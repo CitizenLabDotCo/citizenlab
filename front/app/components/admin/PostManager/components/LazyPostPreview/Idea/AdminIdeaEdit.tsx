@@ -22,7 +22,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import useInputSchema from 'hooks/useInputSchema';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
-import useResourceFiles from 'hooks/useResourceFiles';
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -60,10 +60,7 @@ const AdminIdeaEdit = ({
       : idea.data.relationships.project.data.id,
   });
   const { data: remoteImages } = useIdeaImages(ideaId);
-  const remoteFiles = useResourceFiles({
-    resourceId: ideaId,
-    resourceType: 'idea',
-  });
+  const { data: remoteFiles } = useIdeaFiles(ideaId);
 
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
     projectId: project?.id,
@@ -100,8 +97,8 @@ const AdminIdeaEdit = ({
               return [prop, remoteImages?.data];
             } else if (prop === 'idea_files_attributes') {
               const attachmentsValue =
-                !isNilOrError(remoteFiles) && remoteFiles.length > 0
-                  ? remoteFiles
+                !isNilOrError(remoteFiles) && remoteFiles.data.length > 0
+                  ? remoteFiles.data
                   : undefined;
               return [prop, attachmentsValue];
             } else return [prop, undefined];

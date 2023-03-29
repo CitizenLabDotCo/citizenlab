@@ -18,11 +18,11 @@ import {
   ICustomPageFileData,
   ICustomPageFiles,
 } from 'services/pageFiles';
-import { ideaFilesStream, IIdeaFileData, IIdeaFiles } from 'services/ideaFiles';
+import { IIdeaFileData, IIdeaFiles } from 'services/ideaFiles';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-export type ResourceType = 'project' | 'phase' | 'page' | 'idea';
+export type ResourceType = 'project' | 'phase' | 'page';
 
 export type TResourceFileData =
   | IProjectFileData
@@ -97,9 +97,6 @@ export default class GetResourceFiles extends React.Component<Props, State> {
               }
               if (resourceType === 'page') {
                 streamFn = pageFilesStream;
-              }
-              if (resourceType === 'idea') {
-                streamFn = ideaFilesStream;
               }
 
               return streamFn(resourceId)

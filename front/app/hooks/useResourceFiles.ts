@@ -10,7 +10,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { projectFilesStream } from 'services/projectFiles';
 import { phaseFilesStream } from 'services/phaseFiles';
 import { pageFilesStream } from 'services/pageFiles';
-import { ideaFilesStream } from 'services/ideaFiles';
 
 interface Props {
   resourceId: string | null;
@@ -31,8 +30,6 @@ export default function useResourceFiles({ resourceId, resourceType }: Props) {
           return phaseFilesStream;
         case 'page':
           return pageFilesStream;
-        case 'idea':
-          return ideaFilesStream;
       }
     };
     const stream = getResourceStream(resourceType);

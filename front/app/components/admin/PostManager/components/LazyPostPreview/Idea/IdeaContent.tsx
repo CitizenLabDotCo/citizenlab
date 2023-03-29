@@ -23,9 +23,6 @@ import { Top, Content, Container } from '../PostPreview';
 import { ProcessType } from 'services/projects';
 
 // resources
-import GetResourceFiles, {
-  GetResourceFilesChildProps,
-} from 'resources/GetResourceFiles';
 import GetIdeaById, { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -48,6 +45,7 @@ import useLocalize from 'hooks/useLocalize';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 20px;
@@ -164,7 +162,6 @@ interface InputProps {
 
 interface DataProps {
   idea: GetIdeaByIdChildProps;
-  ideaFiles: GetResourceFilesChildProps;
   locale: GetLocaleChildProps;
   project: GetProjectChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
@@ -175,7 +172,6 @@ interface Props extends InputProps, DataProps {}
 const IdeaContent = ({
   idea,
   project,
-  ideaFiles,
   locale,
   handleClickEdit,
   closePreview,
@@ -184,6 +180,7 @@ const IdeaContent = ({
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: ideaImages } = useIdeaImages(ideaId);
+  const { data: ideaFiles } = useIdeaFiles(ideaId);
   const { mutate: deleteIdea } = useDeleteIdea();
 
   const handleClickDelete = (processType: ProcessType) => () => {
@@ -288,9 +285,9 @@ const IdeaContent = ({
                 />
               )}
 
-              {ideaFiles && !isNilOrError(ideaFiles) && (
+              {ideaFiles && (
                 <Box mb="25px">
-                  <FileAttachments files={ideaFiles} />
+                  <FileAttachments files={ideaFiles.data} />
                 </Box>
               )}
 
@@ -350,11 +347,6 @@ const Data = adopt<DataProps, InputProps>({
     >
       {render}
     </GetProject>
-  ),
-  ideaFiles: ({ ideaId, render }) => (
-    <GetResourceFiles resourceId={ideaId} resourceType="idea">
-      {render}
-    </GetResourceFiles>
   ),
   postOfficialFeedbackPermission: ({ project, render }) => (
     <GetPermission
