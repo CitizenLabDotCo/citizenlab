@@ -697,7 +697,6 @@
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "La teva contrasenya s'ha actualitzat correctament",
   "app.containers.ChangePassword.passwordEmptyError": "Fica la teva contrasenya",
   "app.containers.ChangePassword.passwordsDontMatch": "Confirmar nova contrasenya",
-  "app.containers.ChangePassword.title": "Canvia la teva contrasenya",
   "app.containers.Comments.a11y_commentDeleted": "Comentari eliminat",
   "app.containers.Comments.a11y_commentPosted": "Comentari publicat",
   "app.containers.Comments.a11y_undoUpvote": "Desfer el vot favorable",

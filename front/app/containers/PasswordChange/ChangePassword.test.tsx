@@ -7,7 +7,27 @@ import {
   userEvent,
 } from 'utils/testUtils/rtl';
 import ChangePassword from '.';
-import { changePassword } from 'services/users';
+import { changePassword, IUserData } from 'services/users';
+
+const mockUserData: IUserData = {
+  id: 'userId',
+  type: 'user',
+  attributes: {
+    first_name: 'Stewie',
+    last_name: 'McKenzie',
+    locale: 'en',
+    slug: 'stewie-mckenzie',
+    highest_role: 'admin',
+    bio_multiloc: {},
+    roles: [{ type: 'admin' }],
+    registration_completed_at: '',
+    created_at: '',
+    updated_at: '',
+    unread_notifications: 0,
+    invite_status: null,
+    confirmation_required: false,
+  },
+};
 
 jest.mock('utils/cl-intl');
 jest.mock('hooks/useLocale');
@@ -17,6 +37,10 @@ jest.mock('hooks/useAppConfigurationLocales', () =>
 jest.mock('services/users', () => ({
   changePassword: jest.fn(() => null),
 }));
+jest.mock('hooks/useAuthUser', () => {
+  return () => mockUserData;
+});
+
 describe('ChangePassword', () => {
   it('submits correct data', async () => {
     const user = userEvent.setup();

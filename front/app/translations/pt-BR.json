@@ -697,7 +697,6 @@
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "A sua palavra-passe foi actualizada com sucesso",
   "app.containers.ChangePassword.passwordEmptyError": "Introduza a sua palavra-passe",
   "app.containers.ChangePassword.passwordsDontMatch": "Confirmar nova senha",
-  "app.containers.ChangePassword.title": "Altere a sua palavra-passe",
   "app.containers.Comments.a11y_commentDeleted": "comentário Excluido",
   "app.containers.Comments.a11y_commentPosted": "comentário postado",
   "app.containers.Comments.a11y_undoUpvote": "Desfazer a votação",

@@ -214,7 +214,7 @@ describe PermissionsService do
         before do
           facebook_identity = create(:facebook_identity)
           user.identities << facebook_identity
-          user.update(password_digest: nil)
+          user.update!(password_digest: nil)
           user.save!
         end
 

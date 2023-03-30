@@ -697,7 +697,6 @@
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Twoje hasło zostało pomyślnie zaktualizowane",
   "app.containers.ChangePassword.passwordEmptyError": "Wpisz swoje hasło",
   "app.containers.ChangePassword.passwordsDontMatch": "Potwierdź nowe hasło",
-  "app.containers.ChangePassword.title": "Zmień swoje hasło",
   "app.containers.Comments.a11y_commentDeleted": "Komentarz usunięty",
   "app.containers.Comments.a11y_commentPosted": "Komentarz zamieszczony",
   "app.containers.Comments.a11y_undoUpvote": "Cofnij oddanie głosu",
