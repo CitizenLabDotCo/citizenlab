@@ -108,7 +108,6 @@ class OmniauthCallbackController < ApplicationController
       SideFxUserService.new.before_create(@user, nil)
 
       @user.identities << @identity
-
       begin
         @user.save!
         SideFxUserService.new.after_create(@user, nil)
