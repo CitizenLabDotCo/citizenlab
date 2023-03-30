@@ -397,8 +397,18 @@ class User < ApplicationRecord
     end
   end
 
+  # User has no password
   def no_password?
     !password_digest && !invite_pending?
+  end
+
+  # Do we need a password for this user?
+  def should_require_password?
+    password_digest.blank? && !confirmation_required? && !sso? && !invite_pending?
+  end
+
+  def sso?
+    identities.any?
   end
 
   def member_of?(group_id)

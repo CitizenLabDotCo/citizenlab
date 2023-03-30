@@ -187,6 +187,7 @@ describe PermissionsService do
         it { expect(denied_reason).to eq 'not_active' }
       end
 
+      # TODO: Change this to be properly unconfirmed
       context 'when fully registered unconfirmed resident' do
         before { user.update!(email_confirmed_at: nil) }
 
@@ -194,6 +195,16 @@ describe PermissionsService do
       end
 
       context 'when fully registered confirmed resident' do
+        it { expect(denied_reason).to be_nil }
+      end
+
+      context 'when fully registered sso user' do
+        before do
+          facebook_identity = create(:facebook_identity)
+          user.identities << facebook_identity
+          user.update!(password_digest: nil)
+        end
+
         it { expect(denied_reason).to be_nil }
       end
 

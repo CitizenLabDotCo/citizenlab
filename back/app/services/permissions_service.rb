@@ -50,6 +50,7 @@ class PermissionsService
   def requirements(permission, user)
     requirements = requirements_mapping[permission.permitted_by]
     mark_satisfied_requirements! requirements, user if user
+    ignore_password_for_sso! requirements, user if user
     permitted = requirements.values.none? do |subrequirements|
       subrequirements.value? 'require'
     end
@@ -156,6 +157,12 @@ class PermissionsService
       end
       requirements[:special][special_key] = 'satisfied' if is_satisfied
     end
+  end
+
+  def ignore_password_for_sso!(requirements, user)
+    return requirements if !user
+
+    requirements[:special][:password] = 'dont_ask' if user.sso?
   end
 end
 
