@@ -696,7 +696,6 @@
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Parola dvs. a fost actualizată cu succes",
   "app.containers.ChangePassword.passwordEmptyError": "Introduceți parola dvs.",
   "app.containers.ChangePassword.passwordsDontMatch": "Confirmați noua parolă",
-  "app.containers.ChangePassword.title": "Schimbați-vă parola",
   "app.containers.Comments.a11y_commentDeleted": "Comentariul a fost șters",
   "app.containers.Comments.a11y_commentPosted": "Comentariu postat",
   "app.containers.Comments.a11y_undoUpvote": "Anulați votul pozitiv",
