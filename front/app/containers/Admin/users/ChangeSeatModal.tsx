@@ -18,15 +18,20 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { isNil } from 'utils/helperUtils';
 
 import { IUserData } from 'services/users';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin, isCollaborator } from 'services/permissions/roles';
+
+export type TChangeSeatAction = 'setAsAdmin' | 'setAsNormalUser' | undefined;
 
 const getInfoText = (
   isUserAdmin: boolean,
+  isSettingCollaboratorAsNormalUser: boolean,
   maximumAdmins: number | null | undefined,
   currentAdminSeats: number
 ): MessageDescriptor => {
   if (isUserAdmin) {
     return messages.confirmNormalUserQuestion;
+  } else if (isSettingCollaboratorAsNormalUser) {
+    return messages.confirmSetCollaboratorAsNormalUserQuestion;
   } else if (!isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins) {
     return messages.reachedLimitMessage;
   }
@@ -36,13 +41,18 @@ const getInfoText = (
 
 const getButtonText = (
   isUserAdmin: boolean,
+  isSettingCollaboratorAsNormalUser: boolean,
   maximumAdmins: number | null | undefined,
   currentAdminSeats: number,
   hasSeatBasedBillingEnabled: boolean
 ): MessageDescriptor => {
   const buttonText = messages.confirm;
 
-  if (isUserAdmin || !hasSeatBasedBillingEnabled) {
+  if (
+    isUserAdmin ||
+    isSettingCollaboratorAsNormalUser ||
+    !hasSeatBasedBillingEnabled
+  ) {
     return buttonText;
   }
 
@@ -56,6 +66,7 @@ interface Props {
   showModal: boolean;
   closeModal: () => void;
   toggleAdmin: () => void;
+  changeSeatAction: TChangeSeatAction;
 }
 
 const ChangeSeatModal = ({
@@ -63,8 +74,10 @@ const ChangeSeatModal = ({
   closeModal,
   userToChangeSeat,
   toggleAdmin,
+  changeSeatAction,
 }: Props) => {
   const isUserAdmin = isAdmin({ data: userToChangeSeat });
+  const isUserCollaborator = isCollaborator({ data: userToChangeSeat });
   const { formatMessage } = useIntl();
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
@@ -73,20 +86,25 @@ const ChangeSeatModal = ({
   const { data: seats } = useSeats();
   if (!appConfiguration || !seats) return null;
 
+  const isSettingCollaboratorAsNormalUser =
+    changeSeatAction === 'setAsNormalUser' && isUserCollaborator;
   const maximumAdmins =
     appConfiguration.data.attributes.settings.core.maximum_admins_number;
   const currentAdminSeats = seats.data.attributes.admins_number;
 
   const confirmChangeQuestion = getInfoText(
     isUserAdmin,
+    isSettingCollaboratorAsNormalUser,
     maximumAdmins,
     currentAdminSeats
   );
-  const modalTitle = isUserAdmin
-    ? messages.setAsNormalUser
-    : messages.giveAdminRights;
+  const modalTitle =
+    isUserAdmin || isSettingCollaboratorAsNormalUser
+      ? messages.setAsNormalUser
+      : messages.giveAdminRights;
   const buttonText = getButtonText(
     isUserAdmin,
+    isSettingCollaboratorAsNormalUser,
     maximumAdmins,
     currentAdminSeats,
     hasSeatBasedBillingEnabled
@@ -105,7 +123,7 @@ const ChangeSeatModal = ({
       }
     >
       <Box display="flex" flexDirection="column" width="100%" p="32px">
-        <Box>
+        <Box pb="32px">
           <Text color="textPrimary" fontSize="m" my="0px">
             <FormattedMessage
               {...confirmChangeQuestion}
@@ -118,9 +136,11 @@ const ChangeSeatModal = ({
               }}
             />
           </Text>
-          <Box py="32px">
-            <SeatInfo seatType="admin" />
-          </Box>
+          {!isSettingCollaboratorAsNormalUser && (
+            <Box pt="32px">
+              <SeatInfo seatType="admin" />
+            </Box>
+          )}
         </Box>
         <Box
           display="flex"
