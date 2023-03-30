@@ -38,6 +38,13 @@ class WebApi::V1::PermissionsController < ApplicationController
     render json: raw_json({ requirements: json_requirements }), status: :ok
   end
 
+  def schema
+    authorize @permission
+    fields = @permission.custom_fields # TODO: Take required into account
+
+    render json: raw_json(JsonFormsService.new.user_ui_and_json_multiloc_schemas(fields))
+  end
+
   private
 
   def serialize(permission)

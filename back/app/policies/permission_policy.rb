@@ -29,4 +29,8 @@ class PermissionPolicy < ApplicationPolicy
   def requirements?
     true
   end
+
+  def schema?
+    true
+  end
 end

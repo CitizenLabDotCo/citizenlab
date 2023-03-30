@@ -366,5 +366,22 @@ resource 'Permissions' do
         })
       end
     end
+
+    get 'web_api/v1/users/custom_fields/schema' do
+      before do
+        @permission = @project.permissions.first
+        create :permissions_custom_field, permission: @permission
+        @permission.update! permitted_by: 'users'
+      end
+
+      example_request 'Get the json and ui schema for an idea permission' do
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'schema'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:json_schema_multiloc]).to be_present
+        expect(json_attributes[:ui_schema_multiloc]).to be_present
+      end
+    end
   end
 end
