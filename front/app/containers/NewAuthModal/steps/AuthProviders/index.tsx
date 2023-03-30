@@ -1,7 +1,5 @@
 import React, { memo, useCallback, useEffect } from 'react';
-import { adopt } from 'react-adopt';
 import { isBoolean } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
@@ -11,13 +9,11 @@ import Outlet from 'components/Outlet';
 import Error from 'components/UI/Error';
 
 // resources
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
@@ -40,46 +36,35 @@ export const StyledAuthProviderButton = styled(AuthProviderButton)`
   margin-bottom: 18px;
 `;
 
-interface InputProps {
+interface Props {
   metaData: ISignUpInMetaData;
   className?: string;
   onAuthProviderSelected: TOnContinueFunction;
   goToOtherFlow: () => void;
 }
 
-interface DataProps {
-  azureAdLoginEnabled: boolean | null;
-  facebookLoginEnabled: boolean | null;
-  franceconnectLoginEnabled: boolean | null;
-  googleLoginEnabled: boolean | null;
-  passwordLoginEnabled: boolean | null;
-  tenant: GetAppConfigurationChildProps;
-  viennaCitizenLoginEnabled: boolean | null;
-}
-
-interface Props extends InputProps, DataProps {}
-
 export type AuthProvider = 'email' | SSOProvider;
 
 const AuthProviders = memo<Props & WrappedComponentProps>(
-  ({
-    azureAdLoginEnabled,
-    className,
-    facebookLoginEnabled,
-    franceconnectLoginEnabled,
-    goToOtherFlow,
-    googleLoginEnabled,
-    intl: { formatMessage },
-    metaData,
-    onAuthProviderSelected,
-    passwordLoginEnabled,
-    tenant,
-    viennaCitizenLoginEnabled,
-  }) => {
+  ({ className, goToOtherFlow, metaData, onAuthProviderSelected }) => {
+    const { formatMessage } = useIntl();
+    const { data: tenant } = useAppConfiguration();
+    const tenantSettings = tenant?.data.attributes.settings;
+
+    const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
+    const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
+    const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
+    const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
+    const franceconnectLoginEnabled = useFeatureFlag({
+      name: 'franceconnect_login',
+    });
+    const viennaCitizenLoginEnabled = useFeatureFlag({
+      name: 'vienna_citizen_login',
+    });
+
     const { flow } = metaData;
-    const azureProviderName = !isNilOrError(tenant)
-      ? tenant?.attributes?.settings?.azure_ad_login?.login_mechanism_name
-      : null;
+    const azureProviderName =
+      tenantSettings?.azure_ad_login?.login_mechanism_name;
 
     useEffect(() => {
       if (
@@ -130,15 +115,12 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
       [goToOtherFlow]
     );
 
-    const phone =
-      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
+    const phone = tenantSettings?.password_login?.phone;
 
     const isPasswordSigninOrSignupAllowed =
       passwordLoginEnabled &&
       (flow === 'signin' ||
-        (flow === 'signup' &&
-          !isNilOrError(tenant) &&
-          tenant.attributes.settings.password_login?.enable_signup));
+        (flow === 'signup' && tenantSettings?.password_login?.enable_signup));
 
     return (
       <Container className={className}>
@@ -258,22 +240,4 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
   }
 );
 
-const AuthProvidersWithHoC = injectIntl(AuthProviders);
-
-const Data = adopt<DataProps>({
-  tenant: <GetAppConfiguration />,
-  azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
-  facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
-  franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
-  googleLoginEnabled: <GetFeatureFlag name="google_login" />,
-  passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
-  viennaCitizenLoginEnabled: <GetFeatureFlag name="vienna_citizen_login" />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data>
-    {(dataProps: DataProps) => (
-      <AuthProvidersWithHoC {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+export default AuthProviders;
