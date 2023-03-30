@@ -131,6 +131,7 @@ const EmailAndPassword = ({ onSubmit, onGoBack, onSwitchFlow }: Props) => {
               name="password"
               isLoginPasswordInput
               label={formatMessage(sharedMessages.password)}
+              autocomplete="current-password"
             />
           </Box>
           <Box mt="28px">
