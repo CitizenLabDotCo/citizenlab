@@ -31,11 +31,12 @@ export interface InputProps {
   search?: string;
   // Not used
   groupId?: string;
-  // A project id is passed to this to only return users who are
-  // moderator for the project (includes admins)
+  // Unclear what they are supposed to do
+  // https://citizenlab.atlassian.net/browse/CL-3240
   canModerateProject?: string;
   canModerate?: boolean;
   // Doesn't work with false
+  // https://citizenlab.atlassian.net/browse/CL-3226
   canAdmin?: boolean;
   notCitizenlabMember?: boolean;
   // Not used
