@@ -8,11 +8,19 @@ export default defineMessages({
   subtitle: {
     id: 'app.containers.Admin.Users.userBlockModal.subtitle',
     defaultMessage:
-      'The selected user won’t be able to login to the platform for {daysBlocked}. If you wish to revert this, you can unblock them from the list of blocked users.',
+      "The selected user won't be able to log in to the platform for {daysBlocked}. If you wish to revert this, you can unblock them from the list of blocked users.",
   },
   daysBlocked: {
     id: 'app.containers.Admin.Users.userBlockModal.daysBlocked',
-    defaultMessage: '{numberOfDays} days',
+    defaultMessage: '{numberOfDays} {dayOrDays}',
+  },
+  day: {
+    id: 'app.containers.Admin.Users.userBlockModal.day',
+    defaultMessage: 'day',
+  },
+  days: {
+    id: 'app.containers.Admin.Users.userBlockModal.days',
+    defaultMessage: 'days',
   },
   reasonLabel: {
     id: 'app.containers.Admin.Users.userBlockModal.reasonLabel',
@@ -25,7 +33,7 @@ export default defineMessages({
   blockInfo: {
     id: 'app.containers.Admin.Users.userBlockModal.blockInfo',
     defaultMessage:
-      'The content of this user won’t be removed through this action. Don’t forget to moderate their content if needed.',
+      "The content of this user won't be removed through this action. Don't forget to moderate their content if needed.",
   },
   blockAction: {
     id: 'app.containers.Admin.Users.userBlockModal.blockAction',

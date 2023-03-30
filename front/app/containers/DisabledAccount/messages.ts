@@ -8,7 +8,7 @@ export default defineMessages({
   text: {
     id: 'app.containers.DisabledAccount.text2',
     defaultMessage:
-      'Your account on {orgName} Platform has been temporarily disabled for a violation of community guidelines. For more information on this, you can consult the {TermsAndConditions}.',
+      'Your account on the participation platform of {orgName} has been temporarily disabled for a violation of community guidelines. For more information on this, you can consult the {TermsAndConditions}.',
   },
   termsAndConditions: {
     id: 'app.containers.DisabledAccount.termsAndConditions',
