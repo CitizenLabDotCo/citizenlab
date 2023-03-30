@@ -2,6 +2,7 @@
 
 class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
   skip_after_action :verify_policy_scoped
+  before_action :set_permissions_custom_field, only: %i[show update destroy]
 
   def index
     authorize PermissionsCustomField.new(permission: permission)
@@ -18,7 +19,7 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
 
   def show
     render json: WebApi::V1::PermissionsCustomFieldSerializer.new(
-      find_permissions_custom_field,
+      @permissions_custom_field,
       params: fastjson_params,
       include: %i[custom_field]
     ).serialized_json
@@ -40,23 +41,23 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
   end
 
   def update
-    find_permissions_custom_field.assign_attributes permission_params_for_update
-    authorize find_permissions_custom_field
-    SideFxPermissionsCustomFieldService.new.before_update find_permissions_custom_field, current_user
-    if find_permissions_custom_field.save
-      SideFxPermissionsCustomFieldService.new.before_update find_permissions_custom_field, current_user
+    @permissions_custom_field.assign_attributes permission_params_for_update
+    authorize @permissions_custom_field
+    SideFxPermissionsCustomFieldService.new.before_update @permissions_custom_field, current_user
+    if @permissions_custom_field.save
+      SideFxPermissionsCustomFieldService.new.before_update @permissions_custom_field, current_user
       render json: WebApi::V1::PermissionsCustomFieldSerializer.new(
-        find_permissions_custom_field,
+        @permissions_custom_field,
         params: fastjson_params
       ).serialized_json, status: :ok
     else
-      render json: { errors: find_permissions_custom_field.errors.details }, status: :unprocessable_entity
+      render json: { errors: @permissions_custom_field.errors.details }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    SideFxPermissionsCustomFieldService.new.before_destroy find_permissions_custom_field, current_user
-    permissions_custom_field = find_permissions_custom_field.destroy
+    SideFxPermissionsCustomFieldService.new.before_destroy @permissions_custom_field, current_user
+    permissions_custom_field = @permissions_custom_field.destroy
     if permissions_custom_field.destroyed?
       SideFxPermissionsCustomFieldService.new.after_destroy permissions_custom_field, current_user
       head :ok
@@ -67,8 +68,8 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
 
   private
 
-  def find_permissions_custom_field
-    @find_permissions_custom_field ||= authorize PermissionsCustomField.find(params[:id])
+  def set_permissions_custom_field
+    @permissions_custom_field = authorize PermissionsCustomField.find(params[:id])
   end
 
   def permission
@@ -76,20 +77,7 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
   end
 
   def permission_scope
-    # TODO: avoid code duplication
-    parent_param = params[:parent_param]
-    scope_id = params[parent_param]
-    case parent_param
-    when nil
-      nil
-    when :project_id
-      Project.find(scope_id)
-    when :phase_id
-      Phase.find(scope_id)
-    when :idea_id
-      idea = Idea.find(scope_id)
-      ParticipationContextService.new.get_participation_context idea.project
-    end
+    PermissionsService.new.permission_scope_from_permissions_params(params)
   end
 
   def permission_action

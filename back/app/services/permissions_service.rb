@@ -63,6 +63,22 @@ class PermissionsService
     }
   end
 
+  def permission_scope_from_permissions_params(params)
+    parent_param = params[:parent_param]
+    scope_id = params[parent_param]
+    case parent_param
+    when nil
+      nil
+    when :project_id
+      Project.find(scope_id)
+    when :phase_id
+      Phase.find(scope_id)
+    when :idea_id
+      idea = Idea.find(scope_id)
+      ParticipationContextService.new.get_participation_context idea.project
+    end
+  end
+
   private
 
   def remove_extras_actions(scope, actions = nil)
