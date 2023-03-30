@@ -1,5 +1,4 @@
 import React, { memo, useCallback, useEffect } from 'react';
-import { isBoolean } from 'lodash-es';
 
 // components
 import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
@@ -14,7 +13,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // styling
@@ -45,7 +43,7 @@ interface Props {
 
 export type AuthProvider = 'email' | SSOProvider;
 
-const AuthProviders = memo<Props & WrappedComponentProps>(
+const AuthProviders = memo<Props>(
   ({ className, goToOtherFlow, metaData, onAuthProviderSelected }) => {
     const { formatMessage } = useIntl();
     const { data: tenant } = useAppConfiguration();
@@ -67,26 +65,17 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
       tenantSettings?.azure_ad_login?.login_mechanism_name;
 
     useEffect(() => {
-      if (
-        isBoolean(passwordLoginEnabled) &&
-        isBoolean(googleLoginEnabled) &&
-        isBoolean(facebookLoginEnabled) &&
-        isBoolean(azureAdLoginEnabled) &&
-        isBoolean(franceconnectLoginEnabled) &&
-        isBoolean(viennaCitizenLoginEnabled)
-      ) {
-        const enabledProviders = [
-          passwordLoginEnabled,
-          googleLoginEnabled,
-          facebookLoginEnabled,
-          azureAdLoginEnabled,
-          franceconnectLoginEnabled,
-          viennaCitizenLoginEnabled,
-        ].filter((provider) => provider === true);
+      const enabledProviders = [
+        passwordLoginEnabled,
+        googleLoginEnabled,
+        facebookLoginEnabled,
+        azureAdLoginEnabled,
+        franceconnectLoginEnabled,
+        viennaCitizenLoginEnabled,
+      ].filter((provider) => provider === true);
 
-        if (enabledProviders.length === 1 && passwordLoginEnabled) {
-          onAuthProviderSelected('email');
-        }
+      if (enabledProviders.length === 1 && passwordLoginEnabled) {
+        onAuthProviderSelected('email');
       }
     }, [
       passwordLoginEnabled,
