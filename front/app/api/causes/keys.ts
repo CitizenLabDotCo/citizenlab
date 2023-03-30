@@ -1,18 +1,22 @@
+import { QueryKeys } from 'utils/cl-react-query/types';
 import { ICauseParameters } from './types';
 
+const baseKey = { type: 'cause' };
+
 const causesKeys = {
-  all: () => [{ type: 'cause' }],
-  lists: () => [{ ...causesKeys.all()[0], operation: 'list' }],
+  all: () => [baseKey],
+  lists: () => [{ ...baseKey, operation: 'list' }],
   list: (params: ICauseParameters) => [
-    { ...causesKeys.all()[0], operation: 'list', ...params },
+    { ...baseKey, operation: 'list', parameters: params },
   ],
-  items: () => [{ ...causesKeys.all()[0], operation: 'item' }],
-  item: (id: string) => [
+  items: () => [{ ...baseKey, operation: 'item' }],
+  item: ({ id }: { id: string }) => [
     {
-      ...causesKeys.items()[0],
-      id,
+      ...baseKey,
+      operation: 'item',
+      parameters: { id },
     },
   ],
-};
+} satisfies QueryKeys;
 
 export default causesKeys;

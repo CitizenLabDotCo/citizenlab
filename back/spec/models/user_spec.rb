@@ -487,6 +487,89 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'not moderator scopes' do
+    let(:user) { create(:user) }
+    let(:admin) { create(:admin) }
+    let!(:project) { create(:project) }
+    let!(:project_folder) { create(:project_folder, projects: [project]) }
+    let(:project_moderator) { create(:project_moderator, projects: [project]) }
+    let(:moderator_of_other_project) { create(:project_moderator, projects: [create(:project)]) }
+    let(:project_folder_moderator) { create(:project_folder_moderator, project_folders: [project_folder]) }
+    let(:moderator_of_other_folder) { create(:project_folder_moderator, project_folders: [create(:project_folder)]) }
+
+    describe '.not_project_moderator' do
+      context 'when a project ID is provided' do
+        it 'includes regular user with no roles' do
+          expect(described_class.not_project_moderator(project.id)).to include(user)
+        end
+
+        it 'includes admins' do
+          expect(described_class.not_project_moderator(project.id)).to include(admin)
+        end
+
+        it 'excludes project moderators of project' do
+          expect(described_class.not_project_moderator(project.id)).not_to include(project_moderator)
+        end
+
+        it 'includes project moderators of other projects' do
+          expect(described_class.not_project_moderator(project.id)).to include(moderator_of_other_project)
+        end
+
+        it 'excludes folder moderators of project folder' do
+          expect(described_class.not_project_moderator(project.id)).not_to include(project_folder_moderator)
+        end
+
+        it 'includes folder moderators of other folders' do
+          expect(described_class.not_project_moderator(project.id)).to include(moderator_of_other_folder)
+        end
+      end
+
+      context 'when a project ID is not provided' do
+        it 'includes only users without a project moderator role' do
+          expect(described_class.not_project_moderator)
+            .to match_array([user, admin, project_folder_moderator, moderator_of_other_folder])
+        end
+      end
+    end
+
+    describe '.not_project_folder_moderator' do
+      context 'when a folder ID is provided' do
+        it 'includes regular user with no roles' do
+          expect(described_class.not_project_folder_moderator(project_folder.id)).to include(user)
+        end
+
+        it 'includes admins' do
+          expect(described_class.not_project_folder_moderator(project_folder.id)).to include(admin)
+        end
+
+        it 'excludes folder moderators of folder' do
+          expect(described_class.not_project_folder_moderator(project_folder.id))
+            .not_to include(project_folder_moderator)
+        end
+
+        it 'includes folder moderators of other folders' do
+          expect(described_class.not_project_folder_moderator(project_folder.id)).to include(moderator_of_other_folder)
+        end
+
+        it 'includes project moderators of projects in folder' do
+          expect(described_class.not_project_folder_moderator(project_folder.id)).to include(project_moderator)
+        end
+
+        it 'includes project moderators of projects not in folder' do
+          expect(described_class.not_project_folder_moderator(project_folder.id))
+            .to include(moderator_of_other_project)
+        end
+      end
+
+      context 'when a folder ID is not provided' do
+        it 'includes only users without a folder moderator role' do
+          expect(described_class.not_project_folder_moderator)
+            .to match_array([user, admin, project_moderator, moderator_of_other_project])
+        end
+      end
+    end
+  end
+
   describe 'add_role' do
     it 'gives a user moderator rights for a project' do
       usr = create(:user, roles: [])

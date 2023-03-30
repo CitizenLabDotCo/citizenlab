@@ -134,9 +134,7 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     verification_methods: string[];
   };
-  dynamic_idea_form?: AppConfigurationFeature;
   jsonforms_custom_fields?: AppConfigurationFeature;
-  idea_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
@@ -216,6 +214,7 @@ export interface IAppConfigurationSettings {
   input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
+  seat_based_billing?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

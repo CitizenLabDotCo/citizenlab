@@ -32,7 +32,7 @@ const useAddCategory = () => {
     mutationFn: addCategory,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: categoriesKeys.list(variables.viewId),
+        queryKey: categoriesKeys.list({ viewId: variables.viewId }),
       });
     },
   });
