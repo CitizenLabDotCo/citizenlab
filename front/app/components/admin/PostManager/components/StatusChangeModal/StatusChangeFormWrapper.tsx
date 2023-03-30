@@ -14,9 +14,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
-import GetInitiativeStatus, {
-  GetInitiativeStatusChildProps,
-} from 'resources/GetInitiativeStatus';
 import GetOfficialFeedbacks, {
   GetOfficialFeedbacksChildProps,
 } from 'resources/GetOfficialFeedbacks';
@@ -38,6 +35,7 @@ import { Multiloc, MultilocFormValues } from 'typings';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -59,7 +57,6 @@ interface InputProps {
 
 interface DataProps {
   tenantLocales: GetAppConfigurationLocalesChildProps;
-  newStatus: GetInitiativeStatusChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
 }
 
@@ -76,8 +73,8 @@ const StatusChangeFormWrapper = ({
   newStatusId,
   closeModal,
   officialFeedbacks,
-  newStatus,
 }: Props & WrappedComponentProps) => {
+  const { data: initiativeStatus } = useInitiativeStatus(newStatusId);
   const [mode, setMode] = useState<'latest' | 'new'>('new');
   const [newOfficialFeedback, setNewOfficialFeedback] = useState<FormValues>({
     author_multiloc: {},
@@ -171,7 +168,7 @@ const StatusChangeFormWrapper = ({
 
   if (
     isNilOrError(initiative) ||
-    isNilOrError(newStatus) ||
+    !initiativeStatus ||
     officialFeedbacks.officialFeedbacksList === undefined
   ) {
     return null;
@@ -189,8 +186,8 @@ const StatusChangeFormWrapper = ({
               </ColoredText>
             ),
             newStatus: (
-              <ColoredText color={newStatus.attributes.color}>
-                <T value={newStatus.attributes.title_multiloc} />
+              <ColoredText color={initiativeStatus.data.attributes.color}>
+                <T value={initiativeStatus.data.attributes.title_multiloc} />
               </ColoredText>
             ),
           }}
@@ -220,9 +217,6 @@ const StatusChangeFormWrapper = ({
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,
-  newStatus: ({ newStatusId, render }) => (
-    <GetInitiativeStatus id={newStatusId}>{render}</GetInitiativeStatus>
-  ),
   officialFeedbacks: ({ initiativeId, render }) => (
     <GetOfficialFeedbacks postId={initiativeId} postType="initiative">
       {render}

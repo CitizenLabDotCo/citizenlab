@@ -8,7 +8,7 @@ const initiativeStatusesKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ id }: { id: string }) => [
+  item: ({ id }: { id?: string }) => [
     {
       ...baseKey,
       operation: 'item',

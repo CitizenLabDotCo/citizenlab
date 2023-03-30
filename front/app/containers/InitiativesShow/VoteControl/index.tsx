@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { media, defaultCardStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -11,14 +10,9 @@ import {
   InitiativeStatusCode,
   IInitiativeStatusData,
 } from 'services/initiativeStatuses';
-import GetInitiativeStatus, {
-  GetInitiativeStatusChildProps,
-} from 'resources/GetInitiativeStatus';
+
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+
 import ProposedNotVoted from './ProposedNotVoted';
 import ProposedVoted from './ProposedVoted';
 import Expired from './Expired';
@@ -27,16 +21,17 @@ import Answered from './Answered';
 import Ineligible from './Ineligible';
 import Custom from './Custom';
 import { openSignUpInModal } from 'events/openSignUpInModal';
-import GetInitiativesPermissions, {
-  GetInitiativesPermissionsChildProps,
-} from 'resources/GetInitiativesPermissions';
-import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
+import useInitiativesPermissions, {
+  IInitiativeDisabledReason,
+} from 'hooks/useInitiativesPermissions';
 import { trackEventByName } from 'utils/analytics';
 import { openVerificationModal } from 'events/verificationModal';
 import useAddInitiativeVote from 'api/initiative_votes/useAddInitiativeVote';
 import useDeleteInitiativeVote from 'api/initiative_votes/useDeleteInitiativeVote';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import { IInitiativeData } from 'api/initiatives/types';
+import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const Container = styled.div`
   ${media.desktop`
@@ -98,37 +93,27 @@ const componentMap: TComponentMap = {
   },
 };
 
-interface InputProps {
+interface Props {
   initiativeId: string;
   className?: string;
   onScrollToOfficialFeedback: () => void;
   id?: string;
 }
 
-interface IntiativeInputProps {
-  initiative: IInitiativeData;
-}
-
-interface DataProps {
-  tenant: GetAppConfigurationChildProps;
-  initiativeStatus: GetInitiativeStatusChildProps;
-  authUser: GetAuthUserChildProps;
-  votingPermission: GetInitiativesPermissionsChildProps;
-}
-
-interface Props extends InputProps, DataProps, IntiativeInputProps {}
-
 const VoteControl = ({
-  initiative,
-  initiativeStatus,
-  tenant,
   className,
   onScrollToOfficialFeedback,
   id,
-  votingPermission,
+  initiativeId,
 }: Props) => {
+  const { data: appConfiguration } = useAppConfiguration();
+  const { data: initiative } = useInitiativeById(initiativeId);
   const { mutate: addVote } = useAddInitiativeVote();
   const { mutate: deleteVote } = useDeleteInitiativeVote();
+  const { data: initiativeStatus } = useInitiativeStatus(
+    initiative?.data.relationships.initiative_status?.data?.id
+  );
+  const votingPermission = useInitiativesPermissions('voting_initiative');
   const handleOnvote = () => {
     const requiredAction = votingPermission?.action;
     switch (requiredAction) {
@@ -175,18 +160,18 @@ const VoteControl = ({
 
   const vote = () => {
     if (!isNilOrError(initiative)) {
-      addVote({ initiativeId: initiative.id, mode: 'up' });
+      addVote({ initiativeId: initiative.data.id, mode: 'up' });
     }
   };
 
   const handleOnCancelVote = () => {
     if (
       !isNilOrError(initiative) &&
-      initiative.relationships?.user_vote?.data?.id
+      initiative.data.relationships?.user_vote?.data?.id
     ) {
       deleteVote({
-        initiativeId: initiative.id,
-        voteId: initiative.relationships.user_vote.data.id,
+        initiativeId: initiative.data.id,
+        voteId: initiative.data.relationships.user_vote.data.id,
       });
     }
   };
@@ -194,14 +179,14 @@ const VoteControl = ({
   if (
     isNilOrError(initiative) ||
     isNilOrError(initiativeStatus) ||
-    isNilOrError(tenant) ||
-    !tenant.attributes.settings.initiatives
+    isNilOrError(appConfiguration) ||
+    !appConfiguration.data.attributes.settings.initiatives
   ) {
     return null;
   }
 
   const expiresAt = moment(
-    initiative.attributes.expires_at,
+    initiative.data.attributes.expires_at,
     'YYYY-MM-DDThh:mm:ss.SSSZ'
   );
   const durationAsSeconds = moment
@@ -209,16 +194,17 @@ const VoteControl = ({
     .asSeconds();
   const isExpired = durationAsSeconds < 0;
   const statusCode =
-    initiativeStatus.attributes.code === 'proposed' && isExpired
+    initiativeStatus.data.attributes.code === 'proposed' && isExpired
       ? 'expired'
-      : initiativeStatus.attributes.code;
+      : initiativeStatus.data.attributes.code;
   const userVoted = !!(
-    initiative.relationships.user_vote &&
-    initiative.relationships.user_vote.data
+    initiative.data.relationships.user_vote &&
+    initiative.data.relationships.user_vote.data
   );
   const StatusComponent =
     componentMap[statusCode][userVoted ? 'voted' : 'notVoted'];
-  const initiativeSettings = tenant.attributes.settings.initiatives;
+  const initiativeSettings =
+    appConfiguration.data.attributes.settings.initiatives;
 
   return (
     <Container id={id} className={className || ''} aria-live="polite">
@@ -226,8 +212,8 @@ const VoteControl = ({
         <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
       </ScreenReaderOnly>
       <StatusComponent
-        initiative={initiative}
-        initiativeStatus={initiativeStatus}
+        initiative={initiative.data}
+        initiativeStatus={initiativeStatus.data}
         initiativeSettings={initiativeSettings}
         userVoted={userVoted}
         onVote={handleOnvote}
@@ -239,43 +225,4 @@ const VoteControl = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps & IntiativeInputProps>({
-  tenant: <GetAppConfiguration />,
-  authUser: <GetAuthUser />,
-  initiativeStatus: ({ initiative, render }) => {
-    if (
-      !isNilOrError(initiative) &&
-      initiative.relationships.initiative_status &&
-      initiative.relationships.initiative_status.data
-    ) {
-      return (
-        <GetInitiativeStatus
-          id={initiative.relationships.initiative_status.data.id}
-        >
-          {render}
-        </GetInitiativeStatus>
-      );
-    }
-
-    return null;
-  },
-  votingPermission: <GetInitiativesPermissions action="voting_initiative" />,
-});
-
-export default (inputProps: InputProps) => {
-  // TODO: Move this logic to VoteControl after working on the initiativeStatus. It's dependency here is why we need to pass in the initiative to the Data component
-  const { data: initiative } = useInitiativeById(inputProps.initiativeId);
-  if (!initiative) return null;
-
-  return (
-    <Data {...inputProps} initiative={initiative.data}>
-      {(dataProps) => (
-        <VoteControl
-          {...inputProps}
-          {...dataProps}
-          initiative={initiative.data}
-        />
-      )}
-    </Data>
-  );
-};
+export default VoteControl;
