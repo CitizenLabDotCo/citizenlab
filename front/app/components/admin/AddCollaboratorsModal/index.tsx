@@ -97,7 +97,6 @@ const AddCollaboratorsModal = ({
                 width="auto"
                 onClick={() => {
                   addModerators();
-                  // closeModal();
                   setShowSuccessModal(true);
                 }}
               >
