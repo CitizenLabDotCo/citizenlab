@@ -1,7 +1,4 @@
-import React, { MouseEvent, KeyboardEvent, useState } from 'react';
-import { includes } from 'lodash-es';
-
-import { isNilOrError } from 'utils/helperUtils';
+import React, { MouseEvent, KeyboardEvent, useState, useCallback } from 'react';
 
 // components
 import ScreenReaderContent from './ScreenReaderContent';
@@ -11,8 +8,12 @@ import VoteButton from './VoteButton';
 import { IdeaVotingDisabledReason } from 'api/ideas/types';
 import { getLatestRelevantPhase } from 'services/phases';
 
+// hooks
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
 // utils
-import { openSignUpInModal } from 'events/openSignUpInModal';
+import { isNilOrError } from 'utils/helperUtils';
+import { includes } from 'lodash-es';
 import { openVerificationModal } from 'events/verificationModal';
 
 // style
@@ -81,6 +82,70 @@ const VoteControl = ({
   );
 
   const voteId = authUser && idea?.data?.relationships?.user_vote?.data?.id;
+  const myVoteMode = voteId ? voteData?.data.attributes.mode : null;
+
+  const castVote = useCallback(
+    (voteMode: 'up' | 'down') => {
+      if (isNilOrError(authUser)) return;
+
+      // Change vote (up -> down or down -> up)
+      if (voteId && myVoteMode !== voteMode) {
+        deleteVote(
+          { ideaId, voteId },
+          {
+            onSuccess: () => {
+              addVote(
+                { ideaId, userId: authUser.id, mode: voteMode },
+                {
+                  onSuccess: () => {
+                    setVotingAnimation(null);
+                  },
+                }
+              );
+            },
+          }
+        );
+      }
+
+      // Cancel vote
+      if (voteId && myVoteMode === voteMode) {
+        deleteVote(
+          { ideaId, voteId },
+          {
+            onSuccess: () => {
+              setVotingAnimation(null);
+            },
+          }
+        );
+      }
+
+      // Add vote
+      if (!voteId) {
+        addVote(
+          { ideaId, userId: authUser.id, mode: voteMode },
+          {
+            onSuccess: () => {
+              setVotingAnimation(null);
+            },
+          }
+        );
+      }
+    },
+    [authUser, addVote, deleteVote, ideaId, myVoteMode, voteId]
+  );
+
+  const castUpvote = useCallback(() => castVote('up'), [castVote]);
+  const castDownvote = useCallback(() => castVote('down'), [castVote]);
+
+  const openAuthModalOnUpvote = useOpenAuthModal({
+    onSuccess: castUpvote,
+    waitIf: isNilOrError(authUser),
+  });
+
+  const openAuthModalOnDownvote = useOpenAuthModal({
+    onSuccess: castDownvote,
+    waitIf: isNilOrError(authUser),
+  });
 
   if (!idea) return null;
 
@@ -146,21 +211,19 @@ const VoteControl = ({
       verifiedButNotPermitted)
   );
 
-  const myVoteMode = voteId ? voteData?.data.attributes.mode : null;
-
   const onClickUpvote = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    vote('up');
+    onVote('up');
   };
 
   const onClickDownvote = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    vote('down');
+    onVote('down');
   };
 
-  const vote = async (voteMode: 'up' | 'down') => {
+  const onVote = async (voteMode: 'up' | 'down') => {
     setVotingAnimation(voteMode);
     const votingActionDescriptor =
       idea?.data.attributes.action_descriptor.voting_idea;
@@ -178,53 +241,20 @@ const VoteControl = ({
     const isTryingToUndoVote = !!(myVoteMode && voteMode === myVoteMode);
     const isVerified = !isNilOrError(authUser) && authUser.attributes.verified;
 
+    if (!participationContextId || !participationContextType) return;
+
+    const context = {
+      action: 'voting_idea',
+      id: participationContextId,
+      type: participationContextType,
+    } as const;
+
     if (!addVoteIsLoading && !deleteVoteIsLoading) {
       if (
         !isNilOrError(authUser) &&
         (votingEnabled || (cancellingEnabled && isTryingToUndoVote))
       ) {
-        // Change vote (up -> down or down -> up)
-        if (voteId && myVoteMode !== voteMode) {
-          deleteVote(
-            { ideaId, voteId },
-            {
-              onSuccess: () => {
-                addVote(
-                  { ideaId, userId: authUser.id, mode: voteMode },
-                  {
-                    onSuccess: () => {
-                      setVotingAnimation(null);
-                    },
-                  }
-                );
-              },
-            }
-          );
-        }
-
-        // Cancel vote
-        if (voteId && myVoteMode === voteMode) {
-          deleteVote(
-            { ideaId, voteId },
-            {
-              onSuccess: () => {
-                setVotingAnimation(null);
-              },
-            }
-          );
-        }
-
-        // Add vote
-        if (!voteId) {
-          addVote(
-            { ideaId, userId: authUser.id, mode: voteMode },
-            {
-              onSuccess: () => {
-                setVotingAnimation(null);
-              },
-            }
-          );
-        }
+        castVote(voteMode);
       } else if (
         isSignedIn &&
         !isVerified &&
@@ -232,7 +262,9 @@ const VoteControl = ({
       ) {
         openVerificationModal();
       } else if (isSignedIn && votingDisabledReason === 'not_active') {
-        openSignUpInModal();
+        voteMode === 'up'
+          ? openAuthModalOnUpvote({ context })
+          : openAuthModalOnDownvote({ context });
       } else if (
         !isSignedIn &&
         (votingEnabled ||
@@ -240,20 +272,11 @@ const VoteControl = ({
           votingDisabledReason === 'not_signed_in' ||
           votingDisabledReason === 'not_permitted')
       ) {
-        openSignUpInModal({
-          verification: votingDisabledReason === 'not_verified',
-          verificationContext:
-            votingDisabledReason === 'not_verified' &&
-            participationContextId &&
-            participationContextType
-              ? {
-                  action: 'voting_idea',
-                  id: participationContextId,
-                  type: participationContextType,
-                }
-              : undefined,
-          action: () => vote(voteMode),
-        });
+        const verification = votingDisabledReason === 'not_verified';
+
+        voteMode === 'up'
+          ? openAuthModalOnUpvote({ verification, context })
+          : openAuthModalOnDownvote({ verification, context });
       } else if (votingDisabledReason) {
         disabledVoteClick?.(votingDisabledReason);
       }

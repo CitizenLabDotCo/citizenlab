@@ -3,8 +3,9 @@ import React, { useCallback } from 'react';
 // services
 import { ICauseData } from 'api/causes/types';
 
-// resource hooks
+// hooks
 import useAuthUser from 'hooks/useAuthUser';
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // components
 import Image from 'components/UI/Image';
@@ -15,7 +16,6 @@ import Warning from 'components/UI/Warning';
 
 // utils
 import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
-import { openSignUpInModal } from 'events/openSignUpInModal';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
@@ -179,35 +179,35 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
 
+  const volunteer = useCallback(() => {
+    if (cause.relationships?.user_volunteer?.data) {
+      deleteVolunteer({
+        causeId: cause.id,
+        volunteerId: cause.relationships.user_volunteer.data.id,
+      });
+    } else {
+      addVolunteer(cause.id);
+    }
+  }, [cause, addVolunteer, deleteVolunteer]);
+
+  const openAuthModal = useOpenAuthModal({
+    onSuccess: volunteer,
+  });
+
   const handleOnVolunteerButtonClick = useCallback(() => {
     if (
       !isNilOrError(authUser) &&
       !authUser.attributes.registration_completed_at
     ) {
-      openSignUpInModal();
+      openAuthModal();
     } else {
-      if (cause.relationships?.user_volunteer?.data) {
-        deleteVolunteer({
-          causeId: cause.id,
-          volunteerId: cause.relationships.user_volunteer.data.id,
-        });
-      } else {
-        addVolunteer(cause.id);
-      }
+      volunteer();
     }
-  }, [authUser, cause, addVolunteer, deleteVolunteer]);
+  }, [authUser, openAuthModal, volunteer]);
 
-  const signIn = () =>
-    openSignUpInModal({
-      flow: 'signin',
-      action: () => handleOnVolunteerButtonClick(),
-    });
+  const signIn = () => openAuthModal({ flow: 'signin' });
 
-  const signUp = () =>
-    openSignUpInModal({
-      flow: 'signup',
-      action: () => handleOnVolunteerButtonClick(),
-    });
+  const signUp = () => openAuthModal({ flow: 'signup' });
 
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;

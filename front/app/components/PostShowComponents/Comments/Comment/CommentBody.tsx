@@ -16,12 +16,12 @@ import GetAppConfigurationLocales, {
 } from 'resources/GetAppConfigurationLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 
-import { commentTranslateButtonClicked$ } from './events';
+import { commentTranslateButtonClicked$ } from '../events';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // Components
 import MentionsTextArea from 'components/UI/MentionsTextArea';
