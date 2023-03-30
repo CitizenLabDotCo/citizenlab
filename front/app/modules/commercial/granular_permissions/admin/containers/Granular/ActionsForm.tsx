@@ -20,6 +20,7 @@ import messages from './messages';
 // hooks
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import {
@@ -92,6 +93,9 @@ type Props = PostTypeProps & SharedProps;
 
 const ActionsForm = memo(
   ({ permissions, postType, onChange, projectId }: Props) => {
+    const includePermissionsCustomFields = useFeatureFlag({
+      name: 'permissions_custom_fields',
+    });
     const project = useProject({ projectId });
     const phases = usePhases(projectId);
     const handlePermissionChange =
@@ -156,11 +160,12 @@ const ActionsForm = memo(
                   projectType={postType}
                   onChange={handlePermissionChange(permission)}
                 />
-                {permission.attributes.permitted_by !== 'everyone' && (
-                  <Box mt="42px" mb="20px">
-                    <UserFieldSelection permission={permission} />
-                  </Box>
-                )}
+                {permission.attributes.permitted_by !== 'everyone' &&
+                  includePermissionsCustomFields && (
+                    <Box mt="42px" mb="20px">
+                      <UserFieldSelection permission={permission} />
+                    </Box>
+                  )}
               </ActionPermissionWrapper>
             );
           })}
