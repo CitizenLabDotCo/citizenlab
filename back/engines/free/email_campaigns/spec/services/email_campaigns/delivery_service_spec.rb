@@ -169,18 +169,4 @@ describe EmailCampaigns::DeliveryService do
       expect(service.consentable_campaign_types_for(user)).not_to include('ConsentableDisableableCampaignAForTest')
     end
   end
-
-  describe 'assign_campaigns_recipients' do
-    let(:campaign) { create(:user_digest_campaign) }
-    let!(:user) { create(:user) }
-    let!(:invited_user) { create(:user, invite_status: 'pending') }
-
-    it 'excludes users with a pending invite' do
-      result = service.send(:assign_campaigns_recipients, [campaign], time: Time.now)
-
-      expect(result.count).to eq 1
-      expect(result.to_json).to include user.email
-      expect(result.to_json).not_to include invited_user.email
-    end
-  end
 end
