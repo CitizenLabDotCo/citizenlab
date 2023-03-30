@@ -20,6 +20,7 @@ const CurrentAndUpcomingEvents = ({
     fallbackMessage={messages.noUpcomingOrOngoingEvents}
     eventsTime="currentAndFuture"
     onClickTitleGoToProjectAndScrollToEvent={true}
+    projectPublicationStatuses={['published']}
   />
 );
 

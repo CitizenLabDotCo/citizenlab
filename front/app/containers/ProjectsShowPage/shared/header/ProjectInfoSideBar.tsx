@@ -428,7 +428,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 <ListItemIcon ariaHidden name="calendar" />
                 <ListItemButton
                   id="e2e-project-sidebar-eventcount"
-                  onClick={scrollTo('project-events', false)}
+                  onClick={scrollTo('project-events')}
                 >
                   <FormattedMessage
                     {...messages.xEvents}

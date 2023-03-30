@@ -21,7 +21,7 @@ const useDeleteVote = () => {
     mutationFn: deleteVote,
     onSuccess: (_data, { ideaId }) => {
       queryClient.invalidateQueries({
-        queryKey: ideaKeys.item(ideaId),
+        queryKey: ideaKeys.item({ id: ideaId }),
       });
     },
   });
