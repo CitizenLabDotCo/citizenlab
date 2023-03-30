@@ -35,6 +35,7 @@ const getHeaderMessage = (step: ReturnType<typeof useSteps>['currentStep']) => {
   if (step.endsWith('policies')) return messages.beforeYouParticipate;
   if (step === 'france-connect-login') return messages.beforeYouParticipate;
   if (step === 'email-confirmation') return messages.confirmYourEmail;
+  if (step.endsWith('sign-in')) return messages.logIn;
   if (step === 'enter-password') return messages.logIn;
   return null;
 };
@@ -110,6 +111,7 @@ const AuthModal = () => {
         {/* OLD SIGN IN FLOW */}
         {currentStep === 'auth-providers-sign-in' && (
           <AuthProviders
+            flow="signin"
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onSelectAuthProvider={transition(
               currentStep,

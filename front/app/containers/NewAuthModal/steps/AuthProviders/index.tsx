@@ -21,7 +21,6 @@ import { Options, Option } from './styles';
 
 // typings
 import { SSOProvider } from 'services/singleSignOn';
-import { ISignUpInMetaData } from 'events/openSignUpInModal';
 
 const Container = styled.div`
   display: flex;
@@ -35,7 +34,7 @@ export const StyledAuthProviderButton = styled(AuthProviderButton)`
 `;
 
 interface Props {
-  metaData: ISignUpInMetaData;
+  flow: 'signup' | 'signin';
   className?: string;
   onSelectAuthProvider: TOnContinueFunction;
   onSwitchFlow: () => void;
@@ -43,8 +42,10 @@ interface Props {
 
 export type AuthProvider = 'email' | SSOProvider;
 
+const TODO_REMOVE = false;
+
 const AuthProviders = memo<Props>(
-  ({ className, onSwitchFlow, metaData, onSelectAuthProvider }) => {
+  ({ flow, className, onSwitchFlow, onSelectAuthProvider }) => {
     const { formatMessage } = useIntl();
     const { data: tenant } = useAppConfiguration();
     const tenantSettings = tenant?.data.attributes.settings;
@@ -60,7 +61,6 @@ const AuthProviders = memo<Props>(
       name: 'vienna_citizen_login',
     });
 
-    const { flow } = metaData;
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
 
@@ -90,7 +90,8 @@ const AuthProviders = memo<Props>(
     return (
       <Container className={className}>
         {franceconnectLoginEnabled &&
-          (metaData.error?.code === 'franceconnect_merging_failed' ? (
+          // (metaData.error?.code === 'franceconnect_merging_failed' ? (
+          (TODO_REMOVE ? (
             <Error
               text={
                 <FormattedMessage
@@ -110,12 +111,17 @@ const AuthProviders = memo<Props>(
             />
           ))}
 
-        {(isPasswordSigninOrSignupAllowed ||
+        {/* {(isPasswordSigninOrSignupAllowed ||
           facebookLoginEnabled ||
           azureAdLoginEnabled ||
           viennaCitizenLoginEnabled) &&
           franceconnectLoginEnabled &&
-          !metaData.error && <Or />}
+          !metaData.error && <Or />} */}
+        {(isPasswordSigninOrSignupAllowed ||
+          facebookLoginEnabled ||
+          azureAdLoginEnabled ||
+          viennaCitizenLoginEnabled) &&
+          franceconnectLoginEnabled && <Or />}
 
         <Outlet
           id="app.components.SignUpIn.AuthProviders.ContainerStart"
