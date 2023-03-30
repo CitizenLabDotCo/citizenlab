@@ -909,27 +909,36 @@ resource 'Users' do
           end
         end
 
-        # NOTE: To be included in an upcoming iteration
-        # context 'when the user_confirmation module is active' do
-        #   before do
-        #     SettingsService.new.activate_feature! 'user_confirmation'
-        #   end
+        context 'when the user_confirmation module is active' do
+          before do
+            SettingsService.new.activate_feature! 'user_confirmation'
+          end
 
-        #   describe 'Changing the email' do
-        #     let(:email) { 'new-email@email.com' }
+          describe 'Changing the email' do
+            let(:email) { 'new-email@email.com' }
 
-        #     example_request 'Requires confirmation' do
-        #       json_response = json_parse(response_body)
-        #       expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true
-        #     end
+            example_request 'Requires confirmation' do
+              json_response = json_parse(response_body)
+              expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true
+            end
 
-        #     example_request 'Sends a confirmation email' do
-        #       last_email = ActionMailer::Base.deliveries.last
-        #       user       = User.find(id)
-        #       expect(last_email.to).to include user.reload.email
-        #     end
-        #   end
-        # end
+            example_request 'Sends a confirmation email' do
+              last_email = ActionMailer::Base.deliveries.last
+              user       = User.find(id)
+              expect(last_email.to).to include user.reload.email
+              expect(user.email_confirmation_code_sent_at).not_to be_nil
+            end
+          end
+
+          describe 'Changing something else' do
+            let(:user) { create(:user) }
+
+            example_request 'Does not send a confirmation email' do
+              last_email = ActionMailer::Base.deliveries.last
+              expect(last_email).to be_nil
+            end
+          end
+        end
 
         describe do
           example "Update a user's custom field values" do
@@ -1133,6 +1142,32 @@ resource 'Users' do
           let(:new_password) { 'test_new_password' }
 
           example_request 'update password with correct current password' do
+            @user.reload
+            expect(response_status).to eq 200
+            expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')
+          end
+        end
+
+        describe do
+          let(:current_password) { '' }
+          let(:new_password) { 'test_new_password' }
+
+          example_request 'update password when not providing existing password' do
+            expect(response_status).to eq 422
+            json_response = json_parse(response_body)
+            expect(json_response[:errors][:current_password][0][:error]).to eq 'invalid'
+          end
+        end
+
+        describe do
+          let(:current_password) { '' }
+          let(:new_password) { 'test_new_password' }
+
+          before do
+            @user.update!(password: nil)
+          end
+
+          example_request 'update password when no existing password (passwordless or sso user)' do
             @user.reload
             expect(response_status).to eq 200
             expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')

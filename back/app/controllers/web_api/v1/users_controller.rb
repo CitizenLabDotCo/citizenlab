@@ -147,6 +147,8 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     remove_image_if_requested!(@user, user_params, :avatar)
 
+    @user.reset_confirmation_and_counts if @user.email_changed?
+
     authorize @user
     if @user.save
       SideFxUserService.new.after_update(@user, current_user)
@@ -245,7 +247,7 @@ class WebApi::V1::UsersController < ::ApplicationController
   def update_password
     @user = current_user
     authorize @user
-    if @user.authenticate(params[:user][:current_password])
+    if @user.no_password? || @user.authenticate(params[:user][:current_password])
       if @user.update(password: params[:user][:new_password])
         render json: WebApi::V1::UserSerializer.new(
           @user,
@@ -283,10 +285,9 @@ class WebApi::V1::UsersController < ::ApplicationController
     return false if existing_user.changed?
 
     @user = existing_user
-    @user.reset_confirmation_with_no_password
+    @user.reset_confirmation_and_counts
     return false unless @user.save
 
-    SendConfirmationCode.call(user: @user)
     true
   end
 
