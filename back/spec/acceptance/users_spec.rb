@@ -30,7 +30,7 @@ resource 'Users' do
       parameter :can_moderate_project, 'All admins + users who can moderate the project (by project id), ' \
                                        'excluding folder moderators of folder containing project ' \
                                        '(who can, in fact, moderate the project), ' \
-                                       'OR Admins & all users with project moderator role ' \
+                                       'OR All admins + users with project moderator role ' \
                                        '(if no project ID provided)', required: false
       parameter :is_not_project_moderator, 'Users who are not admins, nor project moderator of project, ' \
                                            'nor folder moderator of folder containing project (by project id), ' \
