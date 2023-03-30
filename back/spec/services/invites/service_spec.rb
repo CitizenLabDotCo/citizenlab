@@ -303,6 +303,26 @@ describe Invites::Service do
         expect(user.roles).to match_array([{ 'type' => 'admin' }, old_role])
         expect(user.manual_groups).to match_array([old_group, new_group])
       end
+
+      context 'when new role and group duplicate existing ones' do
+        let(:hash_array) do
+          [
+            { email: 'john@john.son' },
+            { email: 'Someuser@somedomain.com', groups: old_group.title_multiloc.values.first }
+          ]
+        end
+
+        it 'does not duplicate roles and groups' do
+          # using ActionController::Parameters helps catch some bugs
+          default_params = ActionController::Parameters.new(roles: [old_role]).permit!
+          expect { service.bulk_create_xlsx(xlsx, default_params) }.to change(Invite, :count).from(0).to(1)
+
+          service.bulk_create_xlsx(xlsx)
+          user.reload
+          expect(user.roles).to match_array([old_role])
+          expect(user.manual_groups).to match_array([old_group])
+        end
+      end
     end
 
     context 'with an email that is already invited' do
