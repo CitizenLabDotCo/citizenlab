@@ -1,6 +1,6 @@
 // Libraries
 import React from 'react';
-import { isAdmin, isCollaborator, TRole } from 'services/permissions/roles';
+import { isAdmin, isCollaborator } from 'services/permissions/roles';
 import { includes, get, isArray } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 // Components
