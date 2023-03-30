@@ -67,7 +67,7 @@ describe('ChangeSeatModal', () => {
         userToChangeSeat={mockUser.data}
         changeRoles={changeRoles}
         closeModal={closeModal}
-        changeSeatAction="setAsAdmin"
+        isChangingToNormalUser={false}
       />
     );
 
@@ -88,7 +88,7 @@ describe('ChangeSeatModal', () => {
         userToChangeSeat={mockUser.data}
         changeRoles={changeRoles}
         closeModal={closeModal}
-        changeSeatAction="setAsAdmin"
+        isChangingToNormalUser={false}
       />
     );
 
@@ -110,7 +110,7 @@ describe('ChangeSeatModal', () => {
         userToChangeSeat={mockUser.data}
         changeRoles={changeRoles}
         closeModal={closeModal}
-        changeSeatAction="setAsAdmin"
+        isChangingToNormalUser={false}
       />
     );
 
@@ -131,7 +131,7 @@ describe('ChangeSeatModal', () => {
         userToChangeSeat={mockAdmin.data}
         changeRoles={changeRoles}
         closeModal={closeModal}
-        changeSeatAction="setAsNormalUser"
+        isChangingToNormalUser={true}
       />
     );
 

@@ -11,7 +11,7 @@ import { Tr, Td, Box } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import ChangeSeatModal, { TChangeSeatAction } from './ChangeSeatModal';
+import ChangeSeatModal from './ChangeSeatModal';
 
 // Translation
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -69,8 +69,8 @@ const UserTableRow = ({
   const registeredAt = moment(user.attributes.registration_completed_at).format(
     'LL'
   );
-  const [changeSeatAction, setChangeSeatAction] =
-    useState<TChangeSeatAction>(undefined);
+  const [isChangingToNormalUser, setIsChangingToNormalUser] =
+    useState<boolean>(false);
   const [showModal, setShowModal] = useState(false);
   const closeModal = () => {
     setShowModal(false);
@@ -106,7 +106,7 @@ const UserTableRow = ({
   const getSeatChangeActions = () => {
     const setAsAdminAction: IAction = {
       handler: () => {
-        setChangeSeatAction('setAsAdmin');
+        setIsChangingToNormalUser(false);
         openModal();
       },
       label: formatMessage(messages.setAsAdmin),
@@ -115,7 +115,7 @@ const UserTableRow = ({
 
     const setAsNormalUserAction: IAction = {
       handler: () => {
-        setChangeSeatAction('setAsNormalUser');
+        setIsChangingToNormalUser(true);
         openModal();
       },
       label: formatMessage(messages.setAsNormalUser),
@@ -198,7 +198,7 @@ const UserTableRow = ({
         changeRoles={changeRoles}
         showModal={showModal}
         closeModal={closeModal}
-        changeSeatAction={changeSeatAction}
+        isChangingToNormalUser={isChangingToNormalUser}
       />
     </Tr>
   );
