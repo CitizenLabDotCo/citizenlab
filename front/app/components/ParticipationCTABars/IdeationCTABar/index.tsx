@@ -29,7 +29,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const authUser = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
-  const isSmallerThanXlPhone = useBreakpoint('phone');
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
@@ -70,7 +70,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
           bgColor={theme.colors.white}
           textColor={theme.colors.tenantText}
           textHoverColor={theme.colors.black}
-          icon={!isSmallerThanXlPhone ? 'arrow-right' : undefined}
+          icon={!isSmallerThanPhone ? 'arrow-right' : undefined}
           iconPos="right"
           iconColor={theme.colors.tenantText}
           iconHoverColor={theme.colors.black}
