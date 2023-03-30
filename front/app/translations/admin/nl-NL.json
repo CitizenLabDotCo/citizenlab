@@ -555,6 +555,7 @@
   "app.containers.Admin.Users.confirm": "Bevestigen",
   "app.containers.Admin.Users.confirmAdminQuestion": "Weet je zeker dat je {name} platform admin rechten wilt geven?",
   "app.containers.Admin.Users.confirmNormalUserQuestion": "Weet je zeker dat je {name} als normale gebruiker wilt instellen?",
+  "app.containers.Admin.Users.confirmSetCollaboratorAsNormalUserQuestion": "Are you sure you want to set {name} as a normal user? Please note that they will lose collaborator rights to all the projects and folders that they are assigned to on confirmation.",
   "app.containers.Admin.Users.deleteUser": "Verwijder deze gebruiker",
   "app.containers.Admin.Users.email": "E-mail",
   "app.containers.Admin.Users.folderManager": "Mapbeheerder",
