@@ -22,7 +22,7 @@ import Error from 'components/UI/Error';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import oldSignUpMessages from 'containers/Authentication/SignUpIn/SignUpInModal/SignUp/messages';
-import oldSignInMessages from 'containers/Authentication/SignUpIn/SignUpInModal/SignIn/messages';
+import oldSignInMessages from 'containers/NewAuthModal/steps/EmailAndPassword/messages';
 import errorMessages from 'components/UI/Error/messages';
 
 // typings

@@ -11,7 +11,6 @@ import SSOButtons from './SSOButtons';
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import sharedMessages from '../messages';
-import messages from './messages';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
@@ -44,8 +43,8 @@ const LightFlowStart = ({ onSubmit, onSwitchToSSO }: Props) => {
     () =>
       object({
         email: string()
-          .email(formatMessage(messages.emailFormatError))
-          .required(formatMessage(messages.emailMissingError)),
+          .email(formatMessage(sharedMessages.emailFormatError))
+          .required(formatMessage(sharedMessages.emailMissingError)),
       }),
     [formatMessage]
   );
@@ -66,13 +65,13 @@ const LightFlowStart = ({ onSubmit, onSwitchToSSO }: Props) => {
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(handleSubmit)}>
             <Text mt="0px" mb="32px">
-              {formatMessage(messages.enterYourEmailAddress)}
+              {formatMessage(sharedMessages.enterYourEmailAddress)}
             </Text>
             <Box>
               <Input
                 name="email"
                 type="email"
-                label={formatMessage(messages.email)}
+                label={formatMessage(sharedMessages.email)}
               />
             </Box>
             <Box w="100%" display="flex" mt="32px">
