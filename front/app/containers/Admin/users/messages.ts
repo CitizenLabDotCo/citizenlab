@@ -65,6 +65,11 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.confirmNormalUserQuestion',
     defaultMessage: 'Are you sure you want to set {name} as a normal user?',
   },
+  confirmSetCollaboratorAsNormalUserQuestion: {
+    id: 'app.containers.Admin.Users.confirmSetCollaboratorAsNormalUserQuestion',
+    defaultMessage:
+      'Are you sure you want to set {name} as a normal user? Please note that they will lose collaborator rights to all the projects and folders that they are assigned to on confirmation.',
+  },
   confirmAdminQuestion: {
     id: 'app.containers.Admin.Users.confirmAdminQuestion',
     defaultMessage:
