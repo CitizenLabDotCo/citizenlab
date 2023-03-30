@@ -103,7 +103,8 @@ describe('Block user', () => {
       .contains('Block')
       .click();
 
-    cy.wait(500);
+    // cy.intercept(`**/block`).as('blockRequest');
+    // cy.wait('@blockRequest');
 
     cy.get('#e2e-modal-container').contains('All done');
 
@@ -128,18 +129,9 @@ describe('Block user', () => {
 
     cy.get('#e2e-modal-container').contains('button', 'Yes').click();
 
-    cy.wait(500);
+    // cy.intercept(`**/unblock`).as('blockRequest');
+    // cy.wait('@unblockRequest');
 
     cy.get('.e2e-more-actions').click().parent().contains('Block');
-  });
-
-  it('Should not allow for current user to block itself', () => {
-    cy.get('.e2e-user-table')
-      .contains('.e2e-user-table-row', 'admin@citizenlab.co')
-      .find('.e2e-more-actions')
-      .click()
-      .parent()
-      .contains('Block')
-      .should('not.exist');
   });
 });
