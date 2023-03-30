@@ -3,7 +3,7 @@ import createEmailOnlyAccount from 'api/authentication/createEmailOnlyAccount';
 import signIn from 'api/authentication/signIn';
 import signOut from 'api/authentication/signOut';
 import confirmEmail from 'api/authentication/confirmEmail';
-import { handleOnSSOClick } from 'services/singleSignOn';
+import { handleOnSSOClick, SSOProvider } from 'services/singleSignOn';
 
 // cache
 import streams from 'utils/streams';
@@ -35,6 +35,8 @@ type Step =
   | 'email-confirmation'
   | 'enter-password'
   | 'success';
+
+type AuthProvider = 'email' | SSOProvider;
 
 export const getStepConfig = (
   getAuthenticationData: () => AuthenticationData,
@@ -83,8 +85,27 @@ export const getStepConfig = (
       SWITCH_FLOW: () => {
         // TODO
       },
-      SELECT_AUTH_PROVIDER: () => {
-        // TODO
+      SELECT_AUTH_PROVIDER: (authProvider: AuthProvider) => {
+        switch (authProvider) {
+          case 'email':
+            setCurrentStep('email-password-sign-in');
+            break;
+          case 'google':
+            // TODO
+            break;
+          case 'facebook':
+            // TODO
+            break;
+          case 'azureactivedirectory':
+            // TODO
+            break;
+          case 'franceconnect':
+            // TODO
+            break;
+          case 'id_vienna_saml':
+            // TODO
+            break;
+        }
       },
     },
 
