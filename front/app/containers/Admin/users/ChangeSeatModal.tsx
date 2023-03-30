@@ -23,11 +23,11 @@ import { isAdmin } from 'services/permissions/roles';
 
 const getInfoText = (
   isUserAdmin: boolean,
-  hasReachedLimit: boolean
+  hasReachedOrIsOverLimit: boolean
 ): MessageDescriptor => {
   if (isUserAdmin) {
     return messages.confirmNormalUserQuestion;
-  } else if (hasReachedLimit) {
+  } else if (hasReachedOrIsOverLimit) {
     return messages.reachedLimitMessage;
   }
 
@@ -36,7 +36,7 @@ const getInfoText = (
 
 const getButtonText = (
   isUserAdmin: boolean,
-  hasReachedLimit: boolean,
+  hasReachedOrIsOverLimit: boolean,
   hasSeatBasedBillingEnabled: boolean
 ): MessageDescriptor => {
   const buttonText = messages.confirm;
@@ -45,7 +45,7 @@ const getButtonText = (
     return buttonText;
   }
 
-  return hasReachedLimit ? messages.buyOneAditionalSeat : buttonText;
+  return hasReachedOrIsOverLimit ? messages.buyOneAditionalSeat : buttonText;
 };
 
 interface Props {
@@ -75,17 +75,20 @@ const ChangeSeatModal = ({
     appConfiguration.data.attributes.settings.core.maximum_admins_number;
   const currentAdminSeats = seats.data.attributes.admins_number;
 
-  const hasReachedLimit =
+  const hasReachedOrIsOverLimit =
     !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins;
   const hasMoreSeats =
     !isNil(maximumAdmins) && currentAdminSeats > maximumAdmins;
-  const confirmChangeQuestion = getInfoText(isUserAdmin, hasReachedLimit);
+  const confirmChangeQuestion = getInfoText(
+    isUserAdmin,
+    hasReachedOrIsOverLimit
+  );
   const modalTitle = isUserAdmin
     ? messages.setAsNormalUser
     : messages.giveAdminRights;
   const buttonText = getButtonText(
     isUserAdmin,
-    hasReachedLimit,
+    hasReachedOrIsOverLimit,
     hasSeatBasedBillingEnabled
   );
   const header = !showSuccessModal ? (

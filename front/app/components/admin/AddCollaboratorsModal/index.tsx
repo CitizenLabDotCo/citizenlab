@@ -41,13 +41,13 @@ const AddCollaboratorsModal = ({
     appConfiguration.data.attributes.settings.core.maximum_moderators_number;
   const currentCollaboratorSeats =
     seats.data.attributes.project_moderators_number;
-  const hasReachedLimit =
+  const hasReachedOrIsOverLimit =
     !isNil(maximumCollaborators) &&
     currentCollaboratorSeats >= maximumCollaborators;
   const hasMoreSeats =
     !isNil(maximumCollaborators) &&
     currentCollaboratorSeats > maximumCollaborators;
-  const buttonText = hasReachedLimit
+  const buttonText = hasReachedOrIsOverLimit
     ? formatMessage(messages.buyAdditionalSeats, {
         noOfSeats: noOfCollaboratorSeatsToAdd,
       })
@@ -71,9 +71,9 @@ const AddCollaboratorsModal = ({
         ) : (
           <Box display="flex" flexDirection="column" width="100%" p="32px">
             <Text color="textPrimary" fontSize="m" my="0px">
-              {hasReachedLimit ? (
+              {hasReachedOrIsOverLimit ? (
                 <FormattedMessage
-                  {...messages.reachedLimitText}
+                  {...messages.hasReachedOrIsOverLimit}
                   values={{
                     noOfSeats: noOfCollaboratorSeatsToAdd,
                   }}

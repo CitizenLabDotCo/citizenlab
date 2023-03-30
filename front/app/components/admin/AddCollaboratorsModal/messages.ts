@@ -5,8 +5,8 @@ export default defineMessages({
     id: 'app.containers.admin.addCollaboratorsModal.giveCollaboratorRights',
     defaultMessage: 'Give collaborator rights',
   },
-  reachedLimitText: {
-    id: 'app.containers.admin.addCollaboratorsModal.reachedLimitText',
+  hasReachedOrIsOverLimit: {
+    id: 'app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit',
     defaultMessage:
       'You have reached the limit of included seats within your plan, {noOfSeats} additional {noOfSeats, plural, one {seat} other {seats}} will be added.',
   },
