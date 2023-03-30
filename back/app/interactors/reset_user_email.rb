@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Called only when requesting a new code but changing your email from the confirm modal
 class ResetUserEmail < ApplicationInteractor
   delegate :user, to: :context
   delegate :new_email, to: :context, allow_nil: true
