@@ -11,7 +11,7 @@ import { Tr, Td, Box } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import ChangeSeatModal from './ChangeSeatModal';
+import ChangeSeatModal, { TChangeSeatAction } from './ChangeSeatModal';
 
 // Translation
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -69,6 +69,8 @@ const UserTableRow = ({
   const registeredAt = moment(user.attributes.registration_completed_at).format(
     'LL'
   );
+  const [changeSeatAction, setChangeSeatAction] =
+    useState<TChangeSeatAction>(undefined);
   const [showModal, setShowModal] = useState(false);
   const closeModal = () => {
     setShowModal(false);
@@ -76,6 +78,10 @@ const UserTableRow = ({
   const openModal = () => {
     setShowModal(true);
   };
+  const isCollaborator = [
+    'project_moderator',
+    'project_folder_moderator',
+  ].includes(user.attributes.highest_role);
 
   const handleDeleteClick = () => {
     const deleteMessage = formatMessage(messages.userDeletionConfirmation);
@@ -97,16 +103,32 @@ const UserTableRow = ({
     }
   };
 
-  const setAsAdminAction: IAction = {
-    handler: openModal,
-    label: formatMessage(messages.setAsAdmin),
-    icon: 'shield-checkered' as const,
-  };
+  const getSeatChangeActions = () => {
+    const setAsAdminAction: IAction = {
+      handler: () => {
+        setChangeSeatAction('setAsAdmin');
+        openModal();
+      },
+      label: formatMessage(messages.setAsAdmin),
+      icon: 'shield-checkered' as const,
+    };
 
-  const setAsNormalUserAction: IAction = {
-    handler: openModal,
-    label: formatMessage(messages.setAsNormalUser),
-    icon: 'user-circle' as const,
+    const setAsNormalUserAction: IAction = {
+      handler: () => {
+        setChangeSeatAction('setAsNormalUser');
+        openModal();
+      },
+      label: formatMessage(messages.setAsNormalUser),
+      icon: 'user-circle' as const,
+    };
+
+    if (isUserAdmin) {
+      return [setAsNormalUserAction];
+    } else if (isCollaborator) {
+      return [setAsNormalUserAction, setAsAdminAction];
+    } else {
+      return [setAsAdminAction];
+    }
   };
 
   const actions: IAction[] = [
@@ -117,7 +139,7 @@ const UserTableRow = ({
       label: formatMessage(messages.seeProfile),
       icon: 'eye' as const,
     },
-    ...(isUserAdmin ? [setAsNormalUserAction] : [setAsAdminAction]),
+    ...getSeatChangeActions(),
     {
       handler: () => {
         handleDeleteClick();
@@ -176,6 +198,7 @@ const UserTableRow = ({
         toggleAdmin={toggleAdmin}
         showModal={showModal}
         closeModal={closeModal}
+        changeSeatAction={changeSeatAction}
       />
     </Tr>
   );
