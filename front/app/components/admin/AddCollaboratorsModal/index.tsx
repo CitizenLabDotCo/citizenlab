@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import SeatInfo from 'components/SeatInfo';
-import SeatChangeSuccess from 'components/admin/SeatChangeSuccess';
+import SeatSetSuccess from 'components/admin/SeatSetSuccess';
 
 // Translation
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -33,7 +33,7 @@ const AddCollaboratorsModal = ({
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   if (!appConfiguration || !seats) return null;
 
@@ -53,7 +53,7 @@ const AddCollaboratorsModal = ({
       })
     : formatMessage(messages.confirmButtonText);
 
-  const header = !showSuccessModal ? (
+  const header = !showSuccess ? (
     <Text color="primary" my="8px" fontSize="l" fontWeight="bold" px="2px">
       {formatMessage(messages.giveCollaboratorRights)}
     </Text>
@@ -62,8 +62,8 @@ const AddCollaboratorsModal = ({
   return (
     <>
       <Modal opened={showModal} close={closeModal} header={header}>
-        {showSuccessModal ? (
-          <SeatChangeSuccess
+        {showSuccess ? (
+          <SeatSetSuccess
             closeModal={closeModal}
             hasExceededSetSeats={hasExceededSetSeats}
             seatType="collaborator"
@@ -100,7 +100,7 @@ const AddCollaboratorsModal = ({
                 width="auto"
                 onClick={() => {
                   addModerators();
-                  setShowSuccessModal(true);
+                  setShowSuccess(true);
                 }}
               >
                 {buttonText}

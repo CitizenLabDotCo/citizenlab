@@ -8,7 +8,7 @@ import SeatInfo, {
   TSeatType,
 } from 'components/SeatInfo';
 import Error from 'components/UI/Error';
-import SeatChangeSuccess from 'components/admin/SeatChangeSuccess';
+import SeatSetSuccess from 'components/admin/SeatSetSuccess';
 
 // Translation
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -39,7 +39,7 @@ const InviteUsersWithSeatsModal = ({
   const { formatMessage } = useIntl();
   const [hasAcknowledged, setHasAcknowledged] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
 
@@ -83,10 +83,10 @@ const InviteUsersWithSeatsModal = ({
       return;
     }
     inviteUsers();
-    setShowSuccessModal(true);
+    setShowSuccess(true);
   };
 
-  const header = !showSuccessModal ? (
+  const header = !showSuccess ? (
     <Text color="primary" my="8px" fontSize="l" fontWeight="bold" px="2px">
       {formatMessage(seatTypeModalTitles[seatType])}
     </Text>
@@ -94,11 +94,11 @@ const InviteUsersWithSeatsModal = ({
 
   return (
     <Modal opened={showModal} close={closeModal} header={header}>
-      {showSuccessModal ? (
-        <SeatChangeSuccess
+      {showSuccess ? (
+        <SeatSetSuccess
           closeModal={() => {
             closeModal();
-            setShowSuccessModal(false);
+            setShowSuccess(false);
             setShowWarning(false);
             setHasAcknowledged(false);
           }}

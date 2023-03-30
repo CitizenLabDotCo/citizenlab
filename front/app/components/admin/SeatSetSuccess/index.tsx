@@ -23,7 +23,7 @@ type SeatChangeSuccessModalProps = {
   hasExceededSetSeats: boolean;
 };
 
-const SeatChangeSuccess = ({
+const SeatSetSuccess = ({
   closeModal,
   seatType,
   hasExceededSetSeats,
@@ -64,4 +64,4 @@ const SeatChangeSuccess = ({
   );
 };
 
-export default SeatChangeSuccess;
+export default SeatSetSuccess;

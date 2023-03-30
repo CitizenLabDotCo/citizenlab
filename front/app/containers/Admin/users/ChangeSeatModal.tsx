@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 // Components
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
-import SeatChangeSuccess from 'components/admin/SeatChangeSuccess';
+import SeatSetSuccess from 'components/admin/SeatSetSuccess';
 
 // Translation
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -61,7 +61,7 @@ const ChangeSeatModal = ({
   userToChangeSeat,
   toggleAdmin,
 }: Props) => {
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const isUserAdmin = isAdmin({ data: userToChangeSeat });
   const { formatMessage } = useIntl();
   const hasSeatBasedBillingEnabled = useFeatureFlag({
@@ -91,7 +91,7 @@ const ChangeSeatModal = ({
     hasReachedOrIsOverLimit,
     hasSeatBasedBillingEnabled
   );
-  const header = !showSuccessModal ? (
+  const header = !showSuccess ? (
     <Box px="2px">
       <Text color="primary" my="8px" fontSize="l" fontWeight="bold">
         {formatMessage(modalTitle)}
@@ -102,11 +102,11 @@ const ChangeSeatModal = ({
   return (
     <>
       <Modal opened={showModal} close={closeModal} header={header}>
-        {showSuccessModal ? (
-          <SeatChangeSuccess
+        {showSuccess ? (
+          <SeatSetSuccess
             closeModal={() => {
               closeModal();
-              setShowSuccessModal(false);
+              setShowSuccess(false);
             }}
             hasExceededSetSeats={hasExceededSetSeats}
             seatType="admin"
@@ -141,7 +141,7 @@ const ChangeSeatModal = ({
                 onClick={() => {
                   toggleAdmin();
                   if (!isUserAdmin) {
-                    setShowSuccessModal(true);
+                    setShowSuccess(true);
                   } else {
                     closeModal();
                   }
