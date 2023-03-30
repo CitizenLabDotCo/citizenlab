@@ -30,7 +30,7 @@ export default function useInitiativesPermissions(
           authenticationRequirements: null,
         });
       } else {
-        switch (actionDescriptor.disabled_reason) {
+        switch (actionDescriptor?.disabled_reason) {
           case 'not_verified':
             if (isNilOrError(authUser)) {
               setActionPermission({

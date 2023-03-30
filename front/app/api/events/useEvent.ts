@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import eventsKeys from './keys';
 import { EventsKeys, IEvent } from './types';
 
-const fetchEvent = async (eventId?: string) =>
+const fetchEvent = async ({ eventId }: { eventId?: string }) =>
   fetcher<IEvent>({
     path: `/events/${eventId}`,
     action: 'get',
@@ -12,8 +12,8 @@ const fetchEvent = async (eventId?: string) =>
 
 const useEvent = (eventId?: string) => {
   return useQuery<IEvent, CLErrors, IEvent, EventsKeys>({
-    queryKey: eventsKeys.item(eventId),
-    queryFn: () => fetchEvent(eventId),
+    queryKey: eventsKeys.item({ eventId }),
+    queryFn: () => fetchEvent({ eventId }),
     enabled: !!eventId,
   });
 };

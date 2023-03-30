@@ -1,18 +1,24 @@
+import { QueryKeys } from 'utils/cl-react-query/types';
 import { IQueryParameters } from './types';
 
+const baseKey = {
+  type: 'idea',
+};
+
 const ideasKeys = {
-  all: () => [{ type: 'idea' }],
-  lists: () => [{ ...ideasKeys.all()[0], operation: 'list' }],
-  list: (filters: IQueryParameters) => [
-    { ...ideasKeys.lists()[0], ...filters },
+  all: () => [baseKey],
+  lists: () => [{ ...baseKey, operation: 'list' }],
+  list: (parameters: IQueryParameters) => [
+    { ...baseKey, operation: 'list', parameters },
   ],
-  items: () => [{ ...ideasKeys.all()[0], operation: 'item' }],
-  item: (id?: string) => [
+  items: () => [{ ...baseKey, operation: 'item' }],
+  item: ({ id, slug }: { id?: string; slug?: string }) => [
     {
-      ...ideasKeys.items()[0],
-      id,
+      ...baseKey,
+      operation: 'item',
+      parameters: { id, slug },
     },
   ],
-};
+} satisfies QueryKeys;
 
 export default ideasKeys;

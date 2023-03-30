@@ -364,7 +364,7 @@ export class PostManager extends React.PureComponent<Props, State> {
                     feedbackNeeded === true ? feedbackNeeded : undefined
                   }
                   project={selectedProject}
-                  phaseId={selectedPhase ?? undefined}
+                  phase={selectedPhase ?? undefined}
                   topics={selectedTopics ?? undefined}
                   ideaStatusId={selectedStatus ?? undefined}
                   search={searchTerm}

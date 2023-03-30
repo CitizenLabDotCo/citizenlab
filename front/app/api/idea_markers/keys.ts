@@ -1,11 +1,18 @@
+import { QueryKeys } from 'utils/cl-react-query/types';
 import { QueryParameters } from './types';
 
+const baseKeys = { type: 'post_marker', variant: 'idea' };
+
 const ideaMarkersKeys = {
-  all: () => [{ type: 'post_marker', postType: 'idea' }],
-  lists: () => [{ ...ideaMarkersKeys.all()[0], operation: 'list' }],
-  list: (queryParameters: QueryParameters) => [
-    { ...ideaMarkersKeys.all()[0], operation: 'list', ...queryParameters },
+  all: () => [baseKeys],
+  lists: () => [{ ...baseKeys, operation: 'list' }],
+  list: (parameters: QueryParameters) => [
+    {
+      ...baseKeys,
+      operation: 'list',
+      parameters,
+    },
   ],
-};
+} satisfies QueryKeys;
 
 export default ideaMarkersKeys;
