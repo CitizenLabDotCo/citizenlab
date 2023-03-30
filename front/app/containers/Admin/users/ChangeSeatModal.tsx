@@ -15,16 +15,20 @@ import useSeats from 'api/seats/useSeats';
 
 // Utils
 import { isNil } from 'utils/helperUtils';
+import { isCollaborator } from 'services/permissions/roles';
 
 import { IUserData } from 'services/users';
 
 const getInfoText = (
   isUserAdmin: boolean,
+  isChangingCollaboratorToNormalUser: boolean,
   maximumAdmins: number | null | undefined,
   currentAdminSeats: number
 ): MessageDescriptor => {
   if (isUserAdmin) {
     return messages.confirmNormalUserQuestion;
+  } else if (isChangingCollaboratorToNormalUser) {
+    return messages.confirmSetCollaboratorAsNormalUserQuestion;
   } else if (!isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins) {
     return messages.reachedLimitMessage;
   }
@@ -36,18 +40,21 @@ interface Props {
   user: IUserData;
   showModal: boolean;
   isUserAdmin: boolean;
+  isChangingToNormalUser: boolean;
   closeModal: () => void;
-  toggleAdmin: () => void;
+  changeRoles: () => void;
 }
 
 const ChangeSeatModal = ({
   showModal,
   closeModal,
   user,
-  toggleAdmin,
+  changeRoles,
   isUserAdmin,
+  isChangingToNormalUser,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const isUserCollaborator = isCollaborator({ data: user });
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
   if (!appConfiguration || !seats) return null;
@@ -56,12 +63,15 @@ const ChangeSeatModal = ({
     appConfiguration.data.attributes.settings.core.maximum_admins_number;
   const currentAdminSeats = seats.data.attributes.admins_number;
 
+  const isChangingCollaboratorToNormalUser =
+    isChangingToNormalUser && isUserCollaborator;
   const confirmChangeQuestion = getInfoText(
     isUserAdmin,
+    isChangingCollaboratorToNormalUser,
     maximumAdmins,
     currentAdminSeats
   );
-  const modalTitle = isUserAdmin
+  const modalTitle = isChangingToNormalUser
     ? messages.setAsNormalUser
     : messages.giveAdminRights;
 
@@ -78,7 +88,7 @@ const ChangeSeatModal = ({
       }
     >
       <Box display="flex" flexDirection="column" width="100%" p="32px">
-        <Box>
+        <Box pb="32px">
           <Text color="textPrimary" fontSize="m" my="0px">
             <FormattedMessage
               {...confirmChangeQuestion}
@@ -91,9 +101,11 @@ const ChangeSeatModal = ({
               }}
             />
           </Text>
-          <Box py="32px">
-            <SeatInfo seatType="admin" width={null} />
-          </Box>
+          {!isChangingCollaboratorToNormalUser && (
+            <Box py="32px">
+              <SeatInfo seatType="admin" width={null} />
+            </Box>
+          )}
         </Box>
         <Box
           display="flex"
@@ -104,7 +116,7 @@ const ChangeSeatModal = ({
           <Button
             width="auto"
             onClick={() => {
-              toggleAdmin();
+              changeRoles();
               closeModal();
             }}
           >

@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
-import { isAdmin, TRole } from 'services/permissions/roles';
-import { includes, get, isArray } from 'lodash-es';
+import { isAdmin, isCollaborator, TRole } from 'services/permissions/roles';
+import { includes, isArray } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 // Components
 import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
@@ -58,6 +58,19 @@ const SortableTh = ({ sortDirection, onClick, children }: SortableThProps) => (
   </Th>
 );
 
+const getNewRoles = (user: IUserData): TRole[] => {
+  if (
+    user.attributes.roles &&
+    (isAdmin({ data: user }) || isCollaborator({ data: user }))
+  ) {
+    return [];
+  }
+
+  return user.attributes.roles
+    ? [...user.attributes.roles, { type: 'admin' }]
+    : [];
+};
+
 interface InputProps {
   selectedUsers: string[] | 'none' | 'all';
   handleSelect: (userId: string) => void;
@@ -85,9 +98,7 @@ const UsersTable = ({
   }
 
   const handleAdminRoleOnChange = (user: IUserData) => () => {
-    let newRoles: TRole[] = [];
-
-    trackEventByName(tracks.adminToggle.name);
+    trackEventByName(tracks.adminChangeRole.name);
 
     if (authUser && authUser.id === user.id) {
       eventEmitter.emit<JSX.Element>(
@@ -95,15 +106,7 @@ const UsersTable = ({
         <FormattedMessage {...messages.youCantUnadminYourself} />
       );
     } else {
-      if (user.attributes.roles && isAdmin({ data: user })) {
-        newRoles = user.attributes.roles.filter(
-          (role) => role.type !== 'admin'
-        );
-      } else {
-        newRoles = [...get(user, 'attributes.roles', []), { type: 'admin' }];
-      }
-
-      updateUser(user.id, { roles: newRoles });
+      updateUser(user.id, { roles: getNewRoles(user) });
     }
   };
 
@@ -192,7 +195,7 @@ const UsersTable = ({
                   selectedUsers === 'all' || includes(selectedUsers, user.id)
                 }
                 toggleSelect={handleUserToggle(user.id)}
-                toggleAdmin={handleAdminRoleOnChange(user)}
+                changeRoles={handleAdminRoleOnChange(user)}
                 authUser={authUser}
               />
             ))}
