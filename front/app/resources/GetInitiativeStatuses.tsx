@@ -1,5 +1,5 @@
 import useInitiativeStatuses from 'api/initiative_statuses/useInitiativeStatuses';
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 
 interface InputProps {}
 

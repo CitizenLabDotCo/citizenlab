@@ -34,14 +34,6 @@ export interface IInitiativeStatus {
   data: IInitiativeStatusData;
 }
 
-export interface IInitiativeStatusAdd {
-  title_multiloc: Multiloc;
-  description_multiloc?: Multiloc;
-  color?: string;
-  code?: InitiativeStatusCode;
-  ordering?: number;
-}
-
 export type InitiativeStatusUpdateWithExistingFeedback = {
   initiativeId: string;
   initiative_status_id: string;

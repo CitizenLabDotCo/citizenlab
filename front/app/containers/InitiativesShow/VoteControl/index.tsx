@@ -9,7 +9,7 @@ import messages from './messages';
 import {
   InitiativeStatusCode,
   IInitiativeStatusData,
-} from 'services/initiativeStatuses';
+} from 'api/initiative_statuses/types';
 
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 

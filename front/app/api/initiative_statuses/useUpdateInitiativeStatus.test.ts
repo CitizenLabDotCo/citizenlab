@@ -38,7 +38,7 @@ describe('useUpdateInitiativeStatus', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
+      rest.post(apiPath, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );
