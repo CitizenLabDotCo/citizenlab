@@ -6,7 +6,8 @@ class PermissionsService
     not_active: 'not_active',
     not_permitted: 'not_permitted',
     missing_data: 'missing_data',
-    not_verified: 'not_verified'
+    not_verified: 'not_verified',
+    blocked: 'blocked'
   }.freeze
 
   def update_permissions_for_scope(scope)
@@ -85,14 +86,17 @@ class PermissionsService
       user ||= User.new
     else
       return DENIED_REASONS[:not_signed_in] if !user
-      return DENIED_REASONS[:missing_data] if user.confirmation_required?
-      return DENIED_REASONS[:not_active] if !user.active?
-      return if UserRoleService.new.can_moderate? permission.permission_scope, user
-      return DENIED_REASONS[:not_permitted] if permission.permitted_by == 'admins_moderators'
 
-      if permission.permitted_by == 'groups'
-        reason = denied_when_permitted_by_groups?(permission, user)
-        return DENIED_REASONS[reason] if reason.present?
+      if !user.confirmation_required? # Always ensure confirmation not required for all user permissions
+        return DENIED_REASONS[:not_active] if user.registration_completed_at.nil?
+        return DENIED_REASONS[:blocked] if user.blocked?
+        return if UserRoleService.new.can_moderate? permission.permission_scope, user
+        return DENIED_REASONS[:not_permitted] if permission.permitted_by == 'admins_moderators'
+
+        if permission.permitted_by == 'groups'
+          reason = denied_when_permitted_by_groups?(permission, user)
+          return DENIED_REASONS[reason] if reason.present?
+        end
       end
     end
     return if requirements(permission, user)[:permitted]
