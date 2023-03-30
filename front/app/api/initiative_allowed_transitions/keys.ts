@@ -1,11 +1,13 @@
+import { QueryKeys } from 'utils/cl-react-query/types';
+
+const baseKey = { type: 'allowed_transitions', variant: 'initiative' };
+
 const initiativeAllowedTransitionsKeys = {
-  all: () => [{ type: 'allowed_transitions', variant: 'initiative' }],
-  items: () => [
-    { ...initiativeAllowedTransitionsKeys.all()[0], operation: 'item' },
+  all: () => [baseKey],
+  items: () => [{ ...baseKey, operation: 'item' }],
+  item: ({ id }: { id: string }) => [
+    { ...baseKey, operation: 'item', parameters: { id } },
   ],
-  item: (id: string) => [
-    { ...initiativeAllowedTransitionsKeys.items()[0], id },
-  ],
-} as const;
+} satisfies QueryKeys;
 
 export default initiativeAllowedTransitionsKeys;

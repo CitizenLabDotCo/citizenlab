@@ -1,11 +1,16 @@
+import { QueryKeys } from 'utils/cl-react-query/types';
 import { IQueryParameters } from './types';
 
+const baseKey = {
+  type: 'initiative_count',
+};
+
 const initiativesCountKeys = {
-  all: () => [{ type: 'initiatives_count' }],
-  items: () => [{ ...initiativesCountKeys.all()[0], operation: 'item' }],
-  item: (filters?: IQueryParameters) => [
-    { ...initiativesCountKeys.all()[0], operation: 'item', ...filters },
+  all: () => [baseKey],
+  items: () => [{ ...baseKey, operation: 'item' }],
+  item: (parameters: IQueryParameters) => [
+    { ...baseKey, operation: 'item', parameters },
   ],
-} as const;
+} satisfies QueryKeys;
 
 export default initiativesCountKeys;

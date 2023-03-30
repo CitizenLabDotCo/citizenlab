@@ -56,7 +56,7 @@ export const ParticipationCTAContent = ({
   hasUserParticipated = false,
 }: Props) => {
   const theme = useTheme();
-  const isSmallerThanXlPhone = useBreakpoint('phone');
+  const isSmallerThanPhone = useBreakpoint('phone');
   let timeLeft = currentPhase
     ? getPeriodRemainingUntil(currentPhase.attributes.end_at, 'weeks')
     : undefined;
@@ -71,11 +71,11 @@ export const ParticipationCTAContent = ({
     ? messages.userHasParticipated
     : messages.projectOpenForSubmission;
 
-  if (isSmallerThanXlPhone && !hasUserParticipated) {
+  if (isSmallerThanPhone && !hasUserParticipated) {
     userParticipationMessage = messages.mobileProjectOpenForSubmission;
   }
 
-  if (isSmallerThanXlPhone) {
+  if (isSmallerThanPhone) {
     return (
       <Box
         display="flex"
@@ -107,7 +107,7 @@ export const ParticipationCTAContent = ({
             <Text color="white" m="0px" fontSize="s">
               <div
                 style={{
-                  ...(isSmallerThanXlPhone ? { fontWeight: '600' } : {}),
+                  ...(isSmallerThanPhone ? { fontWeight: '600' } : {}),
                 }}
               >
                 <FormattedMessage {...userParticipationMessage} />

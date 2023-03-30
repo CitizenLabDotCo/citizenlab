@@ -109,7 +109,13 @@ async function fetcher({ path, action, body, queryParams }) {
         data.data.forEach((entry) => {
           if (entry.id) {
             queryClient.setQueryData(
-              [{ type: entry.type, id: entry.id, operation: 'item' }],
+              [
+                {
+                  type: entry.type,
+                  parameters: { id: entry.id },
+                  operation: 'item',
+                },
+              ],
               () => ({ data: entry })
             );
           }
@@ -117,7 +123,13 @@ async function fetcher({ path, action, body, queryParams }) {
       } else if (action === 'post' || action === 'patch') {
         if (data.data.id) {
           queryClient.setQueryData(
-            [{ type: data.data.type, id: data.data.id, operation: 'item' }],
+            [
+              {
+                type: data.data.type,
+                parameters: { id: data.data.id },
+                operation: 'item',
+              },
+            ],
             () => ({ data: data.data })
           );
         }
@@ -126,7 +138,13 @@ async function fetcher({ path, action, body, queryParams }) {
         data.included.forEach((entry) => {
           if (entry.id) {
             queryClient.setQueryData(
-              [{ type: entry.type, id: entry.id, operation: 'item' }],
+              [
+                {
+                  type: entry.type,
+                  parameters: { id: entry.id },
+                  operation: 'item',
+                },
+              ],
               () => ({ data: entry })
             );
           }
