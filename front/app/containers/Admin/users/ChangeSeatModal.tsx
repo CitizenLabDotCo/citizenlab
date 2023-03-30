@@ -42,7 +42,7 @@ interface Props {
   isUserAdmin: boolean;
   isChangingToNormalUser: boolean;
   closeModal: () => void;
-  changeRoles: () => void;
+  changeRoles: (user: IUserData, changeToNormalUser: boolean) => void;
 }
 
 const ChangeSeatModal = ({
@@ -116,7 +116,7 @@ const ChangeSeatModal = ({
           <Button
             width="auto"
             onClick={() => {
-              changeRoles();
+              changeRoles(user, isChangingToNormalUser);
               closeModal();
             }}
           >

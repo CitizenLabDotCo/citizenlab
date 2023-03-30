@@ -1,6 +1,6 @@
 // Libraries
 import React from 'react';
-import { isAdmin, isCollaborator, TRole } from 'services/permissions/roles';
+import { TRole } from 'services/permissions/roles';
 import { includes, isArray } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 // Components
@@ -58,12 +58,8 @@ const SortableTh = ({ sortDirection, onClick, children }: SortableThProps) => (
   </Th>
 );
 
-const getNewRoles = (user: IUserData): TRole[] => {
-  if (
-    !user.attributes.roles ||
-    (user.attributes.roles &&
-      (isAdmin({ data: user }) || isCollaborator({ data: user })))
-  ) {
+const getNewRoles = (user: IUserData, changeToNormalUser: boolean): TRole[] => {
+  if (!user.attributes.roles || changeToNormalUser) {
     return [];
   }
 
@@ -96,7 +92,7 @@ const UsersTable = ({
     return null;
   }
 
-  const handleAdminRoleOnChange = (user: IUserData) => () => {
+  const handleChangeRoles = (user: IUserData, changeToNormalUser: boolean) => {
     trackEventByName(tracks.adminChangeRole.name);
 
     if (authUser && authUser.id === user.id) {
@@ -105,7 +101,7 @@ const UsersTable = ({
         <FormattedMessage {...messages.youCantUnadminYourself} />
       );
     } else {
-      updateUser(user.id, { roles: getNewRoles(user) });
+      updateUser(user.id, { roles: getNewRoles(user, changeToNormalUser) });
     }
   };
 
@@ -194,7 +190,7 @@ const UsersTable = ({
                   selectedUsers === 'all' || includes(selectedUsers, user.id)
                 }
                 toggleSelect={handleUserToggle(user.id)}
-                changeRoles={handleAdminRoleOnChange(user)}
+                changeRoles={handleChangeRoles}
                 authUser={authUser}
               />
             ))}

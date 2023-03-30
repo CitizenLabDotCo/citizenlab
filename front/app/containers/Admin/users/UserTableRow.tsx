@@ -39,7 +39,7 @@ interface Props {
   user: IUserData;
   selected: boolean;
   toggleSelect: () => void;
-  changeRoles: () => void;
+  changeRoles: (user: IUserData, changeToNormalUser: boolean) => void;
   authUser: GetAuthUserChildProps;
 }
 
