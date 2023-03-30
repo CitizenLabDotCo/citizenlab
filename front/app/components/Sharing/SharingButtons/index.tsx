@@ -41,7 +41,7 @@ const SharingButtons = memo(
     url,
     utmParams,
   }: Props & WrappedComponentProps) => {
-    const maxTabletOrSmaller = useBreakpoint('tablet');
+    const isSmallerThanTablet = useBreakpoint('tablet');
 
     const getUrl = (medium: Medium) => {
       return getUrlWithUtm(medium, url, utmParams);
@@ -56,7 +56,7 @@ const SharingButtons = memo(
     return (
       <>
         <Title
-          textAlign={maxTabletOrSmaller ? 'center' : 'inherit'}
+          textAlign={isSmallerThanTablet ? 'center' : 'inherit'}
           mb="12px"
           color="textPrimary"
           variant="h3"
@@ -65,7 +65,7 @@ const SharingButtons = memo(
         </Title>
         <Box
           id={id}
-          justifyContent={maxTabletOrSmaller ? 'center' : 'flex-start'}
+          justifyContent={isSmallerThanTablet ? 'center' : 'flex-start'}
           display="flex"
           gap="5px"
           flexWrap="wrap"
@@ -74,7 +74,7 @@ const SharingButtons = memo(
             facebookMessage={facebookMessage}
             url={getUrl('facebook')}
           />
-          {maxTabletOrSmaller && <Messenger url={getUrl('messenger')} />}
+          {isSmallerThanTablet && <Messenger url={getUrl('messenger')} />}
           <WhatsApp
             whatsAppMessage={whatsAppMessage}
             url={getUrl('whatsapp')}

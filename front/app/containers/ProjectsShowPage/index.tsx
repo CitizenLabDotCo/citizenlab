@@ -85,7 +85,7 @@ const ProjectsShowPage = ({ project }: Props) => {
     ? project.attributes.process_type
     : undefined;
 
-  const smallerThanMinTablet = useBreakpoint('tablet');
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const { formatMessage } = useIntl();
   const [mounted, setMounted] = useState(false);
   const locale = useLocale();
@@ -150,7 +150,7 @@ const ProjectsShowPage = ({ project }: Props) => {
           mx="auto"
           my="48px"
           maxWidth="1166px"
-          padding={smallerThanMinTablet ? '20px' : '0px'}
+          padding={isSmallerThanTablet ? '20px' : '0px'}
         >
           <EventsViewer
             showProjectFilter={false}

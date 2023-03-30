@@ -530,6 +530,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "yönergelerimiz",
   "app.components.form.ErrorDisplay.next": "Sonraki",
   "app.components.form.ErrorDisplay.previous": "Önceki",
+  "app.components.form.ErrorDisplay.save": "Kaydet",
   "app.components.form.ErrorDisplay.submitSurvey": "Anket gönderin",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Kullanıcı e-posta adresine veya adına göre aramak için yazmaya başlayın...",
   "app.components.form.blockedVerified": "Doğrulanmış bilgiler içerdiğinden bu alanı düzenleyemezsiniz",
