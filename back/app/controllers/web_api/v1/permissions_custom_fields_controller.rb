@@ -18,7 +18,7 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
 
   def show
     render json: WebApi::V1::PermissionsCustomFieldSerializer.new(
-      permissions_custom_field,
+      find_permissions_custom_field,
       params: fastjson_params,
       include: %i[custom_field]
     ).serialized_json
@@ -40,23 +40,23 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
   end
 
   def update
-    permissions_custom_field.assign_attributes permission_params_for_update
-    authorize permissions_custom_field
-    SideFxPermissionsCustomFieldService.new.before_update permissions_custom_field, current_user
-    if permissions_custom_field.save
-      SideFxPermissionsCustomFieldService.new.before_update permissions_custom_field, current_user
+    find_permissions_custom_field.assign_attributes permission_params_for_update
+    authorize find_permissions_custom_field
+    SideFxPermissionsCustomFieldService.new.before_update find_permissions_custom_field, current_user
+    if find_permissions_custom_field.save
+      SideFxPermissionsCustomFieldService.new.before_update find_permissions_custom_field, current_user
       render json: WebApi::V1::PermissionsCustomFieldSerializer.new(
-        permissions_custom_field,
+        find_permissions_custom_field,
         params: fastjson_params
       ).serialized_json, status: :ok
     else
-      render json: { errors: permissions_custom_field.errors.details }, status: :unprocessable_entity
+      render json: { errors: find_permissions_custom_field.errors.details }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    SideFxPermissionsCustomFieldService.new.before_destroy permissions_custom_field, current_user
-    permissions_custom_field = permissions_custom_field.destroy
+    SideFxPermissionsCustomFieldService.new.before_destroy find_permissions_custom_field, current_user
+    permissions_custom_field = find_permissions_custom_field.destroy
     if permissions_custom_field.destroyed?
       SideFxPermissionsCustomFieldService.new.after_destroy permissions_custom_field, current_user
       head :ok
@@ -67,8 +67,8 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
 
   private
 
-  def permissions_custom_field
-    @permissions_custom_field ||= authorize PermissionsCustomField.find(params[:id])
+  def find_permissions_custom_field
+    @find_permissions_custom_field ||= authorize PermissionsCustomField.find(params[:id])
   end
 
   def permission
