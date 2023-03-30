@@ -60,15 +60,14 @@ const SortableTh = ({ sortDirection, onClick, children }: SortableThProps) => (
 
 const getNewRoles = (user: IUserData): TRole[] => {
   if (
-    user.attributes.roles &&
-    (isAdmin({ data: user }) || isCollaborator({ data: user }))
+    !user.attributes.roles ||
+    (user.attributes.roles &&
+      (isAdmin({ data: user }) || isCollaborator({ data: user })))
   ) {
     return [];
   }
 
-  return user.attributes.roles
-    ? [...user.attributes.roles, { type: 'admin' }]
-    : [];
+  return [...user.attributes.roles, { type: 'admin' }];
 };
 
 interface InputProps {
