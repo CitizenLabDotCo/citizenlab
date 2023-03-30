@@ -13,7 +13,7 @@ import PasswordInput, {
 import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
-import Consent from 'components/AuthProviders/Consent';
+import Consent from 'containers/NewAuthModal/steps/AuthProviders/Consent';
 import { Options, Option } from '../styles';
 
 // utils

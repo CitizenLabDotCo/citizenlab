@@ -6,8 +6,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import { TOnContinueFunction } from 'components/AuthProviders/AuthProviderButton';
-import { StyledAuthProviderButton } from 'components/AuthProviders';
+import { TOnContinueFunction } from 'containers/NewAuthModal/steps/AuthProviders/AuthProviderButton';
+import { StyledAuthProviderButton } from 'containers/NewAuthModal/steps/AuthProviders';
 import ViennaIcon from './ViennaIcon';
 
 // typings

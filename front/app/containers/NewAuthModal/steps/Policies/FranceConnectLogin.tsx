@@ -2,7 +2,7 @@ import React from 'react';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import oldMessages from 'components/AuthProviders/messages';
+import oldMessages from 'containers/NewAuthModal/steps/AuthProviders/messages';
 
 // components
 import FranceConnectButton from 'components/UI/FranceConnectButton';

@@ -2,7 +2,9 @@ import React, { memo, useCallback, useState, useEffect } from 'react';
 
 // components
 import PasswordSignin from './PasswordSignin';
-import AuthProviders, { AuthProvider } from 'components/AuthProviders';
+import AuthProviders, {
+  AuthProvider,
+} from 'containers/NewAuthModal/steps/AuthProviders';
 import Error from 'components/UI/Error';
 import {
   StyledHeaderContainer,

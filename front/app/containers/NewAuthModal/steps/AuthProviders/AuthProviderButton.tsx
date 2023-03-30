@@ -20,7 +20,7 @@ import { colors } from 'utils/styleUtils';
 
 // typings
 import { TSignUpInFlow } from 'events/openSignUpInModal';
-import { AuthProvider } from './';
+import { AuthProvider } from '.';
 
 const tracks = {
   signInWithSSOClicked: 'Sign in with SSO button clicked',

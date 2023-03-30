@@ -13,7 +13,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import sharedMessages from '../messages';
-import oldMessages from 'components/AuthProviders/messages';
+import oldMessages from 'containers/NewAuthModal/steps/AuthProviders/messages';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
