@@ -400,7 +400,7 @@ class User < ApplicationRecord
   end
 
   def sso?
-    identities.any?
+    identity_ids.any?
   end
 
   def member_of?(group_id)
@@ -499,6 +499,7 @@ class User < ApplicationRecord
 
   private
 
+  # NOTE: registration_completed_at_changed? added to allow tests to change this date manually
   def complete_registration
     return if confirmation_required? || invited? || registration_completed_at_changed?
 
