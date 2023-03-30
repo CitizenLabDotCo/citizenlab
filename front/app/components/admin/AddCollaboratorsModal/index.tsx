@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import SeatInfo from 'components/SeatInfo';
-import SeatChangeSuccessModal from 'components/admin/SeatChangeSuccessModal';
+import SeatChangeSuccess from 'components/admin/SeatChangeSuccess';
 
 // Translation
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -50,69 +50,63 @@ const AddCollaboratorsModal = ({
       })
     : formatMessage(messages.confirmButtonText);
 
+  const header = !showSuccessModal ? (
+    <Text color="primary" my="8px" fontSize="l" fontWeight="bold" px="2px">
+      {formatMessage(messages.giveCollaboratorRights)}
+    </Text>
+  ) : undefined;
+
   return (
     <>
-      <Modal
-        opened={showModal}
-        close={closeModal}
-        header={
-          <Text
-            color="primary"
-            my="8px"
-            fontSize="l"
-            fontWeight="bold"
-            px="2px"
-          >
-            {formatMessage(messages.giveCollaboratorRights)}
-          </Text>
-        }
-      >
-        <Box display="flex" flexDirection="column" width="100%" p="32px">
-          <Text color="textPrimary" fontSize="m" my="0px">
-            {hasReachedLimit ? (
-              <FormattedMessage
-                {...messages.reachedLimitText}
-                values={{
-                  noOfSeats: noOfCollaboratorSeatsToAdd,
-                }}
-              />
-            ) : (
-              <FormattedMessage
-                {...messages.confirmMessage}
-                values={{
-                  noOfPeople: noOfCollaboratorSeatsToAdd,
-                }}
-              />
-            )}
-          </Text>
-          <Box py="32px">
-            <SeatInfo seatType="collaborator" />
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            width="100%"
-            alignItems="center"
-          >
-            <Button
-              width="auto"
-              onClick={() => {
-                addModerators();
-                closeModal();
-                setShowSuccessModal(true);
-              }}
+      <Modal opened={showModal} close={closeModal} header={header}>
+        {showSuccessModal ? (
+          <SeatChangeSuccess
+            closeModal={closeModal}
+            hasPurchasedMoreSeats={hasReachedLimit}
+            seatType="collaborator"
+          />
+        ) : (
+          <Box display="flex" flexDirection="column" width="100%" p="32px">
+            <Text color="textPrimary" fontSize="m" my="0px">
+              {hasReachedLimit ? (
+                <FormattedMessage
+                  {...messages.reachedLimitText}
+                  values={{
+                    noOfSeats: noOfCollaboratorSeatsToAdd,
+                  }}
+                />
+              ) : (
+                <FormattedMessage
+                  {...messages.confirmMessage}
+                  values={{
+                    noOfPeople: noOfCollaboratorSeatsToAdd,
+                  }}
+                />
+              )}
+            </Text>
+            <Box py="32px">
+              <SeatInfo seatType="collaborator" />
+            </Box>
+            <Box
+              display="flex"
+              flexDirection="row"
+              width="100%"
+              alignItems="center"
             >
-              {buttonText}
-            </Button>
+              <Button
+                width="auto"
+                onClick={() => {
+                  addModerators();
+                  // closeModal();
+                  setShowSuccessModal(true);
+                }}
+              >
+                {buttonText}
+              </Button>
+            </Box>
           </Box>
-        </Box>
+        )}
       </Modal>
-      <SeatChangeSuccessModal
-        showModal={showSuccessModal}
-        closeModal={() => setShowSuccessModal(false)}
-        hasPurchasedMoreSeats={hasReachedLimit}
-        seatType="collaborator"
-      />
     </>
   );
 };
