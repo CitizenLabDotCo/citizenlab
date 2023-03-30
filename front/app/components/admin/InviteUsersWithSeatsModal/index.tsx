@@ -42,6 +42,7 @@ const InviteUsersWithSeatsModal = ({
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
+
   if (!appConfiguration || !seats) return null;
 
   const maximumSeatNumber = {
@@ -54,8 +55,8 @@ const InviteUsersWithSeatsModal = ({
     admin: seats.data.attributes.admins_number,
     collaborator: seats.data.attributes.project_moderators_number,
   }[seatType];
-  const hasExceededSetNumber =
-    !isNil(maximumSeatNumber) && currentSeatNumber >= maximumSeatNumber;
+  const hasMoreSeats =
+    !isNil(maximumSeatNumber) && currentSeatNumber > maximumSeatNumber;
 
   const seatTypeMessages: SeatTypeMessageDescriptor = {
     admin: messages.admin,
@@ -95,8 +96,13 @@ const InviteUsersWithSeatsModal = ({
     <Modal opened={showModal} close={closeModal} header={header}>
       {showSuccessModal ? (
         <SeatChangeSuccess
-          closeModal={closeModal}
-          hasPurchasedMoreSeats={hasExceededSetNumber}
+          closeModal={() => {
+            closeModal();
+            setShowSuccessModal(false);
+            setShowWarning(false);
+            setHasAcknowledged(false);
+          }}
+          hasMoreSeats={hasMoreSeats}
           seatType="collaborator"
         />
       ) : (

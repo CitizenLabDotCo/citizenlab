@@ -23,11 +23,11 @@ import { isAdmin } from 'services/permissions/roles';
 
 const getInfoText = (
   isUserAdmin: boolean,
-  hasExceededSetAdmins: boolean
+  hasReachedLimit: boolean
 ): MessageDescriptor => {
   if (isUserAdmin) {
     return messages.confirmNormalUserQuestion;
-  } else if (hasExceededSetAdmins) {
+  } else if (hasReachedLimit) {
     return messages.reachedLimitMessage;
   }
 
@@ -36,7 +36,7 @@ const getInfoText = (
 
 const getButtonText = (
   isUserAdmin: boolean,
-  hasExceededSetAdmins: boolean,
+  hasReachedLimit: boolean,
   hasSeatBasedBillingEnabled: boolean
 ): MessageDescriptor => {
   const buttonText = messages.confirm;
@@ -45,7 +45,7 @@ const getButtonText = (
     return buttonText;
   }
 
-  return hasExceededSetAdmins ? messages.buyOneAditionalSeat : buttonText;
+  return hasReachedLimit ? messages.buyOneAditionalSeat : buttonText;
 };
 
 interface Props {
@@ -75,15 +75,17 @@ const ChangeSeatModal = ({
     appConfiguration.data.attributes.settings.core.maximum_admins_number;
   const currentAdminSeats = seats.data.attributes.admins_number;
 
-  const hasExceededSetAdmins =
+  const hasReachedLimit =
     !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins;
-  const confirmChangeQuestion = getInfoText(isUserAdmin, hasExceededSetAdmins);
+  const hasMoreSeats =
+    !isNil(maximumAdmins) && currentAdminSeats > maximumAdmins;
+  const confirmChangeQuestion = getInfoText(isUserAdmin, hasReachedLimit);
   const modalTitle = isUserAdmin
     ? messages.setAsNormalUser
     : messages.giveAdminRights;
   const buttonText = getButtonText(
     isUserAdmin,
-    hasExceededSetAdmins,
+    hasReachedLimit,
     hasSeatBasedBillingEnabled
   );
   const header = !showSuccessModal ? (
@@ -97,7 +99,16 @@ const ChangeSeatModal = ({
   return (
     <>
       <Modal opened={showModal} close={closeModal} header={header}>
-        {!showSuccessModal && (
+        {showSuccessModal ? (
+          <SeatChangeSuccess
+            closeModal={() => {
+              closeModal();
+              setShowSuccessModal(false);
+            }}
+            hasMoreSeats={hasMoreSeats}
+            seatType="admin"
+          />
+        ) : (
           <Box display="flex" flexDirection="column" width="100%" p="32px">
             <Box>
               <Text color="textPrimary" fontSize="m" my="0px">
@@ -128,6 +139,8 @@ const ChangeSeatModal = ({
                   toggleAdmin();
                   if (!isUserAdmin) {
                     setShowSuccessModal(true);
+                  } else {
+                    closeModal();
                   }
                 }}
               >
@@ -135,13 +148,6 @@ const ChangeSeatModal = ({
               </Button>
             </Box>
           </Box>
-        )}
-        {!isUserAdmin && showSuccessModal && (
-          <SeatChangeSuccess
-            closeModal={closeModal}
-            hasPurchasedMoreSeats={hasExceededSetAdmins}
-            seatType="admin"
-          />
         )}
       </Modal>
     </>
