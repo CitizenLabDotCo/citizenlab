@@ -21,7 +21,7 @@ import signIn from 'api/authentication/signIn';
 
 // i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../../NewAuthModal/steps/EmailAndPassword/messages';
+import messages from './messages';
 
 // utils
 import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
