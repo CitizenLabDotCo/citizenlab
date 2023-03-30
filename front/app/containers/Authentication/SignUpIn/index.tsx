@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 // events
-import { openSignUpInModal, ISignUpInMetaData } from 'events/openSignUpInModal';
-import { openSignUpInModal$ } from './SignUpInModal/events';
+import {
+  openSignUpInModal,
+  ISignUpInMetaData,
+  openOldSignUpInModal$,
+} from 'events/openSignUpInModal';
 import openSignUpInModalIfNecessary from '../utils/openSignUpInModalIfNecessary';
 
 // hooks
@@ -39,7 +42,7 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
   const { pathname, search } = useLocation();
 
   useEffect(() => {
-    const subscription = openSignUpInModal$.subscribe(
+    const subscription = openOldSignUpInModal$.subscribe(
       ({ eventValue: newMetaData }) => {
         setMetaData(newMetaData);
       }

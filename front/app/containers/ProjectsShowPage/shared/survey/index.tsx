@@ -19,22 +19,22 @@ import {
   ISurveyTakingDisabledReason,
 } from 'services/actionTakingRules';
 
+// hooks
+import usePhase from 'hooks/usePhase';
+import useAuthUser from 'hooks/useAuthUser';
+import useProject from 'hooks/useProject';
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
 // i18n
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 // events
-import { openSignUpInModal } from 'events/openSignUpInModal';
 import { openVerificationModal } from 'events/verificationModal';
 
 // styling
 import styled from 'styled-components';
 import SurveyXact from './SurveyXact';
-
-// hooks
-import usePhase from 'hooks/usePhase';
-import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
 
 const Container = styled.div`
   position: relative;
@@ -74,6 +74,7 @@ const Survey = ({
   const project = useProject({ projectId });
   const phase = usePhase(phaseId || null);
   const authUser = useAuthUser();
+  const openAuthModal = useOpenAuthModal();
 
   const onVerify = () => {
     const pcId = phaseId || projectId;
@@ -92,21 +93,21 @@ const Survey = ({
 
   const signUpIn = (flow: 'signin' | 'signup') => {
     if (!isNilOrError(project)) {
-      const pcId = phaseId || projectId;
       const pcType = phaseId ? 'phase' : 'project';
+      const pcId = phaseId ?? projectId;
       const takingSurveyDisabledReason =
         project.attributes?.action_descriptor?.taking_survey?.disabled_reason;
-      openSignUpInModal({
+
+      if (!pcId || !pcType) return;
+
+      openAuthModal({
         flow,
         verification: takingSurveyDisabledReason === 'not_verified',
-        verificationContext:
-          takingSurveyDisabledReason === 'not_verified' && pcId && pcType
-            ? {
-                action: 'taking_survey',
-                id: pcId,
-                type: pcType,
-              }
-            : undefined,
+        context: {
+          action: 'taking_survey',
+          id: pcId,
+          type: pcType,
+        },
       });
     }
   };
@@ -209,11 +210,7 @@ const Survey = ({
                 </button>
               ),
               completeRegistrationLink: (
-                <button
-                  onClick={() => {
-                    openSignUpInModal();
-                  }}
-                >
+                <button onClick={signUp}>
                   <FormattedMessage
                     {...messages.completeRegistrationLinkText}
                   />

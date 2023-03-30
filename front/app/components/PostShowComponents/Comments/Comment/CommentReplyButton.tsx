@@ -4,16 +4,18 @@ import { get } from 'lodash-es';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
+
+// hooks
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // events
-import { commentReplyButtonClicked } from './events';
-import { openSignUpInModal } from 'events/openSignUpInModal';
+import { commentReplyButtonClicked } from '../events';
 import { openVerificationModal } from 'events/verificationModal';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../tracks';
 
 // style
 import styled from 'styled-components';
@@ -22,10 +24,10 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // types
 import { GetUserChildProps } from 'resources/GetUser';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { GetCommentChildProps } from 'resources/GetComment';
 import { GetInitiativesPermissionsChildProps } from 'resources/GetInitiativesPermissions';
 import { IInitiativeData } from 'api/initiatives/types';
 import { IIdeaData } from 'api/ideas/types';
+import { ICommentData } from 'services/comments';
 
 const Container = styled.li`
   display: flex;
@@ -59,7 +61,7 @@ interface Props {
   authUser: GetAuthUserChildProps;
   author: GetUserChildProps;
   post: IIdeaData | IInitiativeData;
-  comment: GetCommentChildProps;
+  comment: ICommentData;
   commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
   className?: string;
 }
@@ -75,22 +77,38 @@ const CommentReplyButton = memo<Props>(
     commentingPermissionInitiative,
     className,
   }) => {
-    const onReply = useCallback(() => {
-      if (!isNilOrError(post) && !isNilOrError(comment)) {
-        const commentId = !isNilOrError(comment) ? comment.id : null;
-        const parentCommentId = !isNilOrError(comment)
-          ? comment.relationships.parent.data?.id || null
-          : null;
-        const authorFirstName = !isNilOrError(author)
-          ? author.attributes.first_name
-          : null;
-        const authorLastName = !isNilOrError(author)
-          ? author.attributes.last_name
-          : null;
-        const authorSlug = !isNilOrError(author)
-          ? author.attributes.slug
-          : null;
+    const commentId = comment.id;
+    const parentCommentId = comment.relationships.parent.data?.id ?? null;
+    const authorFirstName = !isNilOrError(author)
+      ? author.attributes.first_name
+      : null;
+    const authorLastName = !isNilOrError(author)
+      ? author.attributes.last_name
+      : null;
+    const authorSlug = !isNilOrError(author) ? author.attributes.slug : null;
 
+    const reply = useCallback(() => {
+      commentReplyButtonClicked({
+        commentId,
+        parentCommentId,
+        authorFirstName,
+        authorLastName,
+        authorSlug,
+      });
+    }, [
+      commentId,
+      parentCommentId,
+      authorFirstName,
+      authorLastName,
+      authorSlug,
+    ]);
+
+    const openAuthModal = useOpenAuthModal({
+      onSuccess: reply,
+    });
+
+    const onReply = useCallback(() => {
+      if (!isNilOrError(post)) {
         if (post.type === 'idea') {
           const {
             clickChildCommentReplyButton,
@@ -112,73 +130,59 @@ const CommentReplyButton = memo<Props>(
             }
           );
 
+          const context = {
+            type: 'idea',
+            action: 'commenting_idea',
+            id: post.id,
+          } as const;
+
           if (!isNilOrError(authUser) && !commentingDisabledReason) {
-            commentReplyButtonClicked({
-              commentId,
-              parentCommentId,
-              authorFirstName,
-              authorLastName,
-              authorSlug,
-            });
+            reply();
           } else if (
             !isNilOrError(authUser) &&
             !authUserIsVerified &&
             commentingDisabledReason === 'not_verified'
           ) {
-            openVerificationModal();
+            openVerificationModal({ context });
           } else if (!authUser) {
-            openSignUpInModal({
+            openAuthModal({
               verification: commentingDisabledReason === 'not_verified',
-              action: () => onReply(),
+              context,
             });
           } else if (commentingDisabledReason === 'not_active') {
-            openSignUpInModal();
+            openAuthModal({ context });
           }
-        } else {
-          if (commentingPermissionInitiative?.action === 'sign_in_up') {
-            openSignUpInModal({
-              action: () => onReply(),
-            });
-          } else if (
-            commentingPermissionInitiative?.action === 'sign_in_up_and_verify'
-          ) {
-            openSignUpInModal({
-              action: () => onReply(),
-              verification: true,
-              verificationContext: {
-                action: 'commenting_initiative',
-                type: 'initiative',
-              },
-            });
-          } else if (commentingPermissionInitiative?.action === 'verify') {
-            openVerificationModal({
-              context: {
-                action: 'commenting_initiative',
-                type: 'initiative',
-              },
-            });
-          } else if (
-            commentingPermissionInitiative?.action === 'complete_registration'
-          ) {
-            openSignUpInModal();
+        }
+
+        if (post.type === 'initiative') {
+          const authenticationRequirements =
+            commentingPermissionInitiative?.authenticationRequirements;
+
+          const context = {
+            type: 'initiative',
+            action: 'commenting_initiative',
+          } as const;
+
+          if (authenticationRequirements === 'sign_in_up') {
+            openAuthModal({ context });
+          } else if (authenticationRequirements === 'sign_in_up_and_verify') {
+            openAuthModal({ verification: true, context });
+          } else if (authenticationRequirements === 'verify') {
+            openVerificationModal({ context });
+          } else if (authenticationRequirements === 'complete_registration') {
+            openAuthModal({ context });
           } else if (commentingPermissionInitiative?.enabled === true) {
-            commentReplyButtonClicked({
-              commentId,
-              parentCommentId,
-              authorFirstName,
-              authorLastName,
-              authorSlug,
-            });
+            reply();
           }
         }
       }
     }, [
-      authUser,
-      author,
-      commentType,
       post,
-      comment,
+      authUser,
+      commentType,
       commentingPermissionInitiative,
+      reply,
+      openAuthModal,
     ]);
 
     if (!isNilOrError(comment)) {

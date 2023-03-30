@@ -15,7 +15,7 @@ import { getInputTerm } from 'services/participationContexts';
 import ActionForm from './ActionForm';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
 
@@ -55,6 +55,15 @@ type SharedProps = {
 };
 
 type Props = PostTypeProps & SharedProps;
+
+const INITIATIVE_PERMISSION_MESSAGES: Record<
+  IGlobalPermissionAction,
+  MessageDescriptor
+> = {
+  voting_initiative: messages.permissionAction_vote_proposals,
+  commenting_initiative: messages.permissionAction_comment_proposals,
+  posting_initiative: messages.permissionAction_post_proposal,
+};
 
 const ActionsForm = memo(
   ({ permissions, postType, onChange, projectId }: Props) => {
@@ -116,11 +125,7 @@ const ActionsForm = memo(
       }
 
       if (postType === 'initiative') {
-        return {
-          voting_initiative: messages.permissionAction_vote_proposals,
-          commenting_initiative: messages.permissionAction_comment_proposals,
-          posting_initiative: messages.permissionAction_post_proposal,
-        }[permissionAction];
+        return INITIATIVE_PERMISSION_MESSAGES[permissionAction];
       }
     };
 

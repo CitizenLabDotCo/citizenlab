@@ -20,7 +20,7 @@ import GetUser, { GetUserChildProps } from 'resources/GetUser';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // style
 import styled from 'styled-components';

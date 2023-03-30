@@ -78,7 +78,7 @@ export default function openSignUpInModalIfNecessary(
           flow: isAuthError && sso_flow ? sso_flow : 'signup',
           error: isAuthError ? { code: error_code || 'general' } : undefined,
           verification: !!sso_verification,
-          verificationContext:
+          context:
             sso_verification &&
             sso_verification_action &&
             sso_verification_id &&

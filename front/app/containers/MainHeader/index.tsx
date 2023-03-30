@@ -21,10 +21,10 @@ import tracks from './tracks';
 import useAuthUser from 'hooks/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // utils
 import { isNilOrError, isPage, isDesktop } from 'utils/helperUtils';
-import { openSignUpInModal } from 'events/openSignUpInModal';
 import eventEmitter from 'utils/eventEmitter';
 import clHistory from 'utils/cl-router/history';
 
@@ -257,6 +257,8 @@ const MainHeader = ({
   const locale = useLocale();
   const theme = useTheme();
   const windowSize = useWindowSize();
+  const openAuthModal = useOpenAuthModal();
+
   const [fullscreenModalOpened, setFullscreenModalOpened] = useState(false);
 
   useEffect(() => {
@@ -312,11 +314,11 @@ const MainHeader = ({
   };
 
   const signIn = () => {
-    openSignUpInModal({ flow: 'signin' });
+    openAuthModal({ flow: 'signin' });
   };
 
   const signUp = () => {
-    openSignUpInModal({ flow: 'signup' });
+    openAuthModal({ flow: 'signup' });
   };
 
   return (

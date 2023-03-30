@@ -1,12 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-import { media, defaultCardStyle } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage } from 'utils/cl-intl';
 import moment from 'moment';
-import messages from './messages';
+
+// resources
 import {
   InitiativeStatusCode,
   IInitiativeStatusData,
@@ -19,6 +15,8 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+
+// components
 import ProposedNotVoted from './ProposedNotVoted';
 import ProposedVoted from './ProposedVoted';
 import Expired from './Expired';
@@ -26,17 +24,34 @@ import ThresholdReached from './ThresholdReached';
 import Answered from './Answered';
 import Ineligible from './Ineligible';
 import Custom from './Custom';
-import { openSignUpInModal } from 'events/openSignUpInModal';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
-import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
-import { trackEventByName } from 'utils/analytics';
+
 import { openVerificationModal } from 'events/verificationModal';
+
+// hooks
 import useAddInitiativeVote from 'api/initiative_votes/useAddInitiativeVote';
 import useDeleteInitiativeVote from 'api/initiative_votes/useDeleteInitiativeVote';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
+// styling
+import styled from 'styled-components';
+import { media, defaultCardStyle } from 'utils/styleUtils';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { trackEventByName } from 'utils/analytics';
+
+// typings
 import { IInitiativeData } from 'api/initiatives/types';
+import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
 
 const Container = styled.div`
   ${media.desktop`
@@ -118,6 +133,11 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps, IntiativeInputProps {}
 
+const context = {
+  type: 'initiative',
+  action: 'voting_initiative',
+} as const;
+
 const VoteControl = ({
   initiative,
   initiativeStatus,
@@ -129,53 +149,51 @@ const VoteControl = ({
 }: Props) => {
   const { mutate: addVote } = useAddInitiativeVote();
   const { mutate: deleteVote } = useDeleteInitiativeVote();
+
+  const vote = () => {
+    if (!isNilOrError(initiative)) {
+      addVote({ initiativeId: initiative.id, mode: 'up' });
+    }
+  };
+
+  const openAuthModal = useOpenAuthModal({
+    onSuccess: vote,
+    waitIf: isNilOrError(initiative),
+  });
+
   const handleOnvote = () => {
-    const requiredAction = votingPermission?.action;
-    switch (requiredAction) {
+    const authenticationRequirements =
+      votingPermission?.authenticationRequirements;
+
+    switch (authenticationRequirements) {
       case 'sign_in_up':
         trackEventByName(
           'Sign up/in modal opened in response to clicking vote initiative'
         );
-        openSignUpInModal({
+        openAuthModal({
           flow: 'signup',
           verification: false,
-          verificationContext: undefined,
-          action: () => vote(),
+          context,
         });
         break;
       case 'sign_in_up_and_verify':
         trackEventByName(
           'Sign up/in modal opened in response to clicking vote initiative'
         );
-        openSignUpInModal({
+        openAuthModal({
           flow: 'signup',
           verification: true,
-          verificationContext: {
-            type: 'initiative',
-            action: 'voting_initiative',
-          },
-          action: () => vote(),
+          context,
         });
         break;
       case 'verify':
         trackEventByName(
           'Verification modal opened in response to clicking vote initiative'
         );
-        openVerificationModal({
-          context: {
-            action: 'voting_initiative',
-            type: 'initiative',
-          },
-        });
+        openVerificationModal({ context });
         break;
       default:
         vote();
-    }
-  };
-
-  const vote = () => {
-    if (!isNilOrError(initiative)) {
-      addVote({ initiativeId: initiative.id, mode: 'up' });
     }
   };
 

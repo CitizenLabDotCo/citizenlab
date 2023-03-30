@@ -19,6 +19,9 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
+// hooks
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
@@ -28,9 +31,6 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
-
-// utils
-import { openSignUpInModal } from 'events/openSignUpInModal';
 
 // events
 import { openVerificationModal } from 'events/verificationModal';
@@ -145,37 +145,23 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       notActivePhase: messages.postingInNonActivePhases,
       maybeNotPermitted: messages.postingMayNotBePermitted,
     };
-    const { enabled, show, disabledReason, action } = getIdeaPostingRules({
-      project,
-      phase,
-      authUser,
-    });
+    const { enabled, show, disabledReason, authenticationRequirements } =
+      getIdeaPostingRules({
+        project,
+        phase,
+        authUser,
+      });
 
-    const onClick = (event: React.MouseEvent) => {
-      event.preventDefault();
+    const pcType = participationContextType;
+    const pcId = pcType === 'phase' ? phase?.id : projectId;
 
-      trackEventByName(tracks.postYourIdeaButtonClicked);
-
-      // if logged in but not complete user
-      if (action === 'complete_registration') {
-        openSignUpInModal();
-      }
-
-      // if not logged in
-      if (action === 'sign_in_up' || action === 'sign_in_up_and_verify') {
-        signUp();
-      }
-
-      // if logged in but not verified and verification required
-      if (action === 'verify') {
-        verify();
-      }
-
-      // if logged in and posting allowed
-      if (enabled === true) {
-        redirectToIdeaForm();
-      }
-    };
+    const context = pcId
+      ? ({
+          action: 'posting_idea',
+          id: pcId,
+          type: pcType,
+        } as const)
+      : null;
 
     const redirectToIdeaForm = () => {
       if (!isNilOrError(project)) {
@@ -198,21 +184,46 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       }
     };
 
+    const openAuthModal = useOpenAuthModal({
+      onSuccess: redirectToIdeaForm,
+      waitIf: isNilOrError(project),
+    });
+
+    const onClick = (event: React.MouseEvent) => {
+      event.preventDefault();
+
+      trackEventByName(tracks.postYourIdeaButtonClicked);
+
+      // if logged in but not complete user
+      if (authenticationRequirements === 'complete_registration') {
+        signUp();
+      }
+
+      // if not logged in
+      if (
+        authenticationRequirements === 'sign_in_up' ||
+        authenticationRequirements === 'sign_in_up_and_verify'
+      ) {
+        signUp();
+      }
+
+      // if logged in but not verified and verification required
+      if (authenticationRequirements === 'verify') {
+        verify();
+      }
+
+      // if logegd in and posting allowed
+      if (enabled === true) {
+        redirectToIdeaForm();
+      }
+    };
+
     const verify = (event?: React.MouseEvent) => {
       event?.preventDefault();
 
-      const pcType = participationContextType;
-      const pcId = pcType === 'phase' ? phase?.id : projectId;
-
-      if (pcId && pcType) {
+      if (context) {
         trackEventByName(tracks.verificationModalOpened);
-        openVerificationModal({
-          context: {
-            action: 'posting_idea',
-            id: pcId,
-            type: pcType,
-          },
-        });
+        openVerificationModal({ context });
       }
     };
 
@@ -228,24 +239,16 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       (flow: 'signup' | 'signin') => (event?: React.MouseEvent) => {
         event?.preventDefault();
 
-        const pcType = participationContextType;
-        const pcId = pcType === 'phase' ? phase?.id : projectId;
-        const shouldVerify = action === 'sign_in_up_and_verify';
+        const shouldVerify =
+          authenticationRequirements === 'sign_in_up_and_verify';
 
-        if (isNilOrError(authUser) && !isNilOrError(project)) {
+        if (context) {
           trackEventByName(tracks.signUpInModalOpened);
-          openSignUpInModal({
+
+          openAuthModal({
             flow,
             verification: shouldVerify,
-            verificationContext:
-              shouldVerify && pcId && pcType
-                ? {
-                    action: 'posting_idea',
-                    id: pcId,
-                    type: pcType,
-                  }
-                : undefined,
-            action: () => redirectToIdeaForm(),
+            context,
           });
         }
       };
