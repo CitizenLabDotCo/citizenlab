@@ -86,10 +86,10 @@ class PermissionsService
       user ||= User.new
     else
       return DENIED_REASONS[:not_signed_in] if !user
+      return DENIED_REASONS[:blocked] if user.blocked?
 
-      if !user.confirmation_required? # Always ensure confirmation not required for all user permissions
-        return DENIED_REASONS[:not_active] if user.registration_completed_at.nil?
-        return DENIED_REASONS[:blocked] if user.blocked?
+      if !user.confirmation_required? # Ignore confirmation as this will be checked by the requirements
+        return DENIED_REASONS[:not_active] if !user.active?
         return if UserRoleService.new.can_moderate? permission.permission_scope, user
         return DENIED_REASONS[:not_permitted] if permission.permitted_by == 'admins_moderators'
 
