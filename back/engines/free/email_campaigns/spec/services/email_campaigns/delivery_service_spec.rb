@@ -172,13 +172,15 @@ describe EmailCampaigns::DeliveryService do
 
   describe 'assign_campaigns_recipients' do
     let(:campaign) { create(:user_digest_campaign) }
-    let!(:user_with_email) { create(:user) }
-    let!(:user_without_email) { create(:user, invite_status: 'pending') }
+    let!(:user) { create(:user) }
+    let!(:invited_user) { create(:user, invite_status: 'pending') }
 
     it 'excludes users with a pending invite' do
       result = service.send(:assign_campaigns_recipients, [campaign], time: Time.now)
+
       expect(result.count).to eq 1
-      expect(result.to_json).to include user_with_email.email
+      expect(result.to_json).to include user.email
+      expect(result.to_json).not_to include invited_user.email
     end
   end
 end
