@@ -39,7 +39,7 @@ interface Props {
   user: IUserData;
   selected: boolean;
   toggleSelect: () => void;
-  toggleAdmin: () => void;
+  changeRoles: () => void;
   authUser: GetAuthUserChildProps;
 }
 
@@ -60,7 +60,7 @@ const UserTableRow = ({
   user,
   selected,
   toggleSelect,
-  toggleAdmin,
+  changeRoles,
   authUser,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -195,7 +195,7 @@ const UserTableRow = ({
 
       <ChangeSeatModal
         userToChangeSeat={user}
-        toggleAdmin={toggleAdmin}
+        changeRoles={changeRoles}
         showModal={showModal}
         closeModal={closeModal}
         changeSeatAction={changeSeatAction}

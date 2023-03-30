@@ -84,7 +84,7 @@ const UsersTable = ({
     return null;
   }
 
-  const handleAdminRoleOnChange = (user: IUserData) => () => {
+  const handleRolesChange = (user: IUserData) => () => {
     let newRoles: TRole[] = [];
 
     trackEventByName(tracks.adminToggle.name);
@@ -199,7 +199,7 @@ const UsersTable = ({
                   selectedUsers === 'all' || includes(selectedUsers, user.id)
                 }
                 toggleSelect={handleUserToggle(user.id)}
-                toggleAdmin={handleAdminRoleOnChange(user)}
+                changeRoles={handleRolesChange(user)}
                 authUser={authUser}
               />
             ))}

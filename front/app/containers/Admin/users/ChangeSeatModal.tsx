@@ -65,7 +65,7 @@ interface Props {
   userToChangeSeat: IUserData;
   showModal: boolean;
   closeModal: () => void;
-  toggleAdmin: () => void;
+  changeRoles: () => void;
   changeSeatAction: TChangeSeatAction;
 }
 
@@ -73,7 +73,7 @@ const ChangeSeatModal = ({
   showModal,
   closeModal,
   userToChangeSeat,
-  toggleAdmin,
+  changeRoles,
   changeSeatAction,
 }: Props) => {
   const isUserAdmin = isAdmin({ data: userToChangeSeat });
@@ -151,7 +151,7 @@ const ChangeSeatModal = ({
           <Button
             width="auto"
             onClick={() => {
-              toggleAdmin();
+              changeRoles();
               closeModal();
             }}
           >
