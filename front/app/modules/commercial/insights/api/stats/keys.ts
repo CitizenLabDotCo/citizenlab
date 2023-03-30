@@ -1,11 +1,19 @@
+import { QueryKeys } from 'utils/cl-react-query/types';
 import { QueryParameters } from './types';
 
+const baseStatsKey = { type: 'inputs_stat' };
 const statsKeys = {
-  all: () => [{ type: 'inputs_stat' }],
-  items: () => [{ ...statsKeys.all()[0], operation: 'item' }],
-  item: (viewId: string, filters?: QueryParameters) => [
-    { ...statsKeys.all()[0], operation: 'item', viewId, ...filters },
+  all: () => [baseStatsKey],
+  items: () => [{ ...baseStatsKey, operation: 'item' }],
+  item: ({
+    viewId,
+    filters,
+  }: {
+    viewId: string;
+    filters?: QueryParameters;
+  }) => [
+    { ...baseStatsKey, operation: 'item', parameters: { viewId, ...filters } },
   ],
-} as const;
+} satisfies QueryKeys;
 
 export default statsKeys;
