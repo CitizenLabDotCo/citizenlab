@@ -23,6 +23,9 @@ import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
 import Checkbox from 'components/HookForm/Checkbox';
 
+// utils
+import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
+
 interface Props {
   onSubmit: (
     email: string,
@@ -75,14 +78,20 @@ const EmailAndPassword = ({ onSubmit, onGoBack, onSwitchFlow }: Props) => {
   const { formatMessage } = useIntl();
 
   const emailSchema = phoneLoginEnabled
-    ? string() // TODO
+    ? string()
+        .required(formatMessage(messages.emailOrPhoneMissingError))
+        .test('', formatMessage(messages.emailOrPhoneNumberError), (value) => {
+          if (value === undefined) return false;
+          return isValidEmail(value) || isValidPhoneNumber(value);
+        })
     : string()
+        .required(formatMessage(sharedMessages.emailMissingError))
         .email(formatMessage(sharedMessages.emailFormatError))
-        .required(formatMessage(sharedMessages.emailMissingError));
+        .test('', formatMessage(sharedMessages.emailFormatError), isValidEmail);
 
   const schema = object({
     email: emailSchema,
-    password: string(), // TODO
+    password: string().required(formatMessage(sharedMessages.noPasswordError)),
     rememberMe: boolean(),
   });
 
@@ -111,7 +120,9 @@ const EmailAndPassword = ({ onSubmit, onGoBack, onSwitchFlow }: Props) => {
               type="email"
               autocomplete="email"
               label={
-                phoneLoginEnabled ? 'TODO' : formatMessage(sharedMessages.email)
+                phoneLoginEnabled
+                  ? formatMessage(messages.emailOrPhone)
+                  : formatMessage(sharedMessages.email)
               }
             />
           </Box>

@@ -17,4 +17,17 @@ export default defineMessages({
     id: 'app.containers.NewAuthModal.steps.EmailAndPassword.signUp',
     defaultMessage: 'Sign up',
   },
+  emailOrPhone: {
+    id: 'app.containers.NewAuthModal.steps.EmailAndPassword.emailOrPhone',
+    defaultMessage: 'Email or phone',
+  },
+  emailOrPhoneMissingError: {
+    id: 'app.containers.NewAuthModal.steps.EmailAndPassword.emailOrPhoneMissingError',
+    defaultMessage: 'Provide an email address or phone number',
+  },
+  emailOrPhoneNumberError: {
+    id: 'app.containers.NewAuthModal.steps.EmailAndPassword.emailOrPhoneNumberError',
+    defaultMessage:
+      'Enter an email address or a phone number in the correct format',
+  },
 });
