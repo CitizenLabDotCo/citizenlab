@@ -20,16 +20,16 @@ import { colors } from 'utils/styleUtils';
 type SeatChangeSuccessModalProps = {
   closeModal: () => void;
   seatType: TSeatType;
-  hasMoreSeats: boolean;
+  hasExceededSetSeats: boolean;
 };
 
 const SeatChangeSuccess = ({
   closeModal,
   seatType,
-  hasMoreSeats,
+  hasExceededSetSeats,
 }: SeatChangeSuccessModalProps) => {
   const { formatMessage } = useIntl();
-  const descriptionMessage = hasMoreSeats
+  const descriptionMessage = hasExceededSetSeats
     ? formatMessage(messages.reflectedMessage)
     : formatMessage(messages.rightsGranted, {
         seatType: formatMessage(messages[seatType]),

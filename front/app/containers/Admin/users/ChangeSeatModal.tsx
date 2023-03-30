@@ -77,7 +77,7 @@ const ChangeSeatModal = ({
 
   const hasReachedOrIsOverLimit =
     !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins;
-  const hasMoreSeats =
+  const hasExceededSetSeats =
     !isNil(maximumAdmins) && currentAdminSeats > maximumAdmins;
   const confirmChangeQuestion = getInfoText(
     isUserAdmin,
@@ -108,7 +108,7 @@ const ChangeSeatModal = ({
               closeModal();
               setShowSuccessModal(false);
             }}
-            hasMoreSeats={hasMoreSeats}
+            hasExceededSetSeats={hasExceededSetSeats}
             seatType="admin"
           />
         ) : (

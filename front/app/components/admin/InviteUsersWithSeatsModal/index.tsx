@@ -55,7 +55,7 @@ const InviteUsersWithSeatsModal = ({
     admin: seats.data.attributes.admins_number,
     collaborator: seats.data.attributes.project_moderators_number,
   }[seatType];
-  const hasMoreSeats =
+  const hasExceededSetSeats =
     !isNil(maximumSeatNumber) && currentSeatNumber > maximumSeatNumber;
 
   const seatTypeMessages: SeatTypeMessageDescriptor = {
@@ -102,7 +102,7 @@ const InviteUsersWithSeatsModal = ({
             setShowWarning(false);
             setHasAcknowledged(false);
           }}
-          hasMoreSeats={hasMoreSeats}
+          hasExceededSetSeats={hasExceededSetSeats}
           seatType="collaborator"
         />
       ) : (

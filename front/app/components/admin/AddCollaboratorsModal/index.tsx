@@ -44,7 +44,7 @@ const AddCollaboratorsModal = ({
   const hasReachedOrIsOverLimit =
     !isNil(maximumCollaborators) &&
     currentCollaboratorSeats >= maximumCollaborators;
-  const hasMoreSeats =
+  const hasExceededSetSeats =
     !isNil(maximumCollaborators) &&
     currentCollaboratorSeats > maximumCollaborators;
   const buttonText = hasReachedOrIsOverLimit
@@ -65,7 +65,7 @@ const AddCollaboratorsModal = ({
         {showSuccessModal ? (
           <SeatChangeSuccess
             closeModal={closeModal}
-            hasMoreSeats={hasMoreSeats}
+            hasExceededSetSeats={hasExceededSetSeats}
             seatType="collaborator"
           />
         ) : (
