@@ -169,7 +169,7 @@ resource 'Permissions' do
       example_request 'Get the participation conditions of a user' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response).to eq [[SmartGroups::RulesService.new.parse_json_rule(@rule).description_multiloc.symbolize_keys]]
+        expect(json_response.dig(:data, :attributes, :participation_conditions)).to eq [[SmartGroups::RulesService.new.parse_json_rule(@rule).description_multiloc.symbolize_keys]]
       end
     end
 
@@ -184,7 +184,7 @@ resource 'Permissions' do
       example_request 'Get the participation requirements of a user in a continuous project' do
         assert_status 200
         json_response = json_parse response_body
-        expect(json_response).to eq({
+        expect(json_response.dig(:data, :attributes, :requirements)).to eq({
           permitted: true,
           requirements: {
             built_in: {
@@ -215,7 +215,7 @@ resource 'Permissions' do
       example_request 'Get the participation conditions of a user' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response).to eq [[SmartGroups::RulesService.new.parse_json_rule(@rule).description_multiloc.symbolize_keys]]
+        expect(json_response.dig(:data, :attributes, :participation_conditions)).to eq [[SmartGroups::RulesService.new.parse_json_rule(@rule).description_multiloc.symbolize_keys]]
       end
     end
 
@@ -243,7 +243,7 @@ resource 'Permissions' do
       example_request 'Get the participation requirements of a user requiring confirmation in a timeline phase' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response).to eq({
+        expect(json_response.dig(:data, :attributes, :requirements)).to eq({
           permitted: false,
           requirements: {
             built_in: {
@@ -276,7 +276,7 @@ resource 'Permissions' do
       example_request 'Get the participation requirements of a user in the global scope' do
         assert_status 200
         json_response = json_parse response_body
-        expect(json_response).to eq({
+        expect(json_response.dig(:data, :attributes, :requirements)).to eq({
           permitted: true,
           requirements: {
             built_in: {
@@ -314,7 +314,7 @@ resource 'Permissions' do
       example_request 'Get the global registration requirements when custom fields are asked' do
         assert_status 200
         json_response = json_parse response_body
-        expect(json_response).to eq({
+        expect(json_response.dig(:data, :attributes, :requirements)).to eq({
           permitted: false,
           requirements: {
             built_in: {
@@ -349,7 +349,7 @@ resource 'Permissions' do
       example_request 'Get the participation requirements of a user in an idea' do
         assert_status 200
         json_response = json_parse response_body
-        expect(json_response).to eq({
+        expect(json_response.dig(:data, :attributes, :requirements)).to eq({
           permitted: true,
           requirements: {
             built_in: {

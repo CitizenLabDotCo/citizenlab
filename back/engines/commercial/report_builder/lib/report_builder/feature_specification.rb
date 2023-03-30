@@ -15,7 +15,6 @@ module ReportBuilder
     def self.feature_description
       <<~DESC.squish
         Create customizable reports.
-        This feature is experimental and should not be enabled yet.
       DESC
     end
   end

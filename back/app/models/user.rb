@@ -170,7 +170,6 @@ class User < ApplicationRecord
     message: ->(errors) { errors }
   }, if: %i[custom_field_values_changed? active?]
 
-  validates :password, presence: true, on: :create, if: :should_require_password?
   validates :password, length: { maximum: 72 }, allow_nil: true
   # Custom validation is required to deal with the
   # dynamic nature of the minimum password length.
@@ -395,17 +394,13 @@ class User < ApplicationRecord
     end
   end
 
+  # User has no password
   def no_password?
     !password_digest && !invite_pending?
   end
 
-  # Do we require a password to create this user
-  def should_require_password?
-    password_digest.blank? && !confirmation_required? && !sso? && !invite_pending?
-  end
-
   def sso?
-    identities.any?
+    identity_ids.any?
   end
 
   def member_of?(group_id)
@@ -504,6 +499,7 @@ class User < ApplicationRecord
 
   private
 
+  # NOTE: registration_completed_at_changed? added to allow tests to change this date manually
   def complete_registration
     return if confirmation_required? || invited? || registration_completed_at_changed?
 

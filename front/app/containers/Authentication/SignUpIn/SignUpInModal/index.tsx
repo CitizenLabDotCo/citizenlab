@@ -16,11 +16,13 @@ import { isNilOrError } from 'utils/helperUtils';
 import { trackEventByName } from 'utils/analytics';
 
 // events
-import { closeSignUpInModal, signUpActiveStepChange$ } from './events';
-import { openSignUpInModal, ISignUpInMetaData } from 'events/openSignUpInModal';
-
-// typings
-import { TSignUpInFlow } from './typings';
+import { signUpActiveStepChange$ } from './events';
+import {
+  openOldSignUpInModal,
+  closeOldSignUpInModal,
+  ISignUpInMetaData,
+  TSignUpInFlow,
+} from 'events/openSignUpInModal';
 
 interface Props {
   metaData?: ISignUpInMetaData;
@@ -47,7 +49,7 @@ const SignUpInModal = memo<Props>(
 
     const authUser = useAuthUser();
     const participationConditions = useParticipationConditions(
-      metaData?.verificationContext
+      metaData?.context ?? null
     );
 
     const smallerThanPhone = useBreakpoint('phone');
@@ -91,11 +93,11 @@ const SignUpInModal = memo<Props>(
 
       onClosed();
 
-      closeSignUpInModal();
+      closeOldSignUpInModal();
     };
 
     const onSignUpInCompleted = () => {
-      closeSignUpInModal();
+      closeOldSignUpInModal();
       onClosed();
 
       const requiresVerification = !!metaData?.verification;
@@ -104,7 +106,7 @@ const SignUpInModal = memo<Props>(
         !isNilOrError(authUser) && authUser.attributes.verified;
 
       if (!requiresVerification || authUserIsVerified) {
-        metaData?.action?.();
+        metaData?.onSuccess?.();
       }
     };
 
@@ -112,7 +114,7 @@ const SignUpInModal = memo<Props>(
       if (!metaData) return;
 
       const flow = getNewFlow(metaData.flow);
-      openSignUpInModal({
+      openOldSignUpInModal({
         ...metaData,
         flow,
       });

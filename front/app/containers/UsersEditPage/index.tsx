@@ -73,7 +73,7 @@ export default () => {
           <VerificationStatus />
           <ProfileForm />
           <FragmentForm />
-          <PasswordChange />
+          <PasswordChange user={authUser} />
           <ProfileDeletion />
           <CampaignsConsentForm />
         </Wrapper>

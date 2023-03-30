@@ -20,7 +20,7 @@ const useAddInitiativeVote = () => {
     mutationFn: addInitiativeVote,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: initiativesKeys.item(variables.initiativeId),
+        queryKey: initiativesKeys.item({ id: variables.initiativeId }),
       });
     },
   });

@@ -25,6 +25,7 @@ const ConsentManager = lazy(() => import('components/ConsentManager'));
 import ErrorBoundary from 'components/ErrorBoundary';
 import Navigate from 'utils/cl-router/Navigate';
 import Authentication from 'containers/Authentication';
+import NewAuthModal from 'containers/NewAuthModal';
 import MainHeader from 'containers/MainHeader';
 import MobileNavbar from 'containers/MobileNavbar';
 import Meta from './Meta';
@@ -37,15 +38,17 @@ import HasPermission from 'components/HasPermission';
 
 // services
 import { IAppConfigurationStyle } from 'api/app_configuration/types';
-import {
-  authUserStream,
-  signOut,
-  signOutAndDeleteAccount,
-} from 'services/auth';
+import signOut from 'api/authentication/signOut';
+import signOutAndDeleteAccount from 'api/authentication/signOutAndDeleteAccount';
+import { authUserStream } from 'services/auth';
 import { localeStream } from 'services/locale';
 import { TAuthUser } from 'hooks/useAuthUser';
 
-// resources
+// hooks
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import { useLocation } from 'react-router-dom';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -59,10 +62,6 @@ import { Locale } from 'typings';
 
 // utils
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { useLocation } from 'react-router-dom';
 
 const Container = styled.div<{
   disableScroll?: boolean;
@@ -405,6 +404,7 @@ const App = ({ children }: Props) => {
                   authUser={authUser}
                   onModalOpenedStateChange={handleSignUpInModalOpened}
                 />
+                <NewAuthModal />
               </ErrorBoundary>
               <ErrorBoundary>
                 <div id="modal-portal" />

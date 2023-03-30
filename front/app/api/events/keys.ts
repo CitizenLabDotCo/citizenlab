@@ -1,18 +1,22 @@
+import { QueryKeys } from 'utils/cl-react-query/types';
 import { InputParameters } from './types';
 
+const baseKey = { type: 'event' };
+
 const eventsKeys = {
-  all: () => [{ type: 'events' }],
-  lists: () => [{ ...eventsKeys.all()[0], operation: 'list' }],
-  list: (filters: InputParameters) => [
-    { ...eventsKeys.lists()[0], ...filters },
+  all: () => [baseKey],
+  lists: () => [{ ...baseKey, operation: 'list' }],
+  list: (parameters: InputParameters) => [
+    { ...baseKey, operation: 'list', parameters },
   ],
-  items: () => [{ ...eventsKeys.all()[0], operation: 'item' }],
-  item: (eventId?: string) => [
+  items: () => [{ ...baseKey, operation: 'item' }],
+  item: ({ eventId }: { eventId?: string }) => [
     {
-      ...eventsKeys.items()[0],
-      eventId,
+      ...baseKey,
+      operation: 'item',
+      parameters: { eventId },
     },
   ],
-} as const;
+} satisfies QueryKeys;
 
 export default eventsKeys;

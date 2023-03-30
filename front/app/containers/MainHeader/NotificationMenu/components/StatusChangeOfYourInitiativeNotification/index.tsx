@@ -20,7 +20,7 @@ const StatusChangeOfYourInitiativeNotification = memo<Props>((props) => {
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage
-        {...messages.statusChangedOfYourInitiative}
+        {...messages.statusChangedOfInitiative}
         values={{
           status: (
             <T

@@ -49,10 +49,10 @@ RSpec.describe User, type: :model do
       expect(u.slug).not_to be_nil
     end
 
-    it 'is not valid if user confirmation is not turned on' do
+    it 'is still valid if user confirmation is not turned on' do
       u = described_class.new(email: 'test@test.com', locale: 'en')
       u.save
-      expect(u).not_to be_valid
+      expect(u).to be_valid
     end
   end
 
@@ -209,20 +209,20 @@ RSpec.describe User, type: :model do
     end
 
     context 'user confirmation is turned off' do
-      it 'is not valid when not supplied' do
+      it 'is still valid when not supplied' do
         u = build(:user_no_password)
-        expect(u).not_to be_valid
+        expect(u).to be_valid
       end
     end
 
-    it 'is not valid when set to empty string' do
+    it 'is valid when set to empty string' do
       u = build(:user, password: '')
-      expect(u).not_to be_valid
+      expect(u).to be_valid
     end
 
-    it 'is not valid when nil' do
+    it 'is valid when nil' do
       u = build(:user, password: nil)
-      expect(u).not_to be_valid
+      expect(u).to be_valid
     end
 
     it 'does not create a password digest if the password is empty' do
@@ -783,7 +783,7 @@ RSpec.describe User, type: :model do
         expect(user.should_require_confirmation?).to be false
       end
 
-      it 'returns false if the user is a project moderator', skip: !defined?(ProjectManagement::Engine) do
+      it 'returns false if the user is a project moderator' do
         user.add_role('project_moderator', 'project_id' => 'some_id')
         user.save!
         expect(user.should_require_confirmation?).to be false

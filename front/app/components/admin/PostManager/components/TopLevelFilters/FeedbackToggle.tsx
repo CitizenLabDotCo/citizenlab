@@ -154,7 +154,6 @@ const Data = adopt({
     type,
   }) => {
     const projectIds = project ? [project] : undefined;
-
     return type === 'Initiatives' ? (
       <GetInitiativesCount
         feedbackNeeded={true}
@@ -168,8 +167,8 @@ const Data = adopt({
       <GetIdeasCount
         feedbackNeeded={true}
         assignee={assignee}
-        projectIds={projectIds}
-        phaseId={phase}
+        projects={projectIds}
+        phase={phase}
         topics={topics}
         ideaStatusId={status}
       >

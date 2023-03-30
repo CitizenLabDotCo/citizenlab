@@ -2,9 +2,7 @@ import React from 'react';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-
-// events
-import { openSignUpInModal } from 'events/openSignUpInModal';
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // styling
 import { useTheme } from 'styled-components';
@@ -23,6 +21,8 @@ const Unauthorized = () => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
+  const openAuthModal = useOpenAuthModal();
+
   const authUserPending = authUser === undefined;
 
   if (authUserPending) {
@@ -34,7 +34,7 @@ const Unauthorized = () => {
   }
 
   const signIn = () => {
-    openSignUpInModal({
+    openAuthModal({
       flow: 'signin',
     });
   };
