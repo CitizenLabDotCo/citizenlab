@@ -9,6 +9,7 @@ Rails.application.routes.draw do
           get 'participation_conditions', on: :member
           get 'requirements', on: :member
           get 'schema', on: :member
+          resources :permissions_custom_fields, shallow: true
         end
       end
 
