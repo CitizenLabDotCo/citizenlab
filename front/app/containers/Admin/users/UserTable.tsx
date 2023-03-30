@@ -1,6 +1,6 @@
 // Libraries
 import React from 'react';
-import { isAdmin, TRole } from 'services/permissions/roles';
+import { isAdmin, isCollaborator, TRole } from 'services/permissions/roles';
 import { includes, get, isArray } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 // Components
@@ -98,6 +98,13 @@ const UsersTable = ({
       if (user.attributes.roles && isAdmin({ data: user })) {
         newRoles = user.attributes.roles.filter(
           (role) => role.type !== 'admin'
+        );
+      } else if (user.attributes.roles && isCollaborator({ data: user })) {
+        newRoles = user.attributes.roles.filter(
+          (role) =>
+            !['project_moderator', 'project_folder_moderator'].includes(
+              role.type
+            )
         );
       } else {
         newRoles = [...get(user, 'attributes.roles', []), { type: 'admin' }];
