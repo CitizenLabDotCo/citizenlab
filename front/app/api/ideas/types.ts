@@ -13,8 +13,6 @@ export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 // keys in ideas.attributes.action_descriptor
 export type IIdeaAction = 'voting_idea' | 'commenting_idea' | 'budgeting';
 
-// export type IIdeaAction = keyof IIdeaData['attributes']['action_descriptor'];
-
 export type IdeaVotingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
