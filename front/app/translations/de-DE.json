@@ -1416,7 +1416,7 @@
   "app.containers.UsersEditPage.password": "Wählen Sie ein neues Passwort",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Stellen Sie ein Passwort zur Verfügung, das mindestens {minimumPasswordLength} Zeichen lang ist",
   "app.containers.UsersEditPage.passwordAddSection": "Add a password",
-  "app.containers.UsersEditPage.passwordAddSubtitle2": "Set a password and easily login to the platform, without having to confirm your email every time.",
+  "app.containers.UsersEditPage.passwordAddSubtitle2": "Legen Sie ein Passwort fest und melden Sie sich auf der Plattform an, ohne Ihre E-Mail jedes Mal bestätigen zu müssen.",
   "app.containers.UsersEditPage.passwordChangeSection": "Ändern Sie Ihr Passwort",
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Bestätigen Sie Ihr aktuelles Passwort und ändern Sie es in ein neues Passwort.",
   "app.containers.UsersEditPage.privacyReasons": "Falls du dir Sorgen um deine Privatsphäre machst, dann lese bitte {conditionsLink}.",
