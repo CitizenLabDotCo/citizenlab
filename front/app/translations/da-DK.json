@@ -534,6 +534,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "vores retningslinjer",
   "app.components.form.ErrorDisplay.next": "Næste",
   "app.components.form.ErrorDisplay.previous": "Tidligere",
+  "app.components.form.ErrorDisplay.save": "Gem",
   "app.components.form.ErrorDisplay.submitSurvey": "Indsend undersøgelse",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Begynd at skrive for at søge efter brugerens e-mail eller navn...",
   "app.components.form.blockedVerified": "Du kan ikke redigere dette felt, fordi det indeholder verificerede oplysninger",

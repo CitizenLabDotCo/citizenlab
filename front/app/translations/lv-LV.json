@@ -534,6 +534,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "mūsu vadlīnijas",
   "app.components.form.ErrorDisplay.next": "Nākamais",
   "app.components.form.ErrorDisplay.previous": "Iepriekšējais",
+  "app.components.form.ErrorDisplay.save": "Saglabāt",
   "app.components.form.ErrorDisplay.submitSurvey": "Aptaujas iesniegšana",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Sāciet rakstīt, lai meklētu pēc lietotāja e-pasta adreses vai vārda...",
   "app.components.form.blockedVerified": "Šo lauku jūs nevarat rediģēt, jo tas satur pārbaudītu informāciju",

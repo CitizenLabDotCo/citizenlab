@@ -534,6 +534,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "våre retningslinjer",
   "app.components.form.ErrorDisplay.next": "Neste",
   "app.components.form.ErrorDisplay.previous": "Forrige",
+  "app.components.form.ErrorDisplay.save": "Lagre",
   "app.components.form.ErrorDisplay.submitSurvey": "Send spørreundersøkelse",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Start å skrive for å søke bruker ved hjelp av epost eller navn...",
   "app.components.form.blockedVerified": "Du kan ikke redigere dette feltet fordi det inneholder informasjon som er bekreftet",
