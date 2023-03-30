@@ -7,10 +7,13 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import TextLink from '../components/TextLink';
+import TextButton from '../components/TextButton';
 
 // i18n
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import sharedMessages from '../messages';
+import messages from './messages';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
@@ -27,6 +30,8 @@ interface Props {
     rememberMe: boolean,
     tokenLifetime: number
   ) => void;
+  onGoBack: () => void;
+  onSwitchFlow: () => void;
 }
 
 interface FormValues {
@@ -41,8 +46,25 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   rememberMe: false,
 };
 
-const EmailAndPassword = ({ onSubmit }: Props) => {
+const EmailAndPassword = ({ onSubmit, onGoBack, onSwitchFlow }: Props) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
+  const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
+  const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
+  const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
+  const franceconnectLoginEnabled = useFeatureFlag({
+    name: 'franceconnect_login',
+  });
+  const viennaCitizenLoginEnabled = useFeatureFlag({
+    name: 'vienna_citizen_login',
+  });
+
+  const anySSOProviderEnabled =
+    googleLoginEnabled ||
+    facebookLoginEnabled ||
+    azureAdLoginEnabled ||
+    franceconnectLoginEnabled ||
+    viennaCitizenLoginEnabled;
+
   const { data: appConfiguration } = useAppConfiguration();
 
   const appConfigSettings = appConfiguration?.data.attributes.settings;
@@ -87,6 +109,7 @@ const EmailAndPassword = ({ onSubmit }: Props) => {
             <Input
               name="email"
               type="email"
+              autocomplete="email"
               label={
                 phoneLoginEnabled ? 'TODO' : formatMessage(sharedMessages.email)
               }
@@ -112,10 +135,41 @@ const EmailAndPassword = ({ onSubmit }: Props) => {
           </Box>
           <Box w="100%" display="flex" mt="32px">
             <Button type="submit" width="100%">
-              {formatMessage(sharedMessages.continue)}
+              {formatMessage(messages.submit)}
             </Button>
           </Box>
         </form>
+        <Box mt="32px">
+          <TextLink to="/password-recovery">
+            {formatMessage(sharedMessages.forgotPassword)}
+          </TextLink>
+        </Box>
+        <Box>
+          {anySSOProviderEnabled ? (
+            <TextButton
+              id="e2e-login-options"
+              onClick={onGoBack}
+              className="link"
+            >
+              {formatMessage(messages.goBackToLoginOptions)}
+            </TextButton>
+          ) : (
+            <FormattedMessage
+              {...messages.goToSignUp}
+              values={{
+                goToOtherFlowLink: (
+                  <button
+                    id="e2e-goto-signup"
+                    onClick={onSwitchFlow}
+                    className="link"
+                  >
+                    {formatMessage(messages.signUp)}
+                  </button>
+                ),
+              }}
+            />
+          )}
+        </Box>
       </FormProvider>
     </>
   );
