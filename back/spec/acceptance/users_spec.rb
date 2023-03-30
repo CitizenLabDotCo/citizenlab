@@ -26,12 +26,12 @@ resource 'Users' do
       parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', " \
                        "'-email', 'role', '-role'", required: false
       parameter :group, 'Filter by group_id', required: false
+      parameter :can_moderate, 'All admins + users with either a project &/or folder moderator role', required: false
       parameter :can_moderate_project, 'All admins + users who can moderate the project (by project id), ' \
                                        'excluding folder moderators of folder containing project ' \
                                        '(who can, in fact, moderate the project), ' \
                                        'OR Admins & all users with project moderator role ' \
                                        '(if no project ID provided)', required: false
-      parameter :can_moderate, 'All admins + users with either a project &/or folder moderator role', required: false
       parameter :is_not_project_moderator, 'Users who are not admins, nor project moderator of project, ' \
                                            'nor folder moderator of folder containing project (by project id), ' \
                                            'OR Users who are not admins, nor have project moderator role ' \
