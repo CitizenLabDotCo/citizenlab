@@ -66,7 +66,7 @@ interface Props {
   showModal: boolean;
   closeModal: () => void;
   changeRoles: () => void;
-  changeSeatAction: TChangeSeatAction;
+  changeSeatAction?: TChangeSeatAction;
 }
 
 const ChangeSeatModal = ({
