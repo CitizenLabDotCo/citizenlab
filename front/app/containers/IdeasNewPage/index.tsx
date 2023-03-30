@@ -27,7 +27,7 @@ interface InputProps {}
 const NewIdeaPage = (inputProps: InputProps) => {
   const { slug } = useParams();
 
-  const isSmallerThanXlPhone = useBreakpoint('phone');
+  const isSmallerThanPhone = useBreakpoint('phone');
   const project = useProject({ projectSlug: slug });
   const phases = usePhases(project?.id);
   const { phase_id } = parse(location.search, {
@@ -46,7 +46,7 @@ const NewIdeaPage = (inputProps: InputProps) => {
   const portalElement = document?.getElementById('modal-portal');
   const isSurvey = participationMethod === 'native_survey';
 
-  if (isSurvey && portalElement && isSmallerThanXlPhone) {
+  if (isSurvey && portalElement && isSmallerThanPhone) {
     return createPortal(
       <Box
         display="flex"

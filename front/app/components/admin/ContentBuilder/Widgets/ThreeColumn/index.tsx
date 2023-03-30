@@ -11,12 +11,12 @@ import Container from '../Container';
 import messages from './messages';
 
 const ThreeColumn = () => {
-  const isLargeTablet = useBreakpoint('tablet');
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
   return (
     <Box
       id="e2e-three-column"
-      flexDirection={isLargeTablet ? 'column' : 'row'}
+      flexDirection={isSmallerThanTablet ? 'column' : 'row'}
       minHeight="40px"
       display="flex"
       w="100%"

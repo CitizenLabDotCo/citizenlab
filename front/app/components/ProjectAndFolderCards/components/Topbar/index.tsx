@@ -154,8 +154,8 @@ const Header = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const { data: appConfiguration } = useAppConfiguration();
-  const smallerThanXlPhone = useBreakpoint('phone');
-  const smallerThanMinTablet = useBreakpoint('tablet');
+  const isSmallerThanPhone = useBreakpoint('phone');
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const topics = useTopics({ forHomepageFilter: true });
   const areas = useAreas({ forHomepageFilter: true });
   const localize = useLocalize();
@@ -196,7 +196,7 @@ const Header = ({
   const displayFilters =
     showFilters &&
     getShowFilters({
-      smallerThanXlPhone,
+      isSmallerThanPhone,
       hasPublications,
       statusCounts,
       selectedTopics,
@@ -205,7 +205,7 @@ const Header = ({
   const showFiltersLabel = getShowFiltersLabel(
     topics,
     areas,
-    smallerThanMinTablet
+    isSmallerThanTablet
   );
 
   const handleOnChangeTopics = (selectedTopics: string[]) => {
@@ -222,7 +222,7 @@ const Header = ({
     setSearchInputRef(ref);
   };
 
-  const shouldShowAreaAndTagFilters = !smallerThanXlPhone && displayFilters;
+  const shouldShowAreaAndTagFilters = !isSmallerThanPhone && displayFilters;
 
   return (
     <div className={className}>
@@ -272,7 +272,7 @@ const Header = ({
         )}
       </Container>
 
-      {smallerThanXlPhone && displayFilters && (
+      {isSmallerThanPhone && displayFilters && (
         <MobileFilters>
           <StyledSelectTopics
             selectedTopics={selectedTopics}
