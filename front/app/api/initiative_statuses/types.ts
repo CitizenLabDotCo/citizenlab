@@ -46,16 +46,17 @@ export type InitiativeStatusUpdateWithExistingFeedback = {
   initiativeId: string;
   initiative_status_id: string;
   official_feedback_id?: string;
-  body_multiloc?: never;
-  author_multiloc?: never;
+  official_feedback_attributes?: never;
 };
 
 export type InitiativeStatusUpdateWithNewFeedback = {
   initiativeId: string;
   initiative_status_id: string;
   official_feedback_id?: never;
-  body_multiloc: Multiloc;
-  author_multiloc: Multiloc;
+  official_feedback_attributes?: {
+    body_multiloc: Multiloc;
+    author_multiloc: Multiloc;
+  };
 };
 
 export type InitiativeStatusUpdate =

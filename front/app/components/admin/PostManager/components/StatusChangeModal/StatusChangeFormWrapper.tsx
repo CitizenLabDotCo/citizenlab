@@ -140,8 +140,10 @@ const StatusChangeFormWrapper = ({
           {
             initiativeId,
             initiative_status_id: newStatusId,
-            body_multiloc,
-            author_multiloc,
+            official_feedback_attributes: {
+              body_multiloc,
+              author_multiloc,
+            },
           },
           {
             onSuccess: closeModal,
