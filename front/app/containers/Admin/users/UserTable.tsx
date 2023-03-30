@@ -98,7 +98,7 @@ const UsersTable = ({
   }
 
   const handleRolesChange = (user: IUserData) => () => {
-    trackEventByName(tracks.adminToggle.name);
+    trackEventByName(tracks.adminChangeRole.name);
 
     if (authUser && authUser.id === user.id) {
       eventEmitter.emit<JSX.Element>(
