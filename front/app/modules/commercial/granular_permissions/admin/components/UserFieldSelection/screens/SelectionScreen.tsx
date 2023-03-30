@@ -7,6 +7,7 @@ import {
   Text,
   Button,
   colors,
+  Badge,
 } from '@citizenlab/cl2-component-library';
 
 // services
@@ -53,9 +54,25 @@ export const SelectionScreen = ({
                 borderWidth="1px"
                 borderColor={colors.grey300}
               >
-                <Text color="primary">
-                  {field.attributes.title_multiloc[locale]}
-                </Text>
+                <Box display="flex">
+                  <Text color="primary" mr="12px">
+                    {field.attributes.title_multiloc[locale]}
+                  </Text>
+                  {field.attributes.required && (
+                    <Badge
+                      className="inverse"
+                      color={colors.error}
+                      style={{
+                        height: '24px',
+                        marginTop: 'auto',
+                        marginBottom: 'auto',
+                      }}
+                    >
+                      <FormattedMessage {...messages.required} />
+                    </Badge>
+                  )}
+                </Box>
+
                 <Box display="flex">
                   {isBuiltInField(field) && (
                     <Text color="primary" fontSize="s" mr="20px" my="auto">
