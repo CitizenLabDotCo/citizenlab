@@ -28,10 +28,10 @@ class Invites::Service
   end
 
   def bulk_create(hash_array, default_params = {}, inviter = nil)
-    invites = build_invites(hash_array, default_params, inviter)
-    check_invites(invites)
+    invitees = build_invitees(hash_array, default_params, inviter)
+    check_invitees(invitees)
     if @error_storage.no_critical_errors?
-      save_invites(invites - ignored_invites(invites))
+      save_invitees(invitees - ignored_invitees(invitees))
     else
       fail_now
     end
@@ -61,7 +61,7 @@ class Invites::Service
     custom_field_schema[:properties].keys
   end
 
-  def build_invites(hash_array, default_params = {}, inviter = nil)
+  def build_invitees(hash_array, default_params = {}, inviter = nil)
     if hash_array.size > MAX_INVITES
       add_error(:max_invites_limit_exceeded, row: (hash_array.size - 1), value: MAX_INVITES)
       fail_now
@@ -69,50 +69,65 @@ class Invites::Service
       add_error(:no_invites_specified)
       fail_now
     else
-      invites = hash_array.map do |invite_params|
-        build_invite(invite_params, default_params, inviter)
+      invitees = hash_array.map do |invite_params|
+        build_invitee(invite_params, default_params, inviter)
       end
 
-      invitees = invites.map(&:invitee)
       UserSlugService.new.generate_slugs(invitees)
-      invites
+      invitees
     end
   end
 
-  def build_invite(params, default_params = {}, inviter = nil)
-    invitee = User.new({
-      email: params['email']&.strip,
-      first_name: params['first_name'],
-      last_name: params['last_name'],
-      locale: params['locale'] || default_params['locale'] || AppConfiguration.instance.settings('core', 'locales').first,
-      manual_group_ids: params['group_ids'] || default_params['group_ids'] || [],
-      roles: params['roles'] || default_params['roles'] || [],
-      custom_field_values: params.slice(*custom_field_keys),
-      invite_status: 'pending'
-    })
+  def build_invitee(params, default_params = {}, inviter = nil)
+    invitee = prepare_invitee(params, default_params)
 
-    Invite.new(
-      invitee: invitee,
-      inviter: inviter,
-      invite_text: params['invite_text'] || default_params['invite_text'],
-      send_invite_email: params['send_invite_email'].nil? ? true : params['send_invite_email']
-    )
+    if invitee.new_record?
+      invitee.invitee_invite = Invite.new(
+        invitee: invitee,
+        inviter: inviter,
+        invite_text: params['invite_text'] || default_params['invite_text'],
+        send_invite_email: params['send_invite_email'].nil? ? true : params['send_invite_email']
+      )
+    end
+
+    invitee
   end
 
-  def check_invites(invites)
-    check_duplicate_emails(invites)
+  def prepare_invitee(params, default_params)
+    email = params['email']&.strip
+    group_ids = params['group_ids'] || default_params['group_ids'] || []
+    roles = params['roles'] || default_params['roles'] || []
 
-    invites.each_with_index do |invite, row_nb|
+    user =
+      User.find_by_cimail(email) ||
+      User.new({
+        email: email,
+        first_name: params['first_name'],
+        last_name: params['last_name'],
+        locale: params['locale'] || default_params['locale'] || AppConfiguration.instance.settings('core', 'locales').first,
+        custom_field_values: params.slice(*custom_field_keys),
+        invite_status: 'pending'
+      })
+
+    user.manual_group_ids = (user.manual_group_ids + group_ids).uniq
+    user.roles = (user.roles + roles).uniq
+    user
+  end
+
+  def check_invitees(invitees)
+    check_duplicate_emails(invitees)
+
+    invitees.each_with_index do |invitee, row_nb|
       @current_row = row_nb
-      validate_invite(invite)
+      validate_invitee(invitee)
     end
   ensure
     @current_row = nil
   end
 
-  def check_duplicate_emails(invites)
-    emails_indexes = invites.each_with_object(Hash.new { [] }).with_index do |(invite, object), index|
-      object[invite.invitee.email] += [index]
+  def check_duplicate_emails(invitees)
+    emails_indexes = invitees.each_with_object(Hash.new { [] }).with_index do |(invitee, object), index|
+      object[invitee.email] += [index]
     end
     duplicated_emails_indexes = emails_indexes.select { |email, row_indexes| email && row_indexes.size > 1 }
     duplicated_emails_indexes.each do |email, row_indexes|
@@ -120,9 +135,9 @@ class Invites::Service
     end
   end
 
-  def validate_invite(invite)
-    invite.invitee.validate!
-    invite.validate!
+  def validate_invitee(invitee)
+    invitee.validate!
+    invitee.invitee_invite&.validate!
   rescue ActiveRecord::RecordInvalid => e
     e.record.errors.details.each do |field, error_descriptors|
       error_descriptors.each do |error_descriptor|
@@ -141,21 +156,29 @@ class Invites::Service
     end
   end
 
-  def save_invites(invites)
+  def save_invitees(invitees)
     ActiveRecord::Base.transaction do
-      invites.each do |invite|
-        SideFxUserService.new.before_create(invite.invitee, invite.inviter)
-        invite.invitee.save!
-        invite.save!
+      invitees.each do |invitee|
+        if invitee.new_record?
+          SideFxUserService.new.before_create(invitee, invitee.invitee_invite.inviter)
+        else
+          SideFxUserService.new.before_update(invitee, invitee.invitee_invite&.inviter)
+        end
+        invitee.save!
       end
     end
-    invites.each do |invite|
-      SideFxUserService.new.after_create(invite.invitee, invite.inviter)
-      SideFxInviteService.new.after_create(invite, invite.inviter)
+    invitees.each do |invitee|
+      if invitee.previously_new_record?
+        SideFxUserService.new.after_create(invitee, invitee.invitee_invite.inviter)
+        SideFxInviteService.new.after_create(invitee.invitee_invite, invitee.invitee_invite.inviter)
+      else
+        SideFxUserService.new.after_update(invitee, invitee.invitee_invite&.inviter)
+      end
     end
+    invitees
   end
 
-  def ignored_invites(invites)
-    @error_storage.ignored_errors.map { |e| invites[e.row] }
+  def ignored_invitees(invitees)
+    @error_storage.ignored_errors.map { |e| invitees[e.row] }
   end
 end
