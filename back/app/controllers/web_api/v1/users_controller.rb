@@ -283,7 +283,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     return false if existing_user.changed?
 
     @user = existing_user
-    @user.reset_confirmation_with_no_password
+    @user.reset_confirmation_and_counts
     return false unless @user.save
 
     SendConfirmationCode.call(user: @user)

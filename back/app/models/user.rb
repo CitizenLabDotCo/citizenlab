@@ -467,7 +467,7 @@ class User < ApplicationRecord
     self.confirmation_required = should_require_confirmation?
   end
 
-  def reset_confirmation_with_no_password
+  def reset_confirmation_and_counts
     if !confirmation_required?
       # Only reset code and retry/reset counts if account has already been confirmed
       # To keep limits in place for retries when not confirmed

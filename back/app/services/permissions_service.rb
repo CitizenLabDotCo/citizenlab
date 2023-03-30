@@ -138,8 +138,14 @@ class PermissionsService
         users[:special][:password] = 'require'
         users[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
       end,
-      'groups' => {},
-      'admins_moderators' => {}
+      'groups' => everyone.deep_dup.tap do |groups|
+        groups[:built_in][:email] = 'require'
+        groups[:special][:confirmation] = 'require'
+      end,
+      'admins_moderators' => everyone.deep_dup.tap do |admins|
+        admins[:built_in][:email] = 'require'
+        admins[:special][:confirmation] = 'require'
+      end
     }
   end
 

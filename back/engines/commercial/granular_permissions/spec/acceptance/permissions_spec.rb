@@ -228,7 +228,7 @@ resource 'Permissions' do
         create :custom_field_gender, required: false
         create :custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field'
 
-        @user.reset_confirmation_with_no_password
+        @user.reset_confirmation_and_counts
         @user.update!(
           email: 'my@email.com',
           first_name: 'Jack',
