@@ -97,7 +97,7 @@ const ChangeSeatModal = ({
   return (
     <>
       <Modal opened={showModal} close={closeModal} header={header}>
-        {showSuccessModal && (
+        {!showSuccessModal && (
           <Box display="flex" flexDirection="column" width="100%" p="32px">
             <Box>
               <Text color="textPrimary" fontSize="m" my="0px">
@@ -126,7 +126,6 @@ const ChangeSeatModal = ({
                 width="auto"
                 onClick={() => {
                   toggleAdmin();
-                  // closeModal();
                   if (!isUserAdmin) {
                     setShowSuccessModal(true);
                   }
