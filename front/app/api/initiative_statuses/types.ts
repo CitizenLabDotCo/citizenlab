@@ -44,16 +44,16 @@ export interface IInitiativeStatusAdd {
 
 export type InitiativeStatusUpdateWithExistingFeedback = {
   initiativeId: string;
-  statusId: string;
-  feedbackId?: string;
+  initiative_status_id: string;
+  official_feedback_id?: string;
   body_multiloc?: never;
   author_multiloc?: never;
 };
 
 export type InitiativeStatusUpdateWithNewFeedback = {
   initiativeId: string;
-  statusId: string;
-  feedbackId?: never;
+  initiative_status_id: string;
+  official_feedback_id?: never;
   body_multiloc: Multiloc;
   author_multiloc: Multiloc;
 };

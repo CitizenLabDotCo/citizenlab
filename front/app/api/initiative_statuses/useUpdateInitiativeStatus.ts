@@ -15,7 +15,7 @@ const updateInitiativeStatus = ({
 }: InitiativeStatusUpdate) =>
   fetcher<IInitiative>({
     path: `/initiatives/${initiativeId}/initiative_status_changes`,
-    action: 'patch',
+    action: 'post',
     body: { initiative_status_change: { ...requestBody } },
   });
 

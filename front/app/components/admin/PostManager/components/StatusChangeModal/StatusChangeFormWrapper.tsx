@@ -19,11 +19,7 @@ import GetOfficialFeedbacks, {
 } from 'resources/GetOfficialFeedbacks';
 
 // services
-import {
-  updateInitiativeStatusWithExistingFeedback,
-  updateInitiativeStatusAddFeedback,
-} from 'services/initiativeStatusChanges';
-
+import useUpdateInitiativeStatus from 'api/initiative_statuses/useUpdateInitiativeStatus';
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
@@ -75,13 +71,17 @@ const StatusChangeFormWrapper = ({
   officialFeedbacks,
 }: Props & WrappedComponentProps) => {
   const { data: initiativeStatus } = useInitiativeStatus(newStatusId);
+  const {
+    mutate: updateInitiativeStatus,
+    isLoading,
+    isError,
+  } = useUpdateInitiativeStatus();
   const [mode, setMode] = useState<'latest' | 'new'>('new');
   const [newOfficialFeedback, setNewOfficialFeedback] = useState<FormValues>({
     author_multiloc: {},
     body_multiloc: {},
   });
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
+
   const { data: initiative } = useInitiativeById(initiativeId);
 
   const onChangeMode = (event) => {
@@ -136,32 +136,32 @@ const StatusChangeFormWrapper = ({
     const { body_multiloc, author_multiloc } = newOfficialFeedback;
     if (validate()) {
       if (mode === 'new') {
-        setLoading(true);
-        updateInitiativeStatusAddFeedback(
-          initiativeId,
-          newStatusId,
-          body_multiloc,
-          author_multiloc
-        )
-          .then(() => closeModal())
-          .catch(() => {
-            setLoading(false);
-            setError(true);
-          });
+        updateInitiativeStatus(
+          {
+            initiativeId,
+            initiative_status_id: newStatusId,
+            body_multiloc,
+            author_multiloc,
+          },
+          {
+            onSuccess: closeModal,
+          }
+        );
       } else if (
         mode === 'latest' &&
         !isNilOrError(officialFeedbacks.officialFeedbacksList)
       ) {
-        updateInitiativeStatusWithExistingFeedback(
-          initiativeId,
-          newStatusId,
-          officialFeedbacks.officialFeedbacksList.data[0].id
-        )
-          .then(() => closeModal())
-          .catch(() => {
-            setLoading(false);
-            setError(true);
-          });
+        updateInitiativeStatus(
+          {
+            initiativeId,
+            initiative_status_id: newStatusId,
+            official_feedback_id:
+              officialFeedbacks.officialFeedbacksList.data[0].id,
+          },
+          {
+            onSuccess: closeModal,
+          }
+        );
       }
     }
   };
@@ -195,8 +195,8 @@ const StatusChangeFormWrapper = ({
       </ContextLine>
       <StatusChangeForm
         {...{
-          loading,
-          error,
+          loading: isLoading,
+          error: isError,
           newOfficialFeedback,
           mode,
         }}
