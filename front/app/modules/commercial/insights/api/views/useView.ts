@@ -9,7 +9,7 @@ const fetchView = (id: string) =>
 
 const useView = (id: string) => {
   return useQuery<IInsightsView, CLErrors, IInsightsView, ViewsKeys>({
-    queryKey: viewsKeys.item(id),
+    queryKey: viewsKeys.item({ id }),
     queryFn: () => fetchView(id),
   });
 };

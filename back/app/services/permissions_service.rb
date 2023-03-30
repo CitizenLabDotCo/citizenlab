@@ -106,6 +106,8 @@ class PermissionsService
       user ||= User.new
     elsif !user
       return DENIED_REASONS[:not_signed_in]
+    elsif user.confirmation_required?
+      return DENIED_REASONS[:missing_data]
     elsif !user.active?
       return DENIED_REASONS[:not_active]
     end
@@ -168,7 +170,7 @@ class PermissionsService
       when :password
         !user.no_password?
       when :confirmation
-        user.confirmed?
+        !user.confirmation_required?
       end
       requirements[:special][special_key] = 'satisfied' if is_satisfied
     end

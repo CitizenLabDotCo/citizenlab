@@ -1,10 +1,7 @@
 import React from 'react';
 
-// hooks
-import useIdeasCount, {
-  Props as UseIdeasCountProps,
-} from 'hooks/useIdeasCount';
-
+import useIdeasCount from 'api/idea_count/useIdeasCount';
+import { IQueryParameters } from 'api/idea_count/types';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -13,7 +10,6 @@ import messages from '../messages';
 import styled from 'styled-components';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   height: 100%;
@@ -22,14 +18,23 @@ const Container = styled.div`
   font-weight: 500;
 `;
 
-interface Props extends Omit<UseIdeasCountProps, 'projectIds'> {
+interface Props extends Omit<IQueryParameters, 'projectIds'> {
   project?: string | null;
+  feedbackNeeded?: boolean;
+  ideaStatusId?: string;
 }
 
-const IdeasCount = ({ project, ...otherProps }: Props) => {
-  const count = useIdeasCount({
+const IdeasCount = ({
+  project,
+  ideaStatusId,
+  feedbackNeeded,
+  ...otherProps
+}: Props) => {
+  const { data: ideasCount } = useIdeasCount({
     ...otherProps,
-    projectIds: project ? [project] : undefined,
+    feedback_needed: feedbackNeeded,
+    idea_status_id: ideaStatusId,
+    projects: project ? [project] : undefined,
   });
 
   return (
@@ -38,14 +43,14 @@ const IdeasCount = ({ project, ...otherProps }: Props) => {
           If there are no ideas, we have an 'empty container' to indicate there are no ideas matching the filters.
           Hence we only show this count when there's at least 1 idea.
         */}
-      {!isNilOrError(count) &&
-        count > 0 &&
-        (count === 1 ? (
+      {ideasCount &&
+        ideasCount.data.attributes.count > 0 &&
+        (ideasCount.data.attributes.count === 1 ? (
           <FormattedMessage {...messages.oneInput} />
         ) : (
           <FormattedMessage
             {...messages.multipleInputs}
-            values={{ ideaCount: count }}
+            values={{ ideaCount: ideasCount.data.attributes.count }}
           />
         ))}
     </Container>

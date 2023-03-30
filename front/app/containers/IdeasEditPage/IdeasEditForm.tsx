@@ -7,7 +7,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
-import IdeasEditMeta from '../IdeasEditMeta';
+import IdeasEditMeta from './IdeasEditMeta';
 
 // services
 import { deleteIdeaImage } from 'services/ideaImages';
@@ -23,10 +23,10 @@ import useResourceFiles from 'hooks/useResourceFiles';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // utils
-import { getLocationGeojson } from '../utils';
+import { getLocationGeojson } from './utils';
 import { omit } from 'lodash-es';
 import { isError, isNilOrError } from 'utils/helperUtils';
 import { WithRouterProps } from 'utils/cl-router/withRouter';
@@ -34,7 +34,7 @@ import clHistory from 'utils/cl-router/history';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { PreviousPathnameContext } from 'context';
 
-const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
+const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
@@ -246,4 +246,4 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   );
 };
 
-export default IdeasEditPageWithJSONForm;
+export default IdeasEditForm;

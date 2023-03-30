@@ -1,13 +1,18 @@
+import { QueryKeys } from 'utils/cl-react-query/types';
+
+const baseViewsKey = { type: 'view' };
+
 const viewsKeys = {
-  all: () => [{ type: 'view' }],
-  lists: () => [{ ...viewsKeys.all()[0], operation: 'list' }],
-  items: () => [{ ...viewsKeys.all()[0], operation: 'item' }],
-  item: (id: string) => [
+  all: () => [baseViewsKey],
+  lists: () => [{ ...baseViewsKey, operation: 'list' }],
+  items: () => [{ ...baseViewsKey, operation: 'item' }],
+  item: ({ id }: { id: string }) => [
     {
-      ...viewsKeys.items()[0],
-      id,
+      ...baseViewsKey,
+      operation: 'item',
+      parameters: { id },
     },
   ],
-} as const;
+} satisfies QueryKeys;
 
 export default viewsKeys;

@@ -1,11 +1,16 @@
+import { QueryKeys } from 'utils/cl-react-query/types';
 import { IQueryParameters } from './types';
 
-const similarIdeasKeys = {
-  all: () => [{ type: 'similar_idea' }],
-  lists: () => [{ ...similarIdeasKeys.all()[0], operation: 'list' }],
-  list: (filters: IQueryParameters) => [
-    { ...similarIdeasKeys.lists()[0], ...filters },
-  ],
+const baseKey = {
+  type: 'similar_idea',
 };
+
+const similarIdeasKeys = {
+  all: () => [baseKey],
+  lists: () => [{ ...baseKey, operation: 'list' }],
+  list: (parameters: IQueryParameters) => [
+    { ...baseKey, operation: 'list', parameters },
+  ],
+} satisfies QueryKeys;
 
 export default similarIdeasKeys;

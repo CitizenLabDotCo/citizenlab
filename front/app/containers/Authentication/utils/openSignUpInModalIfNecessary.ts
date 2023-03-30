@@ -4,6 +4,7 @@ import { openSignUpInModal } from 'events/openSignUpInModal';
 import { SSOParams } from 'services/singleSignOn';
 import clHistory from 'utils/cl-router/history';
 import { TAuthUser } from 'hooks/useAuthUser';
+import { AuthenticationContext } from 'api/authentication_requirements/types';
 
 export default function openSignUpInModalIfNecessary(
   authUser: TAuthUser,
@@ -65,12 +66,21 @@ export default function openSignUpInModalIfNecessary(
         !authUser.attributes.verified &&
         sso_verification;
 
+      const shouldFinishRegistrationAfterSSO =
+        sso_response &&
+        sso_flow === 'signup' &&
+        !isNilOrError(authUser) &&
+        !authUser.attributes.registration_completed_at;
+
       // we do not open the modal when the user gets sent to the '/sign-up' or '/sign-in' urls because
       // on those pages we show the sign-up-in flow directly on the page and not as a modal.
       // otherwise, when any of the above-defined conditions is set to true, we do trigger the modal
       if (
         !endsWith(sso_pathname, ['sign-up', 'sign-in']) &&
-        (isAuthError || shouldVerify || isInvitation)
+        (isAuthError ||
+          shouldVerify ||
+          isInvitation ||
+          shouldFinishRegistrationAfterSSO)
       ) {
         openSignUpInModal({
           isInvitation,
@@ -79,15 +89,12 @@ export default function openSignUpInModalIfNecessary(
           error: isAuthError ? { code: error_code || 'general' } : undefined,
           verification: !!sso_verification,
           context:
-            sso_verification &&
-            sso_verification_action &&
-            sso_verification_id &&
-            sso_verification_type
-              ? {
-                  action: sso_verification_action as any,
-                  id: sso_verification_id as any,
-                  type: sso_verification_type as any,
-                }
+            sso_verification_action && sso_verification_type
+              ? ({
+                  action: sso_verification_action,
+                  id: sso_verification_id,
+                  type: sso_verification_type,
+                } as AuthenticationContext)
               : undefined,
         });
       }

@@ -2,6 +2,7 @@ import React, { memo, useCallback } from 'react';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // styling
 import styled, { withTheme } from 'styled-components';
@@ -20,7 +21,6 @@ import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 // utils
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import { openSignUpInModal } from 'events/openSignUpInModal';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -133,19 +133,21 @@ interface Props extends InputProps {
 const InitiativesCTABox = memo<Props>(({ theme, className }) => {
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
+  const openAuthModal = useOpenAuthModal({
+    onSuccess: () => clHistory.push('/initiatives/new'),
+  });
 
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
   const signUp = useCallback(() => {
-    openSignUpInModal({
+    openAuthModal({
       flow: 'signup',
       context: {
         type: 'initiative',
         action: 'posting_initiative',
       },
-      onSuccess: () => clHistory.push('/initiatives/new'),
     });
-  }, []);
+  }, [openAuthModal]);
 
   return (
     <Container className={className}>

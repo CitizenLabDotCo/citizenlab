@@ -27,6 +27,17 @@ export default function useSteps() {
   const [status, setStatus] = useState<Status>('ok');
   const [error, setError] = useState<ErrorCode | null>(null);
 
+  const getAuthenticationData = useCallback(() => {
+    const authenticationData = authenticationDataRef.current;
+
+    // This should never be possible
+    if (!authenticationData) {
+      throw new Error('Authentication data not available.');
+    }
+
+    return authenticationData;
+  }, []);
+
   const getRequirements = useCallback(async () => {
     const authenticationContext = authenticationDataRef.current?.context;
 
@@ -39,7 +50,7 @@ export default function useSteps() {
       const response = await getAuthenticationRequirements(
         authenticationContext
       );
-      return response.data.attributes.requirements.requirements;
+      return response.data.attributes.requirements;
     } catch (e) {
       setStatus('error');
       setError('requirements_fetching_failed');
@@ -52,20 +63,16 @@ export default function useSteps() {
     setState((state) => ({ ...state, ...newState }));
   }, []);
 
-  const onSuccess = authenticationDataRef.current?.onSuccess;
-
-  const stepConfig = useMemo(
-    () =>
-      getStepConfig(
-        getRequirements,
-        setCurrentStep,
-        setStatus,
-        setError,
-        updateState,
-        onSuccess
-      ),
-    [getRequirements, updateState, onSuccess]
-  );
+  const stepConfig = useMemo(() => {
+    return getStepConfig(
+      getAuthenticationData,
+      getRequirements,
+      setCurrentStep,
+      setStatus,
+      setError,
+      updateState
+    );
+  }, [getAuthenticationData, getRequirements, updateState]);
 
   const transition = useCallback(
     <S extends Step, T extends keyof StepConfig[S]>(

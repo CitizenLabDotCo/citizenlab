@@ -94,6 +94,10 @@ describe PermissionsService do
     context 'when permitted by light users' do
       let(:permitted_by) { 'everyone_confirmed_email' }
 
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+      end
+
       context 'when not signed in' do
         let(:user) { nil }
 
@@ -101,15 +105,21 @@ describe PermissionsService do
       end
 
       context 'when light unconfirmed resident' do
-        before { user.update!(email_confirmed_at: nil, password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
+        before do
+          user.reset_confirmation_with_no_password
+          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+        end
 
         it { expect(denied_reason).to eq 'missing_data' }
       end
 
       context 'when light unconfirmed inactive resident' do
-        before { user.update!(email_confirmed_at: nil, password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, registration_completed_at: nil) }
+        before do
+          user.reset_confirmation_with_no_password
+          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, registration_completed_at: nil)
+        end
 
-        it { expect(denied_reason).to eq 'not_active' }
+        it { expect(denied_reason).to eq 'missing_data' }
       end
 
       context 'when light confirmed resident' do
@@ -119,7 +129,7 @@ describe PermissionsService do
       end
 
       context 'when fully registered unconfirmed resident' do
-        before { user.update!(email_confirmed_at: nil) }
+        before { user.reset_confirmation_with_no_password }
 
         it { expect(denied_reason).to eq 'missing_data' }
       end
@@ -135,7 +145,10 @@ describe PermissionsService do
       end
 
       context 'when unconfirmed admin' do
-        before { user.update!(email_confirmed_at: nil, roles: [{ type: 'admin' }]) }
+        before do
+          user.reset_confirmation_with_no_password
+          user.update!(roles: [{ type: 'admin' }])
+        end
 
         it { expect(denied_reason).to eq 'missing_data' }
       end
@@ -317,6 +330,10 @@ describe PermissionsService do
     context 'when permitted_by is set to everyone_confirmed_email' do
       let(:permission) { create :permission, permitted_by: 'everyone_confirmed_email' }
 
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+      end
+
       it 'does not permit a visitor' do
         expect(service.requirements(permission, nil)).to eq({
           permitted: false,
@@ -341,7 +358,8 @@ describe PermissionsService do
       end
 
       it 'does not permit a light unconfirmed resident' do
-        user.update!(email_confirmed_at: nil, password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+        user.reset_confirmation_with_no_password
+        user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
         expect(service.requirements(permission, user)).to eq({
           permitted: false,
           requirements: {
@@ -389,7 +407,7 @@ describe PermissionsService do
       end
 
       it 'does not permit a fully registered unconfirmed resident' do # https://citizenlabco.slack.com/archives/C04FX2ATE5B/p1677170928400679
-        user.update!(email_confirmed_at: nil)
+        user.reset_confirmation_with_no_password
         expect(service.requirements(permission, user)).to eq({
           permitted: false,
           requirements: {
@@ -437,8 +455,7 @@ describe PermissionsService do
 
       it 'does not permit an unconfirmed admin' do
         user.add_role 'admin'
-        user.save!
-        user.update!(email_confirmed_at: nil)
+        user.reset_confirmation_with_no_password
         expect(service.requirements(permission, user)).to eq({
           permitted: false,
           requirements: {
@@ -463,7 +480,6 @@ describe PermissionsService do
 
       it 'permits a confirmed admin' do
         user.add_role 'admin'
-        user.save!
         expect(service.requirements(permission, user)).to eq({
           permitted: true,
           requirements: {

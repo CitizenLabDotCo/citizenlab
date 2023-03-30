@@ -1,30 +1,44 @@
+// authentication
 import createEmailOnlyAccount from 'api/authentication/createEmailOnlyAccount';
 import signIn from 'api/authentication/signIn';
 import signOut from 'api/authentication/signOut';
 import confirmEmail from 'api/authentication/confirmEmail';
+import { handleOnSSOClick } from 'services/singleSignOn';
 
+// cache
 import streams from 'utils/streams';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 // typings
-import { GetRequirements, Status, ErrorCode, UpdateState } from '../typings';
-import { SSOProvider } from 'services/singleSignOn';
+import {
+  GetRequirements,
+  Status,
+  ErrorCode,
+  UpdateState,
+  SSOProviderWithoutVienna,
+  AuthenticationData,
+} from '../typings';
 import { Locale } from 'typings';
 
 type Step =
   | 'closed'
-  | 'email-registration'
+  | 'light-flow-start'
+  | 'email-policies'
+  | 'google-policies'
+  | 'facebook-policies'
+  | 'azure-ad-policies'
+  | 'france-connect-login'
   | 'email-confirmation'
   | 'enter-password'
   | 'success';
 
 export const getStepConfig = (
+  getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
   setError: (errorCode: ErrorCode) => void,
-  updateState: UpdateState,
-  onSuccess?: () => void
+  updateState: UpdateState
 ) => {
   return {
     closed: {
@@ -33,20 +47,48 @@ export const getStepConfig = (
       TRIGGER_REGISTRATION_FLOW: async () => {
         updateState({ email: null });
 
-        const requirements = await getRequirements();
+        const { permitted, requirements } = await getRequirements();
+
+        if (permitted) {
+          setCurrentStep('success');
+          return;
+        }
 
         if (requirements.built_in.email === 'satisfied') {
           setCurrentStep('email-confirmation');
         } else {
-          setCurrentStep('email-registration');
+          setCurrentStep('light-flow-start');
         }
       },
     },
 
-    'email-registration': {
+    'light-flow-start': {
       CLOSE: () => setCurrentStep('closed'),
+      SUBMIT_EMAIL: (email: string) => {
+        updateState({ email });
+        setCurrentStep('email-policies');
+      },
+      CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
+        switch (ssoProvider) {
+          case 'google':
+            setCurrentStep('google-policies');
+            break;
+          case 'facebook':
+            setCurrentStep('facebook-policies');
+            break;
+          case 'azureactivedirectory':
+            setCurrentStep('azure-ad-policies');
+            break;
+          case 'franceconnect':
+            setCurrentStep('france-connect-login');
+            break;
+        }
+      },
+    },
 
-      SUBMIT_EMAIL: async (email: string, locale: Locale) => {
+    'email-policies': {
+      CLOSE: () => setCurrentStep('closed'),
+      ACCEPT_POLICIES: async (email: string, locale: Locale) => {
         setStatus('pending');
         updateState({ email });
 
@@ -67,16 +109,46 @@ export const getStepConfig = (
           setError('account_creation_failed');
         }
       },
+    },
 
-      CONTINUE_WITH_SSO: (_ssoProvider: SSOProvider) => {
-        // TODO
-        // Do what happens in normal flow when you select SSO
+    'google-policies': {
+      CLOSE: () => setCurrentStep('closed'),
+      ACCEPT_POLICIES: () => {
+        setStatus('pending');
+        const authenticationData = getAuthenticationData();
+        handleOnSSOClick('google', authenticationData);
+      },
+    },
+
+    'facebook-policies': {
+      CLOSE: () => setCurrentStep('closed'),
+      ACCEPT_POLICIES: () => {
+        setStatus('pending');
+        const authenticationData = getAuthenticationData();
+        handleOnSSOClick('facebook', authenticationData);
+      },
+    },
+
+    'azure-ad-policies': {
+      CLOSE: () => setCurrentStep('closed'),
+      ACCEPT_POLICIES: () => {
+        setStatus('pending');
+        const authenticationData = getAuthenticationData();
+        handleOnSSOClick('azureactivedirectory', authenticationData);
+      },
+    },
+
+    'france-connect-login': {
+      CLOSE: () => setCurrentStep('closed'),
+      LOGIN: () => {
+        setStatus('pending');
+        const authenticationData = getAuthenticationData();
+        handleOnSSOClick('franceconnect', authenticationData);
       },
     },
 
     'email-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
-
       CHANGE_EMAIL: async () => {
         setStatus('pending');
 
@@ -84,10 +156,9 @@ export const getStepConfig = (
 
         updateState({ email: null });
 
-        setCurrentStep('email-registration');
+        setCurrentStep('light-flow-start');
         setStatus('ok');
       },
-
       SUBMIT_CODE: async (code: string) => {
         setStatus('pending');
 
@@ -109,7 +180,6 @@ export const getStepConfig = (
 
     'enter-password': {
       CLOSE: () => setCurrentStep('closed'),
-
       SUBMIT_PASSWORD: async (
         email: string,
         password: string,
@@ -121,13 +191,15 @@ export const getStepConfig = (
         try {
           await signIn({ email, password, rememberMe, tokenLifetime });
 
-          const requirements = await getRequirements();
+          const { requirements } = await getRequirements();
 
           if (requirements.special.confirmation === 'require') {
             setCurrentStep('email-confirmation');
           } else {
             setCurrentStep('closed');
-            onSuccess && onSuccess();
+
+            const { onSuccess } = getAuthenticationData();
+            onSuccess?.();
           }
 
           setStatus('ok');
@@ -147,7 +219,8 @@ export const getStepConfig = (
         setStatus('ok');
         setCurrentStep('closed');
 
-        onSuccess && onSuccess();
+        const { onSuccess } = getAuthenticationData();
+        onSuccess?.();
       },
     },
   };

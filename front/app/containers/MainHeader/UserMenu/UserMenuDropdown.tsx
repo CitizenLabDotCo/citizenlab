@@ -9,8 +9,10 @@ import HasPermission from 'components/HasPermission';
 // services
 import signOut from 'api/authentication/signOut';
 
-// resources
+// hooks
 import useAuthUser from 'hooks/useAuthUser';
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
 // style
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
@@ -18,7 +20,6 @@ import { colors } from 'utils/styleUtils';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { openSignUpInModal } from 'events/openSignUpInModal';
 
 const DropdownListItem = styled(Button)``;
 
@@ -30,6 +31,7 @@ interface Props {
 
 const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
   const authUser = useAuthUser();
+  const openAuthModal = useOpenAuthModal();
 
   const isRegisteredUser =
     !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
@@ -116,7 +118,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             <DropdownListItem
               id="e2e-confirm-email-link"
               onClick={() => {
-                openSignUpInModal();
+                openAuthModal();
               }}
               buttonStyle="text"
               bgHoverColor={colors.grey300}
@@ -134,7 +136,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             <DropdownListItem
               id="e2e-complete-registration-link"
               onClick={() => {
-                openSignUpInModal();
+                openAuthModal();
               }}
               buttonStyle="text"
               bgHoverColor={colors.grey300}

@@ -1,6 +1,9 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import ideasCountKeys from 'api/idea_count/keys';
+import initiativesCountKeys from 'api/initiative_counts/keys';
 
 export interface IOfficialFeedbackData {
   id: string;
@@ -65,9 +68,7 @@ export async function addOfficialFeedbackToIdea(
     `${API_PATH}/ideas/${ideaId}/official_feedback`,
     { official_feedback: feedBack }
   );
-  await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/stats/ideas_count`],
-  });
+  queryClient.invalidateQueries(ideasCountKeys.all());
   return response;
 }
 
@@ -76,11 +77,9 @@ export async function deleteOfficialFeedbackFromIdea(ideaId: string) {
     `${API_PATH}/official_feedback/${ideaId}`,
     ideaId
   );
+  queryClient.invalidateQueries(ideasCountKeys.all());
   await streams.fetchAllWith({
-    apiEndpoint: [
-      `${API_PATH}/ideas/${ideaId}/official_feedback`,
-      `${API_PATH}/stats/ideas_count`,
-    ],
+    apiEndpoint: [`${API_PATH}/ideas/${ideaId}/official_feedback`],
   });
   return response;
 }
@@ -107,9 +106,7 @@ export async function addOfficialFeedbackToInitiative(
     `${API_PATH}/initiatives/${initiativeId}/official_feedback`,
     { official_feedback: feedBack }
   );
-  await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/stats/initiatives_count`],
-  });
+  queryClient.invalidateQueries(initiativesCountKeys.all());
   return response;
 }
 
@@ -120,11 +117,9 @@ export async function deleteOfficialFeedbackFromInitiative(
     `${API_PATH}/official_feedback/${initiativeId}`,
     initiativeId
   );
+  queryClient.invalidateQueries(initiativesCountKeys.all());
   await streams.fetchAllWith({
-    apiEndpoint: [
-      `${API_PATH}/initiatives/${initiativeId}/official_feedback`,
-      `${API_PATH}/stats/initiatives_count`,
-    ],
+    apiEndpoint: [`${API_PATH}/initiatives/${initiativeId}/official_feedback`],
   });
   return response;
 }

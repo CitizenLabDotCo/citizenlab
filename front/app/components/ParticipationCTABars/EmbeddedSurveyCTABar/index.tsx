@@ -7,6 +7,7 @@ import { ParticipationCTAContent } from 'components/ParticipationCTABars/Partici
 // hooks
 import { useTheme } from 'styled-components';
 import useAuthUser from 'hooks/useAuthUser';
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
@@ -27,8 +28,6 @@ import messages from '../messages';
 // router
 import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
-
-import { openSignUpInModal } from 'events/openSignUpInModal';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 
 export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
@@ -48,24 +47,24 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
     }
   }, [divId]);
 
-  const scrollTo = useCallback(
-    (id: string, shouldSelectCurrentPhase = true) =>
-      (event: FormEvent) => {
-        event.preventDefault();
-        const isOnProjectPage = pathname.endsWith(
-          `/projects/${project.attributes.slug}`
-        );
+  const scrollToSurvey = useCallback(() => {
+    const isOnProjectPage = pathname.endsWith(
+      `/projects/${project.attributes.slug}`
+    );
 
-        currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
+    const id = 'project-survey';
+    currentPhase && selectPhase(currentPhase);
 
-        if (isOnProjectPage) {
-          scrollToElement({ id, shouldFocus: true });
-        } else {
-          clHistory.push(`/projects/${project.attributes.slug}#${id}`);
-        }
-      },
-    [currentPhase, project, pathname]
-  );
+    if (isOnProjectPage) {
+      scrollToElement({ id, shouldFocus: true });
+    } else {
+      clHistory.push(`/projects/${project.attributes.slug}#${id}`);
+    }
+  }, [currentPhase, project, pathname]);
+
+  const openAuthModal = useOpenAuthModal({
+    onSuccess: scrollToSurvey,
+  });
 
   const { enabled, disabledReason } = getSurveyTakingRules({
     project,
@@ -84,8 +83,10 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
     registrationNotCompleted;
 
   const handleTakeSurveyClick = (event: FormEvent) => {
+    event.preventDefault();
+
     if (showSignIn) {
-      openSignUpInModal({
+      openAuthModal({
         flow: 'signup',
         verification: shouldVerify,
         context: {
@@ -93,11 +94,10 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
           action: 'taking_survey',
           id: currentPhase ? currentPhase.id : project.id,
         },
-        onSuccess: () => scrollTo('project-survey')(event),
       });
     }
 
-    scrollTo('project-survey')(event);
+    scrollToSurvey();
   };
 
   if (hasProjectEndedOrIsArchived(project, currentPhase)) {

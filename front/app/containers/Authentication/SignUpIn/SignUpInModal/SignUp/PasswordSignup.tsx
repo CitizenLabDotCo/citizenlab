@@ -682,7 +682,6 @@ class PasswordSignup extends PureComponent<
                 privacyPolicyError={this.state.privacyError}
                 onTacAcceptedChange={this.handleTacAcceptedChange}
                 onPrivacyAcceptedChange={this.handlePrivacyAcceptedChange}
-                authProvider={'email'}
               />
             </FormElement>
 
