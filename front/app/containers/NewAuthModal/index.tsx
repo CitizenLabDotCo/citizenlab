@@ -7,6 +7,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 // components
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
+import AuthProviders from './steps/AuthProviders';
+import EmailAndPassword from './steps/EmailAndPassword';
 import LightFlowStart from './steps/LightFlowStart';
 import EmailPolicies from './steps/Policies/EmailPolicies';
 import GooglePolicies from './steps/Policies/GooglePolicies';
@@ -105,6 +107,26 @@ const AuthModal = () => {
           </Box>
         )}
 
+        {/* OLD SIGN IN FLOW */}
+        {currentStep === 'auth-providers-sign-in' && (
+          <AuthProviders
+            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
+            onSelectAuthProvider={transition(
+              currentStep,
+              'SELECT_AUTH_PROVIDER'
+            )}
+          />
+        )}
+
+        {currentStep === 'email-password-sign-in' && (
+          <EmailAndPassword
+            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
+            onGoBack={transition(currentStep, 'GO_BACK')}
+            onSubmit={transition(currentStep, 'SIGN_IN')}
+          />
+        )}
+
+        {/* LIGHT FLOW */}
         {currentStep === 'light-flow-start' && (
           <LightFlowStart
             onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}

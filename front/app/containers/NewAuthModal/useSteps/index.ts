@@ -3,6 +3,9 @@ import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 // api
 import getAuthenticationRequirements from 'api/authentication_requirements/getAuthenticationRequirements';
 
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 // utils
 import { getStepConfig } from './stepConfig';
 
@@ -20,6 +23,23 @@ import {
 } from '../typings';
 
 export default function useSteps() {
+  const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
+  const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
+  const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
+  const franceconnectLoginEnabled = useFeatureFlag({
+    name: 'franceconnect_login',
+  });
+  const viennaCitizenLoginEnabled = useFeatureFlag({
+    name: 'vienna_citizen_login',
+  });
+
+  const anySSOProviderEnabled =
+    googleLoginEnabled ||
+    facebookLoginEnabled ||
+    azureAdLoginEnabled ||
+    franceconnectLoginEnabled ||
+    viennaCitizenLoginEnabled;
+
   const authenticationDataRef = useRef<AuthenticationData | null>(null);
 
   const [currentStep, setCurrentStep] = useState<Step>('closed');
@@ -70,9 +90,15 @@ export default function useSteps() {
       setCurrentStep,
       setStatus,
       setError,
-      updateState
+      updateState,
+      anySSOProviderEnabled
     );
-  }, [getAuthenticationData, getRequirements, updateState]);
+  }, [
+    getAuthenticationData,
+    getRequirements,
+    updateState,
+    anySSOProviderEnabled,
+  ]);
 
   const transition = useCallback(
     <S extends Step, T extends keyof StepConfig[S]>(

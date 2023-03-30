@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect } from 'react';
+import React, { memo, useCallback } from 'react';
 
 // components
 import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
@@ -37,14 +37,14 @@ export const StyledAuthProviderButton = styled(AuthProviderButton)`
 interface Props {
   metaData: ISignUpInMetaData;
   className?: string;
-  onAuthProviderSelected: TOnContinueFunction;
-  goToOtherFlow: () => void;
+  onSelectAuthProvider: TOnContinueFunction;
+  onSwitchFlow: () => void;
 }
 
 export type AuthProvider = 'email' | SSOProvider;
 
 const AuthProviders = memo<Props>(
-  ({ className, goToOtherFlow, metaData, onAuthProviderSelected }) => {
+  ({ className, onSwitchFlow, metaData, onSelectAuthProvider }) => {
     const { formatMessage } = useIntl();
     const { data: tenant } = useAppConfiguration();
     const tenantSettings = tenant?.data.attributes.settings;
@@ -64,44 +64,20 @@ const AuthProviders = memo<Props>(
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
 
-    useEffect(() => {
-      const enabledProviders = [
-        passwordLoginEnabled,
-        googleLoginEnabled,
-        facebookLoginEnabled,
-        azureAdLoginEnabled,
-        franceconnectLoginEnabled,
-        viennaCitizenLoginEnabled,
-      ].filter((provider) => provider === true);
-
-      if (enabledProviders.length === 1 && passwordLoginEnabled) {
-        onAuthProviderSelected('email');
-      }
-    }, [
-      passwordLoginEnabled,
-      googleLoginEnabled,
-      facebookLoginEnabled,
-      azureAdLoginEnabled,
-      franceconnectLoginEnabled,
-      viennaCitizenLoginEnabled,
-      onAuthProviderSelected,
-    ]);
-
     const handleOnFranceConnectSelected = useCallback(
       (event: React.FormEvent) => {
         event.preventDefault();
-        onAuthProviderSelected('franceconnect');
+        onSelectAuthProvider('franceconnect');
       },
-      [onAuthProviderSelected]
+      [onSelectAuthProvider]
     );
 
     const handleGoToOtherFlow = useCallback(
       (event: React.FormEvent) => {
         event.preventDefault();
-        goToOtherFlow();
+        onSwitchFlow();
       },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [goToOtherFlow]
+      [onSwitchFlow]
     );
 
     const phone = tenantSettings?.password_login?.phone;
@@ -136,14 +112,15 @@ const AuthProviders = memo<Props>(
 
         {(isPasswordSigninOrSignupAllowed ||
           facebookLoginEnabled ||
-          azureAdLoginEnabled) &&
+          azureAdLoginEnabled ||
+          viennaCitizenLoginEnabled) &&
           franceconnectLoginEnabled &&
           !metaData.error && <Or />}
 
         <Outlet
           id="app.components.SignUpIn.AuthProviders.ContainerStart"
           flow={flow}
-          onContinue={onAuthProviderSelected}
+          onContinue={onSelectAuthProvider}
         />
 
         {isPasswordSigninOrSignupAllowed && (
@@ -151,7 +128,7 @@ const AuthProviders = memo<Props>(
             flow={flow}
             icon="email"
             authProvider="email"
-            onContinue={onAuthProviderSelected}
+            onContinue={onSelectAuthProvider}
             id="e2e-login-with-email"
           >
             {flow === 'signup' ? (
@@ -175,7 +152,7 @@ const AuthProviders = memo<Props>(
             flow={flow}
             icon="google"
             authProvider="google"
-            onContinue={onAuthProviderSelected}
+            onContinue={onSelectAuthProvider}
           >
             <FormattedMessage {...messages.continueWithGoogle} />
           </StyledAuthProviderButton>
@@ -186,7 +163,7 @@ const AuthProviders = memo<Props>(
             icon="facebook"
             flow={flow}
             authProvider="facebook"
-            onContinue={onAuthProviderSelected}
+            onContinue={onSelectAuthProvider}
           >
             <FormattedMessage {...messages.continueWithFacebook} />
           </StyledAuthProviderButton>
@@ -197,7 +174,7 @@ const AuthProviders = memo<Props>(
             icon="microsoft-windows"
             flow={flow}
             authProvider="azureactivedirectory"
-            onContinue={onAuthProviderSelected}
+            onContinue={onSelectAuthProvider}
           >
             <FormattedMessage
               {...messages.continueWithAzure}

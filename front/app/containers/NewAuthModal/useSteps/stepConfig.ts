@@ -22,6 +22,10 @@ import { Locale } from 'typings';
 
 type Step =
   | 'closed'
+  // old sign in flow
+  | 'auth-providers-sign-in'
+  | 'email-password-sign-in'
+  // light flow
   | 'light-flow-start'
   | 'email-policies'
   | 'google-policies'
@@ -38,7 +42,8 @@ export const getStepConfig = (
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
   setError: (errorCode: ErrorCode) => void,
-  updateState: UpdateState
+  updateState: UpdateState,
+  anySSOProviderEnabled: boolean
 ) => {
   return {
     closed: {
@@ -54,14 +59,51 @@ export const getStepConfig = (
           return;
         }
 
-        if (requirements.built_in.email === 'satisfied') {
-          setCurrentStep('email-confirmation');
+        const isLightFlow = requirements.special.password === 'dont_ask';
+
+        if (isLightFlow) {
+          if (requirements.built_in.email === 'satisfied') {
+            setCurrentStep('email-confirmation');
+          } else {
+            setCurrentStep('light-flow-start');
+          }
         } else {
-          setCurrentStep('light-flow-start');
+          if (anySSOProviderEnabled) {
+            setCurrentStep('auth-providers-sign-in');
+          } else {
+            setCurrentStep('email-password-sign-in');
+          }
         }
       },
     },
 
+    // OLD SIGN IN FLOW
+    'auth-providers-sign-in': {
+      CLOSE: () => setCurrentStep('closed'),
+      SWITCH_FLOW: () => {
+        // TODO
+      },
+      SELECT_AUTH_PROVIDER: () => {
+        // TODO
+      },
+    },
+
+    'email-password-sign-in': {
+      CLOSE: () => setCurrentStep('closed'),
+      SWITCH_FLOW: () => {
+        // TODO
+      },
+      GO_BACK: () => {
+        if (anySSOProviderEnabled) {
+          setCurrentStep('auth-providers-sign-in');
+        }
+      },
+      SIGN_IN: () => {
+        // TODO
+      },
+    },
+
+    // LIGHT FLOW
     'light-flow-start': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT_EMAIL: (email: string) => {
