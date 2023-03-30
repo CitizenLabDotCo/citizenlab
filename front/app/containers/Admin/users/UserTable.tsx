@@ -58,6 +58,19 @@ const SortableTh = ({ sortDirection, onClick, children }: SortableThProps) => (
   </Th>
 );
 
+const getNewRoles = (user: IUserData) => {
+  if (user.attributes.roles && isAdmin({ data: user })) {
+    return user.attributes.roles.filter((role) => role.type !== 'admin');
+  } else if (user.attributes.roles && isCollaborator({ data: user })) {
+    return user.attributes.roles.filter(
+      (role) =>
+        !['project_moderator', 'project_folder_moderator'].includes(role.type)
+    );
+  }
+
+  return [...get(user, 'attributes.roles', []), { type: 'admin' }];
+};
+
 interface InputProps {
   selectedUsers: string[] | 'none' | 'all';
   handleSelect: (userId: string) => void;
@@ -85,8 +98,6 @@ const UsersTable = ({
   }
 
   const handleRolesChange = (user: IUserData) => () => {
-    let newRoles: TRole[] = [];
-
     trackEventByName(tracks.adminToggle.name);
 
     if (authUser && authUser.id === user.id) {
@@ -95,22 +106,7 @@ const UsersTable = ({
         <FormattedMessage {...messages.youCantUnadminYourself} />
       );
     } else {
-      if (user.attributes.roles && isAdmin({ data: user })) {
-        newRoles = user.attributes.roles.filter(
-          (role) => role.type !== 'admin'
-        );
-      } else if (user.attributes.roles && isCollaborator({ data: user })) {
-        newRoles = user.attributes.roles.filter(
-          (role) =>
-            !['project_moderator', 'project_folder_moderator'].includes(
-              role.type
-            )
-        );
-      } else {
-        newRoles = [...get(user, 'attributes.roles', []), { type: 'admin' }];
-      }
-
-      updateUser(user.id, { roles: newRoles });
+      updateUser(user.id, { roles: getNewRoles(user) });
     }
   };
 
