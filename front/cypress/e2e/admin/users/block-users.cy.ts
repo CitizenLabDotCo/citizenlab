@@ -34,6 +34,7 @@ describe('Block user', () => {
       .contains('Block')
       .click();
 
+    cy.intercept({ method: 'PATCH', url: '**/block' }).as('blockRequest');
     cy.get('#e2e-modal-container')
       .find('textarea')
       .type('Test block reason')
@@ -41,8 +42,7 @@ describe('Block user', () => {
       .find('button')
       .contains('Block')
       .click();
-
-    cy.wait(500);
+    cy.wait('@blockRequest');
 
     cy.get('#e2e-modal-container').contains('All done');
 
@@ -70,7 +70,9 @@ describe('Block user', () => {
       .contains('Unblock')
       .click();
 
+    cy.intercept({ method: 'PATCH', url: '**/unblock' }).as('unblockRequest');
     cy.get('#e2e-modal-container').contains('button', 'Yes').click();
+    cy.wait('@unblockRequest');
 
     cy.get('.e2e-left-panel').contains('a', 'Blocked users').contains('0');
 
@@ -84,6 +86,7 @@ describe('Block user', () => {
   });
 
   it('Block from User Profile', () => {
+    // Go to user profile by clicking on the first user in the table
     cy.get('.e2e-user-table')
       .find('.e2e-user-table-row')
       .not(':contains("admin@citizenlab.co")')
@@ -95,6 +98,7 @@ describe('Block user', () => {
 
     cy.get('.e2e-more-actions').click().parent().contains('Block').click();
 
+    cy.intercept({ method: 'PATCH', url: '**/block' }).as('blockRequest');
     cy.get('#e2e-modal-container')
       .find('textarea')
       .type('Test block reason')
@@ -102,9 +106,7 @@ describe('Block user', () => {
       .find('button')
       .contains('Block')
       .click();
-
-    // cy.intercept(`**/block`).as('blockRequest');
-    // cy.wait('@blockRequest');
+    cy.wait('@blockRequest');
 
     cy.get('#e2e-modal-container').contains('All done');
 
@@ -116,6 +118,7 @@ describe('Block user', () => {
   });
 
   it('Unblock from User Profile', () => {
+    // Go to user profile by clicking on the first user in the table
     cy.get('.e2e-user-table')
       .find('.e2e-user-table-row')
       .not(':contains("admin@citizenlab.co")')
@@ -127,10 +130,9 @@ describe('Block user', () => {
 
     cy.get('.e2e-more-actions').click().parent().contains('Unblock').click();
 
+    cy.intercept({ method: 'PATCH', url: '**/unblock' }).as('unblockRequest');
     cy.get('#e2e-modal-container').contains('button', 'Yes').click();
-
-    // cy.intercept(`**/unblock`).as('blockRequest');
-    // cy.wait('@unblockRequest');
+    cy.wait('@unblockRequest');
 
     cy.get('.e2e-more-actions').click().parent().contains('Block');
   });
