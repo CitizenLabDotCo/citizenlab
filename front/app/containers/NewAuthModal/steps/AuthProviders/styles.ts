@@ -3,17 +3,6 @@ import Button from 'components/UI/Button';
 import styled from 'styled-components';
 import { fontSizes, media, defaultOutline } from 'utils/styleUtils';
 
-export const Options = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  margin-bottom: 30px;
-
-  ${media.phone`
-    margin-bottom: 20px;
-  `}
-`;
-
 export const Option = styled.div`
   color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;

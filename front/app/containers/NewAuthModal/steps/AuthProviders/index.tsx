@@ -17,7 +17,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { Options, Option } from './styles';
+import { Option } from './styles';
 
 // typings
 import { SSOProvider } from 'services/singleSignOn';
@@ -189,24 +189,20 @@ const AuthProviders = memo<Props>(
           </StyledAuthProviderButton>
         )}
 
-        <Options>
-          <Option>
-            <FormattedMessage
-              {...(flow === 'signup'
-                ? messages.goToLogIn
-                : messages.goToSignUp)}
-              values={{
-                goToOtherFlowLink: (
-                  <button onClick={handleGoToOtherFlow} className="link">
-                    {formatMessage(
-                      flow === 'signup' ? messages.logIn2 : messages.signUp2
-                    )}
-                  </button>
-                ),
-              }}
-            />
-          </Option>
-        </Options>
+        <Option>
+          <FormattedMessage
+            {...(flow === 'signup' ? messages.goToLogIn : messages.goToSignUp)}
+            values={{
+              goToOtherFlowLink: (
+                <button onClick={handleGoToOtherFlow} className="link">
+                  {formatMessage(
+                    flow === 'signup' ? messages.logIn2 : messages.signUp2
+                  )}
+                </button>
+              ),
+            }}
+          />
+        </Option>
       </Container>
     );
   }
