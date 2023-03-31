@@ -235,7 +235,7 @@ sr-Latn:
     send_user_blocked_email:
       subject: 'Ваш налог је привремено онемогућен'
       title_user_blocked: 'Ваш налог је привремено онемогућен'
-      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
-      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
+      paragraph_1_without_reason: "Ваш налог на платформи за учешће %{organizationName} је привремено онемогућен због кршења смерница заједнице."
+      paragraph_1_with_reason: "Ваш налог на платформи за учешће %{organizationName} је привремено онемогућен из следећег разлога:"
       for_more_information: "За више информација о овоме, можете консултовати %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Можете се поново пријавити од %{date}"
