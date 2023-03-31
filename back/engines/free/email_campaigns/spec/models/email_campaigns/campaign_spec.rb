@@ -14,8 +14,7 @@ RSpec.describe EmailCampaigns::Campaign, type: :model do
       activity2 = create(:activity, item: invite2, action: 'created', user: invite2.inviter)
 
       result = campaign.apply_recipient_filters(activity: activity2)
-
-      expect(result.to_json).not_to include invitee.first_name
+      expect(result).not_to include invitee
       expect(result.count).to eq 0
     end
   end
