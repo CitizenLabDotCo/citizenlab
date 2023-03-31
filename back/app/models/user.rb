@@ -400,7 +400,7 @@ class User < ApplicationRecord
   end
 
   def sso?
-    identity_ids.any?
+    identity_ids.present?
   end
 
   def member_of?(group_id)
