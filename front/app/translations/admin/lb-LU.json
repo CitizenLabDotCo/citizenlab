@@ -1043,7 +1043,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.saveCause": "Save",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.subtitleVolunteeringTab": "Here, you can set up the causes users can volunteer for and download the volunteers.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.titleVolunteeringTab": "Volunteering",
-  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {no volunteers} one {# volunteer} other {# volunteers}}",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {keng Fräiwëlleger} one {#fräiwëlleg} other {#fräiwëlleg}}",
   "app.containers.AdminPage.ProjectEdit.addNewContribution": "Add a contribution",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Add an idea",
   "app.containers.AdminPage.ProjectEdit.addNewInput": "Add an input",
