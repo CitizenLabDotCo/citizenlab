@@ -1,6 +1,11 @@
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 import { IPCAction } from 'typings';
 
+export const GLOBAL_CONTEXT = {
+  type: 'global',
+  action: 'visiting',
+} as const;
+
 interface InitiativeContext {
   type: 'initiative';
   action: IInitiativeAction;
@@ -19,6 +24,7 @@ interface IdeaContext {
 }
 
 export type AuthenticationContext =
+  | typeof GLOBAL_CONTEXT
   | InitiativeContext
   | ProjectContext
   | IdeaContext;

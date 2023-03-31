@@ -20,7 +20,7 @@ const fetchAuthenticationRequirements = (
 ) => {
   const { type, action } = authenticationContext;
 
-  if (type === 'initiative') {
+  if (type === 'initiative' || type === 'global') {
     return fetcher<AuthenticationRequirementsResponse>({
       path: `/permissions/${action}/requirements`,
       action: 'get',

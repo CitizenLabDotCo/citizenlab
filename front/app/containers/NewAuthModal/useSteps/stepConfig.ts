@@ -69,7 +69,11 @@ export const getStepConfig = (
           } else {
             setCurrentStep('light-flow-start');
           }
-        } else {
+        }
+
+        const { flow } = getAuthenticationData();
+
+        if (flow === 'signin') {
           if (anySSOProviderEnabled) {
             setCurrentStep('auth-providers-sign-in');
           } else {

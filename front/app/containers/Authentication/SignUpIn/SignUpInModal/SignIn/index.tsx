@@ -109,9 +109,9 @@ const SignIn = memo<Props>(
               <>
                 {activeStep === 'auth-providers' && (
                   <AuthProviders
-                    metaData={metaData}
-                    onAuthProviderSelected={handleOnAuthProviderSelected}
-                    goToOtherFlow={handleGoToSignUpFlow}
+                    flow={metaData.flow}
+                    onSelectAuthProvider={handleOnAuthProviderSelected}
+                    onSwitchFlow={handleGoToSignUpFlow}
                   />
                 )}
 

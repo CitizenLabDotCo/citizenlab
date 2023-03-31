@@ -1,4 +1,7 @@
-import { AuthenticationContext } from 'api/authentication_requirements/types';
+import {
+  AuthenticationContext,
+  GLOBAL_CONTEXT,
+} from 'api/authentication_requirements/types';
 import eventEmitter from 'utils/eventEmitter';
 import getAuthenticationRequirements from 'api/authentication_requirements/getAuthenticationRequirements';
 import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
@@ -27,13 +30,27 @@ const OLD_MODAL_EVENT = 'openOldSignUpInModal';
 
 // Shared flow
 export async function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
+  const isOldSignInFlow = metaData?.flow === 'signin';
+
+  if (isOldSignInFlow) {
+    triggerAuthenticationFlow({
+      flow: metaData.flow ?? 'signup',
+      pathname: metaData?.pathname || window.location.pathname,
+      context: metaData.context ?? GLOBAL_CONTEXT,
+      onSuccess: metaData.onSuccess,
+    });
+
+    return;
+  }
+
   if (metaData?.context) {
     const response = await getAuthenticationRequirements(metaData.context);
-    const passwordNotRequired =
+
+    const isLightFlow =
       response.data.attributes.requirements.requirements.special.password ===
       'dont_ask';
 
-    if (passwordNotRequired) {
+    if (isLightFlow) {
       triggerAuthenticationFlow({
         flow: metaData.flow ?? 'signup',
         pathname: metaData?.pathname || window.location.pathname,

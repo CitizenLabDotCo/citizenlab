@@ -321,9 +321,9 @@ const SignUp = ({
 
             {activeStep === 'auth-providers' && (
               <AuthProviders
-                metaData={metaData}
-                onAuthProviderSelected={handleSelectAuthProvider}
-                goToOtherFlow={onGoToSignIn}
+                flow={metaData.flow}
+                onSelectAuthProvider={handleSelectAuthProvider}
+                onSwitchFlow={onGoToSignIn}
               />
             )}
 
