@@ -470,6 +470,39 @@ resource 'Users' do
           end
         end
 
+        describe 'Not moderator filters' do
+          before do
+            @user                       = create(:user)
+            @admin                      = create(:admin)
+            @project                    = create(:project)
+            @project_folder             = create(:project_folder, projects: [@project])
+            @project_moderator          = create(:project_moderator, projects: [@project])
+            @moderator_of_other_project = create(:project_moderator, projects: [create(:project)])
+            @project_folder_moderator   = create(:project_folder_moderator, project_folders: [@project_folder])
+            @moderator_of_other_folder  = create(:project_folder_moderator, project_folders: [create(:project_folder)])
+          end
+
+          example 'List only users who cannot moderate a specific project' do
+            do_request is_not_project_moderator: @project.id
+            expect(status).to eq 200
+
+            user_ids = json_parse(response_body)[:data].pluck(:id)
+            expect(user_ids).to include(@user.id, @moderator_of_other_project.id, @moderator_of_other_folder.id)
+            expect(user_ids).not_to include(@admin.id, @project_moderator.id, @project_folder_moderator.id)
+          end
+
+          example 'List only users who cannot moderate a specific folder' do
+            do_request is_not_folder_moderator: @project_folder.id
+            expect(status).to eq 200
+
+            user_ids = json_parse(response_body)[:data].pluck(:id)
+            expect(user_ids).to include(
+              @user.id, @project_moderator.id, @moderator_of_other_project.id, @moderator_of_other_folder.id
+            )
+            expect(user_ids).not_to include(@admin.id, @project_folder_moderator.id)
+          end
+        end
+
         example 'List all users who can moderate a project' do
           p = create(:project)
           a = create(:admin)
