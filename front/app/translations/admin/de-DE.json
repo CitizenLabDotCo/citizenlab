@@ -555,6 +555,7 @@
   "app.containers.Admin.Users.confirm": "Bestätigen",
   "app.containers.Admin.Users.confirmAdminQuestion": "Sind Sie sicher, dass Sie {name} einen Admin-Zugang für die Plattform gewähren wollen?",
   "app.containers.Admin.Users.confirmNormalUserQuestion": "Sind Sie sicher, dass Sie {name} als normale*n Nutzer*in einrichten wollen?",
+  "app.containers.Admin.Users.confirmSetCollaboratorAsNormalUserQuestion": "Sind Sie sicher, dass Sie {name} als normale*n Nutzer*in einrichten wollen? Bitte beachten Sie, dass diese Person Bearbeitungsrechte an allen Projekten und Ordnern verliert, denen sie zugewiesen ist.",
   "app.containers.Admin.Users.deleteUser": "Nutzer*in löschen",
   "app.containers.Admin.Users.email": "E-Mail",
   "app.containers.Admin.Users.folderManager": "Ordner-Manager*in",
