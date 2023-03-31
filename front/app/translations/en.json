@@ -1244,7 +1244,7 @@
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "log in",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "sign up",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "I withdraw my offer to volunteer",
-  "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, =0 {no volunteers} one {# volunteer} other {# volunteers}}",
+  "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, =0 {no participants} one {# participant} other {# participants}}",
   "app.containers.ProjectsShowPage.process.survey.logInLinkText": "log in",
   "app.containers.ProjectsShowPage.process.survey.signUpLinkText": "sign up",
   "app.containers.ProjectsShowPage.process.survey.survey": "Survey",
