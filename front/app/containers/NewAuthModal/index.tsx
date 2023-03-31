@@ -122,6 +122,7 @@ const AuthModal = () => {
 
         {currentStep === 'email-password-sign-in' && (
           <EmailAndPassword
+            status={status}
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onSubmit={transition(currentStep, 'SIGN_IN')}
