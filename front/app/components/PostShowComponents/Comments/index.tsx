@@ -176,8 +176,6 @@ const CommentsSection = memo<Props>(
               commentingDisabledReason={commentingDisabledReason}
               projectId={idea?.data.relationships.project.data.id || null}
               phaseId={phaseId}
-              postId={postId}
-              postType={postType}
             />
           ) : (
             <CommentingInitiativeDisabled />

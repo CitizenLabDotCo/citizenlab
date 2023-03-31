@@ -24,8 +24,6 @@ import { openSignUpInModal } from 'events/openSignUpInModal';
 interface Props {
   projectId: string | null;
   phaseId: string | undefined;
-  postId: string;
-  postType: 'idea' | 'initiative';
   commentingEnabled: boolean | null;
   commentingDisabledReason: IdeaCommentingDisabledReason | null;
 }
