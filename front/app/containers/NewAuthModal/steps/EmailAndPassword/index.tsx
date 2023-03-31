@@ -27,7 +27,11 @@ import Checkbox from 'components/HookForm/Checkbox';
 // utils
 import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
 
+// typings
+import { Status } from 'containers/NewAuthModal/typings';
+
 interface Props {
+  status: Status;
   onSubmit: (
     email: string,
     password: string,
@@ -50,7 +54,12 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   rememberMe: false,
 };
 
-const EmailAndPassword = ({ onSubmit, onGoBack, onSwitchFlow }: Props) => {
+const EmailAndPassword = ({
+  status,
+  onSubmit,
+  onGoBack,
+  onSwitchFlow,
+}: Props) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
   const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
@@ -61,6 +70,8 @@ const EmailAndPassword = ({ onSubmit, onGoBack, onSwitchFlow }: Props) => {
   const viennaCitizenLoginEnabled = useFeatureFlag({
     name: 'vienna_citizen_login',
   });
+
+  const loading = status === 'pending';
 
   const anySSOProviderEnabled =
     googleLoginEnabled ||
@@ -144,7 +155,12 @@ const EmailAndPassword = ({ onSubmit, onGoBack, onSwitchFlow }: Props) => {
             />
           </Box>
           <Box w="100%" display="flex" mt="32px">
-            <Button type="submit" width="auto">
+            <Button
+              type="submit"
+              width="auto"
+              disabled={loading}
+              processing={loading}
+            >
               {formatMessage(containerMessages.logIn)}
             </Button>
           </Box>

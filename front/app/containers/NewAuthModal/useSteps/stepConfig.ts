@@ -123,8 +123,32 @@ export const getStepConfig = (
           setCurrentStep('auth-providers-sign-in');
         }
       },
-      SIGN_IN: () => {
-        // TODO
+      SIGN_IN: async (
+        email: string,
+        password: string,
+        rememberMe: boolean,
+        tokenLifetime: number
+      ) => {
+        setStatus('pending');
+
+        try {
+          await signIn({
+            email,
+            password,
+            rememberMe,
+            tokenLifetime,
+          });
+
+          setCurrentStep('closed');
+
+          const { onSuccess } = getAuthenticationData();
+          onSuccess?.();
+
+          setStatus('ok');
+        } catch {
+          setStatus('error');
+          setError('wrong_password');
+        }
       },
     },
 
