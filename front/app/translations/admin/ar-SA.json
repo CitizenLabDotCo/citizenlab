@@ -555,6 +555,7 @@
   "app.containers.Admin.Users.confirm": "تأكيد",
   "app.containers.Admin.Users.confirmAdminQuestion": "هل تريد بالتأكيد منح {name} حقوق مسؤول منصة?",
   "app.containers.Admin.Users.confirmNormalUserQuestion": "هل تريد بالتأكيد تعيين {name} كمستخدم عادي?",
+  "app.containers.Admin.Users.confirmSetCollaboratorAsNormalUserQuestion": "هل أنت متأكد أنك تريد تعيين {name} كمستخدم عادي؟ يرجى ملاحظة أنهم سيفقدون حقوق المتعاون في جميع المشاريع والمجلدات التي تم تعيينهم لها عند التأكيد.",
   "app.containers.Admin.Users.deleteUser": "احذف هذا المستخدم",
   "app.containers.Admin.Users.email": "البريد الإلكتروني",
   "app.containers.Admin.Users.folderManager": "مدير المجلد",
