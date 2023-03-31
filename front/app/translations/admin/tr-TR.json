@@ -555,6 +555,7 @@
   "app.containers.Admin.Users.confirm": "Onaylayın",
   "app.containers.Admin.Users.confirmAdminQuestion": "{name} platformuna yönetici hakları vermek istediğinizden emin misiniz?",
   "app.containers.Admin.Users.confirmNormalUserQuestion": "{name} adresini normal bir kullanıcı olarak ayarlamak istediğinizden emin misiniz?",
+  "app.containers.Admin.Users.confirmSetCollaboratorAsNormalUserQuestion": "{name} adresini normal bir kullanıcı olarak ayarlamak istediğinizden emin misiniz? Lütfen onaylandığında atandıkları tüm proje ve klasörlerdeki ortak çalışan haklarını kaybedeceklerini unutmayın.",
   "app.containers.Admin.Users.deleteUser": "Kullanıcıyı sil",
   "app.containers.Admin.Users.email": "E-posta",
   "app.containers.Admin.Users.folderManager": "Klasör yöneticisi",
