@@ -61,6 +61,18 @@ class PermissionsService
     }
   end
 
+  def schema_fields(permission)
+    if permission.action == 'visiting' && permission.permission_scope_id.nil?
+      permission.custom_fields
+    else
+      permission.permissions_custom_fields.map do |permissions_custom_field|
+        permissions_custom_field.custom_field.tap do |field|
+          field.required = permissions_custom_field.required
+        end
+      end
+    end
+  end
+
   def permission_scope_from_permissions_params(params)
     parent_param = params[:parent_param]
     scope_id = params[parent_param]

@@ -413,7 +413,10 @@ resource 'Permissions' do
     get 'web_api/v1/ideas/:idea_id/permissions/:action/schema' do
       before do
         @permission = @project.permissions.first
-        create :permissions_custom_field, permission: @permission
+        @field1 = create :custom_field, required: true
+        @field2 = create :custom_field, required: false
+        create :permissions_custom_field, permission: @permission, custom_field: @field1, required: false
+        create :permissions_custom_field, permission: @permission, custom_field: @field2, required: true
         @permission.update! permitted_by: 'users'
       end
 
@@ -426,7 +429,15 @@ resource 'Permissions' do
         json_response = json_parse response_body
         expect(json_response.dig(:data, :type)).to eq 'schema'
         json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes[:json_schema_multiloc]).to be_present
+        expect(json_attributes[:json_schema_multiloc][:en]).to eq({
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            @field1.key.to_sym => { type: 'string' },
+            @field2.key.to_sym => { type: 'string' }
+          },
+          required: [@field2.key]
+        })
         expect(json_attributes[:ui_schema_multiloc]).to be_present
       end
     end

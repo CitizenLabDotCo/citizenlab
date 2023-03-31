@@ -34,14 +34,13 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def requirements
     authorize @permission
-    json_requirements = PermissionsService.new.requirements @permission, current_user
+    json_requirements = permissions_service.requirements @permission, current_user
     render json: raw_json({ requirements: json_requirements }), status: :ok
   end
 
   def schema
     authorize @permission
-    fields = @permission.custom_fields # TODO: Take required into account
-
+    fields = permissions_service.schema_fields @permission
     render json: raw_json(JsonFormsService.new.user_ui_and_json_multiloc_schemas(fields))
   end
 
@@ -55,12 +54,16 @@ class WebApi::V1::PermissionsController < ApplicationController
     ).serialized_json
   end
 
+  def permissions_service
+    @permissions_service ||= PermissionsService.new
+  end
+
   def set_permission
     @permission = authorize Permission.find_by!(action: permission_action, permission_scope: permission_scope)
   end
 
   def permission_scope
-    PermissionsService.new.permission_scope_from_permissions_params(params)
+    permissions_service.permission_scope_from_permissions_params(params)
   end
 
   def permission_action
