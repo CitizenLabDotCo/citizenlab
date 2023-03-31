@@ -235,7 +235,7 @@
     send_user_blocked_email:
       subject: 'Kontoen din er midlertidig deaktivert'
       title_user_blocked: 'Kontoen din er midlertidig deaktivert'
-      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
-      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
+      paragraph_1_without_reason: "Kontoen din på deltakelsesplattformen til %{organizationName} har blitt midlertidig deaktivert på grunn av brudd på fellesskapets retningslinjer."
+      paragraph_1_with_reason: "Kontoen din på deltakelsesplattformen til %{organizationName} har blitt midlertidig deaktivert av følgende grunn:"
       for_more_information: "For mer informasjon om dette, kan du konsultere %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Du kan logge på igjen fra %{date}"
