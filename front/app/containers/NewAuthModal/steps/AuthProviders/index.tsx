@@ -6,6 +6,8 @@ import Or from 'components/UI/Or';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Outlet from 'components/Outlet';
 import Error from 'components/UI/Error';
+import { Text } from '@citizenlab/cl2-component-library';
+import TextButton from '../components/TextButton';
 
 // resources
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -17,7 +19,6 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { Option } from './styles';
 
 // typings
 import { SSOProvider } from 'services/singleSignOn';
@@ -189,20 +190,20 @@ const AuthProviders = memo<Props>(
           </StyledAuthProviderButton>
         )}
 
-        <Option>
+        <Text m="0">
           <FormattedMessage
             {...(flow === 'signup' ? messages.goToLogIn : messages.goToSignUp)}
             values={{
               goToOtherFlowLink: (
-                <button onClick={handleGoToOtherFlow} className="link">
+                <TextButton onClick={handleGoToOtherFlow} className="link">
                   {formatMessage(
                     flow === 'signup' ? messages.logIn2 : messages.signUp2
                   )}
-                </button>
+                </TextButton>
               ),
             }}
           />
-        </Option>
+        </Text>
       </Container>
     );
   }

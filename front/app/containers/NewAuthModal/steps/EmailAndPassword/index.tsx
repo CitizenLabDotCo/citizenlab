@@ -14,6 +14,7 @@ import TextButton from '../components/TextButton';
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import sharedMessages from '../messages';
 import messages from './messages';
+import containerMessages from '../../messages';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
@@ -111,9 +112,6 @@ const EmailAndPassword = ({ onSubmit, onGoBack, onSwitchFlow }: Props) => {
     <>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
-          <Text mt="0px" mb="32px">
-            {formatMessage(sharedMessages.enterYourEmailAddress)}
-          </Text>
           <Box>
             <Input
               name="email"
@@ -126,7 +124,7 @@ const EmailAndPassword = ({ onSubmit, onGoBack, onSwitchFlow }: Props) => {
               }
             />
           </Box>
-          <Box>
+          <Box mt="16px">
             <PasswordInput
               name="password"
               isLoginPasswordInput
@@ -146,8 +144,8 @@ const EmailAndPassword = ({ onSubmit, onGoBack, onSwitchFlow }: Props) => {
             />
           </Box>
           <Box w="100%" display="flex" mt="32px">
-            <Button type="submit" width="100%">
-              {formatMessage(messages.submit)}
+            <Button type="submit" width="auto">
+              {formatMessage(containerMessages.logIn)}
             </Button>
           </Box>
         </form>
@@ -156,7 +154,7 @@ const EmailAndPassword = ({ onSubmit, onGoBack, onSwitchFlow }: Props) => {
             {formatMessage(sharedMessages.forgotPassword)}
           </TextLink>
         </Box>
-        <Box>
+        <Box mt="12px">
           {anySSOProviderEnabled ? (
             <TextButton
               id="e2e-login-options"

@@ -11,6 +11,9 @@ export const StyledButton = styled.button`
     color: ${colors.textPrimary};
     text-decoration: underline;
   }
+
+  cursor: pointer;
+  padding: 0px;
 `;
 
 export default (props: React.HTMLProps<HTMLButtonElement>) => (
