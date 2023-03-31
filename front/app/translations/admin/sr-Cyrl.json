@@ -555,6 +555,7 @@
   "app.containers.Admin.Users.confirm": "Потврди",
   "app.containers.Admin.Users.confirmAdminQuestion": "Да ли сте сигурни да желите да дате {name} администраторских права платформе?",
   "app.containers.Admin.Users.confirmNormalUserQuestion": "Да ли сте сигурни да желите да поставите {name} као обичан корисник?",
+  "app.containers.Admin.Users.confirmSetCollaboratorAsNormalUserQuestion": "Are you sure you want to set {name} as a normal user? Please note that they will lose collaborator rights to all the projects and folders that they are assigned to on confirmation.",
   "app.containers.Admin.Users.deleteUser": "Избриши корисника",
   "app.containers.Admin.Users.email": "Емаил",
   "app.containers.Admin.Users.folderManager": "Управљач фасциклама",

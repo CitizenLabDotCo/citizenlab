@@ -555,6 +555,7 @@
   "app.containers.Admin.Users.confirm": "Potvrdi",
   "app.containers.Admin.Users.confirmAdminQuestion": "Da li ste sigurni da želite da {name} dobije administratorska prava?",
   "app.containers.Admin.Users.confirmNormalUserQuestion": "Da li ste sigurni da želite da {name} bude postavljen/a kao običan korisnik?",
+  "app.containers.Admin.Users.confirmSetCollaboratorAsNormalUserQuestion": "Да ли сте сигурни да желите да поставите {name} као обичан корисник? Имајте на уму да ће изгубити сарадничка права на све пројекте и фасцикле којима су додељени након потврде.",
   "app.containers.Admin.Users.deleteUser": "Obrišite ovog korisnika",
   "app.containers.Admin.Users.email": "Е-pošta",
   "app.containers.Admin.Users.folderManager": "Menadžer fascikle",
