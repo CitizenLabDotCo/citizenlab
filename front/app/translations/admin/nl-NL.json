@@ -1055,7 +1055,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.saveCause": "Opslaan",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.subtitleVolunteeringTab": "Hier kan je de vrijwilligersacties instellen en de lijst met vrijwilligers downloaden.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.titleVolunteeringTab": "Vrijwilligersacties",
-  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {nog geen vrijwilligers} one {# vrijwilliger} other {# vrijwilligers}}",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {nog geen aanmeldingen} one {# aanmelding} other {# aanmeldingen}}",
   "app.containers.AdminPage.ProjectEdit.addNewContribution": "Voeg een bijdrage toe",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Voeg een idee toe",
   "app.containers.AdminPage.ProjectEdit.addNewInput": "Voeg een invoer toe",
