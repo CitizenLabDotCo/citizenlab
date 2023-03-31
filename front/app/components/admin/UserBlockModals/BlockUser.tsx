@@ -108,15 +108,12 @@ const BlockUserModal = ({ open, setClose, user, tenant }: Props) => {
           <form>
             <Text mt="0" color="textSecondary">
               <FormattedMessage
-                {...messages.subtitle1}
+                {...messages.subtitle}
                 values={{
                   daysBlocked: (
                     <b>
-                      {formatMessage(messages.daysBlocked1, {
+                      {formatMessage(messages.daysBlocked, {
                         numberOfDays: blockingDuration,
-                        dayOrDays: formatMessage(
-                          messages[blockingDuration > 1 ? 'days' : 'day']
-                        ),
                       })}
                     </b>
                   ),
