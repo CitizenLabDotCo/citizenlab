@@ -528,4 +528,47 @@ describe PermissionsService do
       end
     end
   end
+
+  describe '#schema_fields' do
+    let(:custom_fields) { [true, false].map { |required| create :custom_field, required: required } }
+    let(:permission) do
+      create(:permission, action: action, permission_scope: permission_scope).tap do |permission|
+        custom_fields.each do |field|
+          create :permissions_custom_field, permission: permission, custom_field: field, required: !field.required
+        end
+        permission.reload
+      end
+    end
+    let(:schema_fields) { service.schema_fields permission }
+
+    context 'when visiting action in global scope' do
+      let(:permission_scope) { nil }
+      let(:action) { 'visiting' }
+
+      it 'returns the original required values' do
+        expect(schema_fields.map(&:id)).to eq custom_fields.map(&:id)
+        expect(schema_fields.map(&:required)).to eq [true, false]
+      end
+    end
+
+    context 'when voting_idea action in a project' do
+      let(:permission_scope) { create :continuous_project }
+      let(:action) { 'voting_idea' }
+
+      it 'returns the required values associated to the permission' do
+        expect(schema_fields.map(&:id)).to eq custom_fields.map(&:id)
+        expect(schema_fields.map(&:required)).to eq [false, true]
+      end
+    end
+
+    context 'when posting_initiative action in a project' do
+      let(:permission_scope) { nil }
+      let(:action) { 'posting_initiative' }
+
+      it 'returns the required values associated to the permission' do
+        expect(schema_fields.map(&:id)).to eq custom_fields.map(&:id)
+        expect(schema_fields.map(&:required)).to eq [false, true]
+      end
+    end
+  end
 end
