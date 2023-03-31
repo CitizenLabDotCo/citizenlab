@@ -565,7 +565,7 @@
   "app.containers.Admin.Users.options": "Opties",
   "app.containers.Admin.Users.permissionToBuy": "Om {name} admin-rechten te geven, moet u 1 extra seat kopen.",
   "app.containers.Admin.Users.platformAdmin": "Platformbeheerder",
-  "app.containers.Admin.Users.projectManager": "Projectleider",
+  "app.containers.Admin.Users.projectManager": "Projectbeheerder",
   "app.containers.Admin.Users.reachedLimitMessage": "U heeft de limiet van het aantal plaatsen binnen uw plan bereikt, 1 extra plaats voor {name} zal worden toegevoegd.",
   "app.containers.Admin.Users.registeredUser": "Geregistreerde gebruiker",
   "app.containers.Admin.Users.seeProfile": "Bekijk het profiel van deze gebruiker",
