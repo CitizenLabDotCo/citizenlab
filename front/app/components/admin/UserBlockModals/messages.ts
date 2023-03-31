@@ -6,13 +6,14 @@ export default defineMessages({
     defaultMessage: 'Block user',
   },
   subtitle: {
-    id: 'app.containers.Admin.Users.userBlockModal.subtitle',
+    id: 'app.containers.Admin.Users.userBlockModal.subtitle1',
     defaultMessage:
-      'The selected user won’t be able to login to the platform for {daysBlocked}. If you wish to revert this, you can unblock them from the list of blocked users.',
+      "The selected user won't be able to log in to the platform for {daysBlocked}. If you wish to revert this, you can unblock them from the list of blocked users.",
   },
   daysBlocked: {
-    id: 'app.containers.Admin.Users.userBlockModal.daysBlocked',
-    defaultMessage: '{numberOfDays} days',
+    id: 'app.containers.Admin.Users.userBlockModal.daysBlocked1',
+    defaultMessage:
+      '{numberOfDays, plural, one {1 day} other {{numberOfDays} days}}',
   },
   reasonLabel: {
     id: 'app.containers.Admin.Users.userBlockModal.reasonLabel',
@@ -23,9 +24,9 @@ export default defineMessages({
     defaultMessage: 'This will be communicated to the blocked user.',
   },
   blockInfo: {
-    id: 'app.containers.Admin.Users.userBlockModal.blockInfo',
+    id: 'app.containers.Admin.Users.userBlockModal.blockInfo1',
     defaultMessage:
-      'The content of this user won’t be removed through this action. Don’t forget to moderate their content if needed.',
+      "The content of this user won't be removed through this action. Don't forget to moderate their content if needed.",
   },
   blockAction: {
     id: 'app.containers.Admin.Users.userBlockModal.blockAction',
@@ -36,11 +37,11 @@ export default defineMessages({
     defaultMessage: 'All done',
   },
   confirmation: {
-    id: 'app.containers.Admin.Users.userBlockModal.confirmation',
+    id: 'app.containers.Admin.Users.userBlockModal.confirmation1',
     defaultMessage: '{name} is blocked until {date}.',
   },
   confirmUnblock: {
-    id: 'app.containers.Admin.Users.userBlockModal.confirmUnblock',
+    id: 'app.containers.Admin.Users.userBlockModal.confirmUnblock1',
     defaultMessage: 'Are you sure you want to unblock {name}?',
   },
   unblockActionConfirmation: {
@@ -56,7 +57,7 @@ export default defineMessages({
     defaultMessage: 'Cancel',
   },
   bocknigInfo: {
-    id: 'app.containers.Admin.Users.userBlockModal.bocknigInfo',
+    id: 'app.containers.Admin.Users.userBlockModal.bocknigInfo1',
     defaultMessage:
       'This user has been blocked since {from}. The ban lasts until {to}.',
   },
