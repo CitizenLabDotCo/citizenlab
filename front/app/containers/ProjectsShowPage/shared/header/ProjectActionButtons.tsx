@@ -12,6 +12,7 @@ import { isNumber } from 'lodash-es';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useAuthUser from 'hooks/useAuthUser';
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
@@ -38,8 +39,6 @@ import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 // router
 import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
-
-import { openSignUpInModal } from 'events/openSignUpInModal';
 
 const Container = styled.div``;
 
@@ -89,6 +88,11 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     [currentPhase, project, pathname]
   );
 
+  const openAuthModal = useOpenAuthModal({
+    onSuccess: () => scrollTo('project-survey'),
+    waitIf: isNilOrError(project),
+  });
+
   if (isNilOrError(project)) {
     return null;
   }
@@ -114,7 +118,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     event.preventDefault();
 
     if (showSignIn) {
-      openSignUpInModal({
+      openAuthModal({
         flow: 'signup',
         verification: shouldVerify,
         context: {
@@ -122,7 +126,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           id: currentPhase?.id ?? project.id,
           action: 'taking_survey',
         },
-        onSuccess: () => scrollTo('project-survey'),
       });
     }
 
