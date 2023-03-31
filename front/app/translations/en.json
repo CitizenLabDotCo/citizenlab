@@ -1251,7 +1251,7 @@
   "app.containers.ProjectsIndexPage.metaDescription": "Explore all ongoing projects of {orgName} to understand how you can participate.\n Come discuss local projects that matter most to you.",
   "app.containers.ProjectsIndexPage.metaTitle": "Projects • {orgName}",
   "app.containers.ProjectsIndexPage.pageTitle": "Projects",
-  "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "I want to volunteer",
+  "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "I want to participate",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Please {signInLink} or {signUpLink} first in order to volunteer for this activity",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "log in",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "sign up",
