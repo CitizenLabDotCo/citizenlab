@@ -30,9 +30,52 @@ resource 'Permissions' do
       end
 
       example_request 'List all permissions of a project' do
-        expect(status).to eq(200)
-        json_response = json_parse(response_body)
+        assert_status 200
+        json_response = json_parse response_body
         expect(json_response[:data].size).to eq Permission.available_actions(@project).size
+      end
+
+      example_request 'List all permissions efficiently include custom fields', document: true do
+        permission = @project.permissions.first
+        field2 = create :custom_field
+        field1 = create :custom_field
+        field3 = create :custom_field
+        field1.move_to_top
+        field2.reload
+        field3.reload
+        permission.permissions_custom_fields.create!(custom_field: field2, required: true)
+        permission.permissions_custom_fields.create!(custom_field: field1, required: false)
+        permission.permissions_custom_fields.create!(custom_field: field3, required: true)
+
+        expect do
+          do_request
+        end.not_to exceed_query_limit(1).with(/SELECT.*custom_fields/)
+
+        assert_status 200
+        json_response = json_parse response_body
+        permission_data = json_response[:data].find { |d| d[:id] == permission.id }
+        ordered_permissions_custom_field_ids = permission.permissions_custom_fields.sort_by do |permissions_custom_field|
+          permissions_custom_field.custom_field.ordering
+        end.map(&:id)
+        expect(permission_data.dig(:relationships, :custom_fields)).to eq(
+          { data: [field1, field2, field3].map { |field| { id: field.id, type: 'custom_field' } } }
+        )
+        expect(permission_data.dig(:relationships, :permissions_custom_fields)).to eq(
+          { data: ordered_permissions_custom_field_ids.map { |id| { id: id, type: 'permissions_custom_field' } } }
+        )
+        [field1, field2, field3].each do |field|
+          included_field = json_response[:included].find { |d| d[:id] == field.id }
+          expect(included_field[:attributes]).to include(
+            ordering: field.ordering,
+            required: field.required
+          )
+        end
+        permission.permissions_custom_fields.each do |permissions_custom_field|
+          included_permissions_custom_field = json_response[:included].find { |d| d[:id] == permissions_custom_field.id }
+          expect(included_permissions_custom_field[:attributes]).to include(
+            required: permissions_custom_field.required
+          )
+        end
       end
     end
 
@@ -43,8 +86,8 @@ resource 'Permissions' do
       end
 
       example_request 'List all permissions of a phase' do
-        expect(status).to eq(200)
-        json_response = json_parse(response_body)
+        assert_status 200
+        json_response = json_parse response_body
         expect(json_response[:data].size).to eq Permission.available_actions(@phase).size
       end
     end
@@ -56,8 +99,8 @@ resource 'Permissions' do
       end
 
       example_request 'List all global permissions' do
-        expect(status).to eq(200)
-        json_response = json_parse(response_body)
+        assert_status 200
+        json_response = json_parse response_body
         expect(json_response[:data].size).to eq Permission.available_actions(nil).size
       end
     end
@@ -66,8 +109,8 @@ resource 'Permissions' do
       let(:action) { @project.permissions.first.action }
 
       example_request 'Get one permission by action' do
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
+        assert_status 200
+        json_response = json_parse response_body
         expect(json_response.dig(:data, :id)).to eq @project.permissions.first.id
       end
     end
@@ -86,8 +129,8 @@ resource 'Permissions' do
       let(:action) { 'posting_initiative' }
 
       example_request 'Get one global permission by action' do
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
+        assert_status 200
+        json_response = json_parse response_body
         expect(json_response.dig(:data, :id)).to eq Permission.find_by!(permission_scope: nil, action: action).id
       end
     end
@@ -104,8 +147,8 @@ resource 'Permissions' do
       let(:group_ids) { create_list(:group, 3, projects: [@project]).map(&:id) }
 
       example_request 'Update a permission' do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
+        assert_status 200
+        json_response = json_parse response_body
         expect(json_response.dig(:data, :attributes, :permitted_by)).to eq permitted_by
         expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to match_array group_ids
       end
@@ -123,8 +166,8 @@ resource 'Permissions' do
       let(:group_ids) { create_list(:group, 3, projects: [@phase.project]).map(&:id) }
 
       example_request 'Update a permission' do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
+        assert_status 200
+        json_response = json_parse response_body
         expect(json_response.dig(:data, :attributes, :permitted_by)).to eq permitted_by
         expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to match_array group_ids
       end
@@ -142,8 +185,8 @@ resource 'Permissions' do
       let(:group_ids) { create_list(:group, 3).map(&:id) }
 
       example_request 'Update a global permission' do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
+        assert_status 200
+        json_response = json_parse response_body
         expect(json_response.dig(:data, :attributes, :permitted_by)).to eq permitted_by
         expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to match_array group_ids
       end
