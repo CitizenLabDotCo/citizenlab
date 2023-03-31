@@ -235,7 +235,7 @@ sv:
     send_user_blocked_email:
       subject: 'Ditt konto har tillfälligt inaktiverats'
       title_user_blocked: 'Ditt konto har tillfälligt inaktiverats'
-      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
-      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
+      paragraph_1_without_reason: "Ditt konto på deltagarplattformen %{organizationName} har tillfälligt stängts av på grund av brott mot gemenskapens riktlinjer."
+      paragraph_1_with_reason: "Ditt konto på deltagarplattformen %{organizationName} har tillfälligt inaktiverats av följande skäl:"
       for_more_information: "Mer information om detta finns på %{termsAndConditionsPage}."
       you_can_sign_in_again_from: "Du kan logga in igen från %{date}"
