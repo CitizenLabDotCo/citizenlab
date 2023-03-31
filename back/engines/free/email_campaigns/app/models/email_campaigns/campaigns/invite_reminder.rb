@@ -47,7 +47,7 @@ module EmailCampaigns
 
     def filter_recipient(users_scope, activity:, time: nil)
       if activity.item&.invitee_id
-        users_scope.where.not(email: nil).and(users_scope.where(id: activity.item.invitee_id))
+        users_scope.where(id: activity.item.invitee_id)
       else
         users_scope.none
       end

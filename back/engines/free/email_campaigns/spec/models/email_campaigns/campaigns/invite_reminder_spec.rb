@@ -26,16 +26,5 @@ RSpec.describe EmailCampaigns::Campaigns::InviteReminder, type: :model do
 
       expect(recipients.count).to eq 0
     end
-
-    it 'excludes users with pending invite and no email' do
-      invitee = create(:user, invite_status: 'pending', email: nil, first_name: 'test_name')
-      invite2 = create(:invite, invitee_id: invitee.id)
-      activity2 = create(:activity, item: invite2, action: 'created', user: invite2.inviter)
-
-      result = campaign.apply_recipient_filters(activity: activity2)
-
-      expect(result.to_json).not_to include invitee.first_name
-      expect(result.count).to eq 0
-    end
   end
 end
