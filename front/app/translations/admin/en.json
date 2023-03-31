@@ -570,6 +570,8 @@
   "app.containers.Admin.Users.userBlockModal.cancel": "Cancel",
   "app.containers.Admin.Users.userBlockModal.confirmUnblock": "Are you sure you want to unblock the user?",
   "app.containers.Admin.Users.userBlockModal.confirmation": "{name} is blocked from platform, until {date}.",
+  "app.containers.Admin.Users.userBlockModal.day": "day",
+  "app.containers.Admin.Users.userBlockModal.days": "days",
   "app.containers.Admin.Users.userBlockModal.daysBlocked": "{numberOfDays} days",
   "app.containers.Admin.Users.userBlockModal.header": "Block user",
   "app.containers.Admin.Users.userBlockModal.reasonLabel": "Reason",
