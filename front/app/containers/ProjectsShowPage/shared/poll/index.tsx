@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { IParticipationContextType } from 'typings';
@@ -9,13 +9,16 @@ import {
   IPollTakingDisabledReason,
 } from 'services/actionTakingRules';
 
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+import useProject from 'hooks/useProject';
+import usePhase from 'hooks/usePhase';
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPollQuestions, {
   GetPollQuestionsChildProps,
 } from 'resources/GetPollQuestions';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // components
 import FormCompleted from './FormCompleted';
@@ -28,7 +31,6 @@ import messages from './messages';
 import { MessageDescriptor } from 'react-intl';
 
 // events
-import { openSignUpInModal } from 'events/openSignUpInModal';
 import { openVerificationModal } from 'events/verificationModal';
 
 import styled from 'styled-components';
@@ -60,10 +62,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  authUser: GetAuthUserChildProps;
   pollQuestions: GetPollQuestionsChildProps;
-  project: GetProjectChildProps;
-  phase: GetPhaseChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -81,9 +80,13 @@ const disabledMessages: {
   alreadyResponded: messages.pollDisabledNotPossible, // will not be used
 };
 
-export class Poll extends PureComponent<Props> {
-  onVerify = () => {
-    const { type, projectId, phaseId } = this.props;
+const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
+  const authUser = useAuthUser();
+  const project = useProject({ projectId });
+  const phase = usePhase(phaseId);
+  const openAuthModal = useOpenAuthModal();
+
+  const onVerify = () => {
     const pcId = type === 'phase' ? phaseId : projectId;
     const pcType = type;
 
@@ -98,18 +101,16 @@ export class Poll extends PureComponent<Props> {
     }
   };
 
-  signUpIn = (flow: 'signin' | 'signup') => {
-    const { phaseId, project, phase } = this.props;
-
+  const signUpIn = (flow: 'signin' | 'signup') => {
     if (!isNilOrError(project)) {
       const pcType = phaseId ? 'phase' : 'project';
-      const pcId = phaseId ? phase?.id : project?.id;
+      const pcId = phaseId ? phaseId : projectId;
       const takingPollDisabledReason =
         project.attributes?.action_descriptor?.taking_poll?.disabled_reason;
 
       if (!pcId || !pcType) return;
 
-      openSignUpInModal({
+      openAuthModal({
         flow,
         verification: takingPollDisabledReason === 'not_verified',
         context: {
@@ -121,105 +122,90 @@ export class Poll extends PureComponent<Props> {
     }
   };
 
-  signIn = () => {
-    this.signUpIn('signin');
+  const signIn = () => {
+    signUpIn('signin');
   };
 
-  signUp = () => {
-    this.signUpIn('signup');
+  const signUp = () => {
+    signUpIn('signup');
   };
 
-  render() {
-    const {
-      pollQuestions,
-      projectId,
-      phaseId,
-      project,
-      phase,
-      type,
-      authUser,
-    } = this.props;
-
-    if (
-      !isNilOrError(pollQuestions) &&
-      !isNilOrError(project) &&
-      !!(type === 'phase' ? !isNilOrError(phase) : true)
-    ) {
-      const isSignedIn = !isNilOrError(authUser);
-      const { enabled, disabledReason } = getPollTakingRules({
-        project,
-        phaseContext: phase,
-        signedIn: !!authUser,
-      });
-      const message = disabledReason
-        ? disabledMessages[disabledReason]
-        : isSignedIn
-        ? messages.pollDisabledNotPossible
-        : messages.pollDisabledMaybeNotPermitted;
-
-      return (
-        <Container>
-          {disabledReason === 'alreadyResponded' ? (
-            <FormCompleted />
-          ) : (
-            <>
-              {(!isSignedIn || !enabled) && (
-                <StyledWarning icon="lock">
-                  <FormattedMessage
-                    {...message}
-                    values={{
-                      verificationLink: (
-                        <button onClick={this.onVerify}>
-                          <FormattedMessage
-                            {...messages.verificationLinkText}
-                          />
-                        </button>
-                      ),
-                      completeRegistrationLink: (
-                        <button
-                          id="e2e-complete-registration-link"
-                          onClick={() => {
-                            openSignUpInModal();
-                          }}
-                        >
-                          <FormattedMessage
-                            {...messages.completeRegistrationLinkText}
-                          />
-                        </button>
-                      ),
-                      signUpLink: (
-                        <button onClick={this.signUp}>
-                          <FormattedMessage {...messages.signUpLinkText} />
-                        </button>
-                      ),
-                      logInLink: (
-                        <button onClick={this.signIn}>
-                          <FormattedMessage {...messages.logInLinkText} />
-                        </button>
-                      ),
-                    }}
-                  />
-                </StyledWarning>
-              )}
-              <PollForm
-                projectId={projectId}
-                questions={pollQuestions}
-                id={type === 'project' ? projectId : phaseId}
-                type={type}
-                disabled={!enabled || isNilOrError(authUser)}
-              />
-            </>
-          )}
-        </Container>
-      );
-    }
-
+  if (
+    isNilOrError(pollQuestions) ||
+    isNilOrError(project) ||
+    !(type === 'phase' ? !isNilOrError(phase) : true)
+  ) {
     return null;
   }
-}
+
+  const isSignedIn = !isNilOrError(authUser);
+  const { enabled, disabledReason } = getPollTakingRules({
+    project,
+    phaseContext: isNilOrError(phase) ? null : phase,
+    signedIn: !!authUser,
+  });
+  const message = disabledReason
+    ? disabledMessages[disabledReason]
+    : isSignedIn
+    ? messages.pollDisabledNotPossible
+    : messages.pollDisabledMaybeNotPermitted;
+
+  return (
+    <Container>
+      {disabledReason === 'alreadyResponded' ? (
+        <FormCompleted />
+      ) : (
+        <>
+          {(!isSignedIn || !enabled) && (
+            <StyledWarning icon="lock">
+              <FormattedMessage
+                {...message}
+                values={{
+                  verificationLink: (
+                    <button onClick={onVerify}>
+                      <FormattedMessage {...messages.verificationLinkText} />
+                    </button>
+                  ),
+                  completeRegistrationLink: (
+                    <button
+                      id="e2e-complete-registration-link"
+                      onClick={() => {
+                        openAuthModal();
+                      }}
+                    >
+                      <FormattedMessage
+                        {...messages.completeRegistrationLinkText}
+                      />
+                    </button>
+                  ),
+                  signUpLink: (
+                    <button onClick={signUp}>
+                      <FormattedMessage {...messages.signUpLinkText} />
+                    </button>
+                  ),
+                  logInLink: (
+                    <button onClick={signIn}>
+                      <FormattedMessage {...messages.logInLinkText} />
+                    </button>
+                  ),
+                }}
+              />
+            </StyledWarning>
+          )}
+          <PollForm
+            projectId={projectId}
+            questions={pollQuestions}
+            id={type === 'project' ? projectId : phaseId}
+            type={type}
+            disabled={!enabled || isNilOrError(authUser)}
+          />
+        </>
+      )}
+    </Container>
+  );
+};
 
 const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
   pollQuestions: ({ projectId, phaseId, type, render }) => (
     <GetPollQuestions
       participationContextId={
@@ -230,10 +216,6 @@ const Data = adopt<DataProps, InputProps>({
       {render}
     </GetPollQuestions>
   ),
-  project: ({ projectId, render }) => (
-    <GetProject projectId={projectId}>{render}</GetProject>
-  ),
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
 });
 
 export default (inputProps: InputProps) => (
