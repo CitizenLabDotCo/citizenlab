@@ -77,7 +77,6 @@ Rails.application.routes.draw do
         get :me, on: :collection
         get :seats, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
-        post :complete_registration, on: :collection
         patch :block, :unblock, on: :member
         post 'reset_password_email' => 'reset_password#reset_password_email', on: :collection
         post 'reset_password' => 'reset_password#reset_password', on: :collection

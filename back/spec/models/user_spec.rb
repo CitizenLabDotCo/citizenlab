@@ -42,10 +42,17 @@ RSpec.describe User, type: :model do
 
   describe 'creating a light user - email & locale only' do
     it 'is valid and generates a slug' do
+      SettingsService.new.activate_feature! 'user_confirmation'
       u = described_class.new(email: 'test@test.com', locale: 'en')
       u.save
       expect(u).to be_valid
       expect(u.slug).not_to be_nil
+    end
+
+    it 'is still valid if user confirmation is not turned on' do
+      u = described_class.new(email: 'test@test.com', locale: 'en')
+      u.save
+      expect(u).to be_valid
     end
   end
 
@@ -192,14 +199,28 @@ RSpec.describe User, type: :model do
   end
 
   describe 'password' do
+    context 'user confirmation is turned on' do
+      it 'is valid when not supplied at all' do
+        # This is allowed to allow accounts without a password
+        SettingsService.new.activate_feature! 'user_confirmation'
+        u = build(:user_no_password)
+        expect(u).to be_valid
+      end
+    end
+
+    context 'user confirmation is turned off' do
+      it 'is still valid when not supplied' do
+        u = build(:user_no_password)
+        expect(u).to be_valid
+      end
+    end
+
     it 'is valid when set to empty string' do
-      # This is allowed to allow accounts without a password
       u = build(:user, password: '')
       expect(u).to be_valid
     end
 
     it 'is valid when nil' do
-      # This is allowed to allow accounts without a password
       u = build(:user, password: nil)
       expect(u).to be_valid
     end
@@ -602,6 +623,11 @@ RSpec.describe User, type: :model do
   end
 
   describe 'active?' do
+    it 'returns true when the user has completed signup' do
+      u = build(:user)
+      expect(u.active?).to be true
+    end
+
     it 'returns false when the user has not completed signup' do
       u = build(:user, registration_completed_at: nil)
       expect(u.active?).to be false
@@ -612,15 +638,54 @@ RSpec.describe User, type: :model do
       expect(u.active?).to be false
     end
 
-    it 'returns true when the user has completed signup' do
+    it 'returns false when the user requires confirmation' do
+      SettingsService.new.activate_feature! 'user_confirmation'
       u = build(:user)
-      expect(u.active?).to be true
+      expect(u.active?).to be false
     end
 
     include_context 'when user_blocking duration is 90 days' do
       it 'returns false when the user is blocked' do
         u = build(:user, block_start_at: Time.now)
         expect(u.active?).to be false
+      end
+    end
+  end
+
+  describe 'registration_completed_at' do
+    context 'without user confirmation turned on' do
+      it 'is set when user is created' do
+        u = create(:user)
+        expect(u.registration_completed_at).not_to be_nil
+      end
+
+      it 'is not set when an invited user is created' do
+        u = create(:invited_user)
+        expect(u.registration_completed_at).to be_nil
+      end
+
+      it 'is set to the value provided if a value is provided in update' do
+        reg_date = Time.now
+        u = create(:user)
+        u.update!(registration_completed_at: reg_date)
+        expect(u.registration_completed_at).to eq reg_date
+      end
+    end
+
+    context 'with user confirmation turned on' do
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+      end
+
+      it 'is not set when a user is created' do
+        u = create(:user_with_confirmation)
+        expect(u.registration_completed_at).to be_nil
+      end
+
+      it 'is set when a user is confirmed' do
+        u = create(:user_with_confirmation)
+        u.confirm!
+        expect(u.registration_completed_at).not_to be_nil
       end
     end
   end
@@ -711,24 +776,6 @@ RSpec.describe User, type: :model do
       expect(user.email_confirmation_code).to be_nil
     end
 
-    describe '#confirmed?' do
-      it 'returns false when the user has not yet confirmed their account' do
-        user.save!
-        expect(user.confirmed?).to be false
-      end
-
-      it 'returns true after the user has confirmed their account' do
-        user.save!
-        user.confirm!
-        expect(user.reload.confirmed?).to be true
-      end
-
-      it 'returns true if the user accepted an invitation' do
-        user.update(invite_status: 'accepted')
-        expect(user.confirmed?).to be true
-      end
-    end
-
     describe '#should_require_confirmation?' do
       it 'returns false if the user is an admin' do
         user.add_role('admin')
@@ -736,7 +783,7 @@ RSpec.describe User, type: :model do
         expect(user.should_require_confirmation?).to be false
       end
 
-      it 'returns false if the user is a project moderator', skip: !defined?(ProjectManagement::Engine) do
+      it 'returns false if the user is a project moderator' do
         user.add_role('project_moderator', 'project_id' => 'some_id')
         user.save!
         expect(user.should_require_confirmation?).to be false
@@ -789,12 +836,45 @@ RSpec.describe User, type: :model do
         user.save!
         user.reset_confirmation_required
         expect(user.confirmation_required?).to be true
+        expect(user.email_confirmed_at).to be_nil
       end
 
       it 'does not perform a commit to the db' do
         user.save!
         user.reset_confirmation_required
         expect(user.saved_change_to_confirmation_required?).to be false
+        expect(user.saved_change_to_email_confirmed_at?).to be false
+      end
+    end
+
+    describe '#reset_confirmation_and_counts' do
+      before do
+        user.update!(
+          email_confirmation_code: '1234',
+          email_confirmation_retry_count: 2,
+          email_confirmation_code_reset_count: 2
+        )
+      end
+
+      it 'resets counts and required if already confirmed' do
+        user.confirm
+        user.reset_confirmation_and_counts
+
+        expect(user.confirmation_required?).to be true
+        expect(user.email_confirmed_at).to be_nil
+        expect(user.email_confirmation_code).to be_nil
+        expect(user.email_confirmation_retry_count).to eq 0
+        expect(user.email_confirmation_code_reset_count).to eq 0
+      end
+
+      it 'only resets confirmation_required if not confirmed' do
+        user.reset_confirmation_and_counts
+
+        expect(user.confirmation_required?).to be true
+        expect(user.email_confirmed_at).to be_nil
+        expect(user.email_confirmation_code_changed?).to be false
+        expect(user.email_confirmation_retry_count_changed?).to be false
+        expect(user.email_confirmation_code_reset_count_changed?).to be false
       end
     end
 
@@ -802,41 +882,13 @@ RSpec.describe User, type: :model do
       it 'sets the email_confirmed_at field' do
         user.save!
         user.confirm
-        expect(user.confirmed?).to be true
+        expect(user.email_confirmed_at).not_to be_nil
       end
 
-      it 'does not perform a commit to the db' do
+      it 'sets confirmation_required? to false' do
         user.save!
         user.confirm
-        expect(user.reload.confirmed?).to be false
-      end
-    end
-
-    describe '#reset_confirmed_at' do
-      it 'resets the confirmed_at field' do
-        user.confirm!
-        user.reset_confirmed_at
-        expect(user.confirmed?).to be false
-      end
-
-      it 'does not perform a commit to the db' do
-        user.confirm!
-        user.reset_confirmed_at
-        expect(user.saved_change_to_confirmation_required?).to be false
-      end
-    end
-
-    describe '#reset_confirmation_code!' do
-      it 'changes the code' do
-        expect { user.reset_confirmation_code! }.to change(user, :email_confirmation_code)
-      end
-
-      it 'increments the reset count' do
-        expect { user.reset_confirmation_code! }.to change(user, :email_confirmation_code_reset_count).from(0).to(1)
-      end
-
-      it 'should save a change to the email confirmation code' do
-        expect { user.reset_confirmation_code! }.to change(user, :saved_change_to_email_confirmation_code?)
+        expect(user.confirmation_required?).to be false
       end
     end
 
@@ -852,11 +904,11 @@ RSpec.describe User, type: :model do
 
     describe '#increment_confirmation_code_reset_count!' do
       it 'increments the reset count' do
-        expect { user.reset_confirmation_code! }.to change(user, :email_confirmation_code_reset_count).from(0).to(1)
+        expect { user.increment_confirmation_code_reset_count! }.to change(user, :email_confirmation_code_reset_count).from(0).to(1)
       end
 
       it 'saved the change to the reset count' do
-        expect { user.reset_confirmation_code! }.to change(user, :saved_change_to_email_confirmation_code_reset_count?)
+        expect { user.increment_confirmation_code_reset_count! }.to change(user, :saved_change_to_email_confirmation_code_reset_count?)
       end
     end
 
@@ -868,26 +920,6 @@ RSpec.describe User, type: :model do
 
       it 'should not save a change to the email confirmation code' do
         expect { user.reset_confirmation_code }.not_to change(user, :saved_change_to_email_confirmation_code?)
-      end
-    end
-
-    describe '#increment_confirmation_code_reset_count' do
-      it 'increments the reset count' do
-        expect { user.increment_confirmation_code_reset_count }.to change(user, :email_confirmation_code_reset_count).from(0).to(1)
-      end
-
-      it 'should not save the change to the reset count' do
-        expect { user.increment_confirmation_code_reset_count }.not_to change(user, :saved_change_to_email_confirmation_code_reset_count?)
-      end
-    end
-
-    describe '#increment_confirmation_retry_count' do
-      it 'increments the retry count' do
-        expect { user.increment_confirmation_retry_count }.to change(user, :email_confirmation_retry_count).from(0).to(1)
-      end
-
-      it 'should not save the change to the retry count' do
-        expect { user.increment_confirmation_retry_count }.not_to change(user, :saved_change_to_email_confirmation_retry_count?)
       end
     end
 

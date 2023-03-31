@@ -19,6 +19,9 @@ class UserRoleService
       can_moderate_project? object, user
     when 'Phase'
       can_moderate_project? object.project, user
+    when 'Permission'
+      context = object.permission_scope
+      context ? can_moderate?(context, user) : user.admin?
     end
   end
 
@@ -46,6 +49,9 @@ class UserRoleService
       moderators_for_project object, scope
     when 'Phase'
       moderators_for_project object.project, scope
+    when 'Permission'
+      context = object.permission_scope
+      context ? moderators_for(context, scope) : scope.admin
     end
   end
 

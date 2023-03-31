@@ -107,6 +107,10 @@ describe PermissionsService do
     context 'when permitted by light users' do
       let(:permitted_by) { 'everyone_confirmed_email' }
 
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+      end
+
       context 'when not signed in' do
         let(:user) { nil }
 
@@ -358,6 +362,10 @@ describe PermissionsService do
 
     context 'when permitted_by is set to everyone_confirmed_email' do
       let(:permission) { create :permission, permitted_by: 'everyone_confirmed_email' }
+
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+      end
 
       it 'does not permit a visitor' do
         expect(service.requirements(permission, nil)).to eq({

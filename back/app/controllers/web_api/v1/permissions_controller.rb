@@ -6,12 +6,12 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def index
     @permissions = policy_scope(Permission)
-      .includes(:permission_scope)
+      .includes(:permission_scope, :custom_fields, permissions_custom_fields: [:custom_field])
       .where(permission_scope: permission_scope)
       .order(created_at: :desc)
     @permissions = paginate @permissions
 
-    render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: fastjson_params)
+    render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: fastjson_params, include: %i[permissions_custom_fields custom_fields])
   end
 
   def show
@@ -41,7 +41,11 @@ class WebApi::V1::PermissionsController < ApplicationController
   private
 
   def serialize(permission)
-    WebApi::V1::PermissionSerializer.new(permission, params: fastjson_params).serialized_json
+    WebApi::V1::PermissionSerializer.new(
+      permission,
+      params: fastjson_params,
+      include: %i[permissions_custom_fields custom_fields]
+    ).serialized_json
   end
 
   def set_permission
@@ -49,19 +53,7 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def permission_scope
-    parent_param = params[:parent_param]
-    scope_id = params[parent_param]
-    case parent_param
-    when nil
-      nil
-    when :project_id
-      Project.find(scope_id)
-    when :phase_id
-      Phase.find(scope_id)
-    when :idea_id
-      idea = Idea.find(scope_id)
-      ParticipationContextService.new.get_participation_context idea.project
-    end
+    PermissionsService.new.permission_scope_from_permissions_params(params)
   end
 
   def permission_action

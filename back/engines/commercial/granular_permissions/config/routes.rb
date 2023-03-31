@@ -8,6 +8,7 @@ Rails.application.routes.draw do
         resources :permissions, param: :permission_action do
           get 'participation_conditions', on: :member
           get 'requirements', on: :member
+          resources :permissions_custom_fields, shallow: true
         end
       end
 
