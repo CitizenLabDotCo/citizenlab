@@ -410,12 +410,16 @@ resource 'Permissions' do
       end
     end
 
-    get 'web_api/v1/users/custom_fields/schema' do
+    get 'web_api/v1/ideas/:idea_id/permissions/:action/schema' do
       before do
         @permission = @project.permissions.first
         create :permissions_custom_field, permission: @permission
         @permission.update! permitted_by: 'users'
       end
+
+      let(:action) { @permission.action }
+      let(:idea) { create :idea, project: @project }
+      let(:idea_id) { idea.id }
 
       example_request 'Get the json and ui schema for an idea permission' do
         assert_status 200
