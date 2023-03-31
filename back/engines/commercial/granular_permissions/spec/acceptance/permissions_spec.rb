@@ -410,6 +410,65 @@ resource 'Permissions' do
       end
     end
 
+    get 'web_api/v1/permissions/:action/schema' do
+      before do
+        @permission = Permission.find_by permission_scope_type: nil, action: 'visiting'
+        @field1 = create :custom_field, required: true
+        @field2 = create :custom_field, required: false
+        create :permissions_custom_field, permission: @permission, custom_field: @field1, required: false
+        create :permissions_custom_field, permission: @permission, custom_field: @field2, required: true
+      end
+
+      let(:action) { 'visiting' }
+
+      example_request 'Get the json and ui schema for a global permission' do
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'schema'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:json_schema_multiloc][:en]).to eq({
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            @field1.key.to_sym => { type: 'string' },
+            @field2.key.to_sym => { type: 'string' }
+          },
+          required: [@field1.key]
+        })
+        expect(json_attributes[:ui_schema_multiloc]).to be_present
+      end
+    end
+
+    get 'web_api/v1/projects/:project_id/permissions/:action/schema' do
+      before do
+        @permission = @project.permissions.first
+        @field1 = create :custom_field, required: true
+        @field2 = create :custom_field, required: false
+        create :permissions_custom_field, permission: @permission, custom_field: @field1, required: false
+        create :permissions_custom_field, permission: @permission, custom_field: @field2, required: true
+      end
+
+      let(:action) { @permission.action }
+      let(:project_id) { @project.id }
+
+      example_request 'Get the json and ui schema for a project permission' do
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'schema'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:json_schema_multiloc][:en]).to eq({
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            @field1.key.to_sym => { type: 'string' },
+            @field2.key.to_sym => { type: 'string' }
+          },
+          required: [@field2.key]
+        })
+        expect(json_attributes[:ui_schema_multiloc]).to be_present
+      end
+    end
+
     get 'web_api/v1/ideas/:idea_id/permissions/:action/schema' do
       before do
         @permission = @project.permissions.first
@@ -417,7 +476,6 @@ resource 'Permissions' do
         @field2 = create :custom_field, required: false
         create :permissions_custom_field, permission: @permission, custom_field: @field1, required: false
         create :permissions_custom_field, permission: @permission, custom_field: @field2, required: true
-        @permission.update! permitted_by: 'users'
       end
 
       let(:action) { @permission.action }
@@ -425,6 +483,36 @@ resource 'Permissions' do
       let(:idea_id) { idea.id }
 
       example_request 'Get the json and ui schema for an idea permission' do
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'schema'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:json_schema_multiloc][:en]).to eq({
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            @field1.key.to_sym => { type: 'string' },
+            @field2.key.to_sym => { type: 'string' }
+          },
+          required: [@field2.key]
+        })
+        expect(json_attributes[:ui_schema_multiloc]).to be_present
+      end
+    end
+
+    get 'web_api/v1/phases/:phase_id/permissions/:action/schema' do
+      before do
+        @permission = @phase.permissions.first
+        @field1 = create :custom_field, required: true
+        @field2 = create :custom_field, required: false
+        create :permissions_custom_field, permission: @permission, custom_field: @field1, required: false
+        create :permissions_custom_field, permission: @permission, custom_field: @field2, required: true
+      end
+
+      let(:action) { @permission.action }
+      let(:idea_id) { @phase.id }
+
+      example_request 'Get the json and ui schema for a phase permission' do
         assert_status 200
         json_response = json_parse response_body
         expect(json_response.dig(:data, :type)).to eq 'schema'
