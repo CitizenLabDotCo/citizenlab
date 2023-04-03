@@ -62,7 +62,7 @@ const ChangeSeatModal = ({
   toggleAdmin,
 }: Props) => {
   const [showSuccess, setShowSuccess] = useState(false);
-  const isUserAdmin = isAdmin({ data: userToChangeSeat });
+  const isUserToChangeSeatAdmin = isAdmin({ data: userToChangeSeat });
   const { formatMessage } = useIntl();
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
@@ -80,14 +80,14 @@ const ChangeSeatModal = ({
   const hasExceededSetSeats =
     !isNil(maximumAdmins) && currentAdminSeats > maximumAdmins;
   const confirmChangeQuestion = getInfoText(
-    isUserAdmin,
+    isUserToChangeSeatAdmin,
     hasReachedOrIsOverLimit
   );
-  const modalTitle = isUserAdmin
+  const modalTitle = isUserToChangeSeatAdmin
     ? messages.setAsNormalUser
     : messages.giveAdminRights;
   const buttonText = getButtonText(
-    isUserAdmin,
+    isUserToChangeSeatAdmin,
     hasReachedOrIsOverLimit,
     hasSeatBasedBillingEnabled
   );
@@ -130,17 +130,13 @@ const ChangeSeatModal = ({
                 <SeatInfo seatType="admin" />
               </Box>
             </Box>
-            <Box
-              display="flex"
-              flexDirection="row"
-              width="100%"
-              alignItems="center"
-            >
+            <Box display="flex" width="100%" alignItems="center">
               <Button
                 width="auto"
                 onClick={() => {
                   toggleAdmin();
-                  if (!isUserAdmin) {
+                  // We are only showing the success modal when changing to admin so we check if the user is not currently an admin
+                  if (!isUserToChangeSeatAdmin) {
                     setShowSuccess(true);
                   } else {
                     closeModal();
