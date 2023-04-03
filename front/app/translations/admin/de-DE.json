@@ -1135,7 +1135,6 @@
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Verlangen Sie von den Teilnehmenden ein Mindestbudget, damit diese ihren Warenkorb einreichen können (geben Sie \"0\" ein, wenn Sie keinen Mindestbetrag festlegen möchten).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "Besuchen Sie unsere Wissensdatenbank",
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Aktivität",
-  "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Wer sind die Projektmanager*innen?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Mehr Eigenschaften",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink": "https://support.citizenlab.co/articles/2672884",
   "app.containers.AdminPage.ProjectEdit.newProject": "Neues Projekt",
