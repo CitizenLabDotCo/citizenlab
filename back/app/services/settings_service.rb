@@ -94,7 +94,7 @@ class SettingsService
         enabled: true,
         allowed: true,
         organization_type: 'generic',
-        timezone: 'Brussels',
+        timezone: 'Europe/Brussels',
         currency: 'EUR',
         locales: locales,
         color_main: '#0A5159',

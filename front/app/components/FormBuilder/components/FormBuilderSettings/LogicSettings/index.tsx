@@ -83,27 +83,28 @@ export const LogicSettings = ({
       {field.input_type === 'page' ? (
         <>
           <Box mb="24px">
-            {builderConfig && !isNilOrError(builderConfig.supportArticleLink) && (
-              <Warning>
-                <FormattedMessage
-                  {...(builderConfig.pagesLogicHelperText ||
-                    messages.pagesLogicHelperText)}
-                  values={{
-                    supportPageLink: (
-                      <a
-                        href={formatMessage(builderConfig.supportArticleLink)}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <FormattedMessage
-                          {...messages.supportArticleLinkText}
-                        />
-                      </a>
-                    ),
-                  }}
-                />
-              </Warning>
-            )}
+            {builderConfig &&
+              !isNilOrError(builderConfig.supportArticleLink) && (
+                <Warning>
+                  <FormattedMessage
+                    {...(builderConfig.pagesLogicHelperText ||
+                      messages.pagesLogicHelperText)}
+                    values={{
+                      supportPageLink: (
+                        <a
+                          href={formatMessage(builderConfig.supportArticleLink)}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <FormattedMessage
+                            {...messages.supportArticleLinkText}
+                          />
+                        </a>
+                      ),
+                    }}
+                  />
+                </Warning>
+              )}
           </Box>
           <PageRuleInput
             fieldId={field.temp_id || field.id}
@@ -115,27 +116,28 @@ export const LogicSettings = ({
       ) : (
         <>
           <Box mb="24px">
-            {builderConfig && !isNilOrError(builderConfig.supportArticleLink) && (
-              <Warning>
-                <FormattedMessage
-                  {...(builderConfig.questionLogicHelperText ||
-                    messages.questionLogicHelperText)}
-                  values={{
-                    supportPageLink: (
-                      <a
-                        href={formatMessage(builderConfig.supportArticleLink)}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <FormattedMessage
-                          {...messages.supportArticleLinkText}
-                        />
-                      </a>
-                    ),
-                  }}
-                />
-              </Warning>
-            )}
+            {builderConfig &&
+              !isNilOrError(builderConfig.supportArticleLink) && (
+                <Warning>
+                  <FormattedMessage
+                    {...(builderConfig.questionLogicHelperText ||
+                      messages.questionLogicHelperText)}
+                    values={{
+                      supportPageLink: (
+                        <a
+                          href={formatMessage(builderConfig.supportArticleLink)}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <FormattedMessage
+                            {...messages.supportArticleLinkText}
+                          />
+                        </a>
+                      ),
+                    }}
+                  />
+                </Warning>
+              )}
           </Box>
           {answers &&
             answers.map((answer) => (
