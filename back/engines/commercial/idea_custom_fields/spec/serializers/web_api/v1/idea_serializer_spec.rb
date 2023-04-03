@@ -26,10 +26,6 @@ describe WebApi::V1::IdeaSerializer do
       let(:idea_author) { create(:user) }
       let(:idea) { create :idea, project: project, custom_field_values: custom_field_values, author: idea_author }
 
-      before_all do
-        SettingsService.new.activate_feature! 'idea_custom_fields'
-      end
-
       it 'serializes all visible extra fields at the same level as the idea fields for the idea author' do
         output = described_class.new(idea, params: { current_user: idea_author }).serializable_hash
         expect(output.dig(:data, :attributes, visible_public_field.key.to_sym)).to eq visible_public_value

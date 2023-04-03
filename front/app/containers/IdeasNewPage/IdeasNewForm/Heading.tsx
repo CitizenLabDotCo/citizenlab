@@ -43,17 +43,17 @@ export const Heading = ({
     ? `/admin/projects/${project.id}/phases/${phaseId}/native-survey/edit`
     : `/admin/projects/${project.id}/native-survey/edit`;
   const canEditSurvey = canUserEditProject && isSurvey;
-  const isSmallerThanXlPhone = useBreakpoint('phone');
-  const showEditSurveyButton = !isSmallerThanXlPhone && canEditSurvey;
+  const isSmallerThanPhone = useBreakpoint('phone');
+  const showEditSurveyButton = !isSmallerThanPhone && canEditSurvey;
   const [showLeaveModal, setShowLeaveModal] = useState(false);
-  const shouldCenterTopBarContent = !isSmallerThanXlPhone || !isSurvey;
+  const shouldCenterTopBarContent = !isSmallerThanPhone || !isSurvey;
   const openModal = () => {
     setShowLeaveModal(true);
   };
   const closeModal = () => {
     setShowLeaveModal(false);
   };
-  const isSurveyOnMobile = isSmallerThanXlPhone && isSurvey;
+  const isSurveyOnMobile = isSmallerThanPhone && isSurvey;
 
   return (
     <>
@@ -92,7 +92,7 @@ export const Heading = ({
           {!isSurvey && (
             <GoBackButton insideModal={false} projectId={project.id} />
           )}
-          {isSurvey && !isSmallerThanXlPhone && (
+          {isSurvey && !isSmallerThanPhone && (
             <Box
               display="flex"
               flexDirection="row"
@@ -145,7 +145,7 @@ export const Heading = ({
             </Box>
             <Box
               display="flex"
-              flexDirection={isSmallerThanXlPhone ? 'column' : 'row'}
+              flexDirection={isSmallerThanPhone ? 'column' : 'row'}
               width="100%"
               alignItems="center"
             >
@@ -154,8 +154,8 @@ export const Heading = ({
                 data-cy="e2e-confirm-delete-survey-results"
                 buttonStyle="delete"
                 width="100%"
-                mb={isSmallerThanXlPhone ? '16px' : undefined}
-                mr={!isSmallerThanXlPhone ? '20px' : undefined}
+                mb={isSmallerThanPhone ? '16px' : undefined}
+                mr={!isSmallerThanPhone ? '20px' : undefined}
                 linkTo={`/projects/${project.attributes.slug}`}
               >
                 <FormattedMessage {...messages.confirmLeaveSurveyButtonText} />

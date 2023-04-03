@@ -23,18 +23,18 @@ interface Props {
 }
 
 const WhiteSpace = ({ size, withDivider }: Props) => {
-  const isPhone = useBreakpoint('phone');
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   const calculatePaddingY = () => {
     switch (size) {
       case 'small':
-        return isPhone ? '8px' : '12px';
+        return isSmallerThanPhone ? '8px' : '12px';
       case 'medium':
-        return isPhone ? '16px' : '24px';
+        return isSmallerThanPhone ? '16px' : '24px';
       case 'large':
-        return isPhone ? '24px' : '36px';
+        return isSmallerThanPhone ? '24px' : '36px';
       default:
-        return isPhone ? '8px' : '12px';
+        return isSmallerThanPhone ? '8px' : '12px';
     }
   };
   return (

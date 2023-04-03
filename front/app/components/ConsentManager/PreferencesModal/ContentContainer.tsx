@@ -11,14 +11,14 @@ interface Props {
 }
 
 const ContentContainer = ({ children, ...props }: Props) => {
-  const phone = useBreakpoint('phone');
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   return (
     <Box
       {...props}
-      padding={phone ? '20px' : '30px'}
+      padding={isSmallerThanPhone ? '20px' : '30px'}
       background="white"
-      margin={phone ? '0' : undefined}
+      margin={isSmallerThanPhone ? '0' : undefined}
     >
       {children}
     </Box>

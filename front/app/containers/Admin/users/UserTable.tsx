@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
-import { isAdmin, TRole } from 'services/permissions/roles';
-import { includes, get, isArray } from 'lodash-es';
+import { TRole } from 'services/permissions/roles';
+import { includes, isArray } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 // Components
 import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
@@ -58,6 +58,14 @@ const SortableTh = ({ sortDirection, onClick, children }: SortableThProps) => (
   </Th>
 );
 
+const getNewRoles = (user: IUserData, changeToNormalUser: boolean): TRole[] => {
+  if (!user.attributes.roles || changeToNormalUser) {
+    return [];
+  }
+
+  return [...user.attributes.roles, { type: 'admin' }];
+};
+
 interface InputProps {
   selectedUsers: string[] | 'none' | 'all';
   handleSelect: (userId: string) => void;
@@ -84,10 +92,8 @@ const UsersTable = ({
     return null;
   }
 
-  const handleAdminRoleOnChange = (user: IUserData) => () => {
-    let newRoles: TRole[] = [];
-
-    trackEventByName(tracks.adminToggle.name);
+  const handleChangeRoles = (user: IUserData, changeToNormalUser: boolean) => {
+    trackEventByName(tracks.adminChangeRole.name);
 
     if (authUser && authUser.id === user.id) {
       eventEmitter.emit<JSX.Element>(
@@ -95,15 +101,7 @@ const UsersTable = ({
         <FormattedMessage {...messages.youCantUnadminYourself} />
       );
     } else {
-      if (user.attributes.roles && isAdmin({ data: user })) {
-        newRoles = user.attributes.roles.filter(
-          (role) => role.type !== 'admin'
-        );
-      } else {
-        newRoles = [...get(user, 'attributes.roles', []), { type: 'admin' }];
-      }
-
-      updateUser(user.id, { roles: newRoles });
+      updateUser(user.id, { roles: getNewRoles(user, changeToNormalUser) });
     }
   };
 
@@ -168,14 +166,11 @@ const UsersTable = ({
               >
                 <FormattedMessage {...messages.since} />
               </SortableTh>
-              <SortableTh
-                sortDirection={
-                  sortAttribute === 'role' ? sortDirection : undefined
-                }
-                onClick={handleSortingOnChange('role')}
-              >
-                <FormattedMessage {...messages.status} />
-              </SortableTh>
+              <Th>
+                <Uppercase>
+                  <FormattedMessage {...messages.status} />
+                </Uppercase>
+              </Th>
               <Th>
                 <Uppercase>
                   <FormattedMessage tagName="div" {...messages.options} />
@@ -192,7 +187,7 @@ const UsersTable = ({
                   selectedUsers === 'all' || includes(selectedUsers, user.id)
                 }
                 toggleSelect={handleUserToggle(user.id)}
-                toggleAdmin={handleAdminRoleOnChange(user)}
+                changeRoles={handleChangeRoles}
                 authUser={authUser}
               />
             ))}
