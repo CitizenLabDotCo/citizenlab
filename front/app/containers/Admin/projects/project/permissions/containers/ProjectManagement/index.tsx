@@ -2,9 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
 
 // components
 import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
@@ -30,10 +29,8 @@ interface Props {
   projectId: string;
 }
 
-const ProjectManagement = ({
-  projectId,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+const ProjectManagement = ({ projectId }: Props) => {
+  const { formatMessage } = useIntl();
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
   });
@@ -73,4 +70,4 @@ const ProjectManagement = ({
   );
 };
 
-export default injectIntl(ProjectManagement);
+export default ProjectManagement;
