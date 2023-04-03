@@ -24,10 +24,10 @@ interface InputProps {
   hideAvatar?: boolean;
   // Exclude users that can moderate the project from selectable users.
   // We pass the projectId here.
-  isNotProjectModerator?: string;
-  // Exclude users that can moderate the folder  from selectable users.
+  isNotProjectModeratorOfProjectId?: string;
+  // Exclude users that can moderate the folder from selectable users.
   // We pass the folderId here.
-  isNotFolderModerator?: string;
+  isNotFolderModeratorOfFolderId?: string;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -138,12 +138,16 @@ const UserSelect = ({
 };
 
 const Data = adopt<DataProps, InputProps>({
-  users: ({ isNotProjectModerator, isNotFolderModerator, render }) => (
+  users: ({
+    isNotProjectModeratorOfProjectId,
+    isNotFolderModeratorOfFolderId,
+    render,
+  }) => (
     <GetUsers
       pageSize={5}
       sort="last_name"
-      isNotProjectModerator={isNotProjectModerator}
-      isNotFolderModerator={isNotFolderModerator}
+      isNotProjectModeratorOfProjectId={isNotProjectModeratorOfProjectId}
+      isNotFolderModeratorOfFolderId={isNotFolderModeratorOfFolderId}
     >
       {render}
     </GetUsers>

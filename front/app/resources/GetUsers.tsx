@@ -41,8 +41,8 @@ export interface InputProps {
   notCitizenlabMember?: boolean;
   // Not used
   includeInactive?: boolean;
-  isNotProjectModerator?: string;
-  isNotFolderModerator?: string;
+  isNotProjectModeratorOfProjectId?: string;
+  isNotFolderModeratorOfFolderId?: string;
 }
 
 interface IQueryParameters {
@@ -190,8 +190,8 @@ export default class GetUsers extends React.Component<Props, State> {
           can_admin: props.canAdmin,
           not_citizenlab_member: props.notCitizenlabMember,
           include_inactive: props.includeInactive,
-          is_not_project_moderator: props.isNotProjectModerator,
-          is_not_folder_moderator: props.isNotFolderModerator,
+          is_not_project_moderator: props.isNotProjectModeratorOfProjectId,
+          is_not_folder_moderator: props.isNotFolderModeratorOfFolderId,
         },
         isNil
       ),
