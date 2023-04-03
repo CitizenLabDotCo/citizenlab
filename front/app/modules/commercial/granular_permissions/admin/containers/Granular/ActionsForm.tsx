@@ -68,6 +68,7 @@ type PostTypeProps =
 type SharedProps = {
   permissions: IPermissionData[];
   phaseId?: string | null;
+  initiativeContext?: boolean;
   onChange: (
     permission: IPermissionData,
     permittedBy: IPermissionData['attributes']['permitted_by'],
@@ -93,7 +94,14 @@ const showDivider = (
 type Props = PostTypeProps & SharedProps;
 
 const ActionsForm = memo(
-  ({ permissions, postType, onChange, projectId, phaseId }: Props) => {
+  ({
+    permissions,
+    postType,
+    onChange,
+    projectId,
+    initiativeContext,
+    phaseId,
+  }: Props) => {
     const includePermissionsCustomFields = useFeatureFlag({
       name: 'permissions_custom_fields',
     });
@@ -168,6 +176,7 @@ const ActionsForm = memo(
                         permission={permission}
                         projectId={projectId}
                         phaseId={phaseId}
+                        initiativeContext={initiativeContext}
                       />
                     </Box>
                   )}

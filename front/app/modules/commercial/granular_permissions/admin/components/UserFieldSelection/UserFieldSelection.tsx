@@ -35,20 +35,20 @@ type UserFieldSelectionProps = {
   permission: IPermissionData;
   projectId?: string | null;
   phaseId?: string | null;
-  initiativeId?: string | null;
+  initiativeContext?: boolean;
 };
 
 const UserFieldSelection = ({
   permission,
   projectId,
   phaseId,
-  initiativeId,
+  initiativeContext,
 }: UserFieldSelectionProps) => {
   const globalRegistrationFields = useUserCustomFields();
   const initialFields = usePermissionsCustomFields({
     projectId,
     phaseId,
-    initiativeId,
+    initiativeContext,
     action: permission.attributes.action,
   });
   const { mutate: addPermissionCustomField } = useAddPermissionCustomField();
@@ -65,7 +65,7 @@ const UserFieldSelection = ({
       custom_field_id: field.id,
       required: false,
       phaseId,
-      initiativeId,
+      initiativeContext,
       projectId,
       action: permission.attributes.action,
     });

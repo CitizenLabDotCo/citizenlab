@@ -30,7 +30,7 @@ export interface IPermissionsCustomFieldAdd {
   custom_field_id: string;
   required: boolean;
   phaseId?: string | null;
-  initiativeId?: string | null;
+  initiativeContext?: boolean | null;
   projectId?: string | null;
   action: string;
 }

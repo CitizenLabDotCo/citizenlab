@@ -8,8 +8,8 @@ const addPermissionsCustomField = async (
   requestBody: IPermissionsCustomFieldAdd
 ) =>
   fetcher<IPermissionsCustomField>({
-    path: requestBody.initiativeId
-      ? `/initiatives/${requestBody.initiativeId}/permissions/${requestBody.action}/permissions_custom_fields`
+    path: requestBody.initiativeContext
+      ? `/permissions/${requestBody.action}/permissions_custom_fields`
       : requestBody.phaseId
       ? `/phases/${requestBody.phaseId}/permissions/${requestBody.action}/permissions_custom_fields`
       : `/projects/${requestBody.projectId}/permissions/${requestBody.action}/permissions_custom_fields`,

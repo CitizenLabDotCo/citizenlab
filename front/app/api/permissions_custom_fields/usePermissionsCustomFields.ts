@@ -12,20 +12,20 @@ import { IGlobalPermissionAction } from 'services/actionPermissions';
 
 export type PermissionCustomFieldsProps = {
   phaseId?: string | null;
-  initiativeId?: string | null;
+  initiativeContext?: boolean | null;
   projectId?: string | null;
   action: IGlobalPermissionAction | IPCPermissionAction;
 };
 
 const fetchEvents = ({
   phaseId,
-  initiativeId,
+  initiativeContext,
   projectId,
   action,
 }: PermissionCustomFieldsProps) => {
   return fetcher<IPermissionsCustomFields>({
-    path: initiativeId
-      ? `/initiatives/${initiativeId}/permissions/${action}/permissions_custom_fields`
+    path: initiativeContext
+      ? `/permissions/${action}/permissions_custom_fields`
       : phaseId
       ? `/phases/${phaseId}/permissions/${action}/permissions_custom_fields`
       : `/projects/${projectId}/permissions/${action}/permissions_custom_fields`,
@@ -35,7 +35,7 @@ const fetchEvents = ({
 
 const usePermissionsCustomFields = ({
   phaseId,
-  initiativeId,
+  initiativeContext,
   projectId,
   action,
 }: PermissionCustomFieldsProps) => {
@@ -45,8 +45,14 @@ const usePermissionsCustomFields = ({
     IPermissionsCustomFields,
     EventsKeys
   >({
-    queryKey: eventsKeys.list({ phaseId, initiativeId, projectId, action }),
-    queryFn: () => fetchEvents({ phaseId, initiativeId, projectId, action }),
+    queryKey: eventsKeys.list({
+      phaseId,
+      initiativeContext,
+      projectId,
+      action,
+    }),
+    queryFn: () =>
+      fetchEvents({ phaseId, initiativeContext, projectId, action }),
   });
 };
 
