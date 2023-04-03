@@ -51,7 +51,7 @@ const SignUpInModal = memo<Props>(
       metaData?.verificationContext
     );
 
-    const smallerThanPhone = useBreakpoint('phone');
+    const isSmallerThanPhone = useBreakpoint('phone');
 
     const opened = !!metaData;
 
@@ -137,7 +137,7 @@ const SignUpInModal = memo<Props>(
         <Box
           id="e2e-sign-up-in-modal"
           className={className}
-          width={smallerThanPhone ? undefined : `${modalWidth}px`}
+          width={isSmallerThanPhone ? undefined : `${modalWidth}px`}
           background="white"
         >
           {opened && metaData && (

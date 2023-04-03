@@ -41,14 +41,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        idea_custom_fields: {
-          enabled: true,
-          allowed: true
-        },
-        dynamic_idea_form: {
-          enabled: true,
-          allowed: true
-        },
         idea_author_change: {
           enabled: true,
           allowed: true

@@ -530,6 +530,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "unsere Richtlinien",
   "app.components.form.ErrorDisplay.next": "Weiter",
   "app.components.form.ErrorDisplay.previous": "Zurück",
+  "app.components.form.ErrorDisplay.save": "Speichern",
   "app.components.form.ErrorDisplay.submitSurvey": "Umfrage abschicken",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Beginnen Sie mit der Eingabe, um nach einer E-Mail oder einem Namen des Nutzers / der Nutzerin zu suchen...",
   "app.components.form.blockedVerified": "Sie können dieses Feld nicht bearbeiten, da es verifizierte Informationen enthält",

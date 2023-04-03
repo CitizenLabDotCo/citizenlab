@@ -7,9 +7,7 @@ module IdeaCustomFields
         module IdeaSerializer
           def self.included(base)
             base.class_eval do
-              attribute :custom_field_values, if: proc {
-                AppConfiguration.instance.feature_activated? 'idea_custom_fields'
-              } do |idea, params|
+              attribute(:custom_field_values) do |idea, params|
                 CustomFieldService.remove_not_visible_fields idea, current_user(params)
               end
 

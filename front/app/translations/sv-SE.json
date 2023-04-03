@@ -530,6 +530,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "våra riktlinjer",
   "app.components.form.ErrorDisplay.next": "Nästa",
   "app.components.form.ErrorDisplay.previous": "Föregående",
+  "app.components.form.ErrorDisplay.save": "Spara",
   "app.components.form.ErrorDisplay.submitSurvey": "Skicka undersökning",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Börja skriva för att söka efter användarens e-postadress eller namn...",
   "app.components.form.blockedVerified": "Du kan inte redigera det här fältet eftersom det innehåller verifierad information",

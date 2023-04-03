@@ -5,7 +5,7 @@ module EmailCampaigns
     def campaign_mail
       invitee = User.first
       inviter = User.last
-      token = InvitesService.new.generate_token
+      token = Invites::Service.new.generate_token
       command = {
         recipient: invitee,
         event_payload: {
