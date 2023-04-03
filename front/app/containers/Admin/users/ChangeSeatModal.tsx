@@ -158,11 +158,7 @@ const ChangeSeatModal = ({
               width="auto"
               onClick={() => {
                 changeRoles(userToChangeSeat, isChangingToNormalUser);
-                // We are only showing the success modal when a seat has been added
-                const isSeatBeingAdded =
-                  !isUserToChangeSeatAdmin &&
-                  !isChangingCollaboratorToNormalUser;
-                if (isSeatBeingAdded) {
+                if (!isChangingToNormalUser) {
                   setShowSuccess(true);
                 } else {
                   closeModal();
