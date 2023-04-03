@@ -2,7 +2,7 @@
 import React, { memo, useState } from 'react';
 
 // Services
-import { addMembership } from 'services/projectModerators';
+import { addProjectModerator } from 'services/projectModerators';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -53,7 +53,7 @@ const UserSearch = memo(({ projectId }: Props) => {
   const handleOnAddModeratorsClick = async () => {
     if (moderatorToAdd) {
       setProcessing(true);
-      await addMembership(projectId, moderatorToAdd);
+      await addProjectModerator(projectId, moderatorToAdd);
       setProcessing(false);
       setModeratorToAdd(null);
     }

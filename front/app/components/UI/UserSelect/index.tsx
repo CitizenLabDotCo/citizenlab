@@ -118,7 +118,6 @@ const UserSelect = ({
         backspaceRemovesValue={false}
         menuShouldScrollIntoView={false}
         isClearable
-        filterOption={() => true}
         value={selectedUser}
         placeholder={placeholder}
         options={
