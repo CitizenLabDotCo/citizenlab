@@ -30,7 +30,7 @@ const CTA = ({ buttonStyle }: Props) => {
             buttonStyle={buttonStyle}
             text={localize(customButtonText)}
             linkTo={customButtonUrl}
-            openLinkInNewTab={true}
+            openLinkInNewTab
           />
         ) : null;
       case 'no_button':

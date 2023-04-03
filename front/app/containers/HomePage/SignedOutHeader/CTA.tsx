@@ -9,7 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   buttonStyle: BannerButtonStyle;
-  signUpIn?: (event: MouseEvent | KeyboardEvent) => void;
+  signUpIn: (event: MouseEvent | KeyboardEvent) => void;
 }
 
 const CTA = ({ buttonStyle, signUpIn }: Props) => {
@@ -36,7 +36,7 @@ const CTA = ({ buttonStyle, signUpIn }: Props) => {
             buttonStyle={buttonStyle}
             text={localize(customButtonText)}
             linkTo={customButtonUrl}
-            openLinkInNewTab={true}
+            openLinkInNewTab
           />
         ) : null;
       case 'no_button':
