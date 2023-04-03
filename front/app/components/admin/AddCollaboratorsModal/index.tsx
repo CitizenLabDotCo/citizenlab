@@ -59,11 +59,11 @@ const AddCollaboratorsModal = ({
       <Box display="flex" flexDirection="column" width="100%" p="32px">
         <Box>
           <Text color="textPrimary" fontSize="m" my="0px">
-            {hasReachedLimit ? (
-              <FormattedMessage {...messages.reachedLimitText} />
-            ) : (
-              <FormattedMessage {...messages.confirmMessage} />
-            )}
+            <FormattedMessage
+              {...(hasReachedLimit
+                ? messages.reachedLimitText
+                : messages.confirmMessage)}
+            />
           </Text>
           <Box py="32px">
             <SeatInfo seatType="collaborator" />
