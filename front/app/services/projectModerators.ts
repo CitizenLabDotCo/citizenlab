@@ -24,15 +24,12 @@ export async function deleteProjectModerator(
   );
   invalidateSeatsCache();
   await streams.fetchAllWith({
-    apiEndpoint: [
-      `${API_PATH}/projects/${projectId}/moderators`,
-      `${API_PATH}/users`,
-    ],
+    apiEndpoint: [`${API_PATH}/projects/${projectId}/moderators`],
   });
   return response;
 }
 
-export async function addMembership(projectId: string, user_id: string) {
+export async function addProjectModerator(projectId: string, user_id: string) {
   const response = await streams.add(
     `${API_PATH}/projects/${projectId}/moderators`,
     {
