@@ -115,7 +115,6 @@ hr:
         description:
       author_id:
         title: Autor
-        description:
       topic_ids:
         title: Oznake
         description:
@@ -127,12 +126,19 @@ hr:
         description:
       budget:
         title: Proračun
-        description:
       images:
         title: Slike
         description:
       attachments:
         title: Privici
+        description:
+      section1:
+        description:
+      section2:
+        title: Slike i prilozi
+        description:
+      section3:
+        title: Pojedinosti
         description:
   custom_forms:
     categories:
@@ -189,6 +195,7 @@ hr:
       author_fullname: 'Ime autora'
       author_email: 'E-pošta autora'
       author_id: 'ID autora'
+      budget: 'Proračun'
       created_at: 'Predano'
       published_at: 'Objavljeno'
       comments_count: 'Komentari'
@@ -210,3 +217,17 @@ hr:
       description: "Pošaljite svoje odgovore tako da odaberete „Pošalji anketu“ u nastavku."
   project_copy:
     title_suffix: 'Kopija'
+  confirmations_mailer:
+    send_confirmation_code:
+      subject: "Potvrdite svoju e-mail adresu za platformu %{organizationName}"
+      header: "Vaš kod za potvrdu"
+      header_message: "Pozdrav, %{firstName}!"
+      confirm_email_address: "Potvrdite svoju adresu e-pošte"
+      thanks_for_signing_up: "Hvala vam što ste se registrirali na platformu %{organizationName}."
+      best_regards: "S poštovanjem,"
+      ignore_email: "Ako niste zatražili kod, slobodno zanemarite ovu e-poruku."
+      expire_code: "Vaš će kod isteći za"
+      24_hours: "24 sata."
+      copy_paste_the_link_below: "Kopirajte i zalijepite donji kod u obrazac za registraciju na platformi."
+      the_link_is_valid_for: "Ovaj poveznica vrijedi 24 sata. Ako istekne, možete <a href=\"%{link}\">zatražiti novi kod</a>."
+      did_you_receive_this_email_in_error: "Jeste li greškom primili ovu e-poruku?<a href=\"%{link}\">Obavijeste nas</a>."

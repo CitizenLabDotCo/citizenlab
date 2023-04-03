@@ -90,4 +90,4 @@ class SideFxCommentService
   end
 end
 
-::SideFxCommentService.prepend_if_ee('FlagInappropriateContent::Patches::SideFxCommentService')
+::SideFxCommentService.prepend(FlagInappropriateContent::Patches::SideFxCommentService)

@@ -41,7 +41,6 @@ import { Observer, Observable, Subscription } from 'rxjs';
 
 // constants
 import { authApiEndpoint } from 'services/auth';
-import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
 import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
 import { isUnauthorizedError } from 'utils/helperUtils';
 
@@ -128,7 +127,7 @@ class Streams {
     // and for which their refetch should be awaited before any others streams are refetched.
     // Currently the only 2 rootstreams are those for the authUser
     // and appConfiguration endpoints
-    const rootStreamIds = [authApiEndpoint, currentAppConfigurationEndpoint];
+    const rootStreamIds = [authApiEndpoint];
 
     rootStreamIds.forEach((rootStreamId) => {
       promisesToAwait.push(this.streams[rootStreamId].fetch());

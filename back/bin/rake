@@ -10,4 +10,17 @@ end
 
 require_relative '../config/boot'
 require 'rake'
-Rake.application.run
+
+if (profile_path = ENV['PROFILER_OUTPUT_PATH'])
+  require 'json'
+  require 'stackprof'
+  require 'fileutils'
+
+  profile = StackProf.run(mode: :wall, raw: true) do
+    Rake.application.run
+  end
+
+  File.write(profile_path, JSON.generate(profile))
+else
+  Rake.application.run
+end

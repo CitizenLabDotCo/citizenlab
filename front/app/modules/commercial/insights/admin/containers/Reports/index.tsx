@@ -1,8 +1,6 @@
 import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
 
 // resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { PublicationStatus } from 'services/projects';
 
 // components
@@ -21,15 +19,19 @@ import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import useProjects from 'hooks/useProjects';
 
-interface DataProps {
-  projects: GetProjectsChildProps;
-}
+const publicationStatuses: PublicationStatus[] = ['published', 'archived'];
 
-const ReportTab = memo(({ projects }: DataProps) => {
+const ReportTab = memo(() => {
+  const projects = useProjects({
+    publicationStatuses,
+    canModerate: true,
+  });
+
   const participableProjects =
-    !isNilOrError(projects) && !isNilOrError(projects.projectsList)
-      ? projects.projectsList.filter((project) => {
+    !isNilOrError(projects) && !isNilOrError(projects)
+      ? projects.filter((project) => {
           const processType = project?.attributes.process_type;
           const participationMethod = project.attributes.participation_method;
           return (
@@ -79,15 +81,4 @@ const ReportTab = memo(({ projects }: DataProps) => {
   );
 });
 
-const publicationStatuses: PublicationStatus[] = ['published', 'archived'];
-
-const Data = adopt<DataProps>({
-  projects: (
-    <GetProjects
-      publicationStatuses={publicationStatuses}
-      filterCanModerate={true}
-    />
-  ),
-});
-
-export default () => <Data>{(dataProps) => <ReportTab {...dataProps} />}</Data>;
+export default ReportTab;

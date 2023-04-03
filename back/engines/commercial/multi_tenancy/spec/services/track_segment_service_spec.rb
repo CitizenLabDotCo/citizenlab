@@ -17,7 +17,7 @@ describe TrackSegmentService do
 
   describe 'identify_user' do
     it "includes tenant properties in the Segment's identify payload" do
-      user = create(:user)
+      user = create(:admin)
 
       expect(SEGMENT_CLIENT).to receive(:identify) do |identification|
         expect(identification[:traits]).to include(expected_tenant_props)
@@ -53,7 +53,7 @@ describe TrackSegmentService do
 
   describe 'track_activity' do
     it 'includes tenant/environment properties in activity events' do
-      user = create(:user)
+      user = create(:admin)
       comment = create(:comment)
       activity = create(:activity, item: comment, action: 'created', user: user)
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { isEmpty } from 'lodash-es';
 import { IPhaseData } from 'services/phases';
 import { IProjectData } from 'services/projects';
-import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { Segment, Menu, Popup } from 'semantic-ui-react';
 import PhasesMenu from './FilterSidebarPhases';
@@ -36,7 +36,7 @@ interface Props {
   selectedPhase?: string | null;
   selectedProject?: string | null;
   selectedStatus?: string | null;
-  onChangePhaseFilter?: (arg: string) => void;
+  onChangePhaseFilter?: (arg: string | null) => void;
   onChangeTopicsFilter?: (topics: string[]) => void;
   onChangeProjectFilter?: (projects: string[] | undefined) => void;
   onChangeStatusFilter?: (arg: string) => void;

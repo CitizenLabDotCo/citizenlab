@@ -1,6 +1,6 @@
 import React, { MouseEvent } from 'react';
 import { Popup } from 'semantic-ui-react';
-import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IIdeaStatusData } from 'api/idea_statuses/types';
 import T from 'components/T';
 import styled from 'styled-components';
 

@@ -1,18 +1,10 @@
 import React, { MouseEvent } from 'react';
-import { combineLatest } from 'rxjs';
-import { take } from 'rxjs/operators';
 import { uniq, get } from 'lodash-es';
-import { findDOMNode } from 'react-dom';
-import { DragSource } from 'react-dnd-cjs';
+import { useDrag } from 'react-dnd';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import {
-  IInitiativeData,
-  updateInitiative,
-  initiativeByIdStream,
-} from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // components
@@ -24,10 +16,6 @@ import Checkbox from 'components/UI/Checkbox';
 import { Td, StatusLabel } from '@citizenlab/cl2-component-library';
 import SubRow from './SubRow';
 import AssigneeSelect from '../AssigneeSelect';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -54,6 +42,13 @@ import events, {
   StatusChangeModalOpen,
 } from 'components/admin/PostManager/events';
 
+// hooks
+import useInitiatives from 'api/initiatives/useInitiatives';
+import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
+
+// types
+import { IInitiativeData } from 'api/initiatives/types';
+
 interface DataProps {
   tenant: GetAppConfigurationChildProps;
   allowedTransitions: GetInitiativeAllowedTransitionsChildProps;
@@ -72,6 +67,8 @@ interface InputProps {
   nothingHappens: (event) => void;
 }
 
+interface Props extends DataProps, InputProps {}
+
 interface CellProps {
   onClick?: (event: any) => void;
   children: React.ReactNode;
@@ -83,25 +80,82 @@ const Cell = ({ onClick, children }: CellProps) => (
   </Td>
 );
 
-interface Props extends InputProps, DataProps {
-  connectDragSource: any;
-}
+const InitiativeRow = ({
+  initiative,
+  selection,
+  activeFilterMenu,
+  statuses,
+  className,
+  onClickCheckbox,
+  onClickTitle,
+  nothingHappens,
+  allowedTransitions,
+  tenant,
+}: Props) => {
+  const { data: initiatives } = useInitiatives({});
+  const { mutate: updateInitiative } = useUpdateInitiative();
 
-class InitiativeRow extends React.PureComponent<Props & WrappedComponentProps> {
-  onUpdateInitiativePhases = (selectedPhases: string[]) => {
-    updateInitiative(this.props.initiative.id, {
-      phase_ids: selectedPhases,
+  const [_collected, drag] = useDrag({
+    type: 'IDEA',
+    item: {
+      type: 'initiative',
+      id: initiative.id,
+    },
+    end: (item, monitor) => {
+      const dropResult = monitor.getDropResult<{
+        type: 'topic';
+        id: string;
+      }>();
+
+      if (dropResult && dropResult.type) {
+        let droppedIniatitives: IInitiativeData[] = [];
+        if (selection.has(item.id)) {
+          droppedIniatitives =
+            initiatives?.data.filter((i) => {
+              return selection.has(i.id);
+            }) || [];
+        } else {
+          const draggedIni = initiatives?.data.find((i) => i.id === item.id);
+          droppedIniatitives = draggedIni ? [draggedIni] : [];
+        }
+
+        droppedIniatitives.map((initiative) => {
+          if (dropResult.type === 'topic') {
+            const currentTopics = initiative.relationships.topics.data.map(
+              (d) => d.id
+            );
+            const newTopics = uniq(currentTopics.concat(dropResult.id));
+            updateInitiative({
+              initiativeId: initiative.id,
+              requestBody: {
+                topic_ids: newTopics,
+              },
+            });
+          }
+        });
+      }
+    },
+  });
+
+  const onUpdateInitiativePhases = (selectedPhases: string[]) => {
+    updateInitiative({
+      initiativeId: initiative.id,
+      requestBody: {
+        phase_ids: selectedPhases,
+      },
     });
   };
 
-  onUpdateInitiativeTopics = (selectedTopics: string[]) => {
-    updateInitiative(this.props.initiative.id, {
-      topic_ids: selectedTopics,
+  const onUpdateInitiativeTopics = (selectedTopics: string[]) => {
+    updateInitiative({
+      initiativeId: initiative.id,
+      requestBody: {
+        topic_ids: selectedTopics,
+      },
     });
   };
 
-  onUpdateInitiativeStatus = (statusId: string) => {
-    const { initiative } = this.props;
+  const onUpdateInitiativeStatus = (statusId: string) => {
     const initiativeId = initiative.id;
 
     eventEmitter.emit<StatusChangeModalOpen>(events.statusChangeModalOpen, {
@@ -116,12 +170,14 @@ class InitiativeRow extends React.PureComponent<Props & WrappedComponentProps> {
     });
   };
 
-  onUpdateInitiativeAssignee = (assigneeId: string) => {
-    const { initiative } = this.props;
+  const onUpdateInitiativeAssignee = (assigneeId: string | undefined) => {
     const initiativeId = initiative.id;
 
-    updateInitiative(initiativeId, {
-      assignee_id: assigneeId || null,
+    updateInitiative({
+      initiativeId: initiative.id,
+      requestBody: {
+        assignee_id: assigneeId || null,
+      },
     });
 
     trackEventByName(tracks.changeInitiativeAssignment, {
@@ -131,9 +187,7 @@ class InitiativeRow extends React.PureComponent<Props & WrappedComponentProps> {
     });
   };
 
-  renderTimingCell = () => {
-    const { initiative, tenant, statuses } = this.props;
-
+  const renderTimingCell = () => {
     const selectedStatus: string | undefined = get(
       initiative,
       'relationships.initiative_status.data.id'
@@ -160,137 +214,65 @@ class InitiativeRow extends React.PureComponent<Props & WrappedComponentProps> {
     return null;
   };
 
-  render() {
-    const {
-      initiative,
-      selection,
-      connectDragSource,
-      activeFilterMenu,
-      statuses,
-      className,
-      onClickCheckbox,
-      onClickTitle,
-      nothingHappens,
-      allowedTransitions,
-    } = this.props;
+  const selectedStatus: string | undefined = get(
+    initiative,
+    'relationships.initiative_status.data.id'
+  );
+  const selectedTopics = initiative.relationships.topics.data.map((p) => p.id);
+  const attrs = initiative.attributes;
+  const active = selection.has(initiative.id);
+  const assigneeId = get(initiative, 'relationships.assignee.data.id');
 
-    const selectedStatus: string | undefined = get(
-      initiative,
-      'relationships.initiative_status.data.id'
-    );
-    const selectedTopics = initiative.relationships.topics.data.map(
-      (p) => p.id
-    );
-    const attrs = initiative.attributes;
-    const active = selection.has(initiative.id);
-    const assigneeId = get(initiative, 'relationships.assignee.data.id');
-
-    return (
-      <>
-        <StyledRow
-          className={`e2e-initiative-row ${className}`}
-          undraggable={activeFilterMenu === 'statuses'}
-          background={active ? colors.grey300 : undefined}
-          ref={(instance) => {
-            instance &&
-              activeFilterMenu !== 'statuses' &&
-              // eslint-disable-next-line react/no-find-dom-node
-              connectDragSource(findDOMNode(instance));
-          }}
-        >
-          <Cell>
-            <Checkbox
-              checked={!!active}
-              onChange={onClickCheckbox}
-              size="21px"
-            />
-          </Cell>
-          <Cell>
-            <TitleLink
-              className="e2e-initiative-manager-initiative-title"
-              onClick={onClickTitle}
-            >
-              <T value={attrs.title_multiloc} />
-            </TitleLink>
-          </Cell>
-          <Cell onClick={nothingHappens}>
-            <AssigneeSelect
-              onAssigneeChange={this.onUpdateInitiativeAssignee}
-              assigneeId={assigneeId}
-            />
-          </Cell>
-          <Cell>{this.renderTimingCell()}</Cell>
-          <Cell>
-            <Icon name="thumbs up" />
-            {attrs.upvotes_count}
-          </Cell>
-          <Cell>{attrs.comments_count}</Cell>
-        </StyledRow>
-        <SubRow
-          {...{
-            active,
-            className,
-            activeFilterMenu,
-            selectedTopics,
-            statuses,
-            selectedStatus,
-            allowedTransitions,
-          }}
-          onUpdatePhases={this.onUpdateInitiativePhases}
-          onUpdateTopics={this.onUpdateInitiativeTopics}
-          onUpdateStatus={this.onUpdateInitiativeStatus}
-          postType="initiative"
-        />
-      </>
-    );
-  }
-}
-
-const initiativeSource = {
-  beginDrag(props: Props) {
-    return {
-      type: 'initiative',
-      id: props.initiative.id,
-    };
-  },
-  endDrag(props: Props & WrappedComponentProps, monitor) {
-    const item = monitor.getItem();
-    const dropResult = monitor.getDropResult();
-    const { selection } = props;
-
-    if (dropResult && dropResult.type) {
-      const observables = selection.has(item.id)
-        ? [...selection].map((id) => initiativeByIdStream(id).observable)
-        : [initiativeByIdStream(item.id).observable];
-
-      if (dropResult.type === 'topic') {
-        combineLatest(observables)
-          .pipe(take(1))
-          .subscribe((initiatives) => {
-            initiatives.map((initiative) => {
-              const currentTopics =
-                initiative.data.relationships.topics.data.map((d) => d.id);
-              const newTopics = uniq(currentTopics.concat(dropResult.id));
-              updateInitiative(initiative.data.id, {
-                topic_ids: newTopics,
-              });
-            });
-          });
-      }
-    }
-  },
+  return (
+    <>
+      <StyledRow
+        className={`e2e-initiative-row ${className}`}
+        undraggable={activeFilterMenu === 'statuses'}
+        background={active ? colors.grey300 : undefined}
+        ref={drag}
+      >
+        <Cell>
+          <Checkbox checked={!!active} onChange={onClickCheckbox} size="21px" />
+        </Cell>
+        <Cell>
+          <TitleLink
+            className="e2e-initiative-manager-initiative-title"
+            onClick={onClickTitle}
+          >
+            <T value={attrs.title_multiloc} />
+          </TitleLink>
+        </Cell>
+        <Cell onClick={nothingHappens}>
+          <AssigneeSelect
+            onAssigneeChange={onUpdateInitiativeAssignee}
+            assigneeId={assigneeId}
+          />
+        </Cell>
+        <Cell>{renderTimingCell()}</Cell>
+        <Cell>
+          <Icon name="thumbs up" />
+          {attrs.upvotes_count}
+        </Cell>
+        <Cell>{attrs.comments_count}</Cell>
+      </StyledRow>
+      <SubRow
+        {...{
+          active,
+          className,
+          activeFilterMenu,
+          selectedTopics,
+          statuses,
+          selectedStatus,
+          allowedTransitions,
+        }}
+        onUpdatePhases={onUpdateInitiativePhases}
+        onUpdateTopics={onUpdateInitiativeTopics}
+        onUpdateStatus={onUpdateInitiativeStatus}
+        postType="initiative"
+      />
+    </>
+  );
 };
-
-function collect(connect, monitor) {
-  return {
-    connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging(),
-  };
-}
-
-const InitiativesRowWithHocs = injectIntl(
-  DragSource('IDEA', initiativeSource, collect)(InitiativeRow)
-);
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetAppConfiguration />,
@@ -303,6 +285,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <InitiativesRowWithHocs {...inputProps} {...dataProps} />}
+    {(dataProps: DataProps) => <InitiativeRow {...inputProps} {...dataProps} />}
   </Data>
 );

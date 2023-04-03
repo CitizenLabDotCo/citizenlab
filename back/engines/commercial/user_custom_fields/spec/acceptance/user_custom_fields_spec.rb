@@ -47,11 +47,11 @@ resource 'User Custom Fields' do
       {
         id: id,
         type: 'user_custom_field',
-        attributes: {
+        attributes: hash_including(
           key: custom_field.key,
           input_type: custom_field.input_type,
-          title_multiloc: custom_field.title_multiloc,
-          description_multiloc: custom_field.description_multiloc,
+          title_multiloc: custom_field.title_multiloc.symbolize_keys,
+          description_multiloc: custom_field.description_multiloc.symbolize_keys,
           required: custom_field.required?,
           hidden: custom_field.hidden?,
           enabled: custom_field.enabled?,
@@ -60,7 +60,7 @@ resource 'User Custom Fields' do
           created_at: custom_field.created_at.as_json,
           updated_at: custom_field.updated_at.as_json,
           logic: {}
-        },
+        ),
         relationships: {
           current_ref_distribution: expected_ref_distribution_linkage,
           options: {
@@ -103,9 +103,11 @@ resource 'User Custom Fields' do
 
     example_request 'Get the react-jsonschema-form json schema and ui schema for the custom fields' do
       assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response[:json_schema_multiloc]).to be_present
-      expect(json_response[:ui_schema_multiloc]).to be_present
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :type)).to eq 'schema'
+      json_attributes = json_response.dig(:data, :attributes)
+      expect(json_attributes[:json_schema_multiloc]).to be_present
+      expect(json_attributes[:ui_schema_multiloc]).to be_present
     end
   end
 
@@ -116,11 +118,13 @@ resource 'User Custom Fields' do
 
     example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
       assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response[:json_schema_multiloc]).to be_present
-      expect(json_response.dig(:json_schema_multiloc, :en, :properties).size).to eq 4
-      expect(json_response[:ui_schema_multiloc]).to be_present
-      expect(json_response.dig(:ui_schema_multiloc, :en, :type)).to eq 'VerticalLayout'
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
+      json_attributes = json_response.dig(:data, :attributes)
+      expect(json_attributes[:json_schema_multiloc]).to be_present
+      expect(json_attributes.dig(:json_schema_multiloc, :en, :properties).size).to eq 4
+      expect(json_attributes[:ui_schema_multiloc]).to be_present
+      expect(json_attributes.dig(:ui_schema_multiloc, :en, :type)).to eq 'VerticalLayout'
     end
   end
 
@@ -169,7 +173,8 @@ resource 'User Custom Fields' do
         let(:key) { 'No spaces allowed' }
         let(:title_multiloc) { { 'en' => '' } }
 
-        example_request '[error] Create an invalid custom field', document: false do
+        example '[error] Create an invalid custom field', document: false do
+          do_request
           assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:key, 'invalid', value: key)
@@ -257,18 +262,16 @@ resource 'User Custom Fields' do
         expect { CustomField.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
-      if CitizenLab.ee?
-        example "[error] Delete a custom field that's still referenced in a rules group" do
-          create(
-            :smart_group,
-            rules: [
-              { ruleType: 'custom_field_text', customFieldId: id, predicate: 'is_empty' }
-            ]
-          )
-          do_request
-          assert_status 422
-          expect(CustomField.find(id)).to be_present
-        end
+      example "[error] Delete a custom field that's still referenced in a rules group" do
+        create(
+          :smart_group,
+          rules: [
+            { ruleType: 'custom_field_text', customFieldId: id, predicate: 'is_empty' }
+          ]
+        )
+        do_request
+        assert_status 422
+        expect(CustomField.find(id)).to be_present
       end
     end
   end

@@ -76,11 +76,9 @@ const Padding = styled.div`
 const InitiativeIndexPage = () => {
   const initiativePermissions = useInitiativesPermissions('posting_initiative');
   const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
-
   if (!initiativesEnabled) {
     return <PageNotFound />;
   }
-
   if (!isNilOrError(initiativePermissions)) {
     const { enabled } = initiativePermissions;
     const proposalSubmissionEnabled = enabled === true || enabled === 'maybe';

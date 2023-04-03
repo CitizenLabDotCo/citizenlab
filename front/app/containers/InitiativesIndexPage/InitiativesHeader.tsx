@@ -1,5 +1,4 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -8,10 +7,6 @@ import InitiativeInfoContent from './InitiativeInfoContent';
 import Warning from 'components/UI/Warning';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -25,9 +20,9 @@ import T from 'components/T';
 
 // images
 import InitiativeButton from 'components/InitiativeButton';
-import GetInitiativesPermissions, {
-  GetInitiativesPermissionsChildProps,
-} from 'resources/GetInitiativesPermissions';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 const Container = styled.div`
   width: 100%;
@@ -90,86 +85,72 @@ const StyledInitiativeInfoContent = styled(InitiativeInfoContent)`
   margin-bottom: 30px;
 `;
 
-export interface InputProps {
+export interface Props {
   className?: string;
 }
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  tenant: GetAppConfigurationChildProps;
-  postingPermission: GetInitiativesPermissionsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-interface State {}
-
-class InitiativesHeader extends PureComponent<Props, State> {
-  render() {
-    const { className, tenant, postingPermission } = this.props;
-
-    if (isNilOrError(tenant) || isNilOrError(postingPermission)) return null;
-
-    const { enabled } = postingPermission;
-    const proposalSubmissionEnabled = enabled === true || enabled === 'maybe';
-
-    return (
-      <Container className={`e2e-initiatives-header ${className || ''}`}>
-        <ScreenReaderOnly>
-          <FormattedMessage
-            tagName="h1"
-            {...messages.invisibleInitiativesPageTitle}
-          />
-        </ScreenReaderOnly>
-        <Content>
-          <Title>
-            {proposalSubmissionEnabled ? (
-              <FormattedMessage
-                {...messages.header}
-                values={{
-                  styledOrgName: (
-                    <T
-                      value={tenant.attributes.settings.core.organization_name}
-                    />
-                  ),
-                }}
-              />
-            ) : (
-              <FormattedMessage
-                {...messages.headerPostingProposalDisabled}
-                values={{
-                  styledOrgName: (
-                    <T
-                      value={tenant.attributes.settings.core.organization_name}
-                    />
-                  ),
-                }}
-              />
-            )}
-          </Title>
-          <StyledAvatarBubbles />
-          <StyledInitiativeInfoContent />
-          {proposalSubmissionEnabled ? (
-            <InitiativeButton location="initiatives_header" />
-          ) : (
-            <Warning>
-              <FormattedMessage {...messages.newProposalsNotPermitted} />
-            </Warning>
-          )}
-        </Content>
-      </Container>
-    );
+const InitiativesHeader = ({ className }: Props) => {
+  const { data: appConfiguration } = useAppConfiguration();
+  const postingPermission = useInitiativesPermissions('posting_initiative');
+  if (isNilOrError(appConfiguration) || isNilOrError(postingPermission)) {
+    return null;
   }
-}
 
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  tenant: <GetAppConfiguration />,
-  postingPermission: <GetInitiativesPermissions action="posting_initiative" />,
-});
+  const { enabled } = postingPermission;
+  const proposalSubmissionEnabled = enabled === true || enabled === 'maybe';
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <InitiativesHeader {...inputProps} {...dataProps} />}
-  </Data>
-);
+  return (
+    <Container className={`e2e-initiatives-header ${className || ''}`}>
+      <ScreenReaderOnly>
+        <FormattedMessage
+          tagName="h1"
+          {...messages.invisibleInitiativesPageTitle}
+        />
+      </ScreenReaderOnly>
+      <Content>
+        <Title>
+          {proposalSubmissionEnabled ? (
+            <FormattedMessage
+              {...messages.header}
+              values={{
+                styledOrgName: (
+                  <T
+                    value={
+                      appConfiguration.data.attributes.settings.core
+                        .organization_name
+                    }
+                  />
+                ),
+              }}
+            />
+          ) : (
+            <FormattedMessage
+              {...messages.headerPostingProposalDisabled}
+              values={{
+                styledOrgName: (
+                  <T
+                    value={
+                      appConfiguration.data.attributes.settings.core
+                        .organization_name
+                    }
+                  />
+                ),
+              }}
+            />
+          )}
+        </Title>
+        <StyledAvatarBubbles />
+        <StyledInitiativeInfoContent />
+        {proposalSubmissionEnabled ? (
+          <InitiativeButton location="initiatives_header" />
+        ) : (
+          <Warning>
+            <FormattedMessage {...messages.newProposalsNotPermitted} />
+          </Warning>
+        )}
+      </Content>
+    </Container>
+  );
+};
+
+export default InitiativesHeader;

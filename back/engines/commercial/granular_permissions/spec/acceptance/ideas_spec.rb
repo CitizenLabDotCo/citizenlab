@@ -26,7 +26,7 @@ resource 'Ideas' do
 
       let(:idea) { build :idea }
       let(:project) do
-        create(:continuous_native_survey_project).tap do |project|
+        create(:continuous_native_survey_project, with_permissions: true).tap do |project|
           project.permissions.find_by(action: 'posting_idea').update! permitted_by: 'everyone'
         end
       end

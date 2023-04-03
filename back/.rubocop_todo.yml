@@ -149,11 +149,6 @@ RSpec/BeforeAfterAll:
 RSpec/ContextWording:
   Enabled: false
 
-# Offense count: 832
-# Configuration parameters: CountAsOne.
-RSpec/ExampleLength:
-  Max: 233
-
 # Offense count: 97
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: CustomTransform, IgnoredWords.

@@ -25,8 +25,8 @@ resource 'Views' do
       end
     end
 
-    context 'when normal user' do
-      before { user_header_token }
+    context 'when resident' do
+      before { resident_header_token }
 
       example 'unauthorized', document: false do
         do_request
@@ -39,7 +39,8 @@ resource 'Views' do
     context 'when name is empty' do
       let(:name) { '' }
 
-      example_request 'returns unprocessable-entity error', document: false do
+      example 'returns unprocessable-entity error', document: false do
+        do_request
         assert_status 422
       end
     end

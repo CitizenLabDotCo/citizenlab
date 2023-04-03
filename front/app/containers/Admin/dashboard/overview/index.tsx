@@ -3,17 +3,8 @@ import moment, { Moment } from 'moment';
 
 // services
 import {
-  usersByTimeCumulativeStream,
   activeUsersByTimeStream,
-  usersByTimeStream,
-  commentsByTimeStream,
-  ideasByTimeCumulativeStream,
-  commentsByTimeCumulativeStream,
   activeUsersByTimeXlsxEndpoint,
-  ideasByTimeCumulativeXlsxEndpoint,
-  commentsByTimeCumulativeXlsxEndpoint,
-  ideasByTimeStream,
-  usersByTimeXlsxEndpoint,
 } from 'services/stats';
 
 // resources
@@ -23,15 +14,17 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import useAuthUser from 'hooks/useAuthUser';
 
 // components
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Title } from '@citizenlab/cl2-component-library';
 import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
 import Outlet from 'components/Outlet';
 import ChartFilters from './ChartFilters';
-import LineBarChart from './charts/LineBarChart';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
-import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
+import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
+import VotesByTimeCard from 'components/admin/GraphCards/VotesByTimeCard';
+import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
+import RegistrationsByTimeCard from 'components/admin/GraphCards/RegistrationsByTimeCard';
 
 // i18n
 import messages from '../messages';
@@ -158,17 +151,15 @@ const OverviewDashboard = ({ projects }: DataProps) => {
         onChangeResolution={handleChangeResolution}
       />
       <GraphsContainer>
-        <Box width="100%" display="flex">
-          <LineBarChart
-            graphUnit="users"
-            graphUnitMessageKey="users"
-            graphTitle={formatMessage(messages.usersByTimeTitle)}
-            xlsxEndpoint={usersByTimeXlsxEndpoint}
-            lineStream={usersByTimeCumulativeStream}
-            barStream={usersByTimeStream}
-            className="e2e-active-users-chart"
-            {...legacyProps}
+        <Column>
+          <RegistrationsByTimeCard
+            projectId={currentProjectFilter}
+            startAtMoment={startAtMoment}
+            endAtMoment={endAtMoment}
+            resolution={resolution}
           />
+        </Column>
+        <Column>
           <BarChartActiveUsersByTime
             graphUnit="users"
             graphUnitMessageKey="activeUsers"
@@ -178,10 +169,10 @@ const OverviewDashboard = ({ projects }: DataProps) => {
             infoMessage={formatMessage(
               messages.numberOfActiveParticipantsDescription
             )}
-            className="e2e-users-by-time-cumulative-chart"
+            className="e2e-users-by-time-cumulative-chart fullWidth"
             {...legacyProps}
           />
-        </Box>
+        </Column>
         <Title
           ml="12px"
           mt="40px"
@@ -200,29 +191,23 @@ const OverviewDashboard = ({ projects }: DataProps) => {
             endAtMoment={endAtMoment}
             resolution={resolution}
           />
-          <LineBarChart
-            graphTitle={formatMessage(messages.inputs)}
-            graphUnit="ideas"
-            graphUnitMessageKey="ideas"
-            xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
-            className="e2e-ideas-chart fullWidth"
-            lineStream={ideasByTimeCumulativeStream}
-            barStream={ideasByTimeStream}
-            {...legacyProps}
+          <PostByTimeCard
+            projectId={currentProjectFilter}
+            startAtMoment={startAtMoment}
+            endAtMoment={endAtMoment}
+            resolution={resolution}
           />
-          <LineBarChart
-            graphTitle={formatMessage(messages.commentsByTimeTitle)}
-            graphUnit="comments"
-            graphUnitMessageKey="comments"
-            xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
-            className="e2e-comments-chart fullWidth"
-            lineStream={commentsByTimeCumulativeStream}
-            barStream={commentsByTimeStream}
-            {...legacyProps}
+          <CommentsByTimeCard
+            projectId={currentProjectFilter}
+            startAtMoment={startAtMoment}
+            endAtMoment={endAtMoment}
+            resolution={resolution}
           />
-          <LineBarChartVotesByTime
-            className="fullWidth e2e-votes-chart"
-            {...legacyProps}
+          <VotesByTimeCard
+            projectId={currentProjectFilter}
+            startAtMoment={startAtMoment}
+            endAtMoment={endAtMoment}
+            resolution={resolution}
           />
         </Column>
         <Column>

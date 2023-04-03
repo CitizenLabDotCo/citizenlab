@@ -79,9 +79,7 @@ resource 'AdminPublication' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 8
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
-        if CitizenLab.ee?
-          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
-        end
+        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
       end
 
       ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS.each do |filter_param|
@@ -209,10 +207,8 @@ resource 'AdminPublication' do
     end
   end
 
-  context 'when citizen' do
-    before do
-      user_header_token
-    end
+  context 'when resident' do
+    before { resident_header_token }
 
     let(:project_statuses) { %w[published published draft draft published archived] }
     let!(:_custom_folder) { create(:project_folder, projects: projects.take(3)) }
@@ -250,7 +246,7 @@ resource 'AdminPublication' do
       end
 
       context 'search param' do
-        example_request 'Search param should return the proper projects and folders' do
+        example 'Search param should return the proper projects and folders', document: false do
           p1 = create(
             :project,
             admin_publication_attributes: { publication_status: 'published' },
@@ -317,7 +313,7 @@ resource 'AdminPublication' do
           expect(response_ids).not_to include f3.admin_publication.id
         end
 
-        example_request 'searching with query and filtering by topic', document: false do
+        example 'searching with query and filtering by topic', document: false do
           topic = create(:topic)
           project_with_topic = create(:project, topics: [topic],
             admin_publication_attributes: { publication_status: 'published' },
@@ -329,7 +325,7 @@ resource 'AdminPublication' do
           expect(response_ids).to contain_exactly(project_with_topic.admin_publication.id)
         end
 
-        example_request 'Search param should return a project within a folder' do
+        example 'Search param should return a project within a folder', document: false do
           project_in_folder = create(
             :project,
             admin_publication_attributes: { publication_status: 'published' },
@@ -354,7 +350,7 @@ resource 'AdminPublication' do
           expect(response_ids).not_to include folder.admin_publication.id
         end
 
-        example_request 'Search param should return a project within a folder and folder' do
+        example 'Search param should return a project within a folder and folder', document: false do
           project_in_folder = create(
             :project,
             admin_publication_attributes: { publication_status: 'published' },
@@ -382,19 +378,17 @@ resource 'AdminPublication' do
           )
         end
 
-        if CitizenLab.ee?
-          example_request 'Search project by content from content builder' do
-            project = create(:project, content_builder_layouts: [
-              build(:layout, craftjs_jsonmultiloc: { en: { someid: { props: { text: 'sometext' } } } })
-            ])
-            create(:project, content_builder_layouts: [
-              build(:layout, craftjs_jsonmultiloc: { en: { sometext: { props: { text: 'othertext' } } } })
-            ])
-            do_request search: 'sometext'
+        example 'Search project by content from content builder', document: false do
+          project = create(:project, content_builder_layouts: [
+            build(:layout, craftjs_jsonmultiloc: { en: { someid: { props: { text: 'sometext' } } } })
+          ])
+          create(:project, content_builder_layouts: [
+            build(:layout, craftjs_jsonmultiloc: { en: { sometext: { props: { text: 'othertext' } } } })
+          ])
+          do_request search: 'sometext'
 
-            expect(response_data.size).to eq 1
-            expect(response_ids).to contain_exactly(project.admin_publication.id)
-          end
+          expect(response_data.size).to eq 1
+          expect(response_ids).to contain_exactly(project.admin_publication.id)
         end
       end
 

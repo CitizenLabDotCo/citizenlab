@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -10,16 +10,21 @@ import { parse } from 'qs';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
 import PasswordInput, {
   hasPasswordMinimumLength,
 } from 'components/UI/PasswordInput';
-import PasswordIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import { Helmet } from 'react-helmet';
-import ContentContainer from 'components/ContentContainer';
 import { FormLabel } from 'components/UI/FormComponents';
 import Error from 'components/UI/Error';
 import { PasswordResetSuccess } from 'containers/PasswordReset/PasswordResetSuccess';
+import {
+  StyledContentContainer,
+  Title,
+  StyledButton,
+  Form,
+  LabelContainer,
+  StyledPasswordIconTooltip,
+} from 'components/smallForm';
 
 // services
 import { resetPassword } from 'services/auth';
@@ -30,56 +35,13 @@ import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // style
-import styled from 'styled-components';
 import messages from './messages';
-import { fontSizes, stylingConsts } from 'utils/styleUtils';
+import { stylingConsts } from 'utils/styleUtils';
 
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
-
-const StyledContentContainer = styled(ContentContainer)`
-  padding-bottom: 100px;
-`;
-
-const Title = styled.h1`
-  width: 100%;
-  color: #333;
-  font-size: ${fontSizes.xxxxl}px;
-  line-height: 40px;
-  font-weight: 500;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  padding-top: 60px;
-  margin-bottom: 50px;
-`;
-
-const StyledButton = styled(Button)`
-  margin-top: 20px;
-  margin-bottom: 10px;
-`;
-
-const Form = styled.form`
-  width: 100%;
-  max-width: 380px;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-`;
-
-const LabelContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const StyledPasswordIconTooltip = styled(PasswordIconTooltip)`
-  margin-bottom: 6px;
-`;
 
 interface DataProps {
   tenant: GetAppConfigurationChildProps;
@@ -177,7 +139,7 @@ class PasswordReset extends React.PureComponent<
     this.passwordInputElement = element;
   };
 
-  handleOnSubmit = async (event) => {
+  handleOnSubmit = async (event: FormEvent) => {
     const { password, token } = this.state;
 
     event.preventDefault();

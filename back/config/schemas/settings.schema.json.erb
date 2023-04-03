@@ -181,6 +181,36 @@
             "minimum": 1,
             "maximum": 30,
             "default": 30
+          },
+          "maximum_admins_number": {
+            "title": "Maximum number of admins",
+            "description": "Maximum allowed number of admins on the platform.",
+            "type": ["integer", "null"]
+          },
+          "maximum_moderators_number": {
+            "title": "Maximum number of managers",
+            "description": "Maximum allowed number of project and folder managers on the platform.",
+            "type": ["integer", "null"]
+          }
+        }
+      },
+
+      "user_blocking": {
+        "type": "object",
+        "title": "User blocking",
+        "description": "User blocking and unblocking features. WIP - Don't enable for customer platforms",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["duration"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+          "duration": {
+            "title": "Duration of block (in days)",
+            "description": "How many days a user will be blocked for. The user will remain blocked until this period expires, or an admin manually removes the block on the user. Setting this value to zero effectively unblocks all blocked users.",
+            "type": "integer",
+            "minimum": 0,
+            "default": 90
           }
         }
       },
@@ -470,6 +500,18 @@
             "type": "string",
             "description": "As more tools can be activated through Segment, here you can specify them using comma separated text, shown in the cookie consent"
           }
+        }
+      },
+
+      "planhat": {
+        "type": "object",
+        "title": "Planhat Integration",
+        "description":  "Planhat integration for data collection (via Segment).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 
@@ -1047,9 +1089,47 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "input_form_custom_fields": {
+        "type": "object",
+        "title": "Input form builder custom fields",
+        "description": "Enables the ability to create custom fields within the ideation form builder.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "user_confirmation": {
+        "type": "object",
+        "title": "User email confirmation",
+        "description": "Enables the ability for emails to be confirmed after registration.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
+      "permission_option_email_confirmation": {
+        "type": "object",
+        "title": "Registration via email confirmation",
+        "description": "Enables a light registration flow where users enter just an email address and a confirmation code.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
+    "planhat": ["segment"],
+
     "typeform_surveys": ["surveys"],
     "google_forms_surveys": ["surveys"],
     "enalyzer_surveys": ["surveys"],
@@ -1068,7 +1148,9 @@
     "id_franceconnect": ["verification"],
     "id_gent_rrn": ["verification"],
     "id_oostende_rrn": ["verification"],
-    "id_id_card_lookup": ["verification"]
+    "id_id_card_lookup": ["verification"],
+
+    "permission_option_email_confirmation": ["user_confirmation"]
   },
   "definitions": {
     "multiloc_string": {

@@ -19,13 +19,22 @@ import { NativeSurveyCTABar } from 'components/ParticipationCTABars/NativeSurvey
 import { EmbeddedSurveyCTABar } from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
 import { BudgetingCTABar } from 'components/ParticipationCTABars/BudgetingCTABar';
 import { VolunteeringCTABar } from 'components/ParticipationCTABars/VolunteeringCTABar';
+import { PollCTABar } from 'components/ParticipationCTABars/PollCTABar';
 
 import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
 // utils
 import { isNilOrError } from './helperUtils';
 import clHistory from 'utils/cl-router/history';
-import { IIdea } from 'services/ideas';
+import { IIdea } from 'api/ideas/types';
+
+export const defaultSortingOptions = [
+  { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
+  { text: <FormattedMessage {...messages.random} />, value: 'random' },
+  { text: <FormattedMessage {...messages.mostVoted} />, value: 'popular' },
+  { text: <FormattedMessage {...messages.newest} />, value: 'new' },
+  { text: <FormattedMessage {...messages.oldest} />, value: '-new' },
+];
 
 type FormSubmissionMethodProps = {
   project?: IProjectData;
@@ -46,6 +55,8 @@ type FormTitleMethodProps = {
   phaseFromUrl?: IPhaseData;
 };
 
+type PostSortingOptionType = { text: JSX.Element; value: string };
+
 export type ParticipationMethodConfig = {
   /** We currently have 2 UIs for admins to edit the form definition. This
    * defines which UI, if any, the method uses */
@@ -60,6 +71,7 @@ export type ParticipationMethodConfig = {
   isMethodLocked: boolean;
   postType: 'defaultInput' | 'nativeSurvey';
   renderCTABar: (props: CTABarProps) => ReactNode | JSX.Element | null;
+  postSortingOptions?: PostSortingOptionType[];
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -120,6 +132,7 @@ const ideationConfig: ParticipationMethodConfig = {
   renderCTABar: (props: CTABarProps) => {
     return <IdeationCTABar project={props.project} phases={props.phases} />;
   },
+  postSortingOptions: defaultSortingOptions,
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
@@ -245,6 +258,9 @@ const budgetingConfig: ParticipationMethodConfig = {
   renderCTABar: (props: CTABarProps) => {
     return <BudgetingCTABar project={props.project} phases={props.phases} />;
   },
+  postSortingOptions: defaultSortingOptions.filter(
+    (option) => option.value !== 'trending' && option.value !== 'popular'
+  ),
 };
 
 const pollConfig: ParticipationMethodConfig = {
@@ -261,8 +277,8 @@ const pollConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
-  renderCTABar: () => {
-    return null;
+  renderCTABar: (props: CTABarProps) => {
+    return <PollCTABar project={props.project} phases={props.phases} />;
   },
 };
 

@@ -3,59 +3,117 @@
 require 'rails_helper'
 
 describe TrackSegmentService do
-  let(:segment_client) { instance_double(SimpleSegment::Client) }
+  let(:segment_client) { instance_double(SimpleSegment::Client, 'segment_client') }
   let(:service) { described_class.new(segment_client) }
 
+  def activate_planhat_feature(bool = true) # rubocop:disable Style/OptionalBooleanParameter
+    app_config = AppConfiguration.instance
+    settings = app_config.settings
+    settings['segment'] = { 'allowed' => bool, 'enabled' => bool }
+    settings['planhat'] = { 'allowed' => bool, 'enabled' => bool }
+    app_config.update!(settings: settings)
+  end
+
   describe 'integrations' do
-    it 'logs to all destinations by default' do
-      user = build_stubbed(:user)
-      expect(service.integrations(user)[:All]).to be true
+    context do
+      where(:user_factory, :is_included) do
+        [
+          [:user, false],
+          [:project_moderator, true],
+          [:project_folder_moderator, true],
+          [:admin, true],
+          [:super_admin, false]
+        ]
+      end
+
+      with_them do
+        user_category = params[:user_factory].to_s.pluralize.tr('_', ' ')
+        includes = params[:is_included] ? 'includes' : 'does not include'
+
+        let(:user) { build(user_factory) }
+
+        it "#{includes} All for #{user_category}" do
+          expect(service.integrations(user)[:All]).to eq(is_included)
+        end
+
+        it "#{includes} Intercom for #{user_category}" do
+          expect(service.integrations(user)[:Intercom]).to eq(is_included)
+        end
+
+        it "#{includes} Satismeter for #{user_category}" do
+          expect(service.integrations(user)[:SatisMeter]).to eq(is_included)
+        end
+
+        context 'when Planhat feature is enabled' do
+          before_all { activate_planhat_feature }
+
+          it "#{includes} Planhat for #{user_category}" do
+            expect(service.integrations(user)[:Planhat]).to eq(is_included)
+          end
+        end
+      end
     end
 
-    it "doesn't include intercom for a super admin" do
-      user = build_stubbed(:admin, email: 'hello@citizenlab.co')
-      expect(service.integrations(user)[:Intercom]).to be false
-    end
+    context 'when Planhat feature is disabled' do
+      before_all { activate_planhat_feature(false) }
+      before_all do
+        app_config = AppConfiguration.instance
+        settings = app_config.settings
+        settings['segment'] = { 'allowed' => false, 'enabled' => false }
+        settings['planhat'] = { 'allowed' => false, 'enabled' => false }
+        app_config.update(settings: settings)
+      end
 
-    it 'includes intercom for an admin' do
-      user = build_stubbed(:admin)
-      expect(service.integrations(user)[:Intercom]).to be true
-    end
+      where(:user_factory) do
+        %i[
+          user
+          project_moderator
+          project_folder_moderator
+          admin
+          super_admin
+        ]
+      end
 
-    it "doesn't include intercom for a normal user" do
-      user = build_stubbed(:user)
-      expect(service.integrations(user)[:Intercom]).to be false
-    end
+      with_them do
+        user_category = params[:user_factory].to_s.pluralize.tr('_', ' ')
 
-    it "doesn't include SatisMeter for a super admin" do
-      user = build_stubbed(:admin, email: 'hello@citizenlab.co')
-      expect(service.integrations(user)[:SatisMeter]).to be false
-    end
-
-    it 'includes SatisMeter for an admin' do
-      user = build_stubbed(:admin)
-      expect(service.integrations(user)[:SatisMeter]).to be true
-    end
-
-    it "doesn't include SatisMeter for a normal user" do
-      user = build_stubbed(:user)
-      expect(service.integrations(user)[:SatisMeter]).to be false
-    end
-
-    it 'includes intercom for a project moderator' do
-      user = build_stubbed(:project_moderator)
-      expect(service.integrations(user)[:Intercom]).to be true
-    end
-
-    it 'includes SatisMeter for a project moderator' do
-      user = build_stubbed(:project_moderator)
-      expect(service.integrations(user)[:SatisMeter]).to be true
+        it "does not include Planhat for #{user_category}" do
+          user = build(user_factory)
+          expect(service.integrations(user)[:Planhat]).to be false
+        end
+      end
     end
   end
 
   describe 'identify_user' do
-    it "calls segment's identify() method with the correct payload" do
+    it 'does not track normal users' do
       user = create(:user)
+      expect(SEGMENT_CLIENT).not_to receive(:identify)
+      service.identify_user(user)
+    end
+
+    it 'does not track super admins' do
+      user = create(:super_admin)
+      expect(segment_client).not_to receive(:identify)
+      service.identify_user(user)
+    end
+
+    it 'tracks admins' do
+      user = create(:admin)
+      expect(segment_client).to receive(:identify)
+      service.identify_user(user)
+    end
+
+    it 'tracks project moderators' do
+      user = create(:project_moderator)
+      expect(segment_client).to receive(:identify)
+      service.identify_user(user)
+    end
+
+    it "calls segment's `identify` method with the correct payload" do
+      activate_planhat_feature
+
+      user = create(:admin)
 
       expect(segment_client).to receive(:identify).with(
         user_id: user.id,
@@ -69,15 +127,16 @@ describe TrackSegmentService do
           birthday: nil,
           gender: nil,
           isSuperAdmin: false,
-          isAdmin: false,
+          isAdmin: true,
           isProjectModerator: false,
-          highestRole: :user,
+          highestRole: :admin,
           timezone: 'Brussels'
         ),
         integrations: {
           All: true,
-          Intercom: false,
-          SatisMeter: false
+          Intercom: true,
+          SatisMeter: true,
+          Planhat: true
         }
       )
 
@@ -86,8 +145,19 @@ describe TrackSegmentService do
   end
 
   describe 'track_activity' do
-    it 'generates an event with the desired content for (normal) activities' do
+    it 'does not track activities initiated by normal users' do
       user = create(:user)
+      activity = create(:activity, user: user)
+
+      expect(segment_client).not_to receive(:track)
+
+      service.track_activity(activity)
+    end
+
+    it 'generates an event with the desired content for (normal) activities' do
+      activate_planhat_feature(false)
+
+      user = create(:admin)
       comment = create(:comment)
       activity = create(:activity, item: comment, action: 'created', user: user)
 
@@ -104,8 +174,9 @@ describe TrackSegmentService do
           ),
           integrations: {
             All: true,
-            Intercom: false,
-            SatisMeter: false
+            Intercom: true,
+            SatisMeter: true,
+            Planhat: false
           }
         )
       )
@@ -114,7 +185,7 @@ describe TrackSegmentService do
     end
 
     it 'generates an event with the desired content for activities about notifications' do
-      user = create(:user)
+      user = create(:admin)
       notification = create(:comment_on_your_comment, recipient: user)
       activity = create(:activity, item: notification, item_type: notification.type, action: 'created', user: user)
       activity.update!(item_type: notification.class.name)
@@ -133,6 +204,25 @@ describe TrackSegmentService do
       )
 
       service.track_activity(activity)
+    end
+  end
+
+  describe '#track_user' do
+    where(:user_factory, :is_tracked) do
+      [
+        [:user, false],
+        [:project_moderator, true],
+        [:project_folder_moderator, true],
+        [:admin, true],
+        [:super_admin, false]
+      ]
+    end
+
+    with_them do
+      it "returns #{params[:is_tracked]} for #{params[:user_factory].to_s.pluralize}" do
+        user = build(user_factory)
+        expect(service.send(:track_user?, user)).to eq(is_tracked)
+      end
     end
   end
 end

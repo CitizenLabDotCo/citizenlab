@@ -6,6 +6,7 @@ import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
 // components
 import { Box, Image, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import Tippy from '@tippyjs/react';
 
 // styling
 import styled from 'styled-components';
@@ -13,7 +14,11 @@ import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
+import sharedMessages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const StyledBackgroundImage = styled(Image)`
   opacity: 0.5;
@@ -27,6 +32,11 @@ interface Props {
 }
 
 const EmptyState = ({ onOpenModal }: Props) => {
+  const isReportBuilderAllowed = useFeatureFlag({
+    name: 'report_builder',
+    onlyCheckAllowed: true,
+  });
+
   return (
     <Box background="white" mb="36px" position="relative" height="460px">
       <StyledBackgroundImage alt="" src={EmptyProjectsImage} />
@@ -44,14 +54,25 @@ const EmptyState = ({ onOpenModal }: Props) => {
           <Text>
             <FormattedMessage {...messages.emptyStateDescription} />
           </Text>
-          <Button
-            mt="8px"
-            py="6px"
-            bgColor={colors.primary}
-            onClick={onOpenModal}
+          <Tippy
+            maxWidth="250px"
+            placement="right-start"
+            content={<FormattedMessage {...sharedMessages.contactToAccess} />}
+            hideOnClick
+            disabled={isReportBuilderAllowed}
           >
-            <FormattedMessage {...messages.emptyStateButtonText} />
-          </Button>
+            <div>
+              <Button
+                mt="8px"
+                py="6px"
+                bgColor={colors.primary}
+                onClick={onOpenModal}
+                disabled={!isReportBuilderAllowed}
+              >
+                <FormattedMessage {...messages.emptyStateButtonText} />
+              </Button>
+            </div>
+          </Tippy>
         </Box>
       </Box>
     </Box>

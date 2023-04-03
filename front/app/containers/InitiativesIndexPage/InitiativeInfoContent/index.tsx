@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -38,12 +38,13 @@ interface Props {
 
 const InitiativeInfoContent = memo<InjectedLocalized & Props>(
   ({ className, localize }) => {
-    const appConfig = useAppConfiguration();
+    const { data: appConfig } = useAppConfiguration();
 
     if (!isNilOrError(appConfig)) {
       const voteThreshold =
-        appConfig.attributes.settings.initiatives?.voting_threshold;
-      const daysLimit = appConfig.attributes.settings.initiatives?.days_limit;
+        appConfig.data.attributes.settings.initiatives?.voting_threshold;
+      const daysLimit =
+        appConfig.data.attributes.settings.initiatives?.days_limit;
 
       return (
         <Content className={className}>
@@ -67,7 +68,7 @@ const InitiativeInfoContent = memo<InjectedLocalized & Props>(
                 </Link>
               ),
               orgName: localize(
-                appConfig.attributes.settings.core.organization_name
+                appConfig.data.attributes.settings.core.organization_name
               ),
             }}
           />

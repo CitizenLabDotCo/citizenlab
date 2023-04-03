@@ -32,21 +32,21 @@
 // imports and definitions
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { first, map, distinctUntilChanged, filter } from 'rxjs/operators';
-import { includes, isEqual, get } from 'lodash-es';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
+import { includes, get } from 'lodash-es';
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import { authUserStream } from 'services/auth';
 import { updateUser } from 'services/users';
 import { Locale } from 'typings';
 import { locales } from 'containers/App/constants';
 import { setCookieLocale, getCookieLocale } from 'utils/localeCookie';
 import clHistory from 'utils/cl-router/history';
+import { IAppConfiguration } from 'api/app_configuration/types';
 
 export const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(
   null as any
 );
-const $tenantLocales = currentAppConfigurationStream().observable.pipe(
-  map((tenant) => get(tenant, 'data.attributes.settings.core.locales')),
-  distinctUntilChanged((prev, next) => !isEqual(prev, next))
+const $tenantLocales = appConfigurationStream.pipe(
+  map((tenant) => get(tenant, 'data.attributes.settings.core.locales'))
 );
 const $authUser = authUserStream().observable.pipe(distinctUntilChanged());
 const $locale = LocaleSubject.pipe(
@@ -105,12 +105,10 @@ combineLatest([$authUser, $tenantLocales]).subscribe(
  *   !! only used in the LanguageSelector component. Chances are it should only be used there.
  *   Checks the locale is supported by this tenant before tying to set the new locale
  */
-export function updateLocale(locale: Locale) {
+export function updateLocale(locale: Locale, appConfig: IAppConfiguration) {
+  const tenantLocales = appConfig.data.attributes.settings.core.locales;
   // "gets" the tenants locale and authUser
-  combineLatest([
-    $tenantLocales.pipe(first()),
-    $authUser.pipe(first()),
-  ]).subscribe(([tenantLocales, authUser]) => {
+  $authUser.pipe(first()).subscribe((authUser) => {
     // if the locale is supported on this tenant
     if (includes(tenantLocales, locale)) {
       // if there is an authenticated user

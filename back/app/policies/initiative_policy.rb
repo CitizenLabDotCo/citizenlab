@@ -78,4 +78,4 @@ class InitiativePolicy < ApplicationPolicy
   end
 end
 
-InitiativePolicy.prepend_if_ee('GranularPermissions::Patches::InitiativePolicy')
+InitiativePolicy.prepend(GranularPermissions::Patches::InitiativePolicy)

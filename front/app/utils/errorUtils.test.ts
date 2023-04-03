@@ -45,12 +45,12 @@ const otherErrors = [
 ];
 
 describe('isCLErrorJSON', () => {
-  test.each(CLErrors)('returns true when passed in CLErrors', (val: any) => {
+  test.each(CLErrors)('returns true when passed in CLErrors', (val) => {
     expect(isCLErrorJSON(val)).toBe(true);
   });
   test.each(otherErrors)(
     'returns false when passed in some other errors',
-    (val: any) => {
+    (val) => {
       expect(isCLErrorJSON(val)).toBe(false);
     }
   );

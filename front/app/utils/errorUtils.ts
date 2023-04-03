@@ -1,8 +1,24 @@
 import { CLErrorsJSON } from 'typings';
 import messages from './messages';
 
-export function isCLErrorJSON(error) {
-  return !!(error && error.json && error.json.errors);
+export function isCLErrorJSON(value: unknown): value is CLErrorsJSON {
+  let objectToCheck = value;
+  for (const prop of ['json', 'errors']) {
+    if (
+      // value is an object
+      typeof objectToCheck === 'object' &&
+      !Array.isArray(objectToCheck) &&
+      objectToCheck !== null &&
+      // value object has prop as key
+      Object.prototype.hasOwnProperty.call(objectToCheck, prop)
+    ) {
+      objectToCheck = objectToCheck[prop];
+    } else {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 // NB: initially I wated to pass in a translated field name to the generic error message but in most languages that won't work, not without hacky phrase building.
@@ -32,7 +48,7 @@ const genericErrors = [
   'even',
 ] as const;
 
-export type GenericErrorKey = typeof genericErrors[number];
+export type GenericErrorKey = (typeof genericErrors)[number];
 // Here are all custom validations I could find in the back-end and that could make some sense to the end user
 
 // NB : (sometimes it'd be clearly better the user doesn't see that error,

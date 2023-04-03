@@ -146,7 +146,8 @@ resource 'Memberships' do
       let(:group_id) { @group.id }
       let(:user_id) { create(:invited_user).id }
 
-      example_request 'Add an invitee as a group member', document: false do
+      example 'Add an invitee as a group member', document: false do
+        do_request
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq user_id

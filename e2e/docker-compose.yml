@@ -17,8 +17,6 @@ services:
     build:
       context: ..
       dockerfile: back/Dockerfile
-      args:
-        CITIZENLAB_EE: "true"
     # To easily test locally. For unknow reason it doesn't work on CI
     # volumes:
     #   - "../back:/cl2_back"
@@ -51,7 +49,3 @@ services:
     environment:
       API_HOST: e2e-web
     command: npm start
-
-networks:
-  default:
-    name: citizenlab-e2e

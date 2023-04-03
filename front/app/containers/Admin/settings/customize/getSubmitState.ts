@@ -1,25 +1,24 @@
 import { isEmpty, isError } from 'lodash-es';
 import { Errors } from 'utils/getSubmitState';
-import { State } from '.';
 
 interface Parameters {
   errors: Errors;
   saved: boolean;
-  state: State;
+  attributeDiff: Record<string, any> | null;
 }
 
-export default function getSubmitState({ errors, saved, state }: Parameters) {
-  const { attributesDiff } = state;
-
-  const emptyAttributesDiff = isEmpty(attributesDiff);
-
+export default function getSubmitState({
+  errors,
+  saved,
+  attributeDiff,
+}: Parameters) {
   if (errors && (!isEmpty(errors) || isError(errors))) {
     return 'error';
-  }
-
-  if (saved && emptyAttributesDiff) {
+  } else if (saved && isEmpty(attributeDiff)) {
     return 'success';
+  } else if (isEmpty(attributeDiff)) {
+    return 'disabled';
+  } else {
+    return 'enabled';
   }
-
-  return emptyAttributesDiff ? 'disabled' : 'enabled';
 }

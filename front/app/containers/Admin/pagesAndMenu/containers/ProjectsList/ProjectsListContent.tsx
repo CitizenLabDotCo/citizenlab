@@ -83,7 +83,11 @@ const ProjectsListContent = ({ customPage }: Props) => {
               isLastItem={index === adminPublicationsList.length - 1}
               key={adminPublication.id}
             >
-              <ProjectRow publication={adminPublication} actions={['manage']} />
+              <ProjectRow
+                publication={adminPublication}
+                actions={['manage']}
+                hideMoreActions
+              />
             </Row>
           ))}
         </>

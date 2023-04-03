@@ -46,7 +46,7 @@ export default defineMessages({
   },
   organizationName: {
     id: 'app.containers.AdminPage.SettingsPage.organizationName',
-    defaultMessage: '{type, select, generic {Organization} other {City}} name',
+    defaultMessage: 'Name of city or organization',
   },
   languages: {
     id: 'app.containers.AdminPage.SettingsPage.languages',
@@ -144,5 +144,17 @@ export default defineMessages({
   settingsSavingError: {
     id: 'app.containers.AdminPage.SettingsPage.settingsSavingError',
     defaultMessage: "Couldn't save. Try changing the setting again.",
+  },
+  organizationNameMultilocError: {
+    id: 'app.containers.AdminPage.SettingsPage.organizationNameMultilocError',
+    defaultMessage: 'Provide an organization name or city for all languages.',
+  },
+  atLeastOneLocale: {
+    id: 'app.containers.AdminPage.SettingsPage.atLeastOneLocale',
+    defaultMessage: 'Select at least one language.',
+  },
+  urlPatternError: {
+    id: 'app.containers.AdminPage.SettingsPage.urlPatternError',
+    defaultMessage: 'Enter a valid URL.',
   },
 });

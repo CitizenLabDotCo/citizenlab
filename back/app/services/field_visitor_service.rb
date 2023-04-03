@@ -65,11 +65,19 @@ class FieldVisitorService
     default(field)
   end
 
+  def visit_file_upload(field)
+    default(field)
+  end
+
+  def visit_topic_ids(field)
+    default(field)
+  end
+
   def visit_page(field)
     default(field)
   end
 
-  def visit_file_upload(field)
+  def visit_section(field)
     default(field)
   end
 

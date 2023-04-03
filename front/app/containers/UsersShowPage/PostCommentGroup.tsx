@@ -1,10 +1,9 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 
 // resources & typings
-import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // permissions
@@ -33,6 +32,10 @@ import CommentBody from 'components/PostShowComponents/Comments/CommentBody';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
+
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 const Container = styled.div`
   width: 100%;
@@ -130,7 +133,6 @@ interface InputProps {
 }
 
 interface DataProps {
-  post: GetPostChildProps;
   user: GetUserChildProps;
 }
 
@@ -138,107 +140,108 @@ const nothingHappens = () => {};
 
 interface Props extends InputProps, DataProps {}
 
-export class PostCommentGroup extends PureComponent<Props> {
-  onIdeaLinkClick = (event: FormEvent<any>) => {
-    event.preventDefault();
+const PostCommentGroup = ({
+  postType,
+  comments,
+  userId,
+  user,
+  postId,
+}: Props) => {
+  const initiativeId = postType === 'initiative' ? postId : undefined;
+  const ideaId = postType === 'idea' ? postId : undefined;
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const { data: idea } = useIdeaById(ideaId);
+  const post = initiative || idea;
 
-    const { post, postType } = this.props;
+  const onIdeaLinkClick = (event: FormEvent<any>) => {
+    event.preventDefault();
 
     if (!isNilOrError(post)) {
       eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-        id: post.id,
-        slug: post.attributes.slug,
+        id: post.data.id,
+        slug: post.data.attributes.slug,
         type: postType,
       });
     }
   };
 
-  render() {
-    const { postType, post, comments, userId, user } = this.props;
-
-    if (!isNilOrError(post) && !isNilOrError(user)) {
-      const { slug, title_multiloc } = post.attributes;
-      const projectId: string | null = get(
-        post,
-        'relationships.project.data.id',
-        null
-      );
-
-      return (
-        <Container>
-          <ScreenReaderOnly>
-            {postType === 'idea' ? (
-              <FormattedMessage {...messages.a11y_postCommentPostedIn} />
-            ) : (
-              <FormattedMessage {...messages.a11y_initiativePostedIn} />
-            )}
-          </ScreenReaderOnly>
-          <PostLink to={`/${postType}s/${slug}`} onClick={this.onIdeaLinkClick}>
-            <PostLinkLeft>
-              <StyledIcon
-                ariaHidden
-                name={postType === 'idea' ? 'idea' : 'initiatives'}
-              />
-              <T value={title_multiloc} className="text" />
-            </PostLinkLeft>
-            <PostLinkRight>
-              {postType === 'idea' ? (
-                <FormattedMessage {...messages.seePost} />
-              ) : (
-                <FormattedMessage {...messages.seeInitiative} />
-              )}
-            </PostLinkRight>
-          </PostLink>
-
-          {comments.map((comment) => {
-            return (
-              <CommentContainer key={comment.id}>
-                <CommentHeader
-                  projectId={projectId}
-                  authorId={userId}
-                  commentId={comment.id}
-                  commentType="parent"
-                  commentCreatedAt={comment.attributes.created_at}
-                  moderator={canModerateProject(projectId, { data: user })}
-                />
-                <CommentBody
-                  commentId={comment.id}
-                  commentType="parent"
-                  editing={false}
-                  onCommentSaved={nothingHappens}
-                  onCancelEditing={nothingHappens}
-                />
-                <VotesContainer>
-                  <VoteIcon ariaHidden name="vote-up" />
-                  <VoteCount aria-hidden>
-                    {comment.attributes.upvotes_count}
-                  </VoteCount>
-                  <ScreenReaderOnly>
-                    <FormattedMessage
-                      {...messages.a11y_upvotesCount}
-                      values={{
-                        upvotesCount: comment.attributes.upvotes_count,
-                      }}
-                    />
-                  </ScreenReaderOnly>
-                </VotesContainer>
-              </CommentContainer>
-            );
-          })}
-        </Container>
-      );
-    }
-
+  if (isNilOrError(post) || isNilOrError(user)) {
     return null;
   }
-}
+
+  const { slug, title_multiloc } = post.data.attributes;
+  const projectId: string | null = get(
+    post,
+    'relationships.project.data.id',
+    null
+  );
+
+  return (
+    <Container>
+      <ScreenReaderOnly>
+        {postType === 'idea' ? (
+          <FormattedMessage {...messages.a11y_postCommentPostedIn} />
+        ) : (
+          <FormattedMessage {...messages.a11y_initiativePostedIn} />
+        )}
+      </ScreenReaderOnly>
+      <PostLink to={`/${postType}s/${slug}`} onClick={onIdeaLinkClick}>
+        <PostLinkLeft>
+          <StyledIcon
+            ariaHidden
+            name={postType === 'idea' ? 'idea' : 'initiatives'}
+          />
+          <T value={title_multiloc} className="text" />
+        </PostLinkLeft>
+        <PostLinkRight>
+          {postType === 'idea' ? (
+            <FormattedMessage {...messages.seePost} />
+          ) : (
+            <FormattedMessage {...messages.seeInitiative} />
+          )}
+        </PostLinkRight>
+      </PostLink>
+
+      {comments.map((comment) => {
+        return (
+          <CommentContainer key={comment.id}>
+            <CommentHeader
+              projectId={projectId}
+              authorId={userId}
+              commentId={comment.id}
+              commentType="parent"
+              commentCreatedAt={comment.attributes.created_at}
+              moderator={canModerateProject(projectId, { data: user })}
+            />
+            <CommentBody
+              commentId={comment.id}
+              commentType="parent"
+              editing={false}
+              onCommentSaved={nothingHappens}
+              onCancelEditing={nothingHappens}
+            />
+            <VotesContainer>
+              <VoteIcon ariaHidden name="vote-up" />
+              <VoteCount aria-hidden>
+                {comment.attributes.upvotes_count}
+              </VoteCount>
+              <ScreenReaderOnly>
+                <FormattedMessage
+                  {...messages.a11y_upvotesCount}
+                  values={{
+                    upvotesCount: comment.attributes.upvotes_count,
+                  }}
+                />
+              </ScreenReaderOnly>
+            </VotesContainer>
+          </CommentContainer>
+        );
+      })}
+    </Container>
+  );
+};
 
 const Data = adopt<DataProps, InputProps>({
-  post: ({ postId, postType, render }) => (
-    <GetPost id={postId} type={postType}>
-      {render}
-    </GetPost>
-  ),
   user: ({ userId, render }) => <GetUser id={userId}>{render}</GetUser>,
 });
 

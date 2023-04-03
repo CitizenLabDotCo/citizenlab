@@ -1,11 +1,11 @@
-import { IAppConfigurationData } from 'services/appConfiguration';
+import { IAppConfigurationData } from 'api/app_configuration/types';
 import { IUserData } from 'services/users';
 
 export interface IDestinationMap {}
 
 export type IDestination = IDestinationMap[keyof IDestinationMap];
 export const CATEGORIES = ['analytics', 'advertising', 'functional'] as const;
-export type TCategory = typeof CATEGORIES[number];
+export type TCategory = (typeof CATEGORIES)[number];
 
 const destinationConfigs: IDestinationConfig[] = [];
 

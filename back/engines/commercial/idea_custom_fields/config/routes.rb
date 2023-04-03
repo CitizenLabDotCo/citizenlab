@@ -11,8 +11,6 @@ IdeaCustomFields::Engine.routes.draw do
             controller: 'idea_custom_fields',
             defaults: { container_type: 'Project' }
           ) do
-            patch 'by_code/:code', action: 'upsert_by_code', on: :collection
-            patch 'update/:id', action: 'update', on: :collection
             patch 'update_all', on: :collection
           end
         end

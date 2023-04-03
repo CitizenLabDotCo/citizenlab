@@ -1,16 +1,16 @@
 import { authUserStream } from 'services/auth';
 import { IUser } from 'services/users';
 import { isObject } from 'lodash-es';
-import { combineLatest } from 'rxjs';
-import {
-  currentAppConfigurationStream,
-  IAppConfigurationData,
-} from 'services/appConfiguration';
 import { map } from 'rxjs/operators';
 import useAuthUser from 'hooks/useAuthUser';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 
+import {
+  IAppConfiguration,
+  IAppConfigurationData,
+} from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 export interface IRouteItem {
   type: 'route';
   path: string;
@@ -61,6 +61,11 @@ const getPermissionRule = (resourceType: TResourceType, action: TAction) => {
   return permissionRules[resourceType][action];
 };
 
+let appConfiguration: IAppConfiguration | undefined = undefined;
+appConfigurationStream.subscribe((appConfig) => {
+  appConfiguration = appConfig;
+});
+
 /**
  *
  * @param param0.item The data item
@@ -76,11 +81,8 @@ const hasPermission = ({
   action: string;
   context?: any;
 }) => {
-  return combineLatest([
-    authUserStream().observable,
-    currentAppConfigurationStream().observable,
-  ]).pipe(
-    map(([user, tenant]) => {
+  return authUserStream().observable.pipe(
+    map((user) => {
       if (!item) {
         return false;
       }
@@ -88,8 +90,8 @@ const hasPermission = ({
       const resourceType = isResource(item) ? item.type : item;
       const rule = getPermissionRule(resourceType, action);
 
-      if (rule) {
-        return rule(item, user, tenant.data, context);
+      if (rule && appConfiguration) {
+        return rule(item, user, appConfiguration.data, context);
       } else {
         throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;
       }
@@ -107,7 +109,7 @@ const usePermission = ({
   context?: any;
 }) => {
   const user = useAuthUser();
-  const appConfig = useAppConfiguration();
+  const { data: appConfig } = useAppConfiguration();
 
   if (!item) {
     return false;
@@ -120,7 +122,7 @@ const usePermission = ({
     return (
       !isNilOrError(user) &&
       !isNilOrError(appConfig) &&
-      rule(item, { data: user }, appConfig, context)
+      rule(item, { data: user }, appConfig?.data, context)
     );
   } else {
     throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;

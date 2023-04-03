@@ -11,7 +11,7 @@ import {
 import { IConsentCookie } from './consent';
 
 // typings
-import { IAppConfigurationData } from 'services/appConfiguration';
+import { IAppConfigurationData } from 'api/app_configuration/types';
 import { CategorizedDestinations, IPreferences } from './typings';
 import { TAuthUser } from 'hooks/useAuthUser';
 

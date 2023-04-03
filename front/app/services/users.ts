@@ -3,6 +3,9 @@ import streams, { IStreamParams } from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { authApiEndpoint } from './auth';
 import { TRole } from 'services/permissions/roles';
+import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import seatsKeys from 'api/seats/keys';
 
 const apiEndpoint = `${API_PATH}/users`;
 
@@ -13,23 +16,28 @@ export interface IUserAttributes {
   last_name: string | null;
   slug: string;
   locale: Locale;
-  avatar?: ImageSizes;
-  roles?: TRole[];
-  highest_role: 'super_admin' | 'admin' | 'project_moderator' | 'user';
+  highest_role:
+    | 'super_admin'
+    | 'admin'
+    | 'project_folder_moderator'
+    | 'project_moderator'
+    | 'user';
   bio_multiloc: Multiloc;
   registration_completed_at: string | null;
   created_at: string;
   updated_at: string;
+  unread_notifications: number;
+  invite_status: 'pending' | 'accepted' | null;
+  confirmation_required: boolean;
+  custom_field_values?: Record<string, any>;
+  avatar?: ImageSizes;
+  roles?: TRole[];
   email?: string;
   gender?: 'male' | 'female' | 'unspecified';
   birthyear?: number;
   domicile?: string;
   education?: string;
-  unread_notifications: number;
-  custom_field_values?: Record<string, any>;
-  invite_status: 'pending' | 'accepted' | null;
   verified?: boolean;
-  confirmation_required: boolean;
 }
 
 export interface IUserData {
@@ -71,6 +79,11 @@ export interface IUserUpdate {
   custom_field_values?: Record<string, any>;
 }
 
+interface IChangePassword {
+  current_password: string;
+  new_password: string;
+}
+
 export function usersStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsers>({ apiEndpoint, ...streamParams });
 }
@@ -96,6 +109,19 @@ export async function updateUser(userId: string, object: IUserUpdate) {
     dataId: [userId],
     apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`],
   });
+
+  // Invalidate seats if the user's roles have changed
+  if (object.roles) {
+    queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+  }
+
+  return response;
+}
+
+export async function changePassword(object: IChangePassword) {
+  const response = await streams.add<IUser>(`${apiEndpoint}/update_password`, {
+    user: object,
+  });
   return response;
 }
 
@@ -108,6 +134,9 @@ export async function deleteUser(userId: string) {
       `${API_PATH}/stats/users_count`,
     ],
   });
+
+  queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+
   return response;
 }
 
@@ -119,6 +148,7 @@ export async function completeRegistration(
     { user: { custom_field_values: customFieldValues || {} } }
   );
   await streams.reset();
+  await resetQueryCache();
   await streams.fetchAllWith({
     apiEndpoint: [authApiEndpoint],
   });

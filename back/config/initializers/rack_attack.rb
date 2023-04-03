@@ -106,4 +106,18 @@ class Rack::Attack
       req.remote_ip
     end
   end
+
+  # For all requests.
+  throttle('user/resend_code', limit: 10, period: 5.minutes) do |req|
+    if req.path == '/web_api/v1/user/resend_code' && req.post?
+      req.ip
+    end
+  end
+
+  # Signing in by IP.
+  throttle('user/confirm', limit: 5, period: 20.seconds) do |req|
+    if req.path == '/web_api/v1/user/confirm' && req.post?
+      req.ip
+    end
+  end
 end

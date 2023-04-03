@@ -115,7 +115,6 @@ sv:
         description:
       author_id:
         title: Författare
-        description:
       topic_ids:
         title: Topics
         description:
@@ -127,12 +126,19 @@ sv:
         description:
       budget:
         title: Budget
-        description:
       images:
         title: Bilder
         description:
       attachments:
         title: Bilagor
+        description:
+      section1:
+        description:
+      section2:
+        title: Bilder och bilagor
+        description:
+      section3:
+        title: Detaljer
         description:
   custom_forms:
     categories:
@@ -189,6 +195,7 @@ sv:
       author_fullname: 'Författarens namn'
       author_email: 'Författarens e-postadress'
       author_id: 'Författar-ID'
+      budget: 'Budget'
       created_at: 'Skickades in'
       published_at: 'Publicerades'
       comments_count: 'Kommentarer'
@@ -210,3 +217,17 @@ sv:
       description: "Skicka in dina svar genom att klicka på Skicka undersökning nedan."
   project_copy:
     title_suffix: 'Kopia'
+  confirmations_mailer:
+    send_confirmation_code:
+      subject: "Bekräfta din e-postadress för %{organizationName}s plattform för deltagande"
+      header: "Din bekräftelsekod"
+      header_message: "Hej %{firstName}!"
+      confirm_email_address: "Bekräfta din e-postadress"
+      thanks_for_signing_up: "Tack för att du registrerade dig för %{organizationName}s plattform för deltagande."
+      best_regards: "Med vänliga hälsningar,"
+      ignore_email: "Om du inte har begärt en kod kan du ignorera det här e-postmeddelandet."
+      expire_code: "Den här koden kommer att gå ut om"
+      24_hours: "24 timmar."
+      copy_paste_the_link_below: "Kopiera och klistra in koden nedan i registreringsformuläret på plattformen."
+      the_link_is_valid_for: "Den här länken är giltig i 24 timmar. Om länken har upphört att gälla kan du <a href=\"%{link}\">begära en ny kod</a>."
+      did_you_receive_this_email_in_error: "Fick du det här e-postmeddelandet av misstag? <a href=\"%{link}\">Meddela oss</a>."

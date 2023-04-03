@@ -31,7 +31,7 @@ const FilterSidebarTopics = ({
   };
 
   const isActive = (id: string) => {
-    return selectedTopics && selectedTopics.indexOf(id) >= 0;
+    return selectedTopics ? selectedTopics.indexOf(id) >= 0 : false;
   };
 
   return (

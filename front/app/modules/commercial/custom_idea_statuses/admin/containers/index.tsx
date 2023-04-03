@@ -12,18 +12,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
-import useIdeaStatuses from 'hooks/useIdeaStatuses';
-
-// streams
-import {
-  updateIdeaStatus,
-  deleteIdeaStatus,
-  IIdeaStatusData,
-} from 'services/ideaStatuses';
+import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
+import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
+import useDeleteIdeaStatus from 'api/idea_statuses/useDeleteIdeaStatus';
+import { IIdeaStatusData } from 'api/idea_statuses/types';
 
 // components
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Spinner } from '@citizenlab/cl2-component-library';
 import {
   Section,
   SectionTitle,
@@ -70,17 +66,19 @@ const StyledIconTooltip = styled(IconTooltip)`
 `;
 
 const IdeaStatuses = () => {
-  const ideaStatuses = useIdeaStatuses();
+  const { data: ideaStatuses, isLoading } = useIdeaStatuses();
+  const { mutate: updateIdeaStatus } = useUpdateIdeaStatus();
+  const { mutate: deleteIdeaStatus } = useDeleteIdeaStatus();
 
   const handleReorder = (id: string, ordering: number) => () => {
-    updateIdeaStatus(id, { ordering });
+    updateIdeaStatus({ id, requestBody: { ordering } });
   };
 
   const isRequired = (ideaStatus: IIdeaStatusData) => {
     return ideaStatus === defaultStatus;
   };
 
-  const handleDelete = (id) => (_event: React.FormEvent<any>) => {
+  const handleDelete = (id: string) => () => {
     deleteIdeaStatus(id);
   };
 
@@ -93,8 +91,8 @@ const IdeaStatuses = () => {
   };
 
   const defaultStatus = useMemo(() => {
-    if (!isNilOrError(ideaStatuses)) {
-      return ideaStatuses.find(
+    if (ideaStatuses) {
+      return ideaStatuses.data.find(
         (status) => status.attributes.code === 'proposed'
       );
     }
@@ -104,7 +102,7 @@ const IdeaStatuses = () => {
 
   const sortableStatuses = useMemo(() => {
     if (!isNilOrError(ideaStatuses) && defaultStatus) {
-      return ideaStatuses.filter(
+      return ideaStatuses.data.filter(
         (status) => status.attributes !== defaultStatus.attributes
       );
     }
@@ -112,7 +110,11 @@ const IdeaStatuses = () => {
     return [];
   }, [defaultStatus, ideaStatuses]);
 
-  if (!isNilOrError(ideaStatuses) && defaultStatus) {
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (ideaStatuses && defaultStatus) {
     return (
       <Section>
         <SectionTitle>

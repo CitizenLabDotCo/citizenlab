@@ -223,6 +223,10 @@ export default defineMessages({
     id: 'app.errors.password_too_short',
     defaultMessage: 'The password must be at least 8 characters long',
   },
+  current_password_invalid: {
+    id: 'app.errors.password_invalid',
+    defaultMessage: 'Please check your current password again.',
+  },
   view_name_taken: {
     id: 'app.errors.view_name_taken',
     defaultMessage: 'A view with this name already exists',

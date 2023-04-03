@@ -39,7 +39,7 @@ import messages from './messages';
 import styled from 'styled-components';
 
 // Typing
-import { IGeotaggedInitiativeData } from 'services/initiatives';
+import { IGeotaggedInitiativeData } from 'api/initiative_markers/types';
 import InitiativeButton from 'components/InitiativeButton';
 
 const Container = styled.div`

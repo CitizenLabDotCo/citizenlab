@@ -1,7 +1,7 @@
+import { IInitiativeData } from 'api/initiatives/types';
 import FeatureFlag from 'components/FeatureFlag';
 import TranslateButton from 'components/UI/TranslateButton';
 import React from 'react';
-import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import styled from 'styled-components';
@@ -17,7 +17,7 @@ interface Props {
   windowSize: GetWindowSizeChildProps;
   translateButtonClicked: boolean;
   onClick: () => void;
-  initiative: GetInitiativeChildProps;
+  initiative: IInitiativeData;
   locale: GetLocaleChildProps;
 }
 

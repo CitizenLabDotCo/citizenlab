@@ -25,6 +25,7 @@ const ManageButton = ({ isDisabled, publicationId }: Props) => {
       type="button"
       key="manage"
       disabled={isDisabled}
+      data-testid="project-row-edit-button"
     >
       <FormattedMessage {...messages.editButtonLabel} />
     </RowButton>

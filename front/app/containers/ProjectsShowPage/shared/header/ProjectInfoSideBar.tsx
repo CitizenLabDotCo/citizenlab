@@ -12,7 +12,7 @@ import moment from 'moment';
 // hooks
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-import useEvents from 'hooks/useEvents';
+import useEvents from 'api/events/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
 
 // router
@@ -129,9 +129,9 @@ interface Props {
 const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
-  const { events } = useEvents({
+  const { data: events } = useEvents({
     projectIds: [projectId],
-    sort: 'newest',
+    sort: '-start_at',
   });
   const authUser = useAuthUser();
 
@@ -423,16 +423,16 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 </ListItemButton>
               </ListItem>
             )}
-            {!isNilOrError(events) && events.length > 0 && (
+            {!isNilOrError(events) && events.data.length > 0 && (
               <ListItem>
                 <ListItemIcon ariaHidden name="calendar" />
                 <ListItemButton
                   id="e2e-project-sidebar-eventcount"
-                  onClick={scrollTo('project-events', false)}
+                  onClick={scrollTo('project-events')}
                 >
                   <FormattedMessage
                     {...messages.xEvents}
-                    values={{ eventsCount: events.length }}
+                    values={{ eventsCount: events.data.length }}
                   />
                 </ListItemButton>
               </ListItem>

@@ -30,8 +30,10 @@ describe('Form builder page element', () => {
   it('adds page element and tests settings', () => {
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
     cy.get('[data-cy="e2e-page"]').click();
-    cy.get('#e2e-page-title-multiloc').type('Page title', { force: true });
-    cy.get('[data-cy="e2e-page-description-multiloc"]')
+    cy.get('#e2e-field-group-title-multiloc').type('Page title', {
+      force: true,
+    });
+    cy.get('[data-cy="e2e-field-group-description-multiloc"]')
       .click()
       .type('Page description');
     cy.get('#e2e-settings-done-button').click();
@@ -72,8 +74,10 @@ describe('Form builder page element', () => {
   it('does not let the user delete the page if there is only one page', () => {
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
     cy.get('[data-cy="e2e-page"]').click();
-    cy.get('#e2e-page-title-multiloc').type('Page title', { force: true });
-    cy.get('[data-cy="e2e-page-description-multiloc"]')
+    cy.get('#e2e-field-group-title-multiloc').type('Page title', {
+      force: true,
+    });
+    cy.get('[data-cy="e2e-field-group-description-multiloc"]')
       .click()
       .type('Page description');
     cy.get('#e2e-settings-done-button').click();

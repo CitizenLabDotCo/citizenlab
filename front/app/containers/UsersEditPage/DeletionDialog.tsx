@@ -18,7 +18,7 @@ import Link from 'utils/cl-router/Link';
 import clHistory from 'utils/cl-router/history';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import eventEmitter from 'utils/eventEmitter';
 import useLocalize from 'hooks/useLocalize';
 import { WrappedComponentProps } from 'react-intl';
@@ -65,7 +65,7 @@ const DeletionDialog = ({
   closeDialog,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const appConfiguration = useAppConfiguration();
+  const { data: appConfiguration } = useAppConfiguration();
   const localize = useLocalize();
 
   const deleteProfile = () => {
@@ -75,10 +75,10 @@ const DeletionDialog = ({
   };
 
   if (!isNilOrError(appConfiguration)) {
-    const logo = appConfiguration.attributes.logo?.medium;
+    const logo = appConfiguration.data.attributes.logo?.medium;
     // just the org's name works fine as alt text for a11y purposes
     const localizedOrgName = localize(
-      appConfiguration.attributes.settings.core.organization_name
+      appConfiguration.data.attributes.settings.core.organization_name
     );
     return (
       <Container>

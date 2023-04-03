@@ -1,16 +1,8 @@
-import React from 'react';
-import { BehaviorSubject, Subscription, of } from 'rxjs';
-import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
-import {
-  IInitiativeAllowedTransitions,
-  initiativeAllowedTransitionsStream,
-} from 'services/initiatives';
-import { isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { IInitiativeAllowedTransitions } from 'api/initiative_allowed_transitions/types';
+import useInitativeAllowedTransitions from 'api/initiative_allowed_transitions/useInitiativeAllowedTransitions';
 
 interface InputProps {
-  id: string | null;
+  id: string;
 }
 
 type children = (
@@ -21,74 +13,18 @@ interface Props extends InputProps {
   children?: children;
 }
 
-interface State {
-  initiativeAllowedTransitions:
-    | IInitiativeAllowedTransitions
-    | undefined
-    | null;
-}
-
 export type GetInitiativeAllowedTransitionsChildProps =
-  | IInitiativeAllowedTransitions
+  | IInitiativeAllowedTransitions['data']['attributes']
   | undefined
   | null;
 
-export default class GetInitiativeAllowedTransitions extends React.Component<
-  Props,
-  State
-> {
-  private inputProps$: BehaviorSubject<InputProps>;
-  private subscriptions: Subscription[];
+const GetInitiativeAllowedTransitions = ({ id, children }: Props) => {
+  const { data: initiativeAllowedTransitions } =
+    useInitativeAllowedTransitions(id);
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      initiativeAllowedTransitions: undefined,
-    };
-  }
+  if (!initiativeAllowedTransitions) return null;
 
-  componentDidMount() {
-    const { id } = this.props;
+  return (children as children)(initiativeAllowedTransitions?.data.attributes);
+};
 
-    this.inputProps$ = new BehaviorSubject({ id });
-
-    this.subscriptions = [
-      this.inputProps$
-        .pipe(
-          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-          filter(({ id }) => isString(id)),
-          switchMap(({ id }: { id: string }) => {
-            if (isString(id)) {
-              return initiativeAllowedTransitionsStream(id).observable;
-            }
-
-            return of(null);
-          })
-        )
-        .subscribe((initiativeAllowedTransitions) =>
-          this.setState({
-            initiativeAllowedTransitions: !isNilOrError(
-              initiativeAllowedTransitions
-            )
-              ? initiativeAllowedTransitions
-              : null,
-          })
-        ),
-    ];
-  }
-
-  componentDidUpdate() {
-    const { id } = this.props;
-    this.inputProps$.next({ id });
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  render() {
-    const { children } = this.props;
-    const { initiativeAllowedTransitions } = this.state;
-    return (children as children)(initiativeAllowedTransitions);
-  }
-}
+export default GetInitiativeAllowedTransitions;

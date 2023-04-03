@@ -64,7 +64,7 @@ const ProjectFolderSelect = ({
   useEffect(() => {
     function getInitialRadioFolderSelect(
       userCanCreateProjectInFolderOnly: boolean,
-      folder_id?: string
+      folder_id?: string | null
     ) {
       if (userCanCreateProjectInFolderOnly) {
         // folder moderators always need to pick a folder
@@ -128,10 +128,7 @@ const ProjectFolderSelect = ({
   ) => {
     setFolderSelected(folderId ? true : false);
 
-    onProjectAttributesDiffChange(
-      { folder_id: folderId || undefined },
-      submitState
-    );
+    onProjectAttributesDiffChange({ folder_id: folderId }, submitState);
   };
 
   const onRadioFolderSelectChange = (newRadioProjectFolderSelect: boolean) => {

@@ -6,9 +6,9 @@ import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
-interface Props {
+type Props = {
   className?: string;
-}
+};
 
 const PasswordInputIconTooltip = ({
   intl: { formatMessage },

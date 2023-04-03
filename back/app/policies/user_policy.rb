@@ -30,6 +30,10 @@ class UserPolicy < ApplicationPolicy
     user&.active? && !user.normal_user?
   end
 
+  def seats?
+    user&.active? && !user.normal_user?
+  end
+
   def index_xlsx?
     user&.active? && user&.admin?
   end
@@ -63,6 +67,18 @@ class UserPolicy < ApplicationPolicy
     record.id == user&.id || (user&.active? && user&.admin?)
   end
 
+  def block?
+    index?
+  end
+
+  def unblock?
+    index?
+  end
+
+  def blocked_count?
+    index?
+  end
+
   def ideas_count?
     true
   end
@@ -73,6 +89,10 @@ class UserPolicy < ApplicationPolicy
 
   def comments_count?
     true
+  end
+
+  def update_password?
+    user&.active? && (record.id == user.id)
   end
 
   def view_private_attributes?
@@ -117,4 +137,4 @@ class UserPolicy < ApplicationPolicy
   end
 end
 
-UserPolicy.prepend_if_ee('Verification::Patches::UserPolicy')
+UserPolicy.prepend(Verification::Patches::UserPolicy)

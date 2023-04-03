@@ -26,7 +26,6 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
         },
       ]
     }
-    label="Show more actions"
   />
   <a11y__ScreenReaderOnly
     aria-live="polite"

@@ -14,7 +14,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
+import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
 import { media } from 'utils/styleUtils';
 import messages from '../messages';
 import tracks from '../tracks';
@@ -51,7 +51,7 @@ const HeaderContent = ({
 }: Props & WrappedComponentProps) => {
   const homepageSettings = useHomepageSettings();
   const localize = useLocalize();
-  const isTablet = useBreakpoint('tablet');
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
   const signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
@@ -64,18 +64,22 @@ const HeaderContent = ({
 
   if (!isNilOrError(homepageSettings)) {
     const homepageAttributes = homepageSettings.attributes;
-    const headerTitle = homepageAttributes.banner_signed_out_header_multiloc
+    const headerTitle = !isEmptyMultiloc(
+      homepageAttributes.banner_signed_out_header_multiloc
+    )
       ? localize(homepageAttributes.banner_signed_out_header_multiloc)
       : formatMessage(messages.titleCity);
-    const headerSubtitle =
+    const headerSubtitle = !isEmptyMultiloc(
       homepageAttributes.banner_signed_out_subheader_multiloc
-        ? localize(homepageAttributes.banner_signed_out_subheader_multiloc)
-        : formatMessage(messages.subtitleCity);
+    )
+      ? localize(homepageAttributes.banner_signed_out_subheader_multiloc)
+      : formatMessage(messages.subtitleCity);
     const headerImage = homepageAttributes.header_bg
       ? homepageAttributes.header_bg.large
       : null;
     const hideAvatarsForThisLayout =
-      isTablet && homepageAttributes.banner_layout === 'fixed_ratio_layout';
+      isSmallerThanTablet &&
+      homepageAttributes.banner_layout === 'fixed_ratio_layout';
     const displayHeaderAvatars =
       homepageAttributes.banner_avatars_enabled && !hideAvatarsForThisLayout;
 

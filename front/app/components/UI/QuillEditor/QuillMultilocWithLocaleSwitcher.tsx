@@ -28,6 +28,8 @@ const LabelContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 16px;
 `;
 
 const StyledLabel = styled(Label)`
@@ -42,7 +44,6 @@ const Spacer = styled.div`
 
 const StyledLocaleSwitcher = styled(LocaleSwitcher)`
   width: auto;
-  margin-left: 20px;
 `;
 
 export interface Props

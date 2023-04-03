@@ -34,6 +34,13 @@ describe BasketPolicy do
     it { is_expected.to permit(:destroy) }
   end
 
+  context 'for blocked basket owner' do
+    let(:user) { create(:user, block_start_at: Time.now) }
+    let(:basket) { create(:basket, user: user, participation_context: create(:continuous_budgeting_project)) }
+
+    it_behaves_like 'policy for blocked user', show: false
+  end
+
   context 'for an admin' do
     let(:user) { create(:admin) }
 

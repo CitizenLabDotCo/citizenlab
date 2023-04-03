@@ -51,6 +51,13 @@ describe IdeaCommentPolicy do
       end
     end
 
+    context 'for blocked comment author' do
+      let(:user) { create(:user, block_start_at: Time.now) }
+      let(:comment) { create(:comment, author: user, post: idea) }
+
+      it_behaves_like 'policy for blocked user'
+    end
+
     context 'for an admin' do
       let(:user) { create(:admin) }
 

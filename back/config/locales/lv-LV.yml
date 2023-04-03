@@ -115,7 +115,6 @@ lv:
         description:
       author_id:
         title: Autors
-        description:
       topic_ids:
         title: Tagi
         description:
@@ -127,12 +126,19 @@ lv:
         description:
       budget:
         title: Budžets
-        description:
       images:
         title: Attēli
         description:
       attachments:
         title: Pielikumi
+        description:
+      section1:
+        description:
+      section2:
+        title: Attēli un pielikumi
+        description:
+      section3:
+        title: Sīkāka informācija
         description:
   custom_forms:
     categories:
@@ -189,6 +195,7 @@ lv:
       author_fullname: 'Autora vārds'
       author_email: 'Autora e-pasts'
       author_id: 'Autora ID'
+      budget: 'Budžets'
       created_at: 'Iesniegts'
       published_at: 'Publicēts'
       comments_count: 'Komentāri'
@@ -210,3 +217,17 @@ lv:
       description: "Lūdzu, iesniedziet savas atbildes, izvēloties \"Iesniegt aptauju\"."
   project_copy:
     title_suffix: 'Kopija'
+  confirmations_mailer:
+    send_confirmation_code:
+      subject: "Apstipriniet savu e-pasta adresi %{organizationName} līdzdalības platformai"
+      header: "Jūsu apstiprinājuma kods"
+      header_message: "Sveiki %{firstName}!"
+      confirm_email_address: "Apstipriniet savu e-pasta adresi"
+      thanks_for_signing_up: "Paldies, ka reģistrējāties %{organizationName} līdzdalības platformā."
+      best_regards: "Ar sveicieniem,"
+      ignore_email: "Ja neesat pieprasījis kodu, varat droši ignorēt šo e-pastu."
+      expire_code: "Šī koda derīguma termiņš beigsies "
+      24_hours: "24 stundas."
+      copy_paste_the_link_below: "Nokopējiet un ielīmējiet zemāk redzamo kodu platformas reģistrācijas veidlapā."
+      the_link_is_valid_for: "Šī saite ir derīga 24 stundas. Ja saites derīguma termiņš ir beidzies, varat <a href=\"%{link}\">pieprasīt jaunu kodu</a>."
+      did_you_receive_this_email_in_error: "Vai jūs kļūdaini saņēmāt šo e-pastu? <a href=\"%{link}\">Dodiet mums zināt</a>."

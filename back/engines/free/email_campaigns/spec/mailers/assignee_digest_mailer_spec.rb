@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::AssigneeDigestMailer, type: :mailer do
-  describe 'AssigneeDigest', skip: !CitizenLab.ee? do
+  describe 'AssigneeDigest' do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::AssigneeDigest.create! }
     let_it_be(:assigned_at) { Time.now }

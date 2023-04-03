@@ -35,8 +35,8 @@ describe XlsxExport::CustomFieldForReport do
         let(:field_value) { 'cat' }
         let(:model) { instance_double Idea, custom_field_values: { 'name' => field_value } }
 
-        it 'returns nil' do
-          expect(report_field.value_from(model)).to be_nil
+        it 'returns the empty string' do
+          expect(report_field.value_from(model)).to eq ''
         end
       end
 
@@ -69,9 +69,9 @@ describe XlsxExport::CustomFieldForReport do
           end
         end
 
-        it 'returns nil when the field has an unknown value' do
+        it 'returns the empty string when the field has an unknown value' do
           model.custom_field_values['name'] = 'unknown'
-          expect(report_field.value_from(model)).to be_nil
+          expect(report_field.value_from(model)).to eq ''
         end
       end
     end
@@ -137,8 +137,8 @@ describe XlsxExport::CustomFieldForReport do
         let(:input_type) { 'select' }
         let(:user) { create(:user, custom_field_values: { 'birthyear' => '1991' }) }
 
-        it 'returns nil' do
-          expect(report_field.value_from(model)).to be_nil
+        it 'returns the empty string' do
+          expect(report_field.value_from(model)).to eq ''
         end
       end
 
@@ -171,9 +171,9 @@ describe XlsxExport::CustomFieldForReport do
           end
         end
 
-        it 'returns nil when the field has an unknown value' do
+        it 'returns the empty string when the field has an unknown value' do
           user.custom_field_values['birthyear'] = 'unknown'
-          expect(report_field.value_from(model)).to be_nil
+          expect(report_field.value_from(model)).to eq ''
         end
       end
     end

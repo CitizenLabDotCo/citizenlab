@@ -55,7 +55,8 @@ resource 'Invites' do
         let(:search) { 'abc' }
         let(:sort) { '-email' }
 
-        example_request 'List all invites by combining filter, sort and search', document: false do
+        example 'List all invites by combining filter, sort and search', document: false do
+          do_request
           assert_status 200
         end
       end
@@ -103,7 +104,8 @@ resource 'Invites' do
           header 'Authorization', "Bearer #{token}"
         end
 
-        example_request '[error] XLSX export by a normal user', document: false do
+        example '[error] XLSX export by a normal user', document: false do
+          do_request
           expect(status).to eq 401
         end
       end
@@ -135,8 +137,8 @@ resource 'Invites' do
         let(:roles) do
           [
             { 'type' => 'admin' },
-            ({ 'type' => 'project_moderator', 'project_id' => project.id } if CitizenLab.ee?)
-          ].compact
+            { 'type' => 'project_moderator', 'project_id' => project.id }
+          ]
         end
 
         example_request 'Bulk invite multiple users' do
@@ -147,8 +149,7 @@ resource 'Invites' do
             expect(Invite.all.map { |i| i.invitee.groups.map(&:id) }.uniq).to match_array [group_ids]
             expect(Invite.all.map { |i| i.invitee.admin? }.uniq).to eq [true]
             expect(Invite.all.map { |i| i.invitee.locale }.uniq).to eq [locale]
-
-            expect(Invite.all.map { |i| i.invitee.project_moderator?(project.id) }.all?).to be true if CitizenLab.ee?
+            expect(Invite.all.map { |i| i.invitee.project_moderator?(project.id) }.all?).to be true
           end
         end
       end
@@ -294,7 +295,8 @@ resource 'Invites' do
       describe do
         let(:email) { 'Super.Boulette@hotmail.com' }
 
-        example_request 'Accept an invite using different capitalization for the email', document: false do
+        example 'Accept an invite using different capitalization for the email', document: false do
+          do_request
           expect(status).to eq 200
         end
       end

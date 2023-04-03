@@ -9,7 +9,7 @@ import InitiativeShowPageTopBar from 'containers/InitiativesShowPage/InitiativeS
 import PlatformFooter from 'containers/PlatformFooter';
 
 // hooks
-import useIdea from 'hooks/useIdea';
+import useIdea from 'api/ideas/useIdeaById';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // utils
@@ -28,10 +28,8 @@ const StyledIdeasShow = styled(IdeasShow)`
   padding-left: 60px;
   padding-right: 60px;
 
-  ${media.tablet`
-    min-height: calc(100vh - ${({
-      theme: { mobileMenuHeight, mobileTopBarHeight },
-    }) => mobileMenuHeight + mobileTopBarHeight}px);
+  ${({ theme: { mobileMenuHeight, mobileTopBarHeight } }) => media.tablet`
+    min-height: calc(100vh - ${mobileMenuHeight + mobileTopBarHeight}px);
     padding-top: 35px;
   `}
 
@@ -68,11 +66,11 @@ const PostPageFullscreenModal = memo<Props>(
     // Far from ideal to always try to load the idea, but
     // has to happen for hooks to work.
     // It shows that we're putting 2 components in 1
-    const idea = useIdea({ ideaId: postId });
+    const { data: idea } = useIdea(postId ?? undefined);
 
     const topBar = useMemo(() => {
       if (postId && type === 'idea' && tablet && !isNilOrError(idea)) {
-        const projectId = idea.relationships.project.data.id;
+        const projectId = idea.data.relationships.project.data.id;
 
         return (
           <IdeaShowPageTopBar
@@ -93,7 +91,7 @@ const PostPageFullscreenModal = memo<Props>(
     const content = useMemo(() => {
       if (postId) {
         if (type === 'idea' && !isNilOrError(idea)) {
-          const projectId = idea.relationships.project.data.id;
+          const projectId = idea.data.relationships.project.data.id;
 
           return (
             <>
@@ -118,8 +116,7 @@ const PostPageFullscreenModal = memo<Props>(
       }
 
       return null;
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [postId, idea]);
+    }, [postId, type, idea]);
 
     const onClose = useCallback(() => {
       close();
@@ -134,7 +131,7 @@ const PostPageFullscreenModal = memo<Props>(
         topBar={topBar}
         navbarRef={navbarRef}
         mobileNavbarRef={mobileNavbarRef}
-        zIndex={399}
+        zIndex={1001}
       >
         {content}
       </FullscreenModal>

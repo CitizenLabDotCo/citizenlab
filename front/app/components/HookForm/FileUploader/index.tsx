@@ -6,8 +6,7 @@ import FileUploaderComponent, {
 import Error from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { UploadFile } from 'typings';
-import useRemoteFiles from 'hooks/useRemoteFiles';
-import { TResourceType } from 'resources/GetRemoteFiles';
+import { RemoteFiles } from 'hooks/useRemoteFiles';
 import { get } from 'lodash-es';
 
 interface Props
@@ -16,21 +15,15 @@ interface Props
     'onFileAdd' | 'onFileRemove' | 'files' | 'id'
   > {
   name: string;
-  resourceType: TResourceType;
-  resourceId: string | null;
+  remoteFiles?: RemoteFiles;
 }
 
-const FileUploader = ({ name, resourceId, resourceType, ...rest }: Props) => {
+const FileUploader = ({ name, remoteFiles, ...rest }: Props) => {
   const {
     setValue,
     formState: { errors },
     control,
   } = useFormContext();
-
-  const remoteFiles = useRemoteFiles({
-    resourceId,
-    resourceType,
-  });
 
   useEffect(() => {
     if (remoteFiles) {

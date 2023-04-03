@@ -192,7 +192,7 @@ resource 'Campaigns' do
       )
     end
 
-    example_request 'Get the delivery statistics of a sent campaing' do
+    example_request 'Get the delivery statistics of a sent campaign' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response).to match({

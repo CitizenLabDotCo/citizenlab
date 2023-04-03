@@ -12,7 +12,7 @@ import Tippy from '@tippyjs/react';
 import Centerer from 'components/UI/Centerer';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useMapConfig from '../../../hooks/useMapConfig';
 
 // services
@@ -81,13 +81,13 @@ interface Props {
 const ProjectCustomMapConfigPage = memo<
   Props & WithRouterProps & WrappedComponentProps
 >(({ params: { projectId }, className, intl: { formatMessage } }) => {
-  const appConfig = useAppConfiguration();
+  const { data: appConfig } = useAppConfiguration();
   const mapConfig = useMapConfig({ projectId });
 
-  const defaultLatLng = getCenter(undefined, appConfig, mapConfig);
+  const defaultLatLng = getCenter(undefined, appConfig?.data, mapConfig);
   const defaultLat = defaultLatLng[0];
   const defaultLng = defaultLatLng[1];
-  const defaultZoom = getZoomLevel(undefined, appConfig, mapConfig);
+  const defaultZoom = getZoomLevel(undefined, appConfig?.data, mapConfig);
 
   const [currentLat, setCurrentLat] = useState<number | undefined>(undefined);
   const [currentLng, setCurrentLng] = useState<number | undefined>(undefined);

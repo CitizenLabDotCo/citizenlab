@@ -12,6 +12,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from '../ErrorDisplay';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { Box } from '@citizenlab/cl2-component-library';
+import { getSubtextElement } from './controlUtils';
 
 const TopicsControl = ({
   data: selectedTopicIds = [],
@@ -45,7 +46,7 @@ const TopicsControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
       <TopicsPicker

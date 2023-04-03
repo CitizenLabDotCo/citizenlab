@@ -12,7 +12,7 @@ describe('<Preferences />', () => {
 
   const categoryDestinations: CategorizedDestinations = {
     analytics: ['google_analytics', 'google_tag_manager'],
-    advertising: ['segment'],
+    advertising: ['google_analytics'],
     functional: ['intercom'],
   };
 

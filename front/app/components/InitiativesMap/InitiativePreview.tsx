@@ -1,6 +1,5 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 
 // utils
@@ -13,12 +12,6 @@ import Button from 'components/UI/Button';
 import { Icon } from '@citizenlab/cl2-component-library';
 import Body from 'components/PostShowComponents/Body';
 
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
-
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -27,6 +20,10 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { colors, media, fontSizes } from 'utils/styleUtils';
+
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useLocale from 'hooks/useLocale';
 
 const Container = styled.div`
   flex: 1;
@@ -130,104 +127,73 @@ const CommentIcon = styled(Icon)`
   margin-top: 2px;
 `;
 
-interface InputProps {
-  initiativeId?: string | null;
+interface Props {
+  initiativeId: string;
   className?: string;
 }
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  initiative: GetInitiativeChildProps;
-}
+const InitiativePreview = ({
+  className,
+  localize,
+  initiativeId,
+}: Props & InjectedLocalized) => {
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const locale = useLocale();
 
-interface Props extends InputProps, DataProps {}
-
-interface State {}
-
-class InitiativePreview extends PureComponent<
-  Props & InjectedLocalized,
-  State
-> {
-  createInitiativeClickHandler = (event: React.MouseEvent) => {
-    event.preventDefault();
-
-    const { initiative } = this.props;
-
-    if (!isNilOrError(initiative)) {
-      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-        id: initiative.id,
-        slug: initiative.attributes.slug,
-        type: 'initiative',
-      });
-    }
-  };
-
-  render() {
-    const { initiative, locale, className, localize } = this.props;
-
-    if (!isNilOrError(initiative)) {
-      const initiativeAddress = get(
-        initiative,
-        'attributes.location_description'
-      );
-      const initiativeBody = localize(initiative.attributes.body_multiloc);
-
-      return (
-        <Container className={className}>
-          <Title>
-            <T value={initiative.attributes.title_multiloc} />
-          </Title>
-
-          {initiativeAddress && (
-            <Address>
-              <MapMarkerIcon name="position" />
-              {initiativeAddress}
-            </Address>
-          )}
-
-          <Description>
-            <Body
-              postId={initiative.id}
-              postType="initiative"
-              locale={locale}
-              body={initiativeBody}
-            />
-          </Description>
-
-          <Footer>
-            <CommentsCount>
-              <CommentIcon name="comments" />
-              {initiative.attributes.comments_count}
-            </CommentsCount>
-          </Footer>
-
-          <ViewInitiativeButton
-            fullWidth={true}
-            onClick={this.createInitiativeClickHandler}
-          >
-            <FormattedMessage {...messages.seeInitiative} />
-          </ViewInitiativeButton>
-        </Container>
-      );
-    }
-
+  if (!initiative || isNilOrError(locale)) {
     return null;
   }
-}
 
-const InitiativePreviewWithHOCs = injectLocalize<Props>(InitiativePreview);
+  const createInitiativeClickHandler = (event: React.MouseEvent) => {
+    event.preventDefault();
 
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  initiative: ({ initiativeId, render }) => (
-    <GetInitiative id={initiativeId}>{render}</GetInitiative>
-  ),
-});
+    eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
+      id: initiativeId,
+      slug: initiative.data.attributes.slug,
+      type: 'initiative',
+    });
+  };
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <InitiativePreviewWithHOCs {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+  const initiativeAddress = get(initiative, 'attributes.location_description');
+  const initiativeBody = localize(initiative.data.attributes.body_multiloc);
+
+  return (
+    <Container className={className}>
+      <Title>
+        <T value={initiative.data.attributes.title_multiloc} />
+      </Title>
+
+      {initiativeAddress && (
+        <Address>
+          <MapMarkerIcon name="position" />
+          {initiativeAddress}
+        </Address>
+      )}
+
+      <Description>
+        <Body
+          postId={initiative.data.id}
+          postType="initiative"
+          locale={locale}
+          body={initiativeBody}
+        />
+      </Description>
+
+      <Footer>
+        <CommentsCount>
+          <CommentIcon name="comments" />
+          {initiative.data.attributes.comments_count}
+        </CommentsCount>
+      </Footer>
+
+      <ViewInitiativeButton
+        fullWidth={true}
+        onClick={createInitiativeClickHandler}
+      >
+        <FormattedMessage {...messages.seeInitiative} />
+      </ViewInitiativeButton>
+    </Container>
+  );
+};
+
+export default injectLocalize<Props>(InitiativePreview);

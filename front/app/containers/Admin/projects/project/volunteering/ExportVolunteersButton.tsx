@@ -10,7 +10,7 @@ import Button from 'components/UI/Button';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { exportVolunteers } from 'services/volunteers';
+import { exportVolunteers } from 'api/causes/util';
 
 interface Props {
   participationContextType: IParticipationContextType;

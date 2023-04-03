@@ -2,10 +2,9 @@ import React, { lazy, Suspense, MouseEvent } from 'react';
 import { ManagerType, TFilterMenu } from '../../..';
 
 // services
-import { IIdeaData } from 'services/ideas';
-import { IInitiativeData } from 'services/initiatives';
+import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'services/phases';
-import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // style
@@ -15,6 +14,9 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useLocale from 'hooks/useLocale';
+
+// Types
+import { IInitiativeData } from 'api/initiatives/types';
 
 // lazy-loaded components
 const IdeaRow = lazy(() => import('./IdeaRow'));

@@ -9,3 +9,53 @@ en:
       title: Default question
       option1: First option
       option2: Second option
+  custom_fields:
+    ideas:
+      title:
+        title: Title
+        description:
+      body:
+        title: Description
+        description:
+      author_id:
+        title: Author
+      topic_ids:
+        title: Tags
+        description:
+      location:
+        title: Location
+        description:
+      proposed_budget:
+        title: Proposed Budget
+        description:
+      budget:
+        title: Budget
+      images:
+        title: Images
+        description:
+      attachments:
+        title: Attachments
+        description:
+      section1:
+        description:
+      section2:
+        title: Images and attachments
+        description: Upload your favourite files here
+      section3:
+        title: Details
+        description:
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: What is your idea?
+        question:
+          title: What is your question?
+        contribution:
+          title: What is your contribution?
+        project:
+          title: What is your project?
+        issue:
+          title: What is your issue?
+        option:
+          title: What is your option?

@@ -114,8 +114,7 @@ de:
         title: Beschreibung
         description:
       author_id:
-        title: Autor
-        description:
+        title: Autor:in
       topic_ids:
         title: Themen
         description:
@@ -127,12 +126,19 @@ de:
         description:
       budget:
         title: Haushalt
-        description:
       images:
         title: Bilder
         description:
       attachments:
         title: Anhänge
+        description:
+      section1:
+        description:
+      section2:
+        title: Bilder und Anhänge
+        description:
+      section3:
+        title: Details
         description:
   custom_forms:
     categories:
@@ -189,6 +195,7 @@ de:
       author_fullname: 'Name des Autors / der Autorin'
       author_email: 'E-Mail-Adresse des Autors / der Autorin'
       author_id: 'ID des Autors / der Autorin'
+      budget: 'Budget'
       created_at: 'Eingereicht am'
       published_at: 'Veröffentlicht am'
       comments_count: 'Kommentare'
@@ -210,3 +217,17 @@ de:
       description: "Bitte übermitteln Sie Ihre Antworten, indem Sie unten auf \"Umfrage abschicken\" klicken."
   project_copy:
     title_suffix: 'Kopie'
+  confirmations_mailer:
+    send_confirmation_code:
+      subject: "Bestätigen Sie Ihre E-Mail-Adresse für die Beteiligungsplattform %{organizationName}"
+      header: "Ihr Bestätigungscode"
+      header_message: "Hallo %{firstName}!"
+      confirm_email_address: "Bestätigen Sie Ihre E-Mail Adresse"
+      thanks_for_signing_up: "Vielen Dank, dass Sie sich für die Beteiligungsplattform %{organizationName} registriert haben."
+      best_regards: "Herzliche Grüße"
+      ignore_email: "Wenn Sie keinen Code angefordert haben, können Sie diese E-Mail einfach ignorieren."
+      expire_code: "Dieser Code läuft ab in "
+      24_hours: "24 Stunden."
+      copy_paste_the_link_below: "Kopieren Sie den unten stehenden Code und fügen Sie ihn in das Registrierungsformular auf der Plattform ein."
+      the_link_is_valid_for: "Dieser Link ist 24 Stunden lang gültig. Wenn der Link abgelaufen ist, können Sie unter <a href=\"%{link}\">einen neuen Code anfordern</a>."
+      did_you_receive_this_email_in_error: "Hast du diese E-Mail irrtümlicherweise erhalten? <a href=\"%{link}\">Lass es uns wissen</a>."

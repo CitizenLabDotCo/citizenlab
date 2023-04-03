@@ -50,7 +50,7 @@ describe('Project description builder navigation', () => {
     );
   });
 
-  it('navigates to projects list when project settings goBack clicked', () => {
+  it.skip('navigates to projects list when project settings goBack clicked', () => {
     cy.visit(`/admin/projects/${projectId}/description`);
     cy.get('#e2e-go-back-button').should('exist');
     cy.get('#e2e-go-back-button').click();

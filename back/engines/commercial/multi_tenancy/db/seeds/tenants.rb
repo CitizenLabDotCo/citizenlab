@@ -50,7 +50,7 @@ module MultiTenancy
             },
             franceconnect_login: {
               allowed: true,
-              enabled: true,
+              enabled: false,
               environment: 'integration',
               identifier: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_IDENTIFIER'),
               secret: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_SECRET')
@@ -101,6 +101,10 @@ module MultiTenancy
               allowed: true
             },
             user_confirmation: {
+              enabled: true,
+              allowed: true
+            },
+            permission_option_email_confirmation: {
               enabled: true,
               allowed: true
             },
@@ -185,6 +189,10 @@ module MultiTenancy
               allowed: true
             },
             segment: {
+              enabled: false,
+              allowed: false
+            },
+            planhat: {
               enabled: false,
               allowed: false
             },
@@ -380,9 +388,18 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            input_form_custom_fields: {
+              enabled: true,
+              allowed: true
+            },
             posthog_integration: {
               enabled: true,
               allowed: true
+            },
+            user_blocking: {
+              enabled: true,
+              allowed: true,
+              duration: 90
             }
           })
         )

@@ -3,9 +3,8 @@ import styled, { withTheme } from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // services
-import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
+import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
 // components
 import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
@@ -16,6 +15,9 @@ import Button from 'components/UI/Button';
 import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+
+// Types
+import { IInitiativeData } from 'api/initiatives/types';
 
 const Container = styled.div``;
 

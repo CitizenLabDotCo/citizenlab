@@ -271,6 +271,13 @@ export default ({
     />
 
     <SortingPicker
+      options={[
+        { key: 'trending', value: 'trending' },
+        { key: 'random', value: 'random' },
+        { key: 'popular', value: 'popular' },
+        { key: 'newest', value: 'new' },
+        { key: 'oldest', value: '-new' },
+      ]}
       ideas_order={ideas_order}
       apiErrors={apiErrors}
       handleIdeaDefaultSortMethodChange={handleIdeaDefaultSortMethodChange}

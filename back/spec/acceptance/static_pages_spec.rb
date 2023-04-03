@@ -47,7 +47,8 @@ resource 'StaticPages' do
     describe nil do
       let(:slug) { 'unexisting-page' }
 
-      example_request '[error] Get an unexisting static page by slug', document: false do
+      example '[error] Get an unexisting static page by slug', document: false do
+        do_request
         expect(status).to eq 404
       end
     end
@@ -280,7 +281,8 @@ resource 'StaticPages' do
       describe nil do
         let(:slug) { '' }
 
-        example_request '[error] Create an invalid static page', document: false do
+        example '[error] Create an invalid static page', document: false do
+          do_request
           assert_status 422
           expect(json_response).to include_response_error(:slug, 'blank')
         end

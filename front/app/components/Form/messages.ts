@@ -39,4 +39,8 @@ export default defineMessages({
     id: 'app.components.form.ErrorDisplay.next',
     defaultMessage: 'Next',
   },
+  save: {
+    id: 'app.components.form.ErrorDisplay.save',
+    defaultMessage: 'Save',
+  },
 });

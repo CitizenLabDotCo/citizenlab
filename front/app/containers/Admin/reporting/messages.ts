@@ -29,4 +29,9 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.printPrepare',
     defaultMessage: 'Preparing to print...',
   },
+  contactToAccess: {
+    id: 'app.containers.Admin.reporting.contactToAccess',
+    defaultMessage:
+      'Creating a custom report is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
+  },
 });

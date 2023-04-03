@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'db/seeds.rb', slow_test: true do
+describe 'db/seeds.rb' do
   # TODO: Refacor this to have separate examples for various assertions. Didn't
   # seem to work the straightforward way after multiple runs, seems to be due to
   # the schema created by apartment for the seedfile tenant. It's not getting

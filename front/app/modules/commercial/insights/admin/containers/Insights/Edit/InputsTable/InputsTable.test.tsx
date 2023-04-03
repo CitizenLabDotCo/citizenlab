@@ -12,6 +12,11 @@ import useInputs from 'modules/commercial/insights/api/inputs/useInputs';
 import clHistory from 'utils/cl-router/history';
 import categories from 'modules/commercial/insights/fixtures/categories';
 import links from 'modules/commercial/insights/fixtures/links';
+import { ideaData as mockIdeaData } from 'api/ideas/__mocks__/useIdeaById';
+
+jest.mock('api/ideas/useIdeaById', () => {
+  return jest.fn(() => ({ data: { data: mockIdeaData[0] } }));
+});
 
 const mockAddInputCategories = jest.fn();
 jest.mock('modules/commercial/insights/api/inputs/useAddInputCategories', () =>
@@ -43,19 +48,7 @@ const viewId = '1';
 
 let mockInputData = inputs;
 
-const mockIdeaData = {
-  id: '2',
-  type: 'idea',
-  attributes: {
-    title_multiloc: { en: 'Test Idea' },
-  },
-};
-
 let mockLocationData = { pathname: '', query: {} };
-
-jest.mock('hooks/useIdea', () => {
-  return jest.fn(() => mockIdeaData);
-});
 
 jest.mock('modules/commercial/insights/api/views/useView');
 

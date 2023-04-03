@@ -21,6 +21,7 @@ import {
   IVerificationError,
   TVerificationStep,
 } from 'events/verificationModal';
+import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 const Container = styled.div`
   display: flex;
@@ -85,7 +86,8 @@ const VerificationSteps = memo<Props>(
 
     const goToSuccessStep = useCallback(() => {
       if (!isNilOrError(authUser)) {
-        streams.reset().then(() => {
+        streams.reset().then(async () => {
+          await resetQueryCache();
           setActiveStep('success');
           setMethod(null);
         });

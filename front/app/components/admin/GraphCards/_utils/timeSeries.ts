@@ -1,5 +1,8 @@
 import moment, { Moment } from 'moment';
 
+// utils
+import { orderBy } from 'lodash-es';
+
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
 
@@ -236,3 +239,34 @@ export const emptyDateRange = <Row>(
 
   return dates.map(getEmptyRow);
 };
+
+// Calculate cumulative series by taking the total as the last item
+// in the serie and substract it with each time period value
+type RowWithDate = { date: string };
+export function calculateCumulativeSerie<SerieRow extends RowWithDate>(
+  serie: SerieRow[],
+  globalTotal: number,
+  getTotal: (s: SerieRow) => number
+) {
+  let timeSerie = orderBy(
+    serie,
+    (row: SerieRow) => {
+      return moment(row.date).format('YYYYMMDD');
+    },
+    ['desc']
+  );
+
+  let totalCount = globalTotal;
+  timeSerie = timeSerie
+    .map((row) => {
+      const _totalCount = totalCount;
+      totalCount = totalCount - getTotal(row);
+      return {
+        ...row,
+        total: _totalCount,
+      };
+    })
+    .reverse();
+
+  return timeSerie;
+}

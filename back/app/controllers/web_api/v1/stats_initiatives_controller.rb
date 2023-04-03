@@ -11,7 +11,7 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
       .where(published_at: @start_at..@end_at)
     initiatives = PostsFilteringService.new.apply_common_initiative_index_filters initiatives, params
 
-    render json: { count: initiatives.count }
+    render json: raw_json({ count: initiatives.count })
   end
 
   def initiatives_by_topic
@@ -28,7 +28,7 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
       .count
 
     topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: { series: { initiatives: serie }, topics: topics.to_h { |t| [t.id, t.attributes.except('id')] } }
+    render json: raw_json({ series: { initiatives: serie }, topics: topics.to_h { |t| [t.id, t.attributes.except('id')] } })
   end
 
   def initiatives_by_area
@@ -45,7 +45,7 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
       .order('areas_initiatives.area_id')
       .count
     areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: { series: { initiatives: serie }, areas: areas.to_h { |a| [a.id, a.attributes.except('id')] } }
+    render json: raw_json({ series: { initiatives: serie }, areas: areas.to_h { |a| [a.id, a.attributes.except('id')] } })
   end
 
   def initiatives_by_time
@@ -62,7 +62,7 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
       @end_at,
       params[:interval]
     )
-    render json: { series: { initiatives: serie } }
+    render json: raw_json({ series: { initiatives: serie } })
   end
 
   def initiatives_by_time_cumulative
@@ -79,7 +79,7 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
       @end_at,
       params[:interval]
     )
-    render json: { series: { initiatives: serie } }
+    render json: raw_json({ series: { initiatives: serie } })
   end
 
   private

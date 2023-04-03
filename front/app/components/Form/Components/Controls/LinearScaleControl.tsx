@@ -15,6 +15,9 @@ import {
 import { FormLabel } from 'components/UI/FormComponents';
 import VerificationIcon from '../VerificationIcon';
 import ErrorDisplay from '../ErrorDisplay';
+import { getSubtextElement } from './controlUtils';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // style
 import { colors } from 'utils/styleUtils';
@@ -31,9 +34,10 @@ const LinearScaleControl = ({
   id,
   visible,
 }: ControlProps) => {
-  const isSmallerThanXlPhone = useBreakpoint('phone');
+  const isSmallerThanPhone = useBreakpoint('phone');
   const theme = useTheme();
   const maximum = schema?.maximum;
+  const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
 
   if (!visible) {
     return null;
@@ -52,12 +56,17 @@ const LinearScaleControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
+      {answerNotPublic && (
+        <Text mb="8px" mt="0px" fontSize="s">
+          <FormattedMessage {...messages.notPublic} />
+        </Text>
+      )}
       <Box data-testid="linearScaleControl">
         <Box
-          gap={isSmallerThanXlPhone ? '8px' : '12px'}
+          gap={isSmallerThanPhone ? '8px' : '12px'}
           display="flex"
           flexWrap="wrap"
           justifyContent="center"
@@ -67,9 +76,7 @@ const LinearScaleControl = ({
             const visualIndex = i + 1;
             return (
               <Box
-                flexGrow={
-                  isSmallerThanXlPhone && maximum && maximum > 5 ? 0 : 1
-                }
+                flexGrow={isSmallerThanPhone && maximum && maximum > 5 ? 0 : 1}
                 key={rowId}
                 minWidth={getButtonWidth()}
                 padding="16px, 20px, 16px, 20px"
@@ -99,31 +106,31 @@ const LinearScaleControl = ({
         </Box>
         <Box
           width="100%"
-          display={isSmallerThanXlPhone ? 'block' : 'flex'}
+          display={isSmallerThanPhone ? 'block' : 'flex'}
           justifyContent="space-between"
         >
           {uischema.options?.minimum_label && (
-            <Box maxWidth={isSmallerThanXlPhone ? '100%' : '50%'}>
+            <Box maxWidth={isSmallerThanPhone ? '100%' : '50%'}>
               <Text
                 mt="8px"
                 mb="0px"
                 color="textSecondary"
-                fontSize={isSmallerThanXlPhone ? 's' : 'm'}
+                fontSize={isSmallerThanPhone ? 's' : 'm'}
               >
-                {isSmallerThanXlPhone && <>1. </>}
+                {isSmallerThanPhone && <>1. </>}
                 {uischema.options?.minimum_label}
               </Text>
             </Box>
           )}
           {uischema.options?.maximum_label && (
-            <Box maxWidth={isSmallerThanXlPhone ? '100%' : '50%'}>
+            <Box maxWidth={isSmallerThanPhone ? '100%' : '50%'}>
               <Text
-                mt={isSmallerThanXlPhone ? '0px' : '8px'}
+                mt={isSmallerThanPhone ? '0px' : '8px'}
                 m="0px"
                 color="textSecondary"
-                fontSize={isSmallerThanXlPhone ? 's' : 'm'}
+                fontSize={isSmallerThanPhone ? 's' : 'm'}
               >
-                {isSmallerThanXlPhone && <>{maximum}. </>}
+                {isSmallerThanPhone && <>{maximum}. </>}
                 {uischema.options?.maximum_label}
               </Text>
             </Box>

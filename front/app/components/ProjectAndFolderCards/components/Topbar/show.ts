@@ -4,7 +4,7 @@ import { ITopicData } from 'services/topics';
 import { IAreaData } from 'services/areas';
 
 interface GetShowFiltersParams {
-  smallerThanXlPhone: boolean;
+  isSmallerThanPhone: boolean;
   hasPublications: boolean;
   statusCounts: IStatusCounts;
   selectedTopics: string[];
@@ -12,7 +12,7 @@ interface GetShowFiltersParams {
 }
 
 export const getShowFilters = ({
-  smallerThanXlPhone,
+  isSmallerThanPhone,
   hasPublications,
   statusCounts,
   selectedTopics,
@@ -22,18 +22,18 @@ export const getShowFilters = ({
     return true;
   }
 
-  return smallerThanXlPhone ? hasPublications : statusCounts.all > 0;
+  return isSmallerThanPhone ? hasPublications : statusCounts.all > 0;
 };
 
 export const getShowFiltersLabel = (
   topics: ITopicData[] | NilOrError,
   areas: IAreaData[] | NilOrError,
-  smallerThanMinTablet: boolean
+  smallerThanTablet: boolean
 ) => {
   return (
     !(
       (isNilOrError(topics) || topics.length === 0) &&
       (isNilOrError(areas) || areas.length === 0)
-    ) && !smallerThanMinTablet
+    ) && !smallerThanTablet
   );
 };

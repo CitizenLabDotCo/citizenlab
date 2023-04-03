@@ -72,9 +72,9 @@ const useScanForCategorySuggestions = (
   category?: string,
   processed?: boolean
 ) => {
-  const queryKey = categorySuggestionsKeys.tasks(viewId, {
-    categories: category ? [category] : [],
-    processed,
+  const queryKey = categorySuggestionsKeys.list({
+    viewId,
+    filters: { categories: category ? [category] : [], processed },
   });
 
   const cachedQueryData = queryClient.getQueryData(queryKey);
@@ -103,9 +103,9 @@ const useScanForCategorySuggestions = (
           };
         });
       }
-      queryClient.invalidateQueries(inputsKeys.list(viewId));
-      queryClient.invalidateQueries(inputsKeys.items(viewId));
-      queryClient.invalidateQueries(statsKeys.item(viewId));
+      queryClient.invalidateQueries(inputsKeys.list({ viewId }));
+      queryClient.invalidateQueries(inputsKeys.item({ viewId }));
+      queryClient.invalidateQueries(statsKeys.item({ viewId }));
     },
     structuralSharing: (oldData, newData) => {
       if (!oldData) {

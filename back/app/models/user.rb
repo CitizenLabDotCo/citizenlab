@@ -28,6 +28,8 @@
 #  email_confirmation_code_reset_count :integer          default(0), not null
 #  email_confirmation_code_sent_at     :datetime
 #  confirmation_required               :boolean          default(TRUE), not null
+#  block_start_at                      :datetime
+#  block_reason                        :string
 #
 # Indexes
 #
@@ -36,6 +38,7 @@
 #  index_users_on_slug                       (slug) UNIQUE
 #  users_unique_lower_email_idx              (lower((email)::text)) UNIQUE
 #
+# rubocop:disable Metrics/ClassLength
 class User < ApplicationRecord
   include EmailCampaigns::UserDecorator
   include Onboarding::UserDecorator
@@ -46,6 +49,7 @@ class User < ApplicationRecord
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
   ROLES = %w[admin project_moderator project_folder_moderator].freeze
+  CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlab.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
 
   class << self
     # Deletes all users asynchronously (with side effects).
@@ -146,7 +150,7 @@ class User < ApplicationRecord
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
-  validates :email, :first_name, :slug, :locale, presence: true, unless: :invite_pending?
+  validates :email, :locale, presence: true, unless: :invite_pending?
 
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
@@ -161,10 +165,11 @@ class User < ApplicationRecord
 
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
-  validates :custom_field_values, json: {
-    schema: -> { CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User')) },
-    message: ->(errors) { errors }
-  }, if: %i[custom_field_values_changed? active?]
+  # TODO: Allow light users without required fields
+  # validates :custom_field_values, json: {
+  #   schema: -> { CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User')) },
+  #   message: ->(errors) { errors }
+  # }, if: %i[custom_field_values_changed? active?]
 
   validates :password, length: { maximum: 72 }, allow_nil: true
   # Custom validation is required to deal with the
@@ -173,8 +178,6 @@ class User < ApplicationRecord
   validate :validate_password_not_common
 
   validate do |record|
-    record.errors.add(:last_name, :blank) unless record.last_name.present? || record.cl1_migrated || record.invite_pending?
-    record.errors.add(:password, :blank) unless record.password_digest.present? || record.identities.any? || record.invite_pending?
     if record.email && (duplicate_user = User.find_by_cimail(record.email)).present? && duplicate_user.id != id
       if duplicate_user.invite_pending?
         ErrorsService.new.remove record.errors, :email, :taken, value: record.email
@@ -192,6 +195,20 @@ class User < ApplicationRecord
   validate :validate_email_domain_blacklist
 
   validates :roles, json: { schema: -> { User.roles_json_schema }, message: ->(errors) { errors } }
+
+  with_options if: -> { AppConfiguration.instance.feature_activated?('user_confirmation') } do
+    validates :email_confirmation_code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
+    validates :email_confirmation_retry_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
+    validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
+
+    with_options if: :email_changed?, on: :create do
+      before_validation :reset_confirmation_code
+      before_validation :reset_confirmed_at
+      before_validation :reset_confirmation_required
+    end
+
+    before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
+  end
 
   scope :admin, -> { where("roles @> '[{\"type\":\"admin\"}]'") }
   scope :not_admin, -> { where.not("roles @> '[{\"type\":\"admin\"}]'") }
@@ -221,6 +238,12 @@ class User < ApplicationRecord
   scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
   scope :active, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
 
+  scope :blocked, lambda {
+    where.not(block_start_at: nil)
+      .and(where(block_start_at: (
+        AppConfiguration.instance.settings('user_blocking', 'duration').days.ago..Time.zone.now)))
+  }
+
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
       .order(Arel.sql("(roles @> '[{\"type\":\"admin\"}]')::integer #{direction}"))
@@ -234,6 +257,14 @@ class User < ApplicationRecord
   scope :in_any_group, lambda { |groups|
     user_ids = groups.flat_map { |group| in_group(group).ids }.uniq
     where(id: user_ids)
+  }
+
+  # https://www.postgresql.org/docs/12/functions-matching.html#FUNCTIONS-POSIX-REGEXP
+  scope :not_citizenlab_member, -> { where.not('email ~* ?', CITIZENLAB_MEMBER_REGEX_CONTENT) }
+  scope :billed_admins, -> { admin.not_citizenlab_member }
+  scope :billed_moderators, lambda {
+    # use any conditions before `or` very carefully (inspect the generated SQL)
+    project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
   }
 
   def self.oldest_admin
@@ -281,7 +312,23 @@ class User < ApplicationRecord
   end
 
   def full_name
-    [first_name, last_name].compact.join(' ')
+    return [first_name, last_name].compact.join(' ') unless no_name?
+
+    [anon_first_name, anon_last_name].compact.join(' ')
+  end
+
+  def no_name?
+    !self[:last_name] && !self[:first_name] && !invite_pending?
+  end
+
+  # Anonymous names to use if no first name and last name
+  def anon_first_name
+    'User'
+  end
+
+  def anon_last_name
+    # Generate a last name based on email in the format of '123456'
+    email.hash.abs.to_s[0, 6]
   end
 
   def highest_role
@@ -299,7 +346,7 @@ class User < ApplicationRecord
   end
 
   def super_admin?
-    admin? && !!(email =~ /citizen-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl|dk|pl)$/i)
+    admin? && !!(email =~ Regexp.new(CITIZENLAB_MEMBER_REGEX_CONTENT, 'i'))
   end
 
   def admin?
@@ -339,8 +386,9 @@ class User < ApplicationRecord
   end
 
   def authenticate(unencrypted_password)
-    if !password_digest
-      false
+    if no_password?
+      # Allow authentication without password - but only if confirmation is required on the user
+      unencrypted_password.empty? && confirmation_required? ? self : false
     elsif cl1_authenticate(unencrypted_password)
       self.password_digest = BCrypt::Password.create(unencrypted_password)
       self
@@ -349,12 +397,26 @@ class User < ApplicationRecord
     end
   end
 
+  def no_password?
+    !password_digest && !invite_pending? && identity_ids.empty?
+  end
+
   def member_of?(group_id)
     !memberships.select { |m| m.group_id == group_id }.empty?
   end
 
   def active?
-    registration_completed_at.present? && !invite_pending?
+    registration_completed_at.present? && !invite_pending? && !blocked?
+  end
+
+  def blocked?
+    block_start_at.present? && block_start_at.between?(block_duration.days.ago, Time.zone.now)
+  end
+
+  def block_end_at
+    return nil unless blocked?
+
+    block_start_at + block_duration.days
   end
 
   def groups
@@ -369,12 +431,114 @@ class User < ApplicationRecord
     manual_groups.merge(groups).exists?
   end
 
+  #
+  # <Used to check upon update or create, if a user should have to confirm their account>
+  #
+  # @return [<Boolean>] <True if the user requires confirmation>
+  #
+  def should_require_confirmation?
+    !(registered_with_phone? || highest_role != :user || identities.any? || invited? || active?)
+  end
+
+  #
+  # <The reader for the private `#confirmation_required` attribute.>
+  #
+  # @return [<Boolean>] <True if the user has not yet confirmed their account after creation or an update to it's details.>
+  #
+  def confirmation_required?
+    AppConfiguration.instance.feature_activated?('user_confirmation') && confirmation_required
+  end
+
+  #
+  # <Returns true if the user has performed confirmation of it's account.>
+  #
+  # @return [<Boolean>] <True has confirmed it's account.>
+  #
+  def confirmed?
+    email_confirmed_at.present?
+  end
+
+  def reset_confirmation_required
+    self.confirmation_required = should_require_confirmation?
+  end
+
+  def reset_confirmation_with_no_password
+    if confirmation_required == false
+      # Only reset code and retry/reset counts if account has already been confirmed
+      # To keep limits in place for non-legit requests
+      self.email_confirmation_code = nil
+      self.email_confirmation_retry_count = 0
+      self.email_confirmation_code_reset_count = 0
+    end
+    self.confirmation_required = true
+  end
+
+  def confirm
+    self.email_confirmed_at    = Time.zone.now
+    self.confirmation_required = false
+    complete_registration if no_password? # temp change for flexible_registration_i1
+  end
+
+  def confirm!
+    return false unless registered_with_email?
+
+    confirm
+    save!
+  end
+
+  def email_confirmation_code_expiration_at
+    email_confirmation_code_sent_at + 1.day
+  end
+
+  def reset_confirmation_code!
+    reset_confirmation_code
+    increment_confirmation_code_reset_count
+    save!
+  end
+
+  def increment_confirmation_retry_count!
+    increment_confirmation_retry_count
+    save!
+  end
+
+  def increment_confirmation_code_reset_count!
+    increment_confirmation_code_reset_count
+    save!
+  end
+
+  def reset_confirmation_code
+    self.email_confirmation_code = use_fake_code? ? '1234' : rand.to_s[2..5]
+  end
+
+  def increment_confirmation_code_reset_count
+    self.email_confirmation_code_reset_count += 1
+  end
+
+  def increment_confirmation_retry_count
+    self.email_confirmation_retry_count += 1
+  end
+
+  def reset_email!(email)
+    update!(
+      email: email,
+      email_confirmation_code_reset_count: 0
+    )
+  end
+
+  def reset_confirmed_at
+    self.email_confirmed_at = nil
+  end
+
+  def complete_registration
+    self.registration_completed_at = Time.now if registration_completed_at.nil?
+  end
+
   private
 
   def generate_slug
     return if slug.present?
 
-    self.slug = UserSlugService.new.generate_slug(self, full_name) if first_name.present?
+    self.slug = UserSlugService.new.generate_slug(self, full_name) unless invite_pending?
   end
 
   def sanitize_bio_multiloc
@@ -440,12 +604,28 @@ class User < ApplicationRecord
       end
     end
   end
+
+  def confirmation_required
+    self[:confirmation_required]
+  end
+
+  def confirmation_required=(val)
+    write_attribute :confirmation_required, val
+  end
+
+  def use_fake_code?
+    Rails.env.development?
+  end
+
+  def block_duration
+    AppConfiguration.instance.settings('user_blocking', 'duration')
+  end
 end
+# rubocop:enable Metrics/ClassLength
 
-User.include_if_ee('IdeaAssignment::Extensions::User')
-User.include_if_ee('Verification::Patches::User')
+User.include(IdeaAssignment::Extensions::User)
+User.include(Verification::Patches::User)
 
-User.include(UserConfirmation::Extensions::User)
-User.prepend_if_ee('MultiTenancy::Patches::User')
-User.prepend_if_ee('MultiTenancy::Patches::UserConfirmation::User')
-User.prepend_if_ee('SmartGroups::Patches::User')
+User.prepend(MultiTenancy::Patches::User)
+User.prepend(MultiTenancy::Patches::UserConfirmation::User)
+User.prepend(SmartGroups::Patches::User)

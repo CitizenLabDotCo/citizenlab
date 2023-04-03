@@ -9,3 +9,53 @@ fr:
       title: Question par défaut
       option1: Première option
       option2: Deuxième option
+  custom_fields:
+    ideas:
+      title:
+        title: Titre
+        description:
+      body:
+        title: Description
+        description:
+      author_id:
+        title: Auteur
+      topic_ids:
+        title: Étiquettes
+        description:
+      location:
+        title: Adresse
+        description:
+      proposed_budget:
+        title: Proposition de budget
+        description:
+      budget:
+        title: Budget
+      images:
+        title: Images
+        description:
+      attachments:
+        title: Pièces jointes
+        description:
+      section1:
+        description:
+      section2:
+        title: Images et pièces jointes
+        description:
+      section3:
+        title: Details
+        description:
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: Quelle est votre idée ?
+        question:
+          title: Quelle est votre question ?
+        contribution:
+          title: Quelle est votre suggestion ?
+        project:
+          title: Quel est votre projet ?
+        issue:
+          title: Quel est votre problème ?
+        option:
+          title: Quelle est votre option ?

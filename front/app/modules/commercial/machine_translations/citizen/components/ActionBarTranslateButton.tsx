@@ -6,7 +6,7 @@ import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 import TranslateButton from 'components/UI/TranslateButton';
 import { GetLocaleChildProps } from 'resources/GetLocale';
-import { GetInitiativeChildProps } from 'resources/GetInitiative';
+import { IInitiativeData } from 'api/initiatives/types';
 
 const StyledTranslateButton = styled(TranslateButton)`
   ${media.phone`
@@ -17,7 +17,7 @@ const StyledTranslateButton = styled(TranslateButton)`
 interface Props {
   translateButtonClicked: boolean;
   onClick: () => void;
-  initiative: GetInitiativeChildProps;
+  initiative: IInitiativeData;
   locale: GetLocaleChildProps;
 }
 

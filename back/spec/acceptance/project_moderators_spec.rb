@@ -50,7 +50,8 @@ resource 'Moderators' do
       let(:project_id) { @project.id }
       let!(:same_project_moderators) { create_list(:project_moderator, 2, projects: [@project]) }
 
-      example_request 'List all moderators of a project', document: false do
+      example 'List all moderators of a project', document: false do
+        do_request
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq same_project_moderators.size

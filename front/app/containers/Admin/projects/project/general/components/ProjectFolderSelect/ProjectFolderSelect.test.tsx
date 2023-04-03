@@ -1,11 +1,15 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
+import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 
 import ProjectFolderSelect from './';
 
 let mockPermission = false;
 jest.mock('services/permissions', () => {
   return { usePermission: () => mockPermission };
+});
+
+beforeEach(() => {
+  mockPermission = false;
 });
 
 const projectFolders = {
@@ -92,6 +96,21 @@ describe('ProjectFolderSelect', () => {
 
     expect(container.querySelector('label[for="folderSelect-no"]')).toHaveClass(
       'disabled'
+    );
+  });
+  it('should set folder_id to null when "no" option is selected', () => {
+    const onProjectAttributesDiffChange = jest.fn();
+    const { container } = render(
+      <ProjectFolderSelect
+        projectAttrs={{ folder_id: 'folder1' }}
+        onProjectAttributesDiffChange={onProjectAttributesDiffChange}
+      />
+    );
+
+    fireEvent.click(container.querySelector('#folderSelect-no'));
+    expect(onProjectAttributesDiffChange).toHaveBeenCalledWith(
+      { folder_id: null },
+      'enabled'
     );
   });
 });

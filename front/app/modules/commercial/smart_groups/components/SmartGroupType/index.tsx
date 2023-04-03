@@ -109,7 +109,7 @@ const SmartGroupType: FC<SmartGroupTypeProps> = ({
       </Step2Button>
       {!isSmartGroupsEnabled && (
         <BlackedOut>
-          <LockIcon name="lock" />
+          <LockIcon name="lock" fill="white" />
           <Copy>
             <FormattedMessage {...messages.smartGroupsAvailability} />
           </Copy>

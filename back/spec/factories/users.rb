@@ -41,5 +41,14 @@ FactoryBot.define do
         create(:invite, invitee: user)
       end
     end
+
+    factory :user_with_confirmation, parent: :user do
+      invite_status { nil }
+      registration_completed_at { nil }
+
+      before(:create) do |user, _evaluator|
+        user.reset_confirmation_code
+      end
+    end
   end
 end

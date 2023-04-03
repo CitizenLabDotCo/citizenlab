@@ -107,7 +107,8 @@ resource 'Moderators' do
       let(:user_id) { other_moderators.first.id }
       let!(:same_project_folder_moderators) { create_list(:project_folder_moderator, 2, project_folders: [project_folder]) }
 
-      example_request 'List all moderators of a project_folder', document: false do
+      example 'List all moderators of a project_folder', document: false do
+        do_request
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq same_project_folder_moderators.size

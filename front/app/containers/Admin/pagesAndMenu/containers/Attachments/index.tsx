@@ -164,8 +164,7 @@ const AttachmentsForm = ({
               </Label>
               <FileUploader
                 name="local_page_files"
-                resourceId={customPageId}
-                resourceType="page"
+                remoteFiles={remotePageFiles}
               />
             </SectionField>
             <Box display="flex">

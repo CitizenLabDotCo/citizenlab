@@ -29,12 +29,12 @@ const useInputs = (viewId: string, queryParams: QueryParameters) => {
     pageNumber: queryParams.pageNumber + 1,
   };
   queryClient.prefetchQuery({
-    queryKey: inputsKeys.list(viewId, prefetchParams),
+    queryKey: inputsKeys.list({ viewId, filters: prefetchParams }),
     queryFn: () => fetchInputs(viewId, prefetchParams),
   });
 
   return useQuery<IInsightsInputs, CLErrors, IInsightsInputs, InputsKeys>({
-    queryKey: inputsKeys.list(viewId, queryParams),
+    queryKey: inputsKeys.list({ viewId, filters: queryParams }),
     queryFn: () => fetchInputs(viewId, queryParams),
   });
 };

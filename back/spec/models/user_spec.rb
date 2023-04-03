@@ -34,9 +34,67 @@ RSpec.describe User, type: :model do
       expect(invitee.invitee_invite.invitee.id).to eq invitee.id
     end
 
-    it 'does not generate a slug if no names given' do
+    it 'does not generate a slug if an invited user' do
       invitee = create(:invited_user, first_name: nil, last_name: nil)
       expect(invitee.slug).to be_nil
+    end
+  end
+
+  describe 'creating a light user - email & locale only' do
+    it 'is valid and generates a slug' do
+      u = described_class.new(email: 'test@test.com', locale: 'en')
+      u.save
+      expect(u).to be_valid
+      expect(u.slug).not_to be_nil
+    end
+  end
+
+  include_context 'when user_blocking duration is 90 days' do
+    describe 'blocked?' do
+      let!(:user1) { create(:user, block_start_at: 89.days.ago) }
+      let!(:user2) { create(:user, block_start_at: 90.days.ago) }
+      let!(:user3) { create(:user, block_start_at: 50.days.ago) }
+
+      it 'Blocked users should be blocked for block duration' do
+        expect(user1.blocked?).to be(true)
+        expect(user2.blocked?).to be(false)
+      end
+
+      it 'Blocked users should be blocked or unblocked according to changes in block duration' do
+        expect(user1.blocked?).to be(true)
+
+        settings = AppConfiguration.instance.settings
+        settings['user_blocking']['duration'] = 60
+        AppConfiguration.instance.update!(settings: settings)
+
+        expect(user1.blocked?).to be(false)
+        expect(user3.blocked?).to be(true)
+      end
+
+      it "Blocked users 'blocked' status should be decoupled from user_blocking feature flag" do
+        settings = AppConfiguration.instance.settings
+        settings['user_blocking']['enabled'] = false
+        AppConfiguration.instance.update!(settings: settings)
+
+        expect(user1.blocked?).to be(true)
+        expect(user2.blocked?).to be(false)
+      end
+
+      it 'Blocked users should be returned in scope :blocked' do
+        blocked_users = described_class.all.blocked
+
+        expect(blocked_users.count).to eq 2
+        expect(blocked_users).to include(user1)
+        expect(blocked_users).not_to include(user2)
+      end
+
+      it 'Should be no blocked users if block duration is zero' do
+        settings = AppConfiguration.instance.settings
+        settings['user_blocking']['duration'] = 0
+        AppConfiguration.instance.update!(settings: settings)
+
+        expect(described_class.all.blocked.count).to eq 0
+      end
     end
   end
 
@@ -67,6 +125,58 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'authentication without password' do
+    context 'when user_confirmation feature is active' do
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+      end
+
+      it 'should be allowed if the user has no password and confirmation is required' do
+        u = described_class.new(email: 'bob@citizenlab.co')
+        expect(!!u.authenticate('')).to be(true)
+      end
+
+      it 'should not be allowed if a password has been supplied in the request' do
+        u = described_class.new(email: 'bob@citizenlab.co')
+        expect(!!u.authenticate('any_string')).to be(false)
+      end
+
+      it 'should not be allowed if a password has been set' do
+        u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
+        expect(!!u.authenticate('')).to be(false)
+      end
+
+      it 'should not be allowed if confirmation is not required' do
+        u = described_class.new(email: 'bob@citizenlab.co')
+        u.confirm
+        expect(!!u.authenticate('')).to be(false)
+      end
+    end
+
+    context 'when user_confirmation feature is not active' do
+      before do
+        SettingsService.new.deactivate_feature! 'user_confirmation'
+      end
+
+      it 'should not be allowed if no password has been set and confirmation is required' do
+        u = described_class.new(email: 'bob@citizenlab.co')
+        expect(!!u.authenticate('')).to be(false)
+        expect(!!u.authenticate('any_string')).to be(false)
+      end
+
+      it 'should not be allowed if a password has been set' do
+        u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
+        expect(!!u.authenticate('')).to be(false)
+      end
+
+      it 'should not be allowed if confirmation is not required' do
+        u = described_class.new(email: 'bob@citizenlab.co')
+        u.confirm
+        expect(!!u.authenticate('')).to be(false)
+      end
+    end
+  end
+
   describe 'email' do
     it 'is invalid if there is a case insensitive duplicate' do
       create(:user, email: 'KoEn@citizenlab.co')
@@ -82,9 +192,26 @@ RSpec.describe User, type: :model do
   end
 
   describe 'password' do
-    it 'is invalid when set to empty string' do
+    it 'is valid when set to empty string' do
+      # This is allowed to allow accounts without a password
       u = build(:user, password: '')
-      expect(u).to be_invalid
+      expect(u).to be_valid
+    end
+
+    it 'is valid when nil' do
+      # This is allowed to allow accounts without a password
+      u = build(:user, password: nil)
+      expect(u).to be_valid
+    end
+
+    it 'does not create a password digest if the password is empty' do
+      u = build(:user, password: '')
+      expect(u.password_digest).to be_nil
+    end
+
+    it 'does not create a password digest if the password is nil' do
+      u = build(:user, password: nil)
+      expect(u.password_digest).to be_nil
     end
 
     it 'is invalid if its a common password' do
@@ -176,7 +303,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'demographic fields', slow_test: true do
+  describe 'demographic fields' do
     before do
       create(:custom_field_birthyear)
       create(:custom_field_gender, :with_options)
@@ -419,7 +546,6 @@ RSpec.describe User, type: :model do
         build_stubbed(:admin, email: 'hello+admin@citizenLab.co'),
         build_stubbed(:admin, email: 'hello@citizenlab.eu'),
         build_stubbed(:admin, email: 'moderator+admin@citizenlab.be'),
-        build_stubbed(:admin, email: 'some.person@citizen-lab.fr'),
         build_stubbed(:admin, email: 'cheese.lover@CitizenLab.ch'),
         build_stubbed(:admin, email: 'Fritz+Wurst@Citizenlab.de'),
         build_stubbed(:admin, email: 'breek.nou.mijn.klomp@citizenlab.NL'),
@@ -459,13 +585,14 @@ RSpec.describe User, type: :model do
   end
 
   describe 'custom_field_values' do
-    it 'validates when custom_field_values have changed' do
-      u = create(:user)
-      u.custom_field_values = {
-        somekey: 'somevalue'
-      }
-      expect { u.save }.to(change { u.errors[:custom_field_values] })
-    end
+    # TODO: Allow light users without required fields
+    # it 'validates when custom_field_values have changed' do
+    #   u = create(:user)
+    #   u.custom_field_values = {
+    #     somekey: 'somevalue'
+    #   }
+    #   expect { u.save }.to(change { u.errors[:custom_field_values] })
+    # end
 
     it "doesn't validate when custom_field_values hasn't changed" do
       u = build(:user, custom_field_values: { somekey: 'somevalue' })
@@ -488,6 +615,13 @@ RSpec.describe User, type: :model do
     it 'returns true when the user has completed signup' do
       u = build(:user)
       expect(u.active?).to be true
+    end
+
+    include_context 'when user_blocking duration is 90 days' do
+      it 'returns false when the user is blocked' do
+        u = build(:user, block_start_at: Time.now)
+        expect(u.active?).to be false
+      end
     end
   end
 
@@ -559,6 +693,335 @@ RSpec.describe User, type: :model do
     it 'raises if no user record with that email was found' do
       expect { described_class.find_by_cimail!('doesnotexist@example.com') }
         .to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  context 'user confirmation' do
+    subject(:user) { build(:user_with_confirmation) }
+
+    after do
+      user.clear_changes_information
+    end
+
+    before do
+      SettingsService.new.activate_feature! 'user_confirmation'
+    end
+
+    it 'is initialized without a confirmation code' do
+      expect(user.email_confirmation_code).to be_nil
+    end
+
+    describe '#confirmed?' do
+      it 'returns false when the user has not yet confirmed their account' do
+        user.save!
+        expect(user.confirmed?).to be false
+      end
+
+      it 'returns true after the user has confirmed their account' do
+        user.save!
+        user.confirm!
+        expect(user.reload.confirmed?).to be true
+      end
+
+      it 'returns true if the user accepted an invitation' do
+        user.update(invite_status: 'accepted')
+        expect(user.confirmed?).to be true
+      end
+    end
+
+    describe '#should_require_confirmation?' do
+      it 'returns false if the user is an admin' do
+        user.add_role('admin')
+        user.save!
+        expect(user.should_require_confirmation?).to be false
+      end
+
+      it 'returns false if the user is a project moderator', skip: !defined?(ProjectManagement::Engine) do
+        user.add_role('project_moderator', 'project_id' => 'some_id')
+        user.save!
+        expect(user.should_require_confirmation?).to be false
+      end
+
+      it 'returns false if the user is a normal user' do
+        expect(user.should_require_confirmation?).to be true
+      end
+
+      it 'returns false if the user registered with a phone number' do
+        enable_phone_login
+        user.email = '343938837373'
+        user.save!
+        expect(user.reload.should_require_confirmation?).to be false
+      end
+    end
+
+    describe '#confirmation_required?' do
+      it 'returns false if the feature is not active' do
+        SettingsService.new.deactivate_feature! 'user_confirmation'
+        expect(user.confirmation_required?).to be false
+      end
+
+      it 'returns false if the user already confirmed their account' do
+        SettingsService.new.activate_feature! 'user_confirmation'
+        user.save!
+        user.confirm!
+        expect(user.reload.confirmation_required?).to be false
+      end
+
+      it 'returns true if the user has not yet confirmed their account' do
+        expect(user.confirmation_required?).to be true
+      end
+    end
+
+    describe '#confirmation_required' do
+      it 'raises a private method error' do
+        expect { user.confirmation_required }.to raise_error NoMethodError
+      end
+    end
+
+    describe '#confirmation_required=' do
+      it 'raises a private method error' do
+        expect { user.confirmation_required = false }.to raise_error NoMethodError
+      end
+    end
+
+    describe '#reset_confirmation_required' do
+      it 'resets the confirmation required field' do
+        user.save!
+        user.reset_confirmation_required
+        expect(user.confirmation_required?).to be true
+      end
+
+      it 'does not perform a commit to the db' do
+        user.save!
+        user.reset_confirmation_required
+        expect(user.saved_change_to_confirmation_required?).to be false
+      end
+    end
+
+    describe '#confirm' do
+      it 'sets the email_confirmed_at field' do
+        user.save!
+        user.confirm
+        expect(user.confirmed?).to be true
+      end
+
+      it 'does not perform a commit to the db' do
+        user.save!
+        user.confirm
+        expect(user.reload.confirmed?).to be false
+      end
+    end
+
+    describe '#reset_confirmed_at' do
+      it 'resets the confirmed_at field' do
+        user.confirm!
+        user.reset_confirmed_at
+        expect(user.confirmed?).to be false
+      end
+
+      it 'does not perform a commit to the db' do
+        user.confirm!
+        user.reset_confirmed_at
+        expect(user.saved_change_to_confirmation_required?).to be false
+      end
+    end
+
+    describe '#reset_confirmation_code!' do
+      it 'changes the code' do
+        expect { user.reset_confirmation_code! }.to change(user, :email_confirmation_code)
+      end
+
+      it 'increments the reset count' do
+        expect { user.reset_confirmation_code! }.to change(user, :email_confirmation_code_reset_count).from(0).to(1)
+      end
+
+      it 'should save a change to the email confirmation code' do
+        expect { user.reset_confirmation_code! }.to change(user, :saved_change_to_email_confirmation_code?)
+      end
+    end
+
+    describe '#increment_confirmation_retry_count!' do
+      it 'increments the retry count' do
+        expect { user.increment_confirmation_retry_count! }.to change(user, :email_confirmation_retry_count).from(0).to(1)
+      end
+
+      it 'saved the change to the retry count' do
+        expect { user.increment_confirmation_retry_count! }.to change(user, :saved_change_to_email_confirmation_retry_count?)
+      end
+    end
+
+    describe '#increment_confirmation_code_reset_count!' do
+      it 'increments the reset count' do
+        expect { user.reset_confirmation_code! }.to change(user, :email_confirmation_code_reset_count).from(0).to(1)
+      end
+
+      it 'saved the change to the reset count' do
+        expect { user.reset_confirmation_code! }.to change(user, :saved_change_to_email_confirmation_code_reset_count?)
+      end
+    end
+
+    describe '#reset_confirmation_code' do
+      it 'changes the code' do
+        expect { user.reset_confirmation_code }.to change(user, :email_confirmation_code)
+        expect(user.email_confirmation_code).to match(USER_CONFIRMATION_CODE_PATTERN)
+      end
+
+      it 'should not save a change to the email confirmation code' do
+        expect { user.reset_confirmation_code }.not_to change(user, :saved_change_to_email_confirmation_code?)
+      end
+    end
+
+    describe '#increment_confirmation_code_reset_count' do
+      it 'increments the reset count' do
+        expect { user.increment_confirmation_code_reset_count }.to change(user, :email_confirmation_code_reset_count).from(0).to(1)
+      end
+
+      it 'should not save the change to the reset count' do
+        expect { user.increment_confirmation_code_reset_count }.not_to change(user, :saved_change_to_email_confirmation_code_reset_count?)
+      end
+    end
+
+    describe '#increment_confirmation_retry_count' do
+      it 'increments the retry count' do
+        expect { user.increment_confirmation_retry_count }.to change(user, :email_confirmation_retry_count).from(0).to(1)
+      end
+
+      it 'should not save the change to the retry count' do
+        expect { user.increment_confirmation_retry_count }.not_to change(user, :saved_change_to_email_confirmation_retry_count?)
+      end
+    end
+
+    describe '#reset_email!' do
+      let(:email) { 'new_email@email.com' }
+
+      it 'changes the email' do
+        expect { user.reset_email!(email) }.to change(user, :email).from(user.email).to(email)
+      end
+
+      it 'resets the confirmation code reset count' do
+        user.increment_confirmation_code_reset_count!
+        user.reload
+        expect { user.reset_email!(email) }.to change(user, :email_confirmation_code_reset_count).from(1).to(0)
+      end
+
+      it 'saves the change to the email' do
+        expect { user.reset_email!(email) }.to change(user, :saved_change_to_email)
+      end
+
+      it 'should save the change to the code reset count' do
+        user.increment_confirmation_code_reset_count!
+        user.reload
+        expect { user.reset_email!(email) }.to change(user, :saved_change_to_email_confirmation_code_reset_count?)
+      end
+    end
+
+    describe '#confirm!' do
+      it 'should set email confirmed at' do
+        user.save!
+        expect { user.confirm! }.to change(user, :saved_change_to_email_confirmed_at?)
+      end
+    end
+  end
+
+  describe '#no_name?' do
+    it 'returns true if first_name and last_name are not set' do
+      user = described_class.new(email: 'test@citizenlab.co')
+      expect(user.no_name?).to be true
+    end
+
+    it 'returns false if first_name is set' do
+      user = described_class.new(email: 'test@citizenlab.co', first_name: 'Bob')
+      expect(user.no_name?).to be false
+    end
+
+    it 'returns false if last_name is set' do
+      user = described_class.new(email: 'test@citizenlab.co', last_name: 'Smith')
+      expect(user.no_name?).to be false
+    end
+
+    it 'returns false if invite is pending' do
+      user = described_class.new(email: 'test@citizenlab.co', invite_status: 'pending')
+      expect(user.no_name?).to be false
+    end
+
+    it 'returns an anonymous full_name and slug in format "User 123456" if true' do
+      user = described_class.new(email: 'test@citizenlab.co')
+      user.save
+      expect(user.full_name).to match(/User \d{6}/)
+      expect(user.slug).to match(/user-\d{6}/)
+    end
+  end
+
+  context 'billed users' do
+    def create_admin_moderator(factory)
+      create(factory).tap do |user|
+        user.roles << { type: 'admin' }
+        user.save!
+      end
+    end
+
+    describe '.billed_admins' do
+      it 'returns admins' do
+        create(:user)
+        admin = create(:admin)
+        expect(described_class.billed_admins).to match_array([admin])
+      end
+
+      it 'does not return citizenlab admins' do
+        create(:user)
+        create(:admin, email: 'test@citizenlab.co')
+        non_cl_admin = create(:admin)
+        expect(described_class.billed_admins).to match_array([non_cl_admin])
+      end
+
+      it 'does not return project and folder moderators' do
+        create(:user)
+        admin = create(:admin)
+        create(:project_moderator)
+        create(:project_folder_moderator)
+        expect(described_class.billed_admins).to match_array([admin])
+      end
+
+      it 'returns admins who are also project or folder moderators' do
+        create(:user)
+        admin = create_admin_moderator(:project_moderator)
+        admin1 = create_admin_moderator(:project_folder_moderator)
+        expect(described_class.billed_admins).to match_array([admin, admin1])
+      end
+    end
+
+    describe '.billed_moderators' do
+      it 'returns project and folder moderators' do
+        create(:user)
+        project_moderator = create(:project_moderator)
+        folder_moderator = create(:project_folder_moderator)
+        expect(described_class.billed_moderators).to match_array([project_moderator, folder_moderator])
+      end
+
+      it 'does not return citizenlab moderators' do
+        create(:user)
+        create(:project_moderator, email: 'test@citizenlab.eu')
+        non_cl_project_moderator = create(:project_moderator)
+        expect(described_class.billed_moderators).to match_array([non_cl_project_moderator])
+      end
+
+      it 'does not return admins' do
+        create(:user)
+        project_moderator = create(:project_moderator)
+        folder_moderator = create(:project_folder_moderator)
+        create(:admin)
+        expect(described_class.billed_moderators).to match_array([project_moderator, folder_moderator])
+      end
+
+      it 'does not return admins who are also project or folder moderators' do
+        create(:user)
+        create(:admin)
+        project_moderator = create(:project_moderator)
+        folder_moderator = create(:project_folder_moderator)
+        create_admin_moderator(:project_moderator)
+        create_admin_moderator(:project_folder_moderator)
+        expect(described_class.billed_moderators).to match_array([project_moderator, folder_moderator])
+      end
     end
   end
 end

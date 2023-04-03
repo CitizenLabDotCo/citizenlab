@@ -115,7 +115,6 @@ sr-Latn:
         description:
       author_id:
         title: Autor
-        description:
       topic_ids:
         title: Tema
         description:
@@ -127,12 +126,19 @@ sr-Latn:
         description:
       budget:
         title: Budžet
-        description:
       images:
         title: Slike
         description:
       attachments:
         title: Prilozi
+        description:
+      section1:
+        description:
+      section2:
+        title: Slike i prilozi
+        description:
+      section3:
+        title: Detalji
         description:
   custom_forms:
     categories:
@@ -189,6 +195,7 @@ sr-Latn:
       author_fullname: 'Ime autora'
       author_email: 'E-pošta autora'
       author_id: 'ID autora'
+      budget: 'Budžet'
       created_at: 'Predato u'
       published_at: 'Objavljeno u'
       comments_count: 'Komentari'
@@ -210,3 +217,17 @@ sr-Latn:
       description: "Prosledite svoje odgovore tako što ćete ispod izabrati „Prosledi anketu”."
   project_copy:
     title_suffix: 'Kopiraj'
+  confirmations_mailer:
+    send_confirmation_code:
+      subject: "Potvrdite svoju adresu e -pošte za %{organizationName} platformu"
+      header: "Vaš konfirmacioni kod"
+      header_message: "Zdravo %{firstName}!"
+      confirm_email_address: "Potvrdi svoju adresu e-pošte"
+      thanks_for_signing_up: "Hvala vam što ste se registrovali na %{organizationName} participativnu platformu."
+      best_regards: "S poštovanjem,"
+      ignore_email: "Ako niste zahtevali šifru, slobodno možete da ignorišete ovu e-poruku."
+      expire_code: "Ova šifra ističe za"
+      24_hours: "24 sata."
+      copy_paste_the_link_below: "Kopirajte i zalepite donji kod u obrazac za registraciju na platformi."
+      the_link_is_valid_for: "Ovaj link važi naredna 24 sata. Ako istekne, možete <a href=\"%{link}\">zatražiti novi kod</a>."
+      did_you_receive_this_email_in_error: "Da li ste ovaj email dobili greškom?<a href=\"%{link}\">Obavestite nas</a>."

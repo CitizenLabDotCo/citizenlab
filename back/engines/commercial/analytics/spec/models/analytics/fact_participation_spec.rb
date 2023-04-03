@@ -14,8 +14,17 @@ RSpec.describe Analytics::FactParticipation, type: :model do
 
   context 'when dimension types have been created' do
     before_all do
-      %w[idea initiative comment vote poll volunteer survey].each do |type|
-        create(:dimension_type, name: type)
+      # Type dimensions
+      [
+        { name: 'idea', parent: 'post' },
+        { name: 'initiative', parent: 'post' },
+        { name: 'comment', parent: 'idea' },
+        { name: 'vote', parent: 'idea' },
+        { name: 'poll', parent: nil },
+        { name: 'volunteer', parent: nil },
+        { name: 'survey', parent: nil }
+      ].each do |type|
+        create(:dimension_type, name: type[:name], parent: type[:parent])
       end
     end
 

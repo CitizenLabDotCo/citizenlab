@@ -12,8 +12,8 @@ class WebApi::V1::ActionDescriptorsController < ApplicationController
       comment_voting_initiative: { enabled: true, disabled_reason: nil },
       cancelling_initiative_votes: { enabled: true, disabled_reason: nil }
     }
-    render(json: descriptors)
+    render json: raw_json(descriptors)
   end
 end
 
-WebApi::V1::ActionDescriptorsController.prepend_if_ee('GranularPermissions::Patches::WebApi::V1::ActionDescriptorsController')
+WebApi::V1::ActionDescriptorsController.prepend(GranularPermissions::Patches::WebApi::V1::ActionDescriptorsController)

@@ -6,7 +6,7 @@ import DateBlocks from './DateBlocks';
 import EventInformation from './EventInformation';
 
 // services
-import { IEventData } from 'services/events';
+import { IEventData } from 'api/events/types';
 
 // style
 import styled from 'styled-components';

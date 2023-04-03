@@ -442,4 +442,11 @@ describe IdeaPolicy do
       end
     end
   end
+
+  context 'for blocked author' do
+    let(:user) { create(:user, block_start_at: Time.now) }
+    let(:idea) { create(:idea, author: user, project: create(:continuous_project)) }
+
+    it_behaves_like 'policy for blocked user'
+  end
 end

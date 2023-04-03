@@ -8,7 +8,7 @@ import { GraphsContainer } from 'components/admin/GraphWrappers';
 import Charts from './Charts';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
 interface State {
@@ -20,12 +20,8 @@ interface State {
 
 interface Props {}
 
-interface Tracks {
-  trackFilterOnGroup: (args: { extra: Record<string, string> }) => void;
-}
-
-export class UsersDashboard extends PureComponent<Props & Tracks, State> {
-  constructor(props: Props & Tracks) {
+export class UsersDashboard extends PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       startAtMoment: undefined,
@@ -43,7 +39,7 @@ export class UsersDashboard extends PureComponent<Props & Tracks, State> {
   };
 
   handleOnGroupFilter = (filter) => {
-    this.props.trackFilterOnGroup({ extra: { group: filter } });
+    trackEventByName(tracks.filteredOnGroup.name, { extra: { group: filter } });
     this.setState({
       currentGroupFilter: filter.value,
       currentGroupFilterLabel: filter.label,
@@ -83,8 +79,4 @@ export class UsersDashboard extends PureComponent<Props & Tracks, State> {
   }
 }
 
-const UsersDashBoardWithHOCs = injectTracks<Props>({
-  trackFilterOnGroup: tracks.filteredOnGroup,
-})(UsersDashboard);
-
-export default UsersDashBoardWithHOCs;
+export default UsersDashboard;

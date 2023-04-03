@@ -10,6 +10,10 @@ module MultiTenancy
 
     SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage ContentBuilder::LayoutImage].freeze
 
+    def initialize(save_temp_remote_urls: false)
+      @save_temp_remote_urls = save_temp_remote_urls
+    end
+
     def available_templates(external_subfolder: 'release')
       template_names = {}
       template_names[:internal] = Dir[Rails.root.join('config/tenant_templates/*.yml')].map do |file|
@@ -80,11 +84,10 @@ module MultiTenancy
           model.skip_image_presence = true if SKIP_IMAGE_PRESENCE_VALIDATION.include?(model_class.name)
 
           begin
-            if validate
-              model.save!
+            if model.class.method_defined?(:in_list?) && model.in_list?
+              model.class.acts_as_list_no_update { save_model(model, validate) }
             else
-              model.save # Might fail but runs before_validations
-              model.save(validate: false)
+              save_model(model, validate)
             end
             # taking original attributes to get correct object ID
             attributes.each do |field_name, field_value|
@@ -312,16 +315,19 @@ module MultiTenancy
     end
 
     def assign_images(model, image_assignments)
-      # Images should not be assigned in the background
-      # while applying a template, so that they can be properly
-      # verified and so that the tenant status doesn't turn into
-      # "created", while the creation could actually still fail.
-      #
-      # Previously, we did it in the background so that the
-      # generation of templates remains within the 3 hours execution
-      # limit of CircleCI.
-
-      ImageAssignmentJob.perform_now model, image_assignments
+      if @save_temp_remote_urls
+        CarrierwaveTempRemote.save_urls(model, image_assignments)
+      else
+        # Images should not be assigned in the background
+        # while applying a template, so that they can be properly
+        # verified and so that the tenant status doesn't turn into
+        # "created", while the creation could actually still fail.
+        #
+        # Previously, we did it in the background so that the
+        # generation of templates remains within the 3 hours execution
+        # limit of CircleCI.
+        model.update!(image_assignments)
+      end
     end
 
     def get_model_class(model_name)
@@ -379,6 +385,15 @@ module MultiTenancy
       end
 
       created_objects_ids
+    end
+
+    def save_model(model, validate)
+      if validate
+        model.save!
+      else
+        model.save # Might fail but runs before_validations
+        model.save(validate: false)
+      end
     end
   end
 end

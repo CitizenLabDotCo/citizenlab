@@ -5,9 +5,11 @@ import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 import { postPageContentMaxWidth } from './styleConstants';
 import { GetLocaleChildProps } from 'resources/GetLocale';
-import { GetInitiativeChildProps } from 'resources/GetInitiative';
 
 import Outlet from 'components/Outlet';
+
+// types
+import { IInitiativeData } from 'api/initiatives/types';
 
 const Container = styled.div`
   width: 100%;
@@ -58,7 +60,7 @@ interface Props {
   translateButtonClicked: boolean;
   onTranslate: () => void;
   locale: GetLocaleChildProps;
-  initiative: GetInitiativeChildProps;
+  initiative: IInitiativeData;
 }
 
 export default memo<Props>(

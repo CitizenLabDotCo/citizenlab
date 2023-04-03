@@ -18,7 +18,11 @@ import {
   ICommentsByProject,
   IVotesByProject,
 } from 'services/stats';
-import { IUsersByBirthyear } from 'services/userCustomFieldStats';
+import {
+  IUsersByBirthyear,
+  IUsersByDomicile,
+  IUsersByRegistrationField,
+} from 'services/userCustomFieldStats';
 import { IGraphFormat, IParticipationByTopic } from 'typings';
 
 interface State {
@@ -38,6 +42,8 @@ export interface ISupportedDataTypeMap {
   votesByProject: IVotesByProject;
   commentsByProject: ICommentsByProject;
   usersByBirthYear: IUsersByBirthyear;
+  usersByDomicile: IUsersByDomicile;
+  usersByRegistrationField: IUsersByRegistrationField;
 }
 
 export type ISupportedDataType =

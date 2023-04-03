@@ -4,7 +4,7 @@ import { SectionField } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { LabelTooltip } from 'containers/Admin/settings/registration';
-import { TAppConfigurationSettingCore } from 'services/appConfiguration';
+import { TAppConfigurationSettingCore } from 'api/app_configuration/types';
 import { Multiloc } from 'typings';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import messages from './messages';

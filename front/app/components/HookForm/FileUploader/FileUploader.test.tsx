@@ -16,7 +16,7 @@ const Form = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit((formData) => onSubmit(formData))}>
-        <FileUploader name="input" resourceId="pageId" resourceType="page" />
+        <FileUploader name="input" />
         <button type="submit">Submit</button>
       </form>
     </FormProvider>

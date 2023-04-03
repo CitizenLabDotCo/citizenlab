@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  mount UserConfirmation::Engine => '', as: 'user_confirmation'
   mount EmailCampaigns::Engine => '', as: 'email_campaigns'
   mount Frontend::Engine => '', as: 'frontend'
   mount Onboarding::Engine => '', as: 'onboarding'
@@ -14,7 +13,7 @@ Rails.application.routes.draw do
   # (unfortunate route naming) is captured by /web_api/v1/ideas/<idea-id>.
   # Already tried +Rails.applications.routes.prepend+. That does not work:
   # https://github.com/rails/rails/issues/11663
-  mount GeographicDashboard::Engine => '', as: 'geographic_dashboard' if CitizenLab.ee?
+  mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
 
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
@@ -50,7 +49,6 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
-        get :schema, on: :member
         get :json_forms_schema, on: :member
       end
 
@@ -77,19 +75,28 @@ Rails.application.routes.draw do
 
       resources :users, only: %i[index create update destroy] do
         get :me, on: :collection
-        post :complete_registration, on: :collection
+        get :seats, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
+        post :complete_registration, on: :collection
+        patch :block, :unblock, on: :member
         post 'reset_password_email' => 'reset_password#reset_password_email', on: :collection
         post 'reset_password' => 'reset_password#reset_password', on: :collection
+        post 'update_password', on: :collection
         get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
         get 'by_invite/:token', on: :collection, to: 'users#by_invite'
         get 'ideas_count', on: :member
         get 'initiatives_count', on: :member
         get 'comments_count', on: :member
+        get 'blocked_count', on: :collection
 
         resources :comments, only: [:index], controller: 'user_comments'
       end
       get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
+
+      scope path: 'user' do
+        resource :confirmation, path: :confirm, only: %i[create]
+        resource :resend_code, only: %i[create]
+      end
 
       resources :topics do
         patch 'reorder', on: :member
@@ -127,7 +134,6 @@ Rails.application.routes.draw do
         get 'submission_count', on: :member
         delete 'inputs', on: :member, action: 'delete_inputs'
         resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
-          get 'schema', on: :collection
           get 'json_forms_schema', on: :collection
         end
       end
@@ -141,7 +147,6 @@ Rails.application.routes.draw do
         resources :groups_projects, shallow: true, except: [:update]
 
         resources :custom_fields, controller: 'project_custom_fields', only: %i[] do
-          get 'schema', on: :collection
           get 'json_forms_schema', on: :collection
         end
 

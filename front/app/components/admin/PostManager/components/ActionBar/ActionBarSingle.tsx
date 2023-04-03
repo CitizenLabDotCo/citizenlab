@@ -1,10 +1,8 @@
 import React from 'react';
-import { deleteIdea } from 'services/ideas';
-import { deleteInitiative } from 'services/initiatives';
-
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
+import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 import { Icon, Button } from 'semantic-ui-react';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import { ManagerType } from '../..';
 
@@ -15,15 +13,17 @@ interface Props {
   handleClickEdit: () => void;
 }
 
-class ActionBarSingle extends React.PureComponent<
-  Props & WrappedComponentProps
-> {
-  handleClickDeleteIdea = () => {
-    const {
-      postId,
-      resetSelection,
-      intl: { formatMessage },
-    } = this.props;
+const ActionBarSingle = ({
+  type,
+  handleClickEdit,
+  postId,
+  resetSelection,
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const { mutate: deleteIdea } = useDeleteIdea();
+  const { mutate: deleteInitiative } = useDeleteInitiative();
+
+  const handleClickDeleteIdea = () => {
     const message = formatMessage(messages.deleteInputConfirmation);
 
     if (window.confirm(message)) {
@@ -32,60 +32,54 @@ class ActionBarSingle extends React.PureComponent<
 
     resetSelection();
   };
-  handleClickDeleteInitiative = () => {
-    const {
-      postId,
-      resetSelection,
-      intl: { formatMessage },
-    } = this.props;
+
+  const handleClickDeleteInitiative = () => {
     const message = formatMessage(messages.deleteInitiativeConfirmation);
 
     if (window.confirm(message)) {
-      deleteInitiative(postId);
+      deleteInitiative(
+        { initiativeId: postId },
+        {
+          onSuccess: () => {
+            resetSelection();
+          },
+        }
+      );
     }
-
-    resetSelection();
   };
 
-  render() {
-    const { type, handleClickEdit } = this.props;
-    if (type === 'AllIdeas' || type === 'ProjectIdeas') {
-      return (
-        <>
-          <Button onClick={handleClickEdit}>
-            <Icon name="edit" />
-            <FormattedMessage {...messages.edit} />
-          </Button>
-          <Button
-            negative={true}
-            basic={true}
-            onClick={this.handleClickDeleteIdea}
-          >
-            <Icon name="delete" />
-            <FormattedMessage {...messages.delete} />
-          </Button>
-        </>
-      );
-    } else if (type === 'Initiatives') {
-      return (
-        <>
-          <Button onClick={handleClickEdit}>
-            <Icon name="edit" />
-            <FormattedMessage {...messages.edit} />
-          </Button>
-          <Button
-            negative={true}
-            basic={true}
-            onClick={this.handleClickDeleteInitiative}
-          >
-            <Icon name="delete" />
-            <FormattedMessage {...messages.delete} />
-          </Button>
-        </>
-      );
-    }
-    return null;
+  if (type === 'AllIdeas' || type === 'ProjectIdeas') {
+    return (
+      <>
+        <Button onClick={handleClickEdit}>
+          <Icon name="edit" />
+          <FormattedMessage {...messages.edit} />
+        </Button>
+        <Button negative={true} basic={true} onClick={handleClickDeleteIdea}>
+          <Icon name="delete" />
+          <FormattedMessage {...messages.delete} />
+        </Button>
+      </>
+    );
+  } else if (type === 'Initiatives') {
+    return (
+      <>
+        <Button onClick={handleClickEdit}>
+          <Icon name="edit" />
+          <FormattedMessage {...messages.edit} />
+        </Button>
+        <Button
+          negative={true}
+          basic={true}
+          onClick={handleClickDeleteInitiative}
+        >
+          <Icon name="delete" />
+          <FormattedMessage {...messages.delete} />
+        </Button>
+      </>
+    );
   }
-}
+  return null;
+};
 
-export default injectIntl(ActionBarSingle);
+export default ActionBarSingle;

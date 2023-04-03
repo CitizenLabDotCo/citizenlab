@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { addIdeaStatus } from 'services/ideaStatuses';
+import useAddIdeaStatus from 'api/idea_statuses/useAddIdeaStatus';
 import clHistory from 'utils/cl-router/history';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { isNilOrError } from 'utils/helperUtils';
@@ -18,10 +18,10 @@ const StyledSectionTitle = styled(SectionTitle)`
 `;
 
 const NewIdeaStatus = () => {
+  const { mutate: addIdeaStatus } = useAddIdeaStatus();
   const tenantLocales = useAppConfigurationLocales();
-  const handleSubmit = async (values: FormValues) => {
-    await addIdeaStatus(values);
-    goBack();
+  const handleSubmit = (values: FormValues) => {
+    addIdeaStatus(values, { onSuccess: goBack });
   };
 
   const goBack = () => {

@@ -8,6 +8,7 @@ class TrackSegmentService
 
   def identify_user(user)
     return unless @segment_client
+    return unless track_user?(user)
 
     traits = user_traits(user)
     @segment_client.identify(
@@ -36,6 +37,7 @@ class TrackSegmentService
 
   def track_activity(activity)
     return unless @segment_client
+    return if activity.user && !track_user?(activity.user)
 
     event = event_from_activity(activity)
     @segment_client.track(event)
@@ -43,20 +45,18 @@ class TrackSegmentService
 
   def integrations(user)
     {
-      All: true,
-      Intercom: intercom_integration_enabled?(user.highest_role),
-      SatisMeter: satismeter_integration_enabled?(user.highest_role)
+      All: track_user?(user),
+      Intercom: track_user?(user),
+      SatisMeter: track_user?(user),
+      Planhat: planhat_integration_enabled?(user)
     }
   end
 
-  # @param [Symbol] role
-  def intercom_integration_enabled?(role)
-    %i[admin project_moderator].include?(role)
-  end
+  # @param [User] user
+  def planhat_integration_enabled?(user)
+    return false unless AppConfiguration.instance.feature_activated?('planhat')
 
-  # @param [Symbol] role
-  def satismeter_integration_enabled?(role)
-    %i[admin project_moderator].include?(role)
+    track_user?(user)
   end
 
   # @param [User] user
@@ -95,6 +95,10 @@ class TrackSegmentService
   end
 
   private
+
+  def track_user?(user)
+    !(user.normal_user? || user.super_admin?)
+  end
 
   def event_from_activity(activity)
     event = {

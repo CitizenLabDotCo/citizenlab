@@ -8,8 +8,6 @@ import { CLErrors } from 'typings';
 
 // FETCHER
 
-const jwt = getJwt();
-
 type Path = `/${string}`;
 interface Get {
   path: Path;
@@ -26,13 +24,13 @@ interface Patch {
 interface Post {
   path: Path;
   action: 'post';
-  body: Record<string, any>;
+  body: Record<string, any> | null;
   queryParams?: never;
 }
 interface Delete {
   path: Path;
   action: 'delete';
-  body?: Record<string, any>;
+  body?: Record<string, any> | null;
   queryParams?: never;
 }
 
@@ -57,7 +55,7 @@ async function fetcher({ path, action, body, queryParams }) {
     post: 'POST',
     delete: 'DELETE',
   };
-
+  const jwt = getJwt();
   // Remove query parameters that have an empty value from query object in order to keep
   // sanitization behaviour consistent current and previous data-fetchign setup
   const relevantQueryParams = omitBy(
@@ -111,7 +109,13 @@ async function fetcher({ path, action, body, queryParams }) {
         data.data.forEach((entry) => {
           if (entry.id) {
             queryClient.setQueryData(
-              [{ type: entry.type, id: entry.id, operation: 'item' }],
+              [
+                {
+                  type: entry.type,
+                  parameters: { id: entry.id },
+                  operation: 'item',
+                },
+              ],
               () => ({ data: entry })
             );
           }
@@ -119,7 +123,13 @@ async function fetcher({ path, action, body, queryParams }) {
       } else if (action === 'post' || action === 'patch') {
         if (data.data.id) {
           queryClient.setQueryData(
-            [{ type: data.data.type, id: data.data.id, operation: 'item' }],
+            [
+              {
+                type: data.data.type,
+                parameters: { id: data.data.id },
+                operation: 'item',
+              },
+            ],
             () => ({ data: data.data })
           );
         }
@@ -128,7 +138,13 @@ async function fetcher({ path, action, body, queryParams }) {
         data.included.forEach((entry) => {
           if (entry.id) {
             queryClient.setQueryData(
-              [{ type: entry.type, id: entry.id, operation: 'item' }],
+              [
+                {
+                  type: entry.type,
+                  parameters: { id: entry.id },
+                  operation: 'item',
+                },
+              ],
               () => ({ data: entry })
             );
           }

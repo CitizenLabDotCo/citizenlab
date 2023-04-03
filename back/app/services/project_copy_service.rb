@@ -2,11 +2,10 @@
 
 class ProjectCopyService < ::TemplateService
   def import(template, folder: nil, local_copy: false)
-    service = MultiTenancy::TenantTemplateService.new
-    same_template = service.translate_and_fix_locales template
+    same_template = tenant_template_service.translate_and_fix_locales template
 
     created_objects_ids = ActiveRecord::Base.transaction do
-      service.resolve_and_apply_template same_template, validate: false, local_copy: local_copy
+      tenant_template_service.resolve_and_apply_template same_template, validate: false, local_copy: local_copy
     end
 
     project = Project.find(created_objects_ids['Project'].first)
@@ -76,6 +75,13 @@ class ProjectCopyService < ::TemplateService
   end
 
   private
+
+  def tenant_template_service
+    # `save_temp_remote_urls: false` because if we store images on another domain (URLs point to another domain),
+    # it's not possible to fetch these images by JS.
+    # Currently, we fetch them by JS on Back Office to preview images.
+    @tenant_template_service ||= MultiTenancy::TenantTemplateService.new(save_temp_remote_urls: false)
+  end
 
   def yml_content_builder_layouts(shift_timestamps: 0)
     layout_images_mapping = {}
@@ -152,6 +158,7 @@ class ProjectCopyService < ::TemplateService
         'enabled' => field.enabled,
         'required' => field.required,
         'code' => field.code,
+        'answer_visible_to' => field.answer_visible_to,
         'hidden' => field.hidden,
         'maximum' => field.maximum,
         'minimum_label_multiloc' => field.minimum_label_multiloc,
@@ -440,7 +447,9 @@ class ProjectCopyService < ::TemplateService
       'cl1_migrated' => user.cl1_migrated,
       'custom_field_values' => user.custom_field_values.delete_if { |_k, v| v.nil? },
       'registration_completed_at' => shift_timestamp(user.registration_completed_at, shift_timestamps)&.iso8601,
-      'verified' => user.verified
+      'verified' => user.verified,
+      'block_start_at' => user.block_start_at,
+      'block_reason' => user.block_reason
     }.tap do |yml_user|
       unless yml_user['password_digest']
         yml_user['password'] = SecureRandom.urlsafe_base64 32

@@ -40,7 +40,10 @@ RSpec.describe Analytics::FactProjectStatus, type: :model do
       let(:archived_at) { Time.now }
 
       before do
-        project.update!({ admin_publication_attributes: { publication_status: 'archived' } })
+        project.update!({ admin_publication_attributes: {
+          publication_status: 'archived',
+          updated_at: archived_at
+        } })
       end
 
       it 'the project is also finished', :aggregate_failures do
@@ -51,7 +54,7 @@ RSpec.describe Analytics::FactProjectStatus, type: :model do
         expect(project_status.finished).to be(true)
 
         # We round the timestamps for comparison because postgres timestamps are stored with
-        # a smaller precision than Ruby timestamp when running the CI.
+        # a smaller precision than Ruby timestamps.
         expect(project_status.timestamp.round).to eq(archived_at.round)
       end
     end

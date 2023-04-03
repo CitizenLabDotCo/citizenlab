@@ -9,6 +9,9 @@ class SideFxInviteService
 
   def before_accept(invite)
     invite.accepted_at = Time.now
+    return unless AppConfiguration.instance.feature_activated?('user_confirmation')
+
+    invite.invitee.email_confirmed_at ||= invite.accepted_at
   end
 
   def after_accept(invite)
@@ -22,5 +25,3 @@ class SideFxInviteService
     LogActivityJob.perform_later(encode_frozen_resource(frozen_invite), 'deleted', user, Time.now.to_i, payload: { invite: serialized_invite })
   end
 end
-
-SideFxInviteService.prepend(UserConfirmation::Patches::SideFxInviteService)

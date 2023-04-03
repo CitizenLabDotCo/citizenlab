@@ -20,7 +20,7 @@ describe MultiTenancy::TenantTemplateService do
     end
   end
 
-  describe 'resolve_and_apply_template', slow_test: true do
+  describe 'resolve_and_apply_template' do
     described_class.new.available_templates[:internal].map do |template|
       it "Successfully applies '#{template}' template" do
         name = template.split('_').join
@@ -40,7 +40,7 @@ describe MultiTenancy::TenantTemplateService do
     end
   end
 
-  describe 'apply_template', slow_test: true do
+  describe 'apply_template' do
     it 'associates refs correctly, when the target of the ref has exactly the same attributes' do
       yml = <<~YAML
         ---

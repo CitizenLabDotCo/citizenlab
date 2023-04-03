@@ -107,6 +107,7 @@ const ItemsInFolder = ({ projectFolderId }: Props) => {
                             ]
                           : ['manage']
                       }
+                      hideMoreActions
                     />
                   </SortableRow>
                 );

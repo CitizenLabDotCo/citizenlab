@@ -29,11 +29,7 @@ RSpec.describe IdeaFile, type: :model do
     let(:idea_file) { create(:idea_file) }
 
     it 'is the location on disk in the "idea_file" directory' do
-      expected_path = if CitizenLab.ee?
-        Regexp.new('/cl2_back/public/uploads/.+/idea_file/file/.+/afvalkalender.pdf')
-      else
-        Regexp.new('/cl2_back/public/uploads/idea_file/file/.+/afvalkalender.pdf')
-      end
+      expected_path = Regexp.new('/cl2_back/public/uploads/.+/idea_file/file/.+/afvalkalender.pdf')
       expect(idea_file.file.path).to match expected_path
     end
   end

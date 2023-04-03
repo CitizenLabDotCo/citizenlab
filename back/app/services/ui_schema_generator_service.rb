@@ -93,12 +93,19 @@ class UiSchemaGeneratorService < FieldVisitorService
 
   def default_options(field)
     {
-      description: multiloc_service.t(field.description_multiloc)
+      description: description_option(field)
     }.tap do |options|
       unless field.multiloc?
         options[:input_type] = field.input_type
       end
     end
+  end
+
+  def description_option(field)
+    @descriptions ||= {}
+    locale = I18n.locale.to_s
+    @descriptions[locale] ||= {}
+    @descriptions[locale][field] ||= multiloc_service.t TextImageService.new.render_data_images(field, :description_multiloc)
   end
 
   private

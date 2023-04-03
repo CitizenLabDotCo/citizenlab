@@ -33,6 +33,7 @@ declare global {
       apiRemoveIdea: typeof apiRemoveIdea;
       apiRemoveInitiative: typeof apiRemoveInitiative;
       apiUpvoteInitiative: typeof apiUpvoteInitiative;
+      apiDownvoteIdea: typeof apiDownvoteIdea;
       apiCreateOfficialFeedbackForIdea: typeof apiCreateOfficialFeedbackForIdea;
       apiCreateOfficialFeedbackForInitiative: typeof apiCreateOfficialFeedbackForInitiative;
       apiAddComment: typeof apiAddComment;
@@ -51,6 +52,8 @@ declare global {
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
       apiEnableProjectDescriptionBuilder: typeof apiEnableProjectDescriptionBuilder;
+      apiCreateReportBuilder: typeof apiCreateReportBuilder;
+      apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
       apiUpdateHomepageSettings: typeof apiUpdateHomepageSettings;
@@ -596,6 +599,25 @@ export function apiUpvoteInitiative(
       },
       method: 'POST',
       url: `web_api/v1/initiatives/${initiativeId}/votes/up`,
+    });
+  });
+}
+
+export function apiDownvoteIdea(
+  email: string,
+  password: string,
+  ideaId: string
+) {
+  return cy.apiLogin(email, password).then((response) => {
+    const jwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/ideas/${ideaId}/votes/down`,
     });
   });
 }
@@ -1205,6 +1227,42 @@ export function apiEnableProjectDescriptionBuilder({
   });
 }
 
+export function apiCreateReportBuilder() {
+  const reportName = randomString();
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/reports',
+      body: {
+        report: {
+          name: reportName,
+        },
+      },
+    });
+  });
+}
+
+export function apiRemoveReportBuilder(reportId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/reports/${reportId}`,
+    });
+  });
+}
+
 export function apiUpdateHomepageSettings({
   top_info_section_enabled,
   bottom_info_section_enabled,
@@ -1337,7 +1395,7 @@ Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
 Cypress.Commands.add('apiCreateInitiative', apiCreateInitiative);
 Cypress.Commands.add('apiRemoveInitiative', apiRemoveInitiative);
-Cypress.Commands.add('apiUpvoteInitiative', apiUpvoteInitiative);
+Cypress.Commands.add('apiDownvoteIdea', apiDownvoteIdea);
 Cypress.Commands.add(
   'apiCreateOfficialFeedbackForIdea',
   apiCreateOfficialFeedbackForIdea
@@ -1371,6 +1429,8 @@ Cypress.Commands.add(
   'apiEnableProjectDescriptionBuilder',
   apiEnableProjectDescriptionBuilder
 );
+Cypress.Commands.add('apiCreateReportBuilder', apiCreateReportBuilder);
+Cypress.Commands.add('apiRemoveReportBuilder', apiRemoveReportBuilder);
 Cypress.Commands.add(
   'intersectsViewport',
   { prevSubject: true },

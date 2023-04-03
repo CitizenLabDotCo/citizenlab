@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
@@ -13,23 +13,19 @@ import { ITopicData } from 'services/topics';
 import HasPermission from 'components/HasPermission';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
-import GetInitiativeImages, {
-  GetInitiativeImagesChildProps,
-} from 'resources/GetInitiativeImages';
-import GetRemoteFiles, {
-  GetRemoteFilesChildProps,
-} from 'resources/GetRemoteFiles';
 import { PreviousPathnameContext } from 'context';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { useParams } from 'react-router-dom';
+import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
+import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 // utils
-import { isNilOrError, isError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // components
 import PageNotFound from 'components/PageNotFound';
@@ -41,6 +37,9 @@ import PageLayout from 'components/InitiativeForm/PageLayout';
 import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
+// types
+import { UploadFile } from 'typings';
+
 const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
   width: 100%;
   min-width: 530px;
@@ -51,9 +50,6 @@ const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
 `;
 
 interface DataProps {
-  initiative: GetInitiativeChildProps;
-  initiativeImages: GetInitiativeImagesChildProps;
-  initiativeFiles: GetRemoteFilesChildProps;
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
   previousPathName: string | null;
@@ -62,19 +58,43 @@ interface DataProps {
 
 interface Props extends DataProps {}
 
-export class InitiativesEditPage extends React.PureComponent<Props> {
-  componentDidMount() {
-    this.checkPageAccess();
-  }
+const InitiativesEditPage = ({
+  previousPathName,
+  authUser,
+  locale,
+  topics,
+}: Props) => {
+  const { initiativeId } = useParams() as {
+    initiativeId: string;
+  };
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
+  const { data: initiativeImages } = useInitiativeImages(initiativeId);
+  const [files, setFiles] = useState<UploadFile[]>([]);
 
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.authUser !== this.props.authUser) {
-      this.checkPageAccess();
+  useEffect(() => {
+    async function getFiles() {
+      let files: UploadFile[] = [];
+
+      if (initiativeFiles) {
+        files = (await Promise.all(
+          initiativeFiles.data.map(async (file) => {
+            const uploadFile = convertUrlToUploadFile(
+              file.attributes.file.url,
+              file.id,
+              file.attributes.name
+            );
+            return uploadFile;
+          })
+        )) as UploadFile[];
+      }
+      setFiles(files);
     }
-  }
 
-  checkPageAccess = () => {
-    const { authUser } = this.props;
+    getFiles();
+  }, [initiativeFiles]);
+
+  useEffect(() => {
     const isPrivilegedUser =
       !isNilOrError(authUser) &&
       (isAdmin({ data: authUser }) ||
@@ -82,83 +102,57 @@ export class InitiativesEditPage extends React.PureComponent<Props> {
         isSuperAdmin({ data: authUser }));
 
     if (!isPrivilegedUser && authUser === null) {
-      clHistory.replace(this.props.previousPathName || '/sign-up');
+      clHistory.replace(previousPathName || '/sign-up');
     }
-  };
+  }, [authUser, previousPathName]);
 
-  onPublished = () => {
-    const { initiative } = this.props;
-    if (!isNilOrError(initiative)) {
-      clHistory.push(`/initiatives/${initiative.attributes.slug}`);
-    }
-  };
-
-  render() {
-    const {
-      authUser,
-      locale,
-      initiative,
-      initiativeImages,
-      initiativeFiles,
-      topics,
-    } = this.props;
-    if (
-      isNilOrError(authUser) ||
-      isNilOrError(locale) ||
-      isNilOrError(initiative) ||
-      initiativeImages === undefined ||
-      initiativeFiles === undefined ||
-      isError(initiativeFiles) ||
-      isNilOrError(topics)
-    ) {
-      return null;
-    }
-
-    const initiativeTopics = topics.filter(
-      (topic) => !isNilOrError(topic)
-    ) as ITopicData[];
-    return (
-      <HasPermission item={initiative} action="edit" context={initiative}>
-        <InitiativesEditMeta />
-        <PageLayout
-          isAdmin={isAdmin({ data: authUser })}
-          className="e2e-initiative-edit-page"
-        >
-          <StyledInitiativesEditFormWrapper
-            locale={locale}
-            initiative={initiative}
-            initiativeImage={
-              isNilOrError(initiativeImages) || initiativeImages.length === 0
-                ? null
-                : initiativeImages[0]
-            }
-            onPublished={this.onPublished}
-            initiativeFiles={initiativeFiles}
-            topics={initiativeTopics}
-          />
-        </PageLayout>
-      </HasPermission>
-    );
+  if (
+    isNilOrError(authUser) ||
+    isNilOrError(locale) ||
+    !initiative ||
+    initiativeImages === undefined ||
+    isNilOrError(topics)
+  ) {
+    return null;
   }
-}
+
+  const onPublished = () => {
+    if (!isNilOrError(initiative)) {
+      clHistory.push(`/initiatives/${initiative.data.attributes.slug}`);
+    }
+  };
+
+  const initiativeTopics = topics.filter(
+    (topic) => !isNilOrError(topic)
+  ) as ITopicData[];
+  return (
+    <HasPermission item={initiative.data} action="edit" context={initiative}>
+      <InitiativesEditMeta />
+      <PageLayout
+        isAdmin={isAdmin({ data: authUser })}
+        className="e2e-initiative-edit-page"
+      >
+        <StyledInitiativesEditFormWrapper
+          locale={locale}
+          initiative={initiative.data}
+          initiativeImage={
+            isNilOrError(initiativeImages) || initiativeImages.data.length === 0
+              ? null
+              : initiativeImages.data[0]
+          }
+          onPublished={onPublished}
+          initiativeFiles={files}
+          topics={initiativeTopics}
+        />
+      </PageLayout>
+    </HasPermission>
+  );
+};
 
 const Data = adopt<DataProps, WithRouterProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
   topics: <GetTopics excludeCode={'custom'} />,
-  initiative: ({ params, render }) => (
-    <GetInitiative id={params.initiativeId}>{render}</GetInitiative>
-  ),
-  initiativeImages: ({ params, render }) => (
-    <GetInitiativeImages initiativeId={params.initiativeId}>
-      {render}
-    </GetInitiativeImages>
-  ),
-  initiativeFiles: ({ params, render }) => (
-    <GetRemoteFiles resourceId={params.initiativeId} resourceType="initiative">
-      {render}
-    </GetRemoteFiles>
-  ),
   previousPathName: ({ render }) => (
     <PreviousPathnameContext.Consumer>
       {render as any}

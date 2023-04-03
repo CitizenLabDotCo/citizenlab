@@ -95,4 +95,4 @@ class Notification < ApplicationRecord
   end
 end
 
-Notification.include_if_ee 'FlagInappropriateContent::Extensions::Notification'
+Notification.include(FlagInappropriateContent::Extensions::Notification)

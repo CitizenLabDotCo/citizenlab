@@ -1,4 +1,4 @@
-import React, { memo, useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { isEmpty, every } from 'lodash-es';
 import moment from 'moment';
 
@@ -9,16 +9,14 @@ import { Icon, Text, Box } from '@citizenlab/cl2-component-library';
 import FileAttachments from 'components/UI/FileAttachments';
 
 // hooks
-import useResourceFiles from 'hooks/useResourceFiles';
 import useProject from 'hooks/useProject';
 
 // services
-import { IEventData } from 'services/events';
+import { IEventData } from 'api/events/types';
 
 // i18n
 import T from 'components/T';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // styling
@@ -29,6 +27,9 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import checkTextOverflow from './checkTextOverflow';
 import { isNilOrError } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+
+// hooks
+import useEventFiles from 'api/event_files/useEventFiles';
 
 const EventInformationContainer = styled.div`
   flex: 1;
@@ -98,7 +99,9 @@ const StyledIcon = styled(Icon)`
   `}
 `;
 
-const EventDescription = styled.div``;
+const EventDescription = styled.div`
+  margin-bottom: 24px;
+`;
 
 const SMALL_LINE_HEIGHT = fontSizes.s + 2.45;
 
@@ -165,27 +168,23 @@ interface Props {
   onClickTitleGoToProjectAndScrollToEvent?: boolean;
 }
 
-const EventInformation = memo<Props & WrappedComponentProps>((props) => {
-  const {
-    event,
-    isMultiDayEvent,
-    startAtMoment,
-    endAtMoment,
-    showProjectTitle,
-    showLocation,
-    showDescription,
-    showAttachments,
-    titleFontSize,
-    onClickTitleGoToProjectAndScrollToEvent,
-    intl,
-  } = props;
+const EventInformation = ({
+  event,
+  isMultiDayEvent,
+  startAtMoment,
+  endAtMoment,
+  showProjectTitle,
+  showLocation,
+  showDescription,
+  showAttachments,
+  titleFontSize,
+  onClickTitleGoToProjectAndScrollToEvent,
+}: Props) => {
+  const { formatMessage } = useIntl();
 
   const theme = useTheme();
 
-  const eventFiles = useResourceFiles({
-    resourceType: 'event',
-    resourceId: event.id,
-  });
+  const { data: eventFiles } = useEventFiles(event.id);
 
   const hasLocation = !every(event.attributes.location_multiloc, isEmpty);
   const eventDateTime = isMultiDayEvent
@@ -209,12 +208,12 @@ const EventInformation = memo<Props & WrappedComponentProps>((props) => {
     if (hideTextOverflow) {
       setHideTextOverflow(false);
       setA11y_showMoreHelperText(
-        intl.formatMessage(messages.a11y_moreContentVisible)
+        formatMessage(messages.a11y_moreContentVisible)
       );
     } else {
       setHideTextOverflow(true);
       setA11y_showMoreHelperText(
-        intl.formatMessage(messages.a11y_lessContentVisible)
+        formatMessage(messages.a11y_lessContentVisible)
       );
     }
   };
@@ -298,7 +297,7 @@ const EventInformation = memo<Props & WrappedComponentProps>((props) => {
           {((textOverflow && hideTextOverflow) || !hideTextOverflow) && (
             <>
               <ShowMoreOrLessButton onClick={toggleHiddenText}>
-                {intl.formatMessage(
+                {formatMessage(
                   hideTextOverflow ? messages.showMore : messages.showLess
                 )}
               </ShowMoreOrLessButton>
@@ -310,13 +309,15 @@ const EventInformation = memo<Props & WrappedComponentProps>((props) => {
         </EventDescription>
       )}
 
-      {!isNilOrError(eventFiles) && eventFiles.length > 0 && showAttachments && (
-        <Box mb="25px">
-          <FileAttachments files={eventFiles} />
-        </Box>
-      )}
+      {!isNilOrError(eventFiles) &&
+        eventFiles.data.length > 0 &&
+        showAttachments && (
+          <Box mb="24px">
+            <FileAttachments files={eventFiles.data} />
+          </Box>
+        )}
     </EventInformationContainer>
   );
-});
+};
 
-export default injectIntl(EventInformation);
+export default EventInformation;

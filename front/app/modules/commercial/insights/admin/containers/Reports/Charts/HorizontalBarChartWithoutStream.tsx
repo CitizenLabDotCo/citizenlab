@@ -26,6 +26,7 @@ import {
   ResponsiveContainer,
   Cell,
   LabelList,
+  LabelProps,
 } from 'recharts';
 import {
   IGraphUnit,
@@ -77,7 +78,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
     }
   };
 
-  const NameLabel = (props) => {
+  const NameLabel = (props: LabelProps) => {
     const { x, y, value } = props;
     return (
       <g style={{ pointerEvents: 'none' }}>
@@ -95,7 +96,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
     );
   };
 
-  const ValueLabel = (props) => {
+  const ValueLabel = (props: LabelProps) => {
     const { x, y, value } = props;
     return (
       <g style={{ pointerEvents: 'none' }}>

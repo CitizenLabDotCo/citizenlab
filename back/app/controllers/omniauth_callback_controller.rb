@@ -207,4 +207,4 @@ class OmniauthCallbackController < ApplicationController
   end
 end
 
-OmniauthCallbackController.prepend_if_ee('Verification::Patches::OmniauthCallbackController')
+OmniauthCallbackController.prepend(Verification::Patches::OmniauthCallbackController)

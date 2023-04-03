@@ -11,7 +11,7 @@ RSpec.shared_examples 'publication filtering model' do |model_name|
 
     model_name_plural = model_name.to_s.pluralize
 
-    before { user_header_token }
+    before { resident_header_token }
 
     let(:models) { create_list(model_name, 4) }
     let(:projects) do

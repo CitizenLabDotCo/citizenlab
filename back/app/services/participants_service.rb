@@ -17,6 +17,7 @@ class ParticipantsService
 
   def participants(options = {})
     since = options[:since]
+    to = options[:to]
     # After https://stackoverflow.com/a/25356375
     list = (['(?, ?)'] * ENGAGING_ACTIVITIES.size).join(', ')
     multiwhere = "(activities.item_type, activities.action) IN (#{list})"
@@ -26,7 +27,10 @@ class ParticipantsService
         multiwhere,
         *ENGAGING_ACTIVITIES.map { |h| [h[:item_type], h[:action]] }.flatten
       ).group('users.id')
-    if since
+
+    if since && to
+      users.where('activities.acted_at::date >= ? AND activities.acted_at::date < ?', since, to)
+    elsif since
       users.where('activities.acted_at::date >= ?', since)
     else
       users

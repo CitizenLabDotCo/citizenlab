@@ -15,6 +15,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import { getLabel } from 'utils/JSONFormUtils';
 import messages from '../../messages';
+import { getSubtextElement } from './controlUtils';
 
 const LocationControl = ({
   uischema,
@@ -38,7 +39,7 @@ const LocationControl = ({
       <FormLabel
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
       {window.google ? (

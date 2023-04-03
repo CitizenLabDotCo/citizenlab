@@ -30,7 +30,7 @@ const useInfiniteInputs = (
     IInsightsInputs,
     InputsKeys
   >({
-    queryKey: inputsKeys.infiniteList(viewId, queryParams),
+    queryKey: inputsKeys.list({ viewId, filters: queryParams }),
     queryFn: ({ pageParam }) =>
       fetchInfiniteInputs(viewId, { ...queryParams, pageNumber: pageParam }),
     getNextPageParam: (lastPage) => {

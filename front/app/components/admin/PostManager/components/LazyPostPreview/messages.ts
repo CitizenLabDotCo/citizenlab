@@ -61,20 +61,58 @@ export default defineMessages({
     defaultMessage: 'Error',
   },
   postedIn: {
-    id: 'app.containers.IdeasShow.postedIn',
+    id: 'app.components.admin.PostManager.postedIn',
     defaultMessage: 'Posted in {projectLink}',
   },
   xDaysLeft: {
-    id: 'app.containers.IdeasShow.xDaysLeft',
+    id: 'app.components.admin.PostManager.xDaysLeft',
     defaultMessage:
       '{x, plural, =0 {Less than a day} one {One day} other {# days}} left',
   },
   proposedBudgetTitle: {
-    id: 'app.containers.IdeasShow.proposedBudgetTitle',
+    id: 'app.components.admin.PostManager.proposedBudgetTitle',
     defaultMessage: 'Proposed budget',
   },
   bodyTitle: {
-    id: 'app.containers.IdeasShow.bodyTitle',
+    id: 'app.components.admin.PostManager.bodyTitle',
     defaultMessage: 'Description',
+  },
+  formTitle: {
+    id: 'app.components.admin.PostManager.formTitle',
+    defaultMessage: 'Edit idea',
+  },
+  optionFormTitle: {
+    id: 'app.components.admin.PostManager.optionFormTitle',
+    defaultMessage: 'Edit option',
+  },
+  projectFormTitle: {
+    id: 'app.components.admin.PostManager.projectFormTitle',
+    defaultMessage: 'Edit project',
+  },
+  questionFormTitle: {
+    id: 'app.components.admin.PostManager.questionFormTitle',
+    defaultMessage: 'Edit question',
+  },
+  issueFormTitle: {
+    id: 'app.components.admin.PostManager.issueFormTitle',
+    defaultMessage: 'Edit issue',
+  },
+  contributionFormTitle: {
+    id: 'app.components.admin.PostManager.contributionFormTitle',
+    defaultMessage: 'Edit contribution',
+  },
+  submitApiError: {
+    id: 'app.components.admin.PostManager.submitApiError',
+    defaultMessage:
+      'There was an issue submitting the form. Please check for any errors and try again.',
+  },
+  editedPostSave: {
+    id: 'app.components.admin.PostManager.editedPostSave',
+    defaultMessage: 'Save',
+  },
+  fileUploadError: {
+    id: 'app.components.admin.PostManager.fileUploadError',
+    defaultMessage:
+      'One or more files failed to upload. Please check the file size and format and try again.',
   },
 });

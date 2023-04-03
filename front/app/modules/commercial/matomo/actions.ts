@@ -9,7 +9,7 @@ import { getUrlLocale } from 'services/locale';
 import { getProjectId } from './getProjectId';
 
 // typings
-import { IAppConfiguration } from 'services/appConfiguration';
+import { IAppConfiguration } from 'api/app_configuration/types';
 
 export const trackEvent = (
   event: IEvent,

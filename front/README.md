@@ -1,4 +1,4 @@
-# cl2-front
+# cl2_front
 
 ## Prerequisites
 

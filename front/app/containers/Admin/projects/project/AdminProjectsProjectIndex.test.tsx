@@ -279,6 +279,7 @@ describe('<AdminProjectEdition />', () => {
       'General',
       'Description',
       'Input manager',
+      'Input form',
       'Allowed input tags',
       'Timeline',
       'Events',

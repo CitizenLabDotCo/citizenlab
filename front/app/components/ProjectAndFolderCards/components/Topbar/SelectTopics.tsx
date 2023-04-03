@@ -17,10 +17,10 @@ import messages from './messages';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import useTopics from 'hooks/useTopics';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // services
-import { coreSettings } from 'services/appConfiguration';
+import { coreSettings } from 'api/app_configuration/utils';
 
 interface SelectTopicsProps {
   className?: string;
@@ -36,8 +36,8 @@ const SelectTopics = ({
 }: SelectTopicsProps & WrappedComponentProps) => {
   const localize = useLocalize();
   const topics = useTopics({ forHomepageFilter: true });
-  const appConfig = useAppConfiguration();
-  const smallerThanMinTablet = useBreakpoint('tablet');
+  const { data: appConfig } = useAppConfiguration();
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
   if (isNilOrError(appConfig)) return null;
 
@@ -54,7 +54,7 @@ const SelectTopics = ({
 
   const topicTerm = () => {
     const fallback = formatMessage(messages.topicTitle);
-    const topicTerm = coreSettings(appConfig).topic_term;
+    const topicTerm = coreSettings(appConfig.data).topic_term;
 
     return capitalize(localize(topicTerm, { fallback }));
   };
@@ -75,8 +75,8 @@ const SelectTopics = ({
       onChange={onChangeTopics}
       multipleSelectionAllowed={true}
       right="-4px"
-      mobileLeft={smallerThanMinTablet ? '-4px' : undefined}
-      mobileRight={smallerThanMinTablet ? undefined : '-4px'}
+      mobileLeft={isSmallerThanTablet ? '-4px' : undefined}
+      mobileRight={isSmallerThanTablet ? undefined : '-4px'}
       textColor={colors.textSecondary}
     />
   );

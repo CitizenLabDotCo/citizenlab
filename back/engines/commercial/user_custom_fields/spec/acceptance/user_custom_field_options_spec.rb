@@ -70,7 +70,8 @@ resource 'User Custom Field Options' do
         let(:key) { 'No spaces allowed' }
         let(:title_multiloc) { { 'en' => '' } }
 
-        example_request '[error] Create an invalid custom field option', document: false do
+        example '[error] Create an invalid custom field option', document: false do
+          do_request
           assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:key, 'invalid', value: key)
@@ -121,18 +122,16 @@ resource 'User Custom Field Options' do
         expect { CustomFieldOption.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
-      if CitizenLab.ee?
-        example "[error] Delete a custom field option that's still referenced in a rules group" do
-          create(
-            :smart_group,
-            rules: [
-              { ruleType: 'custom_field_select', customFieldId: @custom_field.id, predicate: 'has_value', value: id }
-            ]
-          )
-          do_request
-          assert_status 422
-          expect(CustomFieldOption.find(id)).to be_present
-        end
+      example "[error] Delete a custom field option that's still referenced in a rules group" do
+        create(
+          :smart_group,
+          rules: [
+            { ruleType: 'custom_field_select', customFieldId: @custom_field.id, predicate: 'has_value', value: id }
+          ]
+        )
+        do_request
+        assert_status 422
+        expect(CustomFieldOption.find(id)).to be_present
       end
 
       example "Deleting a custom field option that's still referenced in a user's setting", document: false do

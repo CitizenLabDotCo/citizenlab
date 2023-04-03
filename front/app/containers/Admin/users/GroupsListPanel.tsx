@@ -23,7 +23,7 @@ import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // Styling
@@ -164,17 +164,10 @@ export interface State {
   highlightedGroups: Set<IGroupData['id']>;
 }
 
-interface Tracks {
-  trackCreateGroup: () => void;
-}
-
-export class GroupsListPanel extends React.PureComponent<
-  Props & Tracks,
-  State
-> {
+export class GroupsListPanel extends React.PureComponent<Props, State> {
   subs: Subscription[] = [];
 
-  constructor(props: Props & Tracks) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       highlightedGroups: new Set([]),
@@ -202,7 +195,7 @@ export class GroupsListPanel extends React.PureComponent<
 
   handleCreateGroup = (event) => {
     event.preventDefault();
-    this.props.trackCreateGroup();
+    trackEventByName(tracks.createGroup.name);
     this.props.onCreateGroup();
   };
 
@@ -219,7 +212,18 @@ export class GroupsListPanel extends React.PureComponent<
           <GroupName>
             <FormattedMessage {...messages.allUsers} />
           </GroupName>
-          {!isNilOrError(usercount) && <MembersCount>{usercount}</MembersCount>}
+          <MembersCount>{usercount.count}</MembersCount>
+        </MenuLink>
+        <MenuLink to="/admin/users/admins-managers">
+          <GroupName>
+            <FormattedMessage {...messages.adminsAndManagers} />
+          </GroupName>
+          {usercount.administrators_count !== null &&
+            usercount.managers_count !== null && (
+              <MembersCount>
+                {usercount.administrators_count + usercount.managers_count}
+              </MembersCount>
+            )}
         </MenuLink>
         <Separator />
         <MenuTitle>
@@ -272,12 +276,8 @@ const Data = adopt<DataProps, InputProps>({
   usercount: <GetUserCount />,
 });
 
-const GroupsListPanelWithHoc = injectTracks<Props>({
-  trackCreateGroup: tracks.createGroup,
-})(GroupsListPanel);
-
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <GroupsListPanelWithHoc {...inputProps} {...dataProps} />}
+    {(dataProps) => <GroupsListPanel {...inputProps} {...dataProps} />}
   </Data>
 );

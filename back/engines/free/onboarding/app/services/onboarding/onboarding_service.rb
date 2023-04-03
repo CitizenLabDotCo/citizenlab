@@ -39,4 +39,4 @@ module Onboarding
   end
 end
 
-Onboarding::OnboardingService.prepend_if_ee('Verification::Patches::Onboarding::OnboardingService')
+Onboarding::OnboardingService.prepend(Verification::Patches::Onboarding::OnboardingService)

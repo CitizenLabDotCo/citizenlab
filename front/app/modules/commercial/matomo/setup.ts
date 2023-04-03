@@ -2,7 +2,7 @@
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { IAppConfiguration } from 'services/appConfiguration';
+import { IAppConfiguration } from 'api/app_configuration/types';
 import { IUser } from 'services/users';
 
 const MATOMO_HOST = process.env.MATOMO_HOST || '//matomo.hq.citizenlab.co';

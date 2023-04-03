@@ -133,6 +133,7 @@ const createCombinedStream = (
         start_at: startAt,
         end_at: endAt,
         project: currentProject,
+        filter_by_participation: true,
       },
     },
     customField.id

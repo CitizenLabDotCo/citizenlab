@@ -59,6 +59,16 @@ class ApplicationController < ActionController::API
     { current_user: current_user, **extra_params.symbolize_keys }
   end
 
+  def raw_json(json, type: nil)
+    type ||= action_name
+    {
+      data: {
+        type: type,
+        attributes: json
+      }
+    }
+  end
+
   def linked_json(collection, serializer, options = {})
     {
       **serializer.new(collection, options).serializable_hash,

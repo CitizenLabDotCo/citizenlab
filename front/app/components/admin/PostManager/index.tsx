@@ -2,8 +2,8 @@ import React, { Suspense } from 'react';
 import { isFunction } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
-import HTML5Backend from 'react-dnd-html5-backend-cjs';
-import { DndProvider } from 'react-dnd-cjs';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -360,13 +360,15 @@ export class PostManager extends React.PureComponent<Props, State> {
                 />
               ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
                 <IdeasCount
-                  feedbackNeeded={feedbackNeeded}
+                  feedbackNeeded={
+                    feedbackNeeded === true ? feedbackNeeded : undefined
+                  }
                   project={selectedProject}
-                  phase={selectedPhase}
-                  topics={selectedTopics}
-                  ideaStatus={selectedStatus}
-                  searchTerm={searchTerm}
-                  assignee={selectedAssignee}
+                  phase={selectedPhase ?? undefined}
+                  topics={selectedTopics ?? undefined}
+                  ideaStatusId={selectedStatus ?? undefined}
+                  search={searchTerm}
+                  assignee={selectedAssignee ?? undefined}
                 />
               ) : null}
               <StyledInput icon="search" onChange={this.handleSearchChange} />
@@ -444,20 +446,20 @@ const Data = adopt<DataProps, InputProps>({
   posts: ({ type, projectId, render }) => {
     if (type === 'Initiatives') {
       return (
-        <GetInitiatives type="paginated" pageSize={10} sort="new">
+        <GetInitiatives pageSize={10} sort="new">
           {render}
         </GetInitiatives>
       );
     }
 
+    const props = {
+      'page[size]': 10,
+      sort: 'new',
+    } as const;
+
     if (type === 'ProjectIdeas') {
       return (
-        <GetIdeas
-          type="paginated"
-          pageSize={10}
-          sort="new"
-          projectIds={projectId ? [projectId] : undefined}
-        >
+        <GetIdeas {...props} projects={projectId ? [projectId] : undefined}>
           {render}
         </GetIdeas>
       );
@@ -465,12 +467,7 @@ const Data = adopt<DataProps, InputProps>({
 
     if (type === 'AllIdeas') {
       return (
-        <GetIdeas
-          type="paginated"
-          pageSize={10}
-          sort="new"
-          filterCanModerate={true}
-        >
+        <GetIdeas {...props} filter_can_moderate={true}>
           {render}
         </GetIdeas>
       );

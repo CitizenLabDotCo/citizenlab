@@ -207,11 +207,7 @@ class CommentsMoreActions extends PureComponent<
     return (
       <>
         <Container className={className || ''}>
-          <MoreActionsMenu
-            showLabel={false}
-            label={<FormattedMessage {...messages.showMoreActions} />}
-            actions={actions}
-          />
+          <MoreActionsMenu showLabel={false} actions={actions} />
         </Container>
 
         <Modal

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::UsersController < ::ApplicationController
-  before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count]
+  before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count block unblock]
   skip_before_action :authenticate_user, only: %i[create show by_slug by_invite ideas_count initiatives_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -11,12 +11,14 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     @users = policy_scope User
 
+    @users = @users.in_group(Group.find(params[:group])) if params[:group]
+    @users = @users.active unless params[:include_inactive]
+    @users = @users.blocked if params[:only_blocked]
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
-    @users = @users.active unless params[:include_inactive]
-    @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.admin.or(@users.project_moderator(params[:can_moderate_project])) if params[:can_moderate_project].present?
-    @users = @users.admin.or(@users.project_moderator) if params[:can_moderate].present?
+    @users = @users.admin.or(@users.project_moderator).or(@users.project_folder_moderator) if params[:can_moderate].present?
+    @users = @users.not_citizenlab_member if params[:not_citizenlab_member].present?
     @users = @users.admin if params[:can_admin].present?
 
     if params[:search].blank?
@@ -49,6 +51,20 @@ class WebApi::V1::UsersController < ::ApplicationController
     LogActivityJob.perform_later(current_user, 'searched_users', current_user, Time.now.to_i, payload: { search_query: params[:search] }) if params[:search].present?
 
     render json: linked_json(@users, WebApi::V1::UserSerializer, params: fastjson_params)
+  end
+
+  def seats
+    authorize :user, :seats?
+
+    render json: {
+      data: {
+        type: 'seats',
+        attributes: {
+          admins_number: User.billed_admins.count,
+          project_moderators_number: User.billed_moderators.count
+        }
+      }
+    }
   end
 
   def index_xlsx
@@ -108,6 +124,13 @@ class WebApi::V1::UsersController < ::ApplicationController
         @user,
         params: fastjson_params(granted_permissions: permissions)
       ).serialized_json, status: :created
+    elsif reset_confirm_on_existing_no_password_user?
+      SideFxUserService.new.after_update(@user, current_user)
+      permissions = Permission.for_user(@user)
+      render json: WebApi::V1::UserSerializer.new(
+        @user,
+        params: fastjson_params(granted_permissions: permissions)
+      ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
@@ -139,6 +162,7 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def complete_registration
+    # NOTE: Authorize fails if registration is already flagged as complete
     @user = current_user
     authorize @user
 
@@ -146,7 +170,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
 
     @user.assign_attributes(user_params)
-    @user.registration_completed_at = Time.now
+    @user.complete_registration
 
     if @user.save
       SideFxUserService.new.after_update(@user, current_user)
@@ -164,13 +188,40 @@ class WebApi::V1::UsersController < ::ApplicationController
     head :ok
   end
 
+  def block
+    authorize @user, :block?
+    if @user.update(block_start_at: Time.zone.now, block_reason: params.dig(:user, :block_reason))
+      SideFxUserService.new.after_block(@user, current_user)
+
+      render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
+    else
+      render json: { errors: @user.errors.details }, status: :unprocessable_entity
+    end
+  end
+
+  def unblock
+    authorize @user, :unblock?
+    if @user.update(block_start_at: nil, block_reason: nil)
+      SideFxUserService.new.after_unblock(@user, current_user)
+
+      render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
+    else
+      render json: { errors: @user.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   def ideas_count
     ideas = policy_scope(IdeasFinder.new({}, scope: @user.ideas.published, current_user: current_user).find_records)
-    render json: { count: ideas.count }, status: :ok
+    render json: raw_json({ count: ideas.count }), status: :ok
+  end
+
+  def blocked_count
+    authorize :user, :blocked_count?
+    render json: { data: { blocked_users_count: User.all.blocked.count } }, status: :ok
   end
 
   def initiatives_count
-    render json: { count: policy_scope(@user.initiatives.published).count }, status: :ok
+    render json: raw_json({ count: policy_scope(@user.initiatives.published).count }), status: :ok
   end
 
   def comments_count
@@ -188,7 +239,24 @@ class WebApi::V1::UsersController < ::ApplicationController
         policy_scope_class: InitiativeCommentPolicy::Scope
       ).count
     end
-    render json: { count: count }, status: :ok
+    render json: raw_json({ count: count }), status: :ok
+  end
+
+  def update_password
+    @user = current_user
+    authorize @user
+    if @user.authenticate(params[:user][:current_password])
+      if @user.update(password: params[:user][:new_password])
+        render json: WebApi::V1::UserSerializer.new(
+          @user,
+          params: fastjson_params
+        ).serialized_json
+      else
+        render json: { errors: @user.errors.details }, status: :unprocessable_entity
+      end
+    else
+      render json: { errors: { current_password: [{ error: 'invalid' }] } }, status: :unprocessable_entity
+    end
   end
 
   private
@@ -198,6 +266,28 @@ class WebApi::V1::UsersController < ::ApplicationController
     authorize @user
   rescue ActiveRecord::RecordNotFound
     send_error(nil, 404)
+  end
+
+  def reset_confirm_on_existing_no_password_user?
+    return false unless AppConfiguration.instance.feature_activated?('user_confirmation')
+
+    original_user = @user
+    errors = original_user.errors.details[:email]
+    return false unless errors.any? { |hash| hash[:error] == :taken }
+
+    existing_user = User.find_by(email: @user.email)
+    return false unless existing_user.no_password?
+
+    # If any attributes try to change then ignore this found user
+    existing_user.assign_attributes(permitted_attributes(existing_user))
+    return false if existing_user.changed?
+
+    @user = existing_user
+    @user.reset_confirmation_with_no_password
+    return false unless @user.save
+
+    SendConfirmationCode.call(user: @user)
+    true
   end
 
   def mark_custom_field_values_to_clear!

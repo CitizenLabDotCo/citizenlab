@@ -1,11 +1,38 @@
 # frozen_string_literal: true
 
 class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
-  attributes :first_name, :slug, :locale, :roles, :highest_role, :bio_multiloc, :registration_completed_at, :invite_status, :created_at, :updated_at
+  attributes :slug,
+    :locale,
+    :roles,
+    :highest_role,
+    :bio_multiloc,
+    :registration_completed_at,
+    :invite_status,
+    :blocked,
+    :block_start_at,
+    :block_end_at,
+    :block_reason,
+    :created_at,
+    :updated_at
 
   attribute :last_name do |object, params|
     name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
     name_service.last_name(object)
+  end
+
+  attribute :first_name do |object, params|
+    name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
+    name_service.first_name(object)
+  end
+
+  attribute :no_name do |object|
+    object.no_name?
+  end
+
+  attribute :no_password, if: proc { |object, params|
+    view_private_attributes? object, params
+  } do |object|
+    object.no_password?
   end
 
   attribute :email, if: proc { |object, params|
@@ -29,6 +56,28 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     object.unread_notifications.size
   end
 
+  attribute :confirmation_required do |user|
+    user.confirmation_required?
+  end
+
+  attribute :blocked, if: proc { |object, params|
+    view_private_attributes? object, params
+  } do |object|
+    object.blocked?
+  end
+
+  attribute :block_start_at, if: proc { |object, params|
+    view_private_attributes? object, params
+  }
+
+  attribute :block_end_at, if: proc { |object, params|
+    view_private_attributes? object, params
+  }
+
+  attribute :block_reason, if: proc { |object, params|
+    view_private_attributes? object, params
+  }
+
   has_many :granted_permissions, record_type: :permission, serializer: WebApi::V1::PermissionSerializer do |_object, params|
     params[:granted_permissions]
   end
@@ -38,5 +87,4 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   end
 end
 
-WebApi::V1::UserSerializer.include(UserConfirmation::Extensions::WebApi::V1::UserSerializer)
-WebApi::V1::UserSerializer.include_if_ee('Verification::Patches::WebApi::V1::UserSerializer')
+WebApi::V1::UserSerializer.include(Verification::Patches::WebApi::V1::UserSerializer)

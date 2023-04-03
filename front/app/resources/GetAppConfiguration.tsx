@@ -1,8 +1,8 @@
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // typings
-import { IAppConfigurationData } from 'services/appConfiguration';
+import { IAppConfigurationData } from 'api/app_configuration/types';
 import { NilOrError } from 'utils/helperUtils';
 
 export type GetAppConfigurationChildProps = IAppConfigurationData | NilOrError;
@@ -16,8 +16,8 @@ interface Props {
 }
 
 const GetAppConfiguration = ({ children }: Props) => {
-  const appConfiguration = useAppConfiguration();
-  return (children as children)(appConfiguration);
+  const { data: appConfiguration } = useAppConfiguration();
+  return (children as children)(appConfiguration?.data);
 };
 
 export default GetAppConfiguration;

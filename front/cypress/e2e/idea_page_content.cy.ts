@@ -85,6 +85,48 @@ describe('Idea Page', () => {
     });
   });
 
+  describe('Idea sharing modal', () => {
+    let projectId: string = null as any;
+    let ideaId: string = null as any;
+    const projectTitle = randomString();
+    const projectDescriptionPreview = randomString();
+    const projectDescription = randomString();
+    const ideaTitle = randomString();
+    const ideaContent = randomString();
+
+    before(() => {
+      cy.apiCreateProject({
+        type: 'continuous',
+        title: projectTitle,
+        descriptionPreview: projectDescriptionPreview,
+        description: projectDescription,
+        publicationStatus: 'published',
+        participationMethod: 'ideation',
+      })
+        .then((project) => {
+          projectId = project.body.data.id;
+          return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+        })
+        .then((idea) => {
+          ideaId = idea.body.data.id;
+        });
+    });
+
+    it.skip('shows idea sharing modal if new idea', () => {
+      cy.visit(
+        `/ideas/${ideaTitle}?new_idea_id=7df35672-5b1b-442a-8e0a-8933e8dc47f2`
+      );
+      cy.get('#e2e-modal-container').should('exist');
+      cy.get('.e2e-modal-close-button').click();
+      cy.get('#e2e-modal-container').should('not.exist');
+    });
+
+    after(() => {
+      cy.apiRemoveIdea(ideaId);
+      cy.apiRemoveProject(projectId);
+    });
+  });
+
   describe('Idea with location inside of a project with location enabled', () => {
     const projectTitle = randomString();
     let projectId: string;

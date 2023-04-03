@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { isNumber } from 'lodash-es';
 import styled from 'styled-components';
 import { stylingConsts, media } from 'utils/styleUtils';
@@ -41,34 +41,37 @@ interface Props {
   maxWidth?: number | string;
 }
 
-interface State {}
+const ContentContainer = ({
+  mode,
+  id,
+  className,
+  children,
+  maxWidth,
+}: Props) => {
+  let newMaxWidth = maxWidth;
 
-export default class ContentContainer extends PureComponent<Props, State> {
-  render() {
-    const { mode, id, className, children } = this.props;
-    let maxWidth = this.props.maxWidth;
-
-    if (!maxWidth) {
-      if (mode === 'banner') {
-        maxWidth = stylingConsts.bannerWidth;
-      } else if (mode === 'page') {
-        maxWidth = stylingConsts.pageWidth;
-      } else if (mode === 'text') {
-        maxWidth = stylingConsts.textWidth;
-      } else {
-        maxWidth = stylingConsts.maxPageWidth;
-      }
+  if (!maxWidth) {
+    if (mode === 'banner') {
+      newMaxWidth = stylingConsts.bannerWidth;
+    } else if (mode === 'page') {
+      newMaxWidth = stylingConsts.pageWidth;
+    } else if (mode === 'text') {
+      newMaxWidth = stylingConsts.textWidth;
+    } else {
+      newMaxWidth = stylingConsts.maxPageWidth;
     }
-
-    return (
-      <Outer id={id} className={`${className} ${bowser.msie ? 'ie' : ''}`}>
-        <Inner
-          className={`inner ${bowser.msie ? 'ie' : ''}`}
-          maxWidth={maxWidth}
-        >
-          {children}
-        </Inner>
-      </Outer>
-    );
   }
-}
+
+  return (
+    <Outer id={id} className={`${className} ${bowser.msie ? 'ie' : ''}`}>
+      <Inner
+        className={`inner ${bowser.msie ? 'ie' : ''}`}
+        maxWidth={newMaxWidth}
+      >
+        {children}
+      </Inner>
+    </Outer>
+  );
+};
+
+export default ContentContainer;

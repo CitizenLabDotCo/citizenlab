@@ -298,7 +298,7 @@ export interface Props {
 
 const ProjectFolderCard = memo<Props>(
   ({ publication, size, layout, className }) => {
-    const isPhone = useBreakpoint('phone');
+    const isSmallerThanPhone = useBreakpoint('phone');
     const projectFolderImages = useProjectFolderImages(
       publication.publicationId
     );
@@ -326,7 +326,7 @@ const ProjectFolderCard = memo<Props>(
       : projectFolderImages.data[0]?.attributes.versions;
 
     const imageUrl = imageVersions
-      ? getCardImageUrl(imageVersions, isPhone, size)
+      ? getCardImageUrl(imageVersions, isSmallerThanPhone, size)
       : null;
 
     const folderUrl = `/folders/${publication.attributes.publication_slug}`;

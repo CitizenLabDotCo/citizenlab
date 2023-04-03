@@ -14,6 +14,7 @@ import controlMessages from './messages';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
+import { getSubtextElement } from './controlUtils';
 
 const UserPickerControl = ({
   data,
@@ -55,7 +56,7 @@ const UserPickerControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={<FieldLabel />}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
       <UserSelect

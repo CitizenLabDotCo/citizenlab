@@ -60,8 +60,8 @@ export const ModalContentContainer = styled.div<{
   -webkit-overflow-scrolling: touch;
   padding: ${({ padding }) => padding || '30px'};
 
-  ${media.phone`
-    padding: ${({ padding }) => padding || '20px'};
+  ${(props) => media.phone`
+    padding: ${props.padding || '20px'};
   `}
 
   ${({ fullScreen }) =>
@@ -99,9 +99,9 @@ const StyledCloseIconButton = styled(CloseIconButton)<{
 
   ${({ fullScreen }) => (fullScreen ? 'left: 25px;' : 'right: 25px;')};
 
-  ${media.phone`
+  ${(props) => media.phone`
     top: 13px;
-    ${({ fullScreen }) => (fullScreen ? 'left: auto;' : '')};
+    ${props.fullScreen ? 'left: auto;' : ''};
     right: 15px;
   `}
 `;
@@ -141,7 +141,7 @@ const StyledFocusOn = styled(FocusOn)<{
 `;
 
 const ModalContainer = styled(clickOutside)<{
-  windowHeight: string;
+  windowHeight: number;
   fullScreen?: boolean;
 }>`
   width: 100%;
@@ -176,9 +176,9 @@ const ModalContainer = styled(clickOutside)<{
     ${({ fullScreen }) => fullScreen && 'margin-top: 0;'}
   }
 
-  ${media.phone`
+  ${(props) => media.phone`
     max-width: calc(100vw - 30px);
-    max-height: ${(props) => `calc(${props.windowHeight} - 30px)`};
+    max-height: calc(${props.windowHeight}px - 30px);
     margin-top: 15px;
 
     &.fixedHeight {
@@ -186,14 +186,15 @@ const ModalContainer = styled(clickOutside)<{
       max-height: 85vh;
     }
 
-    ${({ fullScreen }) =>
-      fullScreen &&
+    ${
+      props.fullScreen &&
       `
         margin-top: 0;
         max-height: 100%;
         max-width: 100%;
-      `}
-    `}
+      `
+    }
+  `}
 `;
 
 const Overlay = styled.div<{
@@ -441,7 +442,7 @@ export interface InputProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  windowHeight: string;
+  windowHeight: number;
 }
 
 class Modal extends PureComponent<Props, State> {
@@ -456,7 +457,7 @@ class Modal extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      windowHeight: `${window.innerHeight}px`,
+      windowHeight: window.innerHeight,
     };
     this.unlisten = null;
     this.subscription = null;
@@ -468,7 +469,7 @@ class Modal extends PureComponent<Props, State> {
       .subscribe((event) => {
         if (event.target) {
           const height = event.target['innerHeight'] as number;
-          this.setState({ windowHeight: `${height}px` });
+          this.setState({ windowHeight: height });
         }
       });
   }
@@ -501,7 +502,7 @@ class Modal extends PureComponent<Props, State> {
     this.closeModal();
   };
 
-  handleKeypress = (event) => {
+  handleKeypress = (event: KeyboardEvent) => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
       this.closeModal();

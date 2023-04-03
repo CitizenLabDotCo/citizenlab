@@ -12,7 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from 'containers/Admin/users/tracks';
 
 // styling
@@ -62,25 +62,21 @@ type Props = {
 
 interface State {}
 
-interface Tracks {
-  trackConditionAdd: () => void;
-}
-
-class UserFilterConditions extends React.PureComponent<Props & Tracks, State> {
-  handleOnChangeRule = (index) => (rule: TRule) => {
+class UserFilterConditions extends React.PureComponent<Props, State> {
+  handleOnChangeRule = (index: number) => (rule: TRule) => {
     const newRules = clone(this.props.rules);
     newRules.splice(index, 1, rule);
     this.props.onChange(newRules);
   };
 
-  handleOnRemoveRule = (index) => () => {
+  handleOnRemoveRule = (index: number) => () => {
     const newRules = clone(this.props.rules);
     newRules.splice(index, 1);
     this.props.onChange(newRules);
   };
 
   handleOnAddRule = () => {
-    this.props.trackConditionAdd();
+    trackEventByName(tracks.conditionAdd.name);
     const newRules = clone(this.props.rules);
     newRules.push({});
     this.props.onChange(newRules);
@@ -116,10 +112,6 @@ class UserFilterConditions extends React.PureComponent<Props & Tracks, State> {
   }
 }
 
-const UserFilterConditionsWithHoc = injectTracks<Props>({
-  trackConditionAdd: tracks.conditionAdd,
-})(UserFilterConditions);
-
 export const HookFormUserFilterConditions = ({ name }: { name: string }) => {
   const {
     formState: { errors },
@@ -140,7 +132,7 @@ export const HookFormUserFilterConditions = ({ name }: { name: string }) => {
         name={name}
         control={control}
         render={({ field: { ref: _ref, ...field } }) => (
-          <UserFilterConditionsWithHoc
+          <UserFilterConditions
             {...field}
             onChange={handleOnChange}
             rules={getValues(name)}

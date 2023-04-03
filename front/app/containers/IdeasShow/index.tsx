@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState, useEffect } from 'react';
+import React, { lazy, Suspense, useState, useRef, useEffect } from 'react';
 import { isUndefined, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
@@ -7,7 +7,7 @@ import { adopt } from 'react-adopt';
 import { getInputTerm } from 'services/participationContexts';
 
 // analytics
-import { trackEvent } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
@@ -36,9 +36,6 @@ import RightColumnDesktop from './RightColumnDesktop';
 import { isFieldEnabled } from 'utils/projectUtils';
 
 // resources
-import GetIdeaImages, {
-  GetIdeaImagesChildProps,
-} from 'resources/GetIdeaImages';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetWindowSize, {
   GetWindowSizeChildProps,
@@ -52,9 +49,7 @@ import GetPermission, {
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
 
@@ -70,15 +65,15 @@ import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 import { columnsGapDesktop, pageContentMaxWidth } from './styleConstants';
 import Outlet from 'components/Outlet';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // hooks
 import useLocale from 'hooks/useLocale';
 import usePhases from 'hooks/usePhases';
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import { useSearchParams } from 'react-router-dom';
+import useIdeaImages from 'hooks/useIdeaImages';
+import useLocalize from 'hooks/useLocalize';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -160,7 +155,6 @@ const BodySectionTitle = styled.h2`
 
 interface DataProps {
   project: GetProjectChildProps;
-  ideaImages: GetIdeaImagesChildProps;
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
@@ -179,11 +173,9 @@ interface InputProps {
 interface Props extends DataProps, InputProps {}
 
 export const IdeasShow = ({
-  ideaImages,
   windowSize,
   className,
   postOfficialFeedbackPermission,
-  localize,
   projectId,
   insideModal,
   project,
@@ -191,29 +183,28 @@ export const IdeasShow = ({
   ideaId,
   officialFeedbacks,
   setRef,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const ideaImages = useIdeaImages(ideaId);
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
   const [queryParams] = useSearchParams();
+  const ideaIdParameter = queryParams.get('new_idea_id');
+  const timeout = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
-    const newIdeaId = queryParams.get('new_idea_id');
-    let timeout: NodeJS.Timeout;
-    if (isString(newIdeaId)) {
-      timeout = setTimeout(() => {
-        setNewIdeaId(newIdeaId);
+    if (isString(ideaIdParameter)) {
+      timeout.current = setTimeout(() => {
+        setNewIdeaId(ideaIdParameter);
       }, 1500);
       clHistory.replace(window.location.pathname);
     }
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [queryParams]);
+  }, [ideaIdParameter]);
 
   const phases = usePhases(projectId);
-  const idea = useIdea({ ideaId });
+  const { data: idea } = useIdeaById(ideaId);
   const locale = useLocale();
 
   const ideaflowSocialSharingIsEnabled = useFeatureFlag({
@@ -227,20 +218,23 @@ export const IdeasShow = ({
 
   const isLoaded =
     !isNilOrError(idea) &&
-    !isUndefined(ideaImages) &&
+    !isNilOrError(ideaImages) &&
     !isNilOrError(project) &&
     !isUndefined(officialFeedbacks.officialFeedbacksList);
 
   const closeIdeaSocialSharingModal = () => {
+    if (timeout.current) {
+      clearTimeout(timeout.current);
+    }
     setNewIdeaId(null);
   };
 
   const onTranslateIdea = () => {
     // analytics
     if (translateButtonIsClicked === true) {
-      trackEvent(tracks.clickGoBackToOriginalIdeaCopyButton);
+      trackEventByName(tracks.clickGoBackToOriginalIdeaCopyButton.name);
     } else if (translateButtonIsClicked === false) {
-      trackEvent(tracks.clickTranslateIdeaButton);
+      trackEventByName(tracks.clickTranslateIdeaButton.name);
     }
     setTranslateButtonIsClicked(!translateButtonIsClicked);
   };
@@ -259,21 +253,23 @@ export const IdeasShow = ({
     isLoaded
   ) {
     // If the user deletes their profile, authorId can be null
-    const authorId = idea.relationships?.author?.data?.id || null;
-    const titleMultiloc = idea.attributes.title_multiloc;
+    const authorId = idea.data.relationships?.author?.data?.id || null;
+    const titleMultiloc = idea.data.attributes.title_multiloc;
     const ideaTitle = localize(titleMultiloc);
-    const statusId = idea?.relationships?.idea_status?.data?.id;
+    const statusId = idea.data.relationships?.idea_status?.data?.id;
     const ideaImageLarge = ideaImages?.[0]?.attributes?.versions?.large || null;
-    const ideaId = idea.id;
-    const proposedBudget = idea.attributes?.proposed_budget;
-    const ideaBody = localize(idea?.attributes?.body_multiloc);
+    const ideaId = idea.data.id;
+    const proposedBudget = idea.data.attributes?.proposed_budget;
+    const ideaBody = localize(idea.data.attributes?.body_multiloc);
     const isCompactView =
       compact === true ||
       (windowSize ? windowSize <= viewportWidths.tablet : false);
 
+    if (isNilOrError(ideaCustomFieldsSchemas)) return null;
+
     const proposedBudgetEnabled = isFieldEnabled(
       'proposed_budget',
-      ideaCustomFieldsSchemas,
+      ideaCustomFieldsSchemas.data.attributes,
       locale
     );
 
@@ -286,7 +282,7 @@ export const IdeasShow = ({
             <Box mb="40px">
               <GoBackButton projectId={projectId} insideModal={insideModal} />
             </Box>
-            <IdeaMoreActions idea={idea} projectId={projectId} />
+            <IdeaMoreActions idea={idea.data} projectId={projectId} />
           </TopBar>
         )}
 
@@ -303,7 +299,7 @@ export const IdeasShow = ({
               {isCompactView && (
                 <Box ml="30px">
                   {' '}
-                  <IdeaMoreActions idea={idea} projectId={projectId} />
+                  <IdeaMoreActions idea={idea.data} projectId={projectId} />
                 </Box>
               )}
             </IdeaHeader>
@@ -314,7 +310,7 @@ export const IdeasShow = ({
 
             <Outlet
               id="app.containers.IdeasShow.left"
-              idea={idea}
+              idea={idea.data}
               locale={locale}
               onClick={onTranslateIdea}
               translateButtonClicked={translateButtonIsClicked}
@@ -467,15 +463,8 @@ export const IdeasShow = ({
   return null;
 };
 
-const IdeasShowWithHOCs = injectLocalize<Props>(
-  withRouter(injectIntl(IdeasShow))
-);
-
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
-  ideaImages: ({ ideaId, render }) => (
-    <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>
-  ),
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
   ),
@@ -501,6 +490,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <IdeasShowWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <IdeasShow {...inputProps} {...dataProps} />}
   </Data>
 );

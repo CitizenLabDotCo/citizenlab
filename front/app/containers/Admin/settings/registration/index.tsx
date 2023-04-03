@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import getSubmitState from 'utils/getSubmitState';
-import { isCLErrorJSON } from 'utils/errorUtils';
-import { CLError, Multiloc } from 'typings';
+import { Multiloc } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
 // components
 import {
@@ -31,9 +31,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import {
   IAppConfigurationSettings,
   IUpdatedAppConfigurationProperties,
-  updateAppConfiguration,
   TAppConfigurationSettingCore,
-} from 'services/appConfiguration';
+} from 'api/app_configuration/types';
 
 export const LabelTooltip = styled.div`
   display: flex;
@@ -44,14 +43,18 @@ const SignUpFieldsSection = styled.div`
 `;
 
 const SettingsRegistrationTab = () => {
-  const appConfig = useAppConfiguration();
+  const { data: appConfig } = useAppConfiguration();
+  const {
+    mutate: updateAppConfiguration,
+    error,
+    isLoading: isFormSubmitting,
+    isSuccess: isFormSaved,
+  } = useUpdateAppConfiguration();
   const userConfirmationIsAllowed = useFeatureFlag({
     name: 'user_confirmation',
     onlyCheckAllowed: true,
   });
-  const [isFormSubmitting, setIsFormSubmitting] = useState(false);
-  const [isFormSaved, setIsFormSaved] = useState(false);
-  const [errors, setErrors] = useState<{ [fieldName: string]: CLError[] }>({});
+
   const [attributesDiff, setAttributesDiff] =
     useState<IUpdatedAppConfigurationProperties>({});
   const [latestAppConfigSettings, setLatestAppConfigSettings] =
@@ -59,7 +62,7 @@ const SettingsRegistrationTab = () => {
 
   useEffect(() => {
     if (!isNilOrError(appConfig)) {
-      setLatestAppConfigSettings(appConfig.attributes.settings);
+      setLatestAppConfigSettings(appConfig.data.attributes.settings);
     }
   }, [appConfig]);
 
@@ -99,25 +102,12 @@ const SettingsRegistrationTab = () => {
     };
 
   const handleSubmit = async (event?: React.FormEvent<HTMLFormElement>) => {
-    if (event) {
-      event.preventDefault();
-    }
-
-    setIsFormSubmitting(true);
-    setIsFormSaved(false);
-
-    try {
-      await updateAppConfiguration(
-        attributesDiff as IUpdatedAppConfigurationProperties
-      );
-
-      setIsFormSubmitting(false);
-      setIsFormSaved(true);
-      setAttributesDiff({});
-    } catch (error) {
-      setIsFormSubmitting(false);
-      setErrors(isCLErrorJSON(error) ? error.json.errors : error);
-    }
+    event?.preventDefault();
+    updateAppConfiguration(attributesDiff, {
+      onSuccess: () => {
+        setAttributesDiff({});
+      },
+    });
   };
 
   const userConfirmationToggleIsEnabled =
@@ -183,7 +173,7 @@ const SettingsRegistrationTab = () => {
             <SubmitWrapper
               loading={isFormSubmitting}
               status={getSubmitState({
-                errors,
+                errors: error,
                 saved: isFormSaved,
                 diff: attributesDiff,
               })}

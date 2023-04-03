@@ -8,8 +8,8 @@ import { TableCellProps } from 'semantic-ui-react';
 import {
   TAppConfigurationSetting,
   TAppConfigurationSettingWithEnabled,
-} from 'services/appConfiguration';
-import { IIdeaAction } from 'services/ideas';
+} from 'api/app_configuration/types';
+import { IIdeaAction } from 'api/ideas/types';
 import { IProjectAction } from 'services/projects';
 import { WrappedComponentProps } from 'react-intl';
 
@@ -146,6 +146,7 @@ export interface CLError {
   ideas_count?: number;
   blocked_words?: any;
   payload?: Record<string, any>;
+  fragment?: string;
 }
 
 export interface CLErrors {

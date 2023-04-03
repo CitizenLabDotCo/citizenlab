@@ -33,7 +33,7 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const portalElement = document?.getElementById('topbar-portal');
   const phases = usePhases(projectId);
-  const isSmallerThanXlPhone = useBreakpoint('phone');
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   useEffect(() => {
     let isMounted = true;
@@ -84,11 +84,11 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
         width="100vw"
         position="fixed"
         top="0px"
-        zIndex="1004"
+        zIndex="1000"
         background="#fff"
         borderBottom="solid 1px #ddd"
       >
-        {!isSmallerThanXlPhone && (
+        {!isSmallerThanPhone && (
           <Box height="78px">
             <MainHeader />
           </Box>
