@@ -3,12 +3,6 @@ import eventsKeys from './keys';
 
 export type EventsKeys = Keys<typeof eventsKeys>;
 
-export type IUpdatePermissionObject = {
-  permissionId: string;
-  custom_field_id: string;
-  required: boolean;
-};
-
 export interface IPermissionsCustomFields {
   data: IPermissionsCustomFieldData[];
 }

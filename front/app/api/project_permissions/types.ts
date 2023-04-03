@@ -56,5 +56,3 @@ export interface IPCPermissionData {
     };
   };
 }
-
-export type PermissionType = IPCPermissionData[] | undefined | null | Error;
