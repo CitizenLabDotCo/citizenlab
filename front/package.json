@@ -240,7 +240,7 @@
     "rimraf": "3.0.2",
     "shelljs": "0.8.5",
     "style-loader": "^3.3.2",
-    "styled-components": "5.3.6",
+    "styled-components": "5.3.9",
     "ts-jest": "^29.0.5",
     "ts-loader": "^9.2.6",
     "ts-prune": "^0.10.1",
