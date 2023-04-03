@@ -37,10 +37,6 @@ const UserSelectSection = styled.section`
   margin-bottom: 12px;
 `;
 
-const AddButton = styled(Button)`
-  margin-left: 12px;
-`;
-
 const FolderPermissions = () => {
   const { projectFolderId } = useParams() as { projectFolderId: string };
   const { formatMessage } = useIntl();
@@ -126,7 +122,7 @@ const FolderPermissions = () => {
                 isNotFolderModeratorOfFolderId={projectFolderId}
               />
             </Box>
-            <AddButton
+            <Button
               text={formatMessage(messages.addFolderManager)}
               buttonStyle="cl-blue"
               icon="plus-circle"
@@ -134,6 +130,7 @@ const FolderPermissions = () => {
               onClick={handleAddClick}
               disabled={!moderatorToAdd}
               processing={processing}
+              ml="12px"
             />
           </Box>
           {hasSeatBasedBillingEnabled && (
