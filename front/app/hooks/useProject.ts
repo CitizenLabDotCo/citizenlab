@@ -17,7 +17,6 @@ export default function useProject({ projectId, projectSlug }: Props) {
   const [project, setProject] = useState<IProjectData | null | undefined>(
     undefined
   );
-  console.log('IN USE PROJECT!');
 
   useEffect(() => {
     setProject(undefined);

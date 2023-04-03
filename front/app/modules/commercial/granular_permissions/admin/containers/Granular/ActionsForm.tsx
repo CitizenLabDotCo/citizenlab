@@ -67,6 +67,7 @@ type PostTypeProps =
 
 type SharedProps = {
   permissions: IPermissionData[];
+  phaseId?: string | null;
   onChange: (
     permission: IPermissionData,
     permittedBy: IPermissionData['attributes']['permitted_by'],
@@ -92,7 +93,7 @@ const showDivider = (
 type Props = PostTypeProps & SharedProps;
 
 const ActionsForm = memo(
-  ({ permissions, postType, onChange, projectId }: Props) => {
+  ({ permissions, postType, onChange, projectId, phaseId }: Props) => {
     const includePermissionsCustomFields = useFeatureFlag({
       name: 'permissions_custom_fields',
     });
@@ -163,7 +164,11 @@ const ActionsForm = memo(
                 {permission.attributes.permitted_by !== 'everyone' &&
                   includePermissionsCustomFields && (
                     <Box mt="42px" mb="20px">
-                      <UserFieldSelection permission={permission} />
+                      <UserFieldSelection
+                        permission={permission}
+                        projectId={projectId}
+                        phaseId={phaseId}
+                      />
                     </Box>
                   )}
               </ActionPermissionWrapper>

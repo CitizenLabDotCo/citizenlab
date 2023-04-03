@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 // intl
 import messages from '../../containers/Granular/messages';
@@ -12,6 +12,13 @@ import {
   colors,
   Toggle,
 } from '@citizenlab/cl2-component-library';
+import { FieldSelectionModal } from './FieldSelectionModal';
+
+// api
+import useAddPermissionCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
+import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
+import useDeletePermissionsCustomField from 'api/permissions_custom_fields/useDeletePermissionsCustomField';
+import useUpdatePermissionsCustomField from 'api/permissions_custom_fields/useUpdatePermissionsCustomField';
 
 // utils
 import { FormattedMessage } from 'utils/cl-intl';
@@ -23,29 +30,50 @@ import useUserCustomFields from 'hooks/useUserCustomFields';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { IUserCustomFieldData } from 'services/userCustomFields';
-import { FieldSelectionModal } from './FieldSelectionModal';
 
 type UserFieldSelectionProps = {
   permission: IPermissionData;
+  projectId?: string | null;
+  phaseId?: string | null;
+  initiativeId?: string | null;
 };
 
-const UserFieldSelection = ({ permission }: UserFieldSelectionProps) => {
-  const registrationFieldList = useUserCustomFields();
+const UserFieldSelection = ({
+  permission,
+  projectId,
+  phaseId,
+  initiativeId,
+}: UserFieldSelectionProps) => {
+  const globalRegistrationFields = useUserCustomFields();
+  const initialFields = usePermissionsCustomFields({
+    projectId,
+    phaseId,
+    initiativeId,
+    action: permission.attributes.action,
+  });
+  const { mutate: addPermissionCustomField } = useAddPermissionCustomField();
+  const { mutate: updatePermissionCustomField } =
+    useUpdatePermissionsCustomField();
+  const { mutate: deletePermissionsCustomField } =
+    useDeletePermissionsCustomField();
   const locale = useLocale();
   const [showSelectionModal, setShowSelectionModal] = useState(false);
-  const [selectedFields, setSelectedFields] = useState<
-    Array<IUserCustomFieldData>
-  >([]);
+  const initialFieldArray = initialFields?.data?.data;
 
-  useEffect(() => {
-    if (permission.attributes.permitted_by === 'users') {
-      // For each registration field, add it if it's required
-    }
-  }, [permission.attributes.permitted_by]);
+  const handleAddField = (field: IUserCustomFieldData) => {
+    addPermissionCustomField({
+      custom_field_id: field.id,
+      required: false,
+      phaseId,
+      initiativeId,
+      projectId,
+      action: permission.attributes.action,
+    });
+  };
 
-  useEffect(() => {
-    // TODO: Update the actual permission once the BE is in place
-  }, [selectedFields]);
+  const handleDeleteField = (fieldId: string) => {
+    deletePermissionsCustomField(fieldId);
+  };
 
   if (isNilOrError(locale)) {
     return null;
@@ -60,7 +88,7 @@ const UserFieldSelection = ({ permission }: UserFieldSelectionProps) => {
         <FormattedMessage {...messages.userFieldsSelectionDescription} />
       </Text>
       <Box>
-        {selectedFields.map((field) => (
+        {initialFieldArray?.map((field) => (
           <Box
             display="flex"
             justifyContent="space-between"
@@ -71,12 +99,22 @@ const UserFieldSelection = ({ permission }: UserFieldSelectionProps) => {
             borderColor={colors.grey300}
           >
             <Text color="primary">
-              {field.attributes.title_multiloc[locale]}
+              {
+                globalRegistrationFields?.find(
+                  (globalField) =>
+                    globalField.id === field.relationships.custom_field.data.id
+                )?.attributes.title_multiloc[locale]
+              }
             </Text>
             <Box display="flex">
               <Toggle
-                checked={true}
-                onChange={() => {}}
+                checked={field.attributes.required}
+                onChange={() => {
+                  updatePermissionCustomField({
+                    id: field.id,
+                    required: !field.attributes.required,
+                  });
+                }}
                 label={
                   <Text color="primary" fontSize="s">
                     <FormattedMessage {...messages.required} />
@@ -87,11 +125,7 @@ const UserFieldSelection = ({ permission }: UserFieldSelectionProps) => {
                 buttonStyle="text"
                 icon="delete"
                 onClick={() => {
-                  setSelectedFields(
-                    selectedFields.filter(
-                      (selectedField) => selectedField.id !== field.id
-                    )
-                  );
+                  handleDeleteField(field.id);
                 }}
               >
                 <FormattedMessage {...messages.delete} />
@@ -114,9 +148,9 @@ const UserFieldSelection = ({ permission }: UserFieldSelectionProps) => {
       <FieldSelectionModal
         showSelectionModal={showSelectionModal}
         setShowSelectionModal={setShowSelectionModal}
-        selectedFields={selectedFields}
-        setSelectedFields={setSelectedFields}
-        registrationFieldList={registrationFieldList}
+        selectedFields={initialFieldArray}
+        handleAddField={handleAddField}
+        registrationFieldList={globalRegistrationFields}
         locale={locale}
       />
     </Box>

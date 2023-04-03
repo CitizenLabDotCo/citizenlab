@@ -10,12 +10,13 @@ import { IUserCustomFieldData } from 'services/userCustomFields';
 // intl
 import { SelectionScreen } from './screens/SelectionScreen';
 import { AddFieldScreen } from './screens/AddFieldScreen';
+import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 
 type FieldSelectionModalProps = {
   showSelectionModal: boolean;
   setShowSelectionModal: (show: boolean) => void;
-  selectedFields: Array<IUserCustomFieldData>;
-  setSelectedFields: (fields: Array<IUserCustomFieldData>) => void;
+  selectedFields: Array<IPermissionsCustomFieldData> | undefined;
+  handleAddField: (field: IUserCustomFieldData) => void;
   registrationFieldList: Array<IUserCustomFieldData> | null | undefined;
   locale: string;
 };
@@ -24,7 +25,7 @@ export const FieldSelectionModal = ({
   showSelectionModal,
   setShowSelectionModal,
   selectedFields,
-  setSelectedFields,
+  handleAddField,
   registrationFieldList,
   locale,
 }: FieldSelectionModalProps) => {
@@ -45,7 +46,7 @@ export const FieldSelectionModal = ({
             selectedFields={selectedFields}
             registrationFieldList={registrationFieldList}
             locale={locale}
-            setSelectedFields={setSelectedFields}
+            handleAddField={handleAddField}
             setShowAddFieldPage={setShowAddFieldPage}
           />
         )}

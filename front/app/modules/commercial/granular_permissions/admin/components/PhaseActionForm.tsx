@@ -33,6 +33,7 @@ export const PhaseActionForm = ({
       onChange={onChange}
       postType={postType}
       projectId={projectId}
+      phaseId={phase.id}
     />
   );
 };

@@ -1,15 +1,20 @@
 // web_api/v1/phases/:phase_id/permissions/:action/permissions_custom_fields
 import { useQuery } from '@tanstack/react-query';
-import { CLErrors, IPCAction } from 'typings';
+import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import eventsKeys from './keys';
-import { IPermissionsCustomFields, EventsKeys } from './types';
+import {
+  IPermissionsCustomFields,
+  EventsKeys,
+  IPCPermissionAction,
+} from './types';
+import { IGlobalPermissionAction } from 'services/actionPermissions';
 
 export type PermissionCustomFieldsProps = {
-  phaseId?: string;
-  initiativeId?: string;
-  projectId: string;
-  action: IPCAction;
+  phaseId?: string | null;
+  initiativeId?: string | null;
+  projectId?: string | null;
+  action: IGlobalPermissionAction | IPCPermissionAction;
 };
 
 const fetchEvents = ({

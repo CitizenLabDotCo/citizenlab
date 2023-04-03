@@ -29,9 +29,9 @@ export interface IPermissionsCustomField {
 export interface IPermissionsCustomFieldAdd {
   custom_field_id: string;
   required: boolean;
-  phaseId: string;
-  initiativeId: string;
-  projectId: string;
+  phaseId?: string | null;
+  initiativeId?: string | null;
+  projectId?: string | null;
   action: string;
 }
 
@@ -50,7 +50,25 @@ export type IPCPermissionAction =
   | 'budgeting';
 
 export interface IPermissionsCustomFieldData {
-  custom_field_id: string;
-  required: boolean;
-  type: string;
+  id: string;
+  type: 'permissions_custom_field';
+  attributes: {
+    required: boolean;
+    created_at: string;
+    updated_at: string;
+  };
+  relationships: {
+    permission: {
+      data: {
+        id: string;
+        type: 'permission';
+      };
+    };
+    custom_field: {
+      data: {
+        id: string;
+        type: 'custom_field';
+      };
+    };
+  };
 }

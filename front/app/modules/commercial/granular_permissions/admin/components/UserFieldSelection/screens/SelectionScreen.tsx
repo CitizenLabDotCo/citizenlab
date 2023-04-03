@@ -10,6 +10,9 @@ import {
   Badge,
 } from '@citizenlab/cl2-component-library';
 
+// api
+import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
+
 // services
 import {
   isBuiltInField,
@@ -21,10 +24,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../containers/Granular/messages';
 
 type SelectionScreenProps = {
-  selectedFields: Array<IUserCustomFieldData>;
+  selectedFields: Array<IPermissionsCustomFieldData> | undefined;
   registrationFieldList: Array<IUserCustomFieldData> | null | undefined;
   locale: string;
-  setSelectedFields: (fields: Array<IUserCustomFieldData>) => void;
+  handleAddField: (fields: IUserCustomFieldData) => void;
   setShowAddFieldPage: (show: boolean) => void;
 };
 
@@ -32,7 +35,7 @@ export const SelectionScreen = ({
   registrationFieldList,
   selectedFields,
   locale,
-  setSelectedFields,
+  handleAddField,
   setShowAddFieldPage,
 }: SelectionScreenProps) => {
   return (
@@ -43,7 +46,14 @@ export const SelectionScreen = ({
         </Title>
         {registrationFieldList &&
           registrationFieldList
-            .filter((field) => !selectedFields.includes(field))
+            .filter(
+              (globalField) =>
+                !selectedFields?.find(
+                  (selectedField) =>
+                    selectedField.relationships.custom_field.data.id ===
+                    globalField.id
+                )
+            )
             .map((field) => (
               <Box
                 display="flex"
@@ -82,7 +92,7 @@ export const SelectionScreen = ({
                   <Button
                     bgColor={colors.primary}
                     onClick={() => {
-                      setSelectedFields(selectedFields.concat([field]));
+                      handleAddField(field);
                     }}
                   >
                     <FormattedMessage {...messages.select} />

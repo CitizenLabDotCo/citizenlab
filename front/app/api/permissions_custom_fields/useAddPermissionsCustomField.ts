@@ -15,12 +15,12 @@ const addPermissionsCustomField = async (
       : `/projects/${requestBody.projectId}/permissions/${requestBody.action}/permissions_custom_fields`,
     action: 'post',
     body: {
-      custom_field_id: requestBody.initiativeId,
+      custom_field_id: requestBody.custom_field_id,
       required: requestBody.required,
     },
   });
 
-const useAddInitiative = () => {
+const useAddPermissionCustomField = () => {
   const queryClient = useQueryClient();
   return useMutation<
     IPermissionsCustomField,
@@ -36,4 +36,4 @@ const useAddInitiative = () => {
   });
 };
 
-export default useAddInitiative;
+export default useAddPermissionCustomField;

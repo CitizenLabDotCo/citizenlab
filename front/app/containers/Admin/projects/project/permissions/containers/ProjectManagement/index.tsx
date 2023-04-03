@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
-import { Section, SubSectionTitle } from 'components/admin/Section';
+import { Section } from 'components/admin/Section';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -10,7 +10,7 @@ import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
 
 // components
-import { IconTooltip, Title } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Title, Box } from '@citizenlab/cl2-component-library';
 import ModeratorList from '../../components/ModeratorList';
 import UserSearch from '../../components/UserSearch';
 import SeatInfo from 'components/SeatInfo';
@@ -35,12 +35,12 @@ const ProjectManagement = ({
 }: Props & WrappedComponentProps) => {
   return (
     <ModeratorSubSection>
-      <SubSectionTitle>
-        <Title variant="h2" color="primary">
+      <Box display="flex" mb="16px">
+        <Title my="0px" mr="4px" variant="h2" color="primary">
           <FormattedMessage {...messages.projectManagementTitle} />
         </Title>
         <IconTooltip
-          my="auto"
+          mt="4px"
           content={
             <FormattedMessage
               {...messages.projectManagerTooltipContent}
@@ -59,7 +59,7 @@ const ProjectManagement = ({
             />
           }
         />
-      </SubSectionTitle>
+      </Box>
       <UserSearch projectId={projectId} />
       <ModeratorList projectId={projectId} />
       <SeatInfo seatType="project_manager" />
