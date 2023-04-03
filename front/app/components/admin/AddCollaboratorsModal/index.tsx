@@ -56,46 +56,47 @@ const AddCollaboratorsModal = ({
   ) : undefined;
 
   return (
-    <>
-      <Modal opened={showModal} close={closeModal} header={header}>
-        {showSuccess ? (
-          <SeatSetSuccess
-            closeModal={closeModal}
-            hasExceededSetSeats={hasExceededSetSeats}
-            seatType="collaborator"
-          />
-        ) : (
-          <Box display="flex" flexDirection="column" width="100%" p="32px">
-            <Text color="textPrimary" fontSize="m" my="0px">
-              <FormattedMessage
-                {...(hasReachedOrIsOverLimit
-                  ? messages.hasReachedOrIsOverLimit
-                  : messages.confirmMessage)}
-              />
-            </Text>
-            <Box py="32px">
-              <SeatInfo seatType="collaborator" />
-            </Box>
-            <Box
-              display="flex"
-              flexDirection="row"
-              width="100%"
-              alignItems="center"
-            >
-              <Button
-                width="auto"
-                onClick={() => {
-                  addModerators();
-                  setShowSuccess(true);
-                }}
-              >
-                {buttonText}
-              </Button>
-            </Box>
+    <Modal opened={showModal} close={closeModal} header={header}>
+      {showSuccess ? (
+        <SeatSetSuccess
+          closeModal={() => {
+            setShowSuccess(false);
+            closeModal();
+          }}
+          hasExceededSetSeats={hasExceededSetSeats}
+          seatType="collaborator"
+        />
+      ) : (
+        <Box display="flex" flexDirection="column" width="100%" p="32px">
+          <Text color="textPrimary" fontSize="m" my="0px">
+            <FormattedMessage
+              {...(hasReachedOrIsOverLimit
+                ? messages.hasReachedOrIsOverLimit
+                : messages.confirmMessage)}
+            />
+          </Text>
+          <Box py="32px">
+            <SeatInfo seatType="collaborator" />
           </Box>
-        )}
-      </Modal>
-    </>
+          <Box
+            display="flex"
+            flexDirection="row"
+            width="100%"
+            alignItems="center"
+          >
+            <Button
+              width="auto"
+              onClick={() => {
+                addModerators();
+                setShowSuccess(true);
+              }}
+            >
+              {buttonText}
+            </Button>
+          </Box>
+        </Box>
+      )}
+    </Modal>
   );
 };
 
