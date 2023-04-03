@@ -145,12 +145,14 @@ resource 'Permissions' do
 
       let(:action) { @project.permissions.first.action }
       let(:permitted_by) { 'groups' }
+      let(:global_custom_fields) { true }
       let(:group_ids) { create_list(:group, 3, projects: [@project]).map(&:id) }
 
       example_request 'Update a permission' do
         assert_status 200
         json_response = json_parse response_body
         expect(json_response.dig(:data, :attributes, :permitted_by)).to eq permitted_by
+        expect(json_response.dig(:data, :attributes, :global_custom_fields)).to eq global_custom_fields
         expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to match_array group_ids
       end
     end
@@ -445,6 +447,7 @@ resource 'Permissions' do
     get 'web_api/v1/projects/:project_id/permissions/:action/schema' do
       before do
         @permission = @project.permissions.first
+        @permission.update!(global_custom_fields: false)
         @field1 = create :custom_field, required: true
         @field2 = create :custom_field, required: false
         create :permissions_custom_field, permission: @permission, custom_field: @field1, required: false
@@ -475,6 +478,7 @@ resource 'Permissions' do
     get 'web_api/v1/ideas/:idea_id/permissions/:action/schema' do
       before do
         @permission = @project.permissions.first
+        @permission.update!(global_custom_fields: false)
         @field1 = create :custom_field, required: true
         @field2 = create :custom_field, required: false
         create :permissions_custom_field, permission: @permission, custom_field: @field1, required: false
@@ -506,6 +510,7 @@ resource 'Permissions' do
     get 'web_api/v1/phases/:phase_id/permissions/:action/schema' do
       before do
         @permission = @phase.permissions.first
+        @permission.update!(global_custom_fields: false)
         @field1 = create :custom_field, required: true
         @field2 = create :custom_field, required: false
         create :permissions_custom_field, permission: @permission, custom_field: @field1, required: false

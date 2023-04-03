@@ -40,7 +40,7 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def schema
     authorize @permission
-    fields = permissions_service.schema_fields @permission
+    fields = permissions_service.requirements_fields @permission
     render json: raw_json(JsonFormsService.new.user_ui_and_json_multiloc_schemas(fields))
   end
 
