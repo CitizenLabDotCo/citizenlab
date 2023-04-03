@@ -33,16 +33,11 @@ module IdeaCustomFields
       private
 
       def validate_extra_fields_on_publication?
-        dynamic_form_activated? && project.custom_form
+        project.custom_form
       end
 
       def validate_extra_fields_on_update?
-        custom_field_values_changed? && persisted? && dynamic_form_activated? && project.custom_form
-      end
-
-      def dynamic_form_activated?
-        AppConfiguration.instance.feature_activated?('idea_custom_fields') &&
-          AppConfiguration.instance.feature_activated?('dynamic_idea_form')
+        custom_field_values_changed? && persisted? && project.custom_form
       end
 
       def extra_idea_fields_schema

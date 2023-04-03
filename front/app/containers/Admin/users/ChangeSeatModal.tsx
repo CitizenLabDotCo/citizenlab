@@ -16,17 +16,21 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Utils
 import { isNil } from 'utils/helperUtils';
+import { isCollaborator } from 'services/permissions/roles';
 
 import { IUserData } from 'services/users';
 import { isAdmin } from 'services/permissions/roles';
 
 const getInfoText = (
   isUserAdmin: boolean,
+  isChangingCollaboratorToNormalUser: boolean,
   maximumAdmins: number | null | undefined,
   currentAdminSeats: number
 ): MessageDescriptor => {
   if (isUserAdmin) {
     return messages.confirmNormalUserQuestion;
+  } else if (isChangingCollaboratorToNormalUser) {
+    return messages.confirmSetCollaboratorAsNormalUserQuestion;
   } else if (!isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins) {
     return messages.reachedLimitMessage;
   }
@@ -54,17 +58,20 @@ const getButtonText = (
 interface Props {
   userToChangeSeat: IUserData;
   showModal: boolean;
+  isChangingToNormalUser: boolean;
   closeModal: () => void;
-  toggleAdmin: () => void;
+  changeRoles: (user: IUserData, changeToNormalUser: boolean) => void;
 }
 
 const ChangeSeatModal = ({
   showModal,
   closeModal,
   userToChangeSeat,
-  toggleAdmin,
+  changeRoles,
+  isChangingToNormalUser,
 }: Props) => {
   const isUserAdmin = isAdmin({ data: userToChangeSeat });
+  const isUserCollaborator = isCollaborator({ data: userToChangeSeat });
   const { formatMessage } = useIntl();
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
@@ -77,12 +84,15 @@ const ChangeSeatModal = ({
     appConfiguration.data.attributes.settings.core.maximum_admins_number;
   const currentAdminSeats = seats.data.attributes.admins_number;
 
+  const isChangingCollaboratorToNormalUser =
+    isChangingToNormalUser && isUserCollaborator;
   const confirmChangeQuestion = getInfoText(
     isUserAdmin,
+    isChangingCollaboratorToNormalUser,
     maximumAdmins,
     currentAdminSeats
   );
-  const modalTitle = isUserAdmin
+  const modalTitle = isChangingToNormalUser
     ? messages.setAsNormalUser
     : messages.giveAdminRights;
   const buttonText = getButtonText(
@@ -105,7 +115,7 @@ const ChangeSeatModal = ({
       }
     >
       <Box display="flex" flexDirection="column" width="100%" p="32px">
-        <Box>
+        <Box pb="32px">
           <Text color="textPrimary" fontSize="m" my="0px">
             <FormattedMessage
               {...confirmChangeQuestion}
@@ -118,9 +128,11 @@ const ChangeSeatModal = ({
               }}
             />
           </Text>
-          <Box py="32px">
-            <SeatInfo seatType="admin" />
-          </Box>
+          {!isChangingCollaboratorToNormalUser && (
+            <Box pt="32px">
+              <SeatInfo seatType="admin" />
+            </Box>
+          )}
         </Box>
         <Box
           display="flex"
@@ -131,7 +143,7 @@ const ChangeSeatModal = ({
           <Button
             width="auto"
             onClick={() => {
-              toggleAdmin();
+              changeRoles(userToChangeSeat, isChangingToNormalUser);
               closeModal();
             }}
           >

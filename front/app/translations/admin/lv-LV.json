@@ -555,6 +555,7 @@
   "app.containers.Admin.Users.confirm": "Apstipriniet",
   "app.containers.Admin.Users.confirmAdminQuestion": "Vai esat pārliecināts, ka vēlaties piešķirt platformas {name} administratora tiesības?",
   "app.containers.Admin.Users.confirmNormalUserQuestion": "Vai esat pārliecināts, ka vēlaties iestatīt {name} kā parastu lietotāju?",
+  "app.containers.Admin.Users.confirmSetCollaboratorAsNormalUserQuestion": "Vai esat pārliecināts, ka vēlaties iestatīt {name} kā parastu lietotāju? Lūdzu, ņemiet vērā, ka viņš zaudēs sadarbības tiesības uz visiem projektiem un mapēm, kas viņam ir piešķirtas pēc apstiprināšanas.",
   "app.containers.Admin.Users.deleteUser": "Dzēst lietotāju",
   "app.containers.Admin.Users.email": "E-pasts",
   "app.containers.Admin.Users.folderManager": "Mapju pārvaldnieks",

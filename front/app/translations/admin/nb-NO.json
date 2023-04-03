@@ -555,6 +555,7 @@
   "app.containers.Admin.Users.confirm": "Bekreft",
   "app.containers.Admin.Users.confirmAdminQuestion": "Er du sikker på at du vil gi plattformadministratorrettigheter til {name}?",
   "app.containers.Admin.Users.confirmNormalUserQuestion": "Er du sikker på at du vil sette {name} som normal bruker?",
+  "app.containers.Admin.Users.confirmSetCollaboratorAsNormalUserQuestion": "Er du sikker på at du vil sette {name} som en vanlig bruker? Vær oppmerksom på at de vil miste samarbeidsrettigheter til alle prosjektene og mappene som de er tildelt ved bekreftelse.",
   "app.containers.Admin.Users.deleteUser": "Slett bruker",
   "app.containers.Admin.Users.email": "E-post",
   "app.containers.Admin.Users.folderManager": "Mappeleder",
