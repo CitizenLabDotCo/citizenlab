@@ -138,6 +138,7 @@ resource 'Permissions' do
     patch 'web_api/v1/projects/:project_id/permissions/:action' do
       with_options scope: :permission do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
+        parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
@@ -157,6 +158,7 @@ resource 'Permissions' do
     patch 'web_api/v1/phases/:phase_id/permissions/:action' do
       with_options scope: :permission do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
+        parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
@@ -176,6 +178,7 @@ resource 'Permissions' do
     patch 'web_api/v1/permissions/:action' do
       with_options scope: :permission do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
+        parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
