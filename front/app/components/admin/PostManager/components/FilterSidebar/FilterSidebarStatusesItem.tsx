@@ -1,6 +1,6 @@
 import React from 'react';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { get } from 'lodash-es';
 import styled from 'styled-components';
 import { Menu } from 'semantic-ui-react';

@@ -4,25 +4,9 @@
 
 First, you need the latest docker and docker-compose installed.
 
-Build the docker compose images:
+Build the docker compose images and populate the database:
 ```
-docker-compose up --build -d
-```
-Some containers will fail, because the database is not setup yet.
-On the first run, use these commands to create the database and populate it with some dummy data:
-
-```
-docker-compose run --user "$(id -u):$(id -g)" web bundle exec rake db:create
-
-docker-compose run --user "$(id -u):$(id -g)" web bundle exec rake db:reset
-```
-
-Mac or Windows:
-
-```
-docker-compose run web bundle exec rake db:create
-
-docker-compose run web bundle exec rake db:reset
+make reset-dev-env
 ```
 
 ## Executing commands
@@ -62,7 +46,7 @@ The 3rd step is not always required. It is needed when
 
 Alternatively, there is a convenience script to reset the whole environment for you.
 ```
-./script/reset_dev_env.sh
+make reset-dev-env
 ```
 
 ## Testing
@@ -108,7 +92,7 @@ This data is defined in `config/tenant_templates/e2etests_template.yml`. The ten
 To (re)load the data and run the e2e tests locally, execute the following command:
 
 ```
-docker-compose run --rm web bundle exec rake cl2_back:create_tenant[localhost,e2etests_template]
+make e2e-setup
 ```
 
 ### Rubocop
@@ -123,21 +107,6 @@ For a complete list of commands, [see docs here](https://docs.rubocop.org/ruboco
 # default
 rubocop
 
-# in different output formats
-rubocop --format simple
-
-# with safe autocorrect
-rubocop -a
-
-# with unsafe autocorrect
-rubocop -A
-
-# for specific rules
-rubocop --only Rails/Blank,Layout/HeredocIndentation,Naming/FileName
-
-# for specific files or directories. Files to always be ignored should be added in rubocop.yml
-rubocop app spec lib/something.rb
-
 # running rubocop on modified files only
 git diff --name-only --diff-filter=MA | xargs rubocop
 
@@ -145,47 +114,6 @@ git diff --name-only --diff-filter=MA | xargs rubocop
 git diff --name-only --diff-filter=MA | xargs rubocop -a
 ```
 
-
-### Enabling/Disabling Cops
-Everything is configured in the `.rubocop.yml` file. Here's the first version.
-
-```yaml
-require:
-  - rubocop-rails
-  - rubocop-performance
-  - rubocop-rspec
-
-AllCops:
-  NewCops: enable
-  Exclude:
-  - 'db/schema.rb'
-  # add other auto-generated ruby files here.
-Metrics/BlockLength:
-  Enabled: true
-  Exclude:
-    - 'spec/**/*'
-    - 'db/migrate/**/*'
-  # Max: 25
-Metrics/MethodLength:
-  Enabled: true
-  Exclude:
-    - 'db/migrate/**/*'
-  # Max: 10
-Metrics/ClassLength:
-  Enabled: true
-  # Max: 100
-Layout/LineLength:
-  Enabled: true
-  # Max: 120
-Rails/LexicallyScopedActionFilter:
-  Enabled: true
-Style/Documentation:
-  Enabled: true
-  Exclude:
-    - 'db/migrate/**/*'
-Style/ClassAndModuleChildren:
-  Enabled: false
-```
 
 ### Instructions for VsCode
 
@@ -204,26 +132,6 @@ code --install-extension misogi.ruby-rubocop
 3. Click, wait a few minutes for the containers to build and voila! Rubocop should be running in your local environment.
 
 
-### Adding a CI check
-
-```yml
-  rubocop:
-    resource_class: small
-    executor:
-      name: cl2-back
-      image-tag: $CIRCLE_SHA1
-    working_directory: /cl2_back
-    parallelism: 4
-    environment:
-      RAILS_ENV: test
-    steps:
-      - checkout:
-          path: /tmp/cl2-back
-      - run: |
-          rubocop --format simple --parallel
-```
-
-
 ## Using Customized Tenants for Development
 
 In order to have more fake data in your localhost tenant, set the `SEED_SIZE` environment variable in `.env` to `small`, `medium`, `large` or `empty`. Defaults to medium. Then, run `rake db:reset`.
@@ -235,11 +143,7 @@ NOTE: Watch out that you don't accidently commit these changes!
 
 ## Using S3 storage in development
 
-1. Go to desired image and/or file uploader.
-
-2. Always include `storage :fog` (comment out if-condition).
-
-3. Comment out `asset_host` method (use original implementation from Carrierwave)
+Set `USE_AWS_S3_IN_DEV=true` in `env_files/back-safe.env`.
 
 
 ## Creating Engines
