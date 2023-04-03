@@ -48,7 +48,7 @@ const genericErrors = [
   'even',
 ] as const;
 
-export type GenericErrorKey = typeof genericErrors[number];
+export type GenericErrorKey = (typeof genericErrors)[number];
 // Here are all custom validations I could find in the back-end and that could make some sense to the end user
 
 // NB : (sometimes it'd be clearly better the user doesn't see that error,
