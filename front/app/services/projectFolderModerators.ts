@@ -50,6 +50,9 @@ export async function addFolderModerator(
   });
 
   invalidateSeatsCache();
+  await streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/users`],
+  });
 
   return response;
 }
