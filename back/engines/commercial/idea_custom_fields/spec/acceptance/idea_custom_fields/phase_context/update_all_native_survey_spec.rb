@@ -5,10 +5,7 @@ require 'rspec_api_documentation/dsl'
 
 resource 'Idea Custom Fields' do
   explanation 'Fields in idea forms which are customized by the city, scoped on the project level.'
-  before do
-    header 'Content-Type', 'application/json'
-    SettingsService.new.activate_feature! 'idea_custom_fields'
-  end
+  before { header 'Content-Type', 'application/json' }
 
   patch 'web_api/v1/admin/phases/:phase_id/custom_fields/update_all' do
     parameter :custom_fields, type: :array

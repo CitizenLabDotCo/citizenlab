@@ -4,11 +4,6 @@ require 'rails_helper'
 
 RSpec.describe Idea, type: :model do
   context 'with custom fields' do
-    before do
-      SettingsService.new.activate_feature! 'idea_custom_fields'
-      SettingsService.new.activate_feature! 'dynamic_idea_form'
-    end
-
     let(:project) { create :project }
     let(:form) { create :custom_form, participation_context: project }
     let!(:required_field) { create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number' }
