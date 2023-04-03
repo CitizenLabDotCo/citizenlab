@@ -11,6 +11,7 @@
 #  permission_scope_type :string
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  global_custom_fields  :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -42,7 +43,7 @@ class Permission < ApplicationRecord
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
 
-  before_validation :set_permitted_by, on: :create
+  before_validation :set_permitted_by_and_global_custom_fields, on: :create
 
   scope :for_user, lambda { |user| # TODO: take account with everyone_confirmed_email
     next where(permitted_by: 'everyone') unless user
@@ -72,8 +73,9 @@ class Permission < ApplicationRecord
 
   private
 
-  def set_permitted_by
+  def set_permitted_by_and_global_custom_fields
     self.permitted_by ||= 'users'
+    self.global_custom_fields ||= (permitted_by == 'users')
   end
 end
 
