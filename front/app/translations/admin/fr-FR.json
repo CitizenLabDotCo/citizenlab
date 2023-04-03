@@ -568,7 +568,7 @@
   "app.containers.Admin.Users.userBlockModal.blocked": "Bloqué",
   "app.containers.Admin.Users.userBlockModal.bocknigInfo1": "This user has been blocked since {from}. The ban lasts until {to}.",
   "app.containers.Admin.Users.userBlockModal.cancel": "Annuler",
-  "app.containers.Admin.Users.userBlockModal.confirmUnblock1": "Are you sure you want to unblock {name}?",
+  "app.containers.Admin.Users.userBlockModal.confirmUnblock1": "Êtes-vous sûr de vouloir débloquer {name}?",
   "app.containers.Admin.Users.userBlockModal.confirmation1": "{name} is blocked until {date}.",
   "app.containers.Admin.Users.userBlockModal.daysBlocked1": "{numberOfDays, plural, one {1 day} other {{numberOfDays} days}}",
   "app.containers.Admin.Users.userBlockModal.header": "Bloquer l'utilisateur",
