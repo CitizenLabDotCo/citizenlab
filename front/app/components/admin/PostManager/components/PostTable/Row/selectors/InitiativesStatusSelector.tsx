@@ -1,7 +1,7 @@
 import React, { MouseEvent } from 'react';
 import { Popup } from 'semantic-ui-react';
 import { IInitiativeAllowedTransitions } from 'api/initiative_allowed_transitions/types';
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import T from 'components/T';
 import styled from 'styled-components';
 
