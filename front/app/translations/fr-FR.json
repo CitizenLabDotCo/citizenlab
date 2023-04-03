@@ -798,7 +798,7 @@
   "app.containers.DisabledAccount.bottomText": "Vous pourrez vous connecter à nouveau à partir du {date}.",
   "app.containers.DisabledAccount.termsAndConditions": "terms & conditions",
   "app.containers.DisabledAccount.text2": "Your account on {orgName} Platform has been temporarily disabled for a violation of community guidelines. For more information on this, you can consult the {TermsAndConditions}.",
-  "app.containers.DisabledAccount.title": "Your account has been temporarily disabled",
+  "app.containers.DisabledAccount.title": "Votre compte a été temporairement désactivé",
   "app.containers.IdeaButton.addAContribution": "Ajoutez une suggestion",
   "app.containers.IdeaButton.addAProject": "Ajouter un nouveau projet",
   "app.containers.IdeaButton.addAQuestion": "Ajouter une question",
