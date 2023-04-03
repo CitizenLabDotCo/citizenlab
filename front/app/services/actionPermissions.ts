@@ -77,26 +77,6 @@ export interface IPermissionUpdate {
   permitted_by: IPermissionData['attributes']['permitted_by'];
 }
 
-export function phasePermissions(
-  phaseId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IPCPermissions>({
-    apiEndpoint: `${API_PATH}/phases/${phaseId}/permissions`,
-    ...streamParams,
-  });
-}
-
-export function projectPermissions(
-  projectId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IPCPermissions>({
-    apiEndpoint: `${API_PATH}/projects/${projectId}/permissions`,
-    ...streamParams,
-  });
-}
-
 export function globalPermissions(streamParams: IStreamParams | null = null) {
   return streams.get<IGlobalPermissions>({
     apiEndpoint: `${API_PATH}/permissions`, // or `${API_PATH}/action_descriptors/initiatives`
@@ -111,32 +91,6 @@ export function updateGlobalPermission(
 ) {
   return streams.update<IPCPermission>(
     `${API_PATH}/permissions/${action}`,
-    permissionId,
-    { permission }
-  );
-}
-
-export function updatePhasePermission(
-  permissionId: string,
-  phaseId: string,
-  action: string,
-  permission: Partial<IPermissionUpdate>
-) {
-  return streams.update<IPCPermission>(
-    `${API_PATH}/phases/${phaseId}/permissions/${action}`,
-    permissionId,
-    { permission }
-  );
-}
-
-export function updateProjectPermission(
-  permissionId: string,
-  projectId: string,
-  action: string,
-  permission: Partial<IPermissionUpdate>
-) {
-  return streams.update<IPCPermission>(
-    `${API_PATH}/projects/${projectId}/permissions/${action}`,
     permissionId,
     { permission }
   );
