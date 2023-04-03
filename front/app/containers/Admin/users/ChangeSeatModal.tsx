@@ -40,12 +40,17 @@ const getInfoText = (
 
 const getButtonText = (
   isUserAdmin: boolean,
+  isUserToChangeCollaborator: boolean,
   hasReachedOrIsOverLimit: boolean,
   hasSeatBasedBillingEnabled: boolean
 ): MessageDescriptor => {
   const buttonText = messages.confirm;
 
-  if (isUserAdmin || !hasSeatBasedBillingEnabled) {
+  if (
+    isUserAdmin ||
+    isUserToChangeCollaborator ||
+    !hasSeatBasedBillingEnabled
+  ) {
     return buttonText;
   }
 
@@ -69,7 +74,7 @@ const ChangeSeatModal = ({
 }: Props) => {
   const [showSuccess, setShowSuccess] = useState(false);
   const isUserToChangeSeatAdmin = isAdmin({ data: userToChangeSeat });
-  const isUserCollaborator = isCollaborator({ data: userToChangeSeat });
+  const isUserToChangeCollaborator = isCollaborator({ data: userToChangeSeat });
   const { formatMessage } = useIntl();
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
@@ -83,7 +88,7 @@ const ChangeSeatModal = ({
   const currentAdminSeats = seats.data.attributes.admins_number;
 
   const isChangingCollaboratorToNormalUser =
-    isChangingToNormalUser && isUserCollaborator;
+    isChangingToNormalUser && isUserToChangeCollaborator;
   const hasReachedOrIsOverLimit =
     !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins;
   const hasExceededSetSeats =
@@ -98,6 +103,7 @@ const ChangeSeatModal = ({
     : messages.giveAdminRights;
   const buttonText = getButtonText(
     isUserToChangeSeatAdmin,
+    isUserToChangeCollaborator,
     hasReachedOrIsOverLimit,
     hasSeatBasedBillingEnabled
   );
@@ -152,8 +158,11 @@ const ChangeSeatModal = ({
               width="auto"
               onClick={() => {
                 changeRoles(userToChangeSeat, isChangingToNormalUser);
-                // We are only showing the success modal when changing to admin so we check if the user is not currently an admin
-                if (!isUserToChangeSeatAdmin) {
+                // We are only showing the success modal when a seat has been added
+                const isSeatBeingAdded =
+                  !isUserToChangeSeatAdmin &&
+                  !isChangingCollaboratorToNormalUser;
+                if (isSeatBeingAdded) {
                   setShowSuccess(true);
                 } else {
                   closeModal();
