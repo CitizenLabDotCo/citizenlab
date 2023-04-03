@@ -20,6 +20,15 @@ import useSeats from 'api/seats/useSeats';
 
 // Utils
 import { isNil } from 'utils/helperUtils';
+import { TSeatNumber } from 'api/app_configuration/types';
+
+export type SeatTypeTSeatNumber = {
+  [key in TSeatType]: TSeatNumber;
+};
+
+export type SeatTypeNumber = {
+  [key in TSeatType]: number;
+};
 
 interface InviteUsersWithSeatsModalProps {
   showModal: boolean;
@@ -45,16 +54,18 @@ const InviteUsersWithSeatsModal = ({
 
   if (!appConfiguration || !seats) return null;
 
-  const maximumSeatNumber = {
+  const maximumSeatNumbers: SeatTypeTSeatNumber = {
     admin:
       appConfiguration?.data.attributes.settings.core.maximum_admins_number,
     collaborator:
       appConfiguration?.data.attributes.settings.core.maximum_moderators_number,
-  }[seatType];
-  const currentSeatNumber = {
+  };
+  const maximumSeatNumber = maximumSeatNumbers[seatType];
+  const currentSeatNumbers: SeatTypeNumber = {
     admin: seats.data.attributes.admins_number,
     collaborator: seats.data.attributes.project_moderators_number,
-  }[seatType];
+  };
+  const currentSeatNumber = currentSeatNumbers[seatType];
   const hasExceededSetSeats =
     !isNil(maximumSeatNumber) && currentSeatNumber > maximumSeatNumber;
 
