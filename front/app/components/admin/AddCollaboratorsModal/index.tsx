@@ -20,14 +20,12 @@ interface Props {
   showModal: boolean;
   closeModal: () => void;
   addModerators: () => void;
-  noOfCollaboratorSeatsToAdd: number;
 }
 
 const AddCollaboratorsModal = ({
   showModal,
   closeModal,
   addModerators,
-  noOfCollaboratorSeatsToAdd,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
@@ -43,9 +41,7 @@ const AddCollaboratorsModal = ({
     !isNil(maximumCollaborators) &&
     currentCollaboratorSeats >= maximumCollaborators;
   const buttonText = hasReachedLimit
-    ? formatMessage(messages.buyAdditionalSeats, {
-        noOfSeats: noOfCollaboratorSeatsToAdd,
-      })
+    ? formatMessage(messages.buyAdditionalSeats)
     : formatMessage(messages.confirmButtonText);
 
   return (
@@ -63,21 +59,11 @@ const AddCollaboratorsModal = ({
       <Box display="flex" flexDirection="column" width="100%" p="32px">
         <Box>
           <Text color="textPrimary" fontSize="m" my="0px">
-            {hasReachedLimit ? (
-              <FormattedMessage
-                {...messages.reachedLimitText}
-                values={{
-                  noOfSeats: noOfCollaboratorSeatsToAdd,
-                }}
-              />
-            ) : (
-              <FormattedMessage
-                {...messages.confirmMessage}
-                values={{
-                  noOfPeople: noOfCollaboratorSeatsToAdd,
-                }}
-              />
-            )}
+            <FormattedMessage
+              {...(hasReachedLimit
+                ? messages.reachedLimitText
+                : messages.confirmMessage)}
+            />
           </Text>
           <Box py="32px">
             <SeatInfo seatType="collaborator" />
