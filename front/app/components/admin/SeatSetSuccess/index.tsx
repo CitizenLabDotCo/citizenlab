@@ -34,6 +34,9 @@ const SeatSetSuccess = ({
     : formatMessage(messages.rightsGranted, {
         seatType: formatMessage(messages[seatType]),
       });
+  const titleMessage = hasExceededSetSeats
+    ? messages.orderCompleted
+    : messages.allDone;
 
   return (
     <Box p="30px">
@@ -46,7 +49,7 @@ const SeatSetSuccess = ({
         />
       </Box>
       <Title variant="h3" textAlign="center">
-        {formatMessage(messages.allDone)}
+        {formatMessage(titleMessage)}
       </Title>
       <Text textAlign="center" fontSize="l">
         {descriptionMessage}
