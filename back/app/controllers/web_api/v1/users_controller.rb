@@ -119,17 +119,15 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     if @user.save
       SideFxUserService.new.after_create(@user, current_user)
-      permissions = Permission.for_user(@user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
-        params: fastjson_params(granted_permissions: permissions)
+        params: fastjson_params
       ).serialized_json, status: :created
     elsif reset_confirm_on_existing_no_password_user?
       SideFxUserService.new.after_update(@user, current_user)
-      permissions = Permission.for_user(@user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
-        params: fastjson_params(granted_permissions: permissions)
+        params: fastjson_params
       ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
@@ -155,8 +153,7 @@ class WebApi::V1::UsersController < ::ApplicationController
       permissions = Permission.for_user(@user).where.not(id: permissions_before.ids)
       render json: WebApi::V1::UserSerializer.new(
         @user,
-        params: fastjson_params(granted_permissions: permissions),
-        include: %i[granted_permissions granted_permissions.permission_scope]
+        params: fastjson_params
       ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity

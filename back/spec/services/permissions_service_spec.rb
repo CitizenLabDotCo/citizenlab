@@ -361,7 +361,7 @@ describe PermissionsService do
     end
 
     context 'when permitted_by is set to everyone_confirmed_email' do
-      let(:permission) { create :permission, permitted_by: 'everyone_confirmed_email' }
+      let(:permission) { create :permission, permitted_by: 'everyone_confirmed_email', global_custom_fields: true }
 
       before do
         SettingsService.new.activate_feature! 'user_confirmation'

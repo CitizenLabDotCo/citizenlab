@@ -28,10 +28,6 @@ class WebApi::V1::PermissionsController < ApplicationController
     end
   end
 
-  def participation_conditions
-    render json: raw_json({ participation_conditions: @permission.participation_conditions }), status: :ok
-  end
-
   def requirements
     authorize @permission
     json_requirements = permissions_service.requirements @permission, current_user
