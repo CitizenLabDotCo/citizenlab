@@ -151,9 +151,7 @@ const VoteControl = ({
   const { mutate: deleteVote } = useDeleteInitiativeVote();
 
   const vote = () => {
-    if (!isNilOrError(initiative)) {
-      addVote({ initiativeId: initiative.id, mode: 'up' });
-    }
+    addVote({ initiativeId: initiative.id, mode: 'up' });
   };
 
   const openAuthModal = useOpenAuthModal({
