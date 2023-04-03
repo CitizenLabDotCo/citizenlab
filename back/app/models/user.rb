@@ -48,6 +48,7 @@ class User < ApplicationRecord
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
   ROLES = %w[admin project_moderator project_folder_moderator].freeze
+  CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlab.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
 
   class << self
     # Deletes all users asynchronously (with side effects).
@@ -128,6 +129,7 @@ class User < ApplicationRecord
 
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
+  before_validation :complete_registration
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
   before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
@@ -149,7 +151,6 @@ class User < ApplicationRecord
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
   validates :email, :locale, presence: true, unless: :invite_pending?
-
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_nil: true
@@ -163,11 +164,11 @@ class User < ApplicationRecord
 
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
-  # TODO: Allow light users without required fields
-  # validates :custom_field_values, json: {
-  #   schema: -> { CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User')) },
-  #   message: ->(errors) { errors }
-  # }, if: %i[custom_field_values_changed? active?]
+  # NOTE: All validation except for required
+  validates :custom_field_values, json: {
+    schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.with_resource_type('User')) },
+    message: ->(errors) { errors }
+  }, if: %i[custom_field_values_changed? active?]
 
   validates :password, length: { maximum: 72 }, allow_nil: true
   # Custom validation is required to deal with the
@@ -200,8 +201,6 @@ class User < ApplicationRecord
     validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
 
     with_options if: :email_changed?, on: :create do
-      before_validation :reset_confirmation_code
-      before_validation :reset_confirmed_at
       before_validation :reset_confirmation_required
     end
 
@@ -255,6 +254,14 @@ class User < ApplicationRecord
   scope :in_any_group, lambda { |groups|
     user_ids = groups.flat_map { |group| in_group(group).ids }.uniq
     where(id: user_ids)
+  }
+
+  # https://www.postgresql.org/docs/12/functions-matching.html#FUNCTIONS-POSIX-REGEXP
+  scope :not_citizenlab_member, -> { where.not('email ~* ?', CITIZENLAB_MEMBER_REGEX_CONTENT) }
+  scope :billed_admins, -> { admin.not_citizenlab_member }
+  scope :billed_moderators, lambda {
+    # use any conditions before `or` very carefully (inspect the generated SQL)
+    project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
   }
 
   def self.oldest_admin
@@ -313,7 +320,7 @@ class User < ApplicationRecord
 
   # Anonymous names to use if no first name and last name
   def anon_first_name
-    'User'
+    I18n.t 'user.anon_first_name'
   end
 
   def anon_last_name
@@ -336,7 +343,7 @@ class User < ApplicationRecord
   end
 
   def super_admin?
-    admin? && !!(email =~ /citizen-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl|dk|pl)$/i)
+    admin? && !!(email =~ Regexp.new(CITIZENLAB_MEMBER_REGEX_CONTENT, 'i'))
   end
 
   def admin?
@@ -387,8 +394,13 @@ class User < ApplicationRecord
     end
   end
 
+  # User has no password
   def no_password?
-    !password_digest && !invite_pending? && identity_ids.empty?
+    !password_digest && !invite_pending?
+  end
+
+  def sso?
+    identity_ids.present?
   end
 
   def member_of?(group_id)
@@ -396,7 +408,7 @@ class User < ApplicationRecord
   end
 
   def active?
-    registration_completed_at.present? && !invite_pending? && !blocked?
+    registration_completed_at.present? && !invite_pending? && !blocked? && !confirmation_required?
   end
 
   def blocked?
@@ -421,52 +433,19 @@ class User < ApplicationRecord
     manual_groups.merge(groups).exists?
   end
 
-  #
-  # <Used to check upon update or create, if a user should have to confirm their account>
-  #
-  # @return [<Boolean>] <True if the user requires confirmation>
-  #
+  # Used to check upon update or create, if a user should have to confirm their account
   def should_require_confirmation?
-    !(registered_with_phone? || highest_role != :user || identities.any? || invited? || active?)
+    !(registered_with_phone? || highest_role != :user || sso? || invited? || active?)
   end
 
-  #
-  # <The reader for the private `#confirmation_required` attribute.>
-  #
-  # @return [<Boolean>] <True if the user has not yet confirmed their account after creation or an update to it's details.>
-  #
+  # true if the user has not yet confirmed their email address and the platform requires it
   def confirmation_required?
     AppConfiguration.instance.feature_activated?('user_confirmation') && confirmation_required
   end
 
-  #
-  # <Returns true if the user has performed confirmation of it's account.>
-  #
-  # @return [<Boolean>] <True has confirmed it's account.>
-  #
-  def confirmed?
-    email_confirmed_at.present?
-  end
-
-  def reset_confirmation_required
-    self.confirmation_required = should_require_confirmation?
-  end
-
-  def reset_confirmation_with_no_password
-    if confirmation_required == false
-      # Only reset code and retry/reset counts if account has already been confirmed
-      # To keep limits in place for non-legit requests
-      self.email_confirmation_code = nil
-      self.email_confirmation_retry_count = 0
-      self.email_confirmation_code_reset_count = 0
-    end
-    self.confirmation_required = true
-  end
-
   def confirm
-    self.email_confirmed_at    = Time.zone.now
+    self.email_confirmed_at = Time.zone.now
     self.confirmation_required = false
-    complete_registration if no_password? # temp change for flexible_registration_i1
   end
 
   def confirm!
@@ -476,36 +455,39 @@ class User < ApplicationRecord
     save!
   end
 
+  def reset_confirmation_required
+    self.confirmation_required = should_require_confirmation?
+    self.email_confirmed_at = nil
+  end
+
+  def reset_confirmation_and_counts
+    if !confirmation_required?
+      # Only reset code and retry/reset counts if account has already been confirmed
+      # To keep limits in place for retries when not confirmed
+      self.email_confirmation_code = nil
+      self.email_confirmation_retry_count = 0
+      self.email_confirmation_code_reset_count = 0
+    end
+    self.confirmation_required = true
+    self.email_confirmed_at = nil
+  end
+
   def email_confirmation_code_expiration_at
     email_confirmation_code_sent_at + 1.day
-  end
-
-  def reset_confirmation_code!
-    reset_confirmation_code
-    increment_confirmation_code_reset_count
-    save!
-  end
-
-  def increment_confirmation_retry_count!
-    increment_confirmation_retry_count
-    save!
-  end
-
-  def increment_confirmation_code_reset_count!
-    increment_confirmation_code_reset_count
-    save!
   end
 
   def reset_confirmation_code
     self.email_confirmation_code = use_fake_code? ? '1234' : rand.to_s[2..5]
   end
 
-  def increment_confirmation_code_reset_count
+  def increment_confirmation_code_reset_count!
     self.email_confirmation_code_reset_count += 1
+    save!
   end
 
-  def increment_confirmation_retry_count
+  def increment_confirmation_retry_count!
     self.email_confirmation_retry_count += 1
+    save!
   end
 
   def reset_email!(email)
@@ -515,15 +497,14 @@ class User < ApplicationRecord
     )
   end
 
-  def reset_confirmed_at
-    self.email_confirmed_at = nil
-  end
+  private
 
+  # NOTE: registration_completed_at_changed? added to allow tests to change this date manually
   def complete_registration
+    return if confirmation_required? || invited? || registration_completed_at_changed?
+
     self.registration_completed_at = Time.now if registration_completed_at.nil?
   end
-
-  private
 
   def generate_slug
     return if slug.present?

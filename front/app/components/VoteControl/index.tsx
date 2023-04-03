@@ -1,38 +1,19 @@
-import React, { PureComponent, MouseEvent, KeyboardEvent } from 'react';
-import { isString, get, isEmpty, includes } from 'lodash-es';
-import {
-  BehaviorSubject,
-  Subscription,
-  Observable,
-  combineLatest,
-  of,
-} from 'rxjs';
-import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { MouseEvent, KeyboardEvent, useState, useCallback } from 'react';
 
 // components
 import ScreenReaderContent from './ScreenReaderContent';
 import VoteButton from './VoteButton';
 
 // services
-import { authUserStream } from 'services/auth';
-import {
-  ideaByIdStream,
-  IIdea,
-  IdeaVotingDisabledReason,
-} from 'services/ideas';
-import { IUser } from 'services/users';
-import { voteStream, addVote, deleteVote, TVoteMode } from 'services/ideaVotes';
-import { projectByIdStream, IProject, IProjectData } from 'services/projects';
-import {
-  phaseStream,
-  IPhase,
-  IPhaseData,
-  getLatestRelevantPhase,
-} from 'services/phases';
+import { IdeaVotingDisabledReason } from 'api/ideas/types';
+import { getLatestRelevantPhase } from 'services/phases';
+
+// hooks
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // utils
-import { openSignUpInModal } from 'events/openSignUpInModal';
+import { isNilOrError } from 'utils/helperUtils';
+import { includes } from 'lodash-es';
 import { openVerificationModal } from 'events/verificationModal';
 
 // style
@@ -40,7 +21,14 @@ import styled from 'styled-components';
 import { isRtl } from 'utils/styleUtils';
 
 // typings
-import { IParticipationContextType } from 'typings';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'hooks/useAuthUser';
+import useProject from 'hooks/useProject';
+import useIdeaVote from 'api/idea_votes/useIdeaVote';
+import usePhases from 'hooks/usePhases';
+import useAddIdeaVote from 'api/idea_votes/useAddIdeaVote';
+import { TVoteMode } from 'api/idea_votes/types';
+import useDeleteIdeaVote from 'api/idea_votes/useDeleteIdeaVote';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';
@@ -69,293 +57,174 @@ interface Props {
   styleType: TStyleType;
 }
 
-interface State {
-  showVoteControl: boolean;
-  authUser: IUser | null;
-  upvotesCount: number;
-  downvotesCount: number;
-  voting: TVoteMode | null;
-  votingAnimation: TVoteMode | null;
-  myVoteId: string | null | undefined;
-  myVoteMode: TVoteMode | null | undefined;
-  idea: IIdea | null;
-  participationContext: IProjectData | IPhaseData | null;
-  participationContextId: string | null;
-  participationContextType: IParticipationContextType | null;
-  loaded: boolean;
-}
+const VoteControl = ({
+  ariaHidden = false,
+  ideaId,
+  size,
+  className,
+  styleType,
+  disabledVoteClick,
+}: Props) => {
+  const [votingAnimation, setVotingAnimation] = useState<'up' | 'down' | null>(
+    null
+  );
+  const { data: idea } = useIdeaById(ideaId);
+  const { mutate: addVote, isLoading: addVoteIsLoading } = useAddIdeaVote();
+  const { mutate: deleteVote, isLoading: deleteVoteIsLoading } =
+    useDeleteIdeaVote();
+  const authUser = useAuthUser();
+  const project = useProject({
+    projectId: idea?.data.relationships.project.data.id,
+  });
+  const phases = usePhases(idea?.data.relationships.project.data.id);
+  const { data: voteData } = useIdeaVote(
+    idea?.data.relationships.user_vote?.data?.id
+  );
 
-class VoteControl extends PureComponent<Props, State> {
-  voting$: BehaviorSubject<'up' | 'down' | null>;
-  id$: BehaviorSubject<string | null>;
-  subscriptions: Subscription[];
-  upvoteElement: HTMLButtonElement | null;
-  downvoteElement: HTMLButtonElement | null;
+  const voteId = authUser && idea?.data?.relationships?.user_vote?.data?.id;
+  const myVoteMode = voteId ? voteData?.data.attributes.mode : null;
 
-  static defaultProps = {
-    ariaHidden: false,
-  };
+  const castVote = useCallback(
+    (voteMode: 'up' | 'down') => {
+      if (isNilOrError(authUser)) return;
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      showVoteControl: false,
-      authUser: null,
-      upvotesCount: 0,
-      downvotesCount: 0,
-      voting: null,
-      votingAnimation: null,
-      myVoteId: undefined,
-      myVoteMode: undefined,
-      idea: null,
-      participationContext: null,
-      participationContextId: null,
-      participationContextType: null,
-      loaded: false,
-    };
-    this.voting$ = new BehaviorSubject(null);
-    this.id$ = new BehaviorSubject(null);
-    this.subscriptions = [];
-    this.upvoteElement = null;
-    this.downvoteElement = null;
-  }
-
-  componentDidMount() {
-    const authUser$ = authUserStream().observable;
-    const voting$ = this.voting$.pipe(distinctUntilChanged());
-    const id$ = this.id$.pipe(
-      filter((ideaId) => isString(ideaId)),
-      distinctUntilChanged()
-    ) as Observable<string>;
-
-    this.id$.next(this.props.ideaId);
-    this.upvoteElement?.addEventListener(
-      'animationend',
-      this.votingAnimationDone
-    );
-    this.downvoteElement?.addEventListener(
-      'animationend',
-      this.votingAnimationDone
-    );
-
-    const idea$ = id$.pipe(
-      switchMap((ideaId: string) => {
-        const idea$ = ideaByIdStream(ideaId).observable;
-
-        return combineLatest([idea$, voting$]);
-      }),
-      filter(([_idea, voting]) => {
-        return voting === null;
-      }),
-      map(([idea, _voting]) => {
-        return idea;
-      })
-    );
-
-    const myVote$ = combineLatest([authUser$, idea$]).pipe(
-      switchMap(([authUser, idea]) => {
-        if (
-          authUser &&
-          idea &&
-          idea.data.relationships.user_vote &&
-          idea.data.relationships.user_vote.data !== null
-        ) {
-          const voteId = idea.data.relationships.user_vote.data.id;
-          const vote$ = voteStream(voteId).observable;
-
-          return combineLatest([vote$, voting$]).pipe(
-            filter(([_vote, voting]) => {
-              return voting === null;
-            }),
-            map(([vote, _voting]) => {
-              return vote;
-            })
-          );
-        }
-
-        return of(null);
-      })
-    );
-
-    this.subscriptions = [
-      voting$.subscribe((voting) => {
-        this.setState((state) => ({
-          voting,
-          votingAnimation:
-            voting !== null && state.voting === null
-              ? voting
-              : state.votingAnimation,
-        }));
-      }),
-
-      idea$
-        .pipe(
-          switchMap((idea) => {
-            let project$: Observable<IProject | null> = of(null);
-            let phases$: Observable<IPhase[] | null> = of(null);
-            const hasPhases = !isEmpty(
-              get(idea.data.relationships.phases, 'data', null)
-            );
-
-            if (!hasPhases && idea.data.relationships.project.data) {
-              project$ = projectByIdStream(
-                idea.data.relationships.project.data.id
-              ).observable;
-            }
-
-            if (hasPhases && idea.data.relationships.phases.data.length > 0) {
-              phases$ = combineLatest(
-                idea.data.relationships.phases.data.map(
-                  (phase) => phaseStream(phase.id).observable
-                )
+      // Change vote (up -> down or down -> up)
+      if (voteId && myVoteMode !== voteMode) {
+        deleteVote(
+          { ideaId, voteId },
+          {
+            onSuccess: () => {
+              addVote(
+                { ideaId, userId: authUser.id, mode: voteMode },
+                {
+                  onSuccess: () => {
+                    setVotingAnimation(null);
+                  },
+                }
               );
-            }
+            },
+          }
+        );
+      }
 
-            return combineLatest([project$, phases$, authUser$]).pipe(
-              map(([project, phases, authUser]) => ({
-                idea,
-                project,
-                phases,
-                authUser,
-              }))
-            );
-          })
-        )
-        .subscribe(({ idea, project, phases, authUser }) => {
-          // votingActionDescriptor
-          const ideaAttributes = idea.data.attributes;
-          const votingActionDescriptor =
-            ideaAttributes.action_descriptor.voting_idea;
-          const votingEnabled = votingActionDescriptor.up.enabled;
-          const votingDisabledReason = votingActionDescriptor.disabled_reason;
-          const votingFutureEnabled = !!(
-            votingActionDescriptor.up.future_enabled ||
-            votingActionDescriptor.down.future_enabled
-          );
-          const cancellingEnabled = votingActionDescriptor.cancelling_enabled;
+      // Cancel vote
+      if (voteId && myVoteMode === voteMode) {
+        deleteVote(
+          { ideaId, voteId },
+          {
+            onSuccess: () => {
+              setVotingAnimation(null);
+            },
+          }
+        );
+      }
 
-          // participationContext
-          const ideaPhaseIds = idea?.data?.relationships?.phases?.data?.map(
-            (item) => item.id
-          );
-          const ideaPhases = phases
-            ?.filter((phase) => includes(ideaPhaseIds, phase.data.id))
-            .map((phase) => phase.data);
-          const isContinuousProject =
-            project?.data.attributes.process_type === 'continuous';
-          const latestRelevantIdeaPhase = ideaPhases
-            ? getLatestRelevantPhase(ideaPhases)
-            : null;
-          const participationContextType = isContinuousProject
-            ? 'project'
-            : 'phase';
-          const participationContextId = isContinuousProject
-            ? project?.data.id || null
-            : latestRelevantIdeaPhase?.id || null;
-          const participationContext = isContinuousProject
-            ? project?.data || null
-            : latestRelevantIdeaPhase;
-          const isPBContext =
-            participationContext?.attributes.participation_method ===
-            'budgeting';
+      // Add vote
+      if (!voteId) {
+        addVote(
+          { ideaId, userId: authUser.id, mode: voteMode },
+          {
+            onSuccess: () => {
+              setVotingAnimation(null);
+            },
+          }
+        );
+      }
+    },
+    [authUser, addVote, deleteVote, ideaId, myVoteMode, voteId]
+  );
 
-          // Signed in
-          const isSignedIn = !isNilOrError(authUser);
-          const shouldSignIn =
-            !votingEnabled &&
-            (votingDisabledReason === 'not_signed_in' ||
-              (votingDisabledReason === 'not_verified' && !isSignedIn));
+  const castUpvote = useCallback(() => castVote('up'), [castVote]);
+  const castDownvote = useCallback(() => castVote('down'), [castVote]);
 
-          // Verification
-          const shouldVerify =
-            !votingEnabled &&
-            votingDisabledReason === 'not_verified' &&
-            isSignedIn;
-          const verifiedButNotPermitted =
-            !shouldVerify && votingDisabledReason === 'not_permitted';
+  const openAuthModalOnUpvote = useOpenAuthModal({
+    onSuccess: castUpvote,
+    waitIf: isNilOrError(authUser),
+  });
 
-          // Votes count
-          const upvotesCount = ideaAttributes.upvotes_count;
-          const downvotesCount = ideaAttributes.downvotes_count;
+  const openAuthModalOnDownvote = useOpenAuthModal({
+    onSuccess: castDownvote,
+    waitIf: isNilOrError(authUser),
+  });
 
-          const showVoteControl = !!(
-            !isPBContext &&
-            (votingEnabled ||
-              shouldSignIn ||
-              cancellingEnabled ||
-              votingFutureEnabled ||
-              upvotesCount > 0 ||
-              downvotesCount > 0 ||
-              shouldVerify ||
-              verifiedButNotPermitted)
-          );
+  if (!idea) return null;
 
-          this.setState({
-            idea,
-            participationContext,
-            participationContextId,
-            participationContextType,
-            showVoteControl,
-            upvotesCount,
-            downvotesCount,
-            authUser,
-            loaded: true,
-          });
-        }),
+  const ideaAttributes = idea.data.attributes;
+  const votingActionDescriptor = ideaAttributes.action_descriptor.voting_idea;
+  const votingEnabled = votingActionDescriptor.up.enabled;
+  const votingDisabledReason = votingActionDescriptor.disabled_reason;
+  const votingFutureEnabled = !!(
+    votingActionDescriptor.up.future_enabled ||
+    votingActionDescriptor.down.future_enabled
+  );
+  const cancellingEnabled = votingActionDescriptor.cancelling_enabled;
 
-      myVote$.subscribe((myVote) => {
-        this.setState({
-          myVoteId: myVote ? myVote.data.id : null,
-          myVoteMode: myVote ? myVote.data.attributes.mode : null,
-        });
-      }),
-    ];
-  }
+  // participationContext
+  const ideaPhaseIds = idea?.data?.relationships?.phases?.data?.map(
+    (item) => item.id
+  );
+  const ideaPhases =
+    !isNilOrError(phases) &&
+    phases
+      ?.filter((phase) => includes(ideaPhaseIds, phase.id))
+      .map((phase) => phase);
+  const isContinuousProject = project?.attributes.process_type === 'continuous';
+  const latestRelevantIdeaPhase = ideaPhases
+    ? getLatestRelevantPhase(ideaPhases)
+    : null;
+  const participationContextType = isContinuousProject ? 'project' : 'phase';
+  const participationContextId = isContinuousProject
+    ? project?.id || null
+    : latestRelevantIdeaPhase?.id || null;
+  const participationContext = isContinuousProject
+    ? project || null
+    : latestRelevantIdeaPhase;
+  const isPBContext =
+    participationContext?.attributes.participation_method === 'budgeting';
 
-  async componentDidUpdate() {
-    this.id$.next(this.props.ideaId);
-  }
+  // Signed in
+  const isSignedIn = !isNilOrError(authUser);
+  const shouldSignIn =
+    !votingEnabled &&
+    (votingDisabledReason === 'not_signed_in' ||
+      (votingDisabledReason === 'not_verified' && !isSignedIn));
 
-  componentWillUnmount() {
-    this.upvoteElement?.removeEventListener(
-      'animationend',
-      this.votingAnimationDone
-    );
-    this.downvoteElement?.removeEventListener(
-      'animationend',
-      this.votingAnimationDone
-    );
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
+  // Verification
+  const shouldVerify =
+    !votingEnabled && votingDisabledReason === 'not_verified' && isSignedIn;
+  const verifiedButNotPermitted =
+    !shouldVerify && votingDisabledReason === 'not_permitted';
 
-  votingAnimationDone = () => {
-    this.setState({ votingAnimation: null });
-  };
+  // Votes count
+  const upvotesCount = ideaAttributes.upvotes_count;
+  const downvotesCount = ideaAttributes.downvotes_count;
 
-  onClickUpvote = (event: MouseEvent | KeyboardEvent) => {
+  const showVoteControl = !!(
+    !isPBContext &&
+    (votingEnabled ||
+      shouldSignIn ||
+      cancellingEnabled ||
+      votingFutureEnabled ||
+      upvotesCount > 0 ||
+      downvotesCount > 0 ||
+      shouldVerify ||
+      verifiedButNotPermitted)
+  );
+
+  const onClickUpvote = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    this.vote('up');
+    onVote('up');
   };
 
-  onClickDownvote = (event: MouseEvent | KeyboardEvent) => {
+  const onClickDownvote = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    this.vote('down');
+    onVote('down');
   };
 
-  vote = async (voteMode: 'up' | 'down') => {
-    const {
-      authUser,
-      myVoteId,
-      myVoteMode,
-      voting,
-      idea,
-      participationContext,
-      participationContextId,
-      participationContextType,
-    } = this.state;
-    const { ideaId, disabledVoteClick } = this.props;
+  const onVote = async (voteMode: 'up' | 'down') => {
+    setVotingAnimation(voteMode);
     const votingActionDescriptor =
       idea?.data.attributes.action_descriptor.voting_idea;
     const votingEnabled = {
@@ -370,83 +239,22 @@ class VoteControl extends PureComponent<Props, State> {
 
     const isSignedIn = !isNilOrError(authUser);
     const isTryingToUndoVote = !!(myVoteMode && voteMode === myVoteMode);
-    const isVerified =
-      !isNilOrError(authUser) && authUser.data.attributes.verified;
+    const isVerified = !isNilOrError(authUser) && authUser.attributes.verified;
 
-    if (!voting) {
+    if (!participationContextId || !participationContextType) return;
+
+    const context = {
+      action: 'voting_idea',
+      id: participationContextId,
+      type: participationContextType,
+    } as const;
+
+    if (!addVoteIsLoading && !deleteVoteIsLoading) {
       if (
         !isNilOrError(authUser) &&
         (votingEnabled || (cancellingEnabled && isTryingToUndoVote))
       ) {
-        try {
-          this.voting$.next(voteMode);
-
-          const refetchIdeas =
-            participationContext?.attributes?.upvoting_method === 'limited' ||
-            participationContext?.attributes?.downvoting_method === 'limited';
-
-          // Change vote (up -> down or down -> up)
-          if (myVoteId && myVoteMode && myVoteMode !== voteMode) {
-            this.setState((state) => ({
-              upvotesCount:
-                voteMode === 'up'
-                  ? state.upvotesCount + 1
-                  : state.upvotesCount - 1,
-              downvotesCount:
-                voteMode === 'down'
-                  ? state.downvotesCount + 1
-                  : state.downvotesCount - 1,
-              myVoteMode: voteMode,
-            }));
-            await deleteVote(ideaId, myVoteId, refetchIdeas);
-            await addVote(
-              ideaId,
-              { user_id: authUser.data.id, mode: voteMode },
-              refetchIdeas
-            );
-          }
-
-          // Cancel vote
-          if (myVoteId && myVoteMode && myVoteMode === voteMode) {
-            this.setState((state) => ({
-              upvotesCount:
-                voteMode === 'up' ? state.upvotesCount - 1 : state.upvotesCount,
-              downvotesCount:
-                voteMode === 'down'
-                  ? state.downvotesCount - 1
-                  : state.downvotesCount,
-              myVoteMode: null,
-            }));
-            await deleteVote(ideaId, myVoteId, refetchIdeas);
-          }
-
-          // Vote
-          if (!myVoteMode) {
-            this.setState((state) => ({
-              upvotesCount:
-                voteMode === 'up' ? state.upvotesCount + 1 : state.upvotesCount,
-              downvotesCount:
-                voteMode === 'down'
-                  ? state.downvotesCount + 1
-                  : state.downvotesCount,
-              myVoteMode: voteMode,
-            }));
-            await addVote(
-              ideaId,
-              { user_id: authUser.data.id, mode: voteMode },
-              refetchIdeas
-            );
-          }
-
-          await ideaByIdStream(ideaId).fetch();
-          this.voting$.next(null);
-
-          return 'success';
-        } catch (error) {
-          this.voting$.next(null);
-          await ideaByIdStream(ideaId).fetch();
-          throw 'error';
-        }
+        castVote(voteMode);
       } else if (
         isSignedIn &&
         !isVerified &&
@@ -454,7 +262,9 @@ class VoteControl extends PureComponent<Props, State> {
       ) {
         openVerificationModal();
       } else if (isSignedIn && votingDisabledReason === 'not_active') {
-        openSignUpInModal();
+        voteMode === 'up'
+          ? openAuthModalOnUpvote({ context })
+          : openAuthModalOnDownvote({ context });
       } else if (
         !isSignedIn &&
         (votingEnabled ||
@@ -462,20 +272,11 @@ class VoteControl extends PureComponent<Props, State> {
           votingDisabledReason === 'not_signed_in' ||
           votingDisabledReason === 'not_permitted')
       ) {
-        openSignUpInModal({
-          verification: votingDisabledReason === 'not_verified',
-          verificationContext:
-            votingDisabledReason === 'not_verified' &&
-            participationContextId &&
-            participationContextType
-              ? {
-                  action: 'voting_idea',
-                  id: participationContextId,
-                  type: participationContextType,
-                }
-              : undefined,
-          action: () => this.vote(voteMode),
-        });
+        const verification = votingDisabledReason === 'not_verified';
+
+        voteMode === 'up'
+          ? openAuthModalOnUpvote({ verification, context })
+          : openAuthModalOnDownvote({ verification, context });
       } else if (votingDisabledReason) {
         disabledVoteClick?.(votingDisabledReason);
       }
@@ -484,93 +285,65 @@ class VoteControl extends PureComponent<Props, State> {
     return;
   };
 
-  setContainerRef = (element: HTMLDivElement) => {
-    this.props?.setRef?.(element);
-  };
+  if (idea && showVoteControl) {
+    const votingDescriptor = idea.data.attributes.action_descriptor.voting_idea;
+    // Only when downvoting is explicitly disabled,
+    // we don't show the downvote button
+    const showDownvote = votingDescriptor
+      ? votingDescriptor.down.enabled === true ||
+        (votingDescriptor.down.enabled === false &&
+          votingDescriptor.down.disabled_reason !== 'downvoting_disabled')
+      : true;
 
-  setUpvoteRef = (element: HTMLButtonElement) => {
-    this.upvoteElement = element;
-  };
-
-  setDownvoteRef = (element: HTMLButtonElement) => {
-    this.downvoteElement = element;
-  };
-
-  render() {
-    const { size, className, ariaHidden, styleType } = this.props;
-    const {
-      idea,
-      showVoteControl,
-      myVoteMode,
-      votingAnimation,
-      upvotesCount,
-      downvotesCount,
-    } = this.state;
-
-    if (!isNilOrError(idea) && showVoteControl) {
-      const votingDescriptor =
-        idea.data.attributes.action_descriptor.voting_idea;
-      // Only when downvoting is explicitly disabled,
-      // we don't show the downvote button
-      const showDownvote = votingDescriptor
-        ? votingDescriptor.down.enabled === true ||
-          (votingDescriptor.down.enabled === false &&
-            votingDescriptor.down.disabled_reason !== 'downvoting_disabled')
-        : true;
-
-      return (
-        <>
-          <ScreenReaderContent
-            upvotesCount={upvotesCount}
-            downvotesCount={downvotesCount}
+    return (
+      <>
+        <ScreenReaderContent
+          upvotesCount={upvotesCount}
+          downvotesCount={downvotesCount}
+        />
+        <Container
+          className={[
+            className,
+            'e2e-vote-controls',
+            myVoteMode === null ? 'neutral' : myVoteMode,
+          ]
+            .filter((item) => item)
+            .join(' ')}
+          aria-hidden={ariaHidden}
+        >
+          <VoteButton
+            buttonVoteMode="up"
+            userVoteMode={myVoteMode}
+            onClick={onClickUpvote}
+            className={votingAnimation === 'up' ? 'voteClick' : ''}
+            ariaHidden={ariaHidden}
+            styleType={styleType}
+            size={size}
+            iconName="vote-up"
+            votesCount={upvotesCount}
+            ideaId={idea.data.id}
           />
-          <Container
-            className={[
-              className,
-              'e2e-vote-controls',
-              myVoteMode === null ? 'neutral' : myVoteMode,
-            ]
-              .filter((item) => item)
-              .join(' ')}
-            aria-hidden={ariaHidden}
-            ref={this.setContainerRef}
-          >
+
+          {showDownvote && (
             <VoteButton
-              buttonVoteMode="up"
+              buttonVoteMode="down"
               userVoteMode={myVoteMode}
-              onClick={this.onClickUpvote}
-              setRef={this.setUpvoteRef}
-              className={votingAnimation === 'up' ? 'voteClick' : ''}
+              onClick={onClickDownvote}
+              className={votingAnimation === 'down' ? 'voteClick' : ''}
               ariaHidden={ariaHidden}
               styleType={styleType}
               size={size}
-              iconName="vote-up"
-              votesCount={upvotesCount}
+              iconName="vote-down"
+              votesCount={downvotesCount}
               ideaId={idea.data.id}
             />
-
-            {showDownvote && (
-              <VoteButton
-                buttonVoteMode="down"
-                userVoteMode={myVoteMode}
-                onClick={this.onClickDownvote}
-                setRef={this.setDownvoteRef}
-                className={votingAnimation === 'down' ? 'voteClick' : ''}
-                ariaHidden={ariaHidden}
-                styleType={styleType}
-                size={size}
-                iconName="vote-down"
-                votesCount={downvotesCount}
-                ideaId={idea.data.id}
-              />
-            )}
-          </Container>
-        </>
-      );
-    }
-
-    return null;
+          )}
+        </Container>
+      </>
+    );
   }
-}
+
+  return null;
+};
 
 export default VoteControl;

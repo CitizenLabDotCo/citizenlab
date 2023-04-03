@@ -1,9 +1,4 @@
 import React, { memo, FormEvent, useState } from 'react';
-import {
-  isNilOrError,
-  capitalizeParticipationContextType,
-} from 'utils/helperUtils';
-import { openVerificationModal } from 'events/verificationModal';
 
 // components
 import Button from 'components/UI/Button';
@@ -15,18 +10,23 @@ import { addBasket, updateBasket } from 'services/baskets';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'hooks/useBasket';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
 
 // utils
+import {
+  isNilOrError,
+  capitalizeParticipationContextType,
+} from 'utils/helperUtils';
 import streams from 'utils/streams';
-import { openSignUpInModal } from 'events/openSignUpInModal';
+import { openVerificationModal } from 'events/verificationModal';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -36,10 +36,11 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 // styles
 import styled from 'styled-components';
 import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
+
+// typings
 import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
-import { IIdeaData } from 'services/ideas';
-import { IUserData } from 'services/users';
+import { IIdea } from 'api/ideas/types';
 
 const IdeaCardContainer = styled.div`
   display: flex;
@@ -95,13 +96,14 @@ interface Props {
 const AssignBudgetControl = memo(
   ({ view, ideaId, className, projectId }: Props) => {
     const authUser = useAuthUser();
-    const idea = useIdea({ ideaId });
+    const { data: idea } = useIdeaById(ideaId);
     const project = useProject({ projectId });
     const phases = usePhases(projectId);
+
     const isContinuousProject =
       project?.attributes.process_type === 'continuous';
     const ideaPhaseIds = !isNilOrError(idea)
-      ? idea?.relationships?.phases?.data?.map((item) => item.id)
+      ? idea.data.relationships?.phases?.data?.map((item) => item.id)
       : null;
     const ideaPhases = !isNilOrError(phases)
       ? phases?.filter(
@@ -123,51 +125,15 @@ const AssignBudgetControl = memo(
 
     const [processing, setProcessing] = useState(false);
 
-    const handleAddRemoveButtonClick =
-      (idea: IIdeaData, participationContextId: string) =>
-      (event?: FormEvent) => {
-        event?.preventDefault();
+    const assignBudget = async () => {
+      if (
+        isNilOrError(idea) ||
+        !participationContextId ||
+        isNilOrError(authUser)
+      ) {
+        return;
+      }
 
-        const isBudgetingEnabled =
-          idea.attributes.action_descriptor.budgeting?.enabled;
-        const budgetingDisabledReason =
-          idea.attributes.action_descriptor.budgeting?.disabled_reason;
-
-        if (
-          // not signed up/in
-          isNilOrError(authUser) ||
-          budgetingDisabledReason === 'not_signed_in'
-        ) {
-          openSignUpInModal({
-            verificationContext: {
-              action: 'budgeting',
-              id: participationContextId,
-              type: participationContextType,
-            },
-          });
-          // if signed up & in
-        } else if (budgetingDisabledReason === 'not_active') {
-          openSignUpInModal();
-        } else if (!isNilOrError(authUser)) {
-          if (budgetingDisabledReason === 'not_verified') {
-            openVerificationModal({
-              context: {
-                action: 'budgeting',
-                id: participationContextId,
-                type: participationContextType,
-              },
-            });
-          } else if (isBudgetingEnabled) {
-            assignBudget(idea, participationContextId, authUser);
-          }
-        }
-      };
-
-    const assignBudget = async (
-      idea: IIdeaData,
-      participationContextId: string,
-      authUser: IUserData
-    ) => {
       const timeout = (ms: number) =>
         new Promise((resolve) => setTimeout(resolve, ms));
       const done = async () => {
@@ -187,14 +153,14 @@ const AssignBudgetControl = memo(
 
         if (isInBasket) {
           newIdeas = basket.relationships.ideas.data
-            .filter((basketIdea) => basketIdea.id !== idea.id)
+            .filter((basketIdea) => basketIdea.id !== idea.data.id)
             .map((basketIdea) => basketIdea.id);
         } else {
           newIdeas = [
             ...basket.relationships.ideas.data.map(
               (basketIdea) => basketIdea.id
             ),
-            idea.id,
+            idea.data.id,
           ];
         }
 
@@ -222,7 +188,7 @@ const AssignBudgetControl = memo(
             participation_context_type: capitalizeParticipationContextType(
               participationContextType
             ),
-            idea_ids: [idea.id],
+            idea_ids: [idea.data.id],
           });
           done();
           trackEventByName(tracks.basketCreated);
@@ -232,9 +198,55 @@ const AssignBudgetControl = memo(
       }
     };
 
+    const openAuthModal = useOpenAuthModal({
+      onSuccess: assignBudget,
+      waitIf:
+        isNilOrError(idea) || !participationContextId || isNilOrError(authUser),
+    });
+
+    const handleAddRemoveButtonClick =
+      (idea: IIdea, participationContextId: string) => (event?: FormEvent) => {
+        event?.preventDefault();
+
+        const isBudgetingEnabled =
+          idea.data.attributes.action_descriptor.budgeting?.enabled;
+        const budgetingDisabledReason =
+          idea.data.attributes.action_descriptor.budgeting?.disabled_reason;
+
+        const context = {
+          type: participationContextType,
+          action: 'budgeting',
+          id: participationContextId,
+        } as const;
+
+        if (
+          // not signed up/in
+          isNilOrError(authUser) ||
+          budgetingDisabledReason === 'not_signed_in'
+        ) {
+          openAuthModal({ context });
+          // signed in but not active
+        } else if (budgetingDisabledReason === 'not_active') {
+          openAuthModal({ context });
+          // if signed up & in
+        } else if (!isNilOrError(authUser)) {
+          if (budgetingDisabledReason === 'not_verified') {
+            openVerificationModal({
+              context: {
+                action: 'budgeting',
+                id: participationContextId,
+                type: participationContextType,
+              },
+            });
+          } else if (isBudgetingEnabled) {
+            assignBudget();
+          }
+        }
+      };
+
     if (
       !isNilOrError(idea) &&
-      idea.attributes.budget &&
+      idea.data.attributes.budget &&
       participationContextId
     ) {
       const basketIdeaIds = !isNilOrError(basket)
@@ -243,13 +255,13 @@ const AssignBudgetControl = memo(
       const isInBasket =
         Array.isArray(basketIdeaIds) && basketIdeaIds.includes(ideaId);
       const isBudgetingEnabled =
-        idea.attributes.action_descriptor.budgeting?.enabled;
+        idea.data.attributes.action_descriptor.budgeting?.enabled;
       const isSignedIn = !isNilOrError(authUser);
       const isPermitted =
-        idea.attributes.action_descriptor.budgeting?.disabled_reason !==
+        idea.data.attributes.action_descriptor.budgeting?.disabled_reason !==
         'not_permitted';
       const hasBudgetingDisabledReason =
-        !!idea.attributes.action_descriptor.budgeting?.disabled_reason;
+        !!idea.data.attributes.action_descriptor.budgeting?.disabled_reason;
       const isCurrentPhase =
         getCurrentPhase(phases)?.id === participationContext?.id;
       const isCurrent =
@@ -302,7 +314,7 @@ const AssignBudgetControl = memo(
                   <ScreenReaderOnly>
                     <FormattedMessage {...messages.a11y_price} />
                   </ScreenReaderOnly>
-                  <FormattedBudget value={idea.attributes.budget} />
+                  <FormattedBudget value={idea.data.attributes.budget} />
                 </Budget>
                 {addRemoveButton}
               </BudgetWithButtonWrapper>

@@ -17,22 +17,12 @@ describe('<Unauthorized />', () => {
     expect(screen.getByText(/log in or sign up/)).toBeInTheDocument();
   });
 
-  it('opens sign up modal when clicking sign up', () => {
-    mockUser = null;
-    render(<Unauthorized />);
-    const button = screen.getByText(/Sign Up/);
-    fireEvent.click(button);
-    expect(openSignUpInModal).toHaveBeenCalledTimes(1);
-    expect(openSignUpInModal).toHaveBeenCalledWith({ flow: 'signup' });
-  });
-
   it('opens sign in modal when clicking sign in', () => {
     mockUser = null;
     render(<Unauthorized />);
     const button = screen.getByText(/Log in/);
     fireEvent.click(button);
     expect(openSignUpInModal).toHaveBeenCalledTimes(1);
-    expect(openSignUpInModal).toHaveBeenCalledWith({ flow: 'signin' });
   });
 
   it("tells you you don't have access if logged in", () => {

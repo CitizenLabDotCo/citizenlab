@@ -13,6 +13,7 @@ import { WrappedComponentProps } from 'react-intl';
 import { IconTooltip, Title } from '@citizenlab/cl2-component-library';
 import ModeratorList from '../../components/ModeratorList';
 import UserSearch from '../../components/UserSearch';
+import SeatInfo from 'components/SeatInfo';
 
 const ModeratorSubSection = styled(Section)`
   margin-bottom: 30px;
@@ -61,6 +62,7 @@ const ProjectManagement = ({
       </SubSectionTitle>
       <UserSearch projectId={projectId} />
       <ModeratorList projectId={projectId} />
+      <SeatInfo seatType="project_manager" />
     </ModeratorSubSection>
   );
 };

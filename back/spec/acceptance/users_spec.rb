@@ -262,7 +262,8 @@ resource 'Users' do
         describe 'Reusing an existing user with no password' do
           context 'when there is an existing user that has no password' do
             before do
-              create(:user, email: email, password: nil)
+              light_user = create(:user_no_password, email: email)
+              light_user.confirm!
             end
 
             example_request 'existing user is successfully returned and confirmation requirement is reset and email resent' do
@@ -403,6 +404,21 @@ resource 'Users' do
           expect(json_response[:data].pluck(:id)).to match_array group_users.map(&:id)
         end
 
+        example 'Search for users in group' do
+          group = create(:group)
+
+          group_users = [
+            create(:user, first_name: 'Joskelala', manual_groups: [group]),
+            create(:user, last_name: 'Rudolf', manual_groups: [group])
+          ]
+
+          do_request(group: group.id, search: 'joskela')
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data][0][:id]).to eq group_users[0].id
+        end
+
         example 'List all users in group, ordered by role' do
           group = create(:group)
 
@@ -494,6 +510,26 @@ resource 'Users' do
             expect(json_response[:data].size).to eq 2
             expect(json_response[:data].pluck(:id)).to match_array blocked_users.map(&:id)
           end
+        end
+      end
+
+      get 'web_api/v1/users/seats' do
+        before do
+          create(:super_admin) # super admin are not included in admins
+
+          @admins = [@user, *create_list(:admin, 3)]
+
+          folder_moderators = create_list(:project_folder_moderator, 2, project_folders: [create(:project_folder)])
+          project_moderators = create_list(:project_moderator, 4, projects: [create(:project)])
+          @moderators = [*folder_moderators, *project_moderators]
+        end
+
+        example_request 'Get number of admin and manager (moderator) seats' do
+          expect(status).to eq 200
+          expect(response_data[:type]).to eq 'seats'
+          attributes = response_data[:attributes]
+          expect(attributes[:admins_number]).to eq @admins.size
+          expect(attributes[:project_moderators_number]).to eq @moderators.size
         end
       end
 
@@ -729,6 +765,12 @@ resource 'Users' do
         end
       end
 
+      get 'web_api/v1/users/seats' do
+        example_request '[error] Get number of admin seats when current user is not admin' do
+          expect(status).to eq 401
+        end
+      end
+
       get 'web_api/v1/users/:id' do
         let(:id) { @user.id }
 
@@ -868,27 +910,36 @@ resource 'Users' do
           end
         end
 
-        # NOTE: To be included in an upcoming iteration
-        # context 'when the user_confirmation module is active' do
-        #   before do
-        #     SettingsService.new.activate_feature! 'user_confirmation'
-        #   end
+        context 'when the user_confirmation module is active' do
+          before do
+            SettingsService.new.activate_feature! 'user_confirmation'
+          end
 
-        #   describe 'Changing the email' do
-        #     let(:email) { 'new-email@email.com' }
+          describe 'Changing the email' do
+            let(:email) { 'new-email@email.com' }
 
-        #     example_request 'Requires confirmation' do
-        #       json_response = json_parse(response_body)
-        #       expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true
-        #     end
+            example_request 'Requires confirmation' do
+              json_response = json_parse(response_body)
+              expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true
+            end
 
-        #     example_request 'Sends a confirmation email' do
-        #       last_email = ActionMailer::Base.deliveries.last
-        #       user       = User.find(id)
-        #       expect(last_email.to).to include user.reload.email
-        #     end
-        #   end
-        # end
+            example_request 'Sends a confirmation email' do
+              last_email = ActionMailer::Base.deliveries.last
+              user       = User.find(id)
+              expect(last_email.to).to include user.reload.email
+              expect(user.email_confirmation_code_sent_at).not_to be_nil
+            end
+          end
+
+          describe 'Changing something else' do
+            let(:user) { create(:user) }
+
+            example_request 'Does not send a confirmation email' do
+              last_email = ActionMailer::Base.deliveries.last
+              expect(last_email).to be_nil
+            end
+          end
+        end
 
         describe do
           example "Update a user's custom field values" do
@@ -929,6 +980,19 @@ resource 'Users' do
 
             expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
             expect(@user.custom_field_values[cf.key]).to eq(some_value)
+          end
+
+          # To allow for custom fields to be required or not depending on the action
+          example 'Allow update if custom fields are changed but required fields are not present', document: false do
+            cf = create(:custom_field)
+            cf_req = create(:custom_field, required: true)
+
+            do_request(user: { custom_field_values: { cf.key => 'some_value' } })
+            json_response = json_parse(response_body)
+
+            assert_status 200
+            expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq 'some_value'
+            expect(json_response.dig(:data, :attributes, :custom_field_values, cf_req.key.to_sym)).to be_nil
           end
         end
 
@@ -1001,63 +1065,6 @@ resource 'Users' do
         end
       end
 
-      post 'web_api/v1/users/complete_registration' do
-        with_options scope: :user do
-          parameter :custom_field_values, 'An object that can only contain keys for custom fields for users', required: true
-        end
-
-        let(:cf1) { create(:custom_field) }
-        let(:cf2) { create(:custom_field_multiselect, required: true) }
-        let(:cf2_options) { create_list(:custom_field_option, 2, custom_field: cf2) }
-        let(:custom_field_values) { { cf1.key => 'somevalue', cf2.key => [cf2_options.first.key] } }
-
-        example 'Complete the registration of a user' do
-          @user.update! registration_completed_at: nil
-          do_request
-          expect(response_status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_present
-          expect(json_response.dig(:data, :attributes, :custom_field_values, cf1.key.to_sym)).to eq 'somevalue'
-          expect(json_response.dig(:data, :attributes, :custom_field_values, cf2.key.to_sym)).to eq [cf2_options.first.key]
-        end
-
-        # TODO: Allow light users without required fields
-        # example '[error] Complete the registration of a user fails if not all required fields are provided' do
-        #   @user.update! registration_completed_at: nil
-        #   do_request(user: { custom_field_values: { cf2.key => nil } })
-        #   assert_status 422
-        # end
-
-        example '[error] Complete the registration of a user fails if the user has already completed signup' do
-          do_request
-          expect(response_status).to eq 401
-        end
-
-        describe do
-          let(:cf) { create(:custom_field) }
-          let(:gender_cf) { create(:custom_field_gender) }
-          let(:custom_field_values) do
-            {
-              cf.key => 'new value',
-              gender_cf.key => 'female'
-            }
-          end
-
-          example "Can't change some custom_field_values of a user verified with Bogus", document: false do
-            @user.update!(
-              registration_completed_at: nil,
-              custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' }
-            )
-            create(:verification, method_name: 'bogus', user: @user)
-            do_request
-            expect(response_status).to eq 200
-            @user.reload
-            expect(@user.custom_field_values[cf.key]).to eq 'new value'
-            expect(@user.custom_field_values[gender_cf.key]).to eq 'male'
-          end
-        end
-      end
-
       post 'web_api/v1/users/update_password' do
         with_options scope: :user do
           parameter :current_password, required: true
@@ -1079,6 +1086,32 @@ resource 'Users' do
           let(:new_password) { 'test_new_password' }
 
           example_request 'update password with correct current password' do
+            @user.reload
+            expect(response_status).to eq 200
+            expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')
+          end
+        end
+
+        describe do
+          let(:current_password) { '' }
+          let(:new_password) { 'test_new_password' }
+
+          example_request 'update password when not providing existing password' do
+            expect(response_status).to eq 422
+            json_response = json_parse(response_body)
+            expect(json_response[:errors][:current_password][0][:error]).to eq 'invalid'
+          end
+        end
+
+        describe do
+          let(:current_password) { '' }
+          let(:new_password) { 'test_new_password' }
+
+          before do
+            @user.update!(password: nil)
+          end
+
+          example_request 'update password when no existing password (passwordless or sso user)' do
             @user.reload
             expect(response_status).to eq 200
             expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')
@@ -1112,7 +1145,7 @@ resource 'Users' do
           do_request
           expect(status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response[:count]).to eq 1
+          expect(json_response.dig(:data, :attributes, :count)).to eq 1
         end
       end
 
@@ -1144,7 +1177,7 @@ resource 'Users' do
           do_request
           expect(status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response[:count]).to eq 2
+          expect(json_response.dig(:data, :attributes, :count)).to eq 2
         end
 
         example 'Get the number of comments on ideas posted by one user' do
@@ -1156,7 +1189,7 @@ resource 'Users' do
           do_request post_type: 'Idea'
           expect(status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response[:count]).to eq 2
+          expect(json_response.dig(:data, :attributes, :count)).to eq 2
         end
 
         example 'Get the number of comments on initiatives posted by one user' do
@@ -1168,7 +1201,7 @@ resource 'Users' do
           do_request post_type: 'Initiative'
           expect(status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response[:count]).to eq 2
+          expect(json_response.dig(:data, :attributes, :count)).to eq 2
         end
       end
     end

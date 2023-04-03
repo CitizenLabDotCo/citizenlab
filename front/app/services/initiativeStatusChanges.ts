@@ -57,10 +57,10 @@ export async function updateInitiativeStatusWithExistingFeedback(
   );
 
   queryClient.invalidateQueries(initiativesKeys.lists());
-  queryClient.invalidateQueries(initiativesKeys.item(initiativeId));
+  queryClient.invalidateQueries(initiativesKeys.item({ id: initiativeId }));
   queryClient.invalidateQueries(initiativeFilterCountsKeys.items());
   queryClient.invalidateQueries(
-    initiativesAllowedTransitionsKeys.item(initiativeId)
+    initiativesAllowedTransitionsKeys.item({ id: initiativeId })
   );
 
   return response;
@@ -86,10 +86,10 @@ export async function updateInitiativeStatusAddFeedback(
   );
 
   queryClient.invalidateQueries(initiativesKeys.lists());
-  queryClient.invalidateQueries(initiativesKeys.item(initiativeId));
+  queryClient.invalidateQueries(initiativesKeys.item({ id: initiativeId }));
   queryClient.invalidateQueries(initiativeFilterCountsKeys.items());
   queryClient.invalidateQueries(
-    initiativesAllowedTransitionsKeys.item(initiativeId)
+    initiativesAllowedTransitionsKeys.item({ id: initiativeId })
   );
 
   streams.fetchAllWith({

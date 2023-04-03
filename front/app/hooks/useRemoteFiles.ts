@@ -8,7 +8,14 @@ import { pageFilesStream } from 'services/pageFiles';
 import { ideaFilesStream } from 'services/ideaFiles';
 import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
-import { InputProps } from 'resources/GetRemoteFiles';
+
+export type TResourceType = 'project' | 'phase' | 'page' | 'idea';
+
+export interface InputProps {
+  resetOnChange?: boolean;
+  resourceType: TResourceType;
+  resourceId: string | null;
+}
 
 export type RemoteFiles = UploadFile[] | null;
 

@@ -1,16 +1,14 @@
 import {
+  IIdeaJsonFormSchemas,
   CustomFieldCodes,
-  IIdeaFormSchemas,
-} from 'services/ideaCustomFieldsSchemas';
-import { IIdeaJsonFormSchemas } from 'services/ideaJsonFormsSchema';
+} from 'services/ideaJsonFormsSchema';
 import { Locale } from 'typings';
 import { isNilOrError } from './helperUtils';
 
 export function isFieldEnabled(
   fieldCode: CustomFieldCodes,
   ideaCustomFieldsSchemas:
-    | IIdeaFormSchemas
-    | IIdeaJsonFormSchemas
+    | IIdeaJsonFormSchemas['data']['attributes']
     | undefined
     | null
     | Error,

@@ -36,6 +36,7 @@ FactoryBot.define do
 
     factory :invited_user do
       invite_status { 'pending' }
+      registration_completed_at { nil }
 
       after(:create) do |user, _evaluator|
         create(:invite, invitee: user)
@@ -50,5 +51,13 @@ FactoryBot.define do
         user.reset_confirmation_code
       end
     end
+  end
+
+  factory :user_no_password, class: 'User' do
+    sequence(:email) do |n|
+      name, domain = Faker::Internet.email.split('@')
+      "#{name}#{n}@#{domain}"
+    end
+    locale { 'en' }
   end
 end

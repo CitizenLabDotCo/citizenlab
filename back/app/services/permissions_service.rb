@@ -6,7 +6,8 @@ class PermissionsService
     not_active: 'not_active',
     not_permitted: 'not_permitted',
     missing_data: 'missing_data',
-    not_verified: 'not_verified'
+    not_verified: 'not_verified',
+    blocked: 'blocked'
   }.freeze
 
   def update_permissions_for_scope(scope)
@@ -44,16 +45,13 @@ class PermissionsService
   end
 
   def denied_reason_for_permission(permission, user)
-    if permission.permitted_by == 'everyone_confirmed_email'
-      denied_reason permission, user
-    else
-      old_denied_reason permission, user
-    end
+    denied_reason permission, user
   end
 
   def requirements(permission, user)
     requirements = requirements_mapping[permission.permitted_by]
     mark_satisfied_requirements! requirements, user if user
+    ignore_password_for_sso! requirements, user if user
     permitted = requirements.values.none? do |subrequirements|
       subrequirements.value? 'require'
     end
@@ -61,6 +59,22 @@ class PermissionsService
       permitted: permitted,
       requirements: requirements
     }
+  end
+
+  def permission_scope_from_permissions_params(params)
+    parent_param = params[:parent_param]
+    scope_id = params[parent_param]
+    case parent_param
+    when nil
+      nil
+    when :project_id
+      Project.find(scope_id)
+    when :phase_id
+      Phase.find(scope_id)
+    when :idea_id
+      idea = Idea.find(scope_id)
+      ParticipationContextService.new.get_participation_context idea.project
+    end
   end
 
   private
@@ -83,33 +97,24 @@ class PermissionsService
     actions - Permission.where(permission_scope: scope).pluck(:action)
   end
 
-  def old_denied_reason(permission, user)
-    return if permission.permitted_by == 'everyone'
-    return DENIED_REASONS[:not_signed_in] if !user
-    return DENIED_REASONS[:not_active] if !user.active?
-
-    return if UserRoleService.new.can_moderate? permission.permission_scope, user
-
-    reason = case permission.permitted_by
-    when 'users' then :not_signed_in unless user
-    when 'admins_moderators' then :not_permitted
-    when 'groups' then denied_when_permitted_by_groups?(permission, user)
-    else
-      raise "Unsupported permitted_by: '#{permission.permitted_by}'."
-    end
-
-    DENIED_REASONS[reason]
-  end
-
   def denied_reason(permission, user)
     if permission.permitted_by == 'everyone'
       user ||= User.new
-    elsif !user
-      return DENIED_REASONS[:not_signed_in]
-    elsif !user.active?
-      return DENIED_REASONS[:not_active]
-    end
+    else
+      return DENIED_REASONS[:not_signed_in] if !user
+      return DENIED_REASONS[:blocked] if user.blocked?
 
+      if !user.confirmation_required? # Ignore confirmation as this will be checked by the requirements
+        return DENIED_REASONS[:not_active] if !user.active?
+        return if UserRoleService.new.can_moderate? permission.permission_scope, user
+        return DENIED_REASONS[:not_permitted] if permission.permitted_by == 'admins_moderators'
+
+        if permission.permitted_by == 'groups'
+          reason = denied_when_permitted_by_groups?(permission, user)
+          return DENIED_REASONS[reason] if reason.present?
+        end
+      end
+    end
     return if requirements(permission, user)[:permitted]
 
     DENIED_REASONS[:missing_data]
@@ -144,13 +149,19 @@ class PermissionsService
         users[:built_in][:email] = 'require'
         required_field_keys = CustomField.registration.required.map(&:key)
         users[:custom_fields].each_key do |key|
-          users[:custom_fields][key] = required_field_keys.include? key ? 'require' : 'ask'
+          users[:custom_fields][key] = (required_field_keys.include?(key) ? 'require' : 'ask')
         end
         users[:special][:password] = 'require'
         users[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
       end,
-      'groups' => {},
-      'admins_moderators' => {}
+      'groups' => everyone.deep_dup.tap do |groups|
+        groups[:built_in][:email] = 'require'
+        groups[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
+      end,
+      'admins_moderators' => everyone.deep_dup.tap do |admins|
+        admins[:built_in][:email] = 'require'
+        admins[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
+      end
     }
   end
 
@@ -168,10 +179,16 @@ class PermissionsService
       when :password
         !user.no_password?
       when :confirmation
-        user.confirmed?
+        !user.confirmation_required?
       end
       requirements[:special][special_key] = 'satisfied' if is_satisfied
     end
+  end
+
+  def ignore_password_for_sso!(requirements, user)
+    return requirements if !user
+
+    requirements[:special][:password] = 'dont_ask' if user.sso?
   end
 end
 

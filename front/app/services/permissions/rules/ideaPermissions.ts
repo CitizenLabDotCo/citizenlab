@@ -1,6 +1,6 @@
 import { definePermissionRule } from 'services/permissions/permissions';
 import { isAdmin, isProjectModerator } from '../roles';
-import { IIdeaData } from 'services/ideas';
+import { IIdeaData } from 'api/ideas/types';
 import { IUser } from 'services/users';
 
 const isAuthor = (idea: IIdeaData, user?: IUser) => {

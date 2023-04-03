@@ -104,7 +104,7 @@ export class InitiativesNewPage extends React.PureComponent<
     const { authUser } = this.props;
 
     if (authUser === null) {
-      clHistory.replace('/sign-up');
+      clHistory.replace('/');
     }
   };
 

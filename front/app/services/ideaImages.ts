@@ -1,6 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { ideaByIdStream } from 'services/ideas';
 import { ImageSizes } from 'typings';
 
 export interface IIdeaImageData {
@@ -40,22 +39,4 @@ export function deleteIdeaImage(ideaId: string, imageId: string) {
     `${API_PATH}/ideas/${ideaId}/images/${imageId}`,
     imageId
   );
-}
-
-export async function addIdeaImage(
-  ideaId: string,
-  base64: string,
-  ordering: number | null = null
-) {
-  const apiEndpoint = `${API_PATH}/ideas/${ideaId}/images`;
-  const bodyData = {
-    image: {
-      ordering,
-      image: base64,
-    },
-  };
-
-  const ideaImage = await streams.add<IIdeaImage>(apiEndpoint, bodyData);
-  await ideaByIdStream(ideaId).fetch();
-  return ideaImage;
 }

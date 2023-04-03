@@ -19,6 +19,9 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
+// hooks
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
@@ -28,9 +31,6 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
-
-// utils
-import { openSignUpInModal } from 'events/openSignUpInModal';
 
 // events
 import { openVerificationModal } from 'events/verificationModal';
@@ -46,7 +46,6 @@ import { darken } from 'polished';
 
 // typings
 import { LatLng } from 'leaflet';
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 import { getButtonMessage } from './utils';
 import { IPhaseData } from 'services/phases';
 
@@ -109,7 +108,6 @@ interface DataProps {
 interface InputProps extends Omit<ButtonProps, 'onClick'> {
   id?: string;
   projectId: string;
-  phaseId?: string | undefined | null;
   latLng?: LatLng | null;
   inMap?: boolean;
   className?: string;
@@ -124,16 +122,15 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
   ({
     id,
     project,
-    phase,
     phases,
     authUser,
     participationContextType,
-    phaseId,
     projectId,
     inMap,
     className,
     latLng,
     buttonText,
+    phase,
     intl: { formatMessage },
     ...buttonContainerProps
   }) => {
@@ -148,10 +145,48 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       notActivePhase: messages.postingInNonActivePhases,
       maybeNotPermitted: messages.postingMayNotBePermitted,
     };
-    const { enabled, show, disabledReason, action } = getIdeaPostingRules({
-      project,
-      phase,
-      authUser,
+    const { enabled, show, disabledReason, authenticationRequirements } =
+      getIdeaPostingRules({
+        project,
+        phase,
+        authUser,
+      });
+
+    const pcType = participationContextType;
+    const pcId = pcType === 'phase' ? phase?.id : projectId;
+
+    const context = pcId
+      ? ({
+          action: 'posting_idea',
+          id: pcId,
+          type: pcType,
+        } as const)
+      : null;
+
+    const redirectToIdeaForm = () => {
+      if (!isNilOrError(project)) {
+        trackEventByName(tracks.redirectedToIdeaFrom);
+
+        const positionParams = latLng
+          ? { lat: latLng.lat, lng: latLng.lng }
+          : {};
+
+        clHistory.push({
+          pathname: `/projects/${project.attributes.slug}/ideas/new`,
+          search: stringify(
+            {
+              ...positionParams,
+              phase_id: phase?.id,
+            },
+            { addQueryPrefix: true }
+          ),
+        });
+      }
+    };
+
+    const openAuthModal = useOpenAuthModal({
+      onSuccess: redirectToIdeaForm,
+      waitIf: isNilOrError(project),
     });
 
     const onClick = (event: React.MouseEvent) => {
@@ -160,17 +195,20 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       trackEventByName(tracks.postYourIdeaButtonClicked);
 
       // if logged in but not complete user
-      if (action === 'complete_registration') {
-        openSignUpInModal();
+      if (authenticationRequirements === 'complete_registration') {
+        signUp();
       }
 
       // if not logged in
-      if (action === 'sign_in_up' || action === 'sign_in_up_and_verify') {
+      if (
+        authenticationRequirements === 'sign_in_up' ||
+        authenticationRequirements === 'sign_in_up_and_verify'
+      ) {
         signUp();
       }
 
       // if logged in but not verified and verification required
-      if (action === 'verify') {
+      if (authenticationRequirements === 'verify') {
         verify();
       }
 
@@ -180,44 +218,12 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       }
     };
 
-    const redirectToIdeaForm = () => {
-      if (!isNilOrError(project)) {
-        trackEventByName(tracks.redirectedToIdeaFrom);
-
-        const isUserModerator =
-          !isNilOrError(authUser) &&
-          canModerateProject(projectId, { data: authUser });
-
-        const parameters =
-          phaseId && isUserModerator ? `&phase_id=${phaseId}` : '';
-
-        clHistory.push({
-          pathname: `/projects/${project.attributes.slug}/ideas/new`,
-          search: latLng
-            ? stringify(
-                { lat: latLng.lat, lng: latLng.lng },
-                { addQueryPrefix: true }
-              ).concat(parameters)
-            : undefined,
-        });
-      }
-    };
-
     const verify = (event?: React.MouseEvent) => {
       event?.preventDefault();
 
-      const pcType = participationContextType;
-      const pcId = pcType === 'phase' ? phaseId : projectId;
-
-      if (pcId && pcType) {
+      if (context) {
         trackEventByName(tracks.verificationModalOpened);
-        openVerificationModal({
-          context: {
-            action: 'posting_idea',
-            id: pcId,
-            type: pcType,
-          },
-        });
+        openVerificationModal({ context });
       }
     };
 
@@ -233,24 +239,16 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       (flow: 'signup' | 'signin') => (event?: React.MouseEvent) => {
         event?.preventDefault();
 
-        const pcType = participationContextType;
-        const pcId = pcType === 'phase' ? phaseId : projectId;
-        const shouldVerify = action === 'sign_in_up_and_verify';
+        const shouldVerify =
+          authenticationRequirements === 'sign_in_up_and_verify';
 
-        if (isNilOrError(authUser) && !isNilOrError(project)) {
+        if (context) {
           trackEventByName(tracks.signUpInModalOpened);
-          openSignUpInModal({
+
+          openAuthModal({
             flow,
             verification: shouldVerify,
-            verificationContext:
-              shouldVerify && pcId && pcType
-                ? {
-                    action: 'posting_idea',
-                    id: pcId,
-                    type: pcType,
-                  }
-                : undefined,
-            action: () => redirectToIdeaForm(),
+            context,
           });
         }
       };
@@ -364,9 +362,6 @@ const Data = adopt<DataProps, InputProps>({
   phases: ({ projectId, render }) => (
     <GetPhases projectId={projectId}>{render}</GetPhases>
   ),
-  // phase: ({ phaseId, render }) => {
-  //   return <GetPhase id={phaseId}>{render}</GetPhase>
-  // },
 });
 
 const IdeaButtonWithHoC = injectIntl(IdeaButton);

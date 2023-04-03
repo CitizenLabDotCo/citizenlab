@@ -23,7 +23,6 @@ export const PhaseActionForm = ({
   projectId,
 }: PhaseActionFormProps) => {
   const { data: permissions } = usePhasePermissions({ phaseId: phase.id });
-
   if (isNilOrError(permissions)) {
     return null;
   }

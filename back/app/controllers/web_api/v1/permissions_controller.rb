@@ -6,12 +6,12 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def index
     @permissions = policy_scope(Permission)
-      .includes(:permission_scope)
-      .where(permission_scope_id: permission_scope_id)
+      .includes(:permission_scope, :custom_fields, permissions_custom_fields: [:custom_field])
+      .where(permission_scope: permission_scope)
       .order(created_at: :desc)
     @permissions = paginate @permissions
 
-    render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: fastjson_params)
+    render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: fastjson_params, include: %i[permissions_custom_fields custom_fields])
   end
 
   def show
@@ -29,27 +29,31 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def participation_conditions
-    render json: @permission.participation_conditions, status: :ok
+    render json: raw_json({ participation_conditions: @permission.participation_conditions }), status: :ok
   end
 
   def requirements
     authorize @permission
     json_requirements = PermissionsService.new.requirements @permission, current_user
-    render json: json_requirements, status: :ok # TODO: use raw_json
+    render json: raw_json({ requirements: json_requirements }), status: :ok
   end
 
   private
 
   def serialize(permission)
-    WebApi::V1::PermissionSerializer.new(permission, params: fastjson_params).serialized_json
+    WebApi::V1::PermissionSerializer.new(
+      permission,
+      params: fastjson_params,
+      include: %i[permissions_custom_fields custom_fields]
+    ).serialized_json
   end
 
   def set_permission
-    @permission = authorize Permission.find_by!(action: permission_action, permission_scope_id: permission_scope_id)
+    @permission = authorize Permission.find_by!(action: permission_action, permission_scope: permission_scope)
   end
 
-  def permission_scope_id
-    params[params[:parent_param]]
+  def permission_scope
+    PermissionsService.new.permission_scope_from_permissions_params(params)
   end
 
   def permission_action

@@ -11,13 +11,14 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     @users = policy_scope User
 
-    @users = @users.search_by_all(params[:search]) if params[:search].present?
-
+    @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.active unless params[:include_inactive]
     @users = @users.blocked if params[:only_blocked]
-    @users = @users.in_group(Group.find(params[:group])) if params[:group]
+    @users = @users.search_by_all(params[:search]) if params[:search].present?
+
     @users = @users.admin.or(@users.project_moderator(params[:can_moderate_project])) if params[:can_moderate_project].present?
-    @users = @users.admin.or(@users.project_moderator) if params[:can_moderate].present?
+    @users = @users.admin.or(@users.project_moderator).or(@users.project_folder_moderator) if params[:can_moderate].present?
+    @users = @users.not_citizenlab_member if params[:not_citizenlab_member].present?
     @users = @users.admin if params[:can_admin].present?
 
     if params[:search].blank?
@@ -50,6 +51,20 @@ class WebApi::V1::UsersController < ::ApplicationController
     LogActivityJob.perform_later(current_user, 'searched_users', current_user, Time.now.to_i, payload: { search_query: params[:search] }) if params[:search].present?
 
     render json: linked_json(@users, WebApi::V1::UserSerializer, params: fastjson_params)
+  end
+
+  def seats
+    authorize :user, :seats?
+
+    render json: {
+      data: {
+        type: 'seats',
+        attributes: {
+          admins_number: User.billed_admins.count,
+          project_moderators_number: User.billed_moderators.count
+        }
+      }
+    }
   end
 
   def index_xlsx
@@ -132,6 +147,8 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     remove_image_if_requested!(@user, user_params, :avatar)
 
+    @user.reset_confirmation_and_counts if @user.email_changed?
+
     authorize @user
     if @user.save
       SideFxUserService.new.after_update(@user, current_user)
@@ -140,28 +157,6 @@ class WebApi::V1::UsersController < ::ApplicationController
         @user,
         params: fastjson_params(granted_permissions: permissions),
         include: %i[granted_permissions granted_permissions.permission_scope]
-      ).serialized_json, status: :ok
-    else
-      render json: { errors: @user.errors.details }, status: :unprocessable_entity
-    end
-  end
-
-  def complete_registration
-    # NOTE: Authorize fails if registration is already flagged as complete
-    @user = current_user
-    authorize @user
-
-    user_params = permitted_attributes @user
-    user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
-
-    @user.assign_attributes(user_params)
-    @user.complete_registration
-
-    if @user.save
-      SideFxUserService.new.after_update(@user, current_user)
-      render json: WebApi::V1::UserSerializer.new(
-        @user,
-        params: fastjson_params
       ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
@@ -197,7 +192,7 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   def ideas_count
     ideas = policy_scope(IdeasFinder.new({}, scope: @user.ideas.published, current_user: current_user).find_records)
-    render json: { count: ideas.count }, status: :ok
+    render json: raw_json({ count: ideas.count }), status: :ok
   end
 
   def blocked_count
@@ -224,13 +219,13 @@ class WebApi::V1::UsersController < ::ApplicationController
         policy_scope_class: InitiativeCommentPolicy::Scope
       ).count
     end
-    render json: { count: count }, status: :ok
+    render json: raw_json({ count: count }), status: :ok
   end
 
   def update_password
     @user = current_user
     authorize @user
-    if @user.authenticate(params[:user][:current_password])
+    if @user.no_password? || @user.authenticate(params[:user][:current_password])
       if @user.update(password: params[:user][:new_password])
         render json: WebApi::V1::UserSerializer.new(
           @user,
@@ -268,10 +263,9 @@ class WebApi::V1::UsersController < ::ApplicationController
     return false if existing_user.changed?
 
     @user = existing_user
-    @user.reset_confirmation_with_no_password
+    @user.reset_confirmation_and_counts
     return false unless @user.save
 
-    SendConfirmationCode.call(user: @user)
     true
   end
 

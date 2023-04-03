@@ -5,4 +5,6 @@ class WebApi::V1::PermissionSerializer < WebApi::V1::BaseSerializer
 
   belongs_to :permission_scope, polymorphic: true
   has_many :groups
+  has_many :permissions_custom_fields
+  has_many :custom_fields
 end

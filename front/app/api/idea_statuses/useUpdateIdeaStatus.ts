@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import ideaStatusKeys from './keys';
@@ -22,6 +23,7 @@ const useUpdateIdeaStatus = () => {
     mutationFn: updateIdeaStatus,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ideaStatusKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
     },
   });
 };

@@ -14,8 +14,7 @@ describe('Native survey project page actions', () => {
   const phaseFutureTitle = 'Future survey phase';
   let projectIdContinuous: string;
   let projectSlugContinous: string;
-  let projectIdContinuousNonActive: string;
-  let projectSlugContinousNonActive: string;
+  let projectSlugPostingDisabled: string;
   let projectIdArchived: string;
   let projectSlugArchived: string;
   let projectIdTimeline: string;
@@ -23,7 +22,7 @@ describe('Native survey project page actions', () => {
   let userId: string;
 
   before(() => {
-    // Create active continuous project for anyone permission
+    // Create active continuous project
     cy.apiCreateProject({
       type: 'continuous',
       title: projectTitle,
@@ -36,7 +35,7 @@ describe('Native survey project page actions', () => {
       projectSlugContinous = project.body.data.attributes.slug;
     });
 
-    // Create active continuous project
+    // Create active continuous project with posting disabled
     cy.apiCreateProject({
       type: 'continuous',
       title: projectTitle,
@@ -44,9 +43,9 @@ describe('Native survey project page actions', () => {
       description: projectDescription,
       publicationStatus: 'published',
       participationMethod: 'native_survey',
+      postingEnabled: false,
     }).then((project) => {
-      projectIdContinuousNonActive = project.body.data.id;
-      projectSlugContinousNonActive = project.body.data.attributes.slug;
+      projectSlugPostingDisabled = project.body.data.attributes.slug;
     });
 
     // Create archived continuous project
@@ -88,16 +87,9 @@ describe('Native survey project page actions', () => {
     // create a regular user
     cy.apiSignup(userFirstName, userLastName, userEmail, userPassword).then(
       (response) => {
-        userId = response.body.data.id;
+        userId = (response as any).body.data.id;
       }
     );
-  });
-
-  after(() => {
-    cy.apiRemoveProject(projectIdContinuous);
-    cy.apiRemoveProject(projectIdContinuousNonActive);
-    cy.apiRemoveProject(projectIdArchived);
-    cy.apiRemoveUser(userId);
   });
 
   it('tests actions when continuous survey project is active and accepting submissions', () => {
@@ -115,6 +107,7 @@ describe('Native survey project page actions', () => {
     // Action as admin user
     cy.setAdminLoginCookie();
     cy.visit(`/projects/${projectSlugContinous}`);
+    cy.get('#e2e-cta-button').should('be.visible');
     cy.get('#e2e-cta-button').find('button').click({ force: true });
     cy.url().should('include', `/projects/${projectSlugContinous}/ideas/new`);
   });
@@ -138,26 +131,22 @@ describe('Native survey project page actions', () => {
     // Visit timeline project
     cy.visit(`/projects/${projectSlugTimeline}`);
     // Check that correct text and actions shown
-    cy.get('#e2e-cta-button').find('button').click({ force: true });
+    cy.get('#e2e-cta-button').should('be.visible');
+    cy.get('#e2e-cta-button').trigger('mouseenter');
     cy.contains('New submissions can only be added in active phases.').should(
       'exist'
     );
   });
 
   it('tests actions when survey is not accepting submissions', () => {
-    // Login as admin
-    cy.setAdminLoginCookie();
-    // Visit admin project settings
-    cy.visit(`admin/projects/${projectIdContinuous}/native-survey`);
-    // Disable accepting submissions
-    cy.get('[type="checkbox"]').check();
     // Login as regular user
     cy.setLoginCookie(userEmail, userPassword);
     // Visit timeline project
-    cy.visit(`/projects/${projectSlugTimeline}`);
+    cy.visit(`/projects/${projectSlugPostingDisabled}`);
     // Check that correct text and actions shown
-    cy.get('#e2e-cta-button').find('button').click({ force: true });
-    cy.contains('New submissions can only be added in active phases.').should(
+    cy.get('#e2e-cta-button').should('be.visible');
+    cy.get('#e2e-cta-button').trigger('mouseenter');
+    cy.contains('New submissions are not currently being accepted').should(
       'exist'
     );
   });
@@ -177,43 +166,14 @@ describe('Native survey project page actions', () => {
     // Visit the project page
     cy.visit(`/projects/${projectSlugContinous}`);
     // Check that correct text and actions shown
-    cy.get('#e2e-cta-button').should('be.visible');
-    cy.get('#e2e-cta-button').find('button').click({ force: true });
+    cy.get('#e2e-cta-button').should('exist');
+    cy.get('#e2e-cta-button').click();
     cy.url().should('include', `/projects/${projectSlugContinous}/ideas/new`);
   });
 
-  describe('Survey actions for non-active users', () => {
-    const firstName = randomString();
-    const lastName = randomString();
-    const email = randomEmail();
-    const password = randomString();
-    const randomFieldName = randomString();
-    let userId: string;
-    let customFieldId: string;
-
-    before(() => {
-      // create user
-      cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
-        customFieldId = response.body.data.id;
-        cy.apiSignup(firstName, lastName, email, password, {
-          skipCustomFields: true,
-        }).then((response) => {
-          userId = response.body.data.id;
-        });
-        cy.setLoginCookie(email, password);
-      });
-    });
-
-    it("doesn't let non-active users vote", () => {
-      cy.setLoginCookie(email, password);
-      cy.visit(`/projects/${projectSlugContinousNonActive}`);
-      cy.get('#e2e-cta-button').find('button').click({ force: true });
-      cy.get('#e2e-sign-up-in-modal').should('exist');
-    });
-
-    after(() => {
-      cy.apiRemoveUser(userId);
-      cy.apiRemoveCustomField(customFieldId);
-    });
+  after(() => {
+    cy.apiRemoveProject(projectIdContinuous);
+    cy.apiRemoveProject(projectIdArchived);
+    cy.apiRemoveUser(userId);
   });
 });

@@ -10,7 +10,7 @@ export type PhasePermissionsProps = {
 
 const fetchEvents = ({ phaseId }: PhasePermissionsProps) => {
   return fetcher<IPCPermissions>({
-    path: `/projects/${phaseId}/permissions`,
+    path: `/phases/${phaseId}/permissions`,
     action: 'get',
   });
 };

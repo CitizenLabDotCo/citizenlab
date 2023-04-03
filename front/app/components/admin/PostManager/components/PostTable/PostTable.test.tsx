@@ -2,11 +2,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { getIdea } from 'services/ideas';
+import { getIdea } from 'api/ideas/__mocks__/useIdeaById';
 
 // mocking dependencies
 jest.mock('services/globalState');
-jest.mock('services/ideas');
 jest.mock('./Row', () => 'Row');
 jest.mock('./NoPost', () => 'NoPost');
 jest.mock('./header/IdeaHeaderRow', () => 'IdeaHeaderRow');

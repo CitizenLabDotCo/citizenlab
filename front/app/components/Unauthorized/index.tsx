@@ -2,12 +2,9 @@ import React from 'react';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-
-// events
-import { openSignUpInModal } from 'events/openSignUpInModal';
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // styling
-import { colors, fontSizes } from 'utils/styleUtils';
 import { useTheme } from 'styled-components';
 
 // components
@@ -24,6 +21,8 @@ const Unauthorized = () => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
+  const openAuthModal = useOpenAuthModal();
+
   const authUserPending = authUser === undefined;
 
   if (authUserPending) {
@@ -34,14 +33,8 @@ const Unauthorized = () => {
     );
   }
 
-  const signUp = () => {
-    openSignUpInModal({
-      flow: 'signup',
-    });
-  };
-
   const signIn = () => {
-    openSignUpInModal({
+    openAuthModal({
       flow: 'signin',
     });
   };
@@ -64,16 +57,8 @@ const Unauthorized = () => {
             {formatMessage(messages.sorryNoAccess)}
           </Text>
           <Box mb="16px">
-            <Button onClick={signUp} text={formatMessage(messages.signUp)} />
+            <Button onClick={signIn} text={formatMessage(messages.signIn)} />
           </Box>
-          <Button
-            onClick={signIn}
-            buttonStyle="text"
-            textColor={colors.teal400}
-            fontSize={`${fontSizes.l}px`}
-          >
-            {formatMessage(messages.signIn)}
-          </Button>
         </>
       ) : (
         <>

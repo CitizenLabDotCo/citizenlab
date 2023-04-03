@@ -1,8 +1,8 @@
 // Libraries
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { isAdmin, TRole } from 'services/permissions/roles';
 import { includes, get, isArray } from 'lodash-es';
-
+import { isNilOrError } from 'utils/helperUtils';
 // Components
 import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/Pagination';
@@ -13,7 +13,6 @@ import { IUserData, updateUser } from 'services/users';
 
 // Resources
 import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
-import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // Events --- For error handling
 import eventEmitter from 'utils/eventEmitter';
@@ -29,6 +28,8 @@ import messages from './messages';
 
 // Styles
 import styled from 'styled-components';
+import useAuthUser from 'hooks/useAuthUser';
+import Warning from 'components/UI/Warning';
 
 const Container = styled.div`
   flex: 1;
@@ -60,19 +61,31 @@ const SortableTh = ({ sortDirection, onClick, children }: SortableThProps) => (
 interface InputProps {
   selectedUsers: string[] | 'none' | 'all';
   handleSelect: (userId: string) => void;
-  authUser: GetAuthUserChildProps;
+  notCitizenlabMember: boolean;
 }
 
 interface Props extends InputProps, GetUsersChildProps {}
 
-class UsersTable extends PureComponent<Props> {
-  isUserAdmin = (user: IUserData) => {
-    return isAdmin({ data: user });
-  };
+const UsersTable = ({
+  usersList,
+  sortAttribute,
+  sortDirection,
+  currentPage,
+  lastPage,
+  selectedUsers,
+  handleSelect,
+  onChangePage,
+  onChangeSorting,
+  notCitizenlabMember,
+}: Props) => {
+  const authUser = useAuthUser();
 
-  handleAdminRoleOnChange = (user: IUserData) => () => {
+  if (isNilOrError(authUser)) {
+    return null;
+  }
+
+  const handleAdminRoleOnChange = (user: IUserData) => () => {
     let newRoles: TRole[] = [];
-    const { authUser } = this.props;
 
     trackEventByName(tracks.adminToggle.name);
 
@@ -94,110 +107,108 @@ class UsersTable extends PureComponent<Props> {
     }
   };
 
-  handleSortingOnChange = (sortAttribute: SortAttribute) => () => {
+  const handleSortingOnChange = (sortAttribute: SortAttribute) => () => {
     trackEventByName(tracks.sortChange.name, {
       extra: {
         sortAttribute,
       },
     });
-    this.props.onChangeSorting(sortAttribute);
+    onChangeSorting(sortAttribute);
   };
 
-  handlePaginationClick = (pageNumber: number) => {
+  const handlePaginationClick = (pageNumber: number) => {
     trackEventByName(tracks.pagination.name);
-    this.props.onChangePage(pageNumber);
+    onChangePage(pageNumber);
   };
 
-  handleUserToggle = (userId: string) => () => {
+  const handleUserToggle = (userId: string) => () => {
     trackEventByName(tracks.toggleOneUser.name);
-    this.props.handleSelect(userId);
+    handleSelect(userId);
   };
 
-  render() {
-    const {
-      usersList,
-      sortAttribute,
-      sortDirection,
-      currentPage,
-      lastPage,
-      selectedUsers,
-    } = this.props;
-    const usersCount = isArray(usersList) && usersList.length;
+  const usersCount = isArray(usersList) && usersList.length;
 
-    if (isArray(usersList) && usersCount && usersCount > 0) {
-      return (
-        <Container className="e2e-user-table">
-          <Table mt="20px">
-            <Thead>
-              <Tr>
-                <Th />
-                <Th />
-                <SortableTh
-                  sortDirection={
-                    sortAttribute === 'last_name' ? sortDirection : undefined
-                  }
-                  onClick={this.handleSortingOnChange('last_name')}
-                >
-                  <FormattedMessage {...messages.name} />
-                </SortableTh>
-                <SortableTh
-                  sortDirection={
-                    sortAttribute === 'email' ? sortDirection : undefined
-                  }
-                  onClick={this.handleSortingOnChange('email')}
-                >
-                  <FormattedMessage {...messages.email} />
-                </SortableTh>
-                <SortableTh
-                  sortDirection={
-                    sortAttribute === 'created_at' ? sortDirection : undefined
-                  }
-                  onClick={this.handleSortingOnChange('created_at')}
-                >
-                  <FormattedMessage {...messages.since} />
-                </SortableTh>
-                <SortableTh
-                  sortDirection={
-                    sortAttribute === 'role' ? sortDirection : undefined
-                  }
-                  onClick={this.handleSortingOnChange('role')}
-                >
-                  <FormattedMessage {...messages.admin} />
-                </SortableTh>
-                <Th>
-                  <Uppercase>
-                    <FormattedMessage tagName="div" {...messages.options} />
-                  </Uppercase>
-                </Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {usersList.map((user) => (
-                <UserTableRow
-                  key={user.id}
-                  user={user}
-                  selected={
-                    selectedUsers === 'all' || includes(selectedUsers, user.id)
-                  }
-                  toggleSelect={this.handleUserToggle(user.id)}
-                  toggleAdmin={this.handleAdminRoleOnChange(user)}
-                  authUser={this.props.authUser}
-                />
-              ))}
-            </Tbody>
-          </Table>
+  if (isArray(usersList) && usersCount && usersCount > 0) {
+    return (
+      <Container className="e2e-user-table">
+        {process.env.NODE_ENV === 'development' && notCitizenlabMember && (
+          <Warning>
+            <span>
+              <b>@citizenlab.co</b> email addresses are not included as admins &
+              managers.
+            </span>
+          </Warning>
+        )}
+        <Table mt="20px">
+          <Thead>
+            <Tr>
+              <Th />
+              <Th />
+              <SortableTh
+                sortDirection={
+                  sortAttribute === 'last_name' ? sortDirection : undefined
+                }
+                onClick={handleSortingOnChange('last_name')}
+              >
+                <FormattedMessage {...messages.name} />
+              </SortableTh>
+              <SortableTh
+                sortDirection={
+                  sortAttribute === 'email' ? sortDirection : undefined
+                }
+                onClick={handleSortingOnChange('email')}
+              >
+                <FormattedMessage {...messages.email} />
+              </SortableTh>
+              <SortableTh
+                sortDirection={
+                  sortAttribute === 'created_at' ? sortDirection : undefined
+                }
+                onClick={handleSortingOnChange('created_at')}
+              >
+                <FormattedMessage {...messages.since} />
+              </SortableTh>
+              <SortableTh
+                sortDirection={
+                  sortAttribute === 'role' ? sortDirection : undefined
+                }
+                onClick={handleSortingOnChange('role')}
+              >
+                <FormattedMessage {...messages.status} />
+              </SortableTh>
+              <Th>
+                <Uppercase>
+                  <FormattedMessage tagName="div" {...messages.options} />
+                </Uppercase>
+              </Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {usersList.map((user) => (
+              <UserTableRow
+                key={user.id}
+                user={user}
+                selected={
+                  selectedUsers === 'all' || includes(selectedUsers, user.id)
+                }
+                toggleSelect={handleUserToggle(user.id)}
+                toggleAdmin={handleAdminRoleOnChange(user)}
+                authUser={authUser}
+              />
+            ))}
+          </Tbody>
+        </Table>
 
-          <StyledPagination
-            currentPage={currentPage || 1}
-            totalPages={lastPage || 1}
-            loadPage={this.handlePaginationClick}
-          />
-        </Container>
-      );
-    }
-
-    return null;
+        <StyledPagination
+          currentPage={currentPage || 1}
+          totalPages={lastPage || 1}
+          loadPage={handlePaginationClick}
+        />
+      </Container>
+    );
   }
-}
+
+  return null;
+};
 
 export default UsersTable;

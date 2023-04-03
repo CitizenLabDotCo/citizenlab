@@ -1,21 +1,24 @@
+import { QueryKeys } from 'utils/cl-react-query/types';
 import { IQueryParameters } from './types';
 
+const baseKey = {
+  type: 'initiative',
+};
+
 const initiativesKeys = {
-  all: () => [{ type: 'initiative' }],
-  lists: () => [{ ...initiativesKeys.all()[0], operation: 'list' }],
-  list: (filters: IQueryParameters) => [
-    { ...initiativesKeys.lists()[0], ...filters },
+  all: () => [baseKey],
+  lists: () => [{ ...baseKey, operation: 'list' }],
+  list: (parameters: IQueryParameters) => [
+    { ...baseKey, operation: 'list', parameters },
   ],
-  infiniteList: (filters: IQueryParameters) => [
-    { ...initiativesKeys.lists()[0], queryType: 'infitite', ...filters },
-  ],
-  items: () => [{ ...initiativesKeys.all()[0], operation: 'item' }],
-  item: (id: string) => [
+  items: () => [{ ...baseKey, operation: 'item' }],
+  item: ({ id, slug }: { id?: string; slug?: string }) => [
     {
-      ...initiativesKeys.items()[0],
-      id,
+      ...baseKey,
+      operation: 'item',
+      parameters: { id, slug },
     },
   ],
-};
+} satisfies QueryKeys;
 
 export default initiativesKeys;
