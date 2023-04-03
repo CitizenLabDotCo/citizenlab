@@ -119,7 +119,7 @@ const CommentingInitiativesDisabled = () => {
             completeRegistrationLink: (
               <button
                 onClick={() => {
-                  openSignUpInModal();
+                  openAuthModal();
                 }}
               >
                 <FormattedMessage {...messages.completeRegistrationLinkText} />
