@@ -128,6 +128,8 @@ const UserTableRow = ({
       setShowModal(true);
       return;
     }
+
+    // We pass in the user along with whether to change that user to a normal user or admin. We are not toggling because the user passed in could have other roles or be a moderator
     changeRoles(user, changeToNormalUser);
   };
 
