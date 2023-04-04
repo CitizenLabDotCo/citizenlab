@@ -7,6 +7,8 @@ import { isCollaborator } from 'services/permissions/roles';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useSeats from 'api/seats/useSeats';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -20,6 +22,9 @@ import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
 
 // Style
 import styled from 'styled-components';
+
+// utils
+import { isNil } from 'utils/helperUtils';
 
 const AddButton = styled(Button)`
   flex-grow: 0;
@@ -40,6 +45,16 @@ const UserSearch = memo(({ projectId }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [moderatorToAdd, setModeratorToAdd] =
     useState<UserOptionTypeBase | null>(null);
+
+  const { data: appConfiguration } = useAppConfiguration();
+  const { data: seats } = useSeats();
+  if (!appConfiguration || !seats) return null;
+
+  const maximumAdmins =
+    appConfiguration.data.attributes.settings.core.maximum_admins_number;
+  const currentAdminSeats = seats.data.attributes.admins_number;
+  const hasReachedOrIsOverLimit =
+    !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins;
 
   const closeModal = () => {
     setShowModal(false);
@@ -65,7 +80,11 @@ const UserSearch = memo(({ projectId }: Props) => {
   const handleAddClick = () => {
     const isSelectedUserAModerator =
       moderatorToAdd && isCollaborator({ data: moderatorToAdd });
-    if (hasSeatBasedBillingEnabled && !isSelectedUserAModerator) {
+    const shouldOpenModal =
+      hasSeatBasedBillingEnabled &&
+      hasReachedOrIsOverLimit &&
+      !isSelectedUserAModerator;
+    if (shouldOpenModal) {
       openModal();
     } else {
       handleOnAddModeratorsClick();
