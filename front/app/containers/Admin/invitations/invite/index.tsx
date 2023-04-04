@@ -717,14 +717,16 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
           </SectionField>
         </Section>
       </form>
-      <InviteUsersWithSeatsModal
-        inviteUsers={onSubmit}
-        showModal={showModal}
-        closeModal={closeModal}
-        //TODO: At the moment this number only includes manually added emails. We need to handle emails from the uploaded file as well when that ticket is completed.
-        noOfSeatsToAdd={selectedEmails?.split(',').length || 0}
-        seatType={inviteesWillHaveAdminRights ? 'admin' : 'collaborator'}
-      />
+      {hasSeatBasedBillingEnabled && (
+        <InviteUsersWithSeatsModal
+          inviteUsers={onSubmit}
+          showModal={showModal}
+          closeModal={closeModal}
+          //TODO: At the moment this number only includes manually added emails. We need to handle emails from the uploaded file as well when that ticket is completed.
+          noOfSeatsToAdd={selectedEmails?.split(',').length || 0}
+          seatType={inviteesWillHaveAdminRights ? 'admin' : 'collaborator'}
+        />
+      )}
     </>
   );
 };
