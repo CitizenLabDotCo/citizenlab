@@ -73,4 +73,4 @@ export const builtInFieldKeys = [
   'topic_ids',
 ];
 
-export type BuiltInKeyType = typeof builtInFieldKeys[number];
+export type BuiltInKeyType = (typeof builtInFieldKeys)[number];

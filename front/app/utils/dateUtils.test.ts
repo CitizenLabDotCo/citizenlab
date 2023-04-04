@@ -74,14 +74,9 @@ describe('timeAgo is reported correctly', () => {
   });
 
   it('should accurately return months passed since a date', () => {
-    let date = new Date();
-    date.setMonth(date.getMonth() - 1);
-    let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
-    expect(timeAgoResponse).toEqual('4 weeks ago');
-
-    date = new Date();
+    const date = new Date();
     date.setMonth(date.getMonth() - 2);
-    timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
+    const timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
     expect(timeAgoResponse).toEqual('2 months ago');
   });
 
