@@ -51,7 +51,7 @@ const HeaderContent = ({
 }: Props & WrappedComponentProps) => {
   const homepageSettings = useHomepageSettings();
   const localize = useLocalize();
-  const isTablet = useBreakpoint('tablet');
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
   const signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
@@ -78,7 +78,8 @@ const HeaderContent = ({
       ? homepageAttributes.header_bg.large
       : null;
     const hideAvatarsForThisLayout =
-      isTablet && homepageAttributes.banner_layout === 'fixed_ratio_layout';
+      isSmallerThanTablet &&
+      homepageAttributes.banner_layout === 'fixed_ratio_layout';
     const displayHeaderAvatars =
       homepageAttributes.banner_avatars_enabled && !hideAvatarsForThisLayout;
 
@@ -109,7 +110,7 @@ const HeaderContent = ({
 
         {displayHeaderAvatars && <StyledAvatarBubbles />}
 
-        <CTA signedIn={false} buttonStyle={buttonStyle} signUpIn={signUpIn} />
+        <CTA buttonStyle={buttonStyle} signUpIn={signUpIn} />
       </Container>
     );
   }

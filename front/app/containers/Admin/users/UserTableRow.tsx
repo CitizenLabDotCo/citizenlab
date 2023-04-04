@@ -1,6 +1,6 @@
 // Libraries
 import React, { useEffect, useState } from 'react';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin, isCollaborator } from 'services/permissions/roles';
 import moment from 'moment';
 
 // Components
@@ -35,6 +35,9 @@ import { colors } from 'utils/styleUtils';
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+// Utils
+import clHistory from 'utils/cl-router/history';
+
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
 `;
@@ -53,7 +56,7 @@ interface Props {
   user: IUserData;
   selected: boolean;
   toggleSelect: () => void;
-  toggleAdmin: () => void;
+  changeRoles: (user: IUserData, changeToNormalUser: boolean) => void;
   authUser: GetAuthUserChildProps;
 }
 
@@ -75,11 +78,12 @@ const UserTableRow = ({
   user,
   selected,
   toggleSelect,
-  toggleAdmin,
+  changeRoles,
   authUser,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [isUserAdmin, setUserIsAdmin] = useState(isAdmin({ data: user }));
+  const isUserCollaborator = isCollaborator({ data: user });
   const [registeredAt, setRegisteredAt] = useState(
     moment(user.attributes.registration_completed_at).format('LL')
   );
@@ -96,6 +100,9 @@ const UserTableRow = ({
   const openChangeSeatModal = () => {
     setShowChangeSeatModal(true);
   };
+
+  const [isChangingToNormalUser, setIsChangingToNormalUser] =
+    useState<boolean>(false);
 
   useEffect(() => {
     setUserIsAdmin(isAdmin({ data: user }));
@@ -143,20 +150,43 @@ const UserTableRow = ({
         ]
       : [];
 
-  const setAsAdminAction: IAction = {
-    handler: openChangeSeatModal,
-    label: formatMessage(messages.setAsAdmin),
-    icon: 'shield-checkered' as const,
-  };
+  const getSeatChangeActions = () => {
+    const setAsAdminAction: IAction = {
+      handler: () => {
+        setIsChangingToNormalUser(false);
+        openChangeSeatModal();
+      },
+      label: formatMessage(messages.setAsAdmin),
+      icon: 'shield-checkered' as const,
+    };
 
-  const setAsNormalUserAction: IAction = {
-    handler: openChangeSeatModal,
-    label: formatMessage(messages.setAsNormalUser),
-    icon: 'user-circle' as const,
+    const setAsNormalUserAction: IAction = {
+      handler: () => {
+        setIsChangingToNormalUser(true);
+        openChangeSeatModal();
+      },
+      label: formatMessage(messages.setAsNormalUser),
+      icon: 'user-circle' as const,
+    };
+
+    if (isUserAdmin) {
+      return [setAsNormalUserAction];
+    } else if (isUserCollaborator) {
+      return [setAsNormalUserAction, setAsAdminAction];
+    } else {
+      return [setAsAdminAction];
+    }
   };
 
   const actions: IAction[] = [
-    ...(isUserAdmin ? [setAsNormalUserAction] : [setAsAdminAction]),
+    {
+      handler: () => {
+        clHistory.push(`/profile/${user.attributes.slug}`);
+      },
+      label: formatMessage(messages.seeProfile),
+      icon: 'eye' as const,
+    },
+    ...getSeatChangeActions(),
     {
       handler: () => {
         handleDeleteClick();
@@ -225,9 +255,10 @@ const UserTableRow = ({
       <ChangeSeatModal
         user={user}
         isUserAdmin={isUserAdmin}
-        toggleAdmin={toggleAdmin}
+        changeRoles={changeRoles}
         showModal={showChangeSeatModal}
         closeModal={closeChangeSeatModal}
+        isChangingToNormalUser={isChangingToNormalUser}
       />
     </Tr>
   );

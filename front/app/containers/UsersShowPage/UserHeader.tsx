@@ -58,7 +58,7 @@ interface Props {
 const UserHeader = ({ userSlug }: Props) => {
   const authUser = useAuthUser();
   const user = useUser({ slug: userSlug });
-  const isTablet = useBreakpoint('tablet');
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const hideBio = useFeatureFlag({ name: 'disable_user_bios' });
   const isUserBlockingEnabled = useFeatureFlag({
     name: 'user_blocking',
@@ -104,11 +104,11 @@ const UserHeader = ({ userSlug }: Props) => {
     <Box
       bgColor="white"
       width="100%"
-      p={isTablet ? '20px 20px 35px' : '30px 0px 70px'}
+      p={isSmallerThanTablet ? '20px 20px 35px' : '30px 0px 70px'}
       data-testid="userHeader"
     >
       <Box w="100%" display="flex" justifyContent="center" mb="40px">
-        <Avatar userId={user.id} size={isTablet ? 120 : 150} />
+        <Avatar userId={user.id} size={isSmallerThanTablet ? 120 : 150} />
       </Box>
 
       <Box
@@ -147,15 +147,17 @@ const UserHeader = ({ userSlug }: Props) => {
         <Text color="tenantText">
           {formatMessage(messages.memberSince, { date: memberSinceMoment })}
         </Text>
-        {!hideBio && !isEmpty(user.attributes.bio_multiloc) && hasDescription && (
-          <Bio data-testid="userHeaderBio">
-            <QuillEditedContent>
-              {user.attributes.bio_multiloc && (
-                <T value={user.attributes.bio_multiloc} supportHtml={true} />
-              )}
-            </QuillEditedContent>
-          </Bio>
-        )}
+        {!hideBio &&
+          !isEmpty(user.attributes.bio_multiloc) &&
+          hasDescription && (
+            <Bio data-testid="userHeaderBio">
+              <QuillEditedContent>
+                {user.attributes.bio_multiloc && (
+                  <T value={user.attributes.bio_multiloc} supportHtml={true} />
+                )}
+              </QuillEditedContent>
+            </Bio>
+          )}
         {!isNilOrError(authUser) && authUser.id === user.id && (
           <Button
             linkTo="/profile/edit"

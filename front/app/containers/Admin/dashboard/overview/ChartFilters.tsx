@@ -39,7 +39,7 @@ const ChartFilters = ({
   onChangeResolution,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const smallerThanSmallDesktop = useBreakpoint('smallDesktop');
+  const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
 
   return (
     <Box
@@ -48,9 +48,9 @@ const ChartFilters = ({
       mt="-10px"
       mb="20px"
       justifyContent="space-between"
-      flexDirection={smallerThanSmallDesktop ? 'column' : 'row'}
+      flexDirection={isSmallerThanSmallDesktop ? 'column' : 'row'}
     >
-      <Box display="flex" mb={smallerThanSmallDesktop ? '12px' : undefined}>
+      <Box display="flex" mb={isSmallerThanSmallDesktop ? '12px' : undefined}>
         <TimeControl
           startAtMoment={startAtMoment}
           endAtMoment={endAtMoment}

@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import initiativeImagesKeys from './keys';
 import { IInitiativeImages, InitiativeImagesKeys } from './types';
 
-const fetchInitiativeImages = (initiativeId: string) =>
+const fetchInitiativeImages = ({ initiativeId }: { initiativeId: string }) =>
   fetcher<IInitiativeImages>({
     path: `/initiatives/${initiativeId}/images`,
     action: 'get',
@@ -17,8 +17,8 @@ const useInitiativeImages = (initiativeId: string) => {
     IInitiativeImages,
     InitiativeImagesKeys
   >({
-    queryKey: initiativeImagesKeys.list(initiativeId),
-    queryFn: () => fetchInitiativeImages(initiativeId),
+    queryKey: initiativeImagesKeys.list({ initiativeId }),
+    queryFn: () => fetchInitiativeImages({ initiativeId }),
   });
 };
 

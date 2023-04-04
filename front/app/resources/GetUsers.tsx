@@ -34,6 +34,7 @@ export interface InputProps {
   canAdmin?: boolean;
   onlyBlocked?: boolean;
   notCitizenlabMember?: boolean;
+  includeInactive?: boolean;
 }
 
 interface IQueryParameters {
@@ -47,6 +48,7 @@ interface IQueryParameters {
   can_admin?: boolean;
   only_blocked?: boolean;
   not_citizenlab_member?: boolean;
+  include_inactive?: boolean;
 }
 
 type children = (obj: GetUsersChildProps) => JSX.Element | null;
@@ -93,6 +95,7 @@ export default class GetUsers extends React.Component<Props, State> {
         can_admin: undefined,
         only_blocked: undefined,
         not_citizenlab_member: undefined,
+        include_inactive: undefined,
       },
       usersList: undefined,
       sortAttribute: getSortAttribute<Sort, SortAttribute>(initialSort),
@@ -173,6 +176,7 @@ export default class GetUsers extends React.Component<Props, State> {
           can_admin: props.canAdmin,
           only_blocked: props.onlyBlocked,
           not_citizenlab_member: props.notCitizenlabMember,
+          include_inactive: props.includeInactive,
         },
         isNil
       ),

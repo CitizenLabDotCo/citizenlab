@@ -39,8 +39,8 @@ const ProjectsTabPanel = ({
   layout,
   hasMore,
 }: Props) => {
-  const isTablet = useBreakpoint('tablet');
-  const isLargerThanTablet = !isTablet;
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const isLargerThanTablet = !isSmallerThanTablet;
   const [cardSizes, setCardSizes] = useState<TCardSize[]>([]);
 
   useEffect(() => {

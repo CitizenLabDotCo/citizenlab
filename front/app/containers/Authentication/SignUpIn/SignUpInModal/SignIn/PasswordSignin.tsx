@@ -221,8 +221,8 @@ const PasswordSignin = ({
     azureAdLoginEnabled,
     franceconnectLoginEnabled,
   ].filter((provider) => provider === true);
-  const tabletOrSmaller = useBreakpoint('tablet');
-  const isDesktop = !tabletOrSmaller;
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const isDesktop = !isSmallerThanTablet;
 
   return (
     <Container
