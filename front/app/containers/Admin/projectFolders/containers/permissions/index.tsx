@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isNil } from 'utils/helperUtils';
 
 // services
 import useProjectFolderModerators from 'hooks/useProjectFolderModerators';
@@ -27,6 +28,10 @@ import AddCollaboratorsModal from 'components/admin/AddCollaboratorsModal';
 import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
 import SeatInfo from 'components/SeatInfo';
 
+// Hooks
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useSeats from 'api/seats/useSeats';
+
 const StyledA = styled.a`
   &:hover {
     text-decoration: underline;
@@ -49,6 +54,16 @@ const FolderPermissions = () => {
   const [showModal, setShowModal] = useState(false);
   const [moderatorToAdd, setModeratorToAdd] =
     useState<UserOptionTypeBase | null>(null);
+
+  const { data: appConfiguration } = useAppConfiguration();
+  const { data: seats } = useSeats();
+  if (!appConfiguration || !seats) return null;
+
+  const maximumAdmins =
+    appConfiguration.data.attributes.settings.core.maximum_admins_number;
+  const currentAdminSeats = seats.data.attributes.admins_number;
+  const hasReachedOrIsOverLimit =
+    !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins;
 
   const closeModal = () => {
     setShowModal(false);
@@ -74,7 +89,11 @@ const FolderPermissions = () => {
   const handleAddClick = () => {
     const isSelectedUserAModerator =
       moderatorToAdd && isCollaborator({ data: moderatorToAdd });
-    if (hasSeatBasedBillingEnabled && !isSelectedUserAModerator) {
+    const shouldOpenModal =
+      hasSeatBasedBillingEnabled &&
+      hasReachedOrIsOverLimit &&
+      !isSelectedUserAModerator;
+    if (shouldOpenModal) {
       setShowModal(true);
     } else {
       handleOnAddFolderModeratorsClick();
