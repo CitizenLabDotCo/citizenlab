@@ -143,7 +143,7 @@ class PermissionsService
         last_name: 'dont_ask',
         email: 'dont_ask'
       },
-      custom_fields: requirements_fields(permission).map(&:key).index_with { 'dont_ask' },
+      custom_fields: requirements_fields(permission).to_h { |field| [field.key, (field.required ? 'require' : 'dont_ask')] },
       special: {
         password: 'dont_ask',
         confirmation: 'dont_ask'
@@ -162,10 +162,7 @@ class PermissionsService
         users[:built_in][:first_name] = 'require'
         users[:built_in][:last_name] = 'require'
         users[:built_in][:email] = 'require'
-        required_field_keys = requirements_fields(permission).required.map(&:key)
-        users[:custom_fields].each_key do |key|
-          users[:custom_fields][key] = (required_field_keys.include?(key) ? 'require' : 'ask')
-        end
+        users[:custom_fields].transform_values { |requirement| requirement == 'dont_ask' ? 'ask' : requirement }
         users[:special][:password] = 'require'
         users[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
       end

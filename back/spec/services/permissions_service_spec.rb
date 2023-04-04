@@ -360,11 +360,40 @@ describe PermissionsService do
       )
     end
 
+    context 'when global_custom_fields is true' do
+      let(:permission) { create :permission, global_custom_fields: true }
+
+      it 'uses the global registration fields' do
+        field = CustomField.find_by(code: 'birthyear')
+        create :permissions_custom_field, permission: permission, custom_field: field, required: !field.required
+        expect(service.requirements(permission.reload, nil).dig(:requirements, :custom_fields)).to eq({
+          'birthyear' => 'require',
+          'gender' => 'dont_ask',
+          'extra_required_field' => 'require',
+          'extra_optional_field' => 'dont_ask'
+        })
+      end
+    end
+
+    context 'when global_custom_fields is false' do
+      let(:permission) { create :permission, global_custom_fields: false }
+
+      it 'uses the global registration fields' do
+        field = CustomField.find_by(code: 'birthyear')
+        create :permissions_custom_field, permission: permission, custom_field: field, required: !field.required
+        expect(service.requirements(permission.reload, nil).dig(:requirements, :custom_fields)).to eq({
+          'birthyear' => 'dont_ask'
+        })
+      end
+    end
+
     context 'when permitted_by is set to everyone_confirmed_email' do
-      let(:permission) { create :permission, permitted_by: 'everyone_confirmed_email', global_custom_fields: true }
+      let(:permission) { create :permission, permitted_by: 'everyone_confirmed_email', global_custom_fields: false }
 
       before do
         SettingsService.new.activate_feature! 'user_confirmation'
+        field = CustomField.find_by code: 'birthyear'
+        create :permissions_custom_field, permission: permission, custom_field: field, required: false
       end
 
       it 'does not permit a visitor' do
@@ -377,10 +406,7 @@ describe PermissionsService do
               email: 'require'
             },
             custom_fields: {
-              'birthyear' => 'dont_ask',
-              'gender' => 'dont_ask',
-              'extra_required_field' => 'dont_ask',
-              'extra_optional_field' => 'dont_ask'
+              'birthyear' => 'dont_ask'
             },
             special: {
               password: 'dont_ask',
@@ -402,10 +428,7 @@ describe PermissionsService do
               email: 'satisfied'
             },
             custom_fields: {
-              'birthyear' => 'dont_ask',
-              'gender' => 'dont_ask',
-              'extra_required_field' => 'dont_ask',
-              'extra_optional_field' => 'dont_ask'
+              'birthyear' => 'dont_ask'
             },
             special: {
               password: 'dont_ask',
@@ -415,7 +438,7 @@ describe PermissionsService do
         })
       end
 
-      it 'permits a light confirmed resident' do
+      it 'does not permit a light confirmed resident' do
         user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
         expect(service.requirements(permission, user)).to eq({
           permitted: true,
@@ -426,10 +449,7 @@ describe PermissionsService do
               email: 'satisfied'
             },
             custom_fields: {
-              'birthyear' => 'dont_ask',
-              'gender' => 'dont_ask',
-              'extra_required_field' => 'dont_ask',
-              'extra_optional_field' => 'dont_ask'
+              'birthyear' => 'dont_ask'
             },
             special: {
               password: 'dont_ask',
@@ -450,10 +470,7 @@ describe PermissionsService do
               email: 'satisfied'
             },
             custom_fields: {
-              'birthyear' => 'satisfied',
-              'gender' => 'satisfied',
-              'extra_required_field' => 'satisfied',
-              'extra_optional_field' => 'satisfied'
+              'birthyear' => 'satisfied'
             },
             special: {
               password: 'satisfied',
@@ -473,10 +490,7 @@ describe PermissionsService do
               email: 'satisfied'
             },
             custom_fields: {
-              'birthyear' => 'satisfied',
-              'gender' => 'satisfied',
-              'extra_required_field' => 'satisfied',
-              'extra_optional_field' => 'satisfied'
+              'birthyear' => 'satisfied'
             },
             special: {
               password: 'satisfied',
@@ -498,10 +512,7 @@ describe PermissionsService do
               email: 'satisfied'
             },
             custom_fields: {
-              'birthyear' => 'satisfied',
-              'gender' => 'satisfied',
-              'extra_required_field' => 'satisfied',
-              'extra_optional_field' => 'satisfied'
+              'birthyear' => 'satisfied'
             },
             special: {
               password: 'satisfied',
@@ -522,10 +533,7 @@ describe PermissionsService do
               email: 'satisfied'
             },
             custom_fields: {
-              'birthyear' => 'satisfied',
-              'gender' => 'satisfied',
-              'extra_required_field' => 'satisfied',
-              'extra_optional_field' => 'satisfied'
+              'birthyear' => 'satisfied'
             },
             special: {
               password: 'satisfied',
