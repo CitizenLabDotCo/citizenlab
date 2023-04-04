@@ -11,6 +11,7 @@ import {
   addFolderModerator,
   deleteFolderModerator,
 } from 'services/projectFolderModerators';
+import { isCollaborator } from 'services/permissions/roles';
 
 // i18n
 import messages from './messages';
@@ -23,7 +24,7 @@ import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 import AddCollaboratorsModal from 'components/admin/AddCollaboratorsModal';
-import UserSelect from 'components/UI/UserSelect';
+import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
 import SeatInfo from 'components/SeatInfo';
 
 const StyledA = styled.a`
@@ -46,20 +47,21 @@ const FolderPermissions = () => {
   const folderModerators = useProjectFolderModerators(projectFolderId);
   const [processing, setProcessing] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [moderatorToAdd, setModeratorToAdd] = useState<string | null>(null);
+  const [moderatorToAdd, setModeratorToAdd] =
+    useState<UserOptionTypeBase | null>(null);
 
   const closeModal = () => {
     setShowModal(false);
   };
 
-  const handleOnChange = (userId: string) => {
-    setModeratorToAdd(userId);
+  const handleOnChange = (user?: UserOptionTypeBase) => {
+    setModeratorToAdd(user || null);
   };
 
   const handleOnAddFolderModeratorsClick = async () => {
     if (moderatorToAdd) {
       setProcessing(true);
-      await addFolderModerator(projectFolderId, moderatorToAdd);
+      await addFolderModerator(projectFolderId, moderatorToAdd.id);
       setProcessing(false);
       setModeratorToAdd(null);
     }
@@ -70,7 +72,9 @@ const FolderPermissions = () => {
   };
 
   const handleAddClick = () => {
-    if (hasSeatBasedBillingEnabled) {
+    const isSelectedUserAModerator =
+      moderatorToAdd && isCollaborator({ data: moderatorToAdd });
+    if (hasSeatBasedBillingEnabled && !isSelectedUserAModerator) {
       setShowModal(true);
     } else {
       handleOnAddFolderModeratorsClick();
@@ -115,7 +119,7 @@ const FolderPermissions = () => {
               <UserSelect
                 id="folderModeratorUserSearch"
                 inputId="folderModeratorUserSearchInputId"
-                selectedUserId={moderatorToAdd}
+                selectedUserId={moderatorToAdd?.id || null}
                 onChange={handleOnChange}
                 placeholder={formatMessage(messages.searchFolderManager)}
                 hideAvatar

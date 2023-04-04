@@ -3,6 +3,7 @@ import React, { memo, useState } from 'react';
 
 // Services
 import { addProjectModerator } from 'services/projectModerators';
+import { isCollaborator } from 'services/permissions/roles';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -15,7 +16,8 @@ import messages from './messages';
 import Button from 'components/UI/Button';
 import AddCollaboratorsModal from 'components/admin/AddCollaboratorsModal';
 import { Box } from '@citizenlab/cl2-component-library';
-import UserSelect from 'components/UI/UserSelect';
+import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
+
 // Style
 import styled from 'styled-components';
 
@@ -36,7 +38,8 @@ const UserSearch = memo(({ projectId }: Props) => {
   });
   const [processing, setProcessing] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [moderatorToAdd, setModeratorToAdd] = useState<string | null>(null);
+  const [moderatorToAdd, setModeratorToAdd] =
+    useState<UserOptionTypeBase | null>(null);
 
   const closeModal = () => {
     setShowModal(false);
@@ -46,21 +49,23 @@ const UserSearch = memo(({ projectId }: Props) => {
     setShowModal(true);
   };
 
-  const handleOnChange = (userId: string) => {
-    setModeratorToAdd(userId);
+  const handleOnChange = (user?: UserOptionTypeBase) => {
+    setModeratorToAdd(user || null);
   };
 
   const handleOnAddModeratorsClick = async () => {
     if (moderatorToAdd) {
       setProcessing(true);
-      await addProjectModerator(projectId, moderatorToAdd);
+      await addProjectModerator(projectId, moderatorToAdd.id);
       setProcessing(false);
       setModeratorToAdd(null);
     }
   };
 
   const handleAddClick = () => {
-    if (hasSeatBasedBillingEnabled) {
+    const isSelectedUserAModerator =
+      moderatorToAdd && isCollaborator({ data: moderatorToAdd });
+    if (hasSeatBasedBillingEnabled && !isSelectedUserAModerator) {
       openModal();
     } else {
       handleOnAddModeratorsClick();
@@ -74,7 +79,7 @@ const UserSearch = memo(({ projectId }: Props) => {
           <UserSelect
             id="projectModeratorUserSearch"
             inputId="projectModeratorUserSearchInputId"
-            selectedUserId={moderatorToAdd}
+            selectedUserId={moderatorToAdd?.id || null}
             onChange={handleOnChange}
             placeholder={formatMessage(messages.searchUsers)}
             hideAvatar
