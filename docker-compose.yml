@@ -1,6 +1,12 @@
 version: "3.8"
 
 services:
+  redis:
+    image: "redis:7-alpine"
+    ports:
+      - 6379
+    volumes:
+      - "./tmp/redis_data:/var/lib/redis/data"
   postgres:
     image: "postgis/postgis:12-3.1"
     environment:
@@ -17,6 +23,7 @@ services:
       - "postgres"
       - "mailcatcher"
       - "rabbitmq"
+      - "redis"
       # - 'memcached'
     build:
       context: .
