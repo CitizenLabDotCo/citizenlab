@@ -19,7 +19,7 @@ AppConfiguration.create!(
   ).deep_merge({
     core: {
       organization_name: { 'en' => Faker::Address.city },
-      timezone: ENV.fetch('CL_SETTINGS_CORE_TIMEZONE', 'Brussels'),
+      timezone: ENV.fetch('CL_SETTINGS_CORE_TIMEZONE', 'Europe/Brussels'),
       currency: ENV.fetch('CL_SETTINGS_CORE_CURRENCY', 'EUR'),
       reply_to_email: ENV.fetch('DEFAULT_FROM_EMAIL')
     },
