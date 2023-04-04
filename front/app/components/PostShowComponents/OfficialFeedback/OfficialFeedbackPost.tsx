@@ -22,16 +22,12 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { FormattedDate } from 'react-intl';
 import { getLocalized } from 'utils/i18n';
 
-// services
-import {
-  IOfficialFeedbackData,
-  deleteOfficialFeedbackFromIdea,
-  deleteOfficialFeedbackFromInitiative,
-} from 'services/officialFeedback';
-
 // resources
 import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import { IOfficialFeedbackData } from 'api/idea_official_feedback/types';
+import useDeleteIdeaOfficialFeedback from 'api/idea_official_feedback/useDeleteIdeaOfficialFeedback';
+import useDeleteInitiativeOfficialFeedback from 'api/initiative_official_feedback/useDeleteInitiativeOfficialFeedback';
 
 const Container = styled.div`
   display: flex;
@@ -161,6 +157,10 @@ const OfficialFeedbackPost = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
+  const { mutate: deleteOfficialFeedbackFromIdea } =
+    useDeleteIdeaOfficialFeedback();
+  const { mutate: deleteOfficialFeedbackFromInitiative } =
+    useDeleteInitiativeOfficialFeedback();
   const tenantLocales = useAppConfigurationLocales();
   const [showEditForm, setShowEditForm] = useState(false);
 

@@ -1,9 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import ideasCountKeys from 'api/idea_count/keys';
-import initiativesCountKeys from 'api/initiative_counts/keys';
 
 export interface IOfficialFeedbackData {
   id: string;
@@ -49,18 +46,6 @@ export function officialFeedbacksForIdeaStream(
   });
 }
 
-export async function deleteOfficialFeedbackFromIdea(ideaId: string) {
-  const response = await streams.delete(
-    `${API_PATH}/official_feedback/${ideaId}`,
-    ideaId
-  );
-  queryClient.invalidateQueries(ideasCountKeys.all());
-  await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/ideas/${ideaId}/official_feedback`],
-  });
-  return response;
-}
-
 // ------
 
 // initiative
@@ -73,20 +58,6 @@ export function officialFeedbacksForInitiativeStream(
     apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/official_feedback`,
     ...streamParams,
   });
-}
-
-export async function deleteOfficialFeedbackFromInitiative(
-  initiativeId: string
-) {
-  const response = await streams.delete(
-    `${API_PATH}/official_feedback/${initiativeId}`,
-    initiativeId
-  );
-  queryClient.invalidateQueries(initiativesCountKeys.all());
-  await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/initiatives/${initiativeId}/official_feedback`],
-  });
-  return response;
 }
 
 // ------
