@@ -35,6 +35,7 @@ import { colors } from 'utils/styleUtils';
 // Hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
@@ -81,6 +82,9 @@ const UserTableRow = ({
 
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
   if (!appConfiguration || !seats) return null;
 
   const maximumAdmins =
@@ -113,33 +117,32 @@ const UserTableRow = ({
     }
   };
 
-  const setAsAdminActionHandler = () => {
-    setIsChangingToNormalUser(false);
-    if (hasReachedOrIsOverLimit) {
-      setShowModal(true);
-      return;
-    }
-    changeRoles(user, isChangingToNormalUser);
-  };
+  const changeRoleHandler = (changeToNormalUser: boolean) => {
+    setIsChangingToNormalUser(changeToNormalUser);
 
-  const setAsNormalUserHandler = () => {
-    setIsChangingToNormalUser(true);
-    if (hasReachedOrIsOverLimit) {
+    // We are showing the modal for i1 and for i2 when seats are being exceeded
+    const shouldOpenConfirmationInModal =
+      !hasSeatBasedBillingEnabled || hasReachedOrIsOverLimit;
+    if (shouldOpenConfirmationInModal) {
       setShowModal(true);
       return;
     }
-    changeRoles(user, isChangingToNormalUser);
+    changeRoles(user, changeToNormalUser);
   };
 
   const getSeatChangeActions = () => {
     const setAsAdminAction: IAction = {
-      handler: setAsAdminActionHandler,
+      handler: () => {
+        changeRoleHandler(false);
+      },
       label: formatMessage(messages.setAsAdmin),
       icon: 'shield-checkered' as const,
     };
 
     const setAsNormalUserAction: IAction = {
-      handler: setAsNormalUserHandler,
+      handler: () => {
+        changeRoleHandler(true);
+      },
       label: formatMessage(messages.setAsNormalUser),
       icon: 'user-circle' as const,
     };
