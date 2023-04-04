@@ -23,11 +23,22 @@ resource 'Users' do
         parameter :size, 'Number of users per page'
       end
       parameter :search, 'Filter by searching in first_name, last_name and email', required: false
-      parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
+      parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', " \
+                       "'-email', 'role', '-role'", required: false
       parameter :group, 'Filter by group_id', required: false
-      parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
-      parameter :can_moderate, 'Filter out admins and moderators', required: false
-
+      parameter :can_moderate, 'All admins + users with either a project &/or folder moderator role', required: false
+      parameter :can_moderate_project, 'All admins + users who can moderate the project (by project id), ' \
+                                       'excluding folder moderators of folder containing project ' \
+                                       '(who can, in fact, moderate the project), ' \
+                                       'OR All admins + users with project moderator role ' \
+                                       '(if no project ID provided)', required: false
+      parameter :is_not_project_moderator, 'Users who are not admins, nor project moderator of project, ' \
+                                           'nor folder moderator of folder containing project (by project id), ' \
+                                           'OR Users who are not admins, nor have project moderator role ' \
+                                           '(if no project ID provided)', required: false
+      parameter :is_not_folder_moderator, 'Users who are not admins, nor folder moderator of folder (by folder id), ' \
+                                          'OR Users who are not admins, nor have folder moderator role ' \
+                                          '(if no folder ID provided)', required: false
       example_request '[error] List all users' do
         assert_status 401
       end
@@ -457,6 +468,39 @@ resource 'Users' do
             json_response = json_parse(response_body)
 
             expect(json_response[:links][:next]).to be_present
+          end
+        end
+
+        describe 'Not moderator filters' do
+          before do
+            @user                       = create(:user)
+            @admin                      = create(:admin)
+            @project                    = create(:project)
+            @project_folder             = create(:project_folder, projects: [@project])
+            @project_moderator          = create(:project_moderator, projects: [@project])
+            @moderator_of_other_project = create(:project_moderator, projects: [create(:project)])
+            @project_folder_moderator   = create(:project_folder_moderator, project_folders: [@project_folder])
+            @moderator_of_other_folder  = create(:project_folder_moderator, project_folders: [create(:project_folder)])
+          end
+
+          example 'List only users who cannot moderate a specific project' do
+            do_request is_not_project_moderator: @project.id
+            expect(status).to eq 200
+
+            user_ids = json_parse(response_body)[:data].pluck(:id)
+            expect(user_ids).to include(@user.id, @moderator_of_other_project.id, @moderator_of_other_folder.id)
+            expect(user_ids).not_to include(@admin.id, @project_moderator.id, @project_folder_moderator.id)
+          end
+
+          example 'List only users who cannot moderate a specific folder' do
+            do_request is_not_folder_moderator: @project_folder.id
+            expect(status).to eq 200
+
+            user_ids = json_parse(response_body)[:data].pluck(:id)
+            expect(user_ids).to include(
+              @user.id, @project_moderator.id, @moderator_of_other_project.id, @moderator_of_other_folder.id
+            )
+            expect(user_ids).not_to include(@admin.id, @project_folder_moderator.id)
           end
         end
 

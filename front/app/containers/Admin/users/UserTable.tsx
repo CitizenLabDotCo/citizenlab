@@ -166,14 +166,11 @@ const UsersTable = ({
               >
                 <FormattedMessage {...messages.since} />
               </SortableTh>
-              <SortableTh
-                sortDirection={
-                  sortAttribute === 'role' ? sortDirection : undefined
-                }
-                onClick={handleSortingOnChange('role')}
-              >
-                <FormattedMessage {...messages.status} />
-              </SortableTh>
+              <Th>
+                <Uppercase>
+                  <FormattedMessage {...messages.status} />
+                </Uppercase>
+              </Th>
               <Th>
                 <Uppercase>
                   <FormattedMessage tagName="div" {...messages.options} />

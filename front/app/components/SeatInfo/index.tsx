@@ -11,51 +11,96 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 // Hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
 
+import { TSeatNumber } from 'api/app_configuration/types';
+
 // Intl
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // Utils
 import { isNil } from 'utils/helperUtils';
 
-type SeatInfoType = {
-  seatType: 'project_manager' | 'admin';
-  width?: number | null;
+export type TSeatType = 'collaborator' | 'admin';
+
+// Messages
+export type SeatTypeMessageDescriptor = {
+  [key in TSeatType]: MessageDescriptor;
 };
 
-const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
+export type SeatNumbersType = {
+  [key in TSeatType]: TSeatNumber;
+};
+
+export type SeatInfoProps = {
+  seatType: TSeatType;
+};
+
+const SeatInfo = ({ seatType }: SeatInfoProps) => {
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
-  const maximumAdmins =
-    appConfiguration?.data.attributes.settings.core.maximum_admins_number;
-  const maximumProjectManagers =
-    appConfiguration?.data.attributes.settings.core.maximum_moderators_number;
-  const maximumSeatNumber =
-    seatType === 'admin' ? maximumAdmins : maximumProjectManagers;
+
+  const maximumSeatNumbers: SeatNumbersType = {
+    admin:
+      appConfiguration?.data.attributes.settings.core.maximum_admins_number,
+    collaborator:
+      appConfiguration?.data.attributes.settings.core.maximum_moderators_number,
+  };
+  const maximumSeatNumber = maximumSeatNumbers[seatType];
+
+  const additionalSeatNumbers: SeatNumbersType = {
+    admin:
+      appConfiguration?.data.attributes.settings.core.additional_admins_number,
+    collaborator:
+      appConfiguration?.data.attributes.settings.core
+        .additional_moderators_number,
+  };
+  const maximumAdditionalSeats = additionalSeatNumbers[seatType];
 
   // Maximum seat number being null means that there are unlimited seats so we don't show the seat info
-  if (isNil(maximumSeatNumber) || !seats || !appConfiguration) {
+  if (isNil(maximumSeatNumber) || !seats) {
     return null;
   }
 
-  const currentAdminSeats = seats.data.attributes.admins_number;
-  const currentProjectManagerSeats =
-    seats.data.attributes.project_moderators_number;
-  let currentSeatNumber =
-    seatType === 'admin' ? currentAdminSeats : currentProjectManagerSeats;
+  let currentSeatNumber = {
+    admin: seats.data.attributes.admins_number,
+    collaborator: seats.data.attributes.project_moderators_number,
+  }[seatType];
   const additionalSeats = currentSeatNumber - maximumSeatNumber;
-  const currentSeatTypeTitle =
-    seatType === 'admin'
-      ? messages.currentAdminSeatsTitle
-      : messages.currentCollaboratorSeatsTitle;
-  const tooltipMessage =
-    seatType === 'admin'
-      ? messages.includedAdminToolTip
-      : messages.includedCollaboratorToolTip;
+  const showAdditionalSeats = Boolean(
+    additionalSeats > 0 && maximumAdditionalSeats
+  );
+
+  const seatTypeMessage: SeatTypeMessageDescriptor = {
+    admin: messages.currentAdminSeatsTitle,
+    collaborator: messages.currentCollaboratorSeatsTitle,
+  };
+  const currentSeatTypeTitle = seatTypeMessage[seatType];
+  const tooltipMessages: SeatTypeMessageDescriptor = {
+    admin: messages.includedAdminToolTip,
+    collaborator: messages.includedCollaboratorToolTip,
+  };
+  const tooltipMessage = tooltipMessages[seatType];
+
+  const seatTypeInfoMessage = {
+    admin: hasSeatBasedBillingEnabled
+      ? messages.adminInfoTextWithBilling
+      : messages.adminInfoTextWithoutBilling,
+    collaborator: hasSeatBasedBillingEnabled
+      ? messages.collaboratorInfoTextWithBilling
+      : messages.collaboratorInfoTextWithoutBilling,
+  }[seatType];
+
+  const additionalSeatsText = hasSeatBasedBillingEnabled
+    ? `${additionalSeats}/${maximumAdditionalSeats}`
+    : additionalSeats;
 
   // Show maximum number of seats if user has used more for this value
   if (currentSeatNumber >= maximumSeatNumber) {
@@ -64,22 +109,21 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
 
   return (
     <Box
-      width={(width && `${width}px`) || undefined}
       display="flex"
       flexDirection="column"
       padding="20px"
       bgColor={rgba(colors.teal400, 0.07)}
     >
-      <Box display="flex" flexDirection="row" alignItems="center">
+      <Box display="flex" alignItems="center">
         <Icon name="shield-checkered" fill={colors.teal300} />
         <Text color="teal700" ml="8px" variant="bodyM" fontWeight="bold">
           {formatMessage(currentSeatTypeTitle)}
         </Text>
       </Box>
 
-      <Box display="flex" flexDirection="row">
+      <Box display="flex">
         <Box display="flex" flexDirection="column" mr="24px">
-          <Box display="flex" flexDirection="row" alignItems="center">
+          <Box display="flex" alignItems="center">
             <Text color="teal700" mr="8px" variant="bodyS" my="0px">
               {formatMessage(messages.includedSeats)}
             </Text>
@@ -90,18 +134,25 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
           </Text>
         </Box>
 
-        {additionalSeats > 0 && (
+        {showAdditionalSeats && (
           <>
             <Box mr="24px" border={`1px solid ${colors.divider}`} />
 
             <Box display="flex" flexDirection="column">
-              <Box display="flex" flexDirection="row" alignItems="center">
+              <Box display="flex" alignItems="center">
                 <Text color="teal700" mr="8px" variant="bodyS" my="0px">
                   {formatMessage(messages.additionalSeats)}
                 </Text>
+                {hasSeatBasedBillingEnabled && (
+                  <IconTooltip
+                    content={
+                      <FormattedMessage {...messages.additionalSeatsToolTip} />
+                    }
+                  />
+                )}
               </Box>
               <Text fontSize="xl" color="textPrimary" my="0px">
-                {additionalSeats}
+                {additionalSeatsText}
               </Text>
             </Box>
           </>
@@ -109,15 +160,15 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
       </Box>
 
       <Box mt="20px">
-        {seatType === 'project_manager' ? (
+        {seatType === 'collaborator' ? (
           <Text my="0px" variant="bodyS">
             <FormattedMessage
-              {...messages.collaboratorMessage}
+              {...seatTypeInfoMessage}
               values={{
-                adminSeatsIncluded: (
+                collaboratorSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">
-                    {formatMessage(messages.collaboratorIncludedSubText, {
-                      projectManagerSeats: maximumSeatNumber,
+                    {formatMessage(messages.collaboratorsIncludedText, {
+                      managerSeats: maximumSeatNumber,
                     })}
                   </Text>
                 ),
@@ -127,11 +178,11 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
         ) : (
           <Text my="0px" variant="bodyS">
             <FormattedMessage
-              {...messages.adminMessage}
+              {...seatTypeInfoMessage}
               values={{
                 adminSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">
-                    {formatMessage(messages.adminSeatsIncludedSubText, {
+                    {formatMessage(messages.adminSeatsIncludedText, {
                       adminSeats: maximumSeatNumber,
                     })}
                   </Text>

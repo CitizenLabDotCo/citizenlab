@@ -1,51 +1,25 @@
 // Libraries
 import React, { memo, useState } from 'react';
-import { get } from 'lodash-es';
-import { first } from 'rxjs/operators';
-import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 
 // Services
-import { findMembership, addMembership } from 'services/projectModerators';
-import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
+import { addProjectModerator } from 'services/projectModerators';
 
 // hooks
-import useProjectModerators from 'hooks/useProjectModerators';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Components
 import Button from 'components/UI/Button';
-import AsyncSelect from 'react-select/async';
-
+import AddCollaboratorsModal from 'components/admin/AddCollaboratorsModal';
+import { Box } from '@citizenlab/cl2-component-library';
+import UserSelect from 'components/UI/UserSelect';
 // Style
 import styled from 'styled-components';
-import selectStyles from 'components/UI/MultipleSelect/styles';
 
-// Typings
-import { IOption } from 'typings';
-
-const Container = styled.div`
-  width: 100%;
-  margin-bottom: 20px;
-`;
-
-const SelectGroupsContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  align-items: center;
-  margin-bottom: 30px;
-`;
-
-const StyledAsyncSelect = styled(AsyncSelect)`
-  min-width: 300px;
-`;
-
-const AddGroupButton = styled(Button)`
+const AddButton = styled(Button)`
   flex-grow: 0;
   flex-shrink: 0;
   margin-left: 20px;
@@ -55,135 +29,78 @@ interface Props {
   projectId: string;
 }
 
-function isModerator(user: IGroupMembershipsFoundUserData) {
-  return get(user.attributes, 'is_moderator') !== undefined;
-}
+const UserSearch = memo(({ projectId }: Props) => {
+  const { formatMessage } = useIntl();
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
+  const [processing, setProcessing] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [moderatorToAdd, setModeratorToAdd] = useState<string | null>(null);
 
-const UserSearch = memo(
-  ({ projectId, intl: { formatMessage } }: Props & WrappedComponentProps) => {
-    const [selection, setSelection] = useState<IOption[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [processing, setProcessing] = useState(false);
-    const [searchInput, setSearchInput] = useState('');
-    const moderators = useProjectModerators(projectId);
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
-    const getOptions = (users: IGroupMembershipsFoundUserData[]) => {
-      return users
-        .filter((user) => {
-          let userIsNotYetModerator = true;
+  const openModal = () => {
+    setShowModal(true);
+  };
 
-          if (!isNilOrError(moderators)) {
-            moderators.forEach((moderator) => {
-              if (moderator.id === user.id) {
-                userIsNotYetModerator = false;
-              }
-            });
-          }
+  const handleOnChange = (userId: string) => {
+    setModeratorToAdd(userId);
+  };
 
-          return userIsNotYetModerator;
-        })
-        .map((user) => {
-          return {
-            value: user.id,
-            label: `${user.attributes.first_name} ${user.attributes.last_name}`,
-            email: `${user.attributes.email}`,
-            disabled: isModerator(user)
-              ? get(user.attributes, 'is_moderator')
-              : get(user.attributes, 'is_member'),
-          };
-        });
-    };
+  const handleOnAddModeratorsClick = async () => {
+    if (moderatorToAdd) {
+      setProcessing(true);
+      await addProjectModerator(projectId, moderatorToAdd);
+      setProcessing(false);
+      setModeratorToAdd(null);
+    }
+  };
 
-    const loadOptions = (inputValue: string, callback) => {
-      if (inputValue) {
-        setLoading(true);
+  const handleAddClick = () => {
+    if (hasSeatBasedBillingEnabled) {
+      openModal();
+    } else {
+      handleOnAddModeratorsClick();
+    }
+  };
 
-        findMembership(projectId, {
-          queryParameters: {
-            search: inputValue,
-          },
-        })
-          .observable.pipe(first())
-          .subscribe((response) => {
-            const options = getOptions(response.data);
-            setLoading(false);
-            callback(options);
-          });
-      }
-    };
-
-    const handleOnChange = async (selection: IOption[]) => {
-      setSelection(selection);
-    };
-
-    const handleOnAddModeratorsClick = async () => {
-      if (selection && selection.length > 0) {
-        setProcessing(true);
-        const promises = selection.map((item) =>
-          addMembership(projectId, item.value)
-        );
-
-        try {
-          await Promise.all(promises);
-          setSelection([]);
-          setProcessing(false);
-        } catch {
-          setSelection([]);
-          setProcessing(false);
-        }
-      }
-    };
-
-    const handleSearchInputOnChange = (inputValue: string) => {
-      setSearchInput(inputValue);
-    };
-
-    const noOptionsMessage = (inputValue: string) => {
-      if (!isNonEmptyString(inputValue)) {
-        return null;
-      }
-      return formatMessage(messages.noOptions);
-    };
-
-    const isDropdownIconHidden = !isNonEmptyString(searchInput);
-
-    return (
-      <Container>
-        <SelectGroupsContainer>
-          <StyledAsyncSelect
-            name="search-user"
-            isMulti={true}
-            cacheOptions={false}
-            defaultOptions={false}
-            loadOptions={loadOptions}
-            isLoading={loading}
-            isDisabled={processing}
-            value={selection}
+  return (
+    <Box width="100%">
+      <Box display="flex" alignItems="center" mb="24px">
+        <Box width="500px">
+          <UserSelect
+            id="projectModeratorUserSearch"
+            inputId="projectModeratorUserSearchInputId"
+            selectedUserId={moderatorToAdd}
             onChange={handleOnChange}
             placeholder={formatMessage(messages.searchUsers)}
-            styles={selectStyles}
-            noOptionsMessage={noOptionsMessage}
-            onInputChange={handleSearchInputOnChange}
-            components={
-              isDropdownIconHidden && {
-                DropdownIndicator: () => null,
-              }
-            }
+            hideAvatar
+            isNotProjectModeratorOfProjectId={projectId}
           />
+        </Box>
 
-          <AddGroupButton
-            text={formatMessage(messages.addModerators)}
-            buttonStyle="cl-blue"
-            icon="plus-circle"
-            padding="13px 16px"
-            onClick={handleOnAddModeratorsClick}
-            disabled={!selection || selection.length === 0}
-            processing={processing}
-          />
-        </SelectGroupsContainer>
-      </Container>
-    );
-  }
-);
+        <AddButton
+          text={formatMessage(messages.addModerators)}
+          buttonStyle="cl-blue"
+          icon="plus-circle"
+          padding="10px 16px"
+          onClick={handleAddClick}
+          disabled={!moderatorToAdd}
+          processing={processing}
+        />
+      </Box>
+      {hasSeatBasedBillingEnabled && (
+        <AddCollaboratorsModal
+          addModerators={handleOnAddModeratorsClick}
+          showModal={showModal}
+          closeModal={closeModal}
+        />
+      )}
+    </Box>
+  );
+});
 
-export default injectIntl(UserSearch);
+export default UserSearch;

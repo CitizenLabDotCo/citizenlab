@@ -1,5 +1,5 @@
 // Libraries
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { isAdmin, isCollaborator } from 'services/permissions/roles';
 import moment from 'moment';
 
@@ -82,10 +82,11 @@ const UserTableRow = ({
   authUser,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [isUserAdmin, setUserIsAdmin] = useState(isAdmin({ data: user }));
+
+  const isUserAdmin = isAdmin({ data: user });
   const isUserCollaborator = isCollaborator({ data: user });
-  const [registeredAt, setRegisteredAt] = useState(
-    moment(user.attributes.registration_completed_at).format('LL')
+  const registeredAt = moment(user.attributes.registration_completed_at).format(
+    'LL'
   );
   const [showBlockUserModal, setShowBlockUserModal] = useState(false);
   const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
@@ -102,14 +103,7 @@ const UserTableRow = ({
   };
 
   const [isChangingToNormalUser, setIsChangingToNormalUser] =
-    useState<boolean>(false);
-
-  useEffect(() => {
-    setUserIsAdmin(isAdmin({ data: user }));
-    setRegisteredAt(
-      moment(user.attributes.registration_completed_at).format('LL')
-    );
-  }, [user]);
+    useState(false);
 
   const isBlocked = user.attributes?.blocked;
 
@@ -253,8 +247,7 @@ const UserTableRow = ({
         open={showUnblockUserModal}
       />
       <ChangeSeatModal
-        user={user}
-        isUserAdmin={isUserAdmin}
+        userToChangeSeat={user}
         changeRoles={changeRoles}
         showModal={showChangeSeatModal}
         closeModal={closeChangeSeatModal}

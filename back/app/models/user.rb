@@ -220,7 +220,16 @@ class User < ApplicationRecord
       where("roles @> '[{\"type\":\"project_moderator\"}]'")
     end
   }
-  scope :not_project_moderator, -> { where.not(id: project_moderator) }
+  scope :not_project_moderator, lambda { |project_id = nil|
+    return where.not(id: project_moderator) if project_id.nil?
+
+    project = Project.find(project_id)
+    if project.folder
+      where.not(id: project_moderator(project_id)).and(where(id: not_project_folder_moderator(project.folder.id)))
+    else
+      where.not(id: project_moderator(project_id))
+    end
+  }
   scope :project_folder_moderator, lambda { |*project_folder_ids|
     return where("roles @> '[{\"type\":\"project_folder_moderator\"}]'") if project_folder_ids.empty?
 
