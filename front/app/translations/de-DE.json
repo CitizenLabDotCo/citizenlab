@@ -1032,7 +1032,7 @@
   "app.containers.InitiativesShow.twitterMessage": "Stimme für {initiativeTitle} auf",
   "app.containers.InitiativesShow.whatsAppMessage": "{initiativeTitle} | von der Beteiligungsplattform {orgName}",
   "app.containers.Navbar.completeRegistration": "Registrierung abschließen",
-  "app.containers.Navbar.confirmEmail": "Confirm email address",
+  "app.containers.Navbar.confirmEmail": "E-Mail-Adresse bestätigen",
   "app.containers.Navbar.unverified": "Nicht verifiziert",
   "app.containers.Navbar.verified": "Verifiziert",
   "app.containers.NewAuthModal.beforeYouParticipate": "Bevor Sie teilnehmen",
