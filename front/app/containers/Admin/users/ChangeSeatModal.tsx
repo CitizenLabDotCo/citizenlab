@@ -98,7 +98,7 @@ const ChangeSeatModal = ({
     isChangingCollaboratorToNormalUser,
     hasReachedOrIsOverLimit
   );
-  const modalTitle = isUserToChangeSeatAdmin
+  const modalTitle = isChangingToNormalUser
     ? messages.setAsNormalUser
     : messages.giveAdminRights;
   const buttonText = getButtonText(

@@ -71,8 +71,7 @@ const UserTableRow = ({
     'LL'
   );
   const [showModal, setShowModal] = useState(false);
-  const [isChangingToNormalUser, setIsChangingToNormalUser] =
-    useState<boolean>(false);
+  const [isChangingToNormalUser, setIsChangingToNormalUser] = useState(false);
   const closeModal = () => {
     setShowModal(false);
   };
