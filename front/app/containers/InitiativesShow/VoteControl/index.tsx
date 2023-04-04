@@ -260,7 +260,6 @@ const Data = adopt<DataProps, InputProps & IntiativeInputProps>({
   authUser: <GetAuthUser />,
   initiativeStatus: ({ initiative, render }) => {
     if (
-      !isNilOrError(initiative) &&
       initiative.relationships.initiative_status &&
       initiative.relationships.initiative_status.data
     ) {

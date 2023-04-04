@@ -4,7 +4,7 @@ import {
   removeVote,
 } from 'components/PostShowComponents/Comments/Comment/CommentVote/vote';
 
-interface Params {
+export interface VoteOnCommentParams {
   alreadyVoted: boolean;
   postId: string;
   postType: 'idea' | 'initiative';
@@ -21,7 +21,7 @@ export const voteOnComment =
     commentId,
     commentType,
     commentVoteId,
-  }: Params) =>
+  }: VoteOnCommentParams) =>
   async (authUser: IUserData) => {
     if (!alreadyVoted) {
       await upvote({

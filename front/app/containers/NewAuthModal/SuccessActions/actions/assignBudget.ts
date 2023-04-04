@@ -13,7 +13,7 @@ import streams from 'utils/streams';
 import { IUserData } from 'services/users';
 import { IParticipationContextType } from 'typings';
 
-interface Params {
+export interface AssignBudgetParams {
   ideaId: string;
   participationContextId: string;
   participationContextType: IParticipationContextType;
@@ -26,7 +26,7 @@ export const assignBudget =
     participationContextId,
     participationContextType,
     basket,
-  }: Params) =>
+  }: AssignBudgetParams) =>
   async (authUser: IUserData) => {
     if (!isNil(basket)) {
       const basketIdeaIds = basket.relationships.ideas.data.map(

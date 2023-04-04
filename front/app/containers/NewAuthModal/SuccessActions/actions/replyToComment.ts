@@ -1,6 +1,6 @@
 import { commentReplyButtonClicked } from 'components/PostShowComponents/Comments/events';
 
-interface Params {
+export interface ReplyToCommentParams {
   commentId: string | null;
   parentCommentId: string | null;
   authorFirstName: string | null;
@@ -8,6 +8,6 @@ interface Params {
   authorSlug: string | null;
 }
 
-export const replyToComment = (params: Params) => async () => {
+export const replyToComment = (params: ReplyToCommentParams) => async () => {
   commentReplyButtonClicked(params);
 };

@@ -1,11 +1,11 @@
 import { addInitiativeVote } from 'api/initiative_votes/useAddInitiativeVote';
 
-interface Params {
+export interface VoteOnInitiativeParams {
   initiativeId: string;
 }
 
 export const voteOnInitiative =
-  ({ initiativeId }: Params) =>
+  ({ initiativeId }: VoteOnInitiativeParams) =>
   async () => {
     addInitiativeVote({ initiativeId, mode: 'up' });
   };

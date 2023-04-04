@@ -9,14 +9,14 @@ import { stringify } from 'qs';
 // typings
 import { LatLng } from 'leaflet';
 
-interface Params {
+export interface RedirectToIdeaFormParams {
   projectSlug: string;
   latLng?: LatLng | null;
   phaseId?: string;
 }
 
 export const redirectToIdeaForm =
-  ({ projectSlug, latLng, phaseId }: Params) =>
+  ({ projectSlug, latLng, phaseId }: RedirectToIdeaFormParams) =>
   async () => {
     trackEventByName(tracks.redirectedToIdeaFrom);
 

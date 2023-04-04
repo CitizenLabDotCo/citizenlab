@@ -2,7 +2,7 @@ import { IUserData } from 'services/users';
 import { addIdeaVote } from 'api/idea_votes/useAddIdeaVote';
 import { deleteIdeaVote } from 'api/idea_votes/useDeleteIdeaVote';
 
-interface Params {
+export interface VoteOnIdeaParams {
   ideaId: string;
   voteId?: string | null;
   voteMode: 'up' | 'down';
@@ -10,7 +10,7 @@ interface Params {
 }
 
 export const voteOnIdea =
-  ({ ideaId, voteId, myVoteMode, voteMode }: Params) =>
+  ({ ideaId, voteId, myVoteMode, voteMode }: VoteOnIdeaParams) =>
   async (authUser: IUserData) => {
     // Change vote (up -> down or down -> up)
     if (voteId && myVoteMode !== voteMode) {
