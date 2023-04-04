@@ -16,8 +16,8 @@ interface ISignUpInError {
 export type TSignUpInFlow = 'signup' | 'signin';
 
 export interface ISignUpInMetaData {
-  flow?: TSignUpInFlow;
-  pathname?: string;
+  flow: TSignUpInFlow;
+  pathname: string;
   verification?: boolean;
   context?: AuthenticationContext;
   error?: ISignUpInError;

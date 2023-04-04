@@ -142,7 +142,7 @@ const VoteControl = ({
   );
   const votingPermission = useInitiativesPermissions('voting_initiative');
 
-  if (!initiative) return;
+  if (!initiative) return null;
 
   const handleOnvote = () => {
     const authenticationRequirements =
