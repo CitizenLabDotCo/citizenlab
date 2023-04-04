@@ -150,7 +150,6 @@ class WebApi::V1::UsersController < ::ApplicationController
     authorize @user
     if @user.save
       SideFxUserService.new.after_update(@user, current_user)
-      permissions = Permission.for_user(@user).where.not(id: permissions_before.ids)
       render json: WebApi::V1::UserSerializer.new(
         @user,
         params: fastjson_params
