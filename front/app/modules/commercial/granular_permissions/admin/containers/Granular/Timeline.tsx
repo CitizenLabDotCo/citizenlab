@@ -64,6 +64,8 @@ const Timeline = ({ projectId }: InputProps) => {
           phases.length > 0 &&
           phases.map((phase, i) => (
             <Accordion
+              timeoutMilliseconds={1000}
+              transitionHeightPx={1700}
               isOpenByDefault={false}
               title={
                 <Title
@@ -87,6 +89,7 @@ const Timeline = ({ projectId }: InputProps) => {
                 flex={'1'}
                 flexDirection="column"
                 background={colors.white}
+                minHeight="100px"
               >
                 <PhaseActionForm
                   phase={phase}
