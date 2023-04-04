@@ -73,8 +73,9 @@ export type SuccessAction =
 export const getAction = ({ name, params }: SuccessAction) => {
   if (name === 'assignBudget') return assignBudget(params);
   if (name === 'redirectToIdeaForm') return redirectToIdeaForm(params);
-  if (name === 'redirectToInitiativeForm')
+  if (name === 'redirectToInitiativeForm') {
     return redirectToInitiativeForm(params);
+  }
   if (name === 'replyToComment') return replyToComment(params);
   if (name === 'scrollToSurvey') return scrollToSurvey(params);
   if (name === 'volunteer') return volunteer(params);
