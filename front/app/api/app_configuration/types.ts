@@ -47,9 +47,13 @@ export type IAppConfigurationSettingsCore = {
   topics_term?: Multiloc;
   topic_term?: Multiloc;
   authentication_token_lifetime_in_days: number;
-  maximum_admins_number: number | null | undefined;
-  maximum_moderators_number: number | null | undefined;
+  maximum_admins_number: TSeatNumber;
+  maximum_moderators_number: TSeatNumber;
+  additional_admins_number: TSeatNumber;
+  additional_moderators_number: TSeatNumber;
 };
+
+export type TSeatNumber = number | null | undefined;
 
 export type ProposalsSettings = {
   allowed: boolean;
@@ -210,6 +214,7 @@ export interface IAppConfigurationSettings {
   input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
+  seat_based_billing?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

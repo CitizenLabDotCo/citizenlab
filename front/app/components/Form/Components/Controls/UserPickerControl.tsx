@@ -62,7 +62,7 @@ const UserPickerControl = ({
       <UserSelect
         id={id}
         inputId={sanitizeForClassname(id)}
-        value={data}
+        selectedUserId={data}
         onChange={(val) => handleChange(path, val)}
         placeholder={formatMessage(messages.userPickerPlaceholder)}
       />
