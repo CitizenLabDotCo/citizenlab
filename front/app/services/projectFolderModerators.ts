@@ -34,7 +34,7 @@ export async function deleteFolderModerator(
   invalidateSeatsCache();
 
   await streams.fetchAllWith({
-    apiEndpoint: [indexPath(projectFolderId)],
+    apiEndpoint: [indexPath(projectFolderId), `${API_PATH}/users`],
   });
   return response;
 }

@@ -142,18 +142,13 @@ const ChangeSeatModal = ({
                 }}
               />
             </Text>
-            {!isChangingCollaboratorToNormalUser && (
+            {!isChangingToNormalUser && (
               <Box pt="32px">
                 <SeatInfo seatType="admin" />
               </Box>
             )}
           </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            width="100%"
-            alignItems="center"
-          >
+          <Box display="flex" width="100%" alignItems="center">
             <Button
               width="auto"
               onClick={() => {
