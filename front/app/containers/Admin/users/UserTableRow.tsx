@@ -5,6 +5,7 @@ import moment from 'moment';
 
 // Utils
 import clHistory from 'utils/cl-router/history';
+import { isNil } from 'utils/helperUtils';
 
 // Components
 import { Tr, Td, Box } from '@citizenlab/cl2-component-library';
@@ -30,6 +31,10 @@ import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // Styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+
+// Hooks
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useSeats from 'api/seats/useSeats';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
@@ -73,11 +78,19 @@ const UserTableRow = ({
   const [showModal, setShowModal] = useState(false);
   const [isChangingToNormalUser, setIsChangingToNormalUser] =
     useState<boolean>(false);
+
+  const { data: appConfiguration } = useAppConfiguration();
+  const { data: seats } = useSeats();
+  if (!appConfiguration || !seats) return null;
+
+  const maximumAdmins =
+    appConfiguration.data.attributes.settings.core.maximum_admins_number;
+  const currentAdminSeats = seats.data.attributes.admins_number;
+  const hasReachedOrIsOverLimit =
+    !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins;
+
   const closeModal = () => {
     setShowModal(false);
-  };
-  const openModal = () => {
-    setShowModal(true);
   };
 
   const handleDeleteClick = () => {
@@ -100,21 +113,33 @@ const UserTableRow = ({
     }
   };
 
+  const setAsAdminActionHandler = () => {
+    setIsChangingToNormalUser(false);
+    if (hasReachedOrIsOverLimit) {
+      setShowModal(true);
+      return;
+    }
+    changeRoles(user, isChangingToNormalUser);
+  };
+
+  const setAsNormalUserHandler = () => {
+    setIsChangingToNormalUser(true);
+    if (hasReachedOrIsOverLimit) {
+      setShowModal(true);
+      return;
+    }
+    changeRoles(user, isChangingToNormalUser);
+  };
+
   const getSeatChangeActions = () => {
     const setAsAdminAction: IAction = {
-      handler: () => {
-        setIsChangingToNormalUser(false);
-        openModal();
-      },
+      handler: setAsAdminActionHandler,
       label: formatMessage(messages.setAsAdmin),
       icon: 'shield-checkered' as const,
     };
 
     const setAsNormalUserAction: IAction = {
-      handler: () => {
-        setIsChangingToNormalUser(true);
-        openModal();
-      },
+      handler: setAsNormalUserHandler,
       label: formatMessage(messages.setAsNormalUser),
       icon: 'user-circle' as const,
     };
