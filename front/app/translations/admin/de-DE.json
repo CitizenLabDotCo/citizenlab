@@ -570,7 +570,7 @@
   "app.containers.Admin.Users.userBlockModal.cancel": "Abbrechen",
   "app.containers.Admin.Users.userBlockModal.confirmUnblock1": "Are you sure you want to unblock {name}?",
   "app.containers.Admin.Users.userBlockModal.confirmation1": "{name} is blocked until {date}.",
-  "app.containers.Admin.Users.userBlockModal.daysBlocked1": "{numberOfDays, plural, one {1 day} other {{numberOfDays} days}}",
+  "app.containers.Admin.Users.userBlockModal.daysBlocked1": "{numberOfDays, plural, one {1 Tag} other {{numberOfDays} Tage}}",
   "app.containers.Admin.Users.userBlockModal.header": "Nutzer*in sperren",
   "app.containers.Admin.Users.userBlockModal.reasonLabel": "Grund",
   "app.containers.Admin.Users.userBlockModal.reasonLabelTooltip": "Dies wird dem gesperrten Nutzer / der gesperrten Nutzerin mitgeteilt.",
