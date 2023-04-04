@@ -1,29 +1,29 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import ideaOfficialFeedbackKeys from './keys';
+import initiativeOfficialFeedbackKeys from './keys';
 import { INewFeedback, IOfficialFeedback } from './types';
 
-const addIdeaOfficialFeedback = async ({
-  ideaId,
+const addInitiativeOfficialFeedback = async ({
+  initiativeId,
   ...requestBody
-}: INewFeedback & { ideaId: string }) =>
+}: INewFeedback & { initiativeId: string }) =>
   fetcher<IOfficialFeedback>({
-    path: `/ideas/${ideaId}/official_feedback`,
+    path: `/initiatives/${initiativeId}/official_feedback`,
     action: 'post',
     body: { official_feedback: requestBody },
   });
 
-const useAddIdeaOfficialFeedback = () => {
+const useAddInitiativeOfficialFeedback = () => {
   const queryClient = useQueryClient();
   return useMutation<IOfficialFeedback, CLErrors, INewFeedback>({
-    mutationFn: addIdeaOfficialFeedback,
+    mutationFn: addInitiativeOfficialFeedback,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ideaOfficialFeedbackKeys.lists(),
+        queryKey: initiativeOfficialFeedbackKeys.lists(),
       });
     },
   });
 };
 
-export default useAddIdeaOfficialFeedback;
+export default useAddInitiativeOfficialFeedback;

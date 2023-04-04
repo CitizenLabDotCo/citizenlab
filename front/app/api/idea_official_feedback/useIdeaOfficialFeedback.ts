@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import causesKeys from './keys';
+import ideaOfficialFeedbackKeys from './keys';
 import { IOfficialFeedbacks, IdeaOfficialFeedbackKeys } from './types';
 
 const fetchOfficialFeedback = ({ ideaId }: { ideaId: string }) =>
@@ -17,7 +17,7 @@ const useIdeaOfficialFeedback = ({ ideaId }: { ideaId: string }) => {
     IOfficialFeedbacks,
     IdeaOfficialFeedbackKeys
   >({
-    queryKey: causesKeys.list({
+    queryKey: ideaOfficialFeedbackKeys.list({
       ideaId,
     }),
     queryFn: () => fetchOfficialFeedback({ ideaId }),
