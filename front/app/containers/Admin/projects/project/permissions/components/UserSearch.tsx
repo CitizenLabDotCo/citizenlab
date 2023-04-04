@@ -50,11 +50,13 @@ const UserSearch = memo(({ projectId }: Props) => {
   const { data: seats } = useSeats();
   if (!appConfiguration || !seats) return null;
 
-  const maximumAdmins =
-    appConfiguration.data.attributes.settings.core.maximum_admins_number;
-  const currentAdminSeats = seats.data.attributes.admins_number;
+  const maximumCollaborators =
+    appConfiguration.data.attributes.settings.core.maximum_moderators_number;
+  const currentCollaboratorSeats =
+    seats.data.attributes.project_moderators_number;
   const hasReachedOrIsOverLimit =
-    !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins;
+    !isNil(maximumCollaborators) &&
+    currentCollaboratorSeats >= maximumCollaborators;
 
   const closeModal = () => {
     setShowModal(false);
