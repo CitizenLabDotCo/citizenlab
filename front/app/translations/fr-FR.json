@@ -1041,7 +1041,7 @@
   "app.containers.NewAuthModal.steps.AcceptPolicies.reviewTheTerms": "Veuillez lire attentivement les termes ci-dessous pour continuer.",
   "app.containers.NewAuthModal.steps.EmailAndPassword.emailOrPhone": "E-mail ou téléphone",
   "app.containers.NewAuthModal.steps.EmailAndPassword.emailOrPhoneMissingError": "Fournissez une adresse e-mail ou un numéro de téléphone",
-  "app.containers.NewAuthModal.steps.EmailAndPassword.emailOrPhoneNumberError": "Enter an email address or a phone number in the correct format",
+  "app.containers.NewAuthModal.steps.EmailAndPassword.emailOrPhoneNumberError": "Saisissez une adresse e-mail ou un numéro de téléphone au bon format",
   "app.containers.NewAuthModal.steps.EmailAndPassword.goBackToLoginOptions": "Go back to login options",
   "app.containers.NewAuthModal.steps.EmailAndPassword.goToSignUp": "Don't have an account? {goToOtherFlowLink}",
   "app.containers.NewAuthModal.steps.EmailAndPassword.signUp": "S'inscrire",
