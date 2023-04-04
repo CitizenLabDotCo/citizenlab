@@ -6,6 +6,10 @@ import { IUserData } from 'services/users';
 
 const successAction$ = new BehaviorSubject<SuccessAction | null>(null);
 
+export const triggerSuccessAction = (successAction: SuccessAction) => {
+  successAction$.next(successAction);
+};
+
 const getAuthUser = () => {
   let streamSubscription;
 
