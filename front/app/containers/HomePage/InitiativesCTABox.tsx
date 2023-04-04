@@ -19,7 +19,6 @@ import Button from 'components/UI/Button';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // utils
-import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 // intl
@@ -133,9 +132,7 @@ interface Props extends InputProps {
 const InitiativesCTABox = memo<Props>(({ theme, className }) => {
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
-  const openAuthModal = useOpenAuthModal({
-    onSuccess: () => clHistory.push('/initiatives/new'),
-  });
+  const openAuthModal = useOpenAuthModal();
 
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
@@ -145,6 +142,10 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
       context: {
         type: 'initiative',
         action: 'posting_initiative',
+      },
+      successAction: {
+        name: 'redirectToInitiativeForm',
+        params: {},
       },
     });
   }, [openAuthModal]);

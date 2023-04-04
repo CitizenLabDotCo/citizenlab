@@ -6,7 +6,7 @@ export interface VoteOnIdeaParams {
   ideaId: string;
   voteId?: string | null;
   voteMode: 'up' | 'down';
-  myVoteMode: 'up' | 'down';
+  myVoteMode?: 'up' | 'down' | null;
 }
 
 export const voteOnIdea =

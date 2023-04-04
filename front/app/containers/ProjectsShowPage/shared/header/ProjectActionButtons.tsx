@@ -39,6 +39,7 @@ import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 // router
 import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
+import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
 
 const Container = styled.div``;
 
@@ -88,10 +89,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     [currentPhase, project, pathname]
   );
 
-  const openAuthModal = useOpenAuthModal({
-    onSuccess: () => scrollTo('project-survey'),
-    waitIf: isNilOrError(project),
-  });
+  const openAuthModal = useOpenAuthModal();
 
   if (isNilOrError(project)) {
     return null;
@@ -117,6 +115,15 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const handleTakeSurveyClick = (event: FormEvent) => {
     event.preventDefault();
 
+    const successAction: SuccessAction = {
+      name: 'scrollToSurvey',
+      params: {
+        pathname,
+        projectSlug: project.attributes.slug,
+        currentPhase,
+      },
+    };
+
     if (showSignIn) {
       openAuthModal({
         flow: 'signup',
@@ -126,6 +133,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           id: currentPhase?.id ?? project.id,
           action: 'taking_survey',
         },
+        successAction,
       });
     }
 

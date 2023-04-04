@@ -41,6 +41,7 @@ import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
 import { IIdea } from 'api/ideas/types';
+import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
 
 const IdeaCardContainer = styled.div`
   display: flex;
@@ -198,11 +199,7 @@ const AssignBudgetControl = memo(
       }
     };
 
-    const openAuthModal = useOpenAuthModal({
-      onSuccess: assignBudget,
-      waitIf:
-        isNilOrError(idea) || !participationContextId || isNilOrError(authUser),
-    });
+    const openAuthModal = useOpenAuthModal();
 
     const handleAddRemoveButtonClick =
       (idea: IIdea, participationContextId: string) => (event?: FormEvent) => {
@@ -219,15 +216,25 @@ const AssignBudgetControl = memo(
           id: participationContextId,
         } as const;
 
+        const successAction: SuccessAction = {
+          name: 'assignBudget',
+          params: {
+            ideaId,
+            participationContextId,
+            participationContextType,
+            basket,
+          },
+        };
+
         if (
           // not signed up/in
           isNilOrError(authUser) ||
           budgetingDisabledReason === 'not_signed_in'
         ) {
-          openAuthModal({ context });
+          openAuthModal({ context, successAction });
           // signed in but not active
         } else if (budgetingDisabledReason === 'not_active') {
-          openAuthModal({ context });
+          openAuthModal({ context, successAction });
           // if signed up & in
         } else if (!isNilOrError(authUser)) {
           if (budgetingDisabledReason === 'not_verified') {

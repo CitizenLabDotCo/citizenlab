@@ -25,6 +25,9 @@ import useOpenAuthModal from 'hooks/useOpenAuthModal';
 // utils
 import { upvote, removeVote } from './vote';
 
+// typings
+import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
+
 interface InputProps {
   postId: string;
   postType: 'idea' | 'initiative';
@@ -105,10 +108,7 @@ const CommentVote = ({
     }
   };
 
-  const openAuthModal = useOpenAuthModal({
-    onSuccess: vote,
-    waitIf: isNilOrError(authUser),
-  });
+  const openAuthModal = useOpenAuthModal();
 
   const post = postType === 'idea' ? idea?.data : initiative?.data;
 
@@ -128,6 +128,17 @@ const CommentVote = ({
 
   const handleVoteClick = async (event?: MouseEvent) => {
     event?.preventDefault();
+
+    const successAction: SuccessAction = {
+      name: 'voteOnComment',
+      params: {
+        postId,
+        postType,
+        commentId,
+        commentVoteId: isNilOrError(commentVote) ? undefined : commentVote.id,
+        alreadyVoted: voted,
+      },
+    };
 
     if (postType === 'idea') {
       // Wondering why 'comment_voting_idea' and not 'commenting_idea'?
@@ -160,9 +171,10 @@ const CommentVote = ({
         openAuthModal({
           verification: commentVotingDisabledReason === 'not_verified',
           context,
+          successAction,
         });
       } else if (commentVotingDisabledReason === 'not_active') {
-        openAuthModal({ context });
+        openAuthModal({ context, successAction });
       }
     }
 
@@ -178,11 +190,11 @@ const CommentVote = ({
       } as const;
 
       if (authenticationRequirements === 'sign_in_up') {
-        openAuthModal({ context });
+        openAuthModal({ context, successAction });
       } else if (authenticationRequirements === 'complete_registration') {
-        openAuthModal({ context });
+        openAuthModal({ context, successAction });
       } else if (authenticationRequirements === 'sign_in_up_and_verify') {
-        openAuthModal({ verification: true, context });
+        openAuthModal({ verification: true, context, successAction });
       } else if (authenticationRequirements === 'verify') {
         openVerificationModal({ context });
       } else if (commentVotingPermissionInitiative?.enabled === true) {

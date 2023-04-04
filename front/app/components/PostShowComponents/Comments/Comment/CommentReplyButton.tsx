@@ -28,6 +28,7 @@ import { GetInitiativesPermissionsChildProps } from 'resources/GetInitiativesPer
 import { IInitiativeData } from 'api/initiatives/types';
 import { IIdeaData } from 'api/ideas/types';
 import { ICommentData } from 'services/comments';
+import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
 
 const Container = styled.li`
   display: flex;
@@ -103,12 +104,21 @@ const CommentReplyButton = memo<Props>(
       authorSlug,
     ]);
 
-    const openAuthModal = useOpenAuthModal({
-      onSuccess: reply,
-    });
+    const openAuthModal = useOpenAuthModal();
 
     const onReply = useCallback(() => {
       if (!isNilOrError(post)) {
+        const successAction: SuccessAction = {
+          name: 'replyToComment',
+          params: {
+            commentId,
+            parentCommentId,
+            authorFirstName,
+            authorLastName,
+            authorSlug,
+          },
+        };
+
         if (post.type === 'idea') {
           const {
             clickChildCommentReplyButton,
@@ -148,9 +158,10 @@ const CommentReplyButton = memo<Props>(
             openAuthModal({
               verification: commentingDisabledReason === 'not_verified',
               context,
+              successAction,
             });
           } else if (commentingDisabledReason === 'not_active') {
-            openAuthModal({ context });
+            openAuthModal({ context, successAction });
           }
         }
 
@@ -164,13 +175,13 @@ const CommentReplyButton = memo<Props>(
           } as const;
 
           if (authenticationRequirements === 'sign_in_up') {
-            openAuthModal({ context });
+            openAuthModal({ context, successAction });
           } else if (authenticationRequirements === 'sign_in_up_and_verify') {
-            openAuthModal({ verification: true, context });
+            openAuthModal({ verification: true, context, successAction });
           } else if (authenticationRequirements === 'verify') {
             openVerificationModal({ context });
           } else if (authenticationRequirements === 'complete_registration') {
-            openAuthModal({ context });
+            openAuthModal({ context, successAction });
           } else if (commentingPermissionInitiative?.enabled === true) {
             reply();
           }
@@ -183,6 +194,11 @@ const CommentReplyButton = memo<Props>(
       commentingPermissionInitiative,
       reply,
       openAuthModal,
+      commentId,
+      parentCommentId,
+      authorFirstName,
+      authorLastName,
+      authorSlug,
     ]);
 
     if (!isNilOrError(comment)) {

@@ -29,6 +29,7 @@ import messages from '../messages';
 import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
+import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
 
 export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
@@ -62,9 +63,7 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
     }
   }, [currentPhase, project, pathname]);
 
-  const openAuthModal = useOpenAuthModal({
-    onSuccess: scrollToSurvey,
-  });
+  const openAuthModal = useOpenAuthModal();
 
   const { enabled, disabledReason } = getSurveyTakingRules({
     project,
@@ -85,6 +84,15 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
   const handleTakeSurveyClick = (event: FormEvent) => {
     event.preventDefault();
 
+    const successAction: SuccessAction = {
+      name: 'scrollToSurvey',
+      params: {
+        pathname,
+        projectSlug: project.attributes.slug,
+        currentPhase,
+      },
+    };
+
     if (showSignIn) {
       openAuthModal({
         flow: 'signup',
@@ -94,6 +102,7 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
           action: 'taking_survey',
           id: currentPhase ? currentPhase.id : project.id,
         },
+        successAction,
       });
     }
 

@@ -190,20 +190,23 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
     }
   }, [cause, addVolunteer, deleteVolunteer]);
 
-  const openAuthModal = useOpenAuthModal({
-    onSuccess: volunteer,
-  });
+  const openAuthModal = useOpenAuthModal();
 
   const handleOnVolunteerButtonClick = useCallback(() => {
     if (
       !isNilOrError(authUser) &&
       !authUser.attributes.registration_completed_at
     ) {
-      openAuthModal();
+      openAuthModal({
+        successAction: {
+          name: 'volunteer',
+          params: { cause },
+        },
+      });
     } else {
       volunteer();
     }
-  }, [authUser, openAuthModal, volunteer]);
+  }, [authUser, openAuthModal, volunteer, cause]);
 
   const signIn = () => openAuthModal({ flow: 'signin' });
 

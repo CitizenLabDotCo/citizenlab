@@ -44,6 +44,7 @@ import {
   IInitiativeStatusData,
 } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
+import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
 
 const Container = styled.div`
   ${media.desktop`
@@ -134,19 +135,25 @@ const VoteControl = ({
     }
   };
 
-  const openAuthModal = useOpenAuthModal({
-    onSuccess: vote,
-    waitIf: isNilOrError(initiative),
-  });
+  const openAuthModal = useOpenAuthModal();
 
   const { data: initiativeStatus } = useInitiativeStatus(
     initiative?.data.relationships.initiative_status?.data?.id
   );
   const votingPermission = useInitiativesPermissions('voting_initiative');
 
+  if (!initiative) return;
+
   const handleOnvote = () => {
     const authenticationRequirements =
       votingPermission?.authenticationRequirements;
+
+    const successAction: SuccessAction = {
+      name: 'voteOnInitiative',
+      params: {
+        initiativeId: initiative.data.id,
+      },
+    };
 
     switch (authenticationRequirements) {
       case 'sign_in_up':
@@ -157,6 +164,7 @@ const VoteControl = ({
           flow: 'signup',
           verification: false,
           context,
+          successAction,
         });
         break;
       case 'sign_in_up_and_verify':
@@ -167,6 +175,7 @@ const VoteControl = ({
           flow: 'signup',
           verification: true,
           context,
+          successAction,
         });
         break;
       case 'verify':
@@ -193,7 +202,6 @@ const VoteControl = ({
   };
 
   if (
-    isNilOrError(initiative) ||
     isNilOrError(initiativeStatus) ||
     isNilOrError(appConfiguration) ||
     !appConfiguration.data.attributes.settings.initiatives

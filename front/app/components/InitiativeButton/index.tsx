@@ -12,6 +12,7 @@ import Button from 'components/UI/Button';
 import messages from './messages';
 import { ButtonStyles } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
+import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
 
 interface Props {
   lat?: number | null;
@@ -34,9 +35,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
     });
   };
 
-  const openAuthModal = useOpenAuthModal({
-    onSuccess: redirectToInitiativeForm,
-  });
+  const openAuthModal = useOpenAuthModal();
 
   const onNewInitiativeButtonClick = (event?: React.FormEvent) => {
     event?.preventDefault();
@@ -53,6 +52,11 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
         action: 'posting_initiative',
       } as const;
 
+      const successAction: SuccessAction = {
+        name: 'redirectToInitiativeForm',
+        params: { lat, lng },
+      };
+
       switch (initiativePermissions?.authenticationRequirements) {
         case 'sign_in_up':
           trackEventByName(
@@ -62,10 +66,11 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
             flow: 'signup',
             verification: false,
             context,
+            successAction,
           });
           break;
         case 'complete_registration':
-          openAuthModal({ context });
+          openAuthModal({ context, successAction });
           break;
         case 'sign_in_up_and_verify':
           trackEventByName(
@@ -75,6 +80,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
             flow: 'signup',
             verification: true,
             context,
+            successAction,
           });
           break;
         case 'verify':

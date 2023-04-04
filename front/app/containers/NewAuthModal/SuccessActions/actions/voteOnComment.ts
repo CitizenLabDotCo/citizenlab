@@ -10,7 +10,7 @@ export interface VoteOnCommentParams {
   postType: 'idea' | 'initiative';
   commentId: string;
   commentType?: 'parent' | 'child';
-  commentVoteId: string;
+  commentVoteId?: string;
 }
 
 export const voteOnComment =
@@ -33,7 +33,7 @@ export const voteOnComment =
       });
     }
 
-    if (alreadyVoted) {
+    if (alreadyVoted && commentVoteId) {
       await removeVote({
         commentId,
         commentVoteId,

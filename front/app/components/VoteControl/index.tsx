@@ -29,6 +29,7 @@ import usePhases from 'hooks/usePhases';
 import useAddIdeaVote from 'api/idea_votes/useAddIdeaVote';
 import { TVoteMode } from 'api/idea_votes/types';
 import useDeleteIdeaVote from 'api/idea_votes/useDeleteIdeaVote';
+import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';
@@ -134,18 +135,7 @@ const VoteControl = ({
     [authUser, addVote, deleteVote, ideaId, myVoteMode, voteId]
   );
 
-  const castUpvote = useCallback(() => castVote('up'), [castVote]);
-  const castDownvote = useCallback(() => castVote('down'), [castVote]);
-
-  const openAuthModalOnUpvote = useOpenAuthModal({
-    onSuccess: castUpvote,
-    waitIf: isNilOrError(authUser),
-  });
-
-  const openAuthModalOnDownvote = useOpenAuthModal({
-    onSuccess: castDownvote,
-    waitIf: isNilOrError(authUser),
-  });
+  const openAuthModal = useOpenAuthModal();
 
   if (!idea) return null;
 
@@ -249,6 +239,15 @@ const VoteControl = ({
       type: participationContextType,
     } as const;
 
+    const successAction: SuccessAction = {
+      name: 'voteOnIdea',
+      params: {
+        ideaId,
+        voteMode,
+        myVoteMode,
+      },
+    };
+
     if (!addVoteIsLoading && !deleteVoteIsLoading) {
       if (
         !isNilOrError(authUser) &&
@@ -262,9 +261,7 @@ const VoteControl = ({
       ) {
         openVerificationModal();
       } else if (isSignedIn && votingDisabledReason === 'not_active') {
-        voteMode === 'up'
-          ? openAuthModalOnUpvote({ context })
-          : openAuthModalOnDownvote({ context });
+        openAuthModal({ context, successAction });
       } else if (
         !isSignedIn &&
         (votingEnabled ||
@@ -273,10 +270,7 @@ const VoteControl = ({
           votingDisabledReason === 'not_permitted')
       ) {
         const verification = votingDisabledReason === 'not_verified';
-
-        voteMode === 'up'
-          ? openAuthModalOnUpvote({ verification, context })
-          : openAuthModalOnDownvote({ verification, context });
+        openAuthModal({ verification, context, successAction });
       } else if (votingDisabledReason) {
         disabledVoteClick?.(votingDisabledReason);
       }
