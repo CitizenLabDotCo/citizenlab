@@ -9,6 +9,9 @@ import { handleOnSSOClick, SSOProvider } from 'services/singleSignOn';
 import streams from 'utils/streams';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
+// events
+import { triggerSuccessAction } from 'containers/NewAuthModal/SuccessActions';
+
 // typings
 import {
   GetRequirements,
@@ -141,8 +144,10 @@ export const getStepConfig = (
 
           setCurrentStep('closed');
 
-          const { onSuccess } = getAuthenticationData();
-          onSuccess?.();
+          const { successAction } = getAuthenticationData();
+          if (successAction) {
+            triggerSuccessAction(successAction);
+          }
 
           setStatus('ok');
         } catch {
@@ -289,8 +294,10 @@ export const getStepConfig = (
           } else {
             setCurrentStep('closed');
 
-            const { onSuccess } = getAuthenticationData();
-            onSuccess?.();
+            const { successAction } = getAuthenticationData();
+            if (successAction) {
+              triggerSuccessAction(successAction);
+            }
           }
 
           setStatus('ok');
@@ -310,8 +317,10 @@ export const getStepConfig = (
         setStatus('ok');
         setCurrentStep('closed');
 
-        const { onSuccess } = getAuthenticationData();
-        onSuccess?.();
+        const { successAction } = getAuthenticationData();
+        if (successAction) {
+          triggerSuccessAction(successAction);
+        }
       },
     },
   };

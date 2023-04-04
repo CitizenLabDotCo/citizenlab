@@ -23,6 +23,7 @@ import {
   ISignUpInMetaData,
   TSignUpInFlow,
 } from 'events/openSignUpInModal';
+import { triggerSuccessAction } from 'containers/NewAuthModal/SuccessActions';
 
 interface Props {
   metaData?: ISignUpInMetaData;
@@ -106,7 +107,9 @@ const SignUpInModal = memo<Props>(
         !isNilOrError(authUser) && authUser.attributes.verified;
 
       if (!requiresVerification || authUserIsVerified) {
-        metaData?.onSuccess?.();
+        if (metaData?.successAction) {
+          triggerSuccessAction(metaData.successAction);
+        }
       }
     };
 

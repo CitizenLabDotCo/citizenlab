@@ -4,6 +4,7 @@ import {
   AuthenticationContext,
 } from 'api/authentication_requirements/types';
 import { SSOProvider } from 'services/singleSignOn';
+import { SuccessAction } from './SuccessActions/actions';
 
 export type Status = 'pending' | 'error' | 'ok';
 
@@ -29,7 +30,7 @@ export interface AuthenticationData {
   flow: 'signup' | 'signin';
   pathname: string;
   context: AuthenticationContext;
-  onSuccess?: () => void;
+  successAction?: SuccessAction;
 }
 
 export type SSOProviderWithoutVienna = Exclude<SSOProvider, 'id_vienna_saml'>;

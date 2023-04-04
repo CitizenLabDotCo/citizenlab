@@ -5,6 +5,7 @@ import {
 import eventEmitter from 'utils/eventEmitter';
 import getAuthenticationRequirements from 'api/authentication_requirements/getAuthenticationRequirements';
 import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
 
 export type TSignUpInError = 'general' | 'franceconnect_merging_failed';
 
@@ -23,7 +24,7 @@ export interface ISignUpInMetaData {
   isInvitation?: boolean;
   token?: string;
   noAutofocus?: boolean;
-  onSuccess?: () => void;
+  successAction?: SuccessAction;
 }
 
 const OLD_MODAL_EVENT = 'openOldSignUpInModal';
@@ -35,9 +36,9 @@ export async function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
   if (isOldSignInFlow) {
     triggerAuthenticationFlow({
       flow: metaData.flow ?? 'signup',
-      pathname: metaData?.pathname || window.location.pathname,
+      pathname: metaData.pathname || window.location.pathname,
       context: metaData.context ?? GLOBAL_CONTEXT,
-      onSuccess: metaData.onSuccess,
+      successAction: metaData.successAction,
     });
 
     return;
@@ -53,9 +54,9 @@ export async function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
     if (isLightFlow) {
       triggerAuthenticationFlow({
         flow: metaData.flow ?? 'signup',
-        pathname: metaData?.pathname || window.location.pathname,
+        pathname: metaData.pathname || window.location.pathname,
         context: metaData.context,
-        onSuccess: metaData.onSuccess,
+        successAction: metaData.successAction,
       });
 
       return;
@@ -75,7 +76,7 @@ export function openOldSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
     error: metaData?.error,
     isInvitation: !!metaData?.isInvitation,
     token: metaData?.token,
-    onSuccess: metaData?.onSuccess,
+    successAction: metaData?.successAction,
   };
 
   eventEmitter.emit(OLD_MODAL_EVENT, emittedMetaData);
