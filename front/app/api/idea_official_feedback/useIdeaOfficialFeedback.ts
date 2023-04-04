@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import ideaOfficialFeedbackKeys from './keys';
@@ -11,7 +11,7 @@ const fetchOfficialFeedback = ({ ideaId }: { ideaId: string }) =>
   });
 
 const useIdeaOfficialFeedback = ({ ideaId }: { ideaId: string }) => {
-  return useQuery<
+  return useInfiniteQuery<
     IOfficialFeedbacks,
     CLErrors,
     IOfficialFeedbacks,
