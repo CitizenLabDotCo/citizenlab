@@ -6,7 +6,7 @@ import { darken } from 'polished';
 
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
 import { Icon } from '@citizenlab/cl2-component-library';

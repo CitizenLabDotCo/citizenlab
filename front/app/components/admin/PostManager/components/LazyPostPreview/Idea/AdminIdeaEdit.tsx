@@ -12,16 +12,17 @@ import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 // services
-import { deleteIdeaImage } from 'services/ideaImages';
 import { usePermission } from 'services/permissions';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
+
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import useInputSchema from 'hooks/useInputSchema';
-import useIdeaImages from 'hooks/useIdeaImages';
-import useResourceFiles from 'hooks/useResourceFiles';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -45,6 +46,7 @@ const AdminIdeaEdit = ({
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
+  const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
   const granted = usePermission({
     item: idea?.data || null,
     action: 'edit',
@@ -57,11 +59,8 @@ const AdminIdeaEdit = ({
       ? null
       : idea.data.relationships.project.data.id,
   });
-  const remoteImages = useIdeaImages(ideaId);
-  const remoteFiles = useResourceFiles({
-    resourceId: ideaId,
-    resourceType: 'idea',
-  });
+  const { data: remoteImages } = useIdeaImages(ideaId);
+  const { data: remoteFiles } = useIdeaFiles(ideaId);
 
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
     projectId: project?.id,
@@ -95,11 +94,11 @@ const AdminIdeaEdit = ({
               prop === 'idea_images_attributes' &&
               Array.isArray(idea.data.relationships?.idea_images?.data)
             ) {
-              return [prop, remoteImages];
+              return [prop, remoteImages?.data];
             } else if (prop === 'idea_files_attributes') {
               const attachmentsValue =
-                !isNilOrError(remoteFiles) && remoteFiles.length > 0
-                  ? remoteFiles
+                !isNilOrError(remoteFiles) && remoteFiles.data.length > 0
+                  ? remoteFiles.data
                   : undefined;
               return [prop, attachmentsValue];
             } else return [prop, undefined];
@@ -129,12 +128,11 @@ const AdminIdeaEdit = ({
       idea_images_attributes !== initialFormData?.idea_images_attributes;
 
     // Delete a remote image only on submission
-    if (isImageNew && initialFormData?.idea_images_attributes !== undefined) {
-      try {
-        deleteIdeaImage(ideaId, initialFormData?.idea_images_attributes[0].id);
-      } catch (e) {
-        // TODO: Add graceful error handling
-      }
+    if (isImageNew && initialFormData?.idea_images_attributes[0]?.id) {
+      deleteIdeaImage({
+        ideaId,
+        imageId: initialFormData.idea_images_attributes[0].id,
+      });
     }
 
     const payload = {

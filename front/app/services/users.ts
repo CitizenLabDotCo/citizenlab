@@ -109,7 +109,11 @@ export async function updateUser(userId: string, object: IUserUpdate) {
 
   await streams.fetchAllWith({
     dataId: [userId],
-    apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`],
+    apiEndpoint: [
+      `${API_PATH}/groups`,
+      `${API_PATH}/users`,
+      `${API_PATH}/stats/users_count`,
+    ],
   });
 
   // Invalidate seats if the user's roles have changed
