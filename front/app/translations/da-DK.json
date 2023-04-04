@@ -827,7 +827,7 @@
   "app.containers.IdeasNewPage.ajv_error_idea_body_multiloc_maxLength": "Idébeskrivelsen skal være mindre end {limit} tegn lang",
   "app.containers.IdeasNewPage.ajv_error_idea_body_multiloc_minLength": "Idébeskrivelsen skal være mere end {limit} tegn lang",
   "app.containers.IdeasNewPage.ajv_error_idea_body_multiloc_required": "Angiv venligst en beskrivelse",
-  "app.containers.IdeasNewPage.ajv_error_idea_title_multiloc_maxLength1": "The idea title must be less than {limit} characters long",
+  "app.containers.IdeasNewPage.ajv_error_idea_title_multiloc_maxLength1": "Idéens titel skal være på mere end {limit} tegn",
   "app.containers.IdeasNewPage.ajv_error_idea_title_multiloc_minLength": "Idétitlen skal være mere end {limit} tegn lang",
   "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_maxLength": "Beskrivelsen af emnet skal være mindre end {limit} tegn lang",
   "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_minLength": "Beskrivelsen af emnet skal være mere end {limit} tegn lang",
