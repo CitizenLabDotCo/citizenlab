@@ -75,15 +75,13 @@ const CLPageLayout = memo(
     const [userPagePath] = useState<PageType[]>([]);
     const theme = useTheme();
     const formState = useJsonForms();
-    const isSmallerThanXlPhone = useBreakpoint('phone');
+    const isSmallerThanPhone = useBreakpoint('phone');
     const submitText = formSubmitText || messages.submit;
     const showSubmit = currentStep === uiPages.length - 1;
     const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
     const hasPreviousPage = currentStep !== 0;
     const useTopAnchor =
-      isSmallerThanXlPhone &&
-      !isNilOrError(topAnchorRef) &&
-      topAnchorRef.current;
+      isSmallerThanPhone && !isNilOrError(topAnchorRef) && topAnchorRef.current;
 
     useEffect(() => {
       // We can cast types because the tester made sure we only get correct values
@@ -198,7 +196,7 @@ const CLPageLayout = memo(
           })}
           <Box
             display="flex"
-            flexDirection={isSmallerThanXlPhone ? 'column' : 'row-reverse'}
+            flexDirection={isSmallerThanPhone ? 'column' : 'row-reverse'}
             justifyContent="space-between"
             width="100%"
             mb="60px"
@@ -235,7 +233,7 @@ const CLPageLayout = memo(
                 icon="chevron-left"
                 buttonStyle="white"
                 width="100%"
-                marginRight={isSmallerThanXlPhone ? '0px' : '16px'}
+                marginRight={isSmallerThanPhone ? '0px' : '16px'}
               >
                 <FormattedMessage {...messages.previous} />
               </Button>

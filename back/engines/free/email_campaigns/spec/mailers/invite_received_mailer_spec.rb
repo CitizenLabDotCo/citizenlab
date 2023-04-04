@@ -6,7 +6,7 @@ RSpec.describe EmailCampaigns::InviteReceivedMailer, type: :mailer do
   describe 'InviteReceived' do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::InviteReceived.create! }
-    let_it_be(:token) { InvitesService.new.generate_token }
+    let_it_be(:token) { Invites::Service.new.generate_token }
     let_it_be(:inviter) { create(:admin) }
     let_it_be(:invite_text) { 'Would you like to join our awesome platform?' }
     let_it_be(:command) do

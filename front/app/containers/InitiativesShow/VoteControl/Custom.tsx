@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';
 import { StatusExplanation } from './SharedStyles';
 
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
 import CountDown from './CountDown';

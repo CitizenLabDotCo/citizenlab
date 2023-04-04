@@ -4,11 +4,7 @@ module IdeaCustomFields
   module Patches
     module XlsxService
       def generate_idea_xlsx_columns(ideas, view_private_attributes: false, with_tags: false)
-        if AppConfiguration.instance.feature_activated? 'idea_custom_fields'
-          super + custom_form_custom_field_columns(ideas)
-        else
-          super
-        end
+        super + custom_form_custom_field_columns(ideas)
       end
 
       private

@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash-es';
 import { IPhaseData } from 'services/phases';
 import { IProjectData } from 'services/projects';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { Segment, Menu, Popup } from 'semantic-ui-react';
 import PhasesMenu from './FilterSidebarPhases';
 import TopicsMenu from './FilterSidebarTopics';

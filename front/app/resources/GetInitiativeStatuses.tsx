@@ -1,10 +1,5 @@
-import React from 'react';
-import { Subscription } from 'rxjs';
-import {
-  IInitiativeStatusData,
-  initiativeStatusesStream,
-} from 'services/initiativeStatuses';
-import { isNilOrError } from 'utils/helperUtils';
+import useInitiativeStatuses from 'api/initiative_statuses/useInitiativeStatuses';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 
 interface InputProps {}
 
@@ -16,47 +11,15 @@ interface Props extends InputProps {
   children?: children;
 }
 
-interface State {
-  initiativeStatuses: IInitiativeStatusData[] | undefined | null;
-}
-
 export type GetInitiativeStatusesChildProps =
   | IInitiativeStatusData[]
   | undefined
   | null;
 
-export default class GetInitiativeStatuses extends React.Component<
-  Props,
-  State
-> {
-  private subscriptions: Subscription[];
+const GetInitiativeStatuses = ({ children }: Props) => {
+  const { data: initiativeStatuses } = useInitiativeStatuses();
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      initiativeStatuses: undefined,
-    };
-  }
+  return (children as children)(initiativeStatuses?.data);
+};
 
-  componentDidMount() {
-    this.subscriptions = [
-      initiativeStatusesStream().observable.subscribe((initiativeStatuses) => {
-        this.setState({
-          initiativeStatuses: !isNilOrError(initiativeStatuses)
-            ? initiativeStatuses.data
-            : null,
-        });
-      }),
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  render() {
-    const { children } = this.props;
-    const { initiativeStatuses } = this.state;
-    return (children as children)(initiativeStatuses);
-  }
-}
+export default GetInitiativeStatuses;

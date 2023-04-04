@@ -38,6 +38,16 @@ export const isAdmin = (user?: IUser | null | undefined | Error) => {
   return false;
 };
 
+export const isCollaborator = (user?: IUser | null | undefined | Error) => {
+  if (!isNilOrError(user)) {
+    return ['project_moderator', 'project_folder_moderator'].includes(
+      user.data.attributes.highest_role
+    );
+  }
+
+  return false;
+};
+
 /*
   A super admin is an admin with @citizenlab.co email address.
   In the frontend, it doesn't have a significant meaning at the time of writing (18/1/'21).

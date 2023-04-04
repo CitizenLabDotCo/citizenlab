@@ -6,12 +6,7 @@ require 'rspec_api_documentation/dsl'
 resource 'Ideas' do
   explanation 'Proposals from citizens to the city.'
 
-  before do
-    header 'Content-Type', 'application/json'
-
-    SettingsService.new.activate_feature! 'idea_custom_fields'
-    SettingsService.new.activate_feature! 'dynamic_idea_form'
-  end
+  before { header 'Content-Type', 'application/json' }
 
   context 'when visitor' do
     describe 'Create' do

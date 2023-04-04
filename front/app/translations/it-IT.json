@@ -534,6 +534,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "le nostre linee guida",
   "app.components.form.ErrorDisplay.next": "Successivo",
   "app.components.form.ErrorDisplay.previous": "Precedente",
+  "app.components.form.ErrorDisplay.save": "Risparmiare",
   "app.components.form.ErrorDisplay.submitSurvey": "Invia sondaggio",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Inizia a digitare per cercare per email o nome dell'utente...",
   "app.components.form.blockedVerified": "Non puoi modificare questo campo perché contiene informazioni verificate",

@@ -53,7 +53,7 @@ const StyledIdeasShow = styled(IdeasShow)`
 const IdeasShowPage = () => {
   const { slug } = useParams() as { slug: string };
   const { data: idea } = useIdeaBySlug(slug);
-  const tablet = useBreakpoint('tablet');
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
   if (isUnauthorizedError(idea)) {
     return <Unauthorized />;
@@ -66,7 +66,7 @@ const IdeasShowPage = () => {
   if (idea) {
     return (
       <Box background={colors.white}>
-        {tablet && (
+        {isSmallerThanTablet && (
           <StyledIdeaShowPageTopBar
             projectId={idea.data.relationships.project.data.id}
             ideaId={idea.data.id}
