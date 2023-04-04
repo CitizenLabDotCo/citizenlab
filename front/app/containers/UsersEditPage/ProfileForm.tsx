@@ -110,10 +110,10 @@ const ProfileForm = ({
     mode: 'onBlur',
     defaultValues: {
       first_name: authUser?.attributes.no_name
-        ? ''
+        ? undefined
         : authUser?.attributes.first_name,
       last_name: authUser?.attributes.no_name
-        ? ''
+        ? undefined
         : authUser?.attributes.last_name || undefined,
       email: authUser?.attributes.email,
       bio_multiloc: authUser?.attributes.bio_multiloc,
