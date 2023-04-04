@@ -109,8 +109,12 @@ const ProfileForm = ({
   const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues: {
-      first_name: authUser?.attributes.first_name,
-      last_name: authUser?.attributes.last_name || undefined,
+      first_name: authUser?.attributes.no_name
+        ? ''
+        : authUser?.attributes.first_name,
+      last_name: authUser?.attributes.no_name
+        ? ''
+        : authUser?.attributes.last_name || undefined,
       email: authUser?.attributes.email,
       bio_multiloc: authUser?.attributes.bio_multiloc,
       locale: authUser?.attributes.locale,
