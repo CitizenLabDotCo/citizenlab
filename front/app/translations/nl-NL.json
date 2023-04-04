@@ -1251,7 +1251,7 @@
   "app.containers.ProjectsIndexPage.metaDescription": "Verken alle lopende projecten van {orgName} en ontdek hoe jij kan deelnemen.\nBespreek die lokale projecten die voor jou het belangrijkst zijn.",
   "app.containers.ProjectsIndexPage.metaTitle": "Projecten • {orgName}",
   "app.containers.ProjectsIndexPage.pageTitle": "Projecten",
-  "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "{tenantName, select, Almere {Ik schrijf me in voor dit Stadsgesprek} other {Ik geef me op}}",
+  "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Ik wil deelnemen",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Gelieve eerst {signInLink} of {signUpLink} om je aan te melden",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "inloggen",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "registreren",
