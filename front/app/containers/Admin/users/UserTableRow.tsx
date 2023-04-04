@@ -77,8 +77,7 @@ const UserTableRow = ({
     'LL'
   );
   const [showModal, setShowModal] = useState(false);
-  const [isChangingToNormalUser, setIsChangingToNormalUser] =
-    useState<boolean>(false);
+  const [isChangingToNormalUser, setIsChangingToNormalUser] = useState(false);
 
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
