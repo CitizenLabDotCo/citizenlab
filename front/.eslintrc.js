@@ -182,5 +182,6 @@ module.exports = {
     'internals',
     'server',
     'app/containers/App/constants.js',
+    'src/cable.js',
   ],
 };

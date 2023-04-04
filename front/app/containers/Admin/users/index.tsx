@@ -181,6 +181,8 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
         </Modal>
       </>
     );
+
+    console.log('hello from index');
   }
 }
 
