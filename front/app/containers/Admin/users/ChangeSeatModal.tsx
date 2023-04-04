@@ -79,7 +79,6 @@ const ChangeSeatModal = ({
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
   });
-  const isUserCollaborator = isCollaborator({ data: userToChangeSeat });
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
   if (!appConfiguration || !seats) return null;
