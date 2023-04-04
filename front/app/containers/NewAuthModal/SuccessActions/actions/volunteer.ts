@@ -1,6 +1,8 @@
 import { ICauseData } from 'api/causes/types';
 import { addVolunteer } from 'api/causes/useAddVolunteer';
 import { deleteVolunteer } from 'api/causes/useDeleteVolunteer';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import causeKeys from 'api/causes/keys';
 
 export interface VolunteerParams {
   cause: ICauseData;
@@ -10,11 +12,18 @@ export const volunteer =
   ({ cause }: VolunteerParams) =>
   async () => {
     if (cause.relationships?.user_volunteer?.data) {
-      deleteVolunteer({
+      await deleteVolunteer({
         causeId: cause.id,
         volunteerId: cause.relationships.user_volunteer.data.id,
       });
     } else {
-      addVolunteer(cause.id);
+      await addVolunteer(cause.id);
     }
+
+    queryClient.invalidateQueries({
+      queryKey: causeKeys.lists(),
+    });
+    queryClient.invalidateQueries({
+      queryKey: causeKeys.item({ id: cause.id }),
+    });
   };

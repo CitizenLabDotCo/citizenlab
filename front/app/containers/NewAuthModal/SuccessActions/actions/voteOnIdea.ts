@@ -1,6 +1,8 @@
 import { IUserData } from 'services/users';
 import { addIdeaVote } from 'api/idea_votes/useAddIdeaVote';
 import { deleteIdeaVote } from 'api/idea_votes/useDeleteIdeaVote';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import ideasKeys from 'api/ideas/keys';
 
 export interface VoteOnIdeaParams {
   ideaId: string;
@@ -35,4 +37,8 @@ export const voteOnIdea =
         mode: voteMode,
       });
     }
+
+    queryClient.invalidateQueries({
+      queryKey: ideasKeys.item({ id: ideaId }),
+    });
   };
