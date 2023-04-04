@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // Components
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
+import SeatSetSuccess from 'components/admin/SeatSetSuccess';
 
 // Translation
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -24,14 +25,13 @@ import { isAdmin } from 'services/permissions/roles';
 const getInfoText = (
   isUserAdmin: boolean,
   isChangingCollaboratorToNormalUser: boolean,
-  maximumAdmins: number | null | undefined,
-  currentAdminSeats: number
+  hasReachedOrIsOverLimit: boolean
 ): MessageDescriptor => {
   if (isUserAdmin) {
     return messages.confirmNormalUserQuestion;
   } else if (isChangingCollaboratorToNormalUser) {
     return messages.confirmSetCollaboratorAsNormalUserQuestion;
-  } else if (!isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins) {
+  } else if (hasReachedOrIsOverLimit) {
     return messages.reachedLimitMessage;
   }
 
@@ -40,19 +40,21 @@ const getInfoText = (
 
 const getButtonText = (
   isUserAdmin: boolean,
-  maximumAdmins: number | null | undefined,
-  currentAdminSeats: number,
+  isUserToChangeCollaborator: boolean,
+  hasReachedOrIsOverLimit: boolean,
   hasSeatBasedBillingEnabled: boolean
 ): MessageDescriptor => {
   const buttonText = messages.confirm;
 
-  if (isUserAdmin || !hasSeatBasedBillingEnabled) {
+  if (
+    isUserAdmin ||
+    isUserToChangeCollaborator ||
+    !hasSeatBasedBillingEnabled
+  ) {
     return buttonText;
   }
 
-  return !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins
-    ? messages.buyOneAditionalSeat
-    : buttonText;
+  return hasReachedOrIsOverLimit ? messages.buyOneAditionalSeat : buttonText;
 };
 
 interface Props {
@@ -70,7 +72,9 @@ const ChangeSeatModal = ({
   changeRoles,
   isChangingToNormalUser,
 }: Props) => {
-  const isUserAdmin = isAdmin({ data: userToChangeSeat });
+  const [showSuccess, setShowSuccess] = useState(false);
+  const isUserToChangeSeatAdmin = isAdmin({ data: userToChangeSeat });
+  const isUserToChangeCollaborator = isCollaborator({ data: userToChangeSeat });
   const { formatMessage } = useIntl();
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
@@ -85,72 +89,83 @@ const ChangeSeatModal = ({
   const currentAdminSeats = seats.data.attributes.admins_number;
 
   const isChangingCollaboratorToNormalUser =
-    isChangingToNormalUser && isUserCollaborator;
+    isChangingToNormalUser && isUserToChangeCollaborator;
+  const hasReachedOrIsOverLimit =
+    !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins;
+  const hasExceededSetSeats =
+    !isNil(maximumAdmins) && currentAdminSeats > maximumAdmins;
   const confirmChangeQuestion = getInfoText(
-    isUserAdmin,
+    isUserToChangeSeatAdmin,
     isChangingCollaboratorToNormalUser,
-    maximumAdmins,
-    currentAdminSeats
+    hasReachedOrIsOverLimit
   );
-  const modalTitle = isChangingToNormalUser
+  const modalTitle = isUserToChangeSeatAdmin
     ? messages.setAsNormalUser
     : messages.giveAdminRights;
   const buttonText = getButtonText(
-    isUserAdmin,
-    maximumAdmins,
-    currentAdminSeats,
+    isUserToChangeSeatAdmin,
+    isUserToChangeCollaborator,
+    hasReachedOrIsOverLimit,
     hasSeatBasedBillingEnabled
   );
 
+  const header = !showSuccess ? (
+    <Box px="2px">
+      <Text color="primary" my="8px" fontSize="l" fontWeight="bold">
+        {formatMessage(modalTitle)}
+      </Text>
+    </Box>
+  ) : undefined;
+
   return (
-    <Modal
-      opened={showModal}
-      close={closeModal}
-      header={
-        <Box px="2px">
-          <Text color="primary" my="8px" fontSize="l" fontWeight="bold">
-            {formatMessage(modalTitle)}
-          </Text>
-        </Box>
-      }
-    >
-      <Box display="flex" flexDirection="column" width="100%" p="32px">
-        <Box pb="32px">
-          <Text color="textPrimary" fontSize="m" my="0px">
-            <FormattedMessage
-              {...confirmChangeQuestion}
-              values={{
-                name: (
-                  <Text as="span" fontWeight="bold" fontSize="m">
-                    {`${userToChangeSeat.attributes.first_name} ${userToChangeSeat.attributes.last_name}`}
-                  </Text>
-                ),
+    <Modal opened={showModal} close={closeModal} header={header}>
+      {showSuccess ? (
+        <SeatSetSuccess
+          closeModal={() => {
+            closeModal();
+            setShowSuccess(false);
+          }}
+          hasExceededSetSeats={hasExceededSetSeats}
+          seatType="admin"
+        />
+      ) : (
+        <Box display="flex" flexDirection="column" width="100%" p="32px">
+          <Box pb="32px">
+            <Text color="textPrimary" fontSize="m" my="0px">
+              <FormattedMessage
+                {...confirmChangeQuestion}
+                values={{
+                  name: (
+                    <Text as="span" fontWeight="bold" fontSize="m">
+                      {`${userToChangeSeat.attributes.first_name} ${userToChangeSeat.attributes.last_name}`}
+                    </Text>
+                  ),
+                }}
+              />
+            </Text>
+            {!isChangingCollaboratorToNormalUser && (
+              <Box pt="32px">
+                <SeatInfo seatType="admin" />
+              </Box>
+            )}
+          </Box>
+          <Box display="flex" width="100%" alignItems="center">
+            <Button
+              width="auto"
+              onClick={() => {
+                changeRoles(userToChangeSeat, isChangingToNormalUser);
+                if (!isChangingToNormalUser) {
+                  setShowSuccess(true);
+                } else {
+                  closeModal();
+                }
               }}
-            />
-          </Text>
-          {!isChangingCollaboratorToNormalUser && (
-            <Box pt="32px">
-              <SeatInfo seatType="admin" />
-            </Box>
-          )}
+            >
+              {formatMessage(buttonText)}
+            </Button>
+          </Box>
         </Box>
-        <Box
-          display="flex"
-          flexDirection="row"
-          width="100%"
-          alignItems="center"
-        >
-          <Button
-            width="auto"
-            onClick={() => {
-              changeRoles(userToChangeSeat, isChangingToNormalUser);
-              closeModal();
-            }}
-          >
-            {formatMessage(buttonText)}
-          </Button>
-        </Box>
-      </Box>
+      )}
     </Modal>
   );
 };

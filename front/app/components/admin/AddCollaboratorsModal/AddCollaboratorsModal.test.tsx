@@ -61,7 +61,6 @@ describe('AddCollaboratorsModal', () => {
         addModerators={handleOnAddModeratorsClick}
         showModal
         closeModal={closeModal}
-        noOfCollaboratorSeatsToAdd={1}
       />
     );
 
@@ -86,7 +85,6 @@ describe('AddCollaboratorsModal', () => {
         addModerators={handleOnAddModeratorsClick}
         showModal
         closeModal={closeModal}
-        noOfCollaboratorSeatsToAdd={1}
       />
     );
 

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // Components
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import SeatInfo from 'components/SeatInfo';
+import SeatSetSuccess from 'components/admin/SeatSetSuccess';
 
 // Translation
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -20,18 +21,17 @@ interface Props {
   showModal: boolean;
   closeModal: () => void;
   addModerators: () => void;
-  noOfCollaboratorSeatsToAdd: number;
 }
 
 const AddCollaboratorsModal = ({
   showModal,
   closeModal,
   addModerators,
-  noOfCollaboratorSeatsToAdd,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
+  const [showSuccess, setShowSuccess] = useState(false);
 
   if (!appConfiguration || !seats) return null;
 
@@ -39,67 +39,63 @@ const AddCollaboratorsModal = ({
     appConfiguration.data.attributes.settings.core.maximum_moderators_number;
   const currentCollaboratorSeats =
     seats.data.attributes.project_moderators_number;
-  const hasReachedLimit =
+  const hasReachedOrIsOverLimit =
     !isNil(maximumCollaborators) &&
     currentCollaboratorSeats >= maximumCollaborators;
-  const buttonText = hasReachedLimit
-    ? formatMessage(messages.buyAdditionalSeats, {
-        noOfSeats: noOfCollaboratorSeatsToAdd,
-      })
+  const hasExceededSetSeats =
+    !isNil(maximumCollaborators) &&
+    currentCollaboratorSeats > maximumCollaborators;
+  const buttonText = hasReachedOrIsOverLimit
+    ? formatMessage(messages.buyAdditionalSeats)
     : formatMessage(messages.confirmButtonText);
 
+  const header = !showSuccess ? (
+    <Text color="primary" my="8px" fontSize="l" fontWeight="bold" px="2px">
+      {formatMessage(messages.giveCollaboratorRights)}
+    </Text>
+  ) : undefined;
+
   return (
-    <Modal
-      opened={showModal}
-      close={closeModal}
-      header={
-        <Box px="2px">
-          <Text color="primary" my="8px" fontSize="l" fontWeight="bold">
-            {formatMessage(messages.giveCollaboratorRights)}
-          </Text>
-        </Box>
-      }
-    >
-      <Box display="flex" flexDirection="column" width="100%" p="32px">
-        <Box>
+    <Modal opened={showModal} close={closeModal} header={header}>
+      {showSuccess ? (
+        <SeatSetSuccess
+          closeModal={() => {
+            setShowSuccess(false);
+            closeModal();
+          }}
+          hasExceededSetSeats={hasExceededSetSeats}
+          seatType="collaborator"
+        />
+      ) : (
+        <Box display="flex" flexDirection="column" width="100%" p="32px">
           <Text color="textPrimary" fontSize="m" my="0px">
-            {hasReachedLimit ? (
-              <FormattedMessage
-                {...messages.reachedLimitText}
-                values={{
-                  noOfSeats: noOfCollaboratorSeatsToAdd,
-                }}
-              />
-            ) : (
-              <FormattedMessage
-                {...messages.confirmMessage}
-                values={{
-                  noOfPeople: noOfCollaboratorSeatsToAdd,
-                }}
-              />
-            )}
+            <FormattedMessage
+              {...(hasReachedOrIsOverLimit
+                ? messages.hasReachedOrIsOverLimit
+                : messages.confirmMessage)}
+            />
           </Text>
           <Box py="32px">
             <SeatInfo seatType="collaborator" />
           </Box>
-        </Box>
-        <Box
-          display="flex"
-          flexDirection="row"
-          width="100%"
-          alignItems="center"
-        >
-          <Button
-            width="auto"
-            onClick={() => {
-              addModerators();
-              closeModal();
-            }}
+          <Box
+            display="flex"
+            flexDirection="row"
+            width="100%"
+            alignItems="center"
           >
-            {buttonText}
-          </Button>
+            <Button
+              width="auto"
+              onClick={() => {
+                addModerators();
+                setShowSuccess(true);
+              }}
+            >
+              {buttonText}
+            </Button>
+          </Box>
         </Box>
-      </Box>
+      )}
     </Modal>
   );
 };

@@ -57,7 +57,7 @@ jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
 describe('ChangeSeatModal', () => {
   const closeModal = jest.fn();
-  const toggleAdmin = jest.fn();
+  const changeRoles = jest.fn();
   const mockUser = makeUser();
 
   it('shows confirm in button when seats are not full and admin is adding another admin', () => {
@@ -65,8 +65,9 @@ describe('ChangeSeatModal', () => {
       <ChangeSeatModal
         showModal
         userToChangeSeat={mockUser.data}
-        toggleAdmin={toggleAdmin}
+        changeRoles={changeRoles}
         closeModal={closeModal}
+        isChangingToNormalUser={false}
       />
     );
 
@@ -85,8 +86,9 @@ describe('ChangeSeatModal', () => {
       <ChangeSeatModal
         showModal
         userToChangeSeat={mockUser.data}
-        toggleAdmin={toggleAdmin}
+        changeRoles={changeRoles}
         closeModal={closeModal}
+        isChangingToNormalUser={false}
       />
     );
 
@@ -106,8 +108,9 @@ describe('ChangeSeatModal', () => {
       <ChangeSeatModal
         showModal
         userToChangeSeat={mockUser.data}
-        toggleAdmin={toggleAdmin}
+        changeRoles={changeRoles}
         closeModal={closeModal}
+        isChangingToNormalUser={false}
       />
     );
 
@@ -126,8 +129,9 @@ describe('ChangeSeatModal', () => {
       <ChangeSeatModal
         showModal
         userToChangeSeat={mockAdmin.data}
-        toggleAdmin={toggleAdmin}
+        changeRoles={changeRoles}
         closeModal={closeModal}
+        isChangingToNormalUser
       />
     );
 
