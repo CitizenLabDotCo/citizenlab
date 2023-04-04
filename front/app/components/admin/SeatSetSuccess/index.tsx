@@ -1,4 +1,5 @@
 import React from 'react';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import {
@@ -8,7 +9,7 @@ import {
   Icon,
   Button,
 } from '@citizenlab/cl2-component-library';
-import { TSeatType } from 'components/SeatInfo';
+import { SeatTypeMessageDescriptor, TSeatType } from 'components/SeatInfo';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -29,14 +30,23 @@ const SeatSetSuccess = ({
   hasExceededSetSeats,
 }: SeatChangeSuccessModalProps) => {
   const { formatMessage } = useIntl();
-  const descriptionMessage = hasExceededSetSeats
-    ? formatMessage(messages.reflectedMessage)
-    : formatMessage(messages.rightsGranted, {
-        seatType: formatMessage(messages[seatType]),
-      });
-  const titleMessage = hasExceededSetSeats
-    ? messages.orderCompleted
-    : messages.allDone;
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
+  const seatTypeMessages: SeatTypeMessageDescriptor = {
+    admin: messages.admin,
+    collaborator: messages.collaborator,
+  };
+  const descriptionMessage =
+    hasSeatBasedBillingEnabled && hasExceededSetSeats
+      ? formatMessage(messages.reflectedMessage)
+      : formatMessage(messages.rightsGranted, {
+          seatType: formatMessage(seatTypeMessages[seatType]),
+        });
+  const titleMessage =
+    hasSeatBasedBillingEnabled && hasExceededSetSeats
+      ? messages.orderCompleted
+      : messages.allDone;
 
   return (
     <Box p="30px">
