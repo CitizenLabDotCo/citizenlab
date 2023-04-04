@@ -76,7 +76,7 @@ module EmailCampaigns
     end
 
     def apply_recipient_filters(activity: nil, time: nil)
-      self.class.recipient_filters.inject(User.all) do |users_scope, action_symbol|
+      self.class.recipient_filters.inject(User.where.not(email: nil)) do |users_scope, action_symbol|
         send(action_symbol, users_scope, { activity: activity, time: time })
       end
     end

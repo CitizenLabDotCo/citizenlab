@@ -21,6 +21,7 @@ import {
   Radio,
   Input,
   LocaleSwitcher,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import { Section } from 'components/admin/Section';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
@@ -45,10 +46,6 @@ const StyledMentionsTextArea = styled(MentionsTextArea)`
 `;
 
 const StyledInput = styled(Input)``;
-
-const StyledRadio = styled(Radio)`
-  margin-top: 25px;
-`;
 
 const ChangeStatusButton = styled(Button)`
   margin-top: 25px;
@@ -105,26 +102,29 @@ class StatusChangeForm extends PureComponent<
 
     return (
       <>
-        <StyledRadio
-          onChange={onChangeMode}
-          currentValue={mode}
-          value="new"
-          name="statusChangeMethod"
-          label={formatMessage(messages.newFeedbackMode)}
-          id="status-change-radio-new"
-        />
+        <Box mt="12px">
+          <Radio
+            onChange={onChangeMode}
+            currentValue={mode}
+            value="new"
+            name="statusChangeMethod"
+            label={formatMessage(messages.newFeedbackMode)}
+            id="status-change-radio-new"
+          />
+        </Box>
 
         {mode === 'new' && this.renderFeedbackForm()}
 
-        <StyledRadio
-          onChange={onChangeMode}
-          currentValue={mode}
-          value="latest"
-          name="statusChangeMethod"
-          label={formatMessage(messages.latestFeedbackMode)}
-          id="status-change-radio-latest"
-        />
-
+        <Box mt="12px">
+          <Radio
+            onChange={onChangeMode}
+            currentValue={mode}
+            value="latest"
+            name="statusChangeMethod"
+            label={formatMessage(messages.latestFeedbackMode)}
+            id="status-change-radio-latest"
+          />
+        </Box>
         {mode === 'latest' && (
           <OfficialFeedbackPost
             editingAllowed={false}

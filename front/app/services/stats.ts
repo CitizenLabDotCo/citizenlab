@@ -107,13 +107,6 @@ export function ideasByProjectStream(
   });
 }
 
-export function ideasCount(streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeasCount>({
-    apiEndpoint: `${apiEndpoint}/ideas_count`,
-    ...streamParams,
-  });
-}
-
 export function ideasCountForUser(userId: string) {
   return streams.get<IIdeasCount>({
     apiEndpoint: `${API_PATH}/users/${userId}/ideas_count`,

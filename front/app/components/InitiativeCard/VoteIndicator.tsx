@@ -1,17 +1,9 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
 
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetInitiativeStatus, {
-  GetInitiativeStatusChildProps,
-} from 'resources/GetInitiativeStatus';
-
 import { Icon } from '@citizenlab/cl2-component-library';
 import ProposalProgressBar from 'containers/InitiativesShow/VoteControl/ProposalProgressBar';
 
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -21,13 +13,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 import T from 'components/T';
-import { get } from 'lodash-es';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 // Types
-import { IInitiativeData } from 'api/initiatives/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
 
 const Container = styled.div``;
 
@@ -119,32 +111,24 @@ const ExpiredIcon = styled(Icon)`
   margin: 0 4px 2px 0;
 `;
 
-interface InputProps {
+interface Props {
   initiativeId: string;
 }
 
-interface IntiativeInputProps {
-  initiative: IInitiativeData;
-}
-
-interface DataProps {
-  tenant: GetAppConfigurationChildProps;
-  initiativeStatus: GetInitiativeStatusChildProps;
-}
-
-interface Props extends InputProps, DataProps, IntiativeInputProps {}
-
-const VoteIndicator = ({ initiative, initiativeStatus, tenant }: Props) => {
+const VoteIndicator = ({ initiativeId }: Props) => {
   const theme = useTheme();
+  const { data: appConfiguration } = useAppConfiguration();
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const { data: initiativeStatus } = useInitiativeStatus(
+    initiative?.data.relationships.initiative_status?.data?.id
+  );
   if (isNilOrError(initiativeStatus)) return null;
 
-  const statusCode = initiativeStatus.attributes.code;
-  const voteCount = initiative.attributes.upvotes_count;
-  const voteLimit: number = get(
-    tenant,
-    'attributes.settings.initiatives.voting_threshold',
-    1
-  );
+  const statusCode = initiativeStatus.data.attributes.code;
+  const voteCount = initiative?.data.attributes.upvotes_count || 0;
+  const voteLimit: number =
+    appConfiguration?.data?.attributes?.settings.initiatives
+      ?.voting_threshold || 1;
 
   return (
     <Container className="e2e-initiative-card-vote-indicator">
@@ -176,7 +160,7 @@ const VoteIndicator = ({ initiative, initiativeStatus, tenant }: Props) => {
         <div>
           <ExpiredText>
             <ExpiredIcon name="clock" ariaHidden />
-            <T value={initiativeStatus.attributes.title_multiloc} />
+            <T value={initiativeStatus.data.attributes.title_multiloc} />
           </ExpiredText>
 
           <StyledProposalProgressBar
@@ -208,27 +192,27 @@ const VoteIndicator = ({ initiative, initiativeStatus, tenant }: Props) => {
       )}
 
       {statusCode === 'answered' && (
-        <AnsweredStatusBadge color={initiativeStatus.attributes.color}>
+        <AnsweredStatusBadge color={initiativeStatus.data.attributes.color}>
           <AnsweredBadgeIcon name="check-circle" ariaHidden />
           <BadgeLabel>
-            <T value={initiativeStatus.attributes.title_multiloc} />
+            <T value={initiativeStatus.data.attributes.title_multiloc} />
           </BadgeLabel>
         </AnsweredStatusBadge>
       )}
 
       {statusCode === 'ineligible' && (
-        <IneligibleStatusBadge color={initiativeStatus.attributes.color}>
+        <IneligibleStatusBadge color={initiativeStatus.data.attributes.color}>
           <IneligibleBadgeIcon name="halt" ariaHidden />
           <BadgeLabel>
-            <T value={initiativeStatus.attributes.title_multiloc} />
+            <T value={initiativeStatus.data.attributes.title_multiloc} />
           </BadgeLabel>
         </IneligibleStatusBadge>
       )}
 
       {statusCode === 'custom' && (
-        <CustomStatusBadge color={initiativeStatus.attributes.color}>
+        <CustomStatusBadge color={initiativeStatus.data.attributes.color}>
           <BadgeLabel>
-            <T value={initiativeStatus.attributes.title_multiloc} />
+            <T value={initiativeStatus.data.attributes.title_multiloc} />
           </BadgeLabel>
         </CustomStatusBadge>
       )}
@@ -236,31 +220,4 @@ const VoteIndicator = ({ initiative, initiativeStatus, tenant }: Props) => {
   );
 };
 
-const Data = adopt<DataProps, InputProps & IntiativeInputProps>({
-  tenant: <GetAppConfiguration />,
-  initiativeStatus: ({ initiative, render }) => (
-    <GetInitiativeStatus
-      id={get(initiative, 'relationships.initiative_status.data.id')}
-    >
-      {render}
-    </GetInitiativeStatus>
-  ),
-});
-
-export default (inputProps: InputProps) => {
-  // TODO: Move this logic to VoteIndicator after working on the initiativeStatus. It's dependency here is why we need to pass in the initiative to the Data component
-  const { data: initiative } = useInitiativeById(inputProps.initiativeId);
-  if (!initiative) return null;
-
-  return (
-    <Data {...inputProps} initiative={initiative.data}>
-      {(dataProps) => (
-        <VoteIndicator
-          initiative={initiative.data}
-          {...inputProps}
-          {...dataProps}
-        />
-      )}
-    </Data>
-  );
-};
+export default VoteIndicator;

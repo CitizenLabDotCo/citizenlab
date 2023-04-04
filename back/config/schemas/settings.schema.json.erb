@@ -53,9 +53,9 @@
           "timezone": {
             "title": "Time Zone",
             "type": "string",
-            "default": "Brussels",
-            "enum": [<%= ActiveSupport::TimeZone.all.sort_by{|tz| TimezoneService.new.display_timezone(tz)}.map(&:name).map{|l| "\"#{l}\""}.join(",") %>],
-            "enumNames": [<%= ActiveSupport::TimeZone.all.map{|tz| TimezoneService.new.display_timezone(tz)}.sort.map{|l| "\"#{l}\""}.join(",") %>]
+            "default": "Europe/Brussels",
+            "enum": [<%= TimezoneService::SUPPORTED_TIMEZONES.map{|l| "\"#{l}\""}.join(",") %>],
+            "enumNames": [<%= TimezoneService::SUPPORTED_TIMEZONES.map{|tz| TimezoneService.new.display_timezone(tz)}.map{|l| "\"#{l}\""}.join(",") %>]
           },
           "currency": {
             "title": "Currency",
@@ -222,18 +222,6 @@
             "minimum": 0,
             "default": 90
           }
-        }
-      },
-
-      "dynamic_idea_form": {
-        "type": "object",
-        "title": "Dynamic idea form",
-        "description": "Changes the idea form from the hard-coded version to the generated version.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
         }
       },
 
