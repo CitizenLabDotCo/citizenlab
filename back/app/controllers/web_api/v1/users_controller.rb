@@ -135,7 +135,6 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def update
-    permissions_before = Permission.for_user(@user).load
     mark_custom_field_values_to_clear!
     user_params = permitted_attributes @user
     user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})

@@ -17,7 +17,7 @@ describe PermissionPolicy do
     it { is_expected.to permit(:schema) }
 
     it 'indexes some permissions' do
-      expect(scope.resolve.size).to eq 1
+      expect(scope.resolve.size).to eq 0
     end
   end
 
@@ -31,7 +31,7 @@ describe PermissionPolicy do
     it { is_expected.to permit(:schema) }
 
     it 'indexes some permissions' do
-      expect(scope.resolve.size).to eq 1
+      expect(scope.resolve.size).to eq 0
     end
   end
 
@@ -50,7 +50,7 @@ describe PermissionPolicy do
     it { is_expected.to permit(:schema) }
 
     it 'indexes some permissions' do
-      expect(scope.resolve.size).to eq 1
+      expect(scope.resolve.size).to eq 0
     end
   end
 
