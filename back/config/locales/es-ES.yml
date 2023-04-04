@@ -235,7 +235,7 @@ es:
     send_user_blocked_email:
       subject: 'Su cuenta ha sido desactivada temporalmente'
       title_user_blocked: 'Su cuenta ha sido desactivada temporalmente'
-      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
-      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
+      paragraph_1_without_reason: "Su cuenta en la plataforma de participación de %{organizationName} ha sido desactivada temporalmente por violar las directrices comunitarias."
+      paragraph_1_with_reason: "Su cuenta en la plataforma de participación de %{organizationName} ha sido desactivada temporalmente por el siguiente motivo:"
       for_more_information: "Para más información al respecto, puede consultar la página %{termsAndConditionsPage}."
       you_can_sign_in_again_from: "Puedes acceder de nuevo desde %{date}"
