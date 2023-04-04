@@ -318,8 +318,8 @@ namespace :cl2_back do
           duration: 90
         },
         seat_based_billing: {
-          enabled: true,
-          allowed: true
+          enabled: false,
+          allowed: false
         }
       }
     )
