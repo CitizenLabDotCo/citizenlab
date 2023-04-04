@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -26,6 +26,8 @@ import Checkbox from 'components/HookForm/Checkbox';
 
 // utils
 import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../../tracks';
 
 // typings
 import { Status } from 'containers/NewAuthModal/typings';
@@ -112,6 +114,11 @@ const EmailAndPassword = ({
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    trackEventByName(tracks.signInEmailPasswordEntered);
+    return () => trackEventByName(tracks.signInEmailPasswordExited);
+  }, []);
 
   if (!passwordLoginEnabled || tokenLifetime === undefined) return null;
 

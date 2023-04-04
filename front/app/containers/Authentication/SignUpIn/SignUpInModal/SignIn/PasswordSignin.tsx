@@ -35,7 +35,6 @@ import tracks from '../tracks';
 import styled from 'styled-components';
 
 // typings
-import { ISignUpInMetaData } from 'events/openSignUpInModal';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
@@ -64,7 +63,6 @@ const ButtonWrapper = styled.div`
 `;
 
 interface Props {
-  metaData: ISignUpInMetaData;
   onSignInCompleted: (userId: string) => void;
   onGoToSignUp: () => void;
   onGoToLogInOptions: () => void;
@@ -72,7 +70,6 @@ interface Props {
 }
 
 const PasswordSignin = ({
-  metaData,
   onSignInCompleted,
   onGoToLogInOptions,
   onGoToSignUp,
@@ -257,7 +254,7 @@ const PasswordSignin = ({
             onChange={handleEmailOnChange}
             setRef={handleEmailInputSetRef}
             autocomplete="email"
-            autoFocus={!!(isDesktop && !metaData?.noAutofocus)}
+            autoFocus={isDesktop}
           />
         </FormElement>
 

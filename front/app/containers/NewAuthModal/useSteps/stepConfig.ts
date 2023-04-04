@@ -12,6 +12,10 @@ import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 // events
 import { triggerSuccessAction } from 'containers/NewAuthModal/SuccessActions';
 
+// tracks
+import tracks from '../tracks';
+import { trackEventByName } from 'utils/analytics';
+
 // typings
 import {
   GetRequirements,
@@ -136,10 +140,13 @@ export const getStepConfig = (
             triggerSuccessAction(successAction);
           }
 
+          trackEventByName(tracks.signInEmailPasswordCompleted);
+
           setStatus('ok');
         } catch {
           setStatus('error');
           setError('wrong_password');
+          trackEventByName(tracks.signInEmailPasswordFailed);
         }
       },
     },

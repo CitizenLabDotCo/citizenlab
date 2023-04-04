@@ -23,7 +23,6 @@ export interface ISignUpInMetaData {
   error?: ISignUpInError;
   isInvitation?: boolean;
   token?: string;
-  noAutofocus?: boolean;
   successAction?: SuccessAction;
 }
 

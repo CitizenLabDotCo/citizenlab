@@ -572,12 +572,7 @@ class PasswordSignup extends PureComponent<
                   error={invitationRedeemError}
                   onChange={this.handleTokenOnChange}
                   autoFocus={
-                    !!(
-                      isDesktop &&
-                      isInvitation &&
-                      !this.props.metaData.token &&
-                      !this.props.metaData?.noAutofocus
-                    )
+                    !!(isDesktop && isInvitation && !this.props.metaData.token)
                   }
                 />
               </FormElement>
@@ -596,7 +591,6 @@ class PasswordSignup extends PureComponent<
                 onChange={this.handleFirstNameOnChange}
                 autocomplete="given-name"
                 autoFocus={
-                  !this.props.metaData?.noAutofocus &&
                   isDesktop &&
                   (!isInvitation ||
                     !!(isInvitation && this.props.metaData.token))
