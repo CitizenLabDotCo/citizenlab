@@ -70,14 +70,15 @@ export type SuccessAction =
   | VoteOnIdeaAction
   | VoteOnInitiativeAction;
 
-export const actions = {
-  assignBudget,
-  redirectToIdeaForm,
-  redirectToInitiativeForm,
-  replyToComment,
-  scrollToSurvey,
-  volunteer,
-  voteOnComment,
-  voteOnIdea,
-  voteOnInitiative,
+export const getAction = ({ name, params }: SuccessAction) => {
+  if (name === 'assignBudget') return assignBudget(params);
+  if (name === 'redirectToIdeaForm') return redirectToIdeaForm(params);
+  if (name === 'redirectToInitiativeForm')
+    return redirectToInitiativeForm(params);
+  if (name === 'replyToComment') return replyToComment(params);
+  if (name === 'scrollToSurvey') return scrollToSurvey(params);
+  if (name === 'volunteer') return volunteer(params);
+  if (name === 'voteOnComment') return voteOnComment(params);
+  if (name === 'voteOnIdea') return voteOnIdea(params);
+  return voteOnInitiative(params);
 };
