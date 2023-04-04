@@ -162,7 +162,7 @@ class PermissionsService
         users[:built_in][:first_name] = 'require'
         users[:built_in][:last_name] = 'require'
         users[:built_in][:email] = 'require'
-        users[:custom_fields].transform_values { |requirement| requirement == 'dont_ask' ? 'ask' : requirement }
+        users[:custom_fields].transform_values! { |requirement| requirement == 'dont_ask' ? 'ask' : requirement }
         users[:special][:password] = 'require'
         users[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
       end
