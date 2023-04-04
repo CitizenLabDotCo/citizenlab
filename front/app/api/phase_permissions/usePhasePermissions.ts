@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import eventsKeys from './keys';
-import { IPCPermissions, EventsKeys } from './types';
+import phasePermissionKeys from './keys';
+import { IPCPermissions, PhasePermissionKeys } from './types';
 
 export type PhasePermissionsProps = {
   phaseId: string | undefined;
@@ -16,8 +16,13 @@ const fetchEvents = ({ phaseId }: PhasePermissionsProps) => {
 };
 
 const usePhasePermissions = ({ phaseId }: PhasePermissionsProps) => {
-  return useQuery<IPCPermissions, CLErrors, IPCPermissions, EventsKeys>({
-    queryKey: eventsKeys.list({ phaseId }),
+  return useQuery<
+    IPCPermissions,
+    CLErrors,
+    IPCPermissions,
+    PhasePermissionKeys
+  >({
+    queryKey: phasePermissionKeys.list({ phaseId }),
     queryFn: () => fetchEvents({ phaseId }),
   });
 };

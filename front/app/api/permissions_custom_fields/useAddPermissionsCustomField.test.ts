@@ -24,7 +24,11 @@ describe('useAddPermissionsCustomField', () => {
 
   it('mutates data correctly', async () => {
     const { result, waitFor } = renderHook(
-      () => useAddPermissionsCustomField(),
+      () =>
+        useAddPermissionsCustomField({
+          phaseId: 'phaseId1',
+          action: 'taking_survey',
+        }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -50,7 +54,11 @@ describe('useAddPermissionsCustomField', () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useAddPermissionsCustomField(),
+      () =>
+        useAddPermissionsCustomField({
+          phaseId: 'phaseId1',
+          action: 'taking_survey',
+        }),
       {
         wrapper: createQueryClientWrapper(),
       }

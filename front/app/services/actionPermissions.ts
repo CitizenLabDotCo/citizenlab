@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship } from 'typings';
+import { IPCPermissionAction, IRelationship } from 'typings';
 
 export type IGlobalPermissionAction =
   | 'voting_initiative'
@@ -25,15 +25,6 @@ export interface IGlobalPermissionData {
     };
   };
 }
-export type IPCPermissionAction =
-  | 'posting_idea'
-  | 'voting_idea'
-  | 'commenting_idea'
-  | 'commenting_idea'
-  | 'taking_survey'
-  | 'taking_poll'
-  | 'budgeting';
-
 export interface IPCPermissionData {
   id: string;
   type: string;

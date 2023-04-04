@@ -1,8 +1,8 @@
-import { IRelationship } from 'typings';
+import { IPCPermissionAction, IRelationship } from 'typings';
 import { Keys } from 'utils/cl-react-query/types';
-import eventsKeys from './keys';
+import phasePermissionKeys from './keys';
 
-export type EventsKeys = Keys<typeof eventsKeys>;
+export type PhasePermissionKeys = Keys<typeof phasePermissionKeys>;
 
 export type IUpdatePermissionObject = {
   permissionId: string;
@@ -23,16 +23,6 @@ export interface IPermissionUpdate {
   group_ids: string[];
   permitted_by: IPCPermissionData['attributes']['permitted_by'];
 }
-
-export type IPCPermissionAction =
-  | 'posting_idea'
-  | 'voting_idea'
-  | 'commenting_idea'
-  | 'commenting_idea'
-  | 'taking_survey'
-  | 'taking_poll'
-  | 'budgeting';
-
 export interface IPCPermissionData {
   id: string;
   type: string;

@@ -14,7 +14,7 @@ import Feedback from 'components/HookForm/Feedback';
 import validateMultiloc from 'utils/yup/validateMultilocForEveryLocale';
 import Select from 'components/HookForm/Select';
 import { fieldTypes } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
-import SelectionChoiceSetup from 'components/HookForm/SelectionChoiceSetup';
+import ChoiceList from 'components/HookForm/ChoiceList';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 
 // hooks
@@ -148,7 +148,7 @@ export const AddFieldScreen = ({
               </SectionField>
               {(inputType === 'select' || inputType === 'multiselect') && (
                 <SectionField>
-                  <SelectionChoiceSetup
+                  <ChoiceList
                     name={'question_choices'}
                     locales={locales}
                     platformLocale={locale}

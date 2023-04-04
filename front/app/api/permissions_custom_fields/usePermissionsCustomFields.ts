@@ -3,26 +3,14 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import eventsKeys from './keys';
-import {
-  IPermissionsCustomFields,
-  EventsKeys,
-  IPCPermissionAction,
-} from './types';
-import { IGlobalPermissionAction } from 'services/actionPermissions';
-
-export type PermissionCustomFieldsProps = {
-  phaseId?: string | null;
-  initiativeContext?: boolean | null;
-  projectId?: string | null;
-  action: IGlobalPermissionAction | IPCPermissionAction;
-};
+import { IPermissionsCustomFields, EventsKeys, IListParameters } from './types';
 
 const fetchEvents = ({
   phaseId,
   initiativeContext,
   projectId,
   action,
-}: PermissionCustomFieldsProps) => {
+}: IListParameters) => {
   return fetcher<IPermissionsCustomFields>({
     path: initiativeContext
       ? `/permissions/${action}/permissions_custom_fields`
@@ -38,7 +26,7 @@ const usePermissionsCustomFields = ({
   initiativeContext,
   projectId,
   action,
-}: PermissionCustomFieldsProps) => {
+}: IListParameters) => {
   return useQuery<
     IPermissionsCustomFields,
     CLErrors,

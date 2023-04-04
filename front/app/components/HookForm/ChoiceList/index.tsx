@@ -36,7 +36,7 @@ interface Props {
   addButtonLabel: string | JSX.Element | undefined;
 }
 
-const SelectionChoiceSetup = ({
+const ChoiceList = ({
   onSelectedLocaleChange,
   name,
   locales,
@@ -150,6 +150,7 @@ const SelectionChoiceSetup = ({
                           <Box key={choice.id}>
                             <SortableRow
                               id={choice.id}
+                              key={choice.id}
                               index={index}
                               moveRow={handleDragRow}
                               dropRow={() => {
@@ -239,4 +240,4 @@ const SelectionChoiceSetup = ({
   return null;
 };
 
-export default SelectionChoiceSetup;
+export default ChoiceList;

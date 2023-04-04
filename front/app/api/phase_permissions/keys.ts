@@ -1,11 +1,11 @@
 import { PhasePermissionsProps } from './usePhasePermissions';
 
-const eventsKeys = {
-  all: () => [{ type: 'events' }],
-  lists: () => [{ ...eventsKeys.all()[0], operation: 'list' }],
+const phasePermissionKeys = {
+  all: () => [{ type: 'permission', variant: 'phase' }],
+  lists: () => [{ ...phasePermissionKeys.all()[0], operation: 'list' }],
   list: ({ phaseId }: PhasePermissionsProps) => [
-    { ...eventsKeys.lists()[0], phaseId },
+    { ...phasePermissionKeys.lists()[0], phaseId },
   ],
 } as const;
 
-export default eventsKeys;
+export default phasePermissionKeys;

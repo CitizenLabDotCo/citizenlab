@@ -51,7 +51,12 @@ const UserFieldSelection = ({
     initiativeContext,
     action: permission.attributes.action,
   });
-  const { mutate: addPermissionCustomField } = useAddPermissionCustomField();
+  const { mutate: addPermissionCustomField } = useAddPermissionCustomField({
+    phaseId,
+    projectId,
+    initiativeContext,
+    action: permission.attributes.action,
+  });
   const { mutate: updatePermissionCustomField } =
     useUpdatePermissionsCustomField();
   const { mutate: deletePermissionsCustomField } =

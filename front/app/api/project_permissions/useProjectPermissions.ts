@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import eventsKeys from './keys';
-import { IPCPermissions, EventsKeys } from './types';
+import projectPermissionKeys from './keys';
+import { IPCPermissions, ProjectPermissionKeys } from './types';
 
 export type ProjectPermissionsProps = {
   projectId: string | undefined;
@@ -16,8 +16,13 @@ const fetchEvents = ({ projectId }: ProjectPermissionsProps) => {
 };
 
 const useProjectPermissions = ({ projectId }: ProjectPermissionsProps) => {
-  return useQuery<IPCPermissions, CLErrors, IPCPermissions, EventsKeys>({
-    queryKey: eventsKeys.list({ projectId }),
+  return useQuery<
+    IPCPermissions,
+    CLErrors,
+    IPCPermissions,
+    ProjectPermissionKeys
+  >({
+    queryKey: projectPermissionKeys.list({ projectId }),
     queryFn: () => fetchEvents({ projectId }),
   });
 };

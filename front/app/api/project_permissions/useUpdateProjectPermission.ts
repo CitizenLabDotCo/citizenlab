@@ -16,7 +16,7 @@ const updateProjectPermission = ({
     body: { permissionId, permission },
   });
 
-const useUpdateProjectPermission = (projectId) => {
+const useUpdateProjectPermission = (projectId?: string | null) => {
   const queryClient = useQueryClient();
   return useMutation<IPCPermission, CLErrors, IUpdatePermissionObject>({
     mutationFn: updateProjectPermission,
@@ -24,9 +24,11 @@ const useUpdateProjectPermission = (projectId) => {
       queryClient.invalidateQueries({
         queryKey: projectPermissionKeys.lists(),
       });
-      queryClient.invalidateQueries({
-        queryKey: projectPermissionKeys.list(projectId),
-      });
+      if (projectId) {
+        queryClient.invalidateQueries({
+          queryKey: projectPermissionKeys.list({ projectId }),
+        });
+      }
     },
   });
 };

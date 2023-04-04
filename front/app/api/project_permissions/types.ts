@@ -1,8 +1,8 @@
 import { Keys } from 'utils/cl-react-query/types';
-import eventsKeys from './keys';
-import { IRelationship } from 'typings';
+import projectPermissionKeys from './keys';
+import { IPCPermissionAction, IRelationship } from 'typings';
 
-export type EventsKeys = Keys<typeof eventsKeys>;
+export type ProjectPermissionKeys = Keys<typeof projectPermissionKeys>;
 
 export interface IPCPermissions {
   data: IPCPermissionData[];
@@ -23,15 +23,6 @@ export interface IPermissionUpdate {
   group_ids: string[];
   permitted_by: IPCPermissionData['attributes']['permitted_by'];
 }
-
-export type IPCPermissionAction =
-  | 'posting_idea'
-  | 'voting_idea'
-  | 'commenting_idea'
-  | 'commenting_idea'
-  | 'taking_survey'
-  | 'taking_poll'
-  | 'budgeting';
 
 export interface IPCPermissionData {
   id: string;

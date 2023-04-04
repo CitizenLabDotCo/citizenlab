@@ -1,13 +1,11 @@
 import { TPhases } from 'hooks/usePhases';
-import {
-  IGlobalPermissionAction,
-  IPCPermissionAction,
-} from 'services/actionPermissions';
+import { IGlobalPermissionAction } from 'services/actionPermissions';
 import { getInputTerm } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
 import messages from './messages';
+import { IPCPermissionAction } from 'typings';
 
 type GetPermissionActionMessageProps = {
   permissionAction: IPCPermissionAction | IGlobalPermissionAction;

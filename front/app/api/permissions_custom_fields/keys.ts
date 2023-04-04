@@ -1,18 +1,18 @@
-import { PermissionCustomFieldsProps } from './usePermissionsCustomFields';
+import { QueryKeys } from 'utils/cl-react-query/types';
+import { IItemParameters, IListParameters } from './types';
+
+const baseKey = { type: 'permissions_custom_field' };
 
 const permissionsCustomFieldsKeys = {
-  all: () => [{ type: 'events' }],
+  all: () => [baseKey],
   lists: () => [{ ...permissionsCustomFieldsKeys.all()[0], operation: 'list' }],
-  list: ({ phaseId, action }: PermissionCustomFieldsProps) => [
-    { ...permissionsCustomFieldsKeys.lists()[0], phaseId, action },
+  list: (parameters: IListParameters) => [
+    { ...baseKey, operation: 'list', parameters },
   ],
-  items: () => [{ ...permissionsCustomFieldsKeys.all()[0], operation: 'item' }],
-  item: (id?: string) => [
-    {
-      ...permissionsCustomFieldsKeys.items()[0],
-      id,
-    },
+  items: () => [{ ...baseKey, operation: 'item' }],
+  item: (parameters: IItemParameters) => [
+    { ...baseKey, operation: 'item', parameters },
   ],
-} as const;
+} satisfies QueryKeys;
 
 export default permissionsCustomFieldsKeys;
