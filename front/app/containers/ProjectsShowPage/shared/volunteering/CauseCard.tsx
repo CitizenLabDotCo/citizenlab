@@ -192,25 +192,24 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
 
   const openAuthModal = useOpenAuthModal();
 
-  const handleOnVolunteerButtonClick = useCallback(() => {
+  const successAction = {
+    name: 'volunteer',
+    params: { cause },
+  } as const;
+
+  const handleOnVolunteerButtonClick = () => {
     if (
       !isNilOrError(authUser) &&
       !authUser.attributes.registration_completed_at
     ) {
-      openAuthModal({
-        successAction: {
-          name: 'volunteer',
-          params: { cause },
-        },
-      });
+      openAuthModal({ successAction });
     } else {
       volunteer();
     }
-  }, [authUser, openAuthModal, volunteer, cause]);
+  };
 
-  const signIn = () => openAuthModal({ flow: 'signin' });
-
-  const signUp = () => openAuthModal({ flow: 'signup' });
+  const signIn = () => openAuthModal({ flow: 'signin', successAction });
+  const signUp = () => openAuthModal({ flow: 'signup', successAction });
 
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
