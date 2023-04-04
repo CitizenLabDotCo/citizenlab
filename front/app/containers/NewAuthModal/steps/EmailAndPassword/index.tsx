@@ -127,12 +127,13 @@ const EmailAndPassword = ({
   };
 
   return (
-    <>
+    <Box id="e2e-sign-in-email-password-container">
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
           <Box>
             <Input
               name="email"
+              id="email"
               type="email"
               autocomplete="email"
               label={
@@ -145,6 +146,7 @@ const EmailAndPassword = ({
           <Box mt="16px">
             <PasswordInput
               name="password"
+              id="password"
               isLoginPasswordInput
               label={formatMessage(sharedMessages.password)}
               autocomplete="current-password"
@@ -167,13 +169,17 @@ const EmailAndPassword = ({
               width="auto"
               disabled={loading}
               processing={loading}
+              id="e2e-signin-password-submit-button"
             >
               {formatMessage(containerMessages.logIn)}
             </Button>
           </Box>
         </form>
         <Box mt="32px">
-          <TextLink to="/password-recovery">
+          <TextLink
+            to="/password-recovery"
+            className="e2e-password-recovery-link"
+          >
             {formatMessage(sharedMessages.forgotPassword)}
           </TextLink>
         </Box>
@@ -204,7 +210,7 @@ const EmailAndPassword = ({
           )}
         </Box>
       </FormProvider>
-    </>
+    </Box>
   );
 };
 
