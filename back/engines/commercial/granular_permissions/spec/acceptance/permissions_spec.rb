@@ -266,9 +266,9 @@ resource 'Permissions' do
               email: 'satisfied'
             },
             custom_fields: {
-              birthyear: 'dont_ask',
+              birthyear: 'require',
               gender: 'satisfied',
-              extra_field: 'dont_ask'
+              extra_field: 'require'
             },
             special: {
               password: 'dont_ask',
