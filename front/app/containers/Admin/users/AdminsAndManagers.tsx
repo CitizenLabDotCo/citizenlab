@@ -35,8 +35,8 @@ const AllUsers = () => {
         includeInactive
       />
       <StyledBox mt="20px">
-        <SeatInfo seatType="admin" width={null} />
-        <SeatInfo seatType="project_manager" width={null} />
+        <SeatInfo seatType="admin" />
+        <SeatInfo seatType="collaborator" />
       </StyledBox>
     </>
   );

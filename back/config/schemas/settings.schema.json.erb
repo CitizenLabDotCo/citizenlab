@@ -191,6 +191,16 @@
             "title": "Maximum number of managers",
             "description": "Maximum allowed number of project and folder managers on the platform.",
             "type": ["integer", "null"]
+          },
+          "additional_admins_number": {
+            "title": "Additional number of admins",
+            "description": "Additional number of admins on the platform.",
+            "type": ["integer", "null"]
+          },
+          "additional_moderators_number": {
+            "title": "Additional number of managers",
+            "description": "Additional number of project and folder managers on the platform.",
+            "type": ["integer", "null"]
           }
         }
       },
@@ -1064,6 +1074,18 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
+      "seat_based_billing": {
+        "type": "object",
+        "title": "Seat based billing",
+        "description":  "Enables seat-based billing.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
         }
       },
 

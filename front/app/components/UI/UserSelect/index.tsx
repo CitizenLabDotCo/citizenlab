@@ -1,14 +1,14 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import ReactSelect, { OptionTypeBase } from 'react-select';
 import selectStyles from 'components/UI/MultipleSelect/styles';
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
 import { IUserData } from 'services/users';
-import useUser from 'hooks/useUser';
 import Button from 'components/UI/Button';
+import Avatar from './Avatar';
 
 interface DataProps {
   users: GetUsersChildProps;
@@ -16,35 +16,21 @@ interface DataProps {
 
 interface InputProps {
   onChange: (id?: string) => void;
-  value: string | null;
+  selectedUserId: string | null;
   placeholder: string;
   className?: string;
   id: string;
   inputId: string;
+  hideAvatar?: boolean;
+  // Exclude users that can moderate the project from selectable users.
+  // We pass the projectId here.
+  isNotProjectModeratorOfProjectId?: string;
+  // Exclude users that can moderate the folder from selectable users.
+  // We pass the folderId here.
+  isNotFolderModeratorOfFolderId?: string;
 }
 
 interface Props extends DataProps, InputProps {}
-
-export const AvatarImage = styled.img`
-  flex: 0 0 30px;
-  width: 30px;
-  height: 30px;
-  fill: #596b7a;
-  padding: 15px;
-  border-radius: 50%;
-  background: white;
-  margin-right: 0.5rem;
-`;
-
-const AvatarIcon = styled(Icon)`
-  flex: 0 0 30px;
-  width: 30px;
-  height: 30px;
-  background: white;
-  border-radius: 50%;
-  fill: #596b7a;
-  margin-right: 0.5rem;
-`;
 
 const UserOption = styled.div`
   display: flex;
@@ -54,17 +40,20 @@ const UserOption = styled.div`
 const UserSelect = ({
   users,
   onChange,
-  value,
+  selectedUserId,
   placeholder,
   className,
   id,
   inputId,
-}: DataProps & Props): ReactElement => {
+  hideAvatar = false,
+}: DataProps & Props) => {
   const canLoadMore = users.lastPage !== users.currentPage;
-  const selectedUser = useUser({ userId: value });
   const usersList: IUserData[] = Array.isArray(users.usersList)
     ? users.usersList
     : [];
+  const selectedUser = selectedUserId
+    ? usersList.find((user) => user.id === selectedUserId)
+    : null;
 
   const handleChange = (option: OptionTypeBase, { action }) => {
     if (action === 'clear') {
@@ -88,21 +77,6 @@ const UserSelect = ({
     users.onLoadMore();
   };
 
-  const Avatar = ({ userId }: { userId: string }) => {
-    const user = usersList.find((user) => user.id === userId);
-    const avatarSrc =
-      user?.attributes?.avatar?.medium || user?.attributes?.avatar?.small;
-    return (
-      <>
-        {avatarSrc ? (
-          <AvatarImage className="avatarImage" src={avatarSrc} alt="" />
-        ) : (
-          <AvatarIcon className="avatarIcon" name="user-circle" />
-        )}
-      </>
-    );
-  };
-
   const getOptionLabel = (option: OptionTypeBase) => {
     if (option.value === 'loadMore' && canLoadMore) {
       return (
@@ -117,7 +91,7 @@ const UserSelect = ({
     } else if (option.attributes) {
       return (
         <UserOption>
-          <Avatar userId={option.value} />
+          {!hideAvatar && <Avatar user={option} />}
           {option.attributes.last_name}, {option.attributes.first_name} (
           {option.attributes.email})
         </UserOption>
@@ -133,12 +107,6 @@ const UserSelect = ({
 
   const getOptionId = (option: OptionTypeBase) => option.id;
 
-  const filterOption = () => true;
-
-  const options = canLoadMore
-    ? [...usersList, { value: 'loadMore' }]
-    : usersList;
-
   return (
     <Box id="e2e-user-select">
       <ReactSelect
@@ -150,10 +118,11 @@ const UserSelect = ({
         backspaceRemovesValue={false}
         menuShouldScrollIntoView={false}
         isClearable
-        filterOption={filterOption}
         value={selectedUser}
         placeholder={placeholder}
-        options={options}
+        options={
+          canLoadMore ? [...usersList, { value: 'loadMore' }] : usersList
+        }
         getOptionValue={getOptionId}
         getOptionLabel={getOptionLabel}
         onChange={handleChange}
@@ -167,12 +136,25 @@ const UserSelect = ({
   );
 };
 
-const Data = adopt<DataProps>({
-  users: <GetUsers pageSize={5} sort="last_name" />,
+const Data = adopt<DataProps, InputProps>({
+  users: ({
+    isNotProjectModeratorOfProjectId,
+    isNotFolderModeratorOfFolderId,
+    render,
+  }) => (
+    <GetUsers
+      pageSize={5}
+      sort="last_name"
+      isNotProjectModeratorOfProjectId={isNotProjectModeratorOfProjectId}
+      isNotFolderModeratorOfFolderId={isNotFolderModeratorOfFolderId}
+    >
+      {render}
+    </GetUsers>
+  ),
 });
 
-export default (props: InputProps) => (
-  <Data>
-    {(dataProps: DataProps) => <UserSelect {...dataProps} {...props} />}
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {(dataProps: DataProps) => <UserSelect {...dataProps} {...inputProps} />}
   </Data>
 );
