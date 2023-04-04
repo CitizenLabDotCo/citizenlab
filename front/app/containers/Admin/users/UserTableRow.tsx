@@ -120,9 +120,11 @@ const UserTableRow = ({
   const changeRoleHandler = (changeToNormalUser: boolean) => {
     setIsChangingToNormalUser(changeToNormalUser);
 
-    // We are showing the modal for i1 and for i2 when seats are being exceeded
+    // We are showing the modal when setting to a normal user and for admins in i1 and for i2 when admin seats are being exceeded
     const shouldOpenConfirmationInModal =
-      !hasSeatBasedBillingEnabled || hasReachedOrIsOverLimit;
+      changeToNormalUser ||
+      !hasSeatBasedBillingEnabled ||
+      hasReachedOrIsOverLimit;
     if (shouldOpenConfirmationInModal) {
       setShowModal(true);
       return;
