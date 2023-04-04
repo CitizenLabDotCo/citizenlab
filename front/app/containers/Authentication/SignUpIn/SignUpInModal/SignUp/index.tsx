@@ -242,14 +242,11 @@ const SignUp = ({
     setHeaderHeight(`${Math.round(height) + 2}px`);
   };
 
-  const handleSelectAuthProvider = (
-    selectedAuthProvider: AuthProvider,
-    setHrefFromModule?: () => void
-  ) => {
+  const handleSelectAuthProvider = (selectedAuthProvider: AuthProvider) => {
     if (selectedAuthProvider === 'email') {
       setEmailSignUpSelected(true);
     } else {
-      handleOnSSOClick(selectedAuthProvider, metaData, setHrefFromModule);
+      handleOnSSOClick(selectedAuthProvider, metaData);
     }
   };
 

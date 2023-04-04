@@ -93,26 +93,13 @@ export const getStepConfig = (
         // TODO
       },
       SELECT_AUTH_PROVIDER: (authProvider: AuthProvider) => {
-        switch (authProvider) {
-          case 'email':
-            setCurrentStep('email-password-sign-in');
-            break;
-          case 'google':
-            // TODO
-            break;
-          case 'facebook':
-            // TODO
-            break;
-          case 'azureactivedirectory':
-            // TODO
-            break;
-          case 'franceconnect':
-            // TODO
-            break;
-          case 'id_vienna_saml':
-            // TODO
-            break;
+        if (authProvider === 'email') {
+          setCurrentStep('email-password-sign-in');
+          return;
         }
+
+        setStatus('pending');
+        handleOnSSOClick(authProvider, getAuthenticationData());
       },
     },
 

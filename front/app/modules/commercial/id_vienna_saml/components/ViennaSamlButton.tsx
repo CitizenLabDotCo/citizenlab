@@ -1,4 +1,3 @@
-import { AUTH_PATH } from 'containers/App/constants';
 import React from 'react';
 
 // i18n
@@ -39,15 +38,12 @@ interface Props {
 }
 
 const ViennaSamlButton = ({ onContinue, flow }: Props) => {
-  const setHref = () => {
-    window.location.href = `${AUTH_PATH}/vienna_citizen`;
-  };
   const handleOnContinue = () => {
     if (flow === 'signup') {
       window.location.href =
         'https://mein.wien.gv.at/Registrieren?branding=citizenlab';
     } else {
-      onContinue('id_vienna_saml', setHref);
+      onContinue('id_vienna_saml');
     }
   };
   return (

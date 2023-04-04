@@ -102,10 +102,7 @@ const ButtonWrapper = styled.div`
 
 const ContinueButton = styled(Button)``;
 
-export type TOnContinueFunction = (
-  authProvider: AuthProvider,
-  setHrefFromModule?: () => void
-) => void;
+export type TOnContinueFunction = (authProvider: AuthProvider) => void;
 
 export interface Props {
   id?: string;

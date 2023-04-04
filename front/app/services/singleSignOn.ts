@@ -25,12 +25,15 @@ export interface SSOParams {
   error_code?: TSignUpInError;
 }
 
+const setHrefVienna = () => {
+  window.location.href = `${AUTH_PATH}/vienna_citizen`;
+};
+
 export const handleOnSSOClick = (
   provider: SSOProvider,
-  metaData: ISignUpInMetaData,
-  setHrefFromModule?: () => void
+  metaData: ISignUpInMetaData
 ) => {
-  setHrefFromModule ? setHrefFromModule() : setHref(provider, metaData);
+  provider === 'id_vienna_saml' ? setHrefVienna() : setHref(provider, metaData);
 };
 
 function setHref(provider: SSOProvider, metaData: ISignUpInMetaData) {

@@ -54,14 +54,11 @@ const SignIn = memo<Props>(
       };
     }, []);
 
-    const handleOnAuthProviderSelected = (
-      selectedMethod: AuthProvider,
-      setHrefFromModule?: () => void
-    ) => {
+    const handleOnAuthProviderSelected = (selectedMethod: AuthProvider) => {
       if (selectedMethod === 'email') {
         setActiveStep('password-signin');
       } else {
-        handleOnSSOClick(selectedMethod, metaData, setHrefFromModule);
+        handleOnSSOClick(selectedMethod, metaData);
       }
     };
 
