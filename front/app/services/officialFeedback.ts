@@ -37,17 +37,6 @@ export interface INewFeedback {
   body_multiloc: Multiloc;
 }
 
-export function updateOfficialFeedback(
-  officialFeedbackId: string,
-  object: INewFeedback
-) {
-  return streams.update<IOfficialFeedback>(
-    `${API_PATH}/official_feedback/${officialFeedbackId}`,
-    officialFeedbackId,
-    { official_feedback: object }
-  );
-}
-
 // idea
 
 export function officialFeedbacksForIdeaStream(
@@ -58,18 +47,6 @@ export function officialFeedbacksForIdeaStream(
     apiEndpoint: `${API_PATH}/ideas/${ideaId}/official_feedback`,
     ...streamParams,
   });
-}
-
-export async function addOfficialFeedbackToIdea(
-  ideaId: string,
-  feedBack: INewFeedback
-) {
-  const response = await streams.add<IOfficialFeedback>(
-    `${API_PATH}/ideas/${ideaId}/official_feedback`,
-    { official_feedback: feedBack }
-  );
-  queryClient.invalidateQueries(ideasCountKeys.all());
-  return response;
 }
 
 export async function deleteOfficialFeedbackFromIdea(ideaId: string) {
@@ -96,18 +73,6 @@ export function officialFeedbacksForInitiativeStream(
     apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/official_feedback`,
     ...streamParams,
   });
-}
-
-export async function addOfficialFeedbackToInitiative(
-  initiativeId: string,
-  feedBack: INewFeedback
-) {
-  const response = await streams.add<IOfficialFeedback>(
-    `${API_PATH}/initiatives/${initiativeId}/official_feedback`,
-    { official_feedback: feedBack }
-  );
-  queryClient.invalidateQueries(initiativesCountKeys.all());
-  return response;
 }
 
 export async function deleteOfficialFeedbackFromInitiative(
