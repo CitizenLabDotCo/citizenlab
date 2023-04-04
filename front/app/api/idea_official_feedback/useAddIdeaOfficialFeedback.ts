@@ -7,7 +7,7 @@ import { INewFeedback, IOfficialFeedback } from './types';
 const addIdeaOfficialFeedback = async ({
   ideaId,
   ...requestBody
-}: INewFeedback & { ideaId: string }) =>
+}: INewFeedback) =>
   fetcher<IOfficialFeedback>({
     path: `/ideas/${ideaId}/official_feedback`,
     action: 'post',

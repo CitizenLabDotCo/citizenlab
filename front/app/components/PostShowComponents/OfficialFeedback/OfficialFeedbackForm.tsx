@@ -9,14 +9,6 @@ import { Section } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import Button from 'components/UI/Button';
 
-// services
-import {
-  addOfficialFeedbackToIdea,
-  addOfficialFeedbackToInitiative,
-  updateOfficialFeedback,
-  IOfficialFeedbackData,
-} from 'services/officialFeedback';
-
 // utils
 import { isPage, isNilOrError } from 'utils/helperUtils';
 
@@ -34,6 +26,10 @@ import { Multiloc, Locale } from 'typings';
 // stylings
 import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+import useAddIdeaOfficialFeedback from 'api/idea_official_feedback/useAddIdeaOfficialFeedback';
+import useAddInitiativeOfficialFeedback from 'api/initiative_official_feedback/useAddInitiativeOfficialFeedback';
+import { IOfficialFeedbackData } from 'api/idea_official_feedback/types';
+import useUpdateIdeaOfficialFeedback from 'api/idea_official_feedback/useUpdateIdeaOfficialFeedback';
 
 const Container = styled.div``;
 
@@ -115,6 +111,14 @@ const OfficialFeedbackForm = ({
   className,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { mutate: addOfficialFeedbackToIdea } = useAddIdeaOfficialFeedback();
+  const { mutate: addOfficialFeedbackToInitiative } =
+    useAddInitiativeOfficialFeedback();
+  const { mutate: updateIdeaOfficialFeedback } =
+    useUpdateIdeaOfficialFeedback();
+  const { mutate: updateInitiativeOfficialFeedback } =
+    useUpdateIdeaOfficialFeedback();
+
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
   const [formValues, setFormValues] = useState<OfficialFeedbackFormValues>({
     bodyMultiloc: {},
@@ -223,7 +227,7 @@ const OfficialFeedbackForm = ({
     return validated;
   };
 
-  const handleOnSubmit = async (event: React.FormEvent) => {
+  const handleOnSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!processing && validate()) {
@@ -243,39 +247,87 @@ const OfficialFeedbackForm = ({
         );
       });
 
-      try {
-        if (formType === 'new' && postId && postType === 'idea') {
-          await addOfficialFeedbackToIdea(postId, feedbackValues);
-          trackEventByName(tracks.officialFeedbackGiven, {
-            location: isPage('admin', location.pathname)
-              ? 'Admin/idea manager'
-              : 'Citizen/idea page',
-          });
-        }
-
-        if (formType === 'new' && postId && postType === 'initiative') {
-          await addOfficialFeedbackToInitiative(postId, feedbackValues);
-          trackEventByName(tracks.officialFeedbackGiven, {
-            location: isPage('admin', location.pathname)
-              ? 'Admin/initiative manager'
-              : 'Citizen/initiative page',
-          });
-        }
-
-        if (formType === 'edit' && !isNilOrError(feedback) && onClose) {
-          await updateOfficialFeedback(feedback.id, feedbackValues);
-          onClose();
-        }
-
+      const onSuccess = () => {
         setFormValues(getEmptyFormValues());
         setProcessing(false);
         setSuccess(true);
 
         setTimeout(() => setSuccess(false), 6000);
-      } catch {
+      };
+
+      const onError = () => {
         setProcessing(false);
         setError(true);
         setSuccess(false);
+      };
+
+      if (formType === 'new' && postId && postType === 'idea') {
+        addOfficialFeedbackToIdea(
+          { ideaId: postId, ...feedbackValues },
+          {
+            onSuccess,
+            onError,
+          }
+        );
+        trackEventByName(tracks.officialFeedbackGiven, {
+          location: isPage('admin', location.pathname)
+            ? 'Admin/idea manager'
+            : 'Citizen/idea page',
+        });
+      }
+
+      if (formType === 'new' && postId && postType === 'initiative') {
+        addOfficialFeedbackToInitiative(
+          { initiativeId: postId, ...feedbackValues },
+          {
+            onSuccess,
+            onError,
+          }
+        );
+        trackEventByName(tracks.officialFeedbackGiven, {
+          location: isPage('admin', location.pathname)
+            ? 'Admin/initiative manager'
+            : 'Citizen/initiative page',
+        });
+      }
+
+      if (
+        formType === 'edit' &&
+        !isNilOrError(feedback) &&
+        onClose &&
+        postType === 'idea'
+      ) {
+        updateIdeaOfficialFeedback(
+          { id: feedback.id, requestBody: feedbackValues },
+          {
+            onSuccess: () => {
+              onSuccess();
+              onClose();
+            },
+            onError,
+          }
+        );
+      }
+
+      if (
+        formType === 'edit' &&
+        !isNilOrError(feedback) &&
+        onClose &&
+        postType === 'initiative'
+      ) {
+        updateInitiativeOfficialFeedback(
+          {
+            id: feedback.id,
+            requestBody: feedbackValues,
+          },
+          {
+            onSuccess: () => {
+              onSuccess();
+              onClose();
+            },
+            onError,
+          }
+        );
       }
     }
   };

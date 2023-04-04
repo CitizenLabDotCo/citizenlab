@@ -34,4 +34,5 @@ export interface IOfficialFeedbacks {
 export interface INewFeedback {
   author_multiloc: Multiloc;
   body_multiloc: Multiloc;
+  ideaId: string;
 }
