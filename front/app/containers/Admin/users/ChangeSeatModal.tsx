@@ -142,7 +142,7 @@ const ChangeSeatModal = ({
                 }}
               />
             </Text>
-            {!isChangingCollaboratorToNormalUser && (
+            {!isChangingToNormalUser && (
               <Box pt="32px">
                 <SeatInfo seatType="admin" />
               </Box>
