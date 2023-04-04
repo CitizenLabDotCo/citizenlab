@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   # Already tried +Rails.applications.routes.prepend+. That does not work:
   # https://github.com/rails/rails/issues/11663
   mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
+  mount ActionCable.server => '/cable'
 
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
