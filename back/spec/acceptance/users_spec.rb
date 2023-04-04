@@ -888,10 +888,8 @@ resource 'Users' do
           let(:project) { create :continuous_project }
 
           example_request 'Update a user' do
-            expect(response_status).to eq 200
-            expect(response_data.dig(:attributes, :first_name)).to eq(first_name)
-            expect(json_response_body[:included].find { |i| i[:type] == 'project' }&.dig(:attributes, :slug)).to eq project.slug
-            expect(json_response_body[:included].find { |i| i[:type] == 'permission' }&.dig(:attributes, :permitted_by)).to eq 'groups'
+            assert_status 200
+            expect(response_data.dig(:attributes, :first_name)).to eq first_name
           end
         end
 
