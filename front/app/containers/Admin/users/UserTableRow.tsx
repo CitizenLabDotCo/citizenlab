@@ -5,6 +5,7 @@ import moment from 'moment';
 
 // Utils
 import clHistory from 'utils/cl-router/history';
+import { isNil } from 'utils/helperUtils';
 
 // Components
 import { Tr, Td, Box } from '@citizenlab/cl2-component-library';
@@ -30,6 +31,11 @@ import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // Styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+
+// Hooks
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useSeats from 'api/seats/useSeats';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
@@ -72,11 +78,22 @@ const UserTableRow = ({
   );
   const [showModal, setShowModal] = useState(false);
   const [isChangingToNormalUser, setIsChangingToNormalUser] = useState(false);
+
+  const { data: appConfiguration } = useAppConfiguration();
+  const { data: seats } = useSeats();
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
+  if (!appConfiguration || !seats) return null;
+
+  const maximumAdmins =
+    appConfiguration.data.attributes.settings.core.maximum_admins_number;
+  const currentAdminSeats = seats.data.attributes.admins_number;
+  const hasReachedOrIsOverLimit =
+    !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins;
+
   const closeModal = () => {
     setShowModal(false);
-  };
-  const openModal = () => {
-    setShowModal(true);
   };
 
   const handleDeleteClick = () => {
@@ -99,11 +116,27 @@ const UserTableRow = ({
     }
   };
 
+  const changeRoleHandler = (changeToNormalUser: boolean) => {
+    setIsChangingToNormalUser(changeToNormalUser);
+
+    // We are showing the modal when setting to a normal user and for admins in i1 and for i2 when admin seats are being exceeded
+    const shouldOpenConfirmationInModal =
+      changeToNormalUser ||
+      !hasSeatBasedBillingEnabled ||
+      hasReachedOrIsOverLimit;
+    if (shouldOpenConfirmationInModal) {
+      setShowModal(true);
+      return;
+    }
+
+    // We pass in the user along with whether to change that user to a normal user or admin. We are not toggling because the user passed in could have other roles or be a moderator
+    changeRoles(user, changeToNormalUser);
+  };
+
   const getSeatChangeActions = () => {
     const setAsAdminAction: IAction = {
       handler: () => {
-        setIsChangingToNormalUser(false);
-        openModal();
+        changeRoleHandler(false);
       },
       label: formatMessage(messages.setAsAdmin),
       icon: 'shield-checkered' as const,
@@ -111,8 +144,7 @@ const UserTableRow = ({
 
     const setAsNormalUserAction: IAction = {
       handler: () => {
-        setIsChangingToNormalUser(true);
-        openModal();
+        changeRoleHandler(true);
       },
       label: formatMessage(messages.setAsNormalUser),
       icon: 'user-circle' as const,
