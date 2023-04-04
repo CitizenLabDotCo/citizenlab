@@ -38,6 +38,7 @@ class SideFxUserService
   end
 
   def after_block(user, current_user)
+    ActionCable.server.broadcast 'users_blocked_count_channel', 'Contact!!'
     TrackUserJob.perform_later(user)
     LogActivityJob.perform_later(
       user,

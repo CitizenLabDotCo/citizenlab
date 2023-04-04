@@ -7,6 +7,9 @@ import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
 
+// Channels
+import consumer from '../../../../src/cable';
+
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import Modal from 'components/UI/Modal';
@@ -90,6 +93,17 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
+    consumer.subscriptions.create(
+      {
+        channel: 'UsersBlockedCountChannel',
+      },
+      {
+        connected: () => console.log('connected'),
+        disconnected: () => console.log('disconnected'),
+        received: (data) => console.log(data),
+      }
+    );
+
     this.globalState.set({ enabled: true });
   }
 
@@ -134,6 +148,20 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
     if (!this.props.location) return null;
 
     const { groupCreationModal } = this.state;
+
+    // consumer.subscriptions.create
+    // (
+    //   {
+    //     channel: 'UsersBlockedCountChannel'
+    //   },
+    //   {
+    //     received: (message) => {
+    //       console.log(message)
+    //     }
+    //   }
+    // )
+
+    console.log('hello from index');
 
     return (
       <>
@@ -181,8 +209,6 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
         </Modal>
       </>
     );
-
-    console.log('hello from index');
   }
 }
 
