@@ -1080,7 +1080,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.saveCause": "Save",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.subtitleVolunteeringTab": "Εδώ μπορείτε να ρυθμίσετε τις αιτίες για τις οποίες οι χρήστες μπορούν να συμμετέχουν εθελοντικά και να κατεβάσετε τους εθελοντές.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.titleVolunteeringTab": "Εθελοντισμός",
-  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {όχι εθελοντές} one {# volunteer} other {# εθελοντές}}",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {no participants} one {# participant} other {# participants}}",
   "app.containers.AdminPage.ProjectEdit.addNewContribution": "Add a contribution",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Προσθήκη ιδέας",
   "app.containers.AdminPage.ProjectEdit.addNewInput": "Προσθήκη εισήγησης",
