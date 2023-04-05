@@ -548,6 +548,7 @@
   "app.components.form.locationGoogleUnavailable": "Det gick inte att läsa in platsfältet från Google Maps.",
   "app.components.form.submit": "Skicka",
   "app.components.form.submitApiError": "Ett problem uppstod när formuläret skulle skickas. Kontrollera om det finns några fel och försök igen.",
+  "app.components.form.test": "Test. Översätt inte detta.",
   "app.components.formBuilder.Page": "Sida",
   "app.components.formBuilder.addAnswer": "Lägg till svar",
   "app.components.formBuilder.cancelDeleteButtonText": "Avbryt",
