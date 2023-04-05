@@ -548,6 +548,7 @@
   "app.components.form.locationGoogleUnavailable": "تعذر تعبئة حقل الموقع المتوفر من خرائط google.",
   "app.components.form.submit": "إرسال",
   "app.components.form.submitApiError": "حدثت مشكلة أثناء إرسال النموذج. يرجى التحقق بحثًا عن أي أخطاء وإعادة المحاولة.",
+  "app.components.form.test": "امتحان. لا تترجم هذا.",
   "app.components.formBuilder.Page": "الصفحة",
   "app.components.formBuilder.addAnswer": "إضافة إجابة",
   "app.components.formBuilder.cancelDeleteButtonText": "إلغاء",
