@@ -38,3 +38,9 @@ export interface INewFeedback {
   body_multiloc: Multiloc;
   initiativeId: string;
 }
+
+export interface IParameters {
+  pageNumber?: number;
+  pageSize?: number;
+  initiativeId?: string;
+}
