@@ -67,7 +67,12 @@ class WebApi::V1::InvitesController < ApplicationController
 
   def count_new_seats
     authorize :invite
-    seat_numbers = Invites::SeatsCounter.new.count_new_seats { _bulk_create }
+    seat_numbers = Invites::SeatsCounter.new.count_in_transaction do
+      Invites::Service.new(current_user, run_side_fx: false).bulk_create(
+        bulk_create_params[:emails].map { |e| { 'email' => e } },
+        bulk_create_params.except(:emails).stringify_keys
+      )
+    end
     render json: {
       data: {
         type: 'count_new_seats',
@@ -81,7 +86,12 @@ class WebApi::V1::InvitesController < ApplicationController
   def count_new_seats_xlsx
     authorize :invite
 
-    seat_numbers = Invites::SeatsCounter.new.count_new_seats { _bulk_create_xlsx }
+    seat_numbers = Invites::SeatsCounter.new.count_in_transaction do
+      Invites::Service.new(current_user, run_side_fx: false).bulk_create_xlsx(
+        bulk_create_xlsx_params[:xlsx],
+        bulk_create_xlsx_params.except(:xlsx).stringify_keys
+      )
+    end
     render json: {
       data: {
         type: 'count_new_seats_xlsx',
@@ -94,7 +104,10 @@ class WebApi::V1::InvitesController < ApplicationController
 
   def bulk_create
     authorize :invite
-    _bulk_create
+    Invites::Service.new(current_user).bulk_create(
+      bulk_create_params[:emails].map { |e| { 'email' => e } },
+      bulk_create_params.except(:emails).stringify_keys
+    )
     head :ok
   rescue Invites::FailedError => e
     render json: { errors: e.to_h }, status: :unprocessable_entity
@@ -102,7 +115,10 @@ class WebApi::V1::InvitesController < ApplicationController
 
   def bulk_create_xlsx
     authorize :invite
-    _bulk_create_xlsx
+    Invites::Service.new(current_user).bulk_create_xlsx(
+      bulk_create_xlsx_params[:xlsx],
+      bulk_create_xlsx_params.except(:xlsx).stringify_keys
+    )
     head :ok
   rescue Invites::FailedError => e
     render json: { errors: e.to_h }, status: :unprocessable_entity
@@ -169,22 +185,6 @@ class WebApi::V1::InvitesController < ApplicationController
   end
 
   private
-
-  def _bulk_create
-    Invites::Service.new.bulk_create(
-      bulk_create_params[:emails].map { |e| { 'email' => e } },
-      bulk_create_params.except(:emails).stringify_keys,
-      current_user
-    )
-  end
-
-  def _bulk_create_xlsx
-    Invites::Service.new.bulk_create_xlsx(
-      bulk_create_xlsx_params[:xlsx],
-      bulk_create_params.except(:xlsx).stringify_keys,
-      current_user
-    )
-  end
 
   def create_params
     params.require(:invite).permit(

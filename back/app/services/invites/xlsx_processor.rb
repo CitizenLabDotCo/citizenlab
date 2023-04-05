@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class Invites::XlsxProcessor
-  def initialize(error_storage)
+  def initialize(error_storage, custom_field_schema)
     @error_storage = error_storage
+    @custom_field_schema = custom_field_schema
   end
 
   def param_to_hash_array(xlsx_param)
@@ -98,11 +99,7 @@ class Invites::XlsxProcessor
   #
   # @return [Hash<String, String>] Mapping from field key to field type
   def custom_field_types
-    custom_field_schema[:properties].transform_values { |field_schema| field_schema[:type] }
-  end
-
-  def custom_field_schema
-    @custom_field_schema ||= CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User'))
+    @custom_field_schema[:properties].transform_values { |field_schema| field_schema[:type] }
   end
 
   # Converts a value to a given type.

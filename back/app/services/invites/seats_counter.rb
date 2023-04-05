@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Invites::SeatsCounter
-  def count_new_seats(&_block)
+  def count_in_transaction(&_block)
     new_admins_number = nil
     new_project_moderators_number = nil
     User.transaction do
