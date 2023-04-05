@@ -548,6 +548,7 @@
   "app.components.form.locationGoogleUnavailable": "Kunne ikke indlæse feltet for placering leveret af Google Maps.",
   "app.components.form.submit": "Indsend",
   "app.components.form.submitApiError": "Der opstod et problem med at indsende formularen. Kontroller for eventuelle fejl, og prøv igen.",
+  "app.components.form.test": "Test. Du må ikke oversætte dette.",
   "app.components.formBuilder.Page": "Side",
   "app.components.formBuilder.addAnswer": "Tilføj svar",
   "app.components.formBuilder.cancelDeleteButtonText": "Annuller",
