@@ -548,6 +548,7 @@
   "app.components.form.locationGoogleUnavailable": "Nie można załadować pola lokalizacji dostarczonego przez mapy google.",
   "app.components.form.submit": "Prześlij",
   "app.components.form.submitApiError": "Wystąpił problem przy przesyłaniu formularza. Sprawdź, czy nie wystąpiły błędy i spróbuj ponownie.",
+  "app.components.form.test": "Test. Nie tłumacz tego.",
   "app.components.formBuilder.Page": "Strona",
   "app.components.formBuilder.addAnswer": "Dodaj odpowiedź",
   "app.components.formBuilder.cancelDeleteButtonText": "Anuluj",
