@@ -28,10 +28,18 @@ import {
 import { Locale } from 'typings';
 
 type Step =
+  // closed (shared)
   | 'closed'
+
   // old sign in flow
   | 'auth-providers-sign-in'
   | 'email-password-sign-in'
+
+  // old sign up flow
+  | 'auth-providers-sign-up'
+  | 'email-password-sign-up'
+  | 'email-confirmation-old-sign-up-flow'
+
   // light flow
   | 'light-flow-start'
   | 'email-policies'
@@ -39,8 +47,10 @@ type Step =
   | 'facebook-policies'
   | 'azure-ad-policies'
   | 'france-connect-login'
-  | 'email-confirmation'
+  | 'email-confirmation-light-flow'
   | 'enter-password'
+
+  // success (shared)
   | 'success';
 
 type AuthProvider = 'email' | SSOProvider;
@@ -55,6 +65,7 @@ export const getStepConfig = (
   anySSOProviderEnabled: boolean
 ) => {
   return {
+    // closed (shared)
     closed: {
       // When we fire this, we are already sure that we need the new flow.
       // i.e. we have already checked the requirements endpoint and stuff
@@ -72,7 +83,7 @@ export const getStepConfig = (
 
         if (isLightFlow) {
           if (requirements.built_in.email === 'satisfied') {
-            setCurrentStep('email-confirmation');
+            setCurrentStep('email-confirmation-light-flow');
           } else {
             setCurrentStep('light-flow-start');
           }
@@ -90,7 +101,7 @@ export const getStepConfig = (
       },
     },
 
-    // OLD SIGN IN FLOW
+    // old sign in flow
     'auth-providers-sign-in': {
       CLOSE: () => setCurrentStep('closed'),
       SWITCH_FLOW: () => {
@@ -151,7 +162,49 @@ export const getStepConfig = (
       },
     },
 
-    // LIGHT FLOW
+    // old sign up flow
+    'auth-providers-sign-up': {
+      CLOSE: () => setCurrentStep('closed'),
+      SWITCH_FLOW: () => {
+        // TODO
+      },
+      SELECT_AUTH_PROVIDER: (authProvider: AuthProvider) => {
+        if (authProvider === 'email') {
+          setCurrentStep('email-password-sign-up');
+          return;
+        }
+
+        setStatus('pending');
+        handleOnSSOClick(authProvider, getAuthenticationData());
+      },
+    },
+
+    'email-password-sign-up': {
+      CLOSE: () => setCurrentStep('closed'),
+      SWITCH_FLOW: () => {
+        // TODO
+      },
+      GO_BACK: () => {
+        if (anySSOProviderEnabled) {
+          setCurrentStep('auth-providers-sign-up');
+        }
+      },
+      SUBMIT: () => {
+        // TODO
+      },
+    },
+
+    'email-confirmation-old-flow': {
+      CLOSE: () => setCurrentStep('closed'),
+      CHANGE_EMAIL: () => {
+        // TODO
+      },
+      SUBMIT_CODE: (_code: string) => {
+        // TODO
+      },
+    },
+
+    // light flow
     'light-flow-start': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT_EMAIL: (email: string) => {
@@ -186,7 +239,7 @@ export const getStepConfig = (
 
         if (result === 'account_created_successfully') {
           setStatus('ok');
-          setCurrentStep('email-confirmation');
+          setCurrentStep('email-confirmation-light-flow');
         }
 
         if (result === 'email_taken') {
@@ -237,7 +290,7 @@ export const getStepConfig = (
       },
     },
 
-    'email-confirmation': {
+    'email-confirmation-light-flow': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: async () => {
         setStatus('pending');
@@ -284,7 +337,7 @@ export const getStepConfig = (
           const { requirements } = await getRequirements();
 
           if (requirements.special.confirmation === 'require') {
-            setCurrentStep('email-confirmation');
+            setCurrentStep('email-confirmation-light-flow');
           } else {
             setCurrentStep('closed');
 
@@ -302,6 +355,7 @@ export const getStepConfig = (
       },
     },
 
+    // success (shared)
     success: {
       CONTINUE: async () => {
         setStatus('pending');

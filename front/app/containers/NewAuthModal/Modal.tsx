@@ -33,17 +33,29 @@ import { ErrorCode } from './typings';
 type Step = ReturnType<typeof useSteps>['currentStep'];
 
 const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
+  // closed (shared)
   closed: null,
+
+  // old sign in flow
   'auth-providers-sign-in': messages.logIn,
   'email-password-sign-in': messages.logIn,
+
+  // old sign up flow
+  'auth-providers-sign-up': null, // TODO
+  'email-password-sign-up': null, // TODO
+  'email-confirmation-old-flow': messages.confirmYourEmail, // TODO
+
+  // light flow
   'light-flow-start': messages.beforeYouParticipate,
   'email-policies': messages.beforeYouParticipate,
   'google-policies': messages.beforeYouParticipate,
   'facebook-policies': messages.beforeYouParticipate,
   'azure-ad-policies': messages.beforeYouParticipate,
   'france-connect-login': messages.beforeYouParticipate,
-  'email-confirmation': messages.confirmYourEmail,
+  'email-confirmation-light-flow': messages.confirmYourEmail,
   'enter-password': messages.logIn,
+
+  // success (shared)
   success: null,
 };
 
@@ -115,7 +127,7 @@ const AuthModal = () => {
           </Box>
         )}
 
-        {/* OLD SIGN IN FLOW */}
+        {/* old sign in flow */}
         {currentStep === 'auth-providers-sign-in' && (
           <AuthProviders
             flow="signin"
@@ -136,7 +148,7 @@ const AuthModal = () => {
           />
         )}
 
-        {/* LIGHT FLOW */}
+        {/* light flow */}
         {currentStep === 'light-flow-start' && (
           <LightFlowStart
             onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
@@ -177,7 +189,7 @@ const AuthModal = () => {
           <FranceConnectLogin onLogin={transition(currentStep, 'LOGIN')} />
         )}
 
-        {currentStep === 'email-confirmation' && (
+        {currentStep === 'email-confirmation-light-flow' && (
           <EmailConfirmation
             state={state}
             status={status}
