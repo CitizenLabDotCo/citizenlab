@@ -548,6 +548,7 @@
   "app.components.form.locationGoogleUnavailable": "Das von Google Maps zur Verfügung gestellte Standort-Feld konnte nicht geladen werden.",
   "app.components.form.submit": "Einreichen",
   "app.components.form.submitApiError": "Es gab ein Problem beim Absenden des Formulars. Bitte prüfe auf Fehler und versuche es erneut.",
+  "app.components.form.test": "Test. Übersetzen Sie das nicht.",
   "app.components.formBuilder.Page": "Seite",
   "app.components.formBuilder.addAnswer": "Antwort hinzufügen",
   "app.components.formBuilder.cancelDeleteButtonText": "Abbrechen",
