@@ -1647,6 +1647,8 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_questions": "Vote on questions",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_questions_subtitle": "Who can vote on questions?",
   "app.containers.AdminPage.groups.permissions.phase": "Phase",
+  "app.containers.AdminPage.groups.permissions.questionDescription": "Question description",
+  "app.containers.AdminPage.groups.permissions.questionTitle": "Question title",
   "app.containers.AdminPage.groups.permissions.required": "Required",
   "app.containers.AdminPage.groups.permissions.save": "Save",
   "app.containers.AdminPage.groups.permissions.saveErrorMessage": "Something went wrong, please try again later.",
