@@ -150,6 +150,18 @@ const AuthModal = () => {
           />
         )}
 
+        {/* old sign up flow */}
+        {currentStep === 'sign-up:auth-providers' && (
+          <AuthProviders
+            flow="signin"
+            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
+            onSelectAuthProvider={transition(
+              currentStep,
+              'SELECT_AUTH_PROVIDER'
+            )}
+          />
+        )}
+
         {/* light flow */}
         {currentStep === 'light-flow:email' && (
           <LightFlowStart
