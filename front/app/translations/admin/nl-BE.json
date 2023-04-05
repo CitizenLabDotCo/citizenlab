@@ -1757,7 +1757,7 @@
   "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Bevestig",
   "app.containers.admin.addCollaboratorsModal.confirmMessage1": "Weet je zeker dat je 1 persoon beheerdersrechten wilt geven?",
   "app.containers.admin.addCollaboratorsModal.giveCollaboratorRights": "Geef beheerdersrechten",
-  "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Je hebt de limiet van inbegrepen accounts binnen je licentie bereikt, {noOfSeats} extra {noOfSeats, plural, one {account} other {accounts}} zullen worden toegevoegd.",
+  "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Je hebt de limiet van inbegrepen accounts binnen je licentie bereikt, {noOfSeats} extra {noOfSeats, plural, one {account zal} other {accounts zullen}} worden toegevoegd.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Voeg een status toe",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "De standaardstatus kan niet worden verwijderd.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Verwijder",
