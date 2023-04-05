@@ -1,4 +1,4 @@
-import { IRelationship, Multiloc } from 'typings';
+import { ILinks, IRelationship, Multiloc } from 'typings';
 import { Keys } from 'utils/cl-react-query/types';
 import ideaOfficialFeedbackKeys from './keys';
 
@@ -29,6 +29,7 @@ export interface IOfficialFeedback {
 
 export interface IOfficialFeedbacks {
   data: IOfficialFeedbackData[];
+  links: ILinks;
 }
 
 export interface INewFeedback {

@@ -1,6 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import ideaOfficialFeedbackKeys from './keys';
 import {
   IOfficialFeedbacks,
@@ -18,7 +19,7 @@ const fetchOfficialFeedback = ({ ideaId, pageNumber, pageSize }: IParameters) =>
     },
   });
 
-const useIdeaOfficialFeedback = ({ ideaId }: IParameters) => {
+const useIdeaOfficialFeedback = (params: IParameters) => {
   return useInfiniteQuery<
     IOfficialFeedbacks,
     CLErrors,
@@ -26,10 +27,16 @@ const useIdeaOfficialFeedback = ({ ideaId }: IParameters) => {
     IdeaOfficialFeedbackKeys
   >({
     queryKey: ideaOfficialFeedbackKeys.list({
-      ideaId,
+      ideaId: params?.ideaId,
     }),
-    queryFn: () => fetchOfficialFeedback({ ideaId }),
-    enabled: !!ideaId,
+    queryFn: ({ pageParam }) =>
+      fetchOfficialFeedback({ ...params, pageNumber: pageParam }),
+    getNextPageParam: (lastPage) => {
+      const hasNextPage = lastPage.links?.next;
+      const pageNumber = getPageNumberFromUrl(lastPage.links.self);
+      return hasNextPage && pageNumber ? pageNumber + 1 : null;
+    },
+    enabled: !!params?.ideaId,
   });
 };
 

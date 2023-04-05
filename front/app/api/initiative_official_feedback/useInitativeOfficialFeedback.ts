@@ -1,12 +1,13 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import {
-  IParameters,
-  IOfficialFeedbacks,
-  InitiativeOfficialFeedbackKeys,
-} from './types';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import initiativeOfficialFeedbackKeys from './keys';
+import {
+  IOfficialFeedbacks,
+  InitiativeOfficialFeedbackKeys,
+  IParameters,
+} from './types';
 
 const fetchOfficialFeedback = ({
   initiativeId,
@@ -22,7 +23,7 @@ const fetchOfficialFeedback = ({
     },
   });
 
-const useInitiativeOfficialFeedback = ({ initiativeId }: IParameters) => {
+const useInitiativeOfficialFeedback = (params: IParameters) => {
   return useInfiniteQuery<
     IOfficialFeedbacks,
     CLErrors,
@@ -30,10 +31,16 @@ const useInitiativeOfficialFeedback = ({ initiativeId }: IParameters) => {
     InitiativeOfficialFeedbackKeys
   >({
     queryKey: initiativeOfficialFeedbackKeys.list({
-      initiativeId,
+      initiativeId: params?.initiativeId,
     }),
-    queryFn: () => fetchOfficialFeedback({ initiativeId }),
-    enabled: !!initiativeId,
+    queryFn: ({ pageParam }) =>
+      fetchOfficialFeedback({ ...params, pageNumber: pageParam }),
+    getNextPageParam: (lastPage) => {
+      const hasNextPage = lastPage.links?.next;
+      const pageNumber = getPageNumberFromUrl(lastPage.links.self);
+      return hasNextPage && pageNumber ? pageNumber + 1 : null;
+    },
+    enabled: !!params?.initiativeId,
   });
 };
 
