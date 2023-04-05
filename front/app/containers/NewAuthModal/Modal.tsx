@@ -30,14 +30,21 @@ import errorMessages from 'components/UI/Error/messages';
 // typings
 import { ErrorCode } from './typings';
 
-const getHeaderMessage = (step: ReturnType<typeof useSteps>['currentStep']) => {
-  if (step === 'light-flow-start') return messages.beforeYouParticipate;
-  if (step.endsWith('policies')) return messages.beforeYouParticipate;
-  if (step === 'france-connect-login') return messages.beforeYouParticipate;
-  if (step === 'email-confirmation') return messages.confirmYourEmail;
-  if (step.endsWith('sign-in')) return messages.logIn;
-  if (step === 'enter-password') return messages.logIn;
-  return null;
+type Step = ReturnType<typeof useSteps>['currentStep'];
+
+const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
+  closed: null,
+  'auth-providers-sign-in': messages.logIn,
+  'email-password-sign-in': messages.logIn,
+  'light-flow-start': messages.beforeYouParticipate,
+  'email-policies': messages.beforeYouParticipate,
+  'google-policies': messages.beforeYouParticipate,
+  'facebook-policies': messages.beforeYouParticipate,
+  'azure-ad-policies': messages.beforeYouParticipate,
+  'france-connect-login': messages.beforeYouParticipate,
+  'email-confirmation': messages.confirmYourEmail,
+  'enter-password': messages.logIn,
+  success: null,
 };
 
 const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
@@ -58,7 +65,7 @@ const AuthModal = () => {
 
   const closable = currentStep !== 'closed' && currentStep !== 'success';
 
-  const headerMessage = getHeaderMessage(currentStep);
+  const headerMessage = HEADER_MESSAGES[currentStep];
 
   const handleClose = () => {
     if (!closable) return;
