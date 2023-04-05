@@ -328,7 +328,7 @@ export default defineMessages({
     defaultMessage: 'The issue title must be less than {limit} characters long',
   },
   ajv_error_issue_title_multiloc_minLength: {
-    id: 'app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength',
+    id: 'app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength2',
     defaultMessage:
       'The comment title must be more than {limit} characters long',
   },
