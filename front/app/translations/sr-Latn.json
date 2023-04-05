@@ -548,6 +548,7 @@
   "app.components.form.locationGoogleUnavailable": "Učitavanje polja sa lokacijom google mape nije uspelo.",
   "app.components.form.submit": "Pošalji",
   "app.components.form.submitApiError": "Došlo je do problema prilikom slanja forme. Molimo vas da proverite greške i pokušate ponovo.",
+  "app.components.form.test": "Тест. Не преводи ово.",
   "app.components.formBuilder.Page": "Stranica",
   "app.components.formBuilder.addAnswer": "Dodaj odgovor",
   "app.components.formBuilder.cancelDeleteButtonText": "Otkaži",
