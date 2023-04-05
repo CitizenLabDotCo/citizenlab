@@ -99,9 +99,7 @@ const UserTableRow = ({
   });
 
   const [showChangeSeatModal, setShowChangeSeatModal] = useState(false);
-  const closeChangeSeatModal = () => {
-    setShowChangeSeatModal(false);
-  };
+  const [isChangingToNormalUser, setIsChangingToNormalUser] = useState(false);
 
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
@@ -116,10 +114,9 @@ const UserTableRow = ({
   const hasReachedOrIsOverLimit =
     !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins;
 
-
-  const [isChangingToNormalUser, setIsChangingToNormalUser] =
-    useState(false);
-
+  const closeChangeSeatModal = () => {
+    setShowChangeSeatModal(false);
+  };
   const isBlocked = user.attributes?.blocked;
 
   const handleDeleteClick = () => {

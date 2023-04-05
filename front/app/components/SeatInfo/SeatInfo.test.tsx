@@ -20,7 +20,7 @@ type MockAppConfigurationType = {
   };
 };
 
-let mockAppConfiguration: MockAppConfigurationType = {
+const mockAppConfiguration: MockAppConfigurationType = {
   data: {
     id: '1',
     attributes: {
@@ -40,7 +40,7 @@ jest.mock('api/app_configuration/useAppConfiguration', () => () => {
   return { data: mockAppConfiguration };
 });
 
-let mockUserSeatsData = {
+const mockUserSeatsData = {
   data: {
     attributes: {
       admins_number: 3,
