@@ -13,7 +13,7 @@ export interface IOfficialFeedbackData {
     created_at: string;
     updated_at: string;
   };
-  relationships: {
+  relationships?: {
     idea: {
       data: IRelationship;
     };
@@ -41,5 +41,5 @@ export interface INewFeedback {
 export interface IParameters {
   pageNumber?: number;
   pageSize?: number;
-  ideaId: string;
+  ideaId?: string;
 }

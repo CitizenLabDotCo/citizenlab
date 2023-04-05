@@ -28,7 +28,8 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 import useAddIdeaOfficialFeedback from 'api/idea_official_feedback/useAddIdeaOfficialFeedback';
 import useAddInitiativeOfficialFeedback from 'api/initiative_official_feedback/useAddInitiativeOfficialFeedback';
-import { IOfficialFeedbackData } from 'api/idea_official_feedback/types';
+import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
+import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
 import useUpdateIdeaOfficialFeedback from 'api/idea_official_feedback/useUpdateIdeaOfficialFeedback';
 
 const Container = styled.div``;
@@ -95,7 +96,7 @@ interface Props {
   postId?: string;
   postType?: 'idea' | 'initiative';
   formType: 'new' | 'edit';
-  feedback?: IOfficialFeedbackData;
+  feedback?: IIdeaOfficialFeedbackData | IInitiativeOfficialFeedbackData;
   className?: string;
   onClose?: () => void;
 }
@@ -145,20 +146,18 @@ const OfficialFeedbackForm = ({
   useEffect(() => {
     const getPreviouslySavedFormValues = () => {
       const formValues = {
-        authorMultiloc: (feedback as IOfficialFeedbackData).attributes
-          .author_multiloc,
+        authorMultiloc: feedback?.attributes.author_multiloc || {},
         bodyMultiloc: {},
       };
 
-      forOwn(
-        (feedback as IOfficialFeedbackData).attributes.body_multiloc,
-        (bodyText, locale) => {
+      if (feedback) {
+        forOwn(feedback.attributes.body_multiloc, (bodyText, locale) => {
           formValues.bodyMultiloc[locale] = (bodyText || '').replace(
             /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>@([\S\s]*?)<\/span>/gi,
             '@[$3]($2)'
           );
-        }
-      );
+        });
+      }
 
       return formValues;
     };

@@ -3,6 +3,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { Locale, Multiloc } from 'typings';
+import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
+import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
 
 // components
 import OfficialFeedbackForm from './OfficialFeedbackForm';
@@ -25,7 +27,6 @@ import { getLocalized } from 'utils/i18n';
 // resources
 import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { IOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import useDeleteIdeaOfficialFeedback from 'api/idea_official_feedback/useDeleteIdeaOfficialFeedback';
 import useDeleteInitiativeOfficialFeedback from 'api/initiative_official_feedback/useDeleteInitiativeOfficialFeedback';
 
@@ -142,7 +143,9 @@ const StyledMoreActionsMenu = styled(MoreActionsMenu)`
 
 interface Props {
   editingAllowed: boolean | undefined;
-  officialFeedbackPost: IOfficialFeedbackData;
+  officialFeedbackPost:
+    | IIdeaOfficialFeedbackData
+    | IInitiativeOfficialFeedbackData;
   postType: 'idea' | 'initiative';
   className?: string;
   a11y_pronounceLatestOfficialFeedbackPost?: boolean;
