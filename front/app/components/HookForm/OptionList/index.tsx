@@ -214,6 +214,7 @@ const OptionList = ({
                                 </Box>
                                 {canDeleteLastOption && (
                                   <Button
+                                    type="button"
                                     margin="0px"
                                     padding="0px"
                                     buttonStyle="text"
@@ -239,6 +240,7 @@ const OptionList = ({
                   </DndProvider>
                   <Button
                     icon="plus-circle"
+                    type="button"
                     buttonStyle="secondary"
                     data-cy="e2e-add-answer"
                     onClick={() => handleAddOption(options, name)}
