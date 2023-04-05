@@ -40,7 +40,9 @@ export const handleOnSSOClick = (
 };
 
 function setHref(provider: SSOProvider, metaData: AuthenticationData) {
-  const { pathname, verification, context } = metaData;
+  const { verification, context } = metaData;
+
+  const pathname = window.location.pathname;
 
   const ssoParams: SSOParams = {
     sso_response: 'true',

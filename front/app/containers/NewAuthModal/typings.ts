@@ -31,15 +31,14 @@ export type SignUpInError = 'general' | 'franceconnect_merging_failed';
 
 export interface AuthenticationData {
   flow: SignUpInFlow;
-  pathname: string;
   context: AuthenticationContext;
   successAction?: SuccessAction;
 
   // TODO clean this up
   error?: { code: SignUpInError };
-  isInvitation?: boolean;
+  isInvitation: boolean;
   token?: string;
-  verification?: boolean;
+  verification: boolean;
 }
 
 export type SSOProviderWithoutVienna = Exclude<SSOProvider, 'id_vienna_saml'>;
