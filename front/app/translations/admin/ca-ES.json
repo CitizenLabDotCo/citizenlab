@@ -1080,7 +1080,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.saveCause": "Save",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.subtitleVolunteeringTab": "Aquí, podeu configurar les causes per les quals els usuaris poden oferir-se voluntaris i descarregar els voluntaris.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.titleVolunteeringTab": "Voluntariat",
-  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {sense voluntaris} one {#voluntari} other {#voluntaris}}",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {no participants} one {# participant} other {# participants}}",
   "app.containers.AdminPage.ProjectEdit.addNewContribution": "Add a contribution",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Afegir una idea",
   "app.containers.AdminPage.ProjectEdit.addNewInput": "Afegir una entrada",
