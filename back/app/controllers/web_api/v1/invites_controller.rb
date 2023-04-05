@@ -73,12 +73,7 @@ class WebApi::V1::InvitesController < ApplicationController
         bulk_create_params.except(:emails).stringify_keys
       )
     end
-    render json: {
-      data: {
-        type: 'count_new_seats',
-        attributes: seat_numbers
-      }
-    }
+    render json: raw_json(seat_numbers)
   rescue Invites::FailedError => e
     render json: { errors: e.to_h }, status: :unprocessable_entity
   end
@@ -92,12 +87,7 @@ class WebApi::V1::InvitesController < ApplicationController
         bulk_create_xlsx_params.except(:xlsx).stringify_keys
       )
     end
-    render json: {
-      data: {
-        type: 'count_new_seats_xlsx',
-        attributes: seat_numbers
-      }
-    }
+    render json: raw_json(seat_numbers)
   rescue Invites::FailedError => e
     render json: { errors: e.to_h }, status: :unprocessable_entity
   end
