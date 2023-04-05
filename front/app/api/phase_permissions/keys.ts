@@ -1,3 +1,4 @@
+import { QueryKeys } from 'utils/cl-react-query/types';
 import { PhasePermissionsProps } from './usePhasePermissions';
 
 const phasePermissionKeys = {
@@ -6,6 +7,6 @@ const phasePermissionKeys = {
   list: ({ phaseId }: PhasePermissionsProps) => [
     { ...phasePermissionKeys.lists()[0], phaseId },
   ],
-} as const;
+} satisfies QueryKeys;
 
 export default phasePermissionKeys;
