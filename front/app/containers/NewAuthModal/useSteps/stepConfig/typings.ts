@@ -10,6 +10,8 @@ export type Step =
   | 'sign-up:auth-providers'
   | 'sign-up:email-password'
   | 'sign-up:email-confirmation'
+  | 'sign-up:verification'
+  | 'sign-up:registration-fields'
 
   // light flow
   | 'light-flow:email'

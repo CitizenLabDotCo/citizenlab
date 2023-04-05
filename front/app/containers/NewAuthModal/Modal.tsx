@@ -43,7 +43,9 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // old sign up flow
   'sign-up:auth-providers': null, // TODO
   'sign-up:email-password': null, // TODO
-  'sign-up:email-confirmation': messages.confirmYourEmail, // TODO
+  'sign-up:email-confirmation': messages.confirmYourEmail,
+  'sign-up:verification': null, // TODO
+  'sign-up:registration-fields': null, // TODO
 
   // light flow
   'light-flow:email': messages.beforeYouParticipate,

@@ -53,5 +53,15 @@ export const oldSignUpFlow = (
         // TODO
       },
     },
+
+    'sign-up:verification': {
+      CLOSE: () => setCurrentStep('closed'),
+      // TODO
+    },
+
+    'sign-up:registration-fields': {
+      CLOSE: () => setCurrentStep('closed'),
+      // TODO
+    },
   };
 };
