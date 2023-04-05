@@ -55,6 +55,48 @@ resource 'Users' do
       end
     end
 
+    get 'web_api/v1/users/check/:email' do
+      let(:email) { 'test@test.com' }
+
+      context 'when a user does not exist' do
+        example_request 'Returns "show_terms"' do
+          expect(status).to eq 200
+          json_response = json_parse response_body
+          expect(json_response[:action]).to eq('show_terms')
+        end
+      end
+
+      context 'when a user exists without a password and has completed registration', document: false do
+        before { create :user_no_password, email: 'test@test.com', registration_completed_at: Time.now }
+
+        example_request 'Returns "continue"' do
+          expect(status).to eq 200
+          json_response = json_parse response_body
+          expect(json_response[:action]).to eq('continue')
+        end
+      end
+
+      context 'when a user exists with a password', document: false do
+        before { create :user, email: 'test@test.com' }
+
+        example_request '[error] Email already taken' do
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response.dig(:errors, :email, 0, :error)).to eq('taken')
+        end
+      end
+
+      context 'when an invalid email is used', document: false do
+        let(:email) { 'test_test.com' }
+
+        example_request '[error] Invalid email' do
+          assert_status 422
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:errors, :email, 0, :error)).to eq('invalid')
+        end
+      end
+    end
+
     post 'web_api/v1/users' do
       before do
         settings = AppConfiguration.instance.settings
