@@ -548,6 +548,7 @@
   "app.components.form.locationGoogleUnavailable": "Konnt d’Standuertfeld, dat vu Google Maps zur Verfügung gestallt gouf, net lueden.",
   "app.components.form.submit": "Schécken",
   "app.components.form.submitApiError": "Et gouf e Problem beim Ofschécken vum Formulaire. Préift dësen wgl. ob  Feeler a probéiert et nach eng Kéier.",
+  "app.components.form.test": "Test. Iwwersetzen dëst net.",
   "app.components.formBuilder.Page": "Säit",
   "app.components.formBuilder.addAnswer": "Äntwert bäifügen",
   "app.components.formBuilder.cancelDeleteButtonText": "Cancelen",
