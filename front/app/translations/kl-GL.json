@@ -548,6 +548,7 @@
   "app.components.form.locationGoogleUnavailable": "Sumiiffik google mapsikkut nanineqanngilaq.",
   "app.components.form.submit": "Submit",
   "app.components.form.submitApiError": "There was an issue submitting the form. Please check for any errors and try again.",
+  "app.components.form.test": "Test. Don't translate this.",
   "app.components.formBuilder.Page": "Page",
   "app.components.formBuilder.addAnswer": "Add answer",
   "app.components.formBuilder.cancelDeleteButtonText": "Cancel",
