@@ -11,6 +11,7 @@ import {
   Box,
   colors,
   Toggle,
+  Locale,
 } from '@citizenlab/cl2-component-library';
 import { FieldSelectionModal } from './FieldSelectionModal';
 
@@ -30,6 +31,7 @@ import useUserCustomFields from 'hooks/useUserCustomFields';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { IUserCustomFieldData } from 'services/userCustomFields';
+import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 
 type UserFieldSelectionProps = {
   permission: IPermissionData;
@@ -51,12 +53,13 @@ const UserFieldSelection = ({
     initiativeContext,
     action: permission.attributes.action,
   });
-  const { mutate: addPermissionCustomField } = useAddPermissionCustomField({
-    phaseId,
-    projectId,
-    initiativeContext,
-    action: permission.attributes.action,
-  });
+  const { mutate: addPermissionCustomField, isLoading } =
+    useAddPermissionCustomField({
+      phaseId,
+      projectId,
+      initiativeContext,
+      action: permission.attributes.action,
+    });
   const { mutate: updatePermissionCustomField } =
     useUpdatePermissionsCustomField({
       projectId,
@@ -74,6 +77,16 @@ const UserFieldSelection = ({
   const locale = useLocale();
   const [showSelectionModal, setShowSelectionModal] = useState(false);
   const initialFieldArray = initialFields?.data?.data;
+
+  const getTitleFromGlobalFieldId = (
+    field: IPermissionsCustomFieldData,
+    locale: Locale
+  ) => {
+    return globalRegistrationFields?.find(
+      (globalField) =>
+        globalField.id === field?.relationships?.custom_field?.data.id
+    )?.attributes.title_multiloc[locale];
+  };
 
   const handleAddField = (field: IUserCustomFieldData) => {
     addPermissionCustomField({
@@ -114,12 +127,7 @@ const UserFieldSelection = ({
             borderColor={colors.grey300}
           >
             <Text color="primary">
-              {
-                globalRegistrationFields?.find(
-                  (globalField) =>
-                    globalField.id === field.relationships.custom_field.data.id
-                )?.attributes.title_multiloc[locale]
-              }
+              {getTitleFromGlobalFieldId(field, locale)}
             </Text>
             <Box display="flex">
               <Toggle
@@ -165,6 +173,7 @@ const UserFieldSelection = ({
         setShowSelectionModal={setShowSelectionModal}
         selectedFields={initialFieldArray}
         handleAddField={handleAddField}
+        isLoading={isLoading}
         registrationFieldList={globalRegistrationFields}
         locale={locale}
       />

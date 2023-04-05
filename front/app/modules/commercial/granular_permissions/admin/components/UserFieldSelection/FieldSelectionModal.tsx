@@ -19,6 +19,7 @@ type FieldSelectionModalProps = {
   handleAddField: (field: IUserCustomFieldData) => void;
   registrationFieldList: Array<IUserCustomFieldData> | null | undefined;
   locale: string;
+  isLoading: boolean;
 };
 
 export const FieldSelectionModal = ({
@@ -28,6 +29,7 @@ export const FieldSelectionModal = ({
   handleAddField,
   registrationFieldList,
   locale,
+  isLoading,
 }: FieldSelectionModalProps) => {
   const [showAddFieldPage, setShowAddFieldPage] = React.useState(false);
   return (
@@ -47,6 +49,7 @@ export const FieldSelectionModal = ({
             registrationFieldList={registrationFieldList}
             locale={locale}
             handleAddField={handleAddField}
+            isLoading={isLoading}
             setShowAddFieldPage={setShowAddFieldPage}
           />
         )}

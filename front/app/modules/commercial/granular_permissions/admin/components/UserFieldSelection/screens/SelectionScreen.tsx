@@ -29,6 +29,7 @@ type SelectionScreenProps = {
   locale: string;
   handleAddField: (fields: IUserCustomFieldData) => void;
   setShowAddFieldPage: (show: boolean) => void;
+  isLoading: boolean;
 };
 
 export const SelectionScreen = ({
@@ -37,6 +38,7 @@ export const SelectionScreen = ({
   locale,
   handleAddField,
   setShowAddFieldPage,
+  isLoading,
 }: SelectionScreenProps) => {
   return (
     <>
@@ -108,6 +110,7 @@ export const SelectionScreen = ({
           onClick={() => {
             setShowAddFieldPage(true);
           }}
+          processing={isLoading}
         >
           <FormattedMessage {...messages.createANewQuestion} />
         </Button>

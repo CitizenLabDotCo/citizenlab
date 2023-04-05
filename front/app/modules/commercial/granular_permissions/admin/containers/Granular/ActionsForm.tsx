@@ -30,8 +30,8 @@ import {
 import { IPCAction } from 'typings';
 
 const ActionPermissionWrapper = styled.div`
-  margin-bottom: 30px;
   margin-left: 20px;
+  margin-bottom: 60px;
 
   &.last {
     margin-bottom: 0;
@@ -140,6 +140,7 @@ const ActionsForm = memo(
                     className="title-with-line"
                     variant="h5"
                     color="coolGrey600"
+                    marginTop="0px"
                   >
                     <FormattedMessage
                       {...getPermissionActionMessage({
@@ -172,7 +173,7 @@ const ActionsForm = memo(
                 />
                 {permission.attributes.permitted_by !== 'everyone' &&
                   includePermissionsCustomFields && (
-                    <Box mt="42px" mb="20px">
+                    <Box mt="42px">
                       <UserFieldSelection
                         permission={permission}
                         projectId={projectId}

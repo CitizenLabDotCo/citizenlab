@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { get } from 'lodash-es';
@@ -20,11 +20,17 @@ import { List, SortableRow } from 'components/admin/ResourceList';
 import Error, { TFieldName } from 'components/UI/Error';
 
 // Typings
-import { Locale, CLError, RHFErrors } from 'typings';
+import { Locale, CLError, RHFErrors, Multiloc } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { generateTempId } from 'components/FormBuilder/components/FormBuilderSettings/utils';
+
+type Option = {
+  id?: string;
+  temp_id?: string;
+  title_multiloc: Multiloc;
+};
 
 interface Props {
   name: string;
@@ -36,7 +42,7 @@ interface Props {
   addButtonLabel: string | JSX.Element | undefined;
 }
 
-const ChoiceList = ({
+const OptionList = ({
   onSelectedLocaleChange,
   name,
   locales,
@@ -56,10 +62,6 @@ const ChoiceList = ({
   );
 
   // Handles locale change
-  useEffect(() => {
-    setSelectedLocale(platformLocale);
-    onSelectedLocaleChange?.(platformLocale);
-  }, [platformLocale, onSelectedLocaleChange]);
   const handleOnSelectedLocaleChange = useCallback(
     (newSelectedLocale: Locale) => {
       setSelectedLocale(newSelectedLocale);
@@ -67,6 +69,30 @@ const ChoiceList = ({
     },
     [onSelectedLocaleChange]
   );
+
+  // Handle option change
+  type HandleOptionChangeProps = {
+    value: string;
+    options: Array<Option>;
+    index: number;
+    name: string;
+    selectedLocale: Locale;
+  };
+
+  const handleOptionChange = ({
+    value,
+    options,
+    index,
+    name,
+    selectedLocale,
+  }: HandleOptionChangeProps) => {
+    const updatedOptions = options;
+    updatedOptions[index].title_multiloc[selectedLocale] = value;
+    if (!updatedOptions[index].id && !updatedOptions[index].temp_id) {
+      updatedOptions[index].temp_id = generateTempId();
+    }
+    setValue(name, updatedOptions);
+  };
 
   // Handles drag and drop
   const { move } = useFieldArray({
@@ -76,15 +102,22 @@ const ChoiceList = ({
     move(fromIndex, toIndex);
   };
 
-  // Handles add and remove options
-  const addOption = (value, name: string) => {
+  // Handles add option
+  const handleAddOption = (value: Array<Option>, name: string) => {
     const newValues = value;
     newValues.push({
+      temp_id: generateTempId(),
       title_multiloc: {},
     });
     setValue(name, newValues);
   };
-  const removeOption = (value, name, index) => {
+
+  // Handles remove option
+  const handleRemoveOption = (
+    value: Array<Option>,
+    name: string,
+    index: number
+  ) => {
     const newValues = value;
     newValues.splice(index, 1);
     setValue(name, newValues);
@@ -106,11 +139,11 @@ const ChoiceList = ({
           name={name}
           control={control}
           defaultValue={defaultOptionValues}
-          render={({ field: { ref: _ref, value: choices, onBlur } }) => {
+          render={({ field: { ref: _ref, value: options, onBlur } }) => {
             const canDeleteLastOption =
-              allowDeletingAllOptions || choices.length > 1;
-            const validatedValues = choices.map((choice) => ({
-              title_multiloc: choice.title_multiloc,
+              allowDeletingAllOptions || options.length > 1;
+            const validatedValues = options.map((option: Option) => ({
+              title_multiloc: option.title_multiloc,
             }));
 
             return (
@@ -144,64 +177,63 @@ const ChoiceList = ({
                     </Box>
                   </Box>
                   <DndProvider backend={HTML5Backend}>
-                    <List key={choices?.length}>
-                      {choices?.map((choice, index) => {
-                        return (
-                          <Box key={choice.id}>
-                            <SortableRow
-                              id={choice.id}
-                              key={choice.id}
-                              index={index}
-                              moveRow={handleDragRow}
-                              dropRow={() => {
-                                // Do nothing, no need to handle dropping a row for now
-                              }}
-                            >
-                              <Box width="100%">
-                                <Input
-                                  id={`e2e-option-input-${index}`}
-                                  size="small"
-                                  type="text"
-                                  value={
-                                    choice.title_multiloc &&
-                                    choice.title_multiloc[selectedLocale]
-                                  }
-                                  onChange={(value) => {
-                                    const updatedChoices = choices;
-                                    updatedChoices[index].title_multiloc[
-                                      selectedLocale
-                                    ] = value;
-                                    if (
-                                      !updatedChoices[index].id &&
-                                      !updatedChoices[index].temp_id
-                                    ) {
-                                      updatedChoices[index].temp_id =
-                                        generateTempId();
+                    <List key={options?.length}>
+                      {options?.map((option: Option, index: number) => {
+                        const optionId = option.id || option.temp_id;
+                        if (!isNilOrError(optionId)) {
+                          return (
+                            <Box key={optionId}>
+                              <SortableRow
+                                id={optionId}
+                                key={optionId}
+                                index={index}
+                                moveRow={handleDragRow}
+                                dropRow={() => {
+                                  // Do nothing, no need to handle dropping a row for now
+                                }}
+                              >
+                                <Box width="100%">
+                                  <Input
+                                    id={`e2e-option-input-${index}`}
+                                    size="small"
+                                    type="text"
+                                    value={
+                                      option.title_multiloc &&
+                                      option.title_multiloc[selectedLocale]
                                     }
-                                    setValue(name, updatedChoices);
-                                  }}
-                                />
-                              </Box>
-                              {canDeleteLastOption && (
-                                <Button
-                                  margin="0px"
-                                  padding="0px"
-                                  buttonStyle="text"
-                                  onClick={() => {
-                                    removeOption(choices, name, index);
-                                    trigger();
-                                  }}
-                                >
-                                  <Icon
-                                    name="delete"
-                                    fill="coolGrey600"
-                                    padding="0px"
+                                    onChange={(value) => {
+                                      handleOptionChange({
+                                        value,
+                                        options,
+                                        index,
+                                        name,
+                                        selectedLocale,
+                                      });
+                                    }}
                                   />
-                                </Button>
-                              )}
-                            </SortableRow>
-                          </Box>
-                        );
+                                </Box>
+                                {canDeleteLastOption && (
+                                  <Button
+                                    margin="0px"
+                                    padding="0px"
+                                    buttonStyle="text"
+                                    onClick={() => {
+                                      handleRemoveOption(options, name, index);
+                                      trigger();
+                                    }}
+                                  >
+                                    <Icon
+                                      name="delete"
+                                      fill="coolGrey600"
+                                      padding="0px"
+                                    />
+                                  </Button>
+                                )}
+                              </SortableRow>
+                            </Box>
+                          );
+                        }
+                        return null;
                       })}
                     </List>
                   </DndProvider>
@@ -209,7 +241,7 @@ const ChoiceList = ({
                     icon="plus-circle"
                     buttonStyle="secondary"
                     data-cy="e2e-add-answer"
-                    onClick={() => addOption(choices, name)}
+                    onClick={() => handleAddOption(options, name)}
                     text={addButtonLabel}
                   />
                   {validationError && (
@@ -240,4 +272,4 @@ const ChoiceList = ({
   return null;
 };
 
-export default ChoiceList;
+export default OptionList;

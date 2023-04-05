@@ -4,6 +4,7 @@ import { IPermissionData } from 'services/actionPermissions';
 import { IPhaseData } from 'services/phases';
 import { isNilOrError } from 'utils/helperUtils';
 import ActionsForm from '../containers/Granular/ActionsForm';
+import { Box } from '@citizenlab/cl2-component-library';
 
 type PhaseActionFormProps = {
   phase: IPhaseData;
@@ -28,12 +29,14 @@ export const PhaseActionForm = ({
   }
 
   return (
-    <ActionsForm
-      permissions={permissions.data}
-      onChange={onChange}
-      postType={postType}
-      projectId={projectId}
-      phaseId={phase.id}
-    />
+    <Box mb="40px">
+      <ActionsForm
+        permissions={permissions.data}
+        onChange={onChange}
+        postType={postType}
+        projectId={projectId}
+        phaseId={phase.id}
+      />
+    </Box>
   );
 };
