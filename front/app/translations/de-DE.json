@@ -395,7 +395,7 @@
   "app.components.QuillEditor.visitPrompt": "Besuche den Link:",
   "app.components.SeatInfo.additionalSeats": "Zusätzliche Admin-Zugänge",
   "app.components.SeatInfo.additionalSeatsToolTip": "Hier wird die Anzahl der zusätzlichen Nutzungsrechte angezeigt, die Sie zusätzlich zu den \"inbegriffenen Nutzungsrechten\" erworben haben.",
-  "app.components.SeatInfo.adminInfoTextWithBilling": "Ihre Lizenz beinhaltet {adminSeatsIncluded}. Wenn Sie alle Nutzungsrechte genutzt haben, erklären Sie sich damit einverstanden, dass wir die zusätzlichen Plätze entsprechend Ihrer Lizenz in Rechnung stellen.",
+  "app.components.SeatInfo.adminInfoTextWithBilling": "Ihre Lizenz hat {adminSeatsIncluded}. Wenn Sie alle Nutzungsrechte genutzt haben, erklären Sie sich damit einverstanden, dass wir die zusätzlichen Plätze entsprechend Ihrer Lizenz in Rechnung stellen.",
   "app.components.SeatInfo.adminSeatsIncludedText": "{adminSeats} Nutzungsrechte inbegriffen",
   "app.components.SeatInfo.collaboratorInfoTextWithBilling": "Ihre Lizenz hat {collaboratorSeatsIncluded}, die für Ordner- und Projektmanager geeignet sind. Wenn Sie alle Plätze genutzt haben, stimmen Sie zu, dass wir die zusätzlichen Nutzungsrechte entsprechend Ihrer Lizenz in Rechnung stellen.",
   "app.components.SeatInfo.collaboratorsIncludedText": "{managerSeats} Manager-Rechte inklusive",
