@@ -31,6 +31,7 @@ import useAddInitiativeOfficialFeedback from 'api/initiative_official_feedback/u
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
 import useUpdateIdeaOfficialFeedback from 'api/idea_official_feedback/useUpdateIdeaOfficialFeedback';
+import useUpdateInitiativeOfficialFeedback from 'api/initiative_official_feedback/useUpdateInitiativeOfficialFeedback';
 
 const Container = styled.div``;
 
@@ -118,7 +119,7 @@ const OfficialFeedbackForm = ({
   const { mutate: updateIdeaOfficialFeedback } =
     useUpdateIdeaOfficialFeedback();
   const { mutate: updateInitiativeOfficialFeedback } =
-    useUpdateIdeaOfficialFeedback();
+    useUpdateInitiativeOfficialFeedback();
 
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
   const [formValues, setFormValues] = useState<OfficialFeedbackFormValues>({
