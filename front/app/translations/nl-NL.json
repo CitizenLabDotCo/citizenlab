@@ -548,6 +548,7 @@
   "app.components.form.locationGoogleUnavailable": "Kan locatieveld geleverd door google maps niet laden.",
   "app.components.form.submit": "Verzenden",
   "app.components.form.submitApiError": "Er was een probleem met het verzenden van het formulier. Controleer op eventuele fouten en probeer het opnieuw.",
+  "app.components.form.test": "Test. Vertaal dit niet.",
   "app.components.formBuilder.Page": "Pagina",
   "app.components.formBuilder.addAnswer": "Voeg antwoord toe",
   "app.components.formBuilder.cancelDeleteButtonText": "Annuleren",
