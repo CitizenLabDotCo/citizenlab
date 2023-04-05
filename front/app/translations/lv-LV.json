@@ -548,6 +548,7 @@
   "app.components.form.locationGoogleUnavailable": "Nevarēja ielādēt google maps norādīto atrašanās vietas lauku.",
   "app.components.form.submit": "Iesniegt",
   "app.components.form.submitApiError": "Iesniedzot veidlapu, radās kļūda. Lūdzu, pārbaudiet, vai nav kļūdu, un mēģiniet vēlreiz.",
+  "app.components.form.test": "Tests. Netulkojiet to.",
   "app.components.formBuilder.Page": "Lapa",
   "app.components.formBuilder.addAnswer": "Pievienot atbildi",
   "app.components.formBuilder.cancelDeleteButtonText": "Atcelt",
