@@ -548,6 +548,7 @@
   "app.components.form.locationGoogleUnavailable": "Google Maps tarafından sağlanan konum alanı yüklenemedi.",
   "app.components.form.submit": "Gönder",
   "app.components.form.submitApiError": "Form gönderilirken bir sorun oluştu. Lütfen olası hataları düzeltip tekrar deneyin.",
+  "app.components.form.test": "Test. Bunu tercüme etme.",
   "app.components.formBuilder.Page": "Sayfa",
   "app.components.formBuilder.addAnswer": "Cevap ekle",
   "app.components.formBuilder.cancelDeleteButtonText": "İptal",
