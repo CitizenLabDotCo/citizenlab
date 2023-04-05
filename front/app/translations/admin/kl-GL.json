@@ -1080,7 +1080,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.saveCause": "Save",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.subtitleVolunteeringTab": "Uani suliat peqataasut nalunaarfigisinnaasaat pilersissinnaavat kiisalu kajumissutsiminnik suliaqartussat aallugit.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.titleVolunteeringTab": "Kajumissutsimik sulineq",
-  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {no volunteers} one {# volunteer} other {# volunteers}}",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {no participants} one {# participant} other {# participants}}",
   "app.containers.AdminPage.ProjectEdit.addNewContribution": "Add a contribution",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Isumassarsiamik ilanngussigit",
   "app.containers.AdminPage.ProjectEdit.addNewInput": "Add an input",
