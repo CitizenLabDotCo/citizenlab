@@ -74,9 +74,10 @@ const SeatInfo = ({ seatType }: SeatInfoProps) => {
     collaborator: seats.data.attributes.project_moderators_number,
   }[seatType];
   const additionalSeats = currentSeatNumber - maximumSeatNumber;
-  const showAdditionalSeats = Boolean(
-    additionalSeats > 0 && maximumAdditionalSeats
-  );
+  const hasAdditionalSeats = additionalSeats > 0;
+  const showAdditionalSeats = hasSeatBasedBillingEnabled
+    ? Boolean(hasAdditionalSeats && maximumAdditionalSeats)
+    : hasAdditionalSeats;
 
   const seatTypeMessage: SeatTypeMessageDescriptor = {
     admin: messages.currentAdminSeatsTitle,
