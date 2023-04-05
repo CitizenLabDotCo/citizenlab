@@ -1,5 +1,4 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -93,6 +92,7 @@ const OfficialFeedbackFeed = ({
   className,
   a11y_pronounceLatestOfficialFeedbackPost,
 }: Props) => {
+  const [pageSize, setPageSize] = React.useState(1);
   const {
     data: ideaFeedbacks,
     fetchNextPage: fetchNextPageIdeasFeedback,
@@ -100,6 +100,7 @@ const OfficialFeedbackFeed = ({
     isFetchingNextPage: isFetchingNextPageIdeasFeedback,
   } = useIdeaOfficialFeedback({
     ideaId: postId && postType === 'idea' ? postId : undefined,
+    pageSize,
   });
 
   const {
@@ -109,6 +110,7 @@ const OfficialFeedbackFeed = ({
     isFetchingNextPage: isFetchingNextPageInitiativesFeedback,
   } = useInitiativeOfficialFeedback({
     initiativeId: postId && postType === 'initiative' ? postId : undefined,
+    pageSize,
   });
 
   const officialFeedbacksList =
@@ -116,11 +118,7 @@ const OfficialFeedbackFeed = ({
       ? ideaFeedbacks?.pages.flatMap((page) => page.data) || []
       : initiativeFeedbacks?.pages.flatMap((page) => page.data) || [];
 
-  if (
-    !isNilOrError(officialFeedbacksList) &&
-    officialFeedbacksList &&
-    officialFeedbacksList.length > 0
-  ) {
+  if (officialFeedbacksList.length > 0) {
     const updateDate =
       officialFeedbacksList[0].attributes.updated_at ||
       officialFeedbacksList[0].attributes.created_at;
@@ -139,6 +137,7 @@ const OfficialFeedbackFeed = ({
       } else {
         fetchNextPageInitiativeFeedback();
       }
+      setPageSize(10);
     };
 
     const hasMore =

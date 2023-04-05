@@ -30,14 +30,13 @@ const useInitiativeOfficialFeedback = (params: IParameters) => {
     IOfficialFeedbacks,
     InitiativeOfficialFeedbackKeys
   >({
-    queryKey: initiativeOfficialFeedbackKeys.list({
-      initiativeId: params?.initiativeId,
-    }),
-    queryFn: ({ pageParam }) =>
-      fetchOfficialFeedback({ ...params, pageNumber: pageParam }),
+    queryKey: initiativeOfficialFeedbackKeys.list(params),
+    queryFn: ({ pageParam }) => {
+      return fetchOfficialFeedback({ ...params, pageNumber: pageParam });
+    },
     getNextPageParam: (lastPage) => {
-      const hasNextPage = lastPage.links?.next;
-      const pageNumber = getPageNumberFromUrl(lastPage.links.self);
+      const hasNextPage = lastPage?.links?.next;
+      const pageNumber = lastPage && getPageNumberFromUrl(lastPage.links.self);
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },
     enabled: !!params?.initiativeId,
