@@ -48,9 +48,9 @@ export const getStepConfig = (
 
         if (isLightFlow) {
           if (requirements.built_in.email === 'satisfied') {
-            setCurrentStep('email-confirmation-light-flow');
+            setCurrentStep('light-flow:email-confirmation');
           } else {
-            setCurrentStep('light-flow-start');
+            setCurrentStep('light-flow:email');
           }
         }
 
@@ -58,9 +58,9 @@ export const getStepConfig = (
 
         if (flow === 'signin') {
           if (anySSOProviderEnabled) {
-            setCurrentStep('auth-providers-sign-in');
+            setCurrentStep('sign-in:auth-providers');
           } else {
-            setCurrentStep('email-password-sign-in');
+            setCurrentStep('sign-in:email-password');
           }
         }
       },

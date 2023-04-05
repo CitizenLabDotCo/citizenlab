@@ -14,9 +14,10 @@ import { CLError, RHFErrors } from 'typings';
 interface Props
   extends Omit<
     PasswordInputComponentProps,
-    'password' | 'onChange' | 'errors'
+    'id' | 'password' | 'onChange' | 'errors'
   > {
   name: string;
+  id?: string;
   label?: string;
 }
 

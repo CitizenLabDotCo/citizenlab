@@ -27,14 +27,14 @@ export const oldSignInFlow = (
 ) => {
   return {
     // old sign in flow
-    'auth-providers-sign-in': {
+    'sign-in:auth-providers': {
       CLOSE: () => setCurrentStep('closed'),
       SWITCH_FLOW: () => {
         // TODO
       },
       SELECT_AUTH_PROVIDER: (authProvider: AuthProvider) => {
         if (authProvider === 'email') {
-          setCurrentStep('email-password-sign-in');
+          setCurrentStep('sign-in:email-password');
           return;
         }
 
@@ -43,14 +43,14 @@ export const oldSignInFlow = (
       },
     },
 
-    'email-password-sign-in': {
+    'sign-in:email-password': {
       CLOSE: () => setCurrentStep('closed'),
       SWITCH_FLOW: () => {
         // TODO
       },
       GO_BACK: () => {
         if (anySSOProviderEnabled) {
-          setCurrentStep('auth-providers-sign-in');
+          setCurrentStep('sign-in:auth-providers');
         }
       },
       SIGN_IN: async (

@@ -30,31 +30,31 @@ export const newLightFlow = (
 ) => {
   return {
     // light flow
-    'light-flow-start': {
+    'light-flow:email': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT_EMAIL: (email: string) => {
         updateState({ email });
-        setCurrentStep('email-policies');
+        setCurrentStep('light-flow:email-policies');
       },
       CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
         switch (ssoProvider) {
           case 'google':
-            setCurrentStep('google-policies');
+            setCurrentStep('light-flow:google-policies');
             break;
           case 'facebook':
-            setCurrentStep('facebook-policies');
+            setCurrentStep('light-flow:facebook-policies');
             break;
           case 'azureactivedirectory':
-            setCurrentStep('azure-ad-policies');
+            setCurrentStep('light-flow:azure-ad-policies');
             break;
           case 'franceconnect':
-            setCurrentStep('france-connect-login');
+            setCurrentStep('light-flow:france-connect-login');
             break;
         }
       },
     },
 
-    'email-policies': {
+    'light-flow:email-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: async (email: string, locale: Locale) => {
         setStatus('pending');
@@ -64,12 +64,12 @@ export const newLightFlow = (
 
         if (result === 'account_created_successfully') {
           setStatus('ok');
-          setCurrentStep('email-confirmation-light-flow');
+          setCurrentStep('light-flow:email-confirmation');
         }
 
         if (result === 'email_taken') {
           setStatus('ok');
-          setCurrentStep('enter-password');
+          setCurrentStep('light-flow:password');
         }
 
         if (result === 'error') {
@@ -79,7 +79,7 @@ export const newLightFlow = (
       },
     },
 
-    'google-policies': {
+    'light-flow:google-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: () => {
         setStatus('pending');
@@ -88,7 +88,7 @@ export const newLightFlow = (
       },
     },
 
-    'facebook-policies': {
+    'light-flow:facebook-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: () => {
         setStatus('pending');
@@ -97,7 +97,7 @@ export const newLightFlow = (
       },
     },
 
-    'azure-ad-policies': {
+    'light-flow:azure-ad-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: () => {
         setStatus('pending');
@@ -106,7 +106,7 @@ export const newLightFlow = (
       },
     },
 
-    'france-connect-login': {
+    'light-flow:france-connect-login': {
       CLOSE: () => setCurrentStep('closed'),
       LOGIN: () => {
         setStatus('pending');
@@ -115,7 +115,7 @@ export const newLightFlow = (
       },
     },
 
-    'email-confirmation-light-flow': {
+    'light-flow:email-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: async () => {
         setStatus('pending');
@@ -124,7 +124,7 @@ export const newLightFlow = (
 
         updateState({ email: null });
 
-        setCurrentStep('light-flow-start');
+        setCurrentStep('light-flow:email');
         setStatus('ok');
       },
       SUBMIT_CODE: async (code: string) => {
@@ -146,7 +146,7 @@ export const newLightFlow = (
       },
     },
 
-    'enter-password': {
+    'light-flow:password': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT_PASSWORD: async (
         email: string,
@@ -162,7 +162,7 @@ export const newLightFlow = (
           const { requirements } = await getRequirements();
 
           if (requirements.special.confirmation === 'require') {
-            setCurrentStep('email-confirmation-light-flow');
+            setCurrentStep('light-flow:email-confirmation');
           } else {
             setCurrentStep('closed');
 

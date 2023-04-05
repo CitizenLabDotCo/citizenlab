@@ -13,14 +13,14 @@ export const oldSignUpFlow = (
 ) => {
   return {
     // old sign up flow
-    'auth-providers-sign-up': {
+    'sign-up:auth-providers': {
       CLOSE: () => setCurrentStep('closed'),
       SWITCH_FLOW: () => {
         // TODO
       },
       SELECT_AUTH_PROVIDER: (authProvider: AuthProvider) => {
         if (authProvider === 'email') {
-          setCurrentStep('email-password-sign-up');
+          setCurrentStep('sign-up:email-password');
           return;
         }
 
@@ -29,14 +29,14 @@ export const oldSignUpFlow = (
       },
     },
 
-    'email-password-sign-up': {
+    'sign-up:email-password': {
       CLOSE: () => setCurrentStep('closed'),
       SWITCH_FLOW: () => {
         // TODO
       },
       GO_BACK: () => {
         if (anySSOProviderEnabled) {
-          setCurrentStep('auth-providers-sign-up');
+          setCurrentStep('sign-up:auth-providers');
         }
       },
       SUBMIT: () => {
@@ -44,7 +44,7 @@ export const oldSignUpFlow = (
       },
     },
 
-    'email-confirmation-old-sign-up-flow': {
+    'sign-up:email-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: () => {
         // TODO

@@ -37,23 +37,23 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   closed: null,
 
   // old sign in flow
-  'auth-providers-sign-in': messages.logIn,
-  'email-password-sign-in': messages.logIn,
+  'sign-in:auth-providers': messages.logIn,
+  'sign-in:email-password': messages.logIn,
 
   // old sign up flow
-  'auth-providers-sign-up': null, // TODO
-  'email-password-sign-up': null, // TODO
-  'email-confirmation-old-sign-up-flow': messages.confirmYourEmail, // TODO
+  'sign-up:auth-providers': null, // TODO
+  'sign-up:email-password': null, // TODO
+  'sign-up:email-confirmation': messages.confirmYourEmail, // TODO
 
   // light flow
-  'light-flow-start': messages.beforeYouParticipate,
-  'email-policies': messages.beforeYouParticipate,
-  'google-policies': messages.beforeYouParticipate,
-  'facebook-policies': messages.beforeYouParticipate,
-  'azure-ad-policies': messages.beforeYouParticipate,
-  'france-connect-login': messages.beforeYouParticipate,
-  'email-confirmation-light-flow': messages.confirmYourEmail,
-  'enter-password': messages.logIn,
+  'light-flow:email': messages.beforeYouParticipate,
+  'light-flow:email-policies': messages.beforeYouParticipate,
+  'light-flow:google-policies': messages.beforeYouParticipate,
+  'light-flow:facebook-policies': messages.beforeYouParticipate,
+  'light-flow:azure-ad-policies': messages.beforeYouParticipate,
+  'light-flow:france-connect-login': messages.beforeYouParticipate,
+  'light-flow:email-confirmation': messages.confirmYourEmail,
+  'light-flow:password': messages.logIn,
 
   // success (shared)
   success: null,
@@ -128,7 +128,7 @@ const AuthModal = () => {
         )}
 
         {/* old sign in flow */}
-        {currentStep === 'auth-providers-sign-in' && (
+        {currentStep === 'sign-in:auth-providers' && (
           <AuthProviders
             flow="signin"
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
@@ -139,7 +139,7 @@ const AuthModal = () => {
           />
         )}
 
-        {currentStep === 'email-password-sign-in' && (
+        {currentStep === 'sign-in:email-password' && (
           <EmailAndPassword
             status={status}
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
@@ -149,14 +149,14 @@ const AuthModal = () => {
         )}
 
         {/* light flow */}
-        {currentStep === 'light-flow-start' && (
+        {currentStep === 'light-flow:email' && (
           <LightFlowStart
             onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
             onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
           />
         )}
 
-        {currentStep === 'email-policies' && (
+        {currentStep === 'light-flow:email-policies' && (
           <EmailPolicies
             state={state}
             status={status}
@@ -164,32 +164,32 @@ const AuthModal = () => {
           />
         )}
 
-        {currentStep === 'google-policies' && (
+        {currentStep === 'light-flow:google-policies' && (
           <GooglePolicies
             status={status}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
 
-        {currentStep === 'facebook-policies' && (
+        {currentStep === 'light-flow:facebook-policies' && (
           <FacebookPolicies
             status={status}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
 
-        {currentStep === 'azure-ad-policies' && (
+        {currentStep === 'light-flow:azure-ad-policies' && (
           <AzureAdPolicies
             status={status}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
 
-        {currentStep === 'france-connect-login' && (
+        {currentStep === 'light-flow:france-connect-login' && (
           <FranceConnectLogin onLogin={transition(currentStep, 'LOGIN')} />
         )}
 
-        {currentStep === 'email-confirmation-light-flow' && (
+        {currentStep === 'light-flow:email-confirmation' && (
           <EmailConfirmation
             state={state}
             status={status}
@@ -199,7 +199,7 @@ const AuthModal = () => {
           />
         )}
 
-        {currentStep === 'enter-password' && (
+        {currentStep === 'light-flow:password' && (
           <Password
             state={state}
             status={status}
