@@ -2,10 +2,10 @@ import React from 'react';
 import VerificationSteps from './VerificationSteps';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
-import { ISignUpInMetaData } from 'events/openSignUpInModal';
+import { AuthenticationData } from 'containers/NewAuthModal/typings';
 
 interface Props {
-  metaData: ISignUpInMetaData;
+  metaData: AuthenticationData;
   onCompleted: () => void;
   onSkipped: () => void;
   onError: () => void;

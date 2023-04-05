@@ -27,14 +27,14 @@ import tracks from '../tracks';
 import styled from 'styled-components';
 
 // typings
-import { ISignUpInMetaData } from 'events/openSignUpInModal';
+import { AuthenticationData } from 'containers/NewAuthModal/typings';
 
 const Container = styled.div``;
 
 export type TSignInSteps = 'auth-providers' | 'password-signin';
 
 export interface Props {
-  metaData: ISignUpInMetaData;
+  metaData: AuthenticationData;
   onSignInCompleted: (userId: string) => void;
   onGoToSignUp: () => void;
   className?: string;

@@ -37,6 +37,7 @@ import {
 
 // events
 import { signUpActiveStepChange } from '../events';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -52,7 +53,7 @@ import tracks from '../tracks';
 import styled, { useTheme } from 'styled-components';
 
 // typings
-import { ISignUpInMetaData, openSignUpInModal } from 'events/openSignUpInModal';
+import { AuthenticationData } from 'containers/NewAuthModal/typings';
 import { Multiloc } from 'typings';
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import { UserCustomFieldsInfos } from 'services/userCustomFields';
@@ -93,12 +94,12 @@ export type TSignUpStepConfigurationObject = {
   ) => Multiloc | null | undefined;
   isEnabled: (
     authUser: TAuthUser,
-    metaData: ISignUpInMetaData,
+    metaData: any,
     localState: ILocalState
   ) => boolean;
   isActive: (
     authUser: TAuthUser,
-    metaData: ISignUpInMetaData,
+    metaData: any,
     localState: ILocalState
   ) => boolean;
   canTriggerRegistration: boolean;
@@ -109,7 +110,7 @@ export type TSignUpConfiguration = {
 };
 
 export interface Props {
-  metaData: ISignUpInMetaData;
+  metaData: AuthenticationData;
   onSignUpCompleted: () => void;
   onGoToSignIn: () => void;
   className?: string;
@@ -274,10 +275,8 @@ const SignUp = ({
     : '';
 
   const handleSkipVerification = () => {
-    openSignUpInModal({
+    triggerAuthenticationFlow({
       ...metaData,
-      verification: false,
-      context: undefined,
     });
     onCompleteActiveStep();
   };

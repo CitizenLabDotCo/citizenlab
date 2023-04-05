@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 // events
-import {
-  openSignUpInModal,
-  ISignUpInMetaData,
-  openOldSignUpInModal$,
-} from 'events/openSignUpInModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 import openSignUpInModalIfNecessary from '../utils/openSignUpInModalIfNecessary';
 
 // hooks
@@ -31,7 +27,7 @@ interface Props {
 }
 
 const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
-  const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>();
+  const [metaData] = useState<any | undefined>();
   const [initiated, setInitiated] = useState(false);
   const [signUpInModalClosed, setSignUpInModalClosed] = useState(false);
 
@@ -40,16 +36,6 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
   });
 
   const { pathname, search } = useLocation();
-
-  useEffect(() => {
-    const subscription = openOldSignUpInModal$.subscribe(
-      ({ eventValue: newMetaData }) => {
-        setMetaData(newMetaData);
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   // In case of a SSO response or invite
   useEffect(() => {
@@ -79,7 +65,7 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
     const isAuthRoute = isSignInRoute || isSignUpRoute;
     if (isAuthRoute && isNilOrError(authUser)) {
       timeout = setTimeout(() => {
-        openSignUpInModal({
+        triggerAuthenticationFlow({
           flow: isSignInRoute ? 'signin' : 'signup',
         });
       }, 0);

@@ -17,29 +17,14 @@ import { trackEventByName } from 'utils/analytics';
 
 // events
 import { signUpActiveStepChange$ } from './events';
-import {
-  openOldSignUpInModal,
-  closeOldSignUpInModal,
-  ISignUpInMetaData,
-  TSignUpInFlow,
-} from 'events/openSignUpInModal';
 import { triggerSuccessAction } from 'containers/NewAuthModal/SuccessActions';
 
 interface Props {
-  metaData?: ISignUpInMetaData;
+  metaData?: any;
   className?: string;
   onClosed: () => void;
   onOpened?: (opened: boolean) => void;
   fullScreenModal?: boolean;
-}
-
-function getNewFlow(flow: TSignUpInFlow) {
-  switch (flow) {
-    case 'signup':
-      return 'signin';
-    case 'signin':
-      return 'signup';
-  }
 }
 
 const SignUpInModal = memo<Props>(
@@ -93,12 +78,9 @@ const SignUpInModal = memo<Props>(
       }
 
       onClosed();
-
-      closeOldSignUpInModal();
     };
 
     const onSignUpInCompleted = () => {
-      closeOldSignUpInModal();
       onClosed();
 
       const requiresVerification = !!metaData?.verification;
@@ -115,12 +97,6 @@ const SignUpInModal = memo<Props>(
 
     const onToggleSelectedMethod = useCallback(() => {
       if (!metaData) return;
-
-      const flow = getNewFlow(metaData.flow);
-      openOldSignUpInModal({
-        ...metaData,
-        flow,
-      });
     }, [metaData]);
 
     return (

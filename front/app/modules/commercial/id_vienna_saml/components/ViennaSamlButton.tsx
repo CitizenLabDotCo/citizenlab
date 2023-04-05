@@ -10,7 +10,7 @@ import { StyledAuthProviderButton } from 'containers/NewAuthModal/steps/AuthProv
 import ViennaIcon from './ViennaIcon';
 
 // typings
-import { TSignUpInFlow } from 'events/openSignUpInModal';
+import { SignUpInFlow } from 'containers/NewAuthModal/typings';
 
 // styling
 import styled from 'styled-components';
@@ -33,7 +33,7 @@ const SignUpSubHeader = styled(Text)`
 `;
 
 interface Props {
-  flow: TSignUpInFlow;
+  flow: SignUpInFlow;
   onContinue: TOnContinueFunction;
 }
 

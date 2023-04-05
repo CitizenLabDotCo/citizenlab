@@ -36,7 +36,7 @@ import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { TNotificationData } from 'services/notifications';
 import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
-import { TSignUpInFlow } from 'events/openSignUpInModal';
+import { SignUpInFlow } from 'containers/NewAuthModal/typings';
 import {
   CellConfiguration,
   InsertConfigurationOptions,
@@ -256,7 +256,7 @@ export interface OutletsPropertyMap {
   };
   'app.containers.HomePage.EventsWidget': Record<string, any>;
   'app.components.SignUpIn.AuthProviders.ContainerStart': {
-    flow: TSignUpInFlow;
+    flow: SignUpInFlow;
     onContinue: (authProvider: AuthProvider) => void;
   };
   'app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy': Record<

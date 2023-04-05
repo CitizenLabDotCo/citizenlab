@@ -1,11 +1,22 @@
 import eventEmitter from 'utils/eventEmitter';
 import { AuthenticationData } from './typings';
+import { GLOBAL_CONTEXT } from 'api/authentication_requirements/types';
 
 const EVENT_NAME = 'triggerAuthenticationFlow';
 
 export function triggerAuthenticationFlow(
-  authenticationData: AuthenticationData
+  partialAuthenticationData?: Partial<AuthenticationData>
 ) {
+  const authenticationData: AuthenticationData = {
+    flow: partialAuthenticationData?.flow ?? 'signup',
+    pathname: partialAuthenticationData?.pathname ?? window.location.pathname,
+    context: partialAuthenticationData?.context ?? GLOBAL_CONTEXT,
+    successAction: partialAuthenticationData?.successAction,
+    error: partialAuthenticationData?.error,
+    isInvitation: !!partialAuthenticationData?.isInvitation,
+    token: partialAuthenticationData?.token,
+  };
+
   eventEmitter.emit(EVENT_NAME, authenticationData);
 }
 

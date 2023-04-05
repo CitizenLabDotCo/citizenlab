@@ -9,11 +9,11 @@ import { SuccessAction } from './SuccessActions/actions';
 export type Status = 'pending' | 'error' | 'ok';
 
 export type ErrorCode =
-  | 'account_creation_failed' // use existing 'something went wrong'
-  | 'wrong_confirmation_code' // use existing
-  | 'wrong_password' // use existing
-  | 'requirements_fetching_failed' // use existing 'something went wrong'
-  | 'unknown'; // use existing 'something went wrong'
+  | 'account_creation_failed'
+  | 'wrong_confirmation_code'
+  | 'wrong_password'
+  | 'requirements_fetching_failed'
+  | 'unknown';
 
 export interface State {
   email: string | null;
@@ -26,11 +26,20 @@ export type GetRequirements = () => Promise<AuthenticationRequirements>;
 export type StepConfig = ReturnType<typeof getStepConfig>;
 export type Step = keyof StepConfig;
 
+export type SignUpInFlow = 'signup' | 'signin';
+export type SignUpInError = 'general' | 'franceconnect_merging_failed';
+
 export interface AuthenticationData {
-  flow: 'signup' | 'signin';
+  flow: SignUpInFlow;
   pathname: string;
   context: AuthenticationContext;
   successAction?: SuccessAction;
+
+  // TODO clean this up
+  error?: { code: SignUpInError };
+  isInvitation?: boolean;
+  token?: string;
+  verification?: boolean;
 }
 
 export type SSOProviderWithoutVienna = Exclude<SSOProvider, 'id_vienna_saml'>;

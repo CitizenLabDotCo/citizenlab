@@ -19,7 +19,7 @@ import { darken } from 'polished';
 import { colors } from 'utils/styleUtils';
 
 // typings
-import { TSignUpInFlow } from 'events/openSignUpInModal';
+import { SignUpInFlow } from 'containers/NewAuthModal/typings';
 import { AuthProvider } from '.';
 
 const tracks = {
@@ -107,12 +107,12 @@ export type TOnContinueFunction = (authProvider: AuthProvider) => void;
 export interface Props {
   id?: string;
   icon?: IconNames;
-  flow: TSignUpInFlow;
+  flow: SignUpInFlow;
   authProvider: AuthProvider;
   className?: string;
   onContinue: TOnContinueFunction;
   children: React.ReactNode;
-  showConsentOnFlow?: TSignUpInFlow;
+  showConsentOnFlow?: SignUpInFlow;
 }
 
 const AuthProviderButton = memo<Props>(

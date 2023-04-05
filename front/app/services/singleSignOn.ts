@@ -1,5 +1,8 @@
 import { AUTH_PATH } from 'containers/App/constants';
-import { ISignUpInMetaData, TSignUpInError } from 'events/openSignUpInModal';
+import {
+  AuthenticationData,
+  SignUpInError,
+} from 'containers/NewAuthModal/typings';
 import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
 import { isProjectContext } from 'events/verificationModal';
@@ -22,7 +25,7 @@ export interface SSOParams {
   sso_verification_action?: string;
   sso_verification_id?: string;
   sso_verification_type?: string;
-  error_code?: TSignUpInError;
+  error_code?: SignUpInError;
 }
 
 const setHrefVienna = () => {
@@ -31,12 +34,12 @@ const setHrefVienna = () => {
 
 export const handleOnSSOClick = (
   provider: SSOProvider,
-  metaData: ISignUpInMetaData
+  metaData: AuthenticationData
 ) => {
   provider === 'id_vienna_saml' ? setHrefVienna() : setHref(provider, metaData);
 };
 
-function setHref(provider: SSOProvider, metaData: ISignUpInMetaData) {
+function setHref(provider: SSOProvider, metaData: AuthenticationData) {
   const { pathname, verification, context } = metaData;
 
   const ssoParams: SSOParams = {

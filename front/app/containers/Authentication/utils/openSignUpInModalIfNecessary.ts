@@ -1,8 +1,15 @@
+// routing
+import clHistory from 'utils/cl-router/history';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+
+// utils
 import { isNilOrError, endsWith } from 'utils/helperUtils';
 import { parse } from 'qs';
-import { openSignUpInModal } from 'events/openSignUpInModal';
+
+// typings
 import { SSOParams } from 'services/singleSignOn';
-import clHistory from 'utils/cl-router/history';
 import { TAuthUser } from 'hooks/useAuthUser';
 import { AuthenticationContext } from 'api/authentication_requirements/types';
 
@@ -82,7 +89,7 @@ export default function openSignUpInModalIfNecessary(
           isInvitation ||
           shouldFinishRegistrationAfterSSO)
       ) {
-        openSignUpInModal({
+        triggerAuthenticationFlow({
           isInvitation,
           token,
           flow: isAuthError && sso_flow ? sso_flow : 'signup',

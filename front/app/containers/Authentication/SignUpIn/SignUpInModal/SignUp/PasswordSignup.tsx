@@ -49,7 +49,7 @@ import { viewportWidths } from 'utils/styleUtils';
 
 // typings
 import { CLErrorsJSON } from 'typings';
-import { ISignUpInMetaData } from 'events/openSignUpInModal';
+import { AuthenticationData } from 'containers/NewAuthModal/typings';
 import { IUser } from 'services/users';
 
 const Container = styled.div``;
@@ -85,7 +85,7 @@ const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
 `;
 
 type InputProps = {
-  metaData: ISignUpInMetaData;
+  metaData: AuthenticationData;
   loading: boolean;
   hasNextStep?: boolean;
   onCompleted: () => void;
