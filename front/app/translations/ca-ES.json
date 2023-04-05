@@ -548,6 +548,7 @@
   "app.components.form.locationGoogleUnavailable": "No s'ha pogut carregar el camp d'ubicació proporcionat per Google Maps.",
   "app.components.form.submit": "Presentar",
   "app.components.form.submitApiError": "Hi ha hagut un problema en enviar el formulari. Comproveu si hi ha errors i torneu-ho a provar.",
+  "app.components.form.test": "Prova. No tradueixis això.",
   "app.components.formBuilder.Page": "Pàgina",
   "app.components.formBuilder.addAnswer": "Afegir resposta",
   "app.components.formBuilder.cancelDeleteButtonText": "Cancelar",
