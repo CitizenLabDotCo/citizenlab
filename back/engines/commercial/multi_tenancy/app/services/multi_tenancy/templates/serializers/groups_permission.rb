@@ -3,7 +3,7 @@
 module MultiTenancy
   module Templates
     module Serializers
-      class GroupPermission < Base
+      class GroupsPermission < Base
         ref_attributes %i[group permission]
       end
     end
