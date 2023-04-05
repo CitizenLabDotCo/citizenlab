@@ -1,5 +1,5 @@
 // Libraries
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { isAdmin, isCollaborator } from 'services/permissions/roles';
 import moment from 'moment';
 
@@ -12,8 +12,7 @@ import { Tr, Td, Box } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import ChangeSeatModal from './ChangeSeatModal';
-
+const ChangeSeatModal = lazy(() => import('./ChangeSeatModal'));
 // Translation
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -221,13 +220,15 @@ const UserTableRow = ({
         <MoreActionsMenu showLabel={false} actions={actions} />
       </Td>
 
-      <ChangeSeatModal
-        userToChangeSeat={user}
-        changeRoles={changeRoles}
-        showModal={showModal}
-        closeModal={closeModal}
-        isChangingToNormalUser={isChangingToNormalUser}
-      />
+      <Suspense fallback={null}>
+        <ChangeSeatModal
+          userToChangeSeat={user}
+          changeRoles={changeRoles}
+          showModal={showModal}
+          closeModal={closeModal}
+          isChangingToNormalUser={isChangingToNormalUser}
+        />
+      </Suspense>
     </Tr>
   );
 };
