@@ -26,7 +26,7 @@ import { Multiloc, MultilocFormValues } from 'typings';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitativeOfficialFeedback';
+import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
 
 const Container = styled.div`
   background: ${colors.background};

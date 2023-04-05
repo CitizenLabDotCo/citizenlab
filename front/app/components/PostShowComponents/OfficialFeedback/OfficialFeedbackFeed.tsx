@@ -13,7 +13,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedDate } from 'react-intl';
 import useIdeaOfficialFeedback from 'api/idea_official_feedback/useIdeaOfficialFeedback';
-import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitativeOfficialFeedback';
+import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
 
 const Container = styled.div`
   &.hasTopMargin {
