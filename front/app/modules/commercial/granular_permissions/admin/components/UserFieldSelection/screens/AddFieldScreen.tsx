@@ -126,7 +126,7 @@ export const AddFieldScreen = ({
                   label={
                     <>
                       <Text my="0px" color="primary" fontWeight="bold">
-                        Question title
+                        {formatMessage(messages.questionTitle)}
                       </Text>
                     </>
                   }
@@ -139,7 +139,7 @@ export const AddFieldScreen = ({
                   label={
                     <>
                       <Text my="0px" color="primary" fontWeight="bold">
-                        Question description
+                        {formatMessage(messages.questionDescription)}
                       </Text>
                     </>
                   }

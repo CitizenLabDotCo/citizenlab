@@ -20,7 +20,11 @@ describe('useDeletePermissionsCustomField', () => {
 
   it('mutates data correctly', async () => {
     const { result, waitFor } = renderHook(
-      () => useDeletePermissionsCustomField(),
+      () =>
+        useDeletePermissionsCustomField({
+          action: 'taking_poll',
+          projectId: '1',
+        }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -41,7 +45,11 @@ describe('useDeletePermissionsCustomField', () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useDeletePermissionsCustomField(),
+      () =>
+        useDeletePermissionsCustomField({
+          action: 'taking_poll',
+          projectId: '1',
+        }),
       {
         wrapper: createQueryClientWrapper(),
       }

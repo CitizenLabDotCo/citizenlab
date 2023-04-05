@@ -58,9 +58,19 @@ const UserFieldSelection = ({
     action: permission.attributes.action,
   });
   const { mutate: updatePermissionCustomField } =
-    useUpdatePermissionsCustomField();
+    useUpdatePermissionsCustomField({
+      projectId,
+      phaseId,
+      initiativeContext,
+      action: permission.attributes.action,
+    });
   const { mutate: deletePermissionsCustomField } =
-    useDeletePermissionsCustomField();
+    useDeletePermissionsCustomField({
+      projectId,
+      phaseId,
+      initiativeContext,
+      action: permission.attributes.action,
+    });
   const locale = useLocale();
   const [showSelectionModal, setShowSelectionModal] = useState(false);
   const initialFieldArray = initialFields?.data?.data;

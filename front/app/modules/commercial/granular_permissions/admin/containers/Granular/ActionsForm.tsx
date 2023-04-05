@@ -38,6 +38,7 @@ const ActionPermissionWrapper = styled.div`
   }
 `;
 
+// Styled title was used to add a horizontal line after the text which extends to the right
 const StyledTitle = styled(Title)`
   display: flex;
   align-items: center;

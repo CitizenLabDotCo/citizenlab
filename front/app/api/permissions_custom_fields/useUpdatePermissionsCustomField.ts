@@ -7,7 +7,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import permissionsCustomFieldsKeys from './keys';
-import { IPermissionsCustomField, IPermissionCustomFieldUpdate } from './types';
+import {
+  IPermissionsCustomField,
+  IPermissionCustomFieldUpdate,
+  IListParameters,
+} from './types';
 
 const updatePermissionsCustomField = ({
   id,
@@ -19,7 +23,12 @@ const updatePermissionsCustomField = ({
     body: { required },
   });
 
-const useUpdatePermissionsCustomField = () => {
+const useUpdatePermissionsCustomField = ({
+  phaseId,
+  projectId,
+  initiativeContext,
+  action,
+}: IListParameters) => {
   const queryClient = useQueryClient();
   return useMutation<
     IPermissionsCustomField,
@@ -29,7 +38,12 @@ const useUpdatePermissionsCustomField = () => {
     mutationFn: updatePermissionsCustomField,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: permissionsCustomFieldsKeys.all(),
+        queryKey: permissionsCustomFieldsKeys.lists({
+          phaseId,
+          projectId,
+          initiativeContext,
+          action,
+        }),
       });
     },
   });

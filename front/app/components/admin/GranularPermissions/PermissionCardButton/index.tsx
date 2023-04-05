@@ -27,7 +27,7 @@ export const PermissionCardButton = ({
 }: PermissionCardButtonProps) => {
   const [isHover, setIsHover] = useState(false);
 
-  // Temporary colour until new tealLight variations added to component library
+  // TODO: Temporary colour until new tealLight variations added to component library
   const backgroundColor = lighten(0.1, colors.tealLight);
 
   return (

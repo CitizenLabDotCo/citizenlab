@@ -44,7 +44,11 @@ describe('useUpdatePermissionsCustomField', () => {
 
   it('mutates data correctly', async () => {
     const { result, waitFor } = renderHook(
-      () => useUpdatePermissionsCustomField(),
+      () =>
+        useUpdatePermissionsCustomField({
+          action: 'taking_poll',
+          projectId: '1',
+        }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -66,7 +70,11 @@ describe('useUpdatePermissionsCustomField', () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useUpdatePermissionsCustomField(),
+      () =>
+        useUpdatePermissionsCustomField({
+          action: 'taking_poll',
+          projectId: '1',
+        }),
       {
         wrapper: createQueryClientWrapper(),
       }

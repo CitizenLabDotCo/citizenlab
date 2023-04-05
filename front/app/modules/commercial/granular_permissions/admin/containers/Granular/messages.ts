@@ -277,6 +277,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.answerFormat',
     defaultMessage: 'Answer format',
   },
+  questionTitle: {
+    id: 'app.containers.AdminPage.groups.permissions.questionTitle',
+    defaultMessage: 'Question title',
+  },
+  questionDescription: {
+    id: 'app.containers.AdminPage.groups.permissions.questionDescription',
+    defaultMessage: 'Question description',
+  },
   fieldType_text: {
     id: 'app.containers.AdminPage.groups.permissions.fieldType_text',
     defaultMessage: 'Short answer',
