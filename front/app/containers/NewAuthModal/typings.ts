@@ -34,3 +34,4 @@ export interface AuthenticationData {
 }
 
 export type SSOProviderWithoutVienna = Exclude<SSOProvider, 'id_vienna_saml'>;
+export type AuthProvider = 'email' | SSOProvider;

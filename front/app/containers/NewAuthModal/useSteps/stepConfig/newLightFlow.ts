@@ -3,18 +3,10 @@ import createEmailOnlyAccount from 'api/authentication/createEmailOnlyAccount';
 import signIn from 'api/authentication/signIn';
 import signOut from 'api/authentication/signOut';
 import confirmEmail from 'api/authentication/confirmEmail';
-import { handleOnSSOClick, SSOProvider } from 'services/singleSignOn';
-
-// cache
-import streams from 'utils/streams';
-import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { handleOnSSOClick } from 'services/singleSignOn';
 
 // events
 import { triggerSuccessAction } from 'containers/NewAuthModal/SuccessActions';
-
-// tracks
-import tracks from '../tracks';
-import { trackEventByName } from 'utils/analytics';
 
 // typings
 import {
@@ -24,186 +16,19 @@ import {
   UpdateState,
   SSOProviderWithoutVienna,
   AuthenticationData,
-} from '../typings';
+} from '../../typings';
+import { Step } from './typings';
 import { Locale } from 'typings';
 
-type Step =
-  // closed (shared)
-  | 'closed'
-
-  // old sign in flow
-  | 'auth-providers-sign-in'
-  | 'email-password-sign-in'
-
-  // old sign up flow
-  | 'auth-providers-sign-up'
-  | 'email-password-sign-up'
-  | 'email-confirmation-old-sign-up-flow'
-
-  // light flow
-  | 'light-flow-start'
-  | 'email-policies'
-  | 'google-policies'
-  | 'facebook-policies'
-  | 'azure-ad-policies'
-  | 'france-connect-login'
-  | 'email-confirmation-light-flow'
-  | 'enter-password'
-
-  // success (shared)
-  | 'success';
-
-type AuthProvider = 'email' | SSOProvider;
-
-export const getStepConfig = (
+export const newLightFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
   setError: (errorCode: ErrorCode) => void,
-  updateState: UpdateState,
-  anySSOProviderEnabled: boolean
+  updateState: UpdateState
 ) => {
   return {
-    // closed (shared)
-    closed: {
-      // When we fire this, we are already sure that we need the new flow.
-      // i.e. we have already checked the requirements endpoint and stuff
-      TRIGGER_REGISTRATION_FLOW: async () => {
-        updateState({ email: null });
-
-        const { permitted, requirements } = await getRequirements();
-
-        if (permitted) {
-          setCurrentStep('success');
-          return;
-        }
-
-        const isLightFlow = requirements.special.password === 'dont_ask';
-
-        if (isLightFlow) {
-          if (requirements.built_in.email === 'satisfied') {
-            setCurrentStep('email-confirmation-light-flow');
-          } else {
-            setCurrentStep('light-flow-start');
-          }
-        }
-
-        const { flow } = getAuthenticationData();
-
-        if (flow === 'signin') {
-          if (anySSOProviderEnabled) {
-            setCurrentStep('auth-providers-sign-in');
-          } else {
-            setCurrentStep('email-password-sign-in');
-          }
-        }
-      },
-    },
-
-    // old sign in flow
-    'auth-providers-sign-in': {
-      CLOSE: () => setCurrentStep('closed'),
-      SWITCH_FLOW: () => {
-        // TODO
-      },
-      SELECT_AUTH_PROVIDER: (authProvider: AuthProvider) => {
-        if (authProvider === 'email') {
-          setCurrentStep('email-password-sign-in');
-          return;
-        }
-
-        setStatus('pending');
-        handleOnSSOClick(authProvider, getAuthenticationData());
-      },
-    },
-
-    'email-password-sign-in': {
-      CLOSE: () => setCurrentStep('closed'),
-      SWITCH_FLOW: () => {
-        // TODO
-      },
-      GO_BACK: () => {
-        if (anySSOProviderEnabled) {
-          setCurrentStep('auth-providers-sign-in');
-        }
-      },
-      SIGN_IN: async (
-        email: string,
-        password: string,
-        rememberMe: boolean,
-        tokenLifetime: number
-      ) => {
-        setStatus('pending');
-
-        try {
-          await signIn({
-            email,
-            password,
-            rememberMe,
-            tokenLifetime,
-          });
-
-          setCurrentStep('closed');
-
-          const { successAction } = getAuthenticationData();
-          if (successAction) {
-            triggerSuccessAction(successAction);
-          }
-
-          trackEventByName(tracks.signInEmailPasswordCompleted);
-
-          setStatus('ok');
-        } catch {
-          setStatus('error');
-          setError('wrong_password');
-          trackEventByName(tracks.signInEmailPasswordFailed);
-        }
-      },
-    },
-
-    // old sign up flow
-    'auth-providers-sign-up': {
-      CLOSE: () => setCurrentStep('closed'),
-      SWITCH_FLOW: () => {
-        // TODO
-      },
-      SELECT_AUTH_PROVIDER: (authProvider: AuthProvider) => {
-        if (authProvider === 'email') {
-          setCurrentStep('email-password-sign-up');
-          return;
-        }
-
-        setStatus('pending');
-        handleOnSSOClick(authProvider, getAuthenticationData());
-      },
-    },
-
-    'email-password-sign-up': {
-      CLOSE: () => setCurrentStep('closed'),
-      SWITCH_FLOW: () => {
-        // TODO
-      },
-      GO_BACK: () => {
-        if (anySSOProviderEnabled) {
-          setCurrentStep('auth-providers-sign-up');
-        }
-      },
-      SUBMIT: () => {
-        // TODO
-      },
-    },
-
-    'email-confirmation-old-flow': {
-      CLOSE: () => setCurrentStep('closed'),
-      CHANGE_EMAIL: () => {
-        // TODO
-      },
-      SUBMIT_CODE: (_code: string) => {
-        // TODO
-      },
-    },
-
     // light flow
     'light-flow-start': {
       CLOSE: () => setCurrentStep('closed'),
@@ -351,23 +176,6 @@ export const getStepConfig = (
         } catch {
           setStatus('error');
           setError('wrong_password');
-        }
-      },
-    },
-
-    // success (shared)
-    success: {
-      CONTINUE: async () => {
-        setStatus('pending');
-
-        await Promise.all([streams.reset(), resetQueryCache()]);
-
-        setStatus('ok');
-        setCurrentStep('closed');
-
-        const { successAction } = getAuthenticationData();
-        if (successAction) {
-          triggerSuccessAction(successAction);
         }
       },
     },
