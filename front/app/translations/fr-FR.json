@@ -548,6 +548,7 @@
   "app.components.form.locationGoogleUnavailable": "Impossible de charger le champ de localisation fourni par Google Maps.",
   "app.components.form.submit": "Envoyer",
   "app.components.form.submitApiError": "Un problème est survenu lors de la soumission du formulaire. Veuillez vérifier s'il y a des erreurs et réessayer.",
+  "app.components.form.test": "Test. Don't translate this.",
   "app.components.formBuilder.Page": "Page",
   "app.components.formBuilder.addAnswer": "Ajouter une réponse",
   "app.components.formBuilder.cancelDeleteButtonText": "Annuler",
