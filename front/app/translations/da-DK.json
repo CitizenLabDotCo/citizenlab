@@ -121,7 +121,7 @@
   "app.components.FileUploader.fileUploadLabel": "Vedhæftninger (max. 50MB)",
   "app.components.FileUploader.incorrect_extension": "{fileName} understøttes ikke af vores system, det vil ikke blive uploadet.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "Valgt statusfilter: alle",
-  "app.components.FilterBoxes.a11y_numberOfInitiatives": "{initiativeCount, plural, no {# borgerforslag} et {# borgerforslag} other {# borgerforslag}}",
+  "app.components.FilterBoxes.a11y_numberOfInitiatives": "{initiativeCount, plural, one {# borgerforslag} other {# borgerforslag}}",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, no {# inputs} one {# input} other {# inputs}}",
   "app.components.FilterBoxes.a11y_removeFilter": "Fjern filter",
   "app.components.FilterBoxes.a11y_selectedFilter": "Valgt statusfilter: {filter}",
