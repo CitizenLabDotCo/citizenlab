@@ -10,7 +10,14 @@ class PermissionPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.for_user(user)
+      return scope.none if !user&.active?
+
+      if user.admin?
+        scope.all
+      else
+        moderating_context_ids = ParticipationContextService.new.moderating_participation_context_ids user
+        scope.where(permission_scope_id: moderating_context_ids)
+      end
     end
   end
 
@@ -22,11 +29,11 @@ class PermissionPolicy < ApplicationPolicy
     user&.active? && UserRoleService.new.can_moderate?(record, user)
   end
 
-  def participation_conditions?
+  def requirements?
     true
   end
 
-  def requirements?
+  def schema?
     true
   end
 end

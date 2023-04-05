@@ -885,28 +885,11 @@ resource 'Users' do
 
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
-          let(:project) { create :continuous_project, with_permissions: true }
-
-          before do
-            old_timers = create(:smart_group, rules: [
-              {
-                ruleType: 'custom_field_number',
-                customFieldId: create(:custom_field_number, title_multiloc: { 'en' => 'Birthyear?' }, key: 'birthyear', code: 'birthyear').id,
-                predicate: 'is_smaller_than_or_equal',
-                value: 1988
-              }
-            ])
-
-            project.permissions.find_by(action: 'posting_idea')
-              .update!(permitted_by: 'groups', groups: [old_timers])
-          end
+          let(:project) { create :continuous_project }
 
           example_request 'Update a user' do
-            expect(response_status).to eq 200
-            expect(response_data.dig(:attributes, :first_name)).to eq(first_name)
-            expect(json_response_body[:included].find { |i| i[:type] == 'project' }&.dig(:attributes, :slug)).to eq project.slug
-            expect(json_response_body[:included].find { |i| i[:type] == 'permission' }&.dig(:attributes, :permitted_by)).to eq 'groups'
-            expect(response_data.dig(:relationships, :granted_permissions, :data).size).to eq(1)
+            assert_status 200
+            expect(response_data.dig(:attributes, :first_name)).to eq first_name
           end
         end
 
