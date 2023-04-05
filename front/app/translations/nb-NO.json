@@ -548,6 +548,7 @@
   "app.components.form.locationGoogleUnavailable": "Kunne ikke laste område for lokalisering basert på opplysninger fra google maps.",
   "app.components.form.submit": "Send inn",
   "app.components.form.submitApiError": "Det oppstod et problem med å sende inn skjemaet. Kontroller om det er feil, og prøv på nytt.",
+  "app.components.form.test": "Test. Ikke oversett dette.",
   "app.components.formBuilder.Page": "Side",
   "app.components.formBuilder.addAnswer": "Legg til svar",
   "app.components.formBuilder.cancelDeleteButtonText": "Avbryt",
