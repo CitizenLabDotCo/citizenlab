@@ -45,22 +45,47 @@ export const getStepConfig = (
         }
 
         const isLightFlow = requirements.special.password === 'dont_ask';
+        const signedIn = requirements.built_in.email === 'satisfied';
 
         if (isLightFlow) {
-          if (requirements.built_in.email === 'satisfied') {
-            setCurrentStep('light-flow:email-confirmation');
+          if (signedIn) {
+            // TODO
           } else {
-            setCurrentStep('light-flow:email');
+            if (requirements.built_in.email === 'satisfied') {
+              setCurrentStep('light-flow:email-confirmation');
+            } else {
+              setCurrentStep('light-flow:email');
+            }
           }
+
+          return;
         }
 
         const { flow } = getAuthenticationData();
 
         if (flow === 'signin') {
-          if (anySSOProviderEnabled) {
-            setCurrentStep('sign-in:auth-providers');
+          if (signedIn) {
+            // TODO
           } else {
-            setCurrentStep('sign-in:email-password');
+            if (anySSOProviderEnabled) {
+              setCurrentStep('sign-in:auth-providers');
+            } else {
+              setCurrentStep('sign-in:email-password');
+            }
+          }
+
+          return;
+        }
+
+        if (flow === 'signup') {
+          if (signedIn) {
+            // TODO
+          } else {
+            if (anySSOProviderEnabled) {
+              setCurrentStep('sign-up:auth-providers');
+            } else {
+              setCurrentStep('sign-up:email-password');
+            }
           }
         }
       },
