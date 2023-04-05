@@ -548,6 +548,7 @@
   "app.components.form.locationGoogleUnavailable": "Δεν ήταν δυνατή η φόρτωση του πεδίου τοποθεσίας που παρέχεται από τους χάρτες Google.",
   "app.components.form.submit": "Υποβολή",
   "app.components.form.submitApiError": "Υπήρξε πρόβλημα με την υποβολή της φόρμας. Ελέγξτε για τυχόν σφάλματα και προσπαθήστε ξανά.",
+  "app.components.form.test": "Δοκιμή. Μην το μεταφράζετε αυτό.",
   "app.components.formBuilder.Page": "Σελίδα",
   "app.components.formBuilder.addAnswer": "Προσθέστε απάντηση",
   "app.components.formBuilder.cancelDeleteButtonText": "Ακύρωση",
