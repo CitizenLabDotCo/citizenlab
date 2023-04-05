@@ -95,7 +95,7 @@ interface Props {
   locale: Locale;
   tenantLocales: Locale[];
   postId?: string;
-  postType?: 'idea' | 'initiative';
+  postType: 'idea' | 'initiative';
   formType: 'new' | 'edit';
   feedback?: IIdeaOfficialFeedbackData | IInitiativeOfficialFeedbackData;
   className?: string;

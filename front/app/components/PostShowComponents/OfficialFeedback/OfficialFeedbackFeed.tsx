@@ -170,7 +170,7 @@ const OfficialFeedbackFeed = ({
               key={officialFeedbackPost.id}
               editingAllowed={editingAllowed}
               officialFeedbackPost={officialFeedbackPost}
-              postType="initiative"
+              postType={postType}
               a11y_pronounceLatestOfficialFeedbackPost={
                 i === 0 && a11y_pronounceLatestOfficialFeedbackPost
               }

@@ -226,6 +226,7 @@ const OfficialFeedbackPost = ({
           formType="edit"
           feedback={officialFeedbackPost}
           onClose={closeEditForm}
+          postType={postType}
         />
       </EditFormContainer>
     );
