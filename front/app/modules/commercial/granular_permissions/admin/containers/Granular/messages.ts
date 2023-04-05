@@ -245,6 +245,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.userQuestionTitle',
     defaultMessage: 'Ask questions to participants',
   },
+  useExistingRegistrationQuestions: {
+    id: 'app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestions',
+    defaultMessage: 'Use existing registration questions',
+  },
   select: {
     id: 'app.containers.AdminPage.groups.permissions.select',
     defaultMessage: 'Select',
