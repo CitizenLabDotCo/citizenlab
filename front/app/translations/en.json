@@ -832,7 +832,7 @@
   "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_maxLength": "The issue description must be less than {limit} characters long",
   "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_minLength": "The issue description must be more than {limit} characters long",
   "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_maxLength": "The issue title must be less than {limit} characters long",
-  "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength1": "The issue title must be more than {limit} characters long",
+  "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength2": "The comment title must be more than {limit} characters long",
   "app.containers.IdeasNewPage.ajv_error_option_body_multiloc_maxLength": "The option description must be less than {limit} characters long",
   "app.containers.IdeasNewPage.ajv_error_option_body_multiloc_minLength": "The issue description must be more than {limit} characters long",
   "app.containers.IdeasNewPage.ajv_error_option_title_multiloc_maxLength": "The option title must be less than {limit} characters long",
