@@ -18,11 +18,6 @@ module MultiTenancy
 
         attribute(:published_at) { |idea| serialize_timestamp(idea.published_at) }
 
-        attribute(:text_images_attributes) do |idea, serialization_params|
-          serializer = MultiTenancy::Templates::Serializers::TextImage.new(serialization_params)
-          idea.text_images.map { |text_image| serializer.serialize(text_image) }
-        end
-
         attribute(:custom_field_values) do |idea, _serialization_params|
           custom_forms = ::CustomForm.where(participation_context_id: [idea.project_id, idea.creation_phase_id].compact)
           custom_fields = ::CustomField.where(resource: custom_forms)

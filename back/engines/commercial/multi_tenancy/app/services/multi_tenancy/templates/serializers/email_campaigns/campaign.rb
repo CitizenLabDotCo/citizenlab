@@ -14,13 +14,6 @@ module MultiTenancy
             subject_multiloc
             body_multiloc
           ]
-
-          attribute(:text_images_attributes) do |campaign, serialization_params|
-            serializer = MultiTenancy::Templates::Serializers::TextImage.new(serialization_params)
-            campaign.text_images.map do |text_image|
-              serializer.serialize(text_image)
-            end
-          end
         end
       end
     end

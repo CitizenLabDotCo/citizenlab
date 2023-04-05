@@ -32,11 +32,6 @@ module MultiTenancy
           :required,
           if: proc { |record| record.resource_type != User.name }
         )
-
-        attribute(:text_images_attributes) do |record, serialization_params|
-          serializer = MultiTenancy::Templates::Serializers::TextImage.new(serialization_params)
-          record.text_images.map { |text_image| serializer.serialize(text_image) }
-        end
       end
     end
   end

@@ -15,11 +15,6 @@ module MultiTenancy
         ]
 
         attribute(:published_at) { |initiative| serialize_timestamp(initiative.published_at) }
-
-        attribute(:text_images_attributes) do |initiative, serialization_params|
-          serializer = MultiTenancy::Templates::Serializers::TextImage.new(serialization_params)
-          initiative.text_images.map { |text_image| serializer.serialize(text_image) }
-        end
       end
     end
   end
