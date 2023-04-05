@@ -149,6 +149,7 @@ const SeatInfo = ({ seatType }: SeatInfoProps) => {
                     content={
                       <FormattedMessage {...messages.additionalSeatsToolTip} />
                     }
+                    placement="auto"
                   />
                 )}
               </Box>
