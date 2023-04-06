@@ -14,8 +14,12 @@ interface DataProps {
   users: GetUsersChildProps;
 }
 
+export interface UserOptionTypeBase extends OptionTypeBase, IUserData {
+  value?: string;
+}
+
 interface InputProps {
-  onChange: (id?: string) => void;
+  onChange: (user?: UserOptionTypeBase) => void;
   selectedUserId: string | null;
   placeholder: string;
   className?: string;
@@ -55,11 +59,11 @@ const UserSelect = ({
     ? usersList.find((user) => user.id === selectedUserId)
     : null;
 
-  const handleChange = (option: OptionTypeBase, { action }) => {
+  const handleChange = (option: UserOptionTypeBase, { action }) => {
     if (action === 'clear') {
       handleClear();
     } else if (action === 'select-option' && option.value !== 'loadMore') {
-      onChange(option.id);
+      onChange(option);
     } else if (action === 'select-option' && option.value === 'loadMore') {
       handleLoadMore();
     }
@@ -77,7 +81,7 @@ const UserSelect = ({
     users.onLoadMore();
   };
 
-  const getOptionLabel = (option: OptionTypeBase) => {
+  const getOptionLabel = (option: UserOptionTypeBase) => {
     if (option.value === 'loadMore' && canLoadMore) {
       return (
         <Button
@@ -105,7 +109,7 @@ const UserSelect = ({
     onChange();
   };
 
-  const getOptionId = (option: OptionTypeBase) => option.id;
+  const getOptionId = (option: UserOptionTypeBase) => option.id;
 
   return (
     <Box id="e2e-user-select">
@@ -131,6 +135,7 @@ const UserSelect = ({
         styles={selectStyles}
         onMenuScrollToBottom={handleMenuScrollToBottom}
         onMenuOpen={handleClear}
+        filterOption={() => true}
       />
     </Box>
   );

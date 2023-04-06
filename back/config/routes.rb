@@ -212,7 +212,6 @@ Rails.application.routes.draw do
         get 'users_by_time_cumulative', **route_params
         get 'active_users_by_time', **route_params
         get 'active_users_by_time_cumulative', **route_params
-        get 'users_engagement_scores', **route_params
 
         get 'users_by_time_as_xlsx', **route_params
         get 'users_by_time_cumulative_as_xlsx', **route_params
@@ -221,55 +220,30 @@ Rails.application.routes.draw do
         route_params = { controller: 'stats_ideas' }
         get 'ideas_count', **route_params
 
-        get 'ideas_by_time', **route_params
-        get 'ideas_by_time_cumulative', **route_params
         get 'ideas_by_topic', **route_params
         get 'ideas_by_project', **route_params
         get 'ideas_by_status', **route_params
         get 'ideas_by_status_as_xlsx', **route_params
 
-        get 'ideas_by_time_as_xlsx', **route_params
-        get 'ideas_by_time_cumulative_as_xlsx', **route_params
         get 'ideas_by_topic_as_xlsx', **route_params
         get 'ideas_by_project_as_xlsx', **route_params
 
         route_params = { controller: 'stats_initiatives' }
         get 'initiatives_count', **route_params
-        get 'initiatives_by_time', **route_params
-        get 'initiatives_by_time_cumulative', **route_params
-        get 'initiatives_by_topic', **route_params
-        get 'initiatives_by_area', **route_params
 
         route_params = { controller: 'stats_comments' }
         get 'comments_count', **route_params
-        get 'comments_by_time', **route_params
-        get 'comments_by_time_cumulative', **route_params
         get 'comments_by_topic', **route_params
         get 'comments_by_project', **route_params
 
-        get 'comments_by_time_as_xlsx', **route_params
-        get 'comments_by_time_cumulative_as_xlsx', **route_params
         get 'comments_by_topic_as_xlsx', **route_params
         get 'comments_by_project_as_xlsx', **route_params
 
         route_params = { controller: 'stats_votes' }
         get 'votes_count', **route_params
-        get 'votes_by_birthyear', **route_params
-        get 'votes_by_education', **route_params
-        get 'votes_by_domicile', **route_params
-        get 'votes_by_gender', **route_params
-        get 'votes_by_custom_field', **route_params
-        get 'votes_by_time', **route_params
-        get 'votes_by_time_cumulative', **route_params
         get 'votes_by_topic', **route_params
         get 'votes_by_project', **route_params
 
-        get 'votes_by_birthyear_as_xlsx', **route_params
-        get 'votes_by_education_as_xlsx', **route_params
-        get 'votes_by_domicile_as_xlsx', **route_params
-        get 'votes_by_gender_as_xlsx', **route_params
-        get 'votes_by_custom_field_as_xlsx', **route_params
-        get 'votes_by_time_as_xlsx', **route_params
         get 'votes_by_topic_as_xlsx', **route_params
         get 'votes_by_project_as_xlsx', **route_params
       end

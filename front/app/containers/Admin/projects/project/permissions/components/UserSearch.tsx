@@ -1,11 +1,14 @@
 // Libraries
-import React, { memo, useState } from 'react';
+import React, { Suspense, memo, useState, lazy } from 'react';
 
 // Services
 import { addProjectModerator } from 'services/projectModerators';
+import { isCollaborator } from 'services/permissions/roles';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useSeats from 'api/seats/useSeats';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -13,11 +16,17 @@ import messages from './messages';
 
 // Components
 import Button from 'components/UI/Button';
-import AddCollaboratorsModal from 'components/admin/AddCollaboratorsModal';
+const AddCollaboratorsModal = lazy(
+  () => import('components/admin/AddCollaboratorsModal')
+);
 import { Box } from '@citizenlab/cl2-component-library';
-import UserSelect from 'components/UI/UserSelect';
+import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
+
 // Style
 import styled from 'styled-components';
+
+// utils
+import { isNil } from 'utils/helperUtils';
 
 const AddButton = styled(Button)`
   flex-grow: 0;
@@ -36,7 +45,20 @@ const UserSearch = memo(({ projectId }: Props) => {
   });
   const [processing, setProcessing] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [moderatorToAdd, setModeratorToAdd] = useState<string | null>(null);
+  const [moderatorToAdd, setModeratorToAdd] =
+    useState<UserOptionTypeBase | null>(null);
+
+  const { data: appConfiguration } = useAppConfiguration();
+  const { data: seats } = useSeats();
+  if (!appConfiguration || !seats) return null;
+
+  const maximumCollaborators =
+    appConfiguration.data.attributes.settings.core.maximum_moderators_number;
+  const currentCollaboratorSeats =
+    seats.data.attributes.project_moderators_number;
+  const hasReachedOrIsOverLimit =
+    !isNil(maximumCollaborators) &&
+    currentCollaboratorSeats >= maximumCollaborators;
 
   const closeModal = () => {
     setShowModal(false);
@@ -46,21 +68,27 @@ const UserSearch = memo(({ projectId }: Props) => {
     setShowModal(true);
   };
 
-  const handleOnChange = (userId: string) => {
-    setModeratorToAdd(userId);
+  const handleOnChange = (user?: UserOptionTypeBase) => {
+    setModeratorToAdd(user || null);
   };
 
   const handleOnAddModeratorsClick = async () => {
     if (moderatorToAdd) {
       setProcessing(true);
-      await addProjectModerator(projectId, moderatorToAdd);
+      await addProjectModerator(projectId, moderatorToAdd.id);
       setProcessing(false);
       setModeratorToAdd(null);
     }
   };
 
   const handleAddClick = () => {
-    if (hasSeatBasedBillingEnabled) {
+    const isSelectedUserAModerator =
+      moderatorToAdd && isCollaborator({ data: moderatorToAdd });
+    const shouldOpenModal =
+      hasSeatBasedBillingEnabled &&
+      hasReachedOrIsOverLimit &&
+      !isSelectedUserAModerator;
+    if (shouldOpenModal) {
       openModal();
     } else {
       handleOnAddModeratorsClick();
@@ -74,7 +102,7 @@ const UserSearch = memo(({ projectId }: Props) => {
           <UserSelect
             id="projectModeratorUserSearch"
             inputId="projectModeratorUserSearchInputId"
-            selectedUserId={moderatorToAdd}
+            selectedUserId={moderatorToAdd?.id || null}
             onChange={handleOnChange}
             placeholder={formatMessage(messages.searchUsers)}
             hideAvatar
@@ -93,11 +121,13 @@ const UserSearch = memo(({ projectId }: Props) => {
         />
       </Box>
       {hasSeatBasedBillingEnabled && (
-        <AddCollaboratorsModal
-          addModerators={handleOnAddModeratorsClick}
-          showModal={showModal}
-          closeModal={closeModal}
-        />
+        <Suspense fallback={null}>
+          <AddCollaboratorsModal
+            addModerators={handleOnAddModeratorsClick}
+            showModal={showModal}
+            closeModal={closeModal}
+          />
+        </Suspense>
       )}
     </Box>
   );

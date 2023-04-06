@@ -1,7 +1,11 @@
 // Libraries
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { isAdmin, isCollaborator } from 'services/permissions/roles';
 import moment from 'moment';
+
+// Utils
+import clHistory from 'utils/cl-router/history';
+import { isNil } from 'utils/helperUtils';
 
 // Components
 import { Tr, Td, Box } from '@citizenlab/cl2-component-library';
@@ -11,7 +15,7 @@ import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import BlockUser from 'components/admin/UserBlockModals/BlockUser';
 import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
 import Link from 'utils/cl-router/Link';
-import ChangeSeatModal from './ChangeSeatModal';
+const ChangeSeatModal = lazy(() => import('./ChangeSeatModal'));
 
 // Translation
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -33,10 +37,9 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // Hooks
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useSeats from 'api/seats/useSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// Utils
-import clHistory from 'utils/cl-router/history';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
@@ -88,6 +91,7 @@ const UserTableRow = ({
   const registeredAt = moment(user.attributes.registration_completed_at).format(
     'LL'
   );
+
   const [showBlockUserModal, setShowBlockUserModal] = useState(false);
   const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
   const isUserBlockingEnabled = useFeatureFlag({
@@ -95,16 +99,24 @@ const UserTableRow = ({
   });
 
   const [showChangeSeatModal, setShowChangeSeatModal] = useState(false);
+  const [isChangingToNormalUser, setIsChangingToNormalUser] = useState(false);
+
+  const { data: appConfiguration } = useAppConfiguration();
+  const { data: seats } = useSeats();
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
+  if (!appConfiguration || !seats) return null;
+
+  const maximumAdmins =
+    appConfiguration.data.attributes.settings.core.maximum_admins_number;
+  const currentAdminSeats = seats.data.attributes.admins_number;
+  const hasReachedOrIsOverLimit =
+    !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins;
+
   const closeChangeSeatModal = () => {
     setShowChangeSeatModal(false);
   };
-  const openChangeSeatModal = () => {
-    setShowChangeSeatModal(true);
-  };
-
-  const [isChangingToNormalUser, setIsChangingToNormalUser] =
-    useState(false);
-
   const isBlocked = user.attributes?.blocked;
 
   const handleDeleteClick = () => {
@@ -144,11 +156,27 @@ const UserTableRow = ({
         ]
       : [];
 
+  const changeRoleHandler = (changeToNormalUser: boolean) => {
+    setIsChangingToNormalUser(changeToNormalUser);
+
+    // We are showing the modal when setting to a normal user and for admins in i1 and for i2 when admin seats are being exceeded
+    const shouldOpenConfirmationInModal =
+      changeToNormalUser ||
+      !hasSeatBasedBillingEnabled ||
+      hasReachedOrIsOverLimit;
+    if (shouldOpenConfirmationInModal) {
+      setShowChangeSeatModal(true);
+      return;
+    }
+
+    // We pass in the user along with whether to change that user to a normal user or admin. We are not toggling because the user passed in could have other roles or be a moderator
+    changeRoles(user, changeToNormalUser);
+  };
+
   const getSeatChangeActions = () => {
     const setAsAdminAction: IAction = {
       handler: () => {
-        setIsChangingToNormalUser(false);
-        openChangeSeatModal();
+        changeRoleHandler(false);
       },
       label: formatMessage(messages.setAsAdmin),
       icon: 'shield-checkered' as const,
@@ -156,8 +184,7 @@ const UserTableRow = ({
 
     const setAsNormalUserAction: IAction = {
       handler: () => {
-        setIsChangingToNormalUser(true);
-        openChangeSeatModal();
+        changeRoleHandler(true);
       },
       label: formatMessage(messages.setAsNormalUser),
       icon: 'user-circle' as const,
@@ -246,13 +273,15 @@ const UserTableRow = ({
         setClose={() => setShowUnblockUserModal(false)}
         open={showUnblockUserModal}
       />
-      <ChangeSeatModal
-        userToChangeSeat={user}
-        changeRoles={changeRoles}
-        showModal={showChangeSeatModal}
-        closeModal={closeChangeSeatModal}
-        isChangingToNormalUser={isChangingToNormalUser}
-      />
+      <Suspense fallback={null}>
+        <ChangeSeatModal
+          userToChangeSeat={user}
+          changeRoles={changeRoles}
+          showModal={showChangeSeatModal}
+          closeModal={closeChangeSeatModal}
+          isChangingToNormalUser={isChangingToNormalUser}
+        />
+      </Suspense>
     </Tr>
   );
 };
