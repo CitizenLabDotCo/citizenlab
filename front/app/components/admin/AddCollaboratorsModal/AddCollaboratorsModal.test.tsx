@@ -53,7 +53,7 @@ jest.mock('api/seats/useSeats', () => () => {
 
 let mockFeatureFlagData = false;
 
-jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
 describe('AddCollaboratorsModal', () => {
   const closeModal = jest.fn();
