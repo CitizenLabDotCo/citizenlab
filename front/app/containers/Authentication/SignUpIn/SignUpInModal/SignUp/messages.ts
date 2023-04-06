@@ -21,22 +21,6 @@ export default defineMessages({
     id: 'app.containers.SignUp.tokenAlreadyAcceptedError',
     defaultMessage: 'The invitation has already been redeemed',
   },
-  firstNamesLabel: {
-    id: 'app.containers.SignUp.firstNamesLabel',
-    defaultMessage: 'First names',
-  },
-  emptyFirstNameError: {
-    id: 'app.containers.SignUp.emptyFirstNameError',
-    defaultMessage: 'Enter your first name',
-  },
-  lastNameLabel: {
-    id: 'app.containers.SignUp.lastNameLabel',
-    defaultMessage: 'Last name',
-  },
-  emptyLastNameError: {
-    id: 'app.containers.SignUp.emptyLastNameError',
-    defaultMessage: 'Enter your last name',
-  },
   emailLabel: {
     id: 'app.containers.SignUp.emailLabel',
     defaultMessage: 'Email',

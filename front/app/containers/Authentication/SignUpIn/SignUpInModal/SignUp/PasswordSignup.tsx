@@ -329,11 +329,9 @@ class PasswordSignup extends PureComponent<
         )
       : null;
     const firstNameError = !firstName
-      ? formatMessage(messages.emptyFirstNameError)
+      ? formatMessage(messages.completeSignUp)
       : null;
-    const lastNameError = !lastName
-      ? formatMessage(messages.emptyLastNameError)
-      : null;
+    const lastNameError = !lastName ? formatMessage(messages.close) : null;
     const hasMinimumLengthError =
       typeof password === 'string'
         ? hasPasswordMinimumLength(
@@ -579,10 +577,7 @@ class PasswordSignup extends PureComponent<
             )}
 
             <FormElement id="e2e-firstName-container">
-              <FormLabel
-                labelMessage={messages.firstNamesLabel}
-                htmlFor="firstName"
-              />
+              <FormLabel labelMessage={messages.close} htmlFor="firstName" />
               <Input
                 id="firstName"
                 type="text"
@@ -604,10 +599,7 @@ class PasswordSignup extends PureComponent<
             </FormElement>
 
             <FormElement id="e2e-lastName-container">
-              <FormLabel
-                labelMessage={messages.lastNameLabel}
-                htmlFor="lastName"
-              />
+              <FormLabel labelMessage={messages.close} htmlFor="lastName" />
               <Input
                 id="lastName"
                 type="text"

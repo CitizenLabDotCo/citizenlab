@@ -93,7 +93,25 @@ const EmailAndPasswordSignUp = ({
     <Box id="e2e-sign-in-email-password-container">
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
-          <Box>
+          <Box id="e2e-firstName-container">
+            <Input
+              name="first_name"
+              id="firstName"
+              type="text"
+              autocomplete="given-name"
+              label={formatMessage(messages.firstNamesLabel)}
+            />
+          </Box>
+          <Box id="e2e-lastName-container" mt="16px">
+            <Input
+              name="last_name"
+              id="lastName"
+              type="text"
+              autocomplete="family-name"
+              label={formatMessage(messages.lastNameLabel)}
+            />
+          </Box>
+          <Box id="e2e-email-container" mt="16px">
             <Input
               name="email"
               id="email"
@@ -106,7 +124,7 @@ const EmailAndPasswordSignUp = ({
               }
             />
           </Box>
-          <Box mt="16px">
+          <Box id="e2e-password-container" mt="16px">
             <PasswordInput
               name="password"
               id="password"
@@ -114,15 +132,15 @@ const EmailAndPasswordSignUp = ({
               autocomplete="current-password"
             />
           </Box>
-          <Box w="100%" display="flex" mt="32px">
+          <Box w="100%" display="flex" mt="24px">
             <Button
               type="submit"
               width="auto"
               disabled={loading}
               processing={loading}
-              id="e2e-signin-password-submit-button"
+              id="e2e-signup-password-submit-button"
             >
-              {formatMessage(containerMessages.logIn)}
+              {formatMessage(sharedMessages.continue)}
             </Button>
           </Box>
         </form>
