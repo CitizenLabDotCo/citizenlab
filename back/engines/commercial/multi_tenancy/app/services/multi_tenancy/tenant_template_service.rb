@@ -47,7 +47,7 @@ module MultiTenancy
       t1 = Time.zone.now
       obj_to_id_and_class = {}
       created_objects_ids = {}
-      template['models'].each do |model_name, fields|
+      template['models'].each do |model_name, records|
         unless local_copy
           LogActivityJob.perform_later(Tenant.current, 'loading_template', nil, Time.now.to_i, payload: {
             model_name: model_name,
@@ -57,13 +57,13 @@ module MultiTenancy
         model_class = get_model_class(model_name)
         uploaders_names = model_class.uploaders.keys.map(&:to_s)
 
-        fields.each do |attributes|
-          attributes ||= {} # Avoid nil. Enables an empty model field to lead to creation of record with default values.
+        records.each do |attributes|
           minutes_spent = Time.zone.now - t1
           if max_time && (minutes_spent > max_time)
             raise "Template application exceed time limit of #{max_time / 1.minute} minutes"
           end
 
+          attributes ||= {} # Avoid nil. Enables an empty model field to lead to creation of record with default values.
           restored_attributes = restore_template_attributes(
             attributes,
             obj_to_id_and_class,
@@ -79,7 +79,7 @@ module MultiTenancy
           model.skip_image_presence = true if SKIP_IMAGE_PRESENCE_VALIDATION.include?(model_class.name)
 
           begin
-            if model.class.method_defined?(:in_list?) && model.in_list?
+            if model.try(:in_list?)
               model.class.acts_as_list_no_update { save_model(model, validate) }
             else
               save_model(model, validate)
@@ -87,6 +87,7 @@ module MultiTenancy
 
             upload_attributes = restored_attributes.slice(*uploaders_names)
             model.update_columns(upload_attributes) if upload_attributes.present?
+            assign_images(model, image_assignments) if image_assignments.present?
 
             # taking original attributes to get correct object ID
             attributes.each do |field_name, field_value|
@@ -95,33 +96,16 @@ module MultiTenancy
                 obj_to_id_and_class[field_value.object_id] = [submodel.id, submodel.class]
               end
             end
-
-            assign_images(model, image_assignments) if image_assignments.present?
           rescue Exception => e
-            table_names = ActiveRecord::Base.connection.execute(
-              <<-SQL.squish
-                SELECT table_name
-                FROM information_schema.tables
-                WHERE table_type = 'BASE TABLE'
-                AND table_schema = \'#{Tenant.current.schema_name}\'
-            SQL
-            ).map do |r|
-              r['table_name']
-            end
             json_info = {
               error_message: e.message,
-              app_config_host: AppConfiguration.instance.host, # temporary for debugging
-              app_config_settings: AppConfiguration.instance.settings, # temporary for debugging
-              tenant_host: Tenant.current.host, # temporary for debugging
-              tenant_settings: AppConfiguration.instance.settings, # temporary for debugging
-              table_names: table_names, # temporary for debugging
               model_class: model_class.name,
               attributes: attributes
             }.to_json
             raise "Failed to create instance during template application: #{json_info}"
           end
-          obj_to_id_and_class[attributes.object_id] = [model.id, model_class]
 
+          obj_to_id_and_class[attributes.object_id] = [model.id, model_class]
           created_objects_ids = update_created_objects_ids(created_objects_ids, model_class.name, model.id)
         end
       end
