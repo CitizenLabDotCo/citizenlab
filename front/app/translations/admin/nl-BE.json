@@ -596,7 +596,7 @@
   "app.containers.Admin.Users.userBlockModal.header": "Blokkeer gebruiker",
   "app.containers.Admin.Users.userBlockModal.reasonLabel": "Reden",
   "app.containers.Admin.Users.userBlockModal.reasonLabelTooltip": "Dit wordt meegedeeld aan de geblokkeerde gebruiker.",
-  "app.containers.Admin.Users.userBlockModal.subtitle1": "De geselecteerde gebruiker zal niet kunnen inloggen op het platform voor {daysBlocked}. Als u dit wilt terugdraaien, kunt u hem deblokkeren uit de lijst van geblokkeerde gebruikers.",
+  "app.containers.Admin.Users.userBlockModal.subtitle1": "De geselecteerde gebruiker zal niet kunnen inloggen op het platform voor {daysBlocked}. Als je dit wilt terugdraaien, kun je deze gebruiker deblokkeren uit de lijst van geblokkeerde gebruikers.",
   "app.containers.Admin.Users.userBlockModal.unblockAction": "Deblokkeer",
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "Ja, ik wil deze gebruiker deblokkeren",
   "app.containers.Admin.Users.userDeletionConfirmation": "Deze gebruiker permanent verwijderen?",
