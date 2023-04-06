@@ -1,5 +1,7 @@
 import React from 'react';
 import { rgba } from 'polished';
+import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
 
 // Components
 import {
@@ -14,34 +16,34 @@ import {
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
 
-import { TSeatNumber } from 'api/app_configuration/types';
+// types
+import { SeatInfoProps, SeatNumbersType, SeatTypeMessageDescriptor } from '.';
 
 // Intl
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Utils
 import { isNil } from 'utils/helperUtils';
+import Link from 'utils/cl-router/Link';
 
 export type TSeatType = 'collaborator' | 'admin';
 
-// Messages
-export type SeatTypeMessageDescriptor = {
-  [key in TSeatType]: MessageDescriptor;
-};
+const StyledLink = styled(Link)`
+  text-decoration: underline;
 
-export type SeatNumbersType = {
-  [key in TSeatType]: TSeatNumber;
-};
-
-export type SeatInfoProps = {
-  seatType: TSeatType;
-};
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 const BillingInfo = ({ seatType }: SeatInfoProps) => {
   const { formatMessage } = useIntl();
+  const { pathname } = useLocation();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
+  const adminsAndMangersLink = '/admin/users/admins-managers';
+  const isOnAdminsAndMangersPage = pathname.includes(adminsAndMangersLink);
 
   const maximumSeatNumbers: SeatNumbersType = {
     admin:
@@ -69,19 +71,16 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
     admin: seats.data.attributes.admins_number,
     collaborator: seats.data.attributes.project_moderators_number,
   }[seatType];
-
   const seatTypeMessage: SeatTypeMessageDescriptor = {
     admin: messages.adminSeats,
     collaborator: messages.collaboratorSeats,
   };
   const seatTypeTitle = seatTypeMessage[seatType];
-
   const seatTypeTooltipMessages: SeatTypeMessageDescriptor = {
     admin: messages.adminSeatsTooltip,
     collaborator: messages.collaboratorSeatsTooltip,
   };
   const seatTypeTooltipMessage = seatTypeTooltipMessages[seatType];
-
   const totalSeats = maximumAdditionalSeats + maximumSeatNumber;
   const remainingSeats = totalSeats - usedSeats;
 
@@ -145,9 +144,13 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
           <Text variant="bodyS" my="4px">
             {usedSeats}
           </Text>
-          <Text variant="bodyS" my="0px" color="coolGrey600">
-            {formatMessage(messages.view)}
-          </Text>
+          {!isOnAdminsAndMangersPage && (
+            <StyledLink target="_blank" to={adminsAndMangersLink}>
+              <Text variant="bodyS" my="0px" color="coolGrey600">
+                {formatMessage(messages.view)}
+              </Text>
+            </StyledLink>
+          )}
         </Box>
         <Box>
           <Box display="flex">
