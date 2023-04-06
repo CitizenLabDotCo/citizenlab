@@ -55,6 +55,7 @@ module MultiTenancy
           })
         end
         model_class = get_model_class(model_name)
+        uploaders_names = model_class.uploaders.keys.map(&:to_s)
 
         fields.each do |attributes|
           attributes ||= {} # Avoid nil. Enables an empty model field to lead to creation of record with default values.
@@ -63,9 +64,6 @@ module MultiTenancy
             raise "Template application exceed time limit of #{max_time / 1.minute} minutes"
           end
 
-          model = model_class.new
-          image_assignments = {}
-
           restored_attributes = restore_template_attributes(
             attributes,
             obj_to_id_and_class,
@@ -73,14 +71,11 @@ module MultiTenancy
             model_class: model_class
           )
 
-          restored_attributes.each do |field_name, field_value|
-            if field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file')
-              image_assignments[field_name] = field_value
-            else
-              model.send("#{field_name}=", field_value)
-            end
-          end
+          image_assignments, restored_attributes = restored_attributes.partition do |field_name, _field_value|
+            field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file')
+          end.map(&:to_h)
 
+          model = model_class.new(restored_attributes)
           model.skip_image_presence = true if SKIP_IMAGE_PRESENCE_VALIDATION.include?(model_class.name)
 
           begin
@@ -89,6 +84,10 @@ module MultiTenancy
             else
               save_model(model, validate)
             end
+
+            upload_attributes = restored_attributes.slice(*uploaders_names)
+            model.update_columns(upload_attributes) if upload_attributes.present?
+
             # taking original attributes to get correct object ID
             attributes.each do |field_name, field_value|
               if field_name.end_with?('_attributes') && field_value.is_a?(Hash) # linking attribute refs (not supported for lists of attributes)
@@ -96,6 +95,7 @@ module MultiTenancy
                 obj_to_id_and_class[field_value.object_id] = [submodel.id, submodel.class]
               end
             end
+
             assign_images(model, image_assignments) if image_assignments.present?
           rescue Exception => e
             table_names = ActiveRecord::Base.connection.execute(
