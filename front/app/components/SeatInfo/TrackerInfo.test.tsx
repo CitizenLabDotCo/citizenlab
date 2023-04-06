@@ -100,7 +100,7 @@ describe('TrackerInfo', () => {
     expect(screen.queryByText('Additional seats')).not.toBeInTheDocument();
   });
 
-  it('shows correct collaborators additional seats when user has used more and seat_based_billing is off', () => {
+  it('shows correct collaborators additional seats when user has used more', () => {
     mockUserSeatsData.data.attributes.project_moderators_number = 15;
     mockAppConfiguration.data.attributes.settings.core.additional_moderators_number = 7;
     render(<TrackerInfo seatType="collaborator" />);
@@ -114,7 +114,7 @@ describe('TrackerInfo', () => {
     expect(screen.queryByText('6/7')).not.toBeInTheDocument();
   });
 
-  it('shows correct admin additional seats when user has used more and seat_based_billing is off', () => {
+  it('shows correct admin additional seats when user has used more', () => {
     mockUserSeatsData.data.attributes.admins_number = 10;
     mockAppConfiguration.data.attributes.settings.core.additional_admins_number = 7;
     render(<TrackerInfo seatType="admin" />);
