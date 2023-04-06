@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import useLocale from 'hooks/useLocale';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 import useProject from 'hooks/useProject';
-import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 
 // tracks
@@ -167,9 +167,9 @@ const IdeasWithoutFiltersSidebar = ({
   const project = useProject({ projectId });
 
   const [selectedView, setSelectedView] = useState<'card' | 'map'>('card');
-  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
+  const { data: ideaCustomFieldsSchemas } = useIdeaCustomFieldsSchema({
     phaseId: ideaQueryParameters.phase,
-    projectId: projectId || null,
+    projectId,
   });
 
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
