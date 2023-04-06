@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { adopt } from 'react-adopt';
-import { get, isEmpty } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 
 // Styling
 import styled from 'styled-components';
@@ -11,12 +10,6 @@ import StatusChangeForm from './StatusChangeForm';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
-import GetOfficialFeedbacks, {
-  GetOfficialFeedbacksChildProps,
-} from 'resources/GetOfficialFeedbacks';
 
 // services
 import useUpdateInitiativeStatus from 'api/initiative_statuses/useUpdateInitiativeStatus';
@@ -32,6 +25,8 @@ import { Multiloc, MultilocFormValues } from 'typings';
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -45,18 +40,11 @@ const ColoredText = styled.span<{ color: string }>`
   color: ${({ color }) => color};
 `;
 
-interface InputProps {
+interface Props {
   initiativeId: string;
   newStatusId: string;
   closeModal: () => void;
 }
-
-interface DataProps {
-  tenantLocales: GetAppConfigurationLocalesChildProps;
-  officialFeedbacks: GetOfficialFeedbacksChildProps;
-}
-
-interface Props extends DataProps, InputProps {}
 
 export interface FormValues extends MultilocFormValues {
   author_multiloc: Multiloc;
@@ -64,12 +52,18 @@ export interface FormValues extends MultilocFormValues {
 }
 
 const StatusChangeFormWrapper = ({
-  tenantLocales,
   initiativeId,
   newStatusId,
   closeModal,
-  officialFeedbacks,
 }: Props & WrappedComponentProps) => {
+  const tenantLocales = useAppConfigurationLocales();
+  const { data: officialFeedbacks } = useInitiativeOfficialFeedback({
+    initiativeId,
+  });
+
+  const officialFeedbacksList =
+    officialFeedbacks?.pages.flatMap((page) => page.data) || [];
+
   const { data: initiativeStatus } = useInitiativeStatus(newStatusId);
   const {
     mutate: updateInitiativeStatus,
@@ -149,16 +143,12 @@ const StatusChangeFormWrapper = ({
             onSuccess: closeModal,
           }
         );
-      } else if (
-        mode === 'latest' &&
-        !isNilOrError(officialFeedbacks.officialFeedbacksList)
-      ) {
+      } else if (mode === 'latest' && !isNilOrError(officialFeedbacksList)) {
         updateInitiativeStatus(
           {
             initiativeId,
             initiative_status_id: newStatusId,
-            official_feedback_id:
-              officialFeedbacks.officialFeedbacksList.data[0].id,
+            official_feedback_id: officialFeedbacksList[0].id,
           },
           {
             onSuccess: closeModal,
@@ -168,11 +158,7 @@ const StatusChangeFormWrapper = ({
     }
   };
 
-  if (
-    isNilOrError(initiative) ||
-    !initiativeStatus ||
-    officialFeedbacks.officialFeedbacksList === undefined
-  ) {
+  if (isNilOrError(initiative) || !initiativeStatus || !officialFeedbacks) {
     return null;
   }
 
@@ -206,32 +192,11 @@ const StatusChangeFormWrapper = ({
         onChangeAuthor={onChangeAuthor}
         onChangeBody={onChangeBody}
         onChangeMode={onChangeMode}
-        latestOfficialFeedback={get(
-          officialFeedbacks,
-          'officialFeedbacksList.data[0]',
-          null
-        )}
+        latestOfficialFeedback={officialFeedbacksList[0]}
         submit={submit}
       />
     </Container>
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetAppConfigurationLocales />,
-  officialFeedbacks: ({ initiativeId, render }) => (
-    <GetOfficialFeedbacks postId={initiativeId} postType="initiative">
-      {render}
-    </GetOfficialFeedbacks>
-  ),
-});
-
-const StatusChangeFormWrapperWithHocs = injectIntl(StatusChangeFormWrapper);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <StatusChangeFormWrapperWithHocs {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+export default injectIntl(StatusChangeFormWrapper);
