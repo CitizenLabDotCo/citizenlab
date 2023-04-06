@@ -231,3 +231,11 @@ de:
       copy_paste_the_link_below: "Kopieren Sie den unten stehenden Code und fügen Sie ihn in das Registrierungsformular auf der Plattform ein."
       the_link_is_valid_for: "Dieser Link ist 24 Stunden lang gültig. Wenn der Link abgelaufen ist, können Sie unter <a href=\"%{link}\">einen neuen Code anfordern</a>."
       did_you_receive_this_email_in_error: "Hast du diese E-Mail irrtümlicherweise erhalten? <a href=\"%{link}\">Lass es uns wissen</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Ihr Konto wurde vorübergehend deaktiviert'
+      title_user_blocked: 'Ihr Konto wurde vorübergehend deaktiviert'
+      paragraph_1_without_reason: "Ihr Konto auf der Beteiligungsplattform von %{organizationName} wurde wegen eines Verstoßes gegen die Community-Richtlinien vorübergehend deaktiviert."
+      paragraph_1_with_reason: "Ihr Konto auf der Beteiligungsplattform von %{organizationName} wurde aus folgendem Grund vorübergehend deaktiviert:"
+      for_more_information: "Weitere Informationen hierzu finden Sie auf der Webseite %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "Sie können sich ab dem %{date} erneut anmelden"
