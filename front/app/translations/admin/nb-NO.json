@@ -1472,7 +1472,7 @@
   "app.containers.AdminPage.SettingsPage.twoRowBannerTooltipLink": "kunnskapsbasen",
   "app.containers.AdminPage.SettingsPage.twoRowLayout": "To rader",
   "app.containers.AdminPage.SettingsPage.urlError": "URL-adressen er ugyldig",
-  "app.containers.AdminPage.SettingsPage.urlPatternError": "Angi en gyldig URL-adresse.",
+  "app.containers.AdminPage.SettingsPage.urlPatternError": "Skriv inn en gyldig URL.",
   "app.containers.AdminPage.SettingsPage.urlTitle": "Nettsted",
   "app.containers.AdminPage.SettingsPage.urlTitleTooltip": "Du kan legge til en kobling til ditt eget nettsted. Denne koblingen brukes nederst på startsiden.",
   "app.containers.AdminPage.SideBar.academy": "Akademi",
