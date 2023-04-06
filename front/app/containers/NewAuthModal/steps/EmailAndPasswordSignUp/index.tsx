@@ -29,6 +29,9 @@ import Checkbox from 'components/HookForm/Checkbox';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
+// constants
+import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
+
 // typings
 import { Parameters as CreateAccountParameters } from 'api/authentication/createAccountWithPassword';
 import { Status } from 'containers/NewAuthModal/typings';
@@ -55,8 +58,15 @@ const EmailAndPasswordSignUp = ({
   const loading = status === 'pending';
   const appConfigSettings = appConfiguration?.data.attributes.settings;
   const phoneLoginEnabled = !!appConfigSettings?.password_login?.phone;
+  const minimumPasswordLength =
+    appConfigSettings?.password_login?.minimum_length ??
+    DEFAULT_MINIMUM_PASSWORD_LENGTH;
 
-  const schema = getSchema(phoneLoginEnabled, formatMessage);
+  const schema = getSchema(
+    phoneLoginEnabled,
+    minimumPasswordLength,
+    formatMessage
+  );
 
   const methods = useForm({
     mode: 'onSubmit',
@@ -102,7 +112,6 @@ const EmailAndPasswordSignUp = ({
             <PasswordInput
               name="password"
               id="password"
-              isLoginPasswordInput
               label={formatMessage(sharedMessages.password)}
               autocomplete="current-password"
             />

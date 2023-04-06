@@ -1,5 +1,6 @@
 // i18n
 import sharedMessages from '../messages';
+import passwordInputMessages from 'components/UI/PasswordInput/messages';
 
 // form
 import { string, object } from 'yup';
@@ -26,6 +27,7 @@ export const DEFAULT_VALUES: Partial<FormValues> = {
 
 export const getSchema = (
   phoneLoginEnabled: boolean,
+  minimumPasswordLength: number,
   formatMessage: FormatMessage
 ) => {
   const emailSchema = phoneLoginEnabled
@@ -46,7 +48,15 @@ export const getSchema = (
 
   const schema = object({
     email: emailSchema,
-    password: string().required(formatMessage(sharedMessages.noPasswordError)),
+    password: string()
+      .required(formatMessage(sharedMessages.noPasswordError))
+      .test(
+        '',
+        formatMessage(passwordInputMessages.minimumPasswordLengthError, {
+          minimumPasswordLength,
+        }),
+        (value) => !!(value && value.length >= minimumPasswordLength)
+      ),
     // TODO
   });
 
