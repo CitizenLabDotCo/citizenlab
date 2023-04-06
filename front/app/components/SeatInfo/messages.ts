@@ -77,7 +77,7 @@ export default defineMessages({
     defaultMessage: 'Used seats',
   },
   totalSeats: {
-    id: 'app.components.SeatInfo.usedSeats',
+    id: 'app.components.SeatInfo.totalSeats',
     defaultMessage: 'Total seats',
   },
   view: {
