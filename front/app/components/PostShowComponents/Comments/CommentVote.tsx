@@ -1,5 +1,4 @@
 import React, { MouseEvent } from 'react';
-import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -197,10 +196,10 @@ const CommentVote = ({
   const handleVoteClick = async (event?: MouseEvent) => {
     event?.preventDefault();
 
-    const commentingDisabledReason = get(
-      post,
-      'attributes.action_descriptor.commenting_idea.disabled_reason'
-    );
+    const commentingDisabledReason =
+      post?.attributes && 'action_descriptor' in post.attributes
+        ? post?.attributes.action_descriptor.commenting_idea.disabled_reason
+        : undefined;
 
     const authUserIsVerified =
       !isNilOrError(authUser) && authUser.attributes.verified;
@@ -249,10 +248,11 @@ const CommentVote = ({
     }
   };
 
-  const commentingVotingDisabledReason = get(
-    post,
-    'attributes.action_descriptor.comment_voting_idea.disabled_reason'
-  );
+  const commentingVotingDisabledReason =
+    post?.attributes && 'action_descriptor' in post.attributes
+      ? post?.attributes.action_descriptor.comment_voting_idea.disabled_reason
+      : undefined;
+
   const isSignedIn = !isNilOrError(authUser);
   const disabled =
     postType === 'initiative'
