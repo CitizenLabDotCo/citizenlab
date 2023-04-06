@@ -97,7 +97,7 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
 
     consumer.subscriptions.create(
       {
-        channel: 'users_blocked_count_channel',
+        channel: 'UsersBlockedCountChannel',
       },
       {
         connected: () => console.log('connected'),

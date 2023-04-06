@@ -2,7 +2,7 @@
 
 class UsersBlockedCountChannel < ApplicationCable::Channel
   def subscribed
-    stream_for 'users_blocked_count_channel'
+    stream_from 'users_blocked_count_channel'
     ActionCable.server.broadcast 'users_blocked_count_channel', 'Subscribed!!'
   end
 
