@@ -19,9 +19,10 @@ module MultiTenancy
         private
 
         def ref_attributes(record)
-          self.class.reference_attributes.to_a.to_h do |attr_name|
-            ["#{attr_name}_ref".to_sym, Ref.new(record, attr_name)]
-          end
+          self.class.reference_attributes.to_a.filter_map do |attr_name|
+            ref = Ref.new(record, attr_name)
+            [:"#{attr_name}_ref", ref] unless ref.id.nil?
+          end.to_h
         end
 
         def value_attributes(record)
