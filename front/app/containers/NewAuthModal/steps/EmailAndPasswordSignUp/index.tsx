@@ -10,6 +10,7 @@ import useLocale from 'hooks/useLocale';
 import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import TextButton from '../components/TextButton';
+import PoliciesMarkup from '../Policies/PoliciesMarkup';
 
 // i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
@@ -131,6 +132,9 @@ const EmailAndPasswordSignUp = ({
               label={formatMessage(sharedMessages.password)}
               autocomplete="current-password"
             />
+          </Box>
+          <Box mt="24px">
+            <PoliciesMarkup />
           </Box>
           <Box w="100%" display="flex" mt="24px">
             <Button

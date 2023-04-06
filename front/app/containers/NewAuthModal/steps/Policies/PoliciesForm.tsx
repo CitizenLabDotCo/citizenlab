@@ -1,8 +1,8 @@
 import React from 'react';
 
 // components
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
+import { Text } from '@citizenlab/cl2-component-library';
+import PoliciesMarkup from './PoliciesMarkup';
 import Button from 'components/UI/Button';
 
 // styling
@@ -10,16 +10,15 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // i18n
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import sharedMessages from '../messages';
-import oldMessages from 'containers/NewAuthModal/steps/AuthProviders/messages';
+import authProvidersMessages from 'containers/NewAuthModal/steps/AuthProviders/messages';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, boolean } from 'yup';
-import Checkbox from 'components/HookForm/Checkbox';
 
 // typings
 import { Status } from '../../typings';
@@ -59,18 +58,18 @@ interface Props {
   onSubmit: () => void;
 }
 
-const EmailPolicies = ({ status, onSubmit }: Props) => {
+const PoliciesForm = ({ status, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
 
   const schema = object({
     termsAndConditionsAccepted: boolean().test(
       '',
-      formatMessage(oldMessages.tacError),
+      formatMessage(authProvidersMessages.tacError),
       isTruthy
     ),
     privacyPolicyAccepted: boolean().test(
       '',
-      formatMessage(oldMessages.privacyPolicyNotAcceptedError),
+      formatMessage(authProvidersMessages.privacyPolicyNotAcceptedError),
       isTruthy
     ),
   });
@@ -89,48 +88,7 @@ const EmailPolicies = ({ status, onSubmit }: Props) => {
         <Text mt="0px" mb="32px">
           {formatMessage(messages.reviewTheTerms)}
         </Text>
-
-        <Checkbox
-          name="termsAndConditionsAccepted"
-          label={
-            <ConsentText>
-              <FormattedMessage
-                {...oldMessages.iHaveReadAndAgreeTo}
-                values={{
-                  link: (
-                    <Link target="_blank" to="/pages/terms-and-conditions">
-                      <FormattedMessage
-                        {...oldMessages.theTermsAndConditions}
-                      />
-                    </Link>
-                  ),
-                }}
-              />
-            </ConsentText>
-          }
-        />
-        <Box mt="8px">
-          <Checkbox
-            name="privacyPolicyAccepted"
-            label={
-              <ConsentText>
-                <FormattedMessage
-                  {...oldMessages.iHaveReadAndAgreeTo}
-                  values={{
-                    link: (
-                      <Link target="_blank" to="/pages/privacy-policy">
-                        <FormattedMessage {...oldMessages.thePrivacyPolicy} />
-                      </Link>
-                    ),
-                  }}
-                />
-              </ConsentText>
-            }
-          />
-        </Box>
-        <Text mt="24px" mb="0px" fontSize="s" color="textSecondary">
-          {formatMessage(messages.byContinuing)}
-        </Text>
+        <PoliciesMarkup />
         <Button
           mt="32px"
           type="submit"
@@ -145,4 +103,4 @@ const EmailPolicies = ({ status, onSubmit }: Props) => {
   );
 };
 
-export default EmailPolicies;
+export default PoliciesForm;

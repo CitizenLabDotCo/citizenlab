@@ -2,9 +2,10 @@
 import messages from './messages';
 import sharedMessages from '../messages';
 import passwordInputMessages from 'components/UI/PasswordInput/messages';
+import authProvidersMessages from 'containers/NewAuthModal/steps/AuthProviders/messages';
 
 // form
-import { string, object } from 'yup';
+import { string, object, boolean } from 'yup';
 
 // utils
 import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
@@ -17,6 +18,8 @@ export interface FormValues {
   last_name: string;
   email: string;
   password: string;
+  termsAndConditionsAccepted: boolean;
+  privacyPolicyAccepted: boolean;
 }
 
 export const DEFAULT_VALUES: Partial<FormValues> = {
@@ -24,7 +27,11 @@ export const DEFAULT_VALUES: Partial<FormValues> = {
   last_name: undefined,
   email: undefined,
   password: undefined,
+  termsAndConditionsAccepted: false,
+  privacyPolicyAccepted: false,
 };
+
+const isTruthy = (value?: boolean) => !!value;
 
 export const getSchema = (
   phoneLoginEnabled: boolean,
@@ -60,7 +67,16 @@ export const getSchema = (
         }),
         (value) => !!(value && value.length >= minimumPasswordLength)
       ),
-    // TODO
+    termsAndConditionsAccepted: boolean().test(
+      '',
+      formatMessage(authProvidersMessages.tacError),
+      isTruthy
+    ),
+    privacyPolicyAccepted: boolean().test(
+      '',
+      formatMessage(authProvidersMessages.privacyPolicyNotAcceptedError),
+      isTruthy
+    ),
   });
 
   return schema;
