@@ -235,7 +235,7 @@ lb:
     send_user_blocked_email:
       subject: 'Äre Kont gouf temporär deaktivéiert'
       title_user_blocked: 'Äre Kont gouf temporär deaktivéiert'
-      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
-      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
+      paragraph_1_without_reason: "Äre Kont op der Participatiounsplattform vun %{organizationName} gouf temporär deaktivéiert wéinst enger Verletzung vun de Gemeinschaftsrichtlinnen."
+      paragraph_1_with_reason: "Äre Kont op der Participatiounsplattform vun %{organizationName} gouf aus de folgende Grond temporär deaktivéiert:"
       for_more_information: "Fir méi Informatioun doriwwer, Dir kënnt dës Säit consultéieren: %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Dir kënnt erëm ab %{date}umellen"
