@@ -3,14 +3,14 @@ import signIn from './signIn';
 import request from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
 
-interface Parameters {
+export interface Parameters {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
   locale: Locale;
-  isInvitation: boolean | null | undefined;
-  token: string | undefined | null;
+  isInvitation?: boolean | null | undefined;
+  token?: string | undefined | null;
 }
 
 export default async function createAccountWithPassword({

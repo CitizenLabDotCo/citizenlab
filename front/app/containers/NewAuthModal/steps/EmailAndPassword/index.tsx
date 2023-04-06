@@ -65,10 +65,9 @@ const EmailAndPassword = ({
 }: Props) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const anySSOEnabled = useAnySSOEnabled();
+  const { data: appConfiguration } = useAppConfiguration();
 
   const loading = status === 'pending';
-
-  const { data: appConfiguration } = useAppConfiguration();
 
   const appConfigSettings = appConfiguration?.data.attributes.settings;
   const tokenLifetime =
@@ -79,11 +78,15 @@ const EmailAndPassword = ({
 
   const emailSchema = phoneLoginEnabled
     ? string()
-        .required(formatMessage(messages.emailOrPhoneMissingError))
-        .test('', formatMessage(messages.emailOrPhoneNumberError), (value) => {
-          if (value === undefined) return false;
-          return isValidEmail(value) || isValidPhoneNumber(value);
-        })
+        .required(formatMessage(sharedMessages.emailOrPhoneMissingError))
+        .test(
+          '',
+          formatMessage(sharedMessages.emailOrPhoneNumberError),
+          (value) => {
+            if (value === undefined) return false;
+            return isValidEmail(value) || isValidPhoneNumber(value);
+          }
+        )
     : string()
         .required(formatMessage(sharedMessages.emailMissingError))
         .email(formatMessage(sharedMessages.emailFormatError))
@@ -124,7 +127,7 @@ const EmailAndPassword = ({
               autocomplete="email"
               label={
                 phoneLoginEnabled
-                  ? formatMessage(messages.emailOrPhone)
+                  ? formatMessage(sharedMessages.emailOrPhone)
                   : formatMessage(sharedMessages.email)
               }
             />
