@@ -78,6 +78,10 @@ module Frontend
       home_url(options)
     end
 
+    def signup_success_url(options = {})
+      "#{home_url(options)}/complete-signup"
+    end
+
     def signin_failure_url(options = {})
       "#{home_url(options)}/authentication-error"
     end
