@@ -59,15 +59,18 @@ const FolderPermissions = () => {
 
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
-  if (!appConfiguration || !seats) return null;
-
   const maximumCollaborators =
-    appConfiguration.data.attributes.settings.core.maximum_moderators_number;
+    appConfiguration?.data.attributes.settings.core.maximum_moderators_number;
+  const additionalCollaborators =
+    appConfiguration?.data.attributes.settings.core
+      .additional_moderators_number;
+  if (isNil(maximumCollaborators) || isNil(additionalCollaborators) || !seats)
+    return null;
+
   const currentCollaboratorSeats =
     seats.data.attributes.project_moderators_number;
-  const hasReachedOrIsOverLimit =
-    !isNil(maximumCollaborators) &&
-    currentCollaboratorSeats >= maximumCollaborators;
+  const totalSeats = additionalCollaborators + maximumCollaborators;
+  const hasReachedOrIsOverLimit = currentCollaboratorSeats >= totalSeats;
 
   const closeModal = () => {
     setShowModal(false);
