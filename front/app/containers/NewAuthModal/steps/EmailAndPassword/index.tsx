@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAnySSOEnabled from 'containers/NewAuthModal/useAnySSOEnabled';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // components
@@ -63,24 +64,9 @@ const EmailAndPassword = ({
   onSwitchFlow,
 }: Props) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
-  const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
-  const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
-  const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
-  const franceconnectLoginEnabled = useFeatureFlag({
-    name: 'franceconnect_login',
-  });
-  const viennaCitizenLoginEnabled = useFeatureFlag({
-    name: 'vienna_citizen_login',
-  });
+  const anySSOEnabled = useAnySSOEnabled();
 
   const loading = status === 'pending';
-
-  const anySSOProviderEnabled =
-    googleLoginEnabled ||
-    facebookLoginEnabled ||
-    azureAdLoginEnabled ||
-    franceconnectLoginEnabled ||
-    viennaCitizenLoginEnabled;
 
   const { data: appConfiguration } = useAppConfiguration();
 
@@ -184,7 +170,7 @@ const EmailAndPassword = ({
           </TextLink>
         </Box>
         <Box mt="12px">
-          {anySSOProviderEnabled ? (
+          {anySSOEnabled ? (
             <TextButton
               id="e2e-login-options"
               onClick={onGoBack}

@@ -685,7 +685,7 @@ class PasswordSignup extends PureComponent<
                   id="e2e-signup-password-submit-button"
                   processing={processing || loading}
                   text={formatMessage(
-                    hasNextStep ? messages.nextStep : messages.signUp2
+                    hasNextStep ? messages.nextStep : messages.nextStep
                   )}
                   onClick={this.handleOnSubmit(isPhoneSignupEnabled)}
                 />

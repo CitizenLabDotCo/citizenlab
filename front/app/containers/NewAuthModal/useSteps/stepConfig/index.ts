@@ -27,7 +27,7 @@ export const getStepConfig = (
   setStatus: (status: Status) => void,
   setError: (errorCode: ErrorCode) => void,
   updateState: UpdateState,
-  anySSOProviderEnabled: boolean
+  anySSOEnabled: boolean
 ) => {
   return {
     // closed (shared)
@@ -67,7 +67,7 @@ export const getStepConfig = (
           if (signedIn) {
             // TODO
           } else {
-            if (anySSOProviderEnabled) {
+            if (anySSOEnabled) {
               setCurrentStep('sign-in:auth-providers');
             } else {
               setCurrentStep('sign-in:email-password');
@@ -81,7 +81,7 @@ export const getStepConfig = (
           if (signedIn) {
             // TODO
           } else {
-            if (anySSOProviderEnabled) {
+            if (anySSOEnabled) {
               setCurrentStep('sign-up:auth-providers');
             } else {
               setCurrentStep('sign-up:email-password');
@@ -96,14 +96,14 @@ export const getStepConfig = (
       setCurrentStep,
       setStatus,
       setError,
-      anySSOProviderEnabled
+      anySSOEnabled
     ),
 
     ...oldSignUpFlow(
       getAuthenticationData,
       setCurrentStep,
       setStatus,
-      anySSOProviderEnabled
+      anySSOEnabled
     ),
 
     ...newLightFlow(

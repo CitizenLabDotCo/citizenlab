@@ -148,7 +148,7 @@ const AuthModal = () => {
         {/* old sign up flow */}
         {currentStep === 'sign-up:auth-providers' && (
           <AuthProviders
-            flow="signin"
+            flow="signup"
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onSelectAuthProvider={transition(
               currentStep,
