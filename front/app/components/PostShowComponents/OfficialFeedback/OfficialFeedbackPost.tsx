@@ -187,19 +187,18 @@ const OfficialFeedbackPost = ({
     }
   };
 
-  const getActions = (postId: string) =>
-    [
-      {
-        label: <FormattedMessage {...messages.editOfficialFeedbackPost} />,
-        handler: openEditForm,
-        name: 'edit',
-      },
-      {
-        label: <FormattedMessage {...messages.deleteOfficialFeedbackPost} />,
-        handler: deletePost(postId),
-        name: 'delete',
-      },
-    ] as IAction[];
+  const getActions = (postId: string): IAction[] => [
+    {
+      label: <FormattedMessage {...messages.editOfficialFeedbackPost} />,
+      handler: openEditForm,
+      name: 'edit',
+    },
+    {
+      label: <FormattedMessage {...messages.deleteOfficialFeedbackPost} />,
+      handler: deletePost(postId),
+      name: 'delete',
+    },
+  ];
 
   const getPostBodyText = (
     postBodyMultiloc: Multiloc,
