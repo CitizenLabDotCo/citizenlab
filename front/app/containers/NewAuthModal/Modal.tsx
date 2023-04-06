@@ -8,6 +8,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import AuthProviders from './steps/AuthProviders';
+import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
 import EmailAndPassword from './steps/EmailAndPassword';
 import LightFlowStart from './steps/LightFlowStart';
 import EmailPolicies from './steps/Policies/EmailPolicies';
@@ -154,6 +155,15 @@ const AuthModal = () => {
               currentStep,
               'SELECT_AUTH_PROVIDER'
             )}
+          />
+        )}
+
+        {currentStep === 'sign-up:email-password' && (
+          <EmailAndPasswordSignUp
+            status={status}
+            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
+            onGoBack={transition(currentStep, 'GO_BACK')}
+            onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
 
