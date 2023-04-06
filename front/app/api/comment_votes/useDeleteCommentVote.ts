@@ -1,8 +1,7 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { API_PATH } from 'containers/App/constants';
 import fetcher from 'utils/cl-react-query/fetcher';
 import streams from 'utils/streams';
-import commentVotesKeys from './keys';
 import { ICommentVote } from './types';
 
 const deleteVote = async ({
@@ -18,13 +17,9 @@ const deleteVote = async ({
   });
 
 const useDeleteVote = () => {
-  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteVote,
-    onSuccess: (_data, { commentId, voteId }) => {
-      queryClient.invalidateQueries({
-        queryKey: commentVotesKeys.item({ id: voteId }),
-      });
+    onSuccess: (_data, { commentId }) => {
       streams.fetchAllWith({
         apiEndpoint: [`${API_PATH}/comments/${commentId}`],
       });
