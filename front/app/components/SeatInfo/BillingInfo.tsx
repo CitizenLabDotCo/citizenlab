@@ -133,7 +133,7 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
           <Text color="teal700" mr="8px" variant="bodyS" my="0px">
             {formatMessage(messages.remainingSeats)}
           </Text>
-          <Text variant="bodyS" mt="4px">
+          <Text fontSize="xl" mt="4px">
             {remainingSeats}
           </Text>
         </Box>
@@ -141,12 +141,12 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
           <Text color="teal700" mr="8px" variant="bodyS" my="0px">
             {formatMessage(messages.usedSeats)}
           </Text>
-          <Text variant="bodyS" my="4px">
+          <Text fontSize="xl" my="4px">
             {usedSeats}
           </Text>
           {!isOnAdminsAndMangersPage && (
             <StyledLink target="_blank" to={adminsAndMangersLink}>
-              <Text variant="bodyS" my="0px" color="coolGrey600">
+              <Text variant="bodyXs" my="0px" color="coolGrey600">
                 {formatMessage(messages.view)}
               </Text>
             </StyledLink>
@@ -161,10 +161,10 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
               content={<FormattedMessage {...messages.totalSeatsTooltip} />}
             />
           </Box>
-          <Text variant="bodyS" my="4px">
+          <Text my="4px" fontSize="xl">
             {totalSeats}
           </Text>
-          <Text variant="bodyS" my="0px" color="coolGrey600">
+          <Text variant="bodyXs" my="0px" color="coolGrey600">
             {totalSeatsBreakdownMessage}
           </Text>
         </Box>
