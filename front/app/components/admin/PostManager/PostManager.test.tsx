@@ -4,8 +4,8 @@ import { shallow } from 'enzyme';
 
 import { getIdea } from 'api/ideas/__mocks__/useIdeaById';
 import { mockTopicData } from 'services/__mocks__/topics';
-import { mockIdeaStatusData } from 'services/__mocks__/ideaStatuses';
-import { mockProposalStatusData } from 'services/__mocks__/proposalStatuses';
+import { ideaStatusesData } from 'api/idea_statuses/__mocks__/useIdeaStatuses';
+import { initiativeStatusesData } from 'api/initiative_statuses/__mocks__/useInitiativeStatuses';
 
 // mocking dependencies
 jest.mock('services/globalState');
@@ -52,7 +52,7 @@ describe('<PostManager />', () => {
 
   it('Handles the state of the Preview', () => {
     const topics = [mockTopicData];
-    const postStatuses = [mockIdeaStatusData];
+    const postStatuses = [ideaStatusesData];
     const defaultFilterMenu = 'projects';
     const Wrapper = shallow(
       <PostManager
@@ -92,7 +92,7 @@ describe('<PostManager />', () => {
 
   it('Sets globalState AdminFullWidth and back', () => {
     const topics = [mockTopicData];
-    const postStatuses = [mockIdeaStatusData];
+    const postStatuses = [ideaStatusesData];
     const defaultFilterMenu = 'projects';
 
     const Wrapper = shallow(
@@ -117,7 +117,7 @@ describe('<PostManager />', () => {
 
   it('Handles the selection', () => {
     const topics = [mockTopicData];
-    const postStatuses = [mockIdeaStatusData];
+    const postStatuses = [ideaStatusesData];
     const defaultFilterMenu = 'projects';
 
     const Wrapper = shallow(
@@ -149,7 +149,7 @@ describe('<PostManager />', () => {
 
   it('Handles the active state of the filter menu', () => {
     const topics = [mockTopicData];
-    const postStatuses = [mockIdeaStatusData];
+    const postStatuses = [ideaStatusesData];
     const defaultFilterMenu = 'topics';
 
     const Wrapper = shallow(
@@ -182,7 +182,7 @@ describe('<PostManager />', () => {
     posts.onChangeSearchTerm = onChangeSearchTerm;
     const topics = [mockTopicData];
     const defaultFilterMenu = 'topics';
-    const postStatuses = [mockIdeaStatusData];
+    const postStatuses = [ideaStatusesData];
 
     const Wrapper = shallow(
       <PostManager
@@ -208,7 +208,7 @@ describe('<PostManager />', () => {
     const onChangeStatus = jest.fn();
     posts.onChangeStatus = onChangeStatus;
     const topics = [mockTopicData];
-    const postStatuses = [mockProposalStatusData];
+    const postStatuses = [initiativeStatusesData];
     const defaultFilterMenu = 'projects';
 
     const Wrapper = shallow(
