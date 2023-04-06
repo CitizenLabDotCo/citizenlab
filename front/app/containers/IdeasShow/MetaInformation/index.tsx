@@ -11,7 +11,7 @@ import PostedBy from './PostedBy';
 
 // hooks & services
 import useLocale from 'hooks/useLocale';
-import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import Outlet from 'components/Outlet';
 
 // utils
@@ -43,27 +43,27 @@ const MetaInformation = ({
   className,
 }: Props) => {
   const locale = useLocale();
-  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
+  const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
     projectId,
     inputId: ideaId,
   });
 
-  if (!isNilOrError(locale) && !isNilOrError(ideaCustomFieldsSchemas)) {
+  if (!isNilOrError(locale) && !isNilOrError(ideaCustomFieldsSchema)) {
     const topicsEnabled = isFieldEnabled(
       'topic_ids',
-      ideaCustomFieldsSchemas.data.attributes,
+      ideaCustomFieldsSchema.data.attributes,
       locale
     );
 
     const locationEnabled = isFieldEnabled(
       'location_description',
-      ideaCustomFieldsSchemas.data.attributes,
+      ideaCustomFieldsSchema.data.attributes,
       locale
     );
 
     const attachmentsEnabled = isFieldEnabled(
       'idea_files_attributes',
-      ideaCustomFieldsSchemas.data.attributes,
+      ideaCustomFieldsSchema.data.attributes,
       locale
     );
 
