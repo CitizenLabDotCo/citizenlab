@@ -26,7 +26,7 @@ import { Locale, CLError, RHFErrors, Multiloc } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import { generateTempId } from 'components/FormBuilder/components/FormBuilderSettings/utils';
 
-type Option = {
+export type Option = {
   id?: string;
   temp_id?: string;
   title_multiloc: Multiloc;

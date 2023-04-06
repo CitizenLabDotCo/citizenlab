@@ -17,7 +17,7 @@ import {
   FieldType,
   fieldTypes,
 } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
-import OptionList from 'components/HookForm/OptionList';
+import OptionList, { Option } from 'components/HookForm/OptionList';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 
 // hooks
@@ -34,6 +34,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import { addCustomFieldForUsers } from 'services/userCustomFields';
 import { getLabelForInputType } from '../../../containers/Granular/utils';
+import { addUserCustomFieldOption } from 'services/userCustomFieldOptions';
 
 type AddFieldScreenProps = {
   setShowAddFieldPage: (show: boolean) => void;
@@ -44,6 +45,7 @@ export interface FormValues {
   input_type?: string;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
+  question_options: Option[];
 }
 
 export const AddFieldScreen = ({
@@ -55,7 +57,7 @@ export const AddFieldScreen = ({
   const locales = useAppConfigurationLocales();
 
   const schema = object({
-    question_choices: validateOneOptionForMultiSelect(
+    question_options: validateOneOptionForMultiSelect(
       formatMessage(messages.atLeastOneOptionError)
     ),
     input_type: string().required(formatMessage(messages.selectValueError)),
@@ -85,6 +87,12 @@ export const AddFieldScreen = ({
         ...formValues,
       });
       if (newField.data.id) {
+        formValues.question_options.forEach(async (option) => {
+          await addUserCustomFieldOption(newField.data.id, {
+            title_multiloc: option.title_multiloc,
+          });
+        });
+
         setShowAddFieldPage(false);
       }
     } catch (error) {
@@ -152,7 +160,7 @@ export const AddFieldScreen = ({
               {(inputType === 'select' || inputType === 'multiselect') && (
                 <SectionField>
                   <OptionList
-                    name={'question_choices'}
+                    name={'question_options'}
                     locales={locales}
                     platformLocale={locale}
                     fieldLabel={
