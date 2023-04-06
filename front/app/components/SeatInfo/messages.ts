@@ -94,9 +94,9 @@ export default defineMessages({
       'Administrators are in charge of the platform and they have collaborator rights for all folders and projects. You can {visitHelpCenter} to learn more about the different roles.',
   },
   collaboratorSeatsTooltip: {
-    id: 'app.components.SeatInfo.collaboratorSeatsTooltip',
+    id: 'app.components.SeatInfo.collaboratorSeatsTooltip1',
     defaultMessage:
-      'Collaborators are folder / project managers. They can manage an unlimited number of folders / projects. You can {visitHelpCenter} to learn more about the different roles.',
+      'Collaborators are folder/project managers. They can manage an unlimited number of folders/projects. You can {visitHelpCenter} to learn more about the different roles.',
   },
   rolesSupportPage: {
     id: 'app.components.SeatInfo.rolesSupportPage',
