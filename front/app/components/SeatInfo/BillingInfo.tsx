@@ -27,8 +27,6 @@ import messages from './messages';
 import { isNil } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';
 
-export type TSeatType = 'collaborator' | 'admin';
-
 const StyledLink = styled(Link)`
   text-decoration: underline;
 
