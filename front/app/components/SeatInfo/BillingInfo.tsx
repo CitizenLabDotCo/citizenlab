@@ -58,10 +58,10 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
       appConfiguration?.data.attributes.settings.core
         .additional_moderators_number,
   };
-  const maximumAdditionalSeats = additionalSeatNumbers[seatType];
+  const additionalSeats = additionalSeatNumbers[seatType];
 
   // Maximum seat number being null means that there are unlimited seats so we don't show the seat info
-  if (isNil(maximumSeatNumber) || isNil(maximumAdditionalSeats) || !seats) {
+  if (isNil(maximumSeatNumber) || isNil(additionalSeats) || !seats) {
     return null;
   }
 
@@ -79,16 +79,14 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
     collaborator: messages.collaboratorSeatsTooltip,
   };
   const seatTypeTooltipMessage = seatTypeTooltipMessages[seatType];
-  const totalSeats = maximumAdditionalSeats + maximumSeatNumber;
+  const totalSeats = additionalSeats + maximumSeatNumber;
   const remainingSeats = totalSeats - usedSeats;
 
   let totalSeatsBreakdownMessage = formatMessage(messages.seatsWithinPlanText);
   if (usedSeats > maximumSeatNumber) {
-    // Any used seats exceeding the maximum set seat number are additional seats
-    const noOfAdditionalSeats = usedSeats - maximumSeatNumber;
     totalSeatsBreakdownMessage = formatMessage(messages.seatsExceededPlanText, {
       noOfSeatsInPlan: maximumSeatNumber,
-      noOfAdditionalSeats,
+      noOfAdditionalSeats: additionalSeats,
     });
   }
 
