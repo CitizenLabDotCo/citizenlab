@@ -16,11 +16,10 @@ import useSeats from 'api/seats/useSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Utils
-import { isNil } from 'utils/helperUtils';
 import { isCollaborator, isAdmin } from 'services/permissions/roles';
+import { getExceededLimit } from 'components/SeatInfo/utils';
 
 import { IUserData } from 'services/users';
-import { TSeatNumber } from 'api/app_configuration/types';
 
 const getInfoText = (
   isUserAdmin: boolean,
@@ -64,36 +63,6 @@ interface Props {
   closeModal: () => void;
   changeRoles: (user: IUserData, changeToNormalUser: boolean) => void;
 }
-
-// Pulling this out to reduce comlexity and make it easy to read. This will go away once we are stable and have enabled the second iteration of seat based billing for all clients
-export const getExceededLimit = (
-  hasSeatBasedBillingEnabled: boolean,
-  currentAdminSeats: number,
-  additionalAdmins: TSeatNumber,
-  maximumAdmins: TSeatNumber
-) => {
-  // Not yet possible from product but implementation allows it so leaving it for now
-  if (isNil(maximumAdmins)) {
-    return {
-      hasReachedOrIsOverLimit: false,
-      hasExceededSetSeats: false,
-    };
-  } else if (!hasSeatBasedBillingEnabled) {
-    // Here we use maximumAdmins because saving additionalAdmins is a concept in the second iteration
-    return {
-      hasReachedOrIsOverLimit: currentAdminSeats >= maximumAdmins,
-      hasExceededSetSeats: currentAdminSeats > maximumAdmins,
-    };
-  }
-  const totalSeats = !isNil(additionalAdmins)
-    ? additionalAdmins + maximumAdmins
-    : maximumAdmins;
-
-  return {
-    hasReachedOrIsOverLimit: currentAdminSeats >= totalSeats,
-    hasExceededSetSeats: currentAdminSeats > totalSeats,
-  };
-};
 
 const ChangeSeatModal = ({
   showModal,

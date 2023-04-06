@@ -13,9 +13,10 @@ import messages from './messages';
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Utils
-import { isNil } from 'utils/helperUtils';
+import { getExceededLimit } from 'components/SeatInfo/utils';
 
 interface Props {
   showModal: boolean;
@@ -30,6 +31,9 @@ const AddCollaboratorsModal = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
   const { data: seats } = useSeats();
   const [showSuccess, setShowSuccess] = useState(false);
   const additionalCollaborators =
@@ -38,14 +42,18 @@ const AddCollaboratorsModal = ({
   const maximumCollaborators =
     appConfiguration?.data.attributes.settings.core.maximum_moderators_number;
 
-  if (isNil(additionalCollaborators) || isNil(maximumCollaborators) || !seats)
-    return null;
+  if (!appConfiguration || !seats) return null;
 
   const currentCollaboratorSeats =
     seats.data.attributes.project_moderators_number;
-  const totalSeats = additionalCollaborators + maximumCollaborators;
-  const hasReachedOrIsOverLimit = currentCollaboratorSeats >= totalSeats;
-  const hasExceededSetSeats = currentCollaboratorSeats > totalSeats;
+
+  const { hasReachedOrIsOverLimit, hasExceededSetSeats } = getExceededLimit(
+    hasSeatBasedBillingEnabled,
+    currentCollaboratorSeats,
+    additionalCollaborators,
+    maximumCollaborators
+  );
+
   const buttonText = hasReachedOrIsOverLimit
     ? formatMessage(messages.buyAdditionalSeats)
     : formatMessage(messages.confirmButtonText);

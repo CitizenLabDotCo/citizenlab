@@ -5,7 +5,7 @@ import moment from 'moment';
 
 // Utils
 import clHistory from 'utils/cl-router/history';
-import { isNil } from 'utils/helperUtils';
+import { getExceededLimit } from 'components/SeatInfo/utils';
 
 // Components
 import { Tr, Td, Box } from '@citizenlab/cl2-component-library';
@@ -33,6 +33,7 @@ import { IUserData, deleteUser } from 'services/users';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // Styling
+
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
@@ -40,7 +41,6 @@ import { colors } from 'utils/styleUtils';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import { getExceededLimit } from './ChangeSeatModal';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
@@ -110,7 +110,7 @@ const UserTableRow = ({
 
   const maximumAdmins =
     appConfiguration?.data.attributes.settings.core.maximum_admins_number;
-  if (isNil(maximumAdmins) || !seats) return null;
+  if (!appConfiguration || !seats) return null;
 
   const additionalAdmins =
     appConfiguration?.data.attributes.settings.core.additional_admins_number;

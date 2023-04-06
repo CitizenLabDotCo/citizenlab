@@ -26,7 +26,7 @@ import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
 import styled from 'styled-components';
 
 // utils
-import { isNil } from 'utils/helperUtils';
+import { getExceededLimit } from 'components/SeatInfo/utils';
 
 const AddButton = styled(Button)`
   flex-grow: 0;
@@ -56,13 +56,16 @@ const UserSearch = memo(({ projectId }: Props) => {
   const additionalCollaborators =
     appConfiguration?.data.attributes.settings.core
       .additional_moderators_number;
-  if (isNil(maximumCollaborators) || isNil(additionalCollaborators) || !seats)
-    return null;
+  if (!appConfiguration || !seats) return null;
 
   const currentCollaboratorSeats =
     seats.data.attributes.project_moderators_number;
-  const totalSeats = additionalCollaborators + maximumCollaborators;
-  const hasReachedOrIsOverLimit = currentCollaboratorSeats >= totalSeats;
+  const { hasReachedOrIsOverLimit } = getExceededLimit(
+    hasSeatBasedBillingEnabled,
+    currentCollaboratorSeats,
+    additionalCollaborators,
+    maximumCollaborators
+  );
 
   const closeModal = () => {
     setShowModal(false);

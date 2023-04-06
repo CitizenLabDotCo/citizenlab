@@ -4,7 +4,8 @@ import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
-import { isNilOrError, isNil } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getExceededLimit } from 'components/SeatInfo/utils';
 
 // services
 import useProjectFolderModerators from 'hooks/useProjectFolderModerators';
@@ -64,13 +65,17 @@ const FolderPermissions = () => {
   const additionalCollaborators =
     appConfiguration?.data.attributes.settings.core
       .additional_moderators_number;
-  if (isNil(maximumCollaborators) || isNil(additionalCollaborators) || !seats)
-    return null;
+  if (!appConfiguration || !seats) return null;
 
   const currentCollaboratorSeats =
     seats.data.attributes.project_moderators_number;
-  const totalSeats = additionalCollaborators + maximumCollaborators;
-  const hasReachedOrIsOverLimit = currentCollaboratorSeats >= totalSeats;
+
+  const { hasReachedOrIsOverLimit } = getExceededLimit(
+    hasSeatBasedBillingEnabled,
+    currentCollaboratorSeats,
+    additionalCollaborators,
+    maximumCollaborators
+  );
 
   const closeModal = () => {
     setShowModal(false);
