@@ -13,7 +13,10 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import Feedback from 'components/HookForm/Feedback';
 import validateMultiloc from 'utils/yup/validateMultilocForEveryLocale';
 import Select from 'components/HookForm/Select';
-import { fieldTypes } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
+import {
+  FieldType,
+  fieldTypes,
+} from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
 import OptionList from 'components/HookForm/OptionList';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 
@@ -30,6 +33,7 @@ import { Multiloc } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import { addCustomFieldForUsers } from 'services/userCustomFields';
+import { getLabelForInputType } from '../../../containers/Granular/utils';
 
 type AddFieldScreenProps = {
   setShowAddFieldPage: (show: boolean) => void;
@@ -69,9 +73,9 @@ export const AddFieldScreen = ({
   const inputType = methods.watch('input_type');
 
   const inputTypeOptions = () => {
-    return fieldTypes.map((inputType) => ({
+    return fieldTypes.map((inputType: FieldType) => ({
       value: inputType,
-      label: formatMessage(messages[`fieldType_${inputType}`]),
+      label: formatMessage(getLabelForInputType(inputType)),
     }));
   };
 
@@ -92,6 +96,8 @@ export const AddFieldScreen = ({
     return null;
   }
 
+  const fieldOptions = inputTypeOptions();
+
   return (
     <>
       <Box mb="20px">
@@ -110,7 +116,7 @@ export const AddFieldScreen = ({
               <SectionField>
                 <Select
                   name="input_type"
-                  options={inputTypeOptions()}
+                  options={fieldOptions}
                   label={
                     <>
                       <Text my="0px" color="primary" fontWeight="bold">

@@ -37,6 +37,15 @@ type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
 } & WrappedComponentProps;
 
+export type FieldType =
+  | 'select'
+  | 'multiselect'
+  | 'checkbox'
+  | 'text'
+  | 'multiline_text'
+  | 'number'
+  | 'date';
+
 export const fieldTypes = [
   'select',
   'multiselect',
