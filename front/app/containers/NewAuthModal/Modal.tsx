@@ -10,13 +10,14 @@ import Modal from 'components/UI/Modal';
 import AuthProviders from './steps/AuthProviders';
 import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
 import EmailAndPassword from './steps/EmailAndPassword';
+import EmailConfirmation from './steps/EmailConfirmation';
+import ChangeEmail from './steps/ChangeEmail';
 import LightFlowStart from './steps/LightFlowStart';
 import EmailPolicies from './steps/Policies/EmailPolicies';
 import GooglePolicies from './steps/Policies/GooglePolicies';
 import FacebookPolicies from './steps/Policies/FacebookPolicies';
 import AzureAdPolicies from './steps/Policies/AzureAdPolicies';
 import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
-import EmailConfirmation from './steps/EmailConfirmation';
 import Password from './steps/Password';
 import Success from './steps/Success';
 import Error from 'components/UI/Error';
@@ -45,6 +46,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sign-up:auth-providers': messages.signUp,
   'sign-up:email-password': messages.signUp,
   'sign-up:email-confirmation': messages.signUp,
+  'sign-up:change-email': messages.signUp,
   'sign-up:verification': messages.signUp,
   'sign-up:registration-fields': messages.signUp,
 
@@ -174,6 +176,13 @@ const AuthModal = () => {
             error={error}
             onConfirm={transition(currentStep, 'SUBMIT_CODE')}
             onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
+          />
+        )}
+
+        {currentStep === 'sign-up:change-email' && (
+          <ChangeEmail
+            onGoBack={transition(currentStep, 'GO_BACK')}
+            onChangeEmail={transition(currentStep, 'RESEND_CODE')}
           />
         )}
 

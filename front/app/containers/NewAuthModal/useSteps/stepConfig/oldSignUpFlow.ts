@@ -4,6 +4,7 @@ import createAccountWithPassword, {
   Parameters as CreateAccountParams,
 } from 'api/authentication/createAccountWithPassword';
 import confirmEmail from 'api/authentication/confirmEmail';
+import resendEmailConfirmationCode from 'api/authentication/resendEmailConfirmationCode';
 
 // typings
 import {
@@ -66,7 +67,7 @@ export const oldSignUpFlow = (
     'sign-up:email-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: () => {
-        // TODO
+        setCurrentStep('sign-up:change-email');
       },
       SUBMIT_CODE: async (code: string) => {
         setStatus('pending');
@@ -83,6 +84,25 @@ export const oldSignUpFlow = (
           } else {
             setError('unknown');
           }
+        }
+      },
+    },
+
+    'sign-up:change-email': {
+      CLOSE: () => setCurrentStep('closed'),
+      GO_BACK: () => {
+        setCurrentStep('sign-up:email-confirmation');
+      },
+      RESEND_CODE: async (newEmail: string) => {
+        setStatus('pending');
+
+        try {
+          await resendEmailConfirmationCode(newEmail);
+          setStatus('ok');
+          setCurrentStep('sign-up:email-confirmation');
+        } catch {
+          setStatus('error');
+          setError('unknown');
         }
       },
     },

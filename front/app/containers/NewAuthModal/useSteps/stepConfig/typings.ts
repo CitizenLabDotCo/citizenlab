@@ -10,6 +10,7 @@ export type Step =
   | 'sign-up:auth-providers'
   | 'sign-up:email-password'
   | 'sign-up:email-confirmation'
+  | 'sign-up:change-email'
   | 'sign-up:verification'
   | 'sign-up:registration-fields'
 
