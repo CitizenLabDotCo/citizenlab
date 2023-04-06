@@ -38,7 +38,7 @@
 #  index_users_on_registration_completed_at  (registration_completed_at)
 #  index_users_on_slug                       (slug) UNIQUE
 #  users_unique_lower_email_idx              (lower((email)::text)) UNIQUE
-class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
+class User < ApplicationRecord
   include EmailCampaigns::UserDecorator
   include Onboarding::UserDecorator
   include Polls::UserDecorator
