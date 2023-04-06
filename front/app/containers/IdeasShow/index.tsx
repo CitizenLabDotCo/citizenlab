@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useState, useRef, useEffect } from 'react';
-import { isUndefined, isString } from 'lodash-es';
+import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -40,9 +40,6 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
-import GetOfficialFeedbacks, {
-  GetOfficialFeedbacksChildProps,
-} from 'resources/GetOfficialFeedbacks';
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
@@ -156,7 +153,6 @@ const BodySectionTitle = styled.h2`
 interface DataProps {
   project: GetProjectChildProps;
   windowSize: GetWindowSizeChildProps;
-  officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
   comments: GetCommentsChildProps;
 }
@@ -181,12 +177,12 @@ export const IdeasShow = ({
   project,
   compact,
   ideaId,
-  officialFeedbacks,
   setRef,
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: ideaImages } = useIdeaImages(ideaId);
+
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
@@ -217,10 +213,7 @@ export const IdeasShow = ({
   });
 
   const isLoaded =
-    !isNilOrError(idea) &&
-    !isNilOrError(ideaImages) &&
-    !isNilOrError(project) &&
-    !isUndefined(officialFeedbacks.officialFeedbacksList);
+    !isNilOrError(idea) && !isNilOrError(ideaImages) && !isNilOrError(project);
 
   const closeIdeaSocialSharingModal = () => {
     if (timeout.current) {
@@ -371,7 +364,6 @@ export const IdeasShow = ({
               />
             )}
             <Box my="80px">
-              {' '}
               <OfficialFeedback
                 postId={ideaId}
                 postType="idea"
@@ -468,11 +460,6 @@ const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
-  ),
-  officialFeedbacks: ({ ideaId, render }) => (
-    <GetOfficialFeedbacks postId={ideaId} postType="idea">
-      {render}
-    </GetOfficialFeedbacks>
   ),
   postOfficialFeedbackPermission: ({ project, render }) => (
     <GetPermission
