@@ -25,12 +25,12 @@ module MultiTenancy
         # > be remembered.
         attribute(
           :resource_type,
-          if: proc { |record| record.resource_type == User.name }
+          if: proc { |record| record.resource_type == ::User.name }
         )
 
         attribute(
           :required,
-          if: proc { |record| record.resource_type != User.name }
+          if: proc { |record| record.resource_type != ::User.name }
         )
       end
     end
