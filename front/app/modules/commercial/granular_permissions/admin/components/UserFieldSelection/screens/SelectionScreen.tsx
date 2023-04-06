@@ -3,7 +3,6 @@ import React from 'react';
 // components
 import {
   Box,
-  Title,
   Text,
   Button,
   colors,
@@ -43,9 +42,6 @@ export const SelectionScreen = ({
   return (
     <>
       <Box mb="20px">
-        <Title variant="h3" color="primary">
-          <FormattedMessage {...messages.addQuestion} />
-        </Title>
         {registrationFieldList &&
           registrationFieldList
             .filter(
@@ -56,17 +52,17 @@ export const SelectionScreen = ({
                     globalField.id
                 )
             )
-            .map((field) => (
+            .map((field, index) => (
               <Box
                 display="flex"
                 justifyContent="space-between"
                 key={field.id}
                 py="4px"
-                borderTop="solid"
+                borderTop={index > 0 ? 'solid' : 'none'}
                 borderWidth="1px"
                 borderColor={colors.grey300}
               >
-                <Box display="flex">
+                <Box display="flex" px="20px">
                   <Text color="primary" mr="12px">
                     {field.attributes.title_multiloc[locale]}
                   </Text>
@@ -92,6 +88,7 @@ export const SelectionScreen = ({
                     </Text>
                   )}
                   <Button
+                    mr="20px"
                     bgColor={colors.primary}
                     onClick={() => {
                       handleAddField(field);
@@ -105,6 +102,8 @@ export const SelectionScreen = ({
       </Box>
       <Box display="flex">
         <Button
+          ml="20px"
+          mb="20px"
           icon="plus-circle"
           buttonStyle="secondary"
           onClick={() => {

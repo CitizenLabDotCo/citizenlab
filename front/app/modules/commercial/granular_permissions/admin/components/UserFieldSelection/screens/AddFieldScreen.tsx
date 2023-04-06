@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, Title, Button, Text } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import GoBackButton from 'components/UI/GoBackButton';
 import { SectionField } from 'components/admin/Section';
 
@@ -25,7 +25,7 @@ import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // intls
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from '../../../containers/Granular/messages';
 import { Multiloc } from 'typings';
 
@@ -100,10 +100,7 @@ export const AddFieldScreen = ({
 
   return (
     <>
-      <Box mb="20px">
-        <Title variant="h3" color="primary">
-          <FormattedMessage {...messages.createAQuestion} />
-        </Title>
+      <Box my="20px" mx="20px">
         <GoBackButton
           onClick={() => {
             setShowAddFieldPage(false);
