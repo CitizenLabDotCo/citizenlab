@@ -67,10 +67,6 @@ export default defineMessages({
     id: 'app.containers.SignUp.nextStep',
     defaultMessage: 'Next step',
   },
-  signUp2: {
-    id: 'app.containers.SignUp.signUp2',
-    defaultMessage: 'Sign up',
-  },
   submit: {
     id: 'app.containers.SignUp.submit',
     defaultMessage: 'Complete your profile',

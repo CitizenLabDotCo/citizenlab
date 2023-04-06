@@ -41,11 +41,11 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sign-in:email-password': messages.logIn,
 
   // old sign up flow
-  'sign-up:auth-providers': null, // TODO
-  'sign-up:email-password': null, // TODO
-  'sign-up:email-confirmation': messages.confirmYourEmail,
-  'sign-up:verification': null, // TODO
-  'sign-up:registration-fields': null, // TODO
+  'sign-up:auth-providers': messages.signUp,
+  'sign-up:email-password': messages.signUp,
+  'sign-up:email-confirmation': messages.signUp,
+  'sign-up:verification': messages.signUp,
+  'sign-up:registration-fields': messages.signUp,
 
   // light flow
   'light-flow:email': messages.beforeYouParticipate,
@@ -100,12 +100,7 @@ const AuthModal = () => {
         headerMessage ? (
           <>
             {fullscreenModalEnabled ? (
-              <Box
-                w="100%"
-                display="flex"
-                justifyContent="center"
-                className="BLA"
-              >
+              <Box w="100%" display="flex" justifyContent="center">
                 <Box w="580px" px={marginX}>
                   <Title variant="h3" as="h1" mt="0px" mb="0px">
                     {formatMessage(headerMessage)}
