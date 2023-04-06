@@ -1,5 +1,5 @@
 // Libraries
-import React, { memo, useState } from 'react';
+import React, { Suspense, memo, useState, lazy } from 'react';
 
 // Services
 import { addProjectModerator } from 'services/projectModerators';
@@ -16,7 +16,9 @@ import messages from './messages';
 
 // Components
 import Button from 'components/UI/Button';
-import AddCollaboratorsModal from 'components/admin/AddCollaboratorsModal';
+const AddCollaboratorsModal = lazy(
+  () => import('components/admin/AddCollaboratorsModal')
+);
 import { Box } from '@citizenlab/cl2-component-library';
 import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
 
@@ -119,11 +121,13 @@ const UserSearch = memo(({ projectId }: Props) => {
         />
       </Box>
       {hasSeatBasedBillingEnabled && (
-        <AddCollaboratorsModal
-          addModerators={handleOnAddModeratorsClick}
-          showModal={showModal}
-          closeModal={closeModal}
-        />
+        <Suspense fallback={null}>
+          <AddCollaboratorsModal
+            addModerators={handleOnAddModeratorsClick}
+            showModal={showModal}
+            closeModal={closeModal}
+          />
+        </Suspense>
       )}
     </Box>
   );

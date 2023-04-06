@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -24,7 +24,9 @@ import { IconTooltip, Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
-import AddCollaboratorsModal from 'components/admin/AddCollaboratorsModal';
+const AddCollaboratorsModal = lazy(
+  () => import('components/admin/AddCollaboratorsModal')
+);
 import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
 import SeatInfo from 'components/SeatInfo';
 
@@ -159,11 +161,13 @@ const FolderPermissions = () => {
             />
           </Box>
           {hasSeatBasedBillingEnabled && (
-            <AddCollaboratorsModal
-              addModerators={handleOnAddFolderModeratorsClick}
-              showModal={showModal}
-              closeModal={closeModal}
-            />
+            <Suspense fallback={null}>
+              <AddCollaboratorsModal
+                addModerators={handleOnAddFolderModeratorsClick}
+                showModal={showModal}
+                closeModal={closeModal}
+              />
+            </Suspense>
           )}
         </UserSelectSection>
 

@@ -1623,6 +1623,7 @@
   "app.containers.AdminPage.groups.permissions.saveErrorMessage": "Coś poszło nie tak, proszę spróbuj ponownie później.",
   "app.containers.AdminPage.groups.permissions.saveSuccess": "Sukces!",
   "app.containers.AdminPage.groups.permissions.saveSuccessMessage": "Twoje zmiany zostały zapisane.",
+  "app.containers.AdminPage.groups.permissions.unknownName": "Nieznana nazwa",
   "app.containers.AdminPage.projects.all.existingProjects": "Istniejące projekty",
   "app.containers.AdminPage.projects.all.newProjectFolder": "Utwórz folder projektu",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projekty i foldery",

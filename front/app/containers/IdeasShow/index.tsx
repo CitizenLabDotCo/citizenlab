@@ -70,7 +70,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import usePhases from 'hooks/usePhases';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import { useSearchParams } from 'react-router-dom';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useLocalize from 'hooks/useLocalize';
@@ -211,7 +211,7 @@ export const IdeasShow = ({
     name: 'ideaflow_social_sharing',
   });
 
-  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
+  const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
     projectId,
     inputId: ideaId,
   });
@@ -249,7 +249,7 @@ export const IdeasShow = ({
     !isNilOrError(project) &&
     !isNilOrError(idea) &&
     !isNilOrError(locale) &&
-    !isNilOrError(ideaCustomFieldsSchemas) &&
+    !isNilOrError(ideaCustomFieldsSchema) &&
     isLoaded
   ) {
     // If the user deletes their profile, authorId can be null
@@ -266,11 +266,11 @@ export const IdeasShow = ({
       compact === true ||
       (windowSize ? windowSize <= viewportWidths.tablet : false);
 
-    if (isNilOrError(ideaCustomFieldsSchemas)) return null;
+    if (isNilOrError(ideaCustomFieldsSchema)) return null;
 
     const proposedBudgetEnabled = isFieldEnabled(
       'proposed_budget',
-      ideaCustomFieldsSchemas.data.attributes,
+      ideaCustomFieldsSchema.data.attributes,
       locale
     );
 

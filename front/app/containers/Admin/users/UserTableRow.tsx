@@ -1,5 +1,5 @@
 // Libraries
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { isAdmin, isCollaborator } from 'services/permissions/roles';
 import moment from 'moment';
 
@@ -15,7 +15,7 @@ import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import BlockUser from 'components/admin/UserBlockModals/BlockUser';
 import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
 import Link from 'utils/cl-router/Link';
-import ChangeSeatModal from './ChangeSeatModal';
+const ChangeSeatModal = lazy(() => import('./ChangeSeatModal'));
 
 // Translation
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -273,13 +273,15 @@ const UserTableRow = ({
         setClose={() => setShowUnblockUserModal(false)}
         open={showUnblockUserModal}
       />
-      <ChangeSeatModal
-        userToChangeSeat={user}
-        changeRoles={changeRoles}
-        showModal={showChangeSeatModal}
-        closeModal={closeChangeSeatModal}
-        isChangingToNormalUser={isChangingToNormalUser}
-      />
+      <Suspense fallback={null}>
+        <ChangeSeatModal
+          userToChangeSeat={user}
+          changeRoles={changeRoles}
+          showModal={showChangeSeatModal}
+          closeModal={closeChangeSeatModal}
+          isChangingToNormalUser={isChangingToNormalUser}
+        />
+      </Suspense>
     </Tr>
   );
 };
