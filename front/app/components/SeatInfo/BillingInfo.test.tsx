@@ -68,6 +68,7 @@ describe('BillingInfo', () => {
 
   it('shows correct numbers of seat usage for admins', () => {
     render(<BillingInfo seatType="admin" />);
+
     expect(screen.getByText('Admin seats')).toBeInTheDocument();
 
     // Remaining seats
@@ -81,6 +82,27 @@ describe('BillingInfo', () => {
     // Total seats
     expect(screen.getByText('Total seats')).toBeInTheDocument();
     expect(screen.getByText('6')).toBeInTheDocument();
+    expect(screen.getByText('Seats within plan')).toBeInTheDocument();
+  });
+
+  it('shows correct descriptive breakdown for total seats when seats are exceeded', () => {
+    mockUserSeatsData.data.attributes.admins_number = 10;
+    mockAppConfiguration.data.attributes.settings.core.additional_admins_number = 7;
+
+    render(<BillingInfo seatType="admin" />);
+
+    // Remaining seats
+    expect(screen.getByText('Remaining seats')).toBeInTheDocument();
+    expect(screen.getByText('3')).toBeInTheDocument();
+
+    // Used seats
+    expect(screen.getByText('Used seats')).toBeInTheDocument();
+    expect(screen.getByText('10')).toBeInTheDocument();
+
+    // Total seats
+    expect(screen.getByText('Total seats')).toBeInTheDocument();
+    expect(screen.getByText('13')).toBeInTheDocument();
+    expect(screen.getByText('6 within plan, 7 additional')).toBeInTheDocument();
   });
 
   it('shows correct numbers of seat usage for collaborators', () => {
