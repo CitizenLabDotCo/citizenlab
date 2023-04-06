@@ -2,11 +2,12 @@ version: "3.8"
 
 services:
   redis:
-    image: "redis:7-alpine"
+    image: "redis"
+    command: redis-server
     ports:
-      - 6379
+      - "6379:6379"
     volumes:
-      - "./tmp/redis_data:/var/lib/redis/data"
+      - "redis:/var/lib/redis/data"
   postgres:
     image: "postgis/postgis:12-3.1"
     environment:
@@ -47,6 +48,7 @@ services:
       - "postgres"
       - "mailcatcher"
       - "rabbitmq"
+      - "redis"
     build:
       context: .
       dockerfile: back/Dockerfile.development
@@ -85,6 +87,7 @@ services:
 volumes:
   postgres:
   bundle_path:
+  redis:
 
 networks:
   default:

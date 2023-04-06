@@ -93,9 +93,11 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
+    this.globalState.set({ enabled: true });
+
     consumer.subscriptions.create(
       {
-        channel: 'UsersBlockedCountChannel',
+        channel: 'users_blocked_count_channel',
       },
       {
         connected: () => console.log('connected'),
@@ -104,7 +106,7 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
       }
     );
 
-    this.globalState.set({ enabled: true });
+    console.log('hello from componentDidMount');
   }
 
   componentWillUnmount() {
@@ -148,20 +150,6 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
     if (!this.props.location) return null;
 
     const { groupCreationModal } = this.state;
-
-    // consumer.subscriptions.create
-    // (
-    //   {
-    //     channel: 'UsersBlockedCountChannel'
-    //   },
-    //   {
-    //     received: (message) => {
-    //       console.log(message)
-    //     }
-    //   }
-    // )
-
-    console.log('hello from index');
 
     return (
       <>
