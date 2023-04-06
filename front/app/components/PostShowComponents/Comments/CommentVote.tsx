@@ -1,5 +1,4 @@
 import React, { MouseEvent } from 'react';
-import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -9,12 +8,9 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import useDeleteCommentVote from 'api/comment_votes/useDeleteCommentVote';
 import useAddCommentVote from 'api/comment_votes/useAddCommentVote';
 import useCommentVote from 'api/comment_votes/useCommentVote';
+import { ICommentData } from 'services/comments';
 
 // resources
-import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetInitiativesPermissions, {
-  GetInitiativesPermissionsChildProps,
-} from 'resources/GetInitiativesPermissions';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -25,8 +21,7 @@ import { openSignUpInModal } from 'events/openSignUpInModal';
 import { openVerificationModal } from 'events/verificationModal';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -41,6 +36,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'hooks/useAuthUser';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 const Container = styled.li`
   display: flex;
@@ -116,38 +112,30 @@ const UpvoteCount = styled.div`
   `}
 `;
 
-interface InputProps {
+interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
-  commentId: string;
   commentType: 'parent' | 'child' | undefined;
   className?: string;
+  comment: ICommentData;
 }
-
-interface DataProps {
-  commentVotingPermissionInitiative: GetInitiativesPermissionsChildProps;
-  comment: GetCommentChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
 
 const CommentVote = ({
   comment,
   postId,
   postType,
-  commentId,
   commentType,
-  commentVotingPermissionInitiative,
   className,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
   const authUser = useAuthUser();
+  const commentVotingPermissionInitiative = useInitiativesPermissions(
+    'comment_voting_initiative'
+  );
   const { mutate: deleteCommentVote } = useDeleteCommentVote();
   const { mutate: addCommentVote } = useAddCommentVote();
   const { data: commentVote } = useCommentVote(
-    !isNilOrError(comment)
-      ? comment?.relationships?.user_vote?.data?.id
-      : undefined
+    comment.relationships.user_vote?.data?.id
   );
 
   const initiativeId = postType === 'initiative' ? postId : undefined;
@@ -166,7 +154,7 @@ const CommentVote = ({
       if (!commentVote) {
         addCommentVote(
           {
-            commentId,
+            commentId: comment.id,
             userId: authUser.id,
             mode: 'up',
           },
@@ -184,7 +172,7 @@ const CommentVote = ({
         );
       }
 
-      if (!isNilOrError(comment) && !isNilOrError(commentVote)) {
+      if (commentVote) {
         deleteCommentVote(
           {
             commentId: comment.id,
@@ -261,80 +249,62 @@ const CommentVote = ({
     }
   };
 
-  if (!isNilOrError(comment)) {
-    const commentingVotingDisabledReason = get(
-      post,
-      'attributes.action_descriptor.comment_voting_idea.disabled_reason'
-    );
-    const isSignedIn = !isNilOrError(authUser);
-    const disabled =
-      postType === 'initiative'
-        ? !commentVotingPermissionInitiative?.enabled
-        : isSignedIn && commentingVotingDisabledReason === 'not_permitted';
+  const commentingVotingDisabledReason = get(
+    post,
+    'attributes.action_descriptor.comment_voting_idea.disabled_reason'
+  );
+  const isSignedIn = !isNilOrError(authUser);
+  const disabled =
+    postType === 'initiative'
+      ? !commentVotingPermissionInitiative?.enabled
+      : isSignedIn && commentingVotingDisabledReason === 'not_permitted';
 
-    if (!disabled || upvoteCount > 0) {
-      return (
-        <Container className={`vote ${className || ''}`}>
-          <UpvoteButton
-            onClick={handleVoteClick}
-            disabled={disabled}
-            className={`
+  if (!disabled || upvoteCount > 0) {
+    return (
+      <Container className={`vote ${className || ''}`}>
+        <UpvoteButton
+          onClick={handleVoteClick}
+          disabled={disabled}
+          className={`
               e2e-comment-vote
               ${commentVote ? 'voted' : 'notVoted'}
               ${disabled ? 'disabled' : 'enabled'}
             `}
-          >
-            <>
-              <UpvoteIcon
-                name="vote-up"
-                className={`
+        >
+          <>
+            <UpvoteIcon
+              name="vote-up"
+              className={`
                 ${commentVote ? 'voted' : 'notVoted'}
                 ${disabled ? 'disabled' : 'enabled'}
               `}
-              />
-              <ScreenReaderOnly>
-                {!commentVote
-                  ? formatMessage(messages.upvoteComment)
-                  : formatMessage(messages.a11y_undoUpvote)}
-              </ScreenReaderOnly>
-            </>
-            {upvoteCount > 0 && (
-              <UpvoteCount
-                className={`
+            />
+            <ScreenReaderOnly>
+              {!commentVote
+                ? formatMessage(messages.upvoteComment)
+                : formatMessage(messages.a11y_undoUpvote)}
+            </ScreenReaderOnly>
+          </>
+          {upvoteCount > 0 && (
+            <UpvoteCount
+              className={`
               ${commentVote ? 'voted' : 'notVoted'}
               ${disabled ? 'disabled' : 'enabled'}
             `}
-              >
-                {upvoteCount}
-              </UpvoteCount>
-            )}
-          </UpvoteButton>
-          <ScreenReaderOnly aria-live="polite">
-            {formatMessage(messages.a11y_upvoteCount, {
-              upvoteCount,
-            })}
-          </ScreenReaderOnly>
-        </Container>
-      );
-    }
+            >
+              {upvoteCount}
+            </UpvoteCount>
+          )}
+        </UpvoteButton>
+        <ScreenReaderOnly aria-live="polite">
+          {formatMessage(messages.a11y_upvoteCount, {
+            upvoteCount,
+          })}
+        </ScreenReaderOnly>
+      </Container>
+    );
   }
-
   return null;
 };
 
-const CommentVoteWithHOCs = injectIntl(CommentVote);
-
-const Data = adopt<DataProps, InputProps>({
-  comment: ({ commentId, render }) => (
-    <GetComment id={commentId}>{render}</GetComment>
-  ),
-  commentVotingPermissionInitiative: (
-    <GetInitiativesPermissions action="comment_voting_initiative" />
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <CommentVoteWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default CommentVote;
