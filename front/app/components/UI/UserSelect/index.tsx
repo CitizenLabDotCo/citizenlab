@@ -135,6 +135,7 @@ const UserSelect = ({
         styles={selectStyles}
         onMenuScrollToBottom={handleMenuScrollToBottom}
         onMenuOpen={handleClear}
+        filterOption={() => true}
       />
     </Box>
   );
