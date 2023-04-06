@@ -590,7 +590,7 @@
   "app.containers.Admin.Users.userBlockModal.blocked": "Geblokkeerd",
   "app.containers.Admin.Users.userBlockModal.bocknigInfo1": "Deze gebruiker is geblokkeerd sinds {from}. Het verbod duurt tot {to}.",
   "app.containers.Admin.Users.userBlockModal.cancel": "Annuleer",
-  "app.containers.Admin.Users.userBlockModal.confirmUnblock1": "Weet je zeker dat je {name}wilt deblokkeren?",
+  "app.containers.Admin.Users.userBlockModal.confirmUnblock1": "Weet je zeker dat je {name} wilt deblokkeren?",
   "app.containers.Admin.Users.userBlockModal.confirmation1": "{name} is geblokkeerd tot {date}.",
   "app.containers.Admin.Users.userBlockModal.daysBlocked1": "{numberOfDays, plural, one {1 dag} other {{numberOfDays} dagen}}",
   "app.containers.Admin.Users.userBlockModal.header": "Blokkeer gebruiker",
