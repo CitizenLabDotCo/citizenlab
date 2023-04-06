@@ -3,7 +3,9 @@
 module MultiTenancy
   module Templates
     module Serializers
-      class AreasProject < Base
+      class AreasProject
+        include Core
+
         ref_attributes %i[area project]
       end
     end
