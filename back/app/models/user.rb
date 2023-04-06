@@ -39,6 +39,7 @@
 #  index_users_on_slug                       (slug) UNIQUE
 #  users_unique_lower_email_idx              (lower((email)::text)) UNIQUE
 #
+# rubocop:disable Metrics/ClassLength
 class User < ApplicationRecord
   include EmailCampaigns::UserDecorator
   include Onboarding::UserDecorator
@@ -603,6 +604,7 @@ class User < ApplicationRecord
     AppConfiguration.instance.settings('user_blocking', 'duration')
   end
 end
+# rubocop:enable Metrics/ClassLength
 
 User.include(IdeaAssignment::Extensions::User)
 User.include(Verification::Patches::User)
