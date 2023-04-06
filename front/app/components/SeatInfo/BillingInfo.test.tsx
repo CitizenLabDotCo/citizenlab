@@ -100,7 +100,7 @@ describe('BillingInfo', () => {
     expect(screen.getByText('9')).toBeInTheDocument();
   });
 
-  it('shows nothing for admin seats when maximum_admins_number is null', () => {
+  it('shows nothing for admin seats when maximum_admins_number is unlimited (null)', () => {
     mockUserSeatsData.data.attributes.admins_number = 15;
     mockAppConfiguration.data.attributes.settings.core.maximum_admins_number =
       null;
@@ -108,7 +108,7 @@ describe('BillingInfo', () => {
     expect(screen.queryByText('Admin seats')).not.toBeInTheDocument();
   });
 
-  it('shows nothing for collaborator seats when maximum_moderators_number is null', () => {
+  it('shows nothing for collaborator seats when maximum_moderators_number is unlimited (null)', () => {
     mockUserSeatsData.data.attributes.project_moderators_number = 15;
     mockAppConfiguration.data.attributes.settings.core.maximum_moderators_number =
       null;
