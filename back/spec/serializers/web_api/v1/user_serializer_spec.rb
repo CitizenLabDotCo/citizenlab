@@ -32,4 +32,16 @@ describe WebApi::V1::UserSerializer do
       expect(last_name).to eq 'Anderson'
     end
   end
+
+  context 'when a user has changed their email address' do
+    let(:user) { create(:user, email: 'test@test.com', new_email: 'new@new.com') }
+
+    it 'should return the changed email address' do
+      email = described_class
+                    .new(user, params: { current_user: user })
+                    .serializable_hash
+                    .dig(:data, :attributes, :email)
+      expect(email).to eq 'new@new.com'
+    end
+  end
 end

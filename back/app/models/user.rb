@@ -446,12 +446,16 @@ class User < ApplicationRecord
     AppConfiguration.instance.feature_activated?('user_confirmation') && confirmation_required
   end
 
+  def confirm
+    self.email_confirmed_at = Time.zone.now
+    self.confirmation_required = false
+  end
+
   def confirm!
     return unless registered_with_email? && confirmation_required?
 
     confirm_new_email if new_email.present?
-    self.email_confirmed_at = Time.zone.now
-    self.confirmation_required = false
+    confirm
     save!
   end
 
