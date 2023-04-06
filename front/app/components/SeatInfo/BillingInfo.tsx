@@ -69,11 +69,11 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
     admin: seats.data.attributes.admins_number,
     collaborator: seats.data.attributes.project_moderators_number,
   }[seatType];
-  const seatTypeMessage: SeatTypeMessageDescriptor = {
+  const seatTypeTitleMessages: SeatTypeMessageDescriptor = {
     admin: messages.adminSeats,
     collaborator: messages.collaboratorSeats,
   };
-  const seatTypeTitle = seatTypeMessage[seatType];
+  const seatTypeTitleMessage = seatTypeTitleMessages[seatType];
   const seatTypeTooltipMessages: SeatTypeMessageDescriptor = {
     admin: messages.adminSeatsTooltip,
     collaborator: messages.collaboratorSeatsTooltip,
@@ -102,7 +102,7 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
           <Icon name="shield-checkered" fill={colors.teal300} mr="8px" />
         )}
         <Text color="teal700" variant="bodyM" fontWeight="bold" mr="4px">
-          {formatMessage(seatTypeTitle)}
+          {formatMessage(seatTypeTitleMessage)}
         </Text>
         <IconTooltip
           content={
