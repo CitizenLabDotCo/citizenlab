@@ -140,7 +140,7 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
           <Text fontSize="xl" my="4px">
             {usedSeats}
           </Text>
-          {!isOnAdminsAndManagersPage && (
+          {!isOnAdminsAndManagersPage && usedSeats > 0 && (
             <StyledLink target="_blank" to={adminsAndMangersLink}>
               <Text variant="bodyXs" my="0px" color="coolGrey600">
                 {formatMessage(messages.view)}
