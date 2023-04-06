@@ -32,19 +32,20 @@ const AddCollaboratorsModal = ({
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
   const [showSuccess, setShowSuccess] = useState(false);
-
-  if (!appConfiguration || !seats) return null;
-
+  const additionalCollaborators =
+    appConfiguration?.data.attributes.settings.core
+      .additional_moderators_number;
   const maximumCollaborators =
-    appConfiguration.data.attributes.settings.core.maximum_moderators_number;
+    appConfiguration?.data.attributes.settings.core.maximum_moderators_number;
+
+  if (isNil(additionalCollaborators) || isNil(maximumCollaborators) || !seats)
+    return null;
+
   const currentCollaboratorSeats =
     seats.data.attributes.project_moderators_number;
-  const hasReachedOrIsOverLimit =
-    !isNil(maximumCollaborators) &&
-    currentCollaboratorSeats >= maximumCollaborators;
-  const hasExceededSetSeats =
-    !isNil(maximumCollaborators) &&
-    currentCollaboratorSeats > maximumCollaborators;
+  const totalSeats = additionalCollaborators + maximumCollaborators;
+  const hasReachedOrIsOverLimit = currentCollaboratorSeats >= totalSeats;
+  const hasExceededSetSeats = currentCollaboratorSeats > totalSeats;
   const buttonText = hasReachedOrIsOverLimit
     ? formatMessage(messages.buyAdditionalSeats)
     : formatMessage(messages.confirmButtonText);
