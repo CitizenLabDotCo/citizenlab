@@ -35,6 +35,7 @@ import { colors } from 'utils/styleUtils';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { getExceededLimit } from './ChangeSeatModal';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
@@ -83,13 +84,20 @@ const UserTableRow = ({
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
   });
-  if (!appConfiguration || !seats) return null;
 
   const maximumAdmins =
-    appConfiguration.data.attributes.settings.core.maximum_admins_number;
+    appConfiguration?.data.attributes.settings.core.maximum_admins_number;
+  if (isNil(maximumAdmins) || !seats) return null;
+
+  const additionalAdmins =
+    appConfiguration?.data.attributes.settings.core.additional_admins_number;
   const currentAdminSeats = seats.data.attributes.admins_number;
-  const hasReachedOrIsOverLimit =
-    !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins;
+  const { hasReachedOrIsOverLimit } = getExceededLimit(
+    hasSeatBasedBillingEnabled,
+    currentAdminSeats,
+    additionalAdmins,
+    maximumAdmins
+  );
 
   const closeModal = () => {
     setShowModal(false);
