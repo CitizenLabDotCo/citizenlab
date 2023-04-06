@@ -99,7 +99,7 @@ export default defineMessages({
       'This shows the summed number of seats within your plan and additional seats you have purchased.',
   },
   adminSeatsTooltip: {
-    id: 'app.components.SeatInfo.totalSeatsTooltip',
+    id: 'app.components.SeatInfo.adminSeatsTooltip',
     defaultMessage:
       'Administrators are in charge of the platform and they have collaborator rights for all folders and projects. You can {visitHelpCenter} to learn more about the different roles.',
   },
