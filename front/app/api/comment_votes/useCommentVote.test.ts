@@ -6,33 +6,9 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { ICommentVote } from './types';
+import { voteData } from './__mocks__/useCommentVote';
 
 const apiPath = '*/votes/:id';
-
-export const voteData: ICommentVote = {
-  data: {
-    id: 'voteId',
-    type: 'vote',
-    attributes: {
-      mode: 'up',
-    },
-    relationships: {
-      votable: {
-        data: {
-          id: 'ideaId',
-          type: 'votable',
-        },
-      },
-      user: {
-        data: {
-          id: 'userId',
-          type: 'user',
-        },
-      },
-    },
-  },
-};
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {

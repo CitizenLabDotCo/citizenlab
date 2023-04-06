@@ -6,7 +6,7 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { voteData } from './useCommentVote.test';
+import { voteData } from './__mocks__/useCommentVote';
 
 const apiPath = '*comments/:commentId/votes';
 
