@@ -37,7 +37,9 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
 
   attribute :email, if: proc { |object, params|
     view_private_attributes? object, params
-  }
+  } do |object|
+    object.new_email.presence || object.email
+  end
 
   attribute :custom_field_values, if: proc { |object, params|
     view_private_attributes? object, params

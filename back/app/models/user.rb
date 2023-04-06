@@ -30,6 +30,7 @@
 #  confirmation_required               :boolean          default(TRUE), not null
 #  block_start_at                      :datetime
 #  block_reason                        :string
+#  new_email                           :string
 #
 # Indexes
 #
@@ -155,6 +156,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
   validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
+  validates :new_email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
   validates :bio_multiloc, multiloc: { presence: false, html: true }
   validates :gender, inclusion: { in: GENDERS }, allow_nil: true
@@ -444,15 +446,12 @@ class User < ApplicationRecord
     AppConfiguration.instance.feature_activated?('user_confirmation') && confirmation_required
   end
 
-  def confirm
+  def confirm!
+    return unless registered_with_email? && confirmation_required?
+
+    confirm_new_email if new_email.present?
     self.email_confirmed_at = Time.zone.now
     self.confirmation_required = false
-  end
-
-  def confirm!
-    return false unless registered_with_email?
-
-    confirm
     save!
   end
 
@@ -493,9 +492,16 @@ class User < ApplicationRecord
 
   def reset_email!(email)
     update!(
-      email: email,
+      new_email: email,
       email_confirmation_code_reset_count: 0
     )
+  end
+
+  def confirm_new_email
+    return unless new_email
+
+    self.email = new_email
+    self.new_email = nil
   end
 
   private
