@@ -12,10 +12,15 @@ import { Tr, Td, Box } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+import BlockUser from 'components/admin/UserBlockModals/BlockUser';
+import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
+import Link from 'utils/cl-router/Link';
 const ChangeSeatModal = lazy(() => import('./ChangeSeatModal'));
+
 // Translation
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import blockUserMessages from 'components/admin/UserBlockModals/messages';
 
 // Events --- For error handling
 import eventEmitter from 'utils/eventEmitter';
@@ -41,6 +46,16 @@ const RegisteredAt = styled(Td)`
   white-space: nowrap;
 `;
 
+const StyledLink = styled(Link)`
+  cursor: pointer;
+  color: inherit;
+
+  &:hover {
+    color: inherit;
+    text-decoration: underline;
+  }
+`;
+
 interface Props {
   user: IUserData;
   selected: boolean;
@@ -50,6 +65,7 @@ interface Props {
 }
 
 const getStatusMessage = (user: IUserData): MessageDescriptor => {
+  if (user.attributes.blocked) return blockUserMessages.blocked;
   const highestRole = user.attributes.highest_role;
   const roleMessage = {
     admin: messages.platformAdmin,
@@ -76,7 +92,14 @@ const UserTableRow = ({
   const registeredAt = moment(user.attributes.registration_completed_at).format(
     'LL'
   );
-  const [showModal, setShowModal] = useState(false);
+
+  const [showBlockUserModal, setShowBlockUserModal] = useState(false);
+  const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
+  const isUserBlockingEnabled = useFeatureFlag({
+    name: 'user_blocking',
+  });
+
+  const [showChangeSeatModal, setShowChangeSeatModal] = useState(false);
   const [isChangingToNormalUser, setIsChangingToNormalUser] = useState(false);
 
   const { data: appConfiguration } = useAppConfiguration();
@@ -99,9 +122,10 @@ const UserTableRow = ({
     maximumAdmins
   );
 
-  const closeModal = () => {
-    setShowModal(false);
+  const closeChangeSeatModal = () => {
+    setShowChangeSeatModal(false);
   };
+  const isBlocked = user.attributes?.blocked;
 
   const handleDeleteClick = () => {
     const deleteMessage = formatMessage(messages.userDeletionConfirmation);
@@ -122,6 +146,23 @@ const UserTableRow = ({
       }
     }
   };
+  const isCurrentUser = user.id === authUser?.id;
+  const userBlockingRelatedActions: IAction[] =
+    isUserBlockingEnabled && !isCurrentUser
+      ? [
+          isBlocked
+            ? {
+                handler: () => setShowUnblockUserModal(true),
+                label: formatMessage(blockUserMessages.unblockAction),
+                icon: 'user-circle' as const,
+              }
+            : {
+                handler: () => setShowBlockUserModal(true),
+                label: formatMessage(blockUserMessages.blockAction),
+                icon: 'halt' as const,
+              },
+        ]
+      : [];
 
   const changeRoleHandler = (changeToNormalUser: boolean) => {
     setIsChangingToNormalUser(changeToNormalUser);
@@ -132,7 +173,7 @@ const UserTableRow = ({
       !hasSeatBasedBillingEnabled ||
       hasReachedOrIsOverLimit;
     if (shouldOpenConfirmationInModal) {
-      setShowModal(true);
+      setShowChangeSeatModal(true);
       return;
     }
 
@@ -182,6 +223,7 @@ const UserTableRow = ({
       label: formatMessage(messages.deleteUser),
       icon: 'delete' as const,
     },
+    ...userBlockingRelatedActions,
   ];
 
   const statusMessage = getStatusMessage(user);
@@ -201,7 +243,9 @@ const UserTableRow = ({
         <Avatar userId={user.id} size={30} />
       </Td>
       <Td>
-        {user.attributes.first_name} {user.attributes.last_name}
+        <StyledLink to={`/profile/${user.attributes.slug}`}>
+          {user.attributes.first_name} {user.attributes.last_name}
+        </StyledLink>
       </Td>
       <Td>{user.attributes.email}</Td>
       <RegisteredAt>
@@ -227,13 +271,22 @@ const UserTableRow = ({
       <Td>
         <MoreActionsMenu showLabel={false} actions={actions} />
       </Td>
-
+      <BlockUser
+        user={user}
+        setClose={() => setShowBlockUserModal(false)}
+        open={showBlockUserModal}
+      />
+      <UnblockUser
+        user={user}
+        setClose={() => setShowUnblockUserModal(false)}
+        open={showUnblockUserModal}
+      />
       <Suspense fallback={null}>
         <ChangeSeatModal
           userToChangeSeat={user}
           changeRoles={changeRoles}
-          showModal={showModal}
-          closeModal={closeModal}
+          showModal={showChangeSeatModal}
+          closeModal={closeChangeSeatModal}
           isChangingToNormalUser={isChangingToNormalUser}
         />
       </Suspense>
