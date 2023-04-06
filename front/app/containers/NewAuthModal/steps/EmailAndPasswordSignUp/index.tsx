@@ -23,7 +23,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { DEFAULT_VALUES, getSchema, FormValues } from './form';
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
-import Checkbox from 'components/HookForm/Checkbox';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -113,17 +112,6 @@ const EmailAndPasswordSignUp = ({
               id="password"
               label={formatMessage(sharedMessages.password)}
               autocomplete="current-password"
-            />
-          </Box>
-          <Box mt="28px">
-            <Checkbox
-              name="rememberMe"
-              label={
-                <Text mt="0" mb="0" mr="4px">
-                  {formatMessage(sharedMessages.rememberMe)}
-                </Text>
-              }
-              labelTooltipText={formatMessage(sharedMessages.rememberMeTooltip)}
             />
           </Box>
           <Box w="100%" display="flex" mt="32px">
