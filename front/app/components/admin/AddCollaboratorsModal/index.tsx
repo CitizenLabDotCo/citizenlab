@@ -16,7 +16,7 @@ import useSeats from 'api/seats/useSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Utils
-import { getExceededLimit } from 'components/SeatInfo/utils';
+import { getExceededLimitInfo } from 'components/SeatInfo/utils';
 
 interface Props {
   showModal: boolean;
@@ -47,7 +47,7 @@ const AddCollaboratorsModal = ({
   const currentCollaboratorSeats =
     seats.data.attributes.project_moderators_number;
 
-  const { hasReachedOrIsOverLimit, hasExceededSetSeats } = getExceededLimit(
+  const { hasReachedOrIsOverLimit, hasExceededSetSeats } = getExceededLimitInfo(
     hasSeatBasedBillingEnabled,
     currentCollaboratorSeats,
     additionalCollaborators,

@@ -8,7 +8,7 @@ type ExceededLimitType = {
 
 // TODO: Remove / simplify this function after seat based billing
 // Pulling this out to reduce comlexity and make it easy to read where it is used. This will go away once we are stable and have enabled the second iteration of seat based billing for all clients
-export const getExceededLimit = (
+export const getExceededLimitInfo = (
   hasSeatBasedBillingEnabled: boolean,
   currentSeatTypeSeats: number, // admins_number/project_moderators_number
   additionalSeatTypeSeats: TSeatNumber, // additional_admins_number/additional_moderators_number
@@ -27,12 +27,12 @@ export const getExceededLimit = (
       hasExceededSetSeats: currentSeatTypeSeats > maximumSeatTypeSeats,
     };
   }
-  const totalSeats = !isNil(additionalSeatTypeSeats)
+  const seatLimit = !isNil(additionalSeatTypeSeats)
     ? additionalSeatTypeSeats + maximumSeatTypeSeats
     : maximumSeatTypeSeats;
 
   return {
-    hasReachedOrIsOverLimit: currentSeatTypeSeats >= totalSeats,
-    hasExceededSetSeats: currentSeatTypeSeats > totalSeats,
+    hasReachedOrIsOverLimit: currentSeatTypeSeats >= seatLimit,
+    hasExceededSetSeats: currentSeatTypeSeats > seatLimit,
   };
 };

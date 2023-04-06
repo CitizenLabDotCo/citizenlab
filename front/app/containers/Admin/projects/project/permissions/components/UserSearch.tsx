@@ -26,7 +26,7 @@ import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
 import styled from 'styled-components';
 
 // utils
-import { getExceededLimit } from 'components/SeatInfo/utils';
+import { getExceededLimitInfo } from 'components/SeatInfo/utils';
 
 const AddButton = styled(Button)`
   flex-grow: 0;
@@ -60,7 +60,7 @@ const UserSearch = memo(({ projectId }: Props) => {
 
   const currentCollaboratorSeats =
     seats.data.attributes.project_moderators_number;
-  const { hasReachedOrIsOverLimit } = getExceededLimit(
+  const { hasReachedOrIsOverLimit } = getExceededLimitInfo(
     hasSeatBasedBillingEnabled,
     currentCollaboratorSeats,
     additionalCollaborators,

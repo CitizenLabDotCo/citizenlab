@@ -5,7 +5,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getExceededLimit } from 'components/SeatInfo/utils';
+import { getExceededLimitInfo } from 'components/SeatInfo/utils';
 
 // services
 import useProjectFolderModerators from 'hooks/useProjectFolderModerators';
@@ -70,7 +70,7 @@ const FolderPermissions = () => {
   const currentCollaboratorSeats =
     seats.data.attributes.project_moderators_number;
 
-  const { hasReachedOrIsOverLimit } = getExceededLimit(
+  const { hasReachedOrIsOverLimit } = getExceededLimitInfo(
     hasSeatBasedBillingEnabled,
     currentCollaboratorSeats,
     additionalCollaborators,

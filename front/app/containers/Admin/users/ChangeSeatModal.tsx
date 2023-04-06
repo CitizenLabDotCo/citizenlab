@@ -17,7 +17,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Utils
 import { isCollaborator, isAdmin } from 'services/permissions/roles';
-import { getExceededLimit } from 'components/SeatInfo/utils';
+import { getExceededLimitInfo } from 'components/SeatInfo/utils';
 
 import { IUserData } from 'services/users';
 
@@ -91,7 +91,7 @@ const ChangeSeatModal = ({
   const isChangingCollaboratorToNormalUser =
     isChangingToNormalUser && isUserToChangeCollaborator;
 
-  const { hasReachedOrIsOverLimit, hasExceededSetSeats } = getExceededLimit(
+  const { hasReachedOrIsOverLimit, hasExceededSetSeats } = getExceededLimitInfo(
     hasSeatBasedBillingEnabled,
     currentAdminSeats,
     additionalAdmins,
