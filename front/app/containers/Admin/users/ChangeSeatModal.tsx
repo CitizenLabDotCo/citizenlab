@@ -21,6 +21,7 @@ import { isCollaborator } from 'services/permissions/roles';
 
 import { IUserData } from 'services/users';
 import { isAdmin } from 'services/permissions/roles';
+import { TSeatNumber } from 'api/app_configuration/types';
 
 const getInfoText = (
   isUserAdmin: boolean,
@@ -65,6 +66,36 @@ interface Props {
   changeRoles: (user: IUserData, changeToNormalUser: boolean) => void;
 }
 
+// Pulling this out to reduce comlexity and make it easy to read. This will go away once we are stable and have enabled the second iteration of seat based billing for all clients
+export const getExceededLimit = (
+  hasSeatBasedBillingEnabled: boolean,
+  currentAdminSeats: number,
+  additionalAdmins: TSeatNumber,
+  maximumAdmins: TSeatNumber
+) => {
+  // Not yet possible from product but implementation allows it so leaving it for now
+  if (isNil(maximumAdmins)) {
+    return {
+      hasReachedOrIsOverLimit: false,
+      hasExceededSetSeats: false,
+    };
+  } else if (!hasSeatBasedBillingEnabled) {
+    // Here we use maximumAdmins because saving additionalAdmins is a concept in the second iteration
+    return {
+      hasReachedOrIsOverLimit: currentAdminSeats >= maximumAdmins,
+      hasExceededSetSeats: currentAdminSeats > maximumAdmins,
+    };
+  }
+  const totalSeats = !isNil(additionalAdmins)
+    ? additionalAdmins + maximumAdmins
+    : maximumAdmins;
+
+  return {
+    hasReachedOrIsOverLimit: currentAdminSeats >= totalSeats,
+    hasExceededSetSeats: currentAdminSeats > totalSeats,
+  };
+};
+
 const ChangeSeatModal = ({
   showModal,
   closeModal,
@@ -81,18 +112,24 @@ const ChangeSeatModal = ({
   });
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
+  const maximumAdmins =
+    appConfiguration?.data.attributes.settings.core.maximum_admins_number;
   if (!appConfiguration || !seats) return null;
 
-  const maximumAdmins =
-    appConfiguration.data.attributes.settings.core.maximum_admins_number;
   const currentAdminSeats = seats.data.attributes.admins_number;
 
+  const additionalAdmins =
+    appConfiguration?.data.attributes.settings.core.additional_admins_number;
   const isChangingCollaboratorToNormalUser =
     isChangingToNormalUser && isUserToChangeCollaborator;
-  const hasReachedOrIsOverLimit =
-    !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins;
-  const hasExceededSetSeats =
-    !isNil(maximumAdmins) && currentAdminSeats > maximumAdmins;
+
+  const { hasReachedOrIsOverLimit, hasExceededSetSeats } = getExceededLimit(
+    hasSeatBasedBillingEnabled,
+    currentAdminSeats,
+    additionalAdmins,
+    maximumAdmins
+  );
+
   const confirmChangeQuestion = getInfoText(
     isUserToChangeSeatAdmin,
     isChangingCollaboratorToNormalUser,
