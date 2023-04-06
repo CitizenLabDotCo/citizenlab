@@ -1757,7 +1757,7 @@
   "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Confirm",
   "app.containers.admin.addCollaboratorsModal.confirmMessage1": "Are you sure you want to give 1 person collaborator rights?",
   "app.containers.admin.addCollaboratorsModal.giveCollaboratorRights": "Give collaborator rights",
-  "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "You have reached the limit of included seats within your plan, {noOfSeats} additional {noOfSeats, plural, one {seat} other {seats}} will be added.",
+  "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "You have reached the limit of included seats within your plan, 1 additional seat will be added.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Adicionar status",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "O status padrão não pode ser excluído",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Deletar",
