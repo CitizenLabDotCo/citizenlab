@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState, useEffect } from 'react';
+import React, { MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -6,15 +6,12 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
 
-// services
-import { addCommentVote, deleteCommentVote } from 'services/commentVotes';
+import useDeleteCommentVote from 'api/comment_votes/useDeleteCommentVote';
+import useAddCommentVote from 'api/comment_votes/useAddCommentVote';
+import useCommentVote from 'api/comment_votes/useCommentVote';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetCommentVote, {
-  GetCommentVoteChildProps,
-} from 'resources/GetCommentVote';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
@@ -43,6 +40,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'hooks/useAuthUser';
 
 const Container = styled.li`
   display: flex;
@@ -128,27 +126,30 @@ interface InputProps {
 
 interface DataProps {
   commentVotingPermissionInitiative: GetInitiativesPermissionsChildProps;
-  authUser: GetAuthUserChildProps;
   comment: GetCommentChildProps;
-  commentVote: GetCommentVoteChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 const CommentVote = ({
   comment,
-  commentVote,
   postId,
   postType,
   commentId,
   commentType,
-  authUser,
   commentVotingPermissionInitiative,
   className,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const [voted, setVoted] = useState(false);
-  const [upvoteCount, setUpvoteCount] = useState(0);
+  const authUser = useAuthUser();
+  const { mutate: deleteCommentVote } = useDeleteCommentVote();
+  const { mutate: addCommentVote } = useAddCommentVote();
+  const { data: commentVote } = useCommentVote(
+    !isNilOrError(comment)
+      ? comment?.relationships?.user_vote?.data?.id
+      : undefined
+  );
+
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -156,76 +157,51 @@ const CommentVote = ({
 
   const post = postType === 'idea' ? idea?.data : initiative?.data;
 
-  useEffect(() => {
-    setVoted(!isNilOrError(commentVote));
-    setUpvoteCount(
-      !isNilOrError(comment) ? comment.attributes.upvotes_count : 0
-    );
-  }, [commentVote, comment]);
-
-  useEffect(() => {
-    if (!isNilOrError(comment)) {
-      const upvoteCount = comment.attributes.upvotes_count;
-      setUpvoteCount(upvoteCount);
-    }
-
-    if (!voted && !isNilOrError(commentVote)) {
-      setVoted(true);
-    }
-
-    if (voted && isNilOrError(commentVote)) {
-      setVoted(false);
-    }
-  }, [comment, commentVote, voted]);
+  const upvoteCount = !isNilOrError(comment)
+    ? comment.attributes.upvotes_count
+    : 0;
 
   const vote = async () => {
-    const oldVotedValue = voted;
-    const oldUpvoteCount = upvoteCount;
     if (!isNilOrError(authUser)) {
-      if (!oldVotedValue) {
-        try {
-          setVoted(true);
-          setUpvoteCount(upvoteCount + 1);
-
-          await addCommentVote(postId, postType, commentId, {
-            user_id: authUser.id,
+      if (!commentVote) {
+        addCommentVote(
+          {
+            commentId,
+            userId: authUser.id,
             mode: 'up',
-          });
-
-          if (commentType === 'parent') {
-            trackEventByName(tracks.clickParentCommentUpvoteButton);
-          } else if (commentType === 'child') {
-            trackEventByName(tracks.clickChildCommentUpvoteButton);
-          } else {
-            trackEventByName(tracks.clickCommentUpvoteButton);
+          },
+          {
+            onSuccess: () => {
+              if (commentType === 'parent') {
+                trackEventByName(tracks.clickParentCommentUpvoteButton);
+              } else if (commentType === 'child') {
+                trackEventByName(tracks.clickChildCommentUpvoteButton);
+              } else {
+                trackEventByName(tracks.clickCommentUpvoteButton);
+              }
+            },
           }
-        } catch (error) {
-          setVoted(oldVotedValue);
-          setUpvoteCount(oldUpvoteCount);
-        }
+        );
       }
 
-      if (
-        oldVotedValue &&
-        !isNilOrError(comment) &&
-        !isNilOrError(commentVote)
-      ) {
-        try {
-          setVoted(false);
-          setUpvoteCount(upvoteCount - 1);
-          await deleteCommentVote(comment.id, commentVote.id);
-
-          if (commentType === 'parent') {
-            trackEventByName(tracks.clickParentCommentCancelUpvoteButton);
-          } else if (commentType === 'child') {
-            trackEventByName(tracks.clickChildCommentCancelUpvoteButton);
-          } else {
-            trackEventByName(tracks.clickCommentCancelUpvoteButton);
+      if (!isNilOrError(comment) && !isNilOrError(commentVote)) {
+        deleteCommentVote(
+          {
+            commentId: comment.id,
+            voteId: commentVote.data.id,
+          },
+          {
+            onSuccess: () => {
+              if (commentType === 'parent') {
+                trackEventByName(tracks.clickParentCommentCancelUpvoteButton);
+              } else if (commentType === 'child') {
+                trackEventByName(tracks.clickChildCommentCancelUpvoteButton);
+              } else {
+                trackEventByName(tracks.clickCommentCancelUpvoteButton);
+              }
+            },
           }
-        } catch (error) {
-          setVoted(oldVotedValue);
-          setUpvoteCount(oldUpvoteCount);
-        }
+        );
       }
     }
   };
@@ -304,7 +280,7 @@ const CommentVote = ({
             disabled={disabled}
             className={`
               e2e-comment-vote
-              ${voted ? 'voted' : 'notVoted'}
+              ${commentVote ? 'voted' : 'notVoted'}
               ${disabled ? 'disabled' : 'enabled'}
             `}
           >
@@ -312,12 +288,12 @@ const CommentVote = ({
               <UpvoteIcon
                 name="vote-up"
                 className={`
-                ${voted ? 'voted' : 'notVoted'}
+                ${commentVote ? 'voted' : 'notVoted'}
                 ${disabled ? 'disabled' : 'enabled'}
               `}
               />
               <ScreenReaderOnly>
-                {!voted
+                {!commentVote
                   ? formatMessage(messages.upvoteComment)
                   : formatMessage(messages.a11y_undoUpvote)}
               </ScreenReaderOnly>
@@ -325,7 +301,7 @@ const CommentVote = ({
             {upvoteCount > 0 && (
               <UpvoteCount
                 className={`
-              ${voted ? 'voted' : 'notVoted'}
+              ${commentVote ? 'voted' : 'notVoted'}
               ${disabled ? 'disabled' : 'enabled'}
             `}
               >
@@ -349,20 +325,8 @@ const CommentVote = ({
 const CommentVoteWithHOCs = injectIntl(CommentVote);
 
 const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
   comment: ({ commentId, render }) => (
     <GetComment id={commentId}>{render}</GetComment>
-  ),
-  commentVote: ({ comment, render }) => (
-    <GetCommentVote
-      voteId={
-        !isNilOrError(comment)
-          ? comment?.relationships?.user_vote?.data?.id
-          : undefined
-      }
-    >
-      {render}
-    </GetCommentVote>
   ),
   commentVotingPermissionInitiative: (
     <GetInitiativesPermissions action="comment_voting_initiative" />

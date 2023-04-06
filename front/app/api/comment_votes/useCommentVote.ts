@@ -13,8 +13,9 @@ const fetchVote = ({ id }: { id?: string }) =>
 const useCommentVote = (id?: string) => {
   return useQuery<ICommentVote, CLErrors, ICommentVote, CommentVotesKeys>({
     queryKey: voteKeys.item({ id }),
-    queryFn: () => fetchVote({ id }),
+    queryFn: async () => await fetchVote({ id }),
     enabled: !!id,
+    keepPreviousData: false,
   });
 };
 
