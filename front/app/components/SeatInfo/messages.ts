@@ -17,11 +17,6 @@ export default defineMessages({
     id: 'app.components.SeatInfo.additionalSeats',
     defaultMessage: 'Additional seats',
   },
-  adminInfoTextWithBilling: {
-    id: 'app.components.SeatInfo.adminInfoTextWithBilling',
-    defaultMessage:
-      "Your plan has {adminSeatsIncluded}. Once you've used all the seats, you agree on us billing the additional seats according to your license.",
-  },
   adminInfoTextWithoutBilling: {
     id: 'app.components.SeatTrackerInfo.adminInfoTextWithoutBilling',
     defaultMessage:
@@ -30,11 +25,6 @@ export default defineMessages({
   adminSeatsIncludedText: {
     id: 'app.components.SeatInfo.adminSeatsIncludedText',
     defaultMessage: '{adminSeats} admin seats included',
-  },
-  collaboratorInfoTextWithBilling: {
-    id: 'app.components.SeatInfo.collaboratorInfoTextWithBilling',
-    defaultMessage:
-      "Your plan has {collaboratorSeatsIncluded}, eligible for folder managers and project managers. Once you've used all the seats, you agree on us billing the additional seats according to your license.",
   },
   collaboratorInfoTextWithoutBilling: {
     id: 'app.components.SeatTrackerInfo.collaboratorInfoTextWithoutBilling',
