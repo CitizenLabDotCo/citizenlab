@@ -1,14 +1,24 @@
 // authentication
 import { handleOnSSOClick } from 'services/singleSignOn';
+import createAccountWithPassword, {
+  Parameters as CreateAccountParams,
+} from 'api/authentication/createAccountWithPassword';
+import confirmEmail from 'api/authentication/confirmEmail';
 
 // typings
-import { Status, AuthenticationData, AuthProvider } from '../../typings';
+import {
+  Status,
+  AuthenticationData,
+  AuthProvider,
+  ErrorCode,
+} from '../../typings';
 import { Step } from './typings';
 
 export const oldSignUpFlow = (
   getAuthenticationData: () => AuthenticationData,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
+  setError: (errorCode: ErrorCode) => void,
   anySSOProviderEnabled: boolean
 ) => {
   return {
@@ -39,8 +49,17 @@ export const oldSignUpFlow = (
           setCurrentStep('sign-up:auth-providers');
         }
       },
-      SUBMIT: () => {
-        // TODO
+      SUBMIT: async (params: CreateAccountParams) => {
+        setStatus('pending');
+
+        try {
+          await createAccountWithPassword(params);
+          setStatus('ok');
+          setCurrentStep('sign-up:email-confirmation');
+        } catch {
+          setStatus('error');
+          setError('account_creation_failed');
+        }
       },
     },
 
@@ -49,8 +68,22 @@ export const oldSignUpFlow = (
       CHANGE_EMAIL: () => {
         // TODO
       },
-      SUBMIT_CODE: (_code: string) => {
-        // TODO
+      SUBMIT_CODE: async (code: string) => {
+        setStatus('pending');
+
+        try {
+          await confirmEmail({ code });
+          setStatus('ok');
+          setCurrentStep('success'); // TODO
+        } catch (e) {
+          setStatus('error');
+
+          if (e?.code?.[0]?.error === 'invalid') {
+            setError('wrong_confirmation_code');
+          } else {
+            setError('unknown');
+          }
+        }
       },
     },
 

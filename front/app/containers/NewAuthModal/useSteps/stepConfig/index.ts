@@ -103,6 +103,7 @@ export const getStepConfig = (
       getAuthenticationData,
       setCurrentStep,
       setStatus,
+      setError,
       anySSOEnabled
     ),
 

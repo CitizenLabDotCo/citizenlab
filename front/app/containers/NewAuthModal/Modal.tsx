@@ -167,6 +167,16 @@ const AuthModal = () => {
           />
         )}
 
+        {currentStep === 'sign-up:email-confirmation' && (
+          <EmailConfirmation
+            state={state}
+            status={status}
+            error={error}
+            onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+            onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
+          />
+        )}
+
         {/* light flow */}
         {currentStep === 'light-flow:email' && (
           <LightFlowStart
