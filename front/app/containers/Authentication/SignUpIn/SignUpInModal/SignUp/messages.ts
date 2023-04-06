@@ -83,14 +83,6 @@ export default defineMessages({
     id: 'app.containers.SignUp.or',
     defaultMessage: 'or',
   },
-  goToLogIn: {
-    id: 'app.containers.SignUp.goToLogIn',
-    defaultMessage: 'Already have an account? {goToOtherFlowLink}',
-  },
-  logIn2: {
-    id: 'app.containers.SignUp.logIn2',
-    defaultMessage: 'Log in',
-  },
   whatIsFranceConnect: {
     id: 'app.containers.SignUp.whatIsFranceConnect',
     defaultMessage: 'What is FranceConnect?',
@@ -115,10 +107,6 @@ export default defineMessages({
   completeYourProfile: {
     id: 'app.containers.SignUp.completeYourProfile',
     defaultMessage: 'Complete your profile',
-  },
-  backToSignUpOptions: {
-    id: 'app.containers.SignUp.backToSignUpOptions',
-    defaultMessage: 'Go back to sign up options',
   },
   completeSignUp: {
     id: 'app.containers.SignUp.completeSignUp',

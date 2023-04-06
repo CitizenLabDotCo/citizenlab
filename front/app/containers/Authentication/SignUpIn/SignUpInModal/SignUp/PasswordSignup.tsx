@@ -699,18 +699,18 @@ class PasswordSignup extends PureComponent<
             <Option>
               {enabledProviders.length > 1 ? (
                 <button onClick={this.goBackToSignUpOptions} className="link">
-                  <FormattedMessage {...messages.backToSignUpOptions} />
+                  <FormattedMessage {...messages.close} />
                 </button>
               ) : (
                 <FormattedMessage
-                  {...messages.goToLogIn}
+                  {...messages.emailLabel}
                   values={{
                     goToOtherFlowLink: (
                       <button
                         onClick={this.handleOnGoToSignIn}
                         className="link"
                       >
-                        {formatMessage(messages.logIn2)}
+                        x
                       </button>
                     ),
                   }}

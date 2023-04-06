@@ -14,6 +14,7 @@ import TextButton from '../components/TextButton';
 
 // i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 import sharedMessages from '../messages';
 import containerMessages from '../../messages';
 
@@ -34,11 +35,17 @@ import { Status } from 'containers/NewAuthModal/typings';
 
 interface Props {
   status: Status;
+  onSwitchFlow: () => void;
   onGoBack: () => void;
   onSubmit: (parameters: CreateAccountParameters) => void;
 }
 
-const EmailAndPasswordSignUp = ({ status, onGoBack, onSubmit }: Props) => {
+const EmailAndPasswordSignUp = ({
+  status,
+  onSwitchFlow,
+  onGoBack,
+  onSubmit,
+}: Props) => {
   // const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const anySSOEnabled = useAnySSOEnabled();
   const { data: appConfiguration } = useAppConfiguration();
@@ -133,16 +140,12 @@ const EmailAndPasswordSignUp = ({ status, onGoBack, onSubmit }: Props) => {
         </Box>
         <Box mt="12px">
           {anySSOEnabled ? (
-            <TextButton
-              id="e2e-login-options"
-              onClick={onGoBack}
-              className="link"
-            >
-              {formatMessage(messages.goBackToLoginOptions)}
+            <TextButton onClick={onGoBack} className="link">
+              {formatMessage(messages.backToSignUpOptions)}
             </TextButton>
           ) : (
             <FormattedMessage
-              {...messages.goToSignUp}
+              {...messages.goToLogIn}
               values={{
                 goToOtherFlowLink: (
                   <button
@@ -150,7 +153,7 @@ const EmailAndPasswordSignUp = ({ status, onGoBack, onSubmit }: Props) => {
                     onClick={onSwitchFlow}
                     className="link"
                   >
-                    {formatMessage(messages.signUp)}
+                    {formatMessage(containerMessages.logIn)}
                   </button>
                 ),
               }}
