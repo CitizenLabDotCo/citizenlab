@@ -41,7 +41,7 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
   const adminsAndMangersLink = '/admin/users/admins-managers';
-  const isOnAdminsAndMangersPage = pathname.includes(adminsAndMangersLink);
+  const isOnAdminsAndManagersPage = pathname.includes(adminsAndMangersLink);
 
   const maximumSeatNumbers: SeatNumbersType = {
     admin:
@@ -140,7 +140,7 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
           <Text fontSize="xl" my="4px">
             {usedSeats}
           </Text>
-          {!isOnAdminsAndMangersPage && (
+          {!isOnAdminsAndManagersPage && (
             <StyledLink target="_blank" to={adminsAndMangersLink}>
               <Text variant="bodyXs" my="0px" color="coolGrey600">
                 {formatMessage(messages.view)}
