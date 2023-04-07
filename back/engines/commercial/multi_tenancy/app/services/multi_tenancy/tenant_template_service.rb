@@ -56,7 +56,7 @@ module MultiTenancy
           })
         end
 
-        model_class = get_model_class(model_name)
+        model_class = model_name.classify.constantize
         uploaders_names = model_class.uploaders.keys.map(&:to_s)
 
         records.each do |attributes|
@@ -310,18 +310,6 @@ module MultiTenancy
         # limit of CircleCI.
         model.update!(image_assignments)
       end
-    end
-
-    def get_model_class(model_name)
-      legacy_class_names = {
-        'ProjectFolder' => ProjectFolders::Folder,
-        'ProjectFolderFile' => ProjectFolders::File,
-        'ProjectFolderImage' => ProjectFolders::Image,
-        'Verification::IdCard' => IdIdCardLookup::IdCard
-      }
-
-      class_name = model_name.classify
-      legacy_class_names[class_name] || class_name.constantize
     end
 
     def available_external_templates(external_subfolder: 'release')
