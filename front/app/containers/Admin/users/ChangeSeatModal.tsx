@@ -17,10 +17,9 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Utils
 import { isNil } from 'utils/helperUtils';
-import { isCollaborator } from 'services/permissions/roles';
+import { isCollaborator, isAdmin } from 'services/permissions/roles';
 
 import { IUserData } from 'services/users';
-import { isAdmin } from 'services/permissions/roles';
 
 const getInfoText = (
   isUserAdmin: boolean,
