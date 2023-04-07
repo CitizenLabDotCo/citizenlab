@@ -169,20 +169,18 @@ module MultiTenancy
 
     def template_locales(template)
       locales = Set.new
+
       template['models'].each do |_, instances|
         instances.each do |attributes|
-          attributes.each do |field_name, multiloc|
-            next unless multiloc?(field_name) && multiloc.is_a?(Hash)
+          attributes.each do |field_name, attribute|
+            next unless multiloc?(field_name) && attribute.is_a?(Hash)
 
-            multiloc.each_key do |locale|
-              locales.add locale
-            end
+            locales.merge(attribute.keys)
           end
         end
       end
-      template['models']['user']&.each do |attributes|
-        locales.add attributes['locale']
-      end
+
+      locales.merge(user_locales(template))
       locales.to_a
     end
 
@@ -210,6 +208,8 @@ module MultiTenancy
       template = resolve_template(template_name, external_subfolder: external_subfolder)
       template.dig('models', 'user').to_a.pluck('locale').uniq
     end
+
+    alias user_locales required_locales
 
     def translate_and_fix_locales(template)
       translator = MachineTranslations::MachineTranslationService.new
