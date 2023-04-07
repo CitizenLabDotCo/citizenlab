@@ -98,7 +98,7 @@ module MultiTenancy
                 obj_to_id_and_class[field_value.object_id] = [submodel.id, submodel.class]
               end
             end
-          rescue Exception => e
+          rescue StandardError => e
             json_info = {
               error_message: e.message,
               model_class: model_class.name,
