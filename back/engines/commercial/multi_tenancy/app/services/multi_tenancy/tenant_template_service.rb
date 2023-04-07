@@ -55,6 +55,7 @@ module MultiTenancy
             model_name_pluralized: model_name.pluralize
           })
         end
+
         model_class = get_model_class(model_name)
         uploaders_names = model_class.uploaders.keys.map(&:to_s)
 
@@ -136,7 +137,7 @@ module MultiTenancy
         elsif field_name.end_with?('_ref')
           ref_suffix = field_name.end_with?('_attributes_ref') ? '_attributes_ref' : '_ref' # linking attribute refs
           if field_value
-            id, ref_class = obj_to_id_and_class[field_value.object_id]
+            id, ref_class = obj_to_id_and_class.fetch(field_value.object_id)
             new_attributes[field_name.chomp(ref_suffix)] = ref_class.find(id)
           end
 
