@@ -46,7 +46,8 @@ module MultiTenancy
     def apply_template(template, validate: true, max_time: nil, local_copy: false)
       t1 = Time.zone.now
       obj_to_id_and_class = {}
-      created_objects_ids = {}
+      created_objects_ids = Hash.new { |h, k| h[k] = [] } # Hash with empty arrays as default values
+
       template['models'].each do |model_name, records|
         unless local_copy
           LogActivityJob.perform_later(Tenant.current, 'loading_template', nil, Time.now.to_i, payload: {
@@ -106,7 +107,7 @@ module MultiTenancy
           end
 
           obj_to_id_and_class[attributes.object_id] = [model.id, model_class]
-          created_objects_ids = update_created_objects_ids(created_objects_ids, model_class.name, model.id)
+          created_objects_ids[model_class.name] << model.id
         end
       end
 
@@ -355,16 +356,6 @@ module MultiTenancy
 
     def all_supported_locales
       @all_supported_locales ||= CL2_SUPPORTED_LOCALES.map(&:to_s)
-    end
-
-    def update_created_objects_ids(created_objects_ids, model_name, model_id)
-      if created_objects_ids.key?(model_name)
-        created_objects_ids[model_name] << model_id
-      else
-        created_objects_ids[model_name] = [model_id]
-      end
-
-      created_objects_ids
     end
 
     def save_model(model, validate)
