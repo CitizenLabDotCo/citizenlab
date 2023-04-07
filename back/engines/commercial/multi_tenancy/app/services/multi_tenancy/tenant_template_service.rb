@@ -205,12 +205,8 @@ module MultiTenancy
     end
 
     def required_locales(template_name, external_subfolder: 'release')
-      template = resolve_template template_name, external_subfolder: external_subfolder
-      locales = Set.new
-      template['models']['user']&.each do |attributes|
-        locales.add attributes['locale']
-      end
-      locales.to_a
+      template = resolve_template(template_name, external_subfolder: external_subfolder)
+      template.dig('models', 'user').to_a.pluck('locale').uniq
     end
 
     def translate_and_fix_locales(template)
