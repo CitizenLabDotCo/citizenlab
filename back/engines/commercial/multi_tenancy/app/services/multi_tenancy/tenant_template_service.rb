@@ -172,7 +172,7 @@ module MultiTenancy
       template['models'].each do |_, instances|
         instances.each do |attributes|
           attributes.each do |field_name, multiloc|
-            next unless (field_name =~ /_multiloc$/) && multiloc.is_a?(Hash)
+            next unless multiloc?(field_name) && multiloc.is_a?(Hash)
 
             multiloc.each_key do |locale|
               locales.add locale
@@ -190,7 +190,7 @@ module MultiTenancy
       template['models'].each do |_, instances|
         instances.each do |attributes|
           attributes.each do |field_name, multiloc|
-            next unless (field_name =~ /_multiloc$/) && multiloc.is_a?(Hash) && multiloc[locale_to].blank?
+            next unless multiloc?(field_name) && multiloc.is_a?(Hash) && multiloc[locale_to].blank?
 
             multiloc[locale_to] = if locale_from.blank?
               multiloc.values.first
@@ -233,7 +233,7 @@ module MultiTenancy
       template['models'].each do |_model_name, fields|
         fields.each do |attributes|
           attributes.each do |field_name, field_value|
-            if (field_name =~ /_multiloc$/) && field_value.is_a?(Hash)
+            if multiloc?(field_name) && field_value.is_a?(Hash)
               if (field_value.keys & locales_to).blank? && !field_value.key?(translate_from) && field_value.present?
                 other_translate_from = field_value.keys.first
                 other_translate_to = translate_to || locales_to.first
