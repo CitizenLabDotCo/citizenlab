@@ -95,14 +95,44 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
   componentDidMount() {
     this.globalState.set({ enabled: true });
 
+    // These have never logged anything, so far
+    consumer.connection.onOpen = () => {
+      console.log('WebSocket connection opened');
+    };
+
+    consumer.connection.onClose = () => {
+      console.log('WebSocket connection closed');
+    };
+
+    consumer.connection.onError = () => {
+      console.log('WebSocket connection error');
+    };
+
+    // These log connection present, but not connected
+    if (consumer.connection) {
+      console.log('Action Cable connection is present');
+
+      if (consumer.connection.state === 'connected') {
+        console.log('Action Cable connection is connected');
+      } else {
+        console.log('Action Cable connection is not connected');
+      }
+    } else {
+      console.log('Action Cable connection is not present');
+    }
+
+    console.log('consumer.subscriptions.create() function is being called');
     consumer.subscriptions.create(
       {
         channel: 'UsersBlockedCountChannel',
       },
       {
+        // These have never logged anything, so far
         connected: () => console.log('connected'),
         disconnected: () => console.log('disconnected'),
-        received: (data) => console.log(data),
+        received: (data) => console.log('Received data:', data),
+        rejected: () => console.log('rejected'),
+        error: (error) => console.error(error),
       }
     );
 

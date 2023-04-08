@@ -39,7 +39,7 @@ services:
       - "env_files/back-secret.env"
     environment:
       BUNDLE_PATH: /bundle
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://redis:6379/1
     tty: true
     stdin_open: true
 
