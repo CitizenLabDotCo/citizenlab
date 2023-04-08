@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, lazy, Suspense } from 'react';
 import moment, { Moment } from 'moment';
 
 // services
@@ -25,6 +25,7 @@ import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
 import VotesByTimeCard from 'components/admin/GraphCards/VotesByTimeCard';
 import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
 import RegistrationsByTimeCard from 'components/admin/GraphCards/RegistrationsByTimeCard';
+const Management = lazy(() => import('./Management'));
 
 // i18n
 import messages from '../messages';
@@ -48,6 +49,7 @@ interface DataProps {
 }
 
 export type IResource = 'ideas' | 'comments' | 'votes';
+export type TMomentTime = Moment | null;
 
 const OverviewDashboard = ({ projects }: DataProps) => {
   const user = useAuthUser();
@@ -63,9 +65,7 @@ const OverviewDashboard = ({ projects }: DataProps) => {
   );
 
   const [resolution, setResolution] = useState<IResolution>('month');
-  const [startAtMoment, setStartAtMoment] = useState<Moment | null | undefined>(
-    undefined
-  );
+  const [startAtMoment, setStartAtMoment] = useState<Moment | null>(null);
   const [endAtMoment, setEndAtMoment] = useState<Moment | null>(moment());
   const [currentProjectFilter, setCurrentProjectFilter] = useState<
     string | undefined
@@ -231,50 +231,14 @@ const OverviewDashboard = ({ projects }: DataProps) => {
             {...legacyProps}
           />
         </Column>
-        <>
-          <Title
-            ml="12px"
-            mt="40px"
-            width="100%"
-            variant="h2"
-            color="primary"
-            fontWeight="normal"
-          >
-            {formatMessage(overviewMessages.management)}
-          </Title>
-          <Column>
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.inputStatus"
-              projectId={currentProjectFilter}
-              startAtMoment={startAtMoment}
-              endAtMoment={endAtMoment}
-              resolution={resolution}
-            />
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.events"
-              projectId={currentProjectFilter}
-              startAtMoment={startAtMoment}
-              endAtMoment={endAtMoment}
-              resolution={resolution}
-            />
-          </Column>
-          <Column>
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.emailDeliveries"
-              projectId={currentProjectFilter}
-              startAtMoment={startAtMoment}
-              endAtMoment={endAtMoment}
-              resolution={resolution}
-            />
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.invitations"
-              projectId={currentProjectFilter}
-              startAtMoment={startAtMoment}
-              endAtMoment={endAtMoment}
-              resolution={resolution}
-            />
-          </Column>
-        </>
+        <Suspense fallback={null}>
+          <Management
+            currentProjectFilter={currentProjectFilter}
+            startAtMoment={startAtMoment}
+            endAtMoment={endAtMoment}
+            resolution={resolution}
+          />
+        </Suspense>
       </GraphsContainer>
     </>
   );
