@@ -7,9 +7,6 @@ import {
   activeUsersByTimeXlsxEndpoint,
 } from 'services/stats';
 
-// resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 
@@ -40,19 +37,19 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
 // typings
-import { PublicationStatus } from 'services/projects';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { isNilOrError } from 'utils/helperUtils';
-
-interface DataProps {
-  projects: GetProjectsChildProps;
-}
+import useProjects from 'hooks/useProjects';
 
 export type IResource = 'ideas' | 'comments' | 'votes';
 export type TMomentTime = Moment | null;
 
-const OverviewDashboard = ({ projects }: DataProps) => {
+const OverviewDashboard = () => {
   const user = useAuthUser();
+  const projects = useProjects({
+    publicationStatuses: ['draft', 'published', 'archived'],
+    canModerate: true,
+  });
   const { formatMessage } = useIntl();
 
   const resourceOptions = useMemo(
@@ -122,9 +119,6 @@ const OverviewDashboard = ({ projects }: DataProps) => {
 
   if (isNilOrError(projects)) return null;
   if (isNilOrError(user)) return null;
-
-  const { projectsList } = projects;
-  if (!projectsList) return null;
 
   const startAt = startAtMoment && startAtMoment.toISOString();
   const endAt = endAtMoment && endAtMoment.toISOString();
@@ -244,17 +238,4 @@ const OverviewDashboard = ({ projects }: DataProps) => {
   );
 };
 
-const publicationStatuses: PublicationStatus[] = [
-  'draft',
-  'published',
-  'archived',
-];
-
-export default () => (
-  <GetProjects
-    publicationStatuses={publicationStatuses}
-    filterCanModerate={true}
-  >
-    {(projects) => <OverviewDashboard projects={projects} />}
-  </GetProjects>
-);
+export default OverviewDashboard;
