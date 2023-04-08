@@ -7,9 +7,6 @@ import {
   activeUsersByTimeXlsxEndpoint,
 } from 'services/stats';
 
-// hooks
-import useAuthUser from 'hooks/useAuthUser';
-
 // components
 import { Title } from '@citizenlab/cl2-component-library';
 import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
@@ -38,18 +35,11 @@ import tracks from '../tracks';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
-import { isNilOrError } from 'utils/helperUtils';
-import useProjects from 'hooks/useProjects';
 
 export type IResource = 'ideas' | 'comments' | 'votes';
 export type TMomentTime = Moment | null;
 
 const OverviewDashboard = () => {
-  const user = useAuthUser();
-  const projects = useProjects({
-    publicationStatuses: ['draft', 'published', 'archived'],
-    canModerate: true,
-  });
   const { formatMessage } = useIntl();
 
   const resourceOptions = useMemo(
@@ -116,9 +106,6 @@ const OverviewDashboard = () => {
 
     setCurrentResourceByProject(option.value);
   }, []);
-
-  if (isNilOrError(projects)) return null;
-  if (isNilOrError(user)) return null;
 
   const startAt = startAtMoment && startAtMoment.toISOString();
   const endAt = endAtMoment && endAtMoment.toISOString();
