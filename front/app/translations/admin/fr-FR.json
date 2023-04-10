@@ -595,7 +595,7 @@
   "app.containers.Admin.Users.userBlockModal.daysBlocked1": "{numberOfDays, plural, one {1 jour} other {{numberOfDays} jours}}",
   "app.containers.Admin.Users.userBlockModal.header": "Bloquer l'utilisateur",
   "app.containers.Admin.Users.userBlockModal.reasonLabel": "Raison",
-  "app.containers.Admin.Users.userBlockModal.reasonLabelTooltip": "Cette information sera communiquée à l'utilisateur bloqué.",
+  "app.containers.Admin.Users.userBlockModal.reasonLabelTooltip": "Cela sera communiqué à l'utilisateur bloqué.",
   "app.containers.Admin.Users.userBlockModal.subtitle1": "L'utilisateur sélectionné ne pourra pas se connecter à la plateforme pour {daysBlocked}. Si vous souhaitez y remédier, vous pouvez le débloquer de la liste des utilisateurs bloqués.",
   "app.containers.Admin.Users.userBlockModal.unblockAction": "Débloquer",
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "Oui, je veux débloquer cet utilisateur",
