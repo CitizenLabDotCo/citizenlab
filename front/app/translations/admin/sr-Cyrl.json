@@ -595,7 +595,7 @@
   "app.containers.Admin.Users.userBlockModal.daysBlocked1": "{numberOfDays, plural, one {1 day} other {{numberOfDays} days}}",
   "app.containers.Admin.Users.userBlockModal.header": "Block user",
   "app.containers.Admin.Users.userBlockModal.reasonLabel": "Reason",
-  "app.containers.Admin.Users.userBlockModal.reasonLabelTooltip": "This will be comunicated to the blocked user.",
+  "app.containers.Admin.Users.userBlockModal.reasonLabelTooltip": "This will be communicated to the blocked user.",
   "app.containers.Admin.Users.userBlockModal.subtitle1": "The selected user won't be able to log in to the platform for {daysBlocked}. If you wish to revert this, you can unblock them from the list of blocked users.",
   "app.containers.Admin.Users.userBlockModal.unblockAction": "Unblock",
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "Yes, I want to unblock this user",

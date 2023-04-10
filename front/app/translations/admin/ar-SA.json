@@ -595,7 +595,7 @@
   "app.containers.Admin.Users.userBlockModal.daysBlocked1": "{numberOfDays, plural, one {يوم 1} other {{numberOfDays} أيام}}",
   "app.containers.Admin.Users.userBlockModal.header": "مستخدم محضور",
   "app.containers.Admin.Users.userBlockModal.reasonLabel": "سبب",
-  "app.containers.Admin.Users.userBlockModal.reasonLabelTooltip": "سيتم إرسال هذا إلى المستخدم المحظور.",
+  "app.containers.Admin.Users.userBlockModal.reasonLabelTooltip": "سيتم إبلاغ هذا المستخدم المحظور.",
   "app.containers.Admin.Users.userBlockModal.subtitle1": "لن يتمكن المستخدم المحدد من تسجيل الدخول إلى النظام الأساسي لـ {daysBlocked}. إذا كنت ترغب في التراجع عن ذلك ، فيمكنك إلغاء حظره من قائمة المستخدمين المحظورين.",
   "app.containers.Admin.Users.userBlockModal.unblockAction": "رفع الحظر",
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "نعم ، أريد إلغاء حظر هذا المستخدم",
