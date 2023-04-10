@@ -18,6 +18,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
 
+// utils
+import { isValidEmail } from 'utils/validate';
+
 // typings
 import { SSOProvider } from 'services/singleSignOn';
 
@@ -44,7 +47,12 @@ const LightFlowStart = ({ onSubmit, onSwitchToSSO }: Props) => {
       object({
         email: string()
           .email(formatMessage(sharedMessages.emailFormatError))
-          .required(formatMessage(sharedMessages.emailMissingError)),
+          .required(formatMessage(sharedMessages.emailMissingError))
+          .test(
+            '',
+            formatMessage(sharedMessages.emailFormatError),
+            isValidEmail
+          ),
       }),
     [formatMessage]
   );
