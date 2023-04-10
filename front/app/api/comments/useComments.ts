@@ -40,7 +40,8 @@ const useComments = (
 ) => {
   return useInfiniteQuery<IComments, CLErrors, IComments, CommentsKeys>({
     queryKey: commentKeys.list(parameters),
-    queryFn: () => fetchComments(parameters),
+    queryFn: ({ pageParam }) =>
+      fetchComments({ ...parameters, pageNumber: pageParam }),
     getNextPageParam: (lastPage) => {
       const hasNextPage = lastPage.links?.next;
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);

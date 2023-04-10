@@ -4,31 +4,11 @@ import commentsKeys from './keys';
 
 export type CommentsKeys = Keys<typeof commentsKeys>;
 
-type ICommentParametersUser = {
-  ideaId?: never;
-  initiativeId?: never;
-  userId?: string;
-  projectId?: never;
-};
-
-type ICommentParametersIdea = {
+export type ICommentParameters = {
   ideaId?: string;
-  projectId?: string;
-  initiativeId?: never;
-  userId?: never;
-};
-
-type ICommentParametersInitiative = {
-  ideaId?: never;
   initiativeId?: string;
-  userId?: never;
-  projectId?: string;
+  userId?: string;
 };
-
-export type ICommentParameters =
-  | ICommentParametersUser
-  | ICommentParametersIdea
-  | ICommentParametersInitiative;
 
 interface CommentAttributes {
   upvotes_count: number;
