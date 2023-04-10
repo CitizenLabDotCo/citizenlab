@@ -107,16 +107,6 @@ export function commentsForInitiativeStream(
   });
 }
 
-export function commentsForUserStream(
-  userId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IComments>({
-    apiEndpoint: `${API_PATH}/users/${userId}/comments`,
-    ...streamParams,
-  });
-}
-
 export async function addCommentToIdea(
   ideaId: string,
   projectId: string,
