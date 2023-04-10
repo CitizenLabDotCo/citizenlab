@@ -55,10 +55,6 @@ export default defineMessages({
     id: 'app.containers.SignUp.submit',
     defaultMessage: 'Complete your profile',
   },
-  skip: {
-    id: 'app.containers.SignUp.skip',
-    defaultMessage: 'Skip this step',
-  },
   unknownError: {
     id: 'app.containers.SignUp.unknownError',
     defaultMessage: 'Something went wrong. Please try again later.',
@@ -91,10 +87,6 @@ export default defineMessages({
   completeYourProfile: {
     id: 'app.containers.SignUp.completeYourProfile',
     defaultMessage: 'Complete your profile',
-  },
-  completeSignUp: {
-    id: 'app.containers.SignUp.completeSignUp',
-    defaultMessage: 'Complete sign up',
   },
   signUpSuccess: {
     id: 'app.containers.SignUp.signUpSuccess',

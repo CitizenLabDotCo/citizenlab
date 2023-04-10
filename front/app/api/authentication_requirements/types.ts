@@ -38,7 +38,7 @@ export interface AuthenticationRequirementsResponse {
   };
 }
 
-type RequirementStatus = 'dont_ask' | 'require' | 'satisfied';
+type RequirementStatus = 'dont_ask' | 'require' | 'satisfied' | 'ask';
 
 export interface AuthenticationRequirements {
   permitted: boolean;

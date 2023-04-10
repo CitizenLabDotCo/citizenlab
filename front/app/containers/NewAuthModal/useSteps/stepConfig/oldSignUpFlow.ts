@@ -6,6 +6,9 @@ import createAccountWithPassword, {
 import confirmEmail from 'api/authentication/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/resendEmailConfirmationCode';
 
+// utils
+import { askCustomFields } from './utils';
+
 // typings
 import {
   Status,
@@ -70,7 +73,10 @@ export const oldSignUpFlow = (
 
           // const verificationRequired // TODO
 
-          // const customFieldsRequired // TODO
+          if (askCustomFields(requirements.custom_fields)) {
+            setCurrentStep('sign-up:custom-fields');
+            return;
+          }
 
           setCurrentStep('success');
         } catch {
@@ -91,7 +97,17 @@ export const oldSignUpFlow = (
         try {
           await confirmEmail({ code });
           setStatus('ok');
-          setCurrentStep('success'); // TODO
+
+          // const verificationRequired // TODO
+
+          const { requirements } = await getRequirements();
+
+          if (askCustomFields(requirements.custom_fields)) {
+            setCurrentStep('sign-up:custom-fields');
+            return;
+          }
+
+          setCurrentStep('success');
         } catch (e) {
           setStatus('error');
 
@@ -114,8 +130,8 @@ export const oldSignUpFlow = (
 
         try {
           await resendEmailConfirmationCode(newEmail);
-          setStatus('ok');
           setCurrentStep('sign-up:email-confirmation');
+          setStatus('ok');
         } catch {
           setStatus('error');
           setError('unknown');
@@ -128,9 +144,14 @@ export const oldSignUpFlow = (
       // TODO
     },
 
-    'sign-up:registration-fields': {
+    'sign-up:custom-fields': {
       CLOSE: () => setCurrentStep('closed'),
-      // TODO
+      SUBMIT: async () => {
+        // TODO
+      },
+      SKIP: async () => {
+        // TODO
+      },
     },
   };
 };

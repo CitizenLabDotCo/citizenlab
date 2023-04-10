@@ -8,8 +8,8 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import TextLink from '../components/TextLink';
-import TextButton from '../components/TextButton';
+import TextLink from '../_components/TextLink';
+import TextButton from '../_components/TextButton';
 
 // i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';

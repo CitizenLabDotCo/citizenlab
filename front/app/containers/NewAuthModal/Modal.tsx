@@ -11,6 +11,7 @@ import AuthProviders from './steps/AuthProviders';
 import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
 import EmailAndPassword from './steps/EmailAndPassword';
 import EmailConfirmation from './steps/EmailConfirmation';
+import CustomFields from './steps/CustomFields';
 import ChangeEmail from './steps/ChangeEmail';
 import LightFlowStart from './steps/LightFlowStart';
 import EmailPolicies from './steps/Policies/EmailPolicies';
@@ -48,7 +49,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sign-up:email-confirmation': messages.signUp,
   'sign-up:change-email': messages.signUp,
   'sign-up:verification': messages.signUp,
-  'sign-up:registration-fields': messages.signUp,
+  'sign-up:custom-fields': messages.signUp,
 
   // light flow
   'light-flow:email': messages.beforeYouParticipate,
@@ -183,6 +184,14 @@ const AuthModal = () => {
           <ChangeEmail
             onGoBack={transition(currentStep, 'GO_BACK')}
             onChangeEmail={transition(currentStep, 'RESEND_CODE')}
+          />
+        )}
+
+        {currentStep === 'sign-up:custom-fields' && (
+          <CustomFields
+            status={status}
+            onSubmit={transition(currentStep, 'SUBMIT')}
+            onSkip={transition(currentStep, 'SKIP')}
           />
         )}
 

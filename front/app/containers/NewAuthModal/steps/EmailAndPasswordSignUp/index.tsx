@@ -9,7 +9,7 @@ import useLocale from 'hooks/useLocale';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import TextButton from '../components/TextButton';
+import TextButton from '../_components/TextButton';
 import PoliciesMarkup from '../Policies/PoliciesMarkup';
 
 // i18n

@@ -7,7 +7,7 @@ import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Outlet from 'components/Outlet';
 import Error from 'components/UI/Error';
 import { Text } from '@citizenlab/cl2-component-library';
-import TextButton from '../components/TextButton';
+import TextButton from '../_components/TextButton';
 
 // resources
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

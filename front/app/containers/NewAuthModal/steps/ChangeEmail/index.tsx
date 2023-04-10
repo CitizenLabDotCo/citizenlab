@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import TextButton from '../components/TextButton';
+import TextButton from '../_components/TextButton';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';

@@ -12,7 +12,7 @@ export type Step =
   | 'sign-up:email-confirmation'
   | 'sign-up:change-email'
   | 'sign-up:verification'
-  | 'sign-up:registration-fields'
+  | 'sign-up:custom-fields'
 
   // light flow
   | 'light-flow:email'

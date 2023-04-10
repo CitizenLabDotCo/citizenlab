@@ -6,7 +6,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 // components
 import { Box, Text, Icon } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import TextLink from '../components/TextLink';
+import TextLink from '../_components/TextLink';
 
 // i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
