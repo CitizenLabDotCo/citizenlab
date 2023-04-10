@@ -1398,7 +1398,7 @@
   "app.containers.UsersEditPage.verifyNow": "Verificer nu",
   "app.containers.UsersShowPage.a11y_initiativePostedIn": "Borgerforslag, hvoraf denne kommentar blev slået op:",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Idé, hvoraf denne kommentar blev slået op:",
-  "app.containers.UsersShowPage.a11y_upvotesCount": "{upvotesCount, plural, =0 {no upvotes} en {1 upvote} andre {# upvotes}}",
+  "app.containers.UsersShowPage.a11y_upvotesCount": "{upvotesCount, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}",
   "app.containers.UsersShowPage.commentsWithCount": "Kommentarer ({commentsCount}) ",
   "app.containers.UsersShowPage.editProfile": "Rediger min profil ",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Gå tilbage til den foregående side",
