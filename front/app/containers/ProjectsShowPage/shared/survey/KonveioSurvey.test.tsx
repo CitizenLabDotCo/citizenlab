@@ -7,7 +7,7 @@ describe('KonveioSurvey', () => {
   it('should render', () => {
     render(
       <KonveioSurvey
-        email={''}
+        email={null}
         konveioSurveyUrl={'https://demo.konveio.com/node/93?iframe=true'}
       />
     );
@@ -21,10 +21,9 @@ describe('KonveioSurvey', () => {
         konveioSurveyUrl={'https://demo.konveio.com/node/93?iframe=true'}
       />
     );
-    const displayedImage = screen.getByTestId(
-      'konveiosurvey'
-    ) as HTMLImageElement;
-    expect(displayedImage.src).toContain(
+    const displayedIframe = screen.getByTestId('konveiosurvey');
+    expect(displayedIframe).toHaveAttribute(
+      'src',
       'https://demo.konveio.com/node/93?iframe=true&integration=CitizenLab&username=test%40mail.com'
     );
   });
