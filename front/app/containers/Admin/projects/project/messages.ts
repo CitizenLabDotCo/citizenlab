@@ -127,7 +127,7 @@ export default defineMessages({
     defaultMessage: 'Create an external survey',
   },
   createSurveyDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription',
+    id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription1',
     defaultMessage:
       'Embed a Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey, Microsoft Forms or Konveio survey.',
   },
