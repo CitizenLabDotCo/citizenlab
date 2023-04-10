@@ -101,7 +101,7 @@ const CustomPageSettingsForm = ({
     onlyCheckAllowed: true,
   });
   const showPlanUpgradeTease = !isFeatureAllowed;
-  const showAdvancedCustomPages = showPlanUpgradeTease || isFeatureEnabled;
+  const showAdvancedCustomPages = isFeatureEnabled || showPlanUpgradeTease;
   const areas = useAreas();
   const { data: appConfig } = useAppConfiguration();
   const locale = useLocale();
@@ -261,59 +261,59 @@ const CustomPageSettingsForm = ({
 
             {showAdvancedCustomPages && (
               <LinkedProjectContainer
-                display="inline-flex"
+                display="flex"
+                flexDirection="column"
                 disabled={showPlanUpgradeTease}
+                mb={fieldMarginBottom}
               >
-                <Box mb={fieldMarginBottom}>
-                  <Tippy
-                    maxWidth="250px"
-                    placement="right-end"
-                    content={formatMessage(messages.contactGovSuccessToAccess)}
-                    disabled={!showPlanUpgradeTease}
-                    hideOnClick={false}
-                  >
-                    <div>
-                      <Label>
-                        {formatMessage(messages.linkedProjectsLabel)}
-                        {/* Tooltip was conflicting with Tippy that's shown we tease is displayed */}
-                        {!showPlanUpgradeTease && (
-                          <IconTooltip
-                            ml="10px"
-                            content={formatMessage(
-                              messages.linkedProjectsTooltip
-                            )}
-                          />
-                        )}
-                      </Label>
-                      <Box mb="30px">
-                        <Tabs
-                          name="projects_filter_type"
-                          items={projectsFilterTabs}
-                          minTabWidth={120}
-                          disabled={showPlanUpgradeTease}
+                <Tippy
+                  maxWidth="250px"
+                  placement="right-end"
+                  content={formatMessage(messages.contactGovSuccessToAccess)}
+                  disabled={!showPlanUpgradeTease}
+                  hideOnClick={false}
+                >
+                  <div>
+                    <Label>
+                      {formatMessage(messages.linkedProjectsLabel)}
+                      {/* Tooltip was conflicting with Tippy that's shown we tease is displayed */}
+                      {!showPlanUpgradeTease && (
+                        <IconTooltip
+                          ml="10px"
+                          content={formatMessage(
+                            messages.linkedProjectsTooltip
+                          )}
                         />
-                      </Box>
-                    </div>
-                  </Tippy>
-                  {methods.watch('projects_filter_type') === 'topics' && (
-                    <SelectContainer mb="30px">
-                      <MultipleSelect
-                        name="topic_ids"
-                        options={mapFilterEntityToOptions(topics)}
-                        label={formatMessage(messages.selectedTagsLabel)}
+                      )}
+                    </Label>
+                    <Box mb="30px">
+                      <Tabs
+                        name="projects_filter_type"
+                        items={projectsFilterTabs}
+                        minTabWidth={120}
+                        disabled={showPlanUpgradeTease}
                       />
-                    </SelectContainer>
-                  )}
-                  {methods.watch('projects_filter_type') === 'areas' && (
-                    <SelectContainer mb="20px">
-                      <Select
-                        name="area_id"
-                        options={mapFilterEntityToOptions(areas)}
-                        label={formatMessage(messages.selectedAreasLabel)}
-                      />
-                    </SelectContainer>
-                  )}
-                </Box>
+                    </Box>
+                  </div>
+                </Tippy>
+                {methods.watch('projects_filter_type') === 'topics' && (
+                  <SelectContainer mb="30px">
+                    <MultipleSelect
+                      name="topic_ids"
+                      options={mapFilterEntityToOptions(topics)}
+                      label={formatMessage(messages.selectedTagsLabel)}
+                    />
+                  </SelectContainer>
+                )}
+                {methods.watch('projects_filter_type') === 'areas' && (
+                  <SelectContainer mb="20px">
+                    <Select
+                      name="area_id"
+                      options={mapFilterEntityToOptions(areas)}
+                      label={formatMessage(messages.selectedAreasLabel)}
+                    />
+                  </SelectContainer>
+                )}
               </LinkedProjectContainer>
             )}
           </SectionField>
