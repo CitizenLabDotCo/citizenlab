@@ -99,8 +99,6 @@ export const UserComments = ({ userId }: Props) => {
       (comment) => comment.relationships.post.data.id
     );
 
-    console.log('commentGroups', commentGroups);
-
     return (
       <Container className="e2e-profile-comments">
         <ScreenReaderOnly>
