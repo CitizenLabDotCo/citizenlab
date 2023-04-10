@@ -596,7 +596,7 @@
   "app.containers.Admin.Users.userBlockModal.header": "Blokere bruger",
   "app.containers.Admin.Users.userBlockModal.reasonLabel": "Begrundelse",
   "app.containers.Admin.Users.userBlockModal.reasonLabelTooltip": "Dette vil blive meddelt den blokerede bruger.",
-  "app.containers.Admin.Users.userBlockModal.subtitle1": "Den valgte bruger vil ikke kunne logge ind på platformen på {daysBlocked}. Hvis du ønsker at ændre dette, kan du ophæve blokeringerne fra listen over blokerede brugere.",
+  "app.containers.Admin.Users.userBlockModal.subtitle1": "Den valgte bruger vil ikke kunne logge ind på platformen i {daysBlocked}. Hvis du ønsker at ændre dette, kan du ophæve blokeringerne fra listen over blokerede brugere.",
   "app.containers.Admin.Users.userBlockModal.unblockAction": "Fjern blokering af",
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "Ja, jeg ønsker at ophæve blokering af denne bruger",
   "app.containers.Admin.Users.userDeletionConfirmation": "Fjern denne bruger permanent?",
