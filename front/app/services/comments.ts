@@ -87,26 +87,6 @@ export function childCommentsStream(
   });
 }
 
-export function commentsForIdeaStream(
-  ideaId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IComments>({
-    apiEndpoint: `${API_PATH}/ideas/${ideaId}/comments`,
-    ...streamParams,
-  });
-}
-
-export function commentsForInitiativeStream(
-  initiativeId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IComments>({
-    apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/comments`,
-    ...streamParams,
-  });
-}
-
 export async function addCommentToIdea(
   ideaId: string,
   projectId: string,
