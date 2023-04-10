@@ -211,9 +211,7 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
               close();
             },
             onError: (error) => {
-              const apiErrors = get(error, 'json.errors') as unknown as {
-                base: { error: string }[];
-              };
+              const apiErrors = error.json.errors;
               const profanityApiError = apiErrors.base.find(
                 (apiError) => apiError.error === 'includes_banned_words'
               );
@@ -262,9 +260,7 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
               close();
             },
             onError: (error) => {
-              const apiErrors = get(error, 'json.errors') as unknown as {
-                base: { error: string }[];
-              };
+              const apiErrors = error.json.errors;
               const profanityApiError = apiErrors.base.find(
                 (apiError) => apiError.error === 'includes_banned_words'
               );
