@@ -101,6 +101,7 @@ export const getStepConfig = (
 
     ...oldSignUpFlow(
       getAuthenticationData,
+      getRequirements,
       setCurrentStep,
       setStatus,
       setError,

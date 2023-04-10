@@ -12,11 +12,13 @@ import {
   AuthenticationData,
   AuthProvider,
   ErrorCode,
+  GetRequirements,
 } from '../../typings';
 import { Step } from './typings';
 
 export const oldSignUpFlow = (
   getAuthenticationData: () => AuthenticationData,
+  getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
   setError: (errorCode: ErrorCode) => void,
@@ -56,7 +58,21 @@ export const oldSignUpFlow = (
         try {
           await createAccountWithPassword(params);
           setStatus('ok');
-          setCurrentStep('sign-up:email-confirmation');
+
+          const { requirements } = await getRequirements();
+          const emailConfirmationRequired =
+            requirements.special.confirmation === 'require';
+
+          if (emailConfirmationRequired) {
+            setCurrentStep('sign-up:email-confirmation');
+            return;
+          }
+
+          // const verificationRequired // TODO
+
+          // const customFieldsRequired // TODO
+
+          setCurrentStep('success');
         } catch {
           setStatus('error');
           setError('account_creation_failed');
