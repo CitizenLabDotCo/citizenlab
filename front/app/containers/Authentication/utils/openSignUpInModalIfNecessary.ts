@@ -90,7 +90,6 @@ export default function openSignUpInModalIfNecessary(
           shouldFinishRegistrationAfterSSO)
       ) {
         triggerAuthenticationFlow({
-          isInvitation,
           token,
           flow: isAuthError && sso_flow ? sso_flow : 'signup',
           error: isAuthError ? { code: error_code || 'general' } : undefined,

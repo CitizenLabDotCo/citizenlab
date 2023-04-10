@@ -12,7 +12,6 @@ export function triggerAuthenticationFlow(
     context: partialAuthenticationData?.context ?? GLOBAL_CONTEXT,
     successAction: partialAuthenticationData?.successAction,
     error: partialAuthenticationData?.error,
-    isInvitation: !!partialAuthenticationData?.isInvitation,
     token: partialAuthenticationData?.token,
     verification: !!partialAuthenticationData?.verification,
   };

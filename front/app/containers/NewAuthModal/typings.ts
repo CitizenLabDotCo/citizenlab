@@ -17,6 +17,7 @@ export type ErrorCode =
 
 export interface State {
   email: string | null;
+  token: string | null;
 }
 
 export type UpdateState = (state: Partial<State>) => void;
@@ -36,9 +37,8 @@ export interface AuthenticationData {
 
   // TODO clean this up
   error?: { code: SignUpInError };
-  isInvitation: boolean;
   token?: string;
-  verification: boolean;
+  verification: boolean; // TODO remove when new requirements attribute is available
 }
 
 export type SSOProviderWithoutVienna = Exclude<SSOProvider, 'id_vienna_saml'>;

@@ -5,12 +5,16 @@ import getAuthenticationRequirements from 'api/authentication_requirements/getAu
 
 // hooks
 import useAnySSOEnabled from '../useAnySSOEnabled';
+import { useLocation } from 'react-router-dom';
 
 // utils
 import { getStepConfig } from './stepConfig';
 
 // events
 import { triggerAuthenticationFlow$ } from '../events';
+
+// constants
+import { GLOBAL_CONTEXT } from 'api/authentication_requirements/types';
 
 // typings
 import {
@@ -22,13 +26,16 @@ import {
   AuthenticationData,
 } from '../typings';
 
+let initialized = false;
+
 export default function useSteps() {
   const anySSOEnabled = useAnySSOEnabled();
+  const { pathname, search } = useLocation();
 
   const authenticationDataRef = useRef<AuthenticationData | null>(null);
 
   const [currentStep, setCurrentStep] = useState<Step>('closed');
-  const [state, setState] = useState<State>({ email: null });
+  const [state, setState] = useState<State>({ email: null, token: null });
   const [status, setStatus] = useState<Status>('ok');
   const [error, setError] = useState<ErrorCode | null>(null);
 
@@ -108,6 +115,26 @@ export default function useSteps() {
 
     return () => subscription.unsubscribe();
   }, [currentStep, transition]);
+
+  useEffect(() => {
+    if (initialized) return;
+    if (currentStep !== 'closed') return;
+    initialized = true;
+
+    if (pathname.endsWith('/invite')) {
+      authenticationDataRef.current = {
+        flow: 'signup',
+        context: GLOBAL_CONTEXT,
+        verification: false,
+      };
+
+      transition(currentStep, 'START_INVITE_FLOW')(search);
+
+      // Remove all parameters from URL as they've already been captured
+      window.history.replaceState(null, '', '/');
+      return;
+    }
+  }, [pathname, search, currentStep, transition]);
 
   return {
     currentStep,

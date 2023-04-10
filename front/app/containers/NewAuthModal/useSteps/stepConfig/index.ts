@@ -1,3 +1,5 @@
+import { parse } from 'qs';
+
 // flows
 import { oldSignInFlow } from './oldSignInFlow';
 import { oldSignUpFlow } from './oldSignUpFlow';
@@ -36,10 +38,24 @@ export const getStepConfig = (
   return {
     // closed (shared)
     closed: {
-      // When we fire this, we are already sure that we need the new flow.
-      // i.e. we have already checked the requirements endpoint and stuff
+      // When the user entered the platform through an invite link
+      START_INVITE_FLOW: async (search: string) => {
+        const params = parse(search);
+        const token = params.token;
+        if (token !== undefined && typeof token !== 'string') return;
+
+        if (token) {
+          updateState({ token });
+          setCurrentStep('sign-up:email-password');
+        } else {
+          setCurrentStep('closed'); // TODO
+        }
+      },
+
+      // When the authentication flow is triggered by an action
+      // done by the user
       TRIGGER_REGISTRATION_FLOW: async () => {
-        updateState({ email: null });
+        updateState({ email: null, token: null });
 
         const { permitted, requirements } = await getRequirements();
 
