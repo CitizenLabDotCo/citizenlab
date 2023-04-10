@@ -66,10 +66,18 @@ export interface IComments {
   links: ICommentLinks;
 }
 
+export interface INewComment {
+  ideaId?: string;
+  initiativeId?: string;
+  author_id: string;
+  parent_id?: string;
+  body_multiloc: Multiloc;
+}
+
 export interface IUpdatedComment {
   author_id?: string;
   parent_id?: string;
-  body_multiloc: { [key: string]: string };
+  body_multiloc: Multiloc;
 }
 
 export const DeleteReasonCode = {
