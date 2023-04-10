@@ -75,6 +75,7 @@ export interface INewComment {
 }
 
 export interface IUpdatedComment {
+  commentId: string;
   author_id?: string;
   parent_id?: string;
   body_multiloc: Multiloc;

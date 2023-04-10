@@ -4,7 +4,8 @@ import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Services
-import { updateComment, IUpdatedComment } from 'services/comments';
+import useUpdateComment from 'api/comments/useUpdateComment';
+import { IUpdatedComment } from 'api/comments/types';
 
 // Resources
 
@@ -15,7 +16,6 @@ import messages from './messages';
 
 // Components
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -32,6 +32,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 import { commentTranslateButtonClicked$ } from './events';
 import { filter } from 'rxjs/operators';
+import { Button } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div``;
 
@@ -64,6 +65,8 @@ interface Props {
   onCommentSaved: () => void;
   onCancelEditing: () => void;
   className?: string;
+  postId: string;
+  postType: 'idea' | 'initiative';
 }
 
 const CommentBody = ({
@@ -73,19 +76,23 @@ const CommentBody = ({
   onCancelEditing,
   onCommentSaved,
   className,
+  postId,
+  postType,
 }: Props) => {
   const theme = useTheme();
   const { data: comment } = useComment(commentId);
+  const { mutate: updateComment, isLoading: processing } = useUpdateComment({
+    ideaId: postType === 'idea' ? postId : undefined,
+    initiativeId: postType === 'initiative' ? postId : undefined,
+  });
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
 
-  const [commentContent, setCommentContent] = React.useState('');
-  const [editableCommentContent, setEditableCommentContent] =
-    React.useState('');
-  const [translateButtonClicked, setTranslateButtonClicked] =
-    React.useState(false);
-  const [processing, setProcessing] = React.useState(false);
-  const [apiErrors, setApiErrors] = React.useState<CLErrors | null>(null);
+  const [commentContent, setCommentContent] = useState('');
+  const [editableCommentContent, setEditableCommentContent] = useState('');
+  const [translateButtonClicked, setTranslateButtonClicked] = useState(false);
+
+  const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
   const [textAreaRef, setTextAreaRef] = useState<HTMLTextAreaElement | null>(
     null
   );
@@ -172,7 +179,7 @@ const CommentBody = ({
     event.preventDefault();
 
     if (!isNilOrError(locale) && !isNilOrError(comment)) {
-      const updatedComment: IUpdatedComment = {
+      const updatedComment: Omit<IUpdatedComment, 'commentId'> = {
         body_multiloc: {
           [locale]: editableCommentContent.replace(
             /@\[(.*?)\]\((.*?)\)/gi,
@@ -185,20 +192,23 @@ const CommentBody = ({
       if (authorId) {
         updatedComment.author_id = authorId;
       }
-      setProcessing(true);
       setApiErrors(null);
 
-      try {
-        await updateComment(commentId, updatedComment);
-        onCommentSaved();
-      } catch (error) {
-        if (isCLErrorJSON(error)) {
-          const apiErrors = (error as CLErrorsJSON).json.errors;
-          setApiErrors(apiErrors);
+      updateComment(
+        { commentId, ...updatedComment },
+        {
+          onSuccess: () => {
+            onCommentSaved();
+            setCommentContent('');
+          },
+          onError: (error) => {
+            if (isCLErrorJSON(error)) {
+              const apiErrors = (error as CLErrorsJSON).json.errors;
+              setApiErrors(apiErrors);
+            }
+          },
         }
-      }
-
-      setProcessing(false);
+      );
     }
   };
 

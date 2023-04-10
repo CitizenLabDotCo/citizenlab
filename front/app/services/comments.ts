@@ -77,26 +77,6 @@ export interface DeleteReason {
 
 export type CommentsSort = '-new' | 'upvotes_count' | 'new' | '-upvotes_count';
 
-export async function updateComment(
-  commentId: string,
-  object: IUpdatedComment
-) {
-  const response = await streams.update<IComment>(
-    `${API_PATH}/comments/${commentId}`,
-    commentId,
-    { comment: object }
-  );
-
-  // refetch commentsForUser
-  if (object.author_id) {
-    streams.fetchAllWith({
-      apiEndpoint: [`${API_PATH}/users/${object.author_id}/comments`],
-    });
-  }
-
-  return response;
-}
-
 export async function markForDeletion(
   commentId: string,
   authorId?: string,

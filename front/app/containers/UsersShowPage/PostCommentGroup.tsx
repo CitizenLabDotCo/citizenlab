@@ -219,6 +219,8 @@ const PostCommentGroup = ({
               editing={false}
               onCommentSaved={nothingHappens}
               onCancelEditing={nothingHappens}
+              postId={postId}
+              postType={postType}
             />
             <VotesContainer>
               <VoteIcon ariaHidden name="vote-up" />

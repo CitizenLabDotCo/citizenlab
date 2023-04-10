@@ -120,7 +120,6 @@ class Comment extends PureComponent<Props & WrappedComponentProps, State> {
       className,
     } = this.props;
     const { editing } = this.state;
-
     if (!isNilOrError(comment)) {
       const commentId = comment.id;
       const authorId = !isNilOrError(author) ? author.id : null;
@@ -161,6 +160,8 @@ class Comment extends PureComponent<Props & WrappedComponentProps, State> {
                       editing={editing}
                       onCommentSaved={this.onCommentSaved}
                       onCancelEditing={this.onCancelEditing}
+                      postId={postId}
+                      postType={postType}
                     />
                     <CommentFooter
                       className={commentType}
