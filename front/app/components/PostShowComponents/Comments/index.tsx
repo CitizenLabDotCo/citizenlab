@@ -21,7 +21,7 @@ import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 import { Title } from '@citizenlab/cl2-component-library';
 
 // typings
-import { CommentsSort } from 'services/comments';
+import { CommentsSort } from 'api/comments/types';
 import { IdeaCommentingDisabledReason } from 'api/ideas/types';
 import CommentingInitiativeDisabled from './CommentingInitiativeDisabled';
 

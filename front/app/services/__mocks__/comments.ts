@@ -1,4 +1,4 @@
-import { ICommentData, IComment, IComments } from 'services/comments';
+import { ICommentData, IComment, IComments } from 'api/comments/types';
 import { BehaviorSubject } from 'rxjs';
 
 export const makeCommentData = (

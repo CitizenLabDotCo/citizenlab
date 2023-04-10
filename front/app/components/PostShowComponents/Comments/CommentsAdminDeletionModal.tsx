@@ -2,7 +2,7 @@
 import React from 'react';
 
 // Services
-import { DeleteReasonCode } from 'services/comments';
+import { DeleteReasonCode } from 'api/comments/types';
 
 // Components
 import Button from 'components/UI/Button';

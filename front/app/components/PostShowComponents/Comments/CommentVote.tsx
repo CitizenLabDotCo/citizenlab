@@ -7,7 +7,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import useDeleteCommentVote from 'api/comment_votes/useDeleteCommentVote';
 import useAddCommentVote from 'api/comment_votes/useAddCommentVote';
 import useCommentVote from 'api/comment_votes/useCommentVote';
-import { ICommentData } from 'services/comments';
+import { ICommentData } from 'api/comments/types';
 
 // resources
 
