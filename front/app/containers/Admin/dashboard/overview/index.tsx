@@ -12,14 +12,25 @@ import { Title } from '@citizenlab/cl2-component-library';
 import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
 import Outlet from 'components/Outlet';
 import ChartFilters from './ChartFilters';
-import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
-import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
-import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
-import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
-import VotesByTimeCard from 'components/admin/GraphCards/VotesByTimeCard';
-import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
 import RegistrationsByTimeCard from 'components/admin/GraphCards/RegistrationsByTimeCard';
+import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 const Management = lazy(() => import('./Management'));
+const PostsByTimeCard = lazy(
+  () => import('components/admin/GraphCards/PostsByTimeCard')
+);
+const VotesByTimeCard = lazy(
+  () => import('components/admin/GraphCards/VotesByTimeCard')
+);
+const CommentsByTimeCard = lazy(
+  () => import('components/admin/GraphCards/CommentsByTimeCard')
+);
+
+const SelectableResourceByTopicChart = lazy(
+  () => import('./charts/SelectableResourceByTopicChart')
+);
+const SelectableResourceByProjectChart = lazy(
+  () => import('./charts/SelectableResourceByProjectChart')
+);
 
 // i18n
 import messages from '../messages';
@@ -172,24 +183,30 @@ const OverviewDashboard = () => {
             endAtMoment={endAtMoment}
             resolution={resolution}
           />
-          <PostByTimeCard
-            projectId={currentProjectFilter}
-            startAtMoment={startAtMoment}
-            endAtMoment={endAtMoment}
-            resolution={resolution}
-          />
-          <CommentsByTimeCard
-            projectId={currentProjectFilter}
-            startAtMoment={startAtMoment}
-            endAtMoment={endAtMoment}
-            resolution={resolution}
-          />
-          <VotesByTimeCard
-            projectId={currentProjectFilter}
-            startAtMoment={startAtMoment}
-            endAtMoment={endAtMoment}
-            resolution={resolution}
-          />
+          <Suspense fallback={null}>
+            <PostsByTimeCard
+              projectId={currentProjectFilter}
+              startAtMoment={startAtMoment}
+              endAtMoment={endAtMoment}
+              resolution={resolution}
+            />
+          </Suspense>
+          <Suspense fallback={null}>
+            <CommentsByTimeCard
+              projectId={currentProjectFilter}
+              startAtMoment={startAtMoment}
+              endAtMoment={endAtMoment}
+              resolution={resolution}
+            />
+          </Suspense>
+          <Suspense fallback={null}>
+            <VotesByTimeCard
+              projectId={currentProjectFilter}
+              startAtMoment={startAtMoment}
+              endAtMoment={endAtMoment}
+              resolution={resolution}
+            />
+          </Suspense>
         </Column>
         <Column>
           <Outlet
@@ -199,18 +216,23 @@ const OverviewDashboard = () => {
             endAtMoment={endAtMoment}
             resolution={resolution}
           />
-          <SelectableResourceByProjectChart
-            className="dynamicHeight fullWidth e2e-resource-by-project-chart"
-            onResourceByProjectChange={onResourceByProjectChange}
-            resourceOptions={resourceOptions}
-            {...legacyProps}
-          />
-          <SelectableResourceByTopicChart
-            className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
-            onResourceByTopicChange={onResourceByTopicChange}
-            resourceOptions={resourceOptions}
-            {...legacyProps}
-          />
+
+          <Suspense fallback={null}>
+            <SelectableResourceByProjectChart
+              className="dynamicHeight fullWidth e2e-resource-by-project-chart"
+              onResourceByProjectChange={onResourceByProjectChange}
+              resourceOptions={resourceOptions}
+              {...legacyProps}
+            />
+          </Suspense>
+          <Suspense fallback={null}>
+            <SelectableResourceByTopicChart
+              className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
+              onResourceByTopicChange={onResourceByTopicChange}
+              resourceOptions={resourceOptions}
+              {...legacyProps}
+            />
+          </Suspense>
         </Column>
         <Suspense fallback={null}>
           <Management
