@@ -164,7 +164,6 @@ const ParentComment = ({
             postType={postType}
             projectId={projectId}
             parentId={commentId}
-            waitForChildCommentsRefetch={!isNilOrError(childComments)}
           />
         )}
       </Container>
