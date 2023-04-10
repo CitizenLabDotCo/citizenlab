@@ -396,7 +396,7 @@ class PasswordSignup extends PureComponent<
         metaData: { isInvitation },
         intl: { formatMessage },
         locale,
-      } = this.props;
+      } = this.props as any;
 
       const {
         token,

@@ -1,4 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+
+// api
+import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 
 // hooks
 // import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -37,17 +40,22 @@ import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 
 // typings
 import { Parameters as CreateAccountParameters } from 'api/authentication/createAccountWithPassword';
-import { Status } from 'containers/NewAuthModal/typings';
+import { State, Status } from 'containers/NewAuthModal/typings';
 
-interface Props {
+interface BaseProps {
   status: Status;
   onSwitchFlow: () => void;
   onGoBack: () => void;
   onSubmit: (parameters: CreateAccountParameters) => void;
 }
 
+interface Props extends BaseProps {
+  initialFormValues: Partial<FormValues>;
+}
+
 const EmailAndPasswordSignUp = ({
   status,
+  initialFormValues,
   onSwitchFlow,
   onGoBack,
   onSubmit,
@@ -73,7 +81,7 @@ const EmailAndPasswordSignUp = ({
 
   const methods = useForm({
     mode: 'onSubmit',
-    defaultValues: DEFAULT_VALUES,
+    defaultValues: initialFormValues,
     resolver: yupResolver(schema),
   });
 
@@ -183,4 +191,50 @@ const EmailAndPasswordSignUp = ({
   );
 };
 
-export default EmailAndPasswordSignUp;
+interface WrapperProps extends BaseProps {
+  state: State;
+}
+
+const EmailAndPasswordSignUpWrapper = ({
+  state,
+  ...otherProps
+}: WrapperProps) => {
+  const { token } = state;
+  const [prefilledValues, setPrefilledValues] =
+    useState<Partial<FormValues> | null>(null);
+
+  useEffect(() => {
+    if (!token) return;
+    getUserDataFromToken(token)
+      .then((response) => {
+        setPrefilledValues({
+          first_name: response.data.attributes.first_name,
+          last_name: response.data.attributes.last_name ?? undefined,
+          email: response.data.attributes.email ?? undefined,
+        });
+      })
+      .catch((e) => {
+        // TODO
+      });
+  }, [token]);
+
+  if (token) {
+    if (!prefilledValues) return null;
+
+    return (
+      <EmailAndPasswordSignUp
+        {...otherProps}
+        initialFormValues={prefilledValues}
+      />
+    );
+  }
+
+  return (
+    <EmailAndPasswordSignUp
+      {...otherProps}
+      initialFormValues={DEFAULT_VALUES}
+    />
+  );
+};
+
+export default EmailAndPasswordSignUpWrapper;
