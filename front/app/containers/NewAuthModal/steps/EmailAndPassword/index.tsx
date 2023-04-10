@@ -106,7 +106,6 @@ const EmailAndPassword = ({
 
   useEffect(() => {
     trackEventByName(tracks.signInEmailPasswordEntered);
-    return () => trackEventByName(tracks.signInEmailPasswordExited);
   }, []);
 
   if (!passwordLoginEnabled || tokenLifetime === undefined) return null;

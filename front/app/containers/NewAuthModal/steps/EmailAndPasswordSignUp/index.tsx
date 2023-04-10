@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // hooks
 // import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -24,6 +24,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { DEFAULT_VALUES, getSchema, FormValues } from './form';
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
+
+// tracks
+import tracks from '../../tracks';
+import { trackEventByName } from 'utils/analytics';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -72,6 +76,10 @@ const EmailAndPasswordSignUp = ({
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    trackEventByName(tracks.signUpEmailPasswordStepEntered);
+  }, []);
 
   if (isNilOrError(locale)) return null;
 

@@ -7,6 +7,10 @@ import { newLightFlow } from './newLightFlow';
 import streams from 'utils/streams';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
+// tracks
+import tracks from '../../tracks';
+import { trackEventByName } from 'utils/analytics';
+
 // events
 import { triggerSuccessAction } from 'containers/NewAuthModal/SuccessActions';
 
@@ -126,6 +130,8 @@ export const getStepConfig = (
 
         setStatus('ok');
         setCurrentStep('closed');
+
+        trackEventByName(tracks.signUpFlowCompleted);
 
         const { successAction } = getAuthenticationData();
         if (successAction) {

@@ -52,13 +52,18 @@ export const oldSignUpFlow = (
     },
 
     'sign-up:email-password': {
-      CLOSE: () => setCurrentStep('closed'),
+      CLOSE: () => {
+        setCurrentStep('closed');
+        trackEventByName(tracks.signUpEmailPasswordStepExited);
+      },
       SWITCH_FLOW: () => {
         setCurrentStep('sign-in:email-password');
+        trackEventByName(tracks.signUpEmailPasswordStepExited);
       },
       GO_BACK: () => {
         if (anySSOProviderEnabled) {
           setCurrentStep('sign-up:auth-providers');
+          trackEventByName(tracks.signUpEmailPasswordStepExited);
         }
       },
       SUBMIT: async (params: CreateAccountParams) => {
@@ -71,6 +76,8 @@ export const oldSignUpFlow = (
           const { requirements } = await getRequirements();
           const emailConfirmationRequired =
             requirements.special.confirmation === 'require';
+
+          trackEventByName(tracks.signUpCustomFieldsStepCompleted);
 
           if (emailConfirmationRequired) {
             setCurrentStep('sign-up:email-confirmation');
@@ -88,6 +95,7 @@ export const oldSignUpFlow = (
         } catch {
           setStatus('error');
           setError('account_creation_failed');
+          trackEventByName(tracks.signInEmailPasswordFailed);
         }
       },
     },
