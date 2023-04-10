@@ -1,12 +1,8 @@
 import React from 'react';
 import { parse, stringify } from 'qs';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-`;
 
 const StyledIframe = styled.iframe`
   display: block;
@@ -38,9 +34,9 @@ const SmartSurvey = ({ konveioSurveyUrl, className, email }: Props) => {
   const finalSurveyUrl = `${urlSplit[0]}?${queryString}`;
 
   return (
-    <Container className={className}>
+    <Box display="flex" justifyContent="center" className={className}>
       <StyledIframe data-testid={'konveiosurvey'} src={finalSurveyUrl} />
-    </Container>
+    </Box>
   );
 };
 
