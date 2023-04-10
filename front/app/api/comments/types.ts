@@ -8,6 +8,7 @@ export type ICommentParameters = {
   ideaId?: string;
   initiativeId?: string;
   userId?: string;
+  commentId?: string;
 };
 
 interface CommentAttributes {

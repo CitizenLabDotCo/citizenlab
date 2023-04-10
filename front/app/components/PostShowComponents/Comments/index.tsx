@@ -105,7 +105,6 @@ const CommentsSection = memo<Props>(({ postId, postType, className }) => {
   } = useComments({
     initiativeId: postType === 'initiative' ? postId : undefined,
     ideaId: postType === 'idea' ? postId : undefined,
-    pageSize: 2,
     sort: sortOrder,
   });
 
