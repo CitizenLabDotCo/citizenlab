@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 
 interface CommentAttributes {
@@ -76,16 +76,6 @@ export interface DeleteReason {
 }
 
 export type CommentsSort = '-new' | 'upvotes_count' | 'new' | '-upvotes_count';
-
-export function childCommentsStream(
-  commentId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IComments>({
-    apiEndpoint: `${API_PATH}/comments/${commentId}/children`,
-    ...streamParams,
-  });
-}
 
 export async function addCommentToIdea(
   ideaId: string,
