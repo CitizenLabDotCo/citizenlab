@@ -1115,7 +1115,6 @@
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Postavite anketu bez napuštanja platforme.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Kreirajte anketu",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Podesite anketu sa više odgovora",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription": "Povežite Typeform, Google Form ili Enalyzer anketu.",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Možete podesiti podrazumevajući redosled postova koji se prikazuju na centralnoj strani projekta.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sortiranje",
   "app.containers.AdminPage.ProjectEdit.departments": "Departmani",

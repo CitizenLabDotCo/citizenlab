@@ -1115,7 +1115,6 @@
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Platformumuzdan ayrılmadan bir anket oluşturun.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Bir oylama oluşturun",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Çoktan seçmeli bir anket hazırlayın.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription": "Bir Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey veya Microsoft Forms anketi yerleştirin.",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Yayınların ana proje sayfasında görüntülenecekleri varsayılan sırayı ayarlayabilirsiniz.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sıralama",
   "app.containers.AdminPage.ProjectEdit.departments": "Bölümler",
