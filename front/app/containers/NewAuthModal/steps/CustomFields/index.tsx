@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React, { useEffect, FormEvent } from 'react';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -14,6 +14,10 @@ import Button from 'components/UI/Button';
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
+
+// tracks
+import tracks from '../../tracks';
+import { trackEventByName } from 'utils/analytics';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -35,6 +39,10 @@ const CustomFields = ({ status, onSubmit, onSkip }: Props) => {
   const userCustomFieldsSchema = useUserCustomFieldsSchema();
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
+
+  useEffect(() => {
+    trackEventByName(tracks.signUpCustomFieldsStepEntered);
+  }, []);
 
   if (isNilOrError(authUser) || isNilOrError(userCustomFieldsSchema)) {
     return null;

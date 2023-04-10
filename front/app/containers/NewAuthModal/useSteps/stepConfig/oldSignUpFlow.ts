@@ -7,6 +7,10 @@ import confirmEmail from 'api/authentication/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/resendEmailConfirmationCode';
 import { updateUser } from 'services/users';
 
+// tracks
+import tracks from '../../tracks';
+import { trackEventByName } from 'utils/analytics';
+
 // utils
 import { askCustomFields } from './utils';
 
@@ -147,7 +151,10 @@ export const oldSignUpFlow = (
     },
 
     'sign-up:custom-fields': {
-      CLOSE: () => setCurrentStep('closed'),
+      CLOSE: () => {
+        setCurrentStep('closed');
+        trackEventByName(tracks.signUpCustomFieldsStepExited);
+      },
       SUBMIT: async (userId: string, formData: FormData) => {
         setStatus('pending');
 
@@ -155,13 +162,16 @@ export const oldSignUpFlow = (
           await updateUser(userId, { custom_field_values: formData });
           setStatus('ok');
           setCurrentStep('success');
+          trackEventByName(tracks.signUpCustomFieldsStepCompleted);
         } catch {
           setStatus('error');
           setError('unknown');
+          trackEventByName(tracks.signUpCustomFieldsStepFailed);
         }
       },
       SKIP: async () => {
         setCurrentStep('success');
+        trackEventByName(tracks.signUpCustomFieldsStepSkipped);
       },
     },
   };
