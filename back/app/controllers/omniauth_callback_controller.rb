@@ -127,10 +127,12 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def signin_success_redirect
+    request.env['omniauth.params']['sso_flow'] = 'signin'
     redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(locale: @user.locale), request.env['omniauth.params']))
   end
 
   def signup_success_redirect
+    request.env['omniauth.params']['sso_flow'] = 'signup'
     redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: @user.locale), request.env['omniauth.params']))
   end
 
