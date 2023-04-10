@@ -9,6 +9,14 @@ export default defineMessages({
     id: 'app.components.Comments.cancel',
     defaultMessage: 'Cancel',
   },
+  edit: {
+    id: 'app.components.Comments.editComment',
+    defaultMessage: 'Edit',
+  },
+  delete: {
+    id: 'app.components.Comments.deleteComment',
+    defaultMessage: 'Delete',
+  },
   official: {
     id: 'app.components.Comments.official',
     defaultMessage: 'Official',

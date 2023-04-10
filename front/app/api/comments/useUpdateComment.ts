@@ -21,9 +21,12 @@ const useUpdateComment = ({
   const queryClient = useQueryClient();
   return useMutation<IComment, CLErrors, IUpdatedComment>({
     mutationFn: updateComment,
-    onSuccess: (_data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: commentKeys.list({ ideaId, initiativeId }),
+        queryKey: commentKeys.list({
+          ideaId,
+          initiativeId,
+        }),
       });
     },
   });

@@ -1,18 +1,13 @@
 // Libraries
-import React, { PureComponent, FormEvent } from 'react';
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import React, { FormEvent, useState } from 'react';
 import { get } from 'lodash-es';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import injectIntl from 'utils/cl-intl/injectIntl';
-import { WrappedComponentProps } from 'react-intl';
 
 // Services
 import { ICommentData, markForDeletion } from 'services/comments';
-import { hasPermission } from 'services/permissions';
 
 // Components
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
@@ -21,6 +16,7 @@ import SpamReportForm from 'containers/SpamReport';
 import Button from 'components/UI/Button';
 import HasPermission from 'components/HasPermission';
 import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
+import { usePermission } from 'services/permissions';
 
 // events
 import { deleteCommentModalClosed, commentDeleted } from './events';
@@ -76,191 +72,144 @@ export interface State {
   actions: IAction[] | null;
 }
 
-class CommentsMoreActions extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  private comment$: BehaviorSubject<ICommentData>;
-  private subscriptions: Subscription[];
+const CommentsMoreActions = ({
+  projectId,
+  onCommentEdit,
+  comment,
+  className,
+}: Props) => {
+  const [modalVisible_spam, setModalVisible_spam] = useState(false);
+  const [modalVisible_delete, setModalVisible_delete] = useState(false);
+  const [loading_deleteComment, setLoading_deleteComment] = useState(false);
 
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      modalVisible_spam: false,
-      modalVisible_delete: false,
-      loading_deleteComment: false,
-      actions: null,
-    };
-  }
+  const canReport = usePermission({
+    item: comment,
+    action: 'markAsSpam',
+    context: { projectId },
+  });
 
-  componentDidMount() {
-    const { projectId, onCommentEdit, comment } = this.props;
+  const canDelete = usePermission({
+    item: comment,
+    action: 'delete',
+    context: { projectId },
+  });
 
-    this.comment$ = new BehaviorSubject(comment);
+  const canEdit = usePermission({
+    item: comment,
+    action: 'edit',
+    context: { projectId },
+  });
 
-    this.subscriptions = [
-      this.comment$
-        .pipe(
-          switchMap((comment) => {
-            return combineLatest([
-              hasPermission({
-                item: comment,
-                action: 'markAsSpam',
-                context: { projectId },
-              }),
-              hasPermission({
-                item: comment,
-                action: 'delete',
-                context: { projectId },
-              }),
-              hasPermission({
-                item: comment,
-                action: 'edit',
-                context: { projectId },
-              }),
-            ]);
-          }),
-          map(([canReport, canDelete, canEdit]) => {
-            const actions: IAction[] = [];
-
-            // Actions based on permissions
-            if (canReport) {
-              actions.push({
-                label: <FormattedMessage {...messages.reportAsSpam} />,
-                handler: this.openSpamModal,
-              });
-            }
-            if (canDelete) {
-              actions.push({
-                label: <FormattedMessage {...messages.deleteComment} />,
-                handler: this.openDeleteModal,
-              });
-            }
-            if (canEdit) {
-              actions.push({
-                label: <FormattedMessage {...messages.editComment} />,
-                handler: onCommentEdit,
-              });
-            }
-
-            return actions;
-          })
-        )
-        .subscribe((actions) => {
-          this.setState({ actions });
-        }),
-    ];
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.comment !== this.props.comment) {
-      this.comment$.next(this.props.comment);
-    }
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  openDeleteModal = () => {
-    this.setState({ modalVisible_delete: true });
+  const openDeleteModal = () => {
+    setModalVisible_delete(true);
   };
 
-  closeDeleteModal = (event?: FormEvent) => {
+  const openSpamModal = () => {
+    setModalVisible_spam(true);
+  };
+
+  const actions: IAction[] = [
+    ...(canReport
+      ? [
+          {
+            label: <FormattedMessage {...messages.reportAsSpam} />,
+            handler: openSpamModal,
+          },
+        ]
+      : []),
+    ...(canDelete
+      ? [
+          {
+            label: <FormattedMessage {...messages.delete} />,
+            handler: openDeleteModal,
+          },
+        ]
+      : []),
+    ...(canEdit
+      ? [
+          {
+            label: <FormattedMessage {...messages.edit} />,
+            handler: onCommentEdit,
+          },
+        ]
+      : []),
+  ];
+
+  const closeDeleteModal = (event?: FormEvent) => {
     event && event.preventDefault();
-    this.setState({ modalVisible_delete: false });
+    setModalVisible_delete(false);
     deleteCommentModalClosed();
   };
 
-  deleteComment = async (reason) => {
-    const { projectId, comment } = this.props;
+  const deleteComment = async (reason) => {
     const commentId = comment.id;
     const authorId = get(comment, 'relationships.author.data.id', undefined);
     const reasonObj = get(reason, 'reason_code') ? reason : undefined;
-    this.setState({ loading_deleteComment: true });
+    setLoading_deleteComment(true);
     await markForDeletion(commentId, authorId, projectId, reasonObj);
     deleteCommentModalClosed();
     commentDeleted();
   };
 
-  openSpamModal = () => {
-    this.setState({ modalVisible_spam: true });
+  const closeSpamModal = () => {
+    setModalVisible_spam(false);
   };
 
-  closeSpamModal = () => {
-    this.setState({ modalVisible_spam: false });
-  };
-
-  render() {
-    const { projectId, comment, className } = this.props;
-    const {
-      actions,
-      modalVisible_delete,
-      loading_deleteComment,
-      modalVisible_spam,
-    } = this.state;
-
-    if (!comment || !actions) {
-      return null;
-    }
-
-    return (
-      <>
-        <Container className={className || ''}>
-          <MoreActionsMenu showLabel={false} actions={actions} />
-        </Container>
-
-        <Modal
-          opened={modalVisible_delete}
-          close={this.closeDeleteModal}
-          className="e2e-comment-deletion-modal"
-          header={<FormattedMessage {...messages.confirmCommentDeletion} />}
-        >
-          <HasPermission
-            item={comment}
-            action="justifyDeletion"
-            context={{ projectId }}
-          >
-            {/* Justification required for the deletion */}
-            <CommentsAdminDeletionModal
-              onCloseDeleteModal={this.closeDeleteModal}
-              onDeleteComment={this.deleteComment}
-            />
-
-            {/* No justification required */}
-            <HasPermission.No>
-              <ButtonsWrapper>
-                <CancelButton
-                  buttonStyle="secondary"
-                  onClick={this.closeDeleteModal}
-                >
-                  <FormattedMessage {...messages.commentDeletionCancelButton} />
-                </CancelButton>
-                <AcceptButton
-                  buttonStyle="primary"
-                  processing={loading_deleteComment}
-                  className="e2e-confirm-deletion"
-                  onClick={this.deleteComment}
-                >
-                  <FormattedMessage
-                    {...messages.commentDeletionConfirmButton}
-                  />
-                </AcceptButton>
-              </ButtonsWrapper>
-            </HasPermission.No>
-          </HasPermission>
-        </Modal>
-
-        <Modal
-          opened={modalVisible_spam}
-          close={this.closeSpamModal}
-          header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
-        >
-          <SpamReportForm resourceId={comment.id} resourceType="comments" />
-        </Modal>
-      </>
-    );
+  if (!comment || !actions) {
+    return null;
   }
-}
 
-export default injectIntl(CommentsMoreActions);
+  return (
+    <>
+      <Container className={className || ''}>
+        <MoreActionsMenu showLabel={false} actions={actions} />
+      </Container>
+
+      <Modal
+        opened={modalVisible_delete}
+        close={closeDeleteModal}
+        className="e2e-comment-deletion-modal"
+        header={<FormattedMessage {...messages.confirmCommentDeletion} />}
+      >
+        <HasPermission
+          item={comment}
+          action="justifyDeletion"
+          context={{ projectId }}
+        >
+          {/* Justification required for the deletion */}
+          <CommentsAdminDeletionModal
+            onCloseDeleteModal={closeDeleteModal}
+            onDeleteComment={deleteComment}
+          />
+
+          {/* No justification required */}
+          <HasPermission.No>
+            <ButtonsWrapper>
+              <CancelButton buttonStyle="secondary" onClick={closeDeleteModal}>
+                <FormattedMessage {...messages.commentDeletionCancelButton} />
+              </CancelButton>
+              <AcceptButton
+                buttonStyle="primary"
+                processing={loading_deleteComment}
+                className="e2e-confirm-deletion"
+                onClick={deleteComment}
+              >
+                <FormattedMessage {...messages.commentDeletionConfirmButton} />
+              </AcceptButton>
+            </ButtonsWrapper>
+          </HasPermission.No>
+        </HasPermission>
+      </Modal>
+
+      <Modal
+        opened={modalVisible_spam}
+        close={closeSpamModal}
+        header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
+      >
+        <SpamReportForm resourceId={comment.id} resourceType="comments" />
+      </Modal>
+    </>
+  );
+};
+
+export default CommentsMoreActions;
