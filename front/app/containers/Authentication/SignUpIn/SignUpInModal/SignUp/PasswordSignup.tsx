@@ -328,9 +328,7 @@ class PasswordSignup extends PureComponent<
             : messages.emailError
         )
       : null;
-    const firstNameError = !firstName
-      ? formatMessage(messages.completeSignUp)
-      : null;
+    const firstNameError = !firstName ? formatMessage(messages.close) : null;
     const lastNameError = !lastName ? formatMessage(messages.close) : null;
     const hasMinimumLengthError =
       typeof password === 'string'

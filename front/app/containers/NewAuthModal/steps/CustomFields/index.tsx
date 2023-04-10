@@ -36,8 +36,9 @@ const CustomFields = ({ status, onSubmit, onSkip }: Props) => {
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
 
-  if (isNilOrError(authUser) || isNilOrError(userCustomFieldsSchema))
+  if (isNilOrError(authUser) || isNilOrError(userCustomFieldsSchema)) {
     return null;
+  }
 
   const loading = status === 'pending';
 
