@@ -24,7 +24,7 @@ import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { GetInitiativesPermissionsChildProps } from 'resources/GetInitiativesPermissions';
 import { IInitiativeData } from 'api/initiatives/types';
 import { IIdeaData } from 'api/ideas/types';
-import { ICommentData } from 'services/comments';
+import { ICommentData } from 'api/comments/types';
 
 const Container = styled.li`
   display: flex;
