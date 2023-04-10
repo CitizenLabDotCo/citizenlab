@@ -6,9 +6,6 @@ import { get } from 'lodash-es';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// Services
-import { ICommentData, markForDeletion } from 'services/comments';
-
 // Components
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import Modal from 'components/UI/Modal';
@@ -24,6 +21,9 @@ import { deleteCommentModalClosed, commentDeleted } from './events';
 // Styling
 import styled from 'styled-components';
 import { isRtl } from 'utils/styleUtils';
+
+import useMarkCommentForDeletion from 'api/comments/useMarkForDeletion';
+import { ICommentData } from 'api/comments/types';
 
 const Container = styled.div`
   display: flex;
@@ -63,13 +63,8 @@ export interface Props {
   comment: ICommentData;
   onCommentEdit: () => void;
   className?: string;
-}
-
-export interface State {
-  modalVisible_spam: boolean;
-  modalVisible_delete: boolean;
-  loading_deleteComment: boolean;
-  actions: IAction[] | null;
+  postId: string;
+  postType: 'idea' | 'initiative';
 }
 
 const CommentsMoreActions = ({
@@ -77,10 +72,16 @@ const CommentsMoreActions = ({
   onCommentEdit,
   comment,
   className,
+  postType,
+  postId,
 }: Props) => {
+  const { mutate: markForDeletion, isLoading } = useMarkCommentForDeletion({
+    ideaId: postType === 'idea' ? postId : undefined,
+    initiativeId: postType === 'initiative' ? postId : undefined,
+  });
+
   const [modalVisible_spam, setModalVisible_spam] = useState(false);
   const [modalVisible_delete, setModalVisible_delete] = useState(false);
-  const [loading_deleteComment, setLoading_deleteComment] = useState(false);
 
   const canReport = usePermission({
     item: comment,
@@ -145,10 +146,21 @@ const CommentsMoreActions = ({
     const commentId = comment.id;
     const authorId = get(comment, 'relationships.author.data.id', undefined);
     const reasonObj = get(reason, 'reason_code') ? reason : undefined;
-    setLoading_deleteComment(true);
-    await markForDeletion(commentId, authorId, projectId, reasonObj);
-    deleteCommentModalClosed();
-    commentDeleted();
+
+    markForDeletion(
+      {
+        commentId,
+        authorId,
+        projectId,
+        reason: reasonObj,
+      },
+      {
+        onSuccess: () => {
+          deleteCommentModalClosed();
+          commentDeleted();
+        },
+      }
+    );
   };
 
   const closeSpamModal = () => {
@@ -190,7 +202,7 @@ const CommentsMoreActions = ({
               </CancelButton>
               <AcceptButton
                 buttonStyle="primary"
-                processing={loading_deleteComment}
+                processing={isLoading}
                 className="e2e-confirm-deletion"
                 onClick={deleteComment}
               >
