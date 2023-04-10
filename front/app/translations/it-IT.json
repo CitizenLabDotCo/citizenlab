@@ -64,6 +64,7 @@
   "app.components.ConfirmationModal.verifyAndContinue": "Verifica e continua",
   "app.components.ConfirmationModal.wrongEmail": "Un'email sbagliata?",
   "app.components.ConsentManager.Banner.accept": "Accettare",
+  "app.components.ConsentManager.Banner.ariaButtonClose2": "Rifiuto della politica e chiusura del banner",
   "app.components.ConsentManager.Banner.close": "Chiudere",
   "app.components.ConsentManager.Banner.mainText": "Navigando, accetti il nostro {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Gestire",

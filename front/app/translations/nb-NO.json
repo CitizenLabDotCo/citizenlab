@@ -64,6 +64,7 @@
   "app.components.ConfirmationModal.verifyAndContinue": "Bekreft og fortsett",
   "app.components.ConfirmationModal.wrongEmail": "Feil e-post?",
   "app.components.ConsentManager.Banner.accept": "Godta",
+  "app.components.ConsentManager.Banner.ariaButtonClose2": "Avvis retningslinjene og lukk banneret",
   "app.components.ConsentManager.Banner.close": "Lukk",
   "app.components.ConsentManager.Banner.mainText": "Ved å navigere, aksepterer du vår {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Administrer",

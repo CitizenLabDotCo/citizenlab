@@ -64,6 +64,7 @@
   "app.components.ConfirmationModal.verifyAndContinue": "تحقق ومتابعة",
   "app.components.ConfirmationModal.wrongEmail": "هل عنوان البريد الإلكتروني غير صحيح؟",
   "app.components.ConsentManager.Banner.accept": "موافقة",
+  "app.components.ConsentManager.Banner.ariaButtonClose2": "رفض السياسة وإغلاق البانر",
   "app.components.ConsentManager.Banner.close": "إغلاق",
   "app.components.ConsentManager.Banner.mainText": "بالتصفح، فأنت توافق على {policyLink} الخاصة بنا",
   "app.components.ConsentManager.Banner.manage": "إدارة",

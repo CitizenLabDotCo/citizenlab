@@ -64,6 +64,7 @@
   "app.components.ConfirmationModal.verifyAndContinue": "Überprüfen und fortfahren",
   "app.components.ConfirmationModal.wrongEmail": "Falsche E-Mail-Adresse?",
   "app.components.ConsentManager.Banner.accept": "Akzeptieren",
+  "app.components.ConsentManager.Banner.ariaButtonClose2": "Ablehnen und Banner schließen",
   "app.components.ConsentManager.Banner.close": "Schließen",
   "app.components.ConsentManager.Banner.mainText": "Diese Webseite verwendet Cookies gemäß unserer {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Bearbeiten",
