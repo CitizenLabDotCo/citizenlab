@@ -70,35 +70,3 @@ export interface DeleteReason {
 }
 
 export type CommentsSort = '-new' | 'upvotes_count' | 'new' | '-upvotes_count';
-
-export async function markForDeletion(
-  commentId: string,
-  authorId?: string,
-  projectId?: string | null,
-  reason?: DeleteReason
-) {
-  if (reason && reason.reason_code !== 'other') {
-    reason.other_reason = null;
-  }
-
-  const response = await request(
-    `${API_PATH}/comments/${commentId}/mark_as_deleted`,
-    { comment: reason },
-    { method: 'POST' },
-    {}
-  );
-  const dataIdsToRefetch = projectId ? [commentId, projectId] : [commentId];
-  const apiEndpointsToRefetch = authorId
-    ? [
-        `${API_PATH}/users/${authorId}/comments`,
-        `${API_PATH}/users/${authorId}/comments_count`,
-      ]
-    : [];
-
-  await streams.fetchAllWith({
-    dataId: dataIdsToRefetch,
-    apiEndpoint: apiEndpointsToRefetch,
-  });
-
-  return response;
-}
