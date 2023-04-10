@@ -84,10 +84,6 @@ export default defineMessages({
     id: 'app.components.IdeasShow.byUserOnDate',
     defaultMessage: 'By {userName} on {date}',
   },
-  createdTimeAgo: {
-    id: 'app.components.IdeasShow.createdTimeAgo',
-    defaultMessage: 'Created {timeAgo}',
-  },
   or: {
     id: 'app.components.IdeasShow.or',
     defaultMessage: 'or',

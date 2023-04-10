@@ -36,10 +36,6 @@ export default defineMessages({
     id: 'app.components.VoteControl.budgetingNotVerified',
     defaultMessage: 'Please {verifyAccountLink} to continue.',
   },
-  verifyAccountLinkText: {
-    id: 'app.components.AssignBudgetControl.verifyAccountLinkText',
-    defaultMessage: 'verify your account',
-  },
   a11y_price: {
     id: 'app.components.AssignBudgetControl.a11y_price',
     defaultMessage: 'Price: ',

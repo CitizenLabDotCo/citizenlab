@@ -595,7 +595,7 @@
   "app.containers.Admin.Users.userBlockModal.daysBlocked1": "{numberOfDays, plural, one {1 diena} other {{numberOfDays} dienas}}",
   "app.containers.Admin.Users.userBlockModal.header": "Bloķēt lietotāju",
   "app.containers.Admin.Users.userBlockModal.reasonLabel": "Iemesls",
-  "app.containers.Admin.Users.userBlockModal.reasonLabelTooltip": "Tas tiks paziņots bloķētajam lietotājam.",
+  "app.containers.Admin.Users.userBlockModal.reasonLabelTooltip": "Par to tiks paziņots bloķētajam lietotājam.",
   "app.containers.Admin.Users.userBlockModal.subtitle1": "Izvēlētais lietotājs nevarēs pieteikties platformā {daysBlocked}. Ja vēlaties to mainīt, varat atbloķēt viņu no bloķēto lietotāju saraksta.",
   "app.containers.Admin.Users.userBlockModal.unblockAction": "Atbloķēt",
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "Jā, es vēlos atbloķēt šo lietotāju",

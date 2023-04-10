@@ -595,7 +595,7 @@
   "app.containers.Admin.Users.userBlockModal.daysBlocked1": "{numberOfDays, plural, one {1 dzień} other {{numberOfDays} dni}}",
   "app.containers.Admin.Users.userBlockModal.header": "Zablokuj użytkownika",
   "app.containers.Admin.Users.userBlockModal.reasonLabel": "Uzasadnienie",
-  "app.containers.Admin.Users.userBlockModal.reasonLabelTooltip": "Zostanie to przekazane zablokowanemu użytkownikowi.",
+  "app.containers.Admin.Users.userBlockModal.reasonLabelTooltip": "Zostanie to zakomunikowane zablokowanemu użytkownikowi.",
   "app.containers.Admin.Users.userBlockModal.subtitle1": "Wybrany użytkownik nie będzie mógł się zalogować na platformę {daysBlocked}. Jeśli chcesz to przywrócić, możesz odblokować go z listy zablokowanych użytkowników.",
   "app.containers.Admin.Users.userBlockModal.unblockAction": "Odblokuj",
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "Tak, chcę odblokować tego użytkownika",

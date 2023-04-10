@@ -778,7 +778,7 @@
   "app.containers.CustomPageShow.notFound": "Página não encontrada",
   "app.containers.DisabledAccount.bottomText": "Pode voltar a assinar a partir de {date}.",
   "app.containers.DisabledAccount.termsAndConditions": "termos & condições",
-  "app.containers.DisabledAccount.text2": "A sua conta na plataforma {orgName} foi temporariamente desactivada por uma violação das directrizes da comunidade. Para mais informações sobre este assunto, pode consultar o {TermsAndConditions}.",
+  "app.containers.DisabledAccount.text2": "A sua conta na plataforma de participação de {orgName} foi temporariamente desactivada por uma violação das directrizes da comunidade. Para mais informações sobre este assunto, pode consultar o {TermsAndConditions}.",
   "app.containers.DisabledAccount.title": "A sua conta foi temporariamente desactivada",
   "app.containers.IdeaButton.addAContribution": "Acrescentar uma contribuição",
   "app.containers.IdeaButton.addAProject": "Acrescentar um projecto",
