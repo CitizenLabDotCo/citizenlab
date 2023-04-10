@@ -264,32 +264,27 @@ const CustomPageSettingsForm = ({
                 display="inline-flex"
                 disabled={showPlanUpgradeTease}
               >
-                <Tippy
-                  maxWidth="250px"
-                  placement="right-end"
-                  content={formatMessage(messages.contactGovSuccessToAccess)}
-                  disabled={!showPlanUpgradeTease}
-                  hideOnClick={false}
-                >
-                  <div>
-                    <Box mb={fieldMarginBottom}>
-                      <Box
-                        display="flex"
-                        justifyContent="flex-start"
-                        width="100%"
-                      >
-                        <Label>
-                          <span>
-                            {formatMessage(messages.linkedProjectsLabel)}
-                          </span>
+                <Box mb={fieldMarginBottom}>
+                  <Tippy
+                    maxWidth="250px"
+                    placement="right-end"
+                    content={formatMessage(messages.contactGovSuccessToAccess)}
+                    disabled={!showPlanUpgradeTease}
+                    hideOnClick={false}
+                  >
+                    <div>
+                      <Label>
+                        {formatMessage(messages.linkedProjectsLabel)}
+                        {/* Tooltip was conflicting with Tippy that's shown we tease is displayed */}
+                        {!showPlanUpgradeTease && (
                           <IconTooltip
                             ml="10px"
                             content={formatMessage(
                               messages.linkedProjectsTooltip
                             )}
                           />
-                        </Label>
-                      </Box>
+                        )}
+                      </Label>
                       <Box mb="30px">
                         <Tabs
                           name="projects_filter_type"
@@ -298,27 +293,27 @@ const CustomPageSettingsForm = ({
                           disabled={showPlanUpgradeTease}
                         />
                       </Box>
-                      {methods.watch('projects_filter_type') === 'topics' && (
-                        <SelectContainer mb="30px">
-                          <MultipleSelect
-                            name="topic_ids"
-                            options={mapFilterEntityToOptions(topics)}
-                            label={formatMessage(messages.selectedTagsLabel)}
-                          />
-                        </SelectContainer>
-                      )}
-                      {methods.watch('projects_filter_type') === 'areas' && (
-                        <SelectContainer mb="20px">
-                          <Select
-                            name="area_id"
-                            options={mapFilterEntityToOptions(areas)}
-                            label={formatMessage(messages.selectedAreasLabel)}
-                          />
-                        </SelectContainer>
-                      )}
-                    </Box>
-                  </div>
-                </Tippy>
+                    </div>
+                  </Tippy>
+                  {methods.watch('projects_filter_type') === 'topics' && (
+                    <SelectContainer mb="30px">
+                      <MultipleSelect
+                        name="topic_ids"
+                        options={mapFilterEntityToOptions(topics)}
+                        label={formatMessage(messages.selectedTagsLabel)}
+                      />
+                    </SelectContainer>
+                  )}
+                  {methods.watch('projects_filter_type') === 'areas' && (
+                    <SelectContainer mb="20px">
+                      <Select
+                        name="area_id"
+                        options={mapFilterEntityToOptions(areas)}
+                        label={formatMessage(messages.selectedAreasLabel)}
+                      />
+                    </SelectContainer>
+                  )}
+                </Box>
               </LinkedProjectContainer>
             )}
           </SectionField>
