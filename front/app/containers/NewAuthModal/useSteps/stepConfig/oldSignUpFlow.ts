@@ -5,6 +5,7 @@ import createAccountWithPassword, {
 } from 'api/authentication/createAccountWithPassword';
 import confirmEmail from 'api/authentication/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/resendEmailConfirmationCode';
+import { updateUser } from 'services/users';
 
 // utils
 import { askCustomFields } from './utils';
@@ -18,6 +19,7 @@ import {
   GetRequirements,
 } from '../../typings';
 import { Step } from './typings';
+import { FormData } from 'components/UserCustomFieldsForm';
 
 export const oldSignUpFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -146,11 +148,20 @@ export const oldSignUpFlow = (
 
     'sign-up:custom-fields': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT: async () => {
-        // TODO
+      SUBMIT: async (userId: string, formData: FormData) => {
+        setStatus('pending');
+
+        try {
+          await updateUser(userId, { custom_field_values: formData });
+          setStatus('ok');
+          setCurrentStep('success');
+        } catch {
+          setStatus('error');
+          setError('unknown');
+        }
       },
       SKIP: async () => {
-        // TODO
+        setCurrentStep('success');
       },
     },
   };

@@ -26,7 +26,7 @@ import { Status } from 'containers/NewAuthModal/typings';
 
 interface Props {
   status: Status;
-  onSubmit: (data: { key: string; formData: FormData }) => void;
+  onSubmit: (id: string, formData: FormData) => void;
   onSkip: () => void;
 }
 
@@ -42,6 +42,10 @@ const CustomFields = ({ status, onSubmit, onSkip }: Props) => {
 
   const loading = status === 'pending';
 
+  const handleSubmit = ({ formData }: { formData: FormData }) => {
+    onSubmit(authUser.id, formData);
+  };
+
   const handleOnSubmitButtonClick = (event: FormEvent) => {
     event.preventDefault();
     eventEmitter.emit('customFieldsSubmitEvent');
@@ -53,7 +57,7 @@ const CustomFields = ({ status, onSubmit, onSkip }: Props) => {
       pb={smallerThanPhone ? '14px' : '28px'}
       id="e2e-signup-custom-fields-container"
     >
-      <UserCustomFieldsForm authUser={authUser} onSubmit={onSubmit} />
+      <UserCustomFieldsForm authUser={authUser} onSubmit={handleSubmit} />
 
       <Box
         display="flex"
