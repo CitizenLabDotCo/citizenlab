@@ -64,6 +64,7 @@
   "app.components.ConfirmationModal.verifyAndContinue": "Doğrula ve Devam Et",
   "app.components.ConfirmationModal.wrongEmail": "E-posta adresi yanlış mı?",
   "app.components.ConsentManager.Banner.accept": "Kabul et",
+  "app.components.ConsentManager.Banner.ariaButtonClose2": "Politikayı reddet ve başlığı kapat",
   "app.components.ConsentManager.Banner.close": "Kapat",
   "app.components.ConsentManager.Banner.mainText": "Bu platformda {policyLink} ile uyumlu şekilde çerezler kullanılmaktadır.",
   "app.components.ConsentManager.Banner.manage": "Yönet",
