@@ -30,6 +30,8 @@ import Outlet from 'components/Outlet';
 import useComment from 'api/comments/useComment';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
+import { commentTranslateButtonClicked$ } from './events';
+import { filter } from 'rxjs/operators';
 
 const Container = styled.div``;
 
@@ -59,7 +61,6 @@ interface Props {
   commentId: string;
   commentType: 'parent' | 'child';
   editing: boolean;
-  last?: boolean;
   onCommentSaved: () => void;
   onCancelEditing: () => void;
   className?: string;
@@ -69,7 +70,6 @@ const CommentBody = ({
   commentId,
   commentType,
   editing,
-  last,
   onCancelEditing,
   onCommentSaved,
   className,
@@ -132,35 +132,19 @@ const CommentBody = ({
     }
   }, [comment, locale, tenantLocales, commentContent]);
 
-  // componentDidMount() {
-  //   this.setCommentContent();
-  //   this.setEditableCommentContent();
+  useEffect(() => {
+    const subscription = commentTranslateButtonClicked$
+      .pipe(filter(({ eventValue }) => eventValue === commentId))
+      .subscribe(() => {
+        setTranslateButtonClicked(
+          (translateButtonClicked) => !translateButtonClicked
+        );
+      });
 
-  //   this.subscriptions = [
-  //     commentTranslateButtonClicked$
-  //       .pipe(
-  //         filter(
-  //           ({ eventValue: commentId }) => commentId === this.props.commentId
-  //         )
-  //       )
-  //       .subscribe(() => {
-  //         this.setState(({ translateButtonClicked }) => ({
-  //           translateButtonClicked: !translateButtonClicked,
-  //         }));
-  //       }),
-  //   ];
-  // }
-
-  // componentDidUpdate(prevProps: Props) {
-  //   if (prevProps.comment !== this.props.comment) {
-  //     this.setCommentContent();
-  //     this.setEditableCommentContent();
-  //   }
-  // }
-
-  // componentWillUnmount() {
-  //   this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  // }
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [commentId]);
 
   const setNewTextAreaRef = (ref: HTMLTextAreaElement) => {
     setTextAreaRef(ref);
