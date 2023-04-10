@@ -103,3 +103,9 @@ export interface DeleteReason {
 }
 
 export type CommentsSort = '-new' | 'upvotes_count' | 'new' | '-upvotes_count';
+
+export type ICommentQueryParameters = {
+  sort?: CommentsSort;
+  pageNumber?: number;
+  pageSize?: number;
+};

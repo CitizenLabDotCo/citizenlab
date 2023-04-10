@@ -1,4 +1,4 @@
-import { ICommentData } from 'services/comments';
+import { ICommentData } from 'api/comments/types';
 import useComment from 'api/comments/useComment';
 
 interface InputProps {
@@ -11,7 +11,7 @@ interface Props extends InputProps {
   children?: children;
 }
 
-export type GetCommentChildProps = ICommentData | undefined | null | Error;
+export type GetCommentChildProps = ICommentData | undefined;
 
 const GetComment = ({ id, children }: Props) => {
   const { data: comment } = useComment(id);

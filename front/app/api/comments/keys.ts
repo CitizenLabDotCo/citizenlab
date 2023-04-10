@@ -1,12 +1,12 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
-import { ICommentParameters } from './types';
+import { ICommentParameters, ICommentQueryParameters } from './types';
 
 const baseKey = { type: 'comment' };
 
 const commentKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: (params: ICommentParameters) => [
+  list: (params: ICommentParameters & ICommentQueryParameters) => [
     { ...baseKey, operation: 'list', parameters: params },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],

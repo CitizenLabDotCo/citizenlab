@@ -162,12 +162,8 @@ class CommentBody extends PureComponent<Props, State> {
   setEditableCommentContent = () => {
     let editableCommentContent = '';
     const { comment, locale, tenantLocales } = this.props;
-
-    if (
-      !isNilOrError(locale) &&
-      !isNilOrError(tenantLocales) &&
-      !isNilOrError(comment)
-    ) {
+    console.log({ locale });
+    if (!isNilOrError(tenantLocales) && comment) {
       editableCommentContent = getLocalized(
         comment.attributes.body_multiloc,
         locale,
