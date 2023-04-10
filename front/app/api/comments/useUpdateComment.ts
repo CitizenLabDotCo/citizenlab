@@ -1,23 +1,3 @@
-// export async function updateComment(
-//     commentId: string,
-//     object: IUpdatedComment
-//   ) {
-//     const response = await streams.update<IComment>(
-//       `${API_PATH}/comments/${commentId}`,
-//       commentId,
-//       { comment: object }
-//     );
-
-//     // refetch commentsForUser
-//     if (object.author_id) {
-//       streams.fetchAllWith({
-//         apiEndpoint: [`${API_PATH}/users/${object.author_id}/comments`],
-//       });
-//     }
-
-//     return response;
-//   }
-
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';

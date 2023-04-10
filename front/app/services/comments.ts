@@ -58,12 +58,6 @@ export interface IComments {
   links: ICommentLinks;
 }
 
-export interface IUpdatedComment {
-  author_id?: string;
-  parent_id?: string;
-  body_multiloc: { [key: string]: string };
-}
-
 export const DeleteReasonCode = {
   irrelevant: 'irrelevant',
   inappropriate: 'inappropriate',
