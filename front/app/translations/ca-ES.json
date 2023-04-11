@@ -37,6 +37,8 @@
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "{signUpLink} o {signInLink} per comentar.",
   "app.components.Comments.commentingInitiativeNotPermitted": "Els comentaris no estan activats actualment.",
   "app.components.Comments.commentingMaybeNotPermitted": "{signInLink} per veure quines accions es poden dur a terme.",
+  "app.components.Comments.deleteComment": "Suprimeix",
+  "app.components.Comments.editComment": "Edita",
   "app.components.Comments.invisibleTitleComments": "Comentaris",
   "app.components.Comments.mostUpvoted": "La majoria va votar",
   "app.components.Comments.official": "Oficial",
