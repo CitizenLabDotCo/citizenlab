@@ -1,6 +1,6 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react-hooks';
 
-import useAddCommentToIdea from './useAddCommentToIdea';
+import useComment from './useComment';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
@@ -8,55 +8,45 @@ import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { commentsData } from './__mocks__/useComments';
 
-const apiPath = '*/ideas/:ideaId/comments';
+const apiPath = '*/comments/:id';
 
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
+  rest.get(apiPath, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: commentsData[0] }));
   })
 );
 
-describe('useAddCommentToIdea', () => {
+describe('useComment', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
-  it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddCommentToIdea(), {
+  it('returns data correctly', async () => {
+    const { result, waitFor } = renderHook(() => useComment('commentId'), {
       wrapper: createQueryClientWrapper(),
     });
 
-    act(() => {
-      result.current.mutate({
-        ideaId: 'ideaId',
-        author_id: 'author_id',
-        body_multiloc: { en: 'body_multiloc' },
-      });
-    });
+    expect(result.current.isLoading).toBe(true);
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(result.current.isLoading).toBe(false);
     expect(result.current.data?.data).toEqual(commentsData[0]);
   });
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
+      rest.get(apiPath, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddCommentToIdea(), {
+    const { result, waitFor } = renderHook(() => useComment('commentId'), {
       wrapper: createQueryClientWrapper(),
     });
 
-    act(() => {
-      result.current.mutate({
-        ideaId: 'ideaId',
-        author_id: 'author_id',
-        body_multiloc: { en: 'body_multiloc' },
-      });
-    });
-
+    expect(result.current.isLoading).toBe(true);
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error).toBeDefined();
+    expect(result.current.isLoading).toBe(false);
   });
 });

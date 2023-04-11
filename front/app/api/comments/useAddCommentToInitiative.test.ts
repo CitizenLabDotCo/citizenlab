@@ -6,49 +6,13 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { IComment } from './types';
-
-const commentData: IComment = {
-  data: {
-    id: 'commentId',
-    type: 'comment',
-    attributes: {
-      body_multiloc: { en: 'body_multiloc' },
-      created_at: 'created_at',
-      publication_status: 'published',
-      upvotes_count: 0,
-      downvotes_count: 0,
-      children_count: 0,
-      updated_at: 'updated_at',
-    },
-    relationships: {
-      post: {
-        data: {
-          id: 'postId',
-          type: 'post',
-        },
-      },
-      author: {
-        data: {
-          id: 'authorId',
-          type: 'author',
-        },
-      },
-      parent: {
-        data: {
-          id: 'parentId',
-          type: 'parent',
-        },
-      },
-    },
-  },
-};
+import { commentsData } from './__mocks__/useComments';
 
 const apiPath = '*/initiatives/:initiativeId/comments';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: commentData }));
+    return res(ctx.status(200), ctx.json({ data: commentsData[0] }));
   })
 );
 
@@ -70,7 +34,7 @@ describe('useAddCommentToInitiative', () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(commentData);
+    expect(result.current.data?.data).toEqual(commentsData[0]);
   });
 
   it('returns error correctly', async () => {

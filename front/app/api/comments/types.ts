@@ -1,4 +1,4 @@
-import { IRelationship, Multiloc } from 'typings';
+import { IRelationship, Multiloc, ILinks } from 'typings';
 import { Keys } from 'utils/cl-react-query/types';
 import commentsKeys from './keys';
 
@@ -49,21 +49,13 @@ export interface ICommentData {
   };
 }
 
-export interface ICommentLinks {
-  self: string;
-  first: string;
-  prev: string;
-  next: string;
-  last: string;
-}
-
 export interface IComment {
   data: ICommentData;
 }
 
 export interface IComments {
   data: ICommentData[];
-  links: ICommentLinks;
+  links: ILinks;
 }
 
 export interface INewComment {
