@@ -63,10 +63,10 @@ export const isSuperAdmin = (user?: IUser | null | Error) => {
   return false;
 };
 
-export const isNotRegularUser = (user?: IUser | null) => {
+export const isRegularUser = (user?: IUser | null) => {
   if (!isNilOrError(user)) {
     // Every user with a role higher than "user" can be considered a moderator
-    return user.data.attributes?.highest_role !== 'user';
+    return user.data.attributes?.highest_role === 'user';
   }
   return false;
 };

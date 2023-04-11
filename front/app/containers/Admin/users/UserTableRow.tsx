@@ -1,6 +1,6 @@
 // Libraries
 import React, { useState, lazy, Suspense } from 'react';
-import { isAdmin, isNotRegularUser } from 'services/permissions/roles';
+import { isAdmin, isRegularUser } from 'services/permissions/roles';
 import moment from 'moment';
 
 // Utils
@@ -88,7 +88,7 @@ const UserTableRow = ({
   const { formatMessage } = useIntl();
 
   const isUserAdmin = isAdmin({ data: user });
-  const isUserModerator = isNotRegularUser({ data: user });
+  const isUserModerator = !isRegularUser({ data: user });
   const registeredAt = moment(user.attributes.registration_completed_at).format(
     'LL'
   );

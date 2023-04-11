@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { get, isFunction, isNil } from 'lodash-es';
 import { IUser } from 'services/users';
 import {
-  isNotRegularUser,
+  isRegularUser,
   isProjectModerator,
   isAdmin,
   isSuperAdmin,
@@ -54,7 +54,7 @@ const configuration: ModuleConfiguration = {
             segmentFeatureFlag?.enabled &&
             // User is admin or moderator
             !isNilOrError(user) &&
-            isNotRegularUser(user)
+            !isRegularUser(user)
         );
       }
 

@@ -3,7 +3,7 @@ import React, { Suspense, memo, useState, lazy } from 'react';
 
 // Services
 import { addProjectModerator } from 'services/projectModerators';
-import { isNotRegularUser } from 'services/permissions/roles';
+import { isRegularUser } from 'services/permissions/roles';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -89,7 +89,7 @@ const UserSearch = memo(({ projectId }: Props) => {
 
   const handleAddClick = () => {
     const isSelectedUserAModerator =
-      moderatorToAdd && isNotRegularUser({ data: moderatorToAdd });
+      moderatorToAdd && !isRegularUser({ data: moderatorToAdd });
     const shouldOpenModal =
       hasSeatBasedBillingEnabled &&
       hasReachedOrIsOverPlanSeatLimit &&

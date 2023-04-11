@@ -5,7 +5,7 @@ import clHistory from 'utils/cl-router/history';
 
 import {
   isAdmin,
-  isNotRegularUser,
+  isRegularUser,
   isSuperAdmin,
 } from 'services/permissions/roles';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
@@ -55,7 +55,7 @@ const IdeasNewPageWithJSONForm = () => {
     const isPrivilegedUser =
       !isNilOrError(authUser) &&
       (isAdmin({ data: authUser }) ||
-        isNotRegularUser({ data: authUser }) ||
+        !isRegularUser({ data: authUser }) ||
         isSuperAdmin({ data: authUser }));
 
     if (
@@ -117,7 +117,7 @@ const IdeasNewPageWithJSONForm = () => {
         phase_ids:
           phaseId &&
           !isNilOrError(authUser) &&
-          isNotRegularUser({ data: authUser })
+          !isRegularUser({ data: authUser })
             ? [phaseId]
             : null,
       },

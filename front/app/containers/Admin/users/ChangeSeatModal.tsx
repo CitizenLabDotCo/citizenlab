@@ -16,7 +16,7 @@ import useSeats from 'api/seats/useSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Utils
-import { isNotRegularUser, isAdmin } from 'services/permissions/roles';
+import { isRegularUser, isAdmin } from 'services/permissions/roles';
 import { getExceededLimitInfo } from 'components/SeatInfo/utils';
 
 import { IUserData } from 'services/users';
@@ -71,7 +71,7 @@ const ChangeSeatModal = ({
 }: Props) => {
   const [showSuccess, setShowSuccess] = useState(false);
   const isUserToChangeSeatAdmin = isAdmin({ data: userToChangeSeat });
-  const isUserToChangeModerator = isNotRegularUser({
+  const isUserToChangeModerator = !isRegularUser({
     data: userToChangeSeat,
   });
   const { formatMessage } = useIntl();

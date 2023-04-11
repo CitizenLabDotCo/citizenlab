@@ -12,7 +12,7 @@ import {
 } from 'components/ConsentManager/destinations';
 import {
   isAdmin,
-  isNotRegularUser,
+  isRegularUser,
   isSuperAdmin,
 } from 'services/permissions/roles';
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
@@ -34,7 +34,7 @@ const destinationConfig: IDestinationConfig = {
   feature_flag: 'satismeter',
   hasPermission: (user) =>
     !!user &&
-    (isAdmin({ data: user }) || isNotRegularUser({ data: user })) &&
+    (isAdmin({ data: user }) || !isRegularUser({ data: user })) &&
     !isSuperAdmin({ data: user }),
   name: () => 'Satismeter',
 };

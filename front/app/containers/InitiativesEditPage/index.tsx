@@ -9,7 +9,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import {
   isAdmin,
   isSuperAdmin,
-  isNotRegularUser,
+  isRegularUser,
 } from 'services/permissions/roles';
 import { ITopicData } from 'services/topics';
 
@@ -102,7 +102,7 @@ const InitiativesEditPage = ({
     const isPrivilegedUser =
       !isNilOrError(authUser) &&
       (isAdmin({ data: authUser }) ||
-        isNotRegularUser({ data: authUser }) ||
+        !isRegularUser({ data: authUser }) ||
         isSuperAdmin({ data: authUser }));
 
     if (!isPrivilegedUser && authUser === null) {
