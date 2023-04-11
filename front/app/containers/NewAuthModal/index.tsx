@@ -37,7 +37,7 @@ const getHeaderMessage = (step: ReturnType<typeof useSteps>['currentStep']) => {
   return null;
 };
 
-const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
+export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   account_creation_failed: oldSignUpMessages.unknownError,
   wrong_confirmation_code: errorMessages.confirmation_code_invalid,
   wrong_password: oldSignInMessages.signInError,

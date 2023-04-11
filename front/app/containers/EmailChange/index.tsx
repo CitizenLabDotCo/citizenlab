@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Success } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet';
 import {
   StyledContentContainer,
@@ -12,12 +12,15 @@ import {
 } from 'components/smallForm';
 import { FormLabel } from 'components/UI/FormComponents';
 import GoBackButton from 'components/UI/GoBackButton';
-import { openSignUpInModal } from 'events/openSignUpInModal';
+import EmailConfirmation from 'containers/NewAuthModal/steps/EmailConfirmation';
+import Modal from 'components/UI/Modal';
+import Error from 'components/UI/Error';
 
 // api
 import clHistory from 'utils/cl-router/history';
 import { updateUser } from 'services/users';
 import useAuthUser from 'hooks/useAuthUser';
+import confirmEmail from 'api/authentication/confirmEmail';
 
 // hook form
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -31,26 +34,32 @@ import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import resendEmailConfirmationCode from 'api/authentication/resendEmailConfirmationCode';
+
+// typings
+import { Status, ErrorCode } from 'containers/NewAuthModal/typings';
+import { ERROR_CODE_MESSAGES } from 'containers/NewAuthModal';
 
 type FormValues = {
-  new_email: string;
+  email: string;
 };
 
 const EmailChange = () => {
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
-
-  const onFormSubmit = async (formValues: FormValues) => {
-    // Call user update endpoint and set the " new_email ""  attribute
-    if (!isNilOrError(authUser)) {
-      await updateUser(authUser.id, { ...formValues });
-    }
-    // If confirmation required, launch modal
-    openSignUpInModal();
-  };
+  const appConfiguration = useAppConfiguration();
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [newEmail, setNewEmail] = useState<string | null>(null);
+  const [confirmationStatus, setConfirmationStatus] = useState<Status>('ok');
+  const [confirmationError, setConfirmationError] = useState<ErrorCode | null>(
+    null
+  );
+  const [updateSuccessful, setUpdateSuccessful] = useState(false);
 
   const schema = object({
-    new_email: string()
+    email: string()
       .email(formatMessage(messages.emailInvalidError))
       .required(formatMessage(messages.emailEmptyError)),
   });
@@ -58,10 +67,51 @@ const EmailChange = () => {
   const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues: {
-      new_email: '',
+      email: !isNilOrError(authUser) ? authUser.attributes.email : '',
     },
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    if (!isNilOrError(authUser) && authUser.attributes.email) {
+      methods.setValue('email', authUser.attributes.email);
+    }
+  }, [authUser, methods]);
+
+  const onFormSubmit = async (formValues: FormValues) => {
+    try {
+      if (!isNilOrError(authUser)) {
+        await updateUser(authUser.id, { ...formValues });
+      }
+      // If confirmation required, launch modal
+      if (appConfiguration.data?.data.attributes.settings.user_confirmation) {
+        resendEmailConfirmationCode(formValues.email);
+        setNewEmail(formValues.email);
+        setOpenConfirmationModal(true);
+      } else {
+        setUpdateSuccessful(true);
+      }
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
+  };
+
+  const onEmailConfirmation = async (code: string) => {
+    try {
+      await confirmEmail({ code });
+      setConfirmationStatus('ok');
+      setConfirmationError(null);
+      setOpenConfirmationModal(false);
+      setUpdateSuccessful(true);
+    } catch (e) {
+      setConfirmationStatus('error');
+      if (e?.code?.[0]?.error === 'invalid') {
+        setConfirmationError('wrong_confirmation_code');
+      } else {
+        setConfirmationError('unknown');
+      }
+    }
+  };
 
   if (isNilOrError(authUser)) {
     return null;
@@ -101,7 +151,7 @@ const EmailChange = () => {
                 htmlFor="new_password"
               />
             </LabelContainer>
-            <Input name="new_email" type="text" />
+            <Input name="email" type="text" />
             <StyledButton
               type="submit"
               size="m"
@@ -110,8 +160,37 @@ const EmailChange = () => {
               text={formatMessage(messages.submitButton)}
             />
           </Form>
+          <Box display="flex" justifyContent="center">
+            {updateSuccessful && (
+              <Success text={formatMessage(messages.updateSuccessful)} />
+            )}
+          </Box>
         </StyledContentContainer>
       </FormProvider>
+      <Modal
+        fullScreen={false}
+        width="580px"
+        opened={openConfirmationModal}
+        close={() => setOpenConfirmationModal(false)}
+        hideCloseButton={false}
+        header={formatMessage(messages.confirmationModalTitle)}
+      >
+        <Box padding="16px">
+          {confirmationError && (
+            <Box mb="16px">
+              <Error
+                text={formatMessage(ERROR_CODE_MESSAGES[confirmationError])}
+              />
+            </Box>
+          )}
+          <EmailConfirmation
+            state={{ email: newEmail }}
+            status={confirmationStatus}
+            error={confirmationError}
+            onConfirm={onEmailConfirmation}
+          />
+        </Box>
+      </Modal>
     </Box>
   );
 };

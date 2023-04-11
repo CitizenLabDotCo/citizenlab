@@ -28,7 +28,7 @@ interface Props {
   status: Status;
   error: ErrorCode | null;
   onConfirm: (code: string) => void;
-  onChangeEmail: () => void;
+  onChangeEmail?: () => void;
 }
 
 interface FormValues {
@@ -89,7 +89,7 @@ const EmailConfirmation = ({
 
   const handleChangeEmail = (e: FormEvent) => {
     e.preventDefault();
-    onChangeEmail();
+    onChangeEmail && onChangeEmail();
   };
 
   return (

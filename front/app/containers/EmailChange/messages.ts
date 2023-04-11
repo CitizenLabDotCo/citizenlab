@@ -38,4 +38,12 @@ export default defineMessages({
     defaultMessage:
       'Provide an email address in the correct format, for example name@provider.com',
   },
+  updateSuccessful: {
+    id: 'app.containers.ChangeEmail.updateSuccessful',
+    defaultMessage: 'Your email has been successfully updated.',
+  },
+  confirmationModalTitle: {
+    id: 'app.containers.ChangeEmail.confirmationModalTitle',
+    defaultMessage: 'Confirm your email',
+  },
 });
