@@ -386,7 +386,7 @@
   "app.components.QuillEditor.visitPrompt": "Bezoek de link:",
   "app.components.SeatInfo.additionalSeats": "Extra accounts",
   "app.components.SeatInfo.additionalSeatsToolTip": "Dit toont het aantal extra accounts dat je hebt gekocht bovenop de \"Inbegrepen accounts\".",
-  "app.components.SeatInfo.adminSeats": "Administratieve zetels",
+  "app.components.SeatInfo.adminSeats": "Admin accounts",
   "app.components.SeatInfo.adminSeatsIncludedText": "{adminSeats} admin accounts inbegrepen",
   "app.components.SeatInfo.adminSeatsTooltip": "Beheerders hebben de leiding over het platform en zij hebben samenwerkingsrechten voor alle mappen en projecten. U kunt {visitHelpCenter} raadplegen voor meer informatie over de verschillende rollen.",
   "app.components.SeatInfo.collaboratorSeats": "Zetels voor medewerkers",
