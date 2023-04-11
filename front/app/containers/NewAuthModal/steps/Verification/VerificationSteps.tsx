@@ -38,7 +38,6 @@ const Container = styled.div`
 export interface Props {
   context: AuthenticationContext | null; // TODO change to pass in additionnal rules info
   initialActiveStep: TVerificationStep;
-  showHeader?: boolean;
   inModal: boolean;
   skippable?: boolean;
   onCompleted?: () => void;
@@ -53,7 +52,6 @@ const VerificationSteps = memo<Props>(
     className,
     context,
     initialActiveStep,
-    showHeader,
     inModal,
     skippable,
     onCompleted,
@@ -117,7 +115,6 @@ const VerificationSteps = memo<Props>(
           {activeStep === 'method-selection' && (
             <VerificationMethods
               context={context}
-              showHeader={showHeader}
               inModal={inModal}
               skippable={skippable}
               onSkipped={onVerificationSkipped}
@@ -128,7 +125,6 @@ const VerificationSteps = memo<Props>(
           <Outlet
             id="app.components.VerificationModal.methodSteps"
             method={method}
-            showHeader={showHeader}
             inModal={inModal}
             onCancel={onStepCancel}
             onVerified={onStepVerified}

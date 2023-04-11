@@ -9,7 +9,6 @@ import { Input } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import {
   FormContainer,
-  Title,
   Form,
   FormField,
   StyledLabel,
@@ -28,13 +27,12 @@ import { verifyBogus } from '../services/verify';
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
-  showHeader?: boolean;
   inModal: boolean;
   className?: string;
 }
 
 const VerificationFormBogus = memo<Props>(
-  ({ onCancel, onVerified, showHeader, inModal, className }) => {
+  ({ onCancel, onVerified, inModal, className }) => {
     const authUser = useAuthUser();
 
     const [desiredError, setDesiredError] = useState<string>('');
@@ -107,12 +105,6 @@ const VerificationFormBogus = memo<Props>(
         className={className}
         inModal={inModal}
       >
-        {showHeader && (
-          <Title>
-            <strong>Verify your identity (fake)</strong>
-          </Title>
-        )}
-
         <Form inModal={inModal}>
           <FormField>
             <StyledLabel>

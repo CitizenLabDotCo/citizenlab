@@ -155,7 +155,7 @@ export const oldSignUpFlow = (
 
     'sign-up:verification': {
       CLOSE: () => setCurrentStep('closed'),
-      // TODO
+      CONTINUE: () => {},
     },
 
     'sign-up:custom-fields': {

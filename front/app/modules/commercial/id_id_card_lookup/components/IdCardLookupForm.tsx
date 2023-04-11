@@ -11,7 +11,6 @@ import Error from 'components/UI/Error';
 import Collapse from 'components/UI/Collapse';
 import {
   FormContainer,
-  Title,
   Form,
   FormField,
   StyledLabel,
@@ -40,14 +39,13 @@ import { IDLookupMethod } from 'services/verificationMethods';
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
-  showHeader?: boolean;
   inModal: boolean;
   className?: string;
   method: IDLookupMethod;
 }
 
 const VerificationFormLookup = memo<Props & WrappedComponentProps>(
-  ({ onCancel, onVerified, showHeader, inModal, className, method, intl }) => {
+  ({ onCancel, onVerified, inModal, className, method, intl }) => {
     const authUser = useAuthUser();
 
     const [cardId, setCardId] = useState<string>('');
@@ -130,14 +128,6 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
 
     return (
       <FormContainer className={className} inModal={inModal}>
-        {showHeader && (
-          <Title>
-            <strong>
-              <FormattedMessage {...messages.verifyYourIdentity} />
-            </strong>
-          </Title>
-        )}
-
         <Form inModal={inModal}>
           <FormField>
             <StyledLabel htmlFor="cardId">

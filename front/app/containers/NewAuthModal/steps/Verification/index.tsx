@@ -40,7 +40,6 @@ const VerificationSignUpStep = ({
       context={metaData?.context || null}
       initialActiveStep="method-selection"
       inModal={true}
-      showHeader={false}
       skippable={true}
     />
   );

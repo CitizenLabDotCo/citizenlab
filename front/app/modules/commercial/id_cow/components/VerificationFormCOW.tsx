@@ -11,7 +11,6 @@ import Error from 'components/UI/Error';
 import Collapse from 'components/UI/Collapse';
 import {
   FormContainer,
-  Title,
   Form,
   FormField,
   StyledLabel,
@@ -39,13 +38,12 @@ import helpImage from './COWHelpImage.png';
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
-  showHeader?: boolean;
   inModal: boolean;
   className?: string;
 }
 
 const VerificationFormCOW = memo<Props & WrappedComponentProps>(
-  ({ onCancel, onVerified, showHeader, inModal, className, intl }) => {
+  ({ onCancel, onVerified, inModal, className, intl }) => {
     const authUser = useAuthUser();
 
     const [run, setRun] = useState('');
@@ -153,14 +151,6 @@ const VerificationFormCOW = memo<Props & WrappedComponentProps>(
 
     return (
       <FormContainer className={className} inModal={inModal}>
-        {showHeader && (
-          <Title>
-            <strong>
-              <FormattedMessage {...messages.verifyYourIdentity} />
-            </strong>
-          </Title>
-        )}
-
         <Form inModal={inModal}>
           <FormField>
             <StyledLabel htmlFor="run">

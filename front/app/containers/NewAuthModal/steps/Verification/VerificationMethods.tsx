@@ -2,19 +2,14 @@ import React, { memo, useCallback, Fragment } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon, Spinner } from '@citizenlab/cl2-component-library';
-import Avatar from 'components/Avatar';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import {
-  Title,
-  Subtitle,
-} from 'containers/NewAuthModal/steps/AuthProviders/styles';
+import { Subtitle } from 'containers/NewAuthModal/steps/AuthProviders/styles';
 import Or from 'components/UI/Or';
 import Centerer from 'components/UI/Centerer';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
 import useParticipationConditions from 'hooks/useParticipationConditions';
 import useVerificationMethods from 'hooks/useVerificationMethods';
 
@@ -35,43 +30,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-`;
-
-const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  margin-bottom: 35px;
-
-  ${media.tablet`
-    justify-content: flex-start;
-    margin-bottom: 20px;
-  `}
-`;
-
-const AboveTitle = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 25px;
-`;
-
-const StyledAvatar = styled(Avatar)`
-  margin-left: -5px;
-  margin-right: -5px;
-  z-index: 2;
-
-  ${media.phone`
-    margin-left: 0;
-  `}
-`;
-
-const ShieldIcon = styled(Icon)`
-  opacity: 0.5;
-  fill: ${colors.textSecondary};
-  width: 48px;
-  height: 48px;
 `;
 
 const Content = styled.div`
@@ -163,7 +121,6 @@ const SkipButtonContainer = styled.div`
 
 interface Props {
   context: AuthenticationContext | null;
-  showHeader?: boolean;
   skippable?: boolean;
   inModal: boolean;
   onMethodSelected: (selectedMethod: TVerificationMethod) => void;
@@ -172,18 +129,8 @@ interface Props {
 }
 
 const VerificationMethods = memo<Props>(
-  ({
-    context,
-    showHeader,
-    skippable,
-    inModal,
-    onMethodSelected,
-    onSkipped,
-    className,
-  }) => {
+  ({ context, skippable, inModal, onMethodSelected, onSkipped, className }) => {
     const participationConditions = useParticipationConditions(context);
-
-    const authUser = useAuthUser();
     const verificationMethods = useVerificationMethods();
 
     const withContext =
@@ -218,30 +165,6 @@ const VerificationMethods = memo<Props>(
           id="e2e-verification-wizard-method-selection-step"
           className={className || ''}
         >
-          {showHeader && (
-            <Header>
-              <AboveTitle aria-hidden>
-                <StyledAvatar
-                  userId={!isNilOrError(authUser) ? authUser.id : null}
-                  size={55}
-                />
-                <ShieldIcon name="shield-check" />
-              </AboveTitle>
-              <Title id="modal-header">
-                <strong>
-                  <FormattedMessage {...messages.verifyYourIdentity} />
-                </strong>
-                {withContext ? (
-                  <FormattedMessage {...messages.toParticipateInThisProject} />
-                ) : (
-                  <FormattedMessage
-                    {...messages.andUnlockYourCitizenPotential}
-                  />
-                )}
-              </Title>
-            </Header>
-          )}
-
           <Content className={`${inModal ? 'inModal' : ''}`}>
             {withContext &&
               !isNilOrError(participationConditions) &&
