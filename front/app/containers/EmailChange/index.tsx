@@ -1,10 +1,7 @@
-import { Box } from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
 import React from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useIntl } from 'utils/cl-intl';
-import { object, string } from 'yup';
-import messages from './messages';
+
+// components
+import { Box } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet';
 import {
   StyledContentContainer,
@@ -15,12 +12,25 @@ import {
 } from 'components/smallForm';
 import { FormLabel } from 'components/UI/FormComponents';
 import GoBackButton from 'components/UI/GoBackButton';
+import { openSignUpInModal } from 'events/openSignUpInModal';
+
+// api
 import clHistory from 'utils/cl-router/history';
 import { updateUser } from 'services/users';
 import useAuthUser from 'hooks/useAuthUser';
-import { isNilOrError } from 'utils/helperUtils';
-import { openSignUpInModal } from 'events/openSignUpInModal';
+
+// hook form
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import { object, string } from 'yup';
 import Input from 'components/HookForm/Input';
+
+// intl
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 type FormValues = {
   new_email: string;
