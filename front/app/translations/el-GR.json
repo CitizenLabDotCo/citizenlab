@@ -37,6 +37,8 @@
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "Παρακαλούμε {signUpLink} ή {signInLink} για να σχολιάσετε.",
   "app.components.Comments.commentingInitiativeNotPermitted": "Ο σχολιασμός δεν είναι προς το παρόν ενεργοποιημένος.",
   "app.components.Comments.commentingMaybeNotPermitted": "Παρακαλούμε {signInLink} για να δείτε τι ενέργειες μπορούν να γίνουν.",
+  "app.components.Comments.deleteComment": "Διαγραφή",
+  "app.components.Comments.editComment": "Επεξεργασία",
   "app.components.Comments.invisibleTitleComments": "Σχόλια",
   "app.components.Comments.mostUpvoted": "Με τις περισσότερες ψήφους",
   "app.components.Comments.official": "Επίσημα",
