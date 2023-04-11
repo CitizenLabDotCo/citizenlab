@@ -70,7 +70,7 @@ const FolderPermissions = () => {
   const currentCollaboratorSeats =
     seats.data.attributes.project_moderators_number;
 
-  const { hasReachedOrIsOverLimit } = getExceededLimitInfo(
+  const { hasReachedOrIsOverPlanSeatLimit } = getExceededLimitInfo(
     hasSeatBasedBillingEnabled,
     currentCollaboratorSeats,
     additionalCollaborators,
@@ -103,7 +103,7 @@ const FolderPermissions = () => {
       moderatorToAdd && isCollaborator({ data: moderatorToAdd });
     const shouldOpenModal =
       hasSeatBasedBillingEnabled &&
-      hasReachedOrIsOverLimit &&
+      hasReachedOrIsOverPlanSeatLimit &&
       !isSelectedUserAModerator;
     if (shouldOpenModal) {
       setShowModal(true);

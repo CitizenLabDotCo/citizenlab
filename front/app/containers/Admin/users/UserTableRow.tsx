@@ -115,7 +115,7 @@ const UserTableRow = ({
   const additionalAdmins =
     appConfiguration?.data.attributes.settings.core.additional_admins_number;
   const currentAdminSeats = seats.data.attributes.admins_number;
-  const { hasReachedOrIsOverLimit } = getExceededLimitInfo(
+  const { hasReachedOrIsOverPlanSeatLimit } = getExceededLimitInfo(
     hasSeatBasedBillingEnabled,
     currentAdminSeats,
     additionalAdmins,
@@ -171,7 +171,7 @@ const UserTableRow = ({
     const shouldOpenConfirmationInModal =
       changeToNormalUser ||
       !hasSeatBasedBillingEnabled ||
-      hasReachedOrIsOverLimit;
+      hasReachedOrIsOverPlanSeatLimit;
     if (shouldOpenConfirmationInModal) {
       setShowChangeSeatModal(true);
       return;

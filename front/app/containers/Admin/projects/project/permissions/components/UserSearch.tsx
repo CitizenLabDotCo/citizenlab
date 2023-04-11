@@ -60,7 +60,7 @@ const UserSearch = memo(({ projectId }: Props) => {
 
   const currentCollaboratorSeats =
     seats.data.attributes.project_moderators_number;
-  const { hasReachedOrIsOverLimit } = getExceededLimitInfo(
+  const { hasReachedOrIsOverPlanSeatLimit } = getExceededLimitInfo(
     hasSeatBasedBillingEnabled,
     currentCollaboratorSeats,
     additionalCollaborators,
@@ -93,7 +93,7 @@ const UserSearch = memo(({ projectId }: Props) => {
       moderatorToAdd && isCollaborator({ data: moderatorToAdd });
     const shouldOpenModal =
       hasSeatBasedBillingEnabled &&
-      hasReachedOrIsOverLimit &&
+      hasReachedOrIsOverPlanSeatLimit &&
       !isSelectedUserAModerator;
     if (shouldOpenModal) {
       openModal();

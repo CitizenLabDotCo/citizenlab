@@ -2,8 +2,8 @@ import { TSeatNumber } from 'api/app_configuration/types';
 import { isNil } from 'utils/helperUtils';
 
 type ExceededLimitType = {
-  hasReachedOrIsOverLimit: boolean;
-  hasExceededSetSeats: boolean;
+  hasReachedOrIsOverPlanSeatLimit: boolean;
+  hasExceededPlanSeatLimit: boolean;
 };
 
 // TODO: Remove or simplify this function after seat based billing
@@ -17,14 +17,15 @@ export const getExceededLimitInfo = (
   // If maximumSeatTypeSeats isNil, then that means unlimited seats and therefore exceeding is not possible
   if (isNil(maximumSeatTypeSeats)) {
     return {
-      hasReachedOrIsOverLimit: false,
-      hasExceededSetSeats: false,
+      hasReachedOrIsOverPlanSeatLimit: false,
+      hasExceededPlanSeatLimit: false,
     };
   } else if (!hasSeatBasedBillingEnabled) {
     // We use maximumSeatTypeSeats (maximum_admins_number or maximum_moderators_number) because saving additionalSeatTypeSeats (additional_admins_number or additional_moderators_number) is a concept in the second iteration
     return {
-      hasReachedOrIsOverLimit: currentSeatTypeSeats >= maximumSeatTypeSeats,
-      hasExceededSetSeats: currentSeatTypeSeats > maximumSeatTypeSeats,
+      hasReachedOrIsOverPlanSeatLimit:
+        currentSeatTypeSeats >= maximumSeatTypeSeats,
+      hasExceededPlanSeatLimit: currentSeatTypeSeats > maximumSeatTypeSeats,
     };
   }
   const seatLimit = !isNil(additionalSeatTypeSeats)
@@ -32,7 +33,7 @@ export const getExceededLimitInfo = (
     : maximumSeatTypeSeats;
 
   return {
-    hasReachedOrIsOverLimit: currentSeatTypeSeats >= seatLimit,
-    hasExceededSetSeats: currentSeatTypeSeats > seatLimit,
+    hasReachedOrIsOverPlanSeatLimit: currentSeatTypeSeats >= seatLimit,
+    hasExceededPlanSeatLimit: currentSeatTypeSeats > seatLimit,
   };
 };

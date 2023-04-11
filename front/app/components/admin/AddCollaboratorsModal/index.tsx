@@ -47,14 +47,15 @@ const AddCollaboratorsModal = ({
   const currentCollaboratorSeats =
     seats.data.attributes.project_moderators_number;
 
-  const { hasReachedOrIsOverLimit, hasExceededSetSeats } = getExceededLimitInfo(
-    hasSeatBasedBillingEnabled,
-    currentCollaboratorSeats,
-    additionalCollaborators,
-    maximumCollaborators
-  );
+  const { hasReachedOrIsOverPlanSeatLimit, hasExceededPlanSeatLimit } =
+    getExceededLimitInfo(
+      hasSeatBasedBillingEnabled,
+      currentCollaboratorSeats,
+      additionalCollaborators,
+      maximumCollaborators
+    );
 
-  const buttonText = hasReachedOrIsOverLimit
+  const buttonText = hasReachedOrIsOverPlanSeatLimit
     ? formatMessage(messages.buyAdditionalSeats)
     : formatMessage(messages.confirmButtonText);
 
@@ -72,15 +73,15 @@ const AddCollaboratorsModal = ({
             setShowSuccess(false);
             closeModal();
           }}
-          hasExceededSetSeats={hasExceededSetSeats}
+          hasExceededPlanSeatLimit={hasExceededPlanSeatLimit}
           seatType="collaborator"
         />
       ) : (
         <Box display="flex" flexDirection="column" width="100%" p="32px">
           <Text color="textPrimary" fontSize="m" my="0px">
             <FormattedMessage
-              {...(hasReachedOrIsOverLimit
-                ? messages.hasReachedOrIsOverLimit
+              {...(hasReachedOrIsOverPlanSeatLimit
+                ? messages.hasReachedOrIsOverPlanSeatLimit
                 : messages.confirmMessage)}
             />
           </Text>
