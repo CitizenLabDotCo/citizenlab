@@ -14,7 +14,7 @@ const StyledBox = styled(Box)`
   grid-auto-rows: 1fr;
 `;
 
-const AllUsers = () => {
+const AdminsAndModerators = () => {
   const [search, setSearch] = useState<string | undefined>(undefined);
 
   const searchUser = (searchTerm: string) => {
@@ -42,4 +42,4 @@ const AllUsers = () => {
   );
 };
 
-export default AllUsers;
+export default AdminsAndModerators;
