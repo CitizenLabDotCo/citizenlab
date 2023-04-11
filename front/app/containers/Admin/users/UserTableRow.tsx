@@ -5,7 +5,7 @@ import moment from 'moment';
 
 // Utils
 import clHistory from 'utils/cl-router/history';
-import { isNil } from 'utils/helperUtils';
+import { getExceededLimitInfo } from 'components/SeatInfo/utils';
 
 // Components
 import { Tr, Td, Box } from '@citizenlab/cl2-component-library';
@@ -33,6 +33,7 @@ import { IUserData, deleteUser } from 'services/users';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // Styling
+
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
@@ -106,13 +107,20 @@ const UserTableRow = ({
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
   });
-  if (!appConfiguration || !seats) return null;
 
   const maximumAdmins =
-    appConfiguration.data.attributes.settings.core.maximum_admins_number;
+    appConfiguration?.data.attributes.settings.core.maximum_admins_number;
+  if (!appConfiguration || !seats) return null;
+
+  const additionalAdmins =
+    appConfiguration?.data.attributes.settings.core.additional_admins_number;
   const currentAdminSeats = seats.data.attributes.admins_number;
-  const hasReachedOrIsOverLimit =
-    !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins;
+  const { hasReachedOrIsOverPlanSeatLimit } = getExceededLimitInfo(
+    hasSeatBasedBillingEnabled,
+    currentAdminSeats,
+    additionalAdmins,
+    maximumAdmins
+  );
 
   const closeChangeSeatModal = () => {
     setShowChangeSeatModal(false);
@@ -163,7 +171,7 @@ const UserTableRow = ({
     const shouldOpenConfirmationInModal =
       changeToNormalUser ||
       !hasSeatBasedBillingEnabled ||
-      hasReachedOrIsOverLimit;
+      hasReachedOrIsOverPlanSeatLimit;
     if (shouldOpenConfirmationInModal) {
       setShowChangeSeatModal(true);
       return;

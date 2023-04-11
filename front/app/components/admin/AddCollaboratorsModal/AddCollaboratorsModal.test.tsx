@@ -10,8 +10,8 @@ type MockAppConfigurationType = {
     attributes: {
       settings: {
         core: {
-          maximum_admins_number: IAppConfigurationSettingsCore['maximum_admins_number'];
           maximum_moderators_number: IAppConfigurationSettingsCore['maximum_moderators_number'];
+          additional_moderators_number: IAppConfigurationSettingsCore['additional_moderators_number'];
         };
       };
     };
@@ -24,8 +24,8 @@ const mockAppConfiguration: MockAppConfigurationType = {
     attributes: {
       settings: {
         core: {
-          maximum_admins_number: 6,
           maximum_moderators_number: 9,
+          additional_moderators_number: 0,
         },
       },
     },
@@ -51,53 +51,126 @@ jest.mock('api/seats/useSeats', () => () => {
   };
 });
 
+let mockFeatureFlagData = false;
+
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
+
 describe('AddCollaboratorsModal', () => {
   const closeModal = jest.fn();
   const handleOnAddModeratorsClick = jest.fn();
 
-  it('shows confirm in button when seats are not full and admin is adding another collaborator', () => {
-    render(
-      <AddCollaboratorsModal
-        addModerators={handleOnAddModeratorsClick}
-        showModal
-        closeModal={closeModal}
-      />
-    );
+  beforeEach(() => {
+    mockUserSeatsData.data.attributes.project_moderators_number = 5;
 
-    const confirmButton = screen.queryByRole('button', {
-      name: 'Confirm',
-    });
-
-    expect(screen.queryByText('Give collaborator rights')).toBeInTheDocument();
-    expect(
-      screen.queryByText(
-        'Are you sure you want to give 1 person collaborator rights?'
-      )
-    ).toBeInTheDocument();
-    expect(confirmButton).toBeInTheDocument();
+    mockAppConfiguration.data.attributes.settings.core.maximum_moderators_number = 9;
+    mockAppConfiguration.data.attributes.settings.core.additional_moderators_number = 0;
   });
 
-  it('shows buy an additional seat in button when seats are full and admin is trying to add another', () => {
-    mockUserSeatsData.data.attributes.project_moderators_number = 10;
-
-    render(
-      <AddCollaboratorsModal
-        addModerators={handleOnAddModeratorsClick}
-        showModal
-        closeModal={closeModal}
-      />
-    );
-
-    const buyAdditionalSeatButton = screen.queryByRole('button', {
-      name: 'Buy 1 additional seat',
+  describe('when seat_based_billing is off', () => {
+    beforeEach(() => {
+      mockFeatureFlagData = false;
     });
 
-    expect(screen.queryByText('Give collaborator rights')).toBeInTheDocument();
-    expect(
-      screen.queryByText(
-        'You have reached the limit of included seats within your plan, 1 additional seat will be added.'
-      )
-    ).toBeInTheDocument();
-    expect(buyAdditionalSeatButton).toBeInTheDocument();
+    it('shows confirm in button when seats are not full and admin is adding another collaborator', () => {
+      render(
+        <AddCollaboratorsModal
+          addModerators={handleOnAddModeratorsClick}
+          showModal
+          closeModal={closeModal}
+        />
+      );
+
+      const confirmButton = screen.getByRole('button', {
+        name: 'Confirm',
+      });
+
+      expect(screen.getByText('Give collaborator rights')).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          'Are you sure you want to give 1 person collaborator rights?'
+        )
+      ).toBeInTheDocument();
+      expect(confirmButton).toBeInTheDocument();
+    });
+
+    it('shows buy an additional seat in button when seats are full and admin is trying to add another', () => {
+      mockUserSeatsData.data.attributes.project_moderators_number = 10;
+
+      render(
+        <AddCollaboratorsModal
+          addModerators={handleOnAddModeratorsClick}
+          showModal
+          closeModal={closeModal}
+        />
+      );
+
+      const buyAdditionalSeatButton = screen.getByRole('button', {
+        name: 'Buy 1 additional seat',
+      });
+
+      expect(screen.getByText('Give collaborator rights')).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          'You have reached the limit of included seats within your plan, 1 additional seat will be added.'
+        )
+      ).toBeInTheDocument();
+      expect(buyAdditionalSeatButton).toBeInTheDocument();
+    });
+  });
+
+  describe('when seat_based_billing is on', () => {
+    beforeEach(() => {
+      mockFeatureFlagData = true;
+    });
+
+    it('shows confirm in button when seats are more than the ones set in limit but within the sum of additional seats and maximum seats', () => {
+      mockUserSeatsData.data.attributes.project_moderators_number = 10;
+      mockAppConfiguration.data.attributes.settings.core.additional_moderators_number = 7;
+      mockFeatureFlagData = true;
+      render(
+        <AddCollaboratorsModal
+          addModerators={handleOnAddModeratorsClick}
+          showModal
+          closeModal={closeModal}
+        />
+      );
+
+      const confirmButton = screen.getByRole('button', {
+        name: 'Confirm',
+      });
+
+      expect(screen.getByText('Give collaborator rights')).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          'Are you sure you want to give 1 person collaborator rights?'
+        )
+      ).toBeInTheDocument();
+      expect(confirmButton).toBeInTheDocument();
+    });
+
+    it('shows buy an additional seat in button when seats are more than the sum of additional seats and maximum seats', () => {
+      mockUserSeatsData.data.attributes.project_moderators_number = 12;
+      mockAppConfiguration.data.attributes.settings.core.additional_moderators_number = 1;
+      mockFeatureFlagData = true;
+      render(
+        <AddCollaboratorsModal
+          addModerators={handleOnAddModeratorsClick}
+          showModal
+          closeModal={closeModal}
+        />
+      );
+
+      const buyAdditionalSeatButton = screen.getByRole('button', {
+        name: 'Buy 1 additional seat',
+      });
+
+      expect(screen.getByText('Give collaborator rights')).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          'You have reached the limit of included seats within your plan, 1 additional seat will be added.'
+        )
+      ).toBeInTheDocument();
+      expect(buyAdditionalSeatButton).toBeInTheDocument();
+    });
   });
 });
