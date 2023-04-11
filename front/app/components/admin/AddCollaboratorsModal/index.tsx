@@ -85,6 +85,7 @@ const AddCollaboratorsModal = ({
             alignItems="center"
           >
             <Button
+              autoFocus
               width="auto"
               onClick={() => {
                 addModerators();

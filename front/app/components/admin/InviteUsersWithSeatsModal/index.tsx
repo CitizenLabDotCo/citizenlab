@@ -151,6 +151,7 @@ const InviteUsersWithSeatsModal = ({
 
           <Box display="flex" mt="32px">
             <Button
+              autoFocus
               onClick={handleConfirmClick}
               data-testid="confirm-button-text"
             >
