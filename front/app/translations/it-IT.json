@@ -37,6 +37,8 @@
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "Per favore {signUpLink} o {signInLink} per commentare.",
   "app.components.Comments.commentingInitiativeNotPermitted": "I commenti non sono attualmente abilitati.",
   "app.components.Comments.commentingMaybeNotPermitted": "Per favore {signInLink} per vedere quali azioni possono essere intraprese.",
+  "app.components.Comments.deleteComment": "Cancellare",
+  "app.components.Comments.editComment": "Modifica",
   "app.components.Comments.invisibleTitleComments": "Commenti",
   "app.components.Comments.mostUpvoted": "I più votati",
   "app.components.Comments.official": "Ufficiale",
