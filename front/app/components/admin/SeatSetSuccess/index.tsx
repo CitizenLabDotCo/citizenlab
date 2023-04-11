@@ -21,13 +21,13 @@ import { colors } from 'utils/styleUtils';
 type SeatChangeSuccessModalProps = {
   closeModal: () => void;
   seatType: TSeatType;
-  hasExceededSetSeats: boolean;
+  hasExceededPlanSeatLimit: boolean;
 };
 
 const SeatSetSuccess = ({
   closeModal,
   seatType,
-  hasExceededSetSeats,
+  hasExceededPlanSeatLimit,
 }: SeatChangeSuccessModalProps) => {
   const { formatMessage } = useIntl();
   const hasSeatBasedBillingEnabled = useFeatureFlag({
@@ -38,13 +38,13 @@ const SeatSetSuccess = ({
     moderator: messages.moderator,
   };
   const descriptionMessage =
-    hasSeatBasedBillingEnabled && hasExceededSetSeats
+    hasSeatBasedBillingEnabled && hasExceededPlanSeatLimit
       ? formatMessage(messages.reflectedMessage)
       : formatMessage(messages.rightsGranted, {
           seatType: formatMessage(seatTypeMessages[seatType]),
         });
   const titleMessage =
-    hasSeatBasedBillingEnabled && hasExceededSetSeats
+    hasSeatBasedBillingEnabled && hasExceededPlanSeatLimit
       ? messages.orderCompleted
       : messages.allDone;
 

@@ -16,21 +16,21 @@ import useSeats from 'api/seats/useSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Utils
-import { isNil } from 'utils/helperUtils';
 import { isNotRegularUser, isAdmin } from 'services/permissions/roles';
+import { getExceededLimitInfo } from 'components/SeatInfo/utils';
 
 import { IUserData } from 'services/users';
 
 const getInfoText = (
   isUserAdmin: boolean,
   isChangingCollaboratorToNormalUser: boolean,
-  hasReachedOrIsOverLimit: boolean
+  hasReachedOrIsOverPlanSeatLimit: boolean
 ): MessageDescriptor => {
   if (isUserAdmin) {
     return messages.confirmNormalUserQuestion;
   } else if (isChangingCollaboratorToNormalUser) {
     return messages.confirmSetCollaboratorAsNormalUserQuestion;
-  } else if (hasReachedOrIsOverLimit) {
+  } else if (hasReachedOrIsOverPlanSeatLimit) {
     return messages.reachedLimitMessage;
   }
 
@@ -40,7 +40,7 @@ const getInfoText = (
 const getButtonText = (
   isUserAdmin: boolean,
   isUserToChangeCollaborator: boolean,
-  hasReachedOrIsOverLimit: boolean,
+  hasReachedOrIsOverPlanSeatLimit: boolean,
   hasSeatBasedBillingEnabled: boolean
 ): MessageDescriptor => {
   const buttonText = messages.confirm;
@@ -53,7 +53,9 @@ const getButtonText = (
     return buttonText;
   }
 
-  return hasReachedOrIsOverLimit ? messages.buyOneAditionalSeat : buttonText;
+  return hasReachedOrIsOverPlanSeatLimit
+    ? messages.buyOneAditionalSeat
+    : buttonText;
 };
 
 interface Props {
@@ -82,22 +84,29 @@ const ChangeSeatModal = ({
   });
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
+  const maximumAdmins =
+    appConfiguration?.data.attributes.settings.core.maximum_admins_number;
   if (!appConfiguration || !seats) return null;
 
-  const maximumAdmins =
-    appConfiguration.data.attributes.settings.core.maximum_admins_number;
   const currentAdminSeats = seats.data.attributes.admins_number;
 
+  const additionalAdmins =
+    appConfiguration?.data.attributes.settings.core.additional_admins_number;
   const isChangingCollaboratorToNormalUser =
     isChangingToNormalUser && isUserToChangeCollaborator;
-  const hasReachedOrIsOverLimit =
-    !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins;
-  const hasExceededSetSeats =
-    !isNil(maximumAdmins) && currentAdminSeats > maximumAdmins;
+
+  const { hasReachedOrIsOverPlanSeatLimit, hasExceededPlanSeatLimit } =
+    getExceededLimitInfo(
+      hasSeatBasedBillingEnabled,
+      currentAdminSeats,
+      additionalAdmins,
+      maximumAdmins
+    );
+
   const confirmChangeQuestion = getInfoText(
     isUserToChangeSeatAdmin,
     isChangingCollaboratorToNormalUser,
-    hasReachedOrIsOverLimit
+    hasReachedOrIsOverPlanSeatLimit
   );
   const modalTitle = isChangingToNormalUser
     ? messages.setAsNormalUser
@@ -105,7 +114,7 @@ const ChangeSeatModal = ({
   const buttonText = getButtonText(
     isUserToChangeSeatAdmin,
     isUserToChangeCollaborator,
-    hasReachedOrIsOverLimit,
+    hasReachedOrIsOverPlanSeatLimit,
     hasSeatBasedBillingEnabled
   );
 
@@ -125,7 +134,7 @@ const ChangeSeatModal = ({
             closeModal();
             setShowSuccess(false);
           }}
-          hasExceededSetSeats={hasExceededSetSeats}
+          hasExceededPlanSeatLimit={hasExceededPlanSeatLimit}
           seatType="admin"
         />
       ) : (

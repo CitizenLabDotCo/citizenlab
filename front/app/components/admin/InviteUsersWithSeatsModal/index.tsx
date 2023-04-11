@@ -66,7 +66,7 @@ const InviteUsersWithSeatsModal = ({
     moderator: seats.data.attributes.project_moderators_number,
   };
   const currentSeatNumber = currentSeatNumbers[seatType];
-  const hasExceededSetSeats =
+  const hasExceededPlanSeatLimit =
     !isNil(maximumSeatNumber) && currentSeatNumber > maximumSeatNumber;
 
   const seatTypeMessages: SeatTypeMessageDescriptor = {
@@ -113,8 +113,8 @@ const InviteUsersWithSeatsModal = ({
             setShowWarning(false);
             setHasAcknowledged(false);
           }}
-          hasExceededSetSeats={hasExceededSetSeats}
           seatType="moderator"
+          hasExceededPlanSeatLimit={hasExceededPlanSeatLimit}
         />
       ) : (
         <Box display="flex" flexDirection="column" width="100%" p="32px">

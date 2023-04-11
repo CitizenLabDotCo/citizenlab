@@ -4,7 +4,8 @@ import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
-import { isNilOrError, isNil } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getExceededLimitInfo } from 'components/SeatInfo/utils';
 
 // services
 import useProjectFolderModerators from 'hooks/useProjectFolderModerators';
@@ -59,15 +60,22 @@ const FolderPermissions = () => {
 
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
+  const maximumCollaborators =
+    appConfiguration?.data.attributes.settings.core.maximum_moderators_number;
+  const additionalCollaborators =
+    appConfiguration?.data.attributes.settings.core
+      .additional_moderators_number;
   if (!appConfiguration || !seats) return null;
 
-  const maximumCollaborators =
-    appConfiguration.data.attributes.settings.core.maximum_moderators_number;
   const currentCollaboratorSeats =
     seats.data.attributes.project_moderators_number;
-  const hasReachedOrIsOverLimit =
-    !isNil(maximumCollaborators) &&
-    currentCollaboratorSeats >= maximumCollaborators;
+
+  const { hasReachedOrIsOverPlanSeatLimit } = getExceededLimitInfo(
+    hasSeatBasedBillingEnabled,
+    currentCollaboratorSeats,
+    additionalCollaborators,
+    maximumCollaborators
+  );
 
   const closeModal = () => {
     setShowModal(false);
@@ -95,7 +103,7 @@ const FolderPermissions = () => {
       moderatorToAdd && isNotRegularUser({ data: moderatorToAdd });
     const shouldOpenModal =
       hasSeatBasedBillingEnabled &&
-      hasReachedOrIsOverLimit &&
+      hasReachedOrIsOverPlanSeatLimit &&
       !isSelectedUserAModerator;
     if (shouldOpenModal) {
       setShowModal(true);
