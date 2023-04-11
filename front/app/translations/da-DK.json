@@ -37,6 +37,8 @@
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "Ikke alle brugere har tilladelse til at kommentere. Brug venligst {signInLink} for at se om du har tilladelse.",
   "app.components.Comments.commentingInitiativeNotPermitted": "Du har ikke rettigheder til at kommentere.",
   "app.components.Comments.commentingMaybeNotPermitted": "Brug venligst {signInLink} for at se hvilke handlinger der kan udføres",
+  "app.components.Comments.deleteComment": "Slet",
+  "app.components.Comments.editComment": "Rediger",
   "app.components.Comments.invisibleTitleComments": "Kommentarer",
   "app.components.Comments.mostUpvoted": "Flest stemmer",
   "app.components.Comments.official": "Officiel",
