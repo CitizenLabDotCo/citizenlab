@@ -37,6 +37,8 @@
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "Niet iedereen kan reageren. {signUpLink} of {signInLink} om te zien of je aan de voorwaarden voldoet.",
   "app.components.Comments.commentingInitiativeNotPermitted": "Je hebt niet de nodige rechten om te kunnen reageren.",
   "app.components.Comments.commentingMaybeNotPermitted": "Niet iedereen kan reageren. {signInLink} om te zien of je aan de voorwaarden voldoet.",
+  "app.components.Comments.deleteComment": "Verwijder",
+  "app.components.Comments.editComment": "Bewerk",
   "app.components.Comments.invisibleTitleComments": "Reacties",
   "app.components.Comments.mostUpvoted": "Meeste stemmen",
   "app.components.Comments.official": "Officieel",
