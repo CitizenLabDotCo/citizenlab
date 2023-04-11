@@ -1,61 +1,55 @@
 // Libraries
 import React from 'react';
 
-// Styles
-import styled from 'styled-components';
-
 // components
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import Button from 'components/UI/Button';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { IUserData } from 'services/users';
 
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  > :not(:last-child) {
-    margin-right: 20px;
-  }
-`;
-
 type PasswordChangeProps = {
   user: IUserData;
 };
 
-const PasswordChange = ({ user }: PasswordChangeProps) => {
+const LoginCredentials = ({ user }: PasswordChangeProps) => {
   const userHasPreviousPassword = !user.attributes.no_password;
 
-  const passwordChangeTitle = !userHasPreviousPassword
-    ? messages.passwordAddSection
-    : messages.passwordChangeSection;
-  const passwordChangeSubtitle = !userHasPreviousPassword
-    ? messages.passwordAddSubtitle2
-    : messages.passwordChangeSubtitle;
   const passwordChangeButtonText = !userHasPreviousPassword
     ? messages.addPassword
-    : messages.changePassword;
+    : messages.changePassword2;
 
   return (
     <FormSection>
       <FormSectionTitle
-        message={passwordChangeTitle}
-        subtitleMessage={passwordChangeSubtitle}
+        message={messages.loginCredentialsTitle}
+        subtitleMessage={messages.loginCredentialsSubtitle}
       />
-      <Row>
+      <Box display="flex" gap="16px">
+        <Button
+          linkTo="/profile/change-email"
+          width="auto"
+          justifyWrapper="left"
+          buttonStyle="secondary"
+          icon="email"
+        >
+          <FormattedMessage {...messages.changeEmail} />
+        </Button>
         <Button
           linkTo="/profile/change-password"
           width="auto"
           justifyWrapper="left"
+          buttonStyle="secondary"
+          icon="lock"
         >
           <FormattedMessage {...passwordChangeButtonText} />
         </Button>
-      </Row>
+      </Box>
     </FormSection>
   );
 };
 
-export default PasswordChange;
+export default LoginCredentials;

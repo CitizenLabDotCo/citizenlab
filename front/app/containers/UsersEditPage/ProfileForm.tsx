@@ -71,7 +71,6 @@ type Props = InputProps & DataProps & WrappedComponentProps & InjectedLocalized;
 type FormValues = {
   first_name?: string;
   last_name?: string;
-  email?: string;
   bio_multiloc?: Multiloc;
   locale?: string;
   avatar?: UploadFile[] | null;
@@ -96,9 +95,6 @@ const ProfileForm = ({
   const schema = object({
     first_name: string(),
     last_name: string(),
-    email: string()
-      .email(formatMessage(messages.emailInvalidError))
-      .required(formatMessage(messages.emailEmptyError)),
     ...(!disableBio && {
       bio_multiloc: object(),
     }),
@@ -115,7 +111,6 @@ const ProfileForm = ({
       last_name: authUser?.attributes.no_name
         ? undefined
         : authUser?.attributes.last_name || undefined,
-      email: authUser?.attributes.email,
       bio_multiloc: authUser?.attributes.bio_multiloc,
       locale: authUser?.attributes.locale,
     },
@@ -247,25 +242,6 @@ const ProfileForm = ({
               )}
             </InputContainer>
           </SectionField>
-
-          <SectionField>
-            <InputContainer>
-              <Input
-                type="email"
-                name="email"
-                label={formatMessage(messages.email)}
-                autocomplete="email"
-                disabled={lockedFieldsNames.includes('email')}
-              />
-              {lockedFieldsNames.includes('email') && (
-                <StyledIconTooltip
-                  content={<FormattedMessage {...messages.blockedVerified} />}
-                  icon="lock"
-                />
-              )}
-            </InputContainer>
-          </SectionField>
-
           {!disableBio && (
             <SectionField>
               <QuillMultilocWithLocaleSwitcher

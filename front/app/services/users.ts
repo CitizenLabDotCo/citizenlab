@@ -69,6 +69,7 @@ export interface IUserUpdate {
   first_name?: string;
   last_name?: string;
   email?: string;
+  new_email?: string;
   password?: string;
   locale?: string;
   avatar?: string | null;
