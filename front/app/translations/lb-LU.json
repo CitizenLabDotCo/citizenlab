@@ -37,6 +37,8 @@
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "Net all Benotzer ka kommentéieren. Wgl. {signUpLink} oder {signInLink} fir festzestellen ob Dir d'Bedéngungen erfëllt.",
   "app.components.Comments.commentingInitiativeNotPermitted": "Kommentéieren ass momentan net méiglech. ",
   "app.components.Comments.commentingMaybeNotPermitted": "Wgl {signInLink} fir ze gesinn, wat fir Aktiounen ausgeféiert kënne ginn.",
+  "app.components.Comments.deleteComment": "Läschen",
+  "app.components.Comments.editComment": "Edit",
   "app.components.Comments.invisibleTitleComments": "Kommentaren",
   "app.components.Comments.mostUpvoted": "Meescht Stëmmen",
   "app.components.Comments.official": "Offiziell",
