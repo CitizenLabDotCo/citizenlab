@@ -37,6 +37,8 @@
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "No todos los usuarios pueden comentar. Por favor {signUpLink} o {signInLink} para verificar si puedes hacerlo.",
   "app.components.Comments.commentingInitiativeNotPermitted": "No tienes derecho a hacer comentarios.",
   "app.components.Comments.commentingMaybeNotPermitted": "No todo el mundo puede comentar. Por favor {signInLink} para verificar si puedes hacerlo.",
+  "app.components.Comments.deleteComment": "Borrar",
+  "app.components.Comments.editComment": "Editar",
   "app.components.Comments.invisibleTitleComments": "Respuestas",
   "app.components.Comments.mostUpvoted": "Más votados",
   "app.components.Comments.official": "Oficial",
