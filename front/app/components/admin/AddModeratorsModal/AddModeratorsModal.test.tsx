@@ -71,7 +71,7 @@ describe('AddModeratorsModal', () => {
       mockFeatureFlagData = false;
     });
 
-    it('shows confirm in button when seats are not full and admin is adding another collaborator', () => {
+    it('shows confirm in button when seats are not full and admin is adding another moderator', () => {
       render(
         <AddModeratorsModal
           addModerators={handleOnAddModeratorsClick}

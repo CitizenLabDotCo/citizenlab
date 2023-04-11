@@ -79,7 +79,7 @@ describe('InviteUsersWithSeatsModal', () => {
     expect(confirmButton).toBeInTheDocument();
   });
 
-  it('shows correct copy for collaborators', () => {
+  it('shows correct copy for moderators', () => {
     render(
       <InviteUsersWithSeatsModal
         inviteUsers={inviteUsers}

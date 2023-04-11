@@ -105,7 +105,7 @@ describe('BillingInfo', () => {
     expect(screen.getByText('6 within plan, 7 additional')).toBeInTheDocument();
   });
 
-  it('shows correct numbers of seat usage for collaborators', () => {
+  it('shows correct numbers of seat usage for moderators', () => {
     render(<BillingInfo seatType="moderator" />);
     expect(screen.getByText('Collaborator seats')).toBeInTheDocument();
 

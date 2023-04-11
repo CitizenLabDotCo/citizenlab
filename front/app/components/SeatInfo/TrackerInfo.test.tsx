@@ -73,7 +73,7 @@ describe('TrackerInfo', () => {
     expect(screen.queryByText('Additional seats')).not.toBeInTheDocument();
   });
 
-  it('shows correct numbers of seat usage for collaborators', () => {
+  it('shows correct numbers of seat usage for moderators', () => {
     render(<TrackerInfo seatType="moderator" />);
     expect(screen.getByText('Current collaborator seats')).toBeInTheDocument();
     expect(screen.getByText('5/9')).toBeInTheDocument();
@@ -89,18 +89,18 @@ describe('TrackerInfo', () => {
     expect(screen.queryByText('Additional seats')).not.toBeInTheDocument();
   });
 
-  it('shows nothing for collaborator seats when maximum_moderators_number is unlimited (null)', () => {
+  it('shows nothing for moderator seats when maximum_moderators_number is unlimited (null)', () => {
     mockUserSeatsData.data.attributes.project_moderators_number = 15;
     mockAppConfiguration.data.attributes.settings.core.maximum_moderators_number =
       null;
     render(<TrackerInfo seatType="moderator" />);
     expect(
-      screen.queryByText('Current collaborator seats')
+      screen.queryByText('Current moderator seats')
     ).not.toBeInTheDocument();
     expect(screen.queryByText('Additional seats')).not.toBeInTheDocument();
   });
 
-  it('shows correct collaborators additional seats when user has used more', () => {
+  it('shows correct moderators additional seats when user has used more', () => {
     mockUserSeatsData.data.attributes.project_moderators_number = 15;
     mockAppConfiguration.data.attributes.settings.core.additional_moderators_number = 7;
     render(<TrackerInfo seatType="moderator" />);
