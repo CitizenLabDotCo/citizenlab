@@ -42,11 +42,10 @@ const TrackerInfo = ({ seatType }: SeatInfoProps) => {
     return null;
   }
 
-  const currentSeatNumbers = {
+  let currentSeatNumber = {
     admin: seats.data.attributes.admins_number,
     moderator: seats.data.attributes.project_moderators_number,
   }[seatType];
-  const currentSeatNumber = currentSeatNumbers[seatType];
   const additionalSeats = currentSeatNumber - maximumSeatNumber;
   const showAdditionalSeats = additionalSeats > 0;
 
@@ -68,7 +67,7 @@ const TrackerInfo = ({ seatType }: SeatInfoProps) => {
 
   // Show maximum number of seats if user has used more for this value
   if (currentSeatNumber >= maximumSeatNumber) {
-    currentSeatNumbers[seatType] = maximumSeatNumber;
+    currentSeatNumber = maximumSeatNumber;
   }
 
   return (
