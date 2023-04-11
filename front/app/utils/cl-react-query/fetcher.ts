@@ -4,6 +4,7 @@ import { stringify } from 'qs';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { isArray, isNil, omitBy } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
+import { handleBlockedUserError } from 'utils/errorUtils';
 import { CLErrors } from 'typings';
 
 // FETCHER
@@ -99,6 +100,7 @@ async function fetcher({ path, action, body, queryParams }) {
 
   if (!response.ok) {
     const error = data as unknown as CLErrors;
+    handleBlockedUserError(response.status, error);
     if (!error.errors) {
       reportError(data);
     }
@@ -109,7 +111,13 @@ async function fetcher({ path, action, body, queryParams }) {
         data.data.forEach((entry) => {
           if (entry.id) {
             queryClient.setQueryData(
-              [{ type: entry.type, id: entry.id, operation: 'item' }],
+              [
+                {
+                  type: entry.type,
+                  parameters: { id: entry.id },
+                  operation: 'item',
+                },
+              ],
               () => ({ data: entry })
             );
           }
@@ -117,7 +125,13 @@ async function fetcher({ path, action, body, queryParams }) {
       } else if (action === 'post' || action === 'patch') {
         if (data.data.id) {
           queryClient.setQueryData(
-            [{ type: data.data.type, id: data.data.id, operation: 'item' }],
+            [
+              {
+                type: data.data.type,
+                parameters: { id: data.data.id },
+                operation: 'item',
+              },
+            ],
             () => ({ data: data.data })
           );
         }
@@ -126,7 +140,13 @@ async function fetcher({ path, action, body, queryParams }) {
         data.included.forEach((entry) => {
           if (entry.id) {
             queryClient.setQueryData(
-              [{ type: entry.type, id: entry.id, operation: 'item' }],
+              [
+                {
+                  type: entry.type,
+                  parameters: { id: entry.id },
+                  operation: 'item',
+                },
+              ],
               () => ({ data: entry })
             );
           }

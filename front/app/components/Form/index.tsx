@@ -23,16 +23,15 @@ import {
   media,
   stylingConsts,
   useBreakpoint,
+  Button,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
 import ButtonBar from './Components/ButtonBar';
 
 import useObserveEvent from 'hooks/useObserveEvent';
 
 import { CLErrors, Message } from 'typings';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 import { ErrorObject } from 'ajv';
 import { forOwn } from 'lodash-es';
 import { APIErrorsContext, FormContext } from './contexts';
@@ -40,6 +39,7 @@ import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { selectRenderers } from './formConfig';
 import { getFormSchemaAndData } from './utils';
+import messages from './messages';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -97,6 +97,7 @@ interface Props {
   inputId?: string;
   formSubmitText?: MessageDescriptor;
   config?: 'default' | 'input' | 'survey';
+  layout?: 'inline' | 'fullpage';
 }
 
 const Form = memo(
@@ -113,8 +114,9 @@ const Form = memo(
     getAjvErrorMessage,
     getApiErrorMessage,
     config,
-    intl: { formatMessage },
-  }: Props & WrappedComponentProps) => {
+    layout,
+  }: Props) => {
+    const { formatMessage } = useIntl();
     const [data, setData] = useState<FormData>(initialFormData);
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
@@ -124,7 +126,7 @@ const Form = memo(
       () => (getApiErrorMessage ? getApiErrorMessage : () => undefined),
       [getApiErrorMessage]
     );
-    const isSmallerThanXlPhone = useBreakpoint('phone');
+    const isSmallerThanPhone = useBreakpoint('phone');
 
     // To handle multilocs we had the two options of adding one control for each multiloc thing : InputMultiloc, WYSIWYGMultiloc, or have the top-level multiloc object be a custom layout that shows the appropriate field and render the controls inside normally. I went for the second option.
     // Both options limited somehow the validation power, and with this solution, it means that the errors on the layout level are not available (IE this field is required, or this field should have at least one property). So this is a hacky thing to make the current locale required, but we will have to find something better would we want to make all locales required like in the admin side or simply is we would want to have a cleaner form component.
@@ -172,6 +174,7 @@ const Form = memo(
     const handleSubmit = async (formData?: any) => {
       // Any specified formData has priority over data attribute
       const submissionData = formData && formData.data ? formData.data : data;
+
       const sanitizedFormData = {};
       forOwn(submissionData, (value, key) => {
         sanitizedFormData[key] =
@@ -180,13 +183,19 @@ const Form = memo(
       setData(sanitizedFormData);
       onChange?.(sanitizedFormData);
       setShowAllErrors(true);
+
       const [schemaToUse, dataWithoutHiddenFields] = getFormSchemaAndData(
         schema,
         uiSchema,
         submissionData,
         customAjv
       );
-      if (customAjv.validate(schemaToUse, dataWithoutHiddenFields)) {
+      if (
+        customAjv.validate(
+          schemaToUse,
+          config === 'survey' ? dataWithoutHiddenFields : submissionData
+        )
+      ) {
         setLoading(true);
         try {
           await onSubmit(submissionData as FormData);
@@ -217,21 +226,23 @@ const Form = memo(
       [formatMessage, getAjvErrorMessage]
     );
 
-    const layoutType = isCategorization(uiSchema) ? 'fullpage' : 'inline';
+    const layoutType = layout
+      ? layout
+      : isCategorization(uiSchema)
+      ? 'fullpage'
+      : 'inline';
     const renderers = selectRenderers(config || 'default');
 
     return (
       <Box
         as="form"
         minHeight={
-          isSmallerThanXlPhone &&
-          layoutType === 'fullpage' &&
-          config !== 'survey'
+          isSmallerThanPhone && layoutType === 'fullpage' && config !== 'survey'
             ? `calc(100vh - ${stylingConsts.menuHeight}px)`
             : '100%'
         }
         height={
-          isSmallerThanXlPhone
+          isSmallerThanPhone
             ? '100%'
             : layoutType === 'fullpage' && config !== 'survey'
             ? '100vh'
@@ -242,7 +253,7 @@ const Form = memo(
         maxHeight={
           layoutType === 'inline'
             ? 'auto'
-            : isSmallerThanXlPhone || config === 'survey'
+            : isSmallerThanPhone || config === 'survey'
             ? 'auto'
             : `calc(100vh - ${stylingConsts.menuHeight}px)`
         }
@@ -299,7 +310,9 @@ const Form = memo(
             ) : submitOnEvent ? (
               <InvisibleSubmitButton onClick={handleSubmit} />
             ) : (
-              <Button onClick={handleSubmit}>Button</Button>
+              <Button onClick={handleSubmit}>
+                {formatMessage(messages.save)}
+              </Button>
             )}
           </>
         )}
@@ -308,4 +321,4 @@ const Form = memo(
   }
 );
 
-export default injectIntl(Form);
+export default Form;

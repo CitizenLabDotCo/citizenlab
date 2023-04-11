@@ -29,8 +29,8 @@ export default {
   toggleOneUser: {
     name: 'Selected or unselected one user',
   },
-  adminToggle: {
-    name: 'Clicked an admin toggle',
+  adminChangeRole: {
+    name: 'Clicked an action to change the user role',
   },
   sortChange: {
     name: 'Changed sorting of users in the table',

@@ -15,7 +15,7 @@ import Link from 'utils/cl-router/Link';
 import { getInputTermMessage } from 'utils/i18n';
 
 // hooks
-import useIdea from 'hooks/useIdea';
+import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 
@@ -28,9 +28,9 @@ interface Props {
 
 const CommentOnYourIdeaNotification = memo<Props>((props) => {
   const { notification } = props;
-  const idea = useIdea({ ideaSlug: notification.attributes.post_slug });
+  const { data: idea } = useIdeaBySlug(notification.attributes.post_slug);
   const projectId = !isNilOrError(idea)
-    ? idea.relationships.project.data.id
+    ? idea.data.relationships.project.data.id
     : null;
   const project = useProject({ projectId });
   const phases = usePhases(projectId);

@@ -1,13 +1,20 @@
+import { QueryKeys } from 'utils/cl-react-query/types';
+
+const baseKey = {
+  type: 'idea_status',
+};
+
 const ideaStatusesKeys = {
-  all: () => [{ type: 'idea_status' }],
-  lists: () => [{ ...ideaStatusesKeys.all()[0], operation: 'list' }],
-  items: () => [{ ...ideaStatusesKeys.all()[0], operation: 'item' }],
-  item: (id: string) => [
+  all: () => [baseKey],
+  lists: () => [{ ...baseKey, operation: 'list' }],
+  items: () => [{ ...baseKey, operation: 'item' }],
+  item: ({ id }: { id: string }) => [
     {
-      ...ideaStatusesKeys.items()[0],
-      id,
+      ...baseKey,
+      operation: 'item',
+      parameters: { id },
     },
   ],
-} as const;
+} satisfies QueryKeys;
 
 export default ideaStatusesKeys;

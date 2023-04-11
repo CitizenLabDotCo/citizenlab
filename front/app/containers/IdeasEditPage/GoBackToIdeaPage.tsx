@@ -10,7 +10,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 // Hooks
 import useLocalize from 'hooks/useLocalize';
 
-import { IIdeaData } from 'services/ideas';
+import { IIdeaData } from 'api/ideas/types';
 
 interface Props {
   idea: IIdeaData;
@@ -18,7 +18,7 @@ interface Props {
 
 const GoBackToIdeaPage = ({ idea }: Props) => {
   const localize = useLocalize();
-  const isPhone = useBreakpoint('phone');
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   return (
     <Box
@@ -41,7 +41,11 @@ const GoBackToIdeaPage = ({ idea }: Props) => {
         whiteSpace="normal"
         data-cy="e2e-back-to-idea-page-button"
       >
-        <Box as="span" display={isPhone ? 'none' : 'block'} aria-hidden>
+        <Box
+          as="span"
+          display={isSmallerThanPhone ? 'none' : 'block'}
+          aria-hidden
+        >
           {localize(idea.attributes.title_multiloc)}
         </Box>
         <ScreenReaderOnly>

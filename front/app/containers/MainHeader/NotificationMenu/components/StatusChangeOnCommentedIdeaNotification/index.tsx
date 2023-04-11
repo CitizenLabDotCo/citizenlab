@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { IStatusChangeOnCommentedIdeaNotificationData } from 'services/notifications';
 import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';
-import useIdea from 'hooks/useIdea';
+import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import { isNilOrError } from 'utils/helperUtils';
@@ -19,9 +19,9 @@ interface Props {
 
 const StatusChangeOnCommentedIdeaNotification = memo<Props>((props) => {
   const { notification } = props;
-  const idea = useIdea({ ideaSlug: notification.attributes.post_slug });
+  const { data: idea } = useIdeaBySlug(notification.attributes.post_slug);
   const projectId = !isNilOrError(idea)
-    ? idea.relationships.project.data.id
+    ? idea.data.relationships.project.data.id
     : null;
   const project = useProject({ projectId });
   const phases = usePhases(projectId);

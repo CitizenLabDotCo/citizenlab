@@ -24,7 +24,7 @@ const useDeleteVolunteer = () => {
         queryKey: causeKeys.lists(),
       });
       queryClient.invalidateQueries({
-        queryKey: causeKeys.item(variables.causeId),
+        queryKey: causeKeys.item({ id: variables.causeId }),
       });
     },
   });

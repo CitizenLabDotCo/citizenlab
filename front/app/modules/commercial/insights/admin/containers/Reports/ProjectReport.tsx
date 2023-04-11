@@ -226,33 +226,34 @@ const ProjectReport = memo(
           </Section>
         )}
 
-        {!isEqual(participationMethods, ['information']) && timeBoundariesSet && (
-          <Section>
-            <SectionTitle>
-              <FormattedMessage {...messages.sectionWho} />
-            </SectionTitle>
-            <GraphsContainer>
-              <BarChartActiveUsersByTime
-                startAt={startAt}
-                endAt={endAt}
-                stream={activeUsersByTimeStream}
-                resolution={resolution}
-                graphUnit="users"
-                graphUnitMessageKey="users"
-                graphTitle={formatMessage(messages.participantsOverTimeTitle)}
-                xlsxEndpoint={activeUsersByTimeCumulativeXlsxEndpoint}
-                currentProjectFilter={project.id}
-                currentProjectFilterLabel={projectTitle}
-              />
-              <UserCharts
-                startAt={startAt}
-                endAt={endAt}
-                participationMethods={participationMethods}
-                project={project}
-              />
-            </GraphsContainer>
-          </Section>
-        )}
+        {!isEqual(participationMethods, ['information']) &&
+          timeBoundariesSet && (
+            <Section>
+              <SectionTitle>
+                <FormattedMessage {...messages.sectionWho} />
+              </SectionTitle>
+              <GraphsContainer>
+                <BarChartActiveUsersByTime
+                  startAt={startAt}
+                  endAt={endAt}
+                  stream={activeUsersByTimeStream}
+                  resolution={resolution}
+                  graphUnit="users"
+                  graphUnitMessageKey="users"
+                  graphTitle={formatMessage(messages.participantsOverTimeTitle)}
+                  xlsxEndpoint={activeUsersByTimeCumulativeXlsxEndpoint}
+                  currentProjectFilter={project.id}
+                  currentProjectFilterLabel={projectTitle}
+                />
+                <UserCharts
+                  startAt={startAt}
+                  endAt={endAt}
+                  participationMethods={participationMethods}
+                  project={project}
+                />
+              </GraphsContainer>
+            </Section>
+          )}
 
         <Section>
           {((participationMethods.includes('ideation') && timeBoundariesSet) ||
@@ -347,11 +348,11 @@ const Data = adopt<Props, WithRouterProps>({
   ),
   mostVotedIdeas: ({ params, render }) => (
     <GetIdeas
-      pageNumber={1}
-      pageSize={5}
-      sort="popular"
-      type="paginated"
-      projectIds={[params.projectId]}
+      {...{
+        'page[size]': 5,
+        sort: 'popular',
+        projects: [params.projectId],
+      }}
     >
       {render}
     </GetIdeas>

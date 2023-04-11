@@ -4,7 +4,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import TranslateButton from 'components/UI/TranslateButton';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
-import { GetIdeaChildProps } from 'resources/GetIdea';
+import { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 
 const StyledTranslateButton = styled(TranslateButton)`
@@ -14,7 +14,7 @@ const StyledTranslateButton = styled(TranslateButton)`
 interface Props {
   translateButtonClicked: boolean;
   onClick: () => void;
-  idea: GetIdeaChildProps;
+  idea: GetIdeaByIdChildProps;
   locale: GetLocaleChildProps;
 }
 

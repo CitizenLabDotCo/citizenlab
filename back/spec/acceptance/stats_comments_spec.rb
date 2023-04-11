@@ -77,7 +77,7 @@ resource 'Stats - Comments' do
 
       example_request 'Count all comments' do
         assert_status 200
-        expect(json_response[:count]).to eq 2
+        expect(json_response.dig(:data, :attributes, :count)).to eq 2
       end
     end
 
@@ -93,233 +93,11 @@ resource 'Stats - Comments' do
       example 'Count all comments (as a moderator)', document: false do
         do_request
         assert_status 200
-        expect(json_response[:count]).to eq 2
+        expect(json_response.dig(:data, :attributes, :count)).to eq 2
       end
     end
 
     include_examples 'unauthorized requests'
-  end
-
-  context 'with activity over time' do
-    before do
-      travel_to((now - 1.month).in_time_zone(@timezone).beginning_of_month - 1.day) do
-        create(:comment)
-      end
-      travel_to((now - 1.month).in_time_zone(@timezone).beginning_of_month + 1.day) do
-        create_list(:comment, 3)
-      end
-
-      travel_to((now - 1.month).in_time_zone(@timezone).end_of_month - 1.day) do
-        create_list(:comment, 2)
-      end
-      travel_to((now - 1.month).in_time_zone(@timezone).end_of_month + 1.day) do
-        create(:comment)
-      end
-    end
-
-    get 'web_api/v1/stats/comments_by_time' do
-      time_series_parameters self
-      project_filter_parameter self
-      group_filter_parameter self
-      topic_filter_parameter self
-
-      let(:interval) { 'day' }
-
-      context 'when admin' do
-        before { admin_header_token }
-
-        describe 'with time filter outside of platform lifetime' do
-          let(:start_at) { now - 1.year }
-          let(:end_at) { now - 1.year + 1.day }
-
-          it 'returns no entries' do
-            do_request
-            assert_status 200
-
-            expect(json_response).to eq({ series: { comments: {} } })
-          end
-        end
-
-        describe 'with time filter' do
-          let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-          let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
-
-          example_request 'Comments by time' do
-            assert_status 200
-
-            expect(json_response[:series][:comments].size).to eq start_at.in_time_zone(@timezone).end_of_month.day
-            expect(json_response[:series][:comments].values.sum).to eq 5
-          end
-        end
-      end
-
-      include_examples 'unauthorized requests'
-    end
-
-    get 'web_api/v1/stats/comments_by_time_cumulative' do
-      time_series_parameters self
-      project_filter_parameter self
-      group_filter_parameter self
-      topic_filter_parameter self
-
-      let(:interval) { 'day' }
-
-      context 'when admin' do
-        before { admin_header_token }
-
-        describe 'with time filter outside of platform lifetime' do
-          let(:start_at) { now - 1.year }
-          let(:end_at) { now - 1.year + 1.day }
-
-          it 'returns no entries' do
-            do_request
-            assert_status 200
-            expect(json_response).to eq({ series: { comments: {} } })
-          end
-        end
-
-        describe 'with time filter' do
-          let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-          let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
-
-          example_request 'Comments by time (cumulative)' do
-            assert_status 200
-
-            expect(json_response[:series][:comments].size).to eq start_at.in_time_zone(@timezone).end_of_month.day
-            expect(json_response[:series][:comments].values.uniq).to eq json_response[:series][:comments].values.uniq.sort
-            expect(json_response[:series][:comments].values.last).to eq 6
-          end
-        end
-      end
-
-      context 'as a moderator' do
-        before do
-          token = Knock::AuthToken.new(payload: create(:project_moderator).to_token_payload).token
-          header 'Authorization', "Bearer #{token}"
-          initiative = create(:initiative)
-          @project = create(:project)
-          create(:comment, post: initiative)
-          create(:comment, post: create(:idea, project: @project))
-        end
-
-        let(:project) { @project.id }
-
-        example 'Count all comments filtered by project', document: false do
-          do_request
-          assert_status 200
-
-          expect(json_response[:series][:comments].values.last).to eq 1
-        end
-      end
-
-      include_examples 'unauthorized requests'
-    end
-
-    get 'web_api/v1/stats/comments_by_time_as_xlsx' do
-      time_series_parameters self
-      project_filter_parameter self
-      group_filter_parameter self
-      topic_filter_parameter self
-
-      let(:interval) { 'day' }
-
-      context 'when admin' do
-        before { admin_header_token }
-
-        describe 'with time filter' do
-          let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-          let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
-
-          example_request 'Comments by time' do
-            assert_status 200
-            worksheets = RubyXL::Parser.parse_buffer(response_body)
-            worksheet = worksheets.worksheets[0]
-            expect(worksheet.count).to eq start_at.in_time_zone(@timezone).end_of_month.day + 1
-            expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
-            amount_col = worksheet.map { |col| col.cells[1].value }
-            _header, *amounts = amount_col
-            expect(amounts.sum).to eq 5
-          end
-        end
-
-        describe 'with time filter outside of platform lifetime' do
-          let(:start_at) { now - 1.year }
-          let(:end_at) { now - 1.year + 1.day }
-
-          it 'returns no entries' do
-            do_request
-            assert_status 422
-          end
-        end
-      end
-
-      include_examples 'unauthorized requests'
-    end
-
-    get 'web_api/v1/stats/comments_by_time_cumulative_as_xlsx' do
-      time_series_parameters self
-      project_filter_parameter self
-      group_filter_parameter self
-      topic_filter_parameter self
-
-      let(:interval) { 'day' }
-
-      context 'when admin' do
-        before { admin_header_token }
-
-        describe 'with time filter' do
-          let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-          let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
-
-          example_request 'Comments by time (cumulative)' do
-            assert_status 200
-            worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-            expect(worksheet.count).to eq start_at.in_time_zone(@timezone).end_of_month.day + 1
-            # monotonically increasing
-            expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
-            amount_col = worksheet.map { |col| col.cells[1].value }
-            _header, *amounts = amount_col
-            expect(amounts.sort).to eq amounts
-            expect(amounts.last).to eq 6
-          end
-        end
-
-        describe 'with time filter outside of platform lifetime' do
-          let(:start_at) { now - 1.year }
-          let(:end_at) { now - 1.year + 1.day }
-
-          it 'returns no entries' do
-            do_request
-            assert_status 422
-          end
-        end
-      end
-
-      context 'as a moderator' do
-        before do
-          token = Knock::AuthToken.new(payload: create(:project_moderator).to_token_payload).token
-          header 'Authorization', "Bearer #{token}"
-          initiative = create(:initiative)
-          @project = create(:project)
-          create(:comment, post: initiative)
-          create(:comment, post: create(:idea, project: @project))
-        end
-
-        let(:project) { @project.id }
-
-        example 'Count all comments filtered by project', document: false do
-          do_request
-          assert_status 200
-          worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-          expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
-          amount_col = worksheet.map { |col| col.cells[1].value }
-          _header, *amounts = amount_col
-          expect(amounts.last).to eq 1
-        end
-      end
-
-      include_examples 'unauthorized requests'
-    end
   end
 
   get 'web_api/v1/stats/comments_by_topic' do
@@ -361,11 +139,14 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by topic' do
           assert_status 200
-          expect(json_response[:series][:comments].stringify_keys).to match({
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'comments_by_topic'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].stringify_keys).to match({
             @topic1.id => 3,
             @topic2.id => 2
           })
-          expect(json_response[:topics].keys.map(&:to_s)).to match_array [@topic1.id, @topic2.id, @topic3.id]
+          expect(json_attributes[:topics].keys.map(&:to_s)).to match_array [@topic1.id, @topic2.id, @topic3.id]
         end
       end
 
@@ -385,7 +166,10 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by topic filtered by project' do
           assert_status 200
-          expect(json_response[:series][:comments].values.sum).to eq 2
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'comments_by_topic'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].values.sum).to eq 2
         end
       end
 
@@ -405,7 +189,10 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by topic filtered by group' do
           assert_status 200
-          expect(json_response[:series][:comments].values.sum).to eq 2
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'comments_by_topic'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].values.sum).to eq 2
         end
       end
     end
@@ -547,11 +334,14 @@ resource 'Stats - Comments' do
         end
 
         example_request 'Comments by project' do
-          expect(json_response[:series][:comments].stringify_keys).to match({
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'comments_by_project'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].stringify_keys).to match({
             @project1.id => 3,
             @project2.id => 1
           })
-          expect(json_response[:projects].keys.map(&:to_s)).to match_array [@project1.id, @project2.id]
+          expect(json_attributes[:projects].keys.map(&:to_s)).to match_array [@project1.id, @project2.id]
         end
       end
 
@@ -573,7 +363,10 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by project filtered by topic' do
           assert_status 200
-          expect(json_response[:series][:comments].values.sum).to eq 1
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'comments_by_project'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].values.sum).to eq 1
         end
       end
 
@@ -594,7 +387,10 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by project filtered by group' do
           assert_status 200
-          expect(json_response[:series][:comments].values.sum).to eq 1
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'comments_by_project'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].values.sum).to eq 1
         end
       end
     end

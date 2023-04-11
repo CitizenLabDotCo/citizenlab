@@ -1,6 +1,6 @@
 import React from 'react';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';
 import { FormattedMessage } from 'utils/cl-intl';

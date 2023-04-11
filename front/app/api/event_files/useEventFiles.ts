@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import eventFilesKeys from './keys';
 import { IEventFiles, EventFilesKeys } from './types';
 
-const fetchEvents = (eventId: string) => {
+const fetchEvents = ({ eventId }: { eventId: string }) => {
   return fetcher<IEventFiles>({
     path: `/events/${eventId}/files`,
     action: 'get',
@@ -14,8 +14,8 @@ const fetchEvents = (eventId: string) => {
 
 const useEventFiles = (eventId: string) => {
   return useQuery<IEventFiles, CLErrors, IEventFiles, EventFilesKeys>({
-    queryKey: eventFilesKeys.list(eventId),
-    queryFn: () => fetchEvents(eventId),
+    queryKey: eventFilesKeys.list({ eventId }),
+    queryFn: () => fetchEvents({ eventId }),
     enabled: !isNilOrError(eventId),
   });
 };

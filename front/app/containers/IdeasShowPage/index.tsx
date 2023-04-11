@@ -9,7 +9,7 @@ import PageNotFound from 'components/PageNotFound';
 import Unauthorized from 'components/Unauthorized';
 
 // hooks
-import useIdea from 'hooks/useIdea';
+import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
 
 // style
 import styled from 'styled-components';
@@ -52,8 +52,8 @@ const StyledIdeasShow = styled(IdeasShow)`
 
 const IdeasShowPage = () => {
   const { slug } = useParams() as { slug: string };
-  const idea = useIdea({ ideaSlug: slug });
-  const tablet = useBreakpoint('tablet');
+  const { data: idea } = useIdeaBySlug(slug);
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
   if (isUnauthorizedError(idea)) {
     return <Unauthorized />;
@@ -66,16 +66,16 @@ const IdeasShowPage = () => {
   if (idea) {
     return (
       <Box background={colors.white}>
-        {tablet && (
+        {isSmallerThanTablet && (
           <StyledIdeaShowPageTopBar
-            projectId={idea.relationships.project.data.id}
-            ideaId={idea.id}
+            projectId={idea.data.relationships.project.data.id}
+            ideaId={idea.data.id}
             insideModal={false}
           />
         )}
         <StyledIdeasShow
-          ideaId={idea.id}
-          projectId={idea.relationships.project.data.id}
+          ideaId={idea.data.id}
+          projectId={idea.data.relationships.project.data.id}
           insideModal={false}
         />
       </Box>

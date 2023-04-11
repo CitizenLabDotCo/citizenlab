@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 
 // hooks
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 // styles
 import styled from 'styled-components';
@@ -31,7 +31,7 @@ const IdeaBody = styled.div`
 `;
 
 const Idea = ({ ideaId }: IdeaProps) => {
-  const idea = useIdea({ ideaId });
+  const { data: idea } = useIdeaById(ideaId);
 
   if (isNilOrError(idea)) {
     return null;
@@ -40,10 +40,10 @@ const Idea = ({ ideaId }: IdeaProps) => {
   return (
     <div data-testid="insightsIdea">
       <IdeaTitle data-testid="insightsIdeaTitle">
-        <T value={idea.attributes.title_multiloc} />
+        <T value={idea.data.attributes.title_multiloc} />
       </IdeaTitle>
       <IdeaBody data-testid="insightsIdeaBody">
-        <T value={idea.attributes.body_multiloc} supportHtml />
+        <T value={idea.data.attributes.body_multiloc} supportHtml />
       </IdeaBody>
     </div>
   );

@@ -24,15 +24,13 @@ FactoryBot.define do
             'fr-FR' => Faker::Address.city
           },
           'lifecycle_stage' => lifecycle,
-          'timezone' => 'Brussels',
+          'timezone' => 'Europe/Brussels',
           'currency' => 'EUR',
           'locales' => locales,
           'color_main' => '#335533',
           'color_secondary' => Faker::Color.hex_color,
           'color_text' => Faker::Color.hex_color,
-          'authentication_token_lifetime_in_days' => 30,
-          'maximum_admins_number' => 10,
-          'maximum_moderators_number' => 10
+          'authentication_token_lifetime_in_days' => 30
         },
         'initiatives' => {
           'enabled' => true,
@@ -67,7 +65,7 @@ FactoryBot.define do
           },
           'lifecycle_stage' => 'active',
           'locales' => %w[en fr-FR nl-NL],
-          'timezone' => 'Brussels',
+          'timezone' => 'Europe/Brussels',
           'currency' => 'EUR',
           'color_main' => '#335533',
           'color_secondary' => Faker::Color.hex_color,

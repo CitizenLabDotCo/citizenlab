@@ -156,14 +156,14 @@ const CampaignForm = ({
               name="sender"
               options={senderOptions()}
               label={
-                <>
+                <Box display="flex">
                   <FormattedMessage {...messages.fieldSender} />
                   <IconTooltip
                     content={
                       <FormattedMessage {...messages.fieldSenderTooltip} />
                     }
                   />
-                </>
+                </Box>
               }
             />
           </StyledSectionField>

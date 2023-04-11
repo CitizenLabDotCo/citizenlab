@@ -5,7 +5,7 @@ export interface IDestinationMap {}
 
 export type IDestination = IDestinationMap[keyof IDestinationMap];
 export const CATEGORIES = ['analytics', 'advertising', 'functional'] as const;
-export type TCategory = typeof CATEGORIES[number];
+export type TCategory = (typeof CATEGORIES)[number];
 
 const destinationConfigs: IDestinationConfig[] = [];
 

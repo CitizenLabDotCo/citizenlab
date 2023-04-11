@@ -258,6 +258,7 @@ module MultiTenancy
             'registration_completed_at' => u.registration_completed_at.to_s,
             'verified' => u.verified,
             'block_start_at' => u.block_start_at,
+            'block_end_at' => u.block_end_at,
             'block_reason' => u.block_reason
           }
           unless yml_user['password_digest']

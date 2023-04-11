@@ -1,22 +1,9 @@
 import { BehaviorSubject } from 'rxjs';
-import { IUsersByTime, IIdeasCount } from 'services/stats';
+import { IUsersByTime } from 'services/stats';
 import { IStreamParams } from 'utils/streams';
 
 export const usersByRegFieldXlsxEndpoint = (customFieldId: string) =>
   `testendpoint/users_by_custom_field_as_xlsx/${customFieldId}`;
-
-let mockIdeasCount: IIdeasCount | null = null;
-
-export const __setMockIdeasCount = (ideasCount: IIdeasCount) => {
-  mockIdeasCount = ideasCount;
-};
-
-export const ideasCount = jest.fn((_ideasCount) => {
-  const observable = new BehaviorSubject(mockIdeasCount);
-  return {
-    observable,
-  };
-});
 
 // usersByTimeCumulativeStream
 let mockUsersByTimeCumulativeStreamVariable: IUsersByTime | null = null;

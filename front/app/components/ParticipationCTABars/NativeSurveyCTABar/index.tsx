@@ -25,7 +25,7 @@ export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
   const theme = useTheme();
   const authUser = useAuthUser();
   const phases = usePhases(project.id);
-  const isSmallerThanXlPhone = useBreakpoint('phone');
+  const isSmallerThanPhone = useBreakpoint('phone');
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
 
   useEffect(() => {
@@ -51,12 +51,11 @@ export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
       data-testid="e2e-project-survey-button"
       projectId={project.id}
       participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
-      phaseId={isPhaseNativeSurvey ? currentPhase.id : ''}
       fontWeight="500"
       bgColor={theme.colors.white}
       textColor={theme.colors.tenantText}
       iconPos="right"
-      icon={!isSmallerThanXlPhone ? 'arrow-right' : undefined}
+      icon={!isSmallerThanPhone ? 'arrow-right' : undefined}
       iconColor={theme.colors.tenantText}
       textHoverColor={theme.colors.black}
       iconHoverColor={theme.colors.black}

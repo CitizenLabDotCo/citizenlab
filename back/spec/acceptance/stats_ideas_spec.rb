@@ -75,8 +75,9 @@ resource 'Stats - Ideas' do
 
     example_request 'Count all ideas' do
       assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response[:count]).to eq 7
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :type)).to eq 'ideas_count'
+      expect(json_response.dig(:data, :attributes, :count)).to eq 7
     end
 
     describe 'with feedback_needed filter' do
@@ -84,8 +85,9 @@ resource 'Stats - Ideas' do
 
       example_request 'Count all ideas that need feedback' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq 6
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_count'
+        expect(json_response.dig(:data, :attributes, :count)).to eq 6
       end
 
       example 'Count all ideas that need feedback for a specific assignee' do
@@ -94,15 +96,18 @@ resource 'Stats - Ideas' do
         do_request assignee: assignee.id
 
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq 1
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_count'
+        expect(json_response.dig(:data, :attributes, :count)).to eq 1
       end
 
       example 'Count is not limited by pagination' do
         do_request(page: { size: 2, number: 1 })
 
         assert_status 200
-        expect(json_parse(response_body)[:count]).to eq 6
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_count'
+        expect(json_response.dig(:data, :attributes, :count)).to eq 6
       end
     end
   end
@@ -119,10 +124,12 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by topic' do
         assert_status 200
-        json_response = json_parse(response_body)
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_topic'
+        json_attributes = json_response.dig(:data, :attributes)
         expected_topics = @ideas_with_topics.flat_map { |i| i.ideas_topics.map(&:topic_id) }.uniq
-        expect(json_response[:series][:ideas].keys.map(&:to_s).uniq - expected_topics).to eq []
-        expect(json_response[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
+        expect(json_attributes[:series][:ideas].keys.map(&:to_s).uniq - expected_topics).to eq []
+        expect(json_attributes[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
       end
     end
 
@@ -142,8 +149,9 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by topic filtered by project' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.sum).to eq 1
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_topic'
+        expect(json_response.dig(:data, :attributes, :series, :ideas).values.sum).to eq 1
       end
     end
 
@@ -161,8 +169,9 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by topic filtered by group' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.sum).to eq 2
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_topic'
+        expect(json_response.dig(:data, :attributes, :series, :ideas).values.sum).to eq 2
       end
     end
   end
@@ -232,9 +241,11 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by status' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].keys.map(&:to_s)).to match_array [@proposed.id]
-        expect(json_response[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_status'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:series][:ideas].keys.map(&:to_s)).to match_array [@proposed.id]
+        expect(json_attributes[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
       end
     end
 
@@ -252,8 +263,9 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by status filtered by project' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.sum).to eq 1
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_status'
+        expect(json_response.dig(:data, :attributes, :series, :ideas).values.sum).to eq 1
       end
     end
 
@@ -271,8 +283,9 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by status filtered by group' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.sum).to eq 1
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_status'
+        expect(json_response.dig(:data, :attributes, :series, :ideas).values.sum).to eq 1
       end
     end
   end
@@ -342,12 +355,14 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by project' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].stringify_keys).to match({
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_project'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:series][:ideas].stringify_keys).to match({
           @project1.id => 5,
           @project2.id => 1
         })
-        expect(json_response[:projects].keys.map(&:to_s)).to match_array [@project1.id, @project2.id]
+        expect(json_attributes[:projects].keys.map(&:to_s)).to match_array [@project1.id, @project2.id]
       end
     end
 
@@ -366,8 +381,9 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by project filtered by topic' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.sum).to eq 1
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_project'
+        expect(json_response.dig(:data, :attributes, :series, :ideas).values.sum).to eq 1
       end
     end
 
@@ -387,8 +403,9 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by project filtered by group' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.sum).to eq 1
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_project'
+        expect(json_response.dig(:data, :attributes, :series, :ideas).values.sum).to eq 1
       end
     end
   end
@@ -464,180 +481,6 @@ resource 'Stats - Ideas' do
         idea_col = worksheet.map { |col| col.cells[2].value }
         _header, *ideas = idea_col
         expect(ideas.sum).to eq 1
-      end
-    end
-  end
-
-  get 'web_api/v1/stats/ideas_by_time' do
-    time_series_parameters self
-    project_filter_parameter self
-    topic_filter_parameter self
-    group_filter_parameter self
-    feedback_needed_filter_parameter self
-
-    let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-    let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
-    let(:interval) { 'day' }
-
-    example_request 'Ideas by time (published_at)' do
-      assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response[:series][:ideas].size).to eq end_at.yday
-      expect(json_response[:series][:ideas].values.sum).to eq 6
-    end
-
-    describe 'with time filter outside of platform lifetime' do
-      let(:start_at) { now - 10.years }
-      let(:end_at) { now - 10.years + 1.day }
-
-      it 'returns no entries' do
-        do_request
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response).to eq({ series: { ideas: {} } })
-      end
-    end
-  end
-
-  get 'web_api/v1/stats/ideas_by_time_cumulative' do
-    time_series_parameters self
-    project_filter_parameter self
-    topic_filter_parameter self
-    group_filter_parameter self
-    feedback_needed_filter_parameter self
-
-    describe 'without time filters' do
-      let(:interval) { 'day' }
-
-      example 'Ideas by time (published_at) cumulative without time filters', document: false do
-        do_request
-        assert_status 200
-      end
-    end
-
-    describe 'with time filters' do
-      context('Full time filter') do
-        let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-        let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
-        let(:interval) { 'day' }
-
-        example_request 'Ideas by time (published_at) cumulative' do
-          assert_status 200
-          json_response = json_parse(response_body)
-          expect(json_response[:series][:ideas].size).to eq end_at.yday
-          # monotonically increasing
-          expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
-          expect(json_response[:series][:ideas].values.last).to eq 7
-        end
-      end
-
-      context('Start time filter') do
-        let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-        let(:interval) { 'day' }
-
-        example_request 'Ideas by time (published_at) cumulative' do
-          assert_status 200
-          json_response = json_parse(response_body)
-          # monotonically increasing
-          expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
-          expect(json_response[:series][:ideas].values.last).to eq 7
-        end
-      end
-
-      context('Weird time filter') do
-        let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-        let(:end_at) { '' }
-        let(:interval) { 'day' }
-
-        example_request 'Ideas by time (published_at) cumulative' do
-          assert_status 200
-          json_response = json_parse(response_body)
-          # monotonically increasing
-          expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
-          expect(json_response[:series][:ideas].values.last).to eq 7
-        end
-      end
-
-      context('End time filter') do
-        let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
-        let(:interval) { 'day' }
-
-        example_request 'Ideas by time (published_at) cumulative' do
-          assert_status 200
-          json_response = json_parse(response_body)
-          # monotonically increasing
-          expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
-          expect(json_response[:series][:ideas].values.last).to eq 7
-        end
-      end
-    end
-  end
-
-  get 'web_api/v1/stats/ideas_by_time_as_xlsx' do
-    time_series_parameters self
-    project_filter_parameter self
-    topic_filter_parameter self
-    group_filter_parameter self
-    feedback_needed_filter_parameter self
-
-    let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-    let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
-    let(:interval) { 'day' }
-
-    example_request 'Ideas by time (published_at)' do
-      assert_status 200
-      worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-      expect(worksheet.count).to eq end_at.yday + 1
-      expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
-      amount_col = worksheet.map { |col| col.cells[1].value }
-      _header, *amounts = amount_col
-      expect(amounts.sum).to eq 6
-    end
-
-    describe 'with time filter outside of platform lifetime' do
-      let(:start_at) { now - 10.years }
-      let(:end_at) { now - 10.years + 1.day }
-      let(:interval) { 'day' }
-
-      it 'returns no entries' do
-        do_request
-        assert_status 422
-      end
-    end
-  end
-
-  get 'web_api/v1/stats/ideas_by_time_cumulative_as_xlsx' do
-    time_series_parameters self
-    project_filter_parameter self
-    topic_filter_parameter self
-    group_filter_parameter self
-    feedback_needed_filter_parameter self
-
-    describe 'without time filters' do
-      let(:interval) { 'day' }
-
-      example 'Ideas by time (published_at) cumulative without time filters', document: false do
-        do_request
-        assert_status 200
-      end
-    end
-
-    describe 'with time filters' do
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
-      let(:interval) { 'day' }
-
-      example_request 'Ideas by time (published_at) cumulative' do
-        assert_status 200
-        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet.count).to eq end_at.yday + 1
-        expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
-        # monotonically increasing
-        amount_col = worksheet.map { |col| col.cells[1].value }
-        _header, *amounts = amount_col
-        expect(amounts.sort).to eq amounts
-
-        expect(amounts.last).to eq 7
       end
     end
   end

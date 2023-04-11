@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useState, useRef, useEffect } from 'react';
-import { isUndefined, isString } from 'lodash-es';
+import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -36,25 +36,17 @@ import RightColumnDesktop from './RightColumnDesktop';
 import { isFieldEnabled } from 'utils/projectUtils';
 
 // resources
-import GetIdeaImages, {
-  GetIdeaImagesChildProps,
-} from 'resources/GetIdeaImages';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
-import GetOfficialFeedbacks, {
-  GetOfficialFeedbacksChildProps,
-} from 'resources/GetOfficialFeedbacks';
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
 
@@ -70,15 +62,15 @@ import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 import { columnsGapDesktop, pageContentMaxWidth } from './styleConstants';
 import Outlet from 'components/Outlet';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // hooks
 import useLocale from 'hooks/useLocale';
 import usePhases from 'hooks/usePhases';
-import useIdea from 'hooks/useIdea';
-import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import { useSearchParams } from 'react-router-dom';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
+import useLocalize from 'hooks/useLocalize';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -160,9 +152,7 @@ const BodySectionTitle = styled.h2`
 
 interface DataProps {
   project: GetProjectChildProps;
-  ideaImages: GetIdeaImagesChildProps;
   windowSize: GetWindowSizeChildProps;
-  officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
   comments: GetCommentsChildProps;
 }
@@ -179,20 +169,20 @@ interface InputProps {
 interface Props extends DataProps, InputProps {}
 
 export const IdeasShow = ({
-  ideaImages,
   windowSize,
   className,
   postOfficialFeedbackPermission,
-  localize,
   projectId,
   insideModal,
   project,
   compact,
   ideaId,
-  officialFeedbacks,
   setRef,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const { data: ideaImages } = useIdeaImages(ideaId);
+
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
@@ -210,23 +200,20 @@ export const IdeasShow = ({
   }, [ideaIdParameter]);
 
   const phases = usePhases(projectId);
-  const idea = useIdea({ ideaId });
+  const { data: idea } = useIdeaById(ideaId);
   const locale = useLocale();
 
   const ideaflowSocialSharingIsEnabled = useFeatureFlag({
     name: 'ideaflow_social_sharing',
   });
 
-  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
+  const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
     projectId,
     inputId: ideaId,
   });
 
   const isLoaded =
-    !isNilOrError(idea) &&
-    !isUndefined(ideaImages) &&
-    !isNilOrError(project) &&
-    !isUndefined(officialFeedbacks.officialFeedbacksList);
+    !isNilOrError(idea) && !isNilOrError(ideaImages) && !isNilOrError(project);
 
   const closeIdeaSocialSharingModal = () => {
     if (timeout.current) {
@@ -255,25 +242,28 @@ export const IdeasShow = ({
     !isNilOrError(project) &&
     !isNilOrError(idea) &&
     !isNilOrError(locale) &&
-    !isNilOrError(ideaCustomFieldsSchemas) &&
+    !isNilOrError(ideaCustomFieldsSchema) &&
     isLoaded
   ) {
     // If the user deletes their profile, authorId can be null
-    const authorId = idea.relationships?.author?.data?.id || null;
-    const titleMultiloc = idea.attributes.title_multiloc;
+    const authorId = idea.data.relationships?.author?.data?.id || null;
+    const titleMultiloc = idea.data.attributes.title_multiloc;
     const ideaTitle = localize(titleMultiloc);
-    const statusId = idea?.relationships?.idea_status?.data?.id;
-    const ideaImageLarge = ideaImages?.[0]?.attributes?.versions?.large || null;
-    const ideaId = idea.id;
-    const proposedBudget = idea.attributes?.proposed_budget;
-    const ideaBody = localize(idea?.attributes?.body_multiloc);
+    const statusId = idea.data.relationships?.idea_status?.data?.id;
+    const ideaImageLarge =
+      ideaImages?.data[0]?.attributes?.versions?.large || null;
+    const ideaId = idea.data.id;
+    const proposedBudget = idea.data.attributes?.proposed_budget;
+    const ideaBody = localize(idea.data.attributes?.body_multiloc);
     const isCompactView =
       compact === true ||
       (windowSize ? windowSize <= viewportWidths.tablet : false);
 
+    if (isNilOrError(ideaCustomFieldsSchema)) return null;
+
     const proposedBudgetEnabled = isFieldEnabled(
       'proposed_budget',
-      ideaCustomFieldsSchemas,
+      ideaCustomFieldsSchema.data.attributes,
       locale
     );
 
@@ -286,7 +276,7 @@ export const IdeasShow = ({
             <Box mb="40px">
               <GoBackButton projectId={projectId} insideModal={insideModal} />
             </Box>
-            <IdeaMoreActions idea={idea} projectId={projectId} />
+            <IdeaMoreActions idea={idea.data} projectId={projectId} />
           </TopBar>
         )}
 
@@ -303,7 +293,7 @@ export const IdeasShow = ({
               {isCompactView && (
                 <Box ml="30px">
                   {' '}
-                  <IdeaMoreActions idea={idea} projectId={projectId} />
+                  <IdeaMoreActions idea={idea.data} projectId={projectId} />
                 </Box>
               )}
             </IdeaHeader>
@@ -314,7 +304,7 @@ export const IdeasShow = ({
 
             <Outlet
               id="app.containers.IdeasShow.left"
-              idea={idea}
+              idea={idea.data}
               locale={locale}
               onClick={onTranslateIdea}
               translateButtonClicked={translateButtonIsClicked}
@@ -374,7 +364,6 @@ export const IdeasShow = ({
               />
             )}
             <Box my="80px">
-              {' '}
               <OfficialFeedback
                 postId={ideaId}
                 postType="idea"
@@ -467,22 +456,10 @@ export const IdeasShow = ({
   return null;
 };
 
-const IdeasShowWithHOCs = injectLocalize<Props>(
-  withRouter(injectIntl(IdeasShow))
-);
-
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
-  ideaImages: ({ ideaId, render }) => (
-    <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>
-  ),
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
-  ),
-  officialFeedbacks: ({ ideaId, render }) => (
-    <GetOfficialFeedbacks postId={ideaId} postType="idea">
-      {render}
-    </GetOfficialFeedbacks>
   ),
   postOfficialFeedbackPermission: ({ project, render }) => (
     <GetPermission
@@ -501,6 +478,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <IdeasShowWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <IdeasShow {...inputProps} {...dataProps} />}
   </Data>
 );

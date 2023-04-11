@@ -1,29 +1,42 @@
 <!-- Notifications -->
 <mj-section
-  background-color="#fff"
   border-radius="5px"
   text-align="left"
+  padding='0px 24px 0px 24px'
 >
-  <mj-column padding="0 30px 12px" background-color="#fff">
+  <mj-column>
     <mj-text>
-      <p>
+      <p style="padding-top: 24px; color: rgb(51, 51, 51); font-size: 24px; font-weight: 700;"><%= t('.confirm_email_address') %></p>
+      <p style="font-size: 16px; color: rgb(51, 51, 51); padding-top: 24px;">
         <%= t('.thanks_for_signing_up', organizationName: organization_name) %>
-        <%= t('.please_confirm_your_email_address') %>
       </p>
     </mj-text>
   </mj-column>
 </mj-section>
 
-<mj-section padding="0 16px 72px" border-radius="5px">
-  <mj-column padding="24px 25px 12px" background-color="#F6F6F6" border-radius="5px">
+<mj-section border-radius="5px" padding-top='16px' padding='0px 20px 0px 20px'>
+  <mj-column background-color="#F6F6F6" border-radius="5px">
     <mj-text>
-      <p style="color: rgb(111, 119, 125); text-align: center;">
-        <%= t('.copy_paste_the_link_below') %>
-      </p>
-      <span></span>
-      <h3 style="font-size: 44px; text-align: center;">
+      <p style="letter-spacing: 0.3rem; font-size: 32px; text-align: center; font-weight: 700; color: rgb(51, 51, 51); padding-top: 8px; padding-bottom: 0px;">
         <%= user.email_confirmation_code %>
-      </h3>
+      </p>
+      <p style="padding-top: 0px; text-align: center; font-size: 13px; color: rgb(51, 51, 51);"><%= t('.expire_code') %><span style="font-weight: bold;"><%= t('.24_hours') %></span></p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<mj-section padding='0px 20px 0px 20px'>
+  <mj-column>
+    <mj-text>
+      <p style="color: rgb(51, 51, 51); font-size: 16px; padding-top: 16px"><%= t('.ignore_email') %></p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<mj-section padding='0px 20px 0px 20px'>
+  <mj-column>
+    <mj-text>
+      <p style="font-style: italic; color: rgb(51, 51, 51); opacity: 0.5; font-size: 16px; padding-top: 16px; padding-bottom: 32px"><%= t('.best_regards') %></br><%=organization_name %></p>
     </mj-text>
   </mj-column>
 </mj-section>

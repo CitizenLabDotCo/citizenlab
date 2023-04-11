@@ -66,9 +66,9 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userMarkedPostAsSpam',
     defaultMessage: "{name} reported '{postTitle}' as spam",
   },
-  statusChangedOfYourIdea: {
-    id: 'app.containers.NotificationMenu.statusChangedOfYourIdea',
-    defaultMessage: "'{ideaTitle}' status has changed to {status}",
+  statusChangedOfIdea: {
+    id: 'app.containers.NotificationMenu.statusChangedOfIdea',
+    defaultMessage: '{ideaTitle} status has changed to {status}',
   },
   statusChangeOnVotedIdea: {
     id: 'app.containers.NotificationMenu.statusChangeOnVotedIdea',
@@ -126,9 +126,9 @@ export default defineMessages({
     defaultMessage:
       'The status of a contribution you commented on changed to {status}',
   },
-  statusChangedOfYourInitiative: {
-    id: 'app.containers.NotificationMenu.statusChangedOfYourInitiative',
-    defaultMessage: "'{initiativeTitle}' status has changed to {status}",
+  statusChangedOfInitiative: {
+    id: 'app.containers.NotificationMenu.statusChangedOfInitiative',
+    defaultMessage: '{initiativeTitle} status has changed to {status}',
   },
   statusChangeOnVotedInitiative: {
     id: 'app.containers.NotificationMenu.statusChangeOnVotedInitiative',

@@ -31,7 +31,7 @@ interface Props {
 
 const TypeformSurvey = memo<Props>(
   ({ typeformUrl, email, user_id, className, language }) => {
-    const isLargeTablet = useBreakpoint('tablet');
+    const isSmallerThanTablet = useBreakpoint('tablet');
     const queryString = stringify(omitBy({ email, user_id, language }, isNil));
     const surveyUrl = `${typeformUrl}?${queryString}&disable-auto-focus=true`;
 
@@ -40,7 +40,9 @@ const TypeformSurvey = memo<Props>(
         <Iframe
           url={surveyUrl}
           width="100%"
-          height={isLargeTablet ? surveyHeightMobile : surveyHeightDesktop}
+          height={
+            isSmallerThanTablet ? surveyHeightMobile : surveyHeightDesktop
+          }
         />
       </Container>
     );

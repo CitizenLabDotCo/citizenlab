@@ -5,6 +5,11 @@ import clHistory from 'utils/cl-router/history';
 import Preview from './';
 import useInput from 'modules/commercial/insights/api/inputs/useInput';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
+import { ideaData as mockIdeaData } from 'api/ideas/__mocks__/useIdeaById';
+
+jest.mock('api/ideas/useIdeaById', () => {
+  return jest.fn(() => ({ data: { data: mockIdeaData[0] } }));
+});
 
 const viewId = '1';
 
@@ -14,22 +19,9 @@ const defaultProps = {
   previewedInputId: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
 };
 
-let mockInputData: { data: typeof inputs[0] } | undefined = {
+let mockInputData: { data: (typeof inputs)[0] } | undefined = {
   data: inputs[0],
 };
-
-const mockIdeaData = {
-  id: '2',
-  type: 'idea',
-  attributes: {
-    title_multiloc: { en: 'Test Idea' },
-    body_multiploc: { en: 'Test idea body' },
-  },
-};
-
-jest.mock('hooks/useIdea', () => {
-  return jest.fn(() => mockIdeaData);
-});
 
 let mockIsLoading = false;
 jest.mock('modules/commercial/insights/api/inputs/useInput', () =>

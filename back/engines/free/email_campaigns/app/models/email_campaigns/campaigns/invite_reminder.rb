@@ -46,7 +46,11 @@ module EmailCampaigns
     end
 
     def filter_recipient(users_scope, activity:, time: nil)
-      users_scope.where(id: activity.item.invitee.id)
+      if activity.item&.invitee_id
+        users_scope.where(id: activity.item.invitee_id)
+      else
+        users_scope.none
+      end
     end
 
     def generate_commands(recipient:, activity:)

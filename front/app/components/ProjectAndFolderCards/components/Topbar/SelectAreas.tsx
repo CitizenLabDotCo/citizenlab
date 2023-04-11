@@ -35,7 +35,7 @@ const SelectAreas = ({
   const localize = useLocalize();
   const areas = useAreas({ forHomepageFilter: true });
   const { data: appConfig } = useAppConfiguration();
-  const smallerThanMinTablet = useBreakpoint('tablet');
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
   if (isNilOrError(appConfig)) return null;
 
@@ -72,8 +72,8 @@ const SelectAreas = ({
       onChange={onChangeAreas}
       multipleSelectionAllowed={true}
       right="-4px"
-      mobileLeft={smallerThanMinTablet ? '-4px' : undefined}
-      mobileRight={smallerThanMinTablet ? undefined : '-4px'}
+      mobileLeft={isSmallerThanTablet ? '-4px' : undefined}
+      mobileRight={isSmallerThanTablet ? undefined : '-4px'}
       textColor={colors.textSecondary}
     />
   );

@@ -414,6 +414,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
       const showDropdownButton =
         project.attributes.process_type === 'timeline' &&
         numberIdeationPhases > 1;
+      const hasIdeasTab = tabbedProps.tabs.some((tab) => tab.name === 'ideas');
 
       return (
         <>
@@ -427,7 +428,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
           <TopContainer>
             <GoBackButton onClick={this.goBack} />
             <ActionsContainer>
-              {tabbedProps.tabs.some((tab) => tab.name === 'ideas') && (
+              {hasIdeasTab && (
                 <>
                   <Box
                     onClick={this.onNewIdea(pathname)}

@@ -1,29 +1,35 @@
+import { QueryKeys } from 'utils/cl-react-query/types';
 import { InfiniteQueryParameters, QueryParameters } from './types';
 
+const baseKey = {
+  type: 'input',
+};
+
 const inputsKeys = {
-  all: () => [{ type: 'input' }],
-  lists: () => [{ ...inputsKeys.all()[0], operation: 'list' }],
-  list: (viewId: string, filters?: QueryParameters) => [
-    { ...inputsKeys.all()[0], operation: 'list', viewId, ...filters },
-  ],
-  infiniteList: (viewId: string, filters?: InfiniteQueryParameters) => [
+  all: () => [baseKey],
+  lists: () => [{ ...baseKey, operation: 'list' }],
+  list: ({
+    viewId,
+    filters,
+  }: {
+    viewId: string;
+    filters?: QueryParameters | InfiniteQueryParameters;
+  }) => [
     {
-      ...inputsKeys.all()[0],
-      ...filters,
-      viewId,
+      ...baseKey,
       operation: 'list',
-      queryType: 'infinite',
+      viewId,
+      parameters: { viewId, ...filters },
     },
   ],
-  items: (viewId: string) => [
-    { ...inputsKeys.all()[0], viewId, operation: 'item' },
-  ],
-  item: (viewId: string, id: string) => [
+  items: () => [{ ...baseKey, operation: 'item' }],
+  item: ({ viewId, id }: { viewId: string; id?: string }) => [
     {
-      ...inputsKeys.items(viewId)[0],
-      id,
+      ...baseKey,
+      operation: 'item',
+      parameters: { id, viewId },
     },
   ],
-} as const;
+} satisfies QueryKeys;
 
 export default inputsKeys;

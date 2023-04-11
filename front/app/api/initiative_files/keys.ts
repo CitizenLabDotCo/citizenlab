@@ -1,19 +1,30 @@
-const initiativeFilesKeys = {
-  all: () => [{ type: 'initiative_files' }] as const,
-  lists: () =>
-    [{ ...initiativeFilesKeys.all()[0], operation: 'list' }] as const,
-  list: (initiativeId: string) =>
-    [{ ...initiativeFilesKeys.lists()[0], initiativeId }] as const,
-  items: () =>
-    [{ ...initiativeFilesKeys.all()[0], operation: 'item' }] as const,
-  item: (initiativeId: string, fileId: string) =>
-    [
-      {
-        ...initiativeFilesKeys.items()[0],
-        initiativeId,
-        fileId,
-      },
-    ] as const,
+import { QueryKeys } from 'utils/cl-react-query/types';
+
+const baseKey = {
+  type: 'file',
+  variant: 'initiative',
 };
+
+const initiativeFilesKeys = {
+  all: () => [baseKey],
+  lists: () => [{ ...baseKey, operation: 'list' }],
+  list: ({ initiativeId }: { initiativeId: string }) => [
+    { ...baseKey, operation: 'list', parameters: { initiativeId } },
+  ],
+  items: () => [{ ...baseKey, operation: 'item' }],
+  item: ({
+    initiativeId,
+    fileId,
+  }: {
+    initiativeId: string;
+    fileId: string;
+  }) => [
+    {
+      ...baseKey,
+      operation: 'item',
+      parameters: { initiativeId, fileId },
+    },
+  ],
+} satisfies QueryKeys;
 
 export default initiativeFilesKeys;

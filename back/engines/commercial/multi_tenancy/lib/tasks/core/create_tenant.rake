@@ -41,14 +41,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        idea_custom_fields: {
-          enabled: true,
-          allowed: true
-        },
-        dynamic_idea_form: {
-          enabled: true,
-          allowed: true
-        },
         idea_author_change: {
           enabled: true,
           allowed: true
@@ -324,6 +316,10 @@ namespace :cl2_back do
           enabled: false,
           allowed: false,
           duration: 90
+        },
+        seat_based_billing: {
+          enabled: false,
+          allowed: false
         }
       }
     )

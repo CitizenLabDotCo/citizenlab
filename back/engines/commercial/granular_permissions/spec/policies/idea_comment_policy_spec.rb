@@ -12,7 +12,7 @@ describe IdeaCommentPolicy do
     let!(:idea) { create(:idea, project: project) }
     let!(:comment) { create(:comment, post: idea, author: user) }
     let!(:project) do
-      create(:continuous_budgeting_project).tap do |project|
+      create(:continuous_budgeting_project, with_permissions: true).tap do |project|
         project.permissions.find_by(action: 'commenting_idea')
           .update!(permitted_by: 'admins_moderators')
       end

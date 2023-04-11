@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import useInitativeActionDescriptors from 'api/initiative_action_descriptors/useInitiativeActionDescriptors';
+import useInitiativeActionDescriptors from 'api/initiative_action_descriptors/useInitiativeActionDescriptors';
 import { isNilOrError } from 'utils/helperUtils';
 import { ActionPermission } from 'services/actionTakingRules';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -15,14 +15,14 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
     ActionPermission<IInitiativeDisabledReason> | null | undefined
   >(undefined);
   const { data: appConfiguration } = useAppConfiguration();
-  const { data: actionDescriptors } = useInitativeActionDescriptors();
+  const { data: actionDescriptors } = useInitiativeActionDescriptors();
   const authUser = useAuthUser();
 
   useEffect(() => {
     if (appConfiguration && actionDescriptors) {
       const actionDescriptor = actionDescriptors.data.attributes[action];
 
-      if (actionDescriptor.enabled) {
+      if (actionDescriptor?.enabled) {
         setActionPermission({
           show: true,
           enabled: true,
@@ -30,7 +30,7 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
           action: null,
         });
       } else {
-        switch (actionDescriptor.disabled_reason) {
+        switch (actionDescriptor?.disabled_reason) {
           case 'not_verified':
             if (isNilOrError(authUser)) {
               setActionPermission({

@@ -18,10 +18,10 @@ import { darken } from 'polished';
 import { Header, Title } from './styles';
 
 // typings
-import { IIdeasFilterCounts } from 'services/ideas';
+import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativesFilterCounts } from 'api/initiatives_filter_counts/types';
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 
 const Container = styled.div`
   width: 100%;
@@ -109,7 +109,7 @@ interface Props {
   type: 'idea' | 'initiative';
   statuses: (IIdeaStatusData | IInitiativeStatusData)[];
   filterCounts:
-    | IIdeasFilterCounts
+    | IIdeasFilterCounts['data']['attributes']
     | IInitiativesFilterCounts['data']['attributes']
     | null
     | undefined;

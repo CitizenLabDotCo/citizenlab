@@ -7,22 +7,22 @@ import {
   InitiativeAllowedTransitonsKeys,
 } from './types';
 
-const fetchInitativeAllowedTransitions = (id: string) =>
+const fetchInitativeAllowedTransitions = ({ id }: { id: string }) =>
   fetcher<IInitiativeAllowedTransitions>({
     path: `/initiatives/${id}/allowed_transitions`,
     action: 'get',
   });
 
-const useInitativeAllowedTransitions = (id: string) => {
+const useInitiativeAllowedTransitions = (id: string) => {
   return useQuery<
     IInitiativeAllowedTransitions,
     CLErrors,
     IInitiativeAllowedTransitions,
     InitiativeAllowedTransitonsKeys
   >({
-    queryKey: initiativesAllowedTransitionsKeys.item(id),
-    queryFn: () => fetchInitativeAllowedTransitions(id),
+    queryKey: initiativesAllowedTransitionsKeys.item({ id }),
+    queryFn: () => fetchInitativeAllowedTransitions({ id }),
   });
 };
 
-export default useInitativeAllowedTransitions;
+export default useInitiativeAllowedTransitions;

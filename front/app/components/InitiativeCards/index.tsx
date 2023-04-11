@@ -242,7 +242,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
   const handleSearchOnChange = useCallback((search: string) => {
     setSelectedInitiativeFilters((selectedInitiativeFilters) => ({
       ...selectedInitiativeFilters,
-      search,
+      search: search || undefined,
     }));
   }, []);
 
@@ -443,17 +443,18 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
                 selectedView={selectedView}
               />
 
-              {!isNilOrError(initiativesFilterCounts) && biggerThanSmallTablet && (
-                <InitiativesCount>
-                  <FormattedMessage
-                    {...messages.xInitiatives}
-                    values={{
-                      initiativesCount:
-                        initiativesFilterCounts.data.attributes.total,
-                    }}
-                  />
-                </InitiativesCount>
-              )}
+              {!isNilOrError(initiativesFilterCounts) &&
+                biggerThanSmallTablet && (
+                  <InitiativesCount>
+                    <FormattedMessage
+                      {...messages.xInitiatives}
+                      values={{
+                        initiativesCount:
+                          initiativesFilterCounts.data.attributes.total,
+                      }}
+                    />
+                  </InitiativesCount>
+                )}
             </AboveContentLeft>
           </AboveContent>
 

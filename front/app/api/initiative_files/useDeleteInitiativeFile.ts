@@ -21,7 +21,9 @@ const useDeleteInitiativeFile = () => {
     mutationFn: deleteInitiativeFile,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: initiativeFilesKeys.list(variables.initiativeId),
+        queryKey: initiativeFilesKeys.list({
+          initiativeId: variables.initiativeId,
+        }),
       });
     },
   });

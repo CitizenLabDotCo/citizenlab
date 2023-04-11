@@ -1,7 +1,6 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 
 // components
 import Title from 'components/PostShowComponents/Title';
@@ -21,37 +20,32 @@ import T from 'components/T';
 import { Top, Content, Container } from '../PostPreview';
 
 // services
-import { deleteIdea } from 'services/ideas';
 import { ProcessType } from 'services/projects';
 
 // resources
-import GetResourceFiles, {
-  GetResourceFilesChildProps,
-} from 'resources/GetResourceFiles';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetIdeaImages, {
-  GetIdeaImagesChildProps,
-} from 'resources/GetIdeaImages';
+import GetIdeaById, { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
 // utils
 import { getAddressOrFallbackDMS } from 'utils/map';
 
 // i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
+import useLocalize from 'hooks/useLocalize';
 
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 20px;
@@ -160,18 +154,14 @@ const Picks = styled.div`
   align-items: center;
 `;
 
-interface State {}
-
-export interface InputProps {
-  ideaId: string | null;
+interface InputProps {
+  ideaId: string;
   closePreview: () => void;
   handleClickEdit: () => void;
 }
 
 interface DataProps {
-  idea: GetIdeaChildProps;
-  ideaImages: GetIdeaImagesChildProps;
-  ideaFiles: GetResourceFilesChildProps;
+  idea: GetIdeaByIdChildProps;
   locale: GetLocaleChildProps;
   project: GetProjectChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
@@ -179,16 +169,21 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-export class IdeaContent extends PureComponent<
-  Props & InjectedLocalized & WrappedComponentProps,
-  State
-> {
-  handleClickDelete = (processType: ProcessType) => () => {
-    const {
-      idea,
-      closePreview,
-      intl: { formatMessage },
-    } = this.props;
+const IdeaContent = ({
+  idea,
+  project,
+  locale,
+  handleClickEdit,
+  closePreview,
+  ideaId,
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const { data: ideaImages } = useIdeaImages(ideaId);
+  const { data: ideaFiles } = useIdeaFiles(ideaId);
+  const { mutate: deleteIdea } = useDeleteIdea();
+
+  const handleClickDelete = (processType: ProcessType) => () => {
     const deleteConfirmationMessage = {
       continuous: messages.deleteInputConfirmation,
       timeline: messages.deleteInputInTimelineConfirmation,
@@ -196,183 +191,162 @@ export class IdeaContent extends PureComponent<
 
     if (!isNilOrError(idea)) {
       if (window.confirm(formatMessage(deleteConfirmationMessage))) {
-        deleteIdea(idea.id);
-        closePreview();
+        deleteIdea(idea.id, { onSuccess: closePreview });
       }
     }
   };
 
-  render() {
-    const {
-      idea,
-      project,
-      localize,
-      ideaImages,
-      ideaFiles,
-      locale,
-      handleClickEdit,
-    } = this.props;
+  if (!isNilOrError(idea) && !isNilOrError(locale) && !isNilOrError(project)) {
+    const ideaId = idea.id;
+    const ideaTitle = localize(idea.attributes.title_multiloc);
+    const ideaImageLarge =
+      ideaImages && ideaImages.data.length > 0
+        ? ideaImages.data[0].attributes.versions.large
+        : null;
+    const ideaGeoPosition = idea.attributes.location_point_geojson || null;
+    const ideaAddress = getAddressOrFallbackDMS(
+      idea.attributes.location_description,
+      idea.attributes.location_point_geojson
+    );
+    // AuthorId can be null if user has been deleted
+    const authorId = idea.relationships.author.data?.id || null;
+    const proposedBudget = idea.attributes.proposed_budget;
+    const processType = project.attributes.process_type;
 
-    if (
-      !isNilOrError(idea) &&
-      !isNilOrError(locale) &&
-      !isNilOrError(project)
-    ) {
-      const ideaId = idea.id;
-      const ideaTitle = localize(idea.attributes.title_multiloc);
-      const ideaImageLarge =
-        !isNilOrError(ideaImages) && ideaImages.length > 0
-          ? get(ideaImages[0], 'attributes.versions.large', null)
-          : null;
-      const ideaGeoPosition = idea.attributes.location_point_geojson || null;
-      const ideaAddress = getAddressOrFallbackDMS(
-        idea.attributes.location_description,
-        idea.attributes.location_point_geojson
-      );
-      // AuthorId can be null if user has been deleted
-      const authorId = idea.relationships.author.data?.id || null;
-      const proposedBudget = idea.attributes.proposed_budget;
-      const processType = project.attributes.process_type;
+    return (
+      <Container>
+        <Top>
+          <Button icon="edit" buttonStyle="text" onClick={handleClickEdit}>
+            <FormattedMessage {...messages.edit} />
+          </Button>
+          <Button
+            icon="delete"
+            buttonStyle="text"
+            onClick={handleClickDelete(processType)}
+          >
+            <FormattedMessage {...messages.delete} />
+          </Button>
+        </Top>
+        <Content>
+          {!isNilOrError(project) && (
+            <BelongsToProject>
+              <FormattedMessage
+                {...messages.postedIn}
+                values={{
+                  projectLink: (
+                    <ProjectLink
+                      className="e2e-project-link"
+                      to={`/projects/${project.attributes.slug}`}
+                    >
+                      <T value={project.attributes.title_multiloc} />
+                    </ProjectLink>
+                  ),
+                }}
+              />
+            </BelongsToProject>
+          )}
 
-      return (
-        <Container>
-          <Top>
-            <Button icon="edit" buttonStyle="text" onClick={handleClickEdit}>
-              <FormattedMessage {...messages.edit} />
-            </Button>
-            <Button
-              icon="delete"
-              buttonStyle="text"
-              onClick={this.handleClickDelete(processType)}
-            >
-              <FormattedMessage {...messages.delete} />
-            </Button>
-          </Top>
-          <Content>
-            {!isNilOrError(project) && (
-              <BelongsToProject>
-                <FormattedMessage
-                  {...messages.postedIn}
-                  values={{
-                    projectLink: (
-                      <ProjectLink
-                        className="e2e-project-link"
-                        to={`/projects/${project.attributes.slug}`}
-                      >
-                        <T value={project.attributes.title_multiloc} />
-                      </ProjectLink>
-                    ),
-                  }}
+          <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />
+          <StyledPostedBy ideaId={ideaId} authorId={authorId} />
+          <Row>
+            <Left>
+              {ideaImageLarge && (
+                <IdeaImage
+                  src={ideaImageLarge}
+                  alt=""
+                  className="e2e-ideaImage"
                 />
-              </BelongsToProject>
-            )}
+              )}
 
-            <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />
-            <StyledPostedBy ideaId={ideaId} authorId={authorId} />
-            <Row>
-              <Left>
-                {ideaImageLarge && (
-                  <IdeaImage
-                    src={ideaImageLarge}
-                    alt=""
-                    className="e2e-ideaImage"
-                  />
-                )}
+              {proposedBudget && (
+                <>
+                  <BodySectionTitle>
+                    <FormattedMessage {...messages.proposedBudgetTitle} />
+                  </BodySectionTitle>
+                  <IdeaProposedBudget proposedBudget={proposedBudget} />
+                  <BodySectionTitle>
+                    <FormattedMessage {...messages.bodyTitle} />
+                  </BodySectionTitle>
+                </>
+              )}
 
-                {proposedBudget && (
-                  <>
-                    <BodySectionTitle>
-                      <FormattedMessage {...messages.proposedBudgetTitle} />
-                    </BodySectionTitle>
-                    <IdeaProposedBudget proposedBudget={proposedBudget} />
-                    <BodySectionTitle>
-                      <FormattedMessage {...messages.bodyTitle} />
-                    </BodySectionTitle>
-                  </>
-                )}
+              <StyledBody
+                postId={ideaId}
+                postType="idea"
+                body={localize(idea.attributes.body_multiloc)}
+                locale={locale}
+              />
 
-                <StyledBody
-                  postId={ideaId}
-                  postType="idea"
-                  body={localize(idea.attributes.body_multiloc)}
-                  locale={locale}
+              {!isNilOrError(project) && ideaGeoPosition && ideaAddress && (
+                <StyledMap
+                  address={ideaAddress}
+                  position={ideaGeoPosition}
+                  projectId={project.id}
                 />
+              )}
 
-                {!isNilOrError(project) && ideaGeoPosition && ideaAddress && (
-                  <StyledMap
-                    address={ideaAddress}
-                    position={ideaGeoPosition}
-                    projectId={project.id}
-                  />
-                )}
+              {ideaFiles && (
+                <Box mb="25px">
+                  <FileAttachments files={ideaFiles.data} />
+                </Box>
+              )}
 
-                {ideaFiles && !isNilOrError(ideaFiles) && (
-                  <Box mb="25px">
-                    <FileAttachments files={ideaFiles} />
-                  </Box>
-                )}
+              <StyledOfficialFeedback
+                postId={ideaId}
+                postType="idea"
+                permissionToPost
+              />
 
-                <StyledOfficialFeedback
-                  postId={ideaId}
-                  postType="idea"
-                  permissionToPost
-                />
+              <StyledComments postId={ideaId} postType="idea" />
+            </Left>
+            <Right>
+              <VotePreview ideaId={ideaId} />
 
-                <StyledComments postId={ideaId} postType="idea" />
-              </Left>
-              <Right>
-                <VotePreview ideaId={ideaId} />
+              {idea.attributes.budget && (
+                <>
+                  <BudgetBox>
+                    <FormattedBudget value={idea.attributes.budget} />
+                    <Picks>
+                      <FormattedMessage
+                        {...messages.picks}
+                        values={{
+                          picksNumber: idea.attributes.baskets_count,
+                        }}
+                      />
+                      &nbsp;
+                      <IconTooltip
+                        content={
+                          <FormattedMessage {...messages.pbItemCountTooltip} />
+                        }
+                      />
+                    </Picks>
+                  </BudgetBox>
+                </>
+              )}
 
-                {idea.attributes.budget && (
-                  <>
-                    <BudgetBox>
-                      <FormattedBudget value={idea.attributes.budget} />
-                      <Picks>
-                        <FormattedMessage
-                          {...messages.picks}
-                          values={{
-                            picksNumber: idea.attributes.baskets_count,
-                          }}
-                        />
-                        &nbsp;
-                        <IconTooltip
-                          content={
-                            <FormattedMessage
-                              {...messages.pbItemCountTooltip}
-                            />
-                          }
-                        />
-                      </Picks>
-                    </BudgetBox>
-                  </>
-                )}
-
-                <FeedbackSettings ideaId={ideaId} />
-              </Right>
-            </Row>
-          </Content>
-        </Container>
-      );
-    }
-    return null;
+              <FeedbackSettings ideaId={ideaId} projectId={project.id} />
+            </Right>
+          </Row>
+        </Content>
+      </Container>
+    );
   }
-}
+  return null;
+};
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => (
+    <GetIdeaById ideaId={ideaId}>{render}</GetIdeaById>
+  ),
   project: ({ idea, render }) => (
-    <GetProject projectId={get(idea, 'relationships.project.data.id')}>
+    <GetProject
+      projectId={
+        !isNilOrError(idea) ? idea.relationships.project.data.id : null
+      }
+    >
       {render}
     </GetProject>
-  ),
-  ideaFiles: ({ ideaId, render }) => (
-    <GetResourceFiles resourceId={ideaId} resourceType="idea">
-      {render}
-    </GetResourceFiles>
-  ),
-  ideaImages: ({ ideaId, render }) => (
-    <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>
   ),
   postOfficialFeedbackPermission: ({ project, render }) => (
     <GetPermission
@@ -384,12 +358,8 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const IdeaContentWithHOCs = injectIntl(injectLocalize(IdeaContent));
-
-const WrappedIdeaContent = (inputProps: InputProps) => (
+export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <IdeaContentWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <IdeaContent {...inputProps} {...dataProps} />}
   </Data>
 );
-
-export default WrappedIdeaContent;
