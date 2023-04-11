@@ -142,5 +142,6 @@ export default function useSteps() {
     status,
     error,
     transition,
+    setError,
   };
 }

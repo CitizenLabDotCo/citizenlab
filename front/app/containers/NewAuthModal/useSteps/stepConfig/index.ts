@@ -16,6 +16,9 @@ import { trackEventByName } from 'utils/analytics';
 // events
 import { triggerSuccessAction } from 'containers/NewAuthModal/SuccessActions';
 
+// utils
+import { askCustomFields } from './utils';
+
 // typings
 import {
   GetRequirements,
@@ -40,11 +43,10 @@ export const getStepConfig = (
     closed: {
       // When the user entered the platform through an invite link
       START_INVITE_FLOW: async (search: string) => {
-        const params = parse(search);
+        const params = parse(search, { ignoreQueryPrefix: true });
         const token = params.token;
-        if (token !== undefined && typeof token !== 'string') return;
 
-        if (token) {
+        if (typeof token === 'string') {
           updateState({ token });
           setCurrentStep('sign-up:email-password');
         } else {
@@ -57,41 +59,27 @@ export const getStepConfig = (
       TRIGGER_REGISTRATION_FLOW: async () => {
         updateState({ email: null, token: null });
 
-        const { permitted, requirements } = await getRequirements();
-
-        if (permitted) {
-          setCurrentStep('success');
-          return;
-        }
+        const { requirements } = await getRequirements();
 
         const isLightFlow = requirements.special.password === 'dont_ask';
         const signedIn = requirements.built_in.email === 'satisfied';
 
         if (isLightFlow) {
-          if (signedIn) {
-            // TODO
+          if (requirements.built_in.email === 'satisfied') {
+            setCurrentStep('light-flow:email-confirmation');
           } else {
-            if (requirements.built_in.email === 'satisfied') {
-              setCurrentStep('light-flow:email-confirmation');
-            } else {
-              setCurrentStep('light-flow:email');
-            }
+            setCurrentStep('light-flow:email');
           }
-
           return;
         }
 
         const { flow } = getAuthenticationData();
 
-        if (flow === 'signin') {
-          if (signedIn) {
-            // TODO
+        if (flow === 'signin' && !signedIn) {
+          if (anySSOEnabled) {
+            setCurrentStep('sign-in:auth-providers');
           } else {
-            if (anySSOEnabled) {
-              setCurrentStep('sign-in:auth-providers');
-            } else {
-              setCurrentStep('sign-in:email-password');
-            }
+            setCurrentStep('sign-in:email-password');
           }
 
           return;
@@ -99,7 +87,10 @@ export const getStepConfig = (
 
         if (flow === 'signup') {
           if (signedIn) {
-            // TODO
+            if (askCustomFields(requirements.custom_fields)) {
+              setCurrentStep('sign-up:custom-fields');
+              return;
+            }
           } else {
             if (anySSOEnabled) {
               setCurrentStep('sign-up:auth-providers');

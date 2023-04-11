@@ -71,10 +71,13 @@ const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   wrong_password: oldSignInMessages.signInError,
   requirements_fetching_failed: oldSignUpMessages.unknownError,
   unknown: oldSignUpMessages.unknownError,
+  invitation_error: messages.invitationError,
 };
 
 const AuthModal = () => {
-  const { currentStep, transition, error, status, state } = useSteps();
+  const { currentStep, state, status, error, transition, setError } =
+    useSteps();
+
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
   const fullscreenModalEnabled = useFeatureFlag({
@@ -163,7 +166,9 @@ const AuthModal = () => {
 
         {currentStep === 'sign-up:email-password' && (
           <EmailAndPasswordSignUp
+            state={state}
             status={status}
+            onError={setError}
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onSubmit={transition(currentStep, 'SUBMIT')}

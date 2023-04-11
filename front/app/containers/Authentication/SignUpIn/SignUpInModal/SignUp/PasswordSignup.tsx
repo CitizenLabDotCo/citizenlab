@@ -189,7 +189,7 @@ class PasswordSignup extends PureComponent<
           });
         })
         .catch(() => {
-          onError(intl.formatMessage(messages.invitationError));
+          onError(intl.formatMessage(messages.close));
           trackEventByName(tracks.signUpFlowExited);
         });
     }
@@ -308,7 +308,7 @@ class PasswordSignup extends PureComponent<
       metaData: { isInvitation },
       intl: { formatMessage },
       tenant,
-    } = this.props;
+    } = this.props as any;
 
     const invitationRedeemError =
       isInvitation && !token ? formatMessage(messages.emptyTokenError) : null;
@@ -496,7 +496,7 @@ class PasswordSignup extends PureComponent<
       franceconnectLoginEnabled,
       metaData: { isInvitation },
       intl: { formatMessage },
-    } = this.props;
+    } = this.props as any;
     const {
       token,
       firstName,

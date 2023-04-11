@@ -96,8 +96,4 @@ export default defineMessages({
     id: 'app.containers.SignUp.close',
     defaultMessage: 'Close',
   },
-  invitationError: {
-    id: 'app.containers.SignUp.invitationError',
-    defaultMessage: 'Your invitation has expired or has already been redeemed.',
-  },
 });

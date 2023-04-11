@@ -13,6 +13,7 @@ export type ErrorCode =
   | 'wrong_confirmation_code'
   | 'wrong_password'
   | 'requirements_fetching_failed'
+  | 'invitation_error'
   | 'unknown';
 
 export interface State {

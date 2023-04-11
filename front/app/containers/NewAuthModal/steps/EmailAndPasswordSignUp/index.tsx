@@ -8,6 +8,7 @@ import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 import useAnySSOEnabled from 'containers/NewAuthModal/useAnySSOEnabled';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
+import useSteps from 'containers/NewAuthModal/useSteps';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -43,6 +44,7 @@ import { Parameters as CreateAccountParameters } from 'api/authentication/create
 import { State, Status } from 'containers/NewAuthModal/typings';
 
 interface BaseProps {
+  state: State;
   status: Status;
   onSwitchFlow: () => void;
   onGoBack: () => void;
@@ -54,6 +56,7 @@ interface Props extends BaseProps {
 }
 
 const EmailAndPasswordSignUp = ({
+  state,
   status,
   initialFormValues,
   onSwitchFlow,
@@ -103,6 +106,8 @@ const EmailAndPasswordSignUp = ({
       email,
       password,
       locale,
+      isInvitation: !!state.token,
+      token: state.token,
     });
   };
 
@@ -192,11 +197,12 @@ const EmailAndPasswordSignUp = ({
 };
 
 interface WrapperProps extends BaseProps {
-  state: State;
+  onError: ReturnType<typeof useSteps>['setError'];
 }
 
 const EmailAndPasswordSignUpWrapper = ({
   state,
+  onError,
   ...otherProps
 }: WrapperProps) => {
   const { token } = state;
@@ -205,6 +211,8 @@ const EmailAndPasswordSignUpWrapper = ({
 
   useEffect(() => {
     if (!token) return;
+    if (prefilledValues) return;
+
     getUserDataFromToken(token)
       .then((response) => {
         setPrefilledValues({
@@ -213,10 +221,10 @@ const EmailAndPasswordSignUpWrapper = ({
           email: response.data.attributes.email ?? undefined,
         });
       })
-      .catch((e) => {
-        // TODO
+      .catch(() => {
+        onError('invitation_error');
       });
-  }, [token]);
+  }, [token, prefilledValues, onError]);
 
   if (token) {
     if (!prefilledValues) return null;
@@ -224,6 +232,7 @@ const EmailAndPasswordSignUpWrapper = ({
     return (
       <EmailAndPasswordSignUp
         {...otherProps}
+        state={state}
         initialFormValues={prefilledValues}
       />
     );
@@ -232,6 +241,7 @@ const EmailAndPasswordSignUpWrapper = ({
   return (
     <EmailAndPasswordSignUp
       {...otherProps}
+      state={state}
       initialFormValues={DEFAULT_VALUES}
     />
   );

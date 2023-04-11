@@ -144,7 +144,7 @@ const SignUp = ({
   const [emailSignUpSelected, setEmailSignUpSelected] = useState(false);
   const [accountCreated, setAccountCreated] = useState(false);
   const [activeStep, setActiveStep] = useState<TSignUpStep | null>(
-    metaData.isInvitation ? 'password-signup' : 'auth-providers'
+    'auth-providers'
   );
   const [enabledSteps, setEnabledSteps] = useState<TSignUpStep[]>(
     getEnabledSteps(configuration, authUser, metaData, {
