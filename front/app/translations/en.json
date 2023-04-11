@@ -695,6 +695,7 @@
   "app.containers.ChangeEmail.helmetTitle": "Change your email",
   "app.containers.ChangeEmail.newEmailLabel": "New email",
   "app.containers.ChangeEmail.submitButton": "Submit",
+  "app.containers.ChangeEmail.titleAddEmail": "Add your email",
   "app.containers.ChangeEmail.titleChangeEmail": "Change your email",
   "app.containers.ChangePassword.currentPasswordLabel": "Current password",
   "app.containers.ChangePassword.currentPasswordRequired": "Enter your current password",
