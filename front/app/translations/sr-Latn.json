@@ -37,6 +37,8 @@
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "Molimo vas {signUpLink} ili {signInLink} da biste komentarisali.",
   "app.components.Comments.commentingInitiativeNotPermitted": "Komentarisanje nije predviđeno u ovoj vrsti aktivnosti.",
   "app.components.Comments.commentingMaybeNotPermitted": "{signInLink} da biste mogli da učestvujete.",
+  "app.components.Comments.deleteComment": "Избриши",
+  "app.components.Comments.editComment": "Уредити",
   "app.components.Comments.invisibleTitleComments": "Komentari",
   "app.components.Comments.mostUpvoted": "Najviše glasano",
   "app.components.Comments.official": "Zvanično",
