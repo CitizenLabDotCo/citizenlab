@@ -1,6 +1,6 @@
 import {
   isAdmin,
-  isModerator,
+  isNotRegularUser,
   isProjectModerator,
   isSuperAdmin,
 } from './roles';
@@ -23,28 +23,28 @@ describe('isModerator', () => {
     const moderator = makeUser({
       highest_role: 'super_admin',
     });
-    expect(isModerator(moderator)).toBeTruthy();
+    expect(isNotRegularUser(moderator)).toBeTruthy();
   });
 
   it('returns true when a user is a admin', () => {
     const moderator = makeUser({
       highest_role: 'admin',
     });
-    expect(isModerator(moderator)).toBeTruthy();
+    expect(isNotRegularUser(moderator)).toBeTruthy();
   });
 
   it('returns true when a user is a project moderator', () => {
     const moderator = makeUser({
       highest_role: 'project_moderator',
     });
-    expect(isModerator(moderator)).toBeTruthy();
+    expect(isNotRegularUser(moderator)).toBeTruthy();
   });
 
   it('returns false when a user is not a moderator', () => {
     const mortal = makeUser({
       highest_role: 'user',
     });
-    expect(isModerator(mortal)).toBeFalsy();
+    expect(isNotRegularUser(mortal)).toBeFalsy();
   });
 });
 

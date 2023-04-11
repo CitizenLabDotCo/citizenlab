@@ -4,7 +4,7 @@ import {
 } from 'services/permissions/permissions';
 import {
   isAdmin,
-  isModerator,
+  isNotRegularUser,
   isProjectModerator,
   isSuperAdmin,
 } from '../roles';
@@ -74,7 +74,7 @@ export const canAccessRoute = (
       return true;
     }
 
-    if (isModerator(user) && isModeratorRoute(item)) {
+    if (isNotRegularUser(user) && isModeratorRoute(item)) {
       return true;
     }
 
