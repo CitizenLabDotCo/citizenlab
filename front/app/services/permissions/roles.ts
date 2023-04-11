@@ -38,7 +38,7 @@ export const isAdmin = (user?: IUser | null | undefined | Error) => {
   return false;
 };
 
-export const isCollaborator = (user?: IUser | null | undefined | Error) => {
+export const isModerator = (user?: IUser | null | undefined | Error) => {
   if (!isNilOrError(user)) {
     return ['project_moderator', 'project_folder_moderator'].includes(
       user.data.attributes.highest_role

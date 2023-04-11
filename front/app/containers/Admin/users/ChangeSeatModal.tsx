@@ -17,7 +17,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Utils
 import { isNil } from 'utils/helperUtils';
-import { isCollaborator, isAdmin } from 'services/permissions/roles';
+import { isModerator, isAdmin } from 'services/permissions/roles';
 
 import { IUserData } from 'services/users';
 
@@ -73,7 +73,7 @@ const ChangeSeatModal = ({
 }: Props) => {
   const [showSuccess, setShowSuccess] = useState(false);
   const isUserToChangeSeatAdmin = isAdmin({ data: userToChangeSeat });
-  const isUserToChangeCollaborator = isCollaborator({ data: userToChangeSeat });
+  const isUserToChangeCollaborator = isModerator({ data: userToChangeSeat });
   const { formatMessage } = useIntl();
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',

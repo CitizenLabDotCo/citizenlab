@@ -3,7 +3,7 @@ import React, { Suspense, memo, useState, lazy } from 'react';
 
 // Services
 import { addProjectModerator } from 'services/projectModerators';
-import { isCollaborator } from 'services/permissions/roles';
+import { isModerator } from 'services/permissions/roles';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -83,7 +83,7 @@ const UserSearch = memo(({ projectId }: Props) => {
 
   const handleAddClick = () => {
     const isSelectedUserAModerator =
-      moderatorToAdd && isCollaborator({ data: moderatorToAdd });
+      moderatorToAdd && isModerator({ data: moderatorToAdd });
     const shouldOpenModal =
       hasSeatBasedBillingEnabled &&
       hasReachedOrIsOverLimit &&

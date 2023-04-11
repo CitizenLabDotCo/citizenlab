@@ -12,7 +12,7 @@ import {
   addFolderModerator,
   deleteFolderModerator,
 } from 'services/projectFolderModerators';
-import { isCollaborator } from 'services/permissions/roles';
+import { isModerator } from 'services/permissions/roles';
 
 // i18n
 import messages from './messages';
@@ -92,7 +92,7 @@ const FolderPermissions = () => {
 
   const handleAddClick = () => {
     const isSelectedUserAModerator =
-      moderatorToAdd && isCollaborator({ data: moderatorToAdd });
+      moderatorToAdd && isModerator({ data: moderatorToAdd });
     const shouldOpenModal =
       hasSeatBasedBillingEnabled &&
       hasReachedOrIsOverLimit &&
