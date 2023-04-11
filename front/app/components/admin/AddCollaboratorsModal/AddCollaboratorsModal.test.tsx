@@ -80,15 +80,13 @@ describe('AddCollaboratorsModal', () => {
         />
       );
 
-      const confirmButton = screen.queryByRole('button', {
+      const confirmButton = screen.getByRole('button', {
         name: 'Confirm',
       });
 
+      expect(screen.getByText('Give collaborator rights')).toBeInTheDocument();
       expect(
-        screen.queryByText('Give collaborator rights')
-      ).toBeInTheDocument();
-      expect(
-        screen.queryByText(
+        screen.getByText(
           'Are you sure you want to give 1 person collaborator rights?'
         )
       ).toBeInTheDocument();
@@ -106,15 +104,13 @@ describe('AddCollaboratorsModal', () => {
         />
       );
 
-      const buyAdditionalSeatButton = screen.queryByRole('button', {
+      const buyAdditionalSeatButton = screen.getByRole('button', {
         name: 'Buy 1 additional seat',
       });
 
+      expect(screen.getByText('Give collaborator rights')).toBeInTheDocument();
       expect(
-        screen.queryByText('Give collaborator rights')
-      ).toBeInTheDocument();
-      expect(
-        screen.queryByText(
+        screen.getByText(
           'You have reached the limit of included seats within your plan, 1 additional seat will be added.'
         )
       ).toBeInTheDocument();
@@ -139,15 +135,13 @@ describe('AddCollaboratorsModal', () => {
         />
       );
 
-      const confirmButton = screen.queryByRole('button', {
+      const confirmButton = screen.getByRole('button', {
         name: 'Confirm',
       });
 
+      expect(screen.getByText('Give collaborator rights')).toBeInTheDocument();
       expect(
-        screen.queryByText('Give collaborator rights')
-      ).toBeInTheDocument();
-      expect(
-        screen.queryByText(
+        screen.getByText(
           'Are you sure you want to give 1 person collaborator rights?'
         )
       ).toBeInTheDocument();
@@ -166,15 +160,13 @@ describe('AddCollaboratorsModal', () => {
         />
       );
 
-      const buyAdditionalSeatButton = screen.queryByRole('button', {
+      const buyAdditionalSeatButton = screen.getByRole('button', {
         name: 'Buy 1 additional seat',
       });
 
+      expect(screen.getByText('Give collaborator rights')).toBeInTheDocument();
       expect(
-        screen.queryByText('Give collaborator rights')
-      ).toBeInTheDocument();
-      expect(
-        screen.queryByText(
+        screen.getByText(
           'You have reached the limit of included seats within your plan, 1 additional seat will be added.'
         )
       ).toBeInTheDocument();
