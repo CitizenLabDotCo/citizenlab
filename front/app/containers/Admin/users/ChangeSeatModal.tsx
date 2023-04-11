@@ -149,7 +149,7 @@ const ChangeSeatModal = ({
           </Box>
           <Box display="flex" width="100%" alignItems="center">
             <Button
-              autoFocus={true}
+              autoFocus
               width="auto"
               onClick={() => {
                 changeRoles(userToChangeSeat, isChangingToNormalUser);
