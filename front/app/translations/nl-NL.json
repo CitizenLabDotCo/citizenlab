@@ -37,6 +37,8 @@
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "{signInLink} of {signUpLink} om te reageren.",
   "app.components.Comments.commentingInitiativeNotPermitted": "Reageren is momenteel niet mogelijk.",
   "app.components.Comments.commentingMaybeNotPermitted": "{signInLink} om acties te ondernemen",
+  "app.components.Comments.deleteComment": "Verwijder",
+  "app.components.Comments.editComment": "Bewerk",
   "app.components.Comments.invisibleTitleComments": "Reacties",
   "app.components.Comments.mostUpvoted": "Meeste stemmen",
   "app.components.Comments.official": "Officieel",
