@@ -36,23 +36,22 @@ const AddModeratorsModal = ({
   });
   const { data: seats } = useSeats();
   const [showSuccess, setShowSuccess] = useState(false);
-  const additionalCollaborators =
+  const additionalModerators =
     appConfiguration?.data.attributes.settings.core
       .additional_moderators_number;
-  const maximumCollaborators =
+  const maximumModerators =
     appConfiguration?.data.attributes.settings.core.maximum_moderators_number;
 
   if (!appConfiguration || !seats) return null;
 
-  const currentCollaboratorSeats =
-    seats.data.attributes.project_moderators_number;
+  const currentModeratorSeats = seats.data.attributes.project_moderators_number;
 
   const { hasReachedOrIsOverPlanSeatLimit, hasExceededPlanSeatLimit } =
     getExceededLimitInfo(
       hasSeatBasedBillingEnabled,
-      currentCollaboratorSeats,
-      additionalCollaborators,
-      maximumCollaborators
+      currentModeratorSeats,
+      additionalModerators,
+      maximumModerators
     );
 
   const buttonText = hasReachedOrIsOverPlanSeatLimit

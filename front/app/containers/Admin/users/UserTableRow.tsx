@@ -88,7 +88,7 @@ const UserTableRow = ({
   const { formatMessage } = useIntl();
 
   const isUserAdmin = isAdmin({ data: user });
-  const isUserCollaborator = isNotRegularUser({ data: user });
+  const isUserModerator = isNotRegularUser({ data: user });
   const registeredAt = moment(user.attributes.registration_completed_at).format(
     'LL'
   );
@@ -200,7 +200,7 @@ const UserTableRow = ({
 
     if (isUserAdmin) {
       return [setAsNormalUserAction];
-    } else if (isUserCollaborator) {
+    } else if (isUserModerator) {
       return [setAsNormalUserAction, setAsAdminAction];
     } else {
       return [setAsAdminAction];
