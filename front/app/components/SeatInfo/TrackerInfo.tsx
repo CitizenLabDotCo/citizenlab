@@ -32,7 +32,7 @@ const TrackerInfo = ({ seatType }: SeatInfoProps) => {
   const maximumSeatNumbers: SeatNumbersType = {
     admin:
       appConfiguration?.data.attributes.settings.core.maximum_admins_number,
-    collaborator:
+    moderator:
       appConfiguration?.data.attributes.settings.core.maximum_moderators_number,
   };
   const maximumSeatNumber = maximumSeatNumbers[seatType];
@@ -42,32 +42,33 @@ const TrackerInfo = ({ seatType }: SeatInfoProps) => {
     return null;
   }
 
-  let currentSeatNumber = {
+  const currentSeatNumbers = {
     admin: seats.data.attributes.admins_number,
-    collaborator: seats.data.attributes.project_moderators_number,
+    moderator: seats.data.attributes.project_moderators_number,
   }[seatType];
+  const currentSeatNumber = currentSeatNumbers[seatType];
   const additionalSeats = currentSeatNumber - maximumSeatNumber;
   const showAdditionalSeats = additionalSeats > 0;
 
   const seatTypeMessage: SeatTypeMessageDescriptor = {
     admin: messages.currentAdminSeatsTitle,
-    collaborator: messages.currentCollaboratorSeatsTitle,
+    moderator: messages.currentModeratorSeatsTitle,
   };
   const currentSeatTypeTitle = seatTypeMessage[seatType];
   const tooltipMessages: SeatTypeMessageDescriptor = {
     admin: messages.includedAdminToolTip,
-    collaborator: messages.includedCollaboratorToolTip,
+    moderator: messages.includedCollaboratorToolTip,
   };
   const tooltipMessage = tooltipMessages[seatType];
-
-  const seatTypeInfoMessage = {
+  const seatTypeInfoMessages: SeatTypeMessageDescriptor = {
     admin: messages.adminInfoTextWithoutBilling,
-    collaborator: messages.collaboratorInfoTextWithoutBilling,
-  }[seatType];
+    moderator: messages.collaboratorInfoTextWithoutBilling,
+  };
+  const seatTypeInfoMessage = seatTypeInfoMessages[seatType];
 
   // Show maximum number of seats if user has used more for this value
   if (currentSeatNumber >= maximumSeatNumber) {
-    currentSeatNumber = maximumSeatNumber;
+    currentSeatNumbers[seatType] = maximumSeatNumber;
   }
 
   return (
@@ -116,7 +117,7 @@ const TrackerInfo = ({ seatType }: SeatInfoProps) => {
       </Box>
 
       <Box mt="20px">
-        {seatType === 'collaborator' ? (
+        {seatType === 'moderator' ? (
           <Text my="0px" variant="bodyS">
             <FormattedMessage
               {...seatTypeInfoMessage}

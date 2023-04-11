@@ -106,7 +106,7 @@ describe('BillingInfo', () => {
   });
 
   it('shows correct numbers of seat usage for collaborators', () => {
-    render(<BillingInfo seatType="collaborator" />);
+    render(<BillingInfo seatType="moderator" />);
     expect(screen.getByText('Collaborator seats')).toBeInTheDocument();
 
     // Remaining seats
@@ -130,11 +130,11 @@ describe('BillingInfo', () => {
     expect(screen.queryByText('Admin seats')).not.toBeInTheDocument();
   });
 
-  it('shows nothing for collaborator seats when maximum_moderators_number is unlimited (null)', () => {
+  it('shows nothing for moderator seats when maximum_moderators_number is unlimited (null)', () => {
     mockUserSeatsData.data.attributes.project_moderators_number = 15;
     mockAppConfiguration.data.attributes.settings.core.maximum_moderators_number =
       null;
-    render(<BillingInfo seatType="collaborator" />);
+    render(<BillingInfo seatType="moderator" />);
     expect(screen.queryByText('Collaborator seats')).not.toBeInTheDocument();
   });
 });

@@ -57,13 +57,13 @@ const InviteUsersWithSeatsModal = ({
   const maximumSeatNumbers: SeatTypeTSeatNumber = {
     admin:
       appConfiguration?.data.attributes.settings.core.maximum_admins_number,
-    collaborator:
+    moderator:
       appConfiguration?.data.attributes.settings.core.maximum_moderators_number,
   };
   const maximumSeatNumber = maximumSeatNumbers[seatType];
   const currentSeatNumbers: SeatTypeNumber = {
     admin: seats.data.attributes.admins_number,
-    collaborator: seats.data.attributes.project_moderators_number,
+    moderator: seats.data.attributes.project_moderators_number,
   };
   const currentSeatNumber = currentSeatNumbers[seatType];
   const hasExceededSetSeats =
@@ -71,15 +71,15 @@ const InviteUsersWithSeatsModal = ({
 
   const seatTypeMessages: SeatTypeMessageDescriptor = {
     admin: messages.admin,
-    collaborator: messages.collaborator,
+    moderator: messages.moderator,
   };
   const seatTypesMessages: SeatTypeMessageDescriptor = {
     admin: messages.admins,
-    collaborator: messages.collaborators,
+    moderator: messages.moderators,
   };
   const seatTypeModalTitles: SeatTypeMessageDescriptor = {
     admin: messages.giveAdminRights,
-    collaborator: messages.giveCollaboratorRights,
+    moderator: messages.giveModeratorRights,
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,7 +114,7 @@ const InviteUsersWithSeatsModal = ({
             setHasAcknowledged(false);
           }}
           hasExceededSetSeats={hasExceededSetSeats}
-          seatType="collaborator"
+          seatType="moderator"
         />
       ) : (
         <Box display="flex" flexDirection="column" width="100%" p="32px">

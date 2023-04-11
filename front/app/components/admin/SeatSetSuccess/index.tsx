@@ -35,7 +35,7 @@ const SeatSetSuccess = ({
   });
   const seatTypeMessages: SeatTypeMessageDescriptor = {
     admin: messages.admin,
-    collaborator: messages.collaborator,
+    moderator: messages.moderator,
   };
   const descriptionMessage =
     hasSeatBasedBillingEnabled && hasExceededSetSeats

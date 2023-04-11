@@ -51,7 +51,7 @@ const AddCollaboratorsModal = ({
 
   const header = !showSuccess ? (
     <Text color="primary" my="8px" fontSize="l" fontWeight="bold" px="2px">
-      {formatMessage(messages.giveCollaboratorRights)}
+      {formatMessage(messages.giveModeratorRights)}
     </Text>
   ) : undefined;
 
@@ -64,7 +64,7 @@ const AddCollaboratorsModal = ({
             closeModal();
           }}
           hasExceededSetSeats={hasExceededSetSeats}
-          seatType="collaborator"
+          seatType="moderator"
         />
       ) : (
         <Box display="flex" flexDirection="column" width="100%" p="32px">
@@ -76,7 +76,7 @@ const AddCollaboratorsModal = ({
             />
           </Text>
           <Box py="32px">
-            <SeatInfo seatType="collaborator" />
+            <SeatInfo seatType="moderator" />
           </Box>
           <Box
             display="flex"

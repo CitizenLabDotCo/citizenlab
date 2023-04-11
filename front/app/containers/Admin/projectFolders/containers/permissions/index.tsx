@@ -208,7 +208,7 @@ const FolderPermissions = () => {
       </Box>
       {!hasSeatBasedBillingEnabled && (
         <Box width="516px" py="32px">
-          <SeatInfo seatType="collaborator" />
+          <SeatInfo seatType="moderator" />
         </Box>
       )}
     </Box>

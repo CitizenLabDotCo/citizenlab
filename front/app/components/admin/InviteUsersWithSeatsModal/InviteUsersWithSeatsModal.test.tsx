@@ -86,7 +86,7 @@ describe('InviteUsersWithSeatsModal', () => {
         showModal
         closeModal={closeModal}
         noOfSeatsToAdd={2}
-        seatType="collaborator"
+        seatType="moderator"
       />
     );
 
@@ -112,7 +112,7 @@ describe('InviteUsersWithSeatsModal', () => {
         showModal
         closeModal={closeModal}
         noOfSeatsToAdd={2}
-        seatType="collaborator"
+        seatType="moderator"
       />
     );
 
