@@ -81,13 +81,13 @@ export const AddFieldScreen = ({
     }));
   };
 
-  const onFormSubmit = async (formValues: FormValues) => {
+  const onFormSubmit = async (formValues: Partial<FormValues>) => {
     try {
       const newField = await addCustomFieldForUsers({
         ...formValues,
       });
       if (newField.data.id) {
-        formValues.question_options.forEach(async (option) => {
+        formValues?.question_options?.forEach(async (option) => {
           await addUserCustomFieldOption(newField.data.id, {
             title_multiloc: option.title_multiloc,
           });
@@ -178,7 +178,8 @@ export const AddFieldScreen = ({
               )}
               <Box display="flex">
                 <Button
-                  type="submit"
+                  type="button"
+                  onClick={() => onFormSubmit(methods.getValues())}
                   processing={methods.formState.isSubmitting}
                 >
                   {formatMessage(messages.createAQuestion)}

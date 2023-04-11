@@ -40,8 +40,9 @@ export const FieldSelectionModal = ({
       close={() => {
         setShowSelectionModal(false);
       }}
+      niceHeader={true}
       header={
-        <Title variant="h3" color="primary">
+        <Title ml="20px" variant="h3" color="primary">
           <FormattedMessage
             {...(showAddFieldPage
               ? messages.createAQuestion
