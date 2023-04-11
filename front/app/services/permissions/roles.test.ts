@@ -40,13 +40,6 @@ describe('isRegularUser', () => {
     expect(isRegularUser(projectModerator)).toBe(false);
   });
 
-  it('returns false when a user is a project moderator', () => {
-    const projectModerator = makeUser({
-      highest_role: 'project_moderator',
-    });
-    expect(isRegularUser(projectModerator)).toBe(false);
-  });
-
   it('returns true when a user is not a moderator', () => {
     const regularUser = makeUser({
       highest_role: 'user',
