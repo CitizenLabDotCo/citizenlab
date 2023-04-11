@@ -26,7 +26,7 @@ import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 const AddCollaboratorsModal = lazy(
-  () => import('components/admin/AddCollaboratorsModal')
+  () => import('components/admin/AddModeratorsModal')
 );
 import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
 import SeatInfo from 'components/SeatInfo';

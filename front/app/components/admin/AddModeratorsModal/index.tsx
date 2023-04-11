@@ -24,7 +24,7 @@ interface Props {
   addModerators: () => void;
 }
 
-const AddCollaboratorsModal = ({
+const AddModeratorsModal = ({
   showModal,
   closeModal,
   addModerators,
@@ -110,4 +110,4 @@ const AddCollaboratorsModal = ({
   );
 };
 
-export default AddCollaboratorsModal;
+export default AddModeratorsModal;
