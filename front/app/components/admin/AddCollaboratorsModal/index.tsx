@@ -81,7 +81,7 @@ const AddCollaboratorsModal = ({
           <Text color="textPrimary" fontSize="m" my="0px">
             <FormattedMessage
               {...(hasReachedOrIsOverPlanSeatLimit
-                ? messages.hasReachedOrIsOverPlanSeatLimit
+                ? messages.hasReachedOrIsOverLimit
                 : messages.confirmMessage)}
             />
           </Text>
