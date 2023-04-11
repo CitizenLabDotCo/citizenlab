@@ -16,7 +16,7 @@ import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
 import { usePermission } from 'services/permissions';
 
 // events
-import { deleteCommentModalClosed, commentDeleted } from './events';
+import { deleteCommentModalClosed } from './events';
 
 // Styling
 import styled from 'styled-components';
@@ -157,7 +157,7 @@ const CommentsMoreActions = ({
       {
         onSuccess: () => {
           deleteCommentModalClosed();
-          commentDeleted();
+          closeDeleteModal();
         },
       }
     );

@@ -95,7 +95,7 @@ const CommentsSection = memo<Props>(({ postId, postType, className }) => {
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
-  const [sortOrder, setSortOrder] = useState<CommentsSort>('new');
+  const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
   const {
     data: comments,
     isFetchingNextPage,
