@@ -54,6 +54,7 @@ export interface AuthenticationRequirements {
     special: {
       password: RequirementStatus;
       confirmation: RequirementStatus;
+      verification: RequirementStatus;
     };
   };
 }
