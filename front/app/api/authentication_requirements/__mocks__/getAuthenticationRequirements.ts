@@ -16,6 +16,7 @@ export const initiativeResponse: AuthenticationRequirementsResponse = {
           special: {
             password: 'require',
             confirmation: 'require',
+            verification: 'dont_ask',
           },
         },
       },
@@ -39,6 +40,7 @@ export const projectResponse: AuthenticationRequirementsResponse = {
           special: {
             password: 'dont_ask',
             confirmation: 'require',
+            verification: 'dont_ask',
           },
         },
       },
@@ -62,6 +64,7 @@ export const phaseResponse: AuthenticationRequirementsResponse = {
           special: {
             password: 'satisfied',
             confirmation: 'require',
+            verification: 'dont_ask',
           },
         },
       },
@@ -85,6 +88,7 @@ export const ideaResponse: AuthenticationRequirementsResponse = {
           special: {
             password: 'satisfied',
             confirmation: 'satisfied',
+            verification: 'dont_ask',
           },
         },
       },
