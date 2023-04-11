@@ -63,6 +63,10 @@ const EmailChange = () => {
     resolver: yupResolver(schema),
   });
 
+  if (isNilOrError(authUser)) {
+    return null;
+  }
+
   return (
     <Box>
       <FormProvider {...methods}>
@@ -83,7 +87,11 @@ const EmailChange = () => {
               }}
             />
           </Box>
-          <Title>{formatMessage(messages.titleChangeEmail)}</Title>
+          <Title>
+            {authUser.attributes.no_password
+              ? formatMessage(messages.titleAddEmail)
+              : formatMessage(messages.titleChangeEmail)}
+          </Title>
           <Form>
             <LabelContainer>
               <FormLabel

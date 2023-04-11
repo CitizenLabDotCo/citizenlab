@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.ChangeEmail.titleChangeEmail',
     defaultMessage: 'Change your email',
   },
+  titleAddEmail: {
+    id: 'app.containers.ChangeEmail.titleAddEmail',
+    defaultMessage: 'Add your email',
+  },
   submitButton: {
     id: 'app.containers.ChangeEmail.submitButton',
     defaultMessage: 'Submit',
