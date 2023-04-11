@@ -384,7 +384,8 @@ describe PermissionsService do
             },
             special: {
               password: 'dont_ask',
-              confirmation: 'require'
+              confirmation: 'require',
+              verification: 'dont_ask'
             }
           }
         })
@@ -409,7 +410,8 @@ describe PermissionsService do
             },
             special: {
               password: 'dont_ask',
-              confirmation: 'require'
+              confirmation: 'require',
+              verification: 'dont_ask'
             }
           }
         })
@@ -433,7 +435,8 @@ describe PermissionsService do
             },
             special: {
               password: 'dont_ask',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
@@ -457,7 +460,8 @@ describe PermissionsService do
             },
             special: {
               password: 'satisfied',
-              confirmation: 'require'
+              confirmation: 'require',
+              verification: 'dont_ask'
             }
           }
         })
@@ -480,7 +484,8 @@ describe PermissionsService do
             },
             special: {
               password: 'satisfied',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
@@ -505,7 +510,8 @@ describe PermissionsService do
             },
             special: {
               password: 'satisfied',
-              confirmation: 'require'
+              confirmation: 'require',
+              verification: 'dont_ask'
             }
           }
         })
@@ -529,7 +535,8 @@ describe PermissionsService do
             },
             special: {
               password: 'satisfied',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
