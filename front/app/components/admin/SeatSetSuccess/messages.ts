@@ -14,7 +14,7 @@ export default defineMessages({
     id: 'app.components.admin.seatSetSuccess.admin',
     defaultMessage: 'Admin',
   },
-  collaborator: {
+  moderator: {
     id: 'app.components.admin.seatSetSuccess.collaborator',
     defaultMessage: 'Collaborator',
   },
