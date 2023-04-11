@@ -37,6 +37,8 @@
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "Молимо {signUpLink} или {signInLink} за коментар.",
   "app.components.Comments.commentingInitiativeNotPermitted": "Коментарисање тренутно није омогућено.",
   "app.components.Comments.commentingMaybeNotPermitted": "Молимо {signInLink} да видите које радње се могу предузети.",
+  "app.components.Comments.deleteComment": "Delete",
+  "app.components.Comments.editComment": "Edit",
   "app.components.Comments.invisibleTitleComments": "Коментари",
   "app.components.Comments.mostUpvoted": "Највише гласано",
   "app.components.Comments.official": "званичник",
