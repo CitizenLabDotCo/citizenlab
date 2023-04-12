@@ -19,9 +19,6 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
-// hooks
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
-
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
@@ -34,6 +31,7 @@ import messages from './messages';
 
 // events
 import { openVerificationModal } from 'events/verificationModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -185,8 +183,6 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       }
     };
 
-    const openAuthModal = useOpenAuthModal();
-
     if (isNilOrError(project)) return null;
 
     const onClick = (event: React.MouseEvent) => {
@@ -252,7 +248,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
         if (context) {
           trackEventByName(tracks.signUpInModalOpened);
 
-          openAuthModal({
+          triggerAuthenticationFlow({
             flow,
             verification: shouldVerify,
             context,

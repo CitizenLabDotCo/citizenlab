@@ -9,7 +9,6 @@ import T from 'components/T';
 // hooks
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // services
 import { IdeaCommentingDisabledReason } from 'api/ideas/types';
@@ -20,6 +19,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // events
 import { openVerificationModal } from 'events/verificationModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 interface Props {
   projectId: string | null;
@@ -63,7 +63,6 @@ const CommentingDisabled = ({
 }: Props) => {
   const authUser = useAuthUser();
   const project = useProject({ projectId });
-  const openAuthModal = useOpenAuthModal();
 
   const onVerify = () => {
     const pcType = phaseId ? 'phase' : projectId ? 'project' : null;
@@ -88,7 +87,7 @@ const CommentingDisabled = ({
 
     if (!pcId || !pcType) return;
 
-    openAuthModal({
+    triggerAuthenticationFlow({
       flow,
       verification: commentingDisabledReason === 'not_verified',
       context: {
@@ -138,7 +137,7 @@ const CommentingDisabled = ({
             completeRegistrationLink: (
               <button
                 onClick={() => {
-                  openAuthModal();
+                  triggerAuthenticationFlow();
                 }}
               >
                 <FormattedMessage {...messages.completeRegistrationLinkText} />

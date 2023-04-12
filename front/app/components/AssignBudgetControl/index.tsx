@@ -14,7 +14,6 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'hooks/useBasket';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -27,6 +26,9 @@ import {
 } from 'utils/helperUtils';
 import streams from 'utils/streams';
 import { openVerificationModal } from 'events/verificationModal';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -199,8 +201,6 @@ const AssignBudgetControl = memo(
       }
     };
 
-    const openAuthModal = useOpenAuthModal();
-
     const handleAddRemoveButtonClick =
       (idea: IIdea, participationContextId: string) => (event?: FormEvent) => {
         event?.preventDefault();
@@ -231,10 +231,10 @@ const AssignBudgetControl = memo(
           isNilOrError(authUser) ||
           budgetingDisabledReason === 'not_signed_in'
         ) {
-          openAuthModal({ context, successAction });
+          triggerAuthenticationFlow({ context, successAction });
           // signed in but not active
         } else if (budgetingDisabledReason === 'not_active') {
-          openAuthModal({ context, successAction });
+          triggerAuthenticationFlow({ context, successAction });
           // if signed up & in
         } else if (!isNilOrError(authUser)) {
           if (budgetingDisabledReason === 'not_verified') {

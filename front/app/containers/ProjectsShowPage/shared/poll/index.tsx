@@ -13,7 +13,6 @@ import {
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // resources
 import GetPollQuestions, {
@@ -25,6 +24,9 @@ import FormCompleted from './FormCompleted';
 import PollForm from './PollForm';
 import Warning from 'components/UI/Warning';
 
+// styling
+import styled from 'styled-components';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -32,8 +34,7 @@ import { MessageDescriptor } from 'react-intl';
 
 // events
 import { openVerificationModal } from 'events/verificationModal';
-
-import styled from 'styled-components';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -84,7 +85,6 @@ const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
   const authUser = useAuthUser();
   const project = useProject({ projectId });
   const phase = usePhase(phaseId);
-  const openAuthModal = useOpenAuthModal();
 
   const onVerify = () => {
     const pcId = type === 'phase' ? phaseId : projectId;
@@ -110,7 +110,7 @@ const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
 
       if (!pcId || !pcType) return;
 
-      openAuthModal({
+      triggerAuthenticationFlow({
         flow,
         verification: takingPollDisabledReason === 'not_verified',
         context: {
@@ -170,7 +170,7 @@ const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
                     <button
                       id="e2e-complete-registration-link"
                       onClick={() => {
-                        openAuthModal();
+                        triggerAuthenticationFlow();
                       }}
                     >
                       <FormattedMessage

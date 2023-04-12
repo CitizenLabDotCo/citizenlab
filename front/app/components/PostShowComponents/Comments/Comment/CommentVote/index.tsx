@@ -14,13 +14,13 @@ import GetCommentVote, {
 
 // events
 import { openVerificationModal } from 'events/verificationModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'hooks/useAuthUser';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // utils
 import { upvote, removeVote } from './vote';
@@ -108,8 +108,6 @@ const CommentVote = ({
     }
   };
 
-  const openAuthModal = useOpenAuthModal();
-
   const post = postType === 'idea' ? idea?.data : initiative?.data;
 
   useEffect(() => {
@@ -168,13 +166,13 @@ const CommentVote = ({
       ) {
         openVerificationModal({ context });
       } else if (authUser === null) {
-        openAuthModal({
+        triggerAuthenticationFlow({
           verification: commentVotingDisabledReason === 'not_verified',
           context,
           successAction,
         });
       } else if (commentVotingDisabledReason === 'not_active') {
-        openAuthModal({ context, successAction });
+        triggerAuthenticationFlow({ context, successAction });
       }
     }
 
@@ -190,11 +188,15 @@ const CommentVote = ({
       } as const;
 
       if (authenticationRequirements === 'sign_in_up') {
-        openAuthModal({ context, successAction });
+        triggerAuthenticationFlow({ context, successAction });
       } else if (authenticationRequirements === 'complete_registration') {
-        openAuthModal({ context, successAction });
+        triggerAuthenticationFlow({ context, successAction });
       } else if (authenticationRequirements === 'sign_in_up_and_verify') {
-        openAuthModal({ verification: true, context, successAction });
+        triggerAuthenticationFlow({
+          verification: true,
+          context,
+          successAction,
+        });
       } else if (authenticationRequirements === 'verify') {
         openVerificationModal({ context });
       } else if (commentVotingPermissionInitiative?.enabled === true) {

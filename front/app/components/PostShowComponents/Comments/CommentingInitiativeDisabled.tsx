@@ -8,7 +8,6 @@ import Warning from 'components/UI/Warning';
 // hooks
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // i18n
 import messages from './messages';
@@ -16,6 +15,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // events
 import { openVerificationModal } from 'events/verificationModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 const calculateMessageDescriptor = (
   authUser: TAuthUser,
@@ -57,7 +57,6 @@ const CommentingInitiativesDisabled = () => {
   const commentingPermissions = useInitiativesPermissions(
     'commenting_initiative'
   );
-  const openAuthModal = useOpenAuthModal();
 
   const messageDescriptor = calculateMessageDescriptor(
     authUser,
@@ -77,7 +76,7 @@ const CommentingInitiativesDisabled = () => {
 
   const signUpIn = (flow: 'signin' | 'signup') => {
     if (isNilOrError(authUser)) {
-      openAuthModal({
+      triggerAuthenticationFlow({
         flow,
         verification:
           commentingPermissions?.authenticationRequirements ===
@@ -119,7 +118,7 @@ const CommentingInitiativesDisabled = () => {
             completeRegistrationLink: (
               <button
                 onClick={() => {
-                  openAuthModal();
+                  triggerAuthenticationFlow();
                 }}
               >
                 <FormattedMessage {...messages.completeRegistrationLinkText} />

@@ -5,7 +5,9 @@ import { ICauseData } from 'api/causes/types';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // components
 import Image from 'components/UI/Image';
@@ -190,8 +192,6 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
     }
   }, [cause, addVolunteer, deleteVolunteer]);
 
-  const openAuthModal = useOpenAuthModal();
-
   const successAction = {
     name: 'volunteer',
     params: { cause },
@@ -202,14 +202,16 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
       !isNilOrError(authUser) &&
       !authUser.attributes.registration_completed_at
     ) {
-      openAuthModal({ successAction });
+      triggerAuthenticationFlow({ successAction });
     } else {
       volunteer();
     }
   };
 
-  const signIn = () => openAuthModal({ flow: 'signin', successAction });
-  const signUp = () => openAuthModal({ flow: 'signup', successAction });
+  const signIn = () =>
+    triggerAuthenticationFlow({ flow: 'signin', successAction });
+  const signUp = () =>
+    triggerAuthenticationFlow({ flow: 'signup', successAction });
 
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;

@@ -12,12 +12,12 @@ import Custom from './Custom';
 
 // events
 import { openVerificationModal } from 'events/verificationModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // hooks
 import useAddInitiativeVote from 'api/initiative_votes/useAddInitiativeVote';
 import useDeleteInitiativeVote from 'api/initiative_votes/useDeleteInitiativeVote';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
 import useInitiativesPermissions, {
@@ -135,8 +135,6 @@ const VoteControl = ({
     }
   };
 
-  const openAuthModal = useOpenAuthModal();
-
   const { data: initiativeStatus } = useInitiativeStatus(
     initiative?.data.relationships.initiative_status?.data?.id
   );
@@ -160,7 +158,7 @@ const VoteControl = ({
         trackEventByName(
           'Sign up/in modal opened in response to clicking vote initiative'
         );
-        openAuthModal({
+        triggerAuthenticationFlow({
           flow: 'signup',
           verification: false,
           context,
@@ -171,7 +169,7 @@ const VoteControl = ({
         trackEventByName(
           'Sign up/in modal opened in response to clicking vote initiative'
         );
-        openAuthModal({
+        triggerAuthenticationFlow({
           flow: 'signup',
           verification: true,
           context,

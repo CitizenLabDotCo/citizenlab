@@ -23,7 +23,6 @@ import {
 import usePhase from 'hooks/usePhase';
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // i18n
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
@@ -31,6 +30,7 @@ import messages from './messages';
 
 // events
 import { openVerificationModal } from 'events/verificationModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // styling
 import styled from 'styled-components';
@@ -74,7 +74,6 @@ const Survey = ({
   const project = useProject({ projectId });
   const phase = usePhase(phaseId || null);
   const authUser = useAuthUser();
-  const openAuthModal = useOpenAuthModal();
 
   const onVerify = () => {
     const pcId = phaseId || projectId;
@@ -100,7 +99,7 @@ const Survey = ({
 
       if (!pcId || !pcType) return;
 
-      openAuthModal({
+      triggerAuthenticationFlow({
         flow,
         verification: takingSurveyDisabledReason === 'not_verified',
         context: {

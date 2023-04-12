@@ -12,7 +12,9 @@ import { isNumber } from 'lodash-es';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useAuthUser from 'hooks/useAuthUser';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
@@ -89,8 +91,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     [currentPhase, project, pathname]
   );
 
-  const openAuthModal = useOpenAuthModal();
-
   if (isNilOrError(project)) {
     return null;
   }
@@ -125,7 +125,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     };
 
     if (showSignIn) {
-      openAuthModal({
+      triggerAuthenticationFlow({
         flow: 'signup',
         verification: shouldVerify,
         context: {

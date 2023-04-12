@@ -8,8 +8,8 @@ import VoteButton from './VoteButton';
 import { IdeaVotingDisabledReason } from 'api/ideas/types';
 import { getLatestRelevantPhase } from 'services/phases';
 
-// hooks
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -135,8 +135,6 @@ const VoteControl = ({
     [authUser, addVote, deleteVote, ideaId, myVoteMode, voteId]
   );
 
-  const openAuthModal = useOpenAuthModal();
-
   if (!idea) return null;
 
   const ideaAttributes = idea.data.attributes;
@@ -261,7 +259,7 @@ const VoteControl = ({
       ) {
         openVerificationModal();
       } else if (isSignedIn && votingDisabledReason === 'not_active') {
-        openAuthModal({ context, successAction });
+        triggerAuthenticationFlow({ context, successAction });
       } else if (
         !isSignedIn &&
         (votingEnabled ||
@@ -270,7 +268,7 @@ const VoteControl = ({
           votingDisabledReason === 'not_permitted')
       ) {
         const verification = votingDisabledReason === 'not_verified';
-        openAuthModal({ verification, context, successAction });
+        triggerAuthenticationFlow({ verification, context, successAction });
       } else if (votingDisabledReason) {
         disabledVoteClick?.(votingDisabledReason);
       }

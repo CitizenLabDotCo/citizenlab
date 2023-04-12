@@ -6,10 +6,8 @@ import { get } from 'lodash-es';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// hooks
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
-
 // events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 import { commentReplyButtonClicked } from '../events';
 import { openVerificationModal } from 'events/verificationModal';
 
@@ -104,8 +102,6 @@ const CommentReplyButton = memo<Props>(
       authorSlug,
     ]);
 
-    const openAuthModal = useOpenAuthModal();
-
     const onReply = useCallback(() => {
       if (!isNilOrError(post)) {
         const successAction: SuccessAction = {
@@ -155,13 +151,13 @@ const CommentReplyButton = memo<Props>(
           ) {
             openVerificationModal({ context });
           } else if (!authUser) {
-            openAuthModal({
+            triggerAuthenticationFlow({
               verification: commentingDisabledReason === 'not_verified',
               context,
               successAction,
             });
           } else if (commentingDisabledReason === 'not_active') {
-            openAuthModal({ context, successAction });
+            triggerAuthenticationFlow({ context, successAction });
           }
         }
 
@@ -175,13 +171,17 @@ const CommentReplyButton = memo<Props>(
           } as const;
 
           if (authenticationRequirements === 'sign_in_up') {
-            openAuthModal({ context, successAction });
+            triggerAuthenticationFlow({ context, successAction });
           } else if (authenticationRequirements === 'sign_in_up_and_verify') {
-            openAuthModal({ verification: true, context, successAction });
+            triggerAuthenticationFlow({
+              verification: true,
+              context,
+              successAction,
+            });
           } else if (authenticationRequirements === 'verify') {
             openVerificationModal({ context });
           } else if (authenticationRequirements === 'complete_registration') {
-            openAuthModal({ context, successAction });
+            triggerAuthenticationFlow({ context, successAction });
           } else if (commentingPermissionInitiative?.enabled === true) {
             reply();
           }
@@ -193,7 +193,6 @@ const CommentReplyButton = memo<Props>(
       commentType,
       commentingPermissionInitiative,
       reply,
-      openAuthModal,
       commentId,
       parentCommentId,
       authorFirstName,
