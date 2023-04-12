@@ -12,8 +12,6 @@ export function triggerAuthenticationFlow(
     context: partialAuthenticationData?.context ?? GLOBAL_CONTEXT,
     successAction: partialAuthenticationData?.successAction,
     error: partialAuthenticationData?.error,
-    token: partialAuthenticationData?.token,
-    verification: !!partialAuthenticationData?.verification,
   };
 
   eventEmitter.emit(EVENT_NAME, authenticationData);

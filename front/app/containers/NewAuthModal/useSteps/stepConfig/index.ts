@@ -65,7 +65,7 @@ export const getStepConfig = (
         const signedIn = requirements.built_in.email === 'satisfied';
 
         if (isLightFlow) {
-          if (requirements.built_in.email === 'satisfied') {
+          if (signedIn) {
             setCurrentStep('light-flow:email-confirmation');
           } else {
             setCurrentStep('light-flow:email');
@@ -87,6 +87,16 @@ export const getStepConfig = (
 
         if (flow === 'signup') {
           if (signedIn) {
+            if (requirements.special.confirmation === 'require') {
+              setCurrentStep('sign-up:email-confirmation');
+              return;
+            }
+
+            if (requirements.special.verification === 'require') {
+              setCurrentStep('sign-up:verification');
+              return;
+            }
+
             if (askCustomFields(requirements.custom_fields)) {
               setCurrentStep('sign-up:custom-fields');
               return;
@@ -104,6 +114,7 @@ export const getStepConfig = (
 
     ...oldSignInFlow(
       getAuthenticationData,
+      getRequirements,
       setCurrentStep,
       setStatus,
       setError,

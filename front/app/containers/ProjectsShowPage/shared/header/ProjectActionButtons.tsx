@@ -127,7 +127,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     if (showSignIn) {
       triggerAuthenticationFlow({
         flow: 'signup',
-        verification: shouldVerify,
         context: {
           type: currentPhase ? 'phase' : 'project',
           id: currentPhase?.id ?? project.id,

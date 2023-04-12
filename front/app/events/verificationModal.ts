@@ -62,22 +62,10 @@ export enum VerificationModalEvents {
   close = 'closeVerificationModal',
 }
 
-interface IOpenVerificationModalParams {
-  context?: AuthenticationContext;
-  step?: TVerificationStep;
-  error?: IVerificationError | null;
-}
 export function isProjectContext(
   obj?: AuthenticationContext
 ): obj is ProjectContext {
   return (obj as ProjectContext)?.id !== undefined;
-}
-
-export function openVerificationModal(params?: IOpenVerificationModalParams) {
-  eventEmitter.emit<OpenVerificationModalData>(VerificationModalEvents.open, {
-    step: params?.step || 'method-selection',
-    context: params?.context || null,
-  });
 }
 
 export function closeVerificationModal() {

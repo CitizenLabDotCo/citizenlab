@@ -30,7 +30,6 @@ import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
 // events
-import { openVerificationModal } from 'events/verificationModal';
 import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // tracks
@@ -190,36 +189,14 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
 
       trackEventByName(tracks.postYourIdeaButtonClicked);
 
-      // if logged in but not complete user
-      if (authenticationRequirements === 'complete_registration') {
+      if (authenticationRequirements) {
         signUp();
-      }
-
-      // if not logged in
-      if (
-        authenticationRequirements === 'sign_in_up' ||
-        authenticationRequirements === 'sign_in_up_and_verify'
-      ) {
-        signUp();
-      }
-
-      // if logged in but not verified and verification required
-      if (authenticationRequirements === 'verify') {
-        verify();
+        return;
       }
 
       // if logegd in and posting allowed
       if (enabled === true) {
         redirectToIdeaForm();
-      }
-    };
-
-    const verify = (event?: React.MouseEvent) => {
-      event?.preventDefault();
-
-      if (context) {
-        trackEventByName(tracks.verificationModalOpened);
-        openVerificationModal({ context });
       }
     };
 
@@ -235,9 +212,6 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       (flow: 'signup' | 'signin') => (event?: React.MouseEvent) => {
         event?.preventDefault();
 
-        const shouldVerify =
-          authenticationRequirements === 'sign_in_up_and_verify';
-
         const successAction: SuccessAction = {
           name: 'redirectToIdeaForm',
           params: {
@@ -250,7 +224,6 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
 
           triggerAuthenticationFlow({
             flow,
-            verification: shouldVerify,
             context,
             successAction,
           });
@@ -258,7 +231,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       };
 
     const verificationLink = (
-      <button onClick={verify}>
+      <button onClick={signUp}>
         {formatMessage(messages.verificationLinkText)}
       </button>
     );

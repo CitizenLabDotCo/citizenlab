@@ -5,7 +5,6 @@ import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
-import { openVerificationModal } from 'events/verificationModal';
 
 import { trackEventByName } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
@@ -47,50 +46,27 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
     });
 
     if (initiativePermissions?.enabled) {
-      const context = {
-        type: 'initiative',
-        action: 'posting_initiative',
-      } as const;
+      if (initiativePermissions?.authenticationRequirements) {
+        const context = {
+          type: 'initiative',
+          action: 'posting_initiative',
+        } as const;
 
-      const successAction: SuccessAction = {
-        name: 'redirectToInitiativeForm',
-        params: { lat, lng },
-      };
+        const successAction: SuccessAction = {
+          name: 'redirectToInitiativeForm',
+          params: { lat, lng },
+        };
 
-      switch (initiativePermissions?.authenticationRequirements) {
-        case 'sign_in_up':
-          trackEventByName(
-            'Sign up/in modal opened in response to clicking new initiative'
-          );
-          triggerAuthenticationFlow({
-            flow: 'signup',
-            verification: false,
-            context,
-            successAction,
-          });
-          break;
-        case 'complete_registration':
-          triggerAuthenticationFlow({ context, successAction });
-          break;
-        case 'sign_in_up_and_verify':
-          trackEventByName(
-            'Sign up/in modal opened in response to clicking new initiative'
-          );
-          triggerAuthenticationFlow({
-            flow: 'signup',
-            verification: true,
-            context,
-            successAction,
-          });
-          break;
-        case 'verify':
-          trackEventByName(
-            'Verification modal opened in response to clicking new initiative'
-          );
-          openVerificationModal({ context });
-          break;
-        default:
-          redirectToInitiativeForm();
+        trackEventByName(
+          'Sign up/in modal opened in response to clicking new initiative'
+        );
+        triggerAuthenticationFlow({
+          flow: 'signup',
+          context,
+          successAction,
+        });
+      } else {
+        redirectToInitiativeForm();
       }
     }
   };

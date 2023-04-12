@@ -81,37 +81,57 @@ export const newLightFlow = (
 
     'light-flow:google-policies': {
       CLOSE: () => setCurrentStep('closed'),
-      ACCEPT_POLICIES: () => {
+      ACCEPT_POLICIES: async () => {
         setStatus('pending');
         const authenticationData = getAuthenticationData();
-        handleOnSSOClick('google', authenticationData);
+        const { requirements } = await getRequirements();
+        const verificationRequired =
+          requirements.special.verification === 'require';
+        handleOnSSOClick('google', authenticationData, verificationRequired);
       },
     },
 
     'light-flow:facebook-policies': {
       CLOSE: () => setCurrentStep('closed'),
-      ACCEPT_POLICIES: () => {
+      ACCEPT_POLICIES: async () => {
         setStatus('pending');
         const authenticationData = getAuthenticationData();
-        handleOnSSOClick('facebook', authenticationData);
+        const { requirements } = await getRequirements();
+        const verificationRequired =
+          requirements.special.verification === 'require';
+        handleOnSSOClick('facebook', authenticationData, verificationRequired);
       },
     },
 
     'light-flow:azure-ad-policies': {
       CLOSE: () => setCurrentStep('closed'),
-      ACCEPT_POLICIES: () => {
+      ACCEPT_POLICIES: async () => {
         setStatus('pending');
         const authenticationData = getAuthenticationData();
-        handleOnSSOClick('azureactivedirectory', authenticationData);
+        const { requirements } = await getRequirements();
+        const verificationRequired =
+          requirements.special.verification === 'require';
+        handleOnSSOClick(
+          'azureactivedirectory',
+          authenticationData,
+          verificationRequired
+        );
       },
     },
 
     'light-flow:france-connect-login': {
       CLOSE: () => setCurrentStep('closed'),
-      LOGIN: () => {
+      LOGIN: async () => {
         setStatus('pending');
         const authenticationData = getAuthenticationData();
-        handleOnSSOClick('franceconnect', authenticationData);
+        const { requirements } = await getRequirements();
+        const verificationRequired =
+          requirements.special.verification === 'require';
+        handleOnSSOClick(
+          'franceconnect',
+          authenticationData,
+          verificationRequired
+        );
       },
     },
 

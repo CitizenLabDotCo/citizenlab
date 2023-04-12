@@ -25,7 +25,6 @@ import {
   capitalizeParticipationContextType,
 } from 'utils/helperUtils';
 import streams from 'utils/streams';
-import { openVerificationModal } from 'events/verificationModal';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
@@ -95,6 +94,17 @@ interface Props {
   ideaId: string;
   className?: string;
 }
+
+const TRIGGER_AUTH_FLOW_REASONS = new Set([
+  'not_signed_in',
+  'not_active',
+  'not_verified',
+]);
+
+const isReasonToTriggerAuthFlow = (budgetingDisabledReason?: string | null) => {
+  if (!budgetingDisabledReason) return false;
+  return TRIGGER_AUTH_FLOW_REASONS.has(budgetingDisabledReason);
+};
 
 const AssignBudgetControl = memo(
   ({ view, ideaId, className, projectId }: Props) => {
@@ -207,6 +217,12 @@ const AssignBudgetControl = memo(
 
         const isBudgetingEnabled =
           idea.data.attributes.action_descriptor.budgeting?.enabled;
+
+        if (isBudgetingEnabled) {
+          assignBudget();
+          return;
+        }
+
         const budgetingDisabledReason =
           idea.data.attributes.action_descriptor.budgeting?.disabled_reason;
 
@@ -227,27 +243,12 @@ const AssignBudgetControl = memo(
         };
 
         if (
-          // not signed up/in
+          // if you're logged out, or you're logged in
+          // but you don't match requirements yet
           isNilOrError(authUser) ||
-          budgetingDisabledReason === 'not_signed_in'
+          isReasonToTriggerAuthFlow(budgetingDisabledReason)
         ) {
           triggerAuthenticationFlow({ context, successAction });
-          // signed in but not active
-        } else if (budgetingDisabledReason === 'not_active') {
-          triggerAuthenticationFlow({ context, successAction });
-          // if signed up & in
-        } else if (!isNilOrError(authUser)) {
-          if (budgetingDisabledReason === 'not_verified') {
-            openVerificationModal({
-              context: {
-                action: 'budgeting',
-                id: participationContextId,
-                type: participationContextType,
-              },
-            });
-          } else if (isBudgetingEnabled) {
-            assignBudget();
-          }
         }
       };
 

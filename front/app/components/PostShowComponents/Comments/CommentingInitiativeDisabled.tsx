@@ -14,7 +14,6 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // events
-import { openVerificationModal } from 'events/verificationModal';
 import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 const calculateMessageDescriptor = (
@@ -63,24 +62,10 @@ const CommentingInitiativesDisabled = () => {
     commentingPermissions
   );
 
-  const onVerify = () => {
-    if (commentingPermissions?.authenticationRequirements === 'verify') {
-      openVerificationModal({
-        context: {
-          action: 'commenting_initiative',
-          type: 'initiative',
-        },
-      });
-    }
-  };
-
   const signUpIn = (flow: 'signin' | 'signup') => {
     if (isNilOrError(authUser)) {
       triggerAuthenticationFlow({
         flow,
-        verification:
-          commentingPermissions?.authenticationRequirements ===
-          'sign_in_up_and_verify',
         context: {
           action: 'commenting_initiative',
           type: 'initiative',
@@ -125,7 +110,7 @@ const CommentingInitiativesDisabled = () => {
               </button>
             ),
             verifyIdentityLink: (
-              <button onClick={onVerify}>
+              <button onClick={signUp}>
                 <FormattedMessage {...messages.verifyIdentityLinkText} />
               </button>
             ),

@@ -140,7 +140,7 @@ class PasswordSignup extends PureComponent<
   constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
-      token: props.metaData.token,
+      token: undefined,
       firstName: null,
       lastName: null,
       emailOrPhoneNumber: null,
@@ -168,7 +168,7 @@ class PasswordSignup extends PureComponent<
   componentDidMount() {
     trackEventByName(tracks.signUpEmailPasswordStepEntered);
 
-    const { metaData } = this.props;
+    const { metaData } = this.props as any;
 
     this.setState({ token: metaData?.token });
 
@@ -558,7 +558,7 @@ class PasswordSignup extends PureComponent<
             onSubmit={this.handleOnSubmit(isPhoneSignupEnabled)}
             noValidate={true}
           >
-            {isInvitation && !this.props.metaData.token && (
+            {isInvitation && (
               <FormElement id="e2e-token-container">
                 <FormLabel labelMessage={messages.tokenLabel} htmlFor="token" />
                 <Input
@@ -567,9 +567,7 @@ class PasswordSignup extends PureComponent<
                   value={token}
                   error={invitationRedeemError}
                   onChange={this.handleTokenOnChange}
-                  autoFocus={
-                    !!(isDesktop && isInvitation && !this.props.metaData.token)
-                  }
+                  autoFocus={!!(isDesktop && isInvitation)}
                 />
               </FormElement>
             )}
@@ -583,11 +581,7 @@ class PasswordSignup extends PureComponent<
                 error={firstNameError}
                 onChange={this.handleFirstNameOnChange}
                 autocomplete="given-name"
-                autoFocus={
-                  isDesktop &&
-                  (!isInvitation ||
-                    !!(isInvitation && this.props.metaData.token))
-                }
+                autoFocus={isDesktop && (!isInvitation || !!isInvitation)}
                 setRef={this.handleFirstNameInputSetRef}
               />
               <Error

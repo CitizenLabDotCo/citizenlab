@@ -18,7 +18,6 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // events
-import { openVerificationModal } from 'events/verificationModal';
 import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 interface Props {
@@ -64,22 +63,6 @@ const CommentingDisabled = ({
   const authUser = useAuthUser();
   const project = useProject({ projectId });
 
-  const onVerify = () => {
-    const pcType = phaseId ? 'phase' : projectId ? 'project' : null;
-    const pcId =
-      pcType === 'phase' ? phaseId : pcType === 'project' ? projectId : null;
-
-    if (pcId && pcType && commentingDisabledReason === 'not_verified') {
-      openVerificationModal({
-        context: {
-          action: 'commenting_idea',
-          id: pcId,
-          type: pcType,
-        },
-      });
-    }
-  };
-
   const signUpIn = (flow: 'signin' | 'signup') => {
     const pcType = phaseId ? 'phase' : projectId ? 'project' : null;
     const pcId =
@@ -89,7 +72,6 @@ const CommentingDisabled = ({
 
     triggerAuthenticationFlow({
       flow,
-      verification: commentingDisabledReason === 'not_verified',
       context: {
         action: 'commenting_idea',
         id: pcId,
@@ -144,7 +126,7 @@ const CommentingDisabled = ({
               </button>
             ),
             verifyIdentityLink: (
-              <button onClick={onVerify}>
+              <button onClick={signUp}>
                 <FormattedMessage {...messages.verifyIdentityLinkText} />
               </button>
             ),

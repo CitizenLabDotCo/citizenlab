@@ -7,7 +7,7 @@ import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
-import { openVerificationModal } from 'events/verificationModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 import { colors } from 'utils/styleUtils';
 import OnboardingStep from './OnboardingStep';
 import SkipButton from './SkipButton';
@@ -40,7 +40,7 @@ const VerificationOnboardingStep = ({
   const { formatMessage } = useIntl();
 
   const onAccept = () => {
-    openVerificationModal();
+    triggerAuthenticationFlow();
   };
 
   if (!isNilOrError(authUser)) {

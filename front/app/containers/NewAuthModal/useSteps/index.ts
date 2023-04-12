@@ -118,14 +118,13 @@ export default function useSteps() {
 
   useEffect(() => {
     if (initialized) return;
-    if (currentStep !== 'closed') return;
     initialized = true;
+    if (currentStep !== 'closed') return;
 
     if (pathname.endsWith('/invite')) {
       authenticationDataRef.current = {
         flow: 'signup',
         context: GLOBAL_CONTEXT,
-        verification: false,
       };
 
       transition(currentStep, 'START_INVITE_FLOW')(search);

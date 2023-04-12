@@ -1,6 +1,5 @@
 import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { openVerificationModal } from 'events/verificationModal';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -11,6 +10,9 @@ import { FormSection } from 'components/UI/FormComponents';
 import Button from 'components/UI/Button';
 import { Icon } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -113,7 +115,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
   const authUser = useAuthUser();
 
   const onVerify = useCallback(() => {
-    openVerificationModal();
+    triggerAuthenticationFlow();
   }, []);
 
   if (isNilOrError(authUser)) return null;

@@ -33,7 +33,6 @@ import messages from './messages';
 import { MessageDescriptor } from 'react-intl';
 
 // events
-import { openVerificationModal } from 'events/verificationModal';
 import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 const Container = styled.div`
@@ -86,40 +85,20 @@ const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
   const project = useProject({ projectId });
   const phase = usePhase(phaseId);
 
-  const onVerify = () => {
-    const pcId = type === 'phase' ? phaseId : projectId;
-    const pcType = type;
-
-    if (pcId && pcType) {
-      openVerificationModal({
-        context: {
-          action: 'taking_poll',
-          id: pcId,
-          type: pcType,
-        },
-      });
-    }
-  };
-
   const signUpIn = (flow: 'signin' | 'signup') => {
-    if (!isNilOrError(project)) {
-      const pcType = phaseId ? 'phase' : 'project';
-      const pcId = phaseId ? phaseId : projectId;
-      const takingPollDisabledReason =
-        project.attributes?.action_descriptor?.taking_poll?.disabled_reason;
+    const pcType = phaseId ? 'phase' : 'project';
+    const pcId = phaseId ? phaseId : projectId;
 
-      if (!pcId || !pcType) return;
+    if (!pcId || !pcType) return;
 
-      triggerAuthenticationFlow({
-        flow,
-        verification: takingPollDisabledReason === 'not_verified',
-        context: {
-          action: 'taking_poll',
-          id: pcId,
-          type: pcType,
-        },
-      });
-    }
+    triggerAuthenticationFlow({
+      flow,
+      context: {
+        action: 'taking_poll',
+        id: pcId,
+        type: pcType,
+      },
+    });
   };
 
   const signIn = () => {
@@ -162,7 +141,7 @@ const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
                 {...message}
                 values={{
                   verificationLink: (
-                    <button onClick={onVerify}>
+                    <button onClick={signUp}>
                       <FormattedMessage {...messages.verificationLinkText} />
                     </button>
                   ),

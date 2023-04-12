@@ -96,7 +96,6 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
     if (showSignIn) {
       triggerAuthenticationFlow({
         flow: 'signup',
-        verification: shouldVerify,
         context: {
           type: currentPhase ? 'phase' : 'project',
           action: 'taking_survey',

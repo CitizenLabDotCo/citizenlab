@@ -29,7 +29,6 @@ import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 // events
-import { openVerificationModal } from 'events/verificationModal';
 import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // styling
@@ -75,33 +74,15 @@ const Survey = ({
   const phase = usePhase(phaseId || null);
   const authUser = useAuthUser();
 
-  const onVerify = () => {
-    const pcId = phaseId || projectId;
-    const pcType = phaseId ? 'phase' : 'project';
-
-    if (pcId && pcType) {
-      openVerificationModal({
-        context: {
-          action: 'taking_survey',
-          id: pcId,
-          type: pcType,
-        },
-      });
-    }
-  };
-
   const signUpIn = (flow: 'signin' | 'signup') => {
     if (!isNilOrError(project)) {
       const pcType = phaseId ? 'phase' : 'project';
       const pcId = phaseId ?? projectId;
-      const takingSurveyDisabledReason =
-        project.attributes?.action_descriptor?.taking_survey?.disabled_reason;
 
       if (!pcId || !pcType) return;
 
       triggerAuthenticationFlow({
         flow,
-        verification: takingSurveyDisabledReason === 'not_verified',
         context: {
           action: 'taking_survey',
           id: pcId,
@@ -199,7 +180,7 @@ const Survey = ({
               : messages.surveyDisabledNotPossible)}
             values={{
               verificationLink: (
-                <button onClick={onVerify}>
+                <button onClick={signUp}>
                   <FormattedMessage {...messages.verificationLinkText} />
                 </button>
               ),

@@ -38,8 +38,6 @@ export interface AuthenticationData {
 
   // TODO clean this up
   error?: { code: SignUpInError };
-  token?: string;
-  verification: boolean; // TODO remove when new requirements attribute is available
 }
 
 export type SSOProviderWithoutVienna = Exclude<SSOProvider, 'id_vienna_saml'>;

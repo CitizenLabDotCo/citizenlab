@@ -247,7 +247,7 @@ const SignUp = ({
     if (selectedAuthProvider === 'email') {
       setEmailSignUpSelected(true);
     } else {
-      handleOnSSOClick(selectedAuthProvider, metaData);
+      handleOnSSOClick(selectedAuthProvider, metaData, false);
     }
   };
 

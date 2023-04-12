@@ -40,14 +40,21 @@ export const oldSignUpFlow = (
       SWITCH_FLOW: () => {
         setCurrentStep('sign-in:auth-providers');
       },
-      SELECT_AUTH_PROVIDER: (authProvider: AuthProvider) => {
+      SELECT_AUTH_PROVIDER: async (authProvider: AuthProvider) => {
         if (authProvider === 'email') {
           setCurrentStep('sign-up:email-password');
           return;
         }
 
         setStatus('pending');
-        handleOnSSOClick(authProvider, getAuthenticationData());
+        const { requirements } = await getRequirements();
+        const verificationRequired =
+          requirements.special.verification === 'require';
+        handleOnSSOClick(
+          authProvider,
+          getAuthenticationData(),
+          verificationRequired
+        );
       },
     },
 

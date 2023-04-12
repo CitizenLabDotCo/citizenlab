@@ -13,7 +13,6 @@ import GetCommentVote, {
 } from 'resources/GetCommentVote';
 
 // events
-import { openVerificationModal } from 'events/verificationModal';
 import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // hooks
@@ -27,6 +26,7 @@ import { upvote, removeVote } from './vote';
 
 // typings
 import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
+import { IdeaCommentingDisabledReason } from 'api/ideas/types';
 
 interface InputProps {
   postId: string;
@@ -42,6 +42,20 @@ interface DataProps {
 }
 
 interface Props extends InputProps, DataProps {}
+
+const TRIGGER_AUTH_FLOW_REASONS = new Set([
+  'not_signed_in',
+  'not_active',
+  'not_verified',
+  'not_permitted',
+]);
+
+const isReasonToTriggerAuthFlow = (
+  commentVotingDisabledReason?: string | null
+) => {
+  if (!commentVotingDisabledReason) return false;
+  return TRIGGER_AUTH_FLOW_REASONS.has(commentVotingDisabledReason);
+};
 
 const CommentVote = ({
   comment,
@@ -144,10 +158,7 @@ const CommentVote = ({
       const commentVotingDisabledReason = get(
         post,
         'attributes.action_descriptor.comment_voting_idea.disabled_reason'
-      );
-
-      const authUserIsVerified =
-        !isNilOrError(authUser) && authUser.attributes.verified;
+      ) as IdeaCommentingDisabledReason | undefined | null;
 
       // Wondering why 'commenting_idea' and not 'comment_voting_idea'?
       // See app/api/ideas/types.ts
@@ -159,20 +170,11 @@ const CommentVote = ({
 
       if (!isNilOrError(authUser) && !commentVotingDisabledReason) {
         vote();
-      } else if (
-        !isNilOrError(authUser) &&
-        !authUserIsVerified &&
-        commentVotingDisabledReason === 'not_verified'
-      ) {
-        openVerificationModal({ context });
-      } else if (authUser === null) {
+      } else if (isReasonToTriggerAuthFlow(commentVotingDisabledReason)) {
         triggerAuthenticationFlow({
-          verification: commentVotingDisabledReason === 'not_verified',
           context,
           successAction,
         });
-      } else if (commentVotingDisabledReason === 'not_active') {
-        triggerAuthenticationFlow({ context, successAction });
       }
     }
 
@@ -180,26 +182,19 @@ const CommentVote = ({
       const authenticationRequirements =
         commentVotingPermissionInitiative?.authenticationRequirements;
 
-      // Wondering why 'commenting_initiative' and not 'comment_voting_initiative'?
-      // See app/api/initiative_action_descriptors/types.ts
-      const context = {
-        action: 'commenting_initiative',
-        type: 'initiative',
-      } as const;
+      if (authenticationRequirements) {
+        // Wondering why 'commenting_initiative' and not 'comment_voting_initiative'?
+        // See app/api/initiative_action_descriptors/types.ts
+        const context = {
+          action: 'commenting_initiative',
+          type: 'initiative',
+        } as const;
 
-      if (authenticationRequirements === 'sign_in_up') {
-        triggerAuthenticationFlow({ context, successAction });
-      } else if (authenticationRequirements === 'complete_registration') {
-        triggerAuthenticationFlow({ context, successAction });
-      } else if (authenticationRequirements === 'sign_in_up_and_verify') {
         triggerAuthenticationFlow({
-          verification: true,
           context,
           successAction,
         });
-      } else if (authenticationRequirements === 'verify') {
-        openVerificationModal({ context });
-      } else if (commentVotingPermissionInitiative?.enabled === true) {
+      } else {
         vote();
       }
     }
