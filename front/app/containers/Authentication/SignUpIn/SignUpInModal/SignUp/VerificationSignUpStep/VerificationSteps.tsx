@@ -11,7 +11,6 @@ import useVerificationMethods from 'hooks/useVerificationMethods';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 // typings
 import { TVerificationMethod } from 'services/verificationMethods';
@@ -28,11 +27,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding-bottom: 30px;
-
-  ${media.phone`
-    padding-bottom: 20px;
-  `}
 `;
 
 export interface Props {

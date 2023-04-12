@@ -33,7 +33,6 @@ const Container = styled.div`
 
 const Content = styled.div`
   display: flex;
-  margin-bottom: 10px;
 
   &.inModal {
     justify-content: center;
@@ -97,12 +96,12 @@ const ButtonsContainer = styled.div`
   align-items: stretch;
 
   &.inModal {
-    padding: 30px;
+    padding: 28px;
     background: ${colors.background};
     border-radius: ${(props) => props.theme.borderRadius};
 
     ${media.phone`
-      padding: 15px;
+      padding: 14px;
     `}
 
     &.withoutContext {
