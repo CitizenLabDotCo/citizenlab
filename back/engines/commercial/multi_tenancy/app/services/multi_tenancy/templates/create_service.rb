@@ -1,0 +1,103 @@
+# frozen_string_literal: true
+
+module MultiTenancy
+  module Templates
+    class CreateService
+      attr_reader :template_bucket, :tenant_bucket, :s3_client
+
+      # @param [String, nil] tenant_bucket Name of the bucket where the tenant uploads
+      #   are stored. Defaults to 'cl2-tenants-production-benelux'.
+      # @param [String, nil] template_bucket Name of the bucket where the templates will
+      #   be stored. Defaults to the value of the TEMPLATE_BUCKET environment variable.
+      # @param [Aws::S3::Client, nil] s3_client The S3 client to use.
+      def initialize(
+        tenant_bucket: 'cl2-tenants-production-benelux',
+        template_bucket: nil,
+        s3_client: nil
+      )
+        @template_bucket = template_bucket || ENV.fetch('TEMPLATE_BUCKET')
+        @tenant_bucket = tenant_bucket
+        @s3_client = s3_client || Aws::S3::Client.new(region: 'eu-central-1')
+      end
+
+      def create(tenant)
+        template_s3_prefix = template_name(tenant)
+        serialized_models = MultiTenancy::Templates::TenantSerializer.new(tenant).run
+
+        # Delete existing template if it exists. We do this as late as possible to avoid
+        # deleting the template if the previous steps fail (e.g. serialization).
+        delete_s3_objects(template_bucket, template_s3_prefix)
+
+        copy_s3_uploads(tenant.id, template_s3_prefix, models: serialized_models)
+        copy_to_s3(serialized_models.to_yaml, "#{template_s3_prefix}/models.yml")
+      end
+
+      private
+
+      def delete_s3_objects(bucket_name, prefix)
+        # 1000 is the maximum number of objects that can be deleted in a single request.
+        s3_utils.objects(bucket: bucket_name, prefix: prefix).each_slice(1000) do |objects|
+          s3_client.delete_objects(
+            bucket: bucket_name,
+            delete: {
+              objects: objects.map { |object| { key: object.key } },
+              quiet: true
+            })
+        end
+      end
+
+      # Copies the uploads (images, documents, etc.) of the tenant to the template
+      # bucket in the template "directory". It performs a copy from S3 to S3 directly
+      # without downloading the files.
+      #
+      # @param [String] tenant_id The ID of the tenant whose uploads will be copied.
+      # @param [String] template_prefix The prefix of the template "directory" in the
+      #   template bucket.
+      # @param [Hash, nil] models The serialized models of the tenant. If provided, only
+      #   files that are referenced in the models will be copied. Otherwise, all files
+      #   will be copied.
+      # @param [Integer] num_threads The number of threads to use to send copy requests
+      #   to S3.
+      def copy_s3_uploads(tenant_id, template_prefix, models: nil, num_threads: 20)
+        prefix = "uploads/#{tenant_id}"
+        dest_prefix = "#{template_prefix}/uploads"
+
+        s3_utils.copy_objects(
+          tenant_bucket, template_bucket, prefix, num_threads: num_threads
+        ) { |key| transform_key(key, dest_prefix, models: models) }
+      end
+
+      # @param [String] key The original key.
+      # @param [String] prefix The new key will be prefixed with this string.
+      # @param [Hash, nil] models The serialized models of the tenant.
+      def transform_key(key, prefix, models: nil)
+        # It is not necessary to copy the original images (= images before they are
+        # resized or optimized).
+        return if key.include?('/original/')
+
+        _uploads_namespace, _tenant_id, *class_parts, attribute_name, identifier, filename = key.split('/')
+
+        if models
+          # We only copy files that are referenced in serialized models.
+          model_class = class_parts.join('/').classify.constantize
+          return unless models.dig("models", model_class, identifier)
+        end
+
+        [prefix, *class_parts, attribute_name, identifier, filename].join('/')
+      end
+
+      def s3_utils
+        @s3_utils ||= Aws::S3::Utils.new(s3_client)
+      end
+
+      def template_name(tenant)
+        tenant.host
+      end
+
+      # Stores the content in the S3 template bucket.
+      def copy_to_s3(content, key)
+        s3_client.put_object(bucket: template_bucket, key: key, body: content)
+      end
+    end
+  end
+end
