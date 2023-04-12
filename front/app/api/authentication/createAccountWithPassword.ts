@@ -1,7 +1,6 @@
-import { IHttpMethod, Locale } from 'typings';
+import { Locale } from 'typings';
 import signIn from './signIn';
-import request from 'utils/request';
-import { API_PATH } from 'containers/App/constants';
+import fetcher from 'utils/cl-react-query/fetcher';
 
 interface Parameters {
   firstName: string;
@@ -30,18 +29,16 @@ export default async function createAccountWithPassword({
     last_name: lastName,
   };
 
-  const httpMethod: IHttpMethod = {
-    method: 'POST',
-  };
-
   // eslint-disable-next-line no-useless-catch
   try {
     const signUpEndpoint =
-      isInvitation === true
-        ? `${API_PATH}/invites/by_token/${token}/accept`
-        : `${API_PATH}/users`;
+      isInvitation === true ? `invites/by_token/${token}/accept` : `users`;
     const bodyData = { [token ? 'invite' : 'user']: innerBodyData };
-    await request(signUpEndpoint, bodyData, httpMethod, null);
+    await fetcher({
+      path: `/${signUpEndpoint}`,
+      body: bodyData,
+      action: 'post',
+    });
     const authenticatedUser = await signIn({ email, password });
     return authenticatedUser;
   } catch (error) {

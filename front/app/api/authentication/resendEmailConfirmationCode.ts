@@ -1,7 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
+import fetcher from 'utils/cl-react-query/fetcher';
 import streams from 'utils/streams';
-
-const resendCodeApiEndpoint = `${API_PATH}/user/resend_code`;
 
 export default async function resendEmailConfirmationCode(newEmail?: string) {
   const bodyData = newEmail
@@ -11,7 +10,11 @@ export default async function resendEmailConfirmationCode(newEmail?: string) {
     : null;
 
   try {
-    await streams.add(resendCodeApiEndpoint, bodyData);
+    await fetcher({
+      path: `/user/resend_code`,
+      body: bodyData,
+      action: 'post',
+    });
 
     if (bodyData?.new_email) {
       await streams.fetchAllWith({

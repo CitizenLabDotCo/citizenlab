@@ -1,6 +1,4 @@
-import { IHttpMethod } from 'typings';
-import request from 'utils/request';
-import { API_PATH } from 'containers/App/constants';
+import fetcher from 'utils/cl-react-query/fetcher';
 
 interface Parameters {
   password: string;
@@ -16,13 +14,11 @@ export default async function resetPassword({ password, token }: Parameters) {
         token,
       },
     };
-    const httpMethod: IHttpMethod = { method: 'POST' };
-    const response = await request(
-      `${API_PATH}/users/reset_password`,
-      bodyData,
-      httpMethod,
-      null
-    );
+    const response = await fetcher({
+      path: `/users/reset_password`,
+      body: bodyData,
+      action: 'post',
+    });
     return response;
   } catch (error) {
     throw error;
