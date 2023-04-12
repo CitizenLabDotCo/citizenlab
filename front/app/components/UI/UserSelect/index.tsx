@@ -57,7 +57,7 @@ const UserSelect = ({
 
   const handleChange = (option: UserOptionTypeBase, { action }) => {
     if (action === 'clear') {
-      onChange();
+      handleClear();
     } else if (action === 'select-option' && option.value !== 'loadMore') {
       onChange(option);
     } else if (action === 'select-option' && option.value === 'loadMore') {
@@ -75,6 +75,10 @@ const UserSelect = ({
 
   const handleLoadMore = () => {
     users.onLoadMore();
+  };
+
+  const handleClear = () => {
+    onChange();
   };
 
   const getOptionLabel = (option: UserOptionTypeBase) => {
@@ -126,6 +130,7 @@ const UserSelect = ({
         styles={selectStyles}
         onMenuScrollToBottom={handleMenuScrollToBottom}
         filterOption={() => true}
+        onMenuOpen={handleClear}
       />
     </Box>
   );
