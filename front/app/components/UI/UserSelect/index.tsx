@@ -57,7 +57,7 @@ const UserSelect = ({
 
   const handleChange = (option: UserOptionTypeBase, { action }) => {
     if (action === 'clear') {
-      handleClear();
+      onChange();
     } else if (action === 'select-option' && option.value !== 'loadMore') {
       onChange(option);
     } else if (action === 'select-option' && option.value === 'loadMore') {
@@ -100,9 +100,6 @@ const UserSelect = ({
     return null;
   };
 
-  const handleClear = () => {
-    onChange();
-  };
 
   const getOptionId = (option: UserOptionTypeBase) => option.id;
 
