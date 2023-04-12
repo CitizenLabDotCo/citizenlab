@@ -134,7 +134,13 @@ const ChangeSeatModal = ({
           seatType="admin"
         />
       ) : (
-        <Box display="flex" flexDirection="column" width="100%" p="32px">
+        <Box
+          display="flex"
+          flexDirection="column"
+          width="100%"
+          p="32px"
+          data-cy="e2e-confirm-change-seat-body"
+        >
           <Box pb="32px">
             <Text color="textPrimary" fontSize="m" my="0px">
               <FormattedMessage
@@ -165,6 +171,7 @@ const ChangeSeatModal = ({
                   closeModal();
                 }
               }}
+              id="e2e-confirm-change-seat-button"
             >
               {formatMessage(buttonText)}
             </Button>

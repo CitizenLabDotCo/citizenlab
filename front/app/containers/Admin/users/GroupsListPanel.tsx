@@ -21,6 +21,7 @@ import events, { MembershipAdd } from './events';
 // Components
 import Button from 'components/UI/Button';
 import T from 'components/T';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -214,12 +215,14 @@ export const GroupsListPanel = ({
         <GroupName>
           <FormattedMessage {...messages.adminsAndManagers} />
         </GroupName>
-        {usercount.administrators_count !== null &&
-          usercount.managers_count !== null && (
-            <MembersCount>
-              {usercount.administrators_count + usercount.managers_count}
-            </MembersCount>
-          )}
+        <Box data-cy="e2e-admin-and-moderator-count">
+          {usercount.administrators_count !== null &&
+            usercount.managers_count !== null && (
+              <MembersCount>
+                {usercount.administrators_count + usercount.managers_count}
+              </MembersCount>
+            )}
+        </Box>
       </MenuLink>
       {isUserBlockingEnabled && (
         <MenuLink
