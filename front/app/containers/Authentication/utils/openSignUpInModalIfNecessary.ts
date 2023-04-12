@@ -11,7 +11,7 @@ import { parse } from 'qs';
 // typings
 import { SSOParams } from 'services/singleSignOn';
 import { TAuthUser } from 'hooks/useAuthUser';
-import { AuthenticationContext } from 'api/authentication_requirements/types';
+import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 
 export default function openSignUpInModalIfNecessary(
   authUser: TAuthUser,

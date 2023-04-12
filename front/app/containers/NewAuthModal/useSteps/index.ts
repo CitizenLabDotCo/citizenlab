@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 
 // api
-import getAuthenticationRequirements from 'api/authentication_requirements/getAuthenticationRequirements';
+import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';

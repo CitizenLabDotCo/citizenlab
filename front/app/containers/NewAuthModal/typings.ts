@@ -2,7 +2,7 @@ import { getStepConfig } from './useSteps/stepConfig';
 import {
   AuthenticationRequirements,
   AuthenticationContext,
-} from 'api/authentication_requirements/types';
+} from 'api/authentication/authentication_requirements/types';
 import { SSOProvider } from 'services/singleSignOn';
 import { SuccessAction } from './SuccessActions/actions';
 

@@ -29,7 +29,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 // typings
 import { TVerificationMethod } from 'services/verificationMethods';
 import Outlet from 'components/Outlet';
-import { AuthenticationContext } from 'api/authentication_requirements/types';
+import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 
 const Container = styled.div`
   display: flex;

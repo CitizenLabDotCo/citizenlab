@@ -4,6 +4,17 @@ import streams from 'utils/streams';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { IUser } from 'services/users';
+import { CreateEmailOnlyAccountProperties } from './types';
+
+const fetchCreateEmailOnlyAccount = (
+  requestBody: CreateEmailOnlyAccountProperties
+) => {
+  return fetcher<IUser>({
+    path: `/users`,
+    action: 'post',
+    body: requestBody,
+  });
+};
 
 const emailIsTaken = async (response: Response) => {
   const json = await response.json();
@@ -19,13 +30,11 @@ export default async function createEmailOnlyAccount({
   email,
   locale,
 }: Parameters) {
-  const response = await fetcher<IUser>({
-    path: `/users`,
-    action: 'post',
-    body: {
-      user: { email, locale },
-    },
-  });
+  const bodyData = {
+    user: { email, locale },
+  };
+
+  const response = await fetchCreateEmailOnlyAccount(bodyData);
 
   if (response.data) {
     await getAndSetToken({ email });
