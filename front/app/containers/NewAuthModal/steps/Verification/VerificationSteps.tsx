@@ -39,9 +39,7 @@ export interface Props {
   context: AuthenticationContext | null; // TODO change to pass in additionnal rules info
   initialActiveStep: TVerificationStep;
   inModal: boolean;
-  skippable?: boolean;
   onCompleted?: () => void;
-  onSkipped?: () => void;
   onError?: () => void;
   className?: string;
   error?: IVerificationError | null | undefined;
@@ -53,9 +51,7 @@ const VerificationSteps = memo<Props>(
     context,
     initialActiveStep,
     inModal,
-    skippable,
     onCompleted,
-    onSkipped,
     onError,
     error,
   }) => {
@@ -102,10 +98,6 @@ const VerificationSteps = memo<Props>(
       goToSuccessStep();
     }, [goToSuccessStep]);
 
-    const onVerificationSkipped = useCallback(() => {
-      onSkipped?.();
-    }, [onSkipped]);
-
     if (!isNilOrError(verificationMethods)) {
       return (
         <Container
@@ -116,8 +108,6 @@ const VerificationSteps = memo<Props>(
             <VerificationMethods
               context={context}
               inModal={inModal}
-              skippable={skippable}
-              onSkipped={onVerificationSkipped}
               onMethodSelected={onMethodSelected}
             />
           )}

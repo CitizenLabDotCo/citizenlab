@@ -1,10 +1,9 @@
-import React, { memo, useCallback, Fragment } from 'react';
+import React, { memo, Fragment } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Spinner } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
-import Button from 'components/UI/Button';
 import { Subtitle } from 'containers/NewAuthModal/steps/AuthProviders/styles';
 import Or from 'components/UI/Or';
 import Centerer from 'components/UI/Centerer';
@@ -112,16 +111,8 @@ const ButtonsContainer = styled.div`
   }
 `;
 
-const SkipButtonContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
-`;
-
 interface Props {
   context: AuthenticationContext | null;
-  skippable?: boolean;
   inModal: boolean;
   onMethodSelected: (selectedMethod: TVerificationMethod) => void;
   onSkipped?: () => void;
@@ -129,7 +120,7 @@ interface Props {
 }
 
 const VerificationMethods = memo<Props>(
-  ({ context, skippable, inModal, onMethodSelected, onSkipped, className }) => {
+  ({ context, inModal, onMethodSelected, className }) => {
     const participationConditions = useParticipationConditions(context);
     const verificationMethods = useVerificationMethods();
 
@@ -140,10 +131,6 @@ const VerificationMethods = memo<Props>(
     const handleOnMethodSelected = (method: TVerificationMethod) => {
       onMethodSelected(method);
     };
-
-    const onSkipButtonClicked = useCallback(() => {
-      onSkipped?.();
-    }, [onSkipped]);
 
     if (
       verificationMethods === undefined ||
@@ -208,18 +195,6 @@ const VerificationMethods = memo<Props>(
               />
             </ButtonsContainer>
           </Content>
-
-          {skippable && (
-            <SkipButtonContainer>
-              <Button
-                buttonStyle="text"
-                padding="0px"
-                onClick={onSkipButtonClicked}
-              >
-                <FormattedMessage {...messages.skipThisStep} />
-              </Button>
-            </SkipButtonContainer>
-          )}
         </Container>
       );
     }
