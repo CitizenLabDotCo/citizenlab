@@ -5,12 +5,16 @@ import tracks from './tracks';
 import { AuthenticationData } from 'containers/NewAuthModal/typings';
 
 interface Props {
-  metaData: AuthenticationData;
+  authenticationData: AuthenticationData | null;
   onCompleted: () => void;
   onError: () => void;
 }
 
-const VerificationSignUpStep = ({ metaData, onCompleted, onError }: Props) => {
+const VerificationSignUpStep = ({
+  authenticationData,
+  onCompleted,
+  onError,
+}: Props) => {
   const handleOnCompleted = () => {
     trackEventByName(tracks.signUpVerificationStepCompleted);
     onCompleted();
@@ -25,7 +29,7 @@ const VerificationSignUpStep = ({ metaData, onCompleted, onError }: Props) => {
     <VerificationSteps
       onCompleted={handleOnCompleted}
       onError={handleOnError}
-      context={metaData?.context || null}
+      context={authenticationData?.context || null}
     />
   );
 };

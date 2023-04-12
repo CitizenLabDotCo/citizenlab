@@ -141,6 +141,7 @@ export default function useSteps() {
     state,
     status,
     error,
+    authenticationData: authenticationDataRef.current,
     transition,
     setError,
   };

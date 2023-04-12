@@ -11,6 +11,7 @@ import AuthProviders from './steps/AuthProviders';
 import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
 import EmailAndPassword from './steps/EmailAndPassword';
 import EmailConfirmation from './steps/EmailConfirmation';
+import Verification from './steps/Verification';
 import CustomFields from './steps/CustomFields';
 import ChangeEmail from './steps/ChangeEmail';
 import LightFlowStart from './steps/LightFlowStart';
@@ -75,8 +76,15 @@ const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
 };
 
 const AuthModal = () => {
-  const { currentStep, state, status, error, transition, setError } =
-    useSteps();
+  const {
+    currentStep,
+    state,
+    status,
+    error,
+    authenticationData,
+    transition,
+    setError,
+  } = useSteps();
 
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
@@ -189,6 +197,14 @@ const AuthModal = () => {
           <ChangeEmail
             onGoBack={transition(currentStep, 'GO_BACK')}
             onChangeEmail={transition(currentStep, 'RESEND_CODE')}
+          />
+        )}
+
+        {currentStep === 'sign-up:verification' && (
+          <Verification
+            authenticationData={authenticationData}
+            onCompleted={transition(currentStep, 'CONTINUE')}
+            onError={() => setError('unknown')}
           />
         )}
 
