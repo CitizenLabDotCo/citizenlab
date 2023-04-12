@@ -100,7 +100,6 @@ const UserSelect = ({
     return null;
   };
 
-
   const getOptionId = (option: UserOptionTypeBase) => option.id;
 
   return (
@@ -126,7 +125,6 @@ const UserSelect = ({
         menuPlacement="auto"
         styles={selectStyles}
         onMenuScrollToBottom={handleMenuScrollToBottom}
-        onMenuOpen={handleClear}
         filterOption={() => true}
       />
     </Box>
