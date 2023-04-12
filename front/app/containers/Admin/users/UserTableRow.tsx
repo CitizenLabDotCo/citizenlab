@@ -1,6 +1,6 @@
 // Libraries
 import React, { useState, lazy, Suspense } from 'react';
-import { isAdmin, isCollaborator } from 'services/permissions/roles';
+import { isAdmin, isRegularUser } from 'services/permissions/roles';
 import moment from 'moment';
 
 // Utils
@@ -88,7 +88,7 @@ const UserTableRow = ({
   const { formatMessage } = useIntl();
 
   const isUserAdmin = isAdmin({ data: user });
-  const isUserCollaborator = isCollaborator({ data: user });
+  const isUserModerator = !isRegularUser({ data: user });
   const registeredAt = moment(user.attributes.registration_completed_at).format(
     'LL'
   );
@@ -200,7 +200,7 @@ const UserTableRow = ({
 
     if (isUserAdmin) {
       return [setAsNormalUserAction];
-    } else if (isUserCollaborator) {
+    } else if (isUserModerator) {
       return [setAsNormalUserAction, setAsAdminAction];
     } else {
       return [setAsAdminAction];
