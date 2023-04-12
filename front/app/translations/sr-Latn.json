@@ -64,6 +64,7 @@
   "app.components.ConfirmationModal.verifyAndContinue": "Verifikujte i nastavite",
   "app.components.ConfirmationModal.wrongEmail": "Pogrešan email?",
   "app.components.ConsentManager.Banner.accept": "Prihvati",
+  "app.components.ConsentManager.Banner.ariaButtonClose2": "Odbij politiku i zatvori baner",
   "app.components.ConsentManager.Banner.close": "Zatvori",
   "app.components.ConsentManager.Banner.mainText": "Pretražujući ovaj sajt, prihvatate našu {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Upravljajte",

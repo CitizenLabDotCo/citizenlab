@@ -40,7 +40,7 @@ interface Props {
 }
 
 const IdeaText = styled.div`
-  font-size: ${fontSizes.m};
+  font-size: ${fontSizes.m}px;
   color: ${colors.primary};
   line-height: ${MEDIUM_LINE_HEIGHT}px;
 `;

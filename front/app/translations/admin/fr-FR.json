@@ -1756,7 +1756,7 @@
   "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Confirmer",
   "app.containers.admin.addCollaboratorsModal.confirmMessage1": "Êtes-vous sûr de vouloir accorder des droits de collaborateur à une seule personne ?",
   "app.containers.admin.addCollaboratorsModal.giveCollaboratorRights": "Accorder des droits aux collaborateurs",
-  "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Vous avez atteint la limite des sièges inclus dans votre plan, {noOfSeats} supplémentaire {noOfSeats, plural, one {siège} other {sièges}} sera ajouté.",
+  "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Vous avez atteint la limite de sièges inclus dans votre plan, 1 siège supplémentaire sera ajouté.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Ajouter un statut",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Le statut par défaut ne peut pas être supprimé.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Supprimer",
