@@ -27,7 +27,7 @@ module MultiTenancy
             CustomMaps::Layer => serialize_records(CustomMaps::Layer),
             CustomMaps::LegendItem => serialize_records(CustomMaps::LegendItem),
             CustomMaps::MapConfig => serialize_records(CustomMaps::MapConfig),
-            EmailCampaigns::Campaigns => serialize_records(EmailCampaigns::Campaign.where(type: 'EmailCampaigns::Campaigns::Manual')),
+            EmailCampaigns::Campaign => serialize_records(EmailCampaigns::Campaign.where(type: 'EmailCampaigns::Campaigns::Manual')),
             EmailCampaigns::UnsubscriptionToken => serialize_records(EmailCampaigns::UnsubscriptionToken.where(user: user_scope)),
             Event => serialize_records(Event),
             EventFile => serialize_records(EventFile),
