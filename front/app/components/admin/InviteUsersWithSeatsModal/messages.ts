@@ -1,7 +1,7 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  giveCollaboratorRights: {
+  giveModeratorRights: {
     id: 'app.containers.admin.inviteUsersWithSeatsModal.giveCollaboratorRights',
     defaultMessage: 'Give collaborator rights',
   },
@@ -18,7 +18,7 @@ export default defineMessages({
     id: 'app.containers.admin.inviteUsersWithSeatsModal.admin',
     defaultMessage: 'admin',
   },
-  collaborator: {
+  moderator: {
     id: 'app.containers.admin.inviteUsersWithSeatsModal.collaborator',
     defaultMessage: 'collaborator',
   },
@@ -31,7 +31,7 @@ export default defineMessages({
     id: 'app.containers.admin.inviteUsersWithSeatsModal.admins',
     defaultMessage: 'admins',
   },
-  collaborators: {
+  moderators: {
     id: 'app.containers.admin.inviteUsersWithSeatsModal.collaborators',
     defaultMessage: 'collaborators',
   },

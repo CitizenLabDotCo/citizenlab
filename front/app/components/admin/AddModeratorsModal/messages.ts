@@ -1,7 +1,7 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  giveCollaboratorRights: {
+  giveModeratorRights: {
     id: 'app.containers.admin.addCollaboratorsModal.giveCollaboratorRights',
     defaultMessage: 'Give collaborator rights',
   },

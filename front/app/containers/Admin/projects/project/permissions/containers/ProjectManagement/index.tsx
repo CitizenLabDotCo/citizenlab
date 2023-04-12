@@ -63,7 +63,7 @@ const ProjectManagement = ({ projectId }: Props) => {
       <ModeratorList projectId={projectId} />
       {!hasSeatBasedBillingEnabled && (
         <Box width="516px">
-          <SeatInfo seatType="collaborator" />
+          <SeatInfo seatType="moderator" />
         </Box>
       )}
     </ModeratorSubSection>
