@@ -3,9 +3,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import streams from 'utils/streams';
 import { ResendEmailCodeProperties } from './types';
 
-const fetchResendEmailCode = (
-  requestBody: ResendEmailCodeProperties | null
-) => {
+const fetchResendEmailCode = (requestBody: ResendEmailCodeProperties) => {
   return fetcher({
     path: `/user/resend_code`,
     body: requestBody,

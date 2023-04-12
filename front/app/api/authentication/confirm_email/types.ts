@@ -1,3 +1,3 @@
-export interface ResendEmailCodeProperties {
+export type ResendEmailCodeProperties = {
   new_email: string;
-}
+} | null;
