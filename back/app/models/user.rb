@@ -192,10 +192,18 @@ class User < ApplicationRecord
         record.errors.add(:email, :taken, value: record.email)
       end
     end
+    if record.new_email
+      if User.find_by_cimail(record.new_email)
+        record.errors.add(:email, :taken, value: record.new_email)
+      elsif record.errors[:new_email].present?
+        ErrorsService.new.remove record.errors, :new_email, :invalid, value: record.new_email
+        record.errors.add(:email, :invalid, value: record.new_email)
+      end
+    end
   end
 
   EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip)
-  validate :validate_email_domain_blacklist
+  validate :validate_email_domains_blacklist
 
   validates :roles, json: { schema: -> { User.roles_json_schema }, message: ->(errors) { errors } }
 
@@ -495,11 +503,12 @@ class User < ApplicationRecord
     save!
   end
 
-  def reset_email!(email)
-    update!(
-      new_email: email,
-      email_confirmation_code_reset_count: 0
-    )
+  def reset_email!(new_email)
+    if AppConfiguration.instance.feature_activated?('user_confirmation')
+      update!(new_email: new_email, email_confirmation_code_reset_count: 0)
+    else
+      update!(email: new_email, email_confirmation_code_reset_count: 0)
+    end
   end
 
   def confirm_new_email
@@ -546,13 +555,18 @@ class User < ApplicationRecord
     original_authenticate(::Digest::SHA256.hexdigest(unencrypted_password))
   end
 
-  def validate_email_domain_blacklist
-    return if email.blank?
+  def validate_email_domains_blacklist
+    validate_email_domain_blacklist email
+    validate_email_domain_blacklist new_email
+  end
 
-    domain = email.split('@')&.last
-    return unless domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
+  def validate_email_domain_blacklist(email_field)
+    return if email_field.blank?
 
-    errors.add(:email, :domain_blacklisted, value: domain)
+    domain = email_field.split('@')&.last
+    return unless domain
+
+    errors.add(:email, :domain_blacklisted, value: domain) if EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
   end
 
   def validate_minimum_password_length
