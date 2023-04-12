@@ -7,6 +7,8 @@ describe('Idea edit page', () => {
   const password = randomString();
   const ideaTitle = randomString(40);
   const ideaContent = randomString(60);
+  const newIdeaTitle = randomString(40);
+  const newIdeaContent = randomString(60);
   let jwt: string;
   let projectId: string;
   let ideaId: string;
