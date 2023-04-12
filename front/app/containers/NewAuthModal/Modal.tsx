@@ -88,9 +88,10 @@ const AuthModal = () => {
 
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
-  const fullscreenModalEnabled = useFeatureFlag({
+  const _fullscreenModalEnabled = useFeatureFlag({
     name: 'franceconnect_login',
   });
+  const fullscreenModalEnabled = _fullscreenModalEnabled || true;
 
   const closable = currentStep !== 'closed' && currentStep !== 'success';
 
