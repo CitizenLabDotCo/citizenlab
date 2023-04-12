@@ -6,9 +6,8 @@ import styled from 'styled-components';
 
 const StyledIframe = styled.iframe`
   display: block;
-  height: 600px;
-  flex-basis: 640px;
-  border: 1px solid #ccc;
+  height: 1000px;
+  width: 100%;
 `;
 
 type Props = {
@@ -35,7 +34,12 @@ const SmartSurvey = ({ konveioSurveyUrl, className, email }: Props) => {
 
   return (
     <Box display="flex" justifyContent="center" className={className}>
-      <StyledIframe data-testid={'konveiosurvey'} src={finalSurveyUrl} />
+      <StyledIframe
+        data-testid={'konveiosurvey'}
+        src={finalSurveyUrl}
+        frameBorder={0}
+        allowFullScreen
+      />
     </Box>
   );
 };
