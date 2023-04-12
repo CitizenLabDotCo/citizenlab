@@ -2,6 +2,19 @@
 
 module MultiTenancy
   module Templates
+    # Creates self-contained S3-based templates from tenants:
+    # - *self-contained* because they include both the tenant data (serialized DB records)
+    #   and the uploaded files (images, documents, etc.)
+    # - *S3-based* because uploaded files are copied directly from the S3 bucket where the
+    #   tenant uploads are stored to the S3 bucket where the template will be stored. As
+    #   a result, `CreateService` is highly coupled with S3.
+    #
+    # Organization of the template bucket:
+    #   template_bucket
+    #   ├── template_name_1 (= host of the tenant)
+    #   │   ├── models.yml
+    #   ⋮   └── uploads > model > id > file
+    #   └── template_name_N
     class CreateService
       attr_reader :template_bucket, :tenant_bucket, :s3_client
 
