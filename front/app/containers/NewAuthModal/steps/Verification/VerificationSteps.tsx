@@ -16,10 +16,7 @@ import { media } from 'utils/styleUtils';
 // typings
 import { TVerificationMethod } from 'services/verificationMethods';
 import { isNilOrError } from 'utils/helperUtils';
-import {
-  IVerificationError,
-  TVerificationStep,
-} from 'events/verificationModal';
+import { TVerificationStep } from 'events/verificationModal';
 import { AuthenticationContext } from 'api/authentication_requirements/types';
 
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';

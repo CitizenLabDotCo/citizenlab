@@ -27,12 +27,11 @@ import { verifyBogus } from '../services/verify';
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
-  inModal: boolean;
   className?: string;
 }
 
 const VerificationFormBogus = memo<Props>(
-  ({ onCancel, onVerified, inModal, className }) => {
+  ({ onCancel, onVerified, className }) => {
     const authUser = useAuthUser();
 
     const [desiredError, setDesiredError] = useState<string>('');
@@ -103,9 +102,9 @@ const VerificationFormBogus = memo<Props>(
       <FormContainer
         id="e2e-verification-bogus-form"
         className={className}
-        inModal={inModal}
+        inModal={true}
       >
-        <Form inModal={inModal}>
+        <Form inModal={true}>
           <FormField>
             <StyledLabel>
               <LabelTextContainer>

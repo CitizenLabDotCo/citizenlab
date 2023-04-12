@@ -38,12 +38,11 @@ import helpImage from './COWHelpImage.png';
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
-  inModal: boolean;
   className?: string;
 }
 
 const VerificationFormCOW = memo<Props & WrappedComponentProps>(
-  ({ onCancel, onVerified, inModal, className, intl }) => {
+  ({ onCancel, onVerified, className, intl }) => {
     const authUser = useAuthUser();
 
     const [run, setRun] = useState('');
@@ -150,8 +149,8 @@ const VerificationFormCOW = memo<Props & WrappedComponentProps>(
     }, []);
 
     return (
-      <FormContainer className={className} inModal={inModal}>
-        <Form inModal={inModal}>
+      <FormContainer className={className} inModal={true}>
+        <Form inModal={true}>
           <FormField>
             <StyledLabel htmlFor="run">
               <LabelTextContainer>

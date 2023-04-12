@@ -39,13 +39,12 @@ import { IDLookupMethod } from 'services/verificationMethods';
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
-  inModal: boolean;
   className?: string;
   method: IDLookupMethod;
 }
 
 const VerificationFormLookup = memo<Props & WrappedComponentProps>(
-  ({ onCancel, onVerified, inModal, className, method, intl }) => {
+  ({ onCancel, onVerified, className, method, intl }) => {
     const authUser = useAuthUser();
 
     const [cardId, setCardId] = useState<string>('');
@@ -127,8 +126,8 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
     }, []);
 
     return (
-      <FormContainer className={className} inModal={inModal}>
-        <Form inModal={inModal}>
+      <FormContainer className={className} inModal={true}>
+        <Form inModal={true}>
           <FormField>
             <StyledLabel htmlFor="cardId">
               <LabelTextContainer>

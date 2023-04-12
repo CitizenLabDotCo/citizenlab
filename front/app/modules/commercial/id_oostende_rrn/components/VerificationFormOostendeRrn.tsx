@@ -37,14 +37,12 @@ import { TVerificationMethod } from 'services/verificationMethods';
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
-  showHeader?: boolean;
-  inModal: boolean;
   method: TVerificationMethod;
   className?: string;
 }
 
 const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
-  ({ onCancel, onVerified, inModal, className, intl }) => {
+  ({ onCancel, onVerified, className, intl }) => {
     const authUser = useAuthUser();
 
     const [rrn, setRrn] = useState('');
@@ -146,8 +144,8 @@ const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
     }, []);
 
     return (
-      <FormContainer className={className} inModal={inModal}>
-        <Form inModal={inModal}>
+      <FormContainer className={className} inModal={true}>
+        <Form inModal={true}>
           <FormField>
             <StyledLabel htmlFor="rrn">
               <LabelTextContainer>
