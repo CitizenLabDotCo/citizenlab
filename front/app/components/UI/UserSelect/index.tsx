@@ -8,13 +8,15 @@ import { debounce } from 'lodash-es';
 import styled from 'styled-components';
 import { IUserData } from 'services/users';
 import Button from 'components/UI/Button';
-import Avatar from './Avatar';
+import useUser from 'hooks/useUser';
 
 interface DataProps {
   users: GetUsersChildProps;
 }
 
 export interface UserOptionTypeBase extends OptionTypeBase, IUserData {
+  // If the option is 'load more' instead of a user, we don't have IUserData
+  // but { value: 'loadMore' }
   value?: string;
 }
 
@@ -50,12 +52,8 @@ const UserSelect = ({
   inputId,
 }: DataProps & Props) => {
   const canLoadMore = users.lastPage !== users.currentPage;
-  const usersList: IUserData[] = Array.isArray(users.usersList)
-    ? users.usersList
-    : [];
-  const selectedUser = selectedUserId
-    ? usersList.find((user) => user.id === selectedUserId)
-    : null;
+  const usersList = Array.isArray(users.usersList) ? users.usersList : [];
+  const selectedUser = useUser({ userId: selectedUserId });
 
   const handleChange = (option: UserOptionTypeBase, { action }) => {
     if (action === 'clear') {
