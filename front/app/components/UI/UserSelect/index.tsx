@@ -104,7 +104,7 @@ const UserSelect = ({
   const getOptionId = (option: UserOptionTypeBase) => option.id;
 
   return (
-    <Box id="e2e-user-select">
+    <Box data-cy="e2e-user-select">
       <ReactSelect
         id={id}
         inputId={inputId}

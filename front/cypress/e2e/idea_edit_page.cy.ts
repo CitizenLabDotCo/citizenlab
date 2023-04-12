@@ -7,8 +7,6 @@ describe('Idea edit page', () => {
   const password = randomString();
   const ideaTitle = randomString(40);
   const ideaContent = randomString(60);
-  const newIdeaTitle = randomString(40);
-  const newIdeaContent = randomString(60);
   let jwt: string;
   let projectId: string;
   let ideaId: string;
@@ -144,7 +142,9 @@ describe('Idea edit page', () => {
     // Visit idea edit page as Admin
     cy.visit(`/ideas/edit/${ideaId}`);
     // Search and select an author
-    cy.get('#e2e-user-select').click().type(`${lastName}, ${firstName}{enter}`);
+    cy.get('[data-cy="e2e-user-select"]')
+      .click()
+      .type(`${lastName}, ${firstName} {enter}`);
     // Save
     cy.get('form').submit();
     // Reload idea edit page
