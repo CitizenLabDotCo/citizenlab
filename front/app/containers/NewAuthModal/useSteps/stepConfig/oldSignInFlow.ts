@@ -1,5 +1,5 @@
 // authentication
-import signIn from 'api/authentication/signIn';
+import signIn from 'api/authentication/sign_in_out/signIn';
 import { handleOnSSOClick } from 'services/singleSignOn';
 
 // events

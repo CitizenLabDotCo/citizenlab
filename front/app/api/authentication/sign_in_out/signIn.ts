@@ -1,12 +1,11 @@
-import { IUser } from 'services/users';
 import { setJwt } from 'utils/auth/jwt';
 import streams from 'utils/streams';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import signOut from './signOut';
-import fetcher from 'utils/cl-react-query/fetcher';
 import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 import { IHttpMethod } from 'typings';
+import getAuthUser from '../auth_user/getAuthUser';
 
 interface Parameters {
   email: string;
@@ -57,11 +56,7 @@ export async function getAndSetToken({
 
 async function getAuthUserAsync() {
   try {
-    const authenticatedUser = await fetcher<IUser>({
-      path: `/users/me`,
-      action: 'get',
-    });
-    return authenticatedUser;
+    return await getAuthUser();
   } catch {
     signOut();
     throw new Error('not_authenticated');

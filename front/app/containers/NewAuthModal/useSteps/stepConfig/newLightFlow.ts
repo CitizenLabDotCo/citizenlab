@@ -1,8 +1,8 @@
 // authentication
-import createEmailOnlyAccount from 'api/authentication/createEmailOnlyAccount';
-import signIn from 'api/authentication/signIn';
-import signOut from 'api/authentication/signOut';
-import confirmEmail from 'api/authentication/confirmEmail';
+import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
+import signIn from 'api/authentication/sign_in_out/signIn';
+import signOut from 'api/authentication/sign_in_out/signOut';
+import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import { handleOnSSOClick } from 'services/singleSignOn';
 
 // events

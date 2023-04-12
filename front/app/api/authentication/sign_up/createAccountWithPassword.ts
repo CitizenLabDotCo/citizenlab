@@ -1,5 +1,5 @@
 import { Locale } from 'typings';
-import signIn from './signIn';
+import signIn from '../sign_in_out/signIn';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 interface Parameters {

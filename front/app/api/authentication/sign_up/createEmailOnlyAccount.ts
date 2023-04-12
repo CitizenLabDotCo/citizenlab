@@ -1,4 +1,4 @@
-import { getAndSetToken } from './signIn';
+import { getAndSetToken } from '../sign_in_out/signIn';
 import { Locale } from 'typings';
 import streams from 'utils/streams';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';

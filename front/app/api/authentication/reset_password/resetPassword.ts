@@ -1,9 +1,18 @@
 import fetcher from 'utils/cl-react-query/fetcher';
+import { ResetPasswordProperties } from './types';
 
 interface Parameters {
   password: string;
   token: string;
 }
+
+const fetchResetPassword = (requestBody: ResetPasswordProperties) => {
+  return fetcher({
+    path: `/users/reset_password`,
+    body: requestBody,
+    action: 'post',
+  });
+};
 
 export default async function resetPassword({ password, token }: Parameters) {
   // eslint-disable-next-line no-useless-catch
@@ -14,11 +23,7 @@ export default async function resetPassword({ password, token }: Parameters) {
         token,
       },
     };
-    const response = await fetcher({
-      path: `/users/reset_password`,
-      body: bodyData,
-      action: 'post',
-    });
+    const response = await fetchResetPassword(bodyData);
     return response;
   } catch (error) {
     throw error;

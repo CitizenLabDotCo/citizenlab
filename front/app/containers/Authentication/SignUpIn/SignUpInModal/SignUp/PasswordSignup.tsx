@@ -22,7 +22,7 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import createAccountWithPassword from 'api/authentication/createAccountWithPassword';
+import createAccountWithPassword from 'api/authentication/sign_up/createAccountWithPassword';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
