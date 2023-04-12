@@ -26,7 +26,7 @@ describe('isRegularUser', () => {
     expect(isRegularUser(superAdmin)).toBe(false);
   });
 
-  it('returns false when a user is a admin', () => {
+  it('returns false when a user is an admin', () => {
     const admin = makeUser({
       highest_role: 'admin',
     });
