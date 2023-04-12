@@ -25,7 +25,6 @@ interface InputProps {
   className?: string;
   id: string;
   inputId: string;
-  hideAvatar?: boolean;
   // Exclude users that can moderate the project from selectable users.
   // We pass the projectId here.
   isNotProjectModeratorOfProjectId?: string;
@@ -49,7 +48,6 @@ const UserSelect = ({
   className,
   id,
   inputId,
-  hideAvatar = false,
 }: DataProps & Props) => {
   const canLoadMore = users.lastPage !== users.currentPage;
   const usersList: IUserData[] = Array.isArray(users.usersList)
@@ -95,7 +93,6 @@ const UserSelect = ({
     } else if (option.attributes) {
       return (
         <UserOption>
-          {!hideAvatar && <Avatar user={option} />}
           {option.attributes.last_name}, {option.attributes.first_name} (
           {option.attributes.email})
         </UserOption>
