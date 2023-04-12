@@ -14,19 +14,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
-import GetInitiativeStatus, {
-  GetInitiativeStatusChildProps,
-} from 'resources/GetInitiativeStatus';
 import GetOfficialFeedbacks, {
   GetOfficialFeedbacksChildProps,
 } from 'resources/GetOfficialFeedbacks';
 
 // services
-import {
-  updateInitiativeStatusWithExistingFeedback,
-  updateInitiativeStatusAddFeedback,
-} from 'services/initiativeStatusChanges';
-
+import useUpdateInitiativeStatus from 'api/initiative_statuses/useUpdateInitiativeStatus';
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
@@ -38,6 +31,7 @@ import { Multiloc, MultilocFormValues } from 'typings';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -59,7 +53,6 @@ interface InputProps {
 
 interface DataProps {
   tenantLocales: GetAppConfigurationLocalesChildProps;
-  newStatus: GetInitiativeStatusChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
 }
 
@@ -76,15 +69,19 @@ const StatusChangeFormWrapper = ({
   newStatusId,
   closeModal,
   officialFeedbacks,
-  newStatus,
 }: Props & WrappedComponentProps) => {
+  const { data: initiativeStatus } = useInitiativeStatus(newStatusId);
+  const {
+    mutate: updateInitiativeStatus,
+    isLoading,
+    isError,
+  } = useUpdateInitiativeStatus();
   const [mode, setMode] = useState<'latest' | 'new'>('new');
   const [newOfficialFeedback, setNewOfficialFeedback] = useState<FormValues>({
     author_multiloc: {},
     body_multiloc: {},
   });
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
+
   const { data: initiative } = useInitiativeById(initiativeId);
 
   const onChangeMode = (event) => {
@@ -139,39 +136,41 @@ const StatusChangeFormWrapper = ({
     const { body_multiloc, author_multiloc } = newOfficialFeedback;
     if (validate()) {
       if (mode === 'new') {
-        setLoading(true);
-        updateInitiativeStatusAddFeedback(
-          initiativeId,
-          newStatusId,
-          body_multiloc,
-          author_multiloc
-        )
-          .then(() => closeModal())
-          .catch(() => {
-            setLoading(false);
-            setError(true);
-          });
+        updateInitiativeStatus(
+          {
+            initiativeId,
+            initiative_status_id: newStatusId,
+            official_feedback_attributes: {
+              body_multiloc,
+              author_multiloc,
+            },
+          },
+          {
+            onSuccess: closeModal,
+          }
+        );
       } else if (
         mode === 'latest' &&
         !isNilOrError(officialFeedbacks.officialFeedbacksList)
       ) {
-        updateInitiativeStatusWithExistingFeedback(
-          initiativeId,
-          newStatusId,
-          officialFeedbacks.officialFeedbacksList.data[0].id
-        )
-          .then(() => closeModal())
-          .catch(() => {
-            setLoading(false);
-            setError(true);
-          });
+        updateInitiativeStatus(
+          {
+            initiativeId,
+            initiative_status_id: newStatusId,
+            official_feedback_id:
+              officialFeedbacks.officialFeedbacksList.data[0].id,
+          },
+          {
+            onSuccess: closeModal,
+          }
+        );
       }
     }
   };
 
   if (
     isNilOrError(initiative) ||
-    isNilOrError(newStatus) ||
+    !initiativeStatus ||
     officialFeedbacks.officialFeedbacksList === undefined
   ) {
     return null;
@@ -189,8 +188,8 @@ const StatusChangeFormWrapper = ({
               </ColoredText>
             ),
             newStatus: (
-              <ColoredText color={newStatus.attributes.color}>
-                <T value={newStatus.attributes.title_multiloc} />
+              <ColoredText color={initiativeStatus.data.attributes.color}>
+                <T value={initiativeStatus.data.attributes.title_multiloc} />
               </ColoredText>
             ),
           }}
@@ -198,8 +197,8 @@ const StatusChangeFormWrapper = ({
       </ContextLine>
       <StatusChangeForm
         {...{
-          loading,
-          error,
+          loading: isLoading,
+          error: isError,
           newOfficialFeedback,
           mode,
         }}
@@ -220,9 +219,6 @@ const StatusChangeFormWrapper = ({
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,
-  newStatus: ({ newStatusId, render }) => (
-    <GetInitiativeStatus id={newStatusId}>{render}</GetInitiativeStatus>
-  ),
   officialFeedbacks: ({ initiativeId, render }) => (
     <GetOfficialFeedbacks postId={initiativeId} postType="initiative">
       {render}

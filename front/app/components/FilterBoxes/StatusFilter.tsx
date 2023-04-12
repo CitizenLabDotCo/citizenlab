@@ -21,7 +21,7 @@ import { Header, Title } from './styles';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativesFilterCounts } from 'api/initiatives_filter_counts/types';
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 
 const Container = styled.div`
   width: 100%;

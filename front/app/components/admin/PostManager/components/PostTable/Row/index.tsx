@@ -5,7 +5,7 @@ import { ManagerType, TFilterMenu } from '../../..';
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 
 // style
 import styled from 'styled-components';

@@ -59,5 +59,9 @@ FactoryBot.define do
       "#{name}#{n}@#{domain}"
     end
     locale { 'en' }
+
+    before(:create) do |user, _evaluator|
+      user.reset_confirmation_code
+    end
   end
 end

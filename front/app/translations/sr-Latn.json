@@ -534,6 +534,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "naše smernice",
   "app.components.form.ErrorDisplay.next": "Sledeće",
   "app.components.form.ErrorDisplay.previous": "Prethodno",
+  "app.components.form.ErrorDisplay.save": "сачувати",
   "app.components.form.ErrorDisplay.submitSurvey": "Prosledi anketu",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Počnite sa kucanjem za pretragu po e-pošti ili imenu korisnika...",
   "app.components.form.blockedVerified": "Ne možete da izmenite ovo polje zato što sadrži verifikovane informacije",

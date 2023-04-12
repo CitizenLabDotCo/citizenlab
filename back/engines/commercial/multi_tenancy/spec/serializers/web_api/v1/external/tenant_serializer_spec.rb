@@ -15,7 +15,7 @@ describe 'WebApi::V1::External::TenantSerializer' do
             'enabled' => true,
             'locales' => %w[en fr-FR nl-NL],
             'currency' => 'EUR',
-            'timezone' => 'Brussels',
+            'timezone' => 'Europe/Brussels',
             'color_main' => anything,
             'color_text' => anything,
             'color_secondary' => anything,
