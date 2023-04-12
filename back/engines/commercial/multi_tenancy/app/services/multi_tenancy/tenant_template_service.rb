@@ -276,10 +276,7 @@ module MultiTenancy
       return field_value if field_value.blank?
 
       if field_value.is_a? String
-        locales.to_h do |locale|
-          translation = I18n.with_locale(locale) { I18n.t!(field_value) }
-          [locale, translation]
-        end
+        locales.index_with { |locale| I18n.with_locale(locale) { I18n.t!(field_value) } }
       else
         multiloc = field_value.slice(*locales)
 
