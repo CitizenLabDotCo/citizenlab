@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  verifyYourIdentity: {
-    id: 'app.components.VerificationModal.verifyYourIdentity',
-    defaultMessage: 'Verify your identity',
-  },
   andUnlockYourCitizenPotential: {
     id: 'app.components.VerificationModal.andUnlockYourCitizenPotential',
     defaultMessage: 'and unlock your citizen potential',

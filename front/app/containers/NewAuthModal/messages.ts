@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.containers.SignUp.invitationError',
     defaultMessage: 'Your invitation has expired or has already been redeemed.',
   },
+  verifyYourIdentity: {
+    id: 'app.components.VerificationModal.verifyYourIdentity',
+    defaultMessage: 'Verify your identity',
+  },
 });
