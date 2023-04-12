@@ -30,6 +30,7 @@
 #  confirmation_required               :boolean          default(TRUE), not null
 #  block_start_at                      :datetime
 #  block_reason                        :string
+#  new_email                           :string
 #
 # Indexes
 #
@@ -38,6 +39,7 @@
 #  index_users_on_slug                       (slug) UNIQUE
 #  users_unique_lower_email_idx              (lower((email)::text)) UNIQUE
 #
+# rubocop:disable Metrics/ClassLength
 class User < ApplicationRecord
   include EmailCampaigns::UserDecorator
   include Onboarding::UserDecorator
@@ -49,6 +51,7 @@ class User < ApplicationRecord
   INVITE_STATUSES = %w[pending accepted].freeze
   ROLES = %w[admin project_moderator project_folder_moderator].freeze
   CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlab.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
+  EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
 
   class << self
     # Deletes all users asynchronously (with side effects).
@@ -153,7 +156,8 @@ class User < ApplicationRecord
   validates :email, :locale, presence: true, unless: :invite_pending?
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
-  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_nil: true
+  validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
+  validates :new_email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
   validates :bio_multiloc, multiloc: { presence: false, html: true }
   validates :gender, inclusion: { in: GENDERS }, allow_nil: true
@@ -188,10 +192,18 @@ class User < ApplicationRecord
         record.errors.add(:email, :taken, value: record.email)
       end
     end
+    if record.new_email
+      if User.find_by_cimail(record.new_email)
+        record.errors.add(:email, :taken, value: record.new_email)
+      elsif record.errors[:new_email].present?
+        ErrorsService.new.remove record.errors, :new_email, :invalid, value: record.new_email
+        record.errors.add(:email, :invalid, value: record.new_email)
+      end
+    end
   end
 
   EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip)
-  validate :validate_email_domain_blacklist
+  validate :validate_email_domains_blacklist
 
   validates :roles, json: { schema: -> { User.roles_json_schema }, message: ->(errors) { errors } }
 
@@ -449,8 +461,9 @@ class User < ApplicationRecord
   end
 
   def confirm!
-    return false unless registered_with_email?
+    return unless registered_with_email? && confirmation_required?
 
+    confirm_new_email if new_email.present?
     confirm
     save!
   end
@@ -490,11 +503,19 @@ class User < ApplicationRecord
     save!
   end
 
-  def reset_email!(email)
-    update!(
-      email: email,
-      email_confirmation_code_reset_count: 0
-    )
+  def reset_email!(new_email)
+    if AppConfiguration.instance.feature_activated?('user_confirmation')
+      update!(new_email: new_email, email_confirmation_code_reset_count: 0)
+    else
+      update!(email: new_email, email_confirmation_code_reset_count: 0)
+    end
+  end
+
+  def confirm_new_email
+    return unless new_email
+
+    self.email = new_email
+    self.new_email = nil
   end
 
   private
@@ -534,13 +555,18 @@ class User < ApplicationRecord
     original_authenticate(::Digest::SHA256.hexdigest(unencrypted_password))
   end
 
-  def validate_email_domain_blacklist
-    return if email.blank?
+  def validate_email_domains_blacklist
+    validate_email_domain_blacklist email
+    validate_email_domain_blacklist new_email
+  end
 
-    domain = email.split('@')&.last
-    return unless domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
+  def validate_email_domain_blacklist(email_field)
+    return if email_field.blank?
 
-    errors.add(:email, :domain_blacklisted, value: domain)
+    domain = email_field.split('@')&.last
+    return unless domain
+
+    errors.add(:email, :domain_blacklisted, value: domain) if EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
   end
 
   def validate_minimum_password_length
@@ -592,6 +618,7 @@ class User < ApplicationRecord
     AppConfiguration.instance.settings('user_blocking', 'duration')
   end
 end
+# rubocop:enable Metrics/ClassLength
 
 User.include(IdeaAssignment::Extensions::User)
 User.include(Verification::Patches::User)

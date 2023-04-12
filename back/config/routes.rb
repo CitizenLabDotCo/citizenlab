@@ -87,6 +87,7 @@ Rails.application.routes.draw do
         get 'initiatives_count', on: :member
         get 'comments_count', on: :member
         get 'blocked_count', on: :collection
+        get 'check/:email', on: :collection, to: 'users#check', constraints: { email: /.*/ }
 
         resources :comments, only: [:index], controller: 'user_comments'
       end

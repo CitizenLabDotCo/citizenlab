@@ -2,7 +2,7 @@
 
 class WebApi::V1::UsersController < ::ApplicationController
   before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count block unblock]
-  skip_before_action :authenticate_user, only: %i[create show by_slug by_invite ideas_count initiatives_count comments_count]
+  skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count initiatives_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -108,6 +108,21 @@ class WebApi::V1::UsersController < ::ApplicationController
     @user = Invite.find_by!(token: params[:token])&.invitee
     authorize @user
     show
+  end
+
+  # To validate an email without creating a user and return whether to show terms if they are have no password
+  def check
+    @user = User.find_by email: params[:email]
+    skip_authorization
+    if !User::EMAIL_REGEX.match?(params[:email])
+      render json: { errors: { email: [{ error: 'invalid', value: params[:email] }] } }, status: :unprocessable_entity
+    elsif @user && !@user&.no_password?
+      render json: { errors: { email: [{ error: 'taken', value: params[:email] }] } }, status: :unprocessable_entity
+    elsif @user&.registration_completed_at.present?
+      render json: { action: 'continue' }
+    else
+      render json: { action: 'show_terms' }
+    end
   end
 
   def create
