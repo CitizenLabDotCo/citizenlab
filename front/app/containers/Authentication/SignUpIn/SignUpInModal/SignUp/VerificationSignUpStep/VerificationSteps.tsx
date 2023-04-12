@@ -128,7 +128,6 @@ const VerificationSteps = memo<Props>(
           <Outlet
             id="app.components.VerificationModal.methodSteps"
             method={method}
-            inModal={inModal}
             onCancel={onStepCancel}
             onVerified={onStepVerified}
             activeStep={activeStep}

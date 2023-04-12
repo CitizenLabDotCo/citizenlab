@@ -113,94 +113,87 @@ const ButtonsContainer = styled.div`
 
 interface Props {
   context: AuthenticationContext | null;
-  inModal: boolean;
   onMethodSelected: (selectedMethod: TVerificationMethod) => void;
   onSkipped?: () => void;
-  className?: string;
 }
 
-const VerificationMethods = memo<Props>(
-  ({ context, inModal, onMethodSelected, className }) => {
-    const participationConditions = useParticipationConditions(context);
-    const verificationMethods = useVerificationMethods();
+const VerificationMethods = memo<Props>(({ context, onMethodSelected }) => {
+  const participationConditions = useParticipationConditions(context);
+  const verificationMethods = useVerificationMethods();
 
-    const withContext =
-      !isNilOrError(participationConditions) &&
-      participationConditions.length > 0;
+  const withContext =
+    !isNilOrError(participationConditions) &&
+    participationConditions.length > 0;
 
-    const handleOnMethodSelected = (method: TVerificationMethod) => {
-      onMethodSelected(method);
-    };
+  const handleOnMethodSelected = (method: TVerificationMethod) => {
+    onMethodSelected(method);
+  };
 
-    if (
-      verificationMethods === undefined ||
-      participationConditions === undefined
-    ) {
-      return (
-        <Centerer height="250px">
-          <Spinner />
-        </Centerer>
-      );
-    }
-
-    if (
-      !isNilOrError(verificationMethods) &&
-      participationConditions !== undefined
-    ) {
-      return (
-        <Container
-          id="e2e-verification-wizard-method-selection-step"
-          className={className || ''}
-        >
-          <Content className={`${inModal ? 'inModal' : ''}`}>
-            {withContext &&
-              !isNilOrError(participationConditions) &&
-              participationConditions.length > 0 && (
-                <Context>
-                  <Subtitle>
-                    <FormattedMessage {...messages.participationConditions} />
-                  </Subtitle>
-
-                  <ContextLabel>
-                    <FormattedMessage {...messages.peopleMatchingConditions} />
-                  </ContextLabel>
-
-                  {participationConditions.map((rulesSet, index) => {
-                    const rules = rulesSet.map((rule, ruleIndex) => (
-                      <ContextItem className="e2e-rule-item" key={ruleIndex}>
-                        <T value={rule} />
-                      </ContextItem>
-                    ));
-                    return index === 0 ? (
-                      rules
-                    ) : (
-                      <Fragment key={index}>
-                        <Or />
-                        {rules}
-                      </Fragment>
-                    );
-                  })}
-                </Context>
-              )}
-
-            <ButtonsContainer
-              className={`${withContext ? 'withContext' : 'withoutContext'} ${
-                inModal ? 'inModal' : ''
-              }`}
-            >
-              <Outlet
-                id="app.components.VerificationModal.buttons"
-                onClick={handleOnMethodSelected}
-                verificationMethods={verificationMethods}
-              />
-            </ButtonsContainer>
-          </Content>
-        </Container>
-      );
-    }
-
-    return null;
+  if (
+    verificationMethods === undefined ||
+    participationConditions === undefined
+  ) {
+    return (
+      <Centerer height="250px">
+        <Spinner />
+      </Centerer>
+    );
   }
-);
+
+  if (
+    !isNilOrError(verificationMethods) &&
+    participationConditions !== undefined
+  ) {
+    return (
+      <Container id="e2e-verification-wizard-method-selection-step">
+        <Content className="inModal">
+          {withContext &&
+            !isNilOrError(participationConditions) &&
+            participationConditions.length > 0 && (
+              <Context>
+                <Subtitle>
+                  <FormattedMessage {...messages.participationConditions} />
+                </Subtitle>
+
+                <ContextLabel>
+                  <FormattedMessage {...messages.peopleMatchingConditions} />
+                </ContextLabel>
+
+                {participationConditions.map((rulesSet, index) => {
+                  const rules = rulesSet.map((rule, ruleIndex) => (
+                    <ContextItem className="e2e-rule-item" key={ruleIndex}>
+                      <T value={rule} />
+                    </ContextItem>
+                  ));
+                  return index === 0 ? (
+                    rules
+                  ) : (
+                    <Fragment key={index}>
+                      <Or />
+                      {rules}
+                    </Fragment>
+                  );
+                })}
+              </Context>
+            )}
+
+          <ButtonsContainer
+            className={`${
+              withContext ? 'withContext' : 'withoutContext'
+            } ${'inModal'}`}
+          >
+            <Outlet
+              id="app.components.VerificationModal.buttons"
+              onClick={handleOnMethodSelected}
+              verificationMethods={verificationMethods}
+            />
+          </ButtonsContainer>
+        </Content>
+      </Container>
+    );
+  }
+
+  return null;
+});
 
 export default VerificationMethods;

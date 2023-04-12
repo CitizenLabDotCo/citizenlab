@@ -182,7 +182,6 @@ export interface OutletsPropertyMap {
     method: TVerificationMethod | null;
     onCancel: () => void;
     onVerified: () => void;
-    inModal: boolean;
     activeStep: TVerificationStep;
   };
   'app.components.PostShowComponents.ActionBar.right': {

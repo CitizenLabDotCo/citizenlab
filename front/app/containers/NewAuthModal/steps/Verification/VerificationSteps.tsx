@@ -36,96 +36,75 @@ const Container = styled.div`
 `;
 
 export interface Props {
-  context: AuthenticationContext | null; // TODO change to pass in additionnal rules info
-  initialActiveStep: TVerificationStep;
-  inModal: boolean;
+  context: AuthenticationContext | null;
   onCompleted?: () => void;
   onError?: () => void;
-  className?: string;
-  error?: IVerificationError | null | undefined;
 }
 
-const VerificationSteps = memo<Props>(
-  ({
-    className,
-    context,
-    initialActiveStep,
-    inModal,
-    onCompleted,
-    onError,
-    error,
-  }) => {
-    const [activeStep, setActiveStep] = useState<TVerificationStep>(
-      initialActiveStep || 'method-selection'
-    );
-    const [method, setMethod] = useState<TVerificationMethod | null>(null);
+const VerificationSteps = memo<Props>(({ context, onCompleted, onError }) => {
+  const [activeStep, setActiveStep] =
+    useState<TVerificationStep>('method-selection');
+  const [method, setMethod] = useState<TVerificationMethod | null>(null);
 
-    const authUser = useAuthUser();
-    const verificationMethods = useVerificationMethods();
+  const authUser = useAuthUser();
+  const verificationMethods = useVerificationMethods();
 
-    useEffect(() => {
-      if (activeStep === 'success' && onCompleted) {
-        onCompleted();
-      }
-
-      if (activeStep === 'error' && (context === null || error) && onError) {
-        onError();
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [onCompleted, onError, context, activeStep]);
-
-    const onMethodSelected = (selectedMethod: TVerificationMethod) => {
-      setMethod(selectedMethod);
-      setActiveStep('method-step');
-    };
-
-    const goToSuccessStep = useCallback(() => {
-      if (!isNilOrError(authUser)) {
-        streams.reset().then(async () => {
-          await resetQueryCache();
-          setActiveStep('success');
-          setMethod(null);
-        });
-      }
-    }, [authUser]);
-
-    const onStepCancel = useCallback(() => {
-      setActiveStep('method-selection');
-      setMethod(null);
-    }, []);
-
-    const onStepVerified = useCallback(() => {
-      goToSuccessStep();
-    }, [goToSuccessStep]);
-
-    if (!isNilOrError(verificationMethods)) {
-      return (
-        <Container
-          id="e2e-verification-wizard-root"
-          className={className || ''}
-        >
-          {activeStep === 'method-selection' && (
-            <VerificationMethods
-              context={context}
-              inModal={inModal}
-              onMethodSelected={onMethodSelected}
-            />
-          )}
-
-          <Outlet
-            id="app.components.VerificationModal.methodSteps"
-            method={method}
-            inModal={inModal}
-            onCancel={onStepCancel}
-            onVerified={onStepVerified}
-            activeStep={activeStep}
-          />
-        </Container>
-      );
+  useEffect(() => {
+    if (activeStep === 'success' && onCompleted) {
+      onCompleted();
     }
 
-    return null;
+    if (activeStep === 'error' && context === null && onError) {
+      onError();
+    }
+  }, [onCompleted, onError, context, activeStep]);
+
+  const onMethodSelected = (selectedMethod: TVerificationMethod) => {
+    setMethod(selectedMethod);
+    setActiveStep('method-step');
+  };
+
+  const goToSuccessStep = useCallback(() => {
+    if (!isNilOrError(authUser)) {
+      streams.reset().then(async () => {
+        await resetQueryCache();
+        setActiveStep('success');
+        setMethod(null);
+      });
+    }
+  }, [authUser]);
+
+  const onStepCancel = useCallback(() => {
+    setActiveStep('method-selection');
+    setMethod(null);
+  }, []);
+
+  const onStepVerified = useCallback(() => {
+    goToSuccessStep();
+  }, [goToSuccessStep]);
+
+  if (!isNilOrError(verificationMethods)) {
+    return (
+      <Container id="e2e-verification-wizard-root">
+        {activeStep === 'method-selection' && (
+          <VerificationMethods
+            context={context}
+            onMethodSelected={onMethodSelected}
+          />
+        )}
+
+        <Outlet
+          id="app.components.VerificationModal.methodSteps"
+          method={method}
+          onCancel={onStepCancel}
+          onVerified={onStepVerified}
+          activeStep={activeStep}
+        />
+      </Container>
+    );
   }
-);
+
+  return null;
+});
 
 export default VerificationSteps;

@@ -72,19 +72,21 @@ export const oldSignUpFlow = (
         try {
           await createAccountWithPassword(params);
           setStatus('ok');
+          trackEventByName(tracks.signUpCustomFieldsStepCompleted);
 
           const { requirements } = await getRequirements();
           const emailConfirmationRequired =
             requirements.special.confirmation === 'require';
-
-          trackEventByName(tracks.signUpCustomFieldsStepCompleted);
 
           if (emailConfirmationRequired) {
             setCurrentStep('sign-up:email-confirmation');
             return;
           }
 
-          // const verificationRequired // TODO
+          if (requirements.special.verification === 'require') {
+            setCurrentStep('sign-up:verification');
+            return;
+          }
 
           if (askCustomFields(requirements.custom_fields)) {
             setCurrentStep('sign-up:custom-fields');
@@ -112,9 +114,12 @@ export const oldSignUpFlow = (
           await confirmEmail({ code });
           setStatus('ok');
 
-          // const verificationRequired // TODO
-
           const { requirements } = await getRequirements();
+
+          if (requirements.special.verification === 'require') {
+            setCurrentStep('sign-up:verification');
+            return;
+          }
 
           if (askCustomFields(requirements.custom_fields)) {
             setCurrentStep('sign-up:custom-fields');
@@ -155,7 +160,16 @@ export const oldSignUpFlow = (
 
     'sign-up:verification': {
       CLOSE: () => setCurrentStep('closed'),
-      CONTINUE: () => {},
+      CONTINUE: async () => {
+        const { requirements } = await getRequirements();
+
+        if (askCustomFields(requirements.custom_fields)) {
+          setCurrentStep('sign-up:custom-fields');
+          return;
+        }
+
+        setCurrentStep('success');
+      },
     },
 
     'sign-up:custom-fields': {

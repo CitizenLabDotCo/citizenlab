@@ -26,8 +26,6 @@ const VerificationSignUpStep = ({ metaData, onCompleted, onError }: Props) => {
       onCompleted={handleOnCompleted}
       onError={handleOnError}
       context={metaData?.context || null}
-      initialActiveStep="method-selection"
-      inModal={true}
     />
   );
 };
