@@ -46,12 +46,12 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
   const report = useReport(reportId);
   const reportTitle = isNilOrError(report) ? null : report.attributes.name;
 
-  // Project manager
+  // Project mod
   const userId = isNilOrError(report)
     ? null
     : report.relationships.owner.data.id;
   const user = useUser({ userId });
-  const projectManager = isNilOrError(user)
+  const projectModerator = isNilOrError(user)
     ? null
     : `${user.attributes.first_name} ${user.attributes.last_name}`;
 
@@ -87,7 +87,7 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
           />
         </Element>
       )}
-      {projectManager === null ? (
+      {projectModerator === null ? (
         <></>
       ) : (
         <Element id="about-text" is={Container} canvas>
@@ -101,7 +101,7 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
                 startEndDates: projectPeriodString,
               })}</li>
               <li>${formatMessage(messages.managerLabel, {
-                managerName: projectManager,
+                managerName: projectModerator,
               })}</li>
             </ul>
           `}

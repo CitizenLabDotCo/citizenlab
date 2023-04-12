@@ -539,7 +539,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
               )}
               {!hasSeatBasedBillingEnabled && (
                 <Box marginTop="20px">
-                  <SeatInfo seatType="collaborator" />
+                  <SeatInfo seatType="moderator" />
                 </Box>
               )}
             </>
@@ -727,7 +727,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
             closeModal={closeModal}
             //TODO: At the moment this number only includes manually added emails. We need to handle emails from the uploaded file as well when that ticket is completed.
             noOfSeatsToAdd={selectedEmails?.split(',').length || 0}
-            seatType={inviteesWillHaveAdminRights ? 'admin' : 'collaborator'}
+            seatType={inviteesWillHaveAdminRights ? 'admin' : 'moderator'}
           />
         </Suspense>
       )}

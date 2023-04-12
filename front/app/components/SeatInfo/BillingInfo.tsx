@@ -46,7 +46,7 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
   const maximumSeatNumbers: SeatNumbersType = {
     admin:
       appConfiguration?.data.attributes.settings.core.maximum_admins_number,
-    collaborator:
+    moderator:
       appConfiguration?.data.attributes.settings.core.maximum_moderators_number,
   };
   const maximumSeatNumber = maximumSeatNumbers[seatType];
@@ -54,7 +54,7 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
   const additionalSeatNumbers: SeatNumbersType = {
     admin:
       appConfiguration?.data.attributes.settings.core.additional_admins_number,
-    collaborator:
+    moderator:
       appConfiguration?.data.attributes.settings.core
         .additional_moderators_number,
   };
@@ -67,16 +67,16 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
 
   const usedSeats = {
     admin: seats.data.attributes.admins_number,
-    collaborator: seats.data.attributes.project_moderators_number,
+    moderator: seats.data.attributes.project_moderators_number,
   }[seatType];
   const seatTypeTitleMessages: SeatTypeMessageDescriptor = {
     admin: messages.adminSeats,
-    collaborator: messages.collaboratorSeats,
+    moderator: messages.collaboratorSeats,
   };
   const seatTypeTitleMessage = seatTypeTitleMessages[seatType];
   const seatTypeTooltipMessages: SeatTypeMessageDescriptor = {
     admin: messages.adminSeatsTooltip,
-    collaborator: messages.collaboratorSeatsTooltip,
+    moderator: messages.collaboratorSeatsTooltip,
   };
   const seatTypeTooltipMessage = seatTypeTooltipMessages[seatType];
   const totalSeats = additionalSeats + maximumSeatNumber;
