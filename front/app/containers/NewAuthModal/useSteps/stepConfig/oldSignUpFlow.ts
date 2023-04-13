@@ -83,8 +83,6 @@ export const oldSignUpFlow = (
           const emailConfirmationRequired =
             requirements.special.confirmation === 'require';
 
-          console.log(requirements);
-
           if (emailConfirmationRequired) {
             setCurrentStep('sign-up:email-confirmation');
             return;

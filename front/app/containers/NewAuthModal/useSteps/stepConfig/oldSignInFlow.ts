@@ -84,7 +84,6 @@ export const oldSignInFlow = (
           setStatus('ok');
 
           const { requirements } = await getRequirements();
-          console.log(requirements);
 
           if (askCustomFields(requirements.custom_fields)) {
             setCurrentStep('custom-fields');
