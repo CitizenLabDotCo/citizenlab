@@ -461,7 +461,7 @@ class User < ApplicationRecord
   end
 
   def confirm!
-    return unless registered_with_email? && confirmation_required?
+    return unless registered_with_email? && (confirmation_required? || new_email.present?)
 
     confirm_new_email if new_email.present?
     confirm
