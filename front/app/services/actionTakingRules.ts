@@ -312,7 +312,7 @@ const pollTakingDisabledReason = (
   switch (backendReason) {
     case 'missing_data':
       return {
-        disabledReason: 'maybeNotPermitted',
+        disabledReason: 'notActive',
         authenticationRequirements: 'complete_registration',
       };
     case 'project_inactive':
@@ -423,6 +423,8 @@ const surveyTakingDisabledReason = (
   signedIn: boolean
 ): ISurveyTakingDisabledReason => {
   switch (backendReason) {
+    case 'missing_data':
+      return 'notActive';
     case 'project_inactive':
       return 'projectInactive';
     case 'not_signed_in':

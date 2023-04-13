@@ -85,6 +85,21 @@ const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
   const project = useProject({ projectId });
   const phase = usePhase(phaseId);
 
+  if (
+    isNilOrError(pollQuestions) ||
+    isNilOrError(project) ||
+    !(type === 'phase' ? !isNilOrError(phase) : true)
+  ) {
+    return null;
+  }
+
+  const isSignedIn = !isNilOrError(authUser);
+  const { enabled, disabledReason } = getPollTakingRules({
+    project,
+    phaseContext: isNilOrError(phase) ? null : phase,
+    signedIn: !!authUser,
+  });
+
   const signUpIn = (flow: 'signin' | 'signup') => {
     const pcType = phaseId ? 'phase' : 'project';
     const pcId = phaseId ? phaseId : projectId;
@@ -109,20 +124,6 @@ const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
     signUpIn('signup');
   };
 
-  if (
-    isNilOrError(pollQuestions) ||
-    isNilOrError(project) ||
-    !(type === 'phase' ? !isNilOrError(phase) : true)
-  ) {
-    return null;
-  }
-
-  const isSignedIn = !isNilOrError(authUser);
-  const { enabled, disabledReason } = getPollTakingRules({
-    project,
-    phaseContext: isNilOrError(phase) ? null : phase,
-    signedIn: !!authUser,
-  });
   const message = disabledReason
     ? disabledMessages[disabledReason]
     : isSignedIn
