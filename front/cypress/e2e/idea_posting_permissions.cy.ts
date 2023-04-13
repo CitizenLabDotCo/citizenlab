@@ -40,22 +40,22 @@ describe('Idea posting permissions', () => {
       });
   });
 
-  describe.skip('a project that requires verification', () => {
+  describe('a project that requires verification', () => {
     it('sends unverified users to the signup flow', () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       cy.visit('projects/verified-ideation');
       cy.acceptCookies();
-      cy.get('.e2e-idea-button:visible').click();
+      cy.get('#e2e-idea-button').first().click();
       cy.wait(4000); // sometimes the next line fails on CI. Not sure how to properly fix it
-      cy.get('#e2e-verification-wizard-root');
+      cy.get('#e2e-verification-wizard-root').should('exist');
     });
 
     it('lets verified users post', () => {
       cy.setLoginCookie(verifiedEmail, verifiedPassword);
       cy.visit('projects/verified-ideation');
       cy.acceptCookies();
-      cy.get('.e2e-idea-button:visible').click();
-      cy.get('#e2e-new-idea-form');
+      cy.get('#e2e-idea-button').first().click();
+      cy.get('#e2e-idea-new-page').should('exist');
     });
   });
 
