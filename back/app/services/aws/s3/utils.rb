@@ -34,15 +34,24 @@ module Aws
       # @param [String] from_bucket
       # @param [String] to_bucket
       # @param [String] prefix
+      # @param [Hash] copy_args Extra parameters forwarded to Aws::S3::Client#copy_object
       # @param [Integer] num_threads
       # @return [Hash{String => String}] Mapping of original keys to new keys
-      def copy_objects(from_bucket, to_bucket, prefix, num_threads: 4)
+      def copy_objects(from_bucket, to_bucket, prefix, copy_args: {}, num_threads: 4)
         Parallel.map(objects(bucket: from_bucket, prefix: prefix), in_threads: num_threads) do |object|
           key = object.key
           destination_key = yield key
-          copy_source = "#{from_bucket}/#{key}"
+
           if destination_key
-            @s3_client.copy_object(bucket: to_bucket, copy_source: copy_source, key: destination_key)
+            copy_source = "#{from_bucket}/#{key}"
+
+            @s3_client.copy_object(
+              bucket: to_bucket,
+              copy_source: copy_source,
+              key: destination_key,
+              **copy_args
+            )
+
             [key, destination_key]
           end
         end.compact.to_h
