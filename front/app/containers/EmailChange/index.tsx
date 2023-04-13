@@ -80,15 +80,15 @@ const EmailChange = () => {
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
-      if (!isNilOrError(authUser)) {
-        await updateUser(authUser.id, { ...formValues });
-      }
       // If confirmation required, launch modal
       if (appConfiguration.data?.data.attributes.settings.user_confirmation) {
         resendEmailConfirmationCode(formValues.email);
         setNewEmail(formValues.email);
         setOpenConfirmationModal(true);
       } else {
+        if (!isNilOrError(authUser)) {
+          await updateUser(authUser.id, { ...formValues });
+        }
         setUpdateSuccessful(true);
       }
     } catch (error) {
