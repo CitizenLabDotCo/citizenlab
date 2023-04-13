@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 class TrendingIdeaService
-  def filter_trending(ideas = Idea.not_from_survey)
+  def filter_trending(ideas = Idea.all)
     with_trending_score(ideas.not_from_survey)
       .where('sub.is_trending' => true)
   end
 
-  def sort_trending(ideas = Idea.not_from_survey)
+  def sort_trending(ideas = Idea.all)
     with_trending_score(ideas.not_from_survey)
       .order('trending_score DESC')
   end
 
-  def with_trending_score(ideas = Idea.not_from_survey)
+  def with_trending_score(ideas = Idea.all)
     sub_query = Idea
       .joins(:idea_status)
       .joins(:idea_trending_info)
