@@ -15,16 +15,14 @@ describe 'WebApi::V1::External::TenantSerializer' do
             'enabled' => true,
             'locales' => %w[en fr-FR nl-NL],
             'currency' => 'EUR',
-            'timezone' => 'Brussels',
+            'timezone' => 'Europe/Brussels',
             'color_main' => anything,
             'color_text' => anything,
             'color_secondary' => anything,
             'lifecycle_stage' => 'active',
             'organization_name' => { 'en' => 'Liege', 'fr-FR' => 'Liege', 'nl-NL' => 'Luik' },
             'organization_type' => 'medium_city',
-            'authentication_token_lifetime_in_days' => 30,
-            'maximum_admins_number' => 10,
-            'maximum_moderators_number' => 10
+            'authentication_token_lifetime_in_days' => 30
           },
         'initiatives' =>
           { 'allowed' => true,

@@ -23,11 +23,22 @@ resource 'Users' do
         parameter :size, 'Number of users per page'
       end
       parameter :search, 'Filter by searching in first_name, last_name and email', required: false
-      parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
+      parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', " \
+                       "'-email', 'role', '-role'", required: false
       parameter :group, 'Filter by group_id', required: false
-      parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
-      parameter :can_moderate, 'Filter out admins and moderators', required: false
-
+      parameter :can_moderate, 'All admins + users with either a project &/or folder moderator role', required: false
+      parameter :can_moderate_project, 'All admins + users who can moderate the project (by project id), ' \
+                                       'excluding folder moderators of folder containing project ' \
+                                       '(who can, in fact, moderate the project), ' \
+                                       'OR All admins + users with project moderator role ' \
+                                       '(if no project ID provided)', required: false
+      parameter :is_not_project_moderator, 'Users who are not admins, nor project moderator of project, ' \
+                                           'nor folder moderator of folder containing project (by project id), ' \
+                                           'OR Users who are not admins, nor have project moderator role ' \
+                                           '(if no project ID provided)', required: false
+      parameter :is_not_folder_moderator, 'Users who are not admins, nor folder moderator of folder (by folder id), ' \
+                                          'OR Users who are not admins, nor have folder moderator role ' \
+                                          '(if no folder ID provided)', required: false
       example_request '[error] List all users' do
         assert_status 401
       end
@@ -55,75 +66,6 @@ resource 'Users' do
       end
     end
 
-    post 'web_api/v1/user_token' do
-      with_options scope: :auth do
-        parameter :email, 'Email'
-        parameter :password, 'Password'
-      end
-
-      context 'with phone password_login turned off' do
-        before do
-          @user = create(:user, password: 'supersecret')
-        end
-
-        let(:email) { @user.email }
-        let(:password) { 'supersecret' }
-
-        example_request 'Authenticate a registered user' do
-          assert_status 201
-          json_response = json_parse(response_body)
-          expect(json_response[:jwt]).to be_present
-        end
-
-        example '[error] Authenticate an invited user' do
-          @user.update! invite_status: 'pending'
-          do_request
-          assert_status 404
-        end
-      end
-
-      context 'with phone password_login turned on' do
-        before do
-          settings = AppConfiguration.instance.settings
-          settings['password_login'] = {
-            'allowed' => true,
-            'enabled' => true,
-            'enable_signup' => true,
-            'phone' => true,
-            'phone_email_pattern' => 'phone+__PHONE__@test.com',
-            'minimum_length' => 6
-          }
-          AppConfiguration.instance.update!(settings: settings)
-        end
-
-        describe do
-          let!(:user) { create(:user, email: 'phone+3248751212@test.com', password: 'supersecret') }
-          let(:email) { '+324 875 12 12' }
-          let(:password) { 'supersecret' }
-
-          example 'Authenticate a registered user by phone number', document: false do
-            do_request
-            assert_status 201
-            json_response = json_parse(response_body)
-            expect(json_response[:jwt]).to be_present
-          end
-        end
-
-        describe do
-          let!(:user) { create(:user, password: 'supersecret') }
-          let(:email) { user.email }
-          let(:password) { 'supersecret' }
-
-          example 'Authenticate a registered user by email', document: false do
-            do_request
-            assert_status 201
-            json_response = json_parse(response_body)
-            expect(json_response[:jwt]).to be_present
-          end
-        end
-      end
-    end
-
     post 'web_api/v1/users' do
       before do
         settings = AppConfiguration.instance.settings
@@ -139,10 +81,10 @@ resource 'Users' do
       end
 
       with_options scope: 'user' do
-        parameter :first_name, 'User full name', required: true
-        parameter :last_name, 'User full name', required: true
+        parameter :first_name, 'User full name', required: false
+        parameter :last_name, 'User full name', required: false
         parameter :email, 'E-mail address', required: true
-        parameter :password, 'Password', required: true
+        parameter :password, 'Password', required: false
         parameter :locale, 'Locale. Should be one of the tenants locales', required: true
         parameter :avatar, 'Base64 encoded avatar image'
         parameter :roles, 'Roles array, only allowed when admin'
@@ -150,148 +92,230 @@ resource 'Users' do
       end
       ValidationErrorHelper.new.error_fields(self, User)
 
-      let(:first_name) { Faker::Name.first_name }
-      let(:last_name) { Faker::Name.last_name }
-      let(:email) { Faker::Internet.email }
-      let(:password) { Faker::Internet.password }
-      let(:locale) { 'en' }
-      let(:avatar) { png_image_as_base64 'lorem-ipsum.jpg' }
+      context 'full registration with a password' do
+        let(:first_name) { Faker::Name.first_name }
+        let(:last_name) { Faker::Name.last_name }
+        let(:email) { Faker::Internet.email }
+        let(:password) { Faker::Internet.password }
+        let(:locale) { 'en' }
+        let(:avatar) { png_image_as_base64 'lorem-ipsum.jpg' }
 
-      example_request 'Create a user' do
-        assert_status 201
+        example_request 'Create a user' do
+          assert_status 201
+        end
+
+        context 'when the user_confirmation module is active' do
+          before do
+            SettingsService.new.activate_feature! 'user_confirmation'
+          end
+
+          example_request 'Registration is not completed by default' do
+            assert_status 201
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_nil # when no custom fields
+          end
+
+          example_request 'Sends a confirmation email' do
+            last_email = ActionMailer::Base.deliveries.last
+            user       = User.order(:created_at).last
+            expect(last_email.body.encoded).to include user.reload.email_confirmation_code
+          end
+
+          example_request 'Requires confirmation' do
+            assert_status 201
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true # when no custom fields
+          end
+        end
+
+        describe 'Creating an admin user' do
+          before do
+            settings = AppConfiguration.instance.settings
+            settings['password_login'] = {
+              'enabled' => true,
+              'allowed' => true,
+              'enable_signup' => true,
+              'minimum_length' => 5,
+              'phone' => false
+            }
+            AppConfiguration.instance.update! settings: settings
+          end
+
+          let(:roles) { [{ type: 'admin' }] }
+
+          example 'creates a user, but not an admin', document: false do
+            create(:admin) # there must be at least on admin, otherwise the next user will automatically be made an admin
+            do_request
+            assert_status 201
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :roles)).to be_empty
+          end
+        end
+
+        describe 'invalid user errors' do
+          before do
+            settings = AppConfiguration.instance.settings
+            settings['password_login'] = {
+              'enabled' => true,
+              'allowed' => true,
+              'enable_signup' => true,
+              'minimum_length' => 5,
+              'phone' => false
+            }
+            AppConfiguration.instance.update! settings: settings
+          end
+
+          let(:password) { 'ab' }
+
+          example '[error] Create an invalid user', document: false do
+            do_request
+            assert_status 422
+            json_response = json_parse response_body
+            expect(json_response).to include_response_error(:password, 'too_short', count: 5)
+          end
+        end
+
+        describe 'invited user creation error' do
+          let!(:invitee) { create(:invited_user) }
+          let(:email) { invitee.email }
+
+          example_request '[error] Registering an invited user' do
+            assert_status 422
+            json_response = json_parse response_body
+            expect(json_response).to include_response_error(
+              :email,
+              'taken_by_invite',
+              value: email,
+              inviter_email: invitee.invitee_invite.inviter.email
+            )
+          end
+        end
+
+        describe 'case insensitive email error' do
+          before do
+            create(:user, email: 'JeZuS@citizenlab.co')
+          end
+
+          let(:email) { 'jEzUs@citizenlab.co' }
+
+          example '[error] Registering a user with case insensitive email duplicate', document: false do
+            do_request
+            assert_status 422
+          end
+        end
+
+        context 'with phone password_login turned on' do
+          before do
+            settings = AppConfiguration.instance.settings
+            settings['password_login'] = {
+              'allowed' => true,
+              'enabled' => true,
+              'enable_signup' => true,
+              'phone' => true,
+              'phone_email_pattern' => 'phone+__PHONE__@test.com',
+              'minimum_length' => 6
+            }
+            AppConfiguration.instance.update!(settings: settings)
+          end
+
+          describe 'email registration' do
+            let(:email) { 'someone@citizenlab.co' }
+
+            example 'Register with email when an email is passed', document: false do
+              do_request
+              assert_status 201
+              expect(User.find_by(email: email)).to be_present
+            end
+          end
+
+          describe 'phone registration' do
+            let(:email) { '+32 487 36 58 98' }
+
+            example 'Registers a user with a phone number in the email when a phone number is passed', document: false do
+              do_request
+              assert_status 201
+              expect(User.find_by(email: 'phone+32487365898@test.com')).to be_present
+            end
+          end
+        end
       end
 
-      context 'when the user_confirmation module is active' do
+      context 'light registration without a password' do
+        let(:email) { Faker::Internet.email }
+        let(:locale) { 'en' }
+
         before do
           SettingsService.new.activate_feature! 'user_confirmation'
         end
 
-        example_request 'Registration is not completed by default' do
-          assert_status 201
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_nil # when no custom fields
-        end
-
-        example_request 'Sends a confirmation email' do
-          last_email = ActionMailer::Base.deliveries.last
-          user       = User.order(:created_at).last
-          expect(last_email.body.encoded).to include user.reload.email_confirmation_code
-        end
-
-        example_request 'Requires confirmation' do
-          assert_status 201
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true # when no custom fields
-        end
-      end
-
-      describe 'Creating an admin user' do
-        before do
-          settings = AppConfiguration.instance.settings
-          settings['password_login'] = {
-            'enabled' => true,
-            'allowed' => true,
-            'enable_signup' => true,
-            'minimum_length' => 5,
-            'phone' => false
-          }
-          AppConfiguration.instance.update! settings: settings
-        end
-
-        let(:roles) { [{ type: 'admin' }] }
-
-        example 'creates a user, but not an admin', document: false do
-          create(:admin) # there must be at least on admin, otherwise the next user will automatically be made an admin
-          do_request
-          assert_status 201
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :roles)).to be_empty
-        end
-      end
-
-      describe do
-        before do
-          settings = AppConfiguration.instance.settings
-          settings['password_login'] = {
-            'enabled' => true,
-            'allowed' => true,
-            'enable_signup' => true,
-            'minimum_length' => 5,
-            'phone' => false
-          }
-          AppConfiguration.instance.update! settings: settings
-        end
-
-        let(:password) { 'ab' }
-
-        example '[error] Create an invalid user', document: false do
-          do_request
-          assert_status 422
-          json_response = json_parse response_body
-          expect(json_response).to include_response_error(:password, 'too_short', count: 5)
-        end
-      end
-
-      describe do
-        let!(:invitee) { create(:invited_user) }
-        let(:email) { invitee.email }
-
-        example_request '[error] Registering an invited user' do
-          assert_status 422
-          json_response = json_parse response_body
-          expect(json_response).to include_response_error(
-            :email,
-            'taken_by_invite',
-            value: email,
-            inviter_email: invitee.invitee_invite.inviter.email
-          )
-        end
-      end
-
-      describe do
-        before do
-          create(:user, email: 'JeZuS@citizenlab.co')
-        end
-
-        let(:email) { 'jEzUs@citizenlab.co' }
-
-        example '[error] Registering a user with case insensitive email duplicate', document: false do
-          do_request
-          assert_status 422
-        end
-      end
-
-      context 'with phone password_login turned on' do
-        before do
-          settings = AppConfiguration.instance.settings
-          settings['password_login'] = {
-            'allowed' => true,
-            'enabled' => true,
-            'enable_signup' => true,
-            'phone' => true,
-            'phone_email_pattern' => 'phone+__PHONE__@test.com',
-            'minimum_length' => 6
-          }
-          AppConfiguration.instance.update!(settings: settings)
-        end
-
-        describe do
-          let(:email) { 'someone@citizenlab.co' }
-
-          example 'Register with email when an email is passed', document: false do
-            do_request
+        describe 'create a user with no password' do
+          example_request 'User successfully created and requires confirmation' do
             assert_status 201
-            expect(User.find_by(email: email)).to be_present
+
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :confirmation_required)).to be(true)
+          end
+
+          example_request 'Registration is not completed by default' do
+            assert_status 201
+
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_nil
+          end
+
+          example_request 'Sends a confirmation email' do
+            last_email = ActionMailer::Base.deliveries.last
+            user       = User.order(:created_at).last
+            expect(last_email.body.encoded).to include user.reload.email_confirmation_code
           end
         end
 
-        describe do
-          let(:email) { '+32 487 36 58 98' }
+        describe 'Reusing an existing user with no password' do
+          context 'when there is an existing user that has no password' do
+            before do
+              create(:user, email: email, password: nil)
+            end
 
-          example 'Registers a user with a phone number in the email when a phone number is passed', document: false do
-            do_request
-            assert_status 201
-            expect(User.find_by(email: 'phone+32487365898@test.com')).to be_present
+            example_request 'existing user is successfully returned and confirmation requirement is reset and email resent' do
+              assert_status 200
+
+              json_response = json_parse(response_body)
+              expect(json_response.dig(:data, :attributes, :confirmation_required)).to be(true)
+
+              last_email = ActionMailer::Base.deliveries.last
+              user       = User.order(:created_at).last
+              expect(last_email.body.encoded).to include user.reload.email_confirmation_code
+            end
+
+            context 'when the request tries to pass additional changed attributes' do
+              let(:first_name) { Faker::Name.first_name }
+
+              example_request 'email taken error is returned and confirmation requirement is not reset' do
+                assert_status 422
+
+                json_response = json_parse(response_body)
+                expect(json_response.dig(:errors, :email, 0, :error)).to eq('taken')
+
+                user = User.order(:created_at).last
+                expect(user.confirmation_required?).to be(false)
+              end
+            end
+          end
+
+          context 'when there is an existing user WITH a password' do
+            before do
+              create(:user, email: email, password: 'gravy123')
+            end
+
+            example_request 'email taken error is returned and confirmation requirement is not reset' do
+              assert_status 422
+
+              json_response = json_parse(response_body)
+              expect(json_response.dig(:errors, :email, 0, :error)).to eq('taken')
+
+              user = User.order(:created_at).last
+              expect(user.confirmation_required?).to be(false)
+            end
           end
         end
       end
@@ -329,7 +353,8 @@ resource 'Users' do
           expect(json_response[:data].size).to eq 6
         end
 
-        example_request 'List all users includes user blocking related data' do
+        example 'List all users includes user blocking related data', document: false do
+          do_request
           expect(status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response[:data][0][:attributes]).to have_key(:blocked)
@@ -446,6 +471,39 @@ resource 'Users' do
           end
         end
 
+        describe 'Not moderator filters' do
+          before do
+            @user                       = create(:user)
+            @admin                      = create(:admin)
+            @project                    = create(:project)
+            @project_folder             = create(:project_folder, projects: [@project])
+            @project_moderator          = create(:project_moderator, projects: [@project])
+            @moderator_of_other_project = create(:project_moderator, projects: [create(:project)])
+            @project_folder_moderator   = create(:project_folder_moderator, project_folders: [@project_folder])
+            @moderator_of_other_folder  = create(:project_folder_moderator, project_folders: [create(:project_folder)])
+          end
+
+          example 'List only users who cannot moderate a specific project' do
+            do_request is_not_project_moderator: @project.id
+            expect(status).to eq 200
+
+            user_ids = json_parse(response_body)[:data].pluck(:id)
+            expect(user_ids).to include(@user.id, @moderator_of_other_project.id, @moderator_of_other_folder.id)
+            expect(user_ids).not_to include(@admin.id, @project_moderator.id, @project_folder_moderator.id)
+          end
+
+          example 'List only users who cannot moderate a specific folder' do
+            do_request is_not_folder_moderator: @project_folder.id
+            expect(status).to eq 200
+
+            user_ids = json_parse(response_body)[:data].pluck(:id)
+            expect(user_ids).to include(
+              @user.id, @project_moderator.id, @moderator_of_other_project.id, @moderator_of_other_folder.id
+            )
+            expect(user_ids).not_to include(@admin.id, @project_folder_moderator.id)
+          end
+        end
+
         example 'List all users who can moderate a project' do
           p = create(:project)
           a = create(:admin)
@@ -482,20 +540,6 @@ resource 'Users' do
           do_request(can_admin: true)
           json_response = json_parse(response_body)
           expect(json_response[:data].pluck(:id)).to match_array [a.id, @user.id]
-        end
-
-        include_context 'when user_blocking duration is 90 days' do
-          example 'List all blocked users' do
-            blocked_users = create_list(:user, 2, block_start_at: 30.days.ago)
-
-            do_request only_blocked: true
-
-            expect(status).to eq 200
-            json_response = json_parse(response_body)
-            expect(User.count).to be > blocked_users.count # If unblocked users exist, then subsequent tests meaningful.
-            expect(json_response[:data].size).to eq 2
-            expect(json_response[:data].pluck(:id)).to match_array blocked_users.map(&:id)
-          end
         end
       end
 
@@ -613,64 +657,60 @@ resource 'Users' do
         end
       end
 
-      include_context 'when user_blocking duration is 90 days' do
-        get 'web_api/v1/users/blocked_count' do
-          example 'Get count of blocked users' do
-            create_list(:user, 2, block_start_at: 30.days.ago)
+      get 'web_api/v1/users/blocked_count' do
+        example 'Get count of blocked users' do
+          create_list(:user, 2, block_end_at: 5.days.from_now)
 
-            do_request
+          do_request
 
-            expect(status).to eq 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :blocked_users_count)).to eq 2
-          end
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :count)).to eq 2
+        end
+      end
+
+      patch 'web_api/v1/users/:id/block' do
+        before do
+          settings = AppConfiguration.instance.settings
+          settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
+          AppConfiguration.instance.update!(settings: settings)
         end
 
-        patch 'web_api/v1/users/:id/block' do
-          with_options scope: 'user' do
-            parameter :block_reason, 'Reason for blocking & any additional information', required: false
-          end
-          ValidationErrorHelper.new.error_fields(self, User)
+        with_options scope: 'user' do
+          parameter :block_reason, 'Reason for blocking & any additional information', required: false
+        end
+        ValidationErrorHelper.new.error_fields(self, User)
 
-          let!(:user) { create(:user) }
-          let!(:id) { user.id }
+        let!(:user) { create(:user) }
+        let!(:id) { user.id }
 
-          example 'Block a user using an empty request' do
-            do_request
+        example 'Block a user using a null value for block_reason' do
+          do_request user: { block_reason: nil }
 
-            expect(status).to eq 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :blocked)).to be true
-          end
-
-          example 'Block a user using a null value for block_reason' do
-            do_request user: { block_reason: nil }
-
-            expect(status).to eq 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :blocked)).to be true
-          end
-
-          example 'Block a user and provide a reason' do
-            do_request user: { block_reason: 'reason' }
-
-            expect(status).to eq 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :blocked)).to be true
-          end
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :blocked)).to be true
         end
 
-        patch 'web_api/v1/users/:id/unblock' do
-          let!(:user) { create(:user, block_start_at: 5.days.ago) }
-          let!(:id) { user.id }
+        example 'Block a user and provide a reason' do
+          do_request user: { block_reason: 'reason' }
 
-          example 'unblock a user' do
-            do_request
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :blocked)).to be true
+        end
+      end
 
-            expect(status).to eq 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :blocked)).to be false
-          end
+      patch 'web_api/v1/users/:id/unblock' do
+        let!(:user) { create(:user, block_end_at: 5.days.from_now) }
+        let!(:id) { user.id }
+
+        example 'unblock a user' do
+          do_request
+
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :blocked)).to be false
         end
       end
 
@@ -693,7 +733,7 @@ resource 'Users' do
 
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
-          let(:project) { create(:continuous_project) }
+          let(:project) { create(:continuous_project, with_permissions: true) }
 
           before do
             old_timers = create(:smart_group, rules: [
@@ -871,7 +911,7 @@ resource 'Users' do
 
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
-          let(:project) { create(:continuous_project) }
+          let(:project) { create :continuous_project, with_permissions: true }
 
           before do
             old_timers = create(:smart_group, rules: [
@@ -1049,11 +1089,12 @@ resource 'Users' do
           expect(json_response.dig(:data, :attributes, :custom_field_values, cf2.key.to_sym)).to eq [cf2_options.first.key]
         end
 
-        example '[error] Complete the registration of a user fails if not all required fields are provided' do
-          @user.update! registration_completed_at: nil
-          do_request(user: { custom_field_values: { cf2.key => nil } })
-          assert_status 422
-        end
+        # TODO: Allow light users without required fields
+        # example '[error] Complete the registration of a user fails if not all required fields are provided' do
+        #   @user.update! registration_completed_at: nil
+        #   do_request(user: { custom_field_values: { cf2.key => nil } })
+        #   assert_status 422
+        # end
 
         example '[error] Complete the registration of a user fails if the user has already completed signup' do
           do_request

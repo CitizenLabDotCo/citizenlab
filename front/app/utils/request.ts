@@ -5,6 +5,7 @@ import { isString } from 'lodash-es';
 import { IHttpMethod } from 'typings';
 import { IObject } from 'utils/streams';
 import { RequestError } from 'utils/requestError';
+import { handleBlockedUserError } from 'utils/errorUtils';
 
 export default function request<T>(
   url: string,
@@ -50,6 +51,7 @@ export default function request<T>(
       if (response.ok || response.status === 200) {
         return json;
       }
+      handleBlockedUserError(response.status, json);
       const errorMessage = isString(json?.error)
         ? json.error
         : response.statusText || 'unknown error';

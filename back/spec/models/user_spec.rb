@@ -34,58 +34,46 @@ RSpec.describe User, type: :model do
       expect(invitee.invitee_invite.invitee.id).to eq invitee.id
     end
 
-    it 'does not generate a slug if no names given' do
+    it 'does not generate a slug if an invited user' do
       invitee = create(:invited_user, first_name: nil, last_name: nil)
       expect(invitee.slug).to be_nil
     end
   end
 
-  include_context 'when user_blocking duration is 90 days' do
-    describe 'blocked?' do
-      let!(:user1) { create(:user, block_start_at: 89.days.ago) }
-      let!(:user2) { create(:user, block_start_at: 90.days.ago) }
-      let!(:user3) { create(:user, block_start_at: 50.days.ago) }
+  describe 'creating a light user - email & locale only' do
+    it 'is valid and generates a slug' do
+      u = described_class.new(email: 'test@test.com', locale: 'en')
+      u.save
+      expect(u).to be_valid
+      expect(u.slug).not_to be_nil
+    end
+  end
 
-      it 'Blocked users should be blocked for block duration' do
-        expect(user1.blocked?).to be(true)
-        expect(user2.blocked?).to be(false)
-      end
+  describe 'blocked?' do
+    let!(:user1) { create(:user, block_end_at: 1.day.from_now) }
+    let!(:user2) { create(:user, block_end_at: 5.minutes.ago) }
+    let!(:user3) { create(:user, block_end_at: 5.days.from_now) }
 
-      it 'Blocked users should be blocked or unblocked according to changes in block duration' do
-        expect(user1.blocked?).to be(true)
+    it 'Blocked users should be blocked for block duration' do
+      expect(user1.blocked?).to be(true)
+      expect(user2.blocked?).to be(false)
+    end
 
-        settings = AppConfiguration.instance.settings
-        settings['user_blocking']['duration'] = 60
-        AppConfiguration.instance.update!(settings: settings)
+    it "Blocked users 'blocked' status should be decoupled from user_blocking feature flag" do
+      settings = AppConfiguration.instance.settings
+      settings['user_blocking'] = { 'enabled' => false, 'allowed' => false, 'duration' => 90 }
+      AppConfiguration.instance.update!(settings: settings)
 
-        expect(user1.blocked?).to be(false)
-        expect(user3.blocked?).to be(true)
-      end
+      expect(user1.blocked?).to be(true)
+      expect(user2.blocked?).to be(false)
+    end
 
-      it "Blocked users 'blocked' status should be decoupled from user_blocking feature flag" do
-        settings = AppConfiguration.instance.settings
-        settings['user_blocking']['enabled'] = false
-        AppConfiguration.instance.update!(settings: settings)
+    it 'Only blocked users should be returned in scope :blocked' do
+      blocked_users = described_class.all.blocked
 
-        expect(user1.blocked?).to be(true)
-        expect(user2.blocked?).to be(false)
-      end
-
-      it 'Blocked users should be returned in scope :blocked' do
-        blocked_users = described_class.all.blocked
-
-        expect(blocked_users.count).to eq 2
-        expect(blocked_users).to include(user1)
-        expect(blocked_users).not_to include(user2)
-      end
-
-      it 'Should be no blocked users if block duration is zero' do
-        settings = AppConfiguration.instance.settings
-        settings['user_blocking']['duration'] = 0
-        AppConfiguration.instance.update!(settings: settings)
-
-        expect(described_class.all.blocked.count).to eq 0
-      end
+      expect(blocked_users.count).to eq 2
+      expect(blocked_users).to match_array([user1, user3])
+      expect(blocked_users).not_to include(user2)
     end
   end
 
@@ -116,6 +104,58 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'authentication without password' do
+    context 'when user_confirmation feature is active' do
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+      end
+
+      it 'should be allowed if the user has no password and confirmation is required' do
+        u = described_class.new(email: 'bob@citizenlab.co')
+        expect(!!u.authenticate('')).to be(true)
+      end
+
+      it 'should not be allowed if a password has been supplied in the request' do
+        u = described_class.new(email: 'bob@citizenlab.co')
+        expect(!!u.authenticate('any_string')).to be(false)
+      end
+
+      it 'should not be allowed if a password has been set' do
+        u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
+        expect(!!u.authenticate('')).to be(false)
+      end
+
+      it 'should not be allowed if confirmation is not required' do
+        u = described_class.new(email: 'bob@citizenlab.co')
+        u.confirm
+        expect(!!u.authenticate('')).to be(false)
+      end
+    end
+
+    context 'when user_confirmation feature is not active' do
+      before do
+        SettingsService.new.deactivate_feature! 'user_confirmation'
+      end
+
+      it 'should not be allowed if no password has been set and confirmation is required' do
+        u = described_class.new(email: 'bob@citizenlab.co')
+        expect(!!u.authenticate('')).to be(false)
+        expect(!!u.authenticate('any_string')).to be(false)
+      end
+
+      it 'should not be allowed if a password has been set' do
+        u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
+        expect(!!u.authenticate('')).to be(false)
+      end
+
+      it 'should not be allowed if confirmation is not required' do
+        u = described_class.new(email: 'bob@citizenlab.co')
+        u.confirm
+        expect(!!u.authenticate('')).to be(false)
+      end
+    end
+  end
+
   describe 'email' do
     it 'is invalid if there is a case insensitive duplicate' do
       create(:user, email: 'KoEn@citizenlab.co')
@@ -131,9 +171,26 @@ RSpec.describe User, type: :model do
   end
 
   describe 'password' do
-    it 'is invalid when set to empty string' do
+    it 'is valid when set to empty string' do
+      # This is allowed to allow accounts without a password
       u = build(:user, password: '')
-      expect(u).to be_invalid
+      expect(u).to be_valid
+    end
+
+    it 'is valid when nil' do
+      # This is allowed to allow accounts without a password
+      u = build(:user, password: nil)
+      expect(u).to be_valid
+    end
+
+    it 'does not create a password digest if the password is empty' do
+      u = build(:user, password: '')
+      expect(u.password_digest).to be_nil
+    end
+
+    it 'does not create a password digest if the password is nil' do
+      u = build(:user, password: nil)
+      expect(u.password_digest).to be_nil
     end
 
     it 'is invalid if its a common password' do
@@ -409,6 +466,163 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'moderator scopes' do
+    let(:user) { create(:user) }
+    let(:admin) { create(:admin) }
+    let!(:project) { create(:project) }
+    let!(:project_folder) { create(:project_folder, projects: [project]) }
+    let(:project_moderator) { create(:project_moderator, projects: [project]) }
+    let(:moderator_of_other_project) { create(:project_moderator, projects: [create(:project)]) }
+    let(:project_folder_moderator) { create(:project_folder_moderator, project_folders: [project_folder]) }
+    let(:moderator_of_other_folder) { create(:project_folder_moderator, project_folders: [create(:project_folder)]) }
+
+    describe '.project_moderator' do
+      context 'when a project ID is provided' do
+        it 'excludes regular user with no roles' do
+          expect(described_class.project_moderator(project.id)).not_to include(user)
+        end
+
+        it 'excludes admins' do
+          expect(described_class.project_moderator(project.id)).not_to include(admin)
+        end
+
+        it 'includes project moderators of project' do
+          expect(described_class.project_moderator(project.id)).to include(project_moderator)
+        end
+
+        it 'excludes project moderators of other projects' do
+          expect(described_class.project_moderator(project.id)).not_to include(moderator_of_other_project)
+        end
+
+        it 'excludes folder moderators of project folder' do
+          expect(described_class.project_moderator(project.id)).not_to include(project_folder_moderator)
+        end
+
+        it 'excludes folder moderators of other folders' do
+          expect(described_class.project_moderator(project.id)).not_to include(moderator_of_other_folder)
+        end
+      end
+
+      context 'when a project ID is not provided' do
+        it 'includes only users with a project moderator role' do
+          expect(described_class.project_moderator)
+            .to match_array([project_moderator, moderator_of_other_project])
+        end
+      end
+    end
+
+    describe '.project_folder_moderator' do
+      context 'when a folder ID is provided' do
+        it 'excludes regular user with no roles' do
+          expect(described_class.project_folder_moderator(project_folder.id)).not_to include(user)
+        end
+
+        it 'excludes admins' do
+          expect(described_class.project_folder_moderator(project_folder.id)).not_to include(admin)
+        end
+
+        it 'includes folder moderators of folder' do
+          expect(described_class.project_folder_moderator(project_folder.id)).to include(project_folder_moderator)
+        end
+
+        it 'excludes folder moderators of folder' do
+          expect(described_class.project_folder_moderator(project_folder.id)).not_to include(moderator_of_other_folder)
+        end
+
+        it 'excludes project moderators who are not also moderator of the folder' do
+          expect(described_class.project_folder_moderator(project_folder.id)).not_to include(project_moderator)
+          expect(described_class.project_folder_moderator(project_folder.id)).not_to include(moderator_of_other_project)
+        end
+
+        it 'includes project moderators who are also moderator of the folder' do
+          moderator_of_other_project.roles << { type: 'project_folder_moderator', project_folder_id: project_folder.id }
+          moderator_of_other_project.save!
+
+          expect(described_class.project_folder_moderator(project_folder.id)).to include(moderator_of_other_project)
+        end
+      end
+
+      context 'when a folder ID is not provided' do
+        it 'includes only users with a folder moderator role' do
+          expect(described_class.project_folder_moderator)
+            .to match_array([project_folder_moderator, moderator_of_other_folder])
+        end
+      end
+    end
+
+    describe '.not_project_moderator' do
+      context 'when a project ID is provided' do
+        it 'includes regular user with no roles' do
+          expect(described_class.not_project_moderator(project.id)).to include(user)
+        end
+
+        it 'includes admins' do
+          expect(described_class.not_project_moderator(project.id)).to include(admin)
+        end
+
+        it 'excludes project moderators of project' do
+          expect(described_class.not_project_moderator(project.id)).not_to include(project_moderator)
+        end
+
+        it 'includes project moderators of other projects' do
+          expect(described_class.not_project_moderator(project.id)).to include(moderator_of_other_project)
+        end
+
+        it 'excludes folder moderators of project folder' do
+          expect(described_class.not_project_moderator(project.id)).not_to include(project_folder_moderator)
+        end
+
+        it 'includes folder moderators of other folders' do
+          expect(described_class.not_project_moderator(project.id)).to include(moderator_of_other_folder)
+        end
+      end
+
+      context 'when a project ID is not provided' do
+        it 'includes only users without a project moderator role' do
+          expect(described_class.not_project_moderator)
+            .to match_array([user, admin, project_folder_moderator, moderator_of_other_folder])
+        end
+      end
+    end
+
+    describe '.not_project_folder_moderator' do
+      context 'when a folder ID is provided' do
+        it 'includes regular user with no roles' do
+          expect(described_class.not_project_folder_moderator(project_folder.id)).to include(user)
+        end
+
+        it 'includes admins' do
+          expect(described_class.not_project_folder_moderator(project_folder.id)).to include(admin)
+        end
+
+        it 'excludes folder moderators of folder' do
+          expect(described_class.not_project_folder_moderator(project_folder.id))
+            .not_to include(project_folder_moderator)
+        end
+
+        it 'includes folder moderators of other folders' do
+          expect(described_class.not_project_folder_moderator(project_folder.id)).to include(moderator_of_other_folder)
+        end
+
+        it 'includes project moderators of projects in folder' do
+          expect(described_class.not_project_folder_moderator(project_folder.id)).to include(project_moderator)
+        end
+
+        it 'includes project moderators of projects not in folder' do
+          expect(described_class.not_project_folder_moderator(project_folder.id))
+            .to include(moderator_of_other_project)
+        end
+      end
+
+      context 'when a folder ID is not provided' do
+        it 'includes only users without a folder moderator role' do
+          expect(described_class.not_project_folder_moderator)
+            .to match_array([user, admin, project_moderator, moderator_of_other_project])
+        end
+      end
+    end
+  end
+
   describe 'add_role' do
     it 'gives a user moderator rights for a project' do
       usr = create(:user, roles: [])
@@ -507,18 +721,31 @@ RSpec.describe User, type: :model do
   end
 
   describe 'custom_field_values' do
-    it 'validates when custom_field_values have changed' do
-      u = create(:user)
-      u.custom_field_values = {
-        somekey: 'somevalue'
-      }
-      expect { u.save }.to(change { u.errors[:custom_field_values] })
-    end
+    # TODO: Allow light users without required fields
+    # it 'validates when custom_field_values have changed' do
+    #   u = create(:user)
+    #   u.custom_field_values = {
+    #     somekey: 'somevalue'
+    #   }
+    #   expect { u.save }.to(change { u.errors[:custom_field_values] })
+    # end
 
     it "doesn't validate when custom_field_values hasn't changed" do
       u = build(:user, custom_field_values: { somekey: 'somevalue' })
       u.save(validate: false)
       expect { u.save }.not_to(change { u.errors[:custom_field_values] })
+    end
+  end
+
+  describe 'registered?' do
+    it 'returns false when the user has not completed registration' do
+      u = build(:user, registration_completed_at: nil)
+      expect(u.registered?).to be false
+    end
+
+    it 'returns true when the user has completed registration' do
+      u = build(:user)
+      expect(u.registered?).to be true
     end
   end
 
@@ -528,21 +755,14 @@ RSpec.describe User, type: :model do
       expect(u.active?).to be false
     end
 
-    it 'return false when the user has a pending invitation' do
-      u = build(:user, invite_status: 'pending')
-      expect(u.active?).to be false
-    end
-
     it 'returns true when the user has completed signup' do
       u = build(:user)
       expect(u.active?).to be true
     end
 
-    include_context 'when user_blocking duration is 90 days' do
-      it 'returns false when the user is blocked' do
-        u = build(:user, block_start_at: Time.now)
-        expect(u.active?).to be false
-      end
+    it 'returns false when the user is blocked' do
+      u = build(:user, block_end_at: 5.days.from_now)
+      expect(u.active?).to be false
     end
   end
 
@@ -841,6 +1061,35 @@ RSpec.describe User, type: :model do
         user.save!
         expect { user.confirm! }.to change(user, :saved_change_to_email_confirmed_at?)
       end
+    end
+  end
+
+  describe '#no_name?' do
+    it 'returns true if first_name and last_name are not set' do
+      user = described_class.new(email: 'test@citizenlab.co')
+      expect(user.no_name?).to be true
+    end
+
+    it 'returns false if first_name is set' do
+      user = described_class.new(email: 'test@citizenlab.co', first_name: 'Bob')
+      expect(user.no_name?).to be false
+    end
+
+    it 'returns false if last_name is set' do
+      user = described_class.new(email: 'test@citizenlab.co', last_name: 'Smith')
+      expect(user.no_name?).to be false
+    end
+
+    it 'returns false if invite is pending' do
+      user = described_class.new(email: 'test@citizenlab.co', invite_status: 'pending')
+      expect(user.no_name?).to be false
+    end
+
+    it 'returns an anonymous full_name and slug in format "User 123456" if true' do
+      user = described_class.new(email: 'test@citizenlab.co')
+      user.save
+      expect(user.full_name).to match(/User \d{6}/)
+      expect(user.slug).to match(/user-\d{6}/)
     end
   end
 

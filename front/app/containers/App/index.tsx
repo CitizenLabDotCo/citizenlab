@@ -343,7 +343,7 @@ const App = ({ children }: Props) => {
   const isIdeaFormPage = isPage('idea_form', location.pathname);
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
   const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
-  const isTablet = useBreakpoint('tablet');
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const fullScreenModalEnabledAndOpen =
     fullscreenModalEnabled && signUpInModalOpened;
 
@@ -355,7 +355,7 @@ const App = ({ children }: Props) => {
     !isIdeaEditPage &&
     !isInitiativeEditPage;
   const showMobileNav =
-    isTablet &&
+    isSmallerThanTablet &&
     !isAdminPage &&
     !isIdeaFormPage &&
     !isInitiativeFormPage &&

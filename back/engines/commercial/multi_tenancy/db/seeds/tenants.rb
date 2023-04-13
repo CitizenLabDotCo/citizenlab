@@ -27,7 +27,11 @@ module MultiTenancy
             core: {
               organization_type: "#{runner.seed_size}_city",
               organization_name: runner.create_for_tenant_locales { Faker::Address.city },
-              currency: CL2_SUPPORTED_CURRENCIES.sample
+              currency: CL2_SUPPORTED_CURRENCIES.sample,
+              maximum_admins_number: 2,
+              maximum_moderators_number: 2,
+              additional_admins_number: 1,
+              additional_moderators_number: 1
             },
             password_login: {
               allowed: true,
@@ -104,6 +108,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            permission_option_email_confirmation: {
+              enabled: true,
+              allowed: true
+            },
             representativeness: {
               enabled: true,
               allowed: true
@@ -117,14 +125,6 @@ module MultiTenancy
               allowed: true
             },
             custom_idea_statuses: {
-              enabled: true,
-              allowed: true
-            },
-            idea_custom_fields: {
-              enabled: true,
-              allowed: true
-            },
-            dynamic_idea_form: {
               enabled: true,
               allowed: true
             },
@@ -396,6 +396,10 @@ module MultiTenancy
               enabled: true,
               allowed: true,
               duration: 90
+            },
+            seat_based_billing: {
+              enabled: true,
+              allowed: true
             }
           })
         )

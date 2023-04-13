@@ -24,7 +24,7 @@ const GoBackButton = memo(
   ({ projectId, className, insideModal, deselectIdeaOnMap }: Props) => {
     const project = useProject({ projectId });
     const localize = useLocalize();
-    const isPhone = useBreakpoint('phone');
+    const isSmallerThanPhone = useBreakpoint('phone');
 
     const projectExists = !isNilOrError(project);
     const deselectIdeaCallbackExists = !isNilOrError(deselectIdeaOnMap);
@@ -63,7 +63,11 @@ const GoBackButton = memo(
           textDecorationHover="underline"
           whiteSpace="normal"
         >
-          <Box as="span" display={isPhone ? 'none' : 'block'} aria-hidden>
+          <Box
+            as="span"
+            display={isSmallerThanPhone ? 'none' : 'block'}
+            aria-hidden
+          >
             {localize(project.attributes.title_multiloc)}
           </Box>
           <ScreenReaderOnly>

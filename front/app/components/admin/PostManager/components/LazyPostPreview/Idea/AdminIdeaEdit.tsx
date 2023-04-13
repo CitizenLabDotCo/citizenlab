@@ -1,398 +1,233 @@
-import React, { useState, useEffect } from 'react';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// router
-import clHistory from 'utils/cl-router/history';
+import React, { useCallback, useContext, useEffect } from 'react';
 
 // components
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
-import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
-import { Content, Top, Container } from '../PostPreview';
+import { Content, Top } from '../PostPreview';
+import {
+  Box,
+  Button,
+  colors,
+  Spinner,
+} from '@citizenlab/cl2-component-library';
+import ideaFormMessages from 'containers/IdeasNewPage/messages';
+import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 // services
-import { addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
-import { hasPermission } from 'services/permissions';
-import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
+import { usePermission } from 'services/permissions';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
-// i18n
+import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
+
+// hooks
+import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'hooks/useAuthUser';
+import useProject from 'hooks/useProject';
+import useInputSchema from 'hooks/useInputSchema';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
+
+// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils
-import eventEmitter from 'utils/eventEmitter';
-import { geocode } from 'utils/locationTools';
-
-// typings
-import { UploadFile, Multiloc, ILocationInfo } from 'typings';
-
-// style
-import { colors } from 'utils/styleUtils';
-import styled from 'styled-components';
-
-// resource components
-import GetRemoteFiles, {
-  GetRemoteFilesChildProps,
-} from 'resources/GetRemoteFiles';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import useLocale from 'hooks/useLocale';
-
-// tracks
-import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useIdeaImage from 'hooks/useIdeaImage';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-`;
-
-const SaveButton = styled(Button)`
-  margin-right: 10px;
-`;
-
-export interface InputProps {
-  ideaId: string;
-  goBack: () => void;
-}
-
-interface DataProps {
-  remoteIdeaFiles: GetRemoteFilesChildProps;
-  authUser: GetAuthUserChildProps;
-  appConfiguration: GetAppConfigurationChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
+import { getLocationGeojson } from 'containers/IdeasEditPage/utils';
+import { omit } from 'lodash-es';
+import { isError, isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { PreviousPathnameContext } from 'context';
 
 const AdminIdeaEdit = ({
   ideaId,
-  remoteIdeaFiles,
   goBack,
-  authUser,
-  appConfiguration,
-}: Props) => {
-  const locale = useLocale();
-
-  const { mutate: updateIdea } = useUpdateIdea();
+}: {
+  ideaId: string;
+  goBack: () => void;
+}) => {
+  const previousPathName = useContext(PreviousPathnameContext);
+  const authUser = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
-  const ideaImages = idea?.data.relationships.idea_images.data;
-  const ideaImageId =
-    ideaImages && ideaImages.length > 0 ? ideaImages[0].id : null;
-
-  const ideaImage = useIdeaImage({
-    ideaId: idea?.data.id,
-    ideaImageId,
+  const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
+  const granted = usePermission({
+    item: idea?.data || null,
+    action: 'edit',
+    context: idea?.data || null,
   });
 
-  const [ideaFiles, setIdeaFiles] = useState<UploadFile[]>([]);
-  const [imageFileIsChanged, setImageFileIsChanged] = useState(false);
-  const [submitError, setSubmitError] = useState(false);
-  const [titleProfanityError, setTitleProfanityError] = useState(false);
-  const [descriptionProfanityError, setDescriptionProfanityError] =
-    useState(false);
-  const [processing, setProcessing] = useState(false);
-  const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
-  const [descriptionMultiloc, setDescriptionMultiloc] =
-    useState<Multiloc | null>(null);
-  const [imageFile, setImageFile] = useState<UploadFile[]>([]);
-  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
-  const [address, setAddress] = useState<string | null>(null);
+  const { mutate: updateIdea } = useUpdateIdea();
+  const project = useProject({
+    projectId: isNilOrError(idea)
+      ? null
+      : idea.data.relationships.project.data.id,
+  });
+  const { data: remoteImages } = useIdeaImages(ideaId);
+  const { data: remoteFiles } = useIdeaFiles(ideaId);
+
+  const { schema, uiSchema, inputSchemaError } = useInputSchema({
+    projectId: project?.id,
+    inputId: ideaId,
+  });
 
   useEffect(() => {
-    if (!isNilOrError(idea)) {
-      const granted = hasPermission({
-        item: idea.data,
-        action: 'edit',
-        context: idea.data,
-      });
-
-      if (!granted) {
-        clHistory.push('/');
-      }
+    if (idea && authUser !== undefined && !granted) {
+      clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
     }
-  }, [idea]);
+  }, [idea, granted, previousPathName, authUser]);
 
-  useEffect(() => {
-    if (!isNilOrError(ideaImage)) {
-      (async () => {
-        const imageUrl = ideaImage.attributes.versions.large;
-        if (imageUrl) {
-          const imageFile = await convertUrlToUploadFile(imageUrl);
-          if (imageFile) {
-            setImageFile([imageFile]);
-          }
-        }
-      })();
-    }
-  }, [ideaImage]);
+  const initialFormData =
+    isNilOrError(idea) || !schema
+      ? null
+      : Object.fromEntries(
+          Object.keys(schema.properties).map((prop) => {
+            if (prop === 'author_id') {
+              return [prop, idea.data.relationships?.author?.data?.id];
+            } else if (idea.data.attributes?.[prop]) {
+              return [prop, idea.data.attributes?.[prop]];
+            } else if (
+              prop === 'topic_ids' &&
+              Array.isArray(idea.data.relationships?.topics?.data)
+            ) {
+              return [
+                prop,
+                idea.data.relationships?.topics?.data.map((rel) => rel.id),
+              ];
+            } else if (
+              prop === 'idea_images_attributes' &&
+              Array.isArray(idea.data.relationships?.idea_images?.data)
+            ) {
+              return [prop, remoteImages?.data];
+            } else if (prop === 'idea_files_attributes') {
+              const attachmentsValue =
+                !isNilOrError(remoteFiles) && remoteFiles.data.length > 0
+                  ? remoteFiles.data
+                  : undefined;
+              return [prop, attachmentsValue];
+            } else return [prop, undefined];
+          })
+        );
 
-  if (isNilOrError(locale) || isNilOrError(idea)) {
-    return null;
+  // Set initial location point if exists
+  if (
+    initialFormData &&
+    !isNilOrError(idea) &&
+    idea.data.attributes &&
+    idea.data.attributes.location_point_geojson
+  ) {
+    initialFormData['location_point_geojson'] =
+      idea.data.attributes.location_point_geojson;
   }
 
-  const authorId = idea.data.relationships.author.data?.id || null;
+  const onSubmit = async (data) => {
+    const { idea_images_attributes, ...ideaWithoutImages } = data;
 
-  const budget = idea.data.attributes.budget;
-  const proposedBudget = idea.data.attributes.proposed_budget;
-  const projectId = idea.data.relationships.project.data.id;
-  const originalLocationDescription = idea.data.attributes.location_description;
-  const originalTitle = idea.data.attributes.title_multiloc[locale] || null;
-  const originalDescription =
-    idea.data.attributes.body_multiloc[locale] || null;
-  const submitErrorMessage = submitError ? (
-    <FormattedMessage {...messages.submitError} />
-  ) : null;
+    const location_point_geojson = await getLocationGeojson(
+      initialFormData,
+      data
+    );
 
-  const handleOnSaveButtonClick = () => {
-    eventEmitter.emit('IdeaFormSubmitEvent');
-  };
+    const isImageNew =
+      idea_images_attributes !== initialFormData?.idea_images_attributes;
 
-  const handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
-    const {
-      title,
-      imageFile,
-      description,
-      selectedTopics,
-      address: ideaFormAddress,
-      budget,
-      proposedBudget,
-      ideaFiles,
-      ideaFilesToRemove,
-      authorId: newAuthorId,
-    } = ideaFormOutput;
-    const oldImageId = ideaImageId;
-    const newImage = imageFile && imageFile.length > 0 ? imageFile[0] : null;
-
-    const newImageBase64 = newImage ? newImage.base64 : null;
-    const imageToAddPromise =
-      imageFileIsChanged && newImageBase64
-        ? addIdeaImage(ideaId, newImageBase64, 0)
-        : Promise.resolve(null);
-
-    const filesToAddPromises = ideaFiles
-      .filter((file) => !file.remote)
-      .map((file) => addIdeaFile(ideaId, file.base64, file.name));
-    const filesToRemovePromises = ideaFilesToRemove
-      .filter((file) => !!(file.remote && file.id))
-      .map((file) => deleteIdeaFile(ideaId, file.id as string));
-
-    const finalAuthorId = newAuthorId || authorId;
-    const addressDiff: ILocationInfo = {} as any;
-
-    const locationPoint = await geocode(ideaFormAddress);
-    addressDiff.location_description = ideaFormAddress;
-
-    if (locationPoint && originalLocationDescription !== ideaFormAddress) {
-      addressDiff.location_point_geojson = locationPoint;
+    // Delete a remote image only on submission
+    if (isImageNew && initialFormData?.idea_images_attributes[0]?.id) {
+      deleteIdeaImage({
+        ideaId,
+        imageId: initialFormData.idea_images_attributes[0].id,
+      });
     }
+
+    const payload = {
+      ...ideaWithoutImages,
+      idea_images_attributes,
+      location_point_geojson,
+      project_id: project?.id,
+      publication_status: 'published',
+    };
+
     updateIdea(
       {
         id: ideaId,
-        requestBody: {
-          budget,
-          proposed_budget: proposedBudget,
-          title_multiloc: {
-            ...titleMultiloc,
-            [locale]: title,
-          },
-          body_multiloc: {
-            ...descriptionMultiloc,
-            [locale]: description,
-          },
-          topic_ids: selectedTopics,
-          author_id: finalAuthorId,
-          ...addressDiff,
-        },
+        requestBody: isImageNew
+          ? omit(payload, 'idea_files_attributes')
+          : omit(payload, ['idea_images_attributes', 'idea_files_attributes']),
       },
       {
-        onSuccess: async () => {
-          setProcessing(true);
-          setSubmitError(false);
-          try {
-            if (oldImageId && imageFileIsChanged) {
-              await deleteIdeaImage(ideaId, oldImageId);
-            }
-
-            await Promise.all([
-              imageToAddPromise,
-              ...filesToAddPromises,
-              ...filesToRemovePromises,
-            ] as Promise<any>[]);
-
-            goBack();
-          } catch (error) {
-            // eslint-disable-next-line no-console
-            if (process.env.NODE_ENV === 'development') console.log(error);
-            const apiErrors = error.json.errors;
-            const profanityApiError = apiErrors.base.find(
-              (apiError) => apiError.error === 'includes_banned_words'
-            );
-
-            if (profanityApiError) {
-              const titleProfanityError = profanityApiError.blocked_words.some(
-                (blockedWord) => blockedWord.attribute === 'title_multiloc'
-              );
-              const descriptionProfanityError =
-                profanityApiError.blocked_words.some(
-                  (blockedWord) => blockedWord.attribute === 'body_multiloc'
-                );
-
-              if (titleProfanityError) {
-                trackEventByName(tracks.titleProfanityError.name, {
-                  ideaId,
-                  projectId,
-                  locale,
-                  profaneMessage: title,
-                  location: 'IdeaEdit (Input manager in admin)',
-                  userId: !isNilOrError(authUser) ? authUser.id : null,
-                  host: !isNilOrError(appConfiguration)
-                    ? appConfiguration.attributes.host
-                    : null,
-                });
-                setTitleProfanityError(titleProfanityError);
-              }
-
-              if (descriptionProfanityError) {
-                trackEventByName(tracks.descriptionProfanityError.name, {
-                  ideaId,
-                  projectId,
-                  locale,
-                  profaneMessage: description,
-                  location: 'IdeaEdit (Input manager in admin)',
-                  userId: !isNilOrError(authUser) ? authUser.id : null,
-                  host: !isNilOrError(appConfiguration)
-                    ? appConfiguration.attributes.host
-                    : null,
-                });
-                setDescriptionProfanityError(descriptionProfanityError);
-              }
-            }
-
-            setSubmitError(true);
-          }
-
-          setProcessing(false);
+        onSuccess: () => {
+          goBack();
         },
       }
     );
   };
 
-  const onTitleChange = (title: string) => {
-    setTitleMultiloc({ ...titleMultiloc, [locale]: title });
-    setTitleProfanityError(false);
-  };
+  const getApiErrorMessage: ApiErrorGetter = useCallback(
+    (error) => {
+      return (
+        ideaFormMessages[
+          `api_error_${uiSchema?.options?.inputTerm}_${error}`
+        ] ||
+        ideaFormMessages[`api_error_${error}`] ||
+        ideaFormMessages[`api_error_invalid`]
+      );
+    },
+    [uiSchema]
+  );
 
-  const onImageFileAdd = (imageFile: UploadFile[]) => {
-    setImageFile([imageFile[0]]);
-    setImageFileIsChanged(true);
-  };
+  const getAjvErrorMessage: AjvErrorGetter = useCallback(
+    (error) => {
+      return (
+        messages[
+          `ajv_error_${uiSchema?.options?.inputTerm}_${
+            getFieldNameFromPath(error.instancePath) ||
+            error?.params?.missingProperty
+          }_${error.keyword}`
+        ] ||
+        messages[
+          `ajv_error_${
+            getFieldNameFromPath(error.instancePath) ||
+            error?.params?.missingProperty
+          }_${error.keyword}`
+        ] ||
+        undefined
+      );
+    },
+    [uiSchema]
+  );
 
-  const onImageFileRemove = () => {
-    setImageFile([]);
-    setImageFileIsChanged(true);
-  };
-
-  const onTagsChange = (selectedTopics: string[]) => {
-    setSelectedTopics(selectedTopics);
-  };
-
-  const onAddressChange = (address: string) => {
-    setAddress(address);
-  };
-
-  const onDescriptionChange = (description: string) => {
-    setDescriptionMultiloc({
-      ...descriptionMultiloc,
-      [locale]: description,
-    });
-
-    setDescriptionProfanityError(false);
-  };
-
-  const onIdeaFilesChange = (ideaFiles: UploadFile[]) => {
-    setIdeaFiles(ideaFiles);
-  };
-
-  const title = titleMultiloc ? titleMultiloc[locale] || null : originalTitle;
-  const description = descriptionMultiloc
-    ? descriptionMultiloc[locale] || null
-    : originalDescription;
-
-  if (projectId) {
-    return (
-      <Container>
-        <Top>
-          <Button
-            icon="arrow-left"
-            buttonStyle="text"
-            textColor={colors.primary}
-            onClick={goBack}
-          >
-            <FormattedMessage {...messages.cancelEdit} />
-          </Button>
-        </Top>
-
-        <Content className="idea-form">
-          <IdeaForm
-            ideaId={ideaId}
-            authorId={authorId}
-            projectId={projectId}
-            title={title}
-            description={description}
-            selectedTopics={selectedTopics}
-            budget={budget}
-            proposedBudget={proposedBudget}
-            address={address || idea.data.attributes.location_description || ''}
-            imageFile={imageFile}
-            ideaFiles={ideaFiles}
-            onSubmit={handleIdeaFormOutput}
-            remoteIdeaFiles={
-              !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
-            }
-            hasTitleProfanityError={titleProfanityError}
-            hasDescriptionProfanityError={descriptionProfanityError}
-            onTitleChange={onTitleChange}
-            onDescriptionChange={onDescriptionChange}
-            onImageFileAdd={onImageFileAdd}
-            onImageFileRemove={onImageFileRemove}
-            onTagsChange={onTagsChange}
-            onAddressChange={onAddressChange}
-            onIdeaFilesChange={onIdeaFilesChange}
-          />
-
-          <ButtonWrapper>
-            <SaveButton
-              processing={processing}
-              text={<FormattedMessage {...messages.save} />}
-              onClick={handleOnSaveButtonClick}
-            />
-            <Error text={submitErrorMessage} marginTop="0px" />
-          </ButtonWrapper>
-        </Content>
-      </Container>
-    );
+  if (isNilOrError(project)) {
+    return null;
   }
-  return null;
+
+  return (
+    <Box>
+      <Top>
+        <Button
+          icon="arrow-left"
+          buttonStyle="text"
+          textColor={colors.primary}
+          onClick={goBack}
+        >
+          <FormattedMessage {...messages.cancelEdit} />
+        </Button>
+      </Top>
+
+      <Content className="idea-form">
+        {!isNilOrError(project) && !isNilOrError(idea) && schema && uiSchema ? (
+          <Form
+            schema={schema}
+            uiSchema={uiSchema}
+            onSubmit={onSubmit}
+            initialFormData={initialFormData}
+            inputId={idea.data.id}
+            getAjvErrorMessage={getAjvErrorMessage}
+            getApiErrorMessage={getApiErrorMessage}
+            config={'input'}
+            layout={'inline'}
+          />
+        ) : isError(project) || inputSchemaError ? null : (
+          <Spinner />
+        )}
+      </Content>
+    </Box>
+  );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  appConfiguration: <GetAppConfiguration />,
-  remoteIdeaFiles: ({ ideaId, render }) => (
-    <GetRemoteFiles resourceId={ideaId} resourceType="idea">
-      {render}
-    </GetRemoteFiles>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <AdminIdeaEdit {...dataProps} {...inputProps} />}
-  </Data>
-);
+export default AdminIdeaEdit;

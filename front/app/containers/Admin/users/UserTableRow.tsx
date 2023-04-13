@@ -1,21 +1,26 @@
 // Libraries
-import React, { useEffect, useState } from 'react';
-import { isAdmin } from 'services/permissions/roles';
+import React, { useState, lazy, Suspense } from 'react';
+import { isAdmin, isRegularUser } from 'services/permissions/roles';
 import moment from 'moment';
 
 // Utils
 import clHistory from 'utils/cl-router/history';
+import { getExceededLimitInfo } from 'components/SeatInfo/utils';
 
 // Components
 import { Tr, Td, Box } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import ChangeSeatModal from './ChangeSeatModal';
+import BlockUser from 'components/admin/UserBlockModals/BlockUser';
+import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
+import Link from 'utils/cl-router/Link';
+const ChangeSeatModal = lazy(() => import('./ChangeSeatModal'));
 
 // Translation
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import blockUserMessages from 'components/admin/UserBlockModals/messages';
 
 // Events --- For error handling
 import eventEmitter from 'utils/eventEmitter';
@@ -28,22 +33,39 @@ import { IUserData, deleteUser } from 'services/users';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // Styling
+
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
+// Hooks
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useSeats from 'api/seats/useSeats';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
+`;
+
+const StyledLink = styled(Link)`
+  cursor: pointer;
+  color: inherit;
+
+  &:hover {
+    color: inherit;
+    text-decoration: underline;
+  }
 `;
 
 interface Props {
   user: IUserData;
   selected: boolean;
   toggleSelect: () => void;
-  toggleAdmin: () => void;
+  changeRoles: (user: IUserData, changeToNormalUser: boolean) => void;
   authUser: GetAuthUserChildProps;
 }
 
 const getStatusMessage = (user: IUserData): MessageDescriptor => {
+  if (user.attributes.blocked) return blockUserMessages.blocked;
   const highestRole = user.attributes.highest_role;
   const roleMessage = {
     admin: messages.platformAdmin,
@@ -60,28 +82,50 @@ const UserTableRow = ({
   user,
   selected,
   toggleSelect,
-  toggleAdmin,
+  changeRoles,
   authUser,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [isUserAdmin, setUserIsAdmin] = useState(isAdmin({ data: user }));
-  const [registeredAt, setRegisteredAt] = useState(
-    moment(user.attributes.registration_completed_at).format('LL')
-  );
-  const [showModal, setShowModal] = useState(false);
-  const closeModal = () => {
-    setShowModal(false);
-  };
-  const openModal = () => {
-    setShowModal(true);
-  };
 
-  useEffect(() => {
-    setUserIsAdmin(isAdmin({ data: user }));
-    setRegisteredAt(
-      moment(user.attributes.registration_completed_at).format('LL')
-    );
-  }, [user]);
+  const isUserAdmin = isAdmin({ data: user });
+  const isUserModerator = !isRegularUser({ data: user });
+  const registeredAt = moment(user.attributes.registration_completed_at).format(
+    'LL'
+  );
+
+  const [showBlockUserModal, setShowBlockUserModal] = useState(false);
+  const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
+  const isUserBlockingEnabled = useFeatureFlag({
+    name: 'user_blocking',
+  });
+
+  const [showChangeSeatModal, setShowChangeSeatModal] = useState(false);
+  const [isChangingToNormalUser, setIsChangingToNormalUser] = useState(false);
+
+  const { data: appConfiguration } = useAppConfiguration();
+  const { data: seats } = useSeats();
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
+
+  const maximumAdmins =
+    appConfiguration?.data.attributes.settings.core.maximum_admins_number;
+  if (!appConfiguration || !seats) return null;
+
+  const additionalAdmins =
+    appConfiguration?.data.attributes.settings.core.additional_admins_number;
+  const currentAdminSeats = seats.data.attributes.admins_number;
+  const { hasReachedOrIsOverPlanSeatLimit } = getExceededLimitInfo(
+    hasSeatBasedBillingEnabled,
+    currentAdminSeats,
+    additionalAdmins,
+    maximumAdmins
+  );
+
+  const closeChangeSeatModal = () => {
+    setShowChangeSeatModal(false);
+  };
+  const isBlocked = user.attributes?.blocked;
 
   const handleDeleteClick = () => {
     const deleteMessage = formatMessage(messages.userDeletionConfirmation);
@@ -102,17 +146,65 @@ const UserTableRow = ({
       }
     }
   };
+  const isCurrentUser = user.id === authUser?.id;
+  const userBlockingRelatedActions: IAction[] =
+    isUserBlockingEnabled && !isCurrentUser
+      ? [
+          isBlocked
+            ? {
+                handler: () => setShowUnblockUserModal(true),
+                label: formatMessage(blockUserMessages.unblockAction),
+                icon: 'user-circle' as const,
+              }
+            : {
+                handler: () => setShowBlockUserModal(true),
+                label: formatMessage(blockUserMessages.blockAction),
+                icon: 'halt' as const,
+              },
+        ]
+      : [];
 
-  const setAsAdminAction: IAction = {
-    handler: openModal,
-    label: formatMessage(messages.setAsAdmin),
-    icon: 'shield-checkered' as const,
+  const changeRoleHandler = (changeToNormalUser: boolean) => {
+    setIsChangingToNormalUser(changeToNormalUser);
+
+    // We are showing the modal when setting to a normal user and for admins in i1 and for i2 when admin seats are being exceeded
+    const shouldOpenConfirmationInModal =
+      changeToNormalUser ||
+      !hasSeatBasedBillingEnabled ||
+      hasReachedOrIsOverPlanSeatLimit;
+    if (shouldOpenConfirmationInModal) {
+      setShowChangeSeatModal(true);
+      return;
+    }
+
+    // We pass in the user along with whether to change that user to a normal user or admin. We are not toggling because the user passed in could have other roles or be a moderator
+    changeRoles(user, changeToNormalUser);
   };
 
-  const setAsNormalUserAction: IAction = {
-    handler: openModal,
-    label: formatMessage(messages.setAsNormalUser),
-    icon: 'user-circle' as const,
+  const getSeatChangeActions = () => {
+    const setAsAdminAction: IAction = {
+      handler: () => {
+        changeRoleHandler(false);
+      },
+      label: formatMessage(messages.setAsAdmin),
+      icon: 'shield-checkered' as const,
+    };
+
+    const setAsNormalUserAction: IAction = {
+      handler: () => {
+        changeRoleHandler(true);
+      },
+      label: formatMessage(messages.setAsNormalUser),
+      icon: 'user-circle' as const,
+    };
+
+    if (isUserAdmin) {
+      return [setAsNormalUserAction];
+    } else if (isUserModerator) {
+      return [setAsNormalUserAction, setAsAdminAction];
+    } else {
+      return [setAsAdminAction];
+    }
   };
 
   const actions: IAction[] = [
@@ -123,7 +215,7 @@ const UserTableRow = ({
       label: formatMessage(messages.seeProfile),
       icon: 'eye' as const,
     },
-    ...(isUserAdmin ? [setAsNormalUserAction] : [setAsAdminAction]),
+    ...getSeatChangeActions(),
     {
       handler: () => {
         handleDeleteClick();
@@ -131,6 +223,7 @@ const UserTableRow = ({
       label: formatMessage(messages.deleteUser),
       icon: 'delete' as const,
     },
+    ...userBlockingRelatedActions,
   ];
 
   const statusMessage = getStatusMessage(user);
@@ -150,7 +243,9 @@ const UserTableRow = ({
         <Avatar userId={user.id} size={30} />
       </Td>
       <Td>
-        {user.attributes.first_name} {user.attributes.last_name}
+        <StyledLink to={`/profile/${user.attributes.slug}`}>
+          {user.attributes.first_name} {user.attributes.last_name}
+        </StyledLink>
       </Td>
       <Td>{user.attributes.email}</Td>
       <RegisteredAt>
@@ -176,14 +271,25 @@ const UserTableRow = ({
       <Td>
         <MoreActionsMenu showLabel={false} actions={actions} />
       </Td>
-
-      <ChangeSeatModal
+      <BlockUser
         user={user}
-        isUserAdmin={isUserAdmin}
-        toggleAdmin={toggleAdmin}
-        showModal={showModal}
-        closeModal={closeModal}
+        setClose={() => setShowBlockUserModal(false)}
+        open={showBlockUserModal}
       />
+      <UnblockUser
+        user={user}
+        setClose={() => setShowUnblockUserModal(false)}
+        open={showUnblockUserModal}
+      />
+      <Suspense fallback={null}>
+        <ChangeSeatModal
+          userToChangeSeat={user}
+          changeRoles={changeRoles}
+          showModal={showChangeSeatModal}
+          closeModal={closeChangeSeatModal}
+          isChangingToNormalUser={isChangingToNormalUser}
+        />
+      </Suspense>
     </Tr>
   );
 };

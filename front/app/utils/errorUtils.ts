@@ -1,5 +1,7 @@
-import { CLErrorsJSON } from 'typings';
+import { CLErrorsJSON, CLErrors } from 'typings';
 import messages from './messages';
+import { isArray } from 'lodash-es';
+import clHistory from 'utils/cl-router/history';
 
 export function isCLErrorJSON(value: unknown): value is CLErrorsJSON {
   let objectToCheck = value;
@@ -48,7 +50,7 @@ const genericErrors = [
   'even',
 ] as const;
 
-export type GenericErrorKey = typeof genericErrors[number];
+export type GenericErrorKey = (typeof genericErrors)[number];
 // Here are all custom validations I could find in the back-end and that could make some sense to the end user
 
 // NB : (sometimes it'd be clearly better the user doesn't see that error,
@@ -171,5 +173,21 @@ export const handleHookFormSubmissionError = (
     handleError('submissionError', {
       type: 'server',
     });
+  }
+};
+
+export const handleBlockedUserError = (status: number, data: CLErrors) => {
+  if (
+    status === 401 &&
+    'base' in data.errors &&
+    isArray(data.errors.base) &&
+    data.errors.base.length >= 0 &&
+    'error' in data.errors.base[0] &&
+    data.errors.base[0].error === 'blocked' &&
+    window.location.href.indexOf('disabled-account') === -1
+  ) {
+    clHistory.push(
+      `/disabled-account?date=${data.errors.base[0].details.block_end_at}`
+    );
   }
 };

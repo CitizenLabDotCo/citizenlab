@@ -222,8 +222,20 @@ sr-Cyrl:
       subject: "Потврдите своју адресу е-поште за платформу за учешће %{organizationName}"
       header: "Ваш код за потврду"
       header_message: "Здраво %{firstName}!"
+      confirm_email_address: "Потврдите вашу емаил адресу"
       thanks_for_signing_up: "Хвала што сте се пријавили за платформу за учешће %{organizationName}."
-      please_confirm_your_email_address: "Да бисте довршили регистрацију, потврдите своју адресу е-поште."
+      best_regards: "Срдачан поздрав,"
+      ignore_email: "Ако нисте тражили код, можете безбедно да игноришете ову е-поруку."
+      expire_code: "Овај код ће истећи за "
+      24_hours: "24 сати."
       copy_paste_the_link_below: "Копирајте и налепите код испод у формулар за регистрацију на платформи."
       the_link_is_valid_for: "Ова веза важи 24 сата. Ако је веза истекла, можете <a href=\"%{link}\">захтевати нови код</a>."
       did_you_receive_this_email_in_error: "Да ли сте ову е-пошту добили грешком? <a href=\"%{link}\">Обавестите нас</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Ваш налог је привремено онемогућен'
+      title_user_blocked: 'Ваш налог је привремено онемогућен'
+      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
+      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
+      for_more_information: "За више информација о овоме, можете консултовати %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "Можете се поново пријавити од %{date}"

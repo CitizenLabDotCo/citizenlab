@@ -21,7 +21,7 @@ const useDeleteCategory = () => {
     mutationFn: deleteCategory,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: categoriesKeys.list(variables.viewId),
+        queryKey: categoriesKeys.list({ viewId: variables.viewId }),
       });
     },
   });

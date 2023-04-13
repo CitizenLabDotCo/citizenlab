@@ -47,9 +47,13 @@ export type IAppConfigurationSettingsCore = {
   topics_term?: Multiloc;
   topic_term?: Multiloc;
   authentication_token_lifetime_in_days: number;
-  maximum_admins_number: number | null | undefined;
-  maximum_moderators_number: number | null | undefined;
+  maximum_admins_number: TSeatNumber;
+  maximum_moderators_number: TSeatNumber;
+  additional_admins_number: TSeatNumber;
+  additional_moderators_number: TSeatNumber;
 };
+
+export type TSeatNumber = number | null | undefined;
 
 export type ProposalsSettings = {
   allowed: boolean;
@@ -130,9 +134,7 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     verification_methods: string[];
   };
-  dynamic_idea_form?: AppConfigurationFeature;
   jsonforms_custom_fields?: AppConfigurationFeature;
-  idea_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
@@ -208,9 +210,14 @@ export interface IAppConfigurationSettings {
   analytics?: AppConfigurationFeature;
   visitors_dashboard?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
+  permission_option_email_confirmation?: AppConfigurationFeature;
   input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
+  user_blocking?: AppConfigurationFeature & {
+    duration: boolean;
+  };
+  seat_based_billing?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

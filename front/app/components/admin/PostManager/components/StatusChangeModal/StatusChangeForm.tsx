@@ -2,9 +2,6 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
-// services
-import { IOfficialFeedbackData } from 'services/officialFeedback';
-
 // resources
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
@@ -21,6 +18,7 @@ import {
   Radio,
   Input,
   LocaleSwitcher,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import { Section } from 'components/admin/Section';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
@@ -33,6 +31,8 @@ import { colors } from 'utils/styleUtils';
 
 // typings
 import { Multiloc, Locale, MultilocFormValues } from 'typings';
+import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
+import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
 
 const StyledSection = styled(Section)``;
 
@@ -45,10 +45,6 @@ const StyledMentionsTextArea = styled(MentionsTextArea)`
 `;
 
 const StyledInput = styled(Input)``;
-
-const StyledRadio = styled(Radio)`
-  margin-top: 25px;
-`;
 
 const ChangeStatusButton = styled(Button)`
   margin-top: 25px;
@@ -64,7 +60,10 @@ interface InputProps {
   error: boolean;
   newOfficialFeedback: FormValues;
   mode: 'latest' | 'new';
-  latestOfficialFeedback: IOfficialFeedbackData | null;
+  latestOfficialFeedback:
+    | IIdeaOfficialFeedbackData
+    | IInitiativeOfficialFeedbackData
+    | null;
   onChangeMode: (value) => void;
   onChangeBody: (value: Multiloc) => void;
   onChangeAuthor: (value: Multiloc) => void;
@@ -105,26 +104,29 @@ class StatusChangeForm extends PureComponent<
 
     return (
       <>
-        <StyledRadio
-          onChange={onChangeMode}
-          currentValue={mode}
-          value="new"
-          name="statusChangeMethod"
-          label={formatMessage(messages.newFeedbackMode)}
-          id="status-change-radio-new"
-        />
+        <Box mt="12px">
+          <Radio
+            onChange={onChangeMode}
+            currentValue={mode}
+            value="new"
+            name="statusChangeMethod"
+            label={formatMessage(messages.newFeedbackMode)}
+            id="status-change-radio-new"
+          />
+        </Box>
 
         {mode === 'new' && this.renderFeedbackForm()}
 
-        <StyledRadio
-          onChange={onChangeMode}
-          currentValue={mode}
-          value="latest"
-          name="statusChangeMethod"
-          label={formatMessage(messages.latestFeedbackMode)}
-          id="status-change-radio-latest"
-        />
-
+        <Box mt="12px">
+          <Radio
+            onChange={onChangeMode}
+            currentValue={mode}
+            value="latest"
+            name="statusChangeMethod"
+            label={formatMessage(messages.latestFeedbackMode)}
+            id="status-change-radio-latest"
+          />
+        </Box>
         {mode === 'latest' && (
           <OfficialFeedbackPost
             editingAllowed={false}
