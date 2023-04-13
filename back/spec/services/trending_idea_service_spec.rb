@@ -8,7 +8,7 @@ describe TrendingIdeaService do
   end
 
   describe 'filter_trending' do
-    it 'filters trending ideas in accordance with the trending criterea (those that have a positive trending score)' do
+    it 'filters trending ideas in accordance with the trending criteria (those that have a positive trending score)' do
       trending_filter = nil
       expected_selection = nil
       travel_to Time.now do
@@ -25,6 +25,18 @@ describe TrendingIdeaService do
         trending_filter_after = described_class.new.filter_trending(Idea.all).map(&:id)
         expect(trending_filter.size).to eq(trending_filter_after.size + 1)
       end
+    end
+
+    it 'does not include ideas that are native survey responses', document: false do
+      trending = nil
+      trending_filter = nil
+      travel_to Time.now do
+        trending = Idea.all.select { |i| described_class.new.trending? i }
+        generate_survey_response_ideas
+        trending_filter = described_class.new.filter_trending(Idea.all).map(&:id)
+      end
+
+      expect(trending_filter.size).to eq trending.size
     end
   end
 
@@ -64,6 +76,32 @@ describe TrendingIdeaService do
 
       expect(trending_score_sorted).to eq expected_order
     end
+
+    it 'does not include ideas that are native survey responses', document: false do
+      count = nil
+      sorted = nil
+      travel_to Time.now do
+        count = Idea.all.count
+        generate_survey_response_ideas
+        sorted = described_class.new.sort_trending(Idea.all).map(&:id)
+      end
+
+      expect(sorted.size).to eq count
+    end
+  end
+
+  describe 'with_trending_score' do
+    it 'does not include ideas that are native survey responses', document: false do
+      count = nil
+      with_score = nil
+      travel_to Time.now do
+        count = Idea.all.count
+        generate_survey_response_ideas
+        with_score = described_class.new.with_trending_score(Idea.all).map(&:id)
+      end
+
+      expect(with_score.size).to eq count
+    end
   end
 
   def generate_trending_ideas(n)
@@ -90,5 +128,12 @@ describe TrendingIdeaService do
           created_at: Faker::Time.between(from: published_at, to: DateTime.now))
       end
     end
+  end
+
+  def generate_survey_response_ideas
+    IdeaStatus.create_defaults
+    create(:idea, project: create(:continuous_native_survey_project))
+    project = create(:project_with_active_native_survey_phase)
+    create(:idea, project: project, creation_phase: project.phases[0])
   end
 end
