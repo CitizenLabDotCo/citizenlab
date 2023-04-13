@@ -152,7 +152,6 @@ const FolderPermissions = () => {
                 selectedUserId={moderatorToAdd?.id || null}
                 onChange={handleOnChange}
                 placeholder={formatMessage(messages.searchFolderManager)}
-                hideAvatar
                 isNotFolderModeratorOfFolderId={projectFolderId}
               />
             </Box>
