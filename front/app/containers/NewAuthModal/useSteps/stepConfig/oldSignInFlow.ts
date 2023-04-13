@@ -9,6 +9,9 @@ import { triggerSuccessAction } from 'containers/NewAuthModal/SuccessActions';
 import tracks from '../../tracks';
 import { trackEventByName } from 'utils/analytics';
 
+// utils
+import { askCustomFields } from './utils';
+
 // typings
 import {
   Status,
@@ -78,6 +81,16 @@ export const oldSignInFlow = (
             tokenLifetime,
           });
 
+          setStatus('ok');
+
+          const { requirements } = await getRequirements();
+          console.log(requirements);
+
+          if (askCustomFields(requirements.custom_fields)) {
+            setCurrentStep('custom-fields');
+            return;
+          }
+
           setCurrentStep('closed');
 
           const { successAction } = getAuthenticationData();
@@ -86,8 +99,6 @@ export const oldSignInFlow = (
           }
 
           trackEventByName(tracks.signInEmailPasswordCompleted);
-
-          setStatus('ok');
         } catch {
           setStatus('error');
           setError('wrong_password');
