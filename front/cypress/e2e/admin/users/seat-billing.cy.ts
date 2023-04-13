@@ -1,4 +1,5 @@
 import { randomString, randomEmail } from '../../../support/commands';
+import { generateProjectFolder } from '../../../fixtures';
 
 describe('Seat based billing', () => {
   const createdUserIds: string[] = [];
@@ -178,12 +179,39 @@ describe('Seat based billing', () => {
     });
   });
 
-  describe('Project moderator seats', () => {
+  const testShowModalOnAddingModerator = () => {
+    cy.apiGetAppConfiguration().then((appConfigurationResponse) => {
+      const additionalModerators =
+        appConfigurationResponse.body.data.attributes.settings.core
+          .additional_moderators_number;
+      const maximumModerators =
+        appConfigurationResponse.body.data.attributes.settings.core
+          .maximum_moderators_number;
+
+      cy.apiGetSeats().then((seatsResponse) => {
+        const usedSeats =
+          seatsResponse.body.data.attributes.project_moderators_number;
+        const totalSeats = additionalModerators + maximumModerators;
+
+        if (usedSeats >= totalSeats) {
+          // Verify that user is required to confirm
+          cy.get('[data-cy="e2e-add-moderators-body"]').should('exist');
+          // Confirm setting user to moderator user
+          cy.get('#e2e-add-moderator-button').click();
+
+          // Check that success is shown and close the modal
+          cy.get('#e2e-seat-set-success-body').should('exist');
+          cy.get('#e2e-close-seat-success-button').click();
+        }
+      });
+    });
+  };
+
+  describe('Project moderator', () => {
     const projectTitle = randomString();
     const projectDescription = randomString();
     const projectDescriptionPreview = randomString(30);
     let projectId: string;
-    let projectSlug: string;
 
     // User 2
     const user2FirstName = randomString();
@@ -231,7 +259,6 @@ describe('Seat based billing', () => {
         participationMethod: 'native_survey',
       }).then((project) => {
         projectId = project.body.data.id;
-        projectSlug = project.body.data.attributes.slug;
       });
       createUsers([
         {
@@ -271,40 +298,15 @@ describe('Seat based billing', () => {
           password: user7Password,
         },
       ]);
+    });
+
+    beforeEach(() => {
       cy.setAdminLoginCookie();
     });
 
     after(() => {
       cy.apiRemoveProject(projectId);
     });
-
-    const testShowModalOnAdd = () => {
-      cy.apiGetAppConfiguration().then((appConfigurationResponse) => {
-        const additionalModerators =
-          appConfigurationResponse.body.data.attributes.settings.core
-            .additional_moderators_number;
-        const maximumModerators =
-          appConfigurationResponse.body.data.attributes.settings.core
-            .maximum_moderators_number;
-
-        cy.apiGetSeats().then((seatsResponse) => {
-          const usedSeats =
-            seatsResponse.body.data.attributes.project_moderators_number;
-          const totalSeats = additionalModerators + maximumModerators;
-
-          if (usedSeats >= totalSeats) {
-            // Verify that user is required to confirm
-            cy.get('[data-cy="e2e-add-moderators-body"]').should('exist');
-            // Confirm setting user to moderator user
-            cy.get('#e2e-add-moderator-button').click();
-
-            // Check that success is shown and close the modal
-            cy.get('#e2e-seat-set-success-body').should('exist');
-            cy.get('#e2e-close-seat-success-button').click();
-          }
-        });
-      });
-    };
 
     it('is able to add a moderator and shows confirmation when needed', () => {
       cy.visit(`admin/projects/${projectId}/permissions`);
@@ -320,7 +322,7 @@ describe('Seat based billing', () => {
       cy.get('#projectModeratorUserSearch').type(`${user2Email}`);
       cy.get(`[data-cy="e2e-user-${user2Email}"]`).click();
       cy.get('[data-cy="e2e-add-moderators-button"]').click();
-      testShowModalOnAdd();
+      testShowModalOnAddingModerator();
       cy.get('.e2e-admin-list').contains(user2Email);
 
       // Add moderator and check that they are shown in the list
@@ -328,7 +330,7 @@ describe('Seat based billing', () => {
       cy.get('#projectModeratorUserSearch').type(`${user3Email}`);
       cy.get(`[data-cy="e2e-user-${user3Email}"]`).click();
       cy.get('[data-cy="e2e-add-moderators-button"]').click();
-      testShowModalOnAdd();
+      testShowModalOnAddingModerator();
       cy.get('.e2e-admin-list').contains(user3Email);
 
       // Add moderator and check that they are shown in the list
@@ -336,7 +338,7 @@ describe('Seat based billing', () => {
       cy.get('#projectModeratorUserSearch').type(`${user4Email}`);
       cy.get(`[data-cy="e2e-user-${user4Email}"]`).click();
       cy.get('[data-cy="e2e-add-moderators-button"]').click();
-      testShowModalOnAdd();
+      testShowModalOnAddingModerator();
       cy.get('.e2e-admin-list').contains(user4Email);
 
       // Add moderator and check that they are shown in the list
@@ -344,7 +346,7 @@ describe('Seat based billing', () => {
       cy.get('#projectModeratorUserSearch').type(`${user5Email}`);
       cy.get(`[data-cy="e2e-user-${user5Email}"]`).click();
       cy.get('[data-cy="e2e-add-moderators-button"]').click();
-      testShowModalOnAdd();
+      testShowModalOnAddingModerator();
       cy.get('.e2e-admin-list').contains(user5Email);
     });
 
@@ -372,7 +374,7 @@ describe('Seat based billing', () => {
         cy.get('#projectModeratorUserSearch').type(`${user6Email}`);
         cy.get(`[data-cy="e2e-user-${user6Email}"]`).click();
         cy.get('[data-cy="e2e-add-moderators-button"]').click();
-        testShowModalOnAdd();
+        testShowModalOnAddingModerator();
         cy.get('.e2e-admin-list').contains(user6Email);
 
         cy.visit('/admin/users/admins-managers');
@@ -414,7 +416,7 @@ describe('Seat based billing', () => {
           cy.get('#projectModeratorUserSearch').type(`${user7Email}`);
           cy.get(`[data-cy="e2e-user-${user7Email}"]`).click();
           cy.get('[data-cy="e2e-add-moderators-button"]').click();
-          testShowModalOnAdd();
+          testShowModalOnAddingModerator();
           cy.get('.e2e-admin-list').contains(user7Email);
 
           cy.visit('/admin/users/admins-managers');
@@ -440,6 +442,136 @@ describe('Seat based billing', () => {
           });
         });
       });
+    });
+  });
+
+  describe('Folder moderator', () => {
+    let folderId: string;
+
+    // User 8
+    const user8FirstName = randomString();
+    const user8LastName = randomString();
+    const user8Email = randomEmail();
+    const user8Password = randomString();
+
+    // User 9
+    const user9FirstName = randomString();
+    const user9LastName = randomString();
+    const user9Email = randomEmail();
+    const user9Password = randomString();
+
+    // User 10
+    const user10FirstName = randomString();
+    const user10LastName = randomString();
+    const user10Email = randomEmail();
+    const user10Password = randomString();
+
+    // User 11
+    const user11FirstName = randomString();
+    const user11LastName = randomString();
+    const user11Email = randomEmail();
+    const user11Password = randomString();
+
+    // User 12
+    const user12FirstName = randomString();
+    const user12LastName = randomString();
+    const user12Email = randomEmail();
+    const user12Password = randomString();
+
+    // User 13
+    const user13FirstName = randomString();
+    const user13LastName = randomString();
+    const user13Email = randomEmail();
+    const user13Password = randomString();
+
+    before(() => {
+      cy.apiCreateFolder(generateProjectFolder({})).then((folder) => {
+        folderId = folder.body.data.id;
+      });
+
+      createUsers([
+        {
+          first_name: user8FirstName,
+          last_name: user8LastName,
+          email: user8Email,
+          password: user8Password,
+        },
+        {
+          first_name: user9FirstName,
+          last_name: user9LastName,
+          email: user9Email,
+          password: user9Password,
+        },
+        {
+          first_name: user10FirstName,
+          last_name: user10LastName,
+          email: user10Email,
+          password: user10Password,
+        },
+        {
+          first_name: user11FirstName,
+          last_name: user11LastName,
+          email: user11Email,
+          password: user11Password,
+        },
+        {
+          first_name: user12FirstName,
+          last_name: user12LastName,
+          email: user12Email,
+          password: user12Password,
+        },
+        {
+          first_name: user13FirstName,
+          last_name: user13LastName,
+          email: user13Email,
+          password: user13Password,
+        },
+      ]);
+    });
+
+    beforeEach(() => {
+      cy.setAdminLoginCookie();
+    });
+
+    after(() => {
+      cy.apiRemoveFolder(folderId);
+    });
+
+    it('is able to add a moderator and shows confirmation when needed', () => {
+      cy.visit(`admin/projects/folders/${folderId}/permissions`);
+      cy.acceptCookies();
+
+      // Add moderator and check that they are shown in the list
+      cy.get('#folderModeratorUserSearch').should('exist');
+      cy.get('#folderModeratorUserSearch').type(`${user8Email}`);
+      cy.get(`[data-cy="e2e-user-${user8Email}"]`).click();
+      cy.get('[data-cy="e2e-add-folder-moderator-button"]').click();
+      testShowModalOnAddingModerator();
+      cy.get('.e2e-admin-list').contains(user8Email);
+
+      // Add moderator and check that they are shown in the list
+      cy.get('#folderModeratorUserSearch').should('exist');
+      cy.get('#folderModeratorUserSearch').type(`${user9Email}`);
+      cy.get(`[data-cy="e2e-user-${user9Email}"]`).click();
+      cy.get('[data-cy="e2e-add-folder-moderator-button"]').click();
+      testShowModalOnAddingModerator();
+      cy.get('.e2e-admin-list').contains(user9Email);
+
+      // Add moderator and check that they are shown in the list
+      cy.get('#folderModeratorUserSearch').should('exist');
+      cy.get('#folderModeratorUserSearch').type(`${user10Email}`);
+      cy.get(`[data-cy="e2e-user-${user10Email}"]`).click();
+      cy.get('[data-cy="e2e-add-folder-moderator-button"]').click();
+      testShowModalOnAddingModerator();
+      cy.get('.e2e-admin-list').contains(user10Email);
+
+      // Add moderator and check that they are shown in the list
+      cy.get('#folderModeratorUserSearch').should('exist');
+      cy.get('#folderModeratorUserSearch').type(`${user11Email}`);
+      cy.get(`[data-cy="e2e-user-${user11Email}"]`).click();
+      cy.get('[data-cy="e2e-add-folder-moderator-button"]').click();
+      testShowModalOnAddingModerator();
+      cy.get('.e2e-admin-list').contains(user11Email);
     });
   });
 });
