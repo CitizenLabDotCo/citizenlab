@@ -71,8 +71,7 @@ resource 'Users' do
 
         example_request 'Returns "continue"' do
           expect(status).to eq 200
-          json_response = json_parse response_body
-          expect(json_response[:action]).to eq('continue')
+          expect(json_response_body[:action]).to eq('continue')
         end
       end
 
