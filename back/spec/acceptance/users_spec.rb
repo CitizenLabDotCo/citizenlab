@@ -60,7 +60,7 @@ resource 'Users' do
 
       context 'when a user does not exist' do
         example_request 'Returns "show_terms"' do
-          expect(status).to eq 200
+          assert_status 200
           json_response = json_parse response_body
           expect(json_response[:action]).to eq('show_terms')
         end
