@@ -26,7 +26,8 @@ class EventFile < ApplicationRecord
   mount_base64_file_uploader :file, EventFileUploader
   belongs_to :event
 
-  validates :event, :file, :name, presence: true
+  validates :event, :name, presence: true
+  validates :file, presence: true, unless: proc { Current.loading_tenant_template }
   validate :extension_whitelist
 
   private

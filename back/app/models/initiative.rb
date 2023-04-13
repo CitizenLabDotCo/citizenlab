@@ -71,7 +71,7 @@ class Initiative < ApplicationRecord
   with_options unless: :draft? do
     # Problem is that this validation happens too soon, as the first idea status change is created after create.
     # initiative.validates :initiative_status, presence: true
-    validates :initiative_status_changes, presence: true
+    validates :initiative_status_changes, presence: true, unless: proc { Current.loading_tenant_template }
     validate :assignee_can_moderate_initiatives
 
     before_validation :initialize_initiative_status_changes
@@ -165,7 +165,7 @@ class Initiative < ApplicationRecord
   end
 
   def initialize_initiative_status_changes
-    initial_status = InitiativeStatus.find_by code: 'proposed'
+    initial_status = InitiativeStatus.find_by(code: 'proposed')
     return unless initial_status && initiative_status_changes.empty? && !draft?
 
     initiative_status_changes.build(initiative_status: initial_status)

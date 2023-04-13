@@ -28,7 +28,8 @@ class StaticPageFile < ApplicationRecord
   mount_base64_file_uploader :file, StaticPageFileUploader
   belongs_to :static_page
 
-  validates :static_page, :file, :name, presence: true
+  validates :static_page, :name, presence: true
+  validates :file, presence: true, unless: proc { Current.loading_tenant_template }
   validate :extension_whitelist
 
   private
