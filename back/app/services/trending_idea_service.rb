@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 class TrendingIdeaService
-  def filter_trending(ideas = Idea.all)
-    with_trending_score(ideas)
+  def filter_trending(ideas = Idea.not_from_survey)
+    with_trending_score(ideas.not_from_survey)
       .where('sub.is_trending' => true)
   end
 
-  def sort_trending(ideas = Idea.all)
-    with_trending_score(ideas)
+  def sort_trending(ideas = Idea.not_from_survey)
+    with_trending_score(ideas.not_from_survey)
       .order('trending_score DESC')
   end
 
-  def with_trending_score(ideas = Idea.all)
+  def with_trending_score(ideas = Idea.not_from_survey)
     sub_query = Idea
       .joins(:idea_status)
       .joins(:idea_trending_info)
@@ -28,6 +28,7 @@ class TrendingIdeaService
       )
 
     ideas
+      .not_from_survey
       .joins("INNER JOIN (#{sub_query.to_sql}) sub ON ideas.id = sub.id")
       .select(
         <<-SQL.squish

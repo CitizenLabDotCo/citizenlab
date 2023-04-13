@@ -155,6 +155,11 @@ class Idea < ApplicationRecord
 
   scope :order_trending, -> { TrendingIdeaService.new.sort_trending(where('TRUE')) }
 
+  scope :from_survey_project, -> { joins(:project).where(projects: { participation_method: 'native_survey' }) }
+  scope :from_survey_phase, -> { joins(:creation_phase).where(phases: { participation_method: 'native_survey' }) }
+  scope :from_survey, -> { where(id: from_survey_project.select(:id)).or(where(id: from_survey_phase.select(:id))) }
+  scope :not_from_survey, -> { where.not(id: from_survey.select(:id)) }
+
   def just_published?
     publication_status_previous_change == %w[draft published] || publication_status_previous_change == [nil, 'published']
   end
