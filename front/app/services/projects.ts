@@ -44,7 +44,8 @@ export type PostingDisabledReason =
   | 'not_permitted'
   | 'not_verified'
   | 'not_signed_in'
-  | 'not_active';
+  | 'not_active'
+  | 'missing_data';
 
 export type CommentingDisabledReason =
   | 'not_verified'
@@ -53,7 +54,8 @@ export type CommentingDisabledReason =
   | 'commenting_disabled'
   | 'not_permitted'
   | 'not_signed_in'
-  | 'not_active';
+  | 'not_active'
+  | 'missing_data';
 
 export type ProjectVotingDisabledReason =
   | 'project_inactive'
@@ -65,7 +67,8 @@ export type ProjectVotingDisabledReason =
   | 'downvoting_limited_max_reached'
   | 'not_permitted'
   | 'not_verified'
-  | 'not_active';
+  | 'not_active'
+  | 'missing_data';
 
 export type SurveyDisabledReason =
   | 'project_inactive'
@@ -73,7 +76,8 @@ export type SurveyDisabledReason =
   | 'not_permitted'
   | 'not_verified'
   | 'not_signed_in'
-  | 'not_active';
+  | 'not_active'
+  | 'missing_data';
 
 export type PollDisabledReason =
   | 'project_inactive'
@@ -82,7 +86,8 @@ export type PollDisabledReason =
   | 'already_responded'
   | 'not_verified'
   | 'not_signed_in'
-  | 'not_active';
+  | 'not_active'
+  | 'missing_data';
 
 interface ProjectHeaderBgImageSizes {
   large: string | null;

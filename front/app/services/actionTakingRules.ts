@@ -73,6 +73,11 @@ const ideaPostingDisabledReason = (
   authenticationRequirements: AuthenticationRequirements | null;
 } => {
   switch (backendReason) {
+    case 'missing_data':
+      return {
+        disabledReason: null,
+        authenticationRequirements: 'complete_registration',
+      };
     case 'not_verified':
       return signedIn
         ? {
@@ -182,7 +187,7 @@ export const getIdeaPostingRules = ({
         return {
           show: true,
           enabled: false,
-          disabledReason: 'notActivePhase' as IIdeaPostingDisabledReason,
+          disabledReason: 'notActivePhase',
           authenticationRequirements: null,
         };
       }
@@ -198,7 +203,7 @@ export const getIdeaPostingRules = ({
         return {
           show: true,
           enabled: false,
-          disabledReason: 'notPermitted' as IIdeaPostingDisabledReason,
+          disabledReason: 'notPermitted',
           authenticationRequirements: null,
         };
       }
@@ -219,7 +224,7 @@ export const getIdeaPostingRules = ({
             authenticationRequirements: null,
             show: true,
             enabled: false,
-          } as ActionPermissionDisabled<IIdeaPostingDisabledReason>;
+          };
         }
       } else {
         return {
@@ -300,22 +305,56 @@ export type IPollTakingDisabledReason =
 const pollTakingDisabledReason = (
   backendReason: PollDisabledReason | null,
   signedIn: boolean
-): IPollTakingDisabledReason => {
+): {
+  disabledReason: IPollTakingDisabledReason;
+  authenticationRequirements: AuthenticationRequirements | null;
+} => {
   switch (backendReason) {
+    case 'missing_data':
+      return {
+        disabledReason: 'maybeNotPermitted',
+        authenticationRequirements: 'complete_registration',
+      };
     case 'project_inactive':
-      return 'projectInactive';
+      return {
+        disabledReason: 'projectInactive',
+        authenticationRequirements: null,
+      };
     case 'already_responded':
-      return 'alreadyResponded';
+      return {
+        disabledReason: 'alreadyResponded',
+        authenticationRequirements: null,
+      };
     case 'not_active':
-      return 'notActive';
+      return {
+        disabledReason: 'notActive',
+        authenticationRequirements: 'complete_registration',
+      };
     case 'not_verified':
-      return signedIn ? 'notVerified' : 'maybeNotVerified';
+      return signedIn
+        ? {
+            disabledReason: 'notVerified',
+            authenticationRequirements: 'verify',
+          }
+        : {
+            disabledReason: 'maybeNotVerified',
+            authenticationRequirements: 'sign_in_up_and_verify',
+          };
     case 'not_permitted':
-      return signedIn ? 'notPermitted' : 'maybeNotPermitted';
+      return {
+        disabledReason: signedIn ? 'notPermitted' : 'maybeNotPermitted',
+        authenticationRequirements: null,
+      };
     case 'not_signed_in':
-      return 'maybeNotPermitted';
+      return {
+        disabledReason: 'maybeNotPermitted',
+        authenticationRequirements: 'sign_in_up',
+      };
     default:
-      return 'notPermitted';
+      return {
+        disabledReason: 'notPermitted',
+        authenticationRequirements: null,
+      };
   }
 };
 
@@ -362,13 +401,12 @@ export const getPollTakingRules = ({
       authenticationRequirements: null,
     };
   }
-  // if not in phase context
+
   return {
     enabled: false,
-    disabledReason: pollTakingDisabledReason(disabled_reason, !!signedIn),
     show: true,
-    authenticationRequirements: null,
-  };
+    ...pollTakingDisabledReason(disabled_reason, !!signedIn),
+  } as ActionPermission<IPollTakingDisabledReason>;
 };
 
 export type ISurveyTakingDisabledReason =
