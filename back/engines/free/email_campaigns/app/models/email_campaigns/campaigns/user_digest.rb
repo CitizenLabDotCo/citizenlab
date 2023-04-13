@@ -30,7 +30,7 @@ module EmailCampaigns
   class Campaigns::UserDigest < Campaign
     include Disableable
     include Consentable
-    # include Schedulable
+    include Schedulable
     include Trackable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: ['active']
