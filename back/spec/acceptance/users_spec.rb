@@ -90,8 +90,7 @@ resource 'Users' do
 
         example_request '[error] Invalid email' do
           assert_status 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :email, 0, :error)).to eq('invalid')
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('invalid')
         end
       end
     end
