@@ -254,24 +254,33 @@ resource 'User Custom Fields' do
     end
 
     delete 'web_api/v1/users/custom_fields/:id' do
-      let(:custom_field) { create(:custom_field) }
+      let(:custom_field) { create(:custom_field, key: 'new_field') }
       let(:id) { custom_field.id }
 
-      example_request 'Delete a custom field' do
+      example 'Delete a custom field, user saved values and permission relationships' do
+        permission = create(:permission)
+        permissions_custom_field = create(:permissions_custom_field, custom_field: custom_field, permission: permission)
+        user_with_fields = create(:user, custom_field_values: { new_field: 'a value' })
+        # binding.pry
+
+        # TODO: user values aren't being removed
+        do_request
         expect(response_status).to eq 200
         expect { CustomField.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { PermissionsCustomField.find(permissions_custom_field.id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect(user_with_fields.custom_field_values).to eq({})
       end
 
       example "[error] Delete a custom field that's still referenced in a rules group" do
         create(
           :smart_group,
           rules: [
-            { ruleType: 'custom_field_text', customFieldId: id, predicate: 'is_empty' }
+            { ruleType: 'custom_field_text', customFieldId: custom_field.id, predicate: 'is_empty' }
           ]
         )
         do_request
         assert_status 422
-        expect(CustomField.find(id)).to be_present
+        expect(CustomField.find(custom_field.id)).to be_present
       end
     end
   end
