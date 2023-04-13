@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import { IAppConfigurationSettingsCore } from 'api/app_configuration/types';
 
-import AddCollaboratorsModal from './';
+import AddModeratorsModal from '.';
 
 type MockAppConfigurationType = {
   data: {
@@ -55,7 +55,7 @@ let mockFeatureFlagData = false;
 
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
-describe('AddCollaboratorsModal', () => {
+describe('AddModeratorsModal', () => {
   const closeModal = jest.fn();
   const handleOnAddModeratorsClick = jest.fn();
 
@@ -71,9 +71,9 @@ describe('AddCollaboratorsModal', () => {
       mockFeatureFlagData = false;
     });
 
-    it('shows confirm in button when seats are not full and admin is adding another collaborator', () => {
+    it('shows confirm in button when seats are not full and admin is adding another moderator', () => {
       render(
-        <AddCollaboratorsModal
+        <AddModeratorsModal
           addModerators={handleOnAddModeratorsClick}
           showModal
           closeModal={closeModal}
@@ -97,7 +97,7 @@ describe('AddCollaboratorsModal', () => {
       mockUserSeatsData.data.attributes.project_moderators_number = 10;
 
       render(
-        <AddCollaboratorsModal
+        <AddModeratorsModal
           addModerators={handleOnAddModeratorsClick}
           showModal
           closeModal={closeModal}
@@ -128,7 +128,7 @@ describe('AddCollaboratorsModal', () => {
       mockAppConfiguration.data.attributes.settings.core.additional_moderators_number = 7;
       mockFeatureFlagData = true;
       render(
-        <AddCollaboratorsModal
+        <AddModeratorsModal
           addModerators={handleOnAddModeratorsClick}
           showModal
           closeModal={closeModal}
@@ -153,7 +153,7 @@ describe('AddCollaboratorsModal', () => {
       mockAppConfiguration.data.attributes.settings.core.additional_moderators_number = 1;
       mockFeatureFlagData = true;
       render(
-        <AddCollaboratorsModal
+        <AddModeratorsModal
           addModerators={handleOnAddModeratorsClick}
           showModal
           closeModal={closeModal}

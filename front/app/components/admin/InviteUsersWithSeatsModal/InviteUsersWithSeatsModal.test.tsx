@@ -79,14 +79,14 @@ describe('InviteUsersWithSeatsModal', () => {
     expect(confirmButton).toBeInTheDocument();
   });
 
-  it('shows correct copy for collaborators', () => {
+  it('shows correct copy for moderators', () => {
     render(
       <InviteUsersWithSeatsModal
         inviteUsers={inviteUsers}
         showModal
         closeModal={closeModal}
         noOfSeatsToAdd={2}
-        seatType="collaborator"
+        seatType="moderator"
       />
     );
 
@@ -112,7 +112,7 @@ describe('InviteUsersWithSeatsModal', () => {
         showModal
         closeModal={closeModal}
         noOfSeatsToAdd={2}
-        seatType="collaborator"
+        seatType="moderator"
       />
     );
 
