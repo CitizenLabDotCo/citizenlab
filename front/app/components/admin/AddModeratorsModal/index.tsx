@@ -100,6 +100,7 @@ const AddModeratorsModal = ({
             alignItems="center"
           >
             <Button
+              autoFocus
               width="auto"
               onClick={() => {
                 addModerators();
