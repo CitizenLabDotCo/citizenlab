@@ -603,5 +603,65 @@ describe('Seat based billing', () => {
         );
       });
     });
+
+    it('updates remaining seats and used seats', () => {
+      cy.visit('/admin/users/admins-managers');
+      cy.acceptCookies();
+
+      cy.apiGetAppConfiguration().then((appConfigurationResponse) => {
+        let additionalModerators =
+          appConfigurationResponse.body.data.attributes.settings.core
+            .additional_moderators_number;
+        let maximumModerators =
+          appConfigurationResponse.body.data.attributes.settings.core
+            .maximum_moderators_number;
+
+        cy.apiGetSeats().then((seatsResponse) => {
+          let usedSeats =
+            seatsResponse.body.data.attributes.project_moderators_number;
+          let totalSeats = additionalModerators + maximumModerators;
+          let remainingSeats = totalSeats - usedSeats;
+
+          cy.get('#e2e-moderator-remaining-seats').contains(
+            `${remainingSeats}`
+          );
+          cy.get('#e2e-moderator-used-seats').contains(`${usedSeats}`);
+          cy.get('#e2e-moderator-total-seats').contains(`${totalSeats}`);
+
+          // Navigate to the folder permissions page
+          cy.visit(`admin/projects/folders/${folderId}/permissions`);
+
+          // Add moderator and check that they are shown in the list
+          cy.get('#folderModeratorUserSearch').should('exist');
+          cy.get('#folderModeratorUserSearch').type(`${user13Email}`);
+          cy.get(`[data-cy="e2e-user-${user13Email}"]`).click();
+          cy.get('[data-cy="e2e-add-folder-moderator-button"]').click();
+          testShowModalOnAddingModerator();
+          cy.get('.e2e-admin-list').contains(user13Email);
+
+          cy.visit('/admin/users/admins-managers');
+
+          // We make a fresh request to the backend to get the updated values since the additionalModerators can change
+          cy.apiGetAppConfiguration().then((newAppConfigurationResponse) => {
+            usedSeats = usedSeats + 1;
+            additionalModerators =
+              newAppConfigurationResponse.body.data.attributes.settings.core
+                .additional_moderators_number;
+            maximumModerators =
+              newAppConfigurationResponse.body.data.attributes.settings.core
+                .maximum_moderators_number;
+            totalSeats = additionalModerators + maximumModerators;
+            remainingSeats = totalSeats - usedSeats;
+
+            // Verify that the numbers have been updated
+            cy.get('#e2e-moderator-remaining-seats').contains(
+              `${remainingSeats}`
+            );
+            cy.get('#e2e-moderator-used-seats').contains(`${usedSeats}`);
+            cy.get('#e2e-moderator-total-seats').contains(`${totalSeats}`);
+          });
+        });
+      });
+    });
   });
 });
