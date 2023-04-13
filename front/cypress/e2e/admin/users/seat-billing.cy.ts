@@ -6,8 +6,8 @@ describe('Seat based billing', () => {
   let adminAndmoderatorsCount: number;
 
   type CreateUserType = {
-    first_name: string;
-    last_name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
   };
@@ -15,8 +15,8 @@ describe('Seat based billing', () => {
   const createUsers = (users: CreateUserType[]) => {
     users.forEach((user) => {
       cy.apiSignup(
-        user.first_name,
-        user.last_name,
+        user.firstName,
+        user.lastName,
         user.email,
         user.password
       ).then((response) => {
@@ -32,7 +32,7 @@ describe('Seat based billing', () => {
     createdUserIds = [];
   };
 
-  describe('Admin seats', () => {
+  describe('with admin seats', () => {
     // User 1
     const user1FirstName = randomString();
     const user1LastName = randomString();
@@ -42,8 +42,8 @@ describe('Seat based billing', () => {
     before(() => {
       createUsers([
         {
-          first_name: user1FirstName,
-          last_name: user1LastName,
+          firstName: user1FirstName,
+          lastName: user1LastName,
           email: user1Email,
           password: user1Password,
         },
@@ -61,7 +61,7 @@ describe('Seat based billing', () => {
       cleanUp();
     });
 
-    it('is able to set a user to admin or normal user and shows confirmation when exceeding seats', () => {
+    it('allows admin to give admin rights or change another an admin to a normal user and shows confirmation when exceeding adminseats', () => {
       cy.apiGetAppConfiguration().then((appConfigurationResponse) => {
         let additionalAdmins =
           appConfigurationResponse.body?.data.attributes.settings.core
@@ -95,6 +95,10 @@ describe('Seat based billing', () => {
           cy.get('.e2e-user-table')
             .find('.e2e-user-table-row')
             .first()
+            .contains(user1Email);
+          cy.get('.e2e-user-table')
+            .find('.e2e-user-table-row')
+            .first()
             .find('.e2e-more-actions')
             .click()
             .parent()
@@ -117,6 +121,10 @@ describe('Seat based billing', () => {
             .find('.e2e-user-table-row')
             .first()
             .contains('Platform admin');
+          cy.get('.e2e-user-table')
+            .find('.e2e-user-table-row')
+            .first()
+            .contains(user1Email);
           cy.get('[data-cy="e2e-admin-and-moderator-count"]').contains(
             `${adminAndmoderatorsCount + 1}`
           );
@@ -161,6 +169,10 @@ describe('Seat based billing', () => {
               .find('.e2e-user-table-row')
               .first()
               .contains('Registered user');
+            cy.get('.e2e-user-table')
+              .find('.e2e-user-table-row')
+              .first()
+              .contains(user1Email);
             cy.get('[data-cy="e2e-admin-and-moderator-count"]').contains(
               `${adminAndmoderatorsCount}`
             );
@@ -208,7 +220,7 @@ describe('Seat based billing', () => {
     });
   };
 
-  describe('Project moderator', () => {
+  describe('with moderator seats (project moderator)', () => {
     const projectTitle = randomString();
     const projectDescription = randomString();
     const projectDescriptionPreview = randomString(30);
@@ -263,38 +275,38 @@ describe('Seat based billing', () => {
       });
       createUsers([
         {
-          first_name: user2FirstName,
-          last_name: user2LastName,
+          firstName: user2FirstName,
+          lastName: user2LastName,
           email: user2Email,
           password: user2Password,
         },
         {
-          first_name: user3FirstName,
-          last_name: user3LastName,
+          firstName: user3FirstName,
+          lastName: user3LastName,
           email: user3Email,
           password: user3Password,
         },
         {
-          first_name: user4FirstName,
-          last_name: user4LastName,
+          firstName: user4FirstName,
+          lastName: user4LastName,
           email: user4Email,
           password: user4Password,
         },
         {
-          first_name: user5FirstName,
-          last_name: user5LastName,
+          firstName: user5FirstName,
+          lastName: user5LastName,
           email: user5Email,
           password: user5Password,
         },
         {
-          first_name: user6FirstName,
-          last_name: user6LastName,
+          firstName: user6FirstName,
+          lastName: user6LastName,
           email: user6Email,
           password: user6Password,
         },
         {
-          first_name: user7FirstName,
-          last_name: user7LastName,
+          firstName: user7FirstName,
+          lastName: user7LastName,
           email: user7Email,
           password: user7Password,
         },
@@ -310,7 +322,7 @@ describe('Seat based billing', () => {
       cy.apiRemoveProject(projectId);
     });
 
-    it('is able to add a moderator and shows confirmation when needed', () => {
+    it('allows user to add a moderator and shows a confirmation when needed', () => {
       cy.visit(`admin/projects/${projectId}/permissions`);
       cy.acceptCookies();
 
@@ -447,7 +459,7 @@ describe('Seat based billing', () => {
     });
   });
 
-  describe('Folder moderator', () => {
+  describe('with moderator seats (folder moderator)', () => {
     let folderId: string;
 
     // User 8
@@ -493,38 +505,38 @@ describe('Seat based billing', () => {
 
       createUsers([
         {
-          first_name: user8FirstName,
-          last_name: user8LastName,
+          firstName: user8FirstName,
+          lastName: user8LastName,
           email: user8Email,
           password: user8Password,
         },
         {
-          first_name: user9FirstName,
-          last_name: user9LastName,
+          firstName: user9FirstName,
+          lastName: user9LastName,
           email: user9Email,
           password: user9Password,
         },
         {
-          first_name: user10FirstName,
-          last_name: user10LastName,
+          firstName: user10FirstName,
+          lastName: user10LastName,
           email: user10Email,
           password: user10Password,
         },
         {
-          first_name: user11FirstName,
-          last_name: user11LastName,
+          firstName: user11FirstName,
+          lastName: user11LastName,
           email: user11Email,
           password: user11Password,
         },
         {
-          first_name: user12FirstName,
-          last_name: user12LastName,
+          firstName: user12FirstName,
+          lastName: user12LastName,
           email: user12Email,
           password: user12Password,
         },
         {
-          first_name: user13FirstName,
-          last_name: user13LastName,
+          firstName: user13FirstName,
+          lastName: user13LastName,
           email: user13Email,
           password: user13Password,
         },
@@ -540,7 +552,7 @@ describe('Seat based billing', () => {
       cy.apiRemoveFolder(folderId);
     });
 
-    it('is able to add a moderator and shows confirmation when needed', () => {
+    it('allows user to add a moderator and shows confirmation when needed', () => {
       cy.visit(`admin/projects/folders/${folderId}/permissions`);
       cy.acceptCookies();
 
