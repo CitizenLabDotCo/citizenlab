@@ -38,8 +38,11 @@ import VerificationSuccess from './steps/VerificationSuccess';
 type Step = ReturnType<typeof useSteps>['currentStep'];
 
 const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
-  // closed (shared)
+  // shared
   closed: null,
+  verification: messages.verifyYourIdentity,
+  'custom-fields': messages.signUp,
+  success: null,
 
   // old sign in flow
   'sign-in:auth-providers': messages.logIn,
@@ -50,8 +53,6 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sign-up:email-password': messages.signUp,
   'sign-up:email-confirmation': messages.signUp,
   'sign-up:change-email': messages.signUp,
-  'sign-up:verification': messages.verifyYourIdentity,
-  'sign-up:custom-fields': messages.signUp,
 
   // light flow
   'light-flow:email': messages.beforeYouParticipate,
@@ -66,9 +67,6 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // verification only
   'verification-only': messages.verifyYourIdentity,
   'verification-success': null,
-
-  // success (shared)
-  success: null,
 };
 
 const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
@@ -144,6 +142,30 @@ const AuthModal = () => {
           </Box>
         )}
 
+        {/* shared */}
+        {currentStep === 'verification' && (
+          <Verification
+            authenticationData={authenticationData}
+            onCompleted={transition(currentStep, 'CONTINUE')}
+            onError={() => setError('unknown')}
+          />
+        )}
+
+        {currentStep === 'custom-fields' && (
+          <CustomFields
+            status={status}
+            onSubmit={transition(currentStep, 'SUBMIT')}
+            onSkip={transition(currentStep, 'SKIP')}
+          />
+        )}
+
+        {currentStep === 'success' && (
+          <Success
+            status={status}
+            onContinue={transition(currentStep, 'CONTINUE')}
+          />
+        )}
+
         {/* old sign in flow */}
         {currentStep === 'sign-in:auth-providers' && (
           <AuthProviders
@@ -202,22 +224,6 @@ const AuthModal = () => {
           <ChangeEmail
             onGoBack={transition(currentStep, 'GO_BACK')}
             onChangeEmail={transition(currentStep, 'RESEND_CODE')}
-          />
-        )}
-
-        {currentStep === 'sign-up:verification' && (
-          <Verification
-            authenticationData={authenticationData}
-            onCompleted={transition(currentStep, 'CONTINUE')}
-            onError={() => setError('unknown')}
-          />
-        )}
-
-        {currentStep === 'sign-up:custom-fields' && (
-          <CustomFields
-            status={status}
-            onSubmit={transition(currentStep, 'SUBMIT')}
-            onSkip={transition(currentStep, 'SKIP')}
           />
         )}
 
@@ -291,13 +297,6 @@ const AuthModal = () => {
 
         {currentStep === 'verification-success' && (
           <VerificationSuccess onClose={transition(currentStep, 'CLOSE')} />
-        )}
-
-        {currentStep === 'success' && (
-          <Success
-            status={status}
-            onContinue={transition(currentStep, 'CONTINUE')}
-          />
         )}
       </Box>
     </Modal>

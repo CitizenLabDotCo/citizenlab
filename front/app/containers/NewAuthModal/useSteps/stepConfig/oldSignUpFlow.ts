@@ -5,7 +5,6 @@ import createAccountWithPassword, {
 } from 'api/authentication/createAccountWithPassword';
 import confirmEmail from 'api/authentication/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/resendEmailConfirmationCode';
-import { updateUser } from 'services/users';
 
 // tracks
 import tracks from '../../tracks';
@@ -23,7 +22,6 @@ import {
   GetRequirements,
 } from '../../typings';
 import { Step } from './typings';
-import { FormData } from 'components/UserCustomFieldsForm';
 
 export const oldSignUpFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -91,12 +89,12 @@ export const oldSignUpFlow = (
           }
 
           if (requirements.special.verification === 'require') {
-            setCurrentStep('sign-up:verification');
+            setCurrentStep('verification');
             return;
           }
 
           if (askCustomFields(requirements.custom_fields)) {
-            setCurrentStep('sign-up:custom-fields');
+            setCurrentStep('custom-fields');
             return;
           }
 
@@ -124,12 +122,12 @@ export const oldSignUpFlow = (
           const { requirements } = await getRequirements();
 
           if (requirements.special.verification === 'require') {
-            setCurrentStep('sign-up:verification');
+            setCurrentStep('verification');
             return;
           }
 
           if (askCustomFields(requirements.custom_fields)) {
-            setCurrentStep('sign-up:custom-fields');
+            setCurrentStep('custom-fields');
             return;
           }
 
@@ -162,45 +160,6 @@ export const oldSignUpFlow = (
           setStatus('error');
           setError('unknown');
         }
-      },
-    },
-
-    'sign-up:verification': {
-      CLOSE: () => setCurrentStep('closed'),
-      CONTINUE: async () => {
-        const { requirements } = await getRequirements();
-
-        if (askCustomFields(requirements.custom_fields)) {
-          setCurrentStep('sign-up:custom-fields');
-          return;
-        }
-
-        setCurrentStep('success');
-      },
-    },
-
-    'sign-up:custom-fields': {
-      CLOSE: () => {
-        setCurrentStep('closed');
-        trackEventByName(tracks.signUpCustomFieldsStepExited);
-      },
-      SUBMIT: async (userId: string, formData: FormData) => {
-        setStatus('pending');
-
-        try {
-          await updateUser(userId, { custom_field_values: formData });
-          setStatus('ok');
-          setCurrentStep('success');
-          trackEventByName(tracks.signUpCustomFieldsStepCompleted);
-        } catch {
-          setStatus('error');
-          setError('unknown');
-          trackEventByName(tracks.signUpCustomFieldsStepFailed);
-        }
-      },
-      SKIP: async () => {
-        setCurrentStep('success');
-        trackEventByName(tracks.signUpCustomFieldsStepSkipped);
       },
     },
   };

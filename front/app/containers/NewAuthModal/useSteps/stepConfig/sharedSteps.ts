@@ -1,5 +1,8 @@
 import { parse } from 'qs';
 
+// api
+import { updateUser } from 'services/users';
+
 // cache
 import streams from 'utils/streams';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
@@ -20,14 +23,17 @@ import {
   UpdateState,
   AuthenticationData,
   Status,
+  ErrorCode,
 } from '../../typings';
 import { Step } from './typings';
+import { FormData } from 'components/UserCustomFieldsForm';
 
 export const sharedSteps = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
+  setError: (errorCode: ErrorCode) => void,
   updateState: UpdateState,
   anySSOEnabled: boolean
 ) => {
@@ -85,12 +91,12 @@ export const sharedSteps = (
             }
 
             if (requirements.special.verification === 'require') {
-              setCurrentStep('sign-up:verification');
+              setCurrentStep('verification');
               return;
             }
 
             if (askCustomFields(requirements.custom_fields)) {
-              setCurrentStep('sign-up:custom-fields');
+              setCurrentStep('custom-fields');
               return;
             }
           } else {
@@ -105,6 +111,45 @@ export const sharedSteps = (
 
       TRIGGER_VERIFICATION_ONLY: () => {
         setCurrentStep('verification-only');
+      },
+    },
+
+    verification: {
+      CLOSE: () => setCurrentStep('closed'),
+      CONTINUE: async () => {
+        const { requirements } = await getRequirements();
+
+        if (askCustomFields(requirements.custom_fields)) {
+          setCurrentStep('custom-fields');
+          return;
+        }
+
+        setCurrentStep('success');
+      },
+    },
+
+    'custom-fields': {
+      CLOSE: () => {
+        setCurrentStep('closed');
+        trackEventByName(tracks.signUpCustomFieldsStepExited);
+      },
+      SUBMIT: async (userId: string, formData: FormData) => {
+        setStatus('pending');
+
+        try {
+          await updateUser(userId, { custom_field_values: formData });
+          setStatus('ok');
+          setCurrentStep('success');
+          trackEventByName(tracks.signUpCustomFieldsStepCompleted);
+        } catch {
+          setStatus('error');
+          setError('unknown');
+          trackEventByName(tracks.signUpCustomFieldsStepFailed);
+        }
+      },
+      SKIP: async () => {
+        setCurrentStep('success');
+        trackEventByName(tracks.signUpCustomFieldsStepSkipped);
       },
     },
 

@@ -1,6 +1,9 @@
 export type Step =
-  // closed (shared)
+  // shared
   | 'closed'
+  | 'verification'
+  | 'custom-fields'
+  | 'success'
 
   // old sign in flow
   | 'sign-in:auth-providers'
@@ -11,8 +14,6 @@ export type Step =
   | 'sign-up:email-password'
   | 'sign-up:email-confirmation'
   | 'sign-up:change-email'
-  | 'sign-up:verification'
-  | 'sign-up:custom-fields'
 
   // light flow
   | 'light-flow:email'
@@ -24,9 +25,6 @@ export type Step =
   | 'light-flow:email-confirmation'
   | 'light-flow:password'
 
-  // verification (for onboarding and re-verification)
+  // verification only (for onboarding and re-verification)
   | 'verification-only'
-  | 'verification-success'
-
-  // success (shared)
-  | 'success';
+  | 'verification-success';
