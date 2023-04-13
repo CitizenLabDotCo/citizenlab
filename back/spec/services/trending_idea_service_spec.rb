@@ -90,20 +90,6 @@ describe TrendingIdeaService do
     end
   end
 
-  describe 'with_trending_score' do
-    it 'does not include ideas that are native survey responses', document: false do
-      count = nil
-      with_score = nil
-      travel_to Time.now do
-        count = Idea.all.count
-        generate_survey_response_ideas
-        with_score = described_class.new.with_trending_score(Idea.all).map(&:id)
-      end
-
-      expect(with_score.size).to eq count
-    end
-  end
-
   def generate_trending_ideas(n)
     n.times do |_i|
       published_at = Faker::Time.between(from: 1.year.ago, to: DateTime.now)

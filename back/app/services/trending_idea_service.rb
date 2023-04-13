@@ -28,7 +28,6 @@ class TrendingIdeaService
       )
 
     ideas
-      .not_from_survey
       .joins("INNER JOIN (#{sub_query.to_sql}) sub ON ideas.id = sub.id")
       .select(
         <<-SQL.squish
