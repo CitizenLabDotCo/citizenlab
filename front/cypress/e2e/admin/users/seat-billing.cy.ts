@@ -77,12 +77,6 @@ describe('Seat based billing', () => {
 
   it('is able to set a user to admin or normal user and shows confirmation when exceeding seats', () => {
     cy.apiGetAppConfiguration().then((appConfigurationResponse) => {
-      const additionalModerators =
-        appConfigurationResponse.body.data.attributes.settings.core
-          .additional_moderators_number;
-      const maximumModerators =
-        appConfigurationResponse.body.data.attributes.settings.core
-          .maximum_moderators_number;
       let additionalAdmins =
         appConfigurationResponse.body?.data.attributes.settings.core
           .additional_admins_number;
@@ -90,19 +84,9 @@ describe('Seat based billing', () => {
         appConfigurationResponse.body?.data.attributes.settings.core
           .maximum_admins_number;
 
-      console.log('additionalModerators', additionalModerators);
-      console.log('maximumModerators', maximumModerators);
-      console.log('additionalAdmins', additionalAdmins);
-      console.log('maximumAdmins', maximumAdmins);
-
       cy.apiGetSeats().then((seatsResponse) => {
-        const currentModeratorSeats =
-          seatsResponse.body.data.attributes.project_moderators_number;
         const currentAdminSeats =
           seatsResponse.body.data.attributes.admins_number;
-
-        console.log('currentModeratorSeats', currentModeratorSeats);
-        console.log('currentAdminSeats', currentAdminSeats);
 
         let usedSeats = currentAdminSeats;
         let totalSeats = additionalAdmins + maximumAdmins;
