@@ -22,16 +22,10 @@ module UserCustomFields
           record.current_ref_distribution
         end
 
-
-        # has_many :projects, through: :permissions_custom_fields, record_type: :project, serializer: ::WebApi::V1::ProjectSerializer
-
-        has_many :projects do |object|
-          # binding.pry
+        has_many :projects, serializer: ::WebApi::V1::ProjectSerializer do |object|
           project_ids = object.permissions.map { |p| p.permission_scope_id if p.permission_scope_type == 'Project' }
           Project.find(project_ids)
         end
-        # has_many :projects, through: :permissions, serializer: ::WebApi::V1::ProjectSerializer
-
       end
     end
   end

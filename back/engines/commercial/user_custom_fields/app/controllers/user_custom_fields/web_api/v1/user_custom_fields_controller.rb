@@ -13,7 +13,7 @@ module UserCustomFields
         .order(:ordering)
       @custom_fields = @custom_fields.where(input_type: params[:input_types]) if params[:input_types]
 
-      render json: serialize_custom_fields(@custom_fields, params: fastjson_params)
+      render json: serialize_custom_fields(@custom_fields, params: fastjson_params, include: %i[projects])
     end
 
     def schema
@@ -33,7 +33,7 @@ module UserCustomFields
     end
 
     def show
-      render json: serialize_custom_fields(@custom_field, params: fastjson_params)
+      render json: serialize_custom_fields(@custom_field, params: fastjson_params, include: %i[projects])
     end
 
     def create

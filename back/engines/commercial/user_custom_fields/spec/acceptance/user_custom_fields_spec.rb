@@ -24,6 +24,18 @@ resource 'User Custom Fields' do
       expect(json_response[:data].size).to eq 3
     end
 
+    example 'List all custom fields with the projects that they are used in' do
+      project = create(:project)
+      permission = create(:permission, permission_scope: project)
+      create(:permissions_custom_field, custom_field: @custom_fields[0], permission: permission)
+
+      do_request
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response.dig(:data, 0, :relationships, :projects, :data, 0, :id)).to eq project.id
+      expect(json_response.dig(:included, 0, :id)).to eq project.id
+    end
+
     describe 'do filter on input types' do
       before do
         create(:custom_field_multiselect)
@@ -67,7 +79,8 @@ resource 'User Custom Fields' do
             data: custom_field.options.map do |option|
               { id: option.id, type: 'custom_field_option' }
             end
-          }
+          },
+          projects: { data: [] }
         }
       }.deep_symbolize_keys
     end
@@ -261,14 +274,12 @@ resource 'User Custom Fields' do
         permission = create(:permission)
         permissions_custom_field = create(:permissions_custom_field, custom_field: custom_field, permission: permission)
         user_with_fields = create(:user, custom_field_values: { new_field: 'a value' })
-        # binding.pry
 
-        # TODO: user values aren't being removed
         do_request
         expect(response_status).to eq 200
         expect { CustomField.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect { PermissionsCustomField.find(permissions_custom_field.id) }.to raise_error(ActiveRecord::RecordNotFound)
-        expect(user_with_fields.custom_field_values).to eq({})
+        expect(user_with_fields.reload.custom_field_values).to eq({})
       end
 
       example "[error] Delete a custom field that's still referenced in a rules group" do
