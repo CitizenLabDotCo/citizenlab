@@ -763,7 +763,7 @@
   "app.containers.CustomPageShow.notFound": "Página no encontrada",
   "app.containers.DisabledAccount.bottomText": "Puede iniciar sesión de nuevo desde {date}.",
   "app.containers.DisabledAccount.termsAndConditions": "términos y condiciones",
-  "app.containers.DisabledAccount.text2": "Su cuenta en la plataforma de participación de {orgName} ha sido desactivada temporalmente por violación de las normas de la comunidad. Para más información al respecto, puede consultar la página {TermsAndConditions}.",
+  "app.containers.DisabledAccount.text2": "Su cuenta en la plataforma de participación de {orgName} ha sido desactivada temporalmente por violación de las directrices comunitarias. Para más información al respecto, puede consultar la página {TermsAndConditions}.",
   "app.containers.DisabledAccount.title": "Su cuenta ha sido desactivada temporalmente",
   "app.containers.IdeaButton.addAContribution": "Agregar una contribución",
   "app.containers.IdeaButton.addAProject": "Agregue un proyecto",
