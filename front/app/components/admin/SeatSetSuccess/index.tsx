@@ -49,7 +49,7 @@ const SeatSetSuccess = ({
       : messages.allDone;
 
   return (
-    <Box p="30px">
+    <Box p="30px" id="e2e-seat-set-success-body">
       <Box display="flex" justifyContent="center">
         <Icon
           name="check-circle"
@@ -71,7 +71,9 @@ const SeatSetSuccess = ({
         flexDirection="row"
         justifyContent="center"
       >
-        <Button onClick={closeModal}>{formatMessage(messages.close)}</Button>
+        <Button onClick={closeModal} id="e2e-close-seat-success-button">
+          {formatMessage(messages.close)}
+        </Button>
       </Box>
     </Box>
   );
