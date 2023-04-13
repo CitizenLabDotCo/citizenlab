@@ -7,7 +7,7 @@ import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerVerificationOnly } from 'containers/NewAuthModal/events';
 import { colors } from 'utils/styleUtils';
 import OnboardingStep from './OnboardingStep';
 import SkipButton from './SkipButton';
@@ -38,10 +38,6 @@ const VerificationOnboardingStep = ({
 }: Props) => {
   const authUser = useAuthUser();
   const { formatMessage } = useIntl();
-
-  const onAccept = () => {
-    triggerAuthenticationFlow();
-  };
 
   if (!isNilOrError(authUser)) {
     return (
@@ -74,7 +70,7 @@ const VerificationOnboardingStep = ({
             />
             <AcceptButton
               text={formatMessage(messages.verifyNow)}
-              onClick={onAccept}
+              onClick={triggerVerificationOnly}
               className="e2e-signed-in-header-accept-btn"
             />
           </Right>

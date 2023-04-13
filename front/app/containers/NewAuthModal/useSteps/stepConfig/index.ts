@@ -110,6 +110,10 @@ export const getStepConfig = (
           }
         }
       },
+
+      TRIGGER_VERIFICATION_ONLY: () => {
+        setCurrentStep('verification-only');
+      },
     },
 
     ...oldSignInFlow(
@@ -138,6 +142,15 @@ export const getStepConfig = (
       setError,
       updateState
     ),
+
+    'verification-only': {
+      CLOSE: () => setCurrentStep('closed'),
+      CONTINUE: () => setCurrentStep('verification-success'), // TODO see if there's any success window right now?
+    },
+
+    'verification-success': {
+      CLOSE: () => setCurrentStep('closed'),
+    },
 
     // success (shared)
     success: {

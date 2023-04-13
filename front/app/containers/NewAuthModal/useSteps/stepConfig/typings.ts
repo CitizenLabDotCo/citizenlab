@@ -24,5 +24,9 @@ export type Step =
   | 'light-flow:email-confirmation'
   | 'light-flow:password'
 
+  // verification (for onboarding and re-verification)
+  | 'verification-only'
+  | 'verification-success'
+
   // success (shared)
   | 'success';

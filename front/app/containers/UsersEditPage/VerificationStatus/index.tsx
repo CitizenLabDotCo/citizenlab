@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -12,7 +12,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerVerificationOnly } from 'containers/NewAuthModal/events';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -113,17 +113,15 @@ const ReverifyButton = styled.button`
 
 const VerificationStatus = memo(({ className }: { className?: string }) => {
   const authUser = useAuthUser();
-
-  const onVerify = useCallback(() => {
-    triggerAuthenticationFlow();
-  }, []);
-
   if (isNilOrError(authUser)) return null;
 
   const authUserIsVerified = authUser.attributes.verified;
 
   const reverifyButton = (
-    <ReverifyButton className="e2e-reverify-user-button" onClick={onVerify}>
+    <ReverifyButton
+      className="e2e-reverify-user-button"
+      onClick={triggerVerificationOnly}
+    >
       <FormattedMessage {...messages.clickHereToUpdateVerification} />
     </ReverifyButton>
   );
@@ -180,7 +178,10 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
                 <FormattedMessage {...messages.becomeVerifiedSubtitle} />
               </StyledText>
             </Content>
-            <VerifyButton onClick={onVerify} id="e2e-verify-user-button">
+            <VerifyButton
+              onClick={triggerVerificationOnly}
+              id="e2e-verify-user-button"
+            >
               <FormattedMessage {...messages.verifyNow} />
             </VerifyButton>
           </>

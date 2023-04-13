@@ -33,6 +33,7 @@ import errorMessages from 'components/UI/Error/messages';
 
 // typings
 import { ErrorCode } from './typings';
+import VerificationSuccess from './steps/VerificationSuccess';
 
 type Step = ReturnType<typeof useSteps>['currentStep'];
 
@@ -61,6 +62,10 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'light-flow:france-connect-login': messages.beforeYouParticipate,
   'light-flow:email-confirmation': messages.confirmYourEmail,
   'light-flow:password': messages.logIn,
+
+  // verification only
+  'verification-only': messages.verifyYourIdentity,
+  'verification-success': null,
 
   // success (shared)
   success: null,
@@ -273,6 +278,19 @@ const AuthModal = () => {
             status={status}
             onSubmit={transition(currentStep, 'SUBMIT_PASSWORD')}
           />
+        )}
+
+        {/* verification only */}
+        {currentStep === 'verification-only' && (
+          <Verification
+            authenticationData={authenticationData}
+            onCompleted={transition(currentStep, 'CONTINUE')}
+            onError={() => setError('unknown')}
+          />
+        )}
+
+        {currentStep === 'verification-success' && (
+          <VerificationSuccess onClose={transition(currentStep, 'CLOSE')} />
         )}
 
         {currentStep === 'success' && (

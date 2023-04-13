@@ -11,7 +11,10 @@ import { useLocation } from 'react-router-dom';
 import { getStepConfig } from './stepConfig';
 
 // events
-import { triggerAuthenticationFlow$ } from '../events';
+import {
+  triggerAuthenticationFlow$,
+  triggerVerificationOnly$,
+} from '../events';
 
 // constants
 import { GLOBAL_CONTEXT } from 'api/authentication_requirements/types';
@@ -111,6 +114,15 @@ export default function useSteps() {
 
       authenticationDataRef.current = event.eventValue;
       transition(currentStep, 'TRIGGER_REGISTRATION_FLOW')();
+    });
+
+    return () => subscription.unsubscribe();
+  }, [currentStep, transition]);
+
+  useEffect(() => {
+    const subscription = triggerVerificationOnly$.subscribe(() => {
+      if (currentStep !== 'closed') return;
+      transition(currentStep, 'TRIGGER_VERIFICATION_ONLY')();
     });
 
     return () => subscription.unsubscribe();
