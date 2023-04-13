@@ -70,7 +70,7 @@ resource 'Users' do
         before { create :user_no_password, email: 'test@test.com', registration_completed_at: Time.now }
 
         example_request 'Returns "continue"' do
-          expect(status).to eq 200
+          assert_status 200
           expect(json_response_body[:action]).to eq('continue')
         end
       end
