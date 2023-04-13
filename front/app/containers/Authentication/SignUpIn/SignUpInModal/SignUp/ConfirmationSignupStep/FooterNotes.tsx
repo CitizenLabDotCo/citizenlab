@@ -11,6 +11,7 @@ import { darken } from 'polished';
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 export const FooterNote = styled.p`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -67,7 +68,7 @@ const FooterNotes = ({ codeResent, onResendCode, onChangeEmail }: Props) => (
         </FooterNoteLink>
       )}
     </FooterNote>
-    {onChangeEmail && (
+    {!isNilOrError(onChangeEmail) && (
       <FooterNote>
         <FormattedMessage {...messages.wrongEmail} />
         <FooterNoteLink onClick={onChangeEmail}>

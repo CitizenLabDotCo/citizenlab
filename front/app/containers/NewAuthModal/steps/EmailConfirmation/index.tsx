@@ -119,7 +119,7 @@ const EmailConfirmation = ({
           <FooterNotes
             codeResent={codeResent}
             onResendCode={handleResendCode}
-            onChangeEmail={handleChangeEmail}
+            onChangeEmail={onChangeEmail ? handleChangeEmail : undefined}
           />
         </Box>
       </form>
