@@ -76,13 +76,15 @@ module MultiTenancy
         end
 
         models = sort_by_references(models)
-
         resolve_references!(models)
+        { 'models' => models }
+      end
+
+      def self.format_for_tenant_template_service!(template)
+        models = template['models']
         models.transform_keys! { |record_class| record_class.name.snakecase }
         models.transform_values!(&:values)
         models.deep_transform_keys!(&:to_s)
-
-        { 'models' => models }
       end
 
       private
