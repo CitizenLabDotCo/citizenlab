@@ -59,27 +59,27 @@ resource 'Users' do
       let(:email) { 'test@test.com' }
 
       context 'when a user does not exist' do
-        example_request 'Returns "show_terms"' do
+        example_request 'Returns "terms"' do
           assert_status 200
-          expect(json_response_body[:action]).to eq('show_terms')
+          expect(json_response_body[:action]).to eq('terms')
         end
       end
 
       context 'when a user exists without a password and has completed registration', document: false do
         before { create :user_no_password, email: 'test@test.com', registration_completed_at: Time.now }
 
-        example_request 'Returns "continue"' do
+        example_request 'Returns "confirm"' do
           assert_status 200
-          expect(json_response_body[:action]).to eq('continue')
+          expect(json_response_body[:action]).to eq('confirm')
         end
       end
 
       context 'when a user exists with a password', document: false do
         before { create :user, email: 'test@test.com' }
 
-        example_request '[error] Email already taken' do
-          assert_status 422
-          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
+        example_request 'Returns "password"' do
+          assert_status 200
+          expect(json_response_body[:action]).to eq('password')
         end
       end
 

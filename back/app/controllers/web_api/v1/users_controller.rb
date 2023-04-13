@@ -110,18 +110,20 @@ class WebApi::V1::UsersController < ::ApplicationController
     show
   end
 
-  # To validate an email without creating a user and return whether to show terms if they are have no password
+  # To validate an email without creating a user and return which action to go to next
   def check
-    @user = User.find_by email: params[:email]
     skip_authorization
-    if !User::EMAIL_REGEX.match?(params[:email])
-      render json: { errors: { email: [{ error: 'invalid', value: params[:email] }] } }, status: :unprocessable_entity
-    elsif @user && !@user&.no_password?
-      render json: { errors: { email: [{ error: 'taken', value: params[:email] }] } }, status: :unprocessable_entity
-    elsif @user&.registration_completed_at.present?
-      render json: { action: 'continue' }
+    if User::EMAIL_REGEX.match?(params[:email])
+      @user = User.find_by email: params[:email]
+      if @user && !@user&.no_password?
+        render json: { action: 'password' }
+      elsif @user&.registration_completed_at.present?
+        render json: { action: 'confirm' }
+      else
+        render json: { action: 'terms' }
+      end
     else
-      render json: { action: 'show_terms' }
+      render json: { errors: { email: [{ error: 'invalid', value: params[:email] }] } }, status: :unprocessable_entity
     end
   end
 
