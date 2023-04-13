@@ -573,5 +573,35 @@ describe('Seat based billing', () => {
       testShowModalOnAddingModerator();
       cy.get('.e2e-admin-list').contains(user11Email);
     });
+
+    it('updates admin and moderators number', () => {
+      cy.visit('/admin/users/admins-managers');
+      cy.acceptCookies();
+
+      cy.apiGetUsersCount().then((response) => {
+        adminAndmoderatorsCount =
+          response.body.administrators_count + response.body.managers_count;
+
+        cy.get('[data-cy="e2e-admin-and-moderator-count"]').contains(
+          `${adminAndmoderatorsCount}`
+        );
+
+        // Navigate to the folder permissions page
+        cy.visit(`admin/projects/folders/${folderId}/permissions`);
+
+        // Add moderator and check that they are shown in the list
+        cy.get('#folderModeratorUserSearch').should('exist');
+        cy.get('#folderModeratorUserSearch').type(`${user12Email}`);
+        cy.get(`[data-cy="e2e-user-${user12Email}"]`).click();
+        cy.get('[data-cy="e2e-add-folder-moderator-button"]').click();
+        testShowModalOnAddingModerator();
+        cy.get('.e2e-admin-list').contains(user12Email);
+
+        cy.visit('/admin/users/admins-managers');
+        cy.get('[data-cy="e2e-admin-and-moderator-count"]').contains(
+          `${adminAndmoderatorsCount + 1}`
+        );
+      });
+    });
   });
 });
