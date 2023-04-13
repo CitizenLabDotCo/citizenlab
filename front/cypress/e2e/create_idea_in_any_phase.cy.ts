@@ -7,7 +7,6 @@ describe('Idea creation', () => {
   let projectId: string;
   let phaseId: string;
   let projectSlug: string;
-  const newIdeaTitle = randomString(40);
   const newIdeaContent = randomString(60);
 
   before(() => {
@@ -54,6 +53,8 @@ describe('Idea creation', () => {
   });
 
   it('allows the admin to add an idea to an old phase', () => {
+    const newIdeaTitle = randomString(40);
+
     cy.visit(`/admin/projects/${projectId}/timeline`);
     cy.get('#e2e-add-an-input').click();
     cy.get(`#e2e-phase-${phaseId}`).click({ force: true });
@@ -61,6 +62,7 @@ describe('Idea creation', () => {
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
+
     // add a title and description
     cy.get('#e2e-idea-title-input input').type(newIdeaTitle);
     cy.get('#e2e-idea-description-input .ql-editor').type(newIdeaContent);
