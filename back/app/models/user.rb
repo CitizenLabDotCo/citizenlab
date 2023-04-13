@@ -202,6 +202,12 @@ class User < ApplicationRecord
     end
   end
 
+  validate on: :update do
+    if AppConfiguration.instance.feature_activated?('user_confirmation') && email_changed? && !new_email_changed?
+      errors.add :email, :change_not_permitted, value: email
+    end
+  end
+
   EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip)
   validate :validate_email_domains_blacklist
 
