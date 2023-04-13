@@ -96,9 +96,7 @@ module EmailCampaigns
 
     # @return [Boolean]
     def content_worth_sending?(_)
-      @content_worth_sending ||= TrendingIdeaService.new.filter_trending(
-        IdeaPolicy::Scope.new(nil, Idea).resolve.where(publication_status: 'published')
-      ).count('*') >= N_TOP_IDEAS
+      @content_worth_sending ||= trending_ideas.size >= N_TOP_IDEAS
     end
 
     private
@@ -114,14 +112,17 @@ module EmailCampaigns
     end
 
     def top_ideas
+      trending_ideas.limit N_TOP_IDEAS
+    end
+
+    def trending_ideas
       ti_service = TrendingIdeaService.new
-      top_ideas = IdeaPolicy::Scope.new(nil, Idea).resolve
+      ideas = IdeaPolicy::Scope.new(nil, Idea).resolve
         .published
         .includes(:comments)
 
-      truly_trending_ids = ti_service.filter_trending(top_ideas).ids
-      top_ideas = ti_service.sort_trending top_ideas.where(id: truly_trending_ids)
-      top_ideas.limit N_TOP_IDEAS
+      trending_ids = ti_service.filter_trending(ideas).ids
+      ti_service.sort_trending ideas.where(id: trending_ids)
     end
 
     def users_to_projects
