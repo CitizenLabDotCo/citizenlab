@@ -83,7 +83,7 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
   const remainingSeats = totalSeats - usedSeats;
 
   let totalSeatsBreakdownMessage = formatMessage(messages.seatsWithinPlanText);
-  if (usedSeats > maximumSeatNumber) {
+  if (additionalSeats) {
     totalSeatsBreakdownMessage = formatMessage(messages.seatsExceededPlanText, {
       noOfSeatsInPlan: maximumSeatNumber,
       noOfAdditionalSeats: additionalSeats,
