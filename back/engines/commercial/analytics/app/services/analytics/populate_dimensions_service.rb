@@ -37,8 +37,6 @@ module Analytics
 
       def create_dates(from, to)
         (from..to).each do |date|
-          next if date.year < 2020 # We don't want any date dimensions earlier than 2020
-
           Analytics::DimensionDate.create!(
             date: date,
             week: date.beginning_of_week.to_date,
