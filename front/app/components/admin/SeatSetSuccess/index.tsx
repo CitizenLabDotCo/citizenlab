@@ -71,7 +71,7 @@ const SeatSetSuccess = ({
         flexDirection="row"
         justifyContent="center"
       >
-        <Button onClick={closeModal} id="e2e-close-seat-success-button">
+        <Button onClick={closeModal} data-cy="e2e-close-seat-success-button">
           {formatMessage(messages.close)}
         </Button>
       </Box>

@@ -215,14 +215,12 @@ export const GroupsListPanel = ({
         <GroupName>
           <FormattedMessage {...messages.adminsAndManagers} />
         </GroupName>
-        <Box data-cy="e2e-admin-and-moderator-count">
-          {usercount.administrators_count !== null &&
-            usercount.managers_count !== null && (
-              <MembersCount>
-                {usercount.administrators_count + usercount.managers_count}
-              </MembersCount>
-            )}
-        </Box>
+        {usercount.administrators_count !== null &&
+          usercount.managers_count !== null && (
+            <MembersCount data-cy="e2e-admin-and-moderator-count">
+              {usercount.administrators_count + usercount.managers_count}
+            </MembersCount>
+          )}
       </MenuLink>
       {isUserBlockingEnabled && (
         <MenuLink

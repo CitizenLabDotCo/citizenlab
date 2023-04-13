@@ -172,7 +172,7 @@ const ChangeSeatModal = ({
                   closeModal();
                 }
               }}
-              id="e2e-confirm-change-seat-button"
+              data-cy="e2e-confirm-change-seat-button"
             >
               {formatMessage(buttonText)}
             </Button>

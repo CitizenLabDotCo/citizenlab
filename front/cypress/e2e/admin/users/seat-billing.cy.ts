@@ -80,9 +80,11 @@ describe('Seat based billing', () => {
           cy.get('[data-cy="e2e-admin-and-moderator-count"]').contains(
             `${adminAndmoderatorsCount}`
           );
-          cy.get('#e2e-admin-remaining-seats').contains(`${remainingSeats}`);
-          cy.get('#e2e-admin-used-seats').contains(`${usedSeats}`);
-          cy.get('#e2e-admin-total-seats').contains(`${totalSeats}`);
+          cy.get('[data-cy="e2e-admin-remaining-seats"]').contains(
+            `${remainingSeats}`
+          );
+          cy.get('[data-cy="e2e-admin-used-seats"]').contains(`${usedSeats}`);
+          cy.get('[data-cy="e2e-admin-total-seats"]').contains(`${totalSeats}`);
 
           // Navigate to users page
           cy.visit('/admin/users');
@@ -109,11 +111,11 @@ describe('Seat based billing', () => {
             // Verify that user is required to confirm
             cy.get('[data-cy="e2e-confirm-change-seat-body"]').should('exist');
             // Confirm setting user to admin user
-            cy.get('#e2e-confirm-change-seat-button').click();
+            cy.get('[data-cy="e2e-confirm-change-seat-button"]').click();
 
             // Check that success is shown and close the modal
             cy.get('#e2e-seat-set-success-body').should('exist');
-            cy.get('#e2e-close-seat-success-button').click();
+            cy.get('[data-cy="e2e-close-seat-success-button"]').click();
           }
 
           // Verify that user is set to admin
@@ -145,9 +147,13 @@ describe('Seat based billing', () => {
 
             // Verify that seat info is updated
             cy.visit('/admin/users/admins-managers');
-            cy.get('#e2e-admin-remaining-seats').contains(`${remainingSeats}`);
-            cy.get('#e2e-admin-used-seats').contains(`${usedSeats}`);
-            cy.get('#e2e-admin-total-seats').contains(`${totalSeats}`);
+            cy.get('[data-cy="e2e-admin-remaining-seats"]').contains(
+              `${remainingSeats}`
+            );
+            cy.get('[data-cy="e2e-admin-used-seats"]').contains(`${usedSeats}`);
+            cy.get('[data-cy="e2e-admin-total-seats"]').contains(
+              `${totalSeats}`
+            );
 
             // Navigate to users page
             cy.visit('/admin/users');
@@ -163,7 +169,7 @@ describe('Seat based billing', () => {
 
             cy.get('[data-cy="e2e-confirm-change-seat-body"]').should('exist');
             // Confirm setting user to normal user
-            cy.get('#e2e-confirm-change-seat-button').click();
+            cy.get('[data-cy="e2e-confirm-change-seat-button"]').click();
 
             cy.get('.e2e-user-table')
               .find('.e2e-user-table-row')
@@ -183,9 +189,13 @@ describe('Seat based billing', () => {
 
             // Verify that seat info is updated
             cy.visit('/admin/users/admins-managers');
-            cy.get('#e2e-admin-remaining-seats').contains(`${remainingSeats}`);
-            cy.get('#e2e-admin-used-seats').contains(`${usedSeats}`);
-            cy.get('#e2e-admin-total-seats').contains(`${totalSeats}`);
+            cy.get('[data-cy="e2e-admin-remaining-seats"]').contains(
+              `${remainingSeats}`
+            );
+            cy.get('[data-cy="e2e-admin-used-seats"]').contains(`${usedSeats}`);
+            cy.get('[data-cy="e2e-admin-total-seats"]').contains(
+              `${totalSeats}`
+            );
           });
         });
       });
@@ -210,11 +220,11 @@ describe('Seat based billing', () => {
           // Verify that user is required to confirm
           cy.get('[data-cy="e2e-add-moderators-body"]').should('exist');
           // Confirm setting user to moderator user
-          cy.get('#e2e-add-moderator-button').click();
+          cy.get('[data-cy="e2e-add-moderator-button"]').click();
 
           // Check that success is shown and close the modal
           cy.get('#e2e-seat-set-success-body').should('exist');
-          cy.get('#e2e-close-seat-success-button').click();
+          cy.get('[data-cy="e2e-close-seat-success-button"]').click();
         }
       });
     });
@@ -416,11 +426,15 @@ describe('Seat based billing', () => {
           let totalSeats = additionalModerators + maximumModerators;
           let remainingSeats = totalSeats - usedSeats;
 
-          cy.get('#e2e-moderator-remaining-seats').contains(
+          cy.get('[data-cy="e2e-moderator-remaining-seats"]').contains(
             `${remainingSeats}`
           );
-          cy.get('#e2e-moderator-used-seats').contains(`${usedSeats}`);
-          cy.get('#e2e-moderator-total-seats').contains(`${totalSeats}`);
+          cy.get('[data-cy="e2e-moderator-used-seats"]').contains(
+            `${usedSeats}`
+          );
+          cy.get('[data-cy="e2e-moderator-total-seats"]').contains(
+            `${totalSeats}`
+          );
 
           // Navigate to the project permissions page
           cy.visit(`admin/projects/${projectId}/permissions`);
@@ -448,11 +462,15 @@ describe('Seat based billing', () => {
             remainingSeats = totalSeats - usedSeats;
 
             // Verify that the numbers have been updated
-            cy.get('#e2e-moderator-remaining-seats').contains(
+            cy.get('[data-cy="e2e-moderator-remaining-seats"]').contains(
               `${remainingSeats}`
             );
-            cy.get('#e2e-moderator-used-seats').contains(`${usedSeats}`);
-            cy.get('#e2e-moderator-total-seats').contains(`${totalSeats}`);
+            cy.get('[data-cy="e2e-moderator-used-seats"]').contains(
+              `${usedSeats}`
+            );
+            cy.get('[data-cy="e2e-moderator-total-seats"]').contains(
+              `${totalSeats}`
+            );
           });
         });
       });
@@ -637,11 +655,15 @@ describe('Seat based billing', () => {
           let totalSeats = additionalModerators + maximumModerators;
           let remainingSeats = totalSeats - usedSeats;
 
-          cy.get('#e2e-moderator-remaining-seats').contains(
+          cy.get('[data-cy="e2e-moderator-remaining-seats"]').contains(
             `${remainingSeats}`
           );
-          cy.get('#e2e-moderator-used-seats').contains(`${usedSeats}`);
-          cy.get('#e2e-moderator-total-seats').contains(`${totalSeats}`);
+          cy.get('[data-cy="e2e-moderator-used-seats"]').contains(
+            `${usedSeats}`
+          );
+          cy.get('[data-cy="e2e-moderator-total-seats"]').contains(
+            `${totalSeats}`
+          );
 
           // Navigate to the folder permissions page
           cy.visit(`admin/projects/folders/${folderId}/permissions`);
@@ -669,11 +691,15 @@ describe('Seat based billing', () => {
             remainingSeats = totalSeats - usedSeats;
 
             // Verify that the numbers have been updated
-            cy.get('#e2e-moderator-remaining-seats').contains(
+            cy.get('[data-cy="e2e-moderator-remaining-seats"]').contains(
               `${remainingSeats}`
             );
-            cy.get('#e2e-moderator-used-seats').contains(`${usedSeats}`);
-            cy.get('#e2e-moderator-total-seats').contains(`${totalSeats}`);
+            cy.get('[data-cy="e2e-moderator-used-seats"]').contains(
+              `${usedSeats}`
+            );
+            cy.get('[data-cy="e2e-moderator-total-seats"]').contains(
+              `${totalSeats}`
+            );
           });
         });
       });
