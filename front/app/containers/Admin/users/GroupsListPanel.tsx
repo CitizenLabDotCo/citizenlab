@@ -21,7 +21,6 @@ import events, { MembershipAdd } from './events';
 // Components
 import Button from 'components/UI/Button';
 import T from 'components/T';
-import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';

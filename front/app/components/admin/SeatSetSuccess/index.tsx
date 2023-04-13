@@ -49,7 +49,7 @@ const SeatSetSuccess = ({
       : messages.allDone;
 
   return (
-    <Box p="30px" id="e2e-seat-set-success-body">
+    <Box p="30px" data-cy="e2e-seat-set-success-body">
       <Box display="flex" justifyContent="center">
         <Icon
           name="check-circle"

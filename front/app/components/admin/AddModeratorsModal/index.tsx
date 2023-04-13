@@ -106,7 +106,7 @@ const AddModeratorsModal = ({
                 addModerators();
                 setShowSuccess(true);
               }}
-              data-cy="e2e-add-moderator-button"
+              data-cy="e2e-confirm-add-moderator"
             >
               {buttonText}
             </Button>
