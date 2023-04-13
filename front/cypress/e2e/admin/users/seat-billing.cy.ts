@@ -2,7 +2,7 @@ import { randomString, randomEmail } from '../../../support/commands';
 import { generateProjectFolder } from '../../../fixtures';
 
 describe('Seat based billing', () => {
-  const createdUserIds: string[] = [];
+  let createdUserIds: string[] = [];
   let adminAndmoderatorsCount: number;
 
   type CreateUserType = {
@@ -29,11 +29,8 @@ describe('Seat based billing', () => {
     createdUserIds.forEach((id) => {
       cy.apiRemoveUser(id);
     });
+    createdUserIds = [];
   };
-
-  after(() => {
-    cleanUp();
-  });
 
   describe('Admin seats', () => {
     // User 1
@@ -58,6 +55,10 @@ describe('Seat based billing', () => {
       });
 
       cy.setAdminLoginCookie();
+    });
+
+    after(() => {
+      cleanUp();
     });
 
     it('is able to set a user to admin or normal user and shows confirmation when exceeding seats', () => {
@@ -305,6 +306,7 @@ describe('Seat based billing', () => {
     });
 
     after(() => {
+      cleanUp();
       cy.apiRemoveProject(projectId);
     });
 
@@ -534,6 +536,7 @@ describe('Seat based billing', () => {
     });
 
     after(() => {
+      cleanUp();
       cy.apiRemoveFolder(folderId);
     });
 
