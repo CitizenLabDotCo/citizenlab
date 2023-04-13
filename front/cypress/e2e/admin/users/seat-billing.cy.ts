@@ -2,7 +2,6 @@ import { randomString, randomEmail } from '../../../support/commands';
 
 describe('Seat based billing', () => {
   const createdUserIds: string[] = [];
-
   let adminAndmoderatorsCount: number;
 
   type CreateUserType = {
@@ -210,6 +209,12 @@ describe('Seat based billing', () => {
     const user5Email = randomEmail();
     const user5Password = randomString();
 
+    // User 5
+    const user6FirstName = randomString();
+    const user6LastName = randomString();
+    const user6Email = randomEmail();
+    const user6Password = randomString();
+
     before(() => {
       cy.apiCreateProject({
         type: 'continuous',
@@ -246,6 +251,12 @@ describe('Seat based billing', () => {
           last_name: user5LastName,
           email: user5Email,
           password: user5Password,
+        },
+        {
+          first_name: user6FirstName,
+          last_name: user6LastName,
+          email: user6Email,
+          password: user6Password,
         },
       ]);
       cy.setAdminLoginCookie();
@@ -324,6 +335,40 @@ describe('Seat based billing', () => {
       cy.get('[data-cy="e2e-add-moderators-button"]').click();
       testShowModalOnAdd();
       cy.get('.e2e-admin-list').contains(user5Email);
+    });
+
+    it('updates admin and moderators number', () => {
+      cy.visit('/admin/users/admins-managers');
+      cy.acceptCookies();
+
+      cy.apiGetUsersCount().then((response) => {
+        adminAndmoderatorsCount =
+          response.body.administrators_count + response.body.managers_count;
+
+        cy.get('[data-cy="e2e-admin-and-moderator-count"]').contains(
+          `${adminAndmoderatorsCount}`
+        );
+
+        // Navigate to the project permissions page
+        cy.visit(`admin/projects/${projectId}/permissions`);
+        cy.intercept(`**/projects/${projectId}/moderators`).as(
+          'moderatorsRequest'
+        );
+        cy.wait('@moderatorsRequest');
+
+        // Add moderator and check that they are shown in the list
+        cy.get('#projectModeratorUserSearch').should('exist');
+        cy.get('#projectModeratorUserSearch').type(`${user6Email}`);
+        cy.get(`[data-cy="e2e-user-${user6Email}"]`).click();
+        cy.get('[data-cy="e2e-add-moderators-button"]').click();
+        testShowModalOnAdd();
+        cy.get('.e2e-admin-list').contains(user6Email);
+
+        cy.visit('/admin/users/admins-managers');
+        cy.get('[data-cy="e2e-admin-and-moderator-count"]').contains(
+          `${adminAndmoderatorsCount + 1}`
+        );
+      });
     });
   });
 });
