@@ -970,6 +970,11 @@ RSpec.describe User, type: :model do
           invalid_email = 'newemail_com'
           expect { user.reset_email!(invalid_email) }.to raise_error(ActiveRecord::RecordInvalid)
         end
+
+        it 'can change the email if the user is not active' do
+          user.update!(registration_completed_at: nil)
+          expect { user.reset_email!(email) }.to change(user, :email).from(user.email).to(email)
+        end
       end
 
       context 'user confirmation is turned on' do
@@ -1003,6 +1008,23 @@ RSpec.describe User, type: :model do
         it 'raises an invalid error if email is invalid' do
           invalid_email = 'newemail_com'
           expect { user.reset_email!(invalid_email) }.to raise_error(ActiveRecord::RecordInvalid)
+        end
+
+        context 'user is passwordless' do
+          before do
+            user.update!(password: nil)
+          end
+
+          it 'cannot change the email if the user is passwordless and not active' do
+            user.reset_email!(email)
+            expect(user.new_email).to be_nil
+            expect( user.errors.details[:email]).not_to be_nil
+          end
+
+          it 'can change the email if the user is passwordless and active' do
+            user.confirm!
+            expect { user.reset_email!(email) }.to change(user, :saved_change_to_new_email)
+          end
         end
       end
     end

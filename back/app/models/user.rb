@@ -510,10 +510,14 @@ class User < ApplicationRecord
   end
 
   def reset_email!(new_email)
-    if AppConfiguration.instance.feature_activated?('user_confirmation')
-      update!(new_email: new_email, email_confirmation_code_reset_count: 0)
+    if can_reset_email?
+      if AppConfiguration.instance.feature_activated?('user_confirmation')
+        update!(new_email: new_email, email_confirmation_code_reset_count: 0)
+      else
+        update!(email: new_email, email_confirmation_code_reset_count: 0)
+      end
     else
-      update!(email: new_email, email_confirmation_code_reset_count: 0)
+      errors.add :email, :change_not_permitted, value: email
     end
   end
 
@@ -522,6 +526,11 @@ class User < ApplicationRecord
 
     self.email = new_email
     self.new_email = nil
+  end
+
+  # Avoid a situation where somebody can reset an email of a passwordless user
+  def can_reset_email?
+    !no_password? || active?
   end
 
   private
