@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, Title, Button, Text } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import GoBackButton from 'components/UI/GoBackButton';
 import { SectionField } from 'components/admin/Section';
 
@@ -13,8 +13,11 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import Feedback from 'components/HookForm/Feedback';
 import validateMultiloc from 'utils/yup/validateMultilocForEveryLocale';
 import Select from 'components/HookForm/Select';
-import { fieldTypes } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
-import OptionList from 'components/HookForm/OptionList';
+import {
+  FieldType,
+  fieldTypes,
+} from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
+import OptionList, { Option } from 'components/HookForm/OptionList';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 
 // hooks
@@ -22,7 +25,7 @@ import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // intls
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from '../../../containers/Granular/messages';
 import { Multiloc } from 'typings';
 
@@ -30,6 +33,8 @@ import { Multiloc } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import { addCustomFieldForUsers } from 'services/userCustomFields';
+import { getLabelForInputType } from '../../../containers/Granular/utils';
+import { addUserCustomFieldOption } from 'services/userCustomFieldOptions';
 
 type AddFieldScreenProps = {
   setShowAddFieldPage: (show: boolean) => void;
@@ -40,6 +45,7 @@ export interface FormValues {
   input_type?: string;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
+  question_options: Option[];
 }
 
 export const AddFieldScreen = ({
@@ -51,7 +57,7 @@ export const AddFieldScreen = ({
   const locales = useAppConfigurationLocales();
 
   const schema = object({
-    question_choices: validateOneOptionForMultiSelect(
+    question_options: validateOneOptionForMultiSelect(
       formatMessage(messages.atLeastOneOptionError)
     ),
     input_type: string().required(formatMessage(messages.selectValueError)),
@@ -69,18 +75,24 @@ export const AddFieldScreen = ({
   const inputType = methods.watch('input_type');
 
   const inputTypeOptions = () => {
-    return fieldTypes.map((inputType) => ({
+    return fieldTypes.map((inputType: FieldType) => ({
       value: inputType,
-      label: formatMessage(messages[`fieldType_${inputType}`]),
+      label: formatMessage(getLabelForInputType(inputType)),
     }));
   };
 
-  const onFormSubmit = async (formValues: FormValues) => {
+  const onFormSubmit = async (formValues: Partial<FormValues>) => {
     try {
       const newField = await addCustomFieldForUsers({
         ...formValues,
       });
       if (newField.data.id) {
+        formValues?.question_options?.forEach(async (option) => {
+          await addUserCustomFieldOption(newField.data.id, {
+            title_multiloc: option.title_multiloc,
+          });
+        });
+
         setShowAddFieldPage(false);
       }
     } catch (error) {
@@ -92,12 +104,11 @@ export const AddFieldScreen = ({
     return null;
   }
 
+  const fieldOptions = inputTypeOptions();
+
   return (
     <>
-      <Box mb="20px">
-        <Title variant="h3" color="primary">
-          <FormattedMessage {...messages.createAQuestion} />
-        </Title>
+      <Box my="20px" mx="20px">
         <GoBackButton
           onClick={() => {
             setShowAddFieldPage(false);
@@ -110,7 +121,7 @@ export const AddFieldScreen = ({
               <SectionField>
                 <Select
                   name="input_type"
-                  options={inputTypeOptions()}
+                  options={fieldOptions}
                   label={
                     <>
                       <Text my="0px" color="primary" fontWeight="bold">
@@ -149,7 +160,7 @@ export const AddFieldScreen = ({
               {(inputType === 'select' || inputType === 'multiselect') && (
                 <SectionField>
                   <OptionList
-                    name={'question_choices'}
+                    name={'question_options'}
                     locales={locales}
                     platformLocale={locale}
                     fieldLabel={
@@ -167,7 +178,8 @@ export const AddFieldScreen = ({
               )}
               <Box display="flex">
                 <Button
-                  type="submit"
+                  type="button"
+                  onClick={() => onFormSubmit(methods.getValues())}
                   processing={methods.formState.isSubmitting}
                 >
                   {formatMessage(messages.createAQuestion)}

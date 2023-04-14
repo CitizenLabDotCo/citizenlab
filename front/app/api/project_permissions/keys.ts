@@ -1,3 +1,4 @@
+import { QueryKeys } from 'utils/cl-react-query/types';
 import { ProjectPermissionsProps } from './useProjectPermissions';
 
 const projectPermissionKeys = {
@@ -6,6 +7,6 @@ const projectPermissionKeys = {
   list: ({ projectId }: ProjectPermissionsProps) => [
     { ...projectPermissionKeys.lists()[0], projectId },
   ],
-} as const;
+} satisfies QueryKeys;
 
 export default projectPermissionKeys;

@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 
 // services
@@ -11,6 +11,8 @@ import { IUserCustomFieldData } from 'services/userCustomFields';
 import { SelectionScreen } from './screens/SelectionScreen';
 import { AddFieldScreen } from './screens/AddFieldScreen';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../../containers/Granular/messages';
 
 type FieldSelectionModalProps = {
   showSelectionModal: boolean;
@@ -38,8 +40,19 @@ export const FieldSelectionModal = ({
       close={() => {
         setShowSelectionModal(false);
       }}
+      niceHeader={true}
+      header={
+        <Title ml="20px" variant="h3" color="primary">
+          <FormattedMessage
+            {...(showAddFieldPage
+              ? messages.createAQuestion
+              : messages.addQuestion)}
+          />
+        </Title>
+      }
+      width={'550px'}
     >
-      <Box display="flex" flexDirection="column" width="100%">
+      <Box display="flex" flexDirection="column">
         {showAddFieldPage && (
           <AddFieldScreen setShowAddFieldPage={setShowAddFieldPage} />
         )}

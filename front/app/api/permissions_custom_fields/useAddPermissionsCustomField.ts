@@ -9,18 +9,18 @@ import {
 } from './types';
 
 const addPermissionsCustomField = async (
-  requestBody: IPermissionsCustomFieldAdd
+  parameters: IPermissionsCustomFieldAdd
 ) =>
   fetcher<IPermissionsCustomField>({
-    path: requestBody.initiativeContext
-      ? `/permissions/${requestBody.action}/permissions_custom_fields`
-      : requestBody.phaseId
-      ? `/phases/${requestBody.phaseId}/permissions/${requestBody.action}/permissions_custom_fields`
-      : `/projects/${requestBody.projectId}/permissions/${requestBody.action}/permissions_custom_fields`,
+    path: parameters.initiativeContext
+      ? `/permissions/${parameters.action}/permissions_custom_fields`
+      : parameters.phaseId
+      ? `/phases/${parameters.phaseId}/permissions/${parameters.action}/permissions_custom_fields`
+      : `/projects/${parameters.projectId}/permissions/${parameters.action}/permissions_custom_fields`,
     action: 'post',
     body: {
-      custom_field_id: requestBody.custom_field_id,
-      required: requestBody.required,
+      custom_field_id: parameters.custom_field_id,
+      required: parameters.required,
     },
   });
 

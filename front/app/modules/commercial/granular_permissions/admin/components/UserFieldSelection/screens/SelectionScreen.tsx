@@ -3,7 +3,6 @@ import React from 'react';
 // components
 import {
   Box,
-  Title,
   Text,
   Button,
   colors,
@@ -40,77 +39,74 @@ export const SelectionScreen = ({
   setShowAddFieldPage,
   isLoading,
 }: SelectionScreenProps) => {
+  const selectedFieldIds = new Set(
+    selectedFields?.map((field) => field.relationships.custom_field.data.id)
+  );
+
   return (
     <>
       <Box mb="20px">
-        <Title variant="h3" color="primary">
-          <FormattedMessage {...messages.addQuestion} />
-        </Title>
-        {registrationFieldList &&
-          registrationFieldList
-            .filter(
-              (globalField) =>
-                !selectedFields?.find(
-                  (selectedField) =>
-                    selectedField.relationships.custom_field.data.id ===
-                    globalField.id
-                )
-            )
-            .map((field) => (
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                key={field.id}
-                py="4px"
-                borderTop="solid"
-                borderWidth="1px"
-                borderColor={colors.grey300}
-              >
-                <Box display="flex">
-                  <Text color="primary" mr="12px">
-                    {field.attributes.title_multiloc[locale]}
-                  </Text>
-                  {field.attributes.required && (
-                    <Badge
-                      className="inverse"
-                      color={colors.error}
-                      style={{
-                        height: '24px',
-                        marginTop: 'auto',
-                        marginBottom: 'auto',
-                      }}
-                    >
-                      <FormattedMessage {...messages.required} />
-                    </Badge>
-                  )}
-                </Box>
-
-                <Box display="flex">
-                  {isBuiltInField(field) && (
-                    <Text color="primary" fontSize="s" mr="20px" my="auto">
-                      <FormattedMessage {...messages.defaultField} />
-                    </Text>
-                  )}
-                  <Button
-                    bgColor={colors.primary}
-                    onClick={() => {
-                      handleAddField(field);
+        {registrationFieldList
+          ?.filter(({ id }) => !selectedFieldIds.has(id))
+          .map((field, index) => (
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              key={field.id}
+              py="4px"
+              borderTop={index > 0 ? 'solid' : 'none'}
+              borderWidth="1px"
+              borderColor={colors.grey300}
+            >
+              <Box display="flex" px="20px">
+                <Text color="primary" mr="12px">
+                  {field.attributes.title_multiloc[locale]}
+                </Text>
+                {field.attributes.required && (
+                  <Badge
+                    className="inverse"
+                    color={colors.error}
+                    style={{
+                      height: '24px',
+                      marginTop: 'auto',
+                      marginBottom: 'auto',
                     }}
                   >
-                    <FormattedMessage {...messages.select} />
-                  </Button>
-                </Box>
+                    <FormattedMessage {...messages.required} />
+                  </Badge>
+                )}
               </Box>
-            ))}
+
+              <Box display="flex">
+                {isBuiltInField(field) && (
+                  <Text color="primary" fontSize="s" mr="20px" my="auto">
+                    <FormattedMessage {...messages.defaultField} />
+                  </Text>
+                )}
+                <Button
+                  mr="20px"
+                  bgColor={colors.primary}
+                  onClick={() => {
+                    handleAddField(field);
+                  }}
+                  processing={isLoading}
+                >
+                  <FormattedMessage {...messages.select} />
+                </Button>
+              </Box>
+            </Box>
+          ))}
       </Box>
       <Box display="flex">
         <Button
+          ml="20px"
+          mb="20px"
           icon="plus-circle"
           buttonStyle="secondary"
           onClick={() => {
             setShowAddFieldPage(true);
           }}
-          processing={isLoading}
+          type="button"
         >
           <FormattedMessage {...messages.createANewQuestion} />
         </Button>

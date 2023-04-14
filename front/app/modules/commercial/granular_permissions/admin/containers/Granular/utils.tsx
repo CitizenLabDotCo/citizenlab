@@ -9,6 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
 import messages from './messages';
 import { IPCPermissionAction } from 'typings';
+import { FieldType } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
 
 type GetPermissionActionMessageProps = {
   permissionAction: IPCPermissionAction | IGlobalPermissionAction;
@@ -134,4 +135,16 @@ export const getPermissionActionSectionSubtitle = ({
       posting_initiative: messages.permissionAction_post_proposal_subtitle,
     }[permissionAction];
   }
+};
+
+export const getLabelForInputType = (inputType: FieldType) => {
+  return {
+    text: messages.fieldType_text,
+    number: messages.fieldType_number,
+    multiline_text: messages.fieldType_multiline_text,
+    select: messages.fieldType_select,
+    multiselect: messages.fieldType_multiselect,
+    checkbox: messages.fieldType_checkbox,
+    date: messages.fieldType_date,
+  }[inputType];
 };
