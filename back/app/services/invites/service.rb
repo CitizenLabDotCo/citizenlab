@@ -99,7 +99,8 @@ class Invites::Service
   def prepare_invitee(params, default_params)
     email = params['email']&.strip
     group_ids = params['group_ids'] || default_params['group_ids'] || []
-    roles = params['roles'] || default_params['roles'] || []
+    default_params_roles = default_params['roles'].presence || []
+    roles = (params['roles'] + default_params_roles).uniq
 
     user =
       User.find_by_cimail(email) ||
@@ -175,16 +176,18 @@ class Invites::Service
       end
     end
 
-    invitees.each do |invitee|
-      if @run_side_fx
-        if invitee.previously_new_record?
-          SideFxUserService.new.after_create(invitee, @inviter)
-          SideFxInviteService.new.after_create(invitee.invitee_invite, @inviter)
-        else
-          SideFxUserService.new.after_update(invitee, @inviter)
+    invitees
+      .sort! { |i| i.roles_previously_was.any? { |r| r['type'] == 'admin' } && i.roles.none? { |r| r['type'] == 'admin' } ? 1 : 0 }
+      .each do |invitee|
+        if @run_side_fx
+          if invitee.previously_new_record?
+            SideFxUserService.new.after_create(invitee, @inviter)
+            SideFxInviteService.new.after_create(invitee.invitee_invite, @inviter)
+          else
+            SideFxUserService.new.after_update(invitee, @inviter)
+          end
         end
       end
-    end
 
     invitees
   end
