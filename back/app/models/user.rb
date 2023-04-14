@@ -503,7 +503,7 @@ class User < ApplicationRecord
   def complete_registration
     return if confirmation_required? || invite_pending? || registration_completed_at_changed?
 
-    self.registration_completed_at = Time.now if registration_completed_at.nil?
+    self.registration_completed_at ||= Time.now
   end
 
   def generate_slug
