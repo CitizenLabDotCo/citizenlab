@@ -122,6 +122,11 @@ export default function useSteps() {
   useEffect(() => {
     const subscription = triggerVerificationOnly$.subscribe(() => {
       if (currentStep !== 'closed') return;
+
+      authenticationDataRef.current = {
+        flow: 'signup',
+        context: GLOBAL_CONTEXT,
+      };
       transition(currentStep, 'TRIGGER_VERIFICATION_ONLY')();
     });
 
@@ -145,6 +150,8 @@ export default function useSteps() {
       window.history.replaceState(null, '', '/');
       return;
     }
+
+    // TODO
   }, [pathname, search, currentStep, transition]);
 
   return {

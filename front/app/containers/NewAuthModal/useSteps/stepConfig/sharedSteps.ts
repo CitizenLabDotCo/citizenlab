@@ -52,6 +52,11 @@ export const sharedSteps = (
         }
       },
 
+      // When the user returns from SSO
+      RESUME_FLOW_AFTER_SSO: async () => {
+        // TODO
+      },
+
       // When the authentication flow is triggered by an action
       // done by the user
       TRIGGER_REGISTRATION_FLOW: async () => {
