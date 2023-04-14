@@ -80,7 +80,7 @@ class ProjectCopyService < ::TemplateService
     # `save_temp_remote_urls: false` because if we store images on another domain (URLs point to another domain),
     # it's not possible to fetch these images by JS.
     # Currently, we fetch them by JS on Back Office to preview images.
-    @tenant_template_service ||= MultiTenancy::TenantTemplateService.new(save_temp_remote_urls: false)
+    @tenant_template_service ||= MultiTenancy::TenantDeserializer.new(save_temp_remote_urls: false)
   end
 
   def yml_content_builder_layouts(shift_timestamps: 0)

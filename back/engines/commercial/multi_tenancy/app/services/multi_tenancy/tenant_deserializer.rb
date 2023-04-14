@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module MultiTenancy
-  class TenantTemplateService
+  class TenantDeserializer
     USER_INPUT_CLASSES = [
       Idea,
       Initiative,
@@ -14,6 +14,7 @@ module MultiTenancy
       @save_temp_remote_urls = save_temp_remote_urls
     end
 
+    # TODO: move to ApplyService
     def resolve_and_apply_template(
       template_name,
       external_subfolder: 'release',
@@ -22,7 +23,7 @@ module MultiTenancy
       local_copy: false
     )
       Rails.logger.tagged('loading template', template_name: template_name) do
-        apply_template(
+        deserialize(
           resolve_template(template_name, external_subfolder: external_subfolder),
           validate: validate,
           max_time: max_time,
@@ -31,7 +32,7 @@ module MultiTenancy
       end
     end
 
-    def apply_template(...)
+    def deserialize(...)
       # To ensure that `CurrentAttributes` is not unexpectedly reset during the
       # application of a template, we need to make sure that the template is wrapped by
       # the executor before setting the `CurrentAttributes` value. This is because
@@ -46,7 +47,7 @@ module MultiTenancy
       # Note: It's safe to call wrap multiple times because the executor is re-entrant.
       ::Rails.application.executor.wrap do
         Current.set(loading_tenant_template: true) do
-          _apply_template(...)
+          _deserialize(...)
         end
       end
     end
@@ -103,7 +104,7 @@ module MultiTenancy
 
     private
 
-    def _apply_template(template, validate: true, max_time: nil, local_copy: false)
+    def _deserialize(template, validate: true, max_time: nil, local_copy: false)
       t1 = Time.zone.now
       obj_to_id_and_class = {}
       created_objects_ids = Hash.new { |h, k| h[k] = [] } # Hash with empty arrays as default values
@@ -214,6 +215,7 @@ module MultiTenancy
       end
     end
 
+    # TODO: no longer necessary (part of ApplyService)
     def resolve_template(template_name, external_subfolder: 'release')
       if template_name.is_a? String
         raise 'Unknown template' unless available_templates(external_prefix: external_subfolder).include?(template_name)

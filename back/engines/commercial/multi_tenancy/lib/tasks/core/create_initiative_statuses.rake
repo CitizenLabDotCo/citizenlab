@@ -8,7 +8,7 @@ namespace :cl2back do
 
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        ::MultiTenancy::TenantTemplateService.new.apply_template template
+        ::MultiTenancy::TenantDeserializer.new.deserialize template
       end
     end
   end

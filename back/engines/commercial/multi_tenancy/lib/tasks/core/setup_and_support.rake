@@ -91,7 +91,7 @@ namespace :setup_and_support do
       'email_campaigns/campaigns' => campaigns
     } }
     Apartment::Tenant.switch(args[:to_host].tr('.', '_')) do
-      ::MultiTenancy::TenantTemplateService.new.apply_template template
+      ::MultiTenancy::TenantDeserializer.new.deserialize template
     end
   end
 

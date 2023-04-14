@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe MultiTenancy::TenantTemplateService do
+describe MultiTenancy::TenantDeserializer do
   let(:service) { described_class.new }
 
   describe 'available_templates' do
@@ -83,7 +83,7 @@ describe MultiTenancy::TenantTemplateService do
       YAML
       template = YAML.load(yml)
 
-      service.apply_template(template)
+      service.deserialize(template)
 
       expect(CustomForm.count).to eq 2
       expect(CustomField.count).to eq 2
@@ -113,7 +113,7 @@ describe MultiTenancy::TenantTemplateService do
       YAML
       template = YAML.load(yml)
 
-      service.apply_template(template)
+      service.deserialize(template)
 
       expect(ProjectFolders::Folder.count).to eq 1
       expect(Project.count).to eq 2
@@ -160,7 +160,7 @@ describe MultiTenancy::TenantTemplateService do
       end
 
       it 'removes non-platform locales from citizen inputs' do
-        service.apply_template(template)
+        service.deserialize(template)
 
         idea = Idea.first
         expect(idea.title_multiloc.keys).to eq(platform_locales)
@@ -168,7 +168,7 @@ describe MultiTenancy::TenantTemplateService do
       end
 
       it 'does not remove locales from other models (non-citizen inputs)' do
-        service.apply_template(template)
+        service.deserialize(template)
 
         project = Project.first
         expect(project.title_multiloc.keys).to eq(%w[en nl-BE])
@@ -177,7 +177,7 @@ describe MultiTenancy::TenantTemplateService do
       it 'falls back to another (unspecified) locale if all locales are filtered out' do
         template.dig('models', 'idea', 0, 'body_multiloc').except!(*platform_locales)
 
-        service.apply_template(template)
+        service.deserialize(template)
 
         idea = Idea.first
         expect(idea.body_multiloc.keys).to contain_exactly('nl-BE')

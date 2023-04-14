@@ -24,7 +24,7 @@ namespace :templates do
   task :import, %i[host file] => [:environment] do |_t, args|
     host = args[:host]
     Apartment::Tenant.switch(host.tr('.', '_')) do
-      ::MultiTenancy::TenantTemplateService.new.resolve_and_apply_template YAML.load(open(args[:file]).read)
+      ::MultiTenancy::TenantDeserializer.new.resolve_and_apply_template YAML.load(open(args[:file]).read)
     end
   end
 
@@ -52,7 +52,7 @@ namespace :templates do
   task :verify, [:output_file] => [:environment] do |_t, args|
     pool_size = 1 # 4 # Debugging
     failed_templates = []
-    templates = MultiTenancy::TenantTemplateService.new.available_external_templates(prefix: 'test')
+    templates = MultiTenancy::TenantDeserializer.new.available_external_templates(prefix: 'test')
 
     templates.in_groups_of(pool_size).map(&:compact).map do |pool_templates|
       futures = pool_templates.index_with do |template|
@@ -122,14 +122,14 @@ namespace :templates do
 
   task :change_locale, %i[template_name locale_from locale_to] => [:environment] do |_t, args|
     template = YAML.load open(Rails.root.join('config', 'tenant_templates', "#{args[:template_name]}.yml")).read
-    service = ::MultiTenancy::TenantTemplateService.new
+    service = ::MultiTenancy::TenantDeserializer.new
 
     template = service.change_locales template, args[:locale_from], args[:locale_to]
     File.write("config/tenant_templates/#{args[:locale_to]}_#{args[:template_name]}.yml", template.to_yaml)
   end
 
   def verify_template(template, max_time)
-    template_service = MultiTenancy::TenantTemplateService.new
+    template_service = MultiTenancy::TenantDeserializer.new
     locales = template_service.required_locales(template, external_subfolder: 'test')
     locales = ['en'] if locales.blank?
 
