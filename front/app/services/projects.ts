@@ -1,13 +1,13 @@
 import { API_PATH } from 'containers/App/constants';
+import streams, { IStreamParams } from 'utils/streams';
 
 // typings
+import { PermissionsDisabledReason } from 'utils/actionDescriptors';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Locale } from '@citizenlab/cl2-component-library';
 import { IRelationship, Multiloc, UploadFile, CLError } from 'typings';
 import { IAreaData } from './areas';
 import { IAppConfiguration } from 'api/app_configuration/types';
-
-import streams, { IStreamParams } from 'utils/streams';
 import {
   TSurveyService,
   ParticipationMethod,
@@ -33,61 +33,40 @@ export type IProjectAction =
   | 'voting_idea'
   | 'posting_idea'
   | 'taking_survey'
-  | 'taking_poll'
-  | 'not_active';
-
-export type PostingDisabledReason =
-  | 'project_inactive'
-  | 'not_ideation'
-  | 'posting_disabled'
-  | 'posting_limited_max_reached'
-  | 'not_permitted'
-  | 'not_verified'
-  | 'not_signed_in'
-  | 'not_active'
-  | 'missing_data';
+  | 'taking_poll';
 
 export type CommentingDisabledReason =
-  | 'not_verified'
   | 'project_inactive'
   | 'not_supported'
   | 'commenting_disabled'
-  | 'not_permitted'
-  | 'not_signed_in'
-  | 'not_active'
-  | 'missing_data';
+  | PermissionsDisabledReason;
 
 export type ProjectVotingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
   | 'voting_disabled'
   | 'downvoting_disabled'
-  | 'not_signed_in'
   | 'upvoting_limited_max_reached'
   | 'downvoting_limited_max_reached'
-  | 'not_permitted'
-  | 'not_verified'
-  | 'not_active'
-  | 'missing_data';
+  | PermissionsDisabledReason;
+
+export type PostingDisabledReason =
+  | 'project_inactive'
+  | 'not_ideation'
+  | 'posting_disabled'
+  | 'posting_limited_max_reached'
+  | PermissionsDisabledReason;
 
 export type SurveyDisabledReason =
   | 'project_inactive'
   | 'not_survey'
-  | 'not_permitted'
-  | 'not_verified'
-  | 'not_signed_in'
-  | 'not_active'
-  | 'missing_data';
+  | PermissionsDisabledReason;
 
 export type PollDisabledReason =
   | 'project_inactive'
   | 'not_poll'
-  | 'not_permitted'
   | 'already_responded'
-  | 'not_verified'
-  | 'not_signed_in'
-  | 'not_active'
-  | 'missing_data';
+  | PermissionsDisabledReason;
 
 interface ProjectHeaderBgImageSizes {
   large: string | null;

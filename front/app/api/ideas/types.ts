@@ -1,4 +1,5 @@
 import { ILinks, Multiloc, IRelationship } from 'typings';
+import { PermissionsDisabledReason } from 'utils/actionDescriptors';
 import {
   CommentingDisabledReason,
   PublicationStatus as ProjectPublicationStatus,
@@ -18,14 +19,10 @@ export type IdeaVotingDisabledReason =
   | 'not_ideation'
   | 'voting_disabled'
   | 'downvoting_disabled'
-  | 'not_signed_in'
   | 'upvoting_limited_max_reached'
   | 'downvoting_limited_max_reached'
   | 'idea_not_in_current_phase'
-  | 'not_permitted'
-  | 'not_verified'
-  | 'not_active'
-  | 'missing_data';
+  | PermissionsDisabledReason;
 
 export type IdeaCommentingDisabledReason =
   | 'idea_not_in_current_phase'
@@ -33,13 +30,9 @@ export type IdeaCommentingDisabledReason =
 
 export type IdeaBudgetingDisabledReason =
   | 'project_inactive'
-  | 'idea_not_in_current_phase'
-  | 'not_permitted'
-  | 'not_verified'
-  | 'not_signed_in'
   | 'not_budgeting'
-  | 'not_active'
-  | 'missing_data'
+  | 'idea_not_in_current_phase'
+  | PermissionsDisabledReason
   | null
   | undefined;
 
