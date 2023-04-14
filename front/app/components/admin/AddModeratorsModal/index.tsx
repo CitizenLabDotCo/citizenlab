@@ -76,7 +76,13 @@ const AddModeratorsModal = ({
           hasExceededPlanSeatLimit={hasExceededPlanSeatLimit}
         />
       ) : (
-        <Box display="flex" flexDirection="column" width="100%" p="32px">
+        <Box
+          display="flex"
+          flexDirection="column"
+          width="100%"
+          p="32px"
+          data-cy="e2e-add-moderators-body"
+        >
           <Text color="textPrimary" fontSize="m" my="0px">
             <FormattedMessage
               {...(hasReachedOrIsOverPlanSeatLimit
@@ -100,6 +106,7 @@ const AddModeratorsModal = ({
                 addModerators();
                 setShowSuccess(true);
               }}
+              data-cy="e2e-confirm-add-moderator"
             >
               {buttonText}
             </Button>

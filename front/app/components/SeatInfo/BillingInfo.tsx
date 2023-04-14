@@ -83,7 +83,7 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
   const remainingSeats = totalSeats - usedSeats;
 
   let totalSeatsBreakdownMessage = formatMessage(messages.seatsWithinPlanText);
-  if (usedSeats > maximumSeatNumber) {
+  if (additionalSeats) {
     totalSeatsBreakdownMessage = formatMessage(messages.seatsExceededPlanText, {
       noOfSeatsInPlan: maximumSeatNumber,
       noOfAdditionalSeats: additionalSeats,
@@ -129,7 +129,11 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
           <Text color="teal700" mr="8px" variant="bodyS" my="0px">
             {formatMessage(messages.remainingSeats)}
           </Text>
-          <Text fontSize="xl" mt="4px">
+          <Text
+            fontSize="xl"
+            mt="4px"
+            data-cy={`e2e-${seatType}-remaining-seats`}
+          >
             {remainingSeats}
           </Text>
         </Box>
@@ -137,7 +141,7 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
           <Text color="teal700" mr="8px" variant="bodyS" my="0px">
             {formatMessage(messages.usedSeats)}
           </Text>
-          <Text fontSize="xl" my="4px">
+          <Text fontSize="xl" my="4px" data-cy={`e2e-${seatType}-used-seats`}>
             {usedSeats}
           </Text>
           {!isOnAdminsAndManagersPage && usedSeats > 0 && (
@@ -157,7 +161,7 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
               content={<FormattedMessage {...messages.totalSeatsTooltip} />}
             />
           </Box>
-          <Text my="4px" fontSize="xl">
+          <Text my="4px" fontSize="xl" data-cy={`e2e-${seatType}-total-seats`}>
             {totalSeats}
           </Text>
           <Text variant="bodyXs" my="0px" color="coolGrey600">
