@@ -13,7 +13,7 @@ interface Parameters {
   token: string | undefined | null;
 }
 
-const fetchCreateAccountWithPassword = (
+const triggerCreateAccountWithPassword = (
   endpoint: string,
   requestBody: CreateAccountWithPasswordProperties
 ) => {
@@ -46,7 +46,7 @@ export default async function createAccountWithPassword({
         last_name: lastName,
       },
     };
-    await fetchCreateAccountWithPassword(signUpEndpoint, bodyData);
+    await triggerCreateAccountWithPassword(signUpEndpoint, bodyData);
     const authenticatedUser = await signIn({ email, password });
     return authenticatedUser;
   } catch (error) {

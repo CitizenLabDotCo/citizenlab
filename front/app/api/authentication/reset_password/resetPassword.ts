@@ -6,7 +6,7 @@ interface Parameters {
   token: string;
 }
 
-const fetchResetPassword = (requestBody: ResetPasswordProperties) => {
+const triggerResetPassword = (requestBody: ResetPasswordProperties) => {
   return fetcher({
     path: `/users/reset_password`,
     body: requestBody,
@@ -23,7 +23,7 @@ export default async function resetPassword({ password, token }: Parameters) {
         token,
       },
     };
-    const response = await fetchResetPassword(bodyData);
+    const response = await triggerResetPassword(bodyData);
     return response;
   } catch (error) {
     throw error;
