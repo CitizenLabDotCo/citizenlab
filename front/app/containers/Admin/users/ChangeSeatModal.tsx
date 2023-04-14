@@ -20,6 +20,7 @@ import { isRegularUser, isAdmin } from 'services/permissions/roles';
 import { getExceededLimitInfo } from 'components/SeatInfo/utils';
 
 import { IUserData } from 'services/users';
+import BillingWarning from 'components/SeatInfo/BillingWarning';
 
 const getInfoText = (
   isUserAdmin: boolean,
@@ -134,30 +135,33 @@ const ChangeSeatModal = ({
           seatType="admin"
         />
       ) : (
-        <Box display="flex" flexDirection="column" width="100%" p="32px">
-          <Box pb="32px">
-            <Text color="textPrimary" fontSize="m" my="0px">
-              <FormattedMessage
-                {...confirmChangeQuestion}
-                values={{
-                  name: (
-                    <Text as="span" fontWeight="bold" fontSize="m">
-                      {`${userToChangeSeat.attributes.first_name} ${userToChangeSeat.attributes.last_name}`}
-                    </Text>
-                  ),
-                }}
-              />
-            </Text>
-            {!isChangingToNormalUser && (
-              <Box pt="32px">
-                <SeatInfo seatType="admin" />
-              </Box>
-            )}
+        <Box display="flex" flexDirection="column" p="32px">
+          <Text color="textPrimary" mt="0" mb="24px">
+            <FormattedMessage
+              {...confirmChangeQuestion}
+              values={{
+                name: (
+                  <Text as="span" fontWeight="bold" fontSize="m">
+                    {`${userToChangeSeat.attributes.first_name} ${userToChangeSeat.attributes.last_name}`}
+                  </Text>
+                ),
+              }}
+            />
+          </Text>
+
+          {!isChangingToNormalUser && (
+            <Box mb="24px">
+              <SeatInfo seatType="admin" />
+            </Box>
+          )}
+
+          <Box mb="24px">
+            <BillingWarning />
           </Box>
-          <Box display="flex" width="100%" alignItems="center">
+
+          <Box display="flex">
             <Button
               autoFocus
-              width="auto"
               onClick={() => {
                 changeRoles(userToChangeSeat, isChangingToNormalUser);
                 if (!isChangingToNormalUser) {
