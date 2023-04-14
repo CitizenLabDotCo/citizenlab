@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -15,6 +15,11 @@ import UpdateEmailForm from './UpdateEmailForm';
 import clHistory from 'utils/cl-router/history';
 import useAuthUser from 'hooks/useAuthUser';
 import confirmEmail from 'api/authentication/confirmEmail';
+
+// hook form
+import { object, string } from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
@@ -35,13 +40,35 @@ const EmailChange = () => {
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [newEmail, setNewEmail] = useState<string | null>(null);
   const [confirmationStatus, setConfirmationStatus] = useState<Status>('ok');
   const [confirmationError, setConfirmationError] = useState<ErrorCode | null>(
     null
   );
   const [updateSuccessful, setUpdateSuccessful] = useState(false);
   const [updateCancelled, setUpdateCancelled] = useState(false);
+
+  const schema = object({
+    email: string()
+      .email(formatMessage(messages.emailInvalidError))
+      .required(formatMessage(messages.emailEmptyError)),
+  });
+
+  const methods = useForm<FormValues>({
+    mode: 'onBlur',
+    defaultValues: {
+      email: '',
+    },
+    resolver: yupResolver(schema),
+  });
+
+  // Once auth user is fetched, set the email field to the user's email
+  useEffect(() => {
+    if (!isNilOrError(authUser) && authUser.attributes.email) {
+      if (!methods.watch('email')) {
+        methods.setValue('email', authUser.attributes.email);
+      }
+    }
+  }, [authUser, methods]);
 
   const onEmailConfirmation = async (code: string) => {
     try {
@@ -87,9 +114,10 @@ const EmailChange = () => {
         {!updateCancelled && (
           <UpdateEmailForm
             updateSuccessful={updateSuccessful}
-            setNewEmail={setNewEmail}
             setOpenConfirmationModal={setOpenConfirmationModal}
             setUpdateSuccessful={setUpdateSuccessful}
+            methods={methods}
+            user={authUser}
           />
         )}
       </StyledContentContainer>
@@ -113,7 +141,7 @@ const EmailChange = () => {
             </Box>
           )}
           <EmailConfirmation
-            state={{ email: newEmail }}
+            state={{ email: methods.watch('email') }}
             status={confirmationStatus}
             error={confirmationError}
             onConfirm={onEmailConfirmation}

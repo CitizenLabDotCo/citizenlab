@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 // intl
 import messages from './messages';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // services & hooks
-import useAuthUser from 'hooks/useAuthUser';
+import { TAuthUser } from 'hooks/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
 import resendEmailConfirmationCode from 'api/authentication/resendEmailConfirmationCode';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -25,50 +22,36 @@ import { FormLabel } from 'components/UI/FormComponents';
 import { Box, Success } from '@citizenlab/cl2-component-library';
 
 // hook form
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, UseFormReturn } from 'react-hook-form';
 import { FormValues } from '.';
-import { object, string } from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import Input from 'components/HookForm/Input';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 type UpdateEmailFormProps = {
   updateSuccessful: boolean;
-  setNewEmail: (email: string) => void;
   setUpdateSuccessful: (updateSuccessful: boolean) => void;
   setOpenConfirmationModal: (openConfirmationModal: boolean) => void;
+  methods: UseFormReturn<FormValues, any>;
+  user: TAuthUser;
 };
 
 const UpdateEmailForm = ({
   updateSuccessful,
-  setNewEmail,
   setOpenConfirmationModal,
   setUpdateSuccessful,
+  methods,
+  user,
 }: UpdateEmailFormProps) => {
   const { formatMessage } = useIntl();
-  const authUser = useAuthUser();
   const appConfiguration = useAppConfiguration();
   const [error, setError] = useState<'taken' | undefined>(undefined);
 
-  const schema = object({
-    email: string()
-      .email(formatMessage(messages.emailInvalidError))
-      .required(formatMessage(messages.emailEmptyError)),
-  });
-
-  const methods = useForm<FormValues>({
-    mode: 'onBlur',
-    defaultValues: {
-      email: '',
-    },
-    resolver: yupResolver(schema),
-  });
-
-  useEffect(() => {
-    if (!isNilOrError(authUser) && authUser.attributes.email) {
-      methods.setValue('email', authUser.attributes.email);
-    }
-  }, [authUser, methods]);
+  if (isNilOrError(user)) {
+    return null;
+  }
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
@@ -76,7 +59,6 @@ const UpdateEmailForm = ({
       if (appConfiguration.data?.data.attributes.settings.user_confirmation) {
         resendEmailConfirmationCode(formValues.email)
           .then(() => {
-            setNewEmail(formValues.email);
             setOpenConfirmationModal(true);
             setError(undefined);
           })
@@ -85,9 +67,7 @@ const UpdateEmailForm = ({
           });
       } else {
         // Otherwise, update the user's email
-        if (!isNilOrError(authUser)) {
-          await updateUser(authUser.id, { ...formValues });
-        }
+        await updateUser(user.id, { ...formValues });
         setUpdateSuccessful(true);
       }
     } catch (error) {
@@ -95,15 +75,11 @@ const UpdateEmailForm = ({
     }
   };
 
-  if (isNilOrError(authUser)) {
-    return null;
-  }
-
   return (
     <>
       <FormProvider {...methods}>
         <Title>
-          {authUser.attributes.no_password
+          {user.attributes.no_password
             ? formatMessage(messages.titleAddEmail)
             : formatMessage(messages.titleChangeEmail)}
         </Title>
