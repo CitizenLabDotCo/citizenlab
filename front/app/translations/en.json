@@ -391,7 +391,7 @@
   "app.components.SeatInfo.currentAdminSeatsTitle": "Current admin seats",
   "app.components.SeatInfo.currentModeratorSeatsTitle": "Current moderator seats",
   "app.components.SeatInfo.includedAdminToolTip": "This shows the number of available seats for admins included in the yearly contract.",
-  "app.components.SeatInfo.includedModeratorToolTip": "This shows the number of available seats for moderators included in the yearly contract.",
+  "app.components.SeatInfo.includedManagerToolTip": "This shows the number of available seats for managers included in the yearly contract.",
   "app.components.SeatInfo.includedSeats": "Included seats",
   "app.components.SeatInfo.managerSeats": "Manager seats",
   "app.components.SeatInfo.managerSeatsTooltip": "Folder/project managers can manage an unlimited number of folders/projects. You can {visitHelpCenter} to learn more about the different roles.",
