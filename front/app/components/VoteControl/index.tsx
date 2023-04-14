@@ -8,13 +8,12 @@ import VoteButton from './VoteButton';
 import { IdeaVotingDisabledReason } from 'api/ideas/types';
 import { getLatestRelevantPhase } from 'services/phases';
 
-// hooks
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { includes } from 'lodash-es';
-import { openVerificationModal } from 'events/verificationModal';
 
 // style
 import styled from 'styled-components';
@@ -57,6 +56,18 @@ interface Props {
   className?: string;
   styleType: TStyleType;
 }
+
+const TRIGGER_AUTH_FLOW_REASONS = new Set([
+  'not_signed_in',
+  'not_active',
+  'not_verified',
+  'not_permitted',
+]);
+
+const isReasonToTriggerAuthFlow = (votingDisabledReason?: string | null) => {
+  if (!votingDisabledReason) return false;
+  return TRIGGER_AUTH_FLOW_REASONS.has(votingDisabledReason);
+};
 
 const VoteControl = ({
   ariaHidden = false,
@@ -134,8 +145,6 @@ const VoteControl = ({
     },
     [authUser, addVote, deleteVote, ideaId, myVoteMode, voteId]
   );
-
-  const openAuthModal = useOpenAuthModal();
 
   if (!idea) return null;
 
@@ -227,9 +236,7 @@ const VoteControl = ({
       down: votingActionDescriptor?.down.disabled_reason,
     }[voteMode];
 
-    const isSignedIn = !isNilOrError(authUser);
     const isTryingToUndoVote = !!(myVoteMode && voteMode === myVoteMode);
-    const isVerified = !isNilOrError(authUser) && authUser.attributes.verified;
 
     if (!participationContextId || !participationContextType) return;
 
@@ -254,23 +261,8 @@ const VoteControl = ({
         (votingEnabled || (cancellingEnabled && isTryingToUndoVote))
       ) {
         castVote(voteMode);
-      } else if (
-        isSignedIn &&
-        !isVerified &&
-        votingDisabledReason === 'not_verified'
-      ) {
-        openVerificationModal();
-      } else if (isSignedIn && votingDisabledReason === 'not_active') {
-        openAuthModal({ context, successAction });
-      } else if (
-        !isSignedIn &&
-        (votingEnabled ||
-          votingDisabledReason === 'not_verified' ||
-          votingDisabledReason === 'not_signed_in' ||
-          votingDisabledReason === 'not_permitted')
-      ) {
-        const verification = votingDisabledReason === 'not_verified';
-        openAuthModal({ verification, context, successAction });
+      } else if (isReasonToTriggerAuthFlow(votingDisabledReason)) {
+        triggerAuthenticationFlow({ context, successAction });
       } else if (votingDisabledReason) {
         disabledVoteClick?.(votingDisabledReason);
       }

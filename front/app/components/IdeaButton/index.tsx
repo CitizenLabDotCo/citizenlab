@@ -19,9 +19,6 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
-// hooks
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
-
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
@@ -33,7 +30,7 @@ import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
 // events
-import { openVerificationModal } from 'events/verificationModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -185,8 +182,6 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       }
     };
 
-    const openAuthModal = useOpenAuthModal();
-
     if (isNilOrError(project)) return null;
 
     const onClick = (event: React.MouseEvent) => {
@@ -194,36 +189,14 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
 
       trackEventByName(tracks.postYourIdeaButtonClicked);
 
-      // if logged in but not complete user
-      if (authenticationRequirements === 'complete_registration') {
+      if (authenticationRequirements) {
         signUp();
-      }
-
-      // if not logged in
-      if (
-        authenticationRequirements === 'sign_in_up' ||
-        authenticationRequirements === 'sign_in_up_and_verify'
-      ) {
-        signUp();
-      }
-
-      // if logged in but not verified and verification required
-      if (authenticationRequirements === 'verify') {
-        verify();
+        return;
       }
 
       // if logegd in and posting allowed
       if (enabled === true) {
         redirectToIdeaForm();
-      }
-    };
-
-    const verify = (event?: React.MouseEvent) => {
-      event?.preventDefault();
-
-      if (context) {
-        trackEventByName(tracks.verificationModalOpened);
-        openVerificationModal({ context });
       }
     };
 
@@ -239,9 +212,6 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       (flow: 'signup' | 'signin') => (event?: React.MouseEvent) => {
         event?.preventDefault();
 
-        const shouldVerify =
-          authenticationRequirements === 'sign_in_up_and_verify';
-
         const successAction: SuccessAction = {
           name: 'redirectToIdeaForm',
           params: {
@@ -252,9 +222,8 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
         if (context) {
           trackEventByName(tracks.signUpInModalOpened);
 
-          openAuthModal({
+          triggerAuthenticationFlow({
             flow,
-            verification: shouldVerify,
             context,
             successAction,
           });
@@ -262,7 +231,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       };
 
     const verificationLink = (
-      <button onClick={verify}>
+      <button onClick={signUp}>
         {formatMessage(messages.verificationLinkText)}
       </button>
     );
@@ -347,6 +316,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
                 onClick={onClick}
                 disabled={!enabled}
                 ariaDisabled={false}
+                id="e2e-idea-button"
               >
                 <FormattedMessage {...buttonMessage} />
               </Button>

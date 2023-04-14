@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useCallback, FormEvent } from 'react';
 
-// Components
+// components
 import { Button } from '@citizenlab/cl2-component-library';
 import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
 
 // hooks
 import { useTheme } from 'styled-components';
 import useAuthUser from 'hooks/useAuthUser';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
@@ -63,8 +65,6 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
     }
   }, [currentPhase, project, pathname]);
 
-  const openAuthModal = useOpenAuthModal();
-
   const { enabled, disabledReason } = getSurveyTakingRules({
     project,
     phaseContext: currentPhase,
@@ -94,9 +94,8 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
     };
 
     if (showSignIn) {
-      openAuthModal({
+      triggerAuthenticationFlow({
         flow: 'signup',
-        verification: shouldVerify,
         context: {
           type: currentPhase ? 'phase' : 'project',
           action: 'taking_survey',

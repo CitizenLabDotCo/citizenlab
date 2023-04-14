@@ -58,7 +58,7 @@ const SignIn = memo<Props>(
       if (selectedMethod === 'email') {
         setActiveStep('password-signin');
       } else {
-        handleOnSSOClick(selectedMethod, metaData);
+        handleOnSSOClick(selectedMethod, metaData, false);
       }
     };
 

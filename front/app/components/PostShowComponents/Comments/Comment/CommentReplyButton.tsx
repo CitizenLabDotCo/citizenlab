@@ -6,12 +6,9 @@ import { get } from 'lodash-es';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// hooks
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
-
 // events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 import { commentReplyButtonClicked } from '../events';
-import { openVerificationModal } from 'events/verificationModal';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -67,6 +64,20 @@ interface Props {
   className?: string;
 }
 
+const TRIGGER_AUTH_FLOW_REASONS = new Set([
+  'not_signed_in',
+  'not_active',
+  'not_verified',
+  'not_permitted',
+]);
+
+const isReasonToTriggerAuthFlow = (
+  commentingDisabledReason?: string | null
+) => {
+  if (!commentingDisabledReason) return false;
+  return TRIGGER_AUTH_FLOW_REASONS.has(commentingDisabledReason);
+};
+
 const CommentReplyButton = memo<Props>(
   ({
     postType,
@@ -104,8 +115,6 @@ const CommentReplyButton = memo<Props>(
       authorSlug,
     ]);
 
-    const openAuthModal = useOpenAuthModal();
-
     const onReply = useCallback(() => {
       if (!isNilOrError(post)) {
         const successAction: SuccessAction = {
@@ -128,8 +137,6 @@ const CommentReplyButton = memo<Props>(
             post,
             'attributes.action_descriptor.commenting_idea.disabled_reason'
           );
-          const authUserIsVerified =
-            !isNilOrError(authUser) && authUser.attributes.verified;
 
           trackEventByName(
             commentType === 'child'
@@ -148,20 +155,8 @@ const CommentReplyButton = memo<Props>(
 
           if (!isNilOrError(authUser) && !commentingDisabledReason) {
             reply();
-          } else if (
-            !isNilOrError(authUser) &&
-            !authUserIsVerified &&
-            commentingDisabledReason === 'not_verified'
-          ) {
-            openVerificationModal({ context });
-          } else if (!authUser) {
-            openAuthModal({
-              verification: commentingDisabledReason === 'not_verified',
-              context,
-              successAction,
-            });
-          } else if (commentingDisabledReason === 'not_active') {
-            openAuthModal({ context, successAction });
+          } else if (isReasonToTriggerAuthFlow(commentingDisabledReason)) {
+            triggerAuthenticationFlow({ context, successAction });
           }
         }
 
@@ -174,14 +169,8 @@ const CommentReplyButton = memo<Props>(
             action: 'commenting_initiative',
           } as const;
 
-          if (authenticationRequirements === 'sign_in_up') {
-            openAuthModal({ context, successAction });
-          } else if (authenticationRequirements === 'sign_in_up_and_verify') {
-            openAuthModal({ verification: true, context, successAction });
-          } else if (authenticationRequirements === 'verify') {
-            openVerificationModal({ context });
-          } else if (authenticationRequirements === 'complete_registration') {
-            openAuthModal({ context, successAction });
+          if (authenticationRequirements) {
+            triggerAuthenticationFlow({ context, successAction });
           } else if (commentingPermissionInitiative?.enabled === true) {
             reply();
           }
@@ -193,7 +182,6 @@ const CommentReplyButton = memo<Props>(
       commentType,
       commentingPermissionInitiative,
       reply,
-      openAuthModal,
       commentId,
       parentCommentId,
       authorFirstName,

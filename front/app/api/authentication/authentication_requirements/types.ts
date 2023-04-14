@@ -38,7 +38,7 @@ export interface AuthenticationRequirementsResponse {
   };
 }
 
-type RequirementStatus = 'dont_ask' | 'require' | 'satisfied';
+type RequirementStatus = 'dont_ask' | 'require' | 'satisfied' | 'ask';
 
 export interface AuthenticationRequirements {
   permitted: boolean;
@@ -54,6 +54,7 @@ export interface AuthenticationRequirements {
     special: {
       password: RequirementStatus;
       confirmation: RequirementStatus;
+      verification: RequirementStatus;
     };
   };
 }

@@ -13,10 +13,12 @@ export type ErrorCode =
   | 'wrong_confirmation_code'
   | 'wrong_password'
   | 'requirements_fetching_failed'
+  | 'invitation_error'
   | 'unknown';
 
 export interface State {
   email: string | null;
+  token: string | null;
 }
 
 export type UpdateState = (state: Partial<State>) => void;
@@ -36,9 +38,6 @@ export interface AuthenticationData {
 
   // TODO clean this up
   error?: { code: SignUpInError };
-  isInvitation: boolean;
-  token?: string;
-  verification: boolean;
 }
 
 export type SSOProviderWithoutVienna = Exclude<SSOProvider, 'id_vienna_saml'>;

@@ -2,7 +2,9 @@ import React from 'react';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // styling
 import { useTheme } from 'styled-components';
@@ -21,7 +23,6 @@ const Unauthorized = () => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
-  const openAuthModal = useOpenAuthModal();
 
   const authUserPending = authUser === undefined;
 
@@ -34,7 +35,7 @@ const Unauthorized = () => {
   }
 
   const signIn = () => {
-    openAuthModal({
+    triggerAuthenticationFlow({
       flow: 'signin',
     });
   };

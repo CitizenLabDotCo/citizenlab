@@ -8,14 +8,13 @@ import Warning from 'components/UI/Warning';
 // hooks
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // events
-import { openVerificationModal } from 'events/verificationModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 const calculateMessageDescriptor = (
   authUser: TAuthUser,
@@ -57,31 +56,16 @@ const CommentingInitiativesDisabled = () => {
   const commentingPermissions = useInitiativesPermissions(
     'commenting_initiative'
   );
-  const openAuthModal = useOpenAuthModal();
 
   const messageDescriptor = calculateMessageDescriptor(
     authUser,
     commentingPermissions
   );
 
-  const onVerify = () => {
-    if (commentingPermissions?.authenticationRequirements === 'verify') {
-      openVerificationModal({
-        context: {
-          action: 'commenting_initiative',
-          type: 'initiative',
-        },
-      });
-    }
-  };
-
   const signUpIn = (flow: 'signin' | 'signup') => {
     if (isNilOrError(authUser)) {
-      openAuthModal({
+      triggerAuthenticationFlow({
         flow,
-        verification:
-          commentingPermissions?.authenticationRequirements ===
-          'sign_in_up_and_verify',
         context: {
           action: 'commenting_initiative',
           type: 'initiative',
@@ -119,14 +103,14 @@ const CommentingInitiativesDisabled = () => {
             completeRegistrationLink: (
               <button
                 onClick={() => {
-                  openAuthModal();
+                  triggerAuthenticationFlow();
                 }}
               >
                 <FormattedMessage {...messages.completeRegistrationLinkText} />
               </button>
             ),
             verifyIdentityLink: (
-              <button onClick={onVerify}>
+              <button onClick={signUp}>
                 <FormattedMessage {...messages.verifyIdentityLinkText} />
               </button>
             ),

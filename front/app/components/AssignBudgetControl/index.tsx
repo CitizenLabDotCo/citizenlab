@@ -14,7 +14,6 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'hooks/useBasket';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -26,7 +25,9 @@ import {
   capitalizeParticipationContextType,
 } from 'utils/helperUtils';
 import streams from 'utils/streams';
-import { openVerificationModal } from 'events/verificationModal';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -93,6 +94,17 @@ interface Props {
   ideaId: string;
   className?: string;
 }
+
+const TRIGGER_AUTH_FLOW_REASONS = new Set([
+  'not_signed_in',
+  'not_active',
+  'not_verified',
+]);
+
+const isReasonToTriggerAuthFlow = (budgetingDisabledReason?: string | null) => {
+  if (!budgetingDisabledReason) return false;
+  return TRIGGER_AUTH_FLOW_REASONS.has(budgetingDisabledReason);
+};
 
 const AssignBudgetControl = memo(
   ({ view, ideaId, className, projectId }: Props) => {
@@ -199,14 +211,18 @@ const AssignBudgetControl = memo(
       }
     };
 
-    const openAuthModal = useOpenAuthModal();
-
     const handleAddRemoveButtonClick =
       (idea: IIdea, participationContextId: string) => (event?: FormEvent) => {
         event?.preventDefault();
 
         const isBudgetingEnabled =
           idea.data.attributes.action_descriptor.budgeting?.enabled;
+
+        if (isBudgetingEnabled) {
+          assignBudget();
+          return;
+        }
+
         const budgetingDisabledReason =
           idea.data.attributes.action_descriptor.budgeting?.disabled_reason;
 
@@ -227,27 +243,12 @@ const AssignBudgetControl = memo(
         };
 
         if (
-          // not signed up/in
+          // if you're logged out, or you're logged in
+          // but you don't match requirements yet
           isNilOrError(authUser) ||
-          budgetingDisabledReason === 'not_signed_in'
+          isReasonToTriggerAuthFlow(budgetingDisabledReason)
         ) {
-          openAuthModal({ context, successAction });
-          // signed in but not active
-        } else if (budgetingDisabledReason === 'not_active') {
-          openAuthModal({ context, successAction });
-          // if signed up & in
-        } else if (!isNilOrError(authUser)) {
-          if (budgetingDisabledReason === 'not_verified') {
-            openVerificationModal({
-              context: {
-                action: 'budgeting',
-                id: participationContextId,
-                type: participationContextType,
-              },
-            });
-          } else if (isBudgetingEnabled) {
-            assignBudget();
-          }
+          triggerAuthenticationFlow({ context, successAction });
         }
       };
 

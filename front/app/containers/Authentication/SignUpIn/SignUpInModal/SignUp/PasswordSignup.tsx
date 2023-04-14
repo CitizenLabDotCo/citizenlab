@@ -140,7 +140,7 @@ class PasswordSignup extends PureComponent<
   constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
-      token: props.metaData.token,
+      token: undefined,
       firstName: null,
       lastName: null,
       emailOrPhoneNumber: null,
@@ -168,7 +168,7 @@ class PasswordSignup extends PureComponent<
   componentDidMount() {
     trackEventByName(tracks.signUpEmailPasswordStepEntered);
 
-    const { metaData } = this.props;
+    const { metaData } = this.props as any;
 
     this.setState({ token: metaData?.token });
 
@@ -189,7 +189,7 @@ class PasswordSignup extends PureComponent<
           });
         })
         .catch(() => {
-          onError(intl.formatMessage(messages.invitationError));
+          onError(intl.formatMessage(messages.close));
           trackEventByName(tracks.signUpFlowExited);
         });
     }
@@ -308,7 +308,7 @@ class PasswordSignup extends PureComponent<
       metaData: { isInvitation },
       intl: { formatMessage },
       tenant,
-    } = this.props;
+    } = this.props as any;
 
     const invitationRedeemError =
       isInvitation && !token ? formatMessage(messages.emptyTokenError) : null;
@@ -328,12 +328,8 @@ class PasswordSignup extends PureComponent<
             : messages.emailError
         )
       : null;
-    const firstNameError = !firstName
-      ? formatMessage(messages.emptyFirstNameError)
-      : null;
-    const lastNameError = !lastName
-      ? formatMessage(messages.emptyLastNameError)
-      : null;
+    const firstNameError = !firstName ? formatMessage(messages.close) : null;
+    const lastNameError = !lastName ? formatMessage(messages.close) : null;
     const hasMinimumLengthError =
       typeof password === 'string'
         ? hasPasswordMinimumLength(
@@ -400,7 +396,7 @@ class PasswordSignup extends PureComponent<
         metaData: { isInvitation },
         intl: { formatMessage },
         locale,
-      } = this.props;
+      } = this.props as any;
 
       const {
         token,
@@ -500,7 +496,7 @@ class PasswordSignup extends PureComponent<
       franceconnectLoginEnabled,
       metaData: { isInvitation },
       intl: { formatMessage },
-    } = this.props;
+    } = this.props as any;
     const {
       token,
       firstName,
@@ -562,7 +558,7 @@ class PasswordSignup extends PureComponent<
             onSubmit={this.handleOnSubmit(isPhoneSignupEnabled)}
             noValidate={true}
           >
-            {isInvitation && !this.props.metaData.token && (
+            {isInvitation && (
               <FormElement id="e2e-token-container">
                 <FormLabel labelMessage={messages.tokenLabel} htmlFor="token" />
                 <Input
@@ -571,18 +567,13 @@ class PasswordSignup extends PureComponent<
                   value={token}
                   error={invitationRedeemError}
                   onChange={this.handleTokenOnChange}
-                  autoFocus={
-                    !!(isDesktop && isInvitation && !this.props.metaData.token)
-                  }
+                  autoFocus={!!(isDesktop && isInvitation)}
                 />
               </FormElement>
             )}
 
             <FormElement id="e2e-firstName-container">
-              <FormLabel
-                labelMessage={messages.firstNamesLabel}
-                htmlFor="firstName"
-              />
+              <FormLabel labelMessage={messages.close} htmlFor="firstName" />
               <Input
                 id="firstName"
                 type="text"
@@ -590,11 +581,7 @@ class PasswordSignup extends PureComponent<
                 error={firstNameError}
                 onChange={this.handleFirstNameOnChange}
                 autocomplete="given-name"
-                autoFocus={
-                  isDesktop &&
-                  (!isInvitation ||
-                    !!(isInvitation && this.props.metaData.token))
-                }
+                autoFocus={isDesktop && (!isInvitation || !!isInvitation)}
                 setRef={this.handleFirstNameInputSetRef}
               />
               <Error
@@ -604,10 +591,7 @@ class PasswordSignup extends PureComponent<
             </FormElement>
 
             <FormElement id="e2e-lastName-container">
-              <FormLabel
-                labelMessage={messages.lastNameLabel}
-                htmlFor="lastName"
-              />
+              <FormLabel labelMessage={messages.close} htmlFor="lastName" />
               <Input
                 id="lastName"
                 type="text"
@@ -685,7 +669,7 @@ class PasswordSignup extends PureComponent<
                   id="e2e-signup-password-submit-button"
                   processing={processing || loading}
                   text={formatMessage(
-                    hasNextStep ? messages.nextStep : messages.signUp2
+                    hasNextStep ? messages.nextStep : messages.nextStep
                   )}
                   onClick={this.handleOnSubmit(isPhoneSignupEnabled)}
                 />
@@ -699,18 +683,18 @@ class PasswordSignup extends PureComponent<
             <Option>
               {enabledProviders.length > 1 ? (
                 <button onClick={this.goBackToSignUpOptions} className="link">
-                  <FormattedMessage {...messages.backToSignUpOptions} />
+                  <FormattedMessage {...messages.close} />
                 </button>
               ) : (
                 <FormattedMessage
-                  {...messages.goToLogIn}
+                  {...messages.emailLabel}
                   values={{
                     goToOtherFlowLink: (
                       <button
                         onClick={this.handleOnGoToSignIn}
                         className="link"
                       >
-                        {formatMessage(messages.logIn2)}
+                        x
                       </button>
                     ),
                   }}

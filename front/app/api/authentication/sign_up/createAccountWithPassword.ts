@@ -9,8 +9,8 @@ interface Parameters {
   email: string;
   password: string;
   locale: Locale;
-  isInvitation: boolean | null | undefined;
-  token: string | undefined | null;
+  isInvitation?: boolean | null | undefined;
+  token?: string | undefined | null;
 }
 
 const triggerCreateAccountWithPassword = (

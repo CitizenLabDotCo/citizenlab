@@ -238,7 +238,8 @@ resource 'Permissions' do
             custom_fields: {},
             special: {
               password: 'satisfied',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
@@ -301,7 +302,8 @@ resource 'Permissions' do
             },
             special: {
               password: 'dont_ask',
-              confirmation: 'require'
+              confirmation: 'require',
+              verification: 'dont_ask'
             }
           }
         })
@@ -330,7 +332,8 @@ resource 'Permissions' do
             custom_fields: {},
             special: {
               password: 'satisfied',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
@@ -372,7 +375,8 @@ resource 'Permissions' do
             },
             special: {
               password: 'require',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
@@ -403,7 +407,8 @@ resource 'Permissions' do
             custom_fields: {},
             special: {
               password: 'satisfied',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })

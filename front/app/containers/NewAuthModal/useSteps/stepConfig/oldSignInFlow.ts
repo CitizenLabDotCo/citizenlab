@@ -9,17 +9,22 @@ import { triggerSuccessAction } from 'containers/NewAuthModal/SuccessActions';
 import tracks from '../../tracks';
 import { trackEventByName } from 'utils/analytics';
 
+// utils
+import { askCustomFields } from './utils';
+
 // typings
 import {
   Status,
   ErrorCode,
   AuthenticationData,
   AuthProvider,
+  GetRequirements,
 } from '../../typings';
 import { Step } from './typings';
 
 export const oldSignInFlow = (
   getAuthenticationData: () => AuthenticationData,
+  getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
   setError: (errorCode: ErrorCode) => void,
@@ -30,23 +35,30 @@ export const oldSignInFlow = (
     'sign-in:auth-providers': {
       CLOSE: () => setCurrentStep('closed'),
       SWITCH_FLOW: () => {
-        // TODO
+        setCurrentStep('sign-up:auth-providers');
       },
-      SELECT_AUTH_PROVIDER: (authProvider: AuthProvider) => {
+      SELECT_AUTH_PROVIDER: async (authProvider: AuthProvider) => {
         if (authProvider === 'email') {
           setCurrentStep('sign-in:email-password');
           return;
         }
 
         setStatus('pending');
-        handleOnSSOClick(authProvider, getAuthenticationData());
+        const { requirements } = await getRequirements();
+        const verificationRequired =
+          requirements.special.verification === 'require';
+        handleOnSSOClick(
+          authProvider,
+          getAuthenticationData(),
+          verificationRequired
+        );
       },
     },
 
     'sign-in:email-password': {
       CLOSE: () => setCurrentStep('closed'),
       SWITCH_FLOW: () => {
-        // TODO
+        setCurrentStep('sign-up:email-password');
       },
       GO_BACK: () => {
         if (anySSOProviderEnabled) {
@@ -69,6 +81,15 @@ export const oldSignInFlow = (
             tokenLifetime,
           });
 
+          setStatus('ok');
+
+          const { requirements } = await getRequirements();
+
+          if (askCustomFields(requirements.custom_fields)) {
+            setCurrentStep('custom-fields');
+            return;
+          }
+
           setCurrentStep('closed');
 
           const { successAction } = getAuthenticationData();
@@ -77,8 +98,6 @@ export const oldSignInFlow = (
           }
 
           trackEventByName(tracks.signInEmailPasswordCompleted);
-
-          setStatus('ok');
         } catch {
           setStatus('error');
           setError('wrong_password');

@@ -2,7 +2,7 @@ import eventEmitter from 'utils/eventEmitter';
 import { AuthenticationData } from './typings';
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/types';
 
-const EVENT_NAME = 'triggerAuthenticationFlow';
+const TRIGGER_AUTHENTICATION_FLOW = 'triggerAuthenticationFlow';
 
 export function triggerAuthenticationFlow(
   partialAuthenticationData?: Partial<AuthenticationData>
@@ -12,13 +12,20 @@ export function triggerAuthenticationFlow(
     context: partialAuthenticationData?.context ?? GLOBAL_CONTEXT,
     successAction: partialAuthenticationData?.successAction,
     error: partialAuthenticationData?.error,
-    isInvitation: !!partialAuthenticationData?.isInvitation,
-    token: partialAuthenticationData?.token,
-    verification: !!partialAuthenticationData?.verification,
   };
 
-  eventEmitter.emit(EVENT_NAME, authenticationData);
+  eventEmitter.emit(TRIGGER_AUTHENTICATION_FLOW, authenticationData);
 }
 
 export const triggerAuthenticationFlow$ =
-  eventEmitter.observeEvent<AuthenticationData>(EVENT_NAME);
+  eventEmitter.observeEvent<AuthenticationData>(TRIGGER_AUTHENTICATION_FLOW);
+
+const TRIGGER_VERIFICATION_ONLY = 'triggerVerificationOnly';
+
+export function triggerVerificationOnly() {
+  eventEmitter.emit(TRIGGER_VERIFICATION_ONLY);
+}
+
+export const triggerVerificationOnly$ = eventEmitter.observeEvent<undefined>(
+  TRIGGER_VERIFICATION_ONLY
+);

@@ -2,7 +2,9 @@ import React, { memo, useCallback } from 'react';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // styling
 import styled, { withTheme } from 'styled-components';
@@ -132,12 +134,11 @@ interface Props extends InputProps {
 const InitiativesCTABox = memo<Props>(({ theme, className }) => {
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
-  const openAuthModal = useOpenAuthModal();
 
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
   const signUp = useCallback(() => {
-    openAuthModal({
+    triggerAuthenticationFlow({
       flow: 'signup',
       context: {
         type: 'initiative',
@@ -148,7 +149,7 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
         params: {},
       },
     });
-  }, [openAuthModal]);
+  }, []);
 
   return (
     <Container className={className}>

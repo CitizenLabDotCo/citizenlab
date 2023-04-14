@@ -8,14 +8,18 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import AuthProviders from './steps/AuthProviders';
+import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
 import EmailAndPassword from './steps/EmailAndPassword';
+import EmailConfirmation from './steps/EmailConfirmation';
+import Verification from './steps/Verification';
+import CustomFields from './steps/CustomFields';
+import ChangeEmail from './steps/ChangeEmail';
 import LightFlowStart from './steps/LightFlowStart';
 import EmailPolicies from './steps/Policies/EmailPolicies';
 import GooglePolicies from './steps/Policies/GooglePolicies';
 import FacebookPolicies from './steps/Policies/FacebookPolicies';
 import AzureAdPolicies from './steps/Policies/AzureAdPolicies';
 import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
-import EmailConfirmation from './steps/EmailConfirmation';
 import Password from './steps/Password';
 import Success from './steps/Success';
 import Error from 'components/UI/Error';
@@ -29,23 +33,26 @@ import errorMessages from 'components/UI/Error/messages';
 
 // typings
 import { ErrorCode } from './typings';
+import VerificationSuccess from './steps/VerificationSuccess';
 
 type Step = ReturnType<typeof useSteps>['currentStep'];
 
 const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
-  // closed (shared)
+  // shared
   closed: null,
+  verification: messages.verifyYourIdentity,
+  'custom-fields': messages.signUp,
+  success: null,
 
   // old sign in flow
   'sign-in:auth-providers': messages.logIn,
   'sign-in:email-password': messages.logIn,
 
   // old sign up flow
-  'sign-up:auth-providers': null, // TODO
-  'sign-up:email-password': null, // TODO
-  'sign-up:email-confirmation': messages.confirmYourEmail,
-  'sign-up:verification': null, // TODO
-  'sign-up:registration-fields': null, // TODO
+  'sign-up:auth-providers': messages.signUp,
+  'sign-up:email-password': messages.signUp,
+  'sign-up:email-confirmation': messages.signUp,
+  'sign-up:change-email': messages.signUp,
 
   // light flow
   'light-flow:email': messages.beforeYouParticipate,
@@ -57,8 +64,9 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'light-flow:email-confirmation': messages.confirmYourEmail,
   'light-flow:password': messages.logIn,
 
-  // success (shared)
-  success: null,
+  // verification only
+  'verification-only': messages.verifyYourIdentity,
+  'verification-success': null,
 };
 
 const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
@@ -67,10 +75,20 @@ const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   wrong_password: oldSignInMessages.signInError,
   requirements_fetching_failed: oldSignUpMessages.unknownError,
   unknown: oldSignUpMessages.unknownError,
+  invitation_error: messages.invitationError,
 };
 
 const AuthModal = () => {
-  const { currentStep, transition, error, status, state } = useSteps();
+  const {
+    currentStep,
+    state,
+    status,
+    error,
+    authenticationData,
+    transition,
+    setError,
+  } = useSteps();
+
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
   const fullscreenModalEnabled = useFeatureFlag({
@@ -100,12 +118,7 @@ const AuthModal = () => {
         headerMessage ? (
           <>
             {fullscreenModalEnabled ? (
-              <Box
-                w="100%"
-                display="flex"
-                justifyContent="center"
-                className="BLA"
-              >
+              <Box w="100%" display="flex" justifyContent="center">
                 <Box w="580px" px={marginX}>
                   <Title variant="h3" as="h1" mt="0px" mb="0px">
                     {formatMessage(headerMessage)}
@@ -127,6 +140,30 @@ const AuthModal = () => {
           <Box mb="16px">
             <Error text={formatMessage(ERROR_CODE_MESSAGES[error])} />
           </Box>
+        )}
+
+        {/* shared */}
+        {currentStep === 'verification' && (
+          <Verification
+            authenticationData={authenticationData}
+            onCompleted={transition(currentStep, 'CONTINUE')}
+            onError={() => setError('unknown')}
+          />
+        )}
+
+        {currentStep === 'custom-fields' && (
+          <CustomFields
+            status={status}
+            onSubmit={transition(currentStep, 'SUBMIT')}
+            onSkip={transition(currentStep, 'SKIP')}
+          />
+        )}
+
+        {currentStep === 'success' && (
+          <Success
+            status={status}
+            onContinue={transition(currentStep, 'CONTINUE')}
+          />
         )}
 
         {/* old sign in flow */}
@@ -153,12 +190,40 @@ const AuthModal = () => {
         {/* old sign up flow */}
         {currentStep === 'sign-up:auth-providers' && (
           <AuthProviders
-            flow="signin"
+            flow="signup"
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onSelectAuthProvider={transition(
               currentStep,
               'SELECT_AUTH_PROVIDER'
             )}
+          />
+        )}
+
+        {currentStep === 'sign-up:email-password' && (
+          <EmailAndPasswordSignUp
+            state={state}
+            status={status}
+            onError={setError}
+            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
+            onGoBack={transition(currentStep, 'GO_BACK')}
+            onSubmit={transition(currentStep, 'SUBMIT')}
+          />
+        )}
+
+        {currentStep === 'sign-up:email-confirmation' && (
+          <EmailConfirmation
+            state={state}
+            status={status}
+            error={error}
+            onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+            onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
+          />
+        )}
+
+        {currentStep === 'sign-up:change-email' && (
+          <ChangeEmail
+            onGoBack={transition(currentStep, 'GO_BACK')}
+            onChangeEmail={transition(currentStep, 'RESEND_CODE')}
           />
         )}
 
@@ -221,11 +286,17 @@ const AuthModal = () => {
           />
         )}
 
-        {currentStep === 'success' && (
-          <Success
-            status={status}
-            onContinue={transition(currentStep, 'CONTINUE')}
+        {/* verification only */}
+        {currentStep === 'verification-only' && (
+          <Verification
+            authenticationData={authenticationData}
+            onCompleted={transition(currentStep, 'CONTINUE')}
+            onError={() => setError('unknown')}
           />
+        )}
+
+        {currentStep === 'verification-success' && (
+          <VerificationSuccess onClose={transition(currentStep, 'CLOSE')} />
         )}
       </Box>
     </Modal>

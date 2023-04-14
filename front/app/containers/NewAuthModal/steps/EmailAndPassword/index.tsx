@@ -2,13 +2,14 @@ import React, { useEffect } from 'react';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAnySSOEnabled from 'containers/NewAuthModal/useAnySSOEnabled';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import TextLink from '../components/TextLink';
-import TextButton from '../components/TextButton';
+import TextLink from '../_components/TextLink';
+import TextButton from '../_components/TextButton';
 
 // i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
@@ -63,26 +64,10 @@ const EmailAndPassword = ({
   onSwitchFlow,
 }: Props) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
-  const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
-  const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
-  const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
-  const franceconnectLoginEnabled = useFeatureFlag({
-    name: 'franceconnect_login',
-  });
-  const viennaCitizenLoginEnabled = useFeatureFlag({
-    name: 'vienna_citizen_login',
-  });
+  const anySSOEnabled = useAnySSOEnabled();
+  const { data: appConfiguration } = useAppConfiguration();
 
   const loading = status === 'pending';
-
-  const anySSOProviderEnabled =
-    googleLoginEnabled ||
-    facebookLoginEnabled ||
-    azureAdLoginEnabled ||
-    franceconnectLoginEnabled ||
-    viennaCitizenLoginEnabled;
-
-  const { data: appConfiguration } = useAppConfiguration();
 
   const appConfigSettings = appConfiguration?.data.attributes.settings;
   const tokenLifetime =
@@ -93,11 +78,15 @@ const EmailAndPassword = ({
 
   const emailSchema = phoneLoginEnabled
     ? string()
-        .required(formatMessage(messages.emailOrPhoneMissingError))
-        .test('', formatMessage(messages.emailOrPhoneNumberError), (value) => {
-          if (value === undefined) return false;
-          return isValidEmail(value) || isValidPhoneNumber(value);
-        })
+        .required(formatMessage(sharedMessages.emailOrPhoneMissingError))
+        .test(
+          '',
+          formatMessage(sharedMessages.emailOrPhoneNumberError),
+          (value) => {
+            if (value === undefined) return false;
+            return isValidEmail(value) || isValidPhoneNumber(value);
+          }
+        )
     : string()
         .required(formatMessage(sharedMessages.emailMissingError))
         .email(formatMessage(sharedMessages.emailFormatError))
@@ -117,7 +106,6 @@ const EmailAndPassword = ({
 
   useEffect(() => {
     trackEventByName(tracks.signInEmailPasswordEntered);
-    return () => trackEventByName(tracks.signInEmailPasswordExited);
   }, []);
 
   if (!passwordLoginEnabled || tokenLifetime === undefined) return null;
@@ -138,7 +126,7 @@ const EmailAndPassword = ({
               autocomplete="email"
               label={
                 phoneLoginEnabled
-                  ? formatMessage(messages.emailOrPhone)
+                  ? formatMessage(sharedMessages.emailOrPhone)
                   : formatMessage(sharedMessages.email)
               }
             />
@@ -184,7 +172,7 @@ const EmailAndPassword = ({
           </TextLink>
         </Box>
         <Box mt="12px">
-          {anySSOProviderEnabled ? (
+          {anySSOEnabled ? (
             <TextButton
               id="e2e-login-options"
               onClick={onGoBack}

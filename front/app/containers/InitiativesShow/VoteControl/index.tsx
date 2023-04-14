@@ -11,13 +11,12 @@ import Ineligible from './Ineligible';
 import Custom from './Custom';
 
 // events
-import { openVerificationModal } from 'events/verificationModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // hooks
 import useAddInitiativeVote from 'api/initiative_votes/useAddInitiativeVote';
 import useDeleteInitiativeVote from 'api/initiative_votes/useDeleteInitiativeVote';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
 import useInitiativesPermissions, {
@@ -135,8 +134,6 @@ const VoteControl = ({
     }
   };
 
-  const openAuthModal = useOpenAuthModal();
-
   const { data: initiativeStatus } = useInitiativeStatus(
     initiative?.data.relationships.initiative_status?.data?.id
   );
@@ -148,44 +145,24 @@ const VoteControl = ({
     const authenticationRequirements =
       votingPermission?.authenticationRequirements;
 
-    const successAction: SuccessAction = {
-      name: 'voteOnInitiative',
-      params: {
-        initiativeId: initiative.data.id,
-      },
-    };
+    if (authenticationRequirements) {
+      trackEventByName(
+        'Sign up/in modal opened in response to clicking vote initiative'
+      );
+      const successAction: SuccessAction = {
+        name: 'voteOnInitiative',
+        params: {
+          initiativeId: initiative.data.id,
+        },
+      };
 
-    switch (authenticationRequirements) {
-      case 'sign_in_up':
-        trackEventByName(
-          'Sign up/in modal opened in response to clicking vote initiative'
-        );
-        openAuthModal({
-          flow: 'signup',
-          verification: false,
-          context,
-          successAction,
-        });
-        break;
-      case 'sign_in_up_and_verify':
-        trackEventByName(
-          'Sign up/in modal opened in response to clicking vote initiative'
-        );
-        openAuthModal({
-          flow: 'signup',
-          verification: true,
-          context,
-          successAction,
-        });
-        break;
-      case 'verify':
-        trackEventByName(
-          'Verification modal opened in response to clicking vote initiative'
-        );
-        openVerificationModal({ context });
-        break;
-      default:
-        vote();
+      triggerAuthenticationFlow({
+        flow: 'signup',
+        context,
+        successAction,
+      });
+    } else {
+      vote();
     }
   };
 

@@ -11,7 +11,9 @@ import signOut from 'api/authentication/sign_in_out/signOut';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // style
 import styled from 'styled-components';
@@ -31,7 +33,6 @@ interface Props {
 
 const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
   const authUser = useAuthUser();
-  const openAuthModal = useOpenAuthModal();
 
   const isRegisteredUser =
     !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
@@ -118,7 +119,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             <DropdownListItem
               id="e2e-confirm-email-link"
               onClick={() => {
-                openAuthModal();
+                triggerAuthenticationFlow();
               }}
               buttonStyle="text"
               bgHoverColor={colors.grey300}
@@ -136,7 +137,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             <DropdownListItem
               id="e2e-complete-registration-link"
               onClick={() => {
-                openAuthModal();
+                triggerAuthenticationFlow();
               }}
               buttonStyle="text"
               bgHoverColor={colors.grey300}

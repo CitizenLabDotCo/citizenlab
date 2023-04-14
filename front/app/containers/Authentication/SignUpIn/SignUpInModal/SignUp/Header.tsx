@@ -31,9 +31,7 @@ const Header = ({
       <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
         <div>
           <StyledHeaderContainer inModal={!!inModal}>
-            <StyledHeaderTitle inModal={!!inModal}>
-              <FormattedMessage {...messages.signUp2} />
-            </StyledHeaderTitle>
+            <StyledHeaderTitle inModal={!!inModal}>Sign up</StyledHeaderTitle>
 
             {!error && stepName && (
               <HeaderSubtitle>

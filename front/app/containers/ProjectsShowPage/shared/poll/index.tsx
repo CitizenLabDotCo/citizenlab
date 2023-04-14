@@ -13,7 +13,6 @@ import {
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // resources
 import GetPollQuestions, {
@@ -25,15 +24,16 @@ import FormCompleted from './FormCompleted';
 import PollForm from './PollForm';
 import Warning from 'components/UI/Warning';
 
+// styling
+import styled from 'styled-components';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { MessageDescriptor } from 'react-intl';
 
 // events
-import { openVerificationModal } from 'events/verificationModal';
-
-import styled from 'styled-components';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -84,42 +84,21 @@ const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
   const authUser = useAuthUser();
   const project = useProject({ projectId });
   const phase = usePhase(phaseId);
-  const openAuthModal = useOpenAuthModal();
-
-  const onVerify = () => {
-    const pcId = type === 'phase' ? phaseId : projectId;
-    const pcType = type;
-
-    if (pcId && pcType) {
-      openVerificationModal({
-        context: {
-          action: 'taking_poll',
-          id: pcId,
-          type: pcType,
-        },
-      });
-    }
-  };
 
   const signUpIn = (flow: 'signin' | 'signup') => {
-    if (!isNilOrError(project)) {
-      const pcType = phaseId ? 'phase' : 'project';
-      const pcId = phaseId ? phaseId : projectId;
-      const takingPollDisabledReason =
-        project.attributes?.action_descriptor?.taking_poll?.disabled_reason;
+    const pcType = phaseId ? 'phase' : 'project';
+    const pcId = phaseId ? phaseId : projectId;
 
-      if (!pcId || !pcType) return;
+    if (!pcId || !pcType) return;
 
-      openAuthModal({
-        flow,
-        verification: takingPollDisabledReason === 'not_verified',
-        context: {
-          action: 'taking_poll',
-          id: pcId,
-          type: pcType,
-        },
-      });
-    }
+    triggerAuthenticationFlow({
+      flow,
+      context: {
+        action: 'taking_poll',
+        id: pcId,
+        type: pcType,
+      },
+    });
   };
 
   const signIn = () => {
@@ -162,7 +141,7 @@ const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
                 {...message}
                 values={{
                   verificationLink: (
-                    <button onClick={onVerify}>
+                    <button onClick={signUp}>
                       <FormattedMessage {...messages.verificationLinkText} />
                     </button>
                   ),
@@ -170,7 +149,7 @@ const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
                     <button
                       id="e2e-complete-registration-link"
                       onClick={() => {
-                        openAuthModal();
+                        triggerAuthenticationFlow();
                       }}
                     >
                       <FormattedMessage

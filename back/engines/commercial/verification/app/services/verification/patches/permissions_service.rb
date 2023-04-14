@@ -12,6 +12,23 @@ module Verification
 
         denied_reason
       end
+
+      private
+
+      def requirements_mapping(permission)
+        requirements = super
+        if VerificationService.new.find_verification_group(permission.groups)
+          requirements['groups'][:special][:verification] = 'require'
+        end
+        requirements
+      end
+
+      def mark_satisfied_requirements!(requirements, permission, user)
+        super
+        return unless user.verified? && VerificationService.new.find_verification_group(permission.groups)
+
+        requirements[:special][:verification] = 'satisfied'
+      end
     end
   end
 end

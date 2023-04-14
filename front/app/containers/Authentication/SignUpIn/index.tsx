@@ -43,7 +43,7 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
     if (authUserIsPending) return;
 
     const isAuthError = endsWith(pathname, 'authentication-error');
-    const isInvitation = endsWith(pathname, '/invite');
+    const isInvitation = false;
 
     if (!initiated) {
       openSignUpInModalIfNecessary(

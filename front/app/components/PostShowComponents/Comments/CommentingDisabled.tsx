@@ -9,7 +9,6 @@ import T from 'components/T';
 // hooks
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // services
 import { IdeaCommentingDisabledReason } from 'api/ideas/types';
@@ -19,7 +18,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // events
-import { openVerificationModal } from 'events/verificationModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 interface Props {
   projectId: string | null;
@@ -63,23 +62,6 @@ const CommentingDisabled = ({
 }: Props) => {
   const authUser = useAuthUser();
   const project = useProject({ projectId });
-  const openAuthModal = useOpenAuthModal();
-
-  const onVerify = () => {
-    const pcType = phaseId ? 'phase' : projectId ? 'project' : null;
-    const pcId =
-      pcType === 'phase' ? phaseId : pcType === 'project' ? projectId : null;
-
-    if (pcId && pcType && commentingDisabledReason === 'not_verified') {
-      openVerificationModal({
-        context: {
-          action: 'commenting_idea',
-          id: pcId,
-          type: pcType,
-        },
-      });
-    }
-  };
 
   const signUpIn = (flow: 'signin' | 'signup') => {
     const pcType = phaseId ? 'phase' : projectId ? 'project' : null;
@@ -88,9 +70,8 @@ const CommentingDisabled = ({
 
     if (!pcId || !pcType) return;
 
-    openAuthModal({
+    triggerAuthenticationFlow({
       flow,
-      verification: commentingDisabledReason === 'not_verified',
       context: {
         action: 'commenting_idea',
         id: pcId,
@@ -138,14 +119,14 @@ const CommentingDisabled = ({
             completeRegistrationLink: (
               <button
                 onClick={() => {
-                  openAuthModal();
+                  triggerAuthenticationFlow();
                 }}
               >
                 <FormattedMessage {...messages.completeRegistrationLinkText} />
               </button>
             ),
             verifyIdentityLink: (
-              <button onClick={onVerify}>
+              <button onClick={signUp}>
                 <FormattedMessage {...messages.verifyIdentityLinkText} />
               </button>
             ),

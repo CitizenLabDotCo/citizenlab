@@ -14,7 +14,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // typings
 import { IUserData } from 'services/users';
 
-type FormData = Record<string, any>;
+export type FormData = Record<string, any>;
 
 interface Props {
   authUser: IUserData;

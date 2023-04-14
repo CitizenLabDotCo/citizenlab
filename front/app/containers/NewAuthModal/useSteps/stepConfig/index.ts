@@ -1,14 +1,8 @@
 // flows
+import { sharedSteps } from './sharedSteps';
 import { oldSignInFlow } from './oldSignInFlow';
 import { oldSignUpFlow } from './oldSignUpFlow';
 import { newLightFlow } from './newLightFlow';
-
-// cache
-import streams from 'utils/streams';
-import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
-
-// events
-import { triggerSuccessAction } from 'containers/NewAuthModal/SuccessActions';
 
 // typings
 import {
@@ -27,83 +21,35 @@ export const getStepConfig = (
   setStatus: (status: Status) => void,
   setError: (errorCode: ErrorCode) => void,
   updateState: UpdateState,
-  anySSOProviderEnabled: boolean
+  anySSOEnabled: boolean
 ) => {
   return {
-    // closed (shared)
-    closed: {
-      // When we fire this, we are already sure that we need the new flow.
-      // i.e. we have already checked the requirements endpoint and stuff
-      TRIGGER_REGISTRATION_FLOW: async () => {
-        updateState({ email: null });
-
-        const { permitted, requirements } = await getRequirements();
-
-        if (permitted) {
-          setCurrentStep('success');
-          return;
-        }
-
-        const isLightFlow = requirements.special.password === 'dont_ask';
-        const signedIn = requirements.built_in.email === 'satisfied';
-
-        if (isLightFlow) {
-          if (signedIn) {
-            // TODO
-          } else {
-            if (requirements.built_in.email === 'satisfied') {
-              setCurrentStep('light-flow:email-confirmation');
-            } else {
-              setCurrentStep('light-flow:email');
-            }
-          }
-
-          return;
-        }
-
-        const { flow } = getAuthenticationData();
-
-        if (flow === 'signin') {
-          if (signedIn) {
-            // TODO
-          } else {
-            if (anySSOProviderEnabled) {
-              setCurrentStep('sign-in:auth-providers');
-            } else {
-              setCurrentStep('sign-in:email-password');
-            }
-          }
-
-          return;
-        }
-
-        if (flow === 'signup') {
-          if (signedIn) {
-            // TODO
-          } else {
-            if (anySSOProviderEnabled) {
-              setCurrentStep('sign-up:auth-providers');
-            } else {
-              setCurrentStep('sign-up:email-password');
-            }
-          }
-        }
-      },
-    },
-
-    ...oldSignInFlow(
+    ...sharedSteps(
       getAuthenticationData,
+      getRequirements,
       setCurrentStep,
       setStatus,
       setError,
-      anySSOProviderEnabled
+      updateState,
+      anySSOEnabled
+    ),
+
+    ...oldSignInFlow(
+      getAuthenticationData,
+      getRequirements,
+      setCurrentStep,
+      setStatus,
+      setError,
+      anySSOEnabled
     ),
 
     ...oldSignUpFlow(
       getAuthenticationData,
+      getRequirements,
       setCurrentStep,
       setStatus,
-      anySSOProviderEnabled
+      setError,
+      anySSOEnabled
     ),
 
     ...newLightFlow(
@@ -115,21 +61,13 @@ export const getStepConfig = (
       updateState
     ),
 
-    // success (shared)
-    success: {
-      CONTINUE: async () => {
-        setStatus('pending');
+    'verification-only': {
+      CLOSE: () => setCurrentStep('closed'),
+      CONTINUE: () => setCurrentStep('verification-success'),
+    },
 
-        await Promise.all([streams.reset(), resetQueryCache()]);
-
-        setStatus('ok');
-        setCurrentStep('closed');
-
-        const { successAction } = getAuthenticationData();
-        if (successAction) {
-          triggerSuccessAction(successAction);
-        }
-      },
+    'verification-success': {
+      CLOSE: () => setCurrentStep('closed'),
     },
   };
 };
