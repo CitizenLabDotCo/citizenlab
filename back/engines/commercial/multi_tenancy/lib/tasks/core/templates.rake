@@ -135,7 +135,7 @@ namespace :templates do
     )
 
     output_filename = "#{args[:locale_to]}_#{args[:template_name]}.yml"
-    output_path = Rails.root.join('config', 'tenant_templates', output_filename)
+    output_path = Rails.root.join('config/tenant_templates', output_filename)
     File.write(output_path, serialized_models.to_yaml)
   end
 

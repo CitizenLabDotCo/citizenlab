@@ -225,7 +225,7 @@ module MultiTenancy
         if template_name.is_a? String
           raise 'Unknown template' unless utils.available_templates(external_prefix: external_subfolder).include?(template_name)
 
-          internal_path = Rails.root.join('config', 'tenant_templates', "#{template_name}.yml")
+          internal_path = Rails.root.join('config/tenant_templates', "#{template_name}.yml")
           if File.exist? internal_path
             YAML.load open(internal_path).read
           else
