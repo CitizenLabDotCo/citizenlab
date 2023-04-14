@@ -89,7 +89,8 @@ module MultiTenancy
       def seed_empty_localhost_tenant
         return unless Apartment::Tenant.current == 'empty_localhost'
 
-        MultiTenancy::TenantDeserializer.new.resolve_and_apply_template('base', external_subfolder: false)
+        tenant_deserializer = MultiTenancy::Templates::TenantDeserializer.new
+        tenant_deserializer.resolve_and_apply_template('base', external_subfolder: false)
         MultiTenancy::Seeds::Users.new(runner: self).run
       end
 
@@ -97,7 +98,8 @@ module MultiTenancy
       def seed_localhost_tenant
         return unless Apartment::Tenant.current == 'localhost'
 
-        MultiTenancy::TenantDeserializer.new.resolve_and_apply_template('base', external_subfolder: false)
+        tenant_deserializer = MultiTenancy::Templates::TenantDeserializer
+        tenant_deserializer.new.resolve_and_apply_template('base', external_subfolder: false)
 
         MultiTenancy::Seeds::HomePages.new(runner: self).run
         MultiTenancy::Seeds::Users.new(runner: self).run

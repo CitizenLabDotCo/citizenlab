@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe MultiTenancy::TenantDeserializer do
+describe MultiTenancy::Templates::TenantDeserializer do
   let(:service) { described_class.new }
 
   describe 'resolve_and_apply_template', template_test: true do

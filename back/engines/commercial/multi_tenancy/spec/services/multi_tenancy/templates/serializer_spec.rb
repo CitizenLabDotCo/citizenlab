@@ -14,7 +14,7 @@ describe MultiTenancy::Templates::TenantSerializer do
       tenant = create(:tenant, locales: locales)
 
       tenant.switch do
-        MultiTenancy::TenantDeserializer.new.deserialize(template)
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
 
         expect(HomePage.count).to be 1
         expect(Area.count).to be > 0
@@ -72,14 +72,14 @@ describe MultiTenancy::Templates::TenantSerializer do
     end
 
     it 'can deal with missing authors' do
-      idea = create :idea, author: nil
-      create :comment, post: idea
+      idea = create(:idea, author: nil)
+      create(:comment, post: idea)
 
       serializer = described_class.new(Tenant.current, uploads_full_urls: true)
       template = serializer.run
-      tenant = create :tenant, locales: AppConfiguration.instance.settings('core', 'locales')
-      Apartment::Tenant.switch(tenant.schema_name) do
-        MultiTenancy::TenantDeserializer.new.deserialize template
+      tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
         expect(Comment.count).to eq 1
       end
     end
@@ -128,7 +128,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         IdeaStatus.create_defaults
         expect(Project.count).to eq 0
 
-        MultiTenancy::TenantDeserializer.new.deserialize template
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
 
         expect(Project.count).to eq 2
         expect(Idea.count).to eq 3
@@ -217,7 +217,7 @@ describe MultiTenancy::Templates::TenantSerializer do
       tenant = create :tenant, locales: AppConfiguration.instance.settings('core', 'locales')
 
       Apartment::Tenant.switch(tenant.schema_name) do
-        MultiTenancy::TenantDeserializer.new.deserialize template
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
 
         copied_project = Project.find_by(title_multiloc: project.title_multiloc)
         expect(copied_project.causes.order(:title_multiloc['en']).pluck(:ordering))

@@ -22,10 +22,10 @@ namespace :templates do
   end
 
   task :import, %i[host file] => [:environment] do |_t, args|
-    tenant = Tenant.find_by(host: args[:host])
-    tenant.switch do
+    Tenant.find_by(host: args[:host]).switch do
       serialized_models = YAML.load_file(args[:file])
-      ::MultiTenancy::TenantDeserializer.new.resolve_and_apply_template(serialized_models)
+      tenant_deserializer = ::MultiTenancy::Templates::TenantDeserializer.new
+      tenant_deserializer.resolve_and_apply_template(serialized_models)
     end
   end
 

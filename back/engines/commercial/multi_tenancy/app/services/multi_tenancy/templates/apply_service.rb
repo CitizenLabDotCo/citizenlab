@@ -22,7 +22,7 @@ module MultiTenancy
         copy_s3_files(template_name, Tenant.current.id, model_id_mapping)
 
         MultiTenancy::Templates::TenantSerializer.format_for_tenant_template_service!(template_models)
-        TenantDeserializer.new.deserialize(template_models)
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template_models)
       end
 
       def copy_s3_files(template_name, tenant_id, model_id_mapping, num_threads: 20)
