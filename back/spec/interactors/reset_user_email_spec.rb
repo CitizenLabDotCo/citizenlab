@@ -74,9 +74,8 @@ RSpec.describe ResetUserEmail do
         context[:new_email] = 'new@email.com'
       end
 
-      # Failing
+      # TODO: Failing
       it 'returns email errors' do
-        binding.pry
         expect(result.errors[:email]).not_to be_empty
       end
     end
