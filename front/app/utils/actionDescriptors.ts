@@ -22,3 +22,16 @@ const FIXABLE_REASONS = new Set<string>([
 export const isFixableByAuthentication = (disabledReason: string) => {
   return FIXABLE_REASONS.has(disabledReason);
 };
+
+export type ActionDescriptor<DisabledReason> =
+  | { enabled: true; disabled_reason: null }
+  | { enabled: false; disabled_reason: DisabledReason };
+
+// If future_enabled is a string, it's a date
+export type ActionDescriptorFutureEnabled<DisabledReason> =
+  | { enabled: true; disabled_reason: null; future_enabled: null }
+  | {
+      enabled: false;
+      disabled_reason: DisabledReason;
+      future_enabled: string | null;
+    };

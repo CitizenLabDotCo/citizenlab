@@ -25,6 +25,7 @@ import {
   capitalizeParticipationContextType,
 } from 'utils/helperUtils';
 import streams from 'utils/streams';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
@@ -94,17 +95,6 @@ interface Props {
   ideaId: string;
   className?: string;
 }
-
-const TRIGGER_AUTH_FLOW_REASONS = new Set([
-  'not_signed_in',
-  'not_active',
-  'not_verified',
-]);
-
-const isReasonToTriggerAuthFlow = (budgetingDisabledReason?: string | null) => {
-  if (!budgetingDisabledReason) return false;
-  return TRIGGER_AUTH_FLOW_REASONS.has(budgetingDisabledReason);
-};
 
 const AssignBudgetControl = memo(
   ({ view, ideaId, className, projectId }: Props) => {
@@ -215,39 +205,34 @@ const AssignBudgetControl = memo(
       (idea: IIdea, participationContextId: string) => (event?: FormEvent) => {
         event?.preventDefault();
 
-        const isBudgetingEnabled =
-          idea.data.attributes.action_descriptor.budgeting?.enabled;
+        const actionDescriptor =
+          idea.data.attributes.action_descriptor.budgeting;
+        if (!actionDescriptor) return;
 
-        if (isBudgetingEnabled) {
+        if (actionDescriptor.enabled) {
           assignBudget();
           return;
         }
 
-        const budgetingDisabledReason =
-          idea.data.attributes.action_descriptor.budgeting?.disabled_reason;
+        const budgetingDisabledReason = actionDescriptor.disabled_reason;
 
-        const context = {
-          type: participationContextType,
-          action: 'budgeting',
-          id: participationContextId,
-        } as const;
+        if (isFixableByAuthentication(budgetingDisabledReason)) {
+          const context = {
+            type: participationContextType,
+            action: 'budgeting',
+            id: participationContextId,
+          } as const;
 
-        const successAction: SuccessAction = {
-          name: 'assignBudget',
-          params: {
-            ideaId,
-            participationContextId,
-            participationContextType,
-            basket,
-          },
-        };
+          const successAction: SuccessAction = {
+            name: 'assignBudget',
+            params: {
+              ideaId,
+              participationContextId,
+              participationContextType,
+              basket,
+            },
+          };
 
-        if (
-          // if you're logged out, or you're logged in
-          // but you don't match requirements yet
-          isNilOrError(authUser) ||
-          isReasonToTriggerAuthFlow(budgetingDisabledReason)
-        ) {
           triggerAuthenticationFlow({ context, successAction });
         }
       };

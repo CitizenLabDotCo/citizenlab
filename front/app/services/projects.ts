@@ -2,7 +2,11 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
 // typings
-import { PermissionsDisabledReason } from 'utils/actionDescriptors';
+import {
+  PermissionsDisabledReason,
+  ActionDescriptor,
+  ActionDescriptorFutureEnabled,
+} from 'utils/actionDescriptors';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Locale } from '@citizenlab/cl2-component-library';
 import { IRelationship, Multiloc, UploadFile, CLError } from 'typings';
@@ -117,36 +121,14 @@ export interface IProjectAttributes {
   include_all_areas: boolean;
   folder_id?: string;
   action_descriptor: {
-    posting_idea: {
-      enabled: boolean;
-      future_enabled: string | null;
-      disabled_reason: PostingDisabledReason | null;
+    posting_idea: ActionDescriptorFutureEnabled<PostingDisabledReason>;
+    commenting_idea: ActionDescriptor<CommentingDisabledReason>;
+    voting_idea: ActionDescriptor<ProjectVotingDisabledReason> & {
+      up: ActionDescriptor<ProjectVotingDisabledReason>;
+      down: ActionDescriptor<ProjectVotingDisabledReason>;
     };
-    commenting_idea: {
-      enabled: boolean;
-      disabled_reason: CommentingDisabledReason | null;
-    };
-    voting_idea: {
-      // the two values below are implemented but can be deleted if not needed
-      enabled: boolean;
-      disabled_reason: ProjectVotingDisabledReason | null;
-      up: {
-        enabled: boolean;
-        disabled_reason: ProjectVotingDisabledReason | null;
-      };
-      down: {
-        enabled: boolean;
-        disabled_reason: ProjectVotingDisabledReason | null;
-      };
-    };
-    taking_survey: {
-      enabled: boolean;
-      disabled_reason: SurveyDisabledReason | null;
-    };
-    taking_poll: {
-      enabled: boolean;
-      disabled_reason: PollDisabledReason | null;
-    };
+    taking_survey: ActionDescriptor<SurveyDisabledReason>;
+    taking_poll: ActionDescriptor<PollDisabledReason>;
   };
 }
 
