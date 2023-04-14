@@ -3,20 +3,35 @@
 module MultiTenancy
   module Templates
     class ApplyService
-      attr_reader :template_bucket, :tenant_bucket
+      attr_reader :internal_template_dir, :template_bucket, :tenant_bucket
 
       def initialize(
+        internal_template_dir: Rails.root.join('config/tenant_templates'),
         tenant_bucket: ENV.fetch('AWS_S3_BUCKET'),
         template_bucket: ENV.fetch('TEMPLATE_BUCKET'),
         s3_client: Aws::S3::Client.new(region: 'eu-central-1')
       )
+        @internal_template_dir = internal_template_dir
         @tenant_bucket = tenant_bucket
         @template_bucket = template_bucket
         @s3_client = s3_client
       end
 
-      def apply(template_name)
-        template_models = fetch_template_models(template_name)
+      def general_apply(template_name)
+        if template_utils.internal_template?(template_name)
+          apply_internal_template(template_name)
+        else
+          apply_external_template(template_name)
+        end
+      end
+
+      def apply_internal_template(template_name)
+        serialized_models = fetch_internal_template_models(template_name)
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(serialized_models)
+      end
+
+      def apply_external_template(template_name)
+        template_models = fetch_external_template_models(template_name)
 
         model_id_mapping = generate_model_identifiers!(template_models)
         copy_s3_files(template_name, Tenant.current.id, model_id_mapping)
@@ -39,6 +54,10 @@ module MultiTenancy
 
       def s3_utils
         @s3_utils ||= Aws::S3::Utils.new(@s3_client)
+      end
+
+      def template_utils
+        @template_utils ||= MultiTenancy::Templates::Utils.new
       end
 
       def transform_key(key, tenant_id, model_id_mapping)
@@ -64,7 +83,12 @@ module MultiTenancy
         id_mapping
       end
 
-      def fetch_template_models(template_name)
+      def fetch_internal_template_models(template_name)
+        template_path = internal_template_dir.join("#{template_name}.yml")
+        YAML.load_file(template_path)
+      end
+
+      def fetch_external_template_models(template_name)
         key = "#{template_name}/models.yml"
         content = @s3_client.get_object(bucket: template_bucket, key: key).body.read
         # We have to use YAML.load because templates use yaml aliases.

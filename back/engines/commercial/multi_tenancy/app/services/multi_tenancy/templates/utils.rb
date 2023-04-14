@@ -15,6 +15,10 @@ module MultiTenancy
         Dir[dir_path].map { |file| File.basename(file, '.yml') }
       end
 
+      def internal_template?(template_name)
+        available_internal_templates.include?(template_name)
+      end
+
       def available_external_templates(
         s3_client: Aws::S3::Client.new(region: 'eu-central-1'),
         bucket: ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'),
