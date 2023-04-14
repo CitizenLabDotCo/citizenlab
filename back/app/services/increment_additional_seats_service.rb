@@ -3,7 +3,8 @@
 class IncrementAdditionalSeatsService
   class << self
     def increment_if_necessary(updated_user, current_user)
-      role = (updated_user.roles - updated_user.roles_previously_was).first
+      # a moderator is given another project or/and folder moderator rights
+      role = (updated_user.roles - updated_user.roles_previously_was).uniq_by(&:type).first
       return if role.nil?
       return unless increment?(role['type'])
 

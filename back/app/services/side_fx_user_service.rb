@@ -15,7 +15,6 @@ class SideFxUserService
     end
     user.create_email_campaigns_unsubscription_token
     SendConfirmationCode.call(user: user) if user.confirmation_required?
-    IncrementAdditionalSeatsService.increment_if_necessary(user, current_user) if user.roles_previously_changed?
   end
 
   def before_update(user, current_user); end
@@ -27,8 +26,6 @@ class SideFxUserService
       LogActivityJob.perform_later(user, 'completed_registration', current_user, user.updated_at.to_i)
     end
     after_roles_changed current_user, user if user.roles_previously_changed?
-
-    IncrementAdditionalSeatsService.increment_if_necessary(user, current_user) if user.roles_previously_changed?
 
     UpdateMemberCountJob.perform_later
   end

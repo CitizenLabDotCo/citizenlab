@@ -81,6 +81,11 @@ class WebApi::V1::InvitesController < ApplicationController
   def count_new_seats_xlsx
     authorize :invite
 
+    # newly_added_admins, newly_added_moderators =
+    #   Invites::Service.new(current_user).calculate_seats_from_file(
+    #     bulk_create_xlsx_params[:xlsx],
+    #     bulk_create_xlsx_params.except(:xlsx).stringify_keys
+    #   )
     seat_numbers = Invites::SeatsCounter.new.count_in_transaction do
       Invites::Service.new(current_user, run_side_fx: false).bulk_create_xlsx(
         bulk_create_xlsx_params[:xlsx],
@@ -105,13 +110,34 @@ class WebApi::V1::InvitesController < ApplicationController
 
   def bulk_create_xlsx
     authorize :invite
+
+    # current_moder_number = User.billed_moderators.count
+    # current_admin_number = User.billed_admins.count
+
+    newly_added_admins, newly_added_moderators =
+      Invites::Service.new(current_user).calculate_seats_from_file(
+        bulk_create_xlsx_params[:xlsx],
+        bulk_create_xlsx_params.except(:xlsx).stringify_keys
+      )
+
     Invites::Service.new(current_user).bulk_create_xlsx(
       bulk_create_xlsx_params[:xlsx],
       bulk_create_xlsx_params.except(:xlsx).stringify_keys
     )
+
+    # current_moder_number1 = User.billed_moderators.count
+    # current_admin_number1 = User.billed_admins.count
+
+    increment_addition_number(newly_added_admins)
+    increment_addition_number(newly_added_moderators)
+
     head :ok
   rescue Invites::FailedError => e
     render json: { errors: e.to_h }, status: :unprocessable_entity
+  end
+
+  def increment_addition_number
+    IncrementAdditionalSeatsService.sdlkfj
   end
 
   def example_xlsx
