@@ -38,6 +38,7 @@ export interface InputProps {
   // Doesn't work with false
   // https://citizenlab.atlassian.net/browse/CL-3226
   canAdmin?: boolean;
+  onlyBlocked?: boolean;
   notCitizenlabMember?: boolean;
   // Not used
   includeInactive?: boolean;
@@ -54,6 +55,7 @@ interface IQueryParameters {
   can_moderate_project?: string;
   can_moderate?: boolean;
   can_admin?: boolean;
+  only_blocked?: boolean;
   not_citizenlab_member?: boolean;
   include_inactive?: boolean;
   // Pass project id to exclude all users who can moderate
@@ -106,6 +108,7 @@ export default class GetUsers extends React.Component<Props, State> {
         can_moderate_project: undefined,
         can_moderate: undefined,
         can_admin: undefined,
+        only_blocked: undefined,
         not_citizenlab_member: undefined,
         include_inactive: undefined,
         is_not_project_moderator: undefined,
@@ -188,6 +191,7 @@ export default class GetUsers extends React.Component<Props, State> {
           can_moderate_project: props.canModerateProject,
           can_moderate: props.canModerate,
           can_admin: props.canAdmin,
+          only_blocked: props.onlyBlocked,
           not_citizenlab_member: props.notCitizenlabMember,
           include_inactive: props.includeInactive,
           is_not_project_moderator: props.isNotProjectModeratorOfProjectId,

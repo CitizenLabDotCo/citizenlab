@@ -82,6 +82,8 @@ Metrics/BlockNesting:
 Metrics/ClassLength:
   Max: 401
   CountAsOne: ['array', 'hash', 'heredoc']
+  Exclude:
+    - 'app/models/user.rb'
 
 # Offense count: 89
 # Configuration parameters: AllowedMethods, AllowedPatterns, IgnoredMethods.

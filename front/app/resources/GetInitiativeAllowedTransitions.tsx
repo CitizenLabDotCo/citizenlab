@@ -1,5 +1,5 @@
 import { IInitiativeAllowedTransitions } from 'api/initiative_allowed_transitions/types';
-import useInitativeAllowedTransitions from 'api/initiative_allowed_transitions/useInitiativeAllowedTransitions';
+import useInitiativeAllowedTransitions from 'api/initiative_allowed_transitions/useInitiativeAllowedTransitions';
 
 interface InputProps {
   id: string;
@@ -20,7 +20,7 @@ export type GetInitiativeAllowedTransitionsChildProps =
 
 const GetInitiativeAllowedTransitions = ({ id, children }: Props) => {
   const { data: initiativeAllowedTransitions } =
-    useInitativeAllowedTransitions(id);
+    useInitiativeAllowedTransitions(id);
 
   if (!initiativeAllowedTransitions) return null;
 

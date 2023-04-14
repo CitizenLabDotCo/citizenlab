@@ -9,8 +9,4 @@ export default defineMessages({
     id: 'app.components.UserName.verified',
     defaultMessage: 'Verified',
   },
-  notVerified: {
-    id: 'app.components.UserName.notVerified',
-    defaultMessage: 'Unverified',
-  },
 });

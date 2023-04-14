@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
 import { isString, isEmpty, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -23,7 +23,9 @@ import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
-import InviteUsersWithSeatsModal from 'components/admin/InviteUsersWithSeatsModal';
+const InviteUsersWithSeatsModal = lazy(
+  () => import('components/admin/InviteUsersWithSeatsModal')
+);
 import SeatInfo from 'components/SeatInfo';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -537,7 +539,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
               )}
               {!hasSeatBasedBillingEnabled && (
                 <Box marginTop="20px">
-                  <SeatInfo seatType="collaborator" />
+                  <SeatInfo seatType="moderator" />
                 </Box>
               )}
             </>
@@ -718,14 +720,16 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
         </Section>
       </form>
       {hasSeatBasedBillingEnabled && (
-        <InviteUsersWithSeatsModal
-          inviteUsers={onSubmit}
-          showModal={showModal}
-          closeModal={closeModal}
-          //TODO: At the moment this number only includes manually added emails. We need to handle emails from the uploaded file as well when that ticket is completed.
-          noOfSeatsToAdd={selectedEmails?.split(',').length || 0}
-          seatType={inviteesWillHaveAdminRights ? 'admin' : 'collaborator'}
-        />
+        <Suspense fallback={null}>
+          <InviteUsersWithSeatsModal
+            inviteUsers={onSubmit}
+            showModal={showModal}
+            closeModal={closeModal}
+            //TODO: At the moment this number only includes manually added emails. We need to handle emails from the uploaded file as well when that ticket is completed.
+            noOfSeatsToAdd={selectedEmails?.split(',').length || 0}
+            seatType={inviteesWillHaveAdminRights ? 'admin' : 'moderator'}
+          />
+        </Suspense>
       )}
     </>
   );
