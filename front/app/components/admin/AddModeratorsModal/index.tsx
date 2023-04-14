@@ -61,7 +61,7 @@ const AddModeratorsModal = ({
 
   const header = !showSuccess ? (
     <Text color="primary" my="8px" fontSize="l" fontWeight="bold" px="2px">
-      {formatMessage(messages.giveModeratorRights)}
+      {formatMessage(messages.giveManagerRights)}
     </Text>
   ) : undefined;
 
@@ -82,7 +82,7 @@ const AddModeratorsModal = ({
             <FormattedMessage
               {...(hasReachedOrIsOverPlanSeatLimit
                 ? messages.hasReachedOrIsOverLimit
-                : messages.confirmMessage)}
+                : messages.confirmManagerRights)}
             />
           </Text>
           <Box mb="24px">

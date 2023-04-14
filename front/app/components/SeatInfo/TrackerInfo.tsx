@@ -56,14 +56,9 @@ const TrackerInfo = ({ seatType }: SeatInfoProps) => {
   const currentSeatTypeTitle = seatTypeMessage[seatType];
   const tooltipMessages: SeatTypeMessageDescriptor = {
     admin: messages.includedAdminToolTip,
-    moderator: messages.includedCollaboratorToolTip,
+    moderator: messages.includedModeratorToolTip,
   };
   const tooltipMessage = tooltipMessages[seatType];
-  const seatTypeInfoMessages: SeatTypeMessageDescriptor = {
-    admin: messages.adminInfoTextWithoutBilling,
-    moderator: messages.collaboratorInfoTextWithoutBilling,
-  };
-  const seatTypeInfoMessage = seatTypeInfoMessages[seatType];
 
   // Show maximum number of seats if user has used more for this value
   if (currentSeatNumber >= maximumSeatNumber) {
@@ -119,11 +114,11 @@ const TrackerInfo = ({ seatType }: SeatInfoProps) => {
         {seatType === 'moderator' ? (
           <Text my="0px" variant="bodyS">
             <FormattedMessage
-              {...seatTypeInfoMessage}
+              {...messages.managerInfoTextWithoutBilling}
               values={{
-                collaboratorSeatsIncluded: (
+                managerSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">
-                    {formatMessage(messages.collaboratorsIncludedText, {
+                    {formatMessage(messages.managersIncludedText, {
                       managerSeats: maximumSeatNumber,
                     })}
                   </Text>
@@ -134,7 +129,7 @@ const TrackerInfo = ({ seatType }: SeatInfoProps) => {
         ) : (
           <Text my="0px" variant="bodyS">
             <FormattedMessage
-              {...seatTypeInfoMessage}
+              {...messages.adminInfoTextWithoutBilling}
               values={{
                 adminSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">

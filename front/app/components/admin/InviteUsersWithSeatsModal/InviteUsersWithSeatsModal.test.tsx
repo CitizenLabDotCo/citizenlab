@@ -94,10 +94,10 @@ describe('InviteUsersWithSeatsModal', () => {
       name: 'Confirm and send out invitations',
     });
 
-    expect(screen.queryByText('Give collaborator rights')).toBeInTheDocument();
+    expect(screen.queryByText('Give manager rights')).toBeInTheDocument();
     expect(
       screen.queryByText(
-        'You are inviting 2 users with collaborator rights. Based on how many users are included in the invitation, you may need to buy additional seats.'
+        'You are inviting 2 users with manager rights. Based on how many users are included in the invitation, you may need to buy additional seats.'
       )
     ).toBeInTheDocument();
 

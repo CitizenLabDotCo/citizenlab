@@ -72,15 +72,15 @@ const InviteUsersWithSeatsModal = ({
 
   const seatTypeMessages: SeatTypeMessageDescriptor = {
     admin: messages.admin,
-    moderator: messages.moderator,
+    moderator: messages.manager,
   };
   const seatTypesMessages: SeatTypeMessageDescriptor = {
     admin: messages.admins,
-    moderator: messages.moderators,
+    moderator: messages.managers,
   };
   const seatTypeModalTitles: SeatTypeMessageDescriptor = {
     admin: messages.giveAdminRights,
-    moderator: messages.giveModeratorRights,
+    moderator: messages.giveManagerRights,
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {

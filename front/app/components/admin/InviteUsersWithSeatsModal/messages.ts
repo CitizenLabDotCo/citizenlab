@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  giveModeratorRights: {
-    id: 'app.containers.admin.inviteUsersWithSeatsModal.giveCollaboratorRights',
-    defaultMessage: 'Give collaborator rights',
+  giveManagerRights: {
+    id: 'app.containers.admin.inviteUsersWithSeatsModal.giveManagerRights',
+    defaultMessage: 'Give manager rights',
   },
   giveAdminRights: {
     id: 'app.containers.admin.inviteUsersWithSeatsModal.giveAdminRights',
@@ -18,9 +18,9 @@ export default defineMessages({
     id: 'app.containers.admin.inviteUsersWithSeatsModal.admin',
     defaultMessage: 'admin',
   },
-  moderator: {
-    id: 'app.containers.admin.inviteUsersWithSeatsModal.collaborator',
-    defaultMessage: 'collaborator',
+  manager: {
+    id: 'app.containers.admin.inviteUsersWithSeatsModal.manager',
+    defaultMessage: 'manager',
   },
   billingAcknowledgement: {
     id: 'app.containers.admin.inviteUsersWithSeatsModal.billingAcknowledgement',
@@ -31,9 +31,9 @@ export default defineMessages({
     id: 'app.containers.admin.inviteUsersWithSeatsModal.admins',
     defaultMessage: 'admins',
   },
-  moderators: {
-    id: 'app.containers.admin.inviteUsersWithSeatsModal.collaborators',
-    defaultMessage: 'collaborators',
+  managers: {
+    id: 'app.containers.admin.inviteUsersWithSeatsModal.managers',
+    defaultMessage: 'managers',
   },
   acceptWarning: {
     id: 'app.containers.admin.inviteUsersWithSeatsModal.acceptWarning',
