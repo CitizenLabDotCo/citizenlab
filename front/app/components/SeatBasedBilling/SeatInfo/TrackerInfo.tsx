@@ -51,12 +51,12 @@ const TrackerInfo = ({ seatType }: SeatInfoProps) => {
 
   const seatTypeMessage: SeatTypeMessageDescriptor = {
     admin: messages.currentAdminSeatsTitle,
-    moderator: messages.currentModeratorSeatsTitle,
+    moderator: messages.currentManagerSeatsTitle,
   };
   const currentSeatTypeTitle = seatTypeMessage[seatType];
   const tooltipMessages: SeatTypeMessageDescriptor = {
     admin: messages.includedAdminToolTip,
-    moderator: messages.includedModeratorToolTip,
+    moderator: messages.includedManagerToolTip,
   };
   const tooltipMessage = tooltipMessages[seatType];
 

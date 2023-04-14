@@ -5,9 +5,9 @@ export default defineMessages({
     id: 'app.components.SeatInfo.currentAdminSeatsTitle',
     defaultMessage: 'Current admin seats',
   },
-  currentModeratorSeatsTitle: {
-    id: 'app.components.SeatInfo.currentModeratorSeatsTitle',
-    defaultMessage: 'Current moderator seats',
+  currentManagerSeatsTitle: {
+    id: 'app.components.SeatInfo.currentManagerSeatsTitle',
+    defaultMessage: 'Current manager seats',
   },
   includedSeats: {
     id: 'app.components.SeatInfo.includedSeats',
@@ -40,10 +40,10 @@ export default defineMessages({
     defaultMessage:
       'This shows the number of available seats for admins included in the yearly contract.',
   },
-  includedModeratorToolTip: {
-    id: 'app.components.SeatInfo.includedModeratorToolTip',
+  includedManagerToolTip: {
+    id: 'app.components.SeatInfo.includedManagerToolTip',
     defaultMessage:
-      'This shows the number of available seats for moderators included in the yearly contract.',
+      'This shows the number of available seats for managers included in the yearly contract.',
   },
   additionalSeatsToolTip: {
     id: 'app.components.SeatInfo.additionalSeatsToolTip',
