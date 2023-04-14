@@ -1,4 +1,3 @@
-import { QueryKeys } from 'utils/cl-react-query/types';
 import { AuthenticationContext } from './types';
 
 const requirementKeys = {
@@ -6,6 +5,6 @@ const requirementKeys = {
   item: (authenticationContext: AuthenticationContext) => [
     { ...requirementKeys.all()[0], authenticationContext },
   ],
-} satisfies QueryKeys;
+} as const;
 
 export default requirementKeys;

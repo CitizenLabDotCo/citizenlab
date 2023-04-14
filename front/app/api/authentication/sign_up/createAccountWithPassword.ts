@@ -13,7 +13,7 @@ interface Parameters {
   token: string | undefined | null;
 }
 
-const triggerCreateAccountWithPassword = (
+const fetchCreateAccountWithPassword = (
   endpoint: string,
   requestBody: CreateAccountWithPasswordProperties
 ) => {
@@ -33,18 +33,23 @@ export default async function createAccountWithPassword({
   isInvitation,
   token,
 }: Parameters) {
-  const signUpEndpoint =
-    isInvitation === true ? `invites/by_token/${token}/accept` : `users`;
-  const bodyData = {
-    [token ? 'invite' : 'user']: {
-      email,
-      password,
-      locale,
-      first_name: firstName,
-      last_name: lastName,
-    },
-  };
-  await triggerCreateAccountWithPassword(signUpEndpoint, bodyData);
-  const authenticatedUser = await signIn({ email, password });
-  return authenticatedUser;
+  // eslint-disable-next-line no-useless-catch
+  try {
+    const signUpEndpoint =
+      isInvitation === true ? `invites/by_token/${token}/accept` : `users`;
+    const bodyData = {
+      [token ? 'invite' : 'user']: {
+        email,
+        password,
+        locale,
+        first_name: firstName,
+        last_name: lastName,
+      },
+    };
+    await fetchCreateAccountWithPassword(signUpEndpoint, bodyData);
+    const authenticatedUser = await signIn({ email, password });
+    return authenticatedUser;
+  } catch (error) {
+    throw error;
+  }
 }

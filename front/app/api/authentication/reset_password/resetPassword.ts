@@ -6,7 +6,7 @@ interface Parameters {
   token: string;
 }
 
-const triggerResetPassword = (requestBody: ResetPasswordProperties) => {
+const fetchResetPassword = (requestBody: ResetPasswordProperties) => {
   return fetcher({
     path: `/users/reset_password`,
     body: requestBody,
@@ -15,12 +15,17 @@ const triggerResetPassword = (requestBody: ResetPasswordProperties) => {
 };
 
 export default async function resetPassword({ password, token }: Parameters) {
-  const bodyData = {
-    user: {
-      password,
-      token,
-    },
-  };
-  const response = await triggerResetPassword(bodyData);
-  return response;
+  // eslint-disable-next-line no-useless-catch
+  try {
+    const bodyData = {
+      user: {
+        password,
+        token,
+      },
+    };
+    const response = await fetchResetPassword(bodyData);
+    return response;
+  } catch (error) {
+    throw error;
+  }
 }

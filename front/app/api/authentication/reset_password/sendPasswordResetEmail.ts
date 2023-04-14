@@ -1,7 +1,9 @@
 import fetcher from 'utils/cl-react-query/fetcher';
 import { TriggerResetPasswordProperties } from './types';
 
-const resetPasswordEmail = (requestBody: TriggerResetPasswordProperties) => {
+const fetchResetPasswordEmail = (
+  requestBody: TriggerResetPasswordProperties
+) => {
   return fetcher({
     path: `/users/reset_password_email`,
     action: 'post',
@@ -10,11 +12,16 @@ const resetPasswordEmail = (requestBody: TriggerResetPasswordProperties) => {
 };
 
 export default async function sendPasswordResetMail(email: string) {
-  const bodyData = {
-    user: {
-      email,
-    },
-  };
-  const response = await resetPasswordEmail(bodyData);
-  return response;
+  // eslint-disable-next-line no-useless-catch
+  try {
+    const bodyData = {
+      user: {
+        email,
+      },
+    };
+    const response = await fetchResetPasswordEmail(bodyData);
+    return response;
+  } catch (error) {
+    throw error;
+  }
 }

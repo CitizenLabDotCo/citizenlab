@@ -6,7 +6,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { IUser } from 'services/users';
 import { CreateEmailOnlyAccountProperties } from './types';
 
-const triggerCreateEmailOnlyAccount = (
+const fetchCreateEmailOnlyAccount = (
   requestBody: CreateEmailOnlyAccountProperties
 ) => {
   return fetcher<IUser>({
@@ -34,7 +34,7 @@ export default async function createEmailOnlyAccount({
     user: { email, locale },
   };
 
-  const response = await triggerCreateEmailOnlyAccount(bodyData);
+  const response = await fetchCreateEmailOnlyAccount(bodyData);
 
   if (response.data) {
     await getAndSetToken({ email });
