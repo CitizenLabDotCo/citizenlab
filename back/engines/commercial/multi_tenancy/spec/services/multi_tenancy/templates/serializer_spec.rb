@@ -2,13 +2,13 @@
 
 require 'rails_helper'
 
-describe MultiTenancy::Templates::Serializer do
+describe MultiTenancy::Templates::TenantSerializer do
   describe '#run' do
     it 'successfully generates a tenant template from a given tenant' do
       load Rails.root.join('db/seeds.rb')
       localhost = Tenant.find_by(host: 'localhost')
       localhost.switch { MultiTenancy::Seeds::Runner.new.execute }
-      template = described_class.new(localhost).run
+      template = described_class.new(localhost, uploads_full_urls: true).run
 
       locales = localhost.configuration.settings('core', 'locales')
       tenant = create(:tenant, locales: locales)
@@ -36,7 +36,7 @@ describe MultiTenancy::Templates::Serializer do
 
     it 'correctly generates and links attributes references' do
       create(:project_folder, projects: create_list(:project, 2))
-      serializer = described_class.new(Tenant.current)
+      serializer = described_class.new(Tenant.current, uploads_full_urls: true)
       template = serializer.run
 
       admin_publication_attributes = template.dig('models',
@@ -49,7 +49,7 @@ describe MultiTenancy::Templates::Serializer do
 
     it "doesn't include title_multiloc for NavBarItems without custom copy" do
       create(:nav_bar_item, code: 'home', title_multiloc: nil)
-      serializer = described_class.new(Tenant.current)
+      serializer = described_class.new(Tenant.current, uploads_full_urls: true)
       template = serializer.run
 
       home_attributes = template.dig('models', 'nav_bar_item').find { |item| item['code'] == 'home' }
@@ -64,7 +64,7 @@ describe MultiTenancy::Templates::Serializer do
       project = create :project
       project.admin_publication.delete
       expect(project.reload).to be_present
-      serializer = described_class.new(Tenant.current)
+      serializer = described_class.new(Tenant.current, uploads_full_urls: true)
       template = serializer.run
 
       expect(template['models']).to be_present
@@ -75,7 +75,7 @@ describe MultiTenancy::Templates::Serializer do
       idea = create :idea, author: nil
       create :comment, post: idea
 
-      serializer = described_class.new Tenant.current
+      serializer = described_class.new(Tenant.current, uploads_full_urls: true)
       template = serializer.run
       tenant = create :tenant, locales: AppConfiguration.instance.settings('core', 'locales')
       Apartment::Tenant.switch(tenant.schema_name) do
@@ -87,7 +87,7 @@ describe MultiTenancy::Templates::Serializer do
     it 'includes a reference to an existing home_page header_bg' do
       create(:home_page, header_bg: File.open(Rails.root.join('spec/fixtures/header.jpg')))
 
-      serializer = described_class.new(Tenant.current)
+      serializer = described_class.new(Tenant.current, uploads_full_urls: true)
       template = serializer.run
 
       expect(template['models']).to be_present
@@ -97,7 +97,7 @@ describe MultiTenancy::Templates::Serializer do
     it 'includes a reference to an existing static_page header_bg' do
       create(:static_page, header_bg: File.open(Rails.root.join('spec/fixtures/header.jpg')))
 
-      serializer = described_class.new(Tenant.current)
+      serializer = described_class.new(Tenant.current, uploads_full_urls: true)
       template = serializer.run
 
       expect(template['models']).to be_present
@@ -120,7 +120,7 @@ describe MultiTenancy::Templates::Serializer do
       create :idea, project: timeline_project, phases: [ideation_phase]
       create :idea, project: timeline_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_values: { field2.key => 'My value' }
 
-      serializer = described_class.new Tenant.current
+      serializer = described_class.new(Tenant.current, uploads_full_urls: true)
       template = serializer.run
 
       tenant = create :tenant
@@ -155,7 +155,7 @@ describe MultiTenancy::Templates::Serializer do
       field = create :custom_field, :for_custom_form, description_multiloc: description_multiloc
       field.update! description_multiloc: TextImageService.new.swap_data_images(field, :description_multiloc)
 
-      serializer = described_class.new Tenant.current
+      serializer = described_class.new(Tenant.current, uploads_full_urls: true)
       template = serializer.run
 
       expect(template['models']['custom_field'].size).to eq 1
@@ -189,7 +189,7 @@ describe MultiTenancy::Templates::Serializer do
       }
       response.update! custom_field_values: custom_field_values
 
-      serializer = described_class.new Tenant.current
+      serializer = described_class.new(Tenant.current, uploads_full_urls: true)
       template = serializer.run
 
       expected_custom_field_values = {
@@ -212,7 +212,7 @@ describe MultiTenancy::Templates::Serializer do
       )
 
       ordering_of_source_causes = project.causes.order(:title_multiloc['en']).pluck(:ordering)
-      serializer = described_class.new Tenant.current
+      serializer = described_class.new(Tenant.current, uploads_full_urls: true)
       template = serializer.run
       tenant = create :tenant, locales: AppConfiguration.instance.settings('core', 'locales')
 
