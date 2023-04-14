@@ -55,7 +55,7 @@ module Surveys::SurveyParticipationContext
         message: 'Not a valid Microsoft Forms survey embed'
       }
       validates :survey_embed_url, if: %i[survey? konveio?], format: {
-        with: %r{\Ahttps://.*\.konveio\.com/node/.*\z},
+        with: %r{\Ahttps://.*\.konveio\.com/.*\z},
         message: 'Not a valid Konveio embed URL'
       }
       before_validation :strip_survey_embed_url
