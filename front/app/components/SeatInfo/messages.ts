@@ -107,4 +107,9 @@ export default defineMessages({
     id: 'app.components.SeatInfo.visitHelpCenter',
     defaultMessage: 'visit our help center',
   },
+  billingWarning: {
+    id: 'app.components.BillingWarning.billingWarning',
+    defaultMessage:
+      'Once additional seats are added, your billing will be increased. Reach out to your GovSuccess Manager to learn more about it.',
+  },
 });
