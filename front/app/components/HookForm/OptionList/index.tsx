@@ -21,6 +21,7 @@ import Error, { TFieldName } from 'components/UI/Error';
 
 // Typings
 import { Locale, CLError, RHFErrors, Multiloc } from 'typings';
+import { IOptionsType } from 'services/formCustomFields';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -73,7 +74,7 @@ const OptionList = ({
   // Handle option change
   type HandleOptionChangeProps = {
     value: string;
-    options: Array<Option>;
+    options: IOptionsType;
     index: number;
     name: string;
     selectedLocale: Locale;
