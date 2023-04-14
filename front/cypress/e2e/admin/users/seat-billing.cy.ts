@@ -62,6 +62,7 @@ describe('Seat based billing', () => {
     });
 
     it('admin can change seat type and needs to confirm on seat excess', () => {
+      // We get updated seat data from the API and use that to compare with the UI. This is to avoid using hardcoded values as those could be flaky depending on user data left by other tests in other files.
       cy.apiGetAppConfiguration().then((appConfigurationResponse) => {
         let additionalAdmins =
           appConfigurationResponse.body?.data.attributes.settings.core
@@ -122,6 +123,7 @@ describe('Seat based billing', () => {
             `${adminAndmoderatorsCount + 1}`
           );
 
+          // We get updated seat data from the API and use that to compare with the UI. This is to avoid using hardcoded values as those could be flaky depending on user data left by other tests in other files.
           cy.apiGetAppConfiguration().then((newAppConfigurationResponse) => {
             // Since we set the user as admin, we need to update the used seats
             usedSeats = usedSeats + 1;
@@ -182,6 +184,7 @@ describe('Seat based billing', () => {
   });
 
   const testShowModalOnAddingModerator = () => {
+    // We get updated seat data from the API and use that to compare with the UI. This is to avoid using hardcoded values as those could be flaky depending on user data left by other tests in other files.
     cy.apiGetAppConfiguration().then((appConfigurationResponse) => {
       const additionalModerators =
         appConfigurationResponse.body.data.attributes.settings.core
@@ -391,6 +394,7 @@ describe('Seat based billing', () => {
       cy.visit('/admin/users/admins-managers');
       cy.acceptCookies();
 
+      // We get updated seat data from the API and use that to compare with the UI. This is to avoid using hardcoded values as those could be flaky depending on user data left by other tests in other files.
       cy.apiGetAppConfiguration().then((appConfigurationResponse) => {
         let additionalModerators =
           appConfigurationResponse.body.data.attributes.settings.core
@@ -613,7 +617,7 @@ describe('Seat based billing', () => {
     it('updates remaining seats and used seats', () => {
       cy.visit('/admin/users/admins-managers');
       cy.acceptCookies();
-
+      // We get updated seat data from the API and use that to compare with the UI. This is to avoid using hardcoded values as those could be flaky depending on user data left by other tests in other files.
       cy.apiGetAppConfiguration().then((appConfigurationResponse) => {
         let additionalModerators =
           appConfigurationResponse.body.data.attributes.settings.core
