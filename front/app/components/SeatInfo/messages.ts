@@ -5,9 +5,9 @@ export default defineMessages({
     id: 'app.components.SeatInfo.currentAdminSeatsTitle',
     defaultMessage: 'Current admin seats',
   },
-  currentModeratorSeatsTitle: {
-    id: 'app.components.SeatInfo.currentModeratorSeatsTitle',
-    defaultMessage: 'Current moderator seats',
+  currentManagerSeatsTitle: {
+    id: 'app.components.SeatInfo.currentManagerSeatsTitle',
+    defaultMessage: 'Current manager seats',
   },
   includedSeats: {
     id: 'app.components.SeatInfo.includedSeats',
