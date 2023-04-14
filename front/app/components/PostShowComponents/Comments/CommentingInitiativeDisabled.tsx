@@ -63,15 +63,13 @@ const CommentingInitiativesDisabled = () => {
   );
 
   const signUpIn = (flow: 'signin' | 'signup') => {
-    if (isNilOrError(authUser)) {
-      triggerAuthenticationFlow({
-        flow,
-        context: {
-          action: 'commenting_initiative',
-          type: 'initiative',
-        },
-      });
-    }
+    triggerAuthenticationFlow({
+      flow,
+      context: {
+        action: 'commenting_initiative',
+        type: 'initiative',
+      },
+    });
   };
 
   const signIn = () => {

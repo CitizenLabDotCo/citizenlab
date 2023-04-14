@@ -29,6 +29,7 @@ import useAddIdeaVote from 'api/idea_votes/useAddIdeaVote';
 import { TVoteMode } from 'api/idea_votes/types';
 import useDeleteIdeaVote from 'api/idea_votes/useDeleteIdeaVote';
 import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';
@@ -56,18 +57,6 @@ interface Props {
   className?: string;
   styleType: TStyleType;
 }
-
-const TRIGGER_AUTH_FLOW_REASONS = new Set([
-  'not_signed_in',
-  'not_active',
-  'not_verified',
-  'not_permitted',
-]);
-
-const isReasonToTriggerAuthFlow = (votingDisabledReason?: string | null) => {
-  if (!votingDisabledReason) return false;
-  return TRIGGER_AUTH_FLOW_REASONS.has(votingDisabledReason);
-};
 
 const VoteControl = ({
   ariaHidden = false,
@@ -150,8 +139,6 @@ const VoteControl = ({
 
   const ideaAttributes = idea.data.attributes;
   const votingActionDescriptor = ideaAttributes.action_descriptor.voting_idea;
-  const votingEnabled = votingActionDescriptor.up.enabled;
-  const votingDisabledReason = votingActionDescriptor.disabled_reason;
   const votingFutureEnabled = !!(
     votingActionDescriptor.up.future_enabled ||
     votingActionDescriptor.down.future_enabled
@@ -181,33 +168,18 @@ const VoteControl = ({
   const isPBContext =
     participationContext?.attributes.participation_method === 'budgeting';
 
-  // Signed in
-  const isSignedIn = !isNilOrError(authUser);
-  const shouldSignIn =
-    !votingEnabled &&
-    (votingDisabledReason === 'not_signed_in' ||
-      (votingDisabledReason === 'not_verified' && !isSignedIn));
-
-  // Verification
-  const shouldVerify =
-    !votingEnabled && votingDisabledReason === 'not_verified' && isSignedIn;
-  const verifiedButNotPermitted =
-    !shouldVerify && votingDisabledReason === 'not_permitted';
-
   // Votes count
   const upvotesCount = ideaAttributes.upvotes_count;
   const downvotesCount = ideaAttributes.downvotes_count;
 
   const showVoteControl = !!(
     !isPBContext &&
-    (votingEnabled ||
-      shouldSignIn ||
+    (votingActionDescriptor.enabled ||
+      isFixableByAuthentication(votingActionDescriptor.disabled_reason) ||
       cancellingEnabled ||
       votingFutureEnabled ||
       upvotesCount > 0 ||
-      downvotesCount > 0 ||
-      shouldVerify ||
-      verifiedButNotPermitted)
+      downvotesCount > 0)
   );
 
   const onClickUpvote = (event: MouseEvent | KeyboardEvent) => {
@@ -224,17 +196,9 @@ const VoteControl = ({
 
   const onVote = async (voteMode: 'up' | 'down') => {
     setVotingAnimation(voteMode);
-    const votingActionDescriptor =
-      idea?.data.attributes.action_descriptor.voting_idea;
-    const votingEnabled = {
-      up: votingActionDescriptor?.up.enabled,
-      down: votingActionDescriptor?.down.enabled,
-    }[voteMode];
-    const cancellingEnabled = votingActionDescriptor?.cancelling_enabled;
-    const votingDisabledReason = {
-      up: votingActionDescriptor?.up.disabled_reason,
-      down: votingActionDescriptor?.down.disabled_reason,
-    }[voteMode];
+
+    const { enabled: votingEnabled, disabled_reason: votingDisabledReason } =
+      votingActionDescriptor[voteMode];
 
     const isTryingToUndoVote = !!(myVoteMode && voteMode === myVoteMode);
 
@@ -261,7 +225,10 @@ const VoteControl = ({
         (votingEnabled || (cancellingEnabled && isTryingToUndoVote))
       ) {
         castVote(voteMode);
-      } else if (isReasonToTriggerAuthFlow(votingDisabledReason)) {
+      } else if (
+        !votingEnabled &&
+        isFixableByAuthentication(votingDisabledReason)
+      ) {
         triggerAuthenticationFlow({ context, successAction });
       } else if (votingDisabledReason) {
         disabledVoteClick?.(votingDisabledReason);
@@ -272,14 +239,12 @@ const VoteControl = ({
   };
 
   if (idea && showVoteControl) {
-    const votingDescriptor = idea.data.attributes.action_descriptor.voting_idea;
     // Only when downvoting is explicitly disabled,
     // we don't show the downvote button
-    const showDownvote = votingDescriptor
-      ? votingDescriptor.down.enabled === true ||
-        (votingDescriptor.down.enabled === false &&
-          votingDescriptor.down.disabled_reason !== 'downvoting_disabled')
-      : true;
+    const showDownvote =
+      votingActionDescriptor.down.enabled === true ||
+      (votingActionDescriptor.down.enabled === false &&
+        votingActionDescriptor.down.disabled_reason !== 'downvoting_disabled');
 
     return (
       <>

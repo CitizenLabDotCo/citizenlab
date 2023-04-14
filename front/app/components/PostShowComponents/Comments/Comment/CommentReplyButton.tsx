@@ -18,6 +18,9 @@ import tracks from '../tracks';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
+// utils
+import { postIsIdea, postIsInitiative } from './utils';
+
 // types
 import { GetUserChildProps } from 'resources/GetUser';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -26,6 +29,7 @@ import { IInitiativeData } from 'api/initiatives/types';
 import { IIdeaData } from 'api/ideas/types';
 import { ICommentData } from 'services/comments';
 import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 const Container = styled.li`
   display: flex;
@@ -63,20 +67,6 @@ interface Props {
   commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
   className?: string;
 }
-
-const TRIGGER_AUTH_FLOW_REASONS = new Set([
-  'not_signed_in',
-  'not_active',
-  'not_verified',
-  'not_permitted',
-]);
-
-const isReasonToTriggerAuthFlow = (
-  commentingDisabledReason?: string | null
-) => {
-  if (!commentingDisabledReason) return false;
-  return TRIGGER_AUTH_FLOW_REASONS.has(commentingDisabledReason);
-};
 
 const CommentReplyButton = memo<Props>(
   ({
@@ -128,15 +118,11 @@ const CommentReplyButton = memo<Props>(
           },
         };
 
-        if (post.type === 'idea') {
+        if (postIsIdea(post)) {
           const {
             clickChildCommentReplyButton,
             clickParentCommentReplyButton,
           } = tracks;
-          const commentingDisabledReason = get(
-            post,
-            'attributes.action_descriptor.commenting_idea.disabled_reason'
-          );
 
           trackEventByName(
             commentType === 'child'
@@ -147,20 +133,26 @@ const CommentReplyButton = memo<Props>(
             }
           );
 
-          const context = {
-            type: 'idea',
-            action: 'commenting_idea',
-            id: post.id,
-          } as const;
+          const actionDescriptor =
+            post.attributes.action_descriptor.commenting_idea;
 
-          if (!isNilOrError(authUser) && !commentingDisabledReason) {
+          if (actionDescriptor.enabled) {
             reply();
-          } else if (isReasonToTriggerAuthFlow(commentingDisabledReason)) {
+            return;
+          }
+
+          if (isFixableByAuthentication(actionDescriptor.disabled_reason)) {
+            const context = {
+              type: 'idea',
+              action: 'commenting_idea',
+              id: post.id,
+            } as const;
+
             triggerAuthenticationFlow({ context, successAction });
           }
         }
 
-        if (post.type === 'initiative') {
+        if (postIsInitiative(post)) {
           const authenticationRequirements =
             commentingPermissionInitiative?.authenticationRequirements;
 

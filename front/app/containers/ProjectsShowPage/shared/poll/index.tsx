@@ -3,14 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { IParticipationContextType } from 'typings';
 
-// services
-import {
-  getPollTakingRules,
-  IPollTakingDisabledReason,
-} from 'services/actionTakingRules';
-
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
 
@@ -30,7 +23,6 @@ import styled from 'styled-components';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { MessageDescriptor } from 'react-intl';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
@@ -67,21 +59,15 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const disabledMessages: {
-  [key in IPollTakingDisabledReason]: MessageDescriptor;
-} = {
-  projectInactive: messages.pollDisabledProjectInactive,
-  maybeNotPermitted: messages.pollDisabledMaybeNotPermitted,
-  notActive: messages.pollDisabledNotActiveUser,
-  maybeNotVerified: messages.pollDisabledMaybeNotVerified,
-  notPermitted: messages.pollDisabledNotPermitted,
-  notActivePhase: messages.pollDisabledNotActivePhase,
-  notVerified: messages.pollDisabledNotVerified,
-  alreadyResponded: messages.pollDisabledNotPossible, // will not be used
-};
+const disabledMessages = {
+  project_inactive: messages.pollDisabledProjectInactive,
+  not_active: messages.pollDisabledNotActiveUser,
+  not_verified: messages.pollDisabledNotVerified,
+  missing_data: messages.pollDisabledNotActiveUser,
+  not_signed_in: messages.pollDisabledMaybeNotPermitted,
+} as const;
 
 const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
-  const authUser = useAuthUser();
   const project = useProject({ projectId });
   const phase = usePhase(phaseId);
 
@@ -93,12 +79,8 @@ const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
     return null;
   }
 
-  const isSignedIn = !isNilOrError(authUser);
-  const { enabled, disabledReason } = getPollTakingRules({
-    project,
-    phaseContext: isNilOrError(phase) ? null : phase,
-    signedIn: !!authUser,
-  });
+  const { enabled, disabled_reason } =
+    project.attributes.action_descriptor.taking_poll;
 
   const signUpIn = (flow: 'signin' | 'signup') => {
     const pcType = phaseId ? 'phase' : 'project';
@@ -124,19 +106,17 @@ const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
     signUpIn('signup');
   };
 
-  const message = disabledReason
-    ? disabledMessages[disabledReason]
-    : isSignedIn
-    ? messages.pollDisabledNotPossible
-    : messages.pollDisabledMaybeNotPermitted;
+  const message = !enabled
+    ? disabledMessages[disabled_reason] ?? messages.pollDisabledNotPossible
+    : null;
 
   return (
     <Container>
-      {disabledReason === 'alreadyResponded' ? (
+      {disabled_reason === 'already_responded' ? (
         <FormCompleted />
       ) : (
         <>
-          {(!isSignedIn || !enabled) && (
+          {message && (
             <StyledWarning icon="lock">
               <FormattedMessage
                 {...message}
@@ -177,7 +157,7 @@ const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
             questions={pollQuestions}
             id={type === 'project' ? projectId : phaseId}
             type={type}
-            disabled={!enabled || isNilOrError(authUser)}
+            disabled={!enabled}
           />
         </>
       )}

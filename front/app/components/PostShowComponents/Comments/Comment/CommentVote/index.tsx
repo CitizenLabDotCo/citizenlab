@@ -1,6 +1,5 @@
 import React, { MouseEvent, useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -23,10 +22,11 @@ import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 // utils
 import { upvote, removeVote } from './vote';
+import { postIsIdea, postIsInitiative } from '../utils';
 
 // typings
 import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
-import { IdeaCommentingDisabledReason } from 'api/ideas/types';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 interface InputProps {
   postId: string;
@@ -42,20 +42,6 @@ interface DataProps {
 }
 
 interface Props extends InputProps, DataProps {}
-
-const TRIGGER_AUTH_FLOW_REASONS = new Set([
-  'not_signed_in',
-  'not_active',
-  'not_verified',
-  'not_permitted',
-]);
-
-const isReasonToTriggerAuthFlow = (
-  commentVotingDisabledReason?: string | null
-) => {
-  if (!commentVotingDisabledReason) return false;
-  return TRIGGER_AUTH_FLOW_REASONS.has(commentVotingDisabledReason);
-};
 
 const CommentVote = ({
   comment,
@@ -152,25 +138,28 @@ const CommentVote = ({
       },
     };
 
-    if (postType === 'idea') {
+    if (!post) return;
+
+    if (postIsIdea(post)) {
       // Wondering why 'comment_voting_idea' and not 'commenting_idea'?
       // See app/api/ideas/types.ts
-      const commentVotingDisabledReason = get(
-        post,
-        'attributes.action_descriptor.comment_voting_idea.disabled_reason'
-      ) as IdeaCommentingDisabledReason | undefined | null;
+      const actionDescriptor =
+        post.attributes.action_descriptor.comment_voting_idea;
 
-      // Wondering why 'commenting_idea' and not 'comment_voting_idea'?
-      // See app/api/ideas/types.ts
-      const context = {
-        type: 'idea',
-        action: 'commenting_idea',
-        id: postId,
-      } as const;
-
-      if (!isNilOrError(authUser) && !commentVotingDisabledReason) {
+      if (actionDescriptor.enabled) {
         vote();
-      } else if (isReasonToTriggerAuthFlow(commentVotingDisabledReason)) {
+        return;
+      }
+
+      if (isFixableByAuthentication(actionDescriptor.disabled_reason)) {
+        // Wondering why 'commenting_idea' and not 'comment_voting_idea'?
+        // See app/api/ideas/types.ts
+        const context = {
+          type: 'idea',
+          action: 'commenting_idea',
+          id: postId,
+        } as const;
+
         triggerAuthenticationFlow({
           context,
           successAction,
@@ -178,7 +167,7 @@ const CommentVote = ({
       }
     }
 
-    if (postType === 'initiative') {
+    if (postIsInitiative(post)) {
       const authenticationRequirements =
         commentVotingPermissionInitiative?.authenticationRequirements;
 
@@ -200,19 +189,18 @@ const CommentVote = ({
     }
   };
 
-  if (!isNilOrError(comment)) {
-    // Wondering why 'comment_voting_idea' and not 'commenting_idea'?
-    // See app/api/ideas/types.ts
-    const commentingVotingIdeaDisabledReason = get(
-      post,
-      'attributes.action_descriptor.comment_voting_idea.disabled_reason'
-    );
+  if (!isNilOrError(comment) && post) {
+    let disabled: boolean;
 
-    const isSignedIn = !isNilOrError(authUser);
-    const disabled =
-      postType === 'initiative'
-        ? !commentVotingPermissionInitiative?.enabled
-        : isSignedIn && commentingVotingIdeaDisabledReason === 'not_permitted';
+    if (postIsIdea(post)) {
+      // Wondering why 'comment_voting_idea' and not 'commenting_idea'?
+      // See app/api/ideas/types.ts
+      const { enabled, disabled_reason } =
+        post.attributes.action_descriptor.comment_voting_idea;
+      disabled = !enabled && !isFixableByAuthentication(disabled_reason);
+    } else {
+      disabled = !!commentVotingPermissionInitiative?.enabled;
+    }
 
     if (!disabled || upvoteCount > 0) {
       return (

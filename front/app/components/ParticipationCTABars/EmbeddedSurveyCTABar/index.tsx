@@ -6,22 +6,20 @@ import { ParticipationCTAContent } from 'components/ParticipationCTABars/Partici
 
 // hooks
 import { useTheme } from 'styled-components';
-import useAuthUser from 'hooks/useAuthUser';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
-import { getSurveyTakingRules } from 'services/actionTakingRules';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { scrollToElement } from 'utils/scroll';
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -35,7 +33,6 @@ import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
 
 export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
-  const authUser = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const { pathname, hash: divId } = useLocation();
 
@@ -65,35 +62,30 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
     }
   }, [currentPhase, project, pathname]);
 
-  const { enabled, disabledReason } = getSurveyTakingRules({
-    project,
-    phaseContext: currentPhase,
-    signedIn: !isNilOrError(authUser),
-  });
-  const registrationNotCompleted =
-    !isNilOrError(authUser) && !authUser.attributes.registration_completed_at;
-  const shouldVerify = !!(
-    disabledReason === 'maybeNotVerified' || disabledReason === 'notVerified'
-  );
+  const actionDescriptor = project.attributes.action_descriptor.taking_survey;
 
   const showSignIn =
-    shouldVerify ||
-    disabledReason === 'maybeNotPermitted' ||
-    registrationNotCompleted;
+    actionDescriptor.enabled ||
+    isFixableByAuthentication(actionDescriptor.disabled_reason);
 
   const handleTakeSurveyClick = (event: FormEvent) => {
     event.preventDefault();
 
-    const successAction: SuccessAction = {
-      name: 'scrollToSurvey',
-      params: {
-        pathname,
-        projectSlug: project.attributes.slug,
-        currentPhase,
-      },
-    };
+    if (actionDescriptor.enabled) {
+      scrollToSurvey();
+      return;
+    }
 
-    if (showSignIn) {
+    if (isFixableByAuthentication(actionDescriptor.disabled_reason)) {
+      const successAction: SuccessAction = {
+        name: 'scrollToSurvey',
+        params: {
+          pathname,
+          projectSlug: project.attributes.slug,
+          currentPhase,
+        },
+      };
+
       triggerAuthenticationFlow({
         flow: 'signup',
         context: {
@@ -104,15 +96,13 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
         successAction,
       });
     }
-
-    scrollToSurvey();
   };
 
   if (hasProjectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
 
-  const CTAButton = enabled ? (
+  const CTAButton = showSignIn ? (
     <Button
       id="e2e-take-survey-button"
       buttonStyle="primary"
