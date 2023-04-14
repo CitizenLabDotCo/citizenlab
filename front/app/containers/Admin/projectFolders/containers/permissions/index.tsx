@@ -5,7 +5,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getExceededLimitInfo } from 'components/SeatInfo/utils';
+import { getExceededLimitInfo } from 'components/SeatBasedBilling/utils';
 
 // services
 import useProjectFolderModerators from 'hooks/useProjectFolderModerators';
@@ -26,10 +26,10 @@ import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 const AddModeratorsModal = lazy(
-  () => import('components/admin/AddModeratorsModal')
+  () => import('components/SeatBasedBilling/AddModeratorsModal')
 );
 import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
-import SeatInfo from 'components/SeatInfo';
+import SeatInfo from 'components/SeatBasedBilling/SeatInfo';
 
 // Hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

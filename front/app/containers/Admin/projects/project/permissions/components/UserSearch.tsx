@@ -17,7 +17,7 @@ import messages from './messages';
 // Components
 import Button from 'components/UI/Button';
 const AddModeratorsModal = lazy(
-  () => import('components/admin/AddModeratorsModal')
+  () => import('components/SeatBasedBilling/AddModeratorsModal')
 );
 import { Box } from '@citizenlab/cl2-component-library';
 import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
@@ -26,7 +26,7 @@ import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
 import styled from 'styled-components';
 
 // utils
-import { getExceededLimitInfo } from 'components/SeatInfo/utils';
+import { getExceededLimitInfo } from 'components/SeatBasedBilling/utils';
 
 const AddButton = styled(Button)`
   flex-grow: 0;

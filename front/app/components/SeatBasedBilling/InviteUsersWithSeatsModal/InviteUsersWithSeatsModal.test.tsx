@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
-import InviteUsersWithSeatsModal from './';
+import InviteUsersWithSeatsModal from '.';
 
 type MockAppConfigurationType = {
   data: {

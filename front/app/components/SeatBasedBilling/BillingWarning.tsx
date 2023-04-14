@@ -1,7 +1,7 @@
 import React from 'react';
 import Warning from 'components/UI/Warning';
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from './SeatInfo/messages';
 
 const BillingWarning = () => {
   const { formatMessage } = useIntl();

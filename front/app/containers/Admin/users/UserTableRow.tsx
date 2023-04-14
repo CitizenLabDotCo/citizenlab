@@ -5,7 +5,7 @@ import moment from 'moment';
 
 // Utils
 import clHistory from 'utils/cl-router/history';
-import { getExceededLimitInfo } from 'components/SeatInfo/utils';
+import { getExceededLimitInfo } from 'components/SeatBasedBilling/utils';
 
 // Components
 import { Tr, Td, Box } from '@citizenlab/cl2-component-library';

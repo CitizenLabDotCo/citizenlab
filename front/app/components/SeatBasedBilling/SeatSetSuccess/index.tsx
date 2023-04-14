@@ -9,7 +9,10 @@ import {
   Icon,
   Button,
 } from '@citizenlab/cl2-component-library';
-import { SeatTypeMessageDescriptor, TSeatType } from 'components/SeatInfo';
+import {
+  SeatTypeMessageDescriptor,
+  TSeatType,
+} from 'components/SeatBasedBilling/SeatInfo';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';

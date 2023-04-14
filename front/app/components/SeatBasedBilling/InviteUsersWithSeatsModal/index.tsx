@@ -6,9 +6,9 @@ import Modal from 'components/UI/Modal';
 import SeatInfo, {
   SeatTypeMessageDescriptor,
   TSeatType,
-} from 'components/SeatInfo';
+} from 'components/SeatBasedBilling/SeatInfo';
 import Error from 'components/UI/Error';
-import SeatSetSuccess from 'components/admin/SeatSetSuccess';
+import SeatSetSuccess from 'components/SeatBasedBilling/SeatSetSuccess';
 
 // Translation
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -21,7 +21,7 @@ import useSeats from 'api/seats/useSeats';
 // Utils
 import { isNil } from 'utils/helperUtils';
 import { TSeatNumber } from 'api/app_configuration/types';
-import BillingWarning from 'components/SeatInfo/BillingWarning';
+import BillingWarning from 'components/SeatBasedBilling/BillingWarning';
 
 export type SeatTypeTSeatNumber = {
   [key in TSeatType]: TSeatNumber;
