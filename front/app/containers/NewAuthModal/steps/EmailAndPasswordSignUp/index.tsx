@@ -40,7 +40,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 
 // typings
-import { Parameters as CreateAccountParameters } from 'api/authentication/createAccountWithPassword';
+import { Parameters as CreateAccountParameters } from 'api/authentication/sign_up/createAccountWithPassword';
 import { State, Status } from 'containers/NewAuthModal/typings';
 
 interface BaseProps {

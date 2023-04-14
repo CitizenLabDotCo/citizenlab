@@ -3,7 +3,7 @@ import signIn from '../sign_in_out/signIn';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { CreateAccountWithPasswordProperties } from './types';
 
-interface Parameters {
+export interface Parameters {
   firstName: string;
   lastName: string;
   email: string;

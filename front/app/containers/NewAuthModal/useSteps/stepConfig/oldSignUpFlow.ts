@@ -1,10 +1,10 @@
 // authentication
 import { handleOnSSOClick } from 'services/singleSignOn';
 import createAccountWithPassword, {
-  Parameters as CreateAccountParams,
-} from 'api/authentication/createAccountWithPassword';
-import confirmEmail from 'api/authentication/confirmEmail';
-import resendEmailConfirmationCode from 'api/authentication/resendEmailConfirmationCode';
+  Parameters as CreateAccountParameters,
+} from 'api/authentication/sign_up/createAccountWithPassword';
+import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
+import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 
 // tracks
 import tracks from '../../tracks';
@@ -71,7 +71,7 @@ export const oldSignUpFlow = (
           trackEventByName(tracks.signUpEmailPasswordStepExited);
         }
       },
-      SUBMIT: async (params: CreateAccountParams) => {
+      SUBMIT: async (params: CreateAccountParameters) => {
         setStatus('pending');
 
         try {

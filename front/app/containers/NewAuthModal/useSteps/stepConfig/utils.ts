@@ -1,4 +1,4 @@
-import { AuthenticationRequirements } from 'api/authentication_requirements/types';
+import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 
 export const askCustomFields = (
   customFieldRequirements: AuthenticationRequirements['requirements']['custom_fields']

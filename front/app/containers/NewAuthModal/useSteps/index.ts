@@ -17,7 +17,7 @@ import {
 } from '../events';
 
 // constants
-import { GLOBAL_CONTEXT } from 'api/authentication_requirements/types';
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/types';
 
 // typings
 import {

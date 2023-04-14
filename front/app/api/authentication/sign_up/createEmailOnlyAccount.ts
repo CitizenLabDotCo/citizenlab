@@ -21,7 +21,7 @@ const emailIsTaken = async (response: Response) => {
   return !!json?.errors?.email?.some((error) => error.error === 'taken');
 };
 
-interface Parameters {
+export interface Parameters {
   email: string;
   locale: Locale;
 }
