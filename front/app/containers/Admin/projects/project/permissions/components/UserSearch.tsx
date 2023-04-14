@@ -26,6 +26,7 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 
 // Typings
 import { IOption } from 'typings';
+import { Box, Label } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   width: 100%;
@@ -53,6 +54,7 @@ const AddGroupButton = styled(Button)`
 
 interface Props {
   projectId: string;
+  label?: JSX.Element | string;
 }
 
 function isModerator(user: IGroupMembershipsFoundUserData) {
@@ -60,7 +62,11 @@ function isModerator(user: IGroupMembershipsFoundUserData) {
 }
 
 const UserSearch = memo(
-  ({ projectId, intl: { formatMessage } }: Props & WrappedComponentProps) => {
+  ({
+    projectId,
+    intl: { formatMessage },
+    label,
+  }: Props & WrappedComponentProps) => {
     const [selection, setSelection] = useState<IOption[]>([]);
     const [loading, setLoading] = useState(false);
     const [processing, setProcessing] = useState(false);
@@ -149,9 +155,15 @@ const UserSearch = memo(
 
     return (
       <Container>
+        {label && (
+          <Box mb="0px">
+            <Label htmlFor={'search-user-field'}>{label}</Label>
+          </Box>
+        )}
         <SelectGroupsContainer>
           <StyledAsyncSelect
             name="search-user"
+            id="search-user-field"
             isMulti={true}
             cacheOptions={false}
             defaultOptions={false}
