@@ -22,9 +22,10 @@ namespace :templates do
   end
 
   task :import, %i[host file] => [:environment] do |_t, args|
-    host = args[:host]
-    Apartment::Tenant.switch(host.tr('.', '_')) do
-      ::MultiTenancy::TenantDeserializer.new.resolve_and_apply_template YAML.load(open(args[:file]).read)
+    tenant = Tenant.find_by(host: args[:host])
+    tenant.switch do
+      serialized_models = YAML.load_file(args[:file])
+      ::MultiTenancy::TenantDeserializer.new.resolve_and_apply_template(serialized_models)
     end
   end
 
@@ -121,8 +122,7 @@ namespace :templates do
   end
 
   task :change_locale, %i[template_name locale_from locale_to] => [:environment] do |_t, args|
-    template = YAML.load open(Rails.root.join('config', 'tenant_templates', "#{args[:template_name]}.yml")).read
-    service = ::MultiTenancy::TenantDeserializer.new
+    template = YAML.load_file(Rails.root.join('config', 'tenant_templates', "#{args[:template_name]}.yml"))
 
     template = service.change_locales template, args[:locale_from], args[:locale_to]
     File.write("config/tenant_templates/#{args[:locale_to]}_#{args[:template_name]}.yml", template.to_yaml)
