@@ -46,4 +46,20 @@ export default defineMessages({
     id: 'app.containers.ChangeEmail.confirmationModalTitle',
     defaultMessage: 'Confirm your email',
   },
+  emailTaken: {
+    id: 'app.containers.ChangeEmail.emailTaken',
+    defaultMessage: 'This email is already in use.',
+  },
+  emailUpdateCancelled: {
+    id: 'app.containers.ChangeEmail.emailUpdateCancelled',
+    defaultMessage: 'Email update has been cancelled.',
+  },
+  emailUpdateCancelledDescription: {
+    id: 'app.containers.ChangeEmail.emailUpdateCancelledDescription',
+    defaultMessage: 'To update your email, please restart the process.',
+  },
+  backToProfile: {
+    id: 'app.containers.ChangeEmail.backToProfile',
+    defaultMessage: 'Back to profile settings',
+  },
 });
