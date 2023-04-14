@@ -7,7 +7,7 @@ describe MultiTenancy::TenantTemplateService do
 
   describe 'available_templates' do
     it 'returns a non-empty list' do
-      expect(service.available_templates.values.flatten.uniq).not_to be_empty
+      expect(service.available_templates).not_to be_empty
     end
   end
 
@@ -21,7 +21,7 @@ describe MultiTenancy::TenantTemplateService do
   end
 
   describe 'resolve_and_apply_template' do
-    described_class.new.available_templates[:internal].map do |template|
+    described_class.new.available_internal_templates.map do |template|
       it "Successfully applies '#{template}' template" do
         name = template.split('_').join
         locales = described_class.new.required_locales(template, external_subfolder: 'test')

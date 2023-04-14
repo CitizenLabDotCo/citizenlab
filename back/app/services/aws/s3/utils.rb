@@ -10,24 +10,22 @@ module Aws
         @s3_client = s3_client
       end
 
-
       # Returns an Enumerator that iterates over all the objects in an Amazon S3 bucket.
       # This method can handle any number of objects in the S3 bucket by automatically
       # paginating through results.
       #
-      # @param [Hash] list_objects_v2_params Same parameters as Aws::S3::Client#copy_object.
+      # @param [Hash] list_objects_v2_params Same parameters as Aws::S3::Client#list_objects_v2.
       def objects(list_objects_v2_params)
-        Enumerator.new do |yielder|
-          list_objects_request = list_objects_v2_params.dup
+        list_objects_responses(list_objects_v2_params).flat_map(&:contents)
+      end
 
-          loop do
-            response = @s3_client.list_objects_v2(list_objects_request)
-            response.contents.each { |object| yielder.yield(object) }
-
-            break unless response.is_truncated
-
-            list_objects_request[:continuation_token] = response.next_continuation_token
-          end
+      # Returns an array of top-level prefixes for (all or a subset of) objects in an S3
+      # bucket.
+      #
+      # @param [Hash] list_objects_v2_params Same parameters as Aws::S3::Client#list_objects_v2.
+      def common_prefixes(list_objects_v2_params)
+        list_objects_responses(list_objects_v2_params).flat_map do |response|
+          response.common_prefixes.map(&:prefix)
         end
       end
 
@@ -55,6 +53,29 @@ module Aws
             [key, destination_key]
           end
         end.compact.to_h
+      end
+
+      private
+
+      # Returns an enumerator that allows you to iterate over the responses returned by
+      # the Aws::S3::Client#list_objects_v2 method. In other words, it simplifies the
+      # process of paginating through the results.
+      #
+      # @param [Hash] list_objects_v2_params Same parameters as Aws::S3::Client#list_objects_v2.
+      # @return [Enumerator<Seahorse::Client::Response>]
+      def list_objects_responses(list_objects_v2_params)
+        Enumerator.new do |yielder|
+          list_objects_request = list_objects_v2_params.dup
+
+          loop do
+            response = @s3_client.list_objects_v2(list_objects_request)
+            yielder.yield(response)
+
+            break unless response.is_truncated
+
+            list_objects_request[:continuation_token] = response.next_continuation_token
+          end
+        end
       end
     end
   end

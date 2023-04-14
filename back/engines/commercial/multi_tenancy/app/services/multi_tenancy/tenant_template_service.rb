@@ -14,16 +14,28 @@ module MultiTenancy
       @save_temp_remote_urls = save_temp_remote_urls
     end
 
-    def available_templates(external_subfolder: 'release')
-      template_names = {}
-      template_names[:internal] = Dir[Rails.root.join('config/tenant_templates/*.yml')].map do |file|
-        File.basename(file, '.yml')
-      end
-      if external_subfolder
-        template_names[:external] =
-          available_external_templates(external_subfolder: external_subfolder).select(&:present?)
-      end
-      template_names
+    def available_templates(external_prefix: 'release')
+      templates = available_internal_templates
+      templates += available_external_templates(prefix: "#{external_prefix}/") if external_prefix
+      raise_if_duplicates(templates)
+
+      templates.sort
+    end
+
+    def available_internal_templates(dir_path: Rails.root.join('config/tenant_templates/*.yml'))
+      Dir[dir_path].map { |file| File.basename(file, '.yml') }
+    end
+
+    def available_external_templates(
+      s3_client: Aws::S3::Client.new(region: 'eu-central-1'),
+      bucket: ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'),
+      prefix: 'release/'
+    )
+      Aws::S3::Utils
+        .new(s3_client)
+        .common_prefixes(bucket: bucket, prefix: prefix, delimiter: '/models.yml')
+        .map { |common_prefix| common_prefix.chomp('/models.yml').split('/').last }
+        .tap { |template_names| raise_if_duplicates(template_names) }
     end
 
     def resolve_and_apply_template(
@@ -223,7 +235,6 @@ module MultiTenancy
       obj_to_id_and_class = {}
       created_objects_ids = Hash.new { |h, k| h[k] = [] } # Hash with empty arrays as default values
 
-
       template['models'].each do |model_name, records|
         # unless local_copy
         #   LogActivityJob.perform_later(Tenant.current, 'loading_template', nil, Time.now.to_i, payload: {
@@ -330,18 +341,9 @@ module MultiTenancy
       end
     end
 
-    def available_external_templates(external_subfolder: 'release')
-      s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
-      bucket = s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'))
-      bucket.objects(prefix: external_subfolder).map(&:key).map do |template_name|
-        template_name.slice! "#{external_subfolder}/"
-        template_name.chomp '.yml'
-      end
-    end
-
     def resolve_template(template_name, external_subfolder: 'release')
       if template_name.is_a? String
-        raise 'Unknown template' unless available_templates(external_subfolder: external_subfolder).values.flatten.uniq.include? template_name
+        raise 'Unknown template' unless available_templates(external_prefix: external_subfolder).include?(template_name)
 
         internal_path = Rails.root.join('config', 'tenant_templates', "#{template_name}.yml")
         if File.exist? internal_path
@@ -373,5 +375,17 @@ module MultiTenancy
         model.save(validate: false)
       end
     end
+
+    def raise_if_duplicates(template_names)
+      duplicates = template_names.group_by(&:itself)
+                            .transform_values(&:count)
+                            .select { |_, count| count > 1 }
+
+      raise AmbiguousTemplateNames, <<~MSG if duplicates.any?
+        #{duplicates.map { |name, count| "#{name} (#{count}x)" }.join(', ')}.
+      MSG
+    end
+
+    class AmbiguousTemplateNames < StandardError; end
   end
 end

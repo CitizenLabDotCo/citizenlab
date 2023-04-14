@@ -52,9 +52,8 @@ namespace :templates do
   task :verify, [:output_file] => [:environment] do |_t, args|
     pool_size = 1 # 4 # Debugging
     failed_templates = []
-    templates = MultiTenancy::TenantTemplateService.new.available_templates(
-      external_subfolder: 'test'
-    )[:external]
+    templates = MultiTenancy::TenantTemplateService.new.available_external_templates(prefix: 'test')
+
     templates.in_groups_of(pool_size).map(&:compact).map do |pool_templates|
       futures = pool_templates.index_with do |template|
         unless templates.empty?
