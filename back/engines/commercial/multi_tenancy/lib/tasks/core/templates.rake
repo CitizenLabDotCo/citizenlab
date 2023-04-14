@@ -53,7 +53,7 @@ namespace :templates do
   task :verify, [:output_file] => [:environment] do |_t, args|
     pool_size = 1 # 4 # Debugging
     failed_templates = []
-    templates = MultiTenancy::TenantDeserializer.new.available_external_templates(prefix: 'test')
+    templates = MultiTenancy::Templates::Utils.new.available_external_templates(prefix: 'test')
 
     templates.in_groups_of(pool_size).map(&:compact).map do |pool_templates|
       futures = pool_templates.index_with do |template|
@@ -122,15 +122,26 @@ namespace :templates do
   end
 
   task :change_locale, %i[template_name locale_from locale_to] => [:environment] do |_t, args|
-    template = YAML.load_file(Rails.root.join('config', 'tenant_templates', "#{args[:template_name]}.yml"))
+    serialized_models = YAML.load_file(Rails.root.join(
+      'config',
+      'tenant_templates',
+      "#{args[:template_name]}.yml"
+    ))
 
-    template = service.change_locales template, args[:locale_from], args[:locale_to]
-    File.write("config/tenant_templates/#{args[:locale_to]}_#{args[:template_name]}.yml", template.to_yaml)
+    serialized_models = MultiTenancy::Templates::Utils.new.change_locales(
+      serialized_models,
+      args[:locale_from],
+      args[:locale_to]
+    )
+
+    output_filename = "#{args[:locale_to]}_#{args[:template_name]}.yml"
+    output_path = Rails.root.join('config', 'tenant_templates', output_filename)
+    File.write(output_path, serialized_models.to_yaml)
   end
 
   def verify_template(template, max_time)
-    template_service = MultiTenancy::TenantDeserializer.new
-    locales = template_service.required_locales(template, external_subfolder: 'test')
+    template_utils = MultiTenancy::Templates::Utils.new
+    locales = template_utils.required_locales(template, external_subfolder: 'test')
     locales = ['en'] if locales.blank?
 
     name = template.split('_').join
@@ -146,7 +157,7 @@ namespace :templates do
 
     tenant.switch do
       puts "Verifying #{template}"
-      template_service.resolve_and_apply_template(template, external_subfolder: 'test', max_time: max_time)
+      template_utils.resolve_and_apply_template(template, external_subfolder: 'test', max_time: max_time)
     end
 
     tenant.destroy!

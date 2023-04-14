@@ -140,11 +140,13 @@ module MultiTenancy
     # @param [String] template_name
     # @param [Enumerable<String>] config_locales
     def validate_locales(template_name, config_locales)
-      required_locales = ::MultiTenancy::TenantDeserializer.new.required_locales(template_name,
-        external_subfolder: 'test')
-      return if required_locales.to_set <= config_locales.to_set
+      required_locales = ::MultiTenancy::Templates::Utils.new.required_locales(
+        template_name, external_subfolder: 'test'
+      )
 
-      raise ClErrors::TransactionError.new(error_key: :missing_locales)
+      unless required_locales.to_set <= config_locales.to_set
+        raise ClErrors::TransactionError.new(error_key: :missing_locales)
+      end
     end
 
     # Helper to remove uploads because assigning nil to the mounted attribute

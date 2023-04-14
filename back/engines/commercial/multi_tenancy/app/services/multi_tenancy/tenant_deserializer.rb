@@ -195,6 +195,10 @@ module MultiTenancy
       end
     end
 
+    def all_supported_locales
+      @all_supported_locales ||= CL2_SUPPORTED_LOCALES.map(&:to_s)
+    end
+
     def multiloc?(field_name)
       /_multiloc$/.match?(field_name)
     end
@@ -218,7 +222,7 @@ module MultiTenancy
     # TODO: no longer necessary (part of ApplyService)
     def resolve_template(template_name, external_subfolder: 'release')
       if template_name.is_a? String
-        raise 'Unknown template' unless available_templates(external_prefix: external_subfolder).include?(template_name)
+        raise 'Unknown template' unless utils.available_templates(external_prefix: external_subfolder).include?(template_name)
 
         internal_path = Rails.root.join('config', 'tenant_templates', "#{template_name}.yml")
         if File.exist? internal_path
@@ -245,6 +249,10 @@ module MultiTenancy
         model.save # Might fail but runs before_validations
         model.save(validate: false)
       end
+    end
+
+    def utils
+      @utils = ::MultiTenancy::Templates::Utils.new
     end
   end
 end

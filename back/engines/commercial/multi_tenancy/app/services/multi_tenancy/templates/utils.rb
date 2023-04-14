@@ -3,7 +3,6 @@
 module MultiTenancy
   module Templates
     class Utils
-
       def available_templates(external_prefix: 'release')
         templates = available_internal_templates
         templates += available_external_templates(prefix: "#{external_prefix}/") if external_prefix
@@ -28,25 +27,8 @@ module MultiTenancy
           .tap { |template_names| raise_if_duplicates(template_names) }
       end
 
-      def template_locales(template)
-        locales = Set.new
-
-        template['models'].each do |_, instances|
-          instances.each do |attributes|
-            attributes.each do |field_name, attribute|
-              next unless multiloc?(field_name) && attribute.is_a?(Hash)
-
-              locales.merge(attribute.keys)
-            end
-          end
-        end
-
-        locales.merge(user_locales(template))
-        locales.to_a
-      end
-
-      def change_locales(template, locale_from, locale_to)
-        template['models'].each do |_, instances|
+      def change_locales(serialized_models, locale_from, locale_to)
+        serialized_models['models'].each do |_, instances|
           instances.each do |attributes|
             attributes.each do |field_name, multiloc|
               next unless multiloc?(field_name) && multiloc.is_a?(Hash) && multiloc[locale_to].blank?
@@ -59,10 +41,10 @@ module MultiTenancy
             end
           end
         end
-        template['models']['user']&.each do |attributes|
+        serialized_models['models']['user']&.each do |attributes|
           attributes['locale'] = locale_to
         end
-        template
+        serialized_models
       end
 
       def required_locales(template_name, external_subfolder: 'release')
@@ -72,15 +54,15 @@ module MultiTenancy
 
       alias user_locales required_locales
 
-      def translate_and_fix_locales(template)
+      def translate_and_fix_locales(serialized_models)
         translator = MachineTranslations::MachineTranslationService.new
         locales_to = AppConfiguration.instance.settings('core', 'locales')
-        return template if Set.new(template_locales(template)).subset? Set.new(locales_to)
+        return serialized_models if Set.new(template_locales(serialized_models)).subset? Set.new(locales_to)
 
-        locales_from = required_locales template
+        locales_from = required_locales serialized_models
         # Change unsupported user locales to first target tenant locale.
         unless Set.new(locales_from).subset? Set.new(locales_to)
-          template['models']['user']&.each do |attributes|
+          serialized_models['models']['user']&.each do |attributes|
             unless locales_to.include? attributes['locale']
               attributes['locale'] = locales_to.first
             end
@@ -91,7 +73,7 @@ module MultiTenancy
         translate_to = locales_to.include?(translate_from) ? nil : locales_to.first
         # Change multiloc fields, applying translation and removing
         # unsupported locales.
-        template['models'].each do |_model_name, fields|
+        serialized_models['models'].each do |_model_name, fields|
           fields.each do |attributes|
             attributes.each do |field_name, field_value|
               if multiloc?(field_name) && field_value.is_a?(Hash)
@@ -119,7 +101,7 @@ module MultiTenancy
           'project' => { 'description_preview_multiloc' => 280 },
           'idea' => { 'title_multiloc' => 80 }
         }.each do |model, restrictions|
-          template['models'][model]&.each do |attributes|
+          serialized_models['models'][model]&.each do |attributes|
             restrictions.each do |field_name, max_len|
               multiloc = attributes[field_name]
               multiloc.each do |locale, value|
@@ -128,15 +110,28 @@ module MultiTenancy
             end
           end
         end
-        template
-      end
-
-
-      def all_supported_locales
-        @all_supported_locales ||= CL2_SUPPORTED_LOCALES.map(&:to_s)
+        serialized_models
       end
 
       private
+
+      def template_locales(serialized_models)
+        locales = Set.new
+
+        serialized_models['models'].each do |_, instances|
+          instances.each do |attributes|
+            attributes.each do |field_name, attribute|
+              next unless multiloc?(field_name) && attribute.is_a?(Hash)
+
+              locales.merge(attribute.keys)
+            end
+          end
+        end
+
+        locales.merge(user_locales(serialized_models))
+        locales.to_a
+      end
+
 
       def raise_if_duplicates(template_names)
         duplicates = template_names.group_by(&:itself)

@@ -5,12 +5,6 @@ require 'rails_helper'
 describe MultiTenancy::TenantDeserializer do
   let(:service) { described_class.new }
 
-  describe 'available_templates' do
-    it 'returns a non-empty list' do
-      expect(service.available_templates).not_to be_empty
-    end
-  end
-
   describe 'resolve_and_apply_template', template_test: true do
     it 'raises an error if the requested template was not found' do
       expect do
@@ -21,15 +15,16 @@ describe MultiTenancy::TenantDeserializer do
   end
 
   describe 'resolve_and_apply_template' do
-    described_class.new.available_internal_templates.map do |template|
+    MultiTenancy::Templates::Utils.new.available_internal_templates.map do |template|
       it "Successfully applies '#{template}' template" do
         name = template.split('_').join
-        locales = described_class.new.required_locales(template, external_subfolder: 'test')
+
+        template_utils = MultiTenancy::Templates::Utils.new
+        locales = template_utils.required_locales(template, external_subfolder: 'test')
         locales = ['en'] if locales.blank?
-        create(:tenant, name: name, host: "#{name}.localhost", locales: locales, lifecycle: 'active')
-        Apartment::Tenant.switch("#{name}_localhost") do
-          service.resolve_and_apply_template template
-        end
+
+        tenant = create(:tenant, name: name, host: "#{name}.localhost", locales: locales, lifecycle: 'active')
+        tenant.switch { service.resolve_and_apply_template template }
       end
     end
 
