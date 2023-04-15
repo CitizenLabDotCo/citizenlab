@@ -17,7 +17,7 @@ module MultiTenancy
         @s3_client = s3_client
       end
 
-      def general_apply(template_name, external_template_group: 'release')
+      def apply(template_name, external_template_group: 'release')
         if template_utils.internal_template?(template_name)
           apply_internal_template(template_name)
         else
