@@ -11,10 +11,11 @@ module MultiTenancy
     #
     # Organization of the template bucket:
     #   template_bucket
-    #   ├── template_name_1 (= host of the tenant)
-    #   │   ├── models.yml
-    #   ⋮   └── uploads > model > id > file
-    #   └── template_name_N
+    #   └── prefix (e.g. release or test)
+    #       ├── template_name_1 (= host of the tenant)
+    #       │   ├── models.yml
+    #       ⋮   └── uploads > model > id > file
+    #       └── template_name_N
     class CreateService
       attr_reader :template_bucket, :tenant_bucket, :s3_client
 
@@ -33,12 +34,15 @@ module MultiTenancy
         @s3_client = s3_client || Aws::S3::Client.new(region: 'eu-central-1')
       end
 
-      def create(tenant)
-        template_s3_prefix = template_name(tenant)
+      # @param [Object] tenant The tenant to create a template from.
+      # @param [String] prefix The S3 prefix to use for the template.
+      def create(tenant, prefix: 'release')
         serialized_models = MultiTenancy::Templates::TenantSerializer.new(tenant).run
+        template_name = send(:template_name, tenant)
+        template_s3_prefix = template_utils.template_prefix(template_name, prefix: prefix)
 
         # Delete existing template if it exists. We do this as late as possible to avoid
-        # deleting the template if the previous steps fail (e.g. serialization).
+        # deleting the template if the previous steps fails (e.g. serialization).
         delete_s3_objects(template_bucket, template_s3_prefix)
 
         copy_s3_uploads(tenant.id, template_s3_prefix, models: serialized_models)
@@ -47,15 +51,16 @@ module MultiTenancy
 
       private
 
-      def delete_s3_objects(bucket_name, prefix)
+      def delete_s3_objects(bucket_name, template_prefix)
         # 1000 is the maximum number of objects that can be deleted in a single request.
-        s3_utils.objects(bucket: bucket_name, prefix: prefix).each_slice(1000) do |objects|
+        s3_utils.objects(bucket: bucket_name, prefix: template_prefix).each_slice(1000) do |objects|
           s3_client.delete_objects(
             bucket: bucket_name,
             delete: {
               objects: objects.map { |object| { key: object.key } },
               quiet: true
-            })
+            }
+          )
         end
       end
 
@@ -72,11 +77,11 @@ module MultiTenancy
       # @param [Integer] num_threads The number of threads to use to send copy requests
       #   to S3.
       def copy_s3_uploads(tenant_id, template_prefix, models: nil, num_threads: 20)
-        prefix = "uploads/#{tenant_id}"
+        source_prefix = "uploads/#{tenant_id}"
         dest_prefix = "#{template_prefix}/uploads"
 
         s3_utils.copy_objects(
-          tenant_bucket, template_bucket, prefix, num_threads: num_threads
+          tenant_bucket, template_bucket, source_prefix, num_threads: num_threads
         ) { |key| transform_key(key, dest_prefix, models: models) }
       end
 
@@ -93,7 +98,7 @@ module MultiTenancy
         if models
           # We only copy files that are referenced in serialized models.
           model_class = class_parts.join('/').classify.constantize
-          return unless models.dig("models", model_class, identifier)
+          return unless models.dig('models', model_class, identifier)
         end
 
         [prefix, *class_parts, attribute_name, identifier, filename].join('/')
@@ -101,6 +106,10 @@ module MultiTenancy
 
       def s3_utils
         @s3_utils ||= Aws::S3::Utils.new(s3_client)
+      end
+
+      def template_utils
+        @template_utils ||= MultiTenancy::Templates::Utils.new
       end
 
       def template_name(tenant)

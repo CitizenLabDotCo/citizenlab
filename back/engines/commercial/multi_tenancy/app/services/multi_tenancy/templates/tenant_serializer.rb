@@ -80,7 +80,7 @@ module MultiTenancy
         { 'models' => models }
       end
 
-      def self.format_for_tenant_template_service!(template)
+      def self.format_for_deserializer!(template)
         models = template['models']
         models.transform_keys! { |record_class| record_class.name.snakecase }
         models.transform_values!(&:values)

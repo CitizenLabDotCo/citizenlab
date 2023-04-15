@@ -19,6 +19,10 @@ module MultiTenancy
         available_internal_templates.include?(template_name)
       end
 
+      def template_prefix(template_name, prefix: 'release')
+        "#{prefix.chomp('/')}/#{template_name}"
+      end
+
       def available_external_templates(
         s3_client: Aws::S3::Client.new(region: 'eu-central-1'),
         bucket: ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'),
