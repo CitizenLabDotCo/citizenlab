@@ -19,7 +19,26 @@ class SideFxCustomFieldService
   end
 
   def before_destroy(custom_field, current_user)
-    UserCustomFieldService.new.delete_custom_field_values(custom_field, current_user)
+    # First, we log the User custom_field_values that will be deleted
+    users = User.where("custom_field_values ? '#{custom_field.key}'")
+    related_user_data = {}
+    users.each do |user|
+      related_user_data[user.id] = { custom_field.key.to_s => user.custom_field_values[custom_field.key] }
+    end
+
+    LogActivityJob.perform_now(
+      encode_frozen_resource(custom_field),
+      'deletion_initiated',
+      current_user,
+      Time.now.to_i,
+      payload: {
+        explanation: 'if this deletion succeeded, these users lost this data from custom_field_values',
+        log_user_ids_deleted_custom_field_values: related_user_data
+      }
+    )
+
+    # Then, we delete the User custom_field_values
+    UserCustomFieldService.new.delete_custom_field_values(custom_field)
   end
 
   def after_destroy(frozen_custom_field, current_user)
