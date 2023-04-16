@@ -9,7 +9,7 @@ module MultiTenancy
             @value = value
           end
 
-          def dereference(_context)
+          def resolve(_context)
             @value
           end
         end

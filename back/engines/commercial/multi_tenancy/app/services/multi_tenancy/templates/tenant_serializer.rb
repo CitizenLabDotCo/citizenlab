@@ -9,77 +9,13 @@ module MultiTenancy
       end
 
       def run
-        user_scope = User.where('invite_status IS NULL OR invite_status != ?', 'pending')
-
-        models = @tenant.switch do
-          {
-            Area => serialize_records(Area),
-            AreasInitiative => serialize_records(AreasInitiative.where(initiative: Initiative.published)),
-            AreasProject => serialize_records(AreasProject),
-            Basket => serialize_records(Basket),
-            BasketsIdea => serialize_records(BasketsIdea.where(idea: Idea.published)),
-            Comment => serialize_comments(Idea.published, Initiative.published),
-            ContentBuilder::Layout => serialize_records(ContentBuilder::Layout),
-            ContentBuilder::LayoutImage => serialize_records(ContentBuilder::LayoutImage),
-            CustomField => serialize_records(CustomField),
-            CustomFieldOption => serialize_custom_field_options,
-            CustomForm => serialize_records(CustomForm),
-            CustomMaps::Layer => serialize_records(CustomMaps::Layer),
-            CustomMaps::LegendItem => serialize_records(CustomMaps::LegendItem),
-            CustomMaps::MapConfig => serialize_records(CustomMaps::MapConfig),
-            EmailCampaigns::Campaign => serialize_records(EmailCampaigns::Campaign.where(type: 'EmailCampaigns::Campaigns::Manual')),
-            EmailCampaigns::UnsubscriptionToken => serialize_records(EmailCampaigns::UnsubscriptionToken.where(user: user_scope)),
-            Event => serialize_records(Event),
-            EventFile => serialize_records(EventFile),
-            Group => serialize_records(Group.where(membership_type: 'manual')),
-            GroupsPermission => serialize_records(GroupsPermission.joins(:group).merge(Group.where(membership_type: 'manual'))),
-            GroupsProject => serialize_records(GroupsProject.joins(:group).merge(Group.where(membership_type: 'manual'))),
-            HomePage => serialize_records(HomePage),
-            Idea => serialize_records(Idea.published),
-            IdeaFile => serialize_idea_files(Idea.published),
-            IdeaImage => serialize_idea_images(Idea.published),
-            IdeaStatus => serialize_records(IdeaStatus),
-            IdeasPhase => serialize_ideas_phases(Idea.published),
-            IdeasTopic => serialize_ideas_topics(Idea.published),
-            Initiative => serialize_records(Initiative.published),
-            InitiativeFile => serialize_initiative_files(Initiative.published),
-            InitiativeImage => serialize_initiative_images(Initiative.published),
-            InitiativeStatus => serialize_records(InitiativeStatus),
-            InitiativesTopic => serialize_initiatives_topics(Initiative.published),
-            Membership => serialize_records(Membership.where(user: user_scope)),
-            NavBarItem => serialize_records(NavBarItem),
-            OfficialFeedback => serialize_records(OfficialFeedback.where(post: Idea.published)).merge!(serialize_records(OfficialFeedback.where(post: Initiative.published))),
-            Permission => serialize_records(Permission),
-            Phase => serialize_records(Phase),
-            PhaseFile => serialize_records(PhaseFile),
-            Polls::Option => serialize_records(Polls::Option),
-            Polls::Question => serialize_records(Polls::Question),
-            Polls::Response => serialize_records(Polls::Response),
-            Polls::ResponseOption => serialize_records(Polls::ResponseOption),
-            Project => serialize_records(Project),
-            ProjectFile => serialize_records(ProjectFile),
-            ProjectFolders::File => serialize_records(ProjectFolders::File),
-            ProjectFolders::Image => serialize_records(ProjectFolders::Image),
-            ProjectFolders::Folder => serialize_records(ProjectFolders::Folder),
-            ProjectImage => serialize_records(ProjectImage),
-            ProjectsAllowedInputTopic => serialize_records(ProjectsAllowedInputTopic),
-            StaticPage => serialize_records(StaticPage),
-            StaticPageFile => serialize_records(StaticPageFile),
-            TextImage => serialize_text_images,
-            Topic => serialize_records(Topic),
-            User => serialize_records(user_scope),
-            Volunteering::Cause => serialize_records(Volunteering::Cause),
-            Volunteering::Volunteer => serialize_records(Volunteering::Volunteer),
-            Vote => serialize_votes(Idea.published).merge!(serialize_votes(Initiative.published)),
-            AdminPublication => serialize_admin_publications(AdminPublication)
-          }
-        end
-
+        models = @tenant.switch { serialize_models }
         models = sort_by_references(models)
         resolve_references!(models)
         { 'models' => models }
       end
 
+      # Transform the models hash to make it compatible with the `TenantDeserializer`.
       def self.format_for_deserializer!(template)
         models = template['models']
         models.transform_keys! { |record_class| record_class.name.snakecase }
@@ -89,17 +25,140 @@ module MultiTenancy
 
       private
 
+      def serialize_models
+        email_campaigns = EmailCampaigns::Campaign.where(type: 'EmailCampaigns::Campaigns::Manual')
+        groups = Group.where(membership_type: 'manual')
+        ideas = Idea.published
+        initiatives = Initiative.published
+        users = User.where('invite_status IS NULL OR invite_status != ?', 'pending')
+
+        {
+          AdminPublication => serialize_admin_publications(AdminPublication),
+          Area => serialize_records(Area),
+          AreasProject => serialize_records(AreasProject),
+          Basket => serialize_records(Basket),
+          ContentBuilder::Layout => serialize_records(ContentBuilder::Layout),
+          ContentBuilder::LayoutImage => serialize_records(ContentBuilder::LayoutImage),
+          CustomField => serialize_records(CustomField),
+          CustomForm => serialize_records(CustomForm),
+          Event => serialize_records(Event),
+          EventFile => serialize_records(EventFile),
+          HomePage => serialize_records(HomePage),
+          IdeaStatus => serialize_records(IdeaStatus),
+          InitiativeStatus => serialize_records(InitiativeStatus),
+          NavBarItem => serialize_records(NavBarItem),
+          Permission => serialize_records(Permission),
+          Phase => serialize_records(Phase),
+          PhaseFile => serialize_records(PhaseFile),
+          Project => serialize_records(Project),
+          ProjectFile => serialize_records(ProjectFile),
+          ProjectFolders::File => serialize_records(ProjectFolders::File),
+          ProjectFolders::Folder => serialize_records(ProjectFolders::Folder),
+          ProjectFolders::Image => serialize_records(ProjectFolders::Image),
+          ProjectImage => serialize_records(ProjectImage),
+          ProjectsAllowedInputTopic => serialize_records(ProjectsAllowedInputTopic),
+          StaticPage => serialize_records(StaticPage),
+          StaticPageFile => serialize_records(StaticPageFile),
+          Topic => serialize_records(Topic),
+
+          # It is not necessary to serialize the CustomFieldOption records for the
+          # 'domicile' custom field because they will be created automatically from
+          # the areas when loading the template.
+          CustomFieldOption => serialize_records(
+            CustomFieldOption.where(custom_field: CustomField.where.not(code: 'domicile'))
+          ),
+
+          # Custom maps
+          CustomMaps::Layer => serialize_records(CustomMaps::Layer),
+          CustomMaps::LegendItem => serialize_records(CustomMaps::LegendItem),
+          CustomMaps::MapConfig => serialize_records(CustomMaps::MapConfig),
+
+          # Polls
+          Polls::Option => serialize_records(Polls::Option),
+          Polls::Question => serialize_records(Polls::Question),
+          Polls::Response => serialize_records(Polls::Response),
+          Polls::ResponseOption => serialize_records(Polls::ResponseOption),
+
+          # Volunteering
+          Volunteering::Cause => serialize_records(Volunteering::Cause),
+          Volunteering::Volunteer => serialize_records(Volunteering::Volunteer),
+
+          # Ideas
+          Idea => serialize_records(ideas),
+          BasketsIdea => serialize_records(BasketsIdea.where(idea: ideas)),
+          IdeaFile => serialize_records(IdeaFile.where(idea: ideas)),
+          IdeaImage => serialize_records(IdeaImage.where(idea: ideas)),
+          IdeasPhase => serialize_records(IdeasPhase.where(idea: ideas)),
+          IdeasTopic => serialize_records(IdeasTopic.where(idea: ideas)),
+
+          # Initiatives
+          Initiative => serialize_records(initiatives),
+          AreasInitiative => serialize_records(AreasInitiative.where(initiative: initiatives)),
+          InitiativeFile => serialize_records(InitiativeFile.where(initiative: initiatives)),
+          InitiativeImage => serialize_records(InitiativeImage.where(initiative: initiatives)),
+          InitiativesTopic => serialize_records(InitiativesTopic.where(initiative: initiatives)),
+
+          Comment => serialize_comments(ideas, initiatives),
+          Vote => serialize_votes(ideas).merge!(serialize_votes(initiatives)),
+          OfficialFeedback => serialize_records(OfficialFeedback.where(post: [ideas, initiatives])),
+
+          # Groups
+          Group => serialize_records(groups),
+          GroupsPermission => serialize_records(GroupsPermission.where(group: groups)),
+          GroupsProject => serialize_records(GroupsProject.where(group: groups)),
+
+          # EmailCampaigns
+          EmailCampaigns::Campaign => serialize_records(email_campaigns),
+          EmailCampaigns::UnsubscriptionToken => serialize_records(EmailCampaigns::UnsubscriptionToken.where(user: users)),
+
+          # Users
+          User => serialize_records(users),
+          Membership => serialize_records(Membership.where(user: users)),
+
+          TextImage => serialize_records(TextImage.where(imageable: [
+            CustomField,
+            Event,
+            Phase,
+            Project,
+            StaticPage,
+            email_campaigns,
+            ideas,
+            initiatives
+          ]))
+        }
+      end
+
+      # Reorder the classes in the models hash so that the classes that hold
+      # references to other classes are always after the classes they reference.
+      # @raise [TSort::Cyclic] if there is a circular dependency between the classes
+      #   and the class cannot be sorted.
       def sort_by_references(models)
         ref_dependencies_graph = extract_referential_dependencies(models)
-        ref_dependencies_graph[User] << CustomField if ref_dependencies_graph.key?(CustomField)
 
-        each_node = lambda { |&b| ref_dependencies_graph.each_key(&b) }
-        each_child = lambda { |n, &b| ref_dependencies_graph[n].each(&b) }
+        # User depends on CustomField because of the custom field values. We have to add
+        # this dependency manually because the custom field values are stored as JSON in
+        # the database, so serialized users don't hold references to CustomField.
+        if ref_dependencies_graph.key?(User) && ref_dependencies_graph.key?(CustomField)
+          ref_dependencies_graph[User] << CustomField
+        end
+
+        each_node = ->(&b) { ref_dependencies_graph.each_key(&b) }
+        each_child = ->(n, &b) { ref_dependencies_graph[n].each(&b) }
 
         sorted_classes = TSort.tsort(each_node, each_child)
         models.slice(*sorted_classes)
       end
 
+      # Returns a hash with the classes as keys and an array of the classes that
+      # they reference as values. For instance:
+      #   {
+      #     Area => [],
+      #     Basket => [Phase, User],
+      #     CustomFieldOption => [CustomField]
+      #     # ...
+      #   }
+      #
+      # @return [Hash<Class, Array<Class>>]
       def extract_referential_dependencies(models)
         models.transform_values do |records|
           records.flat_map do |_id, attributes|
@@ -110,74 +169,13 @@ module MultiTenancy
         end
       end
 
-      def serialize_idea_files(ideas_scope)
-        idea_files = IdeaFile.joins(:idea).merge(ideas_scope)
-        serialize_records(idea_files)
-      end
-
-      def serialize_idea_images(ideas_scope)
-        idea_images = IdeaImage.joins(:idea).merge(ideas_scope)
-        serialize_records(idea_images)
-      end
-
-      def serialize_ideas_phases(ideas_scope)
-        idea_phases = IdeasPhase.joins(:idea).merge(ideas_scope)
-        serialize_records(idea_phases)
-      end
-
-      def serialize_ideas_topics(ideas_scope)
-        ideas_topics = IdeasTopic.joins(:idea).merge(ideas_scope)
-        serialize_records(ideas_topics)
-      end
-
-      def serialize_initiative_files(initiatives_scope)
-        initiative_files = InitiativeFile.joins(:initiative).merge(initiatives_scope)
-        serialize_records(initiative_files)
-      end
-
-      def serialize_initiative_images(initiatives_scope)
-        initiative_images = InitiativeImage.joins(:initiative).merge(initiatives_scope)
-        serialize_records(initiative_images)
-      end
-
-      def serialize_initiatives_topics(initiatives_scope)
-        initiatives_topics = InitiativesTopic.joins(:initiative).merge(initiatives_scope)
-        serialize_records(initiatives_topics)
-      end
-
-      def serialize_baskets_ideas
-        serializer = MultiTenancy::Templates::Serializers::BasketsIdea.new(*@serialization_params)
-        BasketsIdea.joins(:idea).merge(Idea.published).to_h do |baskets_idea|
-          [baskets_idea.id, serializer.serialize(baskets_idea)]
-        end
-      end
-
-      def serialize_custom_field_options
-        options = CustomFieldOption.joins(:custom_field).merge(CustomField.where.not(code: 'domicile'))
-        serialize_records(options)
-      end
-
-      def serialize_votes(post_scope)
-        post_votes = Vote.where.not(user_id: nil).where(votable: post_scope)
-        comment_votes = Vote.where.not(user_id: nil).where(votable: Comment.where(post: post_scope))
-        votes = post_votes.chain(comment_votes)
-        serialize_records(votes)
-      end
-
-      def serialize_text_images
-        imageable_scopes = [
-          CustomField,
-          Event,
-          Idea.published,
-          Initiative.published,
-          Phase,
-          Project,
-          StaticPage,
-          EmailCampaigns::Campaign.where(type: 'EmailCampaigns::Campaigns::Manual')
-        ]
-
-        imageable_scopes.each_with_object({}) do |scope, hash|
-          hash.merge(serialize_records(TextImage.where(imageable: scope)))
+      # Replace the Ref objects in the models hash with actual references to the
+      # serialized records that they point to.
+      def resolve_references!(models)
+        models.each do |_record_class, instances|
+          instances.each do |_identifier, serialized_instance|
+            serialized_instance.transform_values! { |value| value.resolve(models) }
+          end
         end
       end
 
@@ -185,7 +183,7 @@ module MultiTenancy
         scope = scope.all if scope.is_a?(Class)
         record_class = infer_scope_class(scope)
 
-        return {} if record_class.nil? && scope.size == 0
+        return {} if record_class.nil? && scope.size == 0 # rubocop:disable Style/ZeroLengthPredicate
 
         serializer_class = MultiTenancy::Templates::Serializers.const_get(record_class.name)
         serializer = serializer_class.new(@serialization_params)
@@ -203,12 +201,14 @@ module MultiTenancy
       def serialize_admin_publications(scope)
         publications = serialize_records(scope)
 
+        # The parent publications must be listed before their children since the
+        # children publications reference their parent.
         child_to_parent = publications.transform_values do |attributes|
           Array.wrap(attributes[:parent_ref]&.id)
         end
 
-        each_node = lambda {|&b| child_to_parent.each_key(&b) }
-        each_child = lambda {|n, &b| child_to_parent[n].each(&b) }
+        each_node = ->(&block) { child_to_parent.each_key(&block) }
+        each_child = ->(node, &block) { child_to_parent[node].each(&block) }
         ordered_ids = TSort.tsort(each_node, each_child)
 
         publications.slice(*ordered_ids)
@@ -219,23 +219,24 @@ module MultiTenancy
           hash.merge!(serialize_records(Comment.where(post: scope)))
         end
 
+        # The parent comments must be listed before their children since the
+        # children comments reference their parent.
         child_to_parent = comments.transform_values do |attributes|
           Array.wrap(attributes[:parent_ref]&.id)
         end
 
-        each_node = lambda {|&b| child_to_parent.each_key(&b) }
-        each_child = lambda {|n, &b| child_to_parent[n].each(&b) }
+        each_node = ->(&block) { child_to_parent.each_key(&block) }
+        each_child = ->(node, &block) { child_to_parent[node].each(&block) }
         ordered_ids = TSort.tsort(each_node, each_child)
 
         comments.slice(*ordered_ids)
       end
 
-      def resolve_references!(models)
-        models.each do |_record_class, instances|
-          instances.each do |_identifier, serialized_instance|
-            serialized_instance.transform_values! { |value| value.dereference(models) }
-          end
-        end
+      def serialize_votes(post_scope)
+        post_votes = Vote.where.not(user_id: nil).where(votable: post_scope)
+        comment_votes = Vote.where.not(user_id: nil).where(votable: Comment.where(post: post_scope))
+        votes = post_votes.chain(comment_votes)
+        serialize_records(votes)
       end
     end
   end
