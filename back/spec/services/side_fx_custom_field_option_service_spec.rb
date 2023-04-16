@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 describe SideFxCustomFieldOptionService do
-  let!(:service) { described_class.new }
-  let!(:user) { create :user }
+  let(:service) { described_class.new }
+  let(:user) { create :user }
 
   describe 'before_destroy' do
     let(:custom_field) { create(:custom_field_multiselect, resource_type: 'User') }
