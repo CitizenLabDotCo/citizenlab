@@ -42,7 +42,7 @@ class SideFxCustomFieldOptionService
       User.where(
         "(custom_field_values->>'#{custom_field.key}')::jsonb ? :value", value: custom_field_option.key
       ).each do |user|
-        related_user_data[user.id] = { custom_field.key.to_s => "[#{custom_field_option.key}]" }
+        related_user_data[user.id] = { custom_field.key.to_s => [custom_field_option.key.to_s] }
       end
     else
       User.where("custom_field_values ? '#{custom_field.key}'").each do |user|
@@ -50,7 +50,7 @@ class SideFxCustomFieldOptionService
       end
     end
 
-    LogActivityJob.perform_now(
+    LogActivityJob.perform_later(
       encode_frozen_resource(custom_field_option),
       'deletion_initiated',
       current_user,

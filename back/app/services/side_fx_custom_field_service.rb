@@ -44,7 +44,7 @@ class SideFxCustomFieldService
       related_user_data[user.id] = { custom_field.key.to_s => user.custom_field_values[custom_field.key] }
     end
 
-    LogActivityJob.perform_now(
+    LogActivityJob.perform_later(
       encode_frozen_resource(custom_field),
       'deletion_initiated',
       current_user,
