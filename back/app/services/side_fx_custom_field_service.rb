@@ -19,6 +19,8 @@ class SideFxCustomFieldService
   end
 
   def before_destroy(custom_field, _current_user)
+    return unless custom_field.resource_type == 'User'
+
     UserCustomFieldService.new.delete_custom_field_values(custom_field)
   end
 
