@@ -15,7 +15,36 @@ class SideFxCustomFieldOptionService
     LogActivityJob.perform_later(custom_field_option, 'changed', current_user, custom_field_option.updated_at.to_i)
   end
 
-  def before_destroy(custom_field_option, _current_user)
+  def before_destroy(custom_field_option, current_user)
+    # First, we log the User custom_field_values that will be deleted, if we are deleting a User custom_field_option
+    parent_field = custom_field_option.custom_field
+    if parent_field.resource_type == 'User'
+      related_user_data = {}
+      if parent_field.input_type == 'multiselect'
+        User.where(
+          "(custom_field_values->>'#{parent_field.key}')::jsonb ? :value", value: custom_field_option.key
+        ).each do |user|
+          related_user_data[user.id] = { parent_field.key.to_s => "[#{custom_field_option.key}]" }
+        end
+      else
+        User.where("custom_field_values ? '#{parent_field.key}'").each do |user|
+          related_user_data[user.id] = { parent_field.key.to_s => user.custom_field_values[parent_field.key] }
+        end
+      end
+
+      LogActivityJob.perform_now(
+        encode_frozen_resource(custom_field_option),
+        'deletion_initiated',
+        current_user,
+        Time.now.to_i,
+        payload: {
+          explanation: 'if this deletion succeeded, these users lost this data from custom_field_values',
+          log_user_ids_deleted_custom_field_values: related_user_data
+        }
+      )
+    end
+
+    # Then, we delete the User custom_field_values
     UserCustomFieldService.new.delete_custom_field_option_values custom_field_option.key, custom_field_option.custom_field
   end
 
