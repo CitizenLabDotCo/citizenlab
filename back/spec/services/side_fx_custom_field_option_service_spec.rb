@@ -7,13 +7,13 @@ describe SideFxCustomFieldOptionService do
   let!(:user) { create :user }
 
   describe 'before_destroy' do
-    let!(:custom_field) { create(:custom_field_multiselect, resource_type: 'User') }
-    let!(:option1) { create(:custom_field_option, custom_field: custom_field, key: 'english') }
-    let!(:option2) { create(:custom_field_option, custom_field: custom_field, key: 'french') }
+    let(:custom_field) { create(:custom_field_multiselect, resource_type: 'User') }
+    let(:option1) { create(:custom_field_option, custom_field: custom_field, key: 'english') }
+    let(:option2) { create(:custom_field_option, custom_field: custom_field, key: 'french') }
 
-    let!(:user1) { create(:user, custom_field_values: { custom_field.key => [option1.key, option2.key] }) }
-    let!(:user2) { create(:user, custom_field_values: { custom_field.key => [option1.key] }) }
-    let!(:user3) { create(:user, custom_field_values: { custom_field.key => [option2.key] }) }
+    let(:user1) { create(:user, custom_field_values: { custom_field.key => [option1.key, option2.key] }) }
+    let(:user2) { create(:user, custom_field_values: { custom_field.key => [option1.key] }) }
+    let(:user3) { create(:user, custom_field_values: { custom_field.key => [option2.key] }) }
 
     it 'logs the related user data that will be destroyed' do
       travel_to Time.now do
