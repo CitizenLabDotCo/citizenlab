@@ -16,20 +16,37 @@ class SideFxCustomFieldOptionService
   end
 
   def before_destroy(custom_field_option, current_user)
-    parent_field = custom_field_option.custom_field
-    return unless parent_field.resource_type == 'User'
+    custom_field = custom_field_option.custom_field
+    return unless custom_field.resource_type == 'User'
 
-    # First, we log the User custom_field_values that will be deleted, if we are deleting a User custom_field_option
+    log_user_data_that_will_be_deleted(custom_field_option, custom_field, current_user)
+    UserCustomFieldService.new.delete_custom_field_option_values(custom_field_option.key, custom_field)
+  end
+
+  def after_destroy(frozen_custom_field_option, current_user)
+    serialized_custom_field_option = clean_time_attributes(frozen_custom_field_option.attributes)
+    LogActivityJob.perform_later(
+      encode_frozen_resource(frozen_custom_field_option),
+      'deleted',
+      current_user,
+      Time.now.to_i,
+      payload: { custom_field_option: serialized_custom_field_option }
+    )
+  end
+
+  private
+
+  def log_user_data_that_will_be_deleted(custom_field_option, custom_field, current_user)
     related_user_data = {}
-    if parent_field.input_type == 'multiselect'
+    if custom_field.input_type == 'multiselect'
       User.where(
-        "(custom_field_values->>'#{parent_field.key}')::jsonb ? :value", value: custom_field_option.key
+        "(custom_field_values->>'#{custom_field.key}')::jsonb ? :value", value: custom_field_option.key
       ).each do |user|
-        related_user_data[user.id] = { parent_field.key.to_s => "[#{custom_field_option.key}]" }
+        related_user_data[user.id] = { custom_field.key.to_s => "[#{custom_field_option.key}]" }
       end
     else
-      User.where("custom_field_values ? '#{parent_field.key}'").each do |user|
-        related_user_data[user.id] = { parent_field.key.to_s => user.custom_field_values[parent_field.key] }
+      User.where("custom_field_values ? '#{custom_field.key}'").each do |user|
+        related_user_data[user.id] = { custom_field.key.to_s => user.custom_field_values[custom_field.key] }
       end
     end
 
@@ -42,22 +59,6 @@ class SideFxCustomFieldOptionService
         explanation: 'if this deletion succeeded, these users lost this data from custom_field_values',
         log_user_ids_deleted_custom_field_values: related_user_data
       }
-    )
-
-    # Then, we delete the User custom_field_values
-    UserCustomFieldService.new.delete_custom_field_option_values(
-      custom_field_option.key, custom_field_option.custom_field
-    )
-  end
-
-  def after_destroy(frozen_custom_field_option, current_user)
-    serialized_custom_field_option = clean_time_attributes(frozen_custom_field_option.attributes)
-    LogActivityJob.perform_later(
-      encode_frozen_resource(frozen_custom_field_option),
-      'deleted',
-      current_user,
-      Time.now.to_i,
-      payload: { custom_field_option: serialized_custom_field_option }
     )
   end
 end
