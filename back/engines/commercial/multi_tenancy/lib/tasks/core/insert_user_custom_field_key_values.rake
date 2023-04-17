@@ -45,6 +45,8 @@ namespace :cl2_back do
         user = User.find_by id: d['id']
         if user
           cfv = user.custom_field_values
+          next if cfv[key].present?
+
           cfv[key] = JSON.parse(d['custom_field_values'])[key]
           user.update!(custom_field_values: cfv)
           count += 1
