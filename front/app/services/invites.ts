@@ -27,6 +27,15 @@ export interface IInviteData {
   };
 }
 
+export interface IInvitesNewSeats {
+  data: {
+    attributes: {
+      newly_added_admins_number: number;
+      newly_added_moderators_number: number;
+    };
+  };
+}
+
 export interface IInvites {
   data: IInviteData[];
   links: {
@@ -81,17 +90,37 @@ export function invitesStream(streamParams: IStreamParams | null = null) {
 }
 
 export async function bulkInviteEmails(object: INewBulkInviteEmails) {
-  const response = await streams.add<IInvites>(
-    `${API_PATH}/invites/bulk_create`,
+  const response = await streams.add(`${API_PATH}/invites/bulk_create`, {
+    invites: object,
+  });
+  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/invites`] });
+  return response;
+}
+
+export async function bulkInviteXLSX(object: INewBulkXLSXInviteXLSX) {
+  const response = await streams.add(`${API_PATH}/invites/bulk_create_xlsx`, {
+    invites: object,
+  });
+  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/invites`] });
+  return response;
+}
+
+export async function bulkInviteCountNewSeatsEmails(
+  object: INewBulkInviteEmails
+) {
+  const response = await streams.add<IInvitesNewSeats>(
+    `${API_PATH}/invites/count_new_seats`,
     { invites: object }
   );
   await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/invites`] });
   return response;
 }
 
-export async function bulkInviteXLSX(object: INewBulkXLSXInviteXLSX) {
-  const response = await streams.add<IInvites>(
-    `${API_PATH}/invites/bulk_create_xlsx`,
+export async function bulkInviteCountNewSeatsXLSX(
+  object: INewBulkXLSXInviteXLSX
+) {
+  const response = await streams.add<IInvitesNewSeats>(
+    `${API_PATH}/invites/count_new_seats_xlsx`,
     { invites: object }
   );
   await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/invites`] });
