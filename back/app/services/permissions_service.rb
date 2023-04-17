@@ -156,13 +156,13 @@ class PermissionsService
       requirements[:special][:confirmation] = 'require'
     end
 
-    users = everyone.deep_dup.tap do |users|
-      users[:built_in][:first_name] = 'require'
-      users[:built_in][:last_name] = 'require'
-      users[:built_in][:email] = 'require'
-      users[:custom_fields].transform_values! { |requirement| requirement == 'dont_ask' ? 'ask' : requirement }
-      users[:special][:password] = 'require'
-      users[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
+    users = everyone.deep_dup.tap do |requirements|
+      requirements[:built_in][:first_name] = 'require'
+      requirements[:built_in][:last_name] = 'require'
+      requirements[:built_in][:email] = 'require'
+      requirements[:custom_fields].transform_values! { |requirement| requirement == 'dont_ask' ? 'ask' : requirement }
+      requirements[:special][:password] = 'require'
+      requirements[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
     end
 
     case permission.permitted_by
@@ -170,11 +170,7 @@ class PermissionsService
       everyone
     when 'everyone_confirmed_email'
       everyone_confirmed_email
-    when 'users'
-      users
-    when 'groups'
-      users
-    when 'admins_moderators'
+    else # users | groups | admins_moderators'
       users
     end
   end
