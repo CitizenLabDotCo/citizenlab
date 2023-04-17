@@ -10,6 +10,7 @@ import QualtricsSurvey from './QualtricsSurvey';
 import SmartSurvey from './SmartSurvey';
 import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
 import SnapSurvey from './SnapSurvey';
+import KonveioSurvey from './KonveioSurvey';
 import Warning from 'components/UI/Warning';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
@@ -185,6 +186,13 @@ const Survey = ({
 
           {surveyService === 'snap_survey' && (
             <SnapSurvey snapSurveyUrl={surveyEmbedUrl} />
+          )}
+
+          {surveyService === 'konveio' && (
+            <KonveioSurvey
+              konveioSurveyUrl={surveyEmbedUrl}
+              email={email || null}
+            />
           )}
         </Container>
       );

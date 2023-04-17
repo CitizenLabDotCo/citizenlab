@@ -113,6 +113,10 @@ AppConfiguration.create!(
       enabled: true,
       allowed: true
     },
+    konveio_surveys: {
+      enabled: true,
+      allowed: true
+    },
     volunteering: {
       enabled: true,
       allowed: true
