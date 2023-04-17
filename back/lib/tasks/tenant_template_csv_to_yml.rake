@@ -10,8 +10,9 @@ require 'redcarpet'
 namespace :tenant_template do
   desc 'Converts tenant templates from csv files to a yml file, working in the specified folder'
   task :csv_to_yml, %i[path locale] => [:environment] do |_t, args|
-    locales = args[:locale].split ' '
-    yml_base = YAML.load_file('config/tenant_templates/base.yml')
+    locales = args[:locale].split
+    template_path = Rails.root.join('config/tenant_templates/base.yml')
+    yml_base = YAML.load(File.read(template_path)) # rubocop:disable Security/YAMLLoad
 
     users_hash           = {}
     topics_hash          = {}

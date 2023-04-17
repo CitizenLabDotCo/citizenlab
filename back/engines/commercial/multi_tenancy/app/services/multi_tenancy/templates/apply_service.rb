@@ -95,7 +95,7 @@ module MultiTenancy
 
       def fetch_internal_template_models(template_name)
         template_path = internal_template_dir.join("#{template_name}.yml")
-        YAML.load_file(template_path)
+        YAML.load(File.read(template_path))
       end
 
       def fetch_external_template_models(template_prefix)
