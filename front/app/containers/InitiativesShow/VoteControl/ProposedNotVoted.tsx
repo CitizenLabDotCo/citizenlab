@@ -5,7 +5,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import { StatusExplanation } from './SharedStyles';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
 import CountDown from './CountDown';

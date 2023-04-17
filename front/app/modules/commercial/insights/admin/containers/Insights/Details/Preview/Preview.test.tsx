@@ -19,7 +19,7 @@ const defaultProps = {
   previewedInputId: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
 };
 
-let mockInputData: { data: typeof inputs[0] } | undefined = {
+let mockInputData: { data: (typeof inputs)[0] } | undefined = {
   data: inputs[0],
 };
 

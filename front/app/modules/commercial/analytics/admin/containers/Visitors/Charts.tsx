@@ -21,7 +21,7 @@ import {
 type Props = ProjectId & Dates & Resolution;
 
 const Charts = (props: Props) => {
-  const smallerThanSmallDesktop = useBreakpoint('smallDesktop');
+  const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
 
   return (
     <>
@@ -31,13 +31,13 @@ const Charts = (props: Props) => {
         <Box width="50%">
           <RegistrationsCard
             {...props}
-            layout={smallerThanSmallDesktop ? 'narrow' : 'wide'}
+            layout={isSmallerThanSmallDesktop ? 'narrow' : 'wide'}
           />
         </Box>
         <Box width="50%">
           <ActiveUsersCard
             {...props}
-            layout={smallerThanSmallDesktop ? 'narrow' : 'wide'}
+            layout={isSmallerThanSmallDesktop ? 'narrow' : 'wide'}
           />
         </Box>
       </Box>

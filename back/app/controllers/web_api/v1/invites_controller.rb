@@ -67,41 +67,32 @@ class WebApi::V1::InvitesController < ApplicationController
 
   def bulk_create
     authorize :invite
-    InvitesService.new.bulk_create(
+    Invites::Service.new.bulk_create(
       bulk_create_params[:emails].map { |e| { 'email' => e } },
       bulk_create_params.except(:emails).stringify_keys,
       current_user
     )
     head :ok
-  rescue InvitesService::InvitesFailedError => e
+  rescue Invites::FailedError => e
     render json: { errors: e.to_h }, status: :unprocessable_entity
   end
 
   def bulk_create_xlsx
     authorize :invite
 
-    # Strip out data;...base64 prefix if it's there
-    start = bulk_create_xlsx_params[:xlsx].index(';base64,')
-    pure_base64 = if start
-      bulk_create_xlsx_params[:xlsx][(start + 8)..]
-    else
-      bulk_create_xlsx_params[:xlsx]
-    end
-
-    xlsx = StringIO.new(Base64.decode64(pure_base64))
-    InvitesService.new.bulk_create_xlsx(
-      xlsx,
+    Invites::Service.new.bulk_create_xlsx(
+      bulk_create_xlsx_params[:xlsx],
       bulk_create_params.except(:xlsx).stringify_keys,
       current_user
     )
     head :ok
-  rescue InvitesService::InvitesFailedError => e
+  rescue Invites::FailedError => e
     render json: { errors: e.to_h }, status: :unprocessable_entity
   end
 
   def example_xlsx
     authorize :invite
-    xlsx = InvitesService.new.generate_example_xlsx
+    xlsx = Invites::Service.new.generate_example_xlsx
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'invites.xlsx'
   end
 

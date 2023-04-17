@@ -108,6 +108,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            permissions_custom_fields: {
+              enabled: true,
+              allowed: true
+            },
             representativeness: {
               enabled: true,
               allowed: true
@@ -121,14 +125,6 @@ module MultiTenancy
               allowed: true
             },
             custom_idea_statuses: {
-              enabled: true,
-              allowed: true
-            },
-            idea_custom_fields: {
-              enabled: true,
-              allowed: true
-            },
-            dynamic_idea_form: {
               enabled: true,
               allowed: true
             },

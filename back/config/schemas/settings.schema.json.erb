@@ -53,9 +53,9 @@
           "timezone": {
             "title": "Time Zone",
             "type": "string",
-            "default": "Brussels",
-            "enum": [<%= ActiveSupport::TimeZone.all.sort_by{|tz| TimezoneService.new.display_timezone(tz)}.map(&:name).map{|l| "\"#{l}\""}.join(",") %>],
-            "enumNames": [<%= ActiveSupport::TimeZone.all.map{|tz| TimezoneService.new.display_timezone(tz)}.sort.map{|l| "\"#{l}\""}.join(",") %>]
+            "default": "Europe/Brussels",
+            "enum": [<%= TimezoneService::SUPPORTED_TIMEZONES.map{|l| "\"#{l}\""}.join(",") %>],
+            "enumNames": [<%= TimezoneService::SUPPORTED_TIMEZONES.map{|tz| TimezoneService.new.display_timezone(tz)}.map{|l| "\"#{l}\""}.join(",") %>]
           },
           "currency": {
             "title": "Currency",
@@ -212,18 +212,6 @@
             "minimum": 0,
             "default": 90
           }
-        }
-      },
-
-      "dynamic_idea_form": {
-        "type": "object",
-        "title": "Dynamic idea form",
-        "description": "Changes the idea form from the hard-coded version to the generated version.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
         }
       },
 
@@ -1119,6 +1107,18 @@
         "type": "object",
         "title": "Registration via email confirmation",
         "description": "Enables a light registration flow where users enter just an email address and a confirmation code.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "permissions_custom_fields": {
+        "type": "object",
+        "title": "Permission custom fields on project actions",
+        "description": "Enables the option for admins to add custom questions to project action permissions.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

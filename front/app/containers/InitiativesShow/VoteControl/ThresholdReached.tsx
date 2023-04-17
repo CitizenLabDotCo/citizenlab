@@ -3,7 +3,7 @@ import styled, { withTheme } from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // services
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
 // components

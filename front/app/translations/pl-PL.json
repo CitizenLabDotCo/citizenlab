@@ -534,6 +534,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "nasze wytyczne",
   "app.components.form.ErrorDisplay.next": "Następny",
   "app.components.form.ErrorDisplay.previous": "Poprzedni",
+  "app.components.form.ErrorDisplay.save": "Zapisz",
   "app.components.form.ErrorDisplay.submitSurvey": "Prześlij ankietę",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Zacznij pisać, aby znaleźć e-mail lub użytkownika...",
   "app.components.form.blockedVerified": "Nie możesz edytować tego pola, ponieważ zawiera ono zweryfikowane informacje",

@@ -8,7 +8,7 @@ describe ActivitiesService do
   describe '#create_periodic_activities' do
     it 'logs phase started activity when a new phase starts (in the application timezone)' do
       start_at = Date.parse '2019-03-20'
-      timezone = 'Kamchatka'
+      timezone = 'Asia/Kamchatka'
       phase = create(:phase, start_at: start_at, end_at: (start_at + 1.week))
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = timezone
@@ -22,7 +22,7 @@ describe ActivitiesService do
 
     it "doesn't log phase started activity when no new phase starts (in the application timezone)" do
       start_at = Date.parse '2019-03-20'
-      timezone = 'Kamchatka'
+      timezone = 'Asia/Kamchatka'
       phase = create(:phase, start_at: start_at, end_at: (start_at + 1.week))
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = timezone
@@ -35,7 +35,7 @@ describe ActivitiesService do
 
     it 'logs phase upcoming activity when a new phase starts in a week (in the application timezone)' do
       start_at = Date.parse '2019-03-20'
-      timezone = 'Kamchatka'
+      timezone = 'Asia/Kamchatka'
       phase = create(:phase, start_at: start_at, end_at: (start_at + 1.week))
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = timezone
@@ -49,7 +49,7 @@ describe ActivitiesService do
 
     it "doesn't log phase upcoming activity when no new phase starts in a week (in the application timezone)" do
       start_at = Date.parse '2019-03-20'
-      timezone = 'Kamchatka'
+      timezone = 'Asia/Kamchatka'
       phase = create(:phase, start_at: start_at, end_at: (start_at + 1.week))
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = timezone
@@ -62,7 +62,7 @@ describe ActivitiesService do
 
     it 'logs invite not accepted since 3 days activity when an invite was not accepted since (in the application timezone)' do
       created_at = Time.parse '2019-03-22 10:50:00 +0000'
-      timezone = 'Kamchatka'
+      timezone = 'Asia/Kamchatka'
       invite = create(:invite, created_at: created_at)
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = timezone
@@ -75,7 +75,7 @@ describe ActivitiesService do
 
     it "doesn't log accepted since 3 days activity when no invite wasn't accepted since (in the application timezone)" do
       created_at = Time.parse '2019-03-22 10:50:00 +0000'
-      timezone = 'Kamchatka'
+      timezone = 'Asia/Kamchatka'
       invite = create(:invite, created_at: created_at)
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = timezone

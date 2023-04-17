@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
-import { get } from 'lodash-es';
 
 // react hook form
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
@@ -93,7 +92,7 @@ const ConfigSelectWithLocaleSwitcher = ({
   };
 
   const defaultOptionValues = [{}];
-  const errors = get(formContextErrors, name) as RHFErrors;
+  const errors = formContextErrors[name] as RHFErrors;
   const apiError = errors?.error && ([errors] as CLError[]);
   const validationError = errors?.message;
 

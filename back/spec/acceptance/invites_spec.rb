@@ -120,7 +120,7 @@ resource 'Invites' do
         parameter :invite_text, 'Optional text that will be included in the outgoing e-mail to the invitee. Supports limited HTML', required: false
       end
       with_options scope: :errors do
-        response_field 'error', "One of #{InvitesService::INVITE_ERRORS.except(:unparseable_excel, :malformed_admin_value, :malformed_groups_value).values.join(', ')}"
+        response_field 'error', "One of #{Invites::ErrorStorage::INVITE_ERRORS.except(:unparseable_excel, :malformed_admin_value, :malformed_groups_value).values.join(', ')}"
         response_field 'row', 'The index of the emails value that caused the error, starting from 0'
         response_field 'rows', 'The indexes of the emails that caused the errors, if applicable'
         response_field 'value', 'The value that caused the error, if applicable'
@@ -183,7 +183,7 @@ resource 'Invites' do
       end
 
       with_options scope: :errors do
-        response_field 'error', "One of #{InvitesService::INVITE_ERRORS.values.join(', ')}"
+        response_field 'error', "One of #{Invites::ErrorStorage::INVITE_ERRORS.values.join(', ')}"
         response_field 'row', 'The row number of the error, if applicable'
         response_field 'rows', 'The row numbers of the error, if applicable'
         response_field 'value', 'The value that appeared in the excel file and caused the error, if applicable'
@@ -289,7 +289,7 @@ resource 'Invites' do
         boulettos = json_response[:included].select { |inc| inc[:id] == invite.invitee.id }&.first
         expect(boulettos&.dig(:attributes, :last_name)).to eq('Boulettos')
         expect(boulettos&.dig(:attributes, :invite_status)).to eq('accepted')
-        expect(invite.reload.invitee.registration_completed_at).to be_nil # when no custom fields
+        expect(invite.reload.invitee.registration_completed_at).not_to be_nil
       end
 
       describe do

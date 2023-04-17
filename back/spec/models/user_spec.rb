@@ -664,6 +664,12 @@ RSpec.describe User, type: :model do
         expect(u.registration_completed_at).to be_nil
       end
 
+      it 'is set when an invited user is accepted' do
+        u = create(:invited_user)
+        u.update!(invite_status: 'accepted')
+        expect(u.registration_completed_at).not_to be_nil
+      end
+
       it 'is set to the value provided if a value is provided in update' do
         reg_date = Time.now
         u = create(:user)
@@ -685,6 +691,12 @@ RSpec.describe User, type: :model do
       it 'is set when a user is confirmed' do
         u = create(:user_with_confirmation)
         u.confirm!
+        expect(u.registration_completed_at).not_to be_nil
+      end
+
+      it 'is set when an invited user accepts the invite' do
+        u = create(:invited_user)
+        u.update!(invite_status: 'accepted')
         expect(u.registration_completed_at).not_to be_nil
       end
     end
