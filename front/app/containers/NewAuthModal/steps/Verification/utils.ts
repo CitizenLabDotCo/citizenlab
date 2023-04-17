@@ -2,7 +2,6 @@ import {
   AuthenticationContext,
   ProjectContext,
 } from 'api/authentication/authentication_requirements/types';
-import eventEmitter from 'utils/eventEmitter';
 
 // search for verification_error in back to find these
 type BosaFasVerificationError = 'taken' | 'no_token_passed';
@@ -67,16 +66,3 @@ export function isProjectContext(
 ): obj is ProjectContext {
   return (obj as ProjectContext)?.id !== undefined;
 }
-
-export function closeVerificationModal() {
-  eventEmitter.emit(VerificationModalEvents.close);
-}
-
-export const openVerificationModal$ =
-  eventEmitter.observeEvent<OpenVerificationModalData>(
-    VerificationModalEvents.open
-  );
-
-export const closeVerificationModal$ = eventEmitter.observeEvent(
-  VerificationModalEvents.close
-);

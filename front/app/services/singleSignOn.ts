@@ -5,7 +5,7 @@ import {
 } from 'containers/NewAuthModal/typings';
 import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
-import { isProjectContext } from 'events/verificationModal';
+import { isProjectContext } from 'containers/NewAuthModal/steps/Verification/utils';
 
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';

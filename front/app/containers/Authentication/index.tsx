@@ -2,7 +2,6 @@ import React from 'react';
 
 import { TAuthUser } from 'hooks/useAuthUser';
 import SignUpIn from './SignUpIn';
-import VerificationModal from './VerificationModal';
 
 interface Props {
   authUser: TAuthUser;
@@ -16,7 +15,6 @@ const Authentication = ({ authUser, onModalOpenedStateChange }: Props) => {
         authUser={authUser}
         onModalOpenedStateChange={onModalOpenedStateChange}
       />
-      <VerificationModal />
     </>
   );
 };

@@ -23,7 +23,7 @@ import { IdeaCellComponentProps } from 'components/admin/PostManager/components/
 import { IResolution } from 'components/admin/ResolutionControl';
 import { AuthProvider } from 'containers/NewAuthModal/steps/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
-import { TVerificationStep } from 'events/verificationModal';
+import { TVerificationStep } from 'containers/NewAuthModal/steps/Verification/utils';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar';
 import { LatLngTuple } from 'leaflet';

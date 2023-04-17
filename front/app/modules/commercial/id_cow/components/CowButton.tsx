@@ -4,7 +4,7 @@ import React from 'react';
 import { TVerificationMethod } from 'services/verificationMethods';
 
 // components
-import VerificationMethodButton from 'containers/Authentication/VerificationModal/VerificationMethodButton';
+import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

@@ -15,7 +15,7 @@ import styled from 'styled-components';
 // typings
 import { TVerificationMethod } from 'services/verificationMethods';
 import { isNilOrError } from 'utils/helperUtils';
-import { TVerificationStep } from 'events/verificationModal';
+import { TVerificationStep } from 'containers/NewAuthModal/steps/Verification/utils';
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';

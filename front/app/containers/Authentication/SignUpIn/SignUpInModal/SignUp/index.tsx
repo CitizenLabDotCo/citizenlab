@@ -16,7 +16,6 @@ import Success from './Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { StyledModalContentContainer } from '../styles';
-import VerificationSignUpStep from './VerificationSignUpStep';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -37,7 +36,6 @@ import {
 
 // events
 import { signUpActiveStepChange } from '../events';
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -274,13 +272,6 @@ const SignUp = ({
     ? formatMessage(activeStepConfiguration.stepDescriptionMessage)
     : '';
 
-  const handleSkipVerification = () => {
-    triggerAuthenticationFlow({
-      ...metaData,
-    });
-    onCompleteActiveStep();
-  };
-
   return (
     <Container id="e2e-sign-up-container" className={className ?? ''}>
       {activeStep !== 'success' && (
@@ -339,15 +330,6 @@ const SignUp = ({
 
             {activeStep === 'confirmation' && userConfirmation && (
               <ConfirmationSignupStep onCompleted={onCompleteActiveStep} />
-            )}
-
-            {activeStep === 'verification' && (
-              <VerificationSignUpStep
-                metaData={metaData}
-                onError={handleStepError}
-                onSkipped={handleSkipVerification}
-                onCompleted={onCompleteActiveStep}
-              />
             )}
 
             {activeStep === 'custom-fields' && (
