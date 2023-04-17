@@ -19,6 +19,7 @@ import {
 } from '../../typings';
 import { Step } from './typings';
 import { Locale } from 'typings';
+import { askCustomFields, requiredCustomFields } from './utils';
 
 export const newLightFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -85,8 +86,10 @@ export const newLightFlow = (
         setStatus('pending');
         const authenticationData = getAuthenticationData();
         const { requirements } = await getRequirements();
+
         const verificationRequired =
           requirements.special.verification === 'require';
+
         handleOnSSOClick('google', authenticationData, verificationRequired);
       },
     },
@@ -97,8 +100,10 @@ export const newLightFlow = (
         setStatus('pending');
         const authenticationData = getAuthenticationData();
         const { requirements } = await getRequirements();
+
         const verificationRequired =
           requirements.special.verification === 'require';
+
         handleOnSSOClick('facebook', authenticationData, verificationRequired);
       },
     },
@@ -109,8 +114,10 @@ export const newLightFlow = (
         setStatus('pending');
         const authenticationData = getAuthenticationData();
         const { requirements } = await getRequirements();
+
         const verificationRequired =
           requirements.special.verification === 'require';
+
         handleOnSSOClick(
           'azureactivedirectory',
           authenticationData,
@@ -125,8 +132,10 @@ export const newLightFlow = (
         setStatus('pending');
         const authenticationData = getAuthenticationData();
         const { requirements } = await getRequirements();
+
         const verificationRequired =
           requirements.special.verification === 'require';
+
         handleOnSSOClick(
           'franceconnect',
           authenticationData,
@@ -152,7 +161,15 @@ export const newLightFlow = (
 
         try {
           await confirmEmail({ code });
+
+          const { requirements } = await getRequirements();
           setStatus('ok');
+
+          if (askCustomFields(requirements.custom_fields)) {
+            setCurrentStep('sign-up:custom-fields');
+            return;
+          }
+
           setCurrentStep('success');
         } catch (e) {
           setStatus('error');
@@ -180,19 +197,24 @@ export const newLightFlow = (
           await signIn({ email, password, rememberMe, tokenLifetime });
 
           const { requirements } = await getRequirements();
+          setStatus('ok');
 
           if (requirements.special.confirmation === 'require') {
-            setCurrentStep('light-flow:email-confirmation');
-          } else {
-            setCurrentStep('closed');
-
-            const { successAction } = getAuthenticationData();
-            if (successAction) {
-              triggerSuccessAction(successAction);
-            }
+            setCurrentStep('sign-in:email-confirmation');
+            return;
           }
 
-          setStatus('ok');
+          if (requiredCustomFields(requirements.custom_fields)) {
+            setCurrentStep('sign-in:custom-fields');
+            return;
+          }
+
+          setCurrentStep('closed');
+
+          const { successAction } = getAuthenticationData();
+          if (successAction) {
+            triggerSuccessAction(successAction);
+          }
         } catch {
           setStatus('error');
           setError('wrong_password');

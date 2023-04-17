@@ -67,6 +67,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'light-flow:france-connect-login': messages.beforeYouParticipate,
   'light-flow:email-confirmation': messages.confirmYourEmail,
   'light-flow:password': messages.logIn,
+  'light-flow:custom-fields': messages.logIn,
 
   // verification only
   'verification-only': messages.verifyYourIdentity,

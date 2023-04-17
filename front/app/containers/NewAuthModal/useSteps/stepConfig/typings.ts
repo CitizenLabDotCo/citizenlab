@@ -28,8 +28,6 @@ export type Step =
   | 'light-flow:france-connect-login'
   | 'light-flow:email-confirmation'
   | 'light-flow:password'
-  | 'light-flow:verification'
-  | 'light-flow:custom-fields'
 
   // verification only (for onboarding and re-verification)
   | 'verification-only'
