@@ -146,31 +146,73 @@ export function userJsonFormSchemasStream(
   });
 }
 
-export function addCustomFieldForUsers(data) {
-  return streams.add<IUserCustomField>(`${API_PATH}/users/custom_fields`, {
-    custom_field: data,
+export async function addCustomFieldForUsers(data) {
+  const response = await streams.add<IUserCustomField>(
+    `${API_PATH}/users/custom_fields`,
+    {
+      custom_field: data,
+    }
+  );
+
+  await streams.fetchAllWith({
+    apiEndpoint: [
+      userCustomFieldsSchemaApiEndpoint,
+      userCustomFieldsJSONSchemaApiEndpoint,
+    ],
   });
+
+  return response;
 }
 
-export function updateCustomFieldForUsers(customFieldId: string, object) {
-  return streams.update<IUserCustomField>(
+export async function updateCustomFieldForUsers(customFieldId: string, object) {
+  const response = await streams.update<IUserCustomField>(
     `${API_PATH}/users/custom_fields/${customFieldId}`,
     customFieldId,
     { custom_field: object }
   );
+
+  await streams.fetchAllWith({
+    apiEndpoint: [
+      userCustomFieldsSchemaApiEndpoint,
+      userCustomFieldsJSONSchemaApiEndpoint,
+    ],
+  });
+
+  return response;
 }
 
-export function reorderCustomFieldForUsers(customFieldId: string, object) {
-  return streams.update<IUserCustomField>(
+export async function reorderCustomFieldForUsers(
+  customFieldId: string,
+  object
+) {
+  const response = await streams.update<IUserCustomField>(
     `${API_PATH}/users/custom_fields/${customFieldId}/reorder`,
     customFieldId,
     { custom_field: object }
   );
+
+  await streams.fetchAllWith({
+    apiEndpoint: [
+      userCustomFieldsSchemaApiEndpoint,
+      userCustomFieldsJSONSchemaApiEndpoint,
+    ],
+  });
+
+  return response;
 }
 
-export function deleteUserCustomField(customFieldId: string) {
-  return streams.delete(
+export async function deleteUserCustomField(customFieldId: string) {
+  const response = await streams.delete(
     `${API_PATH}/users/custom_fields/${customFieldId}`,
     customFieldId
   );
+
+  await streams.fetchAllWith({
+    apiEndpoint: [
+      userCustomFieldsSchemaApiEndpoint,
+      userCustomFieldsJSONSchemaApiEndpoint,
+    ],
+  });
+
+  return response;
 }

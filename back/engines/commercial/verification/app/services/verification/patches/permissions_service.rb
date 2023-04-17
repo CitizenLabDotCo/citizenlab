@@ -15,7 +15,7 @@ module Verification
 
       private
 
-      def requirements_mapping(permission)
+      def base_requirements(permission)
         requirements = super
         if VerificationService.new.find_verification_group(permission.groups)
           requirements['groups'][:special][:verification] = 'require'
