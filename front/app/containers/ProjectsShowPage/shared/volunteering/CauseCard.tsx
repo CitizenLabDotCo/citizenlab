@@ -2,6 +2,8 @@ import React, { useCallback } from 'react';
 
 // services
 import { ICauseData } from 'api/causes/types';
+import getAuthenticationRequirements from 'api/authentication_requirements/getAuthenticationRequirements';
+import { GLOBAL_CONTEXT } from 'api/authentication_requirements/types';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -17,7 +19,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
 // utils
-import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
+import { isEmptyMultiloc } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
@@ -197,14 +199,14 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
     params: { cause },
   } as const;
 
-  const handleOnVolunteerButtonClick = () => {
-    if (
-      !isNilOrError(authUser) &&
-      !authUser.attributes.registration_completed_at
-    ) {
-      triggerAuthenticationFlow({ successAction });
-    } else {
+  const handleOnVolunteerButtonClick = async () => {
+    const response = await getAuthenticationRequirements(GLOBAL_CONTEXT);
+    const { requirements } = response.data.attributes;
+
+    if (requirements.permitted) {
       volunteer();
+    } else {
+      triggerAuthenticationFlow({ successAction });
     }
   };
 
