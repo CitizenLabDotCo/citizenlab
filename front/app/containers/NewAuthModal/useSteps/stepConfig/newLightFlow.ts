@@ -90,7 +90,11 @@ export const newLightFlow = (
         const verificationRequired =
           requirements.special.verification === 'require';
 
-        handleOnSSOClick('google', authenticationData, verificationRequired);
+        handleOnSSOClick(
+          'google',
+          { ...authenticationData, flow: 'signin' },
+          verificationRequired
+        );
       },
     },
 
@@ -104,7 +108,11 @@ export const newLightFlow = (
         const verificationRequired =
           requirements.special.verification === 'require';
 
-        handleOnSSOClick('facebook', authenticationData, verificationRequired);
+        handleOnSSOClick(
+          'facebook',
+          { ...authenticationData, flow: 'signin' },
+          verificationRequired
+        );
       },
     },
 
@@ -120,7 +128,7 @@ export const newLightFlow = (
 
         handleOnSSOClick(
           'azureactivedirectory',
-          authenticationData,
+          { ...authenticationData, flow: 'signin' },
           verificationRequired
         );
       },
@@ -138,7 +146,7 @@ export const newLightFlow = (
 
         handleOnSSOClick(
           'franceconnect',
-          authenticationData,
+          { ...authenticationData, flow: 'signin' },
           verificationRequired
         );
       },

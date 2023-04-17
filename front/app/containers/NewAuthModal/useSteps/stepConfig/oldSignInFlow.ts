@@ -50,9 +50,10 @@ export const oldSignInFlow = (
         const { requirements } = await getRequirements();
         const verificationRequired =
           requirements.special.verification === 'require';
+
         handleOnSSOClick(
           authProvider,
-          getAuthenticationData(),
+          { ...getAuthenticationData(), flow: 'signin' },
           verificationRequired
         );
       },
