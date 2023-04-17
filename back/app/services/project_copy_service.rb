@@ -2,7 +2,7 @@
 
 class ProjectCopyService < ::TemplateService
   def import(template, folder: nil, local_copy: false)
-    same_template = template_utils.translate_and_fix_locales(template)
+    same_template = MultiTenancy::Templates::Utils.translate_and_fix_locales(template)
 
     created_objects_ids = ActiveRecord::Base.transaction do
       tenant_template_service.resolve_and_apply_template same_template, validate: false, local_copy: local_copy
@@ -83,10 +83,6 @@ class ProjectCopyService < ::TemplateService
     @tenant_template_service ||= MultiTenancy::Templates::TenantDeserializer.new(
       save_temp_remote_urls: false
     )
-  end
-
-  def template_utils
-    @template_utils ||= ::MultiTenancy::Templates::Utils.new
   end
 
   def yml_content_builder_layouts(shift_timestamps: 0)

@@ -26,13 +26,13 @@ module MultiTenancy
       end
 
       def apply_internal_template(template_name)
-        serialized_models = fetch_internal_template_models(template_name)
+        serialized_models = template_utils.fetch_internal_template_models(template_name)
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(serialized_models)
       end
 
       def apply_external_template(template_name, prefix: 'release')
         template_prefix = template_utils.template_prefix(template_name, prefix: prefix)
-        template_models = fetch_external_template_models(template_prefix)
+        template_models = template_utils.fetch_external_template_models(template_prefix)
 
         model_id_mapping = generate_model_identifiers!(template_models)
         copy_s3_files(template_prefix, Tenant.current.id, model_id_mapping)
@@ -58,7 +58,12 @@ module MultiTenancy
       end
 
       def template_utils
-        @template_utils ||= MultiTenancy::Templates::Utils.new
+        @template_utils ||= MultiTenancy::Templates::Utils.new(
+          internal_template_dir: internal_template_dir,
+          tenant_bucket: tenant_bucket,
+          template_bucket: template_bucket,
+          s3_client: @s3_client
+        )
       end
 
       def transform_key(key, tenant_id, model_id_mapping)
@@ -91,18 +96,6 @@ module MultiTenancy
         end
 
         id_mapping
-      end
-
-      def fetch_internal_template_models(template_name)
-        template_path = internal_template_dir.join("#{template_name}.yml")
-        YAML.load(File.read(template_path))
-      end
-
-      def fetch_external_template_models(template_prefix)
-        key = "#{template_prefix}/models.yml"
-        content = @s3_client.get_object(bucket: template_bucket, key: key).body.read
-        # We have to use YAML.load because templates use yaml aliases.
-        YAML.load(content) # rubocop:disable Security/YAMLLoad
       end
     end
   end

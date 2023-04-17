@@ -125,7 +125,7 @@ namespace :templates do
     template_path = Rails.root.join('config/tenant_templates', "#{args[:template_name]}.yml")
     serialized_models = YAML.load(File.read(template_path))
 
-    serialized_models = MultiTenancy::Templates::Utils.new.change_locales(
+    serialized_models = MultiTenancy::Templates::Utils.change_locales(
       serialized_models,
       args[:locale_from],
       args[:locale_to]
