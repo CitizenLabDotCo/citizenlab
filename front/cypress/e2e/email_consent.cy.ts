@@ -1,4 +1,4 @@
-describe.skip('email consent', () => {
+describe('email consent', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/messaging/emails/custom/new');
@@ -7,16 +7,30 @@ describe.skip('email consent', () => {
 
   it('lets admins create a custom email, this email contains a link to unsubscribe and turns off subscription', () => {
     // creates a custom email
-    cy.get('.e2e-campaign_subject_multiloc')
-      .find('input')
-      .first()
-      .type('Test subject');
-    cy.get('.e2e-campaign_body_multiloc')
-      .find('.ql-editor')
-      .first()
-      .type('Test content');
-    cy.get('.e2e-submit-wrapper-button').find('button').click();
-    cy.wait(1000);
+
+    cy.get('#e2e-reply-to-input').type('test@test.com');
+
+    cy.get('.e2e-campaign_subject_multiloc .e2e-localeswitcher').each(
+      (button) => {
+        // input
+        cy.wrap(button).click();
+        cy.get('.e2e-campaign_subject_multiloc')
+          .find('input')
+          .first()
+          .type('Test subject');
+      }
+    );
+
+    cy.get('.e2e-campaign_body_multiloc .e2e-localeswitcher').each((button) => {
+      // input
+      cy.wrap(button).click();
+      cy.get('.e2e-campaign_body_multiloc')
+        .find('.ql-editor')
+        .first()
+        .type('Test content');
+    });
+
+    cy.get('#e2e-campaign-form-save-button').click();
     cy.get('#e2e-custom-email-container');
     cy.get('#e2e-custom-email-container iframe');
 

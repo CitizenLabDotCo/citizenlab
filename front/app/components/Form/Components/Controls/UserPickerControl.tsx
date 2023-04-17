@@ -62,8 +62,8 @@ const UserPickerControl = ({
       <UserSelect
         id={id}
         inputId={sanitizeForClassname(id)}
-        value={data}
-        onChange={(val) => handleChange(path, val)}
+        selectedUserId={data}
+        onChange={(userOption) => handleChange(path, userOption?.id)}
         placeholder={formatMessage(messages.userPickerPlaceholder)}
       />
       <ErrorDisplay ajvErrors={errors} fieldPath={path} />

@@ -231,3 +231,11 @@ es:
       copy_paste_the_link_below: "Copia y pega el siguiente código en tu formulario de registro."
       the_link_is_valid_for: "El enlace será valido durante 24 horas. Si el enlace ha caducado puedes <a href=\"%{link}\">solicitar un nuevo código</a>."
       did_you_receive_this_email_in_error: "Si recibiste este correo electrónico por error <a href=\"%{link}\">Agradecemos nos puedas avisar</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Su cuenta ha sido desactivada temporalmente'
+      title_user_blocked: 'Su cuenta ha sido desactivada temporalmente'
+      paragraph_1_without_reason: "Su cuenta en la plataforma de participación de %{organizationName} ha sido desactivada temporalmente por violación de las directrices comunitarias."
+      paragraph_1_with_reason: "Su cuenta en la plataforma de participación de %{organizationName} ha sido desactivada temporalmente por el siguiente motivo:"
+      for_more_information: "Para más información al respecto, puede consultar la página %{termsAndConditionsPage}."
+      you_can_sign_in_again_from: "Puedes acceder de nuevo desde %{date}"

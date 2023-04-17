@@ -35,7 +35,7 @@ describe BasketPolicy do
   end
 
   context 'for blocked basket owner' do
-    let(:user) { create(:user, block_start_at: Time.now) }
+    let(:user) { create(:user, block_end_at: 5.days.from_now) }
     let(:basket) { create(:basket, user: user, participation_context: create(:continuous_budgeting_project)) }
 
     it_behaves_like 'policy for blocked user', show: false

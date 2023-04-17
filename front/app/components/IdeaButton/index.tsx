@@ -340,6 +340,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
                   onClick={onClick}
                   disabled={!enabled}
                   ariaDisabled={false}
+                  id="e2e-idea-button"
                 >
                   <FormattedMessage {...buttonMessage} />
                 </Button>

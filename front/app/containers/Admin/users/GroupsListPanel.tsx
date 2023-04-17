@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
@@ -9,6 +9,10 @@ import { Subscription } from 'rxjs';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetUserCount, { GetUserCountChildProps } from 'resources/GetUserCount';
 import { IGroupData } from 'services/groups';
+
+// hooks
+import useBlockedUsercount from 'api/blocked_users/useBlockedUsersCount';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Events
 import eventEmitter from 'utils/eventEmitter';
@@ -160,116 +164,123 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-export interface State {
-  highlightedGroups: Set<IGroupData['id']>;
-}
+export const GroupsListPanel = ({
+  onCreateGroup,
+  className,
+  usercount,
+  groups: { groupsList },
+}: Props) => {
+  const [highlightedGroups, setHighlightedGroups] = useState(
+    new Set<IGroupData['id']>()
+  );
+  const { data: blockedUsercount } = useBlockedUsercount();
+  const isUserBlockingEnabled = useFeatureFlag({
+    name: 'user_blocking',
+  });
 
-export class GroupsListPanel extends React.PureComponent<Props, State> {
-  subs: Subscription[] = [];
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      highlightedGroups: new Set([]),
-    };
-  }
-
-  componentDidMount() {
-    this.subs.push(
+  useEffect(() => {
+    const subs: Subscription[] = [];
+    subs.push(
       eventEmitter
         .observeEvent<MembershipAdd>(events.membershipAdd)
         .subscribe(({ eventValue: { groupsIds } }) => {
-          this.setState({ highlightedGroups: new Set(groupsIds) });
-          setTimeout(this.removeHighlights, 3000);
+          setHighlightedGroups(new Set(groupsIds));
+          setTimeout(removeHighlights, 3000);
         })
     );
-  }
 
-  componentWillUnmount() {
-    this.subs.forEach((sub) => sub.unsubscribe());
-  }
+    return subs.forEach((sub) => sub.unsubscribe());
+  }, []);
 
-  removeHighlights = () => {
-    this.setState({ highlightedGroups: new Set([]) });
+  const removeHighlights = () => {
+    setHighlightedGroups(new Set([]));
   };
 
-  handleCreateGroup = (event) => {
+  const handleCreateGroup = (event) => {
     event.preventDefault();
     trackEventByName(tracks.createGroup.name);
-    this.props.onCreateGroup();
+    onCreateGroup();
   };
 
-  render() {
-    const {
-      usercount,
-      groups: { groupsList },
-    } = this.props;
-    const { highlightedGroups } = this.state;
-
-    return (
-      <Container className={this.props.className}>
-        <MenuLink to="/admin/users" onlyActiveOnIndex>
+  return (
+    <Container className={className}>
+      <MenuLink to="/admin/users" onlyActiveOnIndex>
+        <GroupName>
+          <FormattedMessage {...messages.allUsers} />
+        </GroupName>
+        <MembersCount>{usercount.count}</MembersCount>
+      </MenuLink>
+      <MenuLink to="/admin/users/admins-managers">
+        <GroupName>
+          <FormattedMessage {...messages.adminsAndManagers} />
+        </GroupName>
+        {usercount.administrators_count !== null &&
+          usercount.managers_count !== null && (
+            <MembersCount data-cy="e2e-admin-and-moderator-count">
+              {usercount.administrators_count + usercount.managers_count}
+            </MembersCount>
+          )}
+      </MenuLink>
+      {isUserBlockingEnabled && (
+        <MenuLink
+          to="/admin/users/blocked"
+          data-testid="blocked-users-link"
+          onlyActiveOnIndex
+        >
           <GroupName>
-            <FormattedMessage {...messages.allUsers} />
+            <FormattedMessage {...messages.blockedUsers} />
           </GroupName>
-          <MembersCount>{usercount.count}</MembersCount>
+          {!isNilOrError(blockedUsercount) && (
+            <MembersCount>
+              {blockedUsercount.data.attributes.count}
+            </MembersCount>
+          )}
         </MenuLink>
-        <MenuLink to="/admin/users/admins-managers">
-          <GroupName>
-            <FormattedMessage {...messages.adminsAndManagers} />
-          </GroupName>
-          {usercount.administrators_count !== null &&
-            usercount.managers_count !== null && (
-              <MembersCount>
-                {usercount.administrators_count + usercount.managers_count}
+      )}
+      <Separator />
+      <MenuTitle>
+        <FormattedMessage tagName="h2" {...messages.groupsTitle} />
+        <ButtonWrapper>
+          <AddGroupButton
+            className="e2e-create-group-button"
+            hiddenText={<FormattedMessage {...messages.createGroupButton} />}
+            icon="plus"
+            iconColor={colors.primary}
+            onClick={handleCreateGroup}
+            padding="8px"
+            borderRadius="50%"
+            buttonStyle="secondary"
+            bgColor={rgba(colors.primary, 0.08)}
+            bgHoverColor={rgba(colors.primary, 0.15)}
+          />
+        </ButtonWrapper>
+      </MenuTitle>
+      <GroupsList className="e2e-groups-list">
+        {!isNilOrError(groupsList) &&
+          groupsList.map((group) => (
+            <MenuLink
+              key={group.id}
+              to={`/admin/users/${group.id}`}
+              className={() =>
+                `${highlightedGroups.has(group.id) ? 'highlight' : ''}`
+              }
+            >
+              <Outlet
+                id="app.containers.Admin.users.GroupsListPanel.listitem.icon"
+                type={group.attributes.membership_type}
+              />
+              <GroupName>
+                <T value={group.attributes.title_multiloc} />
+              </GroupName>
+              <MembersCount className="e2e-group-user-count">
+                {group.attributes.memberships_count}
               </MembersCount>
-            )}
-        </MenuLink>
-        <Separator />
-        <MenuTitle>
-          <FormattedMessage tagName="h2" {...messages.groupsTitle} />
-          <ButtonWrapper>
-            <AddGroupButton
-              className="e2e-create-group-button"
-              hiddenText={<FormattedMessage {...messages.createGroupButton} />}
-              icon="plus"
-              iconColor={colors.primary}
-              onClick={this.handleCreateGroup}
-              padding="8px"
-              borderRadius="50%"
-              buttonStyle="secondary"
-              bgColor={rgba(colors.primary, 0.08)}
-              bgHoverColor={rgba(colors.primary, 0.15)}
-            />
-          </ButtonWrapper>
-        </MenuTitle>
-        <GroupsList className="e2e-groups-list">
-          {!isNilOrError(groupsList) &&
-            groupsList.map((group) => (
-              <MenuLink
-                key={group.id}
-                to={`/admin/users/${group.id}`}
-                className={() =>
-                  `${highlightedGroups.has(group.id) ? 'highlight' : ''}`
-                }
-              >
-                <Outlet
-                  id="app.containers.Admin.users.GroupsListPanel.listitem.icon"
-                  type={group.attributes.membership_type}
-                />
-                <GroupName>
-                  <T value={group.attributes.title_multiloc} />
-                </GroupName>
-                <MembersCount className="e2e-group-user-count">
-                  {group.attributes.memberships_count}
-                </MembersCount>
-              </MenuLink>
-            ))}
-        </GroupsList>
-      </Container>
-    );
-  }
-}
+            </MenuLink>
+          ))}
+      </GroupsList>
+    </Container>
+  );
+};
 
 const Data = adopt<DataProps, InputProps>({
   groups: <GetGroups />,
