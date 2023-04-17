@@ -1,13 +1,15 @@
 import { IUserData } from 'services/users';
+import { addCommentVote } from 'api/comment_votes/useAddCommentVote';
+import { deleteCommentVote } from 'api/comment_votes/useDeleteCommentVote';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 import {
-  upvote,
-  removeVote,
-} from 'components/PostShowComponents/Comments/Comment/CommentVote/vote';
+  trackUpvote,
+  trackCancelUpvote,
+} from 'components/PostShowComponents/Comments/Comment/CommentVote/trackVote';
 
 export interface VoteOnCommentParams {
   alreadyVoted: boolean;
-  postId: string;
-  postType: 'idea' | 'initiative';
   commentId: string;
   commentType?: 'parent' | 'child';
   commentVoteId?: string;
@@ -16,28 +18,31 @@ export interface VoteOnCommentParams {
 export const voteOnComment =
   ({
     alreadyVoted,
-    postId,
-    postType,
     commentId,
     commentType,
     commentVoteId,
   }: VoteOnCommentParams) =>
   async (authUser: IUserData) => {
     if (!alreadyVoted) {
-      await upvote({
-        postId,
-        postType,
+      await addCommentVote({
         commentId,
         userId: authUser.id,
-        commentType,
+        mode: 'up',
       });
+
+      trackUpvote(commentType);
     }
 
     if (alreadyVoted && commentVoteId) {
-      await removeVote({
+      await deleteCommentVote({
         commentId,
-        commentVoteId,
-        commentType,
+        voteId: commentVoteId,
       });
+
+      trackCancelUpvote(commentType);
     }
+
+    streams.fetchAllWith({
+      apiEndpoint: [`${API_PATH}/comments/${commentId}`],
+    });
   };

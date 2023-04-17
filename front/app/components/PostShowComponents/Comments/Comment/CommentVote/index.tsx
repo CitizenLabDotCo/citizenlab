@@ -15,14 +15,11 @@ import useDeleteCommentVote from 'api/comment_votes/useDeleteCommentVote';
 import useAddCommentVote from 'api/comment_votes/useAddCommentVote';
 import useCommentVote from 'api/comment_votes/useCommentVote';
 
-// tracks
-import tracks from '../../tracks';
-import { trackEventByName } from 'utils/analytics';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { postIsIdea, postIsInitiative } from '../utils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { trackUpvote, trackCancelUpvote } from './trackVote';
 
 // typings
 import { ICommentData } from 'services/comments';
@@ -76,13 +73,7 @@ const CommentVote = ({
           },
           {
             onSuccess: () => {
-              if (commentType === 'parent') {
-                trackEventByName(tracks.clickParentCommentUpvoteButton);
-              } else if (commentType === 'child') {
-                trackEventByName(tracks.clickChildCommentUpvoteButton);
-              } else {
-                trackEventByName(tracks.clickCommentUpvoteButton);
-              }
+              trackUpvote(commentType);
             },
           }
         );
@@ -96,13 +87,7 @@ const CommentVote = ({
           },
           {
             onSuccess: () => {
-              if (commentType === 'parent') {
-                trackEventByName(tracks.clickParentCommentCancelUpvoteButton);
-              } else if (commentType === 'child') {
-                trackEventByName(tracks.clickChildCommentCancelUpvoteButton);
-              } else {
-                trackEventByName(tracks.clickCommentCancelUpvoteButton);
-              }
+              trackCancelUpvote(commentType);
             },
           }
         );
@@ -132,9 +117,8 @@ const CommentVote = ({
     const successAction: SuccessAction = {
       name: 'voteOnComment',
       params: {
-        postId,
-        postType,
         commentId: comment.id,
+        commentType,
         commentVoteId: isNilOrError(commentVote)
           ? undefined
           : commentVote.data.id,
