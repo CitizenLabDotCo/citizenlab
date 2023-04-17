@@ -27,6 +27,10 @@ import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 // styling
 import styled from 'styled-components';
 import SurveyXact from './SurveyXact';
+import usePhase from 'hooks/usePhase';
+
+// utils
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 const Container = styled.div`
   position: relative;
@@ -61,6 +65,7 @@ const Survey = ({
 }: Props) => {
   const project = useProject({ projectId });
   const authUser = useAuthUser();
+  const phase = usePhase(phaseId ?? null);
 
   const signUpIn = (flow: 'signin' | 'signup') => {
     if (!isNilOrError(project)) {
@@ -89,11 +94,6 @@ const Survey = ({
   };
 
   if (!isNilOrError(project)) {
-    // const { enabled, disabledReason } = getSurveyTakingRules({
-    //   project,
-    //   phaseContext: !isError(phase) ? phase : null,
-    //   signedIn: !isNilOrError(authUser),
-    // });
     const { enabled, disabled_reason } =
       project.attributes.action_descriptor.taking_survey;
 
@@ -161,8 +161,17 @@ const Survey = ({
       );
     }
 
-    const message =
-      disabledMessages[disabled_reason] ?? messages.surveyDisabledNotPossible;
+    const notCurrentPhase =
+      project.attributes.process_type === 'timeline' &&
+      !isNilOrError(phase) &&
+      pastPresentOrFuture([
+        phase.attributes.start_at,
+        phase.attributes.end_at,
+      ]) !== 'present';
+
+    const message = notCurrentPhase
+      ? messages.surveyDisabledNotActivePhase
+      : disabledMessages[disabled_reason] ?? messages.surveyDisabledNotPossible;
 
     return (
       <Container className={`warning ${className || ''}`}>
