@@ -404,7 +404,7 @@
   "app.components.SeatInfo.view": "Voir",
   "app.components.SeatInfo.visitHelpCenter": "consulter notre centre d'aide",
   "app.components.SeatTrackerInfo.adminInfoTextWithoutBilling": "Votre plan inclut {adminSeatsIncluded}. Lorsque vous aurez utilisé tous les sièges, les sièges supplémentaires seront ajoutés sous \"Sièges supplémentaires\".",
-  "app.components.SeatTrackerInfo.managerInfoTextWithoutBilling": "Votre plan dispose de {managerSeatsIncluded}, éligible pour les gestionnaires de dossiers et les gestionnaires de projets. Une fois que vous avez utilisé tous les sièges, des sièges supplémentaires seront ajoutés sous \"Sièges supplémentaires\".",
+  "app.components.SeatTrackerInfo.managerInfoTextWithoutBilling": "Votre plan inclut {managerSeatsIncluded}, éligible pour les administrateurs de dossiers et les administrateurs de projets. Si tous les sièges sont utilisés, les sièges supplémentaires seront ajoutés sous \"Sièges supplémentaires\".",
   "app.components.Sharing.linkCopied": "Lien copié",
   "app.components.Sharing.share": "Partager",
   "app.components.Sharing.shareByEmail": "Partager par e-mail ",
