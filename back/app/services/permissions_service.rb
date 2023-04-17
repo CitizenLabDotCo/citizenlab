@@ -61,6 +61,18 @@ class PermissionsService
     }
   end
 
+  def requirements_fields(permission)
+    if permission.global_custom_fields
+      CustomField.registration
+    else
+      permission.permissions_custom_fields.map do |permissions_custom_field|
+        permissions_custom_field.custom_field.tap do |field|
+          field.required = permissions_custom_field.required
+        end
+      end
+    end
+  end
+
   def permission_scope_from_permissions_params(params)
     parent_param = params[:parent_param]
     scope_id = params[parent_param]
@@ -131,7 +143,7 @@ class PermissionsService
         last_name: 'dont_ask',
         email: 'dont_ask'
       },
-      custom_fields: CustomField.registration.map(&:key).index_with { 'dont_ask' },
+      custom_fields: requirements_fields(permission).to_h { |field| [field.key, (field.required ? 'require' : 'dont_ask')] },
       special: {
         password: 'dont_ask',
         confirmation: 'dont_ask',

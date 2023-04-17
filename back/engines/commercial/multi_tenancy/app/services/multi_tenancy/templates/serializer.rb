@@ -37,6 +37,7 @@ module MultiTenancy
             'groups_project'                       => yml_groups_projects,
             'permission'                           => yml_permissions,
             'groups_permission'                    => yml_groups_permissions,
+            'permissions_custom_field'             => yml_permissions_custom_fields,
             'membership'                           => yml_memberships,
             'static_page'                          => yml_static_pages,
             'nav_bar_item'                         => yml_nav_bar_items,
@@ -588,6 +589,7 @@ module MultiTenancy
             'action' => p.action,
             'permitted_by' => p.permitted_by,
             'permission_scope_ref' => lookup_ref(p.permission_scope_id, %i[project phase]),
+            'global_custom_fields' => p.global_custom_fields,
             'created_at' => p.created_at.to_s,
             'updated_at' => p.updated_at.to_s
           }
@@ -603,6 +605,18 @@ module MultiTenancy
             'group_ref' => lookup_ref(g.group_id, :group),
             'created_at' => g.created_at.to_s,
             'updated_at' => g.updated_at.to_s
+          }
+        end
+      end
+
+      def yml_permissions_custom_fields
+        PermissionsCustomField.all.map do |pcf|
+          {
+            'permission_ref' => lookup_ref(pcf.permission_id, :permission),
+            'custom_field_ref' => lookup_ref(pcf.custom_field_id, :custom_field),
+            'required' => pcf.required,
+            'created_at' => pcf.created_at.to_s,
+            'updated_at' => pcf.updated_at.to_s
           }
         end
       end
