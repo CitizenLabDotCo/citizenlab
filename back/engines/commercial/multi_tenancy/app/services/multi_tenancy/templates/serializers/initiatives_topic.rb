@@ -3,7 +3,9 @@
 module MultiTenancy
   module Templates
     module Serializers
-      class InitiativesTopic < Base
+      class InitiativesTopic
+        include Core
+
         ref_attributes %i[initiative topic]
       end
     end
