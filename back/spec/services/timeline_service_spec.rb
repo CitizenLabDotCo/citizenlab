@@ -66,12 +66,12 @@ describe TimelineService do
       expect(service.current_or_last_ideation_phase(project)&.id).to eq(active_phase.id)
     end
 
-    it 'returns the last ideation phase of the project if there is no currently active phase', skip: 'Failing, why?' do
+    it 'returns the last ideation phase of the project if there is no currently active phase' do
       5.times { create_inactive_phase(project, 'ideation') }
       expect(service.current_or_last_ideation_phase(project)&.id).to eq(project.phases.last.id)
     end
 
-    it 'returns the last budgeting phase of the project if there is no currently active phase', skip: 'Failing, why?' do
+    it 'returns the last budgeting phase of the project if there is no currently active phase' do
       4.times { create_inactive_phase(project, 'ideation') }
       create_inactive_phase(project, 'budgeting')
       expect(service.current_or_last_ideation_phase(project)&.id).to eq(project.phases.last.id)
