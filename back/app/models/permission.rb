@@ -11,6 +11,7 @@
 #  permission_scope_type :string
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  global_custom_fields  :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -42,25 +43,7 @@ class Permission < ApplicationRecord
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
 
-  before_validation :set_permitted_by, on: :create
-
-  scope :for_user, lambda { |user| # TODO: take account with everyone_confirmed_email
-    next where(permitted_by: 'everyone') unless user
-    next all if user.admin?
-
-    permissions_for_everyone = where(permitted_by: %w[everyone users])
-
-    moderating_context_ids = ParticipationContextService.new.moderating_participation_context_ids(user)
-    moderating_permissions = where(permission_scope_id: moderating_context_ids)
-
-    # The way we are getting group permissions here is a bit convoluted in order
-    # to keep the relations structurally compatible for the final OR operation.
-    user_groups = Group.joins(:permissions).where(permissions: self).with_user(user)
-    group_permission_ids = GroupsPermission.where(permission: self).where(group: user_groups).select(:permission_id).distinct
-    group_permissions = where(id: group_permission_ids)
-
-    permissions_for_everyone.or(moderating_permissions).or(group_permissions)
-  }
+  before_validation :set_permitted_by_and_global_custom_fields, on: :create
 
   def self.available_actions(permission_scope)
     ACTIONS[permission_scope&.participation_method]
@@ -72,8 +55,9 @@ class Permission < ApplicationRecord
 
   private
 
-  def set_permitted_by
+  def set_permitted_by_and_global_custom_fields
     self.permitted_by ||= 'users'
+    self.global_custom_fields ||= (permitted_by == 'users')
   end
 end
 
