@@ -679,42 +679,6 @@ resource 'Stats - Users' do
     end
   end
 
-  get 'web_api/v1/stats/users_engagement_scores' do
-    time_boundary_parameters self
-    group_filter_parameter self
-
-    let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-    let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
-
-    before do
-      @u1, @u2, @u3 = create_list(:user, 3)
-      travel_to(start_at - 1.day) do
-        create(:published_activity, user: @u2)
-      end
-
-      travel_to start_at + 4.days do
-        @group = create(:group)
-        create(:membership, user: @u1, group: @group)
-        create(:membership, user: @u2, group: @group)
-
-        create(:comment_created_activity, user: @u1)
-        create(:idea_upvoted_activity, user: @u1)
-        create(:published_activity, user: @u2)
-        create(:idea_downvoted_activity, user: @u2)
-        create(:comment_created_activity, user: @u3)
-      end
-    end
-
-    let(:group) { @group.id }
-
-    example_request 'List 10 best user engagement scores' do
-      assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response[:data].map { |d| d[:attributes][:sum_score] }).to eq([6, 4])
-      expect(json_response[:data].map { |d| d[:relationships][:user][:data][:id] }).to eq([@u2.id, @u1.id])
-      expect(json_response[:included].size).to eq 2
-    end
-  end
   get 'web_api/v1/stats/active_users_by_time_cumulative' do
     explanation 'Active users are users that have generated some activity within the given interval window'
     time_series_parameters self
@@ -829,43 +793,6 @@ resource 'Stats - Users' do
         expect(json_response[:series][:users].values.map(&:class).uniq).to eq [Integer]
         expect(json_response[:series][:users].values.last).to eq 2
       end
-    end
-  end
-
-  get 'web_api/v1/stats/users_engagement_scores' do
-    time_boundary_parameters self
-    group_filter_parameter self
-
-    let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-    let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
-
-    before do
-      @u1, @u2, @u3 = create_list(:user, 3)
-      travel_to(start_at - 1.day) do
-        create(:published_activity, user: @u2)
-      end
-
-      travel_to start_at + 4.days do
-        @group = create(:group)
-        create(:membership, user: @u1, group: @group)
-        create(:membership, user: @u2, group: @group)
-
-        create(:comment_created_activity, user: @u1)
-        create(:idea_upvoted_activity, user: @u1)
-        create(:published_activity, user: @u2)
-        create(:idea_downvoted_activity, user: @u2)
-        create(:comment_created_activity, user: @u3)
-      end
-    end
-
-    let(:group) { @group.id }
-
-    example_request 'List 10 best user engagement scores' do
-      assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response[:data].map { |d| d[:attributes][:sum_score] }).to eq([6, 4])
-      expect(json_response[:data].map { |d| d[:relationships][:user][:data][:id] }).to eq([@u2.id, @u1.id])
-      expect(json_response[:included].size).to eq 2
     end
   end
 end

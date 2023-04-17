@@ -231,3 +231,11 @@ fr-BE:
       copy_paste_the_link_below: "Copiez et collez le code ci-dessous dans votre formulaire d'inscription."
       the_link_is_valid_for: "Ce lien est valable 24 heures. Si le lien a expiré, vous pouvez <a href=\"%{link}\">demander un nouveau code</a>."
       did_you_receive_this_email_in_error: "Avez-vous reçu cet e-mail par erreur ? <a href=\"%{link}\">Faites-le-nous savoir</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Votre compte a été temporairement désactivé'
+      title_user_blocked: 'Votre compte a été temporairement désactivé'
+      paragraph_1_without_reason: "Votre compte sur la plateforme de participation de %{organizationName} a été temporairement désactivé en raison d'une violation des règles de la communauté."
+      paragraph_1_with_reason: "Votre compte sur la plateforme de participation de %{organizationName} a été temporairement désactivé pour la raison suivante :"
+      for_more_information: "Pour plus d'informations à ce sujet, vous pouvez consulter le site %{termsAndConditionsPage}."
+      you_can_sign_in_again_from: "Vous pouvez vous reconnecter à partir de %{date}"

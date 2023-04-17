@@ -231,3 +231,11 @@ ar:
       copy_paste_the_link_below: "انسخ الرمز أدناه والصقه في نموذج التسجيل في المنصة."
       the_link_is_valid_for: "تستمر صلاحية هذا الرابط لمدة 24 ساعة. إذا انتهت صلاحية الرابط، فبإمكانك <a href=\"%{link}\">طلب رمز جديد</a>."
       did_you_receive_this_email_in_error: "هل تلقيت هذه الرسالة الإلكترونية عن طريق الخطأ؟ <a href=\"%{link}\">أخبرنا</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'تم تعطيل حسابك مؤقتا'
+      title_user_blocked: 'تم تعطيل حسابك مؤقتا'
+      paragraph_1_without_reason: "تم تعطيل حسابك على منصة المشاركة %{organizationName} مؤقتًا لانتهاك إرشادات المجتمع."
+      paragraph_1_with_reason: "تم تعطيل حسابك على منصة المشاركة %{organizationName} مؤقتًا للأسباب التالية:"
+      for_more_information: "لمزيد من المعلومات حول هذا الموضوع ، يمكنك الرجوع إلى %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "يمكنك تسجيل الدخول مرة أخرى من %{date}"

@@ -84,16 +84,29 @@ describe SideFxUserService do
 
   describe 'after_block' do
     it "logs a 'blocked' action job when a user is blocked" do
-      user.update(block_start_at: Time.now)
       expect { service.after_block(user, current_user) }
         .to have_enqueued_job(LogActivityJob)
-        .with(user, 'blocked', current_user, user.updated_at.to_i, payload: { block_reason: user.block_reason })
+        .with(
+          user,
+          'blocked',
+          current_user,
+          user.updated_at.to_i,
+          payload: {
+            block_reason: user.block_reason,
+            block_start_at: user.block_start_at,
+            block_end_at: user.block_end_at
+          }
+        )
+    end
+
+    it 'schedules a UserBlockedMailer job' do
+      expect { service.after_block(user, current_user) }
+        .to have_enqueued_mail(UserBlockedMailer, :send_user_blocked_email)
     end
   end
 
   describe 'after_unblock' do
     it "logs an 'unblocked' action job when a user is unblocked" do
-      user.update(block_start_at: nil)
       expect { service.after_unblock(user, current_user) }
         .to have_enqueued_job(LogActivityJob).with(user, 'unblocked', current_user, user.updated_at.to_i)
     end

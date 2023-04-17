@@ -17,26 +17,6 @@ export default defineMessages({
     id: 'app.components.Sharing.shareOnTwitter',
     defaultMessage: 'Share on Twitter',
   },
-  twitter: {
-    id: 'app.components.Sharing.Twitter',
-    defaultMessage: 'Twitter',
-  },
-  email: {
-    id: 'app.components.Sharing.Email',
-    defaultMessage: 'Email',
-  },
-  whatsapp: {
-    id: 'app.components.Sharing.WhatsApp',
-    defaultMessage: 'WhatsApp',
-  },
-  facebook: {
-    id: 'app.components.Sharing.Facebook',
-    defaultMessage: 'Facebook',
-  },
-  messenger: {
-    id: 'app.components.Sharing.messenger',
-    defaultMessage: 'Messenger',
-  },
   shareByEmail: {
     id: 'app.components.Sharing.shareByEmail',
     defaultMessage: 'Share by email',

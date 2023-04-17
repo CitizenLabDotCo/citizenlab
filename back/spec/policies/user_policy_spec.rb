@@ -42,14 +42,12 @@ describe UserPolicy do
     end
 
     context 'for a blocked resident on theirself' do
-      let(:current_user) { create(:user, block_start_at: Time.now) }
+      let(:current_user) { create(:user, block_end_at: 5.days.from_now) }
       let(:subject_user) { current_user }
 
-      include_context 'when user_blocking duration is 90 days' do
-        it { is_expected.to     permit(:show) }
-        it { is_expected.not_to permit(:update) }
-        it { is_expected.to     permit(:destroy) }
-      end
+      it { is_expected.to     permit(:show) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.to     permit(:destroy) }
     end
 
     context 'on someone else' do

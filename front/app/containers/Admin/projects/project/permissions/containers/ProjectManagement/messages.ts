@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  moderatorsSectionTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle',
-    defaultMessage: 'Who can moderate this project?',
+  projectManagementTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectManagementTitle',
+    defaultMessage: 'Project management',
   },
   projectManagerTooltipContent: {
     id: 'app.containers.AdminPage.ProjectEdit.projectManagerTooltipContent',
@@ -18,5 +18,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink',
     defaultMessage:
       'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
+  },
+  moderatorSearchFieldLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel',
+    defaultMessage: 'Who are the project moderators?',
   },
 });
