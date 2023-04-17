@@ -135,7 +135,7 @@ module MultiTenancy
               model_class: model_class
             )
 
-            image_assignments, restored_attributes = restored_attributes.partition do |field_name, _field_value|
+            remote_image_attributes, restored_attributes = restored_attributes.partition do |field_name, _field_value|
               field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file')
             end.map(&:to_h)
 
@@ -149,9 +149,15 @@ module MultiTenancy
                 save_model(model, validate)
               end
 
-              upload_attributes = restored_attributes.slice(*uploaders_names)
-              model.update_columns(upload_attributes) if upload_attributes.present?
-              assign_images(model, image_assignments) if image_assignments.present?
+              # Only upload attributes that are strings are copied verbatim using
+              # `update_columns` to bypass the CarrierWave uploader.
+              str_upload_attributes = restored_attributes
+                .slice(*uploaders_names)
+                .select { |_, v| v.is_a?(String) }
+              model.update_columns(str_upload_attributes) if str_upload_attributes.present?
+
+              # Assign images that were serialized as remote URLs (`remote_*_url`).
+              assign_images(model, remote_image_attributes) if remote_image_attributes.present?
 
               # taking original attributes to get correct object ID
               attributes.each do |field_name, field_value|
