@@ -315,7 +315,7 @@
   "app.components.ProjectArchivedIndicator.archivedProject": "Leider können Sie in diesem Projekt nicht mehr teilnehmen, weil es bereits archiviert wurde",
   "app.components.ProjectCard.a11y_projectDescription": "Projektbeschreibung:",
   "app.components.ProjectCard.a11y_projectTitle": "Projekttitel:",
-  "app.components.ProjectCard.addYourOption": "Fügen Sie Ihre Option hinzu\n",
+  "app.components.ProjectCard.addYourOption": "Option hinzufügen",
   "app.components.ProjectCard.allocateYourBudget": "Mitmachen",
   "app.components.ProjectCard.archived": "Archiviert",
   "app.components.ProjectCard.comment": "Kommentar",
