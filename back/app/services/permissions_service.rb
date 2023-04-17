@@ -136,7 +136,7 @@ class PermissionsService
     :not_permitted if !user.in_any_groups?(permission.groups)
   end
 
-  def requirements_mapping(_permission)
+  def requirements_mapping(permission)
     everyone = {
       built_in: {
         first_name: 'dont_ask',
