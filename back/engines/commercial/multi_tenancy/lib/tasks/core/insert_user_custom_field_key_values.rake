@@ -18,9 +18,6 @@ require 'open-uri'
 #   WHERE (custom_field_values ? 'who_you_are')
 #   ORDER BY id ASC
 #
-# Important! This will overwrite any existing key-value with the same key. therefore, is is highly recommended to
-# first make a backup to help deal with any issues that may arise from this.
-#
 # Example:
 # Given a CSV file with the following headers: "id","custom_field_values":
 #   "id","custom_field_values"
