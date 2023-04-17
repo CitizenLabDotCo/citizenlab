@@ -1115,7 +1115,6 @@
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Postavite upitnik bez napuštanja platforme.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Izradi anketu",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Podesite upitnik s više odgovora.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription": "Ugradite Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey ili Microsoft Forms anketu.",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Možete postaviti zadani redoslijed objava koji se prikazuju na glavnoj stranici projekta.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Razvrstavanje",
   "app.containers.AdminPage.ProjectEdit.departments": "Odjeli",

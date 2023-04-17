@@ -746,6 +746,18 @@
         }
       },
 
+      "konveio_surveys": {
+        "type": "object",
+        "title": "Konveio Surveys",
+        "description":  "Allow Konveio surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
       "volunteering": {
         "type": "object",
         "title": "Volunteering",
@@ -1149,6 +1161,7 @@
     "snap_survey_surveys": ["surveys"],
     "microsoft_forms_surveys": ["surveys"],
     "smart_survey_surveys": ["surveys"],
+    "konveio_surveys": ["surveys"],
 
     "id_auth0": ["verification"],
     "id_bogus": ["verification"],

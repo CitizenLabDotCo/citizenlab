@@ -1115,7 +1115,6 @@
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Mettez en place une enquête sans quitter notre plateforme.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Créer un sondage",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Créez un questionnaire à choix multiples.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription": "Intégrez une enquête Typeform, Google Form ou Enalyzer.",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Vous pouvez définir l'ordre par défaut d'affichage des publications sur la page principale du projet.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Trier",
   "app.containers.AdminPage.ProjectEdit.departments": "Départements",
