@@ -8,11 +8,14 @@ module MultiTenancy
         @serialization_params = serialization_params
       end
 
-      def run
+      def run(deserializer_format: false)
         models = @tenant.switch { serialize_models }
         models = sort_by_references(models)
         resolve_references!(models)
-        { 'models' => models }
+
+        { 'models' => models }.tap do |template|
+          self.class.format_for_deserializer!(template) if deserializer_format
+        end
       end
 
       # Transform the models hash to make it compatible with the `TenantDeserializer`.
