@@ -183,7 +183,7 @@ describe('Seat based billing', () => {
     });
   });
 
-  const testShowModalOnAddingModerator = () => {
+  const testShowModalOnAddingModerator = (previousUsedSeats: number) => {
     // We get updated seat data from the API and use that to compare with the UI. This is to avoid using hardcoded values as those could be flaky depending on user data left by other tests in other files.
     cy.apiGetAppConfiguration().then((appConfigurationResponse) => {
       const additionalModerators =
@@ -197,8 +197,9 @@ describe('Seat based billing', () => {
         const usedSeats =
           seatsResponse.body.data.attributes.project_moderators_number;
         const totalSeats = additionalModerators + maximumModerators;
+        // const hasSeatBeenAdded = usedSeats > previousUsedSeats;
 
-        if (usedSeats >= totalSeats) {
+        if (usedSeats >= totalSeats && previousUsedSeats === usedSeats) {
           // Verify that user is required to confirm
           cy.get('[data-cy="e2e-add-moderators-body"]').should('exist');
           // Confirm setting user to moderator user
@@ -254,6 +255,8 @@ describe('Seat based billing', () => {
     const user7Email = randomEmail();
     const user7Password = randomString();
 
+    let initialUsedModeratorSeats: number;
+
     before(() => {
       cy.apiCreateProject({
         type: 'continuous',
@@ -306,6 +309,10 @@ describe('Seat based billing', () => {
     });
 
     beforeEach(() => {
+      cy.apiGetSeats().then((reposnse) => {
+        initialUsedModeratorSeats =
+          reposnse.body.data.attributes.project_moderators_number;
+      });
       cy.setAdminLoginCookie();
     });
 
@@ -328,31 +335,34 @@ describe('Seat based billing', () => {
       cy.get('#projectModeratorUserSearch').type(user2Email);
       cy.get(`[data-cy="e2e-user-${user2Email}"]`).click();
       cy.get('[data-cy="e2e-add-project-moderator-button"]').click();
-      testShowModalOnAddingModerator();
+      testShowModalOnAddingModerator(initialUsedModeratorSeats);
       cy.get('.e2e-admin-list').contains(user2Email);
+      initialUsedModeratorSeats = initialUsedModeratorSeats + 1;
 
       // Add moderator and check that they are shown in the list
       cy.get('#projectModeratorUserSearch').should('exist');
       cy.get('#projectModeratorUserSearch').type(user3Email);
       cy.get(`[data-cy="e2e-user-${user3Email}"]`).click();
       cy.get('[data-cy="e2e-add-project-moderator-button"]').click();
-      testShowModalOnAddingModerator();
+      testShowModalOnAddingModerator(initialUsedModeratorSeats);
       cy.get('.e2e-admin-list').contains(user3Email);
+      initialUsedModeratorSeats = initialUsedModeratorSeats + 1;
 
       // Add moderator and check that they are shown in the list
       cy.get('#projectModeratorUserSearch').should('exist');
       cy.get('#projectModeratorUserSearch').type(user4Email);
       cy.get(`[data-cy="e2e-user-${user4Email}"]`).click();
       cy.get('[data-cy="e2e-add-project-moderator-button"]').click();
-      testShowModalOnAddingModerator();
+      testShowModalOnAddingModerator(initialUsedModeratorSeats);
       cy.get('.e2e-admin-list').contains(user4Email);
+      initialUsedModeratorSeats = initialUsedModeratorSeats + 1;
 
       // Add moderator and check that they are shown in the list
       cy.get('#projectModeratorUserSearch').should('exist');
       cy.get('#projectModeratorUserSearch').type(user5Email);
       cy.get(`[data-cy="e2e-user-${user5Email}"]`).click();
       cy.get('[data-cy="e2e-add-project-moderator-button"]').click();
-      testShowModalOnAddingModerator();
+      testShowModalOnAddingModerator(initialUsedModeratorSeats);
       cy.get('.e2e-admin-list').contains(user5Email);
     });
 
@@ -380,7 +390,7 @@ describe('Seat based billing', () => {
         cy.get('#projectModeratorUserSearch').type(user6Email);
         cy.get(`[data-cy="e2e-user-${user6Email}"]`).click();
         cy.get('[data-cy="e2e-add-project-moderator-button"]').click();
-        testShowModalOnAddingModerator();
+        testShowModalOnAddingModerator(initialUsedModeratorSeats);
         cy.get('.e2e-admin-list').contains(user6Email);
 
         cy.visit('/admin/users/admins-managers');
@@ -423,7 +433,7 @@ describe('Seat based billing', () => {
           cy.get('#projectModeratorUserSearch').type(user7Email);
           cy.get(`[data-cy="e2e-user-${user7Email}"]`).click();
           cy.get('[data-cy="e2e-add-project-moderator-button"]').click();
-          testShowModalOnAddingModerator();
+          testShowModalOnAddingModerator(usedSeats);
           cy.get('.e2e-admin-list').contains(user7Email);
 
           cy.visit('/admin/users/admins-managers');
@@ -493,6 +503,8 @@ describe('Seat based billing', () => {
     const user13Email = randomEmail();
     const user13Password = randomString();
 
+    let initialUsedModeratorSeats: number;
+
     before(() => {
       cy.apiCreateFolder(generateProjectFolder({})).then((folder) => {
         folderId = folder.body.data.id;
@@ -539,6 +551,11 @@ describe('Seat based billing', () => {
     });
 
     beforeEach(() => {
+      cy.apiGetSeats().then((reposnse) => {
+        initialUsedModeratorSeats =
+          reposnse.body.data.attributes.project_moderators_number;
+      });
+
       cy.setAdminLoginCookie();
     });
 
@@ -556,31 +573,34 @@ describe('Seat based billing', () => {
       cy.get('#folderModeratorUserSearch').type(user8Email);
       cy.get(`[data-cy="e2e-user-${user8Email}"]`).click();
       cy.get('[data-cy="e2e-add-folder-moderator-button"]').click();
-      testShowModalOnAddingModerator();
+      testShowModalOnAddingModerator(initialUsedModeratorSeats);
       cy.get('.e2e-admin-list').contains(user8Email);
+      initialUsedModeratorSeats = initialUsedModeratorSeats + 1;
 
       // Add moderator and check that they are shown in the list
       cy.get('#folderModeratorUserSearch').should('exist');
       cy.get('#folderModeratorUserSearch').type(user9Email);
       cy.get(`[data-cy="e2e-user-${user9Email}"]`).click();
       cy.get('[data-cy="e2e-add-folder-moderator-button"]').click();
-      testShowModalOnAddingModerator();
+      testShowModalOnAddingModerator(initialUsedModeratorSeats);
       cy.get('.e2e-admin-list').contains(user9Email);
+      initialUsedModeratorSeats = initialUsedModeratorSeats + 1;
 
       // Add moderator and check that they are shown in the list
       cy.get('#folderModeratorUserSearch').should('exist');
       cy.get('#folderModeratorUserSearch').type(user10Email);
       cy.get(`[data-cy="e2e-user-${user10Email}"]`).click();
       cy.get('[data-cy="e2e-add-folder-moderator-button"]').click();
-      testShowModalOnAddingModerator();
+      testShowModalOnAddingModerator(initialUsedModeratorSeats);
       cy.get('.e2e-admin-list').contains(user10Email);
+      initialUsedModeratorSeats = initialUsedModeratorSeats + 1;
 
       // Add moderator and check that they are shown in the list
       cy.get('#folderModeratorUserSearch').should('exist');
       cy.get('#folderModeratorUserSearch').type(user11Email);
       cy.get(`[data-cy="e2e-user-${user11Email}"]`).click();
       cy.get('[data-cy="e2e-add-folder-moderator-button"]').click();
-      testShowModalOnAddingModerator();
+      testShowModalOnAddingModerator(initialUsedModeratorSeats);
       cy.get('.e2e-admin-list').contains(user11Email);
     });
 
@@ -604,7 +624,7 @@ describe('Seat based billing', () => {
         cy.get('#folderModeratorUserSearch').type(user12Email);
         cy.get(`[data-cy="e2e-user-${user12Email}"]`).click();
         cy.get('[data-cy="e2e-add-folder-moderator-button"]').click();
-        testShowModalOnAddingModerator();
+        testShowModalOnAddingModerator(initialUsedModeratorSeats);
         cy.get('.e2e-admin-list').contains(user12Email);
 
         cy.visit('/admin/users/admins-managers');
@@ -650,7 +670,7 @@ describe('Seat based billing', () => {
           cy.get('#folderModeratorUserSearch').type(user13Email);
           cy.get(`[data-cy="e2e-user-${user13Email}"]`).click();
           cy.get('[data-cy="e2e-add-folder-moderator-button"]').click();
-          testShowModalOnAddingModerator();
+          testShowModalOnAddingModerator(usedSeats);
           cy.get('.e2e-admin-list').contains(user13Email);
 
           cy.visit('/admin/users/admins-managers');
