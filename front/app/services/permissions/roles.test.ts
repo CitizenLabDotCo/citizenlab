@@ -1,6 +1,6 @@
 import {
   isAdmin,
-  isModerator,
+  isRegularUser,
   isProjectModerator,
   isSuperAdmin,
 } from './roles';
@@ -9,42 +9,42 @@ import { makeUser } from 'services/__mocks__/users';
 describe('isAdmin', () => {
   it('returns true when a user is an admin', () => {
     const admin = makeUser({ roles: [{ type: 'admin' }] });
-    expect(isAdmin(admin)).toBeTruthy();
+    expect(isAdmin(admin)).toBe(true);
   });
 
   it('returns false when a user is not an admin', () => {
-    const mortal = makeUser();
-    expect(isAdmin(mortal)).toBeFalsy();
+    const regularUser = makeUser();
+    expect(isAdmin(regularUser)).toBe(false);
   });
 });
 
-describe('isModerator', () => {
-  it('returns true when a user is a super admin', () => {
-    const moderator = makeUser({
+describe('isRegularUser', () => {
+  it('returns false when a user is a super admin', () => {
+    const superAdmin = makeUser({
       highest_role: 'super_admin',
     });
-    expect(isModerator(moderator)).toBeTruthy();
+    expect(isRegularUser(superAdmin)).toBe(false);
   });
 
-  it('returns true when a user is a admin', () => {
-    const moderator = makeUser({
+  it('returns false when a user is an admin', () => {
+    const admin = makeUser({
       highest_role: 'admin',
     });
-    expect(isModerator(moderator)).toBeTruthy();
+    expect(isRegularUser(admin)).toBe(false);
   });
 
-  it('returns true when a user is a project moderator', () => {
-    const moderator = makeUser({
+  it('returns false when a user is a project moderator', () => {
+    const projectModerator = makeUser({
       highest_role: 'project_moderator',
     });
-    expect(isModerator(moderator)).toBeTruthy();
+    expect(isRegularUser(projectModerator)).toBe(false);
   });
 
-  it('returns false when a user is not a moderator', () => {
-    const mortal = makeUser({
+  it('returns true when a user is not a moderator', () => {
+    const regularUser = makeUser({
       highest_role: 'user',
     });
-    expect(isModerator(mortal)).toBeFalsy();
+    expect(isRegularUser(regularUser)).toBe(true);
   });
 });
 
@@ -55,7 +55,7 @@ describe('isProjectModerator', () => {
       highest_role: 'project_moderator',
       roles: [{ type: 'project_moderator', project_id: projectId }],
     });
-    expect(isProjectModerator(moderator, projectId)).toBeTruthy();
+    expect(isProjectModerator(moderator, projectId)).toBe(true);
   });
 
   it('returns false when a user is a moderator for a different project', () => {
@@ -65,14 +65,14 @@ describe('isProjectModerator', () => {
     });
     expect(
       isProjectModerator(moderator, '444add65-e122-51db-a1b9-80fcd2e3f635')
-    ).toBeFalsy();
+    ).toBe(false);
   });
 
   it('returns false when a user is not a moderator', () => {
-    const mortal = makeUser();
+    const regularUser = makeUser();
     expect(
-      isProjectModerator(mortal, 'df534d5b-ec63-5adf-8713-9cc247957175')
-    ).toBeFalsy();
+      isProjectModerator(regularUser, 'df534d5b-ec63-5adf-8713-9cc247957175')
+    ).toBe(false);
   });
 });
 
@@ -82,11 +82,11 @@ describe('isSuperAdmin', () => {
       roles: [{ type: 'admin' }],
       highest_role: 'super_admin',
     });
-    expect(isSuperAdmin(superAdmin)).toBeTruthy();
+    expect(isSuperAdmin(superAdmin)).toBe(true);
   });
 
   it('returns false when a user is not an admin', () => {
-    const mortal = makeUser();
-    expect(isSuperAdmin(mortal)).toBeFalsy();
+    const regularUser = makeUser();
+    expect(isSuperAdmin(regularUser)).toBe(false);
   });
 });

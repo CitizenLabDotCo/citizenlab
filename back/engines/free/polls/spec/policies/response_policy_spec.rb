@@ -88,4 +88,10 @@ describe Polls::ResponsePolicy do
       expect(scope.resolve.size).to eq 0
     end
   end
+
+  context 'for blocked user' do
+    let(:user) { create(:user, block_end_at: 5.days.from_now) }
+
+    it_behaves_like 'policy for blocked user', show: false
+  end
 end

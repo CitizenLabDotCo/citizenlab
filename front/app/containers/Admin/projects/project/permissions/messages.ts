@@ -61,4 +61,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.moderationRightsTitle',
     defaultMessage: 'Moderation',
   },
+  participationAccessRightsTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle2',
+    defaultMessage: 'Participation',
+  },
 });

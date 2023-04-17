@@ -11,7 +11,7 @@ import { authUserStream } from 'services/auth';
 import { events$, pageChanges$ } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { isAdmin, isModerator } from 'services/permissions/roles';
+import { isAdmin, isRegularUser } from 'services/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { IUser } from 'services/users';
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
@@ -104,7 +104,7 @@ const configuration: ModuleConfiguration = {
         if (!posthogSettings?.allowed || !posthogSettings.enabled) return;
 
         // In case the user signs in or visits signed in as an admin/moderator
-        if (!isNilOrError(user) && (isAdmin(user) || isModerator(user))) {
+        if (!isNilOrError(user) && (isAdmin(user) || !isRegularUser(user))) {
           initializePosthog(POSTHOG_API_KEY, user, appConfig);
         }
 
