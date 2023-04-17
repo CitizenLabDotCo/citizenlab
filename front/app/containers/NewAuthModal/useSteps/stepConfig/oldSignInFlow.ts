@@ -85,6 +85,7 @@ export const oldSignInFlow = (
           });
 
           const { requirements } = await getRequirements();
+          setStatus('ok');
 
           if (requirements.special.confirmation === 'require') {
             setCurrentStep('sign-in:email-confirmation');
@@ -100,8 +101,6 @@ export const oldSignInFlow = (
             setCurrentStep('sign-in:custom-fields');
             return;
           }
-
-          setStatus('ok');
 
           setCurrentStep('closed');
 
@@ -168,7 +167,7 @@ export const oldSignInFlow = (
           await resendEmailConfirmationCode(newEmail);
           setCurrentStep('sign-in:email-confirmation');
           setStatus('ok');
-        } catch {
+        } catch (e) {
           setStatus('error');
           setError('unknown');
         }

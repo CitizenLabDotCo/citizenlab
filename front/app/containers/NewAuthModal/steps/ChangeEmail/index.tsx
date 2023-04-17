@@ -16,7 +16,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
 
+// typings
+import { Status } from 'containers/NewAuthModal/typings';
+
 interface Props {
+  status: Status;
   onGoBack: () => void;
   onChangeEmail: (newEmail: string) => void;
 }
@@ -29,8 +33,10 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   email: undefined,
 };
 
-const ChangeEmail = ({ onGoBack, onChangeEmail }: Props) => {
+const ChangeEmail = ({ status, onGoBack, onChangeEmail }: Props) => {
   const { formatMessage } = useIntl();
+
+  const loading = status === 'pending';
 
   const schema = useMemo(
     () =>
@@ -67,7 +73,12 @@ const ChangeEmail = ({ onGoBack, onChangeEmail }: Props) => {
             />
           </Box>
           <Box w="100%" display="flex" mt="32px">
-            <Button type="submit" width="auto">
+            <Button
+              type="submit"
+              width="auto"
+              processing={loading}
+              disabled={loading}
+            >
               {formatMessage(messages.sendEmailWithCode)}
             </Button>
           </Box>

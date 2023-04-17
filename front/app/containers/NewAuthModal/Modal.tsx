@@ -174,6 +174,24 @@ const AuthModal = () => {
           />
         )}
 
+        {currentStep === 'sign-in:email-confirmation' && (
+          <EmailConfirmation
+            state={state}
+            status={status}
+            error={error}
+            onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+            onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
+          />
+        )}
+
+        {currentStep === 'sign-in:change-email' && (
+          <ChangeEmail
+            status={status}
+            onGoBack={transition(currentStep, 'GO_BACK')}
+            onChangeEmail={transition(currentStep, 'RESEND_CODE')}
+          />
+        )}
+
         {currentStep === 'sign-in:verification' && (
           <Verification
             authenticationData={authenticationData}
@@ -225,6 +243,7 @@ const AuthModal = () => {
 
         {currentStep === 'sign-up:change-email' && (
           <ChangeEmail
+            status={status}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onChangeEmail={transition(currentStep, 'RESEND_CODE')}
           />
