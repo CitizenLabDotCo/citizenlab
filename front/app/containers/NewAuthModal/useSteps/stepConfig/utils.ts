@@ -14,3 +14,15 @@ export const askCustomFields = (
 
   return false;
 };
+
+export const requiredCustomFields = (
+  customFieldRequirements: AuthenticationRequirements['requirements']['custom_fields']
+) => {
+  for (const fieldName in customFieldRequirements) {
+    if (customFieldRequirements[fieldName] === 'require') {
+      return true;
+    }
+  }
+
+  return false;
+};

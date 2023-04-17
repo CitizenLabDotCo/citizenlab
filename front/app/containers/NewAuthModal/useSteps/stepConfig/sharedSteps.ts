@@ -1,8 +1,5 @@
 import { parse } from 'qs';
 
-// api
-import { updateUser } from 'services/users';
-
 // cache
 import streams from 'utils/streams';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
@@ -15,7 +12,7 @@ import { trackEventByName } from 'utils/analytics';
 import { triggerSuccessAction } from 'containers/NewAuthModal/SuccessActions';
 
 // utils
-import { askCustomFields } from './utils';
+import { askCustomFields, requiredCustomFields } from './utils';
 
 // typings
 import {
@@ -23,17 +20,14 @@ import {
   UpdateState,
   AuthenticationData,
   Status,
-  ErrorCode,
 } from '../../typings';
 import { Step } from './typings';
-import { FormData } from 'components/UserCustomFieldsForm';
 
 export const sharedSteps = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
-  setError: (errorCode: ErrorCode) => void,
   updateState: UpdateState,
   anySSOEnabled: boolean
 ) => {
@@ -78,11 +72,27 @@ export const sharedSteps = (
 
         const { flow } = getAuthenticationData();
 
-        if (flow === 'signin' && !signedIn) {
-          if (anySSOEnabled) {
-            setCurrentStep('sign-in:auth-providers');
+        if (flow === 'signin') {
+          if (signedIn) {
+            if (requirements.special.confirmation === 'require') {
+              setCurrentStep('sign-in:email-confirmation');
+              return;
+            }
+
+            if (requirements.special.verification === 'require') {
+              setCurrentStep('sign-in:verification');
+              return;
+            }
+
+            if (requiredCustomFields(requirements.custom_fields)) {
+              setCurrentStep('sign-in:custom-fields');
+              return;
+            }
           } else {
-            setCurrentStep('sign-in:email-password');
+            anySSOEnabled
+              ? setCurrentStep('sign-in:auth-providers')
+              : setCurrentStep('sign-in:email-password');
+            return;
           }
 
           return;
@@ -96,12 +106,12 @@ export const sharedSteps = (
             }
 
             if (requirements.special.verification === 'require') {
-              setCurrentStep('verification');
+              setCurrentStep('sign-up:verification');
               return;
             }
 
             if (askCustomFields(requirements.custom_fields)) {
-              setCurrentStep('custom-fields');
+              setCurrentStep('sign-up:custom-fields');
               return;
             }
           } else {
@@ -119,46 +129,6 @@ export const sharedSteps = (
       },
     },
 
-    verification: {
-      CLOSE: () => setCurrentStep('closed'),
-      CONTINUE: async () => {
-        const { requirements } = await getRequirements();
-
-        if (askCustomFields(requirements.custom_fields)) {
-          setCurrentStep('custom-fields');
-          return;
-        }
-
-        setCurrentStep('success');
-      },
-    },
-
-    'custom-fields': {
-      CLOSE: () => {
-        setCurrentStep('closed');
-        trackEventByName(tracks.signUpCustomFieldsStepExited);
-      },
-      SUBMIT: async (userId: string, formData: FormData) => {
-        setStatus('pending');
-
-        try {
-          await updateUser(userId, { custom_field_values: formData });
-          setStatus('ok');
-          setCurrentStep('success');
-          trackEventByName(tracks.signUpCustomFieldsStepCompleted);
-        } catch {
-          setStatus('error');
-          setError('unknown');
-          trackEventByName(tracks.signUpCustomFieldsStepFailed);
-        }
-      },
-      SKIP: async () => {
-        setCurrentStep('success');
-        trackEventByName(tracks.signUpCustomFieldsStepSkipped);
-      },
-    },
-
-    // success (shared)
     success: {
       CONTINUE: async () => {
         setStatus('pending');
