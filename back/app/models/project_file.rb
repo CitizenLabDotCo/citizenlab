@@ -28,7 +28,8 @@ class ProjectFile < ApplicationRecord
   mount_base64_file_uploader :file, ProjectFileUploader
   belongs_to :project
 
-  validates :project, :file, :name, presence: true
+  validates :project, :name, presence: true
+  validates :file, presence: true, unless: proc { Current.loading_tenant_template }
   validate :extension_whitelist
 
   private

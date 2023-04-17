@@ -26,7 +26,8 @@ class InitiativeFile < ApplicationRecord
   mount_base64_file_uploader :file, InitiativeFileUploader
   belongs_to :initiative
 
-  validates :initiative, :file, :name, presence: true
+  validates :initiative, :name, presence: true
+  validates :file, presence: true, unless: proc { Current.loading_tenant_template }
   validate :extension_whitelist
 
   private
