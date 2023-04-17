@@ -1,7 +1,7 @@
 import {
   AuthenticationContext,
   ProjectContext,
-} from 'api/authentication_requirements/types';
+} from 'api/authentication/authentication_requirements/types';
 import eventEmitter from 'utils/eventEmitter';
 
 // search for verification_error in back to find these

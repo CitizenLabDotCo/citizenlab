@@ -1,9 +1,9 @@
 // authentication
-import signIn from 'api/authentication/signIn';
+import signIn from 'api/authentication/sign_in_out/signIn';
 import { handleOnSSOClick } from 'services/singleSignOn';
 import { updateUser } from 'services/users';
-import confirmEmail from 'api/authentication/confirmEmail';
-import resendEmailConfirmationCode from 'api/authentication/resendEmailConfirmationCode';
+import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
+import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 
 // events
 import { triggerSuccessAction } from 'containers/NewAuthModal/SuccessActions';

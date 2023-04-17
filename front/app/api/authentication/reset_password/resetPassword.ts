@@ -1,11 +1,18 @@
-import { IHttpMethod } from 'typings';
-import request from 'utils/request';
-import { API_PATH } from 'containers/App/constants';
+import fetcher from 'utils/cl-react-query/fetcher';
+import { ResetPasswordProperties } from './types';
 
 interface Parameters {
   password: string;
   token: string;
 }
+
+const triggerResetPassword = (requestBody: ResetPasswordProperties) => {
+  return fetcher({
+    path: `/users/reset_password`,
+    body: requestBody,
+    action: 'post',
+  });
+};
 
 export default async function resetPassword({ password, token }: Parameters) {
   // eslint-disable-next-line no-useless-catch
@@ -16,13 +23,7 @@ export default async function resetPassword({ password, token }: Parameters) {
         token,
       },
     };
-    const httpMethod: IHttpMethod = { method: 'POST' };
-    const response = await request(
-      `${API_PATH}/users/reset_password`,
-      bodyData,
-      httpMethod,
-      null
-    );
+    const response = await triggerResetPassword(bodyData);
     return response;
   } catch (error) {
     throw error;

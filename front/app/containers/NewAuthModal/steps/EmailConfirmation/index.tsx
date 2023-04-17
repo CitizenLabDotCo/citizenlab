@@ -1,7 +1,7 @@
 import React, { useMemo, useState, FormEvent } from 'react';
 
 // services
-import resendEmailConfirmationCode from 'api/authentication/resendEmailConfirmationCode';
+import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';

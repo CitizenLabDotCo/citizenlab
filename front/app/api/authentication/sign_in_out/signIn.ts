@@ -1,11 +1,11 @@
-import { IUser } from 'services/users';
-import { IHttpMethod } from 'typings';
-import { API_PATH } from 'containers/App/constants';
 import { setJwt } from 'utils/auth/jwt';
-import request from 'utils/request';
 import streams from 'utils/streams';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import signOut from './signOut';
+import { API_PATH } from 'containers/App/constants';
+import request from 'utils/request';
+import { IHttpMethod } from 'typings';
+import getAuthUser from '../auth_user/getAuthUser';
 
 interface Parameters {
   email: string;
@@ -17,9 +17,6 @@ interface Parameters {
 interface IUserToken {
   jwt: string;
 }
-
-const userTokenPath = `${API_PATH}/user_token`;
-const authUserPath = `${API_PATH}/users/me`;
 
 export default async function signIn(parameters: Parameters) {
   try {
@@ -46,8 +43,9 @@ export async function getAndSetToken({
   const bodyData = { auth: { email, password, remember_me: rememberMe } };
   const httpMethod: IHttpMethod = { method: 'POST' };
 
+  // TODO: Replace request with fetcher after BE request data format updated
   const { jwt } = await request<IUserToken>(
-    userTokenPath,
+    `${API_PATH}/user_token`,
     bodyData,
     httpMethod,
     null
@@ -58,13 +56,7 @@ export async function getAndSetToken({
 
 async function getAuthUserAsync() {
   try {
-    const authenticatedUser = await request<IUser>(
-      authUserPath,
-      null,
-      null,
-      null
-    );
-    return authenticatedUser;
+    return await getAuthUser();
   } catch {
     signOut();
     throw new Error('not_authenticated');

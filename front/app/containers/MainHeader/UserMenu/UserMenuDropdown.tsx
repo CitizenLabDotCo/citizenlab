@@ -7,7 +7,7 @@ import { Dropdown } from '@citizenlab/cl2-component-library';
 import HasPermission from 'components/HasPermission';
 
 // services
-import signOut from 'api/authentication/signOut';
+import signOut from 'api/authentication/sign_in_out/signOut';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';

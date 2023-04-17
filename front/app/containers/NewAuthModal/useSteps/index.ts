@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 
 // api
-import getAuthenticationRequirements from 'api/authentication_requirements/getAuthenticationRequirements';
+import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
 
 // hooks
 import useAnySSOEnabled from '../useAnySSOEnabled';
@@ -17,7 +17,7 @@ import {
 } from '../events';
 
 // constants
-import { GLOBAL_CONTEXT } from 'api/authentication_requirements/types';
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/types';
 
 // typings
 import {

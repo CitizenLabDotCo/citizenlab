@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 
 // services
 import { ICauseData } from 'api/causes/types';
-import getAuthenticationRequirements from 'api/authentication_requirements/getAuthenticationRequirements';
-import { GLOBAL_CONTEXT } from 'api/authentication_requirements/types';
+import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/types';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';

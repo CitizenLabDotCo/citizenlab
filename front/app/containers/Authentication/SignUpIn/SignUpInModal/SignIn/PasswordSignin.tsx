@@ -17,7 +17,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 import { Options, Option } from '../styles';
 
 // services
-import signIn from 'api/authentication/signIn';
+import signIn from 'api/authentication/sign_in_out/signIn';
 
 // i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
