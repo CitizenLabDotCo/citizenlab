@@ -164,6 +164,7 @@ const FolderPermissions = () => {
               disabled={!moderatorToAdd}
               processing={processing}
               ml="12px"
+              data-cy="e2e-add-folder-moderator-button"
             />
           </Box>
           {hasSeatBasedBillingEnabled && (

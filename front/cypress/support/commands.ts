@@ -18,6 +18,9 @@ declare global {
       apiSignup: typeof apiSignup;
       apiCreateAdmin: typeof apiCreateAdmin;
       apiRemoveUser: typeof apiRemoveUser;
+      apiGetUsersCount: typeof apiGetUsersCount;
+      apiGetSeats: typeof apiGetSeats;
+      apiGetAppConfiguration: typeof apiGetAppConfiguration;
       logout: typeof logout;
       acceptCookies: typeof acceptCookies;
       getIdeaById: typeof getIdeaById;
@@ -294,6 +297,51 @@ export function apiRemoveUser(userId: string) {
       },
       method: 'DELETE',
       url: `web_api/v1/users/${userId}`,
+    });
+  });
+}
+
+export function apiGetUsersCount() {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: `web_api/v1/stats/users_count`,
+    });
+  });
+}
+
+export function apiGetSeats() {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: `web_api/v1/users/seats`,
+    });
+  });
+}
+
+export function apiGetAppConfiguration() {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: `web_api/v1/app_configuration`,
     });
   });
 }
@@ -1381,6 +1429,9 @@ Cypress.Commands.add('apiLogin', apiLogin);
 Cypress.Commands.add('apiSignup', apiSignup);
 Cypress.Commands.add('apiCreateAdmin', apiCreateAdmin);
 Cypress.Commands.add('apiRemoveUser', apiRemoveUser);
+Cypress.Commands.add('apiGetUsersCount', apiGetUsersCount);
+Cypress.Commands.add('apiGetSeats', apiGetSeats);
+Cypress.Commands.add('apiGetAppConfiguration', apiGetAppConfiguration);
 Cypress.Commands.add('logout', logout);
 Cypress.Commands.add('acceptCookies', acceptCookies);
 Cypress.Commands.add('getIdeaById', getIdeaById);
