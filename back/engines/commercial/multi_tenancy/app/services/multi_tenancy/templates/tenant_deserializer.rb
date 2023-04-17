@@ -111,12 +111,12 @@ module MultiTenancy
         created_objects_ids = Hash.new { |h, k| h[k] = [] } # Hash with empty arrays as default values
 
         template['models'].each do |model_name, records|
-          # unless local_copy
-          #   LogActivityJob.perform_later(Tenant.current, 'loading_template', nil, Time.now.to_i, payload: {
-          #     model_name: model_name,
-          #     model_name_pluralized: model_name.pluralize
-          #   })
-          # end
+          unless local_copy
+            LogActivityJob.perform_later(Tenant.current, 'loading_template', nil, Time.now.to_i, payload: {
+              model_name: model_name,
+              model_name_pluralized: model_name.pluralize
+            })
+          end
 
           model_class = model_name.classify.constantize
           uploaders_names = model_class.uploaders.keys.map(&:to_s)
