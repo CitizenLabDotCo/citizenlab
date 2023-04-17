@@ -144,7 +144,7 @@ module MultiTenancy
         template_name, external_subfolder: 'test'
       )
 
-      unless required_locales.to_set <= config_locales.to_set
+      unless required_locales.to_set <= config_locales.to_set # rubocop:disable Style/GuardClause
         raise ClErrors::TransactionError.new(error_key: :missing_locales)
       end
     end
