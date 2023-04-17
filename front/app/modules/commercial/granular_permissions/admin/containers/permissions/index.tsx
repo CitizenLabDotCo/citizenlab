@@ -33,6 +33,7 @@ const PermissionsInitiatives = memo<DataProps>(({ permissions }) => {
             onChange={handlePermissionChange}
             postType="initiative"
             projectId={null}
+            initiativeContext={true}
           />
         )}
       </FeatureFlag>

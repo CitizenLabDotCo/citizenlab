@@ -191,6 +191,16 @@
             "title": "Maximum number of managers",
             "description": "Maximum allowed number of project and folder managers on the platform.",
             "type": ["integer", "null"]
+          },
+          "additional_admins_number": {
+            "title": "Additional number of admins",
+            "description": "Additional number of admins on the platform.",
+            "type": ["integer", "null"]
+          },
+          "additional_moderators_number": {
+            "title": "Additional number of managers",
+            "description": "Additional number of project and folder managers on the platform.",
+            "type": ["integer", "null"]
           }
         }
       },
@@ -198,7 +208,7 @@
       "user_blocking": {
         "type": "object",
         "title": "User blocking",
-        "description": "User blocking and unblocking features. WIP - Don't enable for customer platforms",
+        "description": "Admin can block or unblock users.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "required-settings": ["duration"],
@@ -207,9 +217,9 @@
           "enabled": { "type": "boolean", "default": false },
           "duration": {
             "title": "Duration of block (in days)",
-            "description": "How many days a user will be blocked for. The user will remain blocked until this period expires, or an admin manually removes the block on the user. Setting this value to zero effectively unblocks all blocked users.",
+            "description": "How many days a user will be blocked for. The user will remain blocked until this period expires, or an admin manually removes the block on the user. Changing this value changes the duration of subsequent blocks only.",
             "type": "integer",
-            "minimum": 0,
+            "minimum": 1,
             "default": 90
           }
         }
@@ -1067,6 +1077,18 @@
         }
       },
 
+      "seat_based_billing": {
+        "type": "object",
+        "title": "Seat based billing",
+        "description":  "Enables seat-based billing.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "visitors_dashboard": {
         "type": "object",
         "title": "Visitors dashboard",
@@ -1107,6 +1129,18 @@
         "type": "object",
         "title": "Registration via email confirmation",
         "description": "Enables a light registration flow where users enter just an email address and a confirmation code.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "permissions_custom_fields": {
+        "type": "object",
+        "title": "Permission custom fields on project actions",
+        "description": "Enables the option for admins to add custom questions to project action permissions.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

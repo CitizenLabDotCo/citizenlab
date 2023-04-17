@@ -78,10 +78,6 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     view_private_attributes? object, params
   }
 
-  has_many :granted_permissions, record_type: :permission, serializer: WebApi::V1::PermissionSerializer do |_object, params|
-    params[:granted_permissions]
-  end
-
   def self.view_private_attributes?(object, params = {})
     Pundit.policy!(current_user(params), object).view_private_attributes?
   end

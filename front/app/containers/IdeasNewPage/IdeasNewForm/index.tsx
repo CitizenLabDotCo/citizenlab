@@ -3,7 +3,11 @@ import { PreviousPathnameContext } from 'context';
 
 import clHistory from 'utils/cl-router/history';
 
-import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
+import {
+  isAdmin,
+  isRegularUser,
+  isSuperAdmin,
+} from 'services/permissions/roles';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 import { isError, isNilOrError } from 'utils/helperUtils';
@@ -51,7 +55,7 @@ const IdeasNewPageWithJSONForm = () => {
     const isPrivilegedUser =
       !isNilOrError(authUser) &&
       (isAdmin({ data: authUser }) ||
-        isModerator({ data: authUser }) ||
+        !isRegularUser({ data: authUser }) ||
         isSuperAdmin({ data: authUser }));
 
     if (
@@ -111,7 +115,9 @@ const IdeasNewPageWithJSONForm = () => {
         project_id: project?.id,
         publication_status: 'published',
         phase_ids:
-          phaseId && !isNilOrError(authUser) && isModerator({ data: authUser })
+          phaseId &&
+          !isNilOrError(authUser) &&
+          !isRegularUser({ data: authUser })
             ? [phaseId]
             : null,
       },

@@ -19,7 +19,11 @@ namespace :cl2_back do
           },
           signup_helper_text: {
             en: 'If you don\'t want to register, use hello@citizenlab.co/democrazy as email/password'
-          }
+          },
+          maximum_admins_number: 2,
+          maximum_moderators_number: 2,
+          additional_admins_number: 2,
+          additional_moderators_number: 1
         },
         private_projects: {
           enabled: true,
@@ -316,6 +320,10 @@ namespace :cl2_back do
           enabled: false,
           allowed: false,
           duration: 90
+        },
+        seat_based_billing: {
+          enabled: true,
+          allowed: true
         }
       }
     )
