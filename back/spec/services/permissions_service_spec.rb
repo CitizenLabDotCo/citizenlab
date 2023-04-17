@@ -371,7 +371,8 @@ describe PermissionsService do
             custom_fields: {},
             special: {
               password: 'dont_ask',
-              confirmation: 'dont_ask'
+              confirmation: 'dont_ask',
+              verification: 'dont_ask'
             }
           }
         })
@@ -391,7 +392,8 @@ describe PermissionsService do
             custom_fields: {},
             special: {
               password: 'dont_ask',
-              confirmation: 'dont_ask'
+              confirmation: 'dont_ask',
+              verification: 'dont_ask'
             }
           }
         })
@@ -409,7 +411,8 @@ describe PermissionsService do
             custom_fields: {},
             special: {
               password: 'satisfied',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
@@ -428,7 +431,8 @@ describe PermissionsService do
             custom_fields: {},
             special: {
               password: 'satisfied',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
@@ -524,7 +528,8 @@ describe PermissionsService do
             },
             special: {
               password: 'satisfied',
-              confirmation: 'require'
+              confirmation: 'require',
+              verification: 'dont_ask'
             }
           }
         })
@@ -544,7 +549,8 @@ describe PermissionsService do
             },
             special: {
               password: 'satisfied',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
@@ -566,7 +572,8 @@ describe PermissionsService do
             },
             special: {
               password: 'satisfied',
-              confirmation: 'require'
+              confirmation: 'require',
+              verification: 'dont_ask'
             }
           }
         })
@@ -587,7 +594,8 @@ describe PermissionsService do
             },
             special: {
               password: 'satisfied',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
@@ -619,7 +627,8 @@ describe PermissionsService do
             },
             special: {
               password: 'require',
-              confirmation: 'require'
+              confirmation: 'require',
+              verification: 'dont_ask'
             }
           }
         })
@@ -643,7 +652,8 @@ describe PermissionsService do
             },
             special: {
               password: 'require',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
@@ -763,16 +773,17 @@ describe PermissionsService do
           permitted: false,
           requirements: {
             built_in: {
-              first_name: 'dont_ask',
-              last_name: 'dont_ask',
+              first_name: 'require',
+              last_name: 'require',
               email: 'require'
             },
             custom_fields: {
               'birthyear' => 'require'
             },
             special: {
-              password: 'dont_ask',
-              confirmation: 'require'
+              password: 'require',
+              confirmation: 'require',
+              verification: 'dont_ask'
             }
           }
         })
@@ -785,7 +796,7 @@ describe PermissionsService do
           permitted: false,
           requirements: {
             built_in: {
-              first_name: 'dont_ask',
+              first_name: 'require',
               last_name: 'satisfied',
               email: 'satisfied'
             },
@@ -793,29 +804,9 @@ describe PermissionsService do
               'birthyear' => 'satisfied'
             },
             special: {
-              password: 'dont_ask',
-              confirmation: 'require'
-            }
-          }
-        })
-      end
-
-      it 'permits a light confirmed resident' do
-        user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: { 'birthyear' => 1968 })
-        expect(service.requirements(permission, user)).to eq({
-          permitted: true,
-          requirements: {
-            built_in: {
-              first_name: 'dont_ask',
-              last_name: 'satisfied',
-              email: 'satisfied'
-            },
-            custom_fields: {
-              'birthyear' => 'satisfied'
-            },
-            special: {
-              password: 'dont_ask',
-              confirmation: 'satisfied'
+              password: 'require',
+              confirmation: 'require',
+              verification: 'dont_ask'
             }
           }
         })
@@ -835,7 +826,8 @@ describe PermissionsService do
             },
             special: {
               password: 'satisfied',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
@@ -857,7 +849,8 @@ describe PermissionsService do
             },
             special: {
               password: 'satisfied',
-              confirmation: 'require'
+              confirmation: 'require',
+              verification: 'dont_ask'
             }
           }
         })
@@ -878,7 +871,8 @@ describe PermissionsService do
             },
             special: {
               password: 'satisfied',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
@@ -895,34 +889,36 @@ describe PermissionsService do
           permitted: false,
           requirements: {
             built_in: {
-              first_name: 'dont_ask',
-              last_name: 'dont_ask',
+              first_name: 'require',
+              last_name: 'require',
               email: 'require'
             },
             custom_fields: {},
             special: {
-              password: 'dont_ask',
-              confirmation: 'dont_ask'
+              password: 'require',
+              confirmation: 'dont_ask',
+              verification: 'dont_ask'
             }
           }
         })
       end
 
-      it 'permits a light unconfirmed resident' do
+      it 'does not permit a light unconfirmed resident' do
         user.reset_confirmation_and_counts
         user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
         expect(service.requirements(permission, user)).to eq({
-          permitted: true,
+          permitted: false,
           requirements: {
             built_in: {
-              first_name: 'dont_ask',
+              first_name: 'require',
               last_name: 'satisfied',
               email: 'satisfied'
             },
             custom_fields: {},
             special: {
-              password: 'dont_ask',
-              confirmation: 'satisfied'
+              password: 'require',
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
@@ -941,7 +937,8 @@ describe PermissionsService do
             custom_fields: {},
             special: {
               password: 'satisfied',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
@@ -961,7 +958,8 @@ describe PermissionsService do
             custom_fields: {},
             special: {
               password: 'satisfied',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
@@ -980,7 +978,8 @@ describe PermissionsService do
             custom_fields: {},
             special: {
               password: 'satisfied',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
