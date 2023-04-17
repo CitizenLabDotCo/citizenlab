@@ -148,6 +148,7 @@ module IdeaCustomFields
     end
 
     def delete_field!(field)
+      SideFxCustomFieldService.new.before_destroy field, current_user
       field.destroy!
       SideFxCustomFieldService.new.after_destroy field, current_user
       field
@@ -201,6 +202,7 @@ module IdeaCustomFields
     end
 
     def delete_option!(option)
+      SideFxCustomFieldOptionService.new.before_destroy option, current_user
       option.destroy!
       SideFxCustomFieldOptionService.new.after_destroy option, current_user
       option
