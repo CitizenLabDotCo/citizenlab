@@ -28,6 +28,7 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Registreu-vos amb telèfon o correu electrònic",
   "app.components.Author.a11y_postedBy": "Publicat per:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} participants",
+  "app.components.BillingWarning.billingWarning": "Un cop s'afegeixin seients addicionals, la vostra facturació s'incrementarà. Poseu-vos en contacte amb el vostre gestor de GovSuccess per obtenir-ne més informació.",
   "app.components.CityLogoSection.iframeTitle": "Més informació sobre {orgName}",
   "app.components.Comments.cancel": "Cancel·lar",
   "app.components.Comments.commentingDisabledInCurrentPhase": "No es poden fer comentaris en la fase actual.",
