@@ -30,7 +30,6 @@ resource 'User Custom Fields' do
       create(:permissions_custom_field, custom_field: @custom_fields[0], permission: permission)
 
       phase_project = create(:project_with_phases)
-      phase_project.phases[0]
       phase_permission = create(:permission, permission_scope: phase_project.phases[0])
       create(:permissions_custom_field, custom_field: @custom_fields[0], permission: phase_permission)
 
