@@ -60,7 +60,7 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     attributes = {
       admins_number: User.billed_admins.count,
-      project_moderators_number: User.billed_moderators.count
+      moderators_number: User.billed_moderators.count
     }
     render json: raw_json(attributes)
   end

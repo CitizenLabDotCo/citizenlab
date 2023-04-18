@@ -39,8 +39,7 @@ export const useExceedsSeats = (): ((
         availableAdminSeats
       : false;
     const exceedsModeratorSeats = availableModeratorSeats
-      ? seats.data.attributes.project_moderators_number +
-          newlyAddedModeratorsNumber >
+      ? seats.data.attributes.moderators_number + newlyAddedModeratorsNumber >
         availableModeratorSeats
       : false;
     return {
