@@ -1,18 +1,19 @@
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import React from 'react';
-import { IPermissionData } from 'services/actionPermissions';
 import { IPhaseData } from 'services/phases';
 import { isNilOrError } from 'utils/helperUtils';
 import ActionsForm from '../containers/Granular/ActionsForm';
 import { Box } from '@citizenlab/cl2-component-library';
+import { HandlePermissionChangeProps } from '../containers/Granular/utils';
 
 type PhaseActionFormProps = {
   phase: IPhaseData;
-  onChange: (
-    permission: IPermissionData,
-    permittedBy: IPermissionData['attributes']['permitted_by'],
-    groupIds: string[]
-  ) => void;
+  onChange: ({
+    permission,
+    permittedBy,
+    groupIds,
+    globalCustomFields,
+  }: HandlePermissionChangeProps) => void;
   postType: 'defaultInput' | 'nativeSurvey';
   projectId: string;
 };

@@ -18,7 +18,7 @@ import {
 import usePhases from 'hooks/usePhases';
 import { PhaseActionForm } from '../../components/PhaseActionForm';
 import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
-import { IPCPermissionData } from 'api/phase_permissions/types';
+import { HandlePermissionChangeProps } from './utils';
 
 const Container = styled.div`
   margin-bottom: 20px;
@@ -34,17 +34,24 @@ const Timeline = ({ projectId }: InputProps) => {
     useUpdatePhasePermission(openedPhaseId);
   const phases = usePhases(projectId);
 
-  const handlePermissionChange = (
-    permission: IPCPermissionData,
-    permittedBy: IPCPermissionData['attributes']['permitted_by'],
-    groupIds: string[]
-  ) => {
-    updatePhasePermission({
-      permissionId: permission.id,
-      phaseId: permission.relationships.permission_scope.data.id,
-      action: permission.attributes.action,
-      permission: { permitted_by: permittedBy, group_ids: groupIds },
-    });
+  const handlePermissionChange = ({
+    permission,
+    permittedBy,
+    groupIds,
+    globalCustomFields,
+  }: HandlePermissionChangeProps) => {
+    if (openedPhaseId) {
+      updatePhasePermission({
+        permissionId: permission.id,
+        phaseId: openedPhaseId,
+        action: permission.attributes.action,
+        permission: {
+          permitted_by: permittedBy,
+          group_ids: groupIds,
+          global_custom_fields: globalCustomFields,
+        },
+      });
+    }
   };
 
   if (isNilOrError(phases)) {

@@ -16,6 +16,7 @@ export const data: IPCPermissionData = {
     permitted_by: 'everyone_confirmed_email',
     created_at: '2023-03-28T12:29:20.848Z',
     updated_at: '2023-03-28T13:15:59.410Z',
+    global_custom_fields: false,
   },
   relationships: {
     permission_scope: {

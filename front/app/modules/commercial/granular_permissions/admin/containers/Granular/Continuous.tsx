@@ -8,7 +8,6 @@ import ActionsForm from './ActionsForm';
 import useProject from 'hooks/useProject';
 import useProjectPermissions from 'api/project_permissions/useProjectPermissions';
 import useUpdateProjectPermission from 'api/project_permissions/useUpdateProjectPermission';
-import { IPCPermissionData } from 'api/phase_permissions/types';
 
 // utils
 import {
@@ -16,6 +15,7 @@ import {
   ParticipationMethodConfig,
 } from 'utils/participationMethodUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { HandlePermissionChangeProps } from './utils';
 
 const Container = styled.div`
   display: flex;
@@ -39,16 +39,21 @@ const Continuous = ({ projectId }: Props) => {
     project?.id
   );
 
-  const handlePermissionChange = (
-    permission: IPCPermissionData,
-    permittedBy: IPCPermissionData['attributes']['permitted_by'],
-    groupIds: string[]
-  ) => {
+  const handlePermissionChange = ({
+    permission,
+    permittedBy,
+    groupIds,
+    globalCustomFields,
+  }: HandlePermissionChangeProps) => {
     updateProjectPermission({
       permissionId: permission.id,
       projectId,
       action: permission.attributes.action,
-      permission: { permitted_by: permittedBy, group_ids: groupIds },
+      permission: {
+        permitted_by: permittedBy,
+        group_ids: groupIds,
+        global_custom_fields: globalCustomFields,
+      },
     });
   };
 

@@ -32,12 +32,19 @@ import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { IUserCustomFieldData } from 'services/userCustomFields';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
+import { HandlePermissionChangeProps } from '../../containers/Granular/utils';
 
 type UserFieldSelectionProps = {
   permission: IPermissionData;
   projectId?: string | null;
   phaseId?: string | null;
   initiativeContext?: boolean;
+  onChange: ({
+    permission,
+    permittedBy,
+    groupIds,
+    globalCustomFields,
+  }: HandlePermissionChangeProps) => void;
 };
 
 const UserFieldSelection = ({
@@ -45,6 +52,7 @@ const UserFieldSelection = ({
   projectId,
   phaseId,
   initiativeContext,
+  onChange,
 }: UserFieldSelectionProps) => {
   const globalRegistrationFields = useUserCustomFields();
   const initialFields = usePermissionsCustomFields({
@@ -74,6 +82,7 @@ const UserFieldSelection = ({
       initiativeContext,
       action: permission.attributes.action,
     });
+
   const locale = useLocale();
   const [showSelectionModal, setShowSelectionModal] = useState(false);
   const initialFieldArray = initialFields?.data?.data;
@@ -103,6 +112,8 @@ const UserFieldSelection = ({
     deletePermissionsCustomField(fieldId);
   };
 
+  const groupIds = permission.relationships.groups.data.map((p) => p.id);
+
   if (isNilOrError(locale)) {
     return null;
   }
@@ -116,67 +127,90 @@ const UserFieldSelection = ({
         <FormattedMessage {...messages.userFieldsSelectionDescription} />
       </Text>
       <Box>
-        {initialFieldArray?.map((field) => (
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            key={field.id}
-            py="0px"
-            borderTop="solid"
-            borderWidth="1px"
-            borderColor={colors.grey300}
-          >
-            <Text color="primary">
-              {getTitleFromGlobalFieldId(field, locale)}
-            </Text>
-            <Box display="flex">
-              <Toggle
-                checked={field.attributes.required}
-                onChange={() => {
-                  updatePermissionCustomField({
-                    id: field.id,
-                    required: !field.attributes.required,
-                  });
-                }}
-                label={
-                  <Text color="primary" fontSize="s">
-                    <FormattedMessage {...messages.required} />
-                  </Text>
-                }
+        <Box mb="30px">
+          <Toggle
+            checked={permission.attributes.global_custom_fields}
+            onChange={() => {
+              onChange({
+                permission,
+                groupIds,
+                globalCustomFields: !permission.attributes.global_custom_fields,
+              });
+            }}
+            label={
+              <FormattedMessage
+                {...messages.useExistingRegistrationQuestions}
               />
+            }
+          />
+        </Box>
+        {!permission.attributes.global_custom_fields && (
+          <>
+            <Box>
+              {initialFieldArray?.map((field) => (
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  key={field.id}
+                  py="0px"
+                  borderTop="solid"
+                  borderWidth="1px"
+                  borderColor={colors.grey300}
+                >
+                  <Text color="primary">
+                    {getTitleFromGlobalFieldId(field, locale)}
+                  </Text>
+                  <Box display="flex">
+                    <Toggle
+                      checked={field.attributes.required}
+                      onChange={() => {
+                        updatePermissionCustomField({
+                          id: field.id,
+                          required: !field.attributes.required,
+                        });
+                      }}
+                      label={
+                        <Text color="primary" fontSize="s">
+                          <FormattedMessage {...messages.required} />
+                        </Text>
+                      }
+                    />
+                    <Button
+                      buttonStyle="text"
+                      icon="delete"
+                      onClick={() => {
+                        handleDeleteField(field.id);
+                      }}
+                    >
+                      <FormattedMessage {...messages.delete} />
+                    </Button>
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+            <Box display="flex" mt="12px">
               <Button
-                buttonStyle="text"
-                icon="delete"
+                icon="plus-circle"
+                bgColor={colors.primary}
                 onClick={() => {
-                  handleDeleteField(field.id);
+                  setShowSelectionModal(true);
                 }}
               >
-                <FormattedMessage {...messages.delete} />
+                <FormattedMessageComponent {...messages.addQuestion} />
               </Button>
             </Box>
-          </Box>
-        ))}
+            <FieldSelectionModal
+              showSelectionModal={showSelectionModal}
+              setShowSelectionModal={setShowSelectionModal}
+              selectedFields={initialFieldArray}
+              handleAddField={handleAddField}
+              isLoading={isLoading}
+              registrationFieldList={globalRegistrationFields}
+              locale={locale}
+            />
+          </>
+        )}
       </Box>
-      <Box display="flex" mt="12px">
-        <Button
-          icon="plus-circle"
-          bgColor={colors.primary}
-          onClick={() => {
-            setShowSelectionModal(true);
-          }}
-        >
-          <FormattedMessageComponent {...messages.addQuestion} />
-        </Button>
-      </Box>
-      <FieldSelectionModal
-        showSelectionModal={showSelectionModal}
-        setShowSelectionModal={setShowSelectionModal}
-        selectedFields={initialFieldArray}
-        handleAddField={handleAddField}
-        isLoading={isLoading}
-        registrationFieldList={globalRegistrationFields}
-        locale={locale}
-      />
     </Box>
   );
 };
