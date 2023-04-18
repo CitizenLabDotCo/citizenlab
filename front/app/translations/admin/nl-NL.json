@@ -578,7 +578,7 @@
   "app.containers.Admin.Users.platformAdmin": "Admin",
   "app.containers.Admin.Users.projectManager": "Projectbeheerder",
   "app.containers.Admin.Users.reachedLimitMessage": "Je hebt de limiet van het aantal account binnen je abonnement bereikt, 1 extra account voor {name} zal worden toegevoegd.",
-  "app.containers.Admin.Users.registeredUser": "Geregistreerde gebruikers",
+  "app.containers.Admin.Users.registeredUser": "Geregistreerde gebruiker",
   "app.containers.Admin.Users.seeProfile": "Bekijk het profiel van deze gebruiker",
   "app.containers.Admin.Users.setAsAdmin": "Instellen als admin",
   "app.containers.Admin.Users.setAsNormalUser": "Instellen als normale gebruiker",
