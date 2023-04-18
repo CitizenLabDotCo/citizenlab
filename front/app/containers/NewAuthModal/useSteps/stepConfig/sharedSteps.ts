@@ -90,6 +90,8 @@ export const sharedSteps = (
             setCurrentStep('missing-data:custom-fields');
             return;
           }
+
+          return;
         }
 
         const { flow } = getAuthenticationData();

@@ -77,10 +77,6 @@ export interface IUserUpdate {
   locale?: string;
   avatar?: string | null;
   roles?: TRole[];
-  birthyear?: number;
-  gender?: string;
-  domicile?: string;
-  education?: string;
   bio_multiloc?: Multiloc;
   custom_field_values?: Record<string, any>;
 }
