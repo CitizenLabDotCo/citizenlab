@@ -33,20 +33,25 @@ module MultiTenancy
       def apply_external_template(template_name, prefix: 'release')
         template_models = template_utils.fetch_external_template_models(template_name, prefix: prefix)
         model_id_mapping = generate_model_identifiers!(template_models)
+
+        template_prefix = template_utils.template_prefix(template_name, prefix: prefix)
         copy_s3_files(template_prefix, Tenant.current.id, model_id_mapping)
 
         MultiTenancy::Templates::TenantSerializer.format_for_deserializer!(template_models)
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template_models)
       end
 
-      def copy_s3_files(template_name, tenant_id, model_id_mapping, num_threads: 20)
-        prefix = "#{template_name}/uploads"
+      def copy_s3_files(template_prefix, tenant_id, model_id_mapping, num_threads: 20)
+        uploads_prefix = "#{template_prefix}/uploads/"
 
         s3_utils.copy_objects(
-          template_bucket, tenant_bucket, prefix,
+          template_bucket, tenant_bucket, uploads_prefix,
           copy_args: { acl: 'public-read' },
           num_threads: num_threads
-        ) { |key| transform_key(key, tenant_id, model_id_mapping) }
+        ) do |key|
+          key = key.delete_prefix(uploads_prefix)
+          transform_key(key, tenant_id, model_id_mapping)
+        end
       end
 
       def tenant_bucket
@@ -72,7 +77,7 @@ module MultiTenancy
       end
 
       def transform_key(key, tenant_id, model_id_mapping)
-        _template_name, _uploads_namespace, *class_parts, attribute_name, identifier, filename = key.split('/')
+        *class_parts, attribute_name, identifier, filename = key.split('/')
         new_identifier = model_id_mapping.fetch(identifier)
 
         ['uploads', tenant_id, *class_parts, attribute_name, new_identifier, filename].join('/')
