@@ -1,16 +1,8 @@
 import React, { MouseEvent, useState, useEffect } from 'react';
-import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import UpvoteButton from './UpvoteButton';
-
-// resources
-import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetCommentVote, {
-  GetCommentVoteChildProps,
-} from 'resources/GetCommentVote';
 
 // events
 import { openVerificationModal } from 'events/verificationModal';
@@ -21,31 +13,35 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'hooks/useAuthUser';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 import useOpenAuthModal from 'hooks/useOpenAuthModal';
+import useDeleteCommentVote from 'api/comment_votes/useDeleteCommentVote';
+import useAddCommentVote from 'api/comment_votes/useAddCommentVote';
+import useCommentVote from 'api/comment_votes/useCommentVote';
 
-// utils
-import { upvote, removeVote } from './vote';
+// tracks
+import tracks from '../../tracks';
+import { trackEventByName } from 'utils/analytics';
 
-interface InputProps {
+// typings
+import { ICommentData } from 'services/comments';
+import { IInitiativeData } from 'api/initiatives/types';
+import { IIdeaData } from 'api/ideas/types';
+
+interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
-  commentId: string;
   commentType: 'parent' | 'child' | undefined;
+  comment: ICommentData;
   className?: string;
 }
 
-interface DataProps {
-  comment: GetCommentChildProps;
-  commentVote: GetCommentVoteChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
+const postIsIdea = (post: IIdeaData | IInitiativeData): post is IIdeaData => {
+  return post.type === 'idea';
+};
 
 const CommentVote = ({
-  comment,
-  commentVote,
   postId,
   postType,
-  commentId,
+  comment,
   commentType,
   className,
 }: Props) => {
@@ -59,6 +55,12 @@ const CommentVote = ({
   const { data: idea } = useIdeaById(ideaId);
   const authUser = useAuthUser();
 
+  const { mutate: deleteCommentVote } = useDeleteCommentVote();
+  const { mutate: addCommentVote } = useAddCommentVote();
+  const { data: commentVote } = useCommentVote(
+    comment.relationships.user_vote?.data?.id
+  );
+
   // Wondering why 'comment_voting_initiative' and not 'commenting_initiative'?
   // See app/api/initiative_action_descriptors/types.ts
   const commentVotingPermissionInitiative = useInitiativesPermissions(
@@ -66,41 +68,46 @@ const CommentVote = ({
   );
 
   const vote = async () => {
-    const oldVotedValue = voted;
-
-    if (isNilOrError(authUser)) return;
-
-    if (!oldVotedValue) {
-      setVoted(true);
-      setUpvoteCount((n) => n + 1);
-
-      try {
-        await upvote({
-          postId,
-          postType,
-          commentId,
-          userId: authUser.id,
-          commentType,
-        });
-      } catch (error) {
-        setVoted(false);
-        setUpvoteCount((n) => n - 1);
+    if (!isNilOrError(authUser)) {
+      if (!commentVote) {
+        addCommentVote(
+          {
+            commentId: comment.id,
+            userId: authUser.id,
+            mode: 'up',
+          },
+          {
+            onSuccess: () => {
+              if (commentType === 'parent') {
+                trackEventByName(tracks.clickParentCommentUpvoteButton);
+              } else if (commentType === 'child') {
+                trackEventByName(tracks.clickChildCommentUpvoteButton);
+              } else {
+                trackEventByName(tracks.clickCommentUpvoteButton);
+              }
+            },
+          }
+        );
       }
-    }
 
-    if (oldVotedValue && !isNilOrError(commentVote)) {
-      setVoted(false);
-      setUpvoteCount((n) => n - 1);
-
-      try {
-        await removeVote({
-          commentId,
-          commentVoteId: commentVote.id,
-          commentType,
-        });
-      } catch (error) {
-        setVoted(true);
-        setUpvoteCount((n) => n + 1);
+      if (commentVote) {
+        deleteCommentVote(
+          {
+            commentId: comment.id,
+            voteId: commentVote.data.id,
+          },
+          {
+            onSuccess: () => {
+              if (commentType === 'parent') {
+                trackEventByName(tracks.clickParentCommentCancelUpvoteButton);
+              } else if (commentType === 'child') {
+                trackEventByName(tracks.clickChildCommentCancelUpvoteButton);
+              } else {
+                trackEventByName(tracks.clickCommentCancelUpvoteButton);
+              }
+            },
+          }
+        );
       }
     }
   };
@@ -129,13 +136,11 @@ const CommentVote = ({
   const handleVoteClick = async (event?: MouseEvent) => {
     event?.preventDefault();
 
-    if (postType === 'idea') {
+    if (post && postIsIdea(post)) {
       // Wondering why 'comment_voting_idea' and not 'commenting_idea'?
       // See app/api/ideas/types.ts
-      const commentVotingDisabledReason = get(
-        post,
-        'attributes.action_descriptor.comment_voting_idea.disabled_reason'
-      );
+      const commentVotingDisabledReason =
+        post.attributes.action_descriptor.comment_voting_idea.disabled_reason;
 
       const authUserIsVerified =
         !isNilOrError(authUser) && authUser.attributes.verified;
@@ -194,10 +199,10 @@ const CommentVote = ({
   if (!isNilOrError(comment)) {
     // Wondering why 'comment_voting_idea' and not 'commenting_idea'?
     // See app/api/ideas/types.ts
-    const commentingVotingIdeaDisabledReason = get(
-      post,
-      'attributes.action_descriptor.comment_voting_idea.disabled_reason'
-    );
+    const commentingVotingIdeaDisabledReason =
+      post?.attributes && 'action_descriptor' in post.attributes
+        ? post?.attributes.action_descriptor.comment_voting_idea.disabled_reason
+        : undefined;
 
     const isSignedIn = !isNilOrError(authUser);
     const disabled =
@@ -221,25 +226,4 @@ const CommentVote = ({
   return null;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  comment: ({ commentId, render }) => (
-    <GetComment id={commentId}>{render}</GetComment>
-  ),
-  commentVote: ({ comment, render }) => (
-    <GetCommentVote
-      voteId={
-        !isNilOrError(comment)
-          ? comment?.relationships?.user_vote?.data?.id
-          : undefined
-      }
-    >
-      {render}
-    </GetCommentVote>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <CommentVote {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default CommentVote;

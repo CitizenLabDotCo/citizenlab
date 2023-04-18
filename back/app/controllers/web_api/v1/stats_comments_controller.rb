@@ -3,9 +3,6 @@
 class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   @@multiloc_service = MultilocService.new
 
-  before_action :render_no_data, only: %i[comments_by_time comments_by_time_cumulative]
-  before_action :render_no_data_as_xlsx, only: %i[comments_by_time_as_xlsx comments_by_time_cumulative_as_xlsx]
-
   def comments_count
     count = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve
       .where(created_at: @start_at..@end_at)
@@ -13,56 +10,6 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
       .count
 
     render json: raw_json({ count: count })
-  end
-
-  def comments_by_time_serie
-    comments = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve
-
-    comments = apply_project_filter(comments)
-    comments = apply_topic_filter(comments)
-    comments = apply_group_filter(comments)
-
-    @@stats_service.group_by_time(
-      comments,
-      'comments.created_at',
-      @start_at,
-      @end_at,
-      params[:interval]
-    )
-  end
-
-  def comments_by_time
-    render json: { series: { comments: comments_by_time_serie } }
-  end
-
-  def comments_by_time_as_xlsx
-    xlsx = XlsxService.new.generate_time_stats_xlsx comments_by_time_serie, 'comments_by_time'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments_by_time.xlsx'
-  end
-
-  def comments_by_time_cumulative_serie
-    comments = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve
-
-    comments = apply_project_filter(comments)
-    comments = apply_topic_filter(comments)
-    comments = apply_group_filter(comments)
-
-    @@stats_service.group_by_time_cumulative(
-      comments,
-      'comments.created_at',
-      @start_at,
-      @end_at,
-      params[:interval]
-    )
-  end
-
-  def comments_by_time_cumulative
-    render json: { series: { comments: comments_by_time_cumulative_serie } }
-  end
-
-  def comments_by_time_cumulative_as_xlsx
-    xlsx = XlsxService.new.generate_time_stats_xlsx comments_by_time_cumulative_serie, 'comments_by_time_cumulative'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments_by_time_cumulative.xlsx'
   end
 
   def comments_by_topic_serie
@@ -168,18 +115,6 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
     else
       comments
     end
-  end
-
-  def render_no_data
-    return unless @no_data
-
-    render json: { series: { comments: {} } }
-  end
-
-  def render_no_data_as_xlsx
-    return unless @no_data
-
-    render json: { errors: 'no data for this period' }, status: :unprocessable_entity
   end
 
   def do_authorize
