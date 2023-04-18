@@ -26,12 +26,12 @@ module MultiTenancy
       # @param [Aws::S3::Client, nil] s3_client The S3 client to use.
       def initialize(
         tenant_bucket: 'cl2-tenants-production-benelux',
-        template_bucket: nil,
-        s3_client: nil
+        template_bucket: ENV.fetch('TEMPLATE_BUCKET'),
+        s3_client: Aws::S3::Client.new(region: 'eu-central-1')
       )
-        @template_bucket = template_bucket || ENV.fetch('TEMPLATE_BUCKET')
+        @template_bucket = template_bucket
         @tenant_bucket = tenant_bucket
-        @s3_client = s3_client || Aws::S3::Client.new(region: 'eu-central-1')
+        @s3_client = s3_client
       end
 
       # @param [Object] tenant The tenant to create a template from.
