@@ -28,7 +28,6 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Registrera dig med telefonnummer eller e-postadress",
   "app.components.Author.a11y_postedBy": "Inlagd av:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} deltagare",
-  "app.components.BillingWarning.billingWarning": "När ytterligare platser läggs till kommer din fakturering att öka. Kontakta din GovSuccess Manager för att få veta mer om detta.",
   "app.components.CityLogoSection.iframeTitle": "Mer information om {orgName}",
   "app.components.Comments.cancel": "Avbryt",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Kommentarer är inte möjliga i den aktuella fasen.",
