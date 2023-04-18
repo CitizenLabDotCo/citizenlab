@@ -4,7 +4,7 @@ import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 
 // utils
-import { requiredCustomFields } from './utils';
+import { requiredCustomFields, requiredBuiltInFields } from './utils';
 
 // typings
 import {
@@ -21,38 +21,6 @@ export const missingDataFlow = (
   setError: (errorCode: ErrorCode) => void
 ) => {
   return {
-    'missing-data:built-in': {
-      CLOSE: () => setCurrentStep('closed'),
-      SUBMIT: async (
-        userId: string,
-        builtInFieldUpdate: BuiltInFieldsUpdate
-      ) => {
-        setStatus('pending');
-
-        await updateUser(userId, builtInFieldUpdate);
-        const { requirements } = await getRequirements();
-
-        setStatus('ok');
-
-        if (requirements.special.confirmation === 'require') {
-          setCurrentStep('missing-data:email-confirmation');
-          return;
-        }
-
-        if (requirements.special.verification === 'require') {
-          setCurrentStep('missing-data:verification');
-          return;
-        }
-
-        if (requiredCustomFields(requirements.custom_fields)) {
-          setCurrentStep('missing-data:custom-fields');
-          return;
-        }
-
-        setCurrentStep('success');
-      },
-    },
-
     'missing-data:email-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: () => {
@@ -66,6 +34,11 @@ export const missingDataFlow = (
           const { requirements } = await getRequirements();
 
           setStatus('ok');
+
+          if (requiredBuiltInFields(requirements.built_in)) {
+            setCurrentStep('missing-data:built-in');
+            return;
+          }
 
           if (requirements.special.verification === 'require') {
             setCurrentStep('missing-data:verification');
@@ -106,6 +79,33 @@ export const missingDataFlow = (
           setStatus('error');
           setError('unknown');
         }
+      },
+    },
+
+    'missing-data:built-in': {
+      CLOSE: () => setCurrentStep('closed'),
+      SUBMIT: async (
+        userId: string,
+        builtInFieldUpdate: BuiltInFieldsUpdate
+      ) => {
+        setStatus('pending');
+
+        await updateUser(userId, builtInFieldUpdate);
+        const { requirements } = await getRequirements();
+
+        setStatus('ok');
+
+        if (requirements.special.verification === 'require') {
+          setCurrentStep('missing-data:verification');
+          return;
+        }
+
+        if (requiredCustomFields(requirements.custom_fields)) {
+          setCurrentStep('missing-data:custom-fields');
+          return;
+        }
+
+        setCurrentStep('success');
       },
     },
 

@@ -57,27 +57,16 @@ export const sharedSteps = (
         updateState({ email: null, token: null });
 
         const { requirements } = await getRequirements();
-
-        const isLightFlow = requirements.special.password === 'dont_ask';
         const signedIn = requirements.built_in.email === 'satisfied';
 
-        if (isLightFlow) {
-          if (signedIn) {
-            setCurrentStep('light-flow:email-confirmation');
-          } else {
-            setCurrentStep('light-flow:email');
-          }
-          return;
-        }
-
         if (signedIn) {
-          if (requiredBuiltInFields(requirements.built_in)) {
-            setCurrentStep('missing-data:built-in');
+          if (requirements.special.confirmation === 'require') {
+            setCurrentStep('missing-data:email-confirmation');
             return;
           }
 
-          if (requirements.special.confirmation === 'require') {
-            setCurrentStep('missing-data:email-confirmation');
+          if (requiredBuiltInFields(requirements.built_in)) {
+            setCurrentStep('missing-data:built-in');
             return;
           }
 
@@ -91,6 +80,13 @@ export const sharedSteps = (
             return;
           }
 
+          return;
+        }
+
+        const isLightFlow = requirements.special.password === 'dont_ask';
+
+        if (isLightFlow) {
+          setCurrentStep('light-flow:email');
           return;
         }
 
