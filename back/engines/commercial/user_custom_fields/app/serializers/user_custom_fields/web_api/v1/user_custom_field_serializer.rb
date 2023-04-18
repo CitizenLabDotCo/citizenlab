@@ -23,8 +23,14 @@ module UserCustomFields
         end
 
         has_many :projects, serializer: ::WebApi::V1::ProjectSerializer do |object|
-          project_ids = object.permissions.map { |p| p.permission_scope_id if p.permission_scope_type == 'Project' }
-          Project.find(project_ids)
+          object.permissions.map do |p|
+            case p.permission_scope_type
+            when 'Project'
+              p.permission_scope
+            when 'Phase'
+              p.permission_scope.project
+            end
+          end
         end
       end
     end

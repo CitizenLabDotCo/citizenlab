@@ -25,15 +25,21 @@ resource 'User Custom Fields' do
     end
 
     example 'List all custom fields with the projects that they are used in' do
-      project = create(:project)
+      project = create(:continuous_project)
       permission = create(:permission, permission_scope: project)
       create(:permissions_custom_field, custom_field: @custom_fields[0], permission: permission)
 
+      phase_project = create(:project_with_phases)
+      phase_project.phases[0]
+      phase_permission = create(:permission, permission_scope: phase_project.phases[0])
+      create(:permissions_custom_field, custom_field: @custom_fields[0], permission: phase_permission)
+
       do_request
-      expect(status).to eq(200)
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, 0, :relationships, :projects, :data, 0, :id)).to eq project.id
-      expect(json_response.dig(:included, 0, :id)).to eq project.id
+      assert_status 200
+      expect(json_response_body.dig(:data, 0, :relationships, :projects, :data, 0, :id)).to eq project.id
+      expect(json_response_body.dig(:included, 0, :id)).to eq project.id
+      expect(json_response_body.dig(:data, 0, :relationships, :projects, :data, 1, :id)).to eq phase_project.id
+      expect(json_response_body.dig(:included, 1, :id)).to eq phase_project.id
     end
 
     describe 'do filter on input types' do
