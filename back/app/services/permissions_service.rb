@@ -143,7 +143,7 @@ class PermissionsService
         last_name: 'dont_ask',
         email: 'dont_ask'
       },
-      custom_fields: requirements_fields(permission).to_h { |field| [field.key, (field.required ? 'require' : 'dont_ask')] },
+      custom_fields: requirements_fields(permission).to_h { |field| [field.key, 'dont_ask'] },
       special: {
         password: 'dont_ask',
         confirmation: 'dont_ask',
@@ -153,16 +153,14 @@ class PermissionsService
 
     everyone_confirmed_email = everyone.deep_dup.tap do |requirements|
       requirements[:built_in][:email] = 'require'
-      requirements[:special][:confirmation] = 'require'
+      requirements[:custom_fields] = requirements_fields(permission).to_h { |field| [field.key, (field.required ? 'require' : 'ask')] }
+      requirements[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
     end
 
-    users = everyone.deep_dup.tap do |requirements|
+    users = everyone_confirmed_email.deep_dup.tap do |requirements|
       requirements[:built_in][:first_name] = 'require'
       requirements[:built_in][:last_name] = 'require'
-      requirements[:built_in][:email] = 'require'
-      requirements[:custom_fields].transform_values! { |requirement| requirement == 'dont_ask' ? 'ask' : requirement }
       requirements[:special][:password] = 'require'
-      requirements[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
     end
 
     case permission.permitted_by

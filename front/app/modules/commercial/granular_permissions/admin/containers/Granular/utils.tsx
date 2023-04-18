@@ -1,5 +1,8 @@
 import { TPhases } from 'hooks/usePhases';
-import { IGlobalPermissionAction } from 'services/actionPermissions';
+import {
+  IGlobalPermissionAction,
+  IPermissionData,
+} from 'services/actionPermissions';
 import { getInputTerm } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
@@ -13,6 +16,13 @@ type GetPermissionActionMessageProps = {
   postType: 'defaultInput' | 'nativeSurvey' | 'initiative';
   project: IProjectData | null | undefined;
   phases: TPhases;
+};
+
+export type HandlePermissionChangeProps = {
+  permission: IPermissionData;
+  permittedBy?: IPermissionData['attributes']['permitted_by'];
+  globalCustomFields?: IPermissionData['attributes']['global_custom_fields'];
+  groupIds: string[];
 };
 
 export const getPermissionActionMessage = ({
