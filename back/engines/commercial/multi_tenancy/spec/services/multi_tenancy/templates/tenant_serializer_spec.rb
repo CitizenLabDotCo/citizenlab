@@ -44,7 +44,6 @@ describe MultiTenancy::Templates::TenantSerializer do
       create(:nav_bar_item, code: 'home', title_multiloc: nil)
       template = tenant_serializer.run(deserializer_format: true)
 
-
       home_attributes = template.dig('models', 'nav_bar_item').find { |item| item['code'] == 'home' }
       expect(home_attributes['title_multiloc']).to be_blank
     end
@@ -153,7 +152,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         'key' => field.key,
         'input_type' => field.input_type,
         'title_multiloc' => field.title_multiloc,
-        'description_multiloc' => field.description_multiloc,
+        'description_multiloc' => field.description_multiloc
       )
     end
 

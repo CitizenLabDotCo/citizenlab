@@ -16,5 +16,3 @@ module MultiTenancy
     end
   end
 end
-
-

@@ -8,7 +8,7 @@ namespace :fix_templates do
     Dir[Rails.root.join('config/tenant_templates/*.yml')].map do |file|
       template = YAML.load(File.read(file)) # rubocop:disable Security/YAMLLoad
 
-      if template.dig('models','phase')
+      if template.dig('models', 'phase')
         template['models']['phase'] = fix_overlapping_phases template['models']['phase'], file
         File.write("#{file.split('.').first}_copy.yml", template.to_yaml)
       end

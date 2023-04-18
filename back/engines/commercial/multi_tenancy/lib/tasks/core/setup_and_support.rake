@@ -92,8 +92,7 @@ namespace :setup_and_support do
     } }
 
     Tenant.find_by(host: args[:to_host]).switch do
-      tenant_deserializer = ::MultiTenancy::Templates::TenantDeserializer.new
-      tenant_deserializer.deserialize template
+      MultiTenancy::Templates::TenantDeserializer.new.deserialize template
     end
   end
 

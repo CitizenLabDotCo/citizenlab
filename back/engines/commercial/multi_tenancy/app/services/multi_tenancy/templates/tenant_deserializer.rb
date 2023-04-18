@@ -44,7 +44,7 @@ module MultiTenancy
 
       def _deserialize(template, validate: true, max_time: nil, local_copy: false)
         t1 = Time.zone.now
-        obj_to_id_and_class = {}
+        obj_to_id_and_class = {}.compare_by_identity
         created_objects_ids = Hash.new { |h, k| h[k] = [] } # Hash with empty arrays as default values
 
         template['models'].each do |model_name, records|
@@ -100,7 +100,7 @@ module MultiTenancy
               attributes.each do |field_name, field_value|
                 if field_name.end_with?('_attributes') && field_value.is_a?(Hash) # linking attribute refs (not supported for lists of attributes)
                   submodel = model.send(field_name.chomp('_attributes'))
-                  obj_to_id_and_class[field_value.object_id] = [submodel.id, submodel.class]
+                  obj_to_id_and_class[field_value] = [submodel.id, submodel.class]
                 end
               end
             rescue StandardError => e
@@ -112,7 +112,7 @@ module MultiTenancy
               raise "Failed to create instance during template application: #{json_info}"
             end
 
-            obj_to_id_and_class[attributes.object_id] = [model.id, model_class]
+            obj_to_id_and_class[attributes] = [model.id, model_class]
             created_objects_ids[model_class.name] << model.id
           end
         end
@@ -142,7 +142,7 @@ module MultiTenancy
           elsif field_name.end_with?('_ref')
             ref_suffix = field_name.end_with?('_attributes_ref') ? '_attributes_ref' : '_ref' # linking attribute refs
             if field_value
-              id, ref_class = obj_to_id_and_class.fetch(field_value.object_id)
+              id, ref_class = obj_to_id_and_class.fetch(field_value)
               new_attributes[field_name.chomp(ref_suffix)] = ref_class.find(id)
             end
 

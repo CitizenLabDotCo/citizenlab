@@ -46,7 +46,8 @@ describe MultiTenancy::Templates::TenantDeserializer do
                 nl-BE: Minima et ipsa debitis.
               code: title_multiloc
       YAML
-      template = YAML.load(yml)
+
+      template = YAML.load(yml) # rubocop:disable Security/YAMLLoad
 
       service.deserialize(template)
 
@@ -76,7 +77,8 @@ describe MultiTenancy::Templates::TenantDeserializer do
                 publication_status: published
                 parent_attributes_ref: *1
       YAML
-      template = YAML.load(yml)
+
+      template = YAML.load(yml) # rubocop:disable Security/YAMLLoad
 
       service.deserialize(template)
 

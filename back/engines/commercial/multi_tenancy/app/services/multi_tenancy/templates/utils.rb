@@ -202,8 +202,8 @@ module MultiTenancy
 
       def raise_if_duplicates(template_names)
         duplicates = template_names.group_by(&:itself)
-                                   .transform_values(&:count)
-                                   .select { |_, count| count > 1 }
+          .transform_values(&:count)
+          .select { |_, count| count > 1 }
 
         raise AmbiguousTemplateNames, <<~MSG if duplicates.any?
           #{duplicates.map { |name, count| "#{name} (#{count}x)" }.join(', ')}.
