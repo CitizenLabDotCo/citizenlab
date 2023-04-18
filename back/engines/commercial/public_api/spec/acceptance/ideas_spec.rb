@@ -41,6 +41,7 @@ resource 'Ideas' do
         do_request('page_number' => 2, 'page_size' => 3)
         assert_status 200
         json_response = json_parse(response_body)
+        pp json_response
         expect(json_response[:ideas].size).to eq 2
         expect(json_response[:meta]).to eq({ total_pages: 2, current_page: 2 })
       end

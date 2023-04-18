@@ -117,11 +117,13 @@ module EmailCampaigns
 
     def trending_ideas
       ti_service = TrendingIdeaService.new
+
       ideas = IdeaPolicy::Scope.new(nil, Idea).resolve
         .published
         .includes(:comments)
 
-      trending_ids = ti_service.filter_trending(ideas).ids
+      input_ideas = IdeasFinder.new({}, scope: ideas).find_records
+      trending_ids = ti_service.filter_trending(input_ideas).ids
       ti_service.sort_trending ideas.where(id: trending_ids)
     end
 
