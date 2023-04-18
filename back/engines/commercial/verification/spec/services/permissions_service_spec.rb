@@ -81,12 +81,21 @@ describe PermissionsService do
       end
     end
 
-    context 'when permitted_by is NOT set to a verification group' do
+    context 'when permitted_by group is NOT set to a verification group' do
       let(:groups) { [create(:group), create(:smart_group)] }
       let(:group_permission) { create :permission, permitted_by: 'groups', groups: groups }
 
       it 'verification is not required' do
         requirements = service.requirements(group_permission, nil)
+        expect(requirements[:requirements][:special][:verification]).to eq('dont_ask')
+      end
+    end
+
+    context 'when permitted_by is NOT set to groups' do
+      let(:permission) { create :permission, permitted_by: 'users' }
+
+      it 'verification is not required' do
+        requirements = service.requirements(permission, nil)
         expect(requirements[:requirements][:special][:verification]).to eq('dont_ask')
       end
     end

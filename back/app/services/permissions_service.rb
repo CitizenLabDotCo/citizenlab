@@ -63,7 +63,7 @@ class PermissionsService
 
   def requirements_fields(permission)
     if permission.global_custom_fields
-      CustomField.registration
+      CustomField.registration.enabled
     else
       permission.permissions_custom_fields.map do |permissions_custom_field|
         permissions_custom_field.custom_field.tap do |field|
@@ -143,7 +143,7 @@ class PermissionsService
         last_name: 'dont_ask',
         email: 'dont_ask'
       },
-      custom_fields: requirements_fields(permission).to_h { |field| [field.key, (field.required ? 'require' : 'dont_ask')] },
+      custom_fields: requirements_fields(permission).to_h { |field| [field.key, 'dont_ask'] },
       special: {
         password: 'dont_ask',
         confirmation: 'dont_ask',
@@ -153,16 +153,14 @@ class PermissionsService
 
     everyone_confirmed_email = everyone.deep_dup.tap do |requirements|
       requirements[:built_in][:email] = 'require'
-      requirements[:special][:confirmation] = 'require'
+      requirements[:custom_fields] = requirements_fields(permission).to_h { |field| [field.key, (field.required ? 'require' : 'ask')] }
+      requirements[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
     end
 
-    users = everyone.deep_dup.tap do |users|
-      users[:built_in][:first_name] = 'require'
-      users[:built_in][:last_name] = 'require'
-      users[:built_in][:email] = 'require'
-      users[:custom_fields].transform_values! { |requirement| requirement == 'dont_ask' ? 'ask' : requirement }
-      users[:special][:password] = 'require'
-      users[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
+    users = everyone_confirmed_email.deep_dup.tap do |requirements|
+      requirements[:built_in][:first_name] = 'require'
+      requirements[:built_in][:last_name] = 'require'
+      requirements[:special][:password] = 'require'
     end
 
     case permission.permitted_by
@@ -170,11 +168,7 @@ class PermissionsService
       everyone
     when 'everyone_confirmed_email'
       everyone_confirmed_email
-    when 'users'
-      users
-    when 'groups'
-      users
-    when 'admins_moderators'
+    else # users | groups | admins_moderators'
       users
     end
   end

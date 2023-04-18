@@ -31,7 +31,9 @@ interface InputProps {
   groupIds?: string[];
   projectType?: 'defaultInput' | 'initiative' | 'nativeSurvey';
   onChange: (
-    permittedBy: IPermissionData['attributes']['permitted_by'],
+    permittedBy:
+      | IPermissionData['attributes']['permitted_by']
+      | IPermissionData['attributes']['global_custom_fields'],
     groupIds: Props['groupIds']
   ) => void;
 }

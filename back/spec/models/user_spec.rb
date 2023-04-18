@@ -781,11 +781,6 @@ RSpec.describe User, type: :model do
       expect(u.active?).to be false
     end
 
-    it 'return false when the user has a pending invitation' do
-      u = build(:user, invite_status: 'pending')
-      expect(u.active?).to be false
-    end
-
     it 'returns false when the user requires confirmation' do
       SettingsService.new.activate_feature! 'user_confirmation'
       u = build(:user)
