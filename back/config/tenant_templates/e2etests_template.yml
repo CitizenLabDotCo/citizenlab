@@ -8002,7 +8002,7 @@ models:
       permission_scope_ref: *verifiedIdeation
     - &112
       action: voting_idea
-      permitted_by: groups
+      permitted_by: everyone_confirmed_email
       permission_scope_ref: *verifiedIdeation
     - &113
       action: commenting_idea
@@ -8030,7 +8030,7 @@ models:
       permission_scope_ref: *charliesIdeation
     - &1113
       action: commenting_idea
-      permitted_by: everyone_confirmed_email
+      permitted_by: groups
       permission_scope_ref: *charliesIdeation
     - &1114
       action: budgeting
