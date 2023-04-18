@@ -14,7 +14,7 @@ import UpdateEmailForm from './UpdateEmailForm';
 // api
 import clHistory from 'utils/cl-router/history';
 import useAuthUser from 'hooks/useAuthUser';
-import confirmEmail from 'api/authentication/confirmEmail';
+import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 
 // hook form
 import { object, string } from 'yup';
@@ -30,7 +30,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { Status, ErrorCode } from 'containers/NewAuthModal/typings';
-import { ERROR_CODE_MESSAGES } from 'containers/NewAuthModal';
+import { ERROR_CODE_MESSAGES } from 'containers/NewAuthModal/Modal';
 
 export type FormValues = {
   email: string;
@@ -141,7 +141,7 @@ const EmailChange = () => {
             </Box>
           )}
           <EmailConfirmation
-            state={{ email: methods.watch('email') }}
+            state={{ email: methods.watch('email'), token: null }}
             status={confirmationStatus}
             error={confirmationError}
             onConfirm={onEmailConfirmation}

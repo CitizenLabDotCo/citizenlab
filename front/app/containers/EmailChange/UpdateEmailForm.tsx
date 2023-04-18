@@ -6,7 +6,7 @@ import messages from './messages';
 // services & hooks
 import { TAuthUser } from 'hooks/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
-import resendEmailConfirmationCode from 'api/authentication/resendEmailConfirmationCode';
+import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { updateUser } from 'services/users';
 
