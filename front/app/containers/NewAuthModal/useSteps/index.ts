@@ -3,6 +3,8 @@ import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 // api
 import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
 import { invalidateAllActionDescriptors } from 'containers/NewAuthModal/useSteps/invalidateAllActionDescriptors';
+import requirementsKeys from 'api/authentication/authentication_requirements/keys';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 // hooks
 import useAnySSOEnabled from '../useAnySSOEnabled';
@@ -102,6 +104,7 @@ export default function useSteps() {
         setError(null);
         if (transition === 'CLOSE') {
           invalidateAllActionDescriptors();
+          queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
         }
 
         // @ts-ignore
