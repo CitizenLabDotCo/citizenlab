@@ -37,6 +37,8 @@ class SideFxCustomFieldService
   private
 
   def log_user_data_that_will_be_deleted(custom_field, current_user)
+    return unless custom_field.resource_type == 'User'
+
     related_user_data = {}
     User.where("custom_field_values ? '#{custom_field.key}'").each do |user|
       related_user_data[user.id] = { custom_field.key.to_s => user.custom_field_values[custom_field.key] }

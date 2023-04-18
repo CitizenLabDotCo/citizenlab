@@ -36,6 +36,8 @@ class SideFxCustomFieldOptionService
   private
 
   def log_user_data_that_will_be_deleted(custom_field_option, custom_field, current_user)
+    return unless custom_field.resource_type == 'User'
+
     related_user_data = {}
     if custom_field.input_type == 'multiselect'
       User.where(
