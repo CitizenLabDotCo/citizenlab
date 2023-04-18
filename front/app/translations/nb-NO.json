@@ -28,7 +28,6 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Registrer deg med telefon eller e-post",
   "app.components.Author.a11y_postedBy": "Publisert av:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} brukere",
-  "app.components.BillingWarning.billingWarning": "Når flere seter er lagt til, vil faktureringen din økes. Ta kontakt med GovSuccess Manager for å lære mer om det.",
   "app.components.CityLogoSection.iframeTitle": "Mer informasjon om {orgName}",
   "app.components.Comments.cancel": "Avbryt",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Det er ikke mulig å kommentere i nåværende fase.",
