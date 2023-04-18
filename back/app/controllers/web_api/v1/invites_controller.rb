@@ -65,12 +65,38 @@ class WebApi::V1::InvitesController < ApplicationController
     end
   end
 
+  def count_new_seats
+    authorize :invite
+    seat_numbers = Invites::SeatsCounter.new.count_in_transaction do
+      Invites::Service.new(current_user, run_side_fx: false).bulk_create(
+        bulk_create_params[:emails].map { |e| { 'email' => e } },
+        bulk_create_params.except(:emails).stringify_keys
+      )
+    end
+    render json: raw_json(seat_numbers)
+  rescue Invites::FailedError => e
+    render json: { errors: e.to_h }, status: :unprocessable_entity
+  end
+
+  def count_new_seats_xlsx
+    authorize :invite
+
+    seat_numbers = Invites::SeatsCounter.new.count_in_transaction do
+      Invites::Service.new(current_user, run_side_fx: false).bulk_create_xlsx(
+        bulk_create_xlsx_params[:xlsx],
+        bulk_create_xlsx_params.except(:xlsx).stringify_keys
+      )
+    end
+    render json: raw_json(seat_numbers)
+  rescue Invites::FailedError => e
+    render json: { errors: e.to_h }, status: :unprocessable_entity
+  end
+
   def bulk_create
     authorize :invite
-    Invites::Service.new.bulk_create(
+    Invites::Service.new(current_user).bulk_create(
       bulk_create_params[:emails].map { |e| { 'email' => e } },
-      bulk_create_params.except(:emails).stringify_keys,
-      current_user
+      bulk_create_params.except(:emails).stringify_keys
     )
     head :ok
   rescue Invites::FailedError => e
@@ -79,11 +105,9 @@ class WebApi::V1::InvitesController < ApplicationController
 
   def bulk_create_xlsx
     authorize :invite
-
-    Invites::Service.new.bulk_create_xlsx(
+    Invites::Service.new(current_user).bulk_create_xlsx(
       bulk_create_xlsx_params[:xlsx],
-      bulk_create_params.except(:xlsx).stringify_keys,
-      current_user
+      bulk_create_xlsx_params.except(:xlsx).stringify_keys
     )
     head :ok
   rescue Invites::FailedError => e
@@ -149,6 +173,8 @@ class WebApi::V1::InvitesController < ApplicationController
       head :internal_server_error
     end
   end
+
+  private
 
   def create_params
     params.require(:invite).permit(
