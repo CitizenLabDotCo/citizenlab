@@ -11,8 +11,9 @@ import { IUserCustomFieldData } from 'services/userCustomFields';
 import { SelectionScreen } from './screens/SelectionScreen';
 import { AddFieldScreen } from './screens/AddFieldScreen';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../containers/Granular/messages';
+import { generateTempId } from 'components/FormBuilder/components/FormBuilderSettings/utils';
 
 type FieldSelectionModalProps = {
   showSelectionModal: boolean;
@@ -34,6 +35,17 @@ export const FieldSelectionModal = ({
   isLoading,
 }: FieldSelectionModalProps) => {
   const [showAddFieldPage, setShowAddFieldPage] = React.useState(false);
+  const { formatMessage } = useIntl();
+
+  const defaultFormValues = {
+    options: [
+      {
+        temp_id: generateTempId(),
+        title_multiloc: { [locale]: formatMessage(messages.option1) },
+      },
+    ],
+  };
+
   return (
     <Modal
       opened={showSelectionModal}
@@ -54,7 +66,10 @@ export const FieldSelectionModal = ({
     >
       <Box display="flex" flexDirection="column">
         {showAddFieldPage && (
-          <AddFieldScreen setShowAddFieldPage={setShowAddFieldPage} />
+          <AddFieldScreen
+            defaultValues={defaultFormValues}
+            setShowAddFieldPage={setShowAddFieldPage}
+          />
         )}
         {!showAddFieldPage && (
           <SelectionScreen

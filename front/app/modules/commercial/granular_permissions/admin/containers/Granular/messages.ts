@@ -333,4 +333,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.atLeastOneOptionError',
     defaultMessage: 'At least one choice must be provided',
   },
+  option1: {
+    id: 'app.containers.AdminPage.groups.permissions.option1',
+    defaultMessage: 'Option 1',
+  },
 });

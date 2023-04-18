@@ -17,7 +17,7 @@ import {
   FieldType,
   fieldTypes,
 } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
-import OptionList, { Option } from 'components/HookForm/OptionList';
+import OptionList from 'components/HookForm/OptionList';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 
 // hooks
@@ -35,6 +35,7 @@ import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMulti
 import { addCustomFieldForUsers } from 'services/userCustomFields';
 import { getLabelForInputType } from '../../../containers/Granular/utils';
 import { addUserCustomFieldOption } from 'services/userCustomFieldOptions';
+import { IOptionsType } from 'services/formCustomFields';
 
 type AddFieldScreenProps = {
   setShowAddFieldPage: (show: boolean) => void;
@@ -45,7 +46,7 @@ export interface FormValues {
   input_type?: string;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
-  question_options: Option[];
+  options: IOptionsType[];
 }
 
 export const AddFieldScreen = ({
@@ -57,7 +58,7 @@ export const AddFieldScreen = ({
   const locales = useAppConfigurationLocales();
 
   const schema = object({
-    question_options: validateOneOptionForMultiSelect(
+    options: validateOneOptionForMultiSelect(
       formatMessage(messages.atLeastOneOptionError)
     ),
     input_type: string().required(formatMessage(messages.selectValueError)),
@@ -82,22 +83,28 @@ export const AddFieldScreen = ({
   };
 
   const onFormSubmit = async (formValues: Partial<FormValues>) => {
-    try {
-      const newField = await addCustomFieldForUsers({
-        ...formValues,
-      });
-      if (newField.data.id) {
-        formValues?.question_options?.forEach(async (option) => {
-          await addUserCustomFieldOption(newField.data.id, {
-            title_multiloc: option.title_multiloc,
+    methods.trigger().then(async (isValid) => {
+      if (isValid) {
+        try {
+          const newField = await addCustomFieldForUsers({
+            ...formValues,
           });
-        });
-
-        setShowAddFieldPage(false);
+          if (
+            (newField.data.id && formValues?.input_type === 'multi_select') ||
+            formValues?.input_type === 'single_select'
+          ) {
+            formValues?.options?.forEach(async (option) => {
+              await addUserCustomFieldOption(newField.data.id, {
+                title_multiloc: option.title_multiloc,
+              });
+            });
+          }
+          setShowAddFieldPage(false);
+        } catch (error) {
+          handleHookFormSubmissionError(error, methods.setError);
+        }
       }
-    } catch (error) {
-      handleHookFormSubmissionError(error, methods.setError);
-    }
+    });
   };
 
   if (isNilOrError(locale) || isNilOrError(locales)) {
@@ -160,7 +167,7 @@ export const AddFieldScreen = ({
               {(inputType === 'select' || inputType === 'multiselect') && (
                 <SectionField>
                   <OptionList
-                    name={'question_options'}
+                    name={'options'}
                     locales={locales}
                     platformLocale={locale}
                     fieldLabel={
