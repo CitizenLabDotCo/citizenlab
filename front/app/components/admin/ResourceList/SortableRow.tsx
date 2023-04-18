@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { findDOMNode } from 'react-dom';
-import { DragSource, DropTarget } from 'react-dnd-cjs';
+import { DragSource, DropTarget } from 'react-dnd';
 import { Row } from 'components/admin/ResourceList';
 import { Box, Icon } from '@citizenlab/cl2-component-library';
 
