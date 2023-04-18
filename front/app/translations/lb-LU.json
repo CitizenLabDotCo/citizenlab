@@ -28,7 +28,6 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Mat Telefon oder E-Mail umellen",
   "app.components.Author.a11y_postedBy": "Gepost vun:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} Participanten",
-  "app.components.BillingWarning.billingWarning": "Wann zousätzlech Sëtzer dobäi sinn, gëtt Är Rechnung erhéicht. Kontaktéiert Äre GovSuccess Manager fir méi doriwwer ze léieren.",
   "app.components.CityLogoSection.iframeTitle": "Weider Informatiounen iwwer {orgName}",
   "app.components.Comments.cancel": "Ofbriechen",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Kommentéieren ass an der aktueller Phas net méiglech.",
