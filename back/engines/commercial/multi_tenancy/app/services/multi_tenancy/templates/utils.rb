@@ -3,11 +3,11 @@
 module MultiTenancy
   module Templates
     class Utils
-      attr_reader :internal_template_dir, :template_bucket
+      attr_reader :internal_template_dir
 
       def initialize(
         internal_template_dir: Rails.root.join('config/tenant_templates'),
-        template_bucket: ENV.fetch('TEMPLATE_BUCKET'),
+        template_bucket: ENV.fetch('TEMPLATE_BUCKET', nil),
         s3_client: Aws::S3::Client.new(region: 'eu-central-1')
       )
         @internal_template_dir = internal_template_dir
@@ -17,9 +17,12 @@ module MultiTenancy
 
       def available_templates(external_prefix: 'release')
         templates = available_internal_templates
-        templates += available_external_templates(prefix: "#{external_prefix}/") if external_prefix
-        raise_if_duplicates(templates)
 
+        if template_bucket && external_prefix
+          templates += available_external_templates(prefix: "#{external_prefix}/")
+        end
+
+        raise_if_duplicates(templates)
         templates.sort
       end
 
@@ -67,6 +70,10 @@ module MultiTenancy
         key = "#{template_prefix}/models.yml"
         content = @s3_client.get_object(bucket: template_bucket, key: key).body.read
         parse_yml(content)
+      end
+
+      def template_bucket
+        @template_bucket ||= raise(ArgumentError, 'template_bucket has not been specified')
       end
 
       class << self
