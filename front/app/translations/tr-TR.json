@@ -28,7 +28,6 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Telefon veya E-posta ile kaydolun",
   "app.components.Author.a11y_postedBy": "Yayınlayan:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} katılımcı",
-  "app.components.BillingWarning.billingWarning": "Ek koltuklar eklendiğinde, faturalandırmanız artırılacaktır. Bu konuda daha fazla bilgi edinmek için GovSuccess Yöneticinize ulaşın.",
   "app.components.CityLogoSection.iframeTitle": "{orgName} hakkında daha fazla bilgi",
   "app.components.Comments.cancel": "İptal",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Şu anki aşamada yorum yapmak mümkün değil.",
