@@ -103,12 +103,12 @@ const UserSearch = memo(({ projectId, label }: Props) => {
 
   return (
     <Box width="100%">
+      {label && (
+        <Box mb="0px">
+          <Label htmlFor={'projectModeratorUserSearch'}>{label}</Label>
+        </Box>
+      )}
       <Box display="flex" alignItems="center" mb="24px">
-        {label && (
-          <Box mb="0px">
-            <Label htmlFor={'projectModeratorUserSearch'}>{label}</Label>
-          </Box>
-        )}
         <Box width="500px">
           <UserSelect
             id="projectModeratorUserSearch"
