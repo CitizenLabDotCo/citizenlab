@@ -457,7 +457,7 @@ describe PermissionsService do
               email: 'require'
             },
             custom_fields: {
-              'birthyear' => 'dont_ask'
+              'birthyear' => 'ask'
             },
             special: {
               password: 'dont_ask',
@@ -480,7 +480,7 @@ describe PermissionsService do
               email: 'satisfied'
             },
             custom_fields: {
-              'birthyear' => 'dont_ask'
+              'birthyear' => 'ask'
             },
             special: {
               password: 'dont_ask',
@@ -502,7 +502,7 @@ describe PermissionsService do
               email: 'satisfied'
             },
             custom_fields: {
-              'birthyear' => 'dont_ask'
+              'birthyear' => 'ask'
             },
             special: {
               password: 'dont_ask',
