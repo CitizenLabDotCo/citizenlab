@@ -28,7 +28,6 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Regístrate con el télefono o con el correo electrónico",
   "app.components.Author.a11y_postedBy": "Publicado por:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} usuarios",
-  "app.components.BillingWarning.billingWarning": "Una vez que se añadan plazas adicionales, se incrementará su facturación. Póngase en contacto con su gestor de GovSuccess para obtener más información.",
   "app.components.CityLogoSection.iframeTitle": "Más información sobre {orgName}",
   "app.components.Comments.cancel": "Cancelar",
   "app.components.Comments.commentingDisabledInCurrentPhase": "No es posible comentar en la fase actual.",
