@@ -231,7 +231,7 @@ export default defineMessages({
   userFieldsSelectionDescription: {
     id: 'app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription',
     defaultMessage:
-      'You can ask the existing registration question(s) or create a new one. If a user hasn’t answered to the question(s), they will be asked to answer it before taking the action. Answers to these questions will be stored in user profiles, and will be only accessible to admins.',
+      'You can ask the existing registration question(s) or create new ones. If a user hasn’t answered to the question(s), they will be asked to answer it before taking the action. Answers to these questions will be stored in user profiles, and will be only accessible to admins.',
   },
   selectUserGroups: {
     id: 'app.containers.AdminPage.groups.permissions.selectUserGroups',
