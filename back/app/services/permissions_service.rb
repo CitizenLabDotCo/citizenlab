@@ -63,7 +63,7 @@ class PermissionsService
 
   def requirements_fields(permission)
     if permission.global_custom_fields
-      CustomField.registration
+      CustomField.registration.enabled
     else
       permission.permissions_custom_fields.map do |permissions_custom_field|
         permissions_custom_field.custom_field.tap do |field|
