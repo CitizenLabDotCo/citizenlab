@@ -79,7 +79,7 @@ const BuiltInFields = ({ status, onSubmit }: Props) => {
   };
 
   return (
-    <Box id="e2e-sign-in-email-password-container">
+    <Box id="e2e-built-in-fields-container">
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
           <Text mt="0px" mb="32px">
@@ -117,7 +117,7 @@ const BuiltInFields = ({ status, onSubmit }: Props) => {
               width="auto"
               disabled={loading}
               processing={loading}
-              id="e2e-signup-password-submit-button"
+              id="e2e-built-in-fields-submit-button"
             >
               {formatMessage(sharedMessages.continue)}
             </Button>
