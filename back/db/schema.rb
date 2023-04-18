@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_21_153659) do
+ActiveRecord::Schema.define(version: 2023_04_05_162820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -887,6 +887,7 @@ ActiveRecord::Schema.define(version: 2023_03_21_153659) do
     t.string "permission_scope_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "global_custom_fields", default: false, null: false
     t.index ["action"], name: "index_permissions_on_action"
     t.index ["permission_scope_id"], name: "index_permissions_on_permission_scope_id"
   end
@@ -1304,6 +1305,8 @@ ActiveRecord::Schema.define(version: 2023_03_21_153659) do
     t.boolean "confirmation_required", default: true, null: false
     t.datetime "block_start_at"
     t.string "block_reason"
+    t.string "new_email"
+    t.datetime "block_end_at"
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["registration_completed_at"], name: "index_users_on_registration_completed_at"

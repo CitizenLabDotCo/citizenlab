@@ -122,7 +122,7 @@ export interface IIdeaData {
       // but not an action (so e.g. it can't be used in the authentication_requirements API).
       comment_voting_idea: {
         enabled: boolean;
-        disabled_reason: null;
+        disabled_reason: IdeaCommentingDisabledReason | null;
         future_enabled: null;
       };
       budgeting?: {

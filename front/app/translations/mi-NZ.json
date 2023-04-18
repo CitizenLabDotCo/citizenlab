@@ -1270,7 +1270,6 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "Only admins can view",
   "app.containers.AdminPage.ProjectEdit.optionNo": "Kāo",
   "app.containers.AdminPage.ProjectEdit.optionYes": "Yes (select folder)",
-  "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "Access Permissions",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Participation levels",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "What do you want to do?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Choose how users can participate.",

@@ -107,10 +107,6 @@ describe PermissionsService do
     context 'when permitted by light users' do
       let(:permitted_by) { 'everyone_confirmed_email' }
 
-      before do
-        SettingsService.new.activate_feature! 'user_confirmation'
-      end
-
       context 'when not signed in' do
         let(:user) { nil }
 
@@ -360,11 +356,95 @@ describe PermissionsService do
       )
     end
 
+    context 'when permitted_by is set to everyone' do
+      let(:permission) { create :permission, permitted_by: 'everyone', global_custom_fields: false }
+
+      it 'permits a visitor' do
+        expect(service.requirements(permission, nil)).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'dont_ask',
+              last_name: 'dont_ask',
+              email: 'dont_ask'
+            },
+            custom_fields: {},
+            special: {
+              password: 'dont_ask',
+              confirmation: 'dont_ask',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+
+      it 'permits a light unconfirmed resident' do
+        user.reset_confirmation_and_counts
+        user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+        expect(service.requirements(permission, user)).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'dont_ask',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {},
+            special: {
+              password: 'dont_ask',
+              confirmation: 'dont_ask',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+
+      it 'permits a fully registered confirmed resident' do
+        expect(service.requirements(permission, user)).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {},
+            special: {
+              password: 'satisfied',
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+
+      it 'permits a confirmed admin' do
+        user.add_role 'admin'
+        expect(service.requirements(permission, user)).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {},
+            special: {
+              password: 'satisfied',
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+    end
+
     context 'when permitted_by is set to everyone_confirmed_email' do
-      let(:permission) { create :permission, permitted_by: 'everyone_confirmed_email' }
+      let(:permission) { create :permission, permitted_by: 'everyone_confirmed_email', global_custom_fields: false }
 
       before do
-        SettingsService.new.activate_feature! 'user_confirmation'
+        field = CustomField.find_by code: 'birthyear'
+        create :permissions_custom_field, permission: permission, custom_field: field, required: false
       end
 
       it 'does not permit a visitor' do
@@ -377,14 +457,12 @@ describe PermissionsService do
               email: 'require'
             },
             custom_fields: {
-              'birthyear' => 'dont_ask',
-              'gender' => 'dont_ask',
-              'extra_required_field' => 'dont_ask',
-              'extra_optional_field' => 'dont_ask'
+              'birthyear' => 'ask'
             },
             special: {
               password: 'dont_ask',
-              confirmation: 'require'
+              confirmation: 'require',
+              verification: 'dont_ask'
             }
           }
         })
@@ -402,14 +480,12 @@ describe PermissionsService do
               email: 'satisfied'
             },
             custom_fields: {
-              'birthyear' => 'dont_ask',
-              'gender' => 'dont_ask',
-              'extra_required_field' => 'dont_ask',
-              'extra_optional_field' => 'dont_ask'
+              'birthyear' => 'ask'
             },
             special: {
               password: 'dont_ask',
-              confirmation: 'require'
+              confirmation: 'require',
+              verification: 'dont_ask'
             }
           }
         })
@@ -426,20 +502,164 @@ describe PermissionsService do
               email: 'satisfied'
             },
             custom_fields: {
-              'birthyear' => 'dont_ask',
-              'gender' => 'dont_ask',
-              'extra_required_field' => 'dont_ask',
-              'extra_optional_field' => 'dont_ask'
+              'birthyear' => 'ask'
             },
             special: {
               password: 'dont_ask',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
       end
 
       it 'does not permit a fully registered unconfirmed resident' do # https://citizenlabco.slack.com/archives/C04FX2ATE5B/p1677170928400679
+        user.reset_confirmation_and_counts
+        expect(service.requirements(permission, user)).to eq({
+          permitted: false,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              'birthyear' => 'satisfied'
+            },
+            special: {
+              password: 'satisfied',
+              confirmation: 'require',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+
+      it 'permits a fully registered confirmed resident' do
+        expect(service.requirements(permission, user)).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              'birthyear' => 'satisfied'
+            },
+            special: {
+              password: 'satisfied',
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+
+      it 'does not permit an unconfirmed admin' do
+        user.add_role 'admin'
+        user.reset_confirmation_and_counts
+        expect(service.requirements(permission, user)).to eq({
+          permitted: false,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              'birthyear' => 'satisfied'
+            },
+            special: {
+              password: 'satisfied',
+              confirmation: 'require',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+
+      it 'permits a confirmed admin' do
+        user.add_role 'admin'
+        expect(service.requirements(permission, user)).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              'birthyear' => 'satisfied'
+            },
+            special: {
+              password: 'satisfied',
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+    end
+
+    context 'when permitted_by is set to users' do
+      let(:permission) { create :permission, permitted_by: 'users', global_custom_fields: true }
+
+      before do
+        field = CustomField.find_by code: 'birthyear'
+        create :permissions_custom_field, permission: permission, custom_field: field, required: false
+      end
+
+      it 'does not permit a visitor' do
+        expect(service.requirements(permission, nil)).to eq({
+          permitted: false,
+          requirements: {
+            built_in: {
+              first_name: 'require',
+              last_name: 'require',
+              email: 'require'
+            },
+            custom_fields: {
+              'birthyear' => 'require',
+              'gender' => 'ask',
+              'extra_required_field' => 'require',
+              'extra_optional_field' => 'ask'
+            },
+            special: {
+              password: 'require',
+              confirmation: 'require',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+
+      it 'does not permit a light confirmed resident' do
+        user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+        expect(service.requirements(permission, user)).to eq({
+          permitted: false,
+          requirements: {
+            built_in: {
+              first_name: 'require',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              'birthyear' => 'require',
+              'gender' => 'ask',
+              'extra_required_field' => 'require',
+              'extra_optional_field' => 'ask'
+            },
+            special: {
+              password: 'require',
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+
+      it 'does not permit a fully registered unconfirmed resident' do
         user.reset_confirmation_and_counts
         expect(service.requirements(permission, user)).to eq({
           permitted: false,
@@ -457,7 +677,8 @@ describe PermissionsService do
             },
             special: {
               password: 'satisfied',
-              confirmation: 'require'
+              confirmation: 'require',
+              verification: 'dont_ask'
             }
           }
         })
@@ -480,7 +701,8 @@ describe PermissionsService do
             },
             special: {
               password: 'satisfied',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
@@ -505,7 +727,8 @@ describe PermissionsService do
             },
             special: {
               password: 'satisfied',
-              confirmation: 'require'
+              confirmation: 'require',
+              verification: 'dont_ask'
             }
           }
         })
@@ -529,10 +752,268 @@ describe PermissionsService do
             },
             special: {
               password: 'satisfied',
-              confirmation: 'satisfied'
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
             }
           }
         })
+      end
+    end
+
+    context 'when permitted_by is set to groups' do
+      let(:permission) { create :permission, permitted_by: 'groups', global_custom_fields: false }
+
+      before do
+        field = CustomField.find_by code: 'birthyear'
+        create :permissions_custom_field, permission: permission, custom_field: field, required: true
+      end
+
+      it 'does not permit a visitor' do
+        expect(service.requirements(permission, nil)).to eq({
+          permitted: false,
+          requirements: {
+            built_in: {
+              first_name: 'require',
+              last_name: 'require',
+              email: 'require'
+            },
+            custom_fields: {
+              'birthyear' => 'require'
+            },
+            special: {
+              password: 'require',
+              confirmation: 'require',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+
+      it 'does not permit a light unconfirmed resident' do
+        user.reset_confirmation_and_counts
+        user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: { 'birthyear' => 1968 })
+        expect(service.requirements(permission, user)).to eq({
+          permitted: false,
+          requirements: {
+            built_in: {
+              first_name: 'require',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              'birthyear' => 'satisfied'
+            },
+            special: {
+              password: 'require',
+              confirmation: 'require',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+
+      it 'permits a fully registered confirmed resident' do
+        expect(service.requirements(permission, user)).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              'birthyear' => 'satisfied'
+            },
+            special: {
+              password: 'satisfied',
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+
+      it 'does not permit an unconfirmed admin' do
+        user.add_role 'admin'
+        user.reset_confirmation_and_counts
+        expect(service.requirements(permission, user)).to eq({
+          permitted: false,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              'birthyear' => 'satisfied'
+            },
+            special: {
+              password: 'satisfied',
+              confirmation: 'require',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+
+      it 'permits a confirmed admin' do
+        user.add_role 'admin'
+        expect(service.requirements(permission, user)).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              'birthyear' => 'satisfied'
+            },
+            special: {
+              password: 'satisfied',
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+    end
+
+    context 'when permitted_by is set to admins_moderators' do
+      let(:permission) { create :permission, permitted_by: 'admins_moderators', global_custom_fields: false }
+
+      before { SettingsService.new.deactivate_feature! 'user_confirmation' }
+
+      it 'does not permit a visitor' do
+        expect(service.requirements(permission, nil)).to eq({
+          permitted: false,
+          requirements: {
+            built_in: {
+              first_name: 'require',
+              last_name: 'require',
+              email: 'require'
+            },
+            custom_fields: {},
+            special: {
+              password: 'require',
+              confirmation: 'dont_ask',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+
+      it 'does not permit a light unconfirmed resident' do
+        user.reset_confirmation_and_counts
+        user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+        expect(service.requirements(permission, user)).to eq({
+          permitted: false,
+          requirements: {
+            built_in: {
+              first_name: 'require',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {},
+            special: {
+              password: 'require',
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+
+      it 'permits a fully registered unconfirmed resident' do
+        user.reset_confirmation_and_counts
+        expect(service.requirements(permission, user)).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {},
+            special: {
+              password: 'satisfied',
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+
+      it 'permits an unconfirmed admin' do
+        user.add_role 'admin'
+        user.reset_confirmation_and_counts
+        expect(service.requirements(permission, user)).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {},
+            special: {
+              password: 'satisfied',
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+
+      it 'permits a confirmed admin' do
+        user.add_role 'admin'
+        expect(service.requirements(permission, user)).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {},
+            special: {
+              password: 'satisfied',
+              confirmation: 'satisfied',
+              verification: 'dont_ask'
+            }
+          }
+        })
+      end
+    end
+  end
+
+  describe '#requirements_fields' do
+    let(:custom_fields) { [true, false, false].map { |required| create :custom_field, required: required } }
+    let(:permission) do
+      create(:permission, global_custom_fields: global_custom_fields).tap do |permission|
+        custom_fields.take(2).each do |field|
+          create :permissions_custom_field, permission: permission, custom_field: field, required: !field.required
+        end
+        permission.reload
+      end
+    end
+    let(:requirements_fields) { service.requirements_fields permission }
+
+    context 'when global_custom_fields is true' do
+      let(:global_custom_fields) { true }
+
+      it 'returns the global fields' do
+        expect(requirements_fields.map(&:id)).to eq custom_fields.map(&:id)
+        expect(requirements_fields.map(&:required)).to eq [true, false, false]
+      end
+    end
+
+    context 'when global_custom_fields is false' do
+      let(:global_custom_fields) { false }
+
+      it 'returns the global fields' do
+        expect(requirements_fields.map(&:id)).to eq custom_fields.take(2).map(&:id)
+        expect(requirements_fields.map(&:required)).to eq [false, true]
       end
     end
   end

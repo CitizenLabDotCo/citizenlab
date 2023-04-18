@@ -1,7 +1,7 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
 const baseKey = {
-  type: 'idea_vote',
+  type: 'vote',
   variant: 'idea',
 };
 

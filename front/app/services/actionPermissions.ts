@@ -15,6 +15,7 @@ export interface IGlobalPermissionData {
     permitted_by: 'everyone' | 'users' | 'groups' | 'admins_moderators';
     created_at: string;
     updated_at: string;
+    global_custom_fields: boolean;
   };
   relationships: {
     permission_scope: {
@@ -38,6 +39,7 @@ export interface IPCPermissionData {
       | 'everyone_confirmed_email';
     created_at: string;
     updated_at: string;
+    global_custom_fields: boolean;
   };
   relationships: {
     permission_scope: {
@@ -62,6 +64,7 @@ export interface IGlobalPermissions {
 export interface IPermissionUpdate {
   group_ids: string[];
   permitted_by: IPermissionData['attributes']['permitted_by'];
+  global_custom_fields: boolean;
 }
 
 export function globalPermissions(streamParams: IStreamParams | null = null) {
