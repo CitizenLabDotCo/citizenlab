@@ -5,10 +5,6 @@ import { Text } from '@citizenlab/cl2-component-library';
 import PoliciesMarkup from './PoliciesMarkup';
 import Button from 'components/UI/Button';
 
-// styling
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -22,29 +18,6 @@ import { object, boolean } from 'yup';
 
 // typings
 import { Status } from '../../typings';
-
-export const ConsentText = styled.div`
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.s}px;
-  line-height: 21px;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-
-  a {
-    color: ${colors.textSecondary};
-    font-weight: 400;
-    text-decoration: underline;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-word;
-
-    &:hover {
-      color: #000;
-      text-decoration: underline;
-    }
-  }
-`;
 
 const DEFAULT_VALUES = {
   termsAndConditionsAccepted: false,
