@@ -28,7 +28,6 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "تسجيل الاشتراك باستخدام الهاتف أو البريد الإلكتروني",
   "app.components.Author.a11y_postedBy": "تم النشر بواسطة:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} من المستخدمين",
-  "app.components.BillingWarning.billingWarning": "بمجرد إضافة مقاعد إضافية ، ستتم زيادة فواتيرك. تواصل مع مدير GovSuccess لمعرفة المزيد عنها.",
   "app.components.CityLogoSection.iframeTitle": "المزيد من المعلومات حول {orgName}",
   "app.components.Comments.cancel": "إلغاء",
   "app.components.Comments.commentingDisabledInCurrentPhase": "التعليق غير ممكن في المرحلة الحالية.",
