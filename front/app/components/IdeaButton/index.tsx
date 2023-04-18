@@ -19,9 +19,6 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
-// hooks
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
-
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
@@ -33,7 +30,7 @@ import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
 // events
-import { openVerificationModal } from 'events/verificationModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -48,6 +45,7 @@ import { darken } from 'polished';
 import { LatLng } from 'leaflet';
 import { getButtonMessage } from './utils';
 import { IPhaseData } from 'services/phases';
+import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
 
 const Container = styled.div``;
 
@@ -184,46 +182,21 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       }
     };
 
-    const openAuthModal = useOpenAuthModal({
-      onSuccess: redirectToIdeaForm,
-      waitIf: isNilOrError(project),
-    });
+    if (isNilOrError(project)) return null;
 
     const onClick = (event: React.MouseEvent) => {
       event.preventDefault();
 
       trackEventByName(tracks.postYourIdeaButtonClicked);
 
-      // if logged in but not complete user
-      if (authenticationRequirements === 'complete_registration') {
+      if (authenticationRequirements) {
         signUp();
-      }
-
-      // if not logged in
-      if (
-        authenticationRequirements === 'sign_in_up' ||
-        authenticationRequirements === 'sign_in_up_and_verify'
-      ) {
-        signUp();
-      }
-
-      // if logged in but not verified and verification required
-      if (authenticationRequirements === 'verify') {
-        verify();
+        return;
       }
 
       // if logegd in and posting allowed
       if (enabled === true) {
         redirectToIdeaForm();
-      }
-    };
-
-    const verify = (event?: React.MouseEvent) => {
-      event?.preventDefault();
-
-      if (context) {
-        trackEventByName(tracks.verificationModalOpened);
-        openVerificationModal({ context });
       }
     };
 
@@ -239,22 +212,26 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       (flow: 'signup' | 'signin') => (event?: React.MouseEvent) => {
         event?.preventDefault();
 
-        const shouldVerify =
-          authenticationRequirements === 'sign_in_up_and_verify';
+        const successAction: SuccessAction = {
+          name: 'redirectToIdeaForm',
+          params: {
+            projectSlug: project.attributes.slug,
+          },
+        };
 
         if (context) {
           trackEventByName(tracks.signUpInModalOpened);
 
-          openAuthModal({
+          triggerAuthenticationFlow({
             flow,
-            verification: shouldVerify,
             context,
+            successAction,
           });
         }
       };
 
     const verificationLink = (
-      <button onClick={verify}>
+      <button onClick={signUp}>
         {formatMessage(messages.verificationLinkText)}
       </button>
     );
@@ -303,51 +280,50 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
         );
       }
 
-      if (!isNilOrError(project)) {
-        const inputTerm = getInputTerm(
-          project.attributes.process_type,
-          project,
-          phases
-        );
+      const inputTerm = getInputTerm(
+        project.attributes.process_type,
+        project,
+        phases
+      );
 
-        const buttonMessage = getButtonMessage(
-          phase?.attributes.participation_method ||
-            project.attributes.participation_method,
-          buttonText,
-          inputTerm
-        );
+      const buttonMessage = getButtonMessage(
+        phase?.attributes.participation_method ||
+          project.attributes.participation_method,
+        buttonText,
+        inputTerm
+      );
 
-        return (
-          <Container id={id} className={className || ''}>
-            <Tippy
-              disabled={!tippyContent}
-              interactive={true}
-              placement="bottom"
-              content={tippyContent || <></>}
-              theme="light"
-              hideOnClick={false}
+      return (
+        <Container id={id} className={className || ''}>
+          <Tippy
+            disabled={!tippyContent}
+            interactive={true}
+            placement="bottom"
+            content={tippyContent || <></>}
+            theme="light"
+            hideOnClick={false}
+          >
+            <ButtonWrapper
+              id="e2e-cta-button"
+              tabIndex={!enabled ? 0 : -1}
+              className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
+                disabledReason ? disabledReason : ''
+              }`}
             >
-              <ButtonWrapper
-                id="e2e-cta-button"
-                tabIndex={!enabled ? 0 : -1}
-                className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
-                  disabledReason ? disabledReason : ''
-                }`}
+              <Button
+                {...buttonContainerProps}
+                aria-describedby="tooltip-content"
+                onClick={onClick}
+                disabled={!enabled}
+                ariaDisabled={false}
+                id="e2e-idea-button"
               >
-                <Button
-                  {...buttonContainerProps}
-                  aria-describedby="tooltip-content"
-                  onClick={onClick}
-                  disabled={!enabled}
-                  ariaDisabled={false}
-                >
-                  <FormattedMessage {...buttonMessage} />
-                </Button>
-              </ButtonWrapper>
-            </Tippy>
-          </Container>
-        );
-      }
+                <FormattedMessage {...buttonMessage} />
+              </Button>
+            </ButtonWrapper>
+          </Tippy>
+        </Container>
+      );
     }
 
     return null;

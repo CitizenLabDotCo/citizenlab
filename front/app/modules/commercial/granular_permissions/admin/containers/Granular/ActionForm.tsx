@@ -6,7 +6,13 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
-import { Box, Radio } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Toggle,
+  colors,
+  Title,
+} from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -14,11 +20,7 @@ import permissionsMessages from 'containers/Admin/projects/project/permissions/m
 import { IPermissionData } from 'services/actionPermissions';
 import Warning from 'components/UI/Warning';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-const StyledFieldset = styled.fieldset`
-  border: none;
-  padding: 0;
-`;
+import { PermissionCardButton } from 'components/admin/GranularPermissions/PermissionCardButton';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   width: 300px;
@@ -29,7 +31,9 @@ interface InputProps {
   groupIds?: string[];
   projectType?: 'defaultInput' | 'initiative' | 'nativeSurvey';
   onChange: (
-    permittedBy: IPermissionData['attributes']['permitted_by'],
+    permittedBy:
+      | IPermissionData['attributes']['permitted_by']
+      | IPermissionData['attributes']['global_custom_fields'],
     groupIds: Props['groupIds']
   ) => void;
 }
@@ -82,78 +86,82 @@ const ActionForm = ({
   } = permissionData;
   return (
     <form>
-      <StyledFieldset>
-        {/* TODO: Take a decision on which action we should use for native surveys versus ideation. One or separate? 
-        If separate, we will need to update code where we check for attributes.posting_idea */}
-        {(action === 'taking_survey' || projectType === 'nativeSurvey') && (
-          <Radio
-            name={`permittedBy-${permissionId}`}
-            value="everyone"
-            currentValue={permittedBy}
-            label={
-              <FormattedMessage
-                {...permissionsMessages.permissionsAnyoneLabel}
-              />
-            }
-            onChange={handlePermittedByUpdate('everyone')}
-            id={`participation-permission-everyone-${permissionId}`}
-          />
-        )}
-        {emailConfirmPermissionEnabled && (
-          <Radio
-            name={`permittedBy-${permissionId}`}
-            value="everyone_confirmed_email"
-            currentValue={permittedBy}
-            label={
-              <FormattedMessage {...messages.permissionsEveryoneEmailLabel} />
-            }
-            onChange={handlePermittedByUpdate('everyone_confirmed_email')}
-            id={`participation-permission-users-${permissionId}`}
-          />
-        )}
-        <Radio
-          name={`permittedBy-${permissionId}`}
-          value="users"
-          currentValue={permittedBy}
-          label={<FormattedMessage {...messages.permissionsUsersLabel} />}
-          onChange={handlePermittedByUpdate('users')}
-          id={`participation-permission-users-${permissionId}`}
-        />
-        <Radio
-          name={`permittedBy-${permissionId}`}
-          value="admins_moderators"
-          currentValue={permittedBy}
+      <Box mb="32px">
+        <Toggle
+          checked={permittedBy === 'admins_moderators'}
           label={
-            <FormattedMessage
-              {...permissionsMessages.permissionsAdministrators}
-            />
+            <Box display="flex">
+              <span style={{ color: colors.primary }}>
+                <FormattedMessage
+                  {...permissionsMessages.permissionsAdminsAndCollaborators}
+                />
+              </span>
+
+              <IconTooltip
+                ml="4px"
+                icon="info-solid"
+                content={formatMessage(
+                  permissionsMessages.permissionsAdminsAndCollaboratorsTooltip
+                )}
+              />
+            </Box>
           }
           onChange={handlePermittedByUpdate('admins_moderators')}
           id={`participation-permission-admins-${permissionId}`}
         />
-        <Radio
-          name={`permittedBy-${permissionId}`}
-          value="groups"
-          currentValue={permittedBy}
-          label={
-            <FormattedMessage
-              {...permissionsMessages.permissionsSelectionLabel}
-            />
-          }
-          onChange={handlePermittedByUpdate('groups')}
-          id={`participation-permission-certain-groups-${permissionId}`}
+      </Box>
+      <Box display="flex" gap="16px">
+        {/* TODO: Take a decision on which action we should use for native surveys versus ideation. One or separate? 
+        If separate, we will need to update code where we check for attributes.posting_idea */}
+        {(action === 'taking_survey' || projectType === 'nativeSurvey') && (
+          <PermissionCardButton
+            title={permissionsMessages.permissionsAnyoneLabel}
+            subtitle={permissionsMessages.permissionsAnyoneLabelDescription}
+            onClick={handlePermittedByUpdate('everyone')}
+            selected={permittedBy === 'everyone'}
+          />
+        )}
+        {emailConfirmPermissionEnabled && (
+          <PermissionCardButton
+            iconName="email"
+            title={permissionsMessages.permissionsEmailConfirmLabel}
+            subtitle={
+              permissionsMessages.permissionsEmailConfirmLabelDescription
+            }
+            onClick={handlePermittedByUpdate('everyone_confirmed_email')}
+            selected={permittedBy === 'everyone_confirmed_email'}
+          />
+        )}
+        <PermissionCardButton
+          iconName="user-circle"
+          title={messages.permissionsUsersLabel}
+          subtitle={messages.permissionsUsersLabelDescription}
+          onClick={handlePermittedByUpdate('users')}
+          selected={permittedBy === 'users'}
         />
-        {permittedBy === 'groups' && (
+        <PermissionCardButton
+          iconName="group"
+          title={permissionsMessages.permissionsSelectionLabel}
+          subtitle={permissionsMessages.permissionsSelectionLabelDescription}
+          onClick={handlePermittedByUpdate('groups')}
+          selected={permittedBy === 'groups'}
+        />
+      </Box>
+      {permittedBy === 'groups' && (
+        <Box mt="24px">
+          <Title variant="h5" fontWeight={'normal'} color={'coolGrey600'}>
+            <FormattedMessage {...messages.selectUserGroups} />
+          </Title>
           <StyledMultipleSelect
             value={groupIds || []}
             options={groupsOptions()}
             onChange={handleGroupIdsUpdate}
             placeholder={<FormattedMessage {...messages.selectGroups} />}
           />
-        )}
-      </StyledFieldset>
+        </Box>
+      )}
       {permittedBy === 'everyone_confirmed_email' && (
-        <Box mt="16px" maxWidth="620px">
+        <Box mt="16px" maxWidth="740px">
           <Warning>
             {formatMessage(messages.permissionEveryoneEmailWarning)}
           </Warning>

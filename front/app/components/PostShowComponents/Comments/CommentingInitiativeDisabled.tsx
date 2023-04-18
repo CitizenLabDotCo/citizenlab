@@ -1,169 +1,122 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+// hooks
+import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // events
-import { openVerificationModal } from 'events/verificationModal';
-import { openSignUpInModal } from 'events/openSignUpInModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
-// styling
-import styled from 'styled-components';
-import GetInitiativesPermissions, {
-  GetInitiativesPermissionsChildProps,
-} from 'resources/GetInitiativesPermissions';
+const calculateMessageDescriptor = (
+  authUser: TAuthUser,
+  commentingPermissions: ReturnType<typeof useInitiativesPermissions>
+) => {
+  const isLoggedIn = !isNilOrError(authUser);
+  const authenticationRequirements =
+    commentingPermissions?.authenticationRequirements;
 
-const Container = styled.div`
-  margin-bottom: 30px;
-`;
-
-interface InputProps {}
-
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  commetingPermissions: GetInitiativesPermissionsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-class CommentingInitiativesDisabled extends PureComponent<Props> {
-  calculateMessageDescriptor = () => {
-    const { authUser, commetingPermissions } = this.props;
-    const isLoggedIn = !isNilOrError(authUser);
-    const authenticationRequirements =
-      commetingPermissions?.authenticationRequirements;
-
-    if (commetingPermissions?.enabled === true) {
-      return null;
-    } else if (
-      commetingPermissions?.disabledReason === 'notPermitted' &&
-      !isLoggedIn
-    ) {
-      return messages.commentingInitiativeMaybeNotPermitted;
-    } else if (
-      commetingPermissions?.disabledReason === 'notPermitted' &&
-      isLoggedIn
-    ) {
-      return messages.commentingInitiativeNotPermitted;
-    } else if (authenticationRequirements === 'verify') {
-      return messages.commentingDisabledUnverified;
-    } else if (
-      authUser &&
-      authenticationRequirements === 'complete_registration'
-    ) {
-      return messages.completeRegistrationToComment;
-    } else if (authenticationRequirements === 'sign_in_up') {
-      return messages.signInToCommentInitiative;
-    } else if (authenticationRequirements === 'sign_in_up_and_verify') {
-      return messages.signInAndVerifyToCommentInitiative;
-    }
-    return;
-  };
-
-  onVerify = () => {
-    const { commetingPermissions } = this.props;
-    if (commetingPermissions?.authenticationRequirements === 'verify') {
-      openVerificationModal({
-        context: {
-          action: 'commenting_initiative',
-          type: 'initiative',
-        },
-      });
-    }
-  };
-
-  signUpIn = (flow: 'signin' | 'signup') => {
-    const { authUser, commetingPermissions } = this.props;
-
-    if (isNilOrError(authUser)) {
-      openSignUpInModal({
-        flow,
-        verification:
-          commetingPermissions?.authenticationRequirements ===
-          'sign_in_up_and_verify',
-        context: {
-          action: 'commenting_initiative',
-          type: 'initiative',
-        },
-      });
-    }
-  };
-
-  signIn = () => {
-    this.signUpIn('signin');
-  };
-
-  signUp = () => {
-    this.signUpIn('signup');
-  };
-
-  render() {
-    const messageDescriptor = this.calculateMessageDescriptor();
-
-    if (messageDescriptor) {
-      return (
-        <Container className="e2e-commenting-disabled">
-          <Warning>
-            <FormattedMessage
-              {...messageDescriptor}
-              values={{
-                signUpLink: (
-                  <button onClick={this.signUp}>
-                    <FormattedMessage {...messages.signUpLinkText} />
-                  </button>
-                ),
-                signInLink: (
-                  <button onClick={this.signIn}>
-                    <FormattedMessage {...messages.signInLinkText} />
-                  </button>
-                ),
-                completeRegistrationLink: (
-                  <button
-                    onClick={() => {
-                      openSignUpInModal();
-                    }}
-                  >
-                    <FormattedMessage
-                      {...messages.completeRegistrationLinkText}
-                    />
-                  </button>
-                ),
-                verifyIdentityLink: (
-                  <button onClick={this.onVerify}>
-                    <FormattedMessage {...messages.verifyIdentityLinkText} />
-                  </button>
-                ),
-              }}
-            />
-          </Warning>
-        </Container>
-      );
-    }
-
+  if (commentingPermissions?.enabled === true) {
     return null;
+  } else if (
+    commentingPermissions?.disabledReason === 'notPermitted' &&
+    !isLoggedIn
+  ) {
+    return messages.commentingInitiativeMaybeNotPermitted;
+  } else if (
+    commentingPermissions?.disabledReason === 'notPermitted' &&
+    isLoggedIn
+  ) {
+    return messages.commentingInitiativeNotPermitted;
+  } else if (authenticationRequirements === 'verify') {
+    return messages.commentingDisabledUnverified;
+  } else if (
+    authUser &&
+    authenticationRequirements === 'complete_registration'
+  ) {
+    return messages.completeRegistrationToComment;
+  } else if (authenticationRequirements === 'sign_in_up') {
+    return messages.signInToCommentInitiative;
+  } else if (authenticationRequirements === 'sign_in_up_and_verify') {
+    return messages.signInAndVerifyToCommentInitiative;
   }
-}
+  return;
+};
 
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  commetingPermissions: (
-    <GetInitiativesPermissions action="commenting_initiative" />
-  ),
-});
+const CommentingInitiativesDisabled = () => {
+  const authUser = useAuthUser();
+  const commentingPermissions = useInitiativesPermissions(
+    'commenting_initiative'
+  );
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <CommentingInitiativesDisabled {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+  const messageDescriptor = calculateMessageDescriptor(
+    authUser,
+    commentingPermissions
+  );
+
+  const signUpIn = (flow: 'signin' | 'signup') => {
+    triggerAuthenticationFlow({
+      flow,
+      context: {
+        action: 'commenting_initiative',
+        type: 'initiative',
+      },
+    });
+  };
+
+  const signIn = () => {
+    signUpIn('signin');
+  };
+
+  const signUp = () => {
+    signUpIn('signup');
+  };
+
+  if (!messageDescriptor) return null;
+
+  return (
+    <Box mb="30px">
+      <Warning>
+        <FormattedMessage
+          {...messageDescriptor}
+          values={{
+            signUpLink: (
+              <button onClick={signUp}>
+                <FormattedMessage {...messages.signUpLinkText} />
+              </button>
+            ),
+            signInLink: (
+              <button onClick={signIn}>
+                <FormattedMessage {...messages.signInLinkText} />
+              </button>
+            ),
+            completeRegistrationLink: (
+              <button
+                onClick={() => {
+                  triggerAuthenticationFlow();
+                }}
+              >
+                <FormattedMessage {...messages.completeRegistrationLinkText} />
+              </button>
+            ),
+            verifyIdentityLink: (
+              <button onClick={signUp}>
+                <FormattedMessage {...messages.verifyIdentityLinkText} />
+              </button>
+            ),
+          }}
+        />
+      </Warning>
+    </Box>
+  );
+};
+
+export default CommentingInitiativesDisabled;

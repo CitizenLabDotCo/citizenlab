@@ -107,7 +107,7 @@ const ProfileForm = ({
     defaultValues: {
       first_name: authUser?.attributes.no_name
         ? undefined
-        : authUser?.attributes.first_name,
+        : authUser?.attributes.first_name ?? undefined,
       last_name: authUser?.attributes.no_name
         ? undefined
         : authUser?.attributes.last_name || undefined,

@@ -1,15 +1,9 @@
-import {
-  PostingDisabledReason,
-  PollDisabledReason,
-  IProjectData,
-  SurveyDisabledReason,
-} from './projects';
+import { PostingDisabledReason } from './projects';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { GetProjectChildProps } from 'resources/GetProject';
 import { GetPhaseChildProps } from 'resources/GetPhase';
 import { isNilOrError } from 'utils/helperUtils';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { IPhaseData } from './phases';
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 import { TAuthUser } from 'hooks/useAuthUser';
 import { TPhase } from 'hooks/usePhase';
@@ -73,6 +67,11 @@ const ideaPostingDisabledReason = (
   authenticationRequirements: AuthenticationRequirements | null;
 } => {
   switch (backendReason) {
+    case 'missing_data':
+      return {
+        disabledReason: null,
+        authenticationRequirements: 'complete_registration',
+      };
     case 'not_verified':
       return signedIn
         ? {
@@ -182,7 +181,7 @@ export const getIdeaPostingRules = ({
         return {
           show: true,
           enabled: false,
-          disabledReason: 'notActivePhase' as IIdeaPostingDisabledReason,
+          disabledReason: 'notActivePhase',
           authenticationRequirements: null,
         };
       }
@@ -198,7 +197,7 @@ export const getIdeaPostingRules = ({
         return {
           show: true,
           enabled: false,
-          disabledReason: 'notPermitted' as IIdeaPostingDisabledReason,
+          disabledReason: 'notPermitted',
           authenticationRequirements: null,
         };
       }
@@ -219,7 +218,7 @@ export const getIdeaPostingRules = ({
             authenticationRequirements: null,
             show: true,
             enabled: false,
-          } as ActionPermissionDisabled<IIdeaPostingDisabledReason>;
+          };
         }
       } else {
         return {
@@ -283,180 +282,4 @@ export const getIdeaPostingRules = ({
     disabledReason: null,
     authenticationRequirements: null,
   };
-};
-
-/* ----------- Poll Taking ------------ */
-
-export type IPollTakingDisabledReason =
-  | 'notPermitted'
-  | 'maybeNotPermitted'
-  | 'projectInactive'
-  | 'notActivePhase'
-  | 'alreadyResponded'
-  | 'notVerified'
-  | 'maybeNotVerified'
-  | 'notActive';
-
-const pollTakingDisabledReason = (
-  backendReason: PollDisabledReason | null,
-  signedIn: boolean
-): IPollTakingDisabledReason => {
-  switch (backendReason) {
-    case 'project_inactive':
-      return 'projectInactive';
-    case 'already_responded':
-      return 'alreadyResponded';
-    case 'not_active':
-      return 'notActive';
-    case 'not_verified':
-      return signedIn ? 'notVerified' : 'maybeNotVerified';
-    case 'not_permitted':
-      return signedIn ? 'notPermitted' : 'maybeNotPermitted';
-    case 'not_signed_in':
-      return 'maybeNotPermitted';
-    default:
-      return 'notPermitted';
-  }
-};
-
-/** Should we enable taking the poll in the curret context? And if not, with what message?
- * @param context
- *  project: The project context we are posting to.
- *  phaseContext: The phase context in which the button is rendered. NOT necessarily the active phase. Optional.
- *  signedIn: Whether the user is currently authenticated
- */
-export const getPollTakingRules = ({
-  project,
-  phaseContext,
-  signedIn,
-}: {
-  project: IProjectData;
-  phaseContext?: IPhaseData | null;
-  signedIn: boolean;
-}): ActionPermission<IPollTakingDisabledReason> => {
-  const { enabled, disabled_reason } =
-    project.attributes.action_descriptor.taking_poll;
-
-  if (phaseContext) {
-    if (
-      phaseContext &&
-      pastPresentOrFuture([
-        phaseContext.attributes.start_at,
-        phaseContext.attributes.end_at,
-      ]) !== 'present'
-    ) {
-      return {
-        enabled: false,
-        disabledReason: 'notActivePhase',
-        show: true,
-        authenticationRequirements: null,
-      };
-    }
-  }
-
-  if (enabled) {
-    return {
-      enabled,
-      disabledReason: null,
-      show: true,
-      authenticationRequirements: null,
-    };
-  }
-  // if not in phase context
-  return {
-    enabled: false,
-    disabledReason: pollTakingDisabledReason(disabled_reason, !!signedIn),
-    show: true,
-    authenticationRequirements: null,
-  };
-};
-
-export type ISurveyTakingDisabledReason =
-  | 'notPermitted'
-  | 'maybeNotPermitted'
-  | 'maybeNotVerified'
-  | 'projectInactive'
-  | 'notActivePhase'
-  | 'notVerified'
-  | 'notActive';
-
-const surveyTakingDisabledReason = (
-  backendReason: SurveyDisabledReason | null,
-  signedIn: boolean
-): ISurveyTakingDisabledReason => {
-  switch (backendReason) {
-    case 'project_inactive':
-      return 'projectInactive';
-    case 'not_signed_in':
-      return 'maybeNotPermitted';
-    case 'not_active':
-      return 'notActive';
-    case 'not_verified':
-      return signedIn ? 'notVerified' : 'maybeNotVerified';
-    case 'not_permitted':
-      return signedIn ? 'notPermitted' : 'maybeNotPermitted';
-    default:
-      return 'notPermitted';
-  }
-};
-
-/** Should we show the survey in the given context? And if not, with what message?
- * @param context
- *  project: The project context we are posting to.
- *  phaseContext: The phase context in which the button is rendered. NOT necessarily the active phase. Optional.
- *  signedIn: Whether the user is currently authenticated
- */
-export const getSurveyTakingRules = ({
-  project,
-  phaseContext,
-  signedIn,
-}: {
-  project: IProjectData;
-  phaseContext?: IPhaseData | null;
-  signedIn: boolean;
-}): ActionPermission<ISurveyTakingDisabledReason> => {
-  if (phaseContext) {
-    const inCurrentPhase =
-      pastPresentOrFuture([
-        phaseContext.attributes.start_at,
-        phaseContext.attributes.end_at,
-      ]) === 'present';
-    const { disabled_reason, enabled } =
-      project.attributes.action_descriptor.taking_survey;
-
-    if (inCurrentPhase) {
-      return {
-        enabled,
-        disabledReason: enabled
-          ? null
-          : surveyTakingDisabledReason(disabled_reason, !!signedIn),
-        authenticationRequirements: null,
-        show: true,
-      } as
-        | ActionPermissionDisabled<ISurveyTakingDisabledReason>
-        | ActionPermissionEnabled;
-    } else {
-      // if not in current phase
-      return {
-        enabled: false,
-        disabledReason: 'notActivePhase',
-        authenticationRequirements: null,
-        show: true,
-      };
-    }
-  } else {
-    // if not in phase context
-    const { enabled, disabled_reason } =
-      project.attributes.action_descriptor.taking_survey;
-    return {
-      enabled,
-      disabledReason: enabled
-        ? null
-        : surveyTakingDisabledReason(disabled_reason, !!signedIn),
-      authenticationRequirements: null,
-      show: true,
-    } as
-      | ActionPermissionDisabled<ISurveyTakingDisabledReason>
-      | ActionPermissionEnabled;
-  }
 };

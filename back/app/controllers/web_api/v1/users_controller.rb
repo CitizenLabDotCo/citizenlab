@@ -12,12 +12,14 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = policy_scope User
 
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
-    @users = @users.active unless params[:include_inactive]
+    @users = @users.registered unless params[:include_inactive]
     @users = @users.blocked if params[:only_blocked]
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
     @users = @users.admin.or(@users.project_moderator(params[:can_moderate_project])) if params[:can_moderate_project].present?
+    @users = @users.not_admin.and(@users.not_project_moderator(params[:is_not_project_moderator])) if params[:is_not_project_moderator].present?
     @users = @users.admin.or(@users.project_moderator).or(@users.project_folder_moderator) if params[:can_moderate].present?
+    @users = @users.not_admin.and(@users.not_project_folder_moderator(params[:is_not_folder_moderator])) if params[:is_not_folder_moderator].present?
     @users = @users.not_citizenlab_member if params[:not_citizenlab_member].present?
     @users = @users.admin if params[:can_admin].present?
 
@@ -56,22 +58,18 @@ class WebApi::V1::UsersController < ::ApplicationController
   def seats
     authorize :user, :seats?
 
-    render json: {
-      data: {
-        type: 'seats',
-        attributes: {
-          admins_number: User.billed_admins.count,
-          project_moderators_number: User.billed_moderators.count
-        }
-      }
+    attributes = {
+      admins_number: User.billed_admins.count,
+      project_moderators_number: User.billed_moderators.count
     }
+    render json: raw_json(attributes)
   end
 
   def index_xlsx
     authorize :user, :index_xlsx?
 
     @users = policy_scope User
-    @users = @users.active unless params[:include_inactive]
+    @users = @users.registered unless params[:include_inactive]
 
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.where(id: params[:users]) if params[:users]
@@ -110,18 +108,20 @@ class WebApi::V1::UsersController < ::ApplicationController
     show
   end
 
-  # To validate an email without creating a user and return whether to show terms if they are have no password
+  # To validate an email without creating a user and return which action to go to next
   def check
-    @user = User.find_by email: params[:email]
     skip_authorization
-    if !User::EMAIL_REGEX.match?(params[:email])
-      render json: { errors: { email: [{ error: 'invalid', value: params[:email] }] } }, status: :unprocessable_entity
-    elsif @user && !@user&.no_password?
-      render json: { errors: { email: [{ error: 'taken', value: params[:email] }] } }, status: :unprocessable_entity
-    elsif @user&.registration_completed_at.present?
-      render json: { action: 'continue' }
+    if User::EMAIL_REGEX.match?(params[:email])
+      @user = User.find_by email: params[:email]
+      if @user && !@user&.no_password?
+        render json: { action: 'password' }
+      elsif @user&.registration_completed_at.present?
+        render json: { action: 'confirm' }
+      else
+        render json: { action: 'terms' }
+      end
     else
-      render json: { action: 'show_terms' }
+      render json: { errors: { email: [{ error: 'invalid', value: params[:email] }] } }, status: :unprocessable_entity
     end
   end
 
@@ -134,17 +134,15 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     if @user.save
       SideFxUserService.new.after_create(@user, current_user)
-      permissions = Permission.for_user(@user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
-        params: fastjson_params(granted_permissions: permissions)
+        params: fastjson_params
       ).serialized_json, status: :created
     elsif reset_confirm_on_existing_no_password_user?
       SideFxUserService.new.after_update(@user, current_user)
-      permissions = Permission.for_user(@user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
-        params: fastjson_params(granted_permissions: permissions)
+        params: fastjson_params
       ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
@@ -152,7 +150,6 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def update
-    permissions_before = Permission.for_user(@user).load
     mark_custom_field_values_to_clear!
     user_params = permitted_attributes @user
     user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
@@ -167,11 +164,9 @@ class WebApi::V1::UsersController < ::ApplicationController
     authorize @user
     if @user.save
       SideFxUserService.new.after_update(@user, current_user)
-      permissions = Permission.for_user(@user).where.not(id: permissions_before.ids)
       render json: WebApi::V1::UserSerializer.new(
         @user,
-        params: fastjson_params(granted_permissions: permissions),
-        include: %i[granted_permissions granted_permissions.permission_scope]
+        params: fastjson_params
       ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
@@ -184,8 +179,14 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def block
+    block_end_at = Time.zone.now + AppConfiguration.instance.settings('user_blocking', 'duration').days
+
     authorize @user, :block?
-    if @user.update(block_start_at: Time.zone.now, block_reason: params.dig(:user, :block_reason))
+    if @user.update(
+      block_start_at: Time.zone.now,
+      block_end_at: block_end_at,
+      block_reason: params.dig(:user, :block_reason)
+    )
       SideFxUserService.new.after_block(@user, current_user)
 
       render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
@@ -196,7 +197,7 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   def unblock
     authorize @user, :unblock?
-    if @user.update(block_start_at: nil, block_reason: nil)
+    if @user.update(block_start_at: nil, block_end_at: nil, block_reason: nil)
       SideFxUserService.new.after_unblock(@user, current_user)
 
       render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
@@ -212,7 +213,7 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   def blocked_count
     authorize :user, :blocked_count?
-    render json: { data: { blocked_users_count: User.all.blocked.count } }, status: :ok
+    render json: raw_json({ count: User.all.blocked.count }, type: 'blocked_users_count'), status: :ok
   end
 
   def initiatives_count

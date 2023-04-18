@@ -48,6 +48,7 @@ const ReportViewerPage = lazy(
 const ReportPrintPage = lazy(
   () => import('containers/Admin/reporting/containers/PrintReport')
 );
+const DisabledAccount = lazy(() => import('containers/DisabledAccount'));
 
 export default function createRoutes() {
   return [
@@ -320,6 +321,14 @@ export default function createRoutes() {
           element: (
             <PageLoading>
               <ReportPrintPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: 'disabled-account',
+          element: (
+            <PageLoading>
+              <DisabledAccount />
             </PageLoading>
           ),
         },

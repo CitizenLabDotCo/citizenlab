@@ -30,7 +30,7 @@
 #  confirmation_required               :boolean          default(TRUE), not null
 #  block_start_at                      :datetime
 #  block_reason                        :string
-#  new_email                           :string
+#  block_end_at                        :datetime
 #
 # Indexes
 #
@@ -39,7 +39,6 @@
 #  index_users_on_slug                       (slug) UNIQUE
 #  users_unique_lower_email_idx              (lower((email)::text)) UNIQUE
 #
-# rubocop:disable Metrics/ClassLength
 class User < ApplicationRecord
   include EmailCampaigns::UserDecorator
   include Onboarding::UserDecorator
@@ -157,7 +156,6 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
   validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
-  validates :new_email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
   validates :bio_multiloc, multiloc: { presence: false, html: true }
   validates :gender, inclusion: { in: GENDERS }, allow_nil: true
@@ -192,18 +190,10 @@ class User < ApplicationRecord
         record.errors.add(:email, :taken, value: record.email)
       end
     end
-    if record.new_email
-      if User.find_by_cimail(record.new_email)
-        record.errors.add(:email, :taken, value: record.new_email)
-      elsif record.errors[:new_email].present?
-        ErrorsService.new.remove record.errors, :new_email, :invalid, value: record.new_email
-        record.errors.add(:email, :invalid, value: record.new_email)
-      end
-    end
   end
 
   EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip)
-  validate :validate_email_domains_blacklist
+  validate :validate_email_domain_blacklist
 
   validates :roles, json: { schema: -> { User.roles_json_schema }, message: ->(errors) { errors } }
 
@@ -230,7 +220,16 @@ class User < ApplicationRecord
       where("roles @> '[{\"type\":\"project_moderator\"}]'")
     end
   }
-  scope :not_project_moderator, -> { where.not(id: project_moderator) }
+  scope :not_project_moderator, lambda { |project_id = nil|
+    return where.not(id: project_moderator) if project_id.nil?
+
+    project = Project.find(project_id)
+    if project.folder
+      where.not(id: project_moderator(project_id)).and(where(id: not_project_folder_moderator(project.folder.id)))
+    else
+      where.not(id: project_moderator(project_id))
+    end
+  }
   scope :project_folder_moderator, lambda { |*project_folder_ids|
     return where("roles @> '[{\"type\":\"project_folder_moderator\"}]'") if project_folder_ids.empty?
 
@@ -244,14 +243,12 @@ class User < ApplicationRecord
   scope :not_project_folder_moderator, lambda { |*project_folder_ids|
     where.not(id: project_folder_moderator(*project_folder_ids))
   }
-  scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
-  scope :active, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
 
-  scope :blocked, lambda {
-    where.not(block_start_at: nil)
-      .and(where(block_start_at: (
-        AppConfiguration.instance.settings('user_blocking', 'duration').days.ago..Time.zone.now)))
-  }
+  scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
+  scope :registered, -> { where.not(registration_completed_at: nil) }
+  scope :blocked, -> { where('? < block_end_at', Time.zone.now) }
+  scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
+  scope :active, -> { registered.not_blocked }
 
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
@@ -419,18 +416,16 @@ class User < ApplicationRecord
     !memberships.select { |m| m.group_id == group_id }.empty?
   end
 
-  def active?
-    registration_completed_at.present? && !invite_pending? && !blocked? && !confirmation_required?
-  end
-
   def blocked?
-    block_start_at.present? && block_start_at.between?(block_duration.days.ago, Time.zone.now)
+    block_end_at.present? && block_end_at > Time.zone.now
   end
 
-  def block_end_at
-    return nil unless blocked?
+  def registered?
+    registration_completed_at.present?
+  end
 
-    block_start_at + block_duration.days
+  def active?
+    registered? && !blocked? && !confirmation_required?
   end
 
   def groups
@@ -461,9 +456,8 @@ class User < ApplicationRecord
   end
 
   def confirm!
-    return unless registered_with_email? && (confirmation_required? || new_email.present?)
+    return false unless registered_with_email?
 
-    confirm_new_email if new_email.present?
     confirm
     save!
   end
@@ -503,28 +497,20 @@ class User < ApplicationRecord
     save!
   end
 
-  def reset_email!(new_email)
-    if AppConfiguration.instance.feature_activated?('user_confirmation')
-      update!(new_email: new_email, email_confirmation_code_reset_count: 0)
-    else
-      update!(email: new_email, email_confirmation_code_reset_count: 0)
-    end
-  end
-
-  def confirm_new_email
-    return unless new_email
-
-    self.email = new_email
-    self.new_email = nil
+  def reset_email!(email)
+    update!(
+      email: email,
+      email_confirmation_code_reset_count: 0
+    )
   end
 
   private
 
   # NOTE: registration_completed_at_changed? added to allow tests to change this date manually
   def complete_registration
-    return if confirmation_required? || invited? || registration_completed_at_changed?
+    return if confirmation_required? || invite_pending? || registration_completed_at_changed?
 
-    self.registration_completed_at = Time.now if registration_completed_at.nil?
+    self.registration_completed_at ||= Time.now
   end
 
   def generate_slug
@@ -555,18 +541,13 @@ class User < ApplicationRecord
     original_authenticate(::Digest::SHA256.hexdigest(unencrypted_password))
   end
 
-  def validate_email_domains_blacklist
-    validate_email_domain_blacklist email
-    validate_email_domain_blacklist new_email
-  end
+  def validate_email_domain_blacklist
+    return if email.blank?
 
-  def validate_email_domain_blacklist(email_field)
-    return if email_field.blank?
+    domain = email.split('@')&.last
+    return unless domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
 
-    domain = email_field.split('@')&.last
-    return unless domain
-
-    errors.add(:email, :domain_blacklisted, value: domain) if EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
+    errors.add(:email, :domain_blacklisted, value: domain)
   end
 
   def validate_minimum_password_length
@@ -613,12 +594,7 @@ class User < ApplicationRecord
   def use_fake_code?
     Rails.env.development?
   end
-
-  def block_duration
-    AppConfiguration.instance.settings('user_blocking', 'duration')
-  end
 end
-# rubocop:enable Metrics/ClassLength
 
 User.include(IdeaAssignment::Extensions::User)
 User.include(Verification::Patches::User)

@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { IIdeaVote, INewVoteProperties } from './types';
 import ideasKeys from 'api/ideas/keys';
 
-const addIdeaVote = async ({
+export const addIdeaVote = async ({
   ideaId,
   userId,
   ...requestBody

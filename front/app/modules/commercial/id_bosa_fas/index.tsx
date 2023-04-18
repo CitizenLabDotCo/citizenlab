@@ -2,7 +2,7 @@ import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import './services/verificationMethods';
 const BosaFasButton = React.lazy(() => import('./components/BosaFasButton'));
-import isLastVerificationMethod from 'containers/Authentication/VerificationModal/isLastVerificationMethod';
+import { isLastVerificationMethod } from 'services/verificationMethods';
 import { TVerificationMethodName } from 'services/verificationMethods';
 
 const verificationMethodName: TVerificationMethodName = 'bosa_fas';

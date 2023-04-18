@@ -6,12 +6,13 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 // components
 import { Box, Text, Icon } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import TextLink from '../components/TextLink';
+import TextLink from '../_components/TextLink';
 
 // i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import sharedMessages from '../../messages';
+import sharedMessages from '../messages';
+import containerMessages from '../../messages';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -57,7 +58,9 @@ const Password = ({ state, status, onSubmit }: Props) => {
   const schema = useMemo(
     () =>
       object({
-        password: string().required(formatMessage(messages.noPasswordError)),
+        password: string().required(
+          formatMessage(sharedMessages.noPasswordError)
+        ),
         rememberMe: boolean(),
       }),
     [formatMessage]
@@ -105,7 +108,7 @@ const Password = ({ state, status, onSubmit }: Props) => {
           <PasswordInput
             name="password"
             isLoginPasswordInput
-            label={formatMessage(messages.password)}
+            label={formatMessage(sharedMessages.password)}
           />
         </Box>
         <Box mt="28px">
@@ -113,10 +116,10 @@ const Password = ({ state, status, onSubmit }: Props) => {
             name="rememberMe"
             label={
               <Text mt="0" mb="0" mr="4px">
-                {formatMessage(messages.rememberMe)}
+                {formatMessage(sharedMessages.rememberMe)}
               </Text>
             }
-            labelTooltipText={formatMessage(messages.rememberMeTooltip)}
+            labelTooltipText={formatMessage(sharedMessages.rememberMeTooltip)}
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">
@@ -126,13 +129,13 @@ const Password = ({ state, status, onSubmit }: Props) => {
             disabled={loading}
             processing={loading}
           >
-            {formatMessage(sharedMessages.logIn)}
+            {formatMessage(containerMessages.logIn)}
           </Button>
         </Box>
       </form>
       <Box mt="32px">
         <TextLink to="/password-recovery">
-          {formatMessage(messages.forgotPassword)}
+          {formatMessage(sharedMessages.forgotPassword)}
         </TextLink>
       </Box>
     </FormProvider>

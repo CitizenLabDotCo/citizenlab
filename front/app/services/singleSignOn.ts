@@ -1,8 +1,11 @@
 import { AUTH_PATH } from 'containers/App/constants';
-import { ISignUpInMetaData, TSignUpInError } from 'events/openSignUpInModal';
+import {
+  AuthenticationData,
+  SignUpInError,
+} from 'containers/NewAuthModal/typings';
 import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
-import { isProjectContext } from 'events/verificationModal';
+import { isProjectContext } from 'containers/NewAuthModal/steps/Verification/utils';
 
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';
@@ -22,23 +25,35 @@ export interface SSOParams {
   sso_verification_action?: string;
   sso_verification_id?: string;
   sso_verification_type?: string;
-  error_code?: TSignUpInError;
+  error_code?: SignUpInError;
 }
+
+const setHrefVienna = () => {
+  window.location.href = `${AUTH_PATH}/vienna_citizen`;
+};
 
 export const handleOnSSOClick = (
   provider: SSOProvider,
-  metaData: ISignUpInMetaData,
-  setHrefFromModule?: () => void
+  metaData: AuthenticationData,
+  verification: boolean
 ) => {
-  setHrefFromModule ? setHrefFromModule() : setHref(provider, metaData);
+  provider === 'id_vienna_saml'
+    ? setHrefVienna()
+    : setHref(provider, metaData, verification);
 };
 
-function setHref(provider: SSOProvider, metaData: ISignUpInMetaData) {
-  const { pathname, verification, context } = metaData;
+function setHref(
+  provider: SSOProvider,
+  authenticationData: AuthenticationData,
+  verification: boolean
+) {
+  const { context, flow } = authenticationData;
+
+  const pathname = window.location.pathname;
 
   const ssoParams: SSOParams = {
     sso_response: 'true',
-    sso_flow: metaData.flow,
+    sso_flow: flow,
     sso_pathname: pathname, // Also used by back-end to set user.locale following succesful signup
     sso_verification: verification === true ? 'true' : undefined,
     sso_verification_action: context?.action,

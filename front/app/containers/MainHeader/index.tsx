@@ -21,7 +21,9 @@ import tracks from './tracks';
 import useAuthUser from 'hooks/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // utils
 import { isNilOrError, isPage, isDesktop } from 'utils/helperUtils';
@@ -257,7 +259,6 @@ const MainHeader = ({
   const locale = useLocale();
   const theme = useTheme();
   const windowSize = useWindowSize();
-  const openAuthModal = useOpenAuthModal();
 
   const [fullscreenModalOpened, setFullscreenModalOpened] = useState(false);
 
@@ -314,11 +315,11 @@ const MainHeader = ({
   };
 
   const signIn = () => {
-    openAuthModal({ flow: 'signin' });
+    triggerAuthenticationFlow({ flow: 'signin' });
   };
 
   const signUp = () => {
-    openAuthModal({ flow: 'signup' });
+    triggerAuthenticationFlow({ flow: 'signup' });
   };
 
   return (

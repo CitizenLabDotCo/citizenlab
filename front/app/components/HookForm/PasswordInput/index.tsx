@@ -17,6 +17,7 @@ interface Props
     'id' | 'password' | 'onChange' | 'errors'
   > {
   name: string;
+  id?: string;
   label?: string;
 }
 

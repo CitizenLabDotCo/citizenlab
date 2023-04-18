@@ -15,11 +15,12 @@ function signUp() {
   cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
 }
 
-describe.skip('Sign up - Email + password step', () => {
+describe('Sign up - Email + password step', () => {
   beforeEach(() => {
     cy.goToLandingPage();
     cy.get('#e2e-navbar-signup-menu-item').click();
     cy.get('#e2e-sign-up-container');
+    cy.contains('Sign up with Email').click();
     cy.get('#e2e-sign-up-email-password-container');
   });
 
@@ -28,10 +29,13 @@ describe.skip('Sign up - Email + password step', () => {
   });
 
   it('shows an error when no first name is provided', () => {
-    cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
+    cy.get('#e2e-signup-password-submit-button').should('exist');
+    cy.get('#e2e-signup-password-submit-button').click();
+    cy.get('#e2e-firstName-container .e2e-error-message').should('exist');
+    cy.scrollTo('top');
     cy.get('#e2e-firstName-container .e2e-error-message').should(
       'contain',
-      'This cannot be empty'
+      'Enter your first name'
     );
   });
 
@@ -43,7 +47,7 @@ describe.skip('Sign up - Email + password step', () => {
     cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
     cy.get('#e2e-lastName-container .e2e-error-message').should(
       'contain',
-      'This cannot be empty'
+      'Enter your last name'
     );
   });
 
@@ -55,7 +59,7 @@ describe.skip('Sign up - Email + password step', () => {
     cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
     cy.get('#e2e-email-container .e2e-error-message').should(
       'contain',
-      'This cannot be empty'
+      'Enter an email address in the correct format'
     );
   });
 
@@ -64,7 +68,7 @@ describe.skip('Sign up - Email + password step', () => {
     cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
     cy.get('#e2e-email-container .e2e-error-message').should(
       'contain',
-      "This doesn't look like a valid email"
+      'Enter an email address in the correct format'
     );
   });
 
@@ -78,7 +82,7 @@ describe.skip('Sign up - Email + password step', () => {
     cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
     cy.get('#e2e-password-container .e2e-error-message').should(
       'contain',
-      'Your password needs to be at least 8 characters long.'
+      'Provide a password that is at least 8 characters long'
     );
   });
 
@@ -87,7 +91,7 @@ describe.skip('Sign up - Email + password step', () => {
     cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
     cy.get('#e2e-password-container .e2e-error-message').should(
       'contain',
-      'Your password needs to be at least 8 characters long.'
+      'Provide a password that is at least 8 characters long'
     );
   });
 
@@ -108,12 +112,20 @@ describe.skip('Sign up - Email + password step', () => {
     cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
     cy.get('#e2e-terms-and-conditions-container');
     cy.get('#e2e-terms-and-conditions-container .e2e-error-message');
+    cy.get('#e2e-terms-and-conditions-container .e2e-error-message').should(
+      'contain',
+      'Accept our terms and conditions to proceed'
+    );
   });
 
   it('shows an error when the privacy checkbox is not checked', () => {
     cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
     cy.get('#e2e-terms-and-conditions-container');
     cy.get('#e2e-privacy-container .e2e-error-message');
+    cy.get('#e2e-privacy-container .e2e-error-message').should(
+      'contain',
+      'Accept our privacy policy to proceed'
+    );
   });
 
   it('signs up successfully', () => {
@@ -126,6 +138,8 @@ describe.skip('Sign up - Email + password step', () => {
     signUp();
     cy.get('#e2e-confirmation-code-input').type('1234');
     cy.get('#e2e-confirmation-button').click();
+    cy.get('#e2e-signup-custom-fields-skip-btn').should('exist');
+    cy.get('#e2e-signup-custom-fields-skip-btn').click();
     cy.get('.e2e-signup-success-close-button').wait(500).click();
     cy.get('#e2e-sign-up-in-modal').should('not.exist');
     cy.get('#e2e-user-menu-container');

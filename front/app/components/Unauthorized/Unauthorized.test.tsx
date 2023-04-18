@@ -1,13 +1,13 @@
 import React from 'react';
 import Unauthorized from '.';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import { openSignUpInModal } from 'events/openSignUpInModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 let mockUser: any = null;
 jest.mock('hooks/useAuthUser', () => () => mockUser);
 
-jest.mock('events/openSignUpInModal', () => ({
-  openSignUpInModal: jest.fn(),
+jest.mock('containers/NewAuthModal/events', () => ({
+  triggerAuthenticationFlow: jest.fn(),
 }));
 
 describe('<Unauthorized />', () => {
@@ -22,7 +22,15 @@ describe('<Unauthorized />', () => {
     render(<Unauthorized />);
     const button = screen.getByText(/Log in/);
     fireEvent.click(button);
-    expect(openSignUpInModal).toHaveBeenCalledTimes(1);
+    expect(triggerAuthenticationFlow).toHaveBeenCalledTimes(1);
+    expect(triggerAuthenticationFlow).toHaveBeenCalledWith({
+      flow: 'signin',
+      context: {
+        action: 'visiting',
+        type: 'global',
+      },
+      pathname: '/en/',
+    });
   });
 
   it("tells you you don't have access if logged in", () => {

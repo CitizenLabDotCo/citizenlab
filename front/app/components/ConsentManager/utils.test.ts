@@ -1,6 +1,6 @@
 import { getActiveDestinations } from './utils';
 import { registerDestination, IDestinationConfig } from './destinations';
-import { isAdmin, isModerator } from 'services/permissions/roles';
+import { isAdmin, isRegularUser } from 'services/permissions/roles';
 
 const mockAppConfiguration = {
   id: '1',
@@ -43,7 +43,7 @@ const intercomConfig: IDestinationConfig = {
   category: 'functional',
   feature_flag: 'intercom',
   hasPermission: (user) =>
-    !!user && (isAdmin({ data: user }) || isModerator({ data: user })),
+    !!user && (isAdmin({ data: user }) || !isRegularUser({ data: user })),
   name: () => 'Intercom',
 };
 registerDestination(intercomConfig);

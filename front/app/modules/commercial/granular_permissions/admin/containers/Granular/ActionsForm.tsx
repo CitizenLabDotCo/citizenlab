@@ -1,33 +1,55 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
 import { isEmpty } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import {
-  IPermissionData,
   IGlobalPermissionAction,
-  IPCPermissionAction,
+  IPermissionData,
 } from 'services/actionPermissions';
-import { getInputTerm } from 'services/participationContexts';
 
 // components
 import ActionForm from './ActionForm';
+import UserFieldSelection from '../../components/UserFieldSelection/UserFieldSelection';
+import { Box, colors, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
 
 // hooks
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+// utils
+import {
+  getPermissionActionMessage,
+  getPermissionActionSectionSubtitle,
+  HandlePermissionChangeProps,
+} from './utils';
+import { IPCAction } from 'typings';
 
 const ActionPermissionWrapper = styled.div`
-  margin-bottom: 30px;
+  margin-left: 20px;
+  margin-bottom: 60px;
 
   &.last {
     margin-bottom: 0;
+  }
+`;
+
+// Styled title was used to add a horizontal line after the text which extends to the right
+const StyledTitle = styled(Title)`
+  display: flex;
+  align-items: center;
+
+  ::after {
+    content: '';
+    flex: 1;
+    margin-left: 1rem;
+    height: 1px;
+    background-color: ${colors.grey400};
   }
 `;
 
@@ -47,26 +69,45 @@ type PostTypeProps =
 
 type SharedProps = {
   permissions: IPermissionData[];
-  onChange: (
-    permission: IPermissionData,
-    permittedBy: IPermissionData['attributes']['permitted_by'],
-    groupIds: string[]
-  ) => void;
+  phaseId?: string | null;
+  initiativeContext?: boolean;
+  onChange: ({
+    permission,
+    permittedBy,
+    groupIds,
+    globalCustomFields,
+  }: HandlePermissionChangeProps) => void;
+};
+
+const showDivider = (
+  action: IPCAction | IGlobalPermissionAction,
+  postType: 'defaultInput' | 'nativeSurvey' | 'initiative'
+) => {
+  if (postType === 'nativeSurvey') return false;
+
+  switch (action) {
+    case 'taking_poll':
+    case 'taking_survey':
+      return false;
+    default:
+      return true;
+  }
 };
 
 type Props = PostTypeProps & SharedProps;
 
-const INITIATIVE_PERMISSION_MESSAGES: Record<
-  IGlobalPermissionAction,
-  MessageDescriptor
-> = {
-  voting_initiative: messages.permissionAction_vote_proposals,
-  commenting_initiative: messages.permissionAction_comment_proposals,
-  posting_initiative: messages.permissionAction_post_proposal,
-};
-
 const ActionsForm = memo(
-  ({ permissions, postType, onChange, projectId }: Props) => {
+  ({
+    permissions,
+    postType,
+    onChange,
+    projectId,
+    initiativeContext,
+    phaseId,
+  }: Props) => {
+    const includePermissionsCustomFields = useFeatureFlag({
+      name: 'permissions_custom_fields',
+    });
     const project = useProject({ projectId });
     const phases = usePhases(projectId);
     const handlePermissionChange =
@@ -75,59 +116,8 @@ const ActionsForm = memo(
         permittedBy: IPermissionData['attributes']['permitted_by'],
         groupIds: string[]
       ) => {
-        onChange(permission, permittedBy, groupIds);
+        onChange({ permission, permittedBy, groupIds });
       };
-
-    const getPermissionActionMessage = (
-      permissionAction: IPCPermissionAction | IGlobalPermissionAction
-    ) => {
-      if (postType !== 'initiative' && !isNilOrError(project)) {
-        const inputTerm = getInputTerm(
-          project.attributes.process_type,
-          project,
-          phases
-        );
-
-        // TODO: Either refactor getInputTerm/getInputTermMessage in entire app and add new
-        // "survey" input term + messages, or abstract in some other way.
-        return {
-          posting_idea:
-            postType === 'nativeSurvey'
-              ? messages.permissionAction_take_survey
-              : getInputTermMessage(inputTerm, {
-                  idea: messages.permissionAction_submit_idea,
-                  project: messages.permissionAction_submit_project,
-                  contribution: messages.permissionAction_submit_contribution,
-                  issue: messages.permissionAction_submit_issue,
-                  question: messages.permissionAction_submit_question,
-                  option: messages.permissionAction_submit_option,
-                }),
-          voting_idea: getInputTermMessage(inputTerm, {
-            idea: messages.permissionAction_vote_ideas,
-            project: messages.permissionAction_vote_projects,
-            contribution: messages.permissionAction_vote_contributions,
-            issue: messages.permissionAction_vote_issues,
-            question: messages.permissionAction_vote_questions,
-            option: messages.permissionAction_vote_options,
-          }),
-          commenting_idea: getInputTermMessage(inputTerm, {
-            idea: messages.permissionAction_comment_ideas,
-            project: messages.permissionAction_comment_projects,
-            contribution: messages.permissionAction_comment_contributions,
-            issue: messages.permissionAction_comment_issues,
-            question: messages.permissionAction_comment_questions,
-            option: messages.permissionAction_comment_options,
-          }),
-          taking_survey: messages.permissionAction_take_survey,
-          taking_poll: messages.permissionAction_take_poll,
-          budgeting: messages.permissionAction_budgeting,
-        }[permissionAction];
-      }
-
-      if (postType === 'initiative') {
-        return INITIATIVE_PERMISSION_MESSAGES[permissionAction];
-      }
-    };
 
     if (isEmpty(permissions)) {
       return (
@@ -147,11 +137,34 @@ const ActionsForm = memo(
                   index === permissions.length - 1 ? 'last' : ''
                 }`}
               >
-                <h4>
+                {showDivider(permissionAction, postType) && (
+                  <StyledTitle
+                    className="title-with-line"
+                    variant="h5"
+                    color="coolGrey600"
+                    marginTop="0px"
+                  >
+                    <FormattedMessage
+                      {...getPermissionActionMessage({
+                        permissionAction,
+                        project,
+                        phases,
+                        postType,
+                      })}
+                    />
+                  </StyledTitle>
+                )}
+
+                <Title variant="h4" color="primary">
                   <FormattedMessage
-                    {...getPermissionActionMessage(permissionAction)}
+                    {...getPermissionActionSectionSubtitle({
+                      permissionAction,
+                      project,
+                      phases,
+                      postType,
+                    })}
                   />
-                </h4>
+                </Title>
                 <ActionForm
                   permissionData={permission}
                   groupIds={permission.relationships.groups.data.map(
@@ -160,6 +173,18 @@ const ActionsForm = memo(
                   projectType={postType}
                   onChange={handlePermissionChange(permission)}
                 />
+                {permission.attributes.permitted_by !== 'everyone' &&
+                  includePermissionsCustomFields && (
+                    <Box mt="42px">
+                      <UserFieldSelection
+                        permission={permission}
+                        projectId={projectId}
+                        phaseId={phaseId}
+                        initiativeContext={initiativeContext}
+                        onChange={onChange}
+                      />
+                    </Box>
+                  )}
               </ActionPermissionWrapper>
             );
           })}

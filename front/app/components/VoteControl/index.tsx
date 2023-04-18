@@ -8,13 +8,12 @@ import VoteButton from './VoteButton';
 import { IdeaVotingDisabledReason } from 'api/ideas/types';
 import { getLatestRelevantPhase } from 'services/phases';
 
-// hooks
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { includes } from 'lodash-es';
-import { openVerificationModal } from 'events/verificationModal';
 
 // style
 import styled from 'styled-components';
@@ -29,6 +28,8 @@ import usePhases from 'hooks/usePhases';
 import useAddIdeaVote from 'api/idea_votes/useAddIdeaVote';
 import { TVoteMode } from 'api/idea_votes/types';
 import useDeleteIdeaVote from 'api/idea_votes/useDeleteIdeaVote';
+import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';
@@ -134,25 +135,10 @@ const VoteControl = ({
     [authUser, addVote, deleteVote, ideaId, myVoteMode, voteId]
   );
 
-  const castUpvote = useCallback(() => castVote('up'), [castVote]);
-  const castDownvote = useCallback(() => castVote('down'), [castVote]);
-
-  const openAuthModalOnUpvote = useOpenAuthModal({
-    onSuccess: castUpvote,
-    waitIf: isNilOrError(authUser),
-  });
-
-  const openAuthModalOnDownvote = useOpenAuthModal({
-    onSuccess: castDownvote,
-    waitIf: isNilOrError(authUser),
-  });
-
   if (!idea) return null;
 
   const ideaAttributes = idea.data.attributes;
   const votingActionDescriptor = ideaAttributes.action_descriptor.voting_idea;
-  const votingEnabled = votingActionDescriptor.up.enabled;
-  const votingDisabledReason = votingActionDescriptor.disabled_reason;
   const votingFutureEnabled = !!(
     votingActionDescriptor.up.future_enabled ||
     votingActionDescriptor.down.future_enabled
@@ -182,33 +168,18 @@ const VoteControl = ({
   const isPBContext =
     participationContext?.attributes.participation_method === 'budgeting';
 
-  // Signed in
-  const isSignedIn = !isNilOrError(authUser);
-  const shouldSignIn =
-    !votingEnabled &&
-    (votingDisabledReason === 'not_signed_in' ||
-      (votingDisabledReason === 'not_verified' && !isSignedIn));
-
-  // Verification
-  const shouldVerify =
-    !votingEnabled && votingDisabledReason === 'not_verified' && isSignedIn;
-  const verifiedButNotPermitted =
-    !shouldVerify && votingDisabledReason === 'not_permitted';
-
   // Votes count
   const upvotesCount = ideaAttributes.upvotes_count;
   const downvotesCount = ideaAttributes.downvotes_count;
 
   const showVoteControl = !!(
     !isPBContext &&
-    (votingEnabled ||
-      shouldSignIn ||
+    (votingActionDescriptor.enabled ||
+      isFixableByAuthentication(votingActionDescriptor.disabled_reason) ||
       cancellingEnabled ||
       votingFutureEnabled ||
       upvotesCount > 0 ||
-      downvotesCount > 0 ||
-      shouldVerify ||
-      verifiedButNotPermitted)
+      downvotesCount > 0)
   );
 
   const onClickUpvote = (event: MouseEvent | KeyboardEvent) => {
@@ -225,21 +196,11 @@ const VoteControl = ({
 
   const onVote = async (voteMode: 'up' | 'down') => {
     setVotingAnimation(voteMode);
-    const votingActionDescriptor =
-      idea?.data.attributes.action_descriptor.voting_idea;
-    const votingEnabled = {
-      up: votingActionDescriptor?.up.enabled,
-      down: votingActionDescriptor?.down.enabled,
-    }[voteMode];
-    const cancellingEnabled = votingActionDescriptor?.cancelling_enabled;
-    const votingDisabledReason = {
-      up: votingActionDescriptor?.up.disabled_reason,
-      down: votingActionDescriptor?.down.disabled_reason,
-    }[voteMode];
 
-    const isSignedIn = !isNilOrError(authUser);
+    const { enabled: votingEnabled, disabled_reason: votingDisabledReason } =
+      votingActionDescriptor[voteMode];
+
     const isTryingToUndoVote = !!(myVoteMode && voteMode === myVoteMode);
-    const isVerified = !isNilOrError(authUser) && authUser.attributes.verified;
 
     if (!participationContextId || !participationContextType) return;
 
@@ -249,6 +210,15 @@ const VoteControl = ({
       type: participationContextType,
     } as const;
 
+    const successAction: SuccessAction = {
+      name: 'voteOnIdea',
+      params: {
+        ideaId,
+        voteMode,
+        myVoteMode,
+      },
+    };
+
     if (!addVoteIsLoading && !deleteVoteIsLoading) {
       if (
         !isNilOrError(authUser) &&
@@ -256,27 +226,10 @@ const VoteControl = ({
       ) {
         castVote(voteMode);
       } else if (
-        isSignedIn &&
-        !isVerified &&
-        votingDisabledReason === 'not_verified'
+        !votingEnabled &&
+        isFixableByAuthentication(votingDisabledReason)
       ) {
-        openVerificationModal();
-      } else if (isSignedIn && votingDisabledReason === 'not_active') {
-        voteMode === 'up'
-          ? openAuthModalOnUpvote({ context })
-          : openAuthModalOnDownvote({ context });
-      } else if (
-        !isSignedIn &&
-        (votingEnabled ||
-          votingDisabledReason === 'not_verified' ||
-          votingDisabledReason === 'not_signed_in' ||
-          votingDisabledReason === 'not_permitted')
-      ) {
-        const verification = votingDisabledReason === 'not_verified';
-
-        voteMode === 'up'
-          ? openAuthModalOnUpvote({ verification, context })
-          : openAuthModalOnDownvote({ verification, context });
+        triggerAuthenticationFlow({ context, successAction });
       } else if (votingDisabledReason) {
         disabledVoteClick?.(votingDisabledReason);
       }
@@ -286,14 +239,12 @@ const VoteControl = ({
   };
 
   if (idea && showVoteControl) {
-    const votingDescriptor = idea.data.attributes.action_descriptor.voting_idea;
     // Only when downvoting is explicitly disabled,
     // we don't show the downvote button
-    const showDownvote = votingDescriptor
-      ? votingDescriptor.down.enabled === true ||
-        (votingDescriptor.down.enabled === false &&
-          votingDescriptor.down.disabled_reason !== 'downvoting_disabled')
-      : true;
+    const showDownvote =
+      votingActionDescriptor.down.enabled === true ||
+      (votingActionDescriptor.down.enabled === false &&
+        votingActionDescriptor.down.disabled_reason !== 'downvoting_disabled');
 
     return (
       <>

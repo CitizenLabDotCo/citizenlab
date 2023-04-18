@@ -9,16 +9,23 @@ import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { updateGlobalPermission } from 'services/actionPermissions';
 import FeatureFlag from 'components/FeatureFlag';
+import { HandlePermissionChangeProps } from '../Granular/utils';
 
 interface DataProps {
   permissions: GetGlobalPermissionsChildProps;
 }
 
 const PermissionsInitiatives = memo<DataProps>(({ permissions }) => {
-  const handlePermissionChange = (permission, permittedBy, groupIds) => {
+  const handlePermissionChange = ({
+    permission,
+    permittedBy,
+    groupIds,
+    globalCustomFields,
+  }: HandlePermissionChangeProps) => {
     updateGlobalPermission(permission.id, permission.attributes.action, {
       permitted_by: permittedBy,
       group_ids: groupIds,
+      global_custom_fields: globalCustomFields,
     });
   };
   return (
@@ -33,6 +40,7 @@ const PermissionsInitiatives = memo<DataProps>(({ permissions }) => {
             onChange={handlePermissionChange}
             postType="initiative"
             projectId={null}
+            initiativeContext={true}
           />
         )}
       </FeatureFlag>

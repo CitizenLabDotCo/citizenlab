@@ -70,6 +70,10 @@ export default defineMessages({
     defaultMessage:
       'Are you sure you want to give {name} platform admin rights?',
   },
+  buyOneAditionalSeat: {
+    id: 'app.containers.Admin.Users.buyOneAditionalSeat',
+    defaultMessage: 'Buy one additional seat',
+  },
   confirmSetCollaboratorAsNormalUserQuestion: {
     id: 'app.containers.Admin.Users.confirmSetCollaboratorAsNormalUserQuestion',
     defaultMessage:
@@ -268,5 +272,13 @@ export default defineMessages({
   userInvitationPending: {
     id: 'app.containers.Admin.Users.UserTableRow.userInvitationPending',
     defaultMessage: 'Invitation pending',
+  },
+  blockedUsers: {
+    id: 'app.containers.Admin.Users.BlockedUsers.blockedUsers',
+    defaultMessage: 'Blocked users',
+  },
+  blockedUsersSubtitle: {
+    id: 'app.containers.Admin.Users.BlockedUsers.blockedUsersSubtitle',
+    defaultMessage: 'Manage blocked users.',
   },
 });

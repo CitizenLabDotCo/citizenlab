@@ -133,7 +133,7 @@ const CustomFieldsStep: FC<Props & WrappedComponentProps> = memo(
             <SubmitButton
               id="e2e-signup-custom-fields-submit-btn"
               processing={processingSubmit}
-              text={formatMessage(messages.completeSignUp)}
+              text={formatMessage(messages.close)}
               onClick={handleOnSubmitButtonClick}
             />
             {!userCustomFieldsSchema.hasRequiredFields && (
@@ -146,7 +146,7 @@ const CustomFieldsStep: FC<Props & WrappedComponentProps> = memo(
                 processing={processingSkip}
                 onClick={skipStep}
               >
-                {formatMessage(messages.skip)}
+                {formatMessage(messages.close)}
               </SkipButton>
             )}
           </ButtonWrapper>

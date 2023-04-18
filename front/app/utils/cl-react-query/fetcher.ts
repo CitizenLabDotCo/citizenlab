@@ -4,6 +4,7 @@ import { stringify } from 'qs';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { isArray, isNil, omitBy } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
+import { handleBlockedUserError } from 'utils/errorUtils';
 import { CLErrors } from 'typings';
 
 // FETCHER
@@ -93,12 +94,14 @@ async function fetcher({ path, action, body, queryParams }) {
   try {
     data = await response.json();
   } catch {
+    if (action === 'post') return; // TODO temporary workaround
     reportError('Unsupported case. No valid JSON.');
     throw new Error('Unsupported case. No valid JSON.');
   }
 
   if (!response.ok) {
     const error = data as unknown as CLErrors;
+    handleBlockedUserError(response.status, error);
     if (!error.errors) {
       reportError(data);
     }

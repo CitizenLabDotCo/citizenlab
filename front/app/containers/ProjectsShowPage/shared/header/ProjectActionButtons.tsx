@@ -11,12 +11,13 @@ import { isNumber } from 'lodash-es';
 // hooks
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-import useAuthUser from 'hooks/useAuthUser';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 import { getInputTerm } from 'services/participationContexts';
-import { getSurveyTakingRules } from 'services/actionTakingRules';
 
 // components
 import Button from 'components/UI/Button';
@@ -38,8 +39,8 @@ import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 // router
 import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
-
-import { openSignUpInModal } from 'events/openSignUpInModal';
+import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 const Container = styled.div``;
 
@@ -55,7 +56,6 @@ interface Props {
 const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
-  const authUser = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const { pathname, hash: divId } = useLocation();
 
@@ -93,41 +93,36 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     return null;
   }
 
-  const { enabled, disabledReason } = getSurveyTakingRules({
-    project,
-    phaseContext: currentPhase,
-    signedIn: !isNilOrError(authUser),
-  });
-  const registrationNotCompleted =
-    !isNilOrError(authUser) && !authUser.attributes.registration_completed_at;
-  const shouldVerify = !!(
-    disabledReason === 'maybeNotVerified' || disabledReason === 'notVerified'
-  );
-
-  // Using the same rules used to show the sign wrapper in survey display
-  const showSignIn =
-    shouldVerify ||
-    disabledReason === 'maybeNotPermitted' ||
-    registrationNotCompleted;
-
   const handleTakeSurveyClick = (event: FormEvent) => {
     event.preventDefault();
 
-    if (showSignIn) {
-      openSignUpInModal({
+    const { enabled, disabled_reason } =
+      project.attributes.action_descriptor.taking_survey;
+
+    if (enabled === true) {
+      scrollTo('project-survey');
+      return;
+    }
+
+    if (isFixableByAuthentication(disabled_reason)) {
+      const successAction: SuccessAction = {
+        name: 'scrollToSurvey',
+        params: {
+          pathname,
+          projectSlug: project.attributes.slug,
+          currentPhase,
+        },
+      };
+
+      triggerAuthenticationFlow({
         flow: 'signup',
-        verification: shouldVerify,
         context: {
           type: currentPhase ? 'phase' : 'project',
           id: currentPhase?.id ?? project.id,
           action: 'taking_survey',
         },
-        onSuccess: () => scrollTo('project-survey'),
+        successAction,
       });
-    }
-
-    if (enabled === true) {
-      scrollTo('project-survey');
     }
   };
 
