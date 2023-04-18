@@ -193,6 +193,7 @@ class User < ApplicationRecord
         record.errors.add(:email, :taken, value: record.email)
       end
     end
+    # new_email should raise email errors
     if record.new_email
       if User.find_by_cimail(record.new_email)
         record.errors.add(:email, :taken, value: record.new_email)
@@ -203,18 +204,15 @@ class User < ApplicationRecord
     end
   end
 
-  validate on: :update do
-    if AppConfiguration.instance.feature_activated?('user_confirmation') && email_changed? && !new_email_changed?
-      errors.add :email, :change_not_permitted, value: email
-    end
-  end
+  validate :validate_can_set_new_email, on: :update
+  validate :validate_email_matches_new_email, on: :update
 
   EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip)
   validate :validate_email_domains_blacklist
 
   validates :roles, json: { schema: -> { User.roles_json_schema }, message: ->(errors) { errors } }
 
-  with_options if: -> { AppConfiguration.instance.feature_activated?('user_confirmation') } do
+  with_options if: -> { user_confirmation_enabled? } do
     validates :email_confirmation_code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
     validates :email_confirmation_retry_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
     validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
@@ -224,6 +222,20 @@ class User < ApplicationRecord
     end
 
     before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
+  end
+
+  # If user confirmation is on then email can only be changed from new_email
+  def validate_email_matches_new_email
+    return unless email_changed? && user_confirmation_enabled? && !email_changed?(to: new_email_was)
+
+    errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - email not matching new email'
+  end
+
+  # Avoid situation where somebody can reset an email of a passwordless user when confirmation required
+  def validate_can_set_new_email
+    return unless new_email_changed? && user_confirmation_enabled? && no_password? && !active?
+
+    errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
   end
 
   scope :admin, -> { where("roles @> '[{\"type\":\"admin\"}]'") }
@@ -464,7 +476,7 @@ class User < ApplicationRecord
 
   # true if the user has not yet confirmed their email address and the platform requires it
   def confirmation_required?
-    AppConfiguration.instance.feature_activated?('user_confirmation') && confirmation_required
+    user_confirmation_enabled? && confirmation_required
   end
 
   def confirm
@@ -516,14 +528,10 @@ class User < ApplicationRecord
   end
 
   def reset_email!(new_email)
-    if can_reset_email?
-      if AppConfiguration.instance.feature_activated?('user_confirmation')
-        update!(new_email: new_email, email_confirmation_code_reset_count: 0)
-      else
-        update!(email: new_email, email_confirmation_code_reset_count: 0)
-      end
+    if user_confirmation_enabled?
+      update!(new_email: new_email, email_confirmation_code_reset_count: 0)
     else
-      errors.add :email, :change_not_permitted, value: email
+      update!(email: new_email, email_confirmation_code_reset_count: 0)
     end
   end
 
@@ -534,12 +542,11 @@ class User < ApplicationRecord
     self.new_email = nil
   end
 
-  # Avoid a situation where somebody can reset an email of a passwordless user
-  def can_reset_email?
-    !no_password? || active?
-  end
-
   private
+
+  def user_confirmation_enabled?
+    AppConfiguration.instance.feature_activated?('user_confirmation')
+  end
 
   # NOTE: registration_completed_at_changed? added to allow tests to change this date manually
   def complete_registration

@@ -68,15 +68,28 @@ RSpec.describe ResetUserEmail do
       end
     end
 
-    context 'when a user is passwordless and not active' do
+    context 'when a user is passwordless' do
       before do
         context[:user] = create(:user_no_password)
         context[:new_email] = 'new@email.com'
       end
 
-      # TODO: Failing
-      it 'returns email errors' do
-        expect(result.errors[:email]).not_to be_empty
+      context 'and user is not active' do
+        it 'returns email errors' do
+          expect(result.errors[:email]).not_to be_empty
+          expect(context[:user].reload.new_email).to be_nil
+        end
+      end
+
+      context 'and user is active' do
+        before do
+          context[:user].confirm!
+        end
+
+        it 'sets the user email in new email field' do
+          expect(result.errors).to be_nil
+          expect(context[:user].reload.new_email).to eq context[:new_email]
+        end
       end
     end
   end

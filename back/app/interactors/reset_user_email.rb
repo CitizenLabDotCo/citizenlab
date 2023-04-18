@@ -8,10 +8,9 @@ class ResetUserEmail < ApplicationInteractor
   def call
     return unless new_email
 
-    # context.new_email = user.email
     context.old_email = user.email
     user.reset_email!(new_email)
-  rescue ActiveRecord::RecordInvalid => _e
+  rescue ActiveRecord::ActiveRecordError => _e
     fail_with_error!(user.errors)
   end
 

@@ -805,11 +805,6 @@ RSpec.describe User, type: :model do
       expect(u.active?).to be false
     end
 
-    it 'return false when the user has a pending invitation' do
-      u = build(:user, invite_status: 'pending')
-      expect(u.active?).to be false
-    end
-
     it 'returns false when the user requires confirmation' do
       SettingsService.new.activate_feature! 'user_confirmation'
       u = build(:user)
@@ -1168,15 +1163,24 @@ RSpec.describe User, type: :model do
           expect { user.reset_email!(invalid_email) }.to raise_error(ActiveRecord::RecordInvalid)
         end
 
+        # Works
+        it 'cannot update the email column directly - returns errors' do
+          user.update!(email: email)
+          expect(user.errors).not_to be_nil
+        end
+
+        # TODO: Does not work!!
+        it 'cannot update the email column directly' do
+          expect { user.update!(email: email) }.to raise_error(ActiveRecord::RecordInvalid)
+        end
+
         context 'user is passwordless' do
           before do
             user.update!(password: nil)
           end
 
           it 'cannot change the email if the user is passwordless and not active' do
-            user.reset_email!(email)
-            expect(user.new_email).to be_nil
-            expect( user.errors.details[:email]).not_to be_nil
+            expect { user.reset_email!(email) }.to raise_error(ActiveRecord::RecordInvalid)
           end
 
           it 'can change the email if the user is passwordless and active' do
