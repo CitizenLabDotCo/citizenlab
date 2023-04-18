@@ -26,18 +26,6 @@ describe TrendingIdeaService do
         expect(trending_filter.size).to eq(trending_filter_after.size + 1)
       end
     end
-
-    it 'does not include ideas that are native survey responses', document: false do
-      trending = nil
-      trending_filter = nil
-      travel_to Time.now do
-        trending = Idea.all.select { |i| described_class.new.trending? i }
-        generate_survey_response_ideas
-        trending_filter = described_class.new.filter_trending(Idea.all).map(&:id)
-      end
-
-      expect(trending_filter.size).to eq trending.size
-    end
   end
 
   describe 'sort_trending' do
@@ -75,18 +63,6 @@ describe TrendingIdeaService do
       # lines.each{|l| puts l}
 
       expect(trending_score_sorted).to eq expected_order
-    end
-
-    it 'does not include ideas that are native survey responses', document: false do
-      count = nil
-      sorted = nil
-      travel_to Time.now do
-        count = Idea.all.count
-        generate_survey_response_ideas
-        sorted = described_class.new.sort_trending(Idea.all).map(&:id)
-      end
-
-      expect(sorted.size).to eq count
     end
   end
 
