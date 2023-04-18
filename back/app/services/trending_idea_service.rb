@@ -2,12 +2,12 @@
 
 class TrendingIdeaService
   def filter_trending(ideas = Idea.all)
-    with_trending_score(ideas.not_from_survey)
+    with_trending_score(only_idea_inputs(ideas))
       .where('sub.is_trending' => true)
   end
 
   def sort_trending(ideas = Idea.all)
-    with_trending_score(ideas.not_from_survey)
+    with_trending_score(only_idea_inputs(ideas))
       .order('trending_score DESC')
   end
 
@@ -62,6 +62,10 @@ class TrendingIdeaService
   end
 
   private
+
+  def only_idea_inputs(ideas)
+    IdeasFinder.new({}, scope: Idea.all).find_records
+  end
 
   def trending_score_formula(votes_diff, mean_activity_at)
     [(1 + votes_diff), 1].max / [mean_activity_at, 1].max
