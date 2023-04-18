@@ -28,6 +28,7 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Tilmeld dig med telefon eller e-mail",
   "app.components.Author.a11y_postedBy": "Sendt af:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} brugere\n",
+  "app.components.BillingWarning.billingWarning": "Når der tilføjes flere pladser, vil din fakturering blive forhøjet. Kontakt soren@citizenlab.dk for at få mere at vide om det.",
   "app.components.CityLogoSection.iframeTitle": "Flere oplysninger om {orgName}",
   "app.components.Comments.cancel": "Annuller",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Det er ikke muligt at kommentere i den aktuelle fase.",
