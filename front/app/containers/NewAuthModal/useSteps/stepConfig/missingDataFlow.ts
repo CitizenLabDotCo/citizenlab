@@ -2,6 +2,8 @@
 import { updateUser } from 'services/users';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
+import getAuthUser from 'api/authentication/auth_user/getAuthUser';
+import signOut from 'api/authentication/sign_in_out/signOut';
 
 // utils
 import { requiredCustomFields, requiredBuiltInFields } from './utils';
@@ -23,8 +25,15 @@ export const missingDataFlow = (
   return {
     'missing-data:email-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
-      CHANGE_EMAIL: () => {
-        setCurrentStep('missing-data:change-email');
+      CHANGE_EMAIL: async () => {
+        const authUser = await getAuthUser();
+
+        if (authUser.data.attributes.no_password) {
+          await signOut();
+          setCurrentStep('closed');
+        } else {
+          setCurrentStep('missing-data:change-email');
+        }
       },
       SUBMIT_CODE: async (code: string) => {
         setStatus('pending');
