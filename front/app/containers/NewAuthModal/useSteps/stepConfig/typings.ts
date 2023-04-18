@@ -6,10 +6,6 @@ export type Step =
   // old sign in flow
   | 'sign-in:auth-providers'
   | 'sign-in:email-password'
-  | 'sign-in:email-confirmation'
-  | 'sign-in:change-email'
-  | 'sign-in:verification'
-  | 'sign-in:custom-fields'
 
   // old sign up flow
   | 'sign-up:auth-providers'

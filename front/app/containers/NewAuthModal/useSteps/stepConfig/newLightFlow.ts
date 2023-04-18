@@ -208,12 +208,12 @@ export const newLightFlow = (
           setStatus('ok');
 
           if (requirements.special.confirmation === 'require') {
-            setCurrentStep('sign-in:email-confirmation');
+            setCurrentStep('missing-data:email-confirmation');
             return;
           }
 
           if (requiredCustomFields(requirements.custom_fields)) {
-            setCurrentStep('sign-in:custom-fields');
+            setCurrentStep('missing-data:custom-fields');
             return;
           }
 

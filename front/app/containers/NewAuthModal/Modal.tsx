@@ -46,10 +46,6 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // old sign in flow
   'sign-in:auth-providers': messages.logIn,
   'sign-in:email-password': messages.logIn,
-  'sign-in:email-confirmation': messages.logIn,
-  'sign-in:change-email': messages.logIn,
-  'sign-in:verification': messages.verifyYourIdentity,
-  'sign-in:custom-fields': messages.logIn,
 
   // old sign up flow
   'sign-up:auth-providers': messages.signUp,
@@ -57,7 +53,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sign-up:email-confirmation': messages.signUp,
   'sign-up:change-email': messages.signUp,
   'sign-up:verification': messages.verifyYourIdentity,
-  'sign-up:custom-fields': messages.signUp,
+  'sign-up:custom-fields': messages.completeYourProfile,
 
   // light flow
   'light-flow:email': messages.beforeYouParticipate,
@@ -182,40 +178,6 @@ const AuthModal = () => {
           />
         )}
 
-        {currentStep === 'sign-in:email-confirmation' && (
-          <EmailConfirmation
-            state={state}
-            status={status}
-            error={error}
-            onConfirm={transition(currentStep, 'SUBMIT_CODE')}
-            onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
-          />
-        )}
-
-        {currentStep === 'sign-in:change-email' && (
-          <ChangeEmail
-            status={status}
-            onGoBack={transition(currentStep, 'GO_BACK')}
-            onChangeEmail={transition(currentStep, 'RESEND_CODE')}
-          />
-        )}
-
-        {currentStep === 'sign-in:verification' && (
-          <Verification
-            authenticationData={authenticationData}
-            onCompleted={transition(currentStep, 'CONTINUE')}
-            onError={() => setError('unknown')}
-          />
-        )}
-
-        {currentStep === 'sign-in:custom-fields' && (
-          <CustomFields
-            status={status}
-            onSubmit={transition(currentStep, 'SUBMIT')}
-            onSkip={transition(currentStep, 'SKIP')}
-          />
-        )}
-
         {/* old sign up flow */}
         {currentStep === 'sign-up:auth-providers' && (
           <AuthProviders
@@ -333,9 +295,10 @@ const AuthModal = () => {
         )}
 
         {/* missing data flow */}
-        {currentStep === 'missing-data:built-in' && (
+        {currentStep === 'missing-data:built-in' && authenticationData && (
           <BuiltInFields
             status={status}
+            authenticationData={authenticationData}
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}

@@ -1,9 +1,6 @@
 // authentication
 import signIn from 'api/authentication/sign_in_out/signIn';
 import { handleOnSSOClick } from 'services/singleSignOn';
-import { updateUser } from 'services/users';
-import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
-import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 
 // events
 import { triggerSuccessAction } from 'containers/NewAuthModal/SuccessActions';
@@ -89,17 +86,17 @@ export const oldSignInFlow = (
           setStatus('ok');
 
           if (requirements.special.confirmation === 'require') {
-            setCurrentStep('sign-in:email-confirmation');
+            setCurrentStep('missing-data:email-confirmation');
             return;
           }
 
           if (requirements.special.verification === 'require') {
-            setCurrentStep('sign-in:verification');
+            setCurrentStep('missing-data:verification');
             return;
           }
 
           if (requiredCustomFields(requirements.custom_fields)) {
-            setCurrentStep('sign-in:custom-fields');
+            setCurrentStep('missing-data:custom-fields');
             return;
           }
 
@@ -116,101 +113,6 @@ export const oldSignInFlow = (
           setError('wrong_password');
           trackEventByName(tracks.signInEmailPasswordFailed);
         }
-      },
-    },
-
-    'sign-in:email-confirmation': {
-      CLOSE: () => setCurrentStep('closed'),
-      CHANGE_EMAIL: () => {
-        setCurrentStep('sign-in:change-email');
-      },
-      SUBMIT_CODE: async (code: string) => {
-        setStatus('pending');
-
-        try {
-          await confirmEmail({ code });
-          setStatus('ok');
-
-          const { requirements } = await getRequirements();
-
-          if (requirements.special.verification === 'require') {
-            setCurrentStep('sign-in:verification');
-            return;
-          }
-
-          if (requiredCustomFields(requirements.custom_fields)) {
-            setCurrentStep('sign-in:custom-fields');
-            return;
-          }
-
-          setCurrentStep('success');
-        } catch (e) {
-          setStatus('error');
-
-          if (e?.code?.[0]?.error === 'invalid') {
-            setError('wrong_confirmation_code');
-          } else {
-            setError('unknown');
-          }
-        }
-      },
-    },
-
-    'sign-in:change-email': {
-      CLOSE: () => setCurrentStep('closed'),
-      GO_BACK: () => {
-        setCurrentStep('sign-in:email-confirmation');
-      },
-      RESEND_CODE: async (newEmail: string) => {
-        setStatus('pending');
-
-        try {
-          await resendEmailConfirmationCode(newEmail);
-          setCurrentStep('sign-in:email-confirmation');
-          setStatus('ok');
-        } catch (e) {
-          setStatus('error');
-          setError('unknown');
-        }
-      },
-    },
-
-    'sign-in:verification': {
-      CLOSE: () => setCurrentStep('closed'),
-      CONTINUE: async () => {
-        const { requirements } = await getRequirements();
-
-        if (requiredCustomFields(requirements.custom_fields)) {
-          setCurrentStep('sign-in:custom-fields');
-          return;
-        }
-
-        setCurrentStep('success');
-      },
-    },
-
-    'sign-in:custom-fields': {
-      CLOSE: () => {
-        setCurrentStep('closed');
-        trackEventByName(tracks.signUpCustomFieldsStepExited);
-      },
-      SUBMIT: async (userId: string, formData: FormData) => {
-        setStatus('pending');
-
-        try {
-          await updateUser(userId, { custom_field_values: formData });
-          setStatus('ok');
-          setCurrentStep('success');
-          trackEventByName(tracks.signUpCustomFieldsStepCompleted);
-        } catch {
-          setStatus('error');
-          setError('unknown');
-          trackEventByName(tracks.signUpCustomFieldsStepFailed);
-        }
-      },
-      SKIP: async () => {
-        setCurrentStep('success');
-        trackEventByName(tracks.signUpCustomFieldsStepSkipped);
       },
     },
   };
