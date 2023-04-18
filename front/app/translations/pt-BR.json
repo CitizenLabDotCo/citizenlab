@@ -28,7 +28,6 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Faça o login com o email ou um número de telefone",
   "app.components.Author.a11y_postedBy": "Postado por",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} participantes",
-  "app.components.BillingWarning.billingWarning": "Once additional seats are added, your billing will be increased. Reach out to your GovSuccess Manager to learn more about it.",
   "app.components.CityLogoSection.iframeTitle": "Mais informações sobre {orgName}",
   "app.components.Comments.cancel": "Cancelar",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Não é possível comentar na fase atual.",
