@@ -33,7 +33,7 @@ namespace :templates do
 
     template_creator = MultiTenancy::Templates::CreateService.new(
       tenant_bucket: ENV.fetch('AWS_S3_BUCKET', 'cl2-tenants-production-benelux'),
-      template_bucket: ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'),
+      template_bucket: ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates')
     )
 
     template_host_suffix = ENV.fetch('TEMPLATE_URL_SUFFIX', '.localhost')
@@ -72,7 +72,7 @@ namespace :templates do
   task :release_templates, [:failed_templates_file] => [:environment] do |_t, args|
     failed_template_file = args[:failed_templates_file]
     failed_templates = if failed_template_file.present?
-      File.readlines(failed_template_file).map(&:strip).map(&:presence).compact
+      File.readlines(failed_template_file).map(&:strip).filter_map(&:presence)
     else
       []
     end
