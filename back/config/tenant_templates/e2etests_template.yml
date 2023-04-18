@@ -8002,7 +8002,7 @@ models:
       permission_scope_ref: *verifiedIdeation
     - &112
       action: voting_idea
-      permitted_by: everyone_confirmed_email
+      permitted_by: groups
       permission_scope_ref: *verifiedIdeation
     - &113
       action: commenting_idea
