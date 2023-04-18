@@ -58,7 +58,6 @@ module MultiTenancy
       def template_utils
         @template_utils ||= MultiTenancy::Templates::Utils.new(
           internal_template_dir: internal_template_dir,
-          tenant_bucket: tenant_bucket,
           template_bucket: template_bucket,
           s3_client: @s3_client
         )

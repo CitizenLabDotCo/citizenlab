@@ -3,9 +3,7 @@
 require 'rails_helper'
 
 describe MultiTenancy::Templates::Utils do
-  let(:service) do
-    described_class.new(tenant_bucket: nil, template_bucket: nil)
-  end
+  let(:service) { described_class.new(template_bucket: nil) }
 
   describe '#available_internal_templates' do
     it 'returns a non-empty list' do

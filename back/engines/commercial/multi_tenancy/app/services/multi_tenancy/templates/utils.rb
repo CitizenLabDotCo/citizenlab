@@ -3,16 +3,14 @@
 module MultiTenancy
   module Templates
     class Utils
-      attr_reader :internal_template_dir, :template_bucket, :tenant_bucket
+      attr_reader :internal_template_dir, :template_bucket
 
       def initialize(
         internal_template_dir: Rails.root.join('config/tenant_templates'),
-        tenant_bucket: ENV.fetch('AWS_S3_BUCKET'),
         template_bucket: ENV.fetch('TEMPLATE_BUCKET'),
         s3_client: Aws::S3::Client.new(region: 'eu-central-1')
       )
         @internal_template_dir = internal_template_dir
-        @tenant_bucket = tenant_bucket
         @template_bucket = template_bucket
         @s3_client = s3_client
       end
