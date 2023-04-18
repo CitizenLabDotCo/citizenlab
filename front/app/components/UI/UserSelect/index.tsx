@@ -94,7 +94,7 @@ const UserSelect = ({
       );
     } else if (option.attributes) {
       return (
-        <UserOption>
+        <UserOption data-cy={`e2e-user-${option.attributes.email}`}>
           {option.attributes.last_name}, {option.attributes.first_name} (
           {option.attributes.email})
         </UserOption>

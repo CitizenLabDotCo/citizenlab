@@ -123,6 +123,7 @@ const UserSearch = memo(({ projectId }: Props) => {
           onClick={handleAddClick}
           disabled={!moderatorToAdd}
           processing={processing}
+          data-cy="e2e-add-project-moderator-button"
         />
       </Box>
       {hasSeatBasedBillingEnabled && (
