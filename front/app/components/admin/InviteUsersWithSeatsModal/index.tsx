@@ -11,8 +11,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useSeats from 'api/seats/useSeats';
 import { useExceedsSeats } from 'hooks/useExceedsSeats';
 
 // Utils
@@ -44,16 +42,12 @@ const InviteUsersWithSeatsModal = ({
 }: InviteUsersWithSeatsModalProps) => {
   const { formatMessage } = useIntl();
   const [showSuccess, setShowSuccess] = useState(false);
-  const { data: appConfiguration } = useAppConfiguration();
-  const { data: seats } = useSeats();
   const newSeats = newSeatsResponse.data.attributes;
 
   const exceedsSeats = useExceedsSeats()({
     newlyAddedAdminsNumber: newSeats.newly_added_admins_number,
     newlyAddedModeratorsNumber: newSeats.newly_added_moderators_number,
   });
-
-  if (!appConfiguration || !seats) return null;
 
   const handleConfirmClick = () => {
     inviteUsers();
@@ -89,11 +83,7 @@ const InviteUsersWithSeatsModal = ({
   }
 
   return (
-    <Modal
-      opened={showModal && exceedsSeats.any}
-      close={closeModal}
-      header={header}
-    >
+    <Modal opened={showModal} close={closeModal} header={header}>
       {showSuccess ? (
         <SeatSetSuccess
           closeModal={() => {
