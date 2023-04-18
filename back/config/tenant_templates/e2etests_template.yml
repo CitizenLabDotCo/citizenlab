@@ -646,7 +646,7 @@ models:
       user_ref: *77
     - token: eWx6b1kAKBJsBY8F0FYGgKCXpLaGbVjTTvuJiGoRqxiLUyRSlQwz1F06agHXJd1D
       user_ref: *67
-  project_folder:
+  project_folders/folder:
   - &folder1
     # hard dependance of folder_page test case
     title_multiloc:

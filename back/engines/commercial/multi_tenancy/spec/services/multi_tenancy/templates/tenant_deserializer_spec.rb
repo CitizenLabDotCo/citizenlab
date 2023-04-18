@@ -59,7 +59,7 @@ describe MultiTenancy::Templates::TenantDeserializer do
       yml = <<~YAML
         ---
         models:
-          project_folder:
+          project_folders/folder:
           - title_multiloc:
               en: Folder title
             admin_publication_attributes: &1
