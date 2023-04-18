@@ -20,6 +20,7 @@ import GooglePolicies from './steps/Policies/GooglePolicies';
 import FacebookPolicies from './steps/Policies/FacebookPolicies';
 import AzureAdPolicies from './steps/Policies/AzureAdPolicies';
 import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
+import BuiltInFields from './steps/BuiltInFields';
 import Password from './steps/Password';
 import Success from './steps/Success';
 import Error from 'components/UI/Error';
@@ -328,6 +329,48 @@ const AuthModal = () => {
             state={state}
             status={status}
             onSubmit={transition(currentStep, 'SUBMIT_PASSWORD')}
+          />
+        )}
+
+        {/* missing data flow */}
+        {currentStep === 'missing-data:built-in' && (
+          <BuiltInFields
+            status={status}
+            onSubmit={transition(currentStep, 'SUBMIT')}
+          />
+        )}
+
+        {currentStep === 'missing-data:email-confirmation' && (
+          <EmailConfirmation
+            state={state}
+            status={status}
+            error={error}
+            onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+            onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
+          />
+        )}
+
+        {currentStep === 'missing-data:change-email' && (
+          <ChangeEmail
+            status={status}
+            onGoBack={transition(currentStep, 'GO_BACK')}
+            onChangeEmail={transition(currentStep, 'RESEND_CODE')}
+          />
+        )}
+
+        {currentStep === 'missing-data:verification' && (
+          <Verification
+            authenticationData={authenticationData}
+            onCompleted={transition(currentStep, 'CONTINUE')}
+            onError={() => setError('unknown')}
+          />
+        )}
+
+        {currentStep === 'missing-data:custom-fields' && (
+          <CustomFields
+            status={status}
+            onSubmit={transition(currentStep, 'SUBMIT')}
+            onSkip={transition(currentStep, 'SKIP')}
           />
         )}
 

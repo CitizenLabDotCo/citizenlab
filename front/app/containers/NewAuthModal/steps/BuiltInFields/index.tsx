@@ -37,8 +37,6 @@ import { IUserData } from 'services/users';
 
 interface BaseProps {
   status: Status;
-  onSwitchFlow: () => void;
-  onGoBack: () => void;
   onSubmit: (userId: string, update: BuiltInFieldsUpdate) => void;
 }
 
