@@ -63,6 +63,8 @@ module MultiTenancy
       def fetch_internal_template_models(template_name)
         template_path = internal_template_dir.join("#{template_name}.yml")
         parse_yml(File.read(template_path))
+      rescue Errno::ENOENT
+        raise UnknownTemplateError, "Unknown template: '#{template_name}'."
       end
 
       def fetch_external_template_models(template_name, prefix: 'release')
@@ -70,6 +72,8 @@ module MultiTenancy
         key = "#{template_prefix}/models.yml"
         content = @s3_client.get_object(bucket: template_bucket, key: key).body.read
         parse_yml(content)
+      rescue Aws::S3::Errors::NoSuchKey
+        raise UnknownTemplateError, "Unknown template: '#{template_name}'."
       end
 
       def template_bucket
@@ -207,6 +211,7 @@ module MultiTenancy
       end
 
       class AmbiguousTemplateNames < StandardError; end
+      class UnknownTemplateError < StandardError; end
     end
   end
 end
