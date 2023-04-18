@@ -17,7 +17,7 @@ module MultiTenancy
         @s3_client = s3_client
       end
 
-      def available_templates(external_prefix: 'release')
+      def available_templates(external_prefix: release_prefix)
         templates = available_internal_templates
 
         if template_bucket && external_prefix
@@ -37,11 +37,11 @@ module MultiTenancy
         available_internal_templates.include?(template_name)
       end
 
-      def template_prefix(template_name, prefix: 'release')
+      def template_prefix(template_name, prefix: release_prefix)
         "#{prefix.chomp('/')}/#{template_name}"
       end
 
-      def available_external_templates(prefix: 'release/')
+      def available_external_templates(prefix: release_prefix)
         Aws::S3::Utils
           .new(@s3_client)
           .common_prefixes(bucket: template_bucket, prefix: prefix, delimiter: '/models.yml')
@@ -49,12 +49,12 @@ module MultiTenancy
           .tap { |template_names| raise_if_duplicates(template_names) }
       end
 
-      def required_locales(template_name, external_subfolder: 'release')
+      def required_locales(template_name, external_subfolder: release_prefix)
         serialized_models = fetch_template_models(template_name, external_subfolder: external_subfolder)
         self.class.user_locales(serialized_models)
       end
 
-      def fetch_template_models(template_name, external_subfolder: 'release')
+      def fetch_template_models(template_name, external_subfolder: release_prefix)
         if internal_template?(template_name)
           fetch_internal_template_models(template_name)
         else
@@ -69,7 +69,7 @@ module MultiTenancy
         raise UnknownTemplateError, "Unknown template: '#{template_name}'."
       end
 
-      def fetch_external_template_models(template_name, prefix: 'release')
+      def fetch_external_template_models(template_name, prefix: release_prefix)
         template_prefix = template_prefix(template_name, prefix: prefix)
         key = "#{template_prefix}/models.yml"
         content = @s3_client.get_object(bucket: template_bucket, key: key).body.read
