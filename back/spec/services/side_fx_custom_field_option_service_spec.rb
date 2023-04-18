@@ -15,6 +15,10 @@ describe SideFxCustomFieldOptionService do
     let(:user2) { create(:user, custom_field_values: { custom_field.key => [option1.key] }) }
     let(:user3) { create(:user, custom_field_values: { custom_field.key => [option2.key] }) }
 
+    let(:custom_field_for_form) { create(:custom_field, :for_custom_form, input_type: 'select') }
+    let(:option3) { create(:custom_field_option, custom_field: custom_field_for_form, key: 'option_1') }
+    let!(:user4) { create(:user, custom_field_values: { custom_field_for_form.key => 'option_1' }) }
+
     it 'logs the related user data that will be destroyed' do
       travel_to Time.now do
         expect { service.before_destroy(option1, user) }
@@ -33,19 +37,15 @@ describe SideFxCustomFieldOptionService do
             }
           )
           .exactly(1).times
+      end
+    end
 
-  # describe 'before_delete' do
-  #  let(:custom_field) { create(:custom_field, :for_custom_form, input_type: 'select') }
-  #  let(:option1) { create(:custom_field_option, custom_field: custom_field, key: 'option_1') }
-  #  let!(:user1) { create(:user, custom_field_values: { custom_field.key => 'option_1' }) }
+    context 'when non-user-related custom field option is deleted' do
+      it 'does not delete user custom_field_value(s) with key identical to deleted option key', document: false do
+        service.before_destroy(option3, user)
 
-  #  context 'when non-user-related custom field option is deleted' do
-  #    it 'does not delete user custom_field_value(s) with key identical to deleted option key', document: false do
-  #      service.before_destroy(option1, user)
-
-  #      expect(user1.reload.custom_field_values).to eq({ custom_field.key => 'option_1' })
-
-  #    end
+        expect(user4.reload.custom_field_values).to eq({ custom_field_for_form.key => 'option_1' })
+      end
     end
   end
 end
