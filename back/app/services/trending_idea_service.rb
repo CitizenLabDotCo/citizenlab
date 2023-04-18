@@ -64,7 +64,7 @@ class TrendingIdeaService
   private
 
   def only_idea_inputs(ideas)
-    IdeasFinder.new({}, scope: Idea.all).find_records
+    IdeasFinder.new({}, scope: ideas).find_records
   end
 
   def trending_score_formula(votes_diff, mean_activity_at)
