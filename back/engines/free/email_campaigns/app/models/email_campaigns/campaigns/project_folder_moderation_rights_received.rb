@@ -42,7 +42,7 @@ module EmailCampaigns
     delegate :admin_project_folder_url, to: :url_service
 
     def mailer_class
-      ProjectFolderModerationRightsReceivedMailer
+      ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsReceivedMailer
     end
 
     def activity_triggers

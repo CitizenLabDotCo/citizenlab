@@ -26,6 +26,14 @@ class InvitePolicy < ApplicationPolicy
     user&.active? && user&.admin?
   end
 
+  def count_new_seats?
+    bulk_create?
+  end
+
+  def count_new_seats_xlsx?
+    bulk_create_xlsx?
+  end
+
   def bulk_create?
     user&.active? && user&.admin?
   end
