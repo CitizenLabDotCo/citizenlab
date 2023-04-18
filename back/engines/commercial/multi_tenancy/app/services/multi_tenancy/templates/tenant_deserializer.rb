@@ -2,6 +2,11 @@
 
 module MultiTenancy
   module Templates
+    # This class is exclusively responsible for reconstructing DB records from hashes of
+    # serialized models (such as those produced by the tenant serializer). This class is
+    # and should remain agnostic of the storage backend used for storing the templates
+    # and serialized models. It's also not concerned with the uploads that are part of
+    # the template.
     class TenantDeserializer
       USER_INPUT_CLASSES = [
         Idea,
