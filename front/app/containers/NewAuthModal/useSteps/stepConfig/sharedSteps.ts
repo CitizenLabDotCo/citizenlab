@@ -57,6 +57,7 @@ export const sharedSteps = (
         updateState({ email: null, token: null });
 
         const { requirements } = await getRequirements();
+
         const signedIn = requirements.built_in.email === 'satisfied';
 
         if (signedIn) {
