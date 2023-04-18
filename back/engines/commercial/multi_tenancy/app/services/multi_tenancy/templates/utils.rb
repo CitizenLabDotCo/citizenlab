@@ -55,8 +55,7 @@ module MultiTenancy
         if internal_template?(template_name)
           fetch_internal_template_models(template_name)
         else
-          template_prefix = template_prefix(template_name, prefix: external_subfolder)
-          fetch_external_template_models(template_prefix)
+          fetch_external_template_models(template_name, prefix: external_subfolder)
         end
       end
 
@@ -65,7 +64,8 @@ module MultiTenancy
         parse_yml(File.read(template_path))
       end
 
-      def fetch_external_template_models(template_prefix)
+      def fetch_external_template_models(template_name, prefix: 'release')
+        template_prefix = template_prefix(template_name, prefix: prefix)
         key = "#{template_prefix}/models.yml"
         content = @s3_client.get_object(bucket: template_bucket, key: key).body.read
         parse_yml(content)

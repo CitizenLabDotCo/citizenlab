@@ -24,8 +24,7 @@ namespace :templates do
   task :import, %i[host file] => [:environment] do |_t, args|
     Tenant.find_by(host: args[:host]).switch do
       serialized_models = YAML.load(File.read(args[:file]))
-      tenant_deserializer = ::MultiTenancy::Templates::TenantDeserializer.new
-      tenant_deserializer.resolve_and_apply_template(serialized_models)
+      MultiTenancy::Templates::TenantDeserializer.new.deserialize(serialized_models)
     end
   end
 
@@ -136,12 +135,12 @@ namespace :templates do
     File.write(output_path, serialized_models.to_yaml)
   end
 
-  def verify_template(template, max_time)
+  def verify_template(template_name, max_time)
     template_utils = MultiTenancy::Templates::Utils.new
-    locales = template_utils.required_locales(template, external_subfolder: 'test')
+    locales = template_utils.required_locales(template_name, external_subfolder: 'test')
     locales = ['en'] if locales.blank?
 
-    name = template.split('_').join
+    name = template_name.tr('.', '-')
     tenant_attrs = { name: name, host: "#{name}.localhost" }
     config_attrs = { settings: SettingsService.new.minimal_required_settings(
       locales: locales,
@@ -153,8 +152,9 @@ namespace :templates do
     )
 
     tenant.switch do
-      puts "Verifying #{template}"
-      template_utils.resolve_and_apply_template(template, external_subfolder: 'test', max_time: max_time)
+      puts "Verifying #{template_name}"
+      template = MultiTenancy::Templates::Utils.new.fetch_external_template_models(template_name, prefix: 'test')
+      MultiTenancy::Templates::TenantDeserializer.new.deserialize(template, max_time: max_time)
     end
 
     tenant.destroy!

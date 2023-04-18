@@ -31,9 +31,7 @@ module MultiTenancy
       end
 
       def apply_external_template(template_name, prefix: 'release')
-        template_prefix = template_utils.template_prefix(template_name, prefix: prefix)
-        template_models = template_utils.fetch_external_template_models(template_prefix)
-
+        template_models = template_utils.fetch_external_template_models(template_name, prefix: prefix)
         model_id_mapping = generate_model_identifiers!(template_models)
         copy_s3_files(template_prefix, Tenant.current.id, model_id_mapping)
 

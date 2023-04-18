@@ -15,24 +15,6 @@ module MultiTenancy
         @save_temp_remote_urls = save_temp_remote_urls
       end
 
-      # TODO: move to ApplyService
-      def resolve_and_apply_template(
-        template_name,
-        external_subfolder: 'release',
-        validate: true,
-        max_time: nil,
-        local_copy: false
-      )
-        Rails.logger.tagged('loading template', template_name: template_name) do
-          deserialize(
-            resolve_template(template_name, external_subfolder: external_subfolder),
-            validate: validate,
-            max_time: max_time,
-            local_copy: local_copy
-          )
-        end
-      end
-
       def deserialize(...)
         # To ensure that `CurrentAttributes` is not unexpectedly reset during the
         # application of a template, we need to make sure that the template is wrapped by
@@ -51,56 +33,6 @@ module MultiTenancy
             _deserialize(...)
           end
         end
-      end
-
-      def restore_template_attributes(attributes, obj_to_id_and_class, app_settings, model_class: nil)
-        start_of_day = Time.now.in_time_zone(app_settings.dig('core', 'timezone')).beginning_of_day
-        locales = USER_INPUT_CLASSES.include?(model_class) ? app_settings.dig('core', 'locales') : all_supported_locales
-
-        new_attributes = {}
-        attributes.each do |field_name, field_value|
-          if multiloc?(field_name)
-            new_attributes[field_name] = restore_multiloc_attribute(field_value, locales)
-
-          elsif field_name.end_with?('_attributes') && field_value.is_a?(Hash)
-            new_attributes[field_name] = restore_template_attributes(field_value, obj_to_id_and_class, app_settings)
-
-          elsif field_name.end_with?('_attributes') && field_value.is_a?(Array) && field_value.all?(Hash)
-            new_attributes[field_name] = field_value.map do |value|
-              restore_template_attributes(value, obj_to_id_and_class, app_settings)
-            end
-
-          elsif field_name.end_with?('_ref')
-            ref_suffix = field_name.end_with?('_attributes_ref') ? '_attributes_ref' : '_ref' # linking attribute refs
-            if field_value
-              id, ref_class = obj_to_id_and_class.fetch(field_value.object_id)
-              new_attributes[field_name.chomp(ref_suffix)] = ref_class.find(id)
-            end
-
-          elsif field_name.end_with?('_timediff')
-            if field_value.is_a?(Numeric)
-              time = start_of_day + field_value.hours
-              new_attributes[field_name.chomp('_timediff')] = time
-            end
-
-          else
-            new_attributes[field_name] = field_value
-          end
-        end
-
-        # Required to make templates tests work in which case file storage is used
-        if Rails.env.test?
-          keys = new_attributes.keys.select do |key|
-            key.start_with?('remote_') && key.end_with?('_url') && new_attributes[key]&.start_with?('/')
-          end
-          keys.each do |key|
-            new_key = key.gsub('remote_', '').gsub('_url', '')
-            new_attributes[new_key] = File.open "public#{new_attributes[key]}"
-            new_attributes.delete key
-          end
-        end
-
-        new_attributes
       end
 
       private
@@ -185,6 +117,56 @@ module MultiTenancy
         created_objects_ids
       end
 
+      def restore_template_attributes(attributes, obj_to_id_and_class, app_settings, model_class: nil)
+        start_of_day = Time.now.in_time_zone(app_settings.dig('core', 'timezone')).beginning_of_day
+        locales = USER_INPUT_CLASSES.include?(model_class) ? app_settings.dig('core', 'locales') : all_supported_locales
+
+        new_attributes = {}
+        attributes.each do |field_name, field_value|
+          if multiloc?(field_name)
+            new_attributes[field_name] = restore_multiloc_attribute(field_value, locales)
+
+          elsif field_name.end_with?('_attributes') && field_value.is_a?(Hash)
+            new_attributes[field_name] = restore_template_attributes(field_value, obj_to_id_and_class, app_settings)
+
+          elsif field_name.end_with?('_attributes') && field_value.is_a?(Array) && field_value.all?(Hash)
+            new_attributes[field_name] = field_value.map do |value|
+              restore_template_attributes(value, obj_to_id_and_class, app_settings)
+            end
+
+          elsif field_name.end_with?('_ref')
+            ref_suffix = field_name.end_with?('_attributes_ref') ? '_attributes_ref' : '_ref' # linking attribute refs
+            if field_value
+              id, ref_class = obj_to_id_and_class.fetch(field_value.object_id)
+              new_attributes[field_name.chomp(ref_suffix)] = ref_class.find(id)
+            end
+
+          elsif field_name.end_with?('_timediff')
+            if field_value.is_a?(Numeric)
+              time = start_of_day + field_value.hours
+              new_attributes[field_name.chomp('_timediff')] = time
+            end
+
+          else
+            new_attributes[field_name] = field_value
+          end
+        end
+
+        # Required to make templates tests work in which case file storage is used
+        if Rails.env.test?
+          keys = new_attributes.keys.select do |key|
+            key.start_with?('remote_') && key.end_with?('_url') && new_attributes[key]&.start_with?('/')
+          end
+          keys.each do |key|
+            new_key = key.gsub('remote_', '').gsub('_url', '')
+            new_attributes[new_key] = File.open "public#{new_attributes[key]}"
+            new_attributes.delete key
+          end
+        end
+
+        new_attributes
+      end
+
       def restore_multiloc_attribute(field_value, locales)
         return field_value if field_value.blank?
 
@@ -226,29 +208,6 @@ module MultiTenancy
         end
       end
 
-      # TODO: no longer necessary (part of ApplyService)
-      def resolve_template(template_name, external_subfolder: 'release')
-        if template_name.is_a? String
-          raise 'Unknown template' unless utils.available_templates(external_prefix: external_subfolder).include?(template_name)
-
-          internal_path = Rails.root.join('config/tenant_templates', "#{template_name}.yml")
-          if File.exist? internal_path
-            YAML.load open(internal_path).read
-          else
-            s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
-            bucket = s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'))
-            object = bucket.object("#{external_subfolder}/#{template_name}.yml")
-            YAML.load object.get.body.read
-          end
-        elsif template_name.is_a? Hash
-          template_name
-        elsif template_name.nil?
-          YAML.load open(Rails.root.join('config/tenant_templates/base.yml')).read
-        else
-          raise 'Could not resolve template'
-        end
-      end
-
       def save_model(model, validate)
         if validate
           model.save!
@@ -256,10 +215,6 @@ module MultiTenancy
           model.save # Might fail but runs before_validations
           model.save(validate: false)
         end
-      end
-
-      def utils
-        @utils = ::MultiTenancy::Templates::Utils.new
       end
     end
   end

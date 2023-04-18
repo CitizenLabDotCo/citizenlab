@@ -12,7 +12,7 @@ namespace :cl2back do
     Tenant.all.each do |tenant|
       tenant.switch do
         puts "Adding custom fields for tenant #{tenant.name}"
-        tenant_deserializer.resolve_and_apply_template(template)
+        tenant_deserializer.deserialize(template)
       end
     end
   end

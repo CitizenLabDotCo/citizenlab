@@ -5,37 +5,7 @@ require 'rails_helper'
 describe MultiTenancy::Templates::TenantDeserializer do
   let(:service) { described_class.new }
 
-  describe 'resolve_and_apply_template', template_test: true do
-    it 'raises an error if the requested template was not found' do
-      expect do
-        service.resolve_and_apply_template('a_tenant_template_name_that_doesnt_exist',
-          external_subfolder: 'test')
-      end.to raise_error('Unknown template')
-    end
-  end
-
-  describe 'resolve_and_apply_template' do
-    MultiTenancy::Templates::Utils.new.available_internal_templates.map do |template|
-      it "Successfully applies '#{template}' template" do
-        name = template.split('_').join
-
-        template_utils = MultiTenancy::Templates::Utils.new
-        locales = template_utils.required_locales(template, external_subfolder: 'test')
-        locales = ['en'] if locales.blank?
-
-        tenant = create(:tenant, name: name, host: "#{name}.localhost", locales: locales, lifecycle: 'active')
-        tenant.switch { service.resolve_and_apply_template template }
-      end
-    end
-
-    it 'raises an error if the requested template was not found' do
-      expect do
-        service.resolve_and_apply_template('a_tenant_template_name_that_doesnt_exist')
-      end.to raise_error('Unknown template')
-    end
-  end
-
-  describe 'apply_template' do
+  describe '#deserialize' do
     it 'associates refs correctly, when the target of the ref has exactly the same attributes' do
       yml = <<~YAML
         ---
