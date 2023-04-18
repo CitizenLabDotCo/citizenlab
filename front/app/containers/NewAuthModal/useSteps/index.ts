@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 
 // api
 import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
+import { invalidateAllActionDescriptors } from 'containers/NewAuthModal/useSteps/invalidateAllActionDescriptors';
 
 // hooks
 import useAnySSOEnabled from '../useAnySSOEnabled';
@@ -99,6 +100,10 @@ export default function useSteps() {
 
       const wrappedAction = ((...args) => {
         setError(null);
+        if (transition === 'CLOSE') {
+          invalidateAllActionDescriptors();
+        }
+
         // @ts-ignore
         action(...args);
       }) as StepConfig[S][T];
