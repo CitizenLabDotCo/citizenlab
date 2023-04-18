@@ -6,7 +6,7 @@ RSpec.describe EmailCampaigns::InviteReminderMailer, type: :mailer do
   describe 'InviteReminder' do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::InviteReminder.create! }
-    let_it_be(:token) { InvitesService.new.generate_token }
+    let_it_be(:token) { Invites::Service.new.generate_token }
     let_it_be(:inviter) { create(:admin) }
     let_it_be(:invite_text) { 'Would you like to join our awesome platform?' }
     let_it_be(:command) do

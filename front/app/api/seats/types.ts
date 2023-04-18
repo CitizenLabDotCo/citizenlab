@@ -3,7 +3,7 @@ import seatsKeys from './keys';
 
 export type SeatsKeys = Keys<typeof seatsKeys>;
 
-export interface SeatsType {
+export interface ISeats {
   data: {
     type: 'seats';
     attributes: {

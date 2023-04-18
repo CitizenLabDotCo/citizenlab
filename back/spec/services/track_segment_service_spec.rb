@@ -130,7 +130,7 @@ describe TrackSegmentService do
           isAdmin: true,
           isProjectModerator: false,
           highestRole: :admin,
-          timezone: 'Brussels'
+          timezone: 'Europe/Brussels'
         ),
         integrations: {
           All: true,

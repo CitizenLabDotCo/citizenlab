@@ -13,7 +13,7 @@ const fetchInitativeAllowedTransitions = ({ id }: { id: string }) =>
     action: 'get',
   });
 
-const useInitativeAllowedTransitions = (id: string) => {
+const useInitiativeAllowedTransitions = (id: string) => {
   return useQuery<
     IInitiativeAllowedTransitions,
     CLErrors,
@@ -25,4 +25,4 @@ const useInitativeAllowedTransitions = (id: string) => {
   });
 };
 
-export default useInitativeAllowedTransitions;
+export default useInitiativeAllowedTransitions;

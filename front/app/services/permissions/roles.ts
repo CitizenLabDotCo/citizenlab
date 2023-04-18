@@ -38,6 +38,16 @@ export const isAdmin = (user?: IUser | null | undefined | Error) => {
   return false;
 };
 
+export const isModerator = (user?: IUser | null | undefined | Error) => {
+  if (!isNilOrError(user)) {
+    return ['project_moderator', 'project_folder_moderator'].includes(
+      user.data.attributes.highest_role
+    );
+  }
+
+  return false;
+};
+
 /*
   A super admin is an admin with @citizenlab.co email address.
   In the frontend, it doesn't have a significant meaning at the time of writing (18/1/'21).
@@ -53,10 +63,10 @@ export const isSuperAdmin = (user?: IUser | null | Error) => {
   return false;
 };
 
-export const isModerator = (user?: IUser | null) => {
+export const isRegularUser = (user?: IUser | null) => {
   if (!isNilOrError(user)) {
     // Every user with a role higher than "user" can be considered a moderator
-    return user.data.attributes?.highest_role !== 'user';
+    return user.data.attributes?.highest_role === 'user';
   }
   return false;
 };

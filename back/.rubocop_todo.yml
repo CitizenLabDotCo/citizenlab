@@ -45,11 +45,6 @@ Lint/HashCompareByIdentity:
   Exclude:
     - 'engines/commercial/multi_tenancy/app/services/multi_tenancy/tenant_template_service.rb'
 
-# Offense count: 2
-Lint/MissingSuper:
-  Exclude:
-    - 'app/services/invites_service.rb'
-
 # Offense count: 3
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Lint/OrAssignmentToConstant:
@@ -87,6 +82,8 @@ Metrics/BlockNesting:
 Metrics/ClassLength:
   Max: 405
   CountAsOne: ['array', 'hash', 'heredoc']
+  Exclude:
+    - 'app/models/user.rb'
 
 # Offense count: 89
 # Configuration parameters: AllowedMethods, AllowedPatterns, IgnoredMethods.
@@ -452,7 +449,6 @@ Style/MultilineBlockChain:
     - 'app/models/notifications/threshold_reached_for_admin.rb'
     - 'app/services/cl2_data_listing_service.rb'
     - 'app/services/custom_field_service.rb'
-    - 'app/services/invites_service.rb'
     - 'app/services/profanity_service.rb'
     - 'app/services/user_reduce_service.rb'
     - 'engines/commercial/flag_inappropriate_content/app/services/flag_inappropriate_content/toxicity_detection_service.rb'

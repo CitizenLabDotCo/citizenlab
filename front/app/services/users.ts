@@ -23,6 +23,10 @@ export interface IUserAttributes {
     | 'project_moderator'
     | 'user';
   bio_multiloc: Multiloc;
+  block_end_at?: string;
+  block_reason?: string;
+  block_start_at?: string;
+  blocked?: boolean;
   registration_completed_at: string | null;
   created_at: string;
   updated_at: string;
@@ -109,7 +113,11 @@ export async function updateUser(userId: string, object: IUserUpdate) {
 
   await streams.fetchAllWith({
     dataId: [userId],
-    apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`],
+    apiEndpoint: [
+      `${API_PATH}/groups`,
+      `${API_PATH}/users`,
+      `${API_PATH}/stats/users_count`,
+    ],
   });
 
   // Invalidate seats if the user's roles have changed

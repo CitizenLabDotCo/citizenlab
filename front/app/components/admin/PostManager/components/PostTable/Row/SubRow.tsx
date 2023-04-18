@@ -15,7 +15,7 @@ import { colors } from 'utils/styleUtils';
 import { TFilterMenu } from '../../..';
 import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { GetInitiativeAllowedTransitionsChildProps } from 'resources/GetInitiativeAllowedTransitions';
 
 interface Props {

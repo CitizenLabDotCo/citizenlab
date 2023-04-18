@@ -231,3 +231,11 @@
       copy_paste_the_link_below: "Kopier koden nedenfor og lim den inn i ditt registreringsskjema."
       the_link_is_valid_for: "Denne lenken er gyldig i 24 timer. Hvis lenken er utløpt, kan du <a href=\"%{link}\">be om en ny kode</a>."
       did_you_receive_this_email_in_error: "Mottok du denne e-posten ved en feil? <a href=\"%{link}\">La oss få vite det</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Kontoen din er midlertidig deaktivert'
+      title_user_blocked: 'Kontoen din er midlertidig deaktivert'
+      paragraph_1_without_reason: "Kontoen din på deltakelsesplattformen til %{organizationName} har blitt midlertidig deaktivert på grunn av brudd på fellesskapets retningslinjer."
+      paragraph_1_with_reason: "Kontoen din på deltakelsesplattformen til %{organizationName} har blitt midlertidig deaktivert av følgende grunn:"
+      for_more_information: "For mer informasjon om dette, kan du konsultere %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "Du kan logge på igjen fra %{date}"

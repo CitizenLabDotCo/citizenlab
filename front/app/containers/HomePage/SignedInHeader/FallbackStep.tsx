@@ -78,7 +78,7 @@ const FallbackStep = ({ currentOnboardingCampaignName }: Props) => {
             )}
           </Left>
           <Right>
-            <CTA signedIn buttonStyle="primary-inverse" />
+            <CTA buttonStyle="primary-inverse" />
           </Right>
         </HeaderContent>
       </OnboardingStep>

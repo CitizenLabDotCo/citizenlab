@@ -58,6 +58,11 @@ const LinkedProjectContainer = styled(Box)<{ disabled: boolean }>`
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 `;
 
+const SelectContainer = styled(Box)`
+  position: relative;
+  z-index: 2;
+`;
+
 export interface FormValues {
   title_multiloc: Multiloc;
   nav_bar_item_title_multiloc?: Multiloc;
@@ -294,22 +299,22 @@ const CustomPageSettingsForm = ({
                         />
                       </Box>
                       {methods.watch('projects_filter_type') === 'topics' && (
-                        <Box mb="30px">
+                        <SelectContainer mb="30px">
                           <MultipleSelect
                             name="topic_ids"
                             options={mapFilterEntityToOptions(topics)}
                             label={formatMessage(messages.selectedTagsLabel)}
                           />
-                        </Box>
+                        </SelectContainer>
                       )}
                       {methods.watch('projects_filter_type') === 'areas' && (
-                        <Box mb="20px">
+                        <SelectContainer mb="20px">
                           <Select
                             name="area_id"
                             options={mapFilterEntityToOptions(areas)}
                             label={formatMessage(messages.selectedAreasLabel)}
                           />
-                        </Box>
+                        </SelectContainer>
                       )}
                     </Box>
                   </div>

@@ -7,8 +7,6 @@ import {
 } from 'components/LandingPages/citizen/HeaderContent';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
 import BannerButton from 'components/LandingPages/citizen/BannerButton';
 import { ICustomPageAttributes } from 'services/customPages';
 
@@ -24,16 +22,13 @@ const HeaderContent = ({
   fontColors,
   hasHeaderBannerImage,
   pageAttributes,
-}: Props & WrappedComponentProps) => {
+}: Props) => {
   const localize = useLocalize();
 
-  const formattedHeaderTitle = pageAttributes.banner_header_multiloc
-    ? localize(pageAttributes.banner_header_multiloc)
-    : 'Placeholder: no header multiloc';
-
-  const formattedSubheaderTitle = pageAttributes.banner_subheader_multiloc
-    ? localize(pageAttributes.banner_subheader_multiloc)
-    : 'Placeholder: no subheader multiloc';
+  const formattedHeaderTitle = localize(pageAttributes.banner_header_multiloc);
+  const formattedSubheaderTitle = localize(
+    pageAttributes.banner_subheader_multiloc
+  );
 
   return (
     <Container
@@ -71,4 +66,4 @@ const HeaderContent = ({
   );
 };
 
-export default injectIntl(HeaderContent);
+export default HeaderContent;

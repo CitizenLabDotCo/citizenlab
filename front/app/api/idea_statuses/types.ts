@@ -15,7 +15,7 @@ export const ideaStatusCodes = [
   'custom',
 ] as const;
 
-export type TIdeaStatusCode = typeof ideaStatusCodes[number];
+export type TIdeaStatusCode = (typeof ideaStatusCodes)[number];
 
 export interface IIdeaStatusData {
   id: string;

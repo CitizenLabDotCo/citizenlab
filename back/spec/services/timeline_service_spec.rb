@@ -40,12 +40,12 @@ describe TimelineService do
       t = Time.new(2019, 9, 9, 23) # 11 pm utc = 1 am Brussels == 8pm Santiage
 
       settings = AppConfiguration.instance.settings
-      settings['core']['timezone'] = 'Brussels'
+      settings['core']['timezone'] = 'Europe/Brussels'
       AppConfiguration.instance.update!(settings: settings)
       expect(service.current_phase(project, t)&.id).to be_nil
 
       settings = AppConfiguration.instance.settings
-      settings['core']['timezone'] = 'Santiago'
+      settings['core']['timezone'] = 'America/Santiago'
       AppConfiguration.instance.update!(settings: settings)
       expect(service.current_phase(project, t)&.id).to eq phase.id
     end
@@ -102,12 +102,12 @@ describe TimelineService do
       t = Time.new(2019, 9, 9, 23) # 11 pm utc = 1 am Brussels == 8pm Santiage
 
       settings = AppConfiguration.instance.settings
-      settings['core']['timezone'] = 'Brussels'
+      settings['core']['timezone'] = 'Europe/Brussels'
       AppConfiguration.instance.update!(settings: settings)
       expect(service.current_and_future_phases(project, t)).to eq []
 
       settings = AppConfiguration.instance.settings
-      settings['core']['timezone'] = 'Santiago'
+      settings['core']['timezone'] = 'America/Santiago'
       AppConfiguration.instance.update!(settings: settings)
       expect(service.current_and_future_phases(project, t)).to eq [phase]
     end
@@ -154,12 +154,12 @@ describe TimelineService do
 
       travel_to Time.new(2019, 9, 9, 23) do # 11 pm utc = 1 am Brussels == 8pm Santiage
         settings = AppConfiguration.instance.settings
-        settings['core']['timezone'] = 'Brussels'
+        settings['core']['timezone'] = 'Europe/Brussels'
         AppConfiguration.instance.update!(settings: settings)
         expect(service.timeline_active(project)).to eq :past
 
         settings = AppConfiguration.instance.settings
-        settings['core']['timezone'] = 'Santiago'
+        settings['core']['timezone'] = 'America/Santiago'
         AppConfiguration.instance.update!(settings: settings)
         expect(service.timeline_active(project)).to eq :present
       end

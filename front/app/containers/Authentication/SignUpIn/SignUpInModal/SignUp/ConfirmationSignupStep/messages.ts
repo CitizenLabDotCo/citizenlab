@@ -34,11 +34,6 @@ export default defineMessages({
     id: 'app.components.ConfirmationModal.sendNewCode',
     defaultMessage: 'Send New Code.',
   },
-  pleaseInsertYourNewEmail: {
-    id: 'app.components.ConfirmationModal.pleaseInsertYourNewEmail',
-    defaultMessage:
-      "Please insert your new email. We'll send a new confirmation code to this address.",
-  },
   sendEmailWithCode: {
     id: 'app.components.ConfirmationModal.sendEmailWithCode',
     defaultMessage: 'Send Email with Code',

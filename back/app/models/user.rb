@@ -30,6 +30,7 @@
 #  confirmation_required               :boolean          default(TRUE), not null
 #  block_start_at                      :datetime
 #  block_reason                        :string
+#  block_end_at                        :datetime
 #
 # Indexes
 #
@@ -49,6 +50,7 @@ class User < ApplicationRecord
   INVITE_STATUSES = %w[pending accepted].freeze
   ROLES = %w[admin project_moderator project_folder_moderator].freeze
   CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlab.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
+  EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
 
   class << self
     # Deletes all users asynchronously (with side effects).
@@ -153,7 +155,7 @@ class User < ApplicationRecord
   validates :email, :locale, presence: true, unless: :invite_pending?
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
-  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_nil: true
+  validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
   validates :bio_multiloc, multiloc: { presence: false, html: true }
   validates :gender, inclusion: { in: GENDERS }, allow_nil: true
@@ -218,7 +220,16 @@ class User < ApplicationRecord
       where("roles @> '[{\"type\":\"project_moderator\"}]'")
     end
   }
-  scope :not_project_moderator, -> { where.not(id: project_moderator) }
+  scope :not_project_moderator, lambda { |project_id = nil|
+    return where.not(id: project_moderator) if project_id.nil?
+
+    project = Project.find(project_id)
+    if project.folder
+      where.not(id: project_moderator(project_id)).and(where(id: not_project_folder_moderator(project.folder.id)))
+    else
+      where.not(id: project_moderator(project_id))
+    end
+  }
   scope :project_folder_moderator, lambda { |*project_folder_ids|
     return where("roles @> '[{\"type\":\"project_folder_moderator\"}]'") if project_folder_ids.empty?
 
@@ -232,14 +243,12 @@ class User < ApplicationRecord
   scope :not_project_folder_moderator, lambda { |*project_folder_ids|
     where.not(id: project_folder_moderator(*project_folder_ids))
   }
-  scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
-  scope :active, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
 
-  scope :blocked, lambda {
-    where.not(block_start_at: nil)
-      .and(where(block_start_at: (
-        AppConfiguration.instance.settings('user_blocking', 'duration').days.ago..Time.zone.now)))
-  }
+  scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
+  scope :registered, -> { where.not(registration_completed_at: nil) }
+  scope :blocked, -> { where('? < block_end_at', Time.zone.now) }
+  scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
+  scope :active, -> { registered.not_blocked }
 
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
@@ -407,18 +416,16 @@ class User < ApplicationRecord
     !memberships.select { |m| m.group_id == group_id }.empty?
   end
 
-  def active?
-    registration_completed_at.present? && !invite_pending? && !blocked? && !confirmation_required?
-  end
-
   def blocked?
-    block_start_at.present? && block_start_at.between?(block_duration.days.ago, Time.zone.now)
+    block_end_at.present? && block_end_at > Time.zone.now
   end
 
-  def block_end_at
-    return nil unless blocked?
+  def registered?
+    registration_completed_at.present?
+  end
 
-    block_start_at + block_duration.days
+  def active?
+    registered? && !blocked? && !confirmation_required?
   end
 
   def groups
@@ -501,9 +508,9 @@ class User < ApplicationRecord
 
   # NOTE: registration_completed_at_changed? added to allow tests to change this date manually
   def complete_registration
-    return if confirmation_required? || invited? || registration_completed_at_changed?
+    return if confirmation_required? || invite_pending? || registration_completed_at_changed?
 
-    self.registration_completed_at = Time.now if registration_completed_at.nil?
+    self.registration_completed_at ||= Time.now
   end
 
   def generate_slug
@@ -586,10 +593,6 @@ class User < ApplicationRecord
 
   def use_fake_code?
     Rails.env.development?
-  end
-
-  def block_duration
-    AppConfiguration.instance.settings('user_blocking', 'duration')
   end
 end
 

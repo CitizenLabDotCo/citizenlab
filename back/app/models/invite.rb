@@ -58,7 +58,7 @@ class Invite < ApplicationRecord
   end
 
   def generate_token
-    self.token ||= InvitesService.new.generate_token
+    self.token ||= Invites::Service.new.generate_token
   end
 
   def sanitize_invite_text

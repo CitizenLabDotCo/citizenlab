@@ -231,3 +231,11 @@ it:
       copy_paste_the_link_below: "Copia e incolla il codice qui sotto nel tuo modulo di registrazione."
       the_link_is_valid_for: "Questo link è valido per 24 ore. Se il link è scaduto, puoi <a href=\"%{link}\">richiedere un nuovo codice</a>."
       did_you_receive_this_email_in_error: "Hai ricevuto questa e-mail per errore? <a href=\"%{link}\">Facci sapere</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Il suo account è stato temporaneamente disabilitato'
+      title_user_blocked: 'Il suo account è stato temporaneamente disabilitato'
+      paragraph_1_without_reason: "Il tuo account sulla piattaforma di partecipazione %{organizationName} è stato temporaneamente disabilitato per una violazione delle linee guida della comunità."
+      paragraph_1_with_reason: "Il vostro account sulla piattaforma di partecipazione di %{organizationName} è stato temporaneamente disabilitato per il seguente motivo:"
+      for_more_information: "Per ulteriori informazioni, è possibile consultare il sito %{termsAndConditionsPage}."
+      you_can_sign_in_again_from: "È possibile accedere nuovamente a %{date}"
