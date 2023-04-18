@@ -28,7 +28,6 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Εγγραφή με τηλέφωνο ή email",
   "app.components.Author.a11y_postedBy": "Δημοσιεύτηκε από:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} συμμετέχοντες",
-  "app.components.BillingWarning.billingWarning": "Μόλις προστεθούν επιπλέον θέσεις, η χρέωσή σας θα αυξηθεί. Επικοινωνήστε με τον διαχειριστή της GovSuccess για να μάθετε περισσότερα σχετικά.",
   "app.components.CityLogoSection.iframeTitle": "Περισσότερες πληροφορίες σχετικά με το {orgName}",
   "app.components.Comments.cancel": "Ακύρωση",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Ο σχολιασμός δεν είναι δυνατός στην τρέχουσα φάση.",
