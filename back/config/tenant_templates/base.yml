@@ -272,6 +272,7 @@ models:
       voting_enabled: true
       upvoting_method: unlimited
       remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
+      admin_publication_attributes: {}
   project_image:
     - remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/brainstorming_graphic.png
       project_ref: *open_idea_project
