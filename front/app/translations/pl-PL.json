@@ -28,6 +28,7 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Zarejestruj się przez telefon lub e-mail",
   "app.components.Author.a11y_postedBy": "Przysłane przez:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} użytkowników",
+  "app.components.BillingWarning.billingWarning": "Po dodaniu dodatkowych miejsc, Twoje rozliczenie zostanie zwiększone. Skontaktuj się ze swoim menedżerem GovSuccess, aby dowiedzieć się więcej na ten temat.",
   "app.components.CityLogoSection.iframeTitle": "Więcej informacji na temat {orgName}",
   "app.components.Comments.cancel": "Anuluj",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Komentowanie nie jest możliwe na obecnym etapie.",
