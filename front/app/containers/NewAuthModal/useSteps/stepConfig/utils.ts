@@ -28,13 +28,13 @@ export const requiredCustomFields = (
 };
 
 export const requiredBuiltInFields = (
-  builtInFieldRequirements: AuthenticationRequirements['requirements']['built_in']
+  requirements: AuthenticationRequirements['requirements']
 ) => {
-  for (const fieldName in builtInFieldRequirements) {
-    if (builtInFieldRequirements[fieldName] === 'require') {
-      return true;
-    }
-  }
+  const builtIn = requirements.built_in;
 
-  return false;
+  const askFirstName = builtIn.first_name === 'require';
+  const askLastName = builtIn.last_name === 'require';
+  const askPassword = requirements.special.password === 'require';
+
+  return askFirstName || askLastName || askPassword;
 };

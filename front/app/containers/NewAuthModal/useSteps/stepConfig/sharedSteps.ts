@@ -66,7 +66,7 @@ export const sharedSteps = (
             return;
           }
 
-          if (requiredBuiltInFields(requirements.built_in)) {
+          if (requiredBuiltInFields(requirements)) {
             setCurrentStep('missing-data:built-in');
             return;
           }
