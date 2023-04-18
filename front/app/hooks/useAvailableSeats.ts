@@ -9,11 +9,12 @@ export const useAvailableSeats = () => {
   const core = appConfiguration.data.attributes.settings.core;
 
   return {
-    availableAdminSeats:
-      core.maximum_admins_number &&
-      core.maximum_admins_number + (core.additional_admins_number ?? 0),
-    availableModeratorSeats:
-      core.maximum_moderators_number &&
-      core.maximum_moderators_number + (core.additional_moderators_number ?? 0),
+    availableAdminSeats: isNil(core.maximum_admins_number)
+      ? null
+      : core.maximum_admins_number + (core.additional_admins_number ?? 0),
+    availableModeratorSeats: isNil(core.maximum_moderators_number)
+      ? null
+      : core.maximum_moderators_number +
+        (core.additional_moderators_number ?? 0),
   };
 };
