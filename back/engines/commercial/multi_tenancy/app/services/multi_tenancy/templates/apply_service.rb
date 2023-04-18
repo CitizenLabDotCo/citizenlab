@@ -41,19 +41,6 @@ module MultiTenancy
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template_models)
       end
 
-      def copy_s3_files(template_prefix, tenant_id, model_id_mapping, num_threads: 20)
-        uploads_prefix = "#{template_prefix}/uploads/"
-
-        s3_utils.copy_objects(
-          template_bucket, tenant_bucket, uploads_prefix,
-          copy_args: { acl: 'public-read' },
-          num_threads: num_threads
-        ) do |key|
-          key = key.delete_prefix(uploads_prefix)
-          transform_key(key, tenant_id, model_id_mapping)
-        end
-      end
-
       def tenant_bucket
         @tenant_bucket ||= raise ArgumentError, 'tenant_bucket parameter has not been specified'
       end
@@ -74,6 +61,19 @@ module MultiTenancy
           template_bucket: @template_bucket,
           s3_client: @s3_client
         )
+      end
+
+      def copy_s3_files(template_prefix, tenant_id, model_id_mapping, num_threads: 20)
+        uploads_prefix = "#{template_prefix}/uploads/"
+
+        s3_utils.copy_objects(
+          template_bucket, tenant_bucket, uploads_prefix,
+          copy_args: { acl: 'public-read' },
+          num_threads: num_threads
+        ) do |key|
+          key = key.delete_prefix(uploads_prefix)
+          transform_key(key, tenant_id, model_id_mapping)
+        end
       end
 
       def transform_key(key, tenant_id, model_id_mapping)
