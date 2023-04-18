@@ -50,7 +50,7 @@ class PermissionsService
 
   def requirements(permission, user)
     requirements = base_requirements permission
-    mark_satisfied_requirements! requirements, user if user
+    mark_satisfied_requirements! requirements, permission, user if user
     ignore_password_for_sso! requirements, user if user
     permitted = requirements.values.none? do |subrequirements|
       subrequirements.value? 'require'
@@ -146,40 +146,36 @@ class PermissionsService
       custom_fields: requirements_fields(permission).to_h { |field| [field.key, (field.required ? 'require' : 'dont_ask')] },
       special: {
         password: 'dont_ask',
-        confirmation: 'dont_ask'
+        confirmation: 'dont_ask',
+        verification: 'dont_ask'
       }
     }
+
+    everyone_confirmed_email = everyone.deep_dup.tap do |requirements|
+      requirements[:built_in][:email] = 'require'
+      requirements[:special][:confirmation] = 'require'
+    end
+
+    users = everyone.deep_dup.tap do |requirements|
+      requirements[:built_in][:first_name] = 'require'
+      requirements[:built_in][:last_name] = 'require'
+      requirements[:built_in][:email] = 'require'
+      requirements[:custom_fields].transform_values! { |requirement| requirement == 'dont_ask' ? 'ask' : requirement }
+      requirements[:special][:password] = 'require'
+      requirements[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
+    end
+
     case permission.permitted_by
     when 'everyone'
       everyone
     when 'everyone_confirmed_email'
-      everyone.deep_dup.tap do |everyone_confirmed_email|
-        everyone_confirmed_email[:built_in][:email] = 'require'
-        everyone_confirmed_email[:special][:confirmation] = 'require'
-      end
-    when 'users'
-      everyone.deep_dup.tap do |users|
-        users[:built_in][:first_name] = 'require'
-        users[:built_in][:last_name] = 'require'
-        users[:built_in][:email] = 'require'
-        users[:custom_fields].transform_values! { |requirement| requirement == 'dont_ask' ? 'ask' : requirement }
-        users[:special][:password] = 'require'
-        users[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
-      end
-    when 'groups'
-      everyone.deep_dup.tap do |groups|
-        groups[:built_in][:email] = 'require'
-        groups[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
-      end
-    when 'admins_moderators'
-      everyone.deep_dup.tap do |admins|
-        admins[:built_in][:email] = 'require'
-        admins[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
-      end
+      everyone_confirmed_email
+    else # users | groups | admins_moderators'
+      users
     end
   end
 
-  def mark_satisfied_requirements!(requirements, user)
+  def mark_satisfied_requirements!(requirements, _permission, user)
     return requirements if !user
 
     requirements[:built_in]&.each_key do |attribute|
