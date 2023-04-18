@@ -26,7 +26,7 @@ module UserCustomFields
           project_ids = object.permissions.filter_map { |p| p.permission_scope_id if p.permission_scope_type == 'Project' }
           phase_ids = object.permissions.filter_map { |p| p.permission_scope_id if p.permission_scope_type == 'Phase' }
           if phase_ids.present?
-            project_ids += Phase.find(phase_ids).map(&:project_id)
+            project_ids += Phase.find(phase_ids).pluck(:project_id)
           end
           Project.find(project_ids) if project_ids.present?
         end
