@@ -40,18 +40,18 @@ module Aws
           key = object.key
           destination_key = yield key
 
-          if destination_key
-            copy_source = "#{from_bucket}/#{key}"
+          next unless destination_key
 
-            @s3_client.copy_object(
-              bucket: to_bucket,
-              copy_source: copy_source,
-              key: destination_key,
-              **copy_args
-            )
+          copy_source = "#{from_bucket}/#{key}"
 
-            [key, destination_key]
-          end
+          @s3_client.copy_object(
+            bucket: to_bucket,
+            copy_source: copy_source,
+            key: destination_key,
+            **copy_args
+          )
+
+          [key, destination_key]
         end.compact.to_h
       end
 
