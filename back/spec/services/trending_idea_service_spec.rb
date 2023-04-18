@@ -91,11 +91,4 @@ describe TrendingIdeaService do
       end
     end
   end
-
-  def generate_survey_response_ideas
-    IdeaStatus.create_defaults
-    create(:idea, project: create(:continuous_native_survey_project))
-    project = create(:project_with_active_native_survey_phase)
-    create(:idea, project: project, creation_phase: project.phases[0])
-  end
 end
