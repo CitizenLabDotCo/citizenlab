@@ -7,15 +7,12 @@ import { string, object } from 'yup';
 
 // typings
 import { FormatMessage } from 'typings';
-import { IUserData } from 'services/users';
 
-export const getDefaultValues = (authUser: IUserData) => {
-  return {
-    first_name: authUser.attributes.first_name ?? undefined,
-    last_name: authUser.attributes.last_name ?? undefined,
-    password: undefined,
-  };
-};
+export const DEFAULT_VALUES = {
+  first_name: undefined,
+  last_name: undefined,
+  password: undefined,
+} as const;
 
 export const getSchema = (
   minimumPasswordLength: number,

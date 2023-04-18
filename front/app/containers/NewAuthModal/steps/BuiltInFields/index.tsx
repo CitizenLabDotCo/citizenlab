@@ -17,7 +17,7 @@ import sharedMessages from '../messages';
 // form
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { getDefaultValues, getSchema } from './form';
+import { DEFAULT_VALUES, getSchema } from './form';
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
 
@@ -34,21 +34,17 @@ import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 // typings
 import { BuiltInFieldsUpdate } from '../../useSteps/stepConfig/typings';
 import { Status } from 'containers/NewAuthModal/typings';
-import { IUserData } from 'services/users';
 
-interface BaseProps {
+interface Props {
   status: Status;
   onSubmit: (userId: string, update: BuiltInFieldsUpdate) => void;
 }
 
-interface Props extends BaseProps {
-  authUser: IUserData;
-}
-
-const BuiltInFields = ({ status, authUser, onSubmit }: Props) => {
+const BuiltInFields = ({ status, onSubmit }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const locale = useLocale();
   const { formatMessage } = useIntl();
+  const authUser = useAuthUser();
 
   const loading = status === 'pending';
   const appConfigSettings = appConfiguration?.data.attributes.settings;
@@ -60,7 +56,7 @@ const BuiltInFields = ({ status, authUser, onSubmit }: Props) => {
 
   const methods = useForm({
     mode: 'onSubmit',
-    defaultValues: getDefaultValues(authUser),
+    defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
   });
 
@@ -68,7 +64,7 @@ const BuiltInFields = ({ status, authUser, onSubmit }: Props) => {
     trackEventByName(tracks.signUpEmailPasswordStepEntered);
   }, []);
 
-  if (isNilOrError(locale)) return null;
+  if (isNilOrError(locale) || isNilOrError(authUser)) return null;
 
   const handleSubmit = ({
     first_name,
@@ -132,11 +128,4 @@ const BuiltInFields = ({ status, authUser, onSubmit }: Props) => {
   );
 };
 
-const BuiltInFieldsWrapper = (props: BaseProps) => {
-  const authUser = useAuthUser();
-  if (isNilOrError(authUser)) return null;
-
-  return <BuiltInFields {...props} authUser={authUser} />;
-};
-
-export default BuiltInFieldsWrapper;
+export default BuiltInFields;
