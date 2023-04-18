@@ -26,3 +26,15 @@ export const requiredCustomFields = (
 
   return false;
 };
+
+export const requiredBuiltInFields = (
+  builtInFieldRequirements: AuthenticationRequirements['requirements']['built_in']
+) => {
+  for (const fieldName in builtInFieldRequirements) {
+    if (builtInFieldRequirements[fieldName] === 'required') {
+      return true;
+    }
+  }
+
+  return false;
+};

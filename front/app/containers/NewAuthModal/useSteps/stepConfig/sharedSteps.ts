@@ -12,7 +12,7 @@ import { trackEventByName } from 'utils/analytics';
 import { triggerSuccessAction } from 'containers/NewAuthModal/SuccessActions';
 
 // utils
-import { askCustomFields, requiredCustomFields } from './utils';
+import { requiredCustomFields, requiredBuiltInFields } from './utils';
 
 // typings
 import {
@@ -70,57 +70,42 @@ export const sharedSteps = (
           return;
         }
 
-        const { flow } = getAuthenticationData();
-
-        if (flow === 'signin') {
-          if (signedIn) {
-            if (requirements.special.confirmation === 'require') {
-              setCurrentStep('sign-in:email-confirmation');
-              return;
-            }
-
-            if (requirements.special.verification === 'require') {
-              setCurrentStep('sign-in:verification');
-              return;
-            }
-
-            if (requiredCustomFields(requirements.custom_fields)) {
-              setCurrentStep('sign-in:custom-fields');
-              return;
-            }
-          } else {
-            anySSOEnabled
-              ? setCurrentStep('sign-in:auth-providers')
-              : setCurrentStep('sign-in:email-password');
+        if (signedIn) {
+          if (requiredBuiltInFields(requirements.built_in)) {
+            setCurrentStep('missing-data:built-in');
             return;
           }
 
+          if (requirements.special.confirmation === 'require') {
+            setCurrentStep('missing-data:email-confirmation');
+            return;
+          }
+
+          if (requirements.special.verification === 'require') {
+            setCurrentStep('missing-data:verification');
+            return;
+          }
+
+          if (requiredCustomFields(requirements.custom_fields)) {
+            setCurrentStep('missing-data:custom-fields');
+            return;
+          }
+        }
+
+        const { flow } = getAuthenticationData();
+
+        if (flow === 'signin') {
+          anySSOEnabled
+            ? setCurrentStep('sign-in:auth-providers')
+            : setCurrentStep('sign-in:email-password');
           return;
         }
 
         if (flow === 'signup') {
-          if (signedIn) {
-            if (requirements.special.confirmation === 'require') {
-              setCurrentStep('sign-up:email-confirmation');
-              return;
-            }
-
-            if (requirements.special.verification === 'require') {
-              setCurrentStep('sign-up:verification');
-              return;
-            }
-
-            if (askCustomFields(requirements.custom_fields)) {
-              setCurrentStep('sign-up:custom-fields');
-              return;
-            }
-          } else {
-            if (anySSOEnabled) {
-              setCurrentStep('sign-up:auth-providers');
-            } else {
-              setCurrentStep('sign-up:email-password');
-            }
-          }
+          anySSOEnabled
+            ? setCurrentStep('sign-up:auth-providers')
+            : setCurrentStep('sign-up:email-password');
+          return;
         }
       },
 

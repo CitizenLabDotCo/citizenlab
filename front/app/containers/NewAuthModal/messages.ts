@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.components.VerificationModal.verifyYourIdentity',
     defaultMessage: 'Verify your identity',
   },
+  completeYourProfile: {
+    id: 'app.containers.NewAuthModal.completeYourProfile',
+    defaultMessage: 'Complete your profile',
+  },
 });

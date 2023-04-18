@@ -29,6 +29,19 @@ export type Step =
   | 'light-flow:email-confirmation'
   | 'light-flow:password'
 
+  // missing data (if signed in already)
+  | 'missing-data:built-in'
+  | 'missing-data:email-confirmation'
+  | 'missing-data:change-email'
+  | 'missing-data:verification'
+  | 'missing-data:custom-fields'
+
   // verification only (for onboarding and re-verification)
   | 'verification-only'
   | 'verification-success';
+
+export interface BuiltInFieldsUpdate {
+  first_name?: string;
+  last_name?: string;
+  password?: string;
+}

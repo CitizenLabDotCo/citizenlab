@@ -68,6 +68,13 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'light-flow:email-confirmation': messages.confirmYourEmail,
   'light-flow:password': messages.logIn,
 
+  // missing data flow
+  'missing-data:built-in': messages.completeYourProfile,
+  'missing-data:email-confirmation': messages.confirmYourEmail,
+  'missing-data:change-email': messages.confirmYourEmail,
+  'missing-data:verification': messages.verifyYourIdentity,
+  'missing-data:custom-fields': messages.completeYourProfile,
+
   // verification only
   'verification-only': messages.verifyYourIdentity,
   'verification-success': null,

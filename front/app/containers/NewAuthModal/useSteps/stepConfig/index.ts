@@ -3,6 +3,7 @@ import { sharedSteps } from './sharedSteps';
 import { oldSignInFlow } from './oldSignInFlow';
 import { oldSignUpFlow } from './oldSignUpFlow';
 import { newLightFlow } from './newLightFlow';
+import { missingDataFlow } from './missingDataFlow';
 
 // typings
 import {
@@ -59,6 +60,8 @@ export const getStepConfig = (
       setError,
       updateState
     ),
+
+    ...missingDataFlow(getRequirements, setCurrentStep, setStatus, setError),
 
     'verification-only': {
       CLOSE: () => setCurrentStep('closed'),
