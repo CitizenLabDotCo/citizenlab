@@ -132,9 +132,7 @@ const InviteUsersWithSeatsModal = ({
             <SeatInfo seatType={seatType} />
           </Box>
 
-          <Box mb="24px">
-            <BillingWarning />
-          </Box>
+          <BillingWarning mb="24px" />
 
           <Checkbox
             mb="24px"
