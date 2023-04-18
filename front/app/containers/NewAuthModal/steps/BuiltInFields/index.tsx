@@ -6,11 +6,12 @@ import useLocale from 'hooks/useLocale';
 import useAuthUser from 'hooks/useAuthUser';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 import sharedMessages from '../messages';
 
 // form
@@ -85,6 +86,9 @@ const BuiltInFields = ({ status, authUser, onSubmit }: Props) => {
     <Box id="e2e-sign-in-email-password-container">
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
+          <Text mt="0px" mb="32px">
+            {formatMessage(messages.youNeedToCompleteYourProfile)}
+          </Text>
           <Box id="e2e-firstName-container">
             <Input
               name="first_name"

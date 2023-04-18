@@ -31,7 +31,7 @@ export const requiredBuiltInFields = (
   builtInFieldRequirements: AuthenticationRequirements['requirements']['built_in']
 ) => {
   for (const fieldName in builtInFieldRequirements) {
-    if (builtInFieldRequirements[fieldName] === 'required') {
+    if (builtInFieldRequirements[fieldName] === 'require') {
       return true;
     }
   }
