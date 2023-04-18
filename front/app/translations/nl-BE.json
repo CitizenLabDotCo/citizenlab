@@ -28,6 +28,7 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Aanmelden met telefoon of e-mail",
   "app.components.Author.a11y_postedBy": "Geplaatst door:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} gebruikers",
+  "app.components.BillingWarning.billingWarning": "Zodra er extra accounts worden toegevoegd, wordt jullie factuur verhoogd. Neem contact op met je Government Success Manager voor meer informatie.",
   "app.components.CityLogoSection.iframeTitle": "Meer informatie over {orgName}",
   "app.components.Comments.cancel": "Annuleer",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Reageren is in de huidige fase niet mogelijk.",
