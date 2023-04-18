@@ -18,7 +18,7 @@ import Button from 'components/UI/Button';
 const AddModeratorsModal = lazy(
   () => import('components/admin/AddModeratorsModal')
 );
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Label } from '@citizenlab/cl2-component-library';
 import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
 
 // Style
@@ -35,9 +35,10 @@ const AddButton = styled(Button)`
 
 interface Props {
   projectId: string;
+  label?: JSX.Element | string;
 }
 
-const UserSearch = memo(({ projectId }: Props) => {
+const UserSearch = memo(({ projectId, label }: Props) => {
   const { formatMessage } = useIntl();
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
@@ -102,6 +103,11 @@ const UserSearch = memo(({ projectId }: Props) => {
 
   return (
     <Box width="100%">
+      {label && (
+        <Box mb="0px">
+          <Label htmlFor={'projectModeratorUserSearch'}>{label}</Label>
+        </Box>
+      )}
       <Box display="flex" alignItems="center" mb="24px">
         <Box width="500px">
           <UserSelect

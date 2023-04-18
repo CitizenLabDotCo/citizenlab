@@ -6,7 +6,12 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import { IconTooltip, Box, Title } from '@citizenlab/cl2-component-library';
+import {
+  IconTooltip,
+  Box,
+  Title,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import ModeratorList from '../../components/ModeratorList';
 import UserSearch from '../../components/UserSearch';
 import SeatInfo from 'components/SeatInfo';
@@ -62,7 +67,19 @@ const ProjectManagement = ({ projectId }: Props) => {
           }
         />
       </Box>
-      <UserSearch projectId={projectId} />
+      <UserSearch
+        projectId={projectId}
+        label={
+          <Text
+            color="primary"
+            p="0px"
+            mb="0px"
+            style={{ fontWeight: '500', fontSize: '18px' }}
+          >
+            {formatMessage(messages.moderatorSearchFieldLabel)}
+          </Text>
+        }
+      />
       <ModeratorList projectId={projectId} />
       {!hasSeatBasedBillingEnabled && (
         <Box width="516px">
