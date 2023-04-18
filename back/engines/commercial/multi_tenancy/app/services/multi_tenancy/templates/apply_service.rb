@@ -3,12 +3,12 @@
 module MultiTenancy
   module Templates
     class ApplyService
-      attr_reader :internal_template_dir, :template_bucket, :tenant_bucket
+      attr_reader :internal_template_dir
 
       def initialize(
         internal_template_dir: Rails.root.join('config/tenant_templates'),
-        tenant_bucket: ENV.fetch('AWS_S3_BUCKET'),
-        template_bucket: ENV.fetch('TEMPLATE_BUCKET'),
+        tenant_bucket: ENV.fetch('AWS_S3_BUCKET', nil),
+        template_bucket: ENV.fetch('TEMPLATE_BUCKET', nil),
         s3_client: Aws::S3::Client.new(region: 'eu-central-1')
       )
         @internal_template_dir = internal_template_dir
@@ -49,6 +49,14 @@ module MultiTenancy
         ) { |key| transform_key(key, tenant_id, model_id_mapping) }
       end
 
+      def tenant_bucket
+        @tenant_bucket ||= raise ArgumentError, 'tenant_bucket parameter has not been specified'
+      end
+
+      def template_bucket
+        @template_bucket ||= raise ArgumentError, 'template_bucket parameter has not been specified'
+      end
+
       private
 
       def s3_utils
@@ -58,7 +66,7 @@ module MultiTenancy
       def template_utils
         @template_utils ||= MultiTenancy::Templates::Utils.new(
           internal_template_dir: internal_template_dir,
-          template_bucket: template_bucket,
+          template_bucket: @template_bucket,
           s3_client: @s3_client
         )
       end

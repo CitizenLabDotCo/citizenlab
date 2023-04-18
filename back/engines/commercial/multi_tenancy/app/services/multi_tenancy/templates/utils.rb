@@ -73,7 +73,7 @@ module MultiTenancy
       end
 
       def template_bucket
-        @template_bucket ||= raise(ArgumentError, 'template_bucket has not been specified')
+        @template_bucket ||= raise ArgumentError, 'template_bucket parameter has not been specified'
       end
 
       class << self
