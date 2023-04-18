@@ -6,10 +6,10 @@ describe MultiTenancy::Templates::ApplyService do
   let(:service) { described_class.new }
 
   describe '#apply', template_test: true do
-    it 'raises an error if the requested template was not found' do
+    it 'raises an error if the template does not exist' do
       expect do
         service.apply('non_existing_template', external_template_group: 'test')
-      end.to raise_error('Unknown template')
+      end.to raise_error(MultiTenancy::Templates::Utils::UnknownTemplateError)
     end
   end
 
@@ -26,10 +26,12 @@ describe MultiTenancy::Templates::ApplyService do
         tenant.switch { service.apply(template_name) }
       end
     end
+  end
 
-    it 'raises an error if the requested template was not found' do
-      expect { service.apply('non_existing_template') }
-        .to raise_error('Unknown template')
+  describe '#apply_internal_template' do
+    it 'raises an error if the template does not exist' do
+      expect { service.apply_internal_template('non_existing_template') }
+        .to raise_error(MultiTenancy::Templates::Utils::UnknownTemplateError)
     end
   end
 end
