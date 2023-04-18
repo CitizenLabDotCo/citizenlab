@@ -27,7 +27,7 @@ import {
 } from 'components/smallForm';
 
 // services
-import resetPassword from 'api/authentication/resetPassword';
+import resetPassword from 'api/authentication/reset_password/resetPassword';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';

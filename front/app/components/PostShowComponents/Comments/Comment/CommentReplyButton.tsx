@@ -6,12 +6,9 @@ import { get } from 'lodash-es';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// hooks
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
-
 // events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 import { commentReplyButtonClicked } from '../events';
-import { openVerificationModal } from 'events/verificationModal';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -21,6 +18,9 @@ import tracks from '../tracks';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
+// utils
+import { postIsIdea, postIsInitiative } from './utils';
+
 // types
 import { GetUserChildProps } from 'resources/GetUser';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -28,6 +28,8 @@ import { GetInitiativesPermissionsChildProps } from 'resources/GetInitiativesPer
 import { IInitiativeData } from 'api/initiatives/types';
 import { IIdeaData } from 'api/ideas/types';
 import { ICommentData } from 'services/comments';
+import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 const Container = styled.li`
   display: flex;
@@ -80,10 +82,10 @@ const CommentReplyButton = memo<Props>(
     const commentId = comment.id;
     const parentCommentId = comment.relationships.parent.data?.id ?? null;
     const authorFirstName = !isNilOrError(author)
-      ? author.attributes.first_name
+      ? author.attributes.first_name ?? null
       : null;
     const authorLastName = !isNilOrError(author)
-      ? author.attributes.last_name
+      ? author.attributes.last_name ?? null
       : null;
     const authorSlug = !isNilOrError(author) ? author.attributes.slug : null;
 
@@ -103,23 +105,24 @@ const CommentReplyButton = memo<Props>(
       authorSlug,
     ]);
 
-    const openAuthModal = useOpenAuthModal({
-      onSuccess: reply,
-    });
-
     const onReply = useCallback(() => {
       if (!isNilOrError(post)) {
-        if (post.type === 'idea') {
+        const successAction: SuccessAction = {
+          name: 'replyToComment',
+          params: {
+            commentId,
+            parentCommentId,
+            authorFirstName,
+            authorLastName,
+            authorSlug,
+          },
+        };
+
+        if (postIsIdea(post)) {
           const {
             clickChildCommentReplyButton,
             clickParentCommentReplyButton,
           } = tracks;
-          const commentingDisabledReason = get(
-            post,
-            'attributes.action_descriptor.commenting_idea.disabled_reason'
-          );
-          const authUserIsVerified =
-            !isNilOrError(authUser) && authUser.attributes.verified;
 
           trackEventByName(
             commentType === 'child'
@@ -130,31 +133,26 @@ const CommentReplyButton = memo<Props>(
             }
           );
 
-          const context = {
-            type: 'idea',
-            action: 'commenting_idea',
-            id: post.id,
-          } as const;
+          const actionDescriptor =
+            post.attributes.action_descriptor.commenting_idea;
 
-          if (!isNilOrError(authUser) && !commentingDisabledReason) {
+          if (actionDescriptor.enabled) {
             reply();
-          } else if (
-            !isNilOrError(authUser) &&
-            !authUserIsVerified &&
-            commentingDisabledReason === 'not_verified'
-          ) {
-            openVerificationModal({ context });
-          } else if (!authUser) {
-            openAuthModal({
-              verification: commentingDisabledReason === 'not_verified',
-              context,
-            });
-          } else if (commentingDisabledReason === 'not_active') {
-            openAuthModal({ context });
+            return;
+          }
+
+          if (isFixableByAuthentication(actionDescriptor.disabled_reason)) {
+            const context = {
+              type: 'idea',
+              action: 'commenting_idea',
+              id: post.id,
+            } as const;
+
+            triggerAuthenticationFlow({ context, successAction });
           }
         }
 
-        if (post.type === 'initiative') {
+        if (postIsInitiative(post)) {
           const authenticationRequirements =
             commentingPermissionInitiative?.authenticationRequirements;
 
@@ -163,14 +161,8 @@ const CommentReplyButton = memo<Props>(
             action: 'commenting_initiative',
           } as const;
 
-          if (authenticationRequirements === 'sign_in_up') {
-            openAuthModal({ context });
-          } else if (authenticationRequirements === 'sign_in_up_and_verify') {
-            openAuthModal({ verification: true, context });
-          } else if (authenticationRequirements === 'verify') {
-            openVerificationModal({ context });
-          } else if (authenticationRequirements === 'complete_registration') {
-            openAuthModal({ context });
+          if (authenticationRequirements) {
+            triggerAuthenticationFlow({ context, successAction });
           } else if (commentingPermissionInitiative?.enabled === true) {
             reply();
           }
@@ -182,7 +174,11 @@ const CommentReplyButton = memo<Props>(
       commentType,
       commentingPermissionInitiative,
       reply,
-      openAuthModal,
+      commentId,
+      parentCommentId,
+      authorFirstName,
+      authorLastName,
+      authorSlug,
     ]);
 
     if (!isNilOrError(comment)) {

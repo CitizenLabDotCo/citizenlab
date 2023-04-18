@@ -8,7 +8,8 @@ interface IDeleteVolunteer {
   causeId: string;
   volunteerId: string;
 }
-const deleteVolunteer = async ({ causeId, volunteerId }) =>
+
+export const deleteVolunteer = async ({ causeId, volunteerId }) =>
   fetcher<IVolunteer>({
     path: `/causes/${causeId}/volunteers`,
     action: 'delete',

@@ -11,13 +11,12 @@ import Ineligible from './Ineligible';
 import Custom from './Custom';
 
 // events
-import { openVerificationModal } from 'events/verificationModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // hooks
 import useAddInitiativeVote from 'api/initiative_votes/useAddInitiativeVote';
 import useDeleteInitiativeVote from 'api/initiative_votes/useDeleteInitiativeVote';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
 import useInitiativesPermissions, {
@@ -44,6 +43,7 @@ import {
   IInitiativeStatusData,
 } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
+import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
 
 const Container = styled.div`
   ${media.desktop`
@@ -129,54 +129,40 @@ const VoteControl = ({
   const { mutate: deleteVote } = useDeleteInitiativeVote();
 
   const vote = () => {
-    if (!isNilOrError(initiative)) {
+    if (initiative) {
       addVote({ initiativeId: initiative.data.id, mode: 'up' });
     }
   };
-
-  const openAuthModal = useOpenAuthModal({
-    onSuccess: vote,
-    waitIf: isNilOrError(initiative),
-  });
 
   const { data: initiativeStatus } = useInitiativeStatus(
     initiative?.data.relationships.initiative_status?.data?.id
   );
   const votingPermission = useInitiativesPermissions('voting_initiative');
 
+  if (!initiative) return null;
+
   const handleOnvote = () => {
     const authenticationRequirements =
       votingPermission?.authenticationRequirements;
 
-    switch (authenticationRequirements) {
-      case 'sign_in_up':
-        trackEventByName(
-          'Sign up/in modal opened in response to clicking vote initiative'
-        );
-        openAuthModal({
-          flow: 'signup',
-          verification: false,
-          context,
-        });
-        break;
-      case 'sign_in_up_and_verify':
-        trackEventByName(
-          'Sign up/in modal opened in response to clicking vote initiative'
-        );
-        openAuthModal({
-          flow: 'signup',
-          verification: true,
-          context,
-        });
-        break;
-      case 'verify':
-        trackEventByName(
-          'Verification modal opened in response to clicking vote initiative'
-        );
-        openVerificationModal({ context });
-        break;
-      default:
-        vote();
+    if (authenticationRequirements) {
+      trackEventByName(
+        'Sign up/in modal opened in response to clicking vote initiative'
+      );
+      const successAction: SuccessAction = {
+        name: 'voteOnInitiative',
+        params: {
+          initiativeId: initiative.data.id,
+        },
+      };
+
+      triggerAuthenticationFlow({
+        flow: 'signup',
+        context,
+        successAction,
+      });
+    } else {
+      vote();
     }
   };
 
@@ -193,7 +179,6 @@ const VoteControl = ({
   };
 
   if (
-    isNilOrError(initiative) ||
     isNilOrError(initiativeStatus) ||
     isNilOrError(appConfiguration) ||
     !appConfiguration.data.attributes.settings.initiatives

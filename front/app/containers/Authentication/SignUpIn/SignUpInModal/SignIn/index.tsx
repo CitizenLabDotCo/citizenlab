@@ -2,7 +2,9 @@ import React, { memo, useCallback, useState, useEffect } from 'react';
 
 // components
 import PasswordSignin from './PasswordSignin';
-import AuthProviders, { AuthProvider } from 'components/AuthProviders';
+import AuthProviders, {
+  AuthProvider,
+} from 'containers/NewAuthModal/steps/AuthProviders';
 import Error from 'components/UI/Error';
 import {
   StyledHeaderContainer,
@@ -25,14 +27,14 @@ import tracks from '../tracks';
 import styled from 'styled-components';
 
 // typings
-import { ISignUpInMetaData } from 'events/openSignUpInModal';
+import { AuthenticationData } from 'containers/NewAuthModal/typings';
 
 const Container = styled.div``;
 
 export type TSignInSteps = 'auth-providers' | 'password-signin';
 
 export interface Props {
-  metaData: ISignUpInMetaData;
+  metaData: AuthenticationData;
   onSignInCompleted: (userId: string) => void;
   onGoToSignUp: () => void;
   className?: string;
@@ -52,14 +54,11 @@ const SignIn = memo<Props>(
       };
     }, []);
 
-    const handleOnAuthProviderSelected = (
-      selectedMethod: AuthProvider,
-      setHrefFromModule?: () => void
-    ) => {
+    const handleOnAuthProviderSelected = (selectedMethod: AuthProvider) => {
       if (selectedMethod === 'email') {
         setActiveStep('password-signin');
       } else {
-        handleOnSSOClick(selectedMethod, metaData, setHrefFromModule);
+        handleOnSSOClick(selectedMethod, metaData, false);
       }
     };
 
@@ -107,15 +106,14 @@ const SignIn = memo<Props>(
               <>
                 {activeStep === 'auth-providers' && (
                   <AuthProviders
-                    metaData={metaData}
-                    onAuthProviderSelected={handleOnAuthProviderSelected}
-                    goToOtherFlow={handleGoToSignUpFlow}
+                    flow={metaData.flow}
+                    onSelectAuthProvider={handleOnAuthProviderSelected}
+                    onSwitchFlow={handleGoToSignUpFlow}
                   />
                 )}
 
                 {activeStep === 'password-signin' && (
                   <PasswordSignin
-                    metaData={metaData}
                     onSignInCompleted={handleOnSignInCompleted}
                     onGoToLogInOptions={handleGoToLogInOptions}
                     onGoToSignUp={onGoToSignUp}

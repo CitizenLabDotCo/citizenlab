@@ -11,7 +11,7 @@ import {
   IDLookupMethod,
   TVerificationMethodName,
 } from 'services/verificationMethods';
-import isLastVerificationMethod from 'containers/Authentication/VerificationModal/isLastVerificationMethod';
+import { isLastVerificationMethod } from 'services/verificationMethods';
 
 const verificationMethodName: TVerificationMethodName = 'id_card_lookup';
 const configuration: ModuleConfiguration = {

@@ -1,10 +1,17 @@
+// routing
+import clHistory from 'utils/cl-router/history';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+
+// utils
 import { isNilOrError, endsWith } from 'utils/helperUtils';
 import { parse } from 'qs';
-import { openSignUpInModal } from 'events/openSignUpInModal';
+
+// typings
 import { SSOParams } from 'services/singleSignOn';
-import clHistory from 'utils/cl-router/history';
 import { TAuthUser } from 'hooks/useAuthUser';
-import { AuthenticationContext } from 'api/authentication_requirements/types';
+import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 
 export default function openSignUpInModalIfNecessary(
   authUser: TAuthUser,
@@ -24,9 +31,6 @@ export default function openSignUpInModalIfNecessary(
     const urlSearchParams = parse(search, {
       ignoreQueryPrefix: true,
     }) as any as SSOParams;
-    // this constant represents the 'token' param that can optionally be included in the url
-    // when a user gets sent to the platform through an invitation link (e.g. '/invite?token=123456)
-    const token = urlSearchParams?.['token'] as string | undefined;
 
     // see services/singleSignOn.ts for the typed interface of all the sso related url params the url can potentially contain
     const {
@@ -82,12 +86,9 @@ export default function openSignUpInModalIfNecessary(
           isInvitation ||
           shouldFinishRegistrationAfterSSO)
       ) {
-        openSignUpInModal({
-          isInvitation,
-          token,
+        triggerAuthenticationFlow({
           flow: isAuthError && sso_flow ? sso_flow : 'signup',
           error: isAuthError ? { code: error_code || 'general' } : undefined,
-          verification: !!sso_verification,
           context:
             sso_verification_action && sso_verification_type
               ? ({
