@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
+import { parse } from 'qs';
 
 // api
 import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
@@ -12,6 +13,7 @@ import { useLocation } from 'react-router-dom';
 
 // utils
 import { getStepConfig } from './stepConfig';
+import clHistory from 'utils/cl-router/history';
 
 // events
 import {
@@ -20,7 +22,10 @@ import {
 } from '../events';
 
 // constants
-import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/types';
+import {
+  AuthenticationContext,
+  GLOBAL_CONTEXT,
+} from 'api/authentication/authentication_requirements/types';
 
 // typings
 import {
@@ -31,6 +36,7 @@ import {
   Step,
   AuthenticationData,
 } from '../typings';
+import { SSOParams } from 'services/singleSignOn';
 
 let initialized = false;
 
@@ -159,7 +165,34 @@ export default function useSteps() {
       return;
     }
 
-    // TODO
+    const urlSearchParams = parse(search, {
+      ignoreQueryPrefix: true,
+    }) as any;
+
+    if (urlSearchParams.sso_response === 'true') {
+      const {
+        sso_flow,
+        sso_pathname,
+        sso_verification_action,
+        sso_verification_id,
+        sso_verification_type,
+      } = urlSearchParams as SSOParams;
+
+      authenticationDataRef.current = {
+        flow: sso_flow,
+        context: {
+          type: sso_verification_type,
+          action: sso_verification_action,
+          id: sso_verification_id,
+        } as AuthenticationContext,
+      };
+
+      if (sso_pathname) {
+        clHistory.replace(sso_pathname);
+      }
+
+      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')();
+    }
   }, [pathname, search, currentStep, transition]);
 
   return {

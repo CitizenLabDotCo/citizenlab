@@ -48,7 +48,9 @@ export const sharedSteps = (
 
       // When the user returns from SSO
       RESUME_FLOW_AFTER_SSO: async () => {
-        // TODO
+        const { requirements } = await getRequirements();
+        console.log('hello!');
+        console.log(requirements);
       },
 
       // When the authentication flow is triggered by an action
