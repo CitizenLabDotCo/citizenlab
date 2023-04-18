@@ -1,5 +1,4 @@
 // i18n
-import messages from './messages';
 import sharedMessages from '../messages';
 import passwordInputMessages from 'components/UI/PasswordInput/messages';
 import authProvidersMessages from 'containers/NewAuthModal/steps/AuthProviders/messages';
@@ -55,8 +54,12 @@ export const getSchema = (
         .test('', formatMessage(sharedMessages.emailFormatError), isValidEmail);
 
   const schema = object({
-    first_name: string().required(formatMessage(messages.emptyFirstNameError)),
-    last_name: string().required(formatMessage(messages.emptyLastNameError)),
+    first_name: string().required(
+      formatMessage(sharedMessages.emptyFirstNameError)
+    ),
+    last_name: string().required(
+      formatMessage(sharedMessages.emptyLastNameError)
+    ),
     email: emailSchema,
     password: string()
       .required(formatMessage(sharedMessages.noPasswordError))

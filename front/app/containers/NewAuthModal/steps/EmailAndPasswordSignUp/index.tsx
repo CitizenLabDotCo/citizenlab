@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 
 // hooks
-// import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAnySSOEnabled from 'containers/NewAuthModal/useAnySSOEnabled';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
@@ -121,7 +120,7 @@ const EmailAndPasswordSignUp = ({
               id="firstName"
               type="text"
               autocomplete="given-name"
-              label={formatMessage(messages.firstNamesLabel)}
+              label={formatMessage(sharedMessages.firstNamesLabel)}
             />
           </Box>
           <Box id="e2e-lastName-container" mt="16px">
@@ -130,7 +129,7 @@ const EmailAndPasswordSignUp = ({
               id="lastName"
               type="text"
               autocomplete="family-name"
-              label={formatMessage(messages.lastNameLabel)}
+              label={formatMessage(sharedMessages.lastNameLabel)}
             />
           </Box>
           <Box id="e2e-email-container" mt="16px">
@@ -216,7 +215,7 @@ const EmailAndPasswordSignUpWrapper = ({
     getUserDataFromToken(token)
       .then((response) => {
         setPrefilledValues({
-          first_name: response.data.attributes.first_name,
+          first_name: response.data.attributes.first_name ?? undefined,
           last_name: response.data.attributes.last_name ?? undefined,
           email: response.data.attributes.email ?? undefined,
         });

@@ -10,10 +10,8 @@ import seatsKeys from 'api/seats/keys';
 const apiEndpoint = `${API_PATH}/users`;
 
 export interface IUserAttributes {
-  first_name: string;
-  // CL1 legacy: last names used to not be required
-  // or when signing up with Google, it can be null too
-  last_name: string | null;
+  first_name?: string | null;
+  last_name?: string | null;
   slug: string;
   locale: Locale;
   highest_role:

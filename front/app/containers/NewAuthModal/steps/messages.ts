@@ -55,4 +55,20 @@ export default defineMessages({
     defaultMessage:
       'Enter an email address or a phone number in the correct format',
   },
+  firstNamesLabel: {
+    id: 'app.containers.SignUp.firstNamesLabel',
+    defaultMessage: 'First names',
+  },
+  emptyFirstNameError: {
+    id: 'app.containers.SignUp.emptyFirstNameError',
+    defaultMessage: 'Enter your first name',
+  },
+  lastNameLabel: {
+    id: 'app.containers.SignUp.lastNameLabel',
+    defaultMessage: 'Last name',
+  },
+  emptyLastNameError: {
+    id: 'app.containers.SignUp.emptyLastNameError',
+    defaultMessage: 'Enter your last name',
+  },
 });

@@ -82,10 +82,10 @@ const CommentReplyButton = memo<Props>(
     const commentId = comment.id;
     const parentCommentId = comment.relationships.parent.data?.id ?? null;
     const authorFirstName = !isNilOrError(author)
-      ? author.attributes.first_name
+      ? author.attributes.first_name ?? null
       : null;
     const authorLastName = !isNilOrError(author)
-      ? author.attributes.last_name
+      ? author.attributes.last_name ?? null
       : null;
     const authorSlug = !isNilOrError(author) ? author.attributes.slug : null;
 
