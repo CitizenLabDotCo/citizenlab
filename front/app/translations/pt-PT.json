@@ -28,7 +28,6 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Inscreva-se com Telefone ou Email",
   "app.components.Author.a11y_postedBy": "Publicado por:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} participantes",
-  "app.components.BillingWarning.billingWarning": "Uma vez acrescentados lugares adicionais, a sua facturação será aumentada. Contacte o seu GovSuccess Manager para saber mais sobre o assunto.",
   "app.components.CityLogoSection.iframeTitle": "Mais informações sobre {orgName}",
   "app.components.Comments.cancel": "Cancelar",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Comentar não é possível na fase actual.",
