@@ -8,7 +8,7 @@ describe TrendingIdeaService do
   end
 
   describe 'filter_trending' do
-    it 'filters trending ideas in accordance with the trending criterea (those that have a positive trending score)' do
+    it 'filters trending ideas in accordance with the trending criteria (those that have a positive trending score)' do
       trending_filter = nil
       expected_selection = nil
       travel_to Time.now do
