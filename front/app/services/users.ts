@@ -6,6 +6,7 @@ import { TRole } from 'services/permissions/roles';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import seatsKeys from 'api/seats/keys';
+import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 
 const apiEndpoint = `${API_PATH}/users`;
 
@@ -118,6 +119,8 @@ export async function updateUser(userId: string, object: IUserUpdate) {
   if (object.roles) {
     queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
   }
+
+  queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
 
   return response;
 }
