@@ -30,7 +30,7 @@ const server = setupServer(
   })
 );
 
-describe('useGetAuthenticationRequirements', () => {
+describe('getAuthenticationRequirements', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 

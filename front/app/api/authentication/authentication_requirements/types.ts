@@ -1,5 +1,7 @@
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 import { IPCAction } from 'typings';
+import keys from './keys';
+import { Keys } from 'utils/cl-react-query/types';
 
 export const GLOBAL_CONTEXT = {
   type: 'global',
@@ -58,3 +60,5 @@ export interface AuthenticationRequirements {
     };
   };
 }
+
+export type AuthenticationRequirementKeys = Keys<typeof keys>;

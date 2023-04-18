@@ -15,7 +15,7 @@ const getAuthenticationRequirements = (
   );
 };
 
-const fetchAuthenticationRequirements = (
+export const fetchAuthenticationRequirements = (
   authenticationContext: AuthenticationContext
 ) => {
   const { type, action } = authenticationContext;
