@@ -3,6 +3,8 @@
 module MultiTenancy
   module Templates
     class Utils
+      RELEASE_SPEC_FILE = 'release.json'
+
       attr_reader :internal_template_dir
 
       def initialize(
@@ -74,6 +76,34 @@ module MultiTenancy
         parse_yml(content)
       rescue Aws::S3::Errors::NoSuchKey
         raise UnknownTemplateError, "Unknown template: '#{template_name}'."
+      end
+
+      def release_prefix
+        content = @s3_client.get_object(bucket: template_bucket, key: RELEASE_SPEC_FILE).body.read
+        JSON.parse(content)['release_prefix']
+      rescue Aws::S3::Errors::NoSuchKey
+        nil
+      end
+
+      def test_prefix
+        release_prefix = self.release_prefix
+        return unless release_prefix
+
+        release_prefix == 'blue' ? 'green' : 'blue'
+      end
+
+      def release_templates(prefix = nil)
+        prefix ||= test_prefix
+        raise 'undefined release prefix' unless prefix
+
+        release_json = { release_prefix: prefix }
+        @s3_client.put_object(
+          bucket: template_bucket,
+          key: RELEASE_SPEC_FILE,
+          body: release_json.to_json
+        )
+
+        prefix
       end
 
       def template_bucket
