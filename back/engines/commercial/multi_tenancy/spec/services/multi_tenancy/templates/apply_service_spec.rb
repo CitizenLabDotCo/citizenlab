@@ -20,7 +20,7 @@ describe MultiTenancy::Templates::ApplyService do
         locales = template_utils.required_locales(template_name)
         locales = ['en'] if locales.blank?
 
-        tenant_name = template_name.tr('.', '-')
+        tenant_name = template_name.tr('._', '-')
         tenant = create(:tenant, name: tenant_name, host: "#{tenant_name}.localhost", locales: locales, lifecycle: 'active')
 
         tenant.switch { service.apply(template_name) }

@@ -140,7 +140,7 @@ namespace :templates do
     locales = template_utils.required_locales(template_name, external_subfolder: 'test')
     locales = ['en'] if locales.blank?
 
-    name = template_name.tr('.', '-')
+    name = template_name.tr('._', '-')
     tenant_attrs = { name: name, host: "#{name}.localhost" }
     config_attrs = { settings: SettingsService.new.minimal_required_settings(
       locales: locales,
