@@ -45,7 +45,7 @@ const AddModeratorsModal = ({
 
   if (!appConfiguration || !seats) return null;
 
-  const currentModeratorSeats = seats.data.attributes.project_moderators_number;
+  const currentModeratorSeats = seats.data.attributes.moderators_number;
 
   const { hasReachedOrIsOverPlanSeatLimit, hasExceededPlanSeatLimit } =
     getExceededLimitInfo(
@@ -77,7 +77,12 @@ const AddModeratorsModal = ({
           hasExceededPlanSeatLimit={hasExceededPlanSeatLimit}
         />
       ) : (
-        <Box display="flex" flexDirection="column" p="32px">
+        <Box
+          display="flex"
+          flexDirection="column"
+          p="32px"
+          data-cy="e2e-add-moderators-body"
+        >
           <Text color="textPrimary" fontSize="m" mt="0" mb="24px">
             <FormattedMessage
               {...(hasReachedOrIsOverPlanSeatLimit
@@ -89,9 +94,7 @@ const AddModeratorsModal = ({
             <SeatInfo seatType="moderator" />
           </Box>
 
-          <Box mb="24px">
-            <BillingWarning />
-          </Box>
+          <BillingWarning mb="24px" />
 
           <Box display="flex">
             <Button
@@ -100,6 +103,7 @@ const AddModeratorsModal = ({
                 addModerators();
                 setShowSuccess(true);
               }}
+              data-cy="e2e-confirm-add-moderator"
             >
               {buttonText}
             </Button>

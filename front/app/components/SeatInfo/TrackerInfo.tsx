@@ -44,7 +44,7 @@ const TrackerInfo = ({ seatType }: SeatInfoProps) => {
 
   let currentSeatNumber = {
     admin: seats.data.attributes.admins_number,
-    moderator: seats.data.attributes.project_moderators_number,
+    moderator: seats.data.attributes.moderators_number,
   }[seatType];
   const additionalSeats = currentSeatNumber - maximumSeatNumber;
   const showAdditionalSeats = additionalSeats > 0;

@@ -40,7 +40,7 @@ const mockUserSeatsData = {
   data: {
     attributes: {
       admins_number: 3,
-      project_moderators_number: 5,
+      moderators_number: 5,
     },
   },
 };

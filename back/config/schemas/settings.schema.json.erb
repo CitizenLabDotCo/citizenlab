@@ -183,23 +183,23 @@
             "default": 30
           },
           "maximum_admins_number": {
-            "title": "Maximum number of admins",
-            "description": "Maximum allowed number of admins on the platform.",
+            "title": "Maximum number of admin seats in the contract",
+            "description": "Maximum allowed number of admin seats specified in the contract.",
             "type": ["integer", "null"]
           },
           "maximum_moderators_number": {
-            "title": "Maximum number of managers",
-            "description": "Maximum allowed number of project and folder managers on the platform.",
+            "title": "Maximum number of managers in the contract",
+            "description": "Maximum allowed number of project and folder managers specified in the contract.",
             "type": ["integer", "null"]
           },
           "additional_admins_number": {
-            "title": "Additional number of admins",
-            "description": "Additional number of admins on the platform.",
+            "title": "Additional number of admin seats",
+            "description": "Number of admin seats bought additionally over the contract limit.",
             "type": ["integer", "null"]
           },
           "additional_moderators_number": {
-            "title": "Additional number of managers",
-            "description": "Additional number of project and folder managers on the platform.",
+            "title": "Additional number of manager seats",
+            "description": "Number of moderator seats bought additionally over the contract limit.",
             "type": ["integer", "null"]
           }
         }
@@ -746,6 +746,18 @@
         }
       },
 
+      "konveio_surveys": {
+        "type": "object",
+        "title": "Konveio Surveys",
+        "description":  "Allow Konveio surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
       "volunteering": {
         "type": "object",
         "title": "Volunteering",
@@ -1149,6 +1161,7 @@
     "snap_survey_surveys": ["surveys"],
     "microsoft_forms_surveys": ["surveys"],
     "smart_survey_surveys": ["surveys"],
+    "konveio_surveys": ["surveys"],
 
     "id_auth0": ["verification"],
     "id_bogus": ["verification"],

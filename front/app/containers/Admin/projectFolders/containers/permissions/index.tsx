@@ -67,7 +67,7 @@ const FolderPermissions = () => {
       .additional_moderators_number;
   if (!appConfiguration || !seats) return null;
 
-  const currentModeratorSeats = seats.data.attributes.project_moderators_number;
+  const currentModeratorSeats = seats.data.attributes.moderators_number;
 
   const { hasReachedOrIsOverPlanSeatLimit } = getExceededLimitInfo(
     hasSeatBasedBillingEnabled,
@@ -164,6 +164,7 @@ const FolderPermissions = () => {
               disabled={!moderatorToAdd}
               processing={processing}
               ml="12px"
+              data-cy="e2e-add-folder-moderator-button"
             />
           </Box>
           {hasSeatBasedBillingEnabled && (

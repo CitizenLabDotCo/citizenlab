@@ -28,6 +28,7 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Reģistrējieties, izmantojot tālruni vai e-pastu",
   "app.components.Author.a11y_postedBy": "Publicēja:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} dalībnieki",
+  "app.components.BillingWarning.billingWarning": "Kad tiks pievienotas papildu sēdvietas, jūsu rēķins tiks palielināts. Sazinieties ar savu GovSuccess menedžeri, lai uzzinātu vairāk.",
   "app.components.CityLogoSection.iframeTitle": "Vairāk informācijas par {orgName}",
   "app.components.Comments.cancel": "Atcelt",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Pašreizējā posmā komentāri nav iespējami.",

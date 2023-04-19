@@ -58,15 +58,11 @@ class WebApi::V1::UsersController < ::ApplicationController
   def seats
     authorize :user, :seats?
 
-    render json: {
-      data: {
-        type: 'seats',
-        attributes: {
-          admins_number: User.billed_admins.count,
-          project_moderators_number: User.billed_moderators.count
-        }
-      }
+    attributes = {
+      admins_number: User.billed_admins.count,
+      moderators_number: User.billed_moderators.count
     }
+    render json: raw_json(attributes)
   end
 
   def index_xlsx

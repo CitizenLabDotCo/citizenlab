@@ -1106,7 +1106,6 @@
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Configureu una enquesta sense sortir de la nostra plataforma.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Creeu una enquesta",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Configureu un qüestionari d'elecció múltiple.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription": "Incorporeu una enquesta Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey o Microsoft Forms.",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Podeu establir l'ordre predeterminat de les publicacions que es mostraran a la pàgina principal del projecte.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sorting",
   "app.containers.AdminPage.ProjectEdit.departments": "Departaments",

@@ -531,7 +531,7 @@ GEM
     awesome_nested_set (3.5.0)
       activerecord (>= 4.0.0, < 7.1)
     aws-eventstream (1.2.0)
-    aws-partitions (1.743.0)
+    aws-partitions (1.748.0)
     aws-sdk-core (3.171.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
@@ -540,8 +540,8 @@ GEM
     aws-sdk-kms (1.63.0)
       aws-sdk-core (~> 3, >= 3.165.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-route53 (1.62.0)
-      aws-sdk-core (~> 3, >= 3.127.0)
+    aws-sdk-route53 (1.71.0)
+      aws-sdk-core (~> 3, >= 3.165.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-s3 (1.120.1)
       aws-sdk-core (~> 3, >= 3.165.0)
@@ -846,7 +846,7 @@ GEM
     pg_search (2.3.6)
       activerecord (>= 5.2)
       activesupport (>= 5.2)
-    posthog-ruby (2.2.0)
+    posthog-ruby (2.3.0)
       concurrent-ruby (~> 1)
     premailer (1.19.0)
       addressable
@@ -1100,7 +1100,7 @@ GEM
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     ssrf_filter (1.0.7)
-    stackprof (0.2.24)
+    stackprof (0.2.25)
     swd (1.3.0)
       activesupport (>= 3)
       attr_required (>= 0.0.5)
@@ -1302,7 +1302,7 @@ DEPENDENCIES
   spring
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
-  stackprof (~> 0.2.24)
+  stackprof (~> 0.2.25)
   surveys!
   test-prof (~> 1.2)
   texting!

@@ -58,7 +58,7 @@ const UserSearch = memo(({ projectId }: Props) => {
       .additional_moderators_number;
   if (!appConfiguration || !seats) return null;
 
-  const currentModeratorSeats = seats.data.attributes.project_moderators_number;
+  const currentModeratorSeats = seats.data.attributes.moderators_number;
   const { hasReachedOrIsOverPlanSeatLimit } = getExceededLimitInfo(
     hasSeatBasedBillingEnabled,
     currentModeratorSeats,
@@ -123,6 +123,7 @@ const UserSearch = memo(({ projectId }: Props) => {
           onClick={handleAddClick}
           disabled={!moderatorToAdd}
           processing={processing}
+          data-cy="e2e-add-project-moderator-button"
         />
       </Box>
       {hasSeatBasedBillingEnabled && (
