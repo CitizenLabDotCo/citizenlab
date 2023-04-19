@@ -17,6 +17,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Utils
 import { getExceededLimitInfo } from 'components/SeatInfo/utils';
+import BillingWarning from 'components/SeatInfo/BillingWarning';
 
 interface Props {
   showModal: boolean;
@@ -79,29 +80,25 @@ const AddModeratorsModal = ({
         <Box
           display="flex"
           flexDirection="column"
-          width="100%"
           p="32px"
           data-cy="e2e-add-moderators-body"
         >
-          <Text color="textPrimary" fontSize="m" my="0px">
+          <Text color="textPrimary" fontSize="m" mt="0" mb="24px">
             <FormattedMessage
               {...(hasReachedOrIsOverPlanSeatLimit
                 ? messages.hasReachedOrIsOverLimit
                 : messages.confirmMessage)}
             />
           </Text>
-          <Box py="32px">
+          <Box mb="24px">
             <SeatInfo seatType="moderator" />
           </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            width="100%"
-            alignItems="center"
-          >
+
+          <BillingWarning mb="24px" />
+
+          <Box display="flex">
             <Button
               autoFocus
-              width="auto"
               onClick={() => {
                 addModerators();
                 setShowSuccess(true);

@@ -28,6 +28,7 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Registruj se telefonom ili e-poštom",
   "app.components.Author.a11y_postedBy": "Autor objave:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} učesnika",
+  "app.components.BillingWarning.billingWarning": "Када се додају додатна места, ваш обрачун ће бити повећан. Обратите се свом ГовСуццесс менаџеру да сазнате више о томе.",
   "app.components.CityLogoSection.iframeTitle": "Više informacija o {orgName}",
   "app.components.Comments.cancel": "Prekid",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Komentarisanje nije moguće u ovoj fazi.",

@@ -262,6 +262,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            konveio_surveys: {
+              enabled: true,
+              allowed: true
+            },
             events_widget: {
               enabled: true,
               allowed: true
