@@ -356,21 +356,6 @@ export const HeaderTitle = styled.h1`
   `}
 `;
 
-export const HeaderSubtitle = styled.h2`
-  width: 100%;
-  color: ${(props) => props.theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  line-height: normal;
-  margin: 0;
-  margin-top: 5px;
-  padding: 0;
-
-  ${isRtl`
-    text-align: right;
-  `}
-`;
-
 const FooterContainer = styled.div`
   width: 100%;
   display: flex;
