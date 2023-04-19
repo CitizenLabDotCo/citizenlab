@@ -7,7 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { commentReplyButtonClicked } from '../events';
 
 // analytics
@@ -28,7 +28,7 @@ import { GetInitiativesPermissionsChildProps } from 'resources/GetInitiativesPer
 import { IInitiativeData } from 'api/initiatives/types';
 import { IIdeaData } from 'api/ideas/types';
 import { ICommentData } from 'services/comments';
-import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 const Container = styled.li`

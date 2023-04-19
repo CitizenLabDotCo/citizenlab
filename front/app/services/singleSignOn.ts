@@ -2,10 +2,10 @@ import { AUTH_PATH } from 'containers/App/constants';
 import {
   AuthenticationData,
   SignUpInError,
-} from 'containers/NewAuthModal/typings';
+} from 'containers/Authentication/typings';
 import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
-import { isProjectContext } from 'containers/NewAuthModal/steps/Verification/utils';
+import { isProjectContext } from 'containers/Authentication/steps/Verification/utils';
 
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';

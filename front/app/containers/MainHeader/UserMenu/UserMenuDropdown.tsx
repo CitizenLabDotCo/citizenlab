@@ -14,7 +14,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // style
 import styled from 'styled-components';

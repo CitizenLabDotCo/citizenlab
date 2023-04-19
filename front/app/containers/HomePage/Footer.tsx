@@ -6,7 +6,7 @@ import useLocalize from 'hooks/useLocalize';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // utils
 import { trackEventByName } from 'utils/analytics';

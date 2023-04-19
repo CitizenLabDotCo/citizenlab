@@ -8,7 +8,7 @@ import { ParticipationCTAContent } from 'components/ParticipationCTABars/Partici
 import { useTheme } from 'styled-components';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
@@ -29,7 +29,7 @@ import messages from '../messages';
 import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
-import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();

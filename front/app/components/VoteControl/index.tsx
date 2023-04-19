@@ -9,7 +9,7 @@ import { IdeaVotingDisabledReason } from 'api/ideas/types';
 import { getLatestRelevantPhase } from 'services/phases';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -28,7 +28,7 @@ import usePhases from 'hooks/usePhases';
 import useAddIdeaVote from 'api/idea_votes/useAddIdeaVote';
 import { TVoteMode } from 'api/idea_votes/types';
 import useDeleteIdeaVote from 'api/idea_votes/useDeleteIdeaVote';
-import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 type TSize = '1' | '2' | '3' | '4';

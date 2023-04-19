@@ -27,7 +27,7 @@ import streams from 'utils/streams';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -41,7 +41,7 @@ import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 // typings
 import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
-import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 const IdeaCardContainer = styled.div`
   display: flex;

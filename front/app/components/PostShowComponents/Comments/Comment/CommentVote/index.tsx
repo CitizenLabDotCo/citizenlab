@@ -4,7 +4,7 @@ import React, { MouseEvent, useState, useEffect } from 'react';
 import UpvoteButton from './UpvoteButton';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
@@ -23,7 +23,7 @@ import { trackUpvote, trackCancelUpvote } from './trackVote';
 
 // typings
 import { ICommentData } from 'services/comments';
-import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 interface Props {
   postId: string;

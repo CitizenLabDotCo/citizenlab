@@ -11,7 +11,7 @@ import Ineligible from './Ineligible';
 import Custom from './Custom';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // hooks
 import useAddInitiativeVote from 'api/initiative_votes/useAddInitiativeVote';
@@ -43,7 +43,7 @@ import {
   IInitiativeStatusData,
 } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
-import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 const Container = styled.div`
   ${media.desktop`

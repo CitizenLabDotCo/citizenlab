@@ -12,7 +12,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 
 // events
-import { triggerVerificationOnly } from 'containers/NewAuthModal/events';
+import { triggerVerificationOnly } from 'containers/Authentication/events';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

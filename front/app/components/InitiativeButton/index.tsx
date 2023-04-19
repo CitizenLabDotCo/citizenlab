@@ -4,7 +4,7 @@ import React from 'react';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import { trackEventByName } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
@@ -13,7 +13,7 @@ import Button from 'components/UI/Button';
 import messages from './messages';
 import { ButtonStyles } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
-import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 interface Props {
   lat?: number | null;

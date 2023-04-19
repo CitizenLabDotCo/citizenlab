@@ -5,12 +5,12 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import { TOnContinueFunction } from 'containers/NewAuthModal/steps/AuthProviders/AuthProviderButton';
-import { StyledAuthProviderButton } from 'containers/NewAuthModal/steps/AuthProviders';
+import { TOnContinueFunction } from 'containers/Authentication/steps/AuthProviders/AuthProviderButton';
+import { StyledAuthProviderButton } from 'containers/Authentication/steps/AuthProviders';
 import ViennaIcon from './ViennaIcon';
 
 // typings
-import { SignUpInFlow } from 'containers/NewAuthModal/typings';
+import { SignUpInFlow } from 'containers/Authentication/typings';
 
 // styling
 import styled from 'styled-components';

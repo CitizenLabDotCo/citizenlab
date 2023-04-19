@@ -30,7 +30,7 @@ import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -45,7 +45,7 @@ import { darken } from 'polished';
 import { LatLng } from 'leaflet';
 import { getButtonMessage } from './utils';
 import { IPhaseData } from 'services/phases';
-import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 const Container = styled.div``;
 

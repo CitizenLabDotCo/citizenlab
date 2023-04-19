@@ -9,7 +9,7 @@ import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/t
 import useAuthUser from 'hooks/useAuthUser';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // components
 import Image from 'components/UI/Image';
