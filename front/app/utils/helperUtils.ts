@@ -107,7 +107,7 @@ export function isPage(pageKey: pageKeys, pathName: string) {
     case 'sign_up':
       return pathnameWithoutLocale.startsWith('/sign-up');
     case 'pages_menu':
-      return pathnameWithoutLocale.includes('/pages-menu');
+      return pathnameWithoutLocale.includes('/admin/pages-menu');
   }
 }
 
