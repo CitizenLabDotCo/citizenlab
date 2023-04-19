@@ -18,8 +18,20 @@ RSpec.describe ResetUserEmail do
         context[:new_email] = 'new@email.com'
       end
 
-      it 'sets the user email temporarily in new email' do
-        expect { result }.to change(context[:user], :new_email).from(nil).to(context[:new_email])
+      context 'user is not yet active' do
+        it 'sets the user email direct to the email field' do
+          expect { result }.to change(context[:user], :email).from(context[:user].email).to(context[:new_email])
+        end
+      end
+
+      context 'user is active' do
+        before do
+          context[:user].confirm!
+        end
+
+        it 'sets the user email temporarily in new_email' do
+          expect { result }.to change(context[:user], :new_email).from(nil).to(context[:new_email])
+        end
       end
     end
 

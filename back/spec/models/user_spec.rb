@@ -1106,14 +1106,6 @@ RSpec.describe User, type: :model do
       context 'user confirmation is not turned on' do
         before { SettingsService.new.deactivate_feature! 'user_confirmation' }
 
-        it 'changes the email' do
-          expect { user.reset_email!(email) }.to change(user, :email).from(user.email).to(email)
-        end
-
-        it 'saves the change to the email' do
-          expect { user.reset_email!(email) }.to change(user, :saved_change_to_email)
-        end
-
         it 'raises a taken error if email already exists' do
           create(:user, email: 'new_email@email.com')
           expect { user.reset_email!(email) }.to raise_error(ActiveRecord::RecordInvalid)
@@ -1122,6 +1114,11 @@ RSpec.describe User, type: :model do
         it 'raises an invalid error if email is invalid' do
           invalid_email = 'newemail_com'
           expect { user.reset_email!(invalid_email) }.to raise_error(ActiveRecord::RecordInvalid)
+        end
+
+        it 'saves the change to the email' do
+          expect { user.reset_email!(email) }.to change(user, :email).from(user.email).to(email)
+          expect { user.reset_email!(email) }.to change(user, :saved_change_to_email)
         end
 
         it 'can change the email if the user is not active' do
@@ -1133,26 +1130,6 @@ RSpec.describe User, type: :model do
       context 'user confirmation is turned on' do
         before { SettingsService.new.activate_feature! 'user_confirmation' }
 
-        it 'saves the changed email in the new_email column' do
-          expect { user.reset_email!(email) }.to change(user, :new_email).from(nil).to(email)
-        end
-
-        it 'resets the confirmation code reset count' do
-          user.increment_confirmation_code_reset_count!
-          user.reload
-          expect { user.reset_email!(email) }.to change(user, :email_confirmation_code_reset_count).from(1).to(0)
-        end
-
-        it 'saves the change to the new email field' do
-          expect { user.reset_email!(email) }.to change(user, :saved_change_to_new_email)
-        end
-
-        it 'should save the change to the code reset count' do
-          user.increment_confirmation_code_reset_count!
-          user.reload
-          expect { user.reset_email!(email) }.to change(user, :saved_change_to_email_confirmation_code_reset_count?)
-        end
-
         it 'raises a taken error if email already exists' do
           create(:user, email: 'new_email@email.com')
           expect { user.reset_email!(email) }.to raise_error(ActiveRecord::RecordInvalid)
@@ -1163,18 +1140,36 @@ RSpec.describe User, type: :model do
           expect { user.reset_email!(invalid_email) }.to raise_error(ActiveRecord::RecordInvalid)
         end
 
-        # Works
-        it 'cannot update the email column directly - returns errors' do
-          user.update!(email: email)
-          expect(user.errors).not_to be_nil
+        context 'the user is not yet active' do
+          it 'saves the changes to the email column' do
+            expect { user.reset_email!(email) }.to change(user, :email).from(user.email).to(email)
+            expect { user.reset_email!(email) }.to change(user, :saved_change_to_email)
+          end
         end
 
-        # TODO: Does not work!!
-        it 'cannot update the email column directly' do
-          expect { user.update!(email: email) }.to raise_error(ActiveRecord::RecordInvalid)
+        context 'the user is active' do
+          before do
+            user.confirm!
+          end
+
+          it 'saves the changed email in the new_email column' do
+            expect { user.reset_email!(email) }.to change(user, :new_email).from(nil).to(email)
+            expect { user.reset_email!(email) }.to change(user, :saved_change_to_new_email)
+          end
+
+          it 'resets the confirmation code reset count' do
+            user.increment_confirmation_code_reset_count!
+            user.reload
+            expect { user.reset_email!(email) }.to change(user, :email_confirmation_code_reset_count).from(1).to(0)
+            expect { user.reset_email!(email) }.to change(user, :saved_change_to_email_confirmation_code_reset_count?)
+          end
+
+          it 'cannot update the email column directly' do
+            expect { user.update!(email: email) }.to raise_error(ActiveRecord::RecordInvalid)
+          end
         end
 
-        context 'user is passwordless' do
+        context 'user is passwordless and not active' do
           before do
             user.update!(password: nil)
           end

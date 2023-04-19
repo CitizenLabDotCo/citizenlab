@@ -204,8 +204,7 @@ class User < ApplicationRecord
     end
   end
 
-  validate :validate_can_set_new_email, on: :update
-  validate :validate_email_matches_new_email, on: :update
+  validate :validate_can_update_email, on: :update
 
   EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip)
   validate :validate_email_domains_blacklist
@@ -224,19 +223,18 @@ class User < ApplicationRecord
     before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
   end
 
-  # If user confirmation is on then email can only be changed from new_email
-  def validate_email_matches_new_email
-    return unless email_changed? && user_confirmation_enabled? && !email_changed?(to: new_email_was)
+  def validate_can_update_email
+    return unless new_email_changed? || email_changed?
 
-    errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - email not matching new email'
+    if no_password? && confirmation_required?
+      # Avoid security hole where passwordless user can change when they are authenticated without confirmation
+      errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
+    elsif user_confirmation_enabled? && active? && email_changed? && !email_changed?(to: new_email_was)
+      # When new_email is used, email can only be updated from the value in that column
+      errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - email not matching new email'
+    end
   end
 
-  # Avoid situation where somebody can reset an email of a passwordless user when confirmation required
-  def validate_can_set_new_email
-    return unless new_email_changed? && user_confirmation_enabled? && no_password? && !active?
-
-    errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
-  end
 
   scope :admin, -> { where("roles @> '[{\"type\":\"admin\"}]'") }
   scope :not_admin, -> { where.not("roles @> '[{\"type\":\"admin\"}]'") }
@@ -528,7 +526,7 @@ class User < ApplicationRecord
   end
 
   def reset_email!(new_email)
-    if user_confirmation_enabled?
+    if user_confirmation_enabled? && active?
       update!(new_email: new_email, email_confirmation_code_reset_count: 0)
     else
       update!(email: new_email, email_confirmation_code_reset_count: 0)
