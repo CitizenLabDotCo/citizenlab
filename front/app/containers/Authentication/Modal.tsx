@@ -13,6 +13,7 @@ import EmailAndPassword from './steps/EmailAndPassword';
 import EmailConfirmation from './steps/EmailConfirmation';
 import Verification from './steps/Verification';
 import CustomFields from './steps/CustomFields';
+import Invitation from './steps/Invitation';
 import ChangeEmail from './steps/ChangeEmail';
 import LightFlowStart from './steps/LightFlowStart';
 import EmailPolicies from './steps/Policies/EmailPolicies';
@@ -239,6 +240,13 @@ const AuthModal = ({ setModalOpen }: Props) => {
             status={status}
             onSubmit={transition(currentStep, 'SUBMIT')}
             onSkip={transition(currentStep, 'SKIP')}
+          />
+        )}
+
+        {currentStep === 'sign-up:invite' && (
+          <Invitation
+            status={status}
+            onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
 
