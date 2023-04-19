@@ -160,9 +160,7 @@ const ChangeSeatModal = ({
             </Box>
           )}
 
-          <Box mb="24px">
-            <BillingWarning />
-          </Box>
+          {!isChangingToNormalUser && <BillingWarning mb="24px" />}
 
           <Box display="flex">
             <Button

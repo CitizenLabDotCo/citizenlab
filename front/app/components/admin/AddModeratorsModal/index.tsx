@@ -94,9 +94,7 @@ const AddModeratorsModal = ({
             <SeatInfo seatType="moderator" />
           </Box>
 
-          <Box mb="24px">
-            <BillingWarning />
-          </Box>
+          <BillingWarning mb="24px" />
 
           <Box display="flex">
             <Button
