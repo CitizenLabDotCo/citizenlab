@@ -958,33 +958,27 @@ resource 'Users' do
           end
         end
 
-        context 'when the user_confirmation module is active' do
-          before do
-            SettingsService.new.activate_feature! 'user_confirmation'
-          end
+        describe 'updating the user email' do
+          let(:email) { 'new-email@email.com' }
 
-          describe 'Changing the email' do
-            let(:email) { 'new-email@email.com' }
+          context 'when the user_confirmation module is active' do
+            before do
+              SettingsService.new.activate_feature! 'user_confirmation'
+            end
 
-            example_request 'Requires confirmation' do
+            example_request '[error] is not allowed' do
               json_response = json_parse(response_body)
-              expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true
-            end
-
-            example_request 'Sends a confirmation email' do
-              last_email = ActionMailer::Base.deliveries.last
-              user       = User.find(id)
-              expect(last_email.to).to include user.reload.email
-              expect(user.email_confirmation_code_sent_at).not_to be_nil
+              assert_status 422
+              expect(@user.reload.email).not_to eq(email)
+              expect(json_response[:errors][:email][0][:error]).to eq 'change_not_permitted'
             end
           end
 
-          describe 'Changing something else' do
-            let(:user) { create(:user) }
-
-            example_request 'Does not send a confirmation email' do
-              last_email = ActionMailer::Base.deliveries.last
-              expect(last_email).to be_nil
+          context 'when the user_confirmation module is not active' do
+            example_request 'is allowed' do
+              json_response = json_parse(response_body)
+              assert_status 200
+              expect(json_response.dig(:data, :attributes, :email)).to eq(email)
             end
           end
         end

@@ -12,7 +12,6 @@ class ConfirmationsMailer < ApplicationMailer
   end
 
   def to_email
-    # TODO: Remove first_name and last name if no_name?
     email = recipient.new_email.presence || recipient.email
     email_address_with_name(email, "#{recipient.first_name} #{recipient.last_name}")
   end
