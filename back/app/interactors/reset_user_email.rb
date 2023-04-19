@@ -10,7 +10,7 @@ class ResetUserEmail < ApplicationInteractor
 
     context.old_email = user.email
     user.reset_email!(new_email)
-  rescue ActiveRecord::ActiveRecordError => _e
+  rescue ActiveRecord::RecordInvalid => _e
     fail_with_error!(user.errors)
   end
 
