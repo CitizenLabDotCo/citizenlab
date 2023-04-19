@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'Confirm impact on seat usage',
   },
   infoMessage: {
-    id: 'app.containers.admin.inviteUsersWithSeatsModal.infoMessage',
+    id: 'app.containers.admin.inviteUsersWithSeatsModal.infoMessage1',
     defaultMessage:
       'You have reached the limit of available seats within your plan. {additionalSeats} will be added over the limit.',
   },
