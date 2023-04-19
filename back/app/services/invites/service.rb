@@ -99,8 +99,7 @@ class Invites::Service
   def prepare_invitee(params, default_params)
     email = params['email']&.strip
     group_ids = params['group_ids'] || default_params['group_ids'] || []
-    default_params_roles = default_params['roles'].presence || []
-    roles = (params['roles'] + default_params_roles).uniq
+    roles = ((params['roles'] || []) + (default_params['roles'] || [])).uniq
 
     user =
       User.find_by_cimail(email) ||
