@@ -223,19 +223,6 @@ class User < ApplicationRecord
     before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
   end
 
-  def validate_can_update_email
-    return unless new_email_changed? || email_changed?
-
-    if no_password? && confirmation_required?
-      # Avoid security hole where passwordless user can change when they are authenticated without confirmation
-      errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
-    elsif user_confirmation_enabled? && active? && email_changed? && !email_changed?(to: new_email_was)
-      # When new_email is used, email can only be updated from the value in that column
-      errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - email not matching new email'
-    end
-  end
-
-
   scope :admin, -> { where("roles @> '[{\"type\":\"admin\"}]'") }
   scope :not_admin, -> { where.not("roles @> '[{\"type\":\"admin\"}]'") }
   scope :normal_user, -> { where("roles = '[]'::jsonb") }
@@ -541,6 +528,18 @@ class User < ApplicationRecord
   end
 
   private
+
+  def validate_can_update_email
+    return unless new_email_changed? || email_changed?
+
+    if no_password? && confirmation_required?
+      # Avoid security hole where passwordless user can change when they are authenticated without confirmation
+      errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
+    elsif user_confirmation_enabled? && active? && email_changed? && !email_changed?(to: new_email_was)
+      # When new_email is used, email can only be updated from the value in that column
+      errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - email not matching new email'
+    end
+  end
 
   def user_confirmation_enabled?
     AppConfiguration.instance.feature_activated?('user_confirmation')
