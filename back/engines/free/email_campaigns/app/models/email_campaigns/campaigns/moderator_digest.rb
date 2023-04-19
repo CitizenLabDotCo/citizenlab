@@ -72,12 +72,11 @@ module EmailCampaigns
         next unless nonzero_statistics? statistics
 
         project_name = project.title_multiloc[recipient.locale] || project.title_multiloc[I18n.default_locale]
-        puts "project_name: #{project_name.inspect}"
         top_ideas = top_ideas project, name_service
         idea_ids = top_ideas.pluck(:id)
         {
           event_payload: {
-            project: project,
+            project_id: project.id,
             project_name: project_name,
             statistics: statistics,
             top_ideas: top_ideas,

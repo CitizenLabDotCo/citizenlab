@@ -7,10 +7,15 @@ module EmailCampaigns
       top_ideas = Idea.first(3)
       recipient = User.first
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
+      project_id = Idea.first.project.id
+      puts "project_inspect: #{project.inspect}"
+      project_name = project.title_multiloc[recipient.locale] || project.title_multiloc[I18n.default_locale]
 
       command = {
         recipient: recipient,
         event_payload: {
+          project_id: project_id,
+          project_name: project_name,
           statistics: {
             activities: {
               new_ideas: {
