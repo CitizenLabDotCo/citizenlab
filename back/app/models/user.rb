@@ -31,6 +31,7 @@
 #  block_start_at                      :datetime
 #  block_reason                        :string
 #  block_end_at                        :datetime
+#  new_email                           :string
 #
 # Indexes
 #
@@ -50,7 +51,8 @@ class User < ApplicationRecord
   INVITE_STATUSES = %w[pending accepted].freeze
   ROLES = %w[admin project_moderator project_folder_moderator].freeze
   CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlab.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
-  EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+  EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i.freeze
+  EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip).freeze
 
   class << self
     # Deletes all users asynchronously (with side effects).
@@ -133,11 +135,12 @@ class User < ApplicationRecord
   before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
+  with_options if: -> { user_confirmation_enabled? } do
+    before_validation :reset_confirmation_required, if: :email_changed?, on: :create
+    before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
+  end
+  before_validation :complete_registration
 
-  has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
-  has_many :unread_notifications, -> { where read_at: nil }, class_name: 'Notification', foreign_key: :recipient_id
-
-  has_many :initiator_notifications, class_name: 'Notification', foreign_key: :initiating_user_id, dependent: :nullify
   has_many :identities, dependent: :destroy
   has_many :spam_reports, dependent: :nullify
   has_many :activities, dependent: :nullify
@@ -155,6 +158,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
   validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
+  validates :new_email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
   validates :bio_multiloc, multiloc: { presence: false, html: true }
   validates :gender, inclusion: { in: GENDERS }, allow_nil: true
@@ -189,28 +193,33 @@ class User < ApplicationRecord
         record.errors.add(:email, :taken, value: record.email)
       end
     end
+    # new_email should raise email errors
+    if record.new_email
+      if User.find_by_cimail(record.new_email)
+        record.errors.add(:email, :taken, value: record.new_email)
+      elsif record.errors[:new_email].present?
+        ErrorsService.new.remove record.errors, :new_email, :invalid, value: record.new_email
+        record.errors.add(:email, :invalid, value: record.new_email)
+      end
+    end
   end
 
-  EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip)
-  validate :validate_email_domain_blacklist
+  validate :validate_can_update_email, on: :update
+
+  validate :validate_email_domains_blacklist
 
   validates :roles, json: { schema: -> { User.roles_json_schema }, message: ->(errors) { errors } }
 
-  with_options if: -> { AppConfiguration.instance.feature_activated?('user_confirmation') } do
+  with_options if: -> { user_confirmation_enabled? } do
     validates :email_confirmation_code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
     validates :email_confirmation_retry_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
     validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
-
-    with_options if: :email_changed?, on: :create do
-      before_validation :reset_confirmation_required
-    end
-
-    before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
   end
 
-  before_validation :complete_registration
-
   before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
+  has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
+  has_many :unread_notifications, -> { where read_at: nil }, class_name: 'Notification', foreign_key: :recipient_id
+  has_many :initiator_notifications, class_name: 'Notification', foreign_key: :initiating_user_id, dependent: :nullify
 
   scope :admin, -> { where("roles @> '[{\"type\":\"admin\"}]'") }
   scope :not_admin, -> { where.not("roles @> '[{\"type\":\"admin\"}]'") }
@@ -450,7 +459,7 @@ class User < ApplicationRecord
 
   # true if the user has not yet confirmed their email address and the platform requires it
   def confirmation_required?
-    AppConfiguration.instance.feature_activated?('user_confirmation') && confirmation_required
+    user_confirmation_enabled? && confirmation_required
   end
 
   def confirm
@@ -459,8 +468,9 @@ class User < ApplicationRecord
   end
 
   def confirm!
-    return false unless registered_with_email?
+    return unless registered_with_email? && (confirmation_required? || new_email.present?)
 
+    confirm_new_email if new_email.present?
     confirm
     save!
   end
@@ -500,14 +510,38 @@ class User < ApplicationRecord
     save!
   end
 
-  def reset_email!(email)
-    update!(
-      email: email,
-      email_confirmation_code_reset_count: 0
-    )
+  def reset_email!(new_email)
+    if user_confirmation_enabled? && active?
+      update!(new_email: new_email, email_confirmation_code_reset_count: 0)
+    else
+      update!(email: new_email, email_confirmation_code_reset_count: 0)
+    end
+  end
+
+  def confirm_new_email
+    return unless new_email
+
+    self.email = new_email
+    self.new_email = nil
   end
 
   private
+
+  def validate_can_update_email
+    return unless new_email_changed? || email_changed?
+
+    if no_password? && confirmation_required?
+      # Avoid security hole where passwordless user can change when they are authenticated without confirmation
+      errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
+    elsif user_confirmation_enabled? && active? && email_changed? && !email_changed?(to: new_email_was)
+      # When new_email is used, email can only be updated from the value in that column
+      errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - email not matching new email'
+    end
+  end
+
+  def user_confirmation_enabled?
+    AppConfiguration.instance.feature_activated?('user_confirmation')
+  end
 
   # NOTE: registration_completed_at_changed? added to allow tests to change this date manually
   def complete_registration
@@ -544,13 +578,18 @@ class User < ApplicationRecord
     original_authenticate(::Digest::SHA256.hexdigest(unencrypted_password))
   end
 
-  def validate_email_domain_blacklist
-    return if email.blank?
+  def validate_email_domains_blacklist
+    validate_email_domain_blacklist email
+    validate_email_domain_blacklist new_email
+  end
 
-    domain = email.split('@')&.last
-    return unless domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
+  def validate_email_domain_blacklist(email_field)
+    return if email_field.blank?
 
-    errors.add(:email, :domain_blacklisted, value: domain)
+    domain = email_field.split('@')&.last
+    return unless domain
+
+    errors.add(:email, :domain_blacklisted, value: domain) if EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
   end
 
   def validate_minimum_password_length
