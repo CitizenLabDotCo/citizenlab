@@ -1,5 +1,8 @@
 import { parse } from 'qs';
 
+// api
+import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
+
 // cache
 import streams from 'utils/streams';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
@@ -43,7 +46,15 @@ export const sharedSteps = (
         const token = params.token;
 
         if (typeof token === 'string') {
-          updateState({ token });
+          const response = await getUserDataFromToken(token);
+
+          const prefilledBuiltInFields = {
+            first_name: response.data.attributes.first_name ?? undefined,
+            last_name: response.data.attributes.last_name ?? undefined,
+            email: response.data.attributes.email ?? undefined,
+          };
+
+          updateState({ token, prefilledBuiltInFields });
           setCurrentStep('sign-up:email-password');
         } else {
           setCurrentStep('sign-up:invite');
@@ -85,7 +96,11 @@ export const sharedSteps = (
       // When the authentication flow is triggered by an action
       // done by the user
       TRIGGER_REGISTRATION_FLOW: async () => {
-        updateState({ email: null, token: null });
+        updateState({
+          email: null,
+          token: null,
+          prefilledBuiltInFields: null,
+        });
 
         const { requirements } = await getRequirements();
 

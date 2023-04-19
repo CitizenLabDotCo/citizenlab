@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
-
-// api
-import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
+import React, { useEffect } from 'react';
 
 // hooks
 import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
-import useSteps from 'containers/Authentication/useSteps';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -42,7 +38,7 @@ import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 import { Parameters as CreateAccountParameters } from 'api/authentication/sign_up/createAccountWithPassword';
 import { State, Status } from 'containers/Authentication/typings';
 
-interface BaseProps {
+interface Props {
   state: State;
   status: Status;
   onSwitchFlow: () => void;
@@ -50,14 +46,9 @@ interface BaseProps {
   onSubmit: (parameters: CreateAccountParameters) => void;
 }
 
-interface Props extends BaseProps {
-  initialFormValues: Partial<FormValues>;
-}
-
 const EmailAndPasswordSignUp = ({
   state,
   status,
-  initialFormValues,
   onSwitchFlow,
   onGoBack,
   onSubmit,
@@ -83,7 +74,7 @@ const EmailAndPasswordSignUp = ({
 
   const methods = useForm({
     mode: 'onSubmit',
-    defaultValues: initialFormValues,
+    defaultValues: { ...DEFAULT_VALUES, ...state.prefilledBuiltInFields },
     resolver: yupResolver(schema),
   });
 
@@ -195,55 +186,4 @@ const EmailAndPasswordSignUp = ({
   );
 };
 
-interface WrapperProps extends BaseProps {
-  onError: ReturnType<typeof useSteps>['setError'];
-}
-
-const EmailAndPasswordSignUpWrapper = ({
-  state,
-  onError,
-  ...otherProps
-}: WrapperProps) => {
-  const { token } = state;
-  const [prefilledValues, setPrefilledValues] =
-    useState<Partial<FormValues> | null>(null);
-
-  useEffect(() => {
-    if (!token) return;
-    if (prefilledValues) return;
-
-    getUserDataFromToken(token)
-      .then((response) => {
-        setPrefilledValues({
-          first_name: response.data.attributes.first_name ?? undefined,
-          last_name: response.data.attributes.last_name ?? undefined,
-          email: response.data.attributes.email ?? undefined,
-        });
-      })
-      .catch(() => {
-        onError('invitation_error');
-      });
-  }, [token, prefilledValues, onError]);
-
-  if (token) {
-    if (!prefilledValues) return null;
-
-    return (
-      <EmailAndPasswordSignUp
-        {...otherProps}
-        state={state}
-        initialFormValues={prefilledValues}
-      />
-    );
-  }
-
-  return (
-    <EmailAndPasswordSignUp
-      {...otherProps}
-      state={state}
-      initialFormValues={DEFAULT_VALUES}
-    />
-  );
-};
-
-export default EmailAndPasswordSignUpWrapper;
+export default EmailAndPasswordSignUp;

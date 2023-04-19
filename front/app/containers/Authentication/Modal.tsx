@@ -202,7 +202,6 @@ const AuthModal = ({ setModalOpen }: Props) => {
           <EmailAndPasswordSignUp
             state={state}
             status={status}
-            onError={setError}
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onSubmit={transition(currentStep, 'SUBMIT')}

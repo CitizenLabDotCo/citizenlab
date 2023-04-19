@@ -19,6 +19,11 @@ export type ErrorCode =
 export interface State {
   email: string | null;
   token: string | null;
+  prefilledBuiltInFields: {
+    first_name?: string;
+    last_name?: string;
+    email?: string;
+  } | null;
 }
 
 export type UpdateState = (state: Partial<State>) => void;

@@ -6,6 +6,7 @@ import createAccountWithPassword, {
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import { updateUser } from 'services/users';
+import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 
 // tracks
 import tracks from '../../tracks';
@@ -208,8 +209,17 @@ export const oldSignUpFlow = (
 
     'sign-up:invite': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT: (token: string) => {
-        updateState({ token });
+      SUBMIT: async (token: string) => {
+        const response = await getUserDataFromToken(token);
+
+        const prefilledBuiltInFields = {
+          first_name: response.data.attributes.first_name ?? undefined,
+          last_name: response.data.attributes.last_name ?? undefined,
+          email: response.data.attributes.email ?? undefined,
+        };
+
+        updateState({ token, prefilledBuiltInFields });
+
         setCurrentStep('sign-up:email-password');
       },
     },

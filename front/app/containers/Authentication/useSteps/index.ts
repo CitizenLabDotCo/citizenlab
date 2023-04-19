@@ -47,7 +47,11 @@ export default function useSteps() {
   const authenticationDataRef = useRef<AuthenticationData | null>(null);
 
   const [currentStep, setCurrentStep] = useState<Step>('closed');
-  const [state, setState] = useState<State>({ email: null, token: null });
+  const [state, setState] = useState<State>({
+    email: null,
+    token: null,
+    prefilledBuiltInFields: null,
+  });
   const [status, setStatus] = useState<Status>('ok');
   const [error, setError] = useState<ErrorCode | null>(null);
 
