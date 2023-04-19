@@ -40,7 +40,6 @@
 #  index_users_on_slug                       (slug) UNIQUE
 #  users_unique_lower_email_idx              (lower((email)::text)) UNIQUE
 #
-# rubocop:disable Metrics/ClassLength
 class User < ApplicationRecord
   include EmailCampaigns::UserDecorator
   include Onboarding::UserDecorator
@@ -53,6 +52,7 @@ class User < ApplicationRecord
   ROLES = %w[admin project_moderator project_folder_moderator].freeze
   CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlab.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+  EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip)
 
   class << self
     # Deletes all users asynchronously (with side effects).
@@ -135,11 +135,15 @@ class User < ApplicationRecord
   before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
+  with_options if: -> { user_confirmation_enabled? } do
+    with_options if: :email_changed?, on: :create do
+      before_validation :reset_confirmation_required
+    end
 
-  has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
-  has_many :unread_notifications, -> { where read_at: nil }, class_name: 'Notification', foreign_key: :recipient_id
+    before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
+  end
+  before_validation :complete_registration
 
-  has_many :initiator_notifications, class_name: 'Notification', foreign_key: :initiating_user_id, dependent: :nullify
   has_many :identities, dependent: :destroy
   has_many :spam_reports, dependent: :nullify
   has_many :activities, dependent: :nullify
@@ -205,7 +209,6 @@ class User < ApplicationRecord
 
   validate :validate_can_update_email, on: :update
 
-  EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip)
   validate :validate_email_domains_blacklist
 
   validates :roles, json: { schema: -> { User.roles_json_schema }, message: ->(errors) { errors } }
@@ -214,17 +217,12 @@ class User < ApplicationRecord
     validates :email_confirmation_code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
     validates :email_confirmation_retry_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
     validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
-
-    with_options if: :email_changed?, on: :create do
-      before_validation :reset_confirmation_required
-    end
-
-    before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
   end
 
-  before_validation :complete_registration
-
   before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
+  has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
+  has_many :unread_notifications, -> { where read_at: nil }, class_name: 'Notification', foreign_key: :recipient_id
+  has_many :initiator_notifications, class_name: 'Notification', foreign_key: :initiating_user_id, dependent: :nullify
 
   scope :admin, -> { where("roles @> '[{\"type\":\"admin\"}]'") }
   scope :not_admin, -> { where.not("roles @> '[{\"type\":\"admin\"}]'") }
@@ -642,7 +640,6 @@ class User < ApplicationRecord
     Rails.env.development?
   end
 end
-# rubocop:enable Metrics/ClassLength
 
 User.include(IdeaAssignment::Extensions::User)
 User.include(Verification::Patches::User)
