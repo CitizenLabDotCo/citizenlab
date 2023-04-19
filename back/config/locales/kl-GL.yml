@@ -222,7 +222,7 @@ kl:
       subject: "%{organizationName} peqataatitsinikkut nittartagaanut emailit uppernarsaruk"
       header: "Uppernarsaaninnut isissutissat"
       header_message: "Aluu %{firstName}!"
-      confirm_email_address: "Confirm your email address"
+      confirm_email_address: "Emailit uppernarsaruk"
       thanks_for_signing_up: "Qujanaq, %{organizationName} peqataatitsinikkut nittartagaanut ilaasortanngoravit."
       best_regards: "Best regards,"
       ignore_email: "If you didn't request a code, you can safely ignore this email."
