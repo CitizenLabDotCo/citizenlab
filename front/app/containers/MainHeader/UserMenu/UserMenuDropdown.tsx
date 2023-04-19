@@ -145,7 +145,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             <DropdownListItem
               id="e2e-complete-registration-link"
               onClick={() => {
-                triggerAuthenticationFlow({ flow: 'signin' });
+                triggerAuthenticationFlow();
               }}
               buttonStyle="text"
               bgHoverColor={colors.grey300}
