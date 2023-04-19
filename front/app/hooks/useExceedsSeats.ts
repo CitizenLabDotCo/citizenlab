@@ -34,13 +34,16 @@ export const useExceedsSeats = (): ((
     newlyAddedAdminsNumber,
     newlyAddedModeratorsNumber,
   }: ReturnFunctionParameters) => {
+    const expectedNewAdminSeats =
+      seats.data.attributes.admins_number + newlyAddedAdminsNumber;
+    const expectedNewModeratorSeats =
+      seats.data.attributes.moderators_number + newlyAddedModeratorsNumber;
+
     const exceedsAdminSeats = availableAdminSeats
-      ? seats.data.attributes.admins_number + newlyAddedAdminsNumber >
-        availableAdminSeats
+      ? expectedNewAdminSeats > availableAdminSeats
       : false;
     const exceedsModeratorSeats = availableModeratorSeats
-      ? seats.data.attributes.moderators_number + newlyAddedModeratorsNumber >
-        availableModeratorSeats
+      ? expectedNewModeratorSeats > availableModeratorSeats
       : false;
     return {
       admin: exceedsAdminSeats,
