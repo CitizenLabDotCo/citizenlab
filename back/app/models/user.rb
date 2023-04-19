@@ -136,10 +136,7 @@ class User < ApplicationRecord
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
   with_options if: -> { user_confirmation_enabled? } do
-    with_options if: :email_changed?, on: :create do
-      before_validation :reset_confirmation_required
-    end
-
+    before_validation :reset_confirmation_required, if: :email_changed?, on: :create
     before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
   end
   before_validation :complete_registration
