@@ -11,7 +11,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
-import { useExceedsSeats } from 'hooks/useExceedsSeats';
+import useExceedsSeats from 'hooks/useExceedsSeats';
 
 // Utils
 import { TSeatNumber } from 'api/app_configuration/types';

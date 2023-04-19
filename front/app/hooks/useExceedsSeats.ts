@@ -1,6 +1,6 @@
 import useSeats from 'api/seats/useSeats';
 import { isNil } from 'utils/helperUtils';
-import { useAvailableSeats } from './useAvailableSeats';
+import useTotalSeats from './useTotalSeats';
 
 interface ReturnFunctionParameters {
   newlyAddedAdminsNumber: number;
@@ -14,13 +14,13 @@ interface ExceedsSeats {
   all: boolean;
 }
 
-export const useExceedsSeats = (): ((
+export default function useExceedsSeats(): (
   params: ReturnFunctionParameters
-) => ExceedsSeats) => {
-  const availableSeats = useAvailableSeats();
+) => ExceedsSeats {
+  const totalSeats = useTotalSeats();
   const { data: seats } = useSeats();
 
-  if (isNil(seats) || isNil(availableSeats))
+  if (isNil(seats) || isNil(totalSeats))
     return (_params: ReturnFunctionParameters) => ({
       admin: false,
       moderator: false,
@@ -28,7 +28,7 @@ export const useExceedsSeats = (): ((
       all: false,
     });
 
-  const { availableAdminSeats, availableModeratorSeats } = availableSeats;
+  const { totalAdminSeats, totalModeratorSeats } = totalSeats;
 
   return ({
     newlyAddedAdminsNumber,
@@ -39,11 +39,11 @@ export const useExceedsSeats = (): ((
     const expectedNewModeratorSeats =
       seats.data.attributes.moderators_number + newlyAddedModeratorsNumber;
 
-    const exceedsAdminSeats = availableAdminSeats
-      ? expectedNewAdminSeats > availableAdminSeats
+    const exceedsAdminSeats = totalAdminSeats
+      ? expectedNewAdminSeats > totalAdminSeats
       : false;
-    const exceedsModeratorSeats = availableModeratorSeats
-      ? expectedNewModeratorSeats > availableModeratorSeats
+    const exceedsModeratorSeats = totalModeratorSeats
+      ? expectedNewModeratorSeats > totalModeratorSeats
       : false;
     return {
       admin: exceedsAdminSeats,
@@ -52,4 +52,4 @@ export const useExceedsSeats = (): ((
       all: exceedsAdminSeats && exceedsModeratorSeats,
     };
   };
-};
+}

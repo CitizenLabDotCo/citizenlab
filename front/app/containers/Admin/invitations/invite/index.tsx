@@ -27,7 +27,10 @@ const InviteUsersWithSeatsModal = lazy(
   () => import('components/admin/InviteUsersWithSeatsModal')
 );
 import SeatInfo from 'components/SeatInfo';
+
+// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useExceedsSeats from 'hooks/useExceedsSeats';
 
 // services
 import {
@@ -66,7 +69,6 @@ import { darken } from 'polished';
 
 // typings
 import { Locale, IOption } from 'typings';
-import { useExceedsSeats } from 'hooks/useExceedsSeats';
 
 const StyledTabs = styled(Tabs)`
   margin-bottom: 35px;
