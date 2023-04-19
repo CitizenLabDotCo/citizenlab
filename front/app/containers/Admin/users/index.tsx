@@ -31,7 +31,7 @@ const Wrapper = styled.div`
   background: #fff;
   position: fixed;
   right: 0;
-  top: ${(props) => props.theme.menuHeight}px;
+  top: 0px;
   left: 210px;
   bottom: 0;
   ${media.tablet`
