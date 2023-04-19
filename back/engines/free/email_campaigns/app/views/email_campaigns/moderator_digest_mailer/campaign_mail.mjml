@@ -19,7 +19,7 @@
     border-radius="5px"
   >
     <mj-column>
-      <mj-text font-size="18px" align="center" font-weight="700">
+      <mj-text font-size="28px" align="center" font-weight="700">
         <%= event.statistics.users.new_participants.increase %>
         <img
           alt="User icon"
