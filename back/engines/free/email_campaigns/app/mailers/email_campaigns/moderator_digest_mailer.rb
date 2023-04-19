@@ -28,10 +28,6 @@ module EmailCampaigns
       ((statistic.increase - statistic.past_increase) / statistic.increase.to_f * 100).round
     end
 
-    def project
-      @project ||= event.project
-    end
-
     def change_ideas
       @change_ideas ||= increase_from(event.statistics.activities.new_ideas)
     end

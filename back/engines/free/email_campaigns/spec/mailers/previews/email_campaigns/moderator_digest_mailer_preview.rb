@@ -8,7 +8,6 @@ module EmailCampaigns
       recipient = User.first
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       project_id = Idea.first.project.id
-      puts "project_inspect: #{project.inspect}"
       project_name = project.title_multiloc[recipient.locale] || project.title_multiloc[I18n.default_locale]
 
       command = {
