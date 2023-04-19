@@ -22,7 +22,7 @@ import { trackPage } from 'utils/analytics';
 const ConsentManager = lazy(() => import('components/ConsentManager'));
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import ErrorBoundary from 'components/ErrorBoundary';
 import Navigate from 'utils/cl-router/Navigate';
 import Authentication from 'containers/Authentication';
@@ -61,7 +61,6 @@ import { Locale } from 'typings';
 // utils
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useLocation } from 'react-router-dom';
 
