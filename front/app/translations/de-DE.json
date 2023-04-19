@@ -611,7 +611,7 @@
   "app.components.formBuilder.shortAnswer": "Kurze Antwort",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Zeige Antwort an Nutzer*innen",
   "app.components.formBuilder.singleChoice": "Einfachauswahl",
-  "app.components.formBuilder.supportArticleLinkText": "diese Seite",
+  "app.components.formBuilder.supportArticleLinkText": "dieser Seite",
   "app.components.formBuilder.tags": "Schlagwörter",
   "app.components.formBuilder.title": "Titel",
   "app.components.formBuilder.toLabel": "bis",
