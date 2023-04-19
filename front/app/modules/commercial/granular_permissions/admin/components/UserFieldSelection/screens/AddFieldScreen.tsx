@@ -88,6 +88,7 @@ export const AddFieldScreen = ({
         try {
           const newField = await addCustomFieldForUsers({
             ...formValues,
+            enabled: false,
           });
           if (
             (newField.data.id && formValues?.input_type === 'multi_select') ||
