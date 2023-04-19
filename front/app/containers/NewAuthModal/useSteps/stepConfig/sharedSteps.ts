@@ -12,7 +12,11 @@ import { trackEventByName } from 'utils/analytics';
 import { triggerSuccessAction } from 'containers/NewAuthModal/SuccessActions';
 
 // utils
-import { requiredCustomFields, requiredBuiltInFields } from './utils';
+import {
+  requiredCustomFields,
+  requiredBuiltInFields,
+  askCustomFields,
+} from './utils';
 
 // typings
 import {
@@ -48,9 +52,34 @@ export const sharedSteps = (
 
       // When the user returns from SSO
       RESUME_FLOW_AFTER_SSO: async () => {
+        const { flow } = getAuthenticationData();
         const { requirements } = await getRequirements();
-        console.log('hello!');
-        console.log(requirements);
+
+        if (flow === 'signup') {
+          if (requirements.special.verification === 'require') {
+            setCurrentStep('sign-up:verification');
+            return;
+          }
+
+          if (askCustomFields(requirements.custom_fields)) {
+            setCurrentStep('sign-up:custom-fields');
+            return;
+          }
+
+          setCurrentStep('success');
+        }
+
+        if (flow === 'signin') {
+          if (requirements.special.verification === 'require') {
+            setCurrentStep('missing-data:verification');
+            return;
+          }
+
+          if (requiredCustomFields(requirements.custom_fields)) {
+            setCurrentStep('missing-data:custom-fields');
+            return;
+          }
+        }
       },
 
       // When the authentication flow is triggered by an action

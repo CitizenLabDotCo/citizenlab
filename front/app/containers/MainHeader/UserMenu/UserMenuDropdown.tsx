@@ -11,6 +11,7 @@ import signOut from 'api/authentication/sign_in_out/signOut';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
+import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
@@ -18,6 +19,9 @@ import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 // style
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+
+// constants
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/types';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -33,9 +37,13 @@ interface Props {
 
 const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
   const authUser = useAuthUser();
+  const { data: authenticationRequirementsResponse } =
+    useAuthenticationRequirements(GLOBAL_CONTEXT);
 
   const isRegisteredUser =
-    !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
+    !isNilOrError(authUser) &&
+    !!authenticationRequirementsResponse?.data.attributes.requirements
+      .permitted;
 
   const isConfirmedUser =
     !isNilOrError(authUser) && !authUser.attributes.confirmation_required;
@@ -137,7 +145,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             <DropdownListItem
               id="e2e-complete-registration-link"
               onClick={() => {
-                triggerAuthenticationFlow();
+                triggerAuthenticationFlow({ flow: 'signin' });
               }}
               buttonStyle="text"
               bgHoverColor={colors.grey300}
@@ -147,7 +155,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
               padding="11px 11px"
               justify="space-between"
             >
-              <FormattedMessage {...messages.completeRegistration} />
+              <FormattedMessage {...messages.completeProfile} />
             </DropdownListItem>
           )}
 
