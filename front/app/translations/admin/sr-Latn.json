@@ -1804,7 +1804,6 @@
   "app.containers.admin.import.importStepTwo": "2. Postavite vaš finalni dokument",
   "app.containers.admin.import.successMessage": "Datoteka je uspešno uvežena!",
   "app.containers.admin.inviteUsersWithSeatsModal.confirmButtonText": "Потврдите и пошаљите позивнице",
-  "app.containers.admin.inviteUsersWithSeatsModal.infoMessage": "Ви позивате {noOfUsers, plural, one {1 корисник} other {# корисника}} са {seatType} права. На основу тога колико корисника је укључено у позивницу, можда ћете морати да купите додатна места.",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "Pored registrovanih korisnika, neregistrovani korisnici koji budu dali adresu e-pošte i potvrdili je moći će da preduzimaju korake. Izaberite ovu opciju kako biste snizili prag učešća.",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administratori i projektni menadžeri",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Bilo ko",

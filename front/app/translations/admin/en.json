@@ -1808,7 +1808,7 @@
   "app.containers.admin.inviteUsersWithSeatsModal.additionalManagerSeats": "{seats, plural, one {1 additional manager seat} other {# additional manager seats}}",
   "app.containers.admin.inviteUsersWithSeatsModal.confirmButtonText": "Confirm and send out invitations",
   "app.containers.admin.inviteUsersWithSeatsModal.confirmSeatUsageChange": "Confirm impact on seat usage",
-  "app.containers.admin.inviteUsersWithSeatsModal.infoMessage": "You are inviting {noOfUsers, plural, one {1 user} other {# users}} with {seatType} rights. Based on how many users are included in the invitation, you may need to buy additional seats.",
+  "app.containers.admin.inviteUsersWithSeatsModal.infoMessage1": "You have reached the limit of available seats within your plan. {additionalSeats} will be added over the limit.",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "In addition to registered users, unregistered users who provide an email and confirm it will be able to take the action. Select this option to lower the barrier for participation.",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administrators",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Anyone",

@@ -1804,7 +1804,6 @@
   "app.containers.admin.import.importStepTwo": "2. Subar el modelo completo",
   "app.containers.admin.import.successMessage": "¡Archivo importado con éxito!",
   "app.containers.admin.inviteUsersWithSeatsModal.confirmButtonText": "Confirmar y enviar las invitaciones",
-  "app.containers.admin.inviteUsersWithSeatsModal.infoMessage": "Estás invitando {noOfUsers, plural, one {1 usuario} other {# usuarios}} con derechos {seatType} . En función del número de usuarios incluidos en la invitación, es posible que tenga que comprar plazas adicionales.",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "Además de los usuarios registrados, los usuarios no registrados que faciliten un correo electrónico y lo confirmen podrán realizar la acción. Seleccione esta opción para reducir el límite de participación.",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administradores y moderadores",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Cualquiera",

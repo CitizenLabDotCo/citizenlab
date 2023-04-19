@@ -1804,7 +1804,6 @@
   "app.containers.admin.import.importStepTwo": "2. Upload din færdige skabelonfil",
   "app.containers.admin.import.successMessage": "Filen er importeret med succes!",
   "app.containers.admin.inviteUsersWithSeatsModal.confirmButtonText": "Bekræft og send invitationer ud",
-  "app.containers.admin.inviteUsersWithSeatsModal.infoMessage": "Du er i færd med at invitere {noOfUsers, plural, one {1 bruger} other {# brugere}} med {seatType} rettigheder. Afhængigt af hvor mange brugere der er inkluderet i invitationen, skal du muligvis købe yderligere pladser.",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "Ud over registrerede brugere kan også uregistrerede brugere, der oplyser en e-mail og bekræfter den, foretage handlingen. Vælg denne indstilling for at sænke barrieren for deltagelse.",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administratorer",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Alle",
