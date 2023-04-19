@@ -97,4 +97,64 @@ describe('useExceedsSeats', () => {
       all: true,
     });
   });
+
+  it('should return correct values when equal to the admin limit', () => {
+    const { result } = renderHook(() => useExceedsSeats());
+    const exceedsSeats = result.current({
+      newlyAddedAdminsNumber: 3,
+      newlyAddedModeratorsNumber: 0,
+    });
+
+    expect(exceedsSeats).toEqual({
+      admin: false,
+      moderator: false,
+      any: false,
+      all: false,
+    });
+  });
+
+  it('should return correct values when equal to the moderator limit', () => {
+    const { result } = renderHook(() => useExceedsSeats());
+    const exceedsSeats = result.current({
+      newlyAddedAdminsNumber: 0,
+      newlyAddedModeratorsNumber: 3,
+    });
+
+    expect(exceedsSeats).toEqual({
+      admin: false,
+      moderator: false,
+      any: false,
+      all: false,
+    });
+  });
+
+  it('should return correct values when exceeding the admin limit by 1', () => {
+    const { result } = renderHook(() => useExceedsSeats());
+    const exceedsSeats = result.current({
+      newlyAddedAdminsNumber: 4,
+      newlyAddedModeratorsNumber: 0,
+    });
+
+    expect(exceedsSeats).toEqual({
+      admin: true,
+      moderator: false,
+      any: true,
+      all: false,
+    });
+  });
+
+  it('should return correct values when exceeding the moderator limit by 1', () => {
+    const { result } = renderHook(() => useExceedsSeats());
+    const exceedsSeats = result.current({
+      newlyAddedAdminsNumber: 0,
+      newlyAddedModeratorsNumber: 4,
+    });
+
+    expect(exceedsSeats).toEqual({
+      admin: false,
+      moderator: true,
+      any: true,
+      all: false,
+    });
+  });
 });

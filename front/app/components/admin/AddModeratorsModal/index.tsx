@@ -29,7 +29,6 @@ const AddModeratorsModal = ({
   const [showSuccess, setShowSuccess] = useState(false);
 
   const exceedsSeats = useExceedsSeats()({
-    newlyAddedAdminsNumber: 0,
     newlyAddedModeratorsNumber: 1,
   });
 

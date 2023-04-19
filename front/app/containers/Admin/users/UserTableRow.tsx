@@ -100,7 +100,6 @@ const UserTableRow = ({
 
   const exceedsSeats = useExceedsSeats()({
     newlyAddedAdminsNumber: 1,
-    newlyAddedModeratorsNumber: 0,
   });
 
   const closeChangeSeatModal = () => {

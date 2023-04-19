@@ -45,7 +45,6 @@ const UserSearch = memo(({ projectId }: Props) => {
     useState<UserOptionTypeBase | null>(null);
 
   const exceedsSeats = useExceedsSeats()({
-    newlyAddedAdminsNumber: 0,
     newlyAddedModeratorsNumber: 1,
   });
 

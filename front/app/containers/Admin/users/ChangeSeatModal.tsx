@@ -80,7 +80,6 @@ const ChangeSeatModal = ({
 
   const exceedsSeats = useExceedsSeats()({
     newlyAddedAdminsNumber: 1,
-    newlyAddedModeratorsNumber: 0,
   });
 
   const confirmChangeQuestion = getInfoText(

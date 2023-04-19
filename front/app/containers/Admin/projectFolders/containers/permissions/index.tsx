@@ -57,7 +57,6 @@ const FolderPermissions = () => {
     useState<UserOptionTypeBase | null>(null);
 
   const exceedsSeats = useExceedsSeats()({
-    newlyAddedAdminsNumber: 0,
     newlyAddedModeratorsNumber: 1,
   });
 
