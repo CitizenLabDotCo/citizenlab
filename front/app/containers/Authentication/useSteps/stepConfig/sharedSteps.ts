@@ -46,7 +46,7 @@ export const sharedSteps = (
           updateState({ token });
           setCurrentStep('sign-up:email-password');
         } else {
-          setCurrentStep('closed'); // TODO
+          setCurrentStep('sign-up:invite');
         }
       },
 

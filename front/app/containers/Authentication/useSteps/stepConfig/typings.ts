@@ -14,6 +14,7 @@ export type Step =
   | 'sign-up:change-email'
   | 'sign-up:verification'
   | 'sign-up:custom-fields'
+  | 'sign-up:invite'
 
   // light flow
   | 'light-flow:email'

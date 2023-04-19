@@ -52,6 +52,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sign-up:change-email': messages.signUp,
   'sign-up:verification': messages.verifyYourIdentity,
   'sign-up:custom-fields': messages.completeYourProfile,
+  'sign-up:invite': messages.signUp,
 
   // light flow
   'light-flow:email': messages.beforeYouParticipate,

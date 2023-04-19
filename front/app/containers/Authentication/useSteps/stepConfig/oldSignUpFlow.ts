@@ -21,6 +21,7 @@ import {
   AuthProvider,
   ErrorCode,
   GetRequirements,
+  UpdateState,
 } from '../../typings';
 import { Step } from './typings';
 
@@ -30,6 +31,7 @@ export const oldSignUpFlow = (
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
   setError: (errorCode: ErrorCode) => void,
+  updateState: UpdateState,
   anySSOProviderEnabled: boolean
 ) => {
   return {
@@ -201,6 +203,14 @@ export const oldSignUpFlow = (
       SKIP: async () => {
         setCurrentStep('success');
         trackEventByName(tracks.signUpCustomFieldsStepSkipped);
+      },
+    },
+
+    'sign-up:invite': {
+      CLOSE: () => setCurrentStep('closed'),
+      SUBMIT: (token: string) => {
+        updateState({ token });
+        setCurrentStep('sign-up:email-password');
       },
     },
   };

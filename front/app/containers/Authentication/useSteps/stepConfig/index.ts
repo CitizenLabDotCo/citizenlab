@@ -49,6 +49,7 @@ export const getStepConfig = (
       setCurrentStep,
       setStatus,
       setError,
+      updateState,
       anySSOEnabled
     ),
 
