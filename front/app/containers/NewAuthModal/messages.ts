@@ -13,4 +13,20 @@ export default defineMessages({
     id: 'app.containers.NewAuthModal.confirmYourEmail',
     defaultMessage: 'Confirm your email',
   },
+  signUp: {
+    id: 'app.containers.SignUp.signUp2',
+    defaultMessage: 'Sign up',
+  },
+  invitationError: {
+    id: 'app.containers.SignUp.invitationError',
+    defaultMessage: 'Your invitation has expired or has already been redeemed.',
+  },
+  verifyYourIdentity: {
+    id: 'app.components.VerificationModal.verifyYourIdentity',
+    defaultMessage: 'Verify your identity',
+  },
+  completeYourProfile: {
+    id: 'app.containers.NewAuthModal.completeYourProfile',
+    defaultMessage: 'Complete your profile',
+  },
 });

@@ -28,6 +28,7 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Registracija putem telefona ili e-pošte",
   "app.components.Author.a11y_postedBy": "Autor objave:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} sudionika",
+  "app.components.BillingWarning.billingWarning": "Nakon što se dodaju dodatna mjesta, vaša naplata će se povećati. Obratite se svom GovSuccess Manageru da saznate više o tome.",
   "app.components.CityLogoSection.iframeTitle": "Više informacija o {orgName}",
   "app.components.Comments.cancel": "Odustani",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Komentiranje nije moguće u trenutnoj fazi.",

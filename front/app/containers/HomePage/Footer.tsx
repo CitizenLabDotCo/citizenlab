@@ -4,7 +4,9 @@ import React from 'react';
 import useAuthUser from 'hooks/useAuthUser';
 import useLocalize from 'hooks/useLocalize';
 import useHomepageSettings from 'hooks/useHomepageSettings';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // utils
 import { trackEventByName } from 'utils/analytics';
@@ -59,14 +61,13 @@ const Footer = () => {
   const authUser = useAuthUser();
   const localize = useLocalize();
   const homepageSettings = useHomepageSettings();
-  const openAuthModal = useOpenAuthModal();
 
   const signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
     trackEventByName(tracks.clickCreateAccountCTA, {
       extra: { location: 'footer' },
     });
-    openAuthModal();
+    triggerAuthenticationFlow();
   };
 
   if (!isNilOrError(homepageSettings)) {

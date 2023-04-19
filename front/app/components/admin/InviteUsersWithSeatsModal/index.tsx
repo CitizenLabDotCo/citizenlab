@@ -21,6 +21,7 @@ import useSeats from 'api/seats/useSeats';
 // Utils
 import { isNil } from 'utils/helperUtils';
 import { TSeatNumber } from 'api/app_configuration/types';
+import BillingWarning from 'components/SeatInfo/BillingWarning';
 
 export type SeatTypeTSeatNumber = {
   [key in TSeatType]: TSeatNumber;
@@ -117,8 +118,8 @@ const InviteUsersWithSeatsModal = ({
           hasExceededPlanSeatLimit={hasExceededPlanSeatLimit}
         />
       ) : (
-        <Box display="flex" flexDirection="column" width="100%" p="32px">
-          <Text color="textPrimary" fontSize="m" my="0px">
+        <Box display="flex" flexDirection="column" p="32px">
+          <Text color="textPrimary" mt="0" mb="24px">
             <FormattedMessage
               {...messages.infoMessage}
               values={{
@@ -127,11 +128,14 @@ const InviteUsersWithSeatsModal = ({
               }}
             />
           </Text>
-          <Box py="32px">
+          <Box mb="24px">
             <SeatInfo seatType={seatType} />
           </Box>
 
+          <BillingWarning mb="24px" />
+
           <Checkbox
+            mb="24px"
             checked={hasAcknowledged}
             onChange={onChange}
             label={
@@ -144,12 +148,12 @@ const InviteUsersWithSeatsModal = ({
           />
 
           {showWarning && (
-            <Box mt="12px">
+            <Box mb="24px">
               <Error text={formatMessage(messages.acceptWarning)} />
             </Box>
           )}
 
-          <Box display="flex" mt="32px">
+          <Box display="flex">
             <Button
               onClick={handleConfirmClick}
               data-testid="confirm-button-text"

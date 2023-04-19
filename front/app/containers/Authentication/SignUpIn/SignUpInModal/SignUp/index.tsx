@@ -6,7 +6,9 @@ import { completeRegistration } from 'services/users';
 
 // components
 import Header from './Header';
-import AuthProviders, { AuthProvider } from 'components/AuthProviders';
+import AuthProviders, {
+  AuthProvider,
+} from 'containers/NewAuthModal/steps/AuthProviders';
 import PasswordSignup from './PasswordSignup';
 import ConfirmationSignupStep from './ConfirmationSignupStep';
 import CustomFieldsSignupStep from './CustomFieldsSignupStep';
@@ -14,7 +16,6 @@ import Success from './Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { StyledModalContentContainer } from '../styles';
-import VerificationSignUpStep from './VerificationSignUpStep';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -50,7 +51,7 @@ import tracks from '../tracks';
 import styled, { useTheme } from 'styled-components';
 
 // typings
-import { ISignUpInMetaData, openSignUpInModal } from 'events/openSignUpInModal';
+import { AuthenticationData } from 'containers/NewAuthModal/typings';
 import { Multiloc } from 'typings';
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import { UserCustomFieldsInfos } from 'services/userCustomFields';
@@ -91,12 +92,12 @@ export type TSignUpStepConfigurationObject = {
   ) => Multiloc | null | undefined;
   isEnabled: (
     authUser: TAuthUser,
-    metaData: ISignUpInMetaData,
+    metaData: any,
     localState: ILocalState
   ) => boolean;
   isActive: (
     authUser: TAuthUser,
-    metaData: ISignUpInMetaData,
+    metaData: any,
     localState: ILocalState
   ) => boolean;
   canTriggerRegistration: boolean;
@@ -107,7 +108,7 @@ export type TSignUpConfiguration = {
 };
 
 export interface Props {
-  metaData: ISignUpInMetaData;
+  metaData: AuthenticationData;
   onSignUpCompleted: () => void;
   onGoToSignIn: () => void;
   className?: string;
@@ -141,7 +142,7 @@ const SignUp = ({
   const [emailSignUpSelected, setEmailSignUpSelected] = useState(false);
   const [accountCreated, setAccountCreated] = useState(false);
   const [activeStep, setActiveStep] = useState<TSignUpStep | null>(
-    metaData.isInvitation ? 'password-signup' : 'auth-providers'
+    'auth-providers'
   );
   const [enabledSteps, setEnabledSteps] = useState<TSignUpStep[]>(
     getEnabledSteps(configuration, authUser, metaData, {
@@ -240,14 +241,11 @@ const SignUp = ({
     setHeaderHeight(`${Math.round(height) + 2}px`);
   };
 
-  const handleSelectAuthProvider = (
-    selectedAuthProvider: AuthProvider,
-    setHrefFromModule?: () => void
-  ) => {
+  const handleSelectAuthProvider = (selectedAuthProvider: AuthProvider) => {
     if (selectedAuthProvider === 'email') {
       setEmailSignUpSelected(true);
     } else {
-      handleOnSSOClick(selectedAuthProvider, metaData, setHrefFromModule);
+      handleOnSSOClick(selectedAuthProvider, metaData, false);
     }
   };
 
@@ -273,15 +271,6 @@ const SignUp = ({
   const stepDescription = activeStepConfiguration?.stepDescriptionMessage
     ? formatMessage(activeStepConfiguration.stepDescriptionMessage)
     : '';
-
-  const handleSkipVerification = () => {
-    openSignUpInModal({
-      ...metaData,
-      verification: false,
-      context: undefined,
-    });
-    onCompleteActiveStep();
-  };
 
   return (
     <Container id="e2e-sign-up-container" className={className ?? ''}>
@@ -319,9 +308,9 @@ const SignUp = ({
 
             {activeStep === 'auth-providers' && (
               <AuthProviders
-                metaData={metaData}
-                onAuthProviderSelected={handleSelectAuthProvider}
-                goToOtherFlow={onGoToSignIn}
+                flow={metaData.flow}
+                onSelectAuthProvider={handleSelectAuthProvider}
+                onSwitchFlow={onGoToSignIn}
               />
             )}
 
@@ -341,15 +330,6 @@ const SignUp = ({
 
             {activeStep === 'confirmation' && userConfirmation && (
               <ConfirmationSignupStep onCompleted={onCompleteActiveStep} />
-            )}
-
-            {activeStep === 'verification' && (
-              <VerificationSignUpStep
-                metaData={metaData}
-                onError={handleStepError}
-                onSkipped={handleSkipVerification}
-                onCompleted={onCompleteActiveStep}
-              />
             )}
 
             {activeStep === 'custom-fields' && (

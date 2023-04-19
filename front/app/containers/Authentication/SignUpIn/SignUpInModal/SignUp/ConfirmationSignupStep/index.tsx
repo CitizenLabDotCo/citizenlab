@@ -1,8 +1,10 @@
 import React, { useState, FormEvent } from 'react';
 
 // services
-import confirmEmail, { IConfirmation } from 'api/authentication/confirmEmail';
-import resendEmailConfirmationCode from 'api/authentication/resendEmailConfirmationCode';
+import confirmEmail, {
+  IConfirmation,
+} from 'api/authentication/confirm_email/confirmEmail';
+import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 
 // components
 import Error from 'components/UI/Error';

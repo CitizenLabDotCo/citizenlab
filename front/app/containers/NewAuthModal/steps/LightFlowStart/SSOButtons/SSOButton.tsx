@@ -15,7 +15,7 @@ import { colors } from 'utils/styleUtils';
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import oldMessages from 'components/AuthProviders/messages';
+import oldMessages from 'containers/NewAuthModal/steps/AuthProviders/messages';
 
 // typings
 import { SSOProviderWithoutVienna } from 'containers/NewAuthModal/typings';

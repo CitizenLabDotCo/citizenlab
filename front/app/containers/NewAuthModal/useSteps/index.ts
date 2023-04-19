@@ -1,13 +1,26 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 
 // api
-import getAuthenticationRequirements from 'api/authentication_requirements/getAuthenticationRequirements';
+import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
+import { invalidateAllActionDescriptors } from 'containers/NewAuthModal/useSteps/invalidateAllActionDescriptors';
+import requirementsKeys from 'api/authentication/authentication_requirements/keys';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+
+// hooks
+import useAnySSOEnabled from '../useAnySSOEnabled';
+import { useLocation } from 'react-router-dom';
 
 // utils
 import { getStepConfig } from './stepConfig';
 
 // events
-import { triggerAuthenticationFlow$ } from '../events';
+import {
+  triggerAuthenticationFlow$,
+  triggerVerificationOnly$,
+} from '../events';
+
+// constants
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/types';
 
 // typings
 import {
@@ -19,11 +32,16 @@ import {
   AuthenticationData,
 } from '../typings';
 
+let initialized = false;
+
 export default function useSteps() {
+  const anySSOEnabled = useAnySSOEnabled();
+  const { pathname, search } = useLocation();
+
   const authenticationDataRef = useRef<AuthenticationData | null>(null);
 
   const [currentStep, setCurrentStep] = useState<Step>('closed');
-  const [state, setState] = useState<State>({ email: null });
+  const [state, setState] = useState<State>({ email: null, token: null });
   const [status, setStatus] = useState<Status>('ok');
   const [error, setError] = useState<ErrorCode | null>(null);
 
@@ -70,9 +88,10 @@ export default function useSteps() {
       setCurrentStep,
       setStatus,
       setError,
-      updateState
+      updateState,
+      anySSOEnabled
     );
-  }, [getAuthenticationData, getRequirements, updateState]);
+  }, [getAuthenticationData, getRequirements, updateState, anySSOEnabled]);
 
   const transition = useCallback(
     <S extends Step, T extends keyof StepConfig[S]>(
@@ -83,6 +102,11 @@ export default function useSteps() {
 
       const wrappedAction = ((...args) => {
         setError(null);
+        if (transition === 'CLOSE') {
+          invalidateAllActionDescriptors();
+          queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
+        }
+
         // @ts-ignore
         action(...args);
       }) as StepConfig[S][T];
@@ -103,11 +127,48 @@ export default function useSteps() {
     return () => subscription.unsubscribe();
   }, [currentStep, transition]);
 
+  useEffect(() => {
+    const subscription = triggerVerificationOnly$.subscribe(() => {
+      if (currentStep !== 'closed') return;
+
+      authenticationDataRef.current = {
+        flow: 'signup',
+        context: GLOBAL_CONTEXT,
+      };
+      transition(currentStep, 'TRIGGER_VERIFICATION_ONLY')();
+    });
+
+    return () => subscription.unsubscribe();
+  }, [currentStep, transition]);
+
+  useEffect(() => {
+    if (initialized) return;
+    initialized = true;
+    if (currentStep !== 'closed') return;
+
+    if (pathname.endsWith('/invite')) {
+      authenticationDataRef.current = {
+        flow: 'signup',
+        context: GLOBAL_CONTEXT,
+      };
+
+      transition(currentStep, 'START_INVITE_FLOW')(search);
+
+      // Remove all parameters from URL as they've already been captured
+      window.history.replaceState(null, '', '/');
+      return;
+    }
+
+    // TODO
+  }, [pathname, search, currentStep, transition]);
+
   return {
     currentStep,
     state,
     status,
     error,
+    authenticationData: authenticationDataRef.current,
     transition,
+    setError,
   };
 }

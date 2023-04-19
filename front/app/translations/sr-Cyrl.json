@@ -28,6 +28,7 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Пријавите се путем телефона или е-поште",
   "app.components.Author.a11y_postedBy": "Поставио:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} учесника",
+  "app.components.BillingWarning.billingWarning": "Once additional seats are added, your billing will be increased. Reach out to your GovSuccess Manager to learn more about it.",
   "app.components.CityLogoSection.iframeTitle": "Више информација о {orgName}",
   "app.components.Comments.cancel": "Поништити, отказати",
   "app.components.Comments.commentingDisabledInCurrentPhase": "У тренутној фази коментарисање није могуће.",

@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import streams from 'utils/streams';
 import { ICommentVote } from './types';
 
-const deleteVote = async ({
+export const deleteCommentVote = async ({
   commentId: _commentId,
   voteId,
 }: {
@@ -18,7 +18,7 @@ const deleteVote = async ({
 
 const useDeleteVote = () => {
   return useMutation({
-    mutationFn: deleteVote,
+    mutationFn: deleteCommentVote,
     onSuccess: (_data, { commentId }) => {
       streams.fetchAllWith({
         apiEndpoint: [`${API_PATH}/comments/${commentId}`],

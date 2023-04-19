@@ -31,6 +31,15 @@ export default function useInitiativesPermissions(
         });
       } else {
         switch (actionDescriptor?.disabled_reason) {
+          case 'missing_data': {
+            setActionPermission({
+              show: true,
+              enabled: 'maybe',
+              disabledReason: null,
+              authenticationRequirements: 'complete_registration',
+            });
+            break;
+          }
           case 'not_verified':
             if (isNilOrError(authUser)) {
               setActionPermission({

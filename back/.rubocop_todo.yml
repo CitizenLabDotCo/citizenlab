@@ -80,7 +80,7 @@ Metrics/BlockNesting:
 # Offense count: 1
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ClassLength:
-  Max: 401
+  Max: 405
   CountAsOne: ['array', 'hash', 'heredoc']
   Exclude:
     - 'app/models/user.rb'

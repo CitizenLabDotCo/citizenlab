@@ -1,5 +1,5 @@
 import React from 'react';
-import { isError, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import TypeformSurvey from './TypeformSurvey';
@@ -10,31 +10,28 @@ import QualtricsSurvey from './QualtricsSurvey';
 import SmartSurvey from './SmartSurvey';
 import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
 import SnapSurvey from './SnapSurvey';
+import KonveioSurvey from './KonveioSurvey';
 import Warning from 'components/UI/Warning';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
-// services
-import {
-  getSurveyTakingRules,
-  ISurveyTakingDisabledReason,
-} from 'services/actionTakingRules';
-
 // hooks
-import usePhase from 'hooks/usePhase';
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // i18n
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // events
-import { openVerificationModal } from 'events/verificationModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // styling
 import styled from 'styled-components';
 import SurveyXact from './SurveyXact';
+import usePhase from 'hooks/usePhase';
+
+// utils
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 const Container = styled.div`
   position: relative;
@@ -52,17 +49,13 @@ interface Props {
   className?: string;
 }
 
-const disabledMessage: {
-  [key in ISurveyTakingDisabledReason]: MessageDescriptor;
-} = {
-  projectInactive: messages.surveyDisabledProjectInactive,
-  maybeNotPermitted: messages.surveyDisabledMaybeNotPermitted,
-  maybeNotVerified: messages.surveyDisabledMaybeNotVerified,
-  notPermitted: messages.surveyDisabledNotPermitted,
-  notActivePhase: messages.surveyDisabledNotActivePhase,
-  notVerified: messages.surveyDisabledNotVerified,
-  notActive: messages.surveyDisabledNotActiveUser,
-};
+const disabledMessages = {
+  project_inactive: messages.surveyDisabledProjectInactive,
+  not_active: messages.surveyDisabledNotActiveUser,
+  not_verified: messages.surveyDisabledNotVerified,
+  missing_data: messages.surveyDisabledNotActiveUser,
+  not_signed_in: messages.surveyDisabledMaybeNotPermitted,
+} as const;
 
 const Survey = ({
   projectId,
@@ -72,37 +65,18 @@ const Survey = ({
   className,
 }: Props) => {
   const project = useProject({ projectId });
-  const phase = usePhase(phaseId || null);
   const authUser = useAuthUser();
-  const openAuthModal = useOpenAuthModal();
-
-  const onVerify = () => {
-    const pcId = phaseId || projectId;
-    const pcType = phaseId ? 'phase' : 'project';
-
-    if (pcId && pcType) {
-      openVerificationModal({
-        context: {
-          action: 'taking_survey',
-          id: pcId,
-          type: pcType,
-        },
-      });
-    }
-  };
+  const phase = usePhase(phaseId ?? null);
 
   const signUpIn = (flow: 'signin' | 'signup') => {
     if (!isNilOrError(project)) {
       const pcType = phaseId ? 'phase' : 'project';
       const pcId = phaseId ?? projectId;
-      const takingSurveyDisabledReason =
-        project.attributes?.action_descriptor?.taking_survey?.disabled_reason;
 
       if (!pcId || !pcType) return;
 
-      openAuthModal({
+      triggerAuthenticationFlow({
         flow,
-        verification: takingSurveyDisabledReason === 'not_verified',
         context: {
           action: 'taking_survey',
           id: pcId,
@@ -121,11 +95,8 @@ const Survey = ({
   };
 
   if (!isNilOrError(project)) {
-    const { enabled, disabledReason } = getSurveyTakingRules({
-      project,
-      phaseContext: !isError(phase) ? phase : null,
-      signedIn: !isNilOrError(authUser),
-    });
+    const { enabled, disabled_reason } =
+      project.attributes.action_descriptor.taking_survey;
 
     if (enabled) {
       const email = !isNilOrError(authUser) ? authUser.attributes.email : null;
@@ -187,20 +158,37 @@ const Survey = ({
           {surveyService === 'snap_survey' && (
             <SnapSurvey snapSurveyUrl={surveyEmbedUrl} />
           )}
+
+          {surveyService === 'konveio' && (
+            <KonveioSurvey
+              konveioSurveyUrl={surveyEmbedUrl}
+              email={email || null}
+            />
+          )}
         </Container>
       );
     }
+
+    const notCurrentPhase =
+      project.attributes.process_type === 'timeline' &&
+      !isNilOrError(phase) &&
+      pastPresentOrFuture([
+        phase.attributes.start_at,
+        phase.attributes.end_at,
+      ]) !== 'present';
+
+    const message = notCurrentPhase
+      ? messages.surveyDisabledNotActivePhase
+      : disabledMessages[disabled_reason] ?? messages.surveyDisabledNotPossible;
 
     return (
       <Container className={`warning ${className || ''}`}>
         <Warning icon="lock">
           <FormattedMessage
-            {...(disabledReason
-              ? disabledMessage[disabledReason]
-              : messages.surveyDisabledNotPossible)}
+            {...message}
             values={{
               verificationLink: (
-                <button onClick={onVerify}>
+                <button onClick={signUp}>
                   <FormattedMessage {...messages.verificationLinkText} />
                 </button>
               ),

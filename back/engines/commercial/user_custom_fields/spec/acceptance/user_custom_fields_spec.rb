@@ -24,6 +24,23 @@ resource 'User Custom Fields' do
       expect(json_response[:data].size).to eq 3
     end
 
+    example 'List all custom fields with the projects that they are used in' do
+      project = create(:continuous_project)
+      permission = create(:permission, permission_scope: project)
+      create(:permissions_custom_field, custom_field: @custom_fields[0], permission: permission)
+
+      phase_project = create(:project_with_phases)
+      phase_permission = create(:permission, permission_scope: phase_project.phases[0])
+      create(:permissions_custom_field, custom_field: @custom_fields[0], permission: phase_permission)
+
+      do_request
+      assert_status 200
+      expect(json_response_body.dig(:data, 0, :relationships, :projects, :data, 0, :id)).to eq project.id
+      expect(json_response_body.dig(:included, 0, :id)).to eq project.id
+      expect(json_response_body.dig(:data, 0, :relationships, :projects, :data, 1, :id)).to eq phase_project.id
+      expect(json_response_body.dig(:included, 1, :id)).to eq phase_project.id
+    end
+
     describe 'do filter on input types' do
       before do
         create(:custom_field_multiselect)
@@ -67,7 +84,8 @@ resource 'User Custom Fields' do
             data: custom_field.options.map do |option|
               { id: option.id, type: 'custom_field_option' }
             end
-          }
+          },
+          projects: { data: [] }
         }
       }.deep_symbolize_keys
     end
@@ -254,24 +272,31 @@ resource 'User Custom Fields' do
     end
 
     delete 'web_api/v1/users/custom_fields/:id' do
-      let(:custom_field) { create(:custom_field) }
+      let(:custom_field) { create(:custom_field, key: 'new_field') }
       let(:id) { custom_field.id }
 
-      example_request 'Delete a custom field' do
+      example 'Delete a custom field, user saved values and permission relationships' do
+        permission = create(:permission)
+        permissions_custom_field = create(:permissions_custom_field, custom_field: custom_field, permission: permission)
+        user_with_fields = create(:user, custom_field_values: { new_field: 'a value' })
+
+        do_request
         expect(response_status).to eq 200
         expect { CustomField.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { PermissionsCustomField.find(permissions_custom_field.id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect(user_with_fields.reload.custom_field_values).to eq({})
       end
 
       example "[error] Delete a custom field that's still referenced in a rules group" do
         create(
           :smart_group,
           rules: [
-            { ruleType: 'custom_field_text', customFieldId: id, predicate: 'is_empty' }
+            { ruleType: 'custom_field_text', customFieldId: custom_field.id, predicate: 'is_empty' }
           ]
         )
         do_request
         assert_status 422
-        expect(CustomField.find(id)).to be_present
+        expect(CustomField.find(custom_field.id)).to be_present
       end
     end
   end

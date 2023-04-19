@@ -1107,7 +1107,6 @@
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Nittartagarput qimanngikkaluarlugu misissuinermik pilersitsigit.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Isumasiuinermik pilersitsigit",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Apersuinermi immersugassamik arlalinnik toqqagassalimmik pilersitsigit.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription": "Embed a Typeform, Google Form, Enalyzer, Qualtrics or SurveyXact survey.",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Suliniutit qupperneranni pingaarnermi ilanngussat nuisanerisa nalinginnaasumik tulleriiaarneri inississorsinnaavatit.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sorting",
   "app.containers.AdminPage.ProjectEdit.departments": "Immikkoortortaqarfiit",

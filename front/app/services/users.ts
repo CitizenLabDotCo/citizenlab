@@ -6,14 +6,13 @@ import { TRole } from 'services/permissions/roles';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import seatsKeys from 'api/seats/keys';
+import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 
 const apiEndpoint = `${API_PATH}/users`;
 
 export interface IUserAttributes {
-  first_name: string;
-  // CL1 legacy: last names used to not be required
-  // or when signing up with Google, it can be null too
-  last_name: string | null;
+  first_name?: string | null;
+  last_name?: string | null;
   slug: string;
   locale: Locale;
   highest_role:
@@ -77,10 +76,6 @@ export interface IUserUpdate {
   locale?: string;
   avatar?: string | null;
   roles?: TRole[];
-  birthyear?: number;
-  gender?: string;
-  domicile?: string;
-  education?: string;
   bio_multiloc?: Multiloc;
   custom_field_values?: Record<string, any>;
 }
@@ -124,6 +119,8 @@ export async function updateUser(userId: string, object: IUserUpdate) {
   if (object.roles) {
     queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
   }
+
+  queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
 
   return response;
 }

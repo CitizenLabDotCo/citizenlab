@@ -2,10 +2,14 @@ import React, { useCallback } from 'react';
 
 // services
 import { ICauseData } from 'api/causes/types';
+import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/types';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // components
 import Image from 'components/UI/Image';
@@ -15,7 +19,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
 // utils
-import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
+import { isEmptyMultiloc } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
@@ -190,24 +194,26 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
     }
   }, [cause, addVolunteer, deleteVolunteer]);
 
-  const openAuthModal = useOpenAuthModal({
-    onSuccess: volunteer,
-  });
+  const successAction = {
+    name: 'volunteer',
+    params: { cause },
+  } as const;
 
-  const handleOnVolunteerButtonClick = useCallback(() => {
-    if (
-      !isNilOrError(authUser) &&
-      !authUser.attributes.registration_completed_at
-    ) {
-      openAuthModal();
-    } else {
+  const handleOnVolunteerButtonClick = async () => {
+    const response = await getAuthenticationRequirements(GLOBAL_CONTEXT);
+    const { requirements } = response.data.attributes;
+
+    if (requirements.permitted) {
       volunteer();
+    } else {
+      triggerAuthenticationFlow({ successAction });
     }
-  }, [authUser, openAuthModal, volunteer]);
+  };
 
-  const signIn = () => openAuthModal({ flow: 'signin' });
-
-  const signUp = () => openAuthModal({ flow: 'signup' });
+  const signIn = () =>
+    triggerAuthenticationFlow({ flow: 'signin', successAction });
+  const signUp = () =>
+    triggerAuthenticationFlow({ flow: 'signup', successAction });
 
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;

@@ -133,10 +133,9 @@ class User < ApplicationRecord
 
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
-  before_validation :complete_registration
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
-  before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
+
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :unread_notifications, -> { where read_at: nil }, class_name: 'Notification', foreign_key: :recipient_id
 
@@ -222,6 +221,10 @@ class User < ApplicationRecord
 
     before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
   end
+
+  before_validation :complete_registration
+
+  before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
 
   scope :admin, -> { where("roles @> '[{\"type\":\"admin\"}]'") }
   scope :not_admin, -> { where.not("roles @> '[{\"type\":\"admin\"}]'") }

@@ -887,6 +887,7 @@ ActiveRecord::Schema.define(version: 2023_04_05_162820) do
     t.string "permission_scope_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "global_custom_fields", default: false, null: false
     t.index ["action"], name: "index_permissions_on_action"
     t.index ["permission_scope_id"], name: "index_permissions_on_permission_scope_id"
   end

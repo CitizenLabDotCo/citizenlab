@@ -1,30 +1,29 @@
 import React, { MouseEvent, useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import UpvoteButton from './UpvoteButton';
 
 // events
-import { openVerificationModal } from 'events/verificationModal';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'hooks/useAuthUser';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import useOpenAuthModal from 'hooks/useOpenAuthModal';
 import useDeleteCommentVote from 'api/comment_votes/useDeleteCommentVote';
 import useAddCommentVote from 'api/comment_votes/useAddCommentVote';
 import useCommentVote from 'api/comment_votes/useCommentVote';
 
-// tracks
-import tracks from '../../tracks';
-import { trackEventByName } from 'utils/analytics';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { postIsIdea, postIsInitiative } from '../utils';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { trackUpvote, trackCancelUpvote } from './trackVote';
 
 // typings
 import { ICommentData } from 'services/comments';
-import { IInitiativeData } from 'api/initiatives/types';
-import { IIdeaData } from 'api/ideas/types';
+import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
 
 interface Props {
   postId: string;
@@ -33,10 +32,6 @@ interface Props {
   comment: ICommentData;
   className?: string;
 }
-
-const postIsIdea = (post: IIdeaData | IInitiativeData): post is IIdeaData => {
-  return post.type === 'idea';
-};
 
 const CommentVote = ({
   postId,
@@ -78,13 +73,7 @@ const CommentVote = ({
           },
           {
             onSuccess: () => {
-              if (commentType === 'parent') {
-                trackEventByName(tracks.clickParentCommentUpvoteButton);
-              } else if (commentType === 'child') {
-                trackEventByName(tracks.clickChildCommentUpvoteButton);
-              } else {
-                trackEventByName(tracks.clickCommentUpvoteButton);
-              }
+              trackUpvote(commentType);
             },
           }
         );
@@ -98,24 +87,13 @@ const CommentVote = ({
           },
           {
             onSuccess: () => {
-              if (commentType === 'parent') {
-                trackEventByName(tracks.clickParentCommentCancelUpvoteButton);
-              } else if (commentType === 'child') {
-                trackEventByName(tracks.clickChildCommentCancelUpvoteButton);
-              } else {
-                trackEventByName(tracks.clickCommentCancelUpvoteButton);
-              }
+              trackCancelUpvote(commentType);
             },
           }
         );
       }
     }
   };
-
-  const openAuthModal = useOpenAuthModal({
-    onSuccess: vote,
-    waitIf: isNilOrError(authUser),
-  });
 
   const post = postType === 'idea' ? idea?.data : initiative?.data;
 
@@ -136,79 +114,81 @@ const CommentVote = ({
   const handleVoteClick = async (event?: MouseEvent) => {
     event?.preventDefault();
 
-    if (post && postIsIdea(post)) {
+    const successAction: SuccessAction = {
+      name: 'voteOnComment',
+      params: {
+        commentId: comment.id,
+        commentType,
+        commentVoteId: isNilOrError(commentVote)
+          ? undefined
+          : commentVote.data.id,
+        alreadyVoted: voted,
+      },
+    };
+
+    if (!post) return;
+
+    if (postIsIdea(post)) {
       // Wondering why 'comment_voting_idea' and not 'commenting_idea'?
       // See app/api/ideas/types.ts
-      const commentVotingDisabledReason =
-        post.attributes.action_descriptor.comment_voting_idea.disabled_reason;
+      const actionDescriptor =
+        post.attributes.action_descriptor.comment_voting_idea;
 
-      const authUserIsVerified =
-        !isNilOrError(authUser) && authUser.attributes.verified;
-
-      // Wondering why 'commenting_idea' and not 'comment_voting_idea'?
-      // See app/api/ideas/types.ts
-      const context = {
-        type: 'idea',
-        action: 'commenting_idea',
-        id: postId,
-      } as const;
-
-      if (!isNilOrError(authUser) && !commentVotingDisabledReason) {
+      if (actionDescriptor.enabled) {
         vote();
-      } else if (
-        !isNilOrError(authUser) &&
-        !authUserIsVerified &&
-        commentVotingDisabledReason === 'not_verified'
-      ) {
-        openVerificationModal({ context });
-      } else if (authUser === null) {
-        openAuthModal({
-          verification: commentVotingDisabledReason === 'not_verified',
+        return;
+      }
+
+      if (isFixableByAuthentication(actionDescriptor.disabled_reason)) {
+        // Wondering why 'commenting_idea' and not 'comment_voting_idea'?
+        // See app/api/ideas/types.ts
+        const context = {
+          type: 'idea',
+          action: 'commenting_idea',
+          id: postId,
+        } as const;
+
+        triggerAuthenticationFlow({
           context,
+          successAction,
         });
-      } else if (commentVotingDisabledReason === 'not_active') {
-        openAuthModal({ context });
       }
     }
 
-    if (postType === 'initiative') {
+    if (postIsInitiative(post)) {
       const authenticationRequirements =
         commentVotingPermissionInitiative?.authenticationRequirements;
 
-      // Wondering why 'commenting_initiative' and not 'comment_voting_initiative'?
-      // See app/api/initiative_action_descriptors/types.ts
-      const context = {
-        action: 'commenting_initiative',
-        type: 'initiative',
-      } as const;
+      if (authenticationRequirements) {
+        // Wondering why 'commenting_initiative' and not 'comment_voting_initiative'?
+        // See app/api/initiative_action_descriptors/types.ts
+        const context = {
+          action: 'commenting_initiative',
+          type: 'initiative',
+        } as const;
 
-      if (authenticationRequirements === 'sign_in_up') {
-        openAuthModal({ context });
-      } else if (authenticationRequirements === 'complete_registration') {
-        openAuthModal({ context });
-      } else if (authenticationRequirements === 'sign_in_up_and_verify') {
-        openAuthModal({ verification: true, context });
-      } else if (authenticationRequirements === 'verify') {
-        openVerificationModal({ context });
-      } else if (commentVotingPermissionInitiative?.enabled === true) {
+        triggerAuthenticationFlow({
+          context,
+          successAction,
+        });
+      } else {
         vote();
       }
     }
   };
 
-  if (!isNilOrError(comment)) {
-    // Wondering why 'comment_voting_idea' and not 'commenting_idea'?
-    // See app/api/ideas/types.ts
-    const commentingVotingIdeaDisabledReason =
-      post?.attributes && 'action_descriptor' in post.attributes
-        ? post?.attributes.action_descriptor.comment_voting_idea.disabled_reason
-        : undefined;
+  if (!isNilOrError(comment) && post) {
+    let disabled: boolean;
 
-    const isSignedIn = !isNilOrError(authUser);
-    const disabled =
-      postType === 'initiative'
-        ? !commentVotingPermissionInitiative?.enabled
-        : isSignedIn && commentingVotingIdeaDisabledReason === 'not_permitted';
+    if (postIsIdea(post)) {
+      // Wondering why 'comment_voting_idea' and not 'commenting_idea'?
+      // See app/api/ideas/types.ts
+      const { enabled, disabled_reason } =
+        post.attributes.action_descriptor.comment_voting_idea;
+      disabled = !enabled && !isFixableByAuthentication(disabled_reason);
+    } else {
+      disabled = !!commentVotingPermissionInitiative?.enabled;
+    }
 
     if (!disabled || upvoteCount > 0) {
       return (

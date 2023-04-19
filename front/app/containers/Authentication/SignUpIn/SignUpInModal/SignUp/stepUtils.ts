@@ -12,7 +12,6 @@ import {
   ILocalState,
 } from '.';
 import { TAuthUser } from 'hooks/useAuthUser';
-import { ISignUpInMetaData } from 'events/openSignUpInModal';
 import { UserCustomFieldsInfos } from 'services/userCustomFields';
 
 export function getDefaultSteps(
@@ -143,7 +142,7 @@ const customFieldsEnabled = (userCustomFieldsSchema: UserCustomFieldsInfos) =>
 export function getActiveStep(
   configuration: TSignUpConfiguration,
   authUser: TAuthUser,
-  metaData: ISignUpInMetaData,
+  metaData: any,
   localState: ILocalState
 ) {
   const stepConfig = Object.values(configuration)
@@ -161,7 +160,7 @@ export function getActiveStep(
 export function getEnabledSteps(
   configuration: TSignUpConfiguration,
   authUser: TAuthUser,
-  metaData: ISignUpInMetaData,
+  metaData: any,
   localState: ILocalState
 ) {
   return Object.values(configuration)
@@ -176,7 +175,7 @@ export function registrationCanBeCompleted(
   lastCompletedStep: TSignUpStep,
   configuration: TSignUpConfiguration,
   authUser: TAuthUser,
-  metaData: ISignUpInMetaData,
+  metaData: any,
   localState: ILocalState
 ) {
   const stepsThatCanTriggerRegistration = Object.values(configuration)

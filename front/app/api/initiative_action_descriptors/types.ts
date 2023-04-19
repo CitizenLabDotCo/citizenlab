@@ -14,7 +14,8 @@ export type InitiativeDisabledReason =
   | 'not_permitted'
   | 'not_verified'
   | 'not_signed_in'
-  | 'not_active';
+  | 'not_active'
+  | 'missing_data';
 
 // Confusingly, 'comment_voting_initiative' is an action descriptor, but
 // not an action, and it doesn't have its own granular permissions.

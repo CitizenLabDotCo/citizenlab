@@ -198,6 +198,8 @@ RSpec.configure do |config|
   config.filter_run_excluding template_test: true
 end
 
+RSpec::Matchers.define_negated_matcher :not_change, :change
+
 require 'vcr'
 VCR.configure do |config|
   config.hook_into :webmock

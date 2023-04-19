@@ -26,6 +26,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import {
   getPermissionActionMessage,
   getPermissionActionSectionSubtitle,
+  HandlePermissionChangeProps,
 } from './utils';
 import { IPCAction } from 'typings';
 
@@ -70,11 +71,12 @@ type SharedProps = {
   permissions: IPermissionData[];
   phaseId?: string | null;
   initiativeContext?: boolean;
-  onChange: (
-    permission: IPermissionData,
-    permittedBy: IPermissionData['attributes']['permitted_by'],
-    groupIds: string[]
-  ) => void;
+  onChange: ({
+    permission,
+    permittedBy,
+    groupIds,
+    globalCustomFields,
+  }: HandlePermissionChangeProps) => void;
 };
 
 const showDivider = (
@@ -114,7 +116,7 @@ const ActionsForm = memo(
         permittedBy: IPermissionData['attributes']['permitted_by'],
         groupIds: string[]
       ) => {
-        onChange(permission, permittedBy, groupIds);
+        onChange({ permission, permittedBy, groupIds });
       };
 
     if (isEmpty(permissions)) {
@@ -179,6 +181,7 @@ const ActionsForm = memo(
                         projectId={projectId}
                         phaseId={phaseId}
                         initiativeContext={initiativeContext}
+                        onChange={onChange}
                       />
                     </Box>
                   )}
