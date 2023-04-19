@@ -1385,7 +1385,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_date": "Date",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_multiline_text": "Réponse longue",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_multiselect": "Choix multiple (plusieurs options possibles)",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_number": "Valeur numerique",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_number": "Valeur numérique",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_select": "Choix multiple (une seule option possible)",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_text": "Réponse courte",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.geographicAreasTabLinkText": "Onglet des zones géographiques",
