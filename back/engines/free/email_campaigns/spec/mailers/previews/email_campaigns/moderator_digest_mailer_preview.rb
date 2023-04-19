@@ -7,8 +7,9 @@ module EmailCampaigns
       top_ideas = Idea.first(3)
       recipient = User.first
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
-      project_id = Idea.first.project.id
-      project_name = project.title_multiloc[recipient.locale] || project.title_multiloc[I18n.default_locale]
+      project = Idea.first.project
+      project_id = project.id
+      project_name = project.title_multiloc[recipient.locale || I18n.default_locale]
 
       command = {
         recipient: recipient,
