@@ -421,10 +421,7 @@ const App = ({ children }: Props) => {
                 }
                 minHeight={
                   isSmallerThanTablet
-                    ? `calc(100vh - ${
-                        stylingConsts.menuHeight -
-                        stylingConsts.mobileMenuHeight
-                      }px)`
+                    ? `calc(100vh - ${stylingConsts.menuHeight}px - ${stylingConsts.mobileMenuHeight}px)`
                     : `calc(100vh - ${stylingConsts.menuHeight}px)`
                 }
               >
