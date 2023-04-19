@@ -84,10 +84,10 @@ describe('AddModeratorsModal', () => {
         name: 'Confirm',
       });
 
-      expect(screen.getByText('Give collaborator rights')).toBeInTheDocument();
+      expect(screen.getByText('Give manager rights')).toBeInTheDocument();
       expect(
         screen.getByText(
-          'Are you sure you want to give 1 person collaborator rights?'
+          'Are you sure you want to give 1 person manager rights?'
         )
       ).toBeInTheDocument();
       expect(confirmButton).toBeInTheDocument();
@@ -108,7 +108,7 @@ describe('AddModeratorsModal', () => {
         name: 'Buy 1 additional seat',
       });
 
-      expect(screen.getByText('Give collaborator rights')).toBeInTheDocument();
+      expect(screen.getByText('Give manager rights')).toBeInTheDocument();
       expect(
         screen.getByText(
           'You have reached the limit of included seats within your plan, 1 additional seat will be added.'
@@ -139,10 +139,10 @@ describe('AddModeratorsModal', () => {
         name: 'Confirm',
       });
 
-      expect(screen.getByText('Give collaborator rights')).toBeInTheDocument();
+      expect(screen.getByText('Give manager rights')).toBeInTheDocument();
       expect(
         screen.getByText(
-          'Are you sure you want to give 1 person collaborator rights?'
+          'Are you sure you want to give 1 person manager rights?'
         )
       ).toBeInTheDocument();
       expect(confirmButton).toBeInTheDocument();
@@ -164,7 +164,7 @@ describe('AddModeratorsModal', () => {
         name: 'Buy 1 additional seat',
       });
 
-      expect(screen.getByText('Give collaborator rights')).toBeInTheDocument();
+      expect(screen.getByText('Give manager rights')).toBeInTheDocument();
       expect(
         screen.getByText(
           'You have reached the limit of included seats within your plan, 1 additional seat will be added.'

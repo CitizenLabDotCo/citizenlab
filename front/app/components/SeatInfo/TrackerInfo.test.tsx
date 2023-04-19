@@ -75,7 +75,7 @@ describe('TrackerInfo', () => {
 
   it('shows correct numbers of seat usage for moderators', () => {
     render(<TrackerInfo seatType="moderator" />);
-    expect(screen.getByText('Current collaborator seats')).toBeInTheDocument();
+    expect(screen.getByText('Current manager seats')).toBeInTheDocument();
     expect(screen.getByText('5/9')).toBeInTheDocument();
     expect(screen.queryByText('Additional seats')).not.toBeInTheDocument();
   });
@@ -105,7 +105,7 @@ describe('TrackerInfo', () => {
     mockAppConfiguration.data.attributes.settings.core.additional_moderators_number = 7;
     render(<TrackerInfo seatType="moderator" />);
 
-    expect(screen.getByText('Current collaborator seats')).toBeInTheDocument();
+    expect(screen.getByText('Current manager seats')).toBeInTheDocument();
     expect(screen.getByText('9/9')).toBeInTheDocument();
 
     expect(screen.queryByText('Additional seats')).toBeInTheDocument();

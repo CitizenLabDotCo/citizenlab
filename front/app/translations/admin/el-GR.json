@@ -557,7 +557,6 @@
   "app.containers.Admin.Users.confirm": "Επιβεβαίωση",
   "app.containers.Admin.Users.confirmAdminQuestion": "Είστε σίγουροι ότι θέλετε να δώσετε δικαιώματα διαχειριστή της πλατφόρμας {name} ;",
   "app.containers.Admin.Users.confirmNormalUserQuestion": "Είστε σίγουροι ότι θέλετε να ορίσετε το {name} ως κανονικό χρήστη;",
-  "app.containers.Admin.Users.confirmSetCollaboratorAsNormalUserQuestion": "Είστε σίγουροι ότι θέλετε να ορίσετε το {name} ως κανονικό χρήστη; Λάβετε υπόψη ότι θα χάσει τα δικαιώματα συνεργάτη σε όλα τα έργα και τους φακέλους που του έχουν εκχωρηθεί κατά την επιβεβαίωση.",
   "app.containers.Admin.Users.deleteUser": "Διαγραφή χρήστη",
   "app.containers.Admin.Users.email": "Email",
   "app.containers.Admin.Users.folderManager": "Διαχειριστής φακέλων",

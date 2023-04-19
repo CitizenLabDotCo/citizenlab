@@ -71,12 +71,12 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
   }[seatType];
   const seatTypeTitleMessages: SeatTypeMessageDescriptor = {
     admin: messages.adminSeats,
-    moderator: messages.collaboratorSeats,
+    moderator: messages.managerSeats,
   };
   const seatTypeTitleMessage = seatTypeTitleMessages[seatType];
   const seatTypeTooltipMessages: SeatTypeMessageDescriptor = {
     admin: messages.adminSeatsTooltip,
-    moderator: messages.collaboratorSeatsTooltip,
+    moderator: messages.managerSeatsTooltip,
   };
   const seatTypeTooltipMessage = seatTypeTooltipMessages[seatType];
   const totalSeats = additionalSeats + maximumSeatNumber;
