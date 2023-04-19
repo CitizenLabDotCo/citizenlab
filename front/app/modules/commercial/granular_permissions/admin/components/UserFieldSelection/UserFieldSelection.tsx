@@ -118,6 +118,13 @@ const UserFieldSelection = ({
     return null;
   }
 
+  const showQuestionToggle =
+    permission.attributes.permitted_by !== 'everyone_confirmed_email';
+
+  const showQuestions =
+    !permission.attributes.global_custom_fields ||
+    permission.attributes.permitted_by === 'everyone_confirmed_email';
+
   return (
     <Box>
       <Title variant="h4" color="primary" style={{ fontWeight: 600 }}>
@@ -127,24 +134,27 @@ const UserFieldSelection = ({
         <FormattedMessage {...messages.userFieldsSelectionDescription} />
       </Text>
       <Box>
-        <Box mb="30px">
-          <Toggle
-            checked={permission.attributes.global_custom_fields}
-            onChange={() => {
-              onChange({
-                permission,
-                groupIds,
-                globalCustomFields: !permission.attributes.global_custom_fields,
-              });
-            }}
-            label={
-              <FormattedMessage
-                {...messages.useExistingRegistrationQuestions}
-              />
-            }
-          />
-        </Box>
-        {!permission.attributes.global_custom_fields && (
+        {showQuestionToggle && (
+          <Box mb="30px">
+            <Toggle
+              checked={permission.attributes.global_custom_fields}
+              onChange={() => {
+                onChange({
+                  permission,
+                  groupIds,
+                  globalCustomFields:
+                    !permission.attributes.global_custom_fields,
+                });
+              }}
+              label={
+                <FormattedMessage
+                  {...messages.useExistingRegistrationQuestions}
+                />
+              }
+            />
+          </Box>
+        )}
+        {showQuestions && (
           <>
             <Box>
               {initialFieldArray?.map((field) => (
