@@ -128,6 +128,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
       opened={currentStep !== 'closed'}
       close={handleClose}
       hideCloseButton={!closable}
+      closeOnClickOutside={false}
       header={
         headerMessage ? (
           <>

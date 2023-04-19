@@ -62,6 +62,7 @@ export const FieldSelectionModal = ({
           />
         </Title>
       }
+      closeOnClickOutside={false}
       width={'550px'}
     >
       <Box display="flex" flexDirection="column">
