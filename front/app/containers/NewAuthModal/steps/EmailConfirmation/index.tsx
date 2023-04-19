@@ -6,12 +6,11 @@ import resendEmailConfirmationCode from 'api/authentication/confirm_email/resend
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import CodeSentMessage from 'containers/Authentication/SignUpIn/SignUpInModal/SignUp/ConfirmationSignupStep/CodeSentMessage';
-import FooterNotes from 'containers/Authentication/SignUpIn/SignUpInModal/SignUp/ConfirmationSignupStep/FooterNotes';
+import CodeSentMessage from './CodeSentMessage';
+import FooterNotes from './FooterNotes';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import oldMessages from 'containers/Authentication/SignUpIn/SignUpInModal/SignUp/ConfirmationSignupStep/messages';
 import messages from './messages';
 
 // form
@@ -102,7 +101,7 @@ const EmailConfirmation = ({
           <Input
             name="code"
             type="text"
-            label={formatMessage(oldMessages.codeInput)}
+            label={formatMessage(messages.codeInput)}
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">
@@ -112,7 +111,7 @@ const EmailConfirmation = ({
             disabled={loading}
             processing={loading}
           >
-            {formatMessage(oldMessages.verifyAndContinue)}
+            {formatMessage(messages.verifyAndContinue)}
           </Button>
         </Box>
         <Box mt="24px">

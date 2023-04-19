@@ -29,4 +29,12 @@ export default defineMessages({
     id: 'app.containers.NewAuthModal.completeYourProfile',
     defaultMessage: 'Complete your profile',
   },
+  unknownError: {
+    id: 'app.containers.SignUp.unknownError',
+    defaultMessage: 'Something went wrong. Please try again later.',
+  },
+  signInError: {
+    id: 'app.containers.SignIn.signInError',
+    defaultMessage: 'No account was found for the provided credentials',
+  },
 });

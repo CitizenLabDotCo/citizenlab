@@ -28,8 +28,6 @@ import Error from 'components/UI/Error';
 // i18n
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import oldSignUpMessages from 'containers/Authentication/SignUpIn/SignUpInModal/SignUp/messages';
-import oldSignInMessages from 'containers/Authentication/SignUpIn/SignUpInModal/SignIn/messages';
 import errorMessages from 'components/UI/Error/messages';
 
 // typings
@@ -78,11 +76,11 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
 };
 
 const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
-  account_creation_failed: oldSignUpMessages.unknownError,
+  account_creation_failed: messages.unknownError,
   wrong_confirmation_code: errorMessages.confirmation_code_invalid,
-  wrong_password: oldSignInMessages.signInError,
-  requirements_fetching_failed: oldSignUpMessages.unknownError,
-  unknown: oldSignUpMessages.unknownError,
+  wrong_password: messages.signInError,
+  requirements_fetching_failed: messages.unknownError,
+  unknown: messages.unknownError,
   invitation_error: messages.invitationError,
 };
 
