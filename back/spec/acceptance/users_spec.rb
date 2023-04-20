@@ -559,7 +559,7 @@ resource 'Users' do
           expect(response_data[:type]).to eq 'seats'
           attributes = response_data[:attributes]
           expect(attributes[:admins_number]).to eq @admins.size
-          expect(attributes[:project_moderators_number]).to eq @moderators.size
+          expect(attributes[:moderators_number]).to eq @moderators.size
         end
       end
 

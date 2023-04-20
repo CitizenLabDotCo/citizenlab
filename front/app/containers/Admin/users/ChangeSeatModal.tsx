@@ -30,7 +30,7 @@ const getInfoText = (
   if (isUserAdmin) {
     return messages.confirmNormalUserQuestion;
   } else if (isChangingModeratorToNormalUser) {
-    return messages.confirmSetCollaboratorAsNormalUserQuestion;
+    return messages.confirmSetManagerAsNormalUserQuestion;
   } else if (hasReachedOrIsOverPlanSeatLimit) {
     return messages.reachedLimitMessage;
   }

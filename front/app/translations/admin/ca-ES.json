@@ -557,7 +557,6 @@
   "app.containers.Admin.Users.confirm": "Confirmeu",
   "app.containers.Admin.Users.confirmAdminQuestion": "Esteu segur que voleu donar {name} drets d'administrador de la plataforma?",
   "app.containers.Admin.Users.confirmNormalUserQuestion": "Esteu segur que voleu definir {name} com a usuari normal?",
-  "app.containers.Admin.Users.confirmSetCollaboratorAsNormalUserQuestion": "Esteu segur que voleu definir {name} com a usuari normal? Tingueu en compte que perdran els drets de col·laborador de tots els projectes i carpetes als quals estiguin assignats en confirmar-los.",
   "app.containers.Admin.Users.deleteUser": "Eliminar l'usuari",
   "app.containers.Admin.Users.email": "Email",
   "app.containers.Admin.Users.folderManager": "Gestor de carpetes",

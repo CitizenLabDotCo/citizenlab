@@ -44,7 +44,7 @@ let mockUserSeatsData = {
   data: {
     attributes: {
       admins_number: 2,
-      project_moderators_number: 5,
+      moderators_number: 5,
     },
   },
 };
@@ -58,7 +58,7 @@ jest.mock('api/seats/useSeats', () => () => {
 describe('BillingInfo', () => {
   beforeEach(() => {
     mockUserSeatsData.data.attributes.admins_number = 2;
-    mockUserSeatsData.data.attributes.project_moderators_number = 5;
+    mockUserSeatsData.data.attributes.moderators_number = 5;
 
     mockAppConfiguration.data.attributes.settings.core.maximum_admins_number = 6;
     mockAppConfiguration.data.attributes.settings.core.maximum_moderators_number = 9;
@@ -127,7 +127,7 @@ describe('BillingInfo', () => {
 
   it('shows correct numbers of seat usage for moderators', () => {
     render(<BillingInfo seatType="moderator" />);
-    expect(screen.getByText('Collaborator seats')).toBeInTheDocument();
+    expect(screen.getByText('Manager seats')).toBeInTheDocument();
 
     // Remaining seats
     expect(screen.getByText('Remaining seats')).toBeInTheDocument();
@@ -151,10 +151,10 @@ describe('BillingInfo', () => {
   });
 
   it('shows nothing for moderator seats when maximum_moderators_number is unlimited (null)', () => {
-    mockUserSeatsData.data.attributes.project_moderators_number = 15;
+    mockUserSeatsData.data.attributes.moderators_number = 15;
     mockAppConfiguration.data.attributes.settings.core.maximum_moderators_number =
       null;
     render(<BillingInfo seatType="moderator" />);
-    expect(screen.queryByText('Collaborator seats')).not.toBeInTheDocument();
+    expect(screen.queryByText('Manager seats')).not.toBeInTheDocument();
   });
 });
