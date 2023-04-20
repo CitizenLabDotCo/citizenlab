@@ -261,7 +261,7 @@ en:
       title_your_weekly_report: '%{firstName}, your weekly report'
       text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
       cta_moderate: 'Moderate your project'
-      new_users: 'New users'
+      project_new_users: '%{noOfNewUsers, plural, one {1 new user} other {# new users}}'
       new_ideas: 'New ideas'
       new_comments: 'New comments'
       title_inputs_past_week: 'New inputs in the past week'
