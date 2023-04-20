@@ -8,7 +8,6 @@ class IncrementAdditionalSeatsService
       return unless increment?(role['type'])
 
       increment!(role['type'])
-
       LogActivityJob.perform_later(updated_user, 'additional_seats_number_incremented',
         current_user, Time.now.to_i,
         payload: { role: role })
@@ -16,7 +15,7 @@ class IncrementAdditionalSeatsService
 
     private
 
-    def increment!(seat_type, by: 1)
+    def increment!(seat_type)
       field =
         case seat_type
         when 'admin' then 'additional_admins_number'
@@ -28,7 +27,7 @@ class IncrementAdditionalSeatsService
       ActiveRecord::Base.uncached do # to make it less likely that we'll use stale data for increment
         config = AppConfiguration.first!
         config.settings['core'][field] ||= 0
-        config.settings['core'][field] += by
+        config.settings['core'][field] += 1
         config.save!
       end
     end

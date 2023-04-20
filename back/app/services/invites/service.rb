@@ -176,7 +176,6 @@ class Invites::Service
     end
 
     invitees
-      .sort { |i, _| i.roles_previously_was.any? { |r| r['type'] == 'admin' } && i.roles.none? { |r| r['type'] == 'admin' } ? 1 : 0 }
       .each do |invitee|
         if @run_side_fx
           if invitee.previously_new_record?
