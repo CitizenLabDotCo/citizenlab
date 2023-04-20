@@ -1,15 +1,8 @@
-import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
+import React from 'react';
 
 // components
 import Button from 'components/UI/Button';
 import OfficialFeedbackPost from './OfficialFeedbackPost';
-
-// resources
-import GetOfficialFeedbacks, {
-  GetOfficialFeedbacksChildProps,
-} from 'resources/GetOfficialFeedbacks';
 
 // styles
 import styled from 'styled-components';
@@ -17,8 +10,10 @@ import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, FormattedDate } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedDate } from 'react-intl';
+import useIdeaOfficialFeedback from 'api/idea_official_feedback/useIdeaOfficialFeedback';
+import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
 
 const Container = styled.div`
   &.hasTopMargin {
@@ -82,7 +77,7 @@ const LoadMoreButton = styled(Button)`
   margin-top: 10px;
 `;
 
-interface InputProps {
+interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
   editingAllowed: boolean | undefined;
@@ -90,119 +85,115 @@ interface InputProps {
   a11y_pronounceLatestOfficialFeedbackPost?: boolean;
 }
 
-interface DataProps {
-  officialFeedbacks: GetOfficialFeedbacksChildProps;
-}
+const OfficialFeedbackFeed = ({
+  postId,
+  postType,
+  editingAllowed,
+  className,
+  a11y_pronounceLatestOfficialFeedbackPost,
+}: Props) => {
+  const [pageSize, setPageSize] = React.useState(1);
+  const {
+    data: ideaFeedbacks,
+    fetchNextPage: fetchNextPageIdeasFeedback,
+    hasNextPage: hasNextPageIdeasFeedback,
+    isFetchingNextPage: isFetchingNextPageIdeasFeedback,
+  } = useIdeaOfficialFeedback({
+    ideaId: postId && postType === 'idea' ? postId : undefined,
+    pageSize,
+  });
 
-interface Props extends InputProps, DataProps {}
+  const {
+    data: initiativeFeedbacks,
+    fetchNextPage: fetchNextPageInitiativeFeedback,
+    hasNextPage: hasNextPageInitiativesFeedback,
+    isFetchingNextPage: isFetchingNextPageInitiativesFeedback,
+  } = useInitiativeOfficialFeedback({
+    initiativeId: postId && postType === 'initiative' ? postId : undefined,
+    pageSize,
+  });
 
-interface State {}
+  const officialFeedbacksList =
+    postType === 'idea'
+      ? ideaFeedbacks?.pages.flatMap((page) => page.data) || []
+      : initiativeFeedbacks?.pages.flatMap((page) => page.data) || [];
 
-class OfficialFeedbackFeed extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  render() {
-    const {
-      officialFeedbacks,
-      editingAllowed,
-      className,
-      a11y_pronounceLatestOfficialFeedbackPost,
-    } = this.props;
+  if (officialFeedbacksList.length > 0) {
+    const updateDate =
+      officialFeedbacksList[0].attributes.updated_at ||
+      officialFeedbacksList[0].attributes.created_at;
+    const formattedDate = (
+      <FormattedDate
+        value={updateDate}
+        year="numeric"
+        month="long"
+        day="numeric"
+      />
+    );
 
-    if (officialFeedbacks) {
-      const {
-        officialFeedbacksList,
-        querying,
-        hasMore,
-        loadingMore,
-        onLoadMore,
-      } = officialFeedbacks;
-
-      if (
-        !isNilOrError(officialFeedbacksList) &&
-        officialFeedbacksList.data &&
-        officialFeedbacksList.data.length > 0
-      ) {
-        const updateDate =
-          officialFeedbacksList.data[0].attributes.updated_at ||
-          officialFeedbacksList.data[0].attributes.created_at;
-        const formattedDate = (
-          <FormattedDate
-            value={updateDate}
-            year="numeric"
-            month="long"
-            day="numeric"
-          />
-        );
-
-        return (
-          <Container
-            aria-live="polite"
-            className={`${className} ${editingAllowed ? 'hasTopMargin' : ''}`}
-          >
-            <FeedbackHeader>
-              <FeedbackTitle>
-                <FormattedMessage {...messages.officialUpdates} />
-              </FeedbackTitle>
-              <FeedbackSubtitle>
-                <FormattedMessage
-                  {...messages.lastUpdate}
-                  values={{
-                    lastUpdateDate: <StyledSpan>{formattedDate}</StyledSpan>,
-                  }}
-                />
-              </FeedbackSubtitle>
-            </FeedbackHeader>
-
-            {officialFeedbacksList.data.map((officialFeedbackPost, i) => {
-              return (
-                <StyledOfficialFeedbackPost
-                  key={officialFeedbackPost.id}
-                  editingAllowed={editingAllowed}
-                  officialFeedbackPost={officialFeedbackPost}
-                  postType="initiative"
-                  a11y_pronounceLatestOfficialFeedbackPost={
-                    i === 0 && a11y_pronounceLatestOfficialFeedbackPost
-                  }
-                />
-              );
-            })}
-
-            {!querying && hasMore && (
-              <LoadMoreButton
-                buttonStyle="secondary-outlined"
-                icon="refresh"
-                onClick={onLoadMore}
-                text={<FormattedMessage {...messages.showPreviousUpdates} />}
-                processing={loadingMore}
-              />
-            )}
-          </Container>
-        );
+    const onLoadMore = () => {
+      if (postType === 'idea') {
+        fetchNextPageIdeasFeedback();
+      } else {
+        fetchNextPageInitiativeFeedback();
       }
-    }
+      setPageSize(10);
+    };
 
-    return null;
+    const hasMore =
+      postType === 'idea'
+        ? hasNextPageIdeasFeedback
+        : hasNextPageInitiativesFeedback;
+
+    return (
+      <Container
+        aria-live="polite"
+        className={`${className} ${editingAllowed ? 'hasTopMargin' : ''}`}
+      >
+        <FeedbackHeader>
+          <FeedbackTitle>
+            <FormattedMessage {...messages.officialUpdates} />
+          </FeedbackTitle>
+          <FeedbackSubtitle>
+            <FormattedMessage
+              {...messages.lastUpdate}
+              values={{
+                lastUpdateDate: <StyledSpan>{formattedDate}</StyledSpan>,
+              }}
+            />
+          </FeedbackSubtitle>
+        </FeedbackHeader>
+
+        {officialFeedbacksList.map((officialFeedbackPost, i) => {
+          return (
+            <StyledOfficialFeedbackPost
+              key={officialFeedbackPost.id}
+              editingAllowed={editingAllowed}
+              officialFeedbackPost={officialFeedbackPost}
+              postType={postType}
+              a11y_pronounceLatestOfficialFeedbackPost={
+                i === 0 && a11y_pronounceLatestOfficialFeedbackPost
+              }
+            />
+          );
+        })}
+
+        {hasMore && (
+          <LoadMoreButton
+            buttonStyle="secondary-outlined"
+            icon="refresh"
+            onClick={onLoadMore}
+            text={<FormattedMessage {...messages.showPreviousUpdates} />}
+            processing={
+              isFetchingNextPageIdeasFeedback ||
+              isFetchingNextPageInitiativesFeedback
+            }
+          />
+        )}
+      </Container>
+    );
   }
-}
+  return null;
+};
 
-const Data = adopt<DataProps, InputProps>({
-  officialFeedbacks: ({ postId, postType, render }) => (
-    <GetOfficialFeedbacks postId={postId} postType={postType}>
-      {render}
-    </GetOfficialFeedbacks>
-  ),
-});
-
-const OfficialFeedbackFeedWithIntl = injectIntl(OfficialFeedbackFeed);
-
-const WrappedOfficialFeedback = (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <OfficialFeedbackFeedWithIntl {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
-
-export default WrappedOfficialFeedback;
+export default OfficialFeedbackFeed;

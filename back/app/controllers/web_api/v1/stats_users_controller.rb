@@ -186,34 +186,6 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     )
   end
 
-  def users_engagement_scores
-    ps = ParticipantsService.new
-    activities = Activity
-      .where(user_id: StatUserPolicy::Scope.new(current_user, User.active).resolve)
-
-    if params[:group]
-      group = Group.find(params[:group])
-      activities = activities.where(user_id: group.members)
-    end
-
-    engaging_activities = ps.filter_engaging_activities(activities)
-    scored_activities = ps.with_engagement_scores(engaging_activities)
-
-    serie = Activity
-      .from(scored_activities.select(:user_id).where(acted_at: @start_at..@end_at))
-      .group(:user_id)
-      .includes(:user)
-      .select('user_id, SUM(score) as sum_score')
-      .order('sum_score DESC')
-      .limit(10)
-
-    render json: WebApi::V1::EngagementScoreSerializer.new(
-      serie,
-      params: fastjson_params,
-      include: [:user]
-    ).serialized_json
-  end
-
   private
 
   def render_no_data

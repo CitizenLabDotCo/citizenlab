@@ -15,7 +15,7 @@ import { IProjectFileData } from 'services/projectFiles';
 import { IPhaseFileData } from 'services/phaseFiles';
 import { IEventFileData } from 'api/event_files/types';
 import { ICustomPageFileData } from 'services/pageFiles';
-import { IIdeaFileData } from 'services/ideaFiles';
+import { IIdeaFileData } from 'api/idea_files/types';
 
 const Container = styled.div`
   display: flex;

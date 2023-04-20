@@ -1,4 +1,4 @@
-import useInitativeMarkers from 'api/initiative_markers/useInitiativeMarkers';
+import useInitiativeMarkers from 'api/initiative_markers/useInitiativeMarkers';
 import { IGeotaggedInitiativeData } from 'api/initiative_markers/types';
 
 interface InputProps {}
@@ -17,7 +17,7 @@ export type GetInitiativeMarkersChildProps =
   | null;
 
 const GetInitiativeMarkers = ({ children }: Props) => {
-  const { data: initiativeMarkers } = useInitativeMarkers();
+  const { data: initiativeMarkers } = useInitiativeMarkers();
 
   return (children as children)(initiativeMarkers?.data);
 };

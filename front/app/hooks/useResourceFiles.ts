@@ -1,16 +1,32 @@
 import { useState, useEffect } from 'react';
 import { Observable, of } from 'rxjs';
+
 import {
-  ResourceType,
-  TResourceFileData,
-  TResourceFiles,
-} from 'resources/GetResourceFiles';
+  projectFilesStream,
+  IProjectFileData,
+  IProjectFiles,
+} from 'services/projectFiles';
+import {
+  phaseFilesStream,
+  IPhaseFileData,
+  IPhaseFiles,
+} from 'services/phaseFiles';
+import {
+  pageFilesStream,
+  ICustomPageFileData,
+  ICustomPageFiles,
+} from 'services/pageFiles';
+
 import { isNilOrError } from 'utils/helperUtils';
 
-import { projectFilesStream } from 'services/projectFiles';
-import { phaseFilesStream } from 'services/phaseFiles';
-import { pageFilesStream } from 'services/pageFiles';
-import { ideaFilesStream } from 'services/ideaFiles';
+export type ResourceType = 'project' | 'phase' | 'page';
+
+export type TResourceFileData =
+  | IProjectFileData
+  | IPhaseFileData
+  | ICustomPageFileData;
+
+export type TResourceFiles = IProjectFiles | IPhaseFiles | ICustomPageFiles;
 
 interface Props {
   resourceId: string | null;
@@ -31,8 +47,6 @@ export default function useResourceFiles({ resourceId, resourceType }: Props) {
           return phaseFilesStream;
         case 'page':
           return pageFilesStream;
-        case 'idea':
-          return ideaFilesStream;
       }
     };
     const stream = getResourceStream(resourceType);

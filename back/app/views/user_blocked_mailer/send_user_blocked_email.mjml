@@ -1,0 +1,29 @@
+<mj-section padding="30px 25px">
+  <mj-column>
+    <mj-text color="black">
+      <h1 style="font-size: 25px; margin-bottom: 40px;"><%= t('.title_user_blocked') %></h1>
+      <% unless @user.block_reason.blank? %>
+        <p style="margin-bottom: 40px;">
+          <%= t('.paragraph_1_with_reason', organizationName: organization_name) %>
+        </p>
+        <p style="margin-bottom: 40px; font-weight: bold;"><%= @user.block_reason %></p>
+        <p style="margin-bottom: 40px;">
+          <%= t('.for_more_information', termsAndConditionsPage: '') %>
+          <mj-text>
+            <a style="color: rgb(111, 119, 125);" href="<%= terms_conditions_url %>"><%= t('static_pages.terms_and_conditions_title') %></a>
+          </mj-text>
+        </p>
+      <% else %>
+        <p style="margin-bottom: 40px;">
+          <%= t('.paragraph_1_without_reason', organizationName: organization_name) %> <%= t('.for_more_information', termsAndConditionsPage: '') %> 
+          <mj-text>
+            <a style="color: rgb(111, 119, 125);" href="<%= terms_conditions_url %>"><%= t('static_pages.terms_and_conditions_title') %></a>
+          </mj-text>
+        </p>
+      <% end %>
+      <p style="margin-bottom: 40px;">
+        <%= t('.you_can_sign_in_again_from', date: @user.block_end_at.strftime('%b %d, %Y')) %>
+      </p>
+    </mj-text>
+  </mj-column>
+</mj-section>

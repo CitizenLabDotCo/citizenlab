@@ -231,3 +231,11 @@ sr-Latn:
       copy_paste_the_link_below: "Kopirajte i zalepite donji kod u obrazac za registraciju na platformi."
       the_link_is_valid_for: "Ovaj link važi naredna 24 sata. Ako istekne, možete <a href=\"%{link}\">zatražiti novi kod</a>."
       did_you_receive_this_email_in_error: "Da li ste ovaj email dobili greškom?<a href=\"%{link}\">Obavestite nas</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Ваш налог је привремено онемогућен'
+      title_user_blocked: 'Ваш налог је привремено онемогућен'
+      paragraph_1_without_reason: "Ваш налог на платформи за учешће %{organizationName} је привремено онемогућен због кршења смерница заједнице."
+      paragraph_1_with_reason: "Ваш налог на платформи за учешће %{organizationName} је привремено онемогућен из следећег разлога:"
+      for_more_information: "За више информација о овоме, можете консултовати %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "Можете се поново пријавити од %{date}"

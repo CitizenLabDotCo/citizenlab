@@ -1,6 +1,6 @@
-import React, { memo } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'react-router-dom';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -27,65 +27,65 @@ export const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 30px;
 `;
 
-const ProjectPermissions = memo(
-  ({ params: { projectId } }: WithRouterProps) => {
-    const project = useProject({ projectId });
-    const isProjectManagementEnabled = useFeatureFlag({
-      name: 'project_management',
-    });
+const ProjectPermissions = () => {
+  const { projectId } = useParams() as { projectId: string };
+  const project = useProject({ projectId });
 
-    const isProjectVisibilityEnabled = useFeatureFlag({
-      name: 'project_visibility',
-    });
+  const isProjectManagementEnabled = useFeatureFlag({
+    name: 'project_management',
+  });
 
-    if (!isNilOrError(project)) {
-      return (
-        <>
-          <Outlet
-            id="app.containers.Admin.project.edit.permissions.participationRights"
-            projectId={projectId}
-            project={project}
-          >
-            {(outletComponents) =>
-              outletComponents.length > 0 || isProjectVisibilityEnabled ? (
-                <StyledSection>
-                  <StyledSectionTitle>
-                    <FormattedMessage
-                      {...messages.participationAccessRightsTitle}
-                    />
-                  </StyledSectionTitle>
-                  {outletComponents}
-                </StyledSection>
-              ) : null
-            }
-          </Outlet>
-          {isProjectVisibilityEnabled && (
-            <ProjectVisibility projectId={projectId} />
-          )}
-          <Outlet
-            id="app.containers.Admin.project.edit.permissions.moderatorRights"
-            projectId={projectId}
-          >
-            {(outletComponents) =>
-              outletComponents.length > 0 ? (
-                <StyledSection>
-                  <StyledSectionTitle>
-                    <FormattedMessage {...messages.moderationRightsTitle} />
-                  </StyledSectionTitle>
-                  {outletComponents}
-                </StyledSection>
-              ) : null
-            }
-          </Outlet>
-          {isProjectManagementEnabled && (
-            <ProjectManagement projectId={projectId} />
-          )}
-        </>
-      );
-    }
+  const isProjectVisibilityEnabled = useFeatureFlag({
+    name: 'project_visibility',
+  });
 
-    return null;
+  if (!isNilOrError(project)) {
+    return (
+      <>
+        <Outlet
+          id="app.containers.Admin.project.edit.permissions.participationRights"
+          projectId={projectId}
+          project={project}
+        >
+          {(outletComponents) =>
+            outletComponents.length > 0 || isProjectVisibilityEnabled ? (
+              <StyledSection>
+                <StyledSectionTitle>
+                  <FormattedMessage
+                    {...messages.participationAccessRightsTitle}
+                  />
+                </StyledSectionTitle>
+                {outletComponents}
+              </StyledSection>
+            ) : null
+          }
+        </Outlet>
+        {isProjectVisibilityEnabled && (
+          <ProjectVisibility projectId={projectId} />
+        )}
+        <Outlet
+          id="app.containers.Admin.project.edit.permissions.moderatorRights"
+          projectId={projectId}
+        >
+          {(outletComponents) =>
+            outletComponents.length > 0 ? (
+              <StyledSection>
+                <StyledSectionTitle>
+                  <FormattedMessage {...messages.moderationRightsTitle} />
+                </StyledSectionTitle>
+                {outletComponents}
+              </StyledSection>
+            ) : null
+          }
+        </Outlet>
+        {isProjectManagementEnabled && (
+          <ProjectManagement projectId={projectId} />
+        )}
+      </>
+    );
   }
-);
 
-export default withRouter(ProjectPermissions);
+  return null;
+};
+
+export default ProjectPermissions;

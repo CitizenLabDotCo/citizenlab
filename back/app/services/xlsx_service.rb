@@ -112,16 +112,6 @@ class XlsxService
     generate_xlsx "#{resource_name}_by_#{grouped_by}", columns, serie
   end
 
-  def generate_votes_by_time_xlsx(serie, name)
-    columns = [
-      { header: 'date',  f: ->(item) { item['date'] } },
-      { header: 'up',    f: ->(item) { item['up'] } },
-      { header: 'down',  f: ->(item) { item['down'] } },
-      { header: 'total', f: ->(item) { item['total'] } }
-    ]
-    generate_xlsx name, columns, serie
-  end
-
   def generate_users_xlsx(users, view_private_attributes: false)
     url_service = Frontend::UrlService.new
     columns = [

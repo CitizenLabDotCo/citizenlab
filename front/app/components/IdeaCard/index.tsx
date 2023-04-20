@@ -15,7 +15,7 @@ import { IParticipationContextType } from 'typings';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
-import useIdeaImage from 'hooks/useIdeaImage';
+import useIdeaImage from 'api/idea_images/useIdeaImage';
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 
@@ -138,10 +138,10 @@ const CompactIdeaCard = memo<IdeaCardProps>(
     const project = useProject({
       projectId: idea.data.relationships.project.data.id,
     });
-    const ideaImage = useIdeaImage({
-      ideaId: idea.data.id,
-      ideaImageId: idea.data.relationships.idea_images.data?.[0]?.id,
-    });
+    const { data: ideaImage } = useIdeaImage(
+      idea.data.id,
+      idea.data.relationships.idea_images.data?.[0]?.id
+    );
     const authorId = idea.data.relationships.author.data?.id;
     const ideaTitle = localize(idea.data.attributes.title_multiloc);
     // remove html tags from wysiwyg output
@@ -205,7 +205,9 @@ const CompactIdeaCard = memo<IdeaCardProps>(
         title={ideaTitle}
         to={`/ideas/${idea.data.attributes.slug}`}
         image={
-          !isNilOrError(ideaImage) ? ideaImage.attributes.versions.medium : null
+          !isNilOrError(ideaImage)
+            ? ideaImage.data.attributes.versions.medium
+            : null
         }
         imagePlaceholder={
           <ImagePlaceholderContainer>

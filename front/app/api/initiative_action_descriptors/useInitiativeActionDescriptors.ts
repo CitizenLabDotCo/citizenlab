@@ -13,7 +13,7 @@ const fetchInitativeActionDescriptors = () =>
     action: 'get',
   });
 
-const useInitativeActionDescriptors = () => {
+const useInitiativeActionDescriptors = () => {
   return useQuery<
     IInitiativeActionDescriptors,
     CLErrors,
@@ -25,4 +25,4 @@ const useInitativeActionDescriptors = () => {
   });
 };
 
-export default useInitativeActionDescriptors;
+export default useInitiativeActionDescriptors;

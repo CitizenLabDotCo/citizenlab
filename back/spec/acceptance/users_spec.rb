@@ -23,11 +23,22 @@ resource 'Users' do
         parameter :size, 'Number of users per page'
       end
       parameter :search, 'Filter by searching in first_name, last_name and email', required: false
-      parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
+      parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', " \
+                       "'-email', 'role', '-role'", required: false
       parameter :group, 'Filter by group_id', required: false
-      parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
-      parameter :can_moderate, 'Filter out admins and moderators', required: false
-
+      parameter :can_moderate, 'All admins + users with either a project &/or folder moderator role', required: false
+      parameter :can_moderate_project, 'All admins + users who can moderate the project (by project id), ' \
+                                       'excluding folder moderators of folder containing project ' \
+                                       '(who can, in fact, moderate the project), ' \
+                                       'OR All admins + users with project moderator role ' \
+                                       '(if no project ID provided)', required: false
+      parameter :is_not_project_moderator, 'Users who are not admins, nor project moderator of project, ' \
+                                           'nor folder moderator of folder containing project (by project id), ' \
+                                           'OR Users who are not admins, nor have project moderator role ' \
+                                           '(if no project ID provided)', required: false
+      parameter :is_not_folder_moderator, 'Users who are not admins, nor folder moderator of folder (by folder id), ' \
+                                          'OR Users who are not admins, nor have folder moderator role ' \
+                                          '(if no folder ID provided)', required: false
       example_request '[error] List all users' do
         assert_status 401
       end
@@ -342,7 +353,8 @@ resource 'Users' do
           expect(json_response[:data].size).to eq 6
         end
 
-        example_request 'List all users includes user blocking related data' do
+        example 'List all users includes user blocking related data', document: false do
+          do_request
           expect(status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response[:data][0][:attributes]).to have_key(:blocked)
@@ -459,6 +471,39 @@ resource 'Users' do
           end
         end
 
+        describe 'Not moderator filters' do
+          before do
+            @user                       = create(:user)
+            @admin                      = create(:admin)
+            @project                    = create(:project)
+            @project_folder             = create(:project_folder, projects: [@project])
+            @project_moderator          = create(:project_moderator, projects: [@project])
+            @moderator_of_other_project = create(:project_moderator, projects: [create(:project)])
+            @project_folder_moderator   = create(:project_folder_moderator, project_folders: [@project_folder])
+            @moderator_of_other_folder  = create(:project_folder_moderator, project_folders: [create(:project_folder)])
+          end
+
+          example 'List only users who cannot moderate a specific project' do
+            do_request is_not_project_moderator: @project.id
+            expect(status).to eq 200
+
+            user_ids = json_parse(response_body)[:data].pluck(:id)
+            expect(user_ids).to include(@user.id, @moderator_of_other_project.id, @moderator_of_other_folder.id)
+            expect(user_ids).not_to include(@admin.id, @project_moderator.id, @project_folder_moderator.id)
+          end
+
+          example 'List only users who cannot moderate a specific folder' do
+            do_request is_not_folder_moderator: @project_folder.id
+            expect(status).to eq 200
+
+            user_ids = json_parse(response_body)[:data].pluck(:id)
+            expect(user_ids).to include(
+              @user.id, @project_moderator.id, @moderator_of_other_project.id, @moderator_of_other_folder.id
+            )
+            expect(user_ids).not_to include(@admin.id, @project_folder_moderator.id)
+          end
+        end
+
         example 'List all users who can moderate a project' do
           p = create(:project)
           a = create(:admin)
@@ -496,20 +541,6 @@ resource 'Users' do
           json_response = json_parse(response_body)
           expect(json_response[:data].pluck(:id)).to match_array [a.id, @user.id]
         end
-
-        include_context 'when user_blocking duration is 90 days' do
-          example 'List all blocked users' do
-            blocked_users = create_list(:user, 2, block_start_at: 30.days.ago)
-
-            do_request only_blocked: true
-
-            expect(status).to eq 200
-            json_response = json_parse(response_body)
-            expect(User.count).to be > blocked_users.count # If unblocked users exist, then subsequent tests meaningful.
-            expect(json_response[:data].size).to eq 2
-            expect(json_response[:data].pluck(:id)).to match_array blocked_users.map(&:id)
-          end
-        end
       end
 
       get 'web_api/v1/users/seats' do
@@ -528,7 +559,7 @@ resource 'Users' do
           expect(response_data[:type]).to eq 'seats'
           attributes = response_data[:attributes]
           expect(attributes[:admins_number]).to eq @admins.size
-          expect(attributes[:project_moderators_number]).to eq @moderators.size
+          expect(attributes[:moderators_number]).to eq @moderators.size
         end
       end
 
@@ -626,64 +657,60 @@ resource 'Users' do
         end
       end
 
-      include_context 'when user_blocking duration is 90 days' do
-        get 'web_api/v1/users/blocked_count' do
-          example 'Get count of blocked users' do
-            create_list(:user, 2, block_start_at: 30.days.ago)
+      get 'web_api/v1/users/blocked_count' do
+        example 'Get count of blocked users' do
+          create_list(:user, 2, block_end_at: 5.days.from_now)
 
-            do_request
+          do_request
 
-            expect(status).to eq 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :blocked_users_count)).to eq 2
-          end
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :count)).to eq 2
+        end
+      end
+
+      patch 'web_api/v1/users/:id/block' do
+        before do
+          settings = AppConfiguration.instance.settings
+          settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
+          AppConfiguration.instance.update!(settings: settings)
         end
 
-        patch 'web_api/v1/users/:id/block' do
-          with_options scope: 'user' do
-            parameter :block_reason, 'Reason for blocking & any additional information', required: false
-          end
-          ValidationErrorHelper.new.error_fields(self, User)
+        with_options scope: 'user' do
+          parameter :block_reason, 'Reason for blocking & any additional information', required: false
+        end
+        ValidationErrorHelper.new.error_fields(self, User)
 
-          let!(:user) { create(:user) }
-          let!(:id) { user.id }
+        let!(:user) { create(:user) }
+        let!(:id) { user.id }
 
-          example 'Block a user using an empty request' do
-            do_request
+        example 'Block a user using a null value for block_reason' do
+          do_request user: { block_reason: nil }
 
-            expect(status).to eq 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :blocked)).to be true
-          end
-
-          example 'Block a user using a null value for block_reason' do
-            do_request user: { block_reason: nil }
-
-            expect(status).to eq 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :blocked)).to be true
-          end
-
-          example 'Block a user and provide a reason' do
-            do_request user: { block_reason: 'reason' }
-
-            expect(status).to eq 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :blocked)).to be true
-          end
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :blocked)).to be true
         end
 
-        patch 'web_api/v1/users/:id/unblock' do
-          let!(:user) { create(:user, block_start_at: 5.days.ago) }
-          let!(:id) { user.id }
+        example 'Block a user and provide a reason' do
+          do_request user: { block_reason: 'reason' }
 
-          example 'unblock a user' do
-            do_request
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :blocked)).to be true
+        end
+      end
 
-            expect(status).to eq 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :blocked)).to be false
-          end
+      patch 'web_api/v1/users/:id/unblock' do
+        let!(:user) { create(:user, block_end_at: 5.days.from_now) }
+        let!(:id) { user.id }
+
+        example 'unblock a user' do
+          do_request
+
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :blocked)).to be false
         end
       end
 

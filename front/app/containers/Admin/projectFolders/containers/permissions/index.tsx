@@ -1,24 +1,18 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import styled from 'styled-components';
-import AsyncSelect from 'react-select/async';
-import { first } from 'rxjs/operators';
-import { IOption } from 'typings';
-import {
-  isProjectFolderModerator,
-  userModeratesFolder,
-} from 'services/permissions/rules/projectFolderPermissions';
+import { useParams } from 'react-router-dom';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
-import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import useProjectFolderModerators from 'hooks/useProjectFolderModerators';
-import { IUsers, IUserData, usersStream } from 'services/users';
-import useAuthUser from 'hooks/useAuthUser';
 import {
   addFolderModerator,
   deleteFolderModerator,
 } from 'services/projectFolderModerators';
+import { isRegularUser } from 'services/permissions/roles';
 
 // i18n
 import messages from './messages';
@@ -30,10 +24,14 @@ import { IconTooltip, Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
-import selectStyles from 'components/UI/MultipleSelect/styles';
-import { isAdmin } from 'services/permissions/roles';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+const AddModeratorsModal = lazy(
+  () => import('components/admin/AddModeratorsModal')
+);
+import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
 import SeatInfo from 'components/SeatInfo';
+
+// Hooks
+import useExceedsSeats from 'hooks/useExceedsSeats';
 
 const StyledA = styled.a`
   &:hover {
@@ -46,102 +44,55 @@ const UserSelectSection = styled.section`
   margin-bottom: 12px;
 `;
 
-const UserSelectSelect = styled(AsyncSelect)`
-  min-width: 300px;
-`;
-
-const UserSelectButton = styled(Button)`
-  margin-left: 12px;
-`;
-
-const FolderPermissions = ({
-  params: { projectFolderId },
-}: WithRouterProps) => {
+const FolderPermissions = () => {
+  const { projectFolderId } = useParams() as { projectFolderId: string };
   const { formatMessage } = useIntl();
-  const authUser = useAuthUser();
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
   const folderModerators = useProjectFolderModerators(projectFolderId);
+  const [processing, setProcessing] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [moderatorToAdd, setModeratorToAdd] =
+    useState<UserOptionTypeBase | null>(null);
 
-  const [selectedUserOptions, setSelectedUserOptions] = useState<IOption[]>([]);
-  const [searchInput, setSearchInput] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [processing, setProcessing] = useState<boolean>(false);
+  const exceedsSeats = useExceedsSeats()({
+    newlyAddedModeratorsNumber: 1,
+  });
 
-  const handleFolderModeratorInputChange = (value: string) => {
-    setSearchInput(value);
+  const closeModal = () => {
+    setShowModal(false);
   };
 
-  const handleFolderModeratorsChange = async (selection: IOption[]) => {
-    setSelectedUserOptions(selection);
+  const handleOnChange = (user?: UserOptionTypeBase) => {
+    setModeratorToAdd(user || null);
   };
 
-  const handleOnAddFolderModeratorsClick = useCallback(() => {
-    setProcessing(true);
-    selectedUserOptions.forEach(({ value: userId }) =>
-      addFolderModerator(projectFolderId, userId)
-    );
-    setProcessing(false);
-    setSelectedUserOptions([]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedUserOptions]);
-
-  const handleDeleteFolderModeratorClick =
-    (projectFolderId: string, moderatorId: string) => () => {
-      deleteFolderModerator(projectFolderId, moderatorId);
-    };
-
-  const loadUsers = (inputValue: string, callback) => {
-    if (inputValue) {
-      setLoading(true);
-
-      usersStream({
-        queryParameters: {
-          search: inputValue,
-        },
-      })
-        .observable.pipe(first())
-        .subscribe((response) => {
-          setLoading(false);
-          callback(getFolderModeratorOptions(response));
-        });
+  const handleOnAddFolderModeratorsClick = async () => {
+    if (moderatorToAdd) {
+      setProcessing(true);
+      await addFolderModerator(projectFolderId, moderatorToAdd.id);
+      setProcessing(false);
+      setModeratorToAdd(null);
     }
   };
 
-  const getFolderModeratorOptions = (users: IUsers) => {
-    // note: this typing info of users above is not correc
-    if (!isNilOrError(users)) {
-      return users.data
-        .filter(
-          (user: IUserData) => !userModeratesFolder(user, projectFolderId)
-        )
-        .map((user: IUserData) => {
-          return {
-            value: user.id,
-            label: `${userName(user)} (${user.attributes.email})`,
-            email: `${user.attributes.email}`,
-            disabled:
-              isProjectFolderModerator(user) && !isAdmin({ data: user }),
-          };
-        });
-    }
-
-    return [];
+  const handleDeleteFolderModeratorClick = (moderatorId: string) => () => {
+    deleteFolderModerator(projectFolderId, moderatorId);
   };
 
-  const noOptionsMessage = () => {
-    if (isNonEmptyString(searchInput)) {
-      return formatMessage(messages.noMatch);
+  const handleAddClick = () => {
+    const isSelectedUserAModerator =
+      moderatorToAdd && !isRegularUser({ data: moderatorToAdd });
+    const shouldOpenModal =
+      hasSeatBasedBillingEnabled &&
+      exceedsSeats.moderator &&
+      !isSelectedUserAModerator;
+    if (shouldOpenModal) {
+      setShowModal(true);
+    } else {
+      handleOnAddFolderModeratorsClick();
     }
-
-    return null;
-  };
-
-  const isDropdownIconHidden = useMemo(
-    () => !isNonEmptyString(searchInput),
-    [searchInput]
-  );
-
-  const userName = (user: IUserData) => {
-    return `${user.attributes.first_name} ${user.attributes.last_name}`;
   };
 
   return (
@@ -177,66 +128,67 @@ const FolderPermissions = ({
         </SubSectionTitle>
 
         <UserSelectSection>
-          <UserSelectSelect
-            name="search-user"
-            isMulti={true}
-            cacheOptions={false}
-            defaultOptions={false}
-            loadOptions={loadUsers}
-            isLoading={loading}
-            isDisabled={processing}
-            value={selectedUserOptions}
-            onChange={handleFolderModeratorsChange}
-            placeholder={formatMessage(messages.searchFolderManager)}
-            styles={selectStyles}
-            noOptionsMessage={noOptionsMessage}
-            onInputChange={handleFolderModeratorInputChange}
-            components={
-              isDropdownIconHidden && { DropdownIndicator: () => null }
-            }
-          />
-          <UserSelectButton
-            text={formatMessage(messages.addFolderManager)}
-            buttonStyle="cl-blue"
-            icon="plus-circle"
-            padding="13px 16px"
-            onClick={handleOnAddFolderModeratorsClick}
-            disabled={!selectedUserOptions || selectedUserOptions.length === 0}
-            processing={processing}
-          />
+          <Box display="flex" alignItems="center" mb="12px">
+            <Box width="500px">
+              <UserSelect
+                id="folderModeratorUserSearch"
+                inputId="folderModeratorUserSearchInputId"
+                selectedUserId={moderatorToAdd?.id || null}
+                onChange={handleOnChange}
+                placeholder={formatMessage(messages.searchFolderManager)}
+                isNotFolderModeratorOfFolderId={projectFolderId}
+              />
+            </Box>
+            <Button
+              text={formatMessage(messages.addFolderManager)}
+              buttonStyle="cl-blue"
+              icon="plus-circle"
+              padding="10px 16px"
+              onClick={handleAddClick}
+              disabled={!moderatorToAdd}
+              processing={processing}
+              ml="12px"
+              data-cy="e2e-add-folder-moderator-button"
+            />
+          </Box>
+          {hasSeatBasedBillingEnabled && (
+            <Suspense fallback={null}>
+              <AddModeratorsModal
+                addModerators={handleOnAddFolderModeratorsClick}
+                showModal={showModal}
+                closeModal={closeModal}
+              />
+            </Suspense>
+          )}
         </UserSelectSection>
 
         <List>
           <>
             {!isNilOrError(folderModerators) &&
-              !isNilOrError(authUser) &&
               folderModerators.map((folderModerator, index) => (
+                // This row is a near copy of ModeratorListRow. They could be
+                // extracted in 1 component.
                 <Row
                   key={folderModerator.id}
                   isLastItem={index === folderModerators.length - 1}
                 >
                   <Box display="flex" alignItems="center">
-                    <Box mr="8px">
+                    <Box mr="12px">
                       <Avatar userId={folderModerator.id} size={30} />
                     </Box>
-                    <Text as="span" m={'0'}>
-                      {userName(folderModerator)}
+                    <Text as="span" m="0">
+                      {`${folderModerator.attributes.first_name} ${folderModerator.attributes.last_name}`}
                     </Text>
                   </Box>
-                  <Text as="span" m={'0'}>
+                  <Text as="span" m="0">
                     {folderModerator.attributes.email}
                   </Text>
                   <Button
                     onClick={handleDeleteFolderModeratorClick(
-                      projectFolderId,
                       folderModerator.id
                     )}
                     buttonStyle="text"
                     icon="delete"
-                    disabled={
-                      !isNilOrError(authUser) &&
-                      authUser.id === folderModerator.id
-                    }
                   >
                     <FormattedMessage {...messages.deleteFolderManagerLabel} />
                   </Button>
@@ -245,11 +197,13 @@ const FolderPermissions = ({
           </>
         </List>
       </Box>
-      <Box width="100%" py="32px">
-        <SeatInfo seatType="project_manager" />
-      </Box>
+      {!hasSeatBasedBillingEnabled && (
+        <Box width="516px" py="32px">
+          <SeatInfo seatType="moderator" />
+        </Box>
+      )}
     </Box>
   );
 };
 
-export default withRouter(FolderPermissions);
+export default FolderPermissions;

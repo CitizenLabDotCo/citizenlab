@@ -40,6 +40,8 @@ export const getAppConfigurationData = (
         authentication_token_lifetime_in_days: 30,
         maximum_admins_number: 12,
         maximum_moderators_number: 14,
+        additional_admins_number: 0,
+        additional_moderators_number: 0,
       },
       advanced_custom_pages: {
         allowed: true,

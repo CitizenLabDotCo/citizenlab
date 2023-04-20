@@ -7,7 +7,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // utils
 import { registerDestination } from './destinations';
-import { isAdmin, isModerator } from 'services/permissions/roles';
+import { isAdmin, isRegularUser } from 'services/permissions/roles';
 
 // typings
 import { IUserData } from 'services/users';
@@ -75,7 +75,7 @@ registerDestination({
   category: 'functional',
   feature_flag: 'intercom',
   hasPermission: (user) =>
-    !!user && (isAdmin({ data: user }) || isModerator({ data: user })),
+    !!user && (isAdmin({ data: user }) || !isRegularUser({ data: user })),
   name: () => 'Intercom',
 });
 

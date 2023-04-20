@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { isString, trim, get } from 'lodash-es';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -9,26 +8,20 @@ import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
 import Link from 'utils/cl-router/Link';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { addCommentToIdea, addCommentToInitiative } from 'services/comments';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
 
 // events
 import { commentAdded } from './events';
@@ -36,15 +29,17 @@ import { commentAdded } from './events';
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
-import { colors, defaultStyles, viewportWidths } from 'utils/styleUtils';
-import GetInitiativesPermissions, {
-  GetInitiativesPermissionsChildProps,
-} from 'resources/GetInitiativesPermissions';
-import { GetAppConfigurationChildProps } from 'resources/GetAppConfiguration';
+import { colors, defaultStyles } from 'utils/styleUtils';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
+import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
+import useLocale from 'hooks/useLocale';
+import useAuthUser from 'hooks/useAuthUser';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 const Container = styled.div`
   display: flex;
@@ -108,39 +103,31 @@ const CancelButton = styled(Button)`
   margin-right: 8px;
 `;
 
-interface InputProps {
+interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
   postingComment: (arg: boolean) => void;
   className?: string;
 }
 
-interface DataProps {
-  commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
-  locale: GetLocaleChildProps;
-  authUser: GetAuthUserChildProps;
-  windowSize: GetWindowSizeChildProps;
-  appConfiguration: GetAppConfigurationChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const ParentCommentForm = ({
-  locale,
-  authUser,
-  postId,
-  postType,
-  appConfiguration,
-  intl: { formatMessage },
-  windowSize,
-  commentingPermissionInitiative,
-  className,
-  postingComment,
-}: Props & WrappedComponentProps) => {
+const ParentCommentForm = ({ postId, postType, className }: Props) => {
+  const locale = useLocale();
+  const authUser = useAuthUser();
+  const { data: appConfiguration } = useAppConfiguration();
+  const { formatMessage } = useIntl();
+  const smallerThanTablet = useBreakpoint('tablet');
+  const { mutate: addCommentToIdea, isLoading: addCommentToIdeaIsLoading } =
+    useAddCommentToIdea();
+  const {
+    mutate: addCommentToInitiative,
+    isLoading: addCommentToInitiativeIsLoading,
+  } = useAddCommentToInitiative();
+  const commentingPermissionInitiative = useInitiativesPermissions(
+    'commenting_initiative'
+  );
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
-  const [processing, setProcessing] = useState(false);
   const [hasApiError, setHasApiError] = useState(false);
   const [profanityApiError, setProfanityApiError] = useState(false);
   const [hasEmptyError, setHasEmptyError] = useState(true);
@@ -151,9 +138,12 @@ const ParentCommentForm = ({
   const { data: idea } = useIdeaById(ideaId);
   const post = initiative || idea;
 
-  useEffect(() => {
-    postingComment(processing);
-  }, [processing, postingComment]);
+  const processing =
+    addCommentToIdeaIsLoading || addCommentToInitiativeIsLoading;
+
+  if (isNilOrError(locale) || isNilOrError(authUser)) {
+    return null;
+  }
 
   const onChange = (inputValue: string) => {
     setInputValue(inputValue);
@@ -188,7 +178,6 @@ const ParentCommentForm = ({
       idea?.data.relationships.project.data.id || null;
 
     setFocused(false);
-    setProcessing(true);
 
     if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
       const commentBodyMultiloc = {
@@ -203,72 +192,102 @@ const ParentCommentForm = ({
         },
       });
 
-      try {
-        setProcessing(true);
+      if (postType === 'idea' && projectId) {
+        addCommentToIdea(
+          {
+            ideaId: postId,
+            author_id: authUser.id,
+            body_multiloc: commentBodyMultiloc,
+          },
+          {
+            onSuccess: (comment) => {
+              const parentComment = document.getElementById(comment.data.id);
+              if (parentComment) {
+                setTimeout(() => {
+                  parentComment.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+              }
+              commentAdded();
+              close();
+            },
+            onError: (error) => {
+              const apiErrors = error.json.errors;
+              const profanityApiError = apiErrors.base.find(
+                (apiError) => apiError.error === 'includes_banned_words'
+              );
 
-        if (postType === 'idea' && projectId) {
-          await addCommentToIdea(
-            postId,
-            projectId,
-            authUser.id,
-            commentBodyMultiloc
-          ).then((comment) => {
-            const parentComment = document.getElementById(comment.data.id);
-            if (parentComment) {
-              setTimeout(() => {
-                parentComment.scrollIntoView({ behavior: 'smooth' });
-              }, 100);
-            }
-          });
-        }
+              setHasApiError(true);
 
-        if (postType === 'initiative') {
-          await addCommentToInitiative(
-            postId,
-            authUser.id,
-            commentBodyMultiloc
-          ).then((comment) => {
-            const parentComment = document.getElementById(comment.data.id);
-            if (parentComment) {
-              setTimeout(() => {
-                parentComment.scrollIntoView({ behavior: 'smooth' });
-              }, 100);
-            }
-          });
-        }
+              if (profanityApiError) {
+                trackEventByName(tracks.parentCommentProfanityError.name, {
+                  locale,
+                  postId,
+                  postType,
+                  projectId,
+                  profaneMessage: commentBodyMultiloc[locale],
+                  location: 'InitiativesNewFormWrapper (citizen side)',
+                  userId: authUser.id,
+                  host: !isNilOrError(appConfiguration)
+                    ? appConfiguration.data.attributes.host
+                    : null,
+                });
 
-        commentAdded();
-        setProcessing(false);
-        close();
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        if (process.env.NODE_ENV === 'development') console.log(error);
-        const apiErrors = get(error, 'json.errors');
-        const profanityApiError = apiErrors.base.find(
-          (apiError) => apiError.error === 'includes_banned_words'
+                setProfanityApiError(true);
+              }
+
+              throw error;
+            },
+          }
         );
+      }
 
-        setHasApiError(true);
-        setProcessing(false);
+      if (postType === 'initiative') {
+        addCommentToInitiative(
+          {
+            initiativeId: postId,
+            author_id: authUser.id,
+            body_multiloc: commentBodyMultiloc,
+          },
+          {
+            onSuccess: (comment) => {
+              const parentComment = document.getElementById(comment.data.id);
+              if (parentComment) {
+                setTimeout(() => {
+                  parentComment.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+              }
+              commentAdded();
+              close();
+            },
+            onError: (error) => {
+              const apiErrors = error.json.errors;
+              const profanityApiError = apiErrors.base.find(
+                (apiError) => apiError.error === 'includes_banned_words'
+              );
 
-        if (profanityApiError) {
-          trackEventByName(tracks.parentCommentProfanityError.name, {
-            locale,
-            postId,
-            postType,
-            projectId,
-            profaneMessage: commentBodyMultiloc[locale],
-            location: 'InitiativesNewFormWrapper (citizen side)',
-            userId: authUser.id,
-            host: !isNilOrError(appConfiguration)
-              ? appConfiguration.attributes.host
-              : null,
-          });
+              setHasApiError(true);
 
-          setProfanityApiError(true);
-        }
+              if (profanityApiError) {
+                trackEventByName(tracks.parentCommentProfanityError.name, {
+                  locale,
+                  postId,
+                  postType,
+                  projectId,
+                  profaneMessage: commentBodyMultiloc[locale],
+                  location: 'InitiativesNewFormWrapper (citizen side)',
+                  userId: authUser.id,
+                  host: !isNilOrError(appConfiguration)
+                    ? appConfiguration.data.attributes.host
+                    : null,
+                });
 
-        throw error;
+                setProfanityApiError(true);
+              }
+
+              throw error;
+            },
+          }
+        );
       }
     }
   };
@@ -320,8 +339,6 @@ const ParentCommentForm = ({
   const placeholder = formatMessage(
     messages[`${postType}CommentBodyPlaceholder`]
   );
-  const smallerThanSmallTablet =
-    !isNilOrError(windowSize) && windowSize <= viewportWidths.tablet;
 
   if (!isNilOrError(authUser) && canComment) {
     return (
@@ -367,7 +384,7 @@ const ParentCommentForm = ({
                   disabled={processing}
                   onClick={close}
                   buttonStyle="secondary"
-                  padding={smallerThanSmallTablet ? '6px 12px' : undefined}
+                  padding={smallerThanTablet ? '6px 12px' : undefined}
                 >
                   <FormattedMessage {...messages.cancel} />
                 </CancelButton>
@@ -376,7 +393,7 @@ const ParentCommentForm = ({
                   processing={processing}
                   onClick={onSubmit}
                   disabled={hasEmptyError}
-                  padding={smallerThanSmallTablet ? '6px 12px' : undefined}
+                  padding={smallerThanTablet ? '6px 12px' : undefined}
                 >
                   <FormattedMessage {...messages.publishComment} />
                 </Button>
@@ -391,21 +408,4 @@ const ParentCommentForm = ({
   return null;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  authUser: <GetAuthUser />,
-  windowSize: <GetWindowSize />,
-  commentingPermissionInitiative: (
-    <GetInitiativesPermissions action="commenting_initiative" />
-  ),
-});
-
-const ParentCommentFormWithHoCs = injectIntl(ParentCommentForm);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <ParentCommentFormWithHoCs {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+export default ParentCommentForm;

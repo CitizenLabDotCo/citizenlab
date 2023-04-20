@@ -1,51 +1,30 @@
 // Libraries
-import React, { memo, useState } from 'react';
-import { get } from 'lodash-es';
-import { first } from 'rxjs/operators';
-import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
+import React, { Suspense, memo, useState, lazy } from 'react';
 
 // Services
-import { findMembership, addMembership } from 'services/projectModerators';
-import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
+import { addProjectModerator } from 'services/projectModerators';
+import { isRegularUser } from 'services/permissions/roles';
 
 // hooks
-import useProjectModerators from 'hooks/useProjectModerators';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useExceedsSeats from 'hooks/useExceedsSeats';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Components
 import Button from 'components/UI/Button';
-import AsyncSelect from 'react-select/async';
+const AddModeratorsModal = lazy(
+  () => import('components/admin/AddModeratorsModal')
+);
+import { Box } from '@citizenlab/cl2-component-library';
+import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
 
 // Style
 import styled from 'styled-components';
-import selectStyles from 'components/UI/MultipleSelect/styles';
 
-// Typings
-import { IOption } from 'typings';
-
-const Container = styled.div`
-  width: 100%;
-  margin-bottom: 20px;
-`;
-
-const SelectGroupsContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  align-items: center;
-  margin-bottom: 30px;
-`;
-
-const StyledAsyncSelect = styled(AsyncSelect)`
-  min-width: 300px;
-`;
-
-const AddGroupButton = styled(Button)`
+const AddButton = styled(Button)`
   flex-grow: 0;
   flex-shrink: 0;
   margin-left: 20px;
@@ -55,135 +34,91 @@ interface Props {
   projectId: string;
 }
 
-function isModerator(user: IGroupMembershipsFoundUserData) {
-  return get(user.attributes, 'is_moderator') !== undefined;
-}
+const UserSearch = memo(({ projectId }: Props) => {
+  const { formatMessage } = useIntl();
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
+  const [processing, setProcessing] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [moderatorToAdd, setModeratorToAdd] =
+    useState<UserOptionTypeBase | null>(null);
 
-const UserSearch = memo(
-  ({ projectId, intl: { formatMessage } }: Props & WrappedComponentProps) => {
-    const [selection, setSelection] = useState<IOption[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [processing, setProcessing] = useState(false);
-    const [searchInput, setSearchInput] = useState('');
-    const moderators = useProjectModerators(projectId);
+  const exceedsSeats = useExceedsSeats()({
+    newlyAddedModeratorsNumber: 1,
+  });
 
-    const getOptions = (users: IGroupMembershipsFoundUserData[]) => {
-      return users
-        .filter((user) => {
-          let userIsNotYetModerator = true;
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
-          if (!isNilOrError(moderators)) {
-            moderators.forEach((moderator) => {
-              if (moderator.id === user.id) {
-                userIsNotYetModerator = false;
-              }
-            });
-          }
+  const openModal = () => {
+    setShowModal(true);
+  };
 
-          return userIsNotYetModerator;
-        })
-        .map((user) => {
-          return {
-            value: user.id,
-            label: `${user.attributes.first_name} ${user.attributes.last_name}`,
-            email: `${user.attributes.email}`,
-            disabled: isModerator(user)
-              ? get(user.attributes, 'is_moderator')
-              : get(user.attributes, 'is_member'),
-          };
-        });
-    };
+  const handleOnChange = (user?: UserOptionTypeBase) => {
+    setModeratorToAdd(user || null);
+  };
 
-    const loadOptions = (inputValue: string, callback) => {
-      if (inputValue) {
-        setLoading(true);
+  const handleOnAddModeratorsClick = async () => {
+    if (moderatorToAdd) {
+      setProcessing(true);
+      await addProjectModerator(projectId, moderatorToAdd.id);
+      setProcessing(false);
+      setModeratorToAdd(null);
+    }
+  };
 
-        findMembership(projectId, {
-          queryParameters: {
-            search: inputValue,
-          },
-        })
-          .observable.pipe(first())
-          .subscribe((response) => {
-            const options = getOptions(response.data);
-            setLoading(false);
-            callback(options);
-          });
-      }
-    };
+  const handleAddClick = () => {
+    const isSelectedUserAModerator =
+      moderatorToAdd && !isRegularUser({ data: moderatorToAdd });
+    const shouldOpenModal =
+      hasSeatBasedBillingEnabled &&
+      exceedsSeats.moderator &&
+      !isSelectedUserAModerator;
+    if (shouldOpenModal) {
+      openModal();
+    } else {
+      handleOnAddModeratorsClick();
+    }
+  };
 
-    const handleOnChange = async (selection: IOption[]) => {
-      setSelection(selection);
-    };
-
-    const handleOnAddModeratorsClick = async () => {
-      if (selection && selection.length > 0) {
-        setProcessing(true);
-        const promises = selection.map((item) =>
-          addMembership(projectId, item.value)
-        );
-
-        try {
-          await Promise.all(promises);
-          setSelection([]);
-          setProcessing(false);
-        } catch {
-          setSelection([]);
-          setProcessing(false);
-        }
-      }
-    };
-
-    const handleSearchInputOnChange = (inputValue: string) => {
-      setSearchInput(inputValue);
-    };
-
-    const noOptionsMessage = (inputValue: string) => {
-      if (!isNonEmptyString(inputValue)) {
-        return null;
-      }
-      return formatMessage(messages.noOptions);
-    };
-
-    const isDropdownIconHidden = !isNonEmptyString(searchInput);
-
-    return (
-      <Container>
-        <SelectGroupsContainer>
-          <StyledAsyncSelect
-            name="search-user"
-            isMulti={true}
-            cacheOptions={false}
-            defaultOptions={false}
-            loadOptions={loadOptions}
-            isLoading={loading}
-            isDisabled={processing}
-            value={selection}
+  return (
+    <Box width="100%">
+      <Box display="flex" alignItems="center" mb="24px">
+        <Box width="500px">
+          <UserSelect
+            id="projectModeratorUserSearch"
+            inputId="projectModeratorUserSearchInputId"
+            selectedUserId={moderatorToAdd?.id || null}
             onChange={handleOnChange}
             placeholder={formatMessage(messages.searchUsers)}
-            styles={selectStyles}
-            noOptionsMessage={noOptionsMessage}
-            onInputChange={handleSearchInputOnChange}
-            components={
-              isDropdownIconHidden && {
-                DropdownIndicator: () => null,
-              }
-            }
+            isNotProjectModeratorOfProjectId={projectId}
           />
+        </Box>
 
-          <AddGroupButton
-            text={formatMessage(messages.addModerators)}
-            buttonStyle="cl-blue"
-            icon="plus-circle"
-            padding="13px 16px"
-            onClick={handleOnAddModeratorsClick}
-            disabled={!selection || selection.length === 0}
-            processing={processing}
+        <AddButton
+          text={formatMessage(messages.addModerators)}
+          buttonStyle="cl-blue"
+          icon="plus-circle"
+          padding="10px 16px"
+          onClick={handleAddClick}
+          disabled={!moderatorToAdd}
+          processing={processing}
+          data-cy="e2e-add-project-moderator-button"
+        />
+      </Box>
+      {hasSeatBasedBillingEnabled && (
+        <Suspense fallback={null}>
+          <AddModeratorsModal
+            addModerators={handleOnAddModeratorsClick}
+            showModal={showModal}
+            closeModal={closeModal}
           />
-        </SelectGroupsContainer>
-      </Container>
-    );
-  }
-);
+        </Suspense>
+      )}
+    </Box>
+  );
+});
 
-export default injectIntl(UserSearch);
+export default UserSearch;

@@ -10,7 +10,7 @@ const fetchInitativeMarkers = () =>
     action: 'get',
   });
 
-const useInitativeMarkers = () => {
+const useInitiativeMarkers = () => {
   return useQuery<
     IInitiativeMarkers,
     CLErrors,
@@ -22,4 +22,4 @@ const useInitativeMarkers = () => {
   });
 };
 
-export default useInitativeMarkers;
+export default useInitiativeMarkers;

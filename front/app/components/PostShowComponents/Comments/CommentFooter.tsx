@@ -158,7 +158,7 @@ const CommentFooter = ({
         <StyledCommentVote
           postId={postId}
           postType={postType}
-          commentId={commentId}
+          comment={comment}
           commentType={commentType}
         />
         <StyledCommentReplyButton
@@ -184,6 +184,8 @@ const CommentFooter = ({
           projectId={projectId}
           comment={comment}
           onCommentEdit={onEditing}
+          postId={postId}
+          postType={postType}
         />
       </Right>
     </Container>

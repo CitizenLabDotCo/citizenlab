@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { UploadFile, CLErrors } from 'typings';
+import { UploadFile } from 'typings';
 
 import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';
@@ -13,37 +13,31 @@ import Button from 'components/UI/Button';
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 
 // resources
-import { addIdeaImportFile } from 'services/ideaFiles';
+import useImportIdeas from '../../api/import_ideas/useImportIdeas';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 const Import = () => {
+  const {
+    mutate: addIdeaImportFile,
+    isLoading,
+    error,
+    isSuccess,
+    reset,
+  } = useImportIdeas();
   const [file, setFile] = useState<UploadFile | undefined>(undefined);
-  const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccessful, setIsSuccessful] = useState(false);
 
   const handleFileOnAdd = async (fileToAdd: UploadFile) => {
     setFile(fileToAdd);
-    setApiErrors(undefined);
+    reset();
   };
 
   const handleFileImport = async () => {
     if (!file) return;
 
-    setIsLoading(true);
-    try {
-      await addIdeaImportFile(file.base64);
-      setIsSuccessful(true);
-      setApiErrors(undefined);
-    } catch (errors) {
-      setIsSuccessful(false);
-      setApiErrors(errors?.json);
-    } finally {
-      setIsLoading(false);
-    }
+    addIdeaImportFile(file.base64);
   };
 
   const downloadExampleFile = async () => {
@@ -83,10 +77,10 @@ const Import = () => {
           id={'bulk_idea_import'}
           onFileRemove={() => {
             setFile(undefined);
-            setApiErrors(undefined);
+            reset();
           }}
           onFileAdd={handleFileOnAdd}
-          apiErrors={apiErrors}
+          apiErrors={error}
           files={file ? [file] : []}
         />
         <Box display="flex" flexDirection="row" alignItems="flex-start">
@@ -98,7 +92,7 @@ const Import = () => {
             <FormattedMessage {...messages.importInput} />
           </Button>
         </Box>
-        {!isLoading && isSuccessful && (
+        {!isLoading && isSuccess && (
           <Text color="success">
             <FormattedMessage {...messages.successMessage} />
           </Text>

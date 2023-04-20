@@ -41,9 +41,6 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
-import GetOfficialFeedbacks, {
-  GetOfficialFeedbacksChildProps,
-} from 'resources/GetOfficialFeedbacks';
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
@@ -316,7 +313,6 @@ interface DataProps {
   initiativeImages: GetInitiativeImagesChildProps;
   authUser: GetAuthUserChildProps;
   windowSize: GetWindowSizeChildProps;
-  officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
   tenant: GetAppConfigurationChildProps;
 }
@@ -341,7 +337,6 @@ const InitiativesShow = ({
   className,
   postOfficialFeedbackPermission,
   tenant,
-  officialFeedbacks,
   initiativeId,
   intl: { formatMessage },
 }: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps) => {
@@ -371,14 +366,10 @@ const InitiativesShow = ({
   }, [newInitiativeId]);
 
   useEffect(() => {
-    if (
-      !loaded &&
-      !isUndefined(initiativeImages) &&
-      !isUndefined(officialFeedbacks.officialFeedbacksList)
-    ) {
+    if (!loaded && !isUndefined(initiativeImages)) {
       setLoaded(true);
     }
-  }, [initiative, initiativeImages, officialFeedbacks, loaded]);
+  }, [initiative, initiativeImages, loaded]);
 
   useEffect(() => {
     if (a11y_pronounceLatestOfficialFeedbackPost) {
@@ -735,11 +726,6 @@ const Data = adopt<DataProps, InputProps & IntiativeInputProps>({
     <GetInitiativeImages initiativeId={initiativeId}>
       {render}
     </GetInitiativeImages>
-  ),
-  officialFeedbacks: ({ initiativeId, render }) => (
-    <GetOfficialFeedbacks postId={initiativeId} postType="initiative">
-      {render}
-    </GetOfficialFeedbacks>
   ),
   postOfficialFeedbackPermission: ({ initiative, render }) => (
     <GetPermission

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
 import ideasCountKeys from 'api/idea_count/keys';
+import ideaImagesKeys from 'api/idea_images/keys';
 import ideaMarkersKeys from 'api/idea_markers/keys';
 import { API_PATH } from 'containers/App/constants';
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -25,9 +26,14 @@ const useDeleteIdea = () => {
       queryClient.invalidateQueries({ queryKey: ideaMarkersKeys.lists() });
       queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
       queryClient.invalidateQueries({ queryKey: ideasCountKeys.items() });
+      queryClient.invalidateQueries({
+        queryKey: ideaImagesKeys.list({ ideaId }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: ideaImagesKeys.item({ ideaId }),
+      });
       streams.fetchAllWith({
         apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/analytics`],
-        partialApiEndpoint: [`${API_PATH}/ideas/${ideaId}/images`],
       });
     },
   });

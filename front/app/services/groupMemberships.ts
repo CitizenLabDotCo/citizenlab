@@ -1,8 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { ImageSizes } from 'typings';
-// import { getGroups, getGroup } from 'services/groups';
-// import { usersStream } from 'services/users';
 
 export interface IGroupMembership {
   id: string;
@@ -19,22 +16,6 @@ export interface IGroupMembership {
 
 export interface IGroupMemberships {
   data: IGroupMembership[];
-}
-
-export interface IGroupMembershipsFoundUserData {
-  id: string;
-  type: 'user';
-  attributes: {
-    first_name: string;
-    last_name: string;
-    slug: string;
-    avatar?: ImageSizes;
-    is_member?: boolean;
-    // the is_moderator attribute is absent, except in moderators/users_search if the project_id was provided as a parameter
-    // this is only the case in the findMembership function in moderators.ts at the time of this writing
-    is_moderator?: boolean;
-    email: string;
-  };
 }
 
 export function getGroupMemberships(

@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useState, useRef, useEffect } from 'react';
-import { isUndefined, isString } from 'lodash-es';
+import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -40,13 +40,9 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
-import GetOfficialFeedbacks, {
-  GetOfficialFeedbacksChildProps,
-} from 'resources/GetOfficialFeedbacks';
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
-import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -70,9 +66,9 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import usePhases from 'hooks/usePhases';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import { useSearchParams } from 'react-router-dom';
-import useIdeaImages from 'hooks/useIdeaImages';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useLocalize from 'hooks/useLocalize';
 
 const contentFadeInDuration = 250;
@@ -156,9 +152,7 @@ const BodySectionTitle = styled.h2`
 interface DataProps {
   project: GetProjectChildProps;
   windowSize: GetWindowSizeChildProps;
-  officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
-  comments: GetCommentsChildProps;
 }
 
 interface InputProps {
@@ -181,12 +175,12 @@ export const IdeasShow = ({
   project,
   compact,
   ideaId,
-  officialFeedbacks,
   setRef,
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const ideaImages = useIdeaImages(ideaId);
+  const { data: ideaImages } = useIdeaImages(ideaId);
+
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
@@ -211,16 +205,13 @@ export const IdeasShow = ({
     name: 'ideaflow_social_sharing',
   });
 
-  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
+  const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
     projectId,
     inputId: ideaId,
   });
 
   const isLoaded =
-    !isNilOrError(idea) &&
-    !isNilOrError(ideaImages) &&
-    !isNilOrError(project) &&
-    !isUndefined(officialFeedbacks.officialFeedbacksList);
+    !isNilOrError(idea) && !isNilOrError(ideaImages) && !isNilOrError(project);
 
   const closeIdeaSocialSharingModal = () => {
     if (timeout.current) {
@@ -249,7 +240,7 @@ export const IdeasShow = ({
     !isNilOrError(project) &&
     !isNilOrError(idea) &&
     !isNilOrError(locale) &&
-    !isNilOrError(ideaCustomFieldsSchemas) &&
+    !isNilOrError(ideaCustomFieldsSchema) &&
     isLoaded
   ) {
     // If the user deletes their profile, authorId can be null
@@ -257,7 +248,8 @@ export const IdeasShow = ({
     const titleMultiloc = idea.data.attributes.title_multiloc;
     const ideaTitle = localize(titleMultiloc);
     const statusId = idea.data.relationships?.idea_status?.data?.id;
-    const ideaImageLarge = ideaImages?.[0]?.attributes?.versions?.large || null;
+    const ideaImageLarge =
+      ideaImages?.data[0]?.attributes?.versions?.large || null;
     const ideaId = idea.data.id;
     const proposedBudget = idea.data.attributes?.proposed_budget;
     const ideaBody = localize(idea.data.attributes?.body_multiloc);
@@ -265,11 +257,11 @@ export const IdeasShow = ({
       compact === true ||
       (windowSize ? windowSize <= viewportWidths.tablet : false);
 
-    if (isNilOrError(ideaCustomFieldsSchemas)) return null;
+    if (isNilOrError(ideaCustomFieldsSchema)) return null;
 
     const proposedBudgetEnabled = isFieldEnabled(
       'proposed_budget',
-      ideaCustomFieldsSchemas.data.attributes,
+      ideaCustomFieldsSchema.data.attributes,
       locale
     );
 
@@ -370,7 +362,6 @@ export const IdeasShow = ({
               />
             )}
             <Box my="80px">
-              {' '}
               <OfficialFeedback
                 postId={ideaId}
                 postType="idea"
@@ -468,11 +459,6 @@ const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
   ),
-  officialFeedbacks: ({ ideaId, render }) => (
-    <GetOfficialFeedbacks postId={ideaId} postType="idea">
-      {render}
-    </GetOfficialFeedbacks>
-  ),
   postOfficialFeedbackPermission: ({ project, render }) => (
     <GetPermission
       item={!isNilOrError(project) ? project : null}
@@ -480,11 +466,6 @@ const Data = adopt<DataProps, InputProps>({
     >
       {render}
     </GetPermission>
-  ),
-  comments: ({ ideaId, render }) => (
-    <GetComments postId={ideaId} postType="idea">
-      {render}
-    </GetComments>
   ),
 });
 

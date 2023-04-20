@@ -12,7 +12,7 @@ class AvatarsService
   # @param users[ActiveRecord::Relation] Scope of users to be filtered for avatars
   # @param limit[Integer] Limit the number of users returned. Does not affect the total count
   # @return [Hash] A hash containing the users with avatars and total count of participants
-  def avatars_for_project(project, users: User.active, limit: 5)
+  def avatars_for_project(project, users: User.registered, limit: 5)
     user_ids_and_count = Rails.cache.fetch("#{project.cache_key}/user_avatars", expires_in: 1.day) do
       participants = @participants_service.project_participants(project)
       fetch_user_ids_and_count(participants, limit)
@@ -25,7 +25,7 @@ class AvatarsService
   # @param users[ActiveRecord::Relation] Scope of users to be filtered for avatars
   # @param limit[Integer] Limit the number of users returned. Does not affect the total count
   # @return [Hash] A hash containing the users with avatars and total count of participants
-  def avatars_for_group(group, users: User.active, limit: 5)
+  def avatars_for_group(group, users: User.registered, limit: 5)
     user_ids_and_count = Rails.cache.fetch("#{group.cache_key}/user_avatars", expires_in: 1.day) do
       users_in_group = users.merge(group.members)
       fetch_user_ids_and_count(users_in_group, limit)

@@ -87,6 +87,9 @@ Metrics/BlockNesting:
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ClassLength:
   Max: 991
+  CountAsOne: ['array', 'hash', 'heredoc']
+  Exclude:
+    - 'app/models/user.rb'
 
 # Offense count: 97
 # Configuration parameters: AllowedMethods, AllowedPatterns, IgnoredMethods.

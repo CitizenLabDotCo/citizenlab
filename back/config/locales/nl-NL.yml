@@ -231,3 +231,11 @@ nl:
       copy_paste_the_link_below: "Kopieer en plak de onderstaande code in je registratieformulier op het platform."
       the_link_is_valid_for: "Deze link is 24 uur geldig. Als de link is verlopen, kan je <a href=\"%{link}\">een nieuwe code aanvragen</a>."
       did_you_receive_this_email_in_error: "Heb je deze e-mail per vergissing ontvangen? <a href=\"%{link}\">Laat het ons weten</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Je account is tijdelijk geblokkeerd'
+      title_user_blocked: 'Je account is tijdelijk geblokkeerd'
+      paragraph_1_without_reason: "Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld wegens overtreding van de communityrichtlijnen."
+      paragraph_1_with_reason: "Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld om de volgende reden:"
+      for_more_information: "Voor meer informatie hierover kan je deze pagina raadplegen: %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "Je kan opnieuw inloggen vanaf %{date}"

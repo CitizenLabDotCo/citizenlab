@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import { IPhaseFileData } from 'services/phaseFiles';
 import { IEventFileData } from 'api/event_files/types';
-import { IIdeaFileData } from 'services/ideaFiles';
+import { IIdeaFileData } from 'api/idea_files/types';
 import { darken } from 'polished';
 
 // components

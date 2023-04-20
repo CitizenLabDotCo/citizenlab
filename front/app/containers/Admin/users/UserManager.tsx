@@ -24,6 +24,7 @@ interface InputProps {
   search: string | undefined;
   groupId?: string;
   groupType?: MembershipType;
+  onlyBlocked?: boolean;
   deleteUsersFromGroup?: (userIds: string[]) => void;
   // These are used in the inputProps for GetUsers
   canModerate?: boolean;

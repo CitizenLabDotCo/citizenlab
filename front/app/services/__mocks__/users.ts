@@ -33,13 +33,8 @@ export const makeUser = (attributes = {}, id?: string): IUser => {
         unread_notifications: 0,
         ...attributes,
       },
-      relationships: {
-        granted_permissions: {
-          data: [],
-        },
-      },
     },
-  } as IUser;
+  };
 };
 
 export const makeAdmin = (attributes = {}): IUser => {

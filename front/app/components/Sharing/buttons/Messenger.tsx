@@ -46,7 +46,7 @@ const Messenger = ({
       return (
         <Button
           onClick={handleClick(messengerHref)}
-          aria-label={formatMessage(messages.shareViaWhatsApp)}
+          aria-label={formatMessage(messages.shareViaMessenger)}
           bgColor={colors.facebookMessenger}
           width="40px"
           height="40px"

@@ -28,7 +28,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 
 // utils
-import { isModerator } from 'services/permissions/roles';
+import { isRegularUser } from 'services/permissions/roles';
 import { isNilOrError, isUUID } from 'utils/helperUtils';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
@@ -54,7 +54,7 @@ const getRedirectURL = (
     return `${localeSegment}/subscription-ended`;
   }
 
-  if (!isNilOrError(authUser) && isModerator({ data: authUser })) {
+  if (!isNilOrError(authUser) && !isRegularUser({ data: authUser })) {
     return `${localeSegment}/`;
   }
 

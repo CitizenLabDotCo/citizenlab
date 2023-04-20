@@ -449,6 +449,7 @@ class ProjectCopyService < ::TemplateService
       'registration_completed_at' => shift_timestamp(user.registration_completed_at, shift_timestamps)&.iso8601,
       'verified' => user.verified,
       'block_start_at' => user.block_start_at,
+      'block_end_at' => user.block_end_at,
       'block_reason' => user.block_reason
     }.tap do |yml_user|
       unless yml_user['password_digest']

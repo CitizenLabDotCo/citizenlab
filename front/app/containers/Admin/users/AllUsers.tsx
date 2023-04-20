@@ -1,7 +1,6 @@
 // Libraries
 import React, { useState } from 'react';
 import { isString, isEmpty } from 'lodash-es';
-
 // Components
 import UserManager from './UserManager';
 import UsersHeader from './UsersHeader';

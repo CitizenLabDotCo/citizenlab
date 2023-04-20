@@ -1,7 +1,7 @@
 import {
   IIdeaJsonFormSchemas,
   CustomFieldCodes,
-} from 'services/ideaJsonFormsSchema';
+} from 'api/idea_json_form_schema/types';
 import { Locale } from 'typings';
 import { isNilOrError } from './helperUtils';
 

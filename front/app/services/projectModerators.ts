@@ -1,11 +1,10 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 import { IUsers } from 'services/users';
-import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import seatsKeys from 'api/seats/keys';
 
-const ivalidateSeatsCache = () => {
+const invalidateSeatsCache = () => {
   queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
 };
 
@@ -23,31 +22,27 @@ export async function deleteProjectModerator(
     `${API_PATH}/projects/${projectId}/moderators/${moderatorId}`,
     moderatorId
   );
-  ivalidateSeatsCache();
+  invalidateSeatsCache();
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/projects/${projectId}/moderators`],
+    apiEndpoint: [
+      `${API_PATH}/projects/${projectId}/moderators`,
+      `${API_PATH}/users`,
+    ],
   });
   return response;
 }
 
-export function findMembership(
-  projectId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<{ data: IGroupMembershipsFoundUserData[] }>({
-    apiEndpoint: `${API_PATH}/projects/${projectId}/moderators/users_search`,
-    ...streamParams,
-    cacheStream: false,
-  });
-}
-
-export async function addMembership(projectId: string, user_id: string) {
+export async function addProjectModerator(projectId: string, user_id: string) {
   const response = await streams.add(
     `${API_PATH}/projects/${projectId}/moderators`,
     {
       moderator: { user_id },
     }
   );
-  ivalidateSeatsCache();
+  invalidateSeatsCache();
+  await streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/stats/users_count`],
+  });
+
   return response;
 }

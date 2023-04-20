@@ -12,7 +12,7 @@ import Centerer from 'components/UI/Centerer';
 import useLocale from 'hooks/useLocale';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import useProject from 'hooks/useProject';
-import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 
 // events
 import {
@@ -123,7 +123,7 @@ interface Props {
 
 const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
   const locale = useLocale();
-  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
+  const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
     projectId,
     phaseId,
   });
@@ -163,11 +163,11 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
     };
   }, []);
 
-  if (isNilOrError(ideaCustomFieldsSchemas)) return null;
+  if (isNilOrError(ideaCustomFieldsSchema)) return null;
 
   const topicsEnabled = isFieldEnabled(
     'topic_ids',
-    ideaCustomFieldsSchemas.data.attributes,
+    ideaCustomFieldsSchema.data.attributes,
     locale
   );
 

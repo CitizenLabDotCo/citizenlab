@@ -1,7 +1,8 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
 const baseKey = {
-  type: 'initiative_files',
+  type: 'file',
+  variant: 'initiative',
 };
 
 const initiativeFilesKeys = {

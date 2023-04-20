@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 // hooks
-import useIdeaImages from 'hooks/useIdeaImages';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
 
 // styling
 import styled from 'styled-components';
@@ -25,7 +25,6 @@ import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import checkTextOverflow, { MEDIUM_LINE_HEIGHT } from './checkTextOverflow';
 
 interface Props {
@@ -41,7 +40,7 @@ interface Props {
 }
 
 const IdeaText = styled.div`
-  font-size: ${fontSizes.m};
+  font-size: ${fontSizes.m}px;
   color: ${colors.primary};
   line-height: ${MEDIUM_LINE_HEIGHT}px;
 `;
@@ -59,10 +58,8 @@ const IdeaCard = ({
 }: Props) => {
   const textContainerRef = useRef<HTMLDivElement | null>(null);
   const [textOverflow, setTextOverflow] = useState(false);
-  const images = useIdeaImages(id);
-  const image = isNilOrError(images)
-    ? undefined
-    : images[0]?.attributes?.versions?.medium;
+  const { data: images } = useIdeaImages(id);
+  const image = images?.data[0]?.attributes?.versions?.medium;
 
   useEffect(() => {
     if (!textContainerRef.current) return;

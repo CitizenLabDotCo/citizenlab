@@ -6,7 +6,11 @@ import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // services
-import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
+import {
+  isAdmin,
+  isSuperAdmin,
+  isRegularUser,
+} from 'services/permissions/roles';
 import { ITopicData } from 'services/topics';
 
 // resources
@@ -98,7 +102,7 @@ const InitiativesEditPage = ({
     const isPrivilegedUser =
       !isNilOrError(authUser) &&
       (isAdmin({ data: authUser }) ||
-        isModerator({ data: authUser }) ||
+        !isRegularUser({ data: authUser }) ||
         isSuperAdmin({ data: authUser }));
 
     if (!isPrivilegedUser && authUser === null) {

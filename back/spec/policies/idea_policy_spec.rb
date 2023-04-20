@@ -444,8 +444,16 @@ describe IdeaPolicy do
   end
 
   context 'for blocked author' do
-    let(:user) { create(:user, block_start_at: Time.now) }
+    let(:user) { create(:user, block_end_at: 5.days.from_now) }
     let(:idea) { create(:idea, author: user, project: create(:continuous_project)) }
+
+    it_behaves_like 'policy for blocked user'
+  end
+
+  # It appears we actually create an idea when a user submits a native survey
+  context 'for blocked user submitting a survey' do
+    let(:user) { create(:user, block_end_at: 5.days.from_now) }
+    let(:idea) { create(:idea, author: user, project: create(:continuous_survey_project)) }
 
     it_behaves_like 'policy for blocked user'
   end

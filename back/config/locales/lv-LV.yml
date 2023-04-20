@@ -231,3 +231,11 @@ lv:
       copy_paste_the_link_below: "Nokopējiet un ielīmējiet zemāk redzamo kodu platformas reģistrācijas veidlapā."
       the_link_is_valid_for: "Šī saite ir derīga 24 stundas. Ja saites derīguma termiņš ir beidzies, varat <a href=\"%{link}\">pieprasīt jaunu kodu</a>."
       did_you_receive_this_email_in_error: "Vai jūs kļūdaini saņēmāt šo e-pastu? <a href=\"%{link}\">Dodiet mums zināt</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Jūsu konts ir uz laiku atspējots'
+      title_user_blocked: 'Jūsu konts ir uz laiku atspējots'
+      paragraph_1_without_reason: "Jūsu konts līdzdalības platformā %{organizationName} ir uz laiku atspējots par kopienas vadlīniju pārkāpumu."
+      paragraph_1_with_reason: "Jūsu konts %{organizationName} dalības platformā ir uz laiku atspējots šāda iemesla dēļ:"
+      for_more_information: "Plašāku informāciju par šo tēmu var atrast vietnē %{termsAndConditionsPage}."
+      you_can_sign_in_again_from: "Varat atkal pierakstīties no %{date}"

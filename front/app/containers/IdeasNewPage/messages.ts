@@ -242,8 +242,8 @@ export default defineMessages({
   },
 
   ajv_error_idea_title_multiloc_maxLength: {
-    id: 'app.containers.IdeasNewPage.ajv_error_idea_title_multiloc_maxLength',
-    defaultMessage: 'The idea title must be more than {limit} characters long',
+    id: 'app.containers.IdeasNewPage.ajv_error_idea_title_multiloc_maxLength1',
+    defaultMessage: 'The idea title must be less than {limit} characters long',
   },
   ajv_error_idea_title_multiloc_minLength: {
     id: 'app.containers.IdeasNewPage.ajv_error_idea_title_multiloc_minLength',
@@ -266,9 +266,9 @@ export default defineMessages({
       'The contribution title must be less than {limit} characters long',
   },
   ajv_error_contribution_title_multiloc_minLength: {
-    id: 'app.containers.IdeasNewPage.ajv_error_contribution_title_multiloc_minLength',
+    id: 'app.containers.IdeasNewPage.ajv_error_contribution_title_multiloc_minLength1',
     defaultMessage:
-      'The contribution title must be less than {limit} characters long',
+      'The contribution title must be more than {limit} characters long',
   },
   ajv_error_contribution_body_multiloc_maxLength: {
     id: 'app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_maxLength',
@@ -287,9 +287,9 @@ export default defineMessages({
       'The question title must be less than {limit} characters long',
   },
   ajv_error_question_title_multiloc_minLength: {
-    id: 'app.containers.IdeasNewPage.ajv_error_question_title_multiloc_minLength',
+    id: 'app.containers.IdeasNewPage.ajv_error_question_title_multiloc_minLength1',
     defaultMessage:
-      'The question title must be less than {limit} characters long',
+      'The question title must be more than {limit} characters long',
   },
   ajv_error_question_body_multiloc_maxLength: {
     id: 'app.containers.IdeasNewPage.ajv_error_question_body_multiloc_maxLength',
@@ -308,9 +308,9 @@ export default defineMessages({
       'The project title must be less than {limit} characters long',
   },
   ajv_error_project_title_multiloc_minLength: {
-    id: 'app.containers.IdeasNewPage.ajv_error_project_title_multiloc_minLength',
+    id: 'app.containers.IdeasNewPage.ajv_error_project_title_multiloc_minLength1',
     defaultMessage:
-      'The project title must be less than {limit} characters long',
+      'The project title must be more than {limit} characters long',
   },
   ajv_error_project_body_multiloc_maxLength: {
     id: 'app.containers.IdeasNewPage.ajv_error_project_body_multiloc_maxLength',
@@ -328,8 +328,9 @@ export default defineMessages({
     defaultMessage: 'The issue title must be less than {limit} characters long',
   },
   ajv_error_issue_title_multiloc_minLength: {
-    id: 'app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength',
-    defaultMessage: 'The issue title must be less than {limit} characters long',
+    id: 'app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength2',
+    defaultMessage:
+      'The comment title must be more than {limit} characters long',
   },
   ajv_error_issue_body_multiloc_maxLength: {
     id: 'app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_maxLength',
@@ -348,9 +349,9 @@ export default defineMessages({
       'The option title must be less than {limit} characters long',
   },
   ajv_error_option_title_multiloc_minLength: {
-    id: 'app.containers.IdeasNewPage.ajv_error_option_title_multiloc_minLength',
+    id: 'app.containers.IdeasNewPage.ajv_error_option_title_multiloc_minLength1',
     defaultMessage:
-      'The option title must be less than {limit} characters long',
+      'The option title must be more than {limit} characters long',
   },
   ajv_error_option_body_multiloc_maxLength: {
     id: 'app.containers.IdeasNewPage.ajv_error_option_body_multiloc_maxLength',

@@ -2,12 +2,16 @@
 
 class UserCustomFieldService
   def delete_custom_field_values(field)
+    return unless field.resource_type == 'User'
+
     User
-      .where("custom_field_values \? '#{field.key}'")
+      .where("custom_field_values ? '#{field.key}'")
       .update_all("custom_field_values = custom_field_values - '#{field.key}'")
   end
 
   def delete_custom_field_option_values(option_key, field)
+    return unless field.resource_type == 'User'
+
     if field.input_type == 'multiselect'
       # When option is the only selection
       User

@@ -1,12 +1,18 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { IUsers } from 'services/users';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import seatsKeys from 'api/seats/keys';
 
 const indexPath = (projectFolderId: string) =>
   `${API_PATH}/project_folders/${projectFolderId}/moderators`;
 
 const showPath = (projectFolderId: string, moderatorId: string) =>
   `${indexPath(projectFolderId)}/${moderatorId}`;
+
+const invalidateSeatsCache = () => {
+  queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+};
 
 export function folderModeratorsStream(projectFolderId: string) {
   return streams.get<IUsers>({
@@ -24,8 +30,11 @@ export async function deleteFolderModerator(
     moderatorId,
     true
   );
+
+  invalidateSeatsCache();
+
   await streams.fetchAllWith({
-    apiEndpoint: [indexPath(projectFolderId)],
+    apiEndpoint: [indexPath(projectFolderId), `${API_PATH}/users`],
   });
   return response;
 }
@@ -39,8 +48,11 @@ export async function addFolderModerator(
       user_id: moderatorId,
     },
   });
+
+  invalidateSeatsCache();
   await streams.fetchAllWith({
-    apiEndpoint: [indexPath(projectFolderId)],
+    apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/stats/users_count`],
   });
+
   return response;
 }

@@ -231,3 +231,11 @@ sv:
       copy_paste_the_link_below: "Kopiera och klistra in koden nedan i registreringsformuläret på plattformen."
       the_link_is_valid_for: "Den här länken är giltig i 24 timmar. Om länken har upphört att gälla kan du <a href=\"%{link}\">begära en ny kod</a>."
       did_you_receive_this_email_in_error: "Fick du det här e-postmeddelandet av misstag? <a href=\"%{link}\">Meddela oss</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Ditt konto har tillfälligt inaktiverats'
+      title_user_blocked: 'Ditt konto har tillfälligt inaktiverats'
+      paragraph_1_without_reason: "Ditt konto på deltagarplattformen %{organizationName} har tillfälligt stängts av på grund av brott mot gemenskapens riktlinjer."
+      paragraph_1_with_reason: "Ditt konto på deltagarplattformen %{organizationName} har tillfälligt inaktiverats av följande skäl:"
+      for_more_information: "Mer information om detta finns på %{termsAndConditionsPage}."
+      you_can_sign_in_again_from: "Du kan logga in igen från %{date}"

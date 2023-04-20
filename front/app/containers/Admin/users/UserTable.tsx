@@ -42,29 +42,21 @@ const StyledPagination = styled(Pagination)`
   margin-top: 12px;
 `;
 
+const Uppercase = styled.span`
+  text-transform: uppercase;
+`;
+
 interface SortableThProps {
   sortDirection: 'ascending' | 'descending' | undefined;
   onClick: () => void;
   children: React.ReactNode;
 }
 
-const Uppercase = styled.span`
-  text-transform: uppercase;
-`;
-
 const SortableTh = ({ sortDirection, onClick, children }: SortableThProps) => (
   <Th clickable sortDirection={sortDirection} onClick={onClick}>
     <Uppercase>{children}</Uppercase>
   </Th>
 );
-
-const getNewRoles = (user: IUserData, changeToNormalUser: boolean): TRole[] => {
-  if (!user.attributes.roles || changeToNormalUser) {
-    return [];
-  }
-
-  return [...user.attributes.roles, { type: 'admin' }];
-};
 
 interface InputProps {
   selectedUsers: string[] | 'none' | 'all';
@@ -95,7 +87,7 @@ const UsersTable = ({
   const handleChangeRoles = (user: IUserData, changeToNormalUser: boolean) => {
     trackEventByName(tracks.adminChangeRole.name);
 
-    if (authUser && authUser.id === user.id) {
+    if (authUser.id === user.id) {
       eventEmitter.emit<JSX.Element>(
         events.userRoleChangeFailed,
         <FormattedMessage {...messages.youCantUnadminYourself} />
@@ -124,9 +116,7 @@ const UsersTable = ({
     handleSelect(userId);
   };
 
-  const usersCount = isArray(usersList) && usersList.length;
-
-  if (isArray(usersList) && usersCount && usersCount > 0) {
+  if (isArray(usersList) && usersList.length > 0) {
     return (
       <Container className="e2e-user-table">
         {process.env.NODE_ENV === 'development' && notCitizenlabMember && (
@@ -166,14 +156,11 @@ const UsersTable = ({
               >
                 <FormattedMessage {...messages.since} />
               </SortableTh>
-              <SortableTh
-                sortDirection={
-                  sortAttribute === 'role' ? sortDirection : undefined
-                }
-                onClick={handleSortingOnChange('role')}
-              >
-                <FormattedMessage {...messages.status} />
-              </SortableTh>
+              <Th>
+                <Uppercase>
+                  <FormattedMessage {...messages.status} />
+                </Uppercase>
+              </Th>
               <Th>
                 <Uppercase>
                   <FormattedMessage tagName="div" {...messages.options} />
@@ -185,7 +172,7 @@ const UsersTable = ({
             {usersList.map((user) => (
               <UserTableRow
                 key={user.id}
-                user={user}
+                userInRow={user}
                 selected={
                   selectedUsers === 'all' || includes(selectedUsers, user.id)
                 }
@@ -210,3 +197,11 @@ const UsersTable = ({
 };
 
 export default UsersTable;
+
+const getNewRoles = (user: IUserData, changeToNormalUser: boolean): TRole[] => {
+  if (!user.attributes.roles || changeToNormalUser) {
+    return [];
+  }
+
+  return [...user.attributes.roles, { type: 'admin' }];
+};

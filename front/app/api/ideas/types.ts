@@ -118,7 +118,7 @@ export interface IIdeaData {
       };
       comment_voting_idea: {
         enabled: boolean;
-        disabled_reason: null;
+        disabled_reason: IdeaCommentingDisabledReason | null;
         future_enabled: null;
       };
       budgeting?: {

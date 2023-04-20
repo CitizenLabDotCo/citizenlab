@@ -3,16 +3,6 @@
 class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   @@multiloc_service = MultilocService.new
 
-  before_action :render_no_data, only: %i[
-    ideas_by_time
-    ideas_by_time_cumulative
-  ]
-
-  before_action :render_no_data_as_xlsx, only: %i[
-    ideas_by_time_as_xlsx
-    ideas_by_time_cumulative_as_xlsx
-  ]
-
   def ideas_count
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
       .where(published_at: @start_at..@end_at)
@@ -125,65 +115,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas_by_status.xlsx'
   end
 
-  def ideas_by_time
-    render json: raw_json({ series: { ideas: ideas_by_time_serie } })
-  end
-
-  def ideas_by_time_as_xlsx
-    name = 'ideas_by_time'
-    xlsx = XlsxService.new.generate_time_stats_xlsx ideas_by_time_serie, name
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "#{name}.xlsx"
-  end
-
-  def ideas_by_time_cumulative
-    render json: raw_json({ series: { ideas: ideas_by_time_cumulative_serie } })
-  end
-
-  def ideas_by_time_cumulative_as_xlsx
-    name = 'ideas_by_time_cumulative'
-    xlsx = XlsxService.new.generate_time_stats_xlsx ideas_by_time_cumulative_serie, name
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "#{name}.xlsx"
-  end
-
   private
-
-  def ideas_by_time_cumulative_serie
-    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-    ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
-
-    @@stats_service.group_by_time_cumulative(
-      ideas,
-      'published_at',
-      @start_at,
-      @end_at,
-      params[:interval]
-    )
-  end
-
-  def ideas_by_time_serie
-    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-    ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
-
-    @@stats_service.group_by_time(
-      ideas,
-      'published_at',
-      @start_at,
-      @end_at,
-      params[:interval]
-    )
-  end
-
-  def render_no_data
-    return unless @no_data
-
-    render json: raw_json({ series: { ideas: {} } })
-  end
-
-  def render_no_data_as_xlsx
-    return unless @no_data
-
-    render json: { errors: 'no data for this period' }, status: :unprocessable_entity
-  end
 
   def do_authorize
     authorize :stat_idea

@@ -12,12 +12,14 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = policy_scope User
 
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
-    @users = @users.active unless params[:include_inactive]
+    @users = @users.registered unless params[:include_inactive]
     @users = @users.blocked if params[:only_blocked]
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
     @users = @users.admin.or(@users.project_moderator(params[:can_moderate_project])) if params[:can_moderate_project].present?
+    @users = @users.not_admin.and(@users.not_project_moderator(params[:is_not_project_moderator])) if params[:is_not_project_moderator].present?
     @users = @users.admin.or(@users.project_moderator).or(@users.project_folder_moderator) if params[:can_moderate].present?
+    @users = @users.not_admin.and(@users.not_project_folder_moderator(params[:is_not_folder_moderator])) if params[:is_not_folder_moderator].present?
     @users = @users.not_citizenlab_member if params[:not_citizenlab_member].present?
     @users = @users.admin if params[:can_admin].present?
 
@@ -56,22 +58,18 @@ class WebApi::V1::UsersController < ::ApplicationController
   def seats
     authorize :user, :seats?
 
-    render json: {
-      data: {
-        type: 'seats',
-        attributes: {
-          admins_number: User.billed_admins.count,
-          project_moderators_number: User.billed_moderators.count
-        }
-      }
+    attributes = {
+      admins_number: User.billed_admins.count,
+      moderators_number: User.billed_moderators.count
     }
+    render json: raw_json(attributes)
   end
 
   def index_xlsx
     authorize :user, :index_xlsx?
 
     @users = policy_scope User
-    @users = @users.active unless params[:include_inactive]
+    @users = @users.registered unless params[:include_inactive]
 
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.where(id: params[:users]) if params[:users]
@@ -189,8 +187,14 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def block
+    block_end_at = Time.zone.now + AppConfiguration.instance.settings('user_blocking', 'duration').days
+
     authorize @user, :block?
-    if @user.update(block_start_at: Time.zone.now, block_reason: params.dig(:user, :block_reason))
+    if @user.update(
+      block_start_at: Time.zone.now,
+      block_end_at: block_end_at,
+      block_reason: params.dig(:user, :block_reason)
+    )
       SideFxUserService.new.after_block(@user, current_user)
 
       render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
@@ -201,7 +205,7 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   def unblock
     authorize @user, :unblock?
-    if @user.update(block_start_at: nil, block_reason: nil)
+    if @user.update(block_start_at: nil, block_end_at: nil, block_reason: nil)
       SideFxUserService.new.after_unblock(@user, current_user)
 
       render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
@@ -217,7 +221,7 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   def blocked_count
     authorize :user, :blocked_count?
-    render json: { data: { blocked_users_count: User.all.blocked.count } }, status: :ok
+    render json: raw_json({ count: User.all.blocked.count }, type: 'blocked_users_count'), status: :ok
   end
 
   def initiatives_count

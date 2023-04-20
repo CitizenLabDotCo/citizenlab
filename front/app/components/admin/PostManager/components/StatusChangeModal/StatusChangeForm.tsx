@@ -2,9 +2,6 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
-// services
-import { IOfficialFeedbackData } from 'services/officialFeedback';
-
 // resources
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
@@ -34,6 +31,8 @@ import { colors } from 'utils/styleUtils';
 
 // typings
 import { Multiloc, Locale, MultilocFormValues } from 'typings';
+import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
+import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
 
 const StyledSection = styled(Section)``;
 
@@ -61,7 +60,10 @@ interface InputProps {
   error: boolean;
   newOfficialFeedback: FormValues;
   mode: 'latest' | 'new';
-  latestOfficialFeedback: IOfficialFeedbackData | null;
+  latestOfficialFeedback:
+    | IIdeaOfficialFeedbackData
+    | IInitiativeOfficialFeedbackData
+    | null;
   onChangeMode: (value) => void;
   onChangeBody: (value: Multiloc) => void;
   onChangeAuthor: (value: Multiloc) => void;

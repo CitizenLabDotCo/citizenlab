@@ -32,6 +32,41 @@ resource 'Idea Custom Fields' do
       let(:custom_form) { create(:custom_form, participation_context: context) }
       let(:project_id) { context.id }
 
+      context 'when CustomForm custom field has same key as User custom_field' do
+        example 'Deleting the CustomForm field does not cause deletion User custom_field_values key', document: false do
+          custom_field = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
+          user1 = create(:user, custom_field_values: { custom_field.key => 'some value' })
+
+          do_request({ custom_fields: [] })
+
+          assert_status 200
+          expect(user1.reload.custom_field_values).to eq({ custom_field.key => 'some value' })
+        end
+      end
+
+      context 'when CustomForm custom field option collides with User custom field option' do
+        example 'Deleting the CustomForm option does not delete the User custom_field_values value', document: false do
+          field_to_update = create(:custom_field, input_type: 'select', resource: custom_form)
+          option = create(:custom_field_option, custom_field: field_to_update)
+          user1 = create(:user, custom_field_values: { field_to_update.key => option.key })
+
+          request = {
+            custom_fields: [
+              { input_type: 'page' },
+              {
+                id: field_to_update.id,
+                options: []
+              }
+            ]
+          }
+
+          do_request request
+
+          assert_status 200
+          expect(user1.reload.custom_field_values).to eq({ field_to_update.key => option.key })
+        end
+      end
+
       example '[error] Invalid data in fields' do
         field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
         request = {

@@ -42,23 +42,7 @@ class StatCommentPolicy < ApplicationPolicy
     show_stats?
   end
 
-  def ideas_by_time?
-    show_stats?
-  end
-
-  def ideas_by_time_cumulative?
-    show_stats?
-  end
-
   def comments_count?
-    show_stats?
-  end
-
-  def comments_by_time?
-    show_stats?
-  end
-
-  def comments_by_time_cumulative?
     show_stats?
   end
 
@@ -67,14 +51,6 @@ class StatCommentPolicy < ApplicationPolicy
   end
 
   def comments_by_project?
-    show_stats?
-  end
-
-  def comments_by_time_as_xlsx?
-    show_stats?
-  end
-
-  def comments_by_time_cumulative_as_xlsx?
     show_stats?
   end
 

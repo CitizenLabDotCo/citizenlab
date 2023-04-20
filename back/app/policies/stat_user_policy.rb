@@ -50,10 +50,6 @@ class StatUserPolicy < ApplicationPolicy
     show_stats?
   end
 
-  def users_engagement_scores?
-    show_stats?
-  end
-
   def users_by_time_as_xlsx?
     show_stats?
   end

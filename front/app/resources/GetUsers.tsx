@@ -24,16 +24,26 @@ export type Sort =
   | '-role';
 
 export interface InputProps {
+  // Not used
   pageNumber?: number;
   pageSize?: number;
   sort?: Sort;
   search?: string;
+  // Not used
   groupId?: string;
+  // Unclear what they are supposed to do
+  // https://citizenlab.atlassian.net/browse/CL-3240
   canModerateProject?: string;
   canModerate?: boolean;
+  // Doesn't work with false
+  // https://citizenlab.atlassian.net/browse/CL-3226
   canAdmin?: boolean;
+  onlyBlocked?: boolean;
   notCitizenlabMember?: boolean;
+  // Not used
   includeInactive?: boolean;
+  isNotProjectModeratorOfProjectId?: string;
+  isNotFolderModeratorOfFolderId?: string;
 }
 
 interface IQueryParameters {
@@ -45,8 +55,15 @@ interface IQueryParameters {
   can_moderate_project?: string;
   can_moderate?: boolean;
   can_admin?: boolean;
+  only_blocked?: boolean;
   not_citizenlab_member?: boolean;
   include_inactive?: boolean;
+  // Pass project id to exclude all users who can moderate
+  // the project
+  is_not_project_moderator?: string;
+  // Pass folder id to exclude all users who can moderate
+  // the folder
+  is_not_folder_moderator?: string;
 }
 
 type children = (obj: GetUsersChildProps) => JSX.Element | null;
@@ -91,8 +108,11 @@ export default class GetUsers extends React.Component<Props, State> {
         can_moderate_project: undefined,
         can_moderate: undefined,
         can_admin: undefined,
+        only_blocked: undefined,
         not_citizenlab_member: undefined,
         include_inactive: undefined,
+        is_not_project_moderator: undefined,
+        is_not_folder_moderator: undefined,
       },
       usersList: undefined,
       sortAttribute: getSortAttribute<Sort, SortAttribute>(initialSort),
@@ -171,8 +191,11 @@ export default class GetUsers extends React.Component<Props, State> {
           can_moderate_project: props.canModerateProject,
           can_moderate: props.canModerate,
           can_admin: props.canAdmin,
+          only_blocked: props.onlyBlocked,
           not_citizenlab_member: props.notCitizenlabMember,
           include_inactive: props.includeInactive,
+          is_not_project_moderator: props.isNotProjectModeratorOfProjectId,
+          is_not_folder_moderator: props.isNotFolderModeratorOfFolderId,
         },
         isNil
       ),

@@ -5,11 +5,10 @@ import { switchMap } from 'rxjs/operators';
 import { projectFilesStream } from 'services/projectFiles';
 import { phaseFilesStream } from 'services/phaseFiles';
 import { pageFilesStream } from 'services/pageFiles';
-import { ideaFilesStream } from 'services/ideaFiles';
 import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
 
-export type TResourceType = 'project' | 'phase' | 'page' | 'idea';
+export type TResourceType = 'project' | 'phase' | 'page';
 
 export interface InputProps {
   resetOnChange?: boolean;
@@ -34,7 +33,6 @@ function useRemoteFiles({
       project: projectFilesStream,
       phase: phaseFilesStream,
       page: pageFilesStream,
-      idea: ideaFilesStream,
     }[resourceType];
     let observable: Observable<(UploadFile | null)[] | null> = of(null);
 

@@ -55,10 +55,5 @@ describe Analytics::PopulateDimensionsService do
       create(:initiative, created_at: initiative_date)
       expect { described_class.run }.to change(Analytics::DimensionDate, :count).by(10)
     end
-
-    it 'only creates date dimensions from 2020-01-01 onwards' do
-      create(:idea, created_at: Date.parse('2019-08-01'))
-      expect { described_class.run }.to change { Analytics::DimensionDate.first.date }.to(Date.parse('2020-01-01'))
-    end
   end
 end
