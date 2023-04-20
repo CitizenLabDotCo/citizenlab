@@ -386,7 +386,7 @@
   "app.components.SeatInfo.additionalSeats": "Extra accounts",
   "app.components.SeatInfo.additionalSeatsToolTip": "Dit toont het aantal extra accounts dat je hebt gekocht bovenop de \"Inbegrepen accounts\".",
   "app.components.SeatInfo.adminSeats": "Admin accounts",
-  "app.components.SeatInfo.adminSeatsIncludedText": "{adminSeats} admin accounts inbegrepen",
+  "app.components.SeatInfo.adminSeatsIncludedText": "{adminSeats} admin-accounts inbegrepen",
   "app.components.SeatInfo.adminSeatsTooltip": "Admins hebben de leiding over het platform en zij hebben beheerdersrechten voor alle mappen en projecten. Je kunt {visitHelpCenter} raadplegen voor meer informatie over de verschillende rollen.",
   "app.components.SeatInfo.collaboratorSeats": "Map-/projectbeheerder accounts",
   "app.components.SeatInfo.collaboratorSeatsTooltip1": "Beheerders zijn map-/projectbeheerders. Zij kunnen een onbeperkt aantal mappen/projecten beheren. Je kunt {visitHelpCenter} raadplegen voor meer informatie over de verschillende rollen.",
