@@ -1,10 +1,7 @@
-import React, { PureComponent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 import { get } from 'lodash-es';
-
-// router
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import { Icon, IconNames, Box, Text } from '@citizenlab/cl2-component-library';
@@ -12,8 +9,7 @@ import MenuItem from './MenuItem';
 import Link from 'utils/cl-router/Link';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -141,10 +137,6 @@ interface DataProps {
 }
 interface Props extends InputProps, DataProps {}
 
-interface State {
-  navItems: NavItem[];
-}
-
 export type NavItem = {
   name: string;
   link: string;
@@ -172,204 +164,172 @@ const getTopAndBottomNavItems = (navItems: NavItem[]) => {
   return [topNavItems, bottomNavItems];
 };
 
-class Sidebar extends PureComponent<
-  Props & WrappedComponentProps & WithRouterProps,
-  State
-> {
-  constructor(props: Props & WrappedComponentProps & WithRouterProps) {
-    super(props);
+const defaultNavItems: NavItem[] = [
+  {
+    name: 'dashboard',
+    link: '/admin/dashboard',
+    iconName: 'sidebar-dashboards',
+    message: 'dashboard',
+  },
+  {
+    name: 'projects',
+    link: '/admin/projects',
+    iconName: 'sidebar-folder',
+    message: 'projects',
+  },
+  {
+    name: 'reporting',
+    link: `/admin/reporting`,
+    iconName: 'sidebar-reporting',
+    message: 'reporting',
+  },
+  {
+    name: 'workshops',
+    link: '/admin/workshops',
+    iconName: 'sidebar-workshops',
+    message: 'workshops',
+    featureNames: ['workshops'],
+  },
+  {
+    name: 'ideas',
+    link: '/admin/ideas',
+    iconName: 'sidebar-input-manager',
+    message: 'inputManager',
+  },
+  {
+    name: 'initiatives',
+    link: '/admin/initiatives',
+    iconName: 'sidebar-proposals',
+    message: 'initiatives',
+    featureNames: ['initiatives'],
+    onlyCheckAllowed: true,
+  },
+  {
+    name: 'userinserts',
+    link: '/admin/users',
+    iconName: 'sidebar-users',
+    message: 'users',
+  },
+  {
+    name: 'invitations',
+    link: '/admin/invitations',
+    iconName: 'sidebar-invitations',
+    message: 'invitations',
+  },
+  {
+    name: 'messaging',
+    link: '/admin/messaging',
+    iconName: 'sidebar-messaging',
+    message: 'messaging',
+    featureNames: ['manual_emailing', 'automated_emailing_control', 'texting'],
+  },
+  {
+    name: 'menu',
+    link: '/admin/pages-menu',
+    iconName: 'sidebar-pages-menu',
+    message: 'menu',
+    showAtBottom: true,
+  },
+  {
+    name: 'settings',
+    link: '/admin/settings/general',
+    iconName: 'sidebar-settings',
+    message: 'settings',
+    showAtBottom: true,
+  },
+];
 
-    this.state = {
-      navItems: [
-        {
-          name: 'dashboard',
-          link: '/admin/dashboard',
-          iconName: 'sidebar-dashboards',
-          message: 'dashboard',
-        },
-        {
-          name: 'projects',
-          link: '/admin/projects',
-          iconName: 'sidebar-folder',
-          message: 'projects',
-        },
-        {
-          name: 'reporting',
-          link: `/admin/reporting`,
-          iconName: 'sidebar-reporting',
-          message: 'reporting',
-        },
-        {
-          name: 'workshops',
-          link: '/admin/workshops',
-          iconName: 'sidebar-workshops',
-          message: 'workshops',
-          featureNames: ['workshops'],
-        },
-        {
-          name: 'ideas',
-          link: '/admin/ideas',
-          iconName: 'sidebar-input-manager',
-          message: 'inputManager',
-        },
-        {
-          name: 'initiatives',
-          link: '/admin/initiatives',
-          iconName: 'sidebar-proposals',
-          message: 'initiatives',
-          featureNames: ['initiatives'],
-          onlyCheckAllowed: true,
-        },
-        {
-          name: 'userinserts',
-          link: '/admin/users',
-          iconName: 'sidebar-users',
-          message: 'users',
-        },
-        {
-          name: 'invitations',
-          link: '/admin/invitations',
-          iconName: 'sidebar-invitations',
-          message: 'invitations',
-        },
-        {
-          name: 'messaging',
-          link: '/admin/messaging',
-          iconName: 'sidebar-messaging',
-          message: 'messaging',
-          featureNames: [
-            'manual_emailing',
-            'automated_emailing_control',
-            'texting',
-          ],
-        },
-        {
-          name: 'menu',
-          link: '/admin/pages-menu',
-          iconName: 'sidebar-pages-menu',
-          message: 'menu',
-          showAtBottom: true,
-        },
-        {
-          name: 'settings',
-          link: '/admin/settings/general',
-          iconName: 'sidebar-settings',
-          message: 'settings',
-          showAtBottom: true,
-        },
-      ],
-    };
-  }
+const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
+  const { formatMessage } = useIntl();
+  const [navItems, setNavItems] = useState<NavItem[]>(defaultNavItems);
+  const isPagesAndMenuPage = isPage('pages_menu', location.pathname);
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { ideasCount, initiativesCount } = nextProps;
-    if (
-      !isNilOrError(ideasCount.count) &&
-      ideasCount.count !==
-        prevState.navItems.find((navItem) => navItem.name === 'ideas').count
-    ) {
-      const { navItems } = prevState;
-      const nextNavItems = navItems;
-      const ideasIndex = navItems.findIndex(
-        (navItem) => navItem.name === 'ideas'
-      );
-      nextNavItems[ideasIndex].count = ideasCount.count;
-      return { navItems: nextNavItems };
-    }
-    if (
-      !isNilOrError(initiativesCount.count) &&
-      initiativesCount.count !==
-        prevState.navItems.find((navItem) => navItem.name === 'initiatives')
-          .count
-    ) {
-      const { navItems } = prevState;
-      const nextNavItems = navItems;
-      const initiativesIndex = navItems.findIndex(
-        (navItem) => navItem.name === 'initiatives'
-      );
-      nextNavItems[initiativesIndex].count = initiativesCount.count;
-      return { navItems: nextNavItems };
-    }
-    return prevState;
-  }
+  useEffect(() => {
+    const updatedNavItems: NavItem[] = navItems.map((navItem: NavItem) => {
+      if (
+        navItem.name === 'ideas' &&
+        !isNilOrError(ideasCount.count) &&
+        ideasCount.count
+      ) {
+        return { ...navItem, count: ideasCount.count };
+      } else if (
+        navItem.name === 'initiatives' &&
+        !isNilOrError(initiativesCount.count) &&
+        initiativesCount.count
+      ) {
+        return { ...navItem, count: initiativesCount.count };
+      }
+      return navItem;
+    });
+    setNavItems(updatedNavItems);
+  }, [ideasCount.count, initiativesCount.count]);
 
-  handleData = (insertNavItemOptions: InsertConfigurationOptions<NavItem>) => {
-    this.setState(({ navItems }) => ({
-      navItems: insertConfiguration(insertNavItemOptions)(navItems),
-    }));
+  const handleData = (
+    insertNavItemOptions: InsertConfigurationOptions<NavItem>
+  ) => {
+    setNavItems(insertConfiguration(insertNavItemOptions)(navItems));
   };
 
-  render() {
-    const { formatMessage } = this.props.intl;
-    const { navItems } = this.state;
-    const isPagesAndMenuPage = isPage('pages_menu', location.pathname);
-
-    if (!(navItems && navItems.length > 1)) {
-      return null;
-    }
-    const [topNavItems, bottomNavItems] = getTopAndBottomNavItems(navItems);
-
-    return (
-      <Menu>
-        <Outlet
-          id="app.containers.Admin.sideBar.navItems"
-          onData={this.handleData}
-        />
-        <MenuInner id="sidebar">
-          <Box w="100%">
-            <Link to="/">
-              <Box
-                height={
-                  isPagesAndMenuPage ? `${stylingConsts.menuHeight}px` : '60px'
-                }
-                background="#7FBBCA" // TODO: Use color from component library.
-                mb="10px"
-                display="flex"
-                alignItems="center"
-                pl="5px"
-              >
-                <IconWrapper>
-                  <Icon name="arrow-left-circle" fill={colors.white} />
-                </IconWrapper>
-                <Text color="white" fontSize="s" ml="10px">
-                  {formatMessage({ ...messages.toPlatform })}
-                </Text>
-              </Box>
-            </Link>
-          </Box>
-
-          {topNavItems.map((navItem) => (
-            <MenuItem navItem={navItem} key={navItem.name} />
-          ))}
-          <Spacer />
-
-          {bottomNavItems.map((navItem) => (
-            <MenuItem navItem={navItem} key={navItem.name} />
-          ))}
-          <MenuLink
-            href={formatMessage(messages.linkToAcademy)}
-            target="_blank"
-          >
-            <IconWrapper>
-              <Icon name="sidebar-academy" />
-            </IconWrapper>
-            <CustomText>{formatMessage({ ...messages.academy })}</CustomText>
-          </MenuLink>
-
-          <GetStartedLink
-            href={formatMessage(messages.linkToGuide)}
-            target="_blank"
-          >
-            <IconWrapper>
-              <Icon name="sidebar-guide" />
-            </IconWrapper>
-            <CustomText>{formatMessage({ ...messages.guide })}</CustomText>
-          </GetStartedLink>
-        </MenuInner>
-      </Menu>
-    );
+  if (!(navItems && navItems.length > 1)) {
+    return null;
   }
-}
+  const [topNavItems, bottomNavItems] = getTopAndBottomNavItems(navItems);
+
+  return (
+    <Menu>
+      <Outlet id="app.containers.Admin.sideBar.navItems" onData={handleData} />
+      <MenuInner id="sidebar">
+        <Box w="100%">
+          <Link to="/">
+            <Box
+              height={
+                isPagesAndMenuPage ? `${stylingConsts.menuHeight}px` : '60px'
+              }
+              background="#7FBBCA" // TODO: Use color from component library.
+              mb="10px"
+              display="flex"
+              alignItems="center"
+              pl="5px"
+            >
+              <IconWrapper>
+                <Icon name="arrow-left-circle" fill={colors.white} />
+              </IconWrapper>
+              <Text color="white" fontSize="s" ml="10px">
+                {formatMessage({ ...messages.toPlatform })}
+              </Text>
+            </Box>
+          </Link>
+        </Box>
+
+        {topNavItems.map((navItem) => (
+          <MenuItem navItem={navItem} key={navItem.name} />
+        ))}
+        <Spacer />
+
+        {bottomNavItems.map((navItem) => (
+          <MenuItem navItem={navItem} key={navItem.name} />
+        ))}
+
+        <MenuLink href={formatMessage(messages.linkToAcademy)} target="_blank">
+          <IconWrapper>
+            <Icon name="sidebar-academy" />
+          </IconWrapper>
+          <CustomText>{formatMessage({ ...messages.academy })}</CustomText>
+        </MenuLink>
+
+        <GetStartedLink
+          href={formatMessage(messages.linkToGuide)}
+          target="_blank"
+        >
+          <IconWrapper>
+            <Icon name="sidebar-guide" />
+          </IconWrapper>
+          <CustomText>{formatMessage({ ...messages.guide })}</CustomText>
+        </GetStartedLink>
+      </MenuInner>
+    </Menu>
+  );
+};
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
@@ -385,10 +345,8 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const SideBarWithHocs = withRouter(injectIntl(Sidebar));
-
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <SideBarWithHocs {...inputProps} {...dataProps} />}
+    {(dataProps) => <Sidebar {...inputProps} {...dataProps} />}
   </Data>
 );
