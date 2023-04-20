@@ -1226,7 +1226,7 @@
   "app.containers.Projects.xOptions": "{ideasCount, Plural, keine {# Optionen} eine {# Option} andere {# Optionen}}\n",
   "app.containers.Projects.xOptionsInCurrentPhase": "{ideasCount, plural, one {# Optionen} other {# Optionen}} in der aktuellen Phase",
   "app.containers.Projects.xOptionsInFinalPhase": "{ideasCount, plural, one {# Option} other {# Optionen}} in der finalen Phase",
-  "app.containers.Projects.xParticipants": "{participantsCount, plural, one {# Teilnehmer:in} other {# Teilnehmende}}",
+  "app.containers.Projects.xParticipants": "{participantsCount, plural, one {# Teilnehmer*in} other {# Teilnehmende}}",
   "app.containers.Projects.xPhases": "{phasesCount, plural, one {# Phase} other {# Phasen}}",
   "app.containers.Projects.xProjects": "{ideasCount, plural, no {# Projekte} one {# Projekt} other {# Projekte}}",
   "app.containers.Projects.xProjectsInCurrentPhase": "{ideasCount, plural, one {# Projekt} other {# Projekte}} in der aktuellen Phase\n",
