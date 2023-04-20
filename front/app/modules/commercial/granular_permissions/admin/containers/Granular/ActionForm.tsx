@@ -86,7 +86,7 @@ const ActionForm = ({
   } = permissionData;
   return (
     <form>
-      <Box mb="32px">
+      <Box mb="10px">
         <Toggle
           checked={permittedBy === 'admins_moderators'}
           label={
@@ -106,65 +106,78 @@ const ActionForm = ({
               />
             </Box>
           }
-          onChange={handlePermittedByUpdate('admins_moderators')}
+          onChange={handlePermittedByUpdate(
+            permittedBy === 'admins_moderators' ? 'users' : 'admins_moderators'
+          )}
           id={`participation-permission-admins-${permissionId}`}
         />
       </Box>
-      <Box display="flex" gap="16px">
-        {/* TODO: Take a decision on which action we should use for native surveys versus ideation. One or separate? 
-        If separate, we will need to update code where we check for attributes.posting_idea */}
-        {(action === 'taking_survey' || projectType === 'nativeSurvey') && (
-          <PermissionCardButton
-            title={permissionsMessages.permissionsAnyoneLabel}
-            subtitle={permissionsMessages.permissionsAnyoneLabelDescription}
-            onClick={handlePermittedByUpdate('everyone')}
-            selected={permittedBy === 'everyone'}
-          />
-        )}
-        {emailConfirmPermissionEnabled && (
-          <PermissionCardButton
-            iconName="email"
-            title={permissionsMessages.permissionsEmailConfirmLabel}
-            subtitle={
-              permissionsMessages.permissionsEmailConfirmLabelDescription
-            }
-            onClick={handlePermittedByUpdate('everyone_confirmed_email')}
-            selected={permittedBy === 'everyone_confirmed_email'}
-          />
-        )}
-        <PermissionCardButton
-          iconName="user-circle"
-          title={messages.permissionsUsersLabel}
-          subtitle={messages.permissionsUsersLabelDescription}
-          onClick={handlePermittedByUpdate('users')}
-          selected={permittedBy === 'users'}
-        />
-        <PermissionCardButton
-          iconName="group"
-          title={permissionsMessages.permissionsSelectionLabel}
-          subtitle={permissionsMessages.permissionsSelectionLabelDescription}
-          onClick={handlePermittedByUpdate('groups')}
-          selected={permittedBy === 'groups'}
-        />
-      </Box>
-      {permittedBy === 'groups' && (
-        <Box mt="24px">
-          <Title variant="h5" fontWeight={'normal'} color={'coolGrey600'}>
-            <FormattedMessage {...messages.selectUserGroups} />
-          </Title>
-          <StyledMultipleSelect
-            value={groupIds || []}
-            options={groupsOptions()}
-            onChange={handleGroupIdsUpdate}
-            placeholder={<FormattedMessage {...messages.selectGroups} />}
-          />
-        </Box>
-      )}
-      {permittedBy === 'everyone_confirmed_email' && (
-        <Box mt="16px" maxWidth="740px">
-          <Warning>
-            {formatMessage(messages.permissionEveryoneEmailWarning)}
-          </Warning>
+      {permittedBy !== 'admins_moderators' && (
+        <Box mt="20px">
+          <Box display="flex" gap="16px">
+            {/* TODO: Take a decision on which action we should use for native surveys versus ideation. One or separate?
+            If separate, we will need to update code where we check for attributes.posting_idea */}
+            {(action === 'taking_survey' || projectType === 'nativeSurvey') && (
+              <PermissionCardButton
+                title={permissionsMessages.permissionsAnyoneLabel}
+                subtitle={permissionsMessages.permissionsAnyoneLabelDescription}
+                onClick={handlePermittedByUpdate('everyone')}
+                selected={permittedBy === 'everyone'}
+              />
+            )}
+            {emailConfirmPermissionEnabled && (
+              <PermissionCardButton
+                iconName="email"
+                title={permissionsMessages.permissionsEmailConfirmLabel}
+                subtitle={
+                  permissionsMessages.permissionsEmailConfirmLabelDescription
+                }
+                onClick={handlePermittedByUpdate('everyone_confirmed_email')}
+                selected={permittedBy === 'everyone_confirmed_email'}
+              />
+            )}
+            <PermissionCardButton
+              iconName="user-circle"
+              title={messages.permissionsUsersLabel}
+              subtitle={messages.permissionsUsersLabelDescription}
+              onClick={handlePermittedByUpdate('users')}
+              selected={permittedBy === 'users'}
+            />
+            <PermissionCardButton
+              iconName="group"
+              title={permissionsMessages.permissionsSelectionLabel}
+              subtitle={
+                permissionsMessages.permissionsSelectionLabelDescription
+              }
+              onClick={handlePermittedByUpdate('groups')}
+              selected={permittedBy === 'groups'}
+            />
+          </Box>
+          {permittedBy === 'groups' && (
+            <Box
+              mt="10px"
+              border={`solid 1px ${colors.grey300}`}
+              px="20px"
+              pb="20px"
+            >
+              <Title variant="h5" fontWeight={'normal'} color={'coolGrey600'}>
+                <FormattedMessage {...messages.selectUserGroups} />
+              </Title>
+              <StyledMultipleSelect
+                value={groupIds || []}
+                options={groupsOptions()}
+                onChange={handleGroupIdsUpdate}
+                placeholder={<FormattedMessage {...messages.selectGroups} />}
+              />
+            </Box>
+          )}
+          {permittedBy === 'everyone_confirmed_email' && (
+            <Box mt="16px" maxWidth="740px">
+              <Warning>
+                {formatMessage(messages.permissionEveryoneEmailWarning)}
+              </Warning>
+            </Box>
+          )}
         </Box>
       )}
     </form>

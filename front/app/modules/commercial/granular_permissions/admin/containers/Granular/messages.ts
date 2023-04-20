@@ -23,102 +23,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.selectGroups',
     defaultMessage: 'Select group(s)',
   },
-  permissionAction_comment_ideas: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_ideas',
-    defaultMessage: 'Comment on ideas',
-  },
-  permissionAction_comment_projects: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_projects',
-    defaultMessage: 'Comment on projects',
-  },
-  permissionAction_comment_contributions: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_contributions',
-    defaultMessage: 'Comment on contributions',
-  },
-  permissionAction_comment_options: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_options',
-    defaultMessage: 'Comment on options',
-  },
-  permissionAction_comment_questions: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_questions',
-    defaultMessage: 'Comment on questions',
-  },
-  permissionAction_comment_issues: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_issues',
-    defaultMessage: 'Comment on issues',
-  },
-  permissionAction_vote_ideas: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_ideas',
-    defaultMessage: 'Vote on ideas',
-  },
-  permissionAction_vote_projects: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_projects',
-    defaultMessage: 'Vote on projects',
-  },
-  permissionAction_vote_contributions: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_contributions',
-    defaultMessage: 'Vote on contributions',
-  },
-  permissionAction_vote_options: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_options',
-    defaultMessage: 'Vote on options',
-  },
-  permissionAction_vote_questions: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_questions',
-    defaultMessage: 'Vote on questions',
-  },
-  permissionAction_vote_issues: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_issues',
-    defaultMessage: 'Vote on issues',
-  },
-  permissionAction_submit_idea: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_idea',
-    defaultMessage: 'Submit your idea',
-  },
-  permissionAction_submit_project: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_project',
-    defaultMessage: 'Submit your project',
-  },
-  permissionAction_submit_contribution: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_contribution',
-    defaultMessage: 'Submit your contribution',
-  },
-  permissionAction_submit_option: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_option',
-    defaultMessage: 'Submit your option',
-  },
-  permissionAction_submit_question: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_question',
-    defaultMessage: 'Submit your question',
-  },
-  permissionAction_submit_issue: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_issue',
-    defaultMessage: 'Submit your issue',
-  },
-  permissionAction_comment_proposals: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_proposal',
-    defaultMessage: 'Comment on proposals',
-  },
-  permissionAction_vote_proposals: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_proposal',
-    defaultMessage: 'Vote on proposals',
-  },
-  permissionAction_post_proposal: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_post_proposal',
-    defaultMessage: 'Post a proposal',
-  },
-  permissionAction_take_survey: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_take_survey',
-    defaultMessage: 'Take the survey',
-  },
-  permissionAction_take_poll: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_take_poll',
-    defaultMessage: 'Take the poll',
-  },
-  permissionAction_budgeting: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_budgeting',
-    defaultMessage: 'Spending budget',
-  },
   noActionsCanBeTakenInThisProject: {
     id: 'app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject',
     defaultMessage:
@@ -128,77 +32,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.granularPermissionsTitle',
     defaultMessage: 'What can different users do?',
   },
-  permissionAction_submit_idea_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_idea_subtitle',
-    defaultMessage: 'Who can submit ideas?',
+  permissionAction_submit_input_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_input_subtitle',
+    defaultMessage: 'Who can submit inputs?',
   },
-  permissionAction_submit_project_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_project_subtitle',
-    defaultMessage: 'Who can submit projects?',
+  permissionAction_vote_input_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_input_subtitle',
+    defaultMessage: 'Who can vote on inputs?',
   },
-  permissionAction_submit_contribution_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_contribution_subtitle',
-    defaultMessage: 'Who can submit contributions?',
-  },
-  permissionAction_submit_option_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_option_subtitle',
-    defaultMessage: 'Who can submit options?',
-  },
-  permissionAction_submit_question_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_question_subtitle',
-    defaultMessage: 'Who can submit questions?',
-  },
-  permissionAction_submit_issue_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_issue_subtitle',
-    defaultMessage: 'Who can submit issues?',
-  },
-  permissionAction_vote_ideas_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_ideas_subtitle',
-    defaultMessage: 'Who can vote on ideas?',
-  },
-  permissionAction_vote_projects_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_projects_subtitle',
-    defaultMessage: 'Who can vote on projects?',
-  },
-  permissionAction_vote_contributions_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_contributions_subtitle',
-    defaultMessage: 'Who can vote on contributions?',
-  },
-  permissionAction_vote_options_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_options_subtitle',
-    defaultMessage: 'Who can vote on options?',
-  },
-  permissionAction_vote_questions_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_questions_subtitle',
-    defaultMessage: 'Who can vote on questions?',
-  },
-  permissionAction_vote_issues_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_issues_subtitle',
-    defaultMessage: 'Who can vote on issues?',
-  },
-  permissionAction_comment_ideas_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_ideas_subtitle',
-    defaultMessage: 'Who can comment on ideas?',
-  },
-  permissionAction_comment_projects_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_projects_subtitle',
-    defaultMessage: 'Who can comment on projects?',
-  },
-  permissionAction_comment_contributions_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_contributions_subtitle',
-    defaultMessage: 'Who can comment on contributions?',
-  },
-  permissionAction_comment_options_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_options_subtitle',
-    defaultMessage: 'Who can comment on options?',
-  },
-  permissionAction_comment_questions_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_questions_subtitle',
-    defaultMessage: 'Who can comment on questions?',
-  },
-  permissionAction_comment_issues_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_issues_subtitle',
-    defaultMessage: 'Who can comment on issues?',
+  permissionAction_comment_input_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_inputs_subtitle',
+    defaultMessage: 'Who can comment on inputs?',
   },
   permissionAction_comment_proposals_subtitle: {
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle',
@@ -231,7 +75,7 @@ export default defineMessages({
   userFieldsSelectionDescription: {
     id: 'app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription',
     defaultMessage:
-      'You can ask the existing registration question(s) or create new ones. If a user hasn’t answered to the question(s), they will be asked to answer it before taking the action. Answers to these questions will be stored in user profiles, and will be only accessible to admins.',
+      'Responses to demographic questions will get stored in user profiles. Answers to these questions will be accessible to both admins and moderators to easy participation analysis. Questions will only be asked to users who have not answered them before.',
   },
   selectUserGroups: {
     id: 'app.containers.AdminPage.groups.permissions.selectUserGroups',
@@ -239,15 +83,20 @@ export default defineMessages({
   },
   addQuestion: {
     id: 'app.containers.AdminPage.groups.permissions.addQuestion',
-    defaultMessage: 'Add a question',
+    defaultMessage: 'Add demographic questions',
   },
   userQuestionTitle: {
     id: 'app.containers.AdminPage.groups.permissions.userQuestionTitle',
-    defaultMessage: 'Ask questions to participants',
+    defaultMessage: 'Demographic questions asked during participation',
   },
   useExistingRegistrationQuestions: {
     id: 'app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestions',
-    defaultMessage: 'Use existing registration questions',
+    defaultMessage: 'Ask platform level registration questions',
+  },
+  useExistingRegistrationQuestionsDescription: {
+    id: 'app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription',
+    defaultMessage:
+      'Use this setting if collecting name, last name, and answers to platform level demographic questions is important to you. It may increase the barrier for participation.',
   },
   select: {
     id: 'app.containers.AdminPage.groups.permissions.select',
