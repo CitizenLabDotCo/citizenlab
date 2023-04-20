@@ -43,7 +43,7 @@ class Permission < ApplicationRecord
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
 
-  before_validation :set_permitted_by
+  before_validation :set_permitted_by_and_global_custom_fields, on: :create
   before_validation :set_global_custom_fields
 
   def self.available_actions(permission_scope)
@@ -56,13 +56,14 @@ class Permission < ApplicationRecord
 
   private
 
-  def set_permitted_by
+  def set_permitted_by_and_global_custom_fields
     self.permitted_by ||= 'users'
+    set_global_custom_fields
+    self.global_custom_fields ||= (permitted_by == 'users')
   end
 
   def set_global_custom_fields
     self.global_custom_fields = false if permitted_by == 'everyone_confirmed_email'
-    self.global_custom_fields ||= (permitted_by == 'users')
   end
 end
 

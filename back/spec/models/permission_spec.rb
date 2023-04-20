@@ -28,5 +28,12 @@ RSpec.describe Permission, type: :model do
         expect(permission.global_custom_fields).to be_falsey
       end
     end
+
+    context 'user' do
+      it 'is true when created' do
+        permission = create(:permission, :by_users, global_custom_fields: nil)
+        expect(permission.global_custom_fields).to be_truthy
+      end
+    end
   end
 end
