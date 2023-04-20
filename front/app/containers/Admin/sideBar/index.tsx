@@ -7,7 +7,7 @@ import { get } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
-import { Icon, IconNames, Box } from '@citizenlab/cl2-component-library';
+import { Icon, IconNames, Box, Text } from '@citizenlab/cl2-component-library';
 import MenuItem from './MenuItem';
 import Link from 'utils/cl-router/Link';
 
@@ -73,7 +73,7 @@ const IconWrapper = styled.div`
   justify-content: center;
 `;
 
-const Text = styled.div`
+const CustomText = styled.div`
   flex: 1;
   color: ${colors.white};
   opacity: 0.7;
@@ -108,7 +108,7 @@ const MenuLink = styled.a`
   &.focus-visible {
     background: rgba(0, 0, 0, 0.36);
 
-    ${Text} {
+    ${CustomText} {
       opacity: 1;
     }
   }
@@ -117,7 +117,7 @@ const MenuLink = styled.a`
     width: 56px;
     padding-right: 5px;
 
-    ${Text} {
+    ${CustomText} {
       display: none;
     }
   `}
@@ -306,11 +306,14 @@ class Sidebar extends PureComponent<
                 mb="10px"
                 display="flex"
                 alignItems="center"
+                pl="5px"
               >
                 <IconWrapper>
                   <Icon name="arrow-left-circle" fill={colors.white} />
                 </IconWrapper>
-                <Text>{formatMessage({ ...messages.toPlatform })}</Text>
+                <Text color="white" fontSize="s" ml="10px">
+                  {formatMessage({ ...messages.toPlatform })}
+                </Text>
               </Box>
             </Link>
           </Box>
@@ -327,7 +330,7 @@ class Sidebar extends PureComponent<
             <IconWrapper>
               <Icon name="sidebar-academy" />
             </IconWrapper>
-            <Text>{formatMessage({ ...messages.academy })}</Text>
+            <CustomText>{formatMessage({ ...messages.academy })}</CustomText>
           </MenuLink>
 
           <GetStartedLink
@@ -337,7 +340,7 @@ class Sidebar extends PureComponent<
             <IconWrapper>
               <Icon name="sidebar-guide" />
             </IconWrapper>
-            <Text>{formatMessage({ ...messages.guide })}</Text>
+            <CustomText>{formatMessage({ ...messages.guide })}</CustomText>
           </GetStartedLink>
         </MenuInner>
       </Menu>
