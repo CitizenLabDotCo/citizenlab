@@ -25,69 +25,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.admin',
     defaultMessage: 'Admin',
   },
-  setAsAdmin: {
-    id: 'app.containers.Admin.Users.setAsAdmin',
-    defaultMessage: 'Set as admin',
-  },
-  setAsNormalUser: {
-    id: 'app.containers.Admin.Users.setAsNormalUser',
-    defaultMessage: 'Set as normal user',
-  },
-  registeredUser: {
-    id: 'app.containers.Admin.Users.registeredUser',
-    defaultMessage: 'Registered user',
-  },
-  platformAdmin: {
-    id: 'app.containers.Admin.Users.platformAdmin',
-    defaultMessage: 'Platform admin',
-  },
-  folderManager: {
-    id: 'app.containers.Admin.Users.folderManager',
-    defaultMessage: 'Folder manager',
-  },
-  projectManager: {
-    id: 'app.containers.Admin.Users.projectManager',
-    defaultMessage: 'Project manager',
-  },
-  status: {
-    id: 'app.containers.Admin.Users.status',
-    defaultMessage: 'Status',
-  },
-  confirm: {
-    id: 'app.containers.Admin.Users.confirm',
-    defaultMessage: 'Confirm',
-  },
-  giveAdminRights: {
-    id: 'app.containers.Admin.Users.giveAdminRights',
-    defaultMessage: 'Give admin rights',
-  },
-  confirmNormalUserQuestion: {
-    id: 'app.containers.Admin.Users.confirmNormalUserQuestion',
-    defaultMessage: 'Are you sure you want to set {name} as a normal user?',
-  },
-  confirmAdminQuestion: {
-    id: 'app.containers.Admin.Users.confirmAdminQuestion',
-    defaultMessage:
-      'Are you sure you want to give {name} platform admin rights?',
-  },
-  buyOneAditionalSeat: {
-    id: 'app.containers.Admin.Users.buyOneAditionalSeat',
-    defaultMessage: 'Buy one additional seat',
-  },
-  confirmSetManagerAsNormalUserQuestion: {
-    id: 'app.containers.Admin.Users.confirmSetManagerAsNormalUserQuestion',
-    defaultMessage:
-      'Are you sure you want to set {name} as a normal user? Please note that they will lose manager rights to all the projects and folders that they are assigned to on confirmation.',
-  },
   permissionToBuy: {
     id: 'app.containers.Admin.Users.permissionToBuy',
     defaultMessage:
       'To give {name} admin rights, you need to buy 1 additional seat.',
-  },
-  reachedLimitMessage: {
-    id: 'app.containers.Admin.Users.reachedLimitMessage',
-    defaultMessage:
-      'You have reached the limit of seats within your plan, 1 additional seat for {name} will be added.',
   },
   options: {
     id: 'app.containers.Admin.Users.options',

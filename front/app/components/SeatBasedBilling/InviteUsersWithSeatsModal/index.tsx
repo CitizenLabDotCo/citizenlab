@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 // Components
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
-import SeatInfo, { TSeatType } from 'components/SeatInfo';
-import SeatSetSuccess from 'components/admin/SeatSetSuccess';
+import SeatInfo, { TSeatType } from 'components/SeatBasedBilling/SeatInfo';
+import SeatSetSuccess from 'components/SeatBasedBilling/SeatSetSuccess';
 
 // Translation
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -15,7 +15,7 @@ import useExceedsSeats from 'hooks/useExceedsSeats';
 
 // Utils
 import { TSeatNumber } from 'api/app_configuration/types';
-import BillingWarning from 'components/SeatInfo/BillingWarning';
+import BillingWarning from 'components/SeatBasedBilling/SeatInfo/BillingWarning';
 
 import { IInvitesNewSeats } from 'services/invites';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 
-import ChangeSeatModal from './ChangeSeatModal';
+import ChangeSeatModal from '.';
 import { makeAdmin, makeUser } from 'services/__mocks__/users';
 
 type MockAppConfigurationType = {

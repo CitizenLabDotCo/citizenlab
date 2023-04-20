@@ -9,7 +9,7 @@ import messages from './messages';
 import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import ModeratorList from '../../components/ModeratorList';
 import UserSearch from '../../components/UserSearch';
-import SeatInfo from 'components/SeatInfo';
+import SeatInfo from 'components/SeatBasedBilling/SeatInfo';
 import { Section, SubSectionTitle } from 'components/admin/Section';
 
 // hooks

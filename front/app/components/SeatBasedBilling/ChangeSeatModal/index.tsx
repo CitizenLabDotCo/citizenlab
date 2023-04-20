@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 // Components
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
-import SeatSetSuccess from 'components/admin/SeatSetSuccess';
+import SeatSetSuccess from '../SeatSetSuccess';
 
 // Translation
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import SeatInfo from 'components/SeatInfo';
+import SeatInfo from 'components/SeatBasedBilling/SeatInfo';
 import messages from './messages';
 
 // hooks
@@ -18,7 +18,7 @@ import useExceedsSeats from 'hooks/useExceedsSeats';
 import { isRegularUser, isAdmin } from 'services/permissions/roles';
 
 import { IUserData } from 'services/users';
-import BillingWarning from 'components/SeatInfo/BillingWarning';
+import BillingWarning from 'components/SeatBasedBilling/SeatInfo/BillingWarning';
 
 const getInfoText = (
   isUserAdmin: boolean,
