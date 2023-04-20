@@ -41,6 +41,7 @@
   "app.components.Comments.invisibleTitleComments": "التعليقات",
   "app.components.Comments.mostUpvoted": "الأكثر تصويتًا",
   "app.components.Comments.official": "رسمي",
+  "app.components.Comments.oldestToNewest": "الأحدث",
   "app.components.Comments.replyToComment": "رد على التعليق",
   "app.components.Comments.reportAsSpam": "الإبلاغ كإزعاج",
   "app.components.Comments.seeOriginal": "رؤية الأصل",
