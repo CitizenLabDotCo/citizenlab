@@ -1,12 +1,10 @@
 import React, { useRef } from 'react';
 import { isString, isEmpty, capitalize } from 'lodash-es';
-import { first } from 'rxjs/operators';
 
 // libraries
 import { MentionsInput, Mention } from 'react-mentions';
 
 // services
-import { mentionsStream } from 'services/mentions';
 
 // components
 import Error from 'components/UI/Error';
@@ -18,6 +16,7 @@ import { transparentize } from 'polished';
 
 // typings
 import { Locale } from 'typings';
+import getMentions from 'api/mentions/getMentions';
 
 const Container = styled.div`
   position: relative;
@@ -193,21 +192,20 @@ const MentionsTextArea = ({
     }
   };
 
-  const getUsers = async (query: string, callback) => {
-    let users: any[] = [];
+  const getUsers = async (
+    query: string,
+    callback: (users: { id: string; display: string }[]) => void
+  ) => {
+    let users: { id: string; display: string }[] = [];
 
     if (isString(query) && !isEmpty(query)) {
-      const mention = query.toLowerCase();
-      const queryParameters = { mention };
+      const queryParameters = {
+        mention: query.toLowerCase(),
+        post_id: postId,
+        post_type: capitalize(postType) as 'Idea' | 'Initiative',
+      };
 
-      if (postId && postType) {
-        queryParameters['post_id'] = postId;
-        queryParameters['post_type'] = capitalize(postType);
-      }
-
-      const response = await mentionsStream({ queryParameters })
-        .observable.pipe(first())
-        .toPromise();
+      const response = await getMentions(queryParameters);
 
       if (response && response.data && response.data.length > 0) {
         users = response.data.map((user) => ({
@@ -217,9 +215,9 @@ const MentionsTextArea = ({
           id: user.attributes.slug,
         }));
       }
-    }
 
-    callback(users);
+      callback(users);
+    }
   };
 
   if (getStyle()) {

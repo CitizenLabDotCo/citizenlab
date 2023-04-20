@@ -6,8 +6,8 @@ export type MentionsKeys = Keys<typeof mentionsKeys>;
 
 export type IQueryParameters = {
   mention: string;
-  post_id: string;
-  post_type: 'Idea' | 'Initiative';
+  post_id?: string;
+  post_type?: 'Idea' | 'Initiative';
 };
 
 export interface IMentionData {
