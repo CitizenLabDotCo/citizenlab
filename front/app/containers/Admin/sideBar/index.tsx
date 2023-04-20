@@ -153,6 +153,23 @@ export type NavItem = {
   featureNames?: TAppConfigurationSetting[];
   count?: number;
   onlyCheckAllowed?: boolean;
+  showAtBottom?: boolean;
+};
+
+const getTopAndBottomNavItems = (navItems: NavItem[]) => {
+  // Using this to avoid looping twice
+  const [topNavItems, bottomNavItems] = navItems.reduce(
+    (accumulator, navItem) => {
+      const [top, bottom] = accumulator;
+      if (navItem.showAtBottom) {
+        return [top, [...bottom, navItem]];
+      } else {
+        return [[...top, navItem], bottom];
+      }
+    },
+    [[], []]
+  );
+  return [topNavItems, bottomNavItems];
 };
 
 class Sidebar extends PureComponent<
@@ -231,12 +248,14 @@ class Sidebar extends PureComponent<
           link: '/admin/pages-menu',
           iconName: 'sidebar-pages-menu',
           message: 'menu',
+          showAtBottom: true,
         },
         {
           name: 'settings',
           link: '/admin/settings/general',
           iconName: 'sidebar-settings',
           message: 'settings',
+          showAtBottom: true,
         },
       ],
     };
@@ -288,6 +307,7 @@ class Sidebar extends PureComponent<
     if (!(navItems && navItems.length > 1)) {
       return null;
     }
+    const [topNavItems, bottomNavItems] = getTopAndBottomNavItems(navItems);
 
     return (
       <Menu>
@@ -318,11 +338,14 @@ class Sidebar extends PureComponent<
             </Link>
           </Box>
 
-          {navItems.map((navItem) => (
+          {topNavItems.map((navItem) => (
             <MenuItem navItem={navItem} key={navItem.name} />
           ))}
           <Spacer />
 
+          {bottomNavItems.map((navItem) => (
+            <MenuItem navItem={navItem} key={navItem.name} />
+          ))}
           <MenuLink
             href={formatMessage(messages.linkToAcademy)}
             target="_blank"
