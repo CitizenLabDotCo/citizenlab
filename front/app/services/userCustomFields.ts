@@ -3,8 +3,8 @@ import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Locale, Multiloc } from 'typings';
 import { JsonSchema7, Layout } from '@jsonforms/core';
 
-export const userCustomFieldsSchemaApiEndpoint = `${API_PATH}/users/custom_fields/schema`;
-export const userCustomFieldsJSONSchemaApiEndpoint = `${API_PATH}/users/custom_fields/json_forms_schema`;
+const userCustomFieldsSchemaApiEndpoint = `${API_PATH}/users/custom_fields/schema`;
+const userCustomFieldsJSONSchemaApiEndpoint = `${API_PATH}/users/custom_fields/json_forms_schema`;
 
 export type IUserCustomFieldInputType =
   | 'text'
