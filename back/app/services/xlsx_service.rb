@@ -123,7 +123,7 @@ class XlsxService
       { header: 'created_at', f: ->(u) { u.created_at }, skip_sanitization: true },
       { header: 'registration_completed_at', f: ->(u) { u.registration_completed_at }, skip_sanitization: true },
       { header: 'invite_status', f: ->(u) { u.invite_status }, skip_sanitization: true },
-      *user_custom_field_columns(:itself, true)
+      *user_custom_field_columns(:itself)
     ]
 
     unless view_private_attributes
@@ -159,7 +159,7 @@ class XlsxService
       { header: 'location_description', f: ->(i) { i.location_description } },
       { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
-    columns.concat user_custom_field_columns :author, view_private_attributes
+    columns.concat user_custom_field_columns(:author)
     columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
     columns
   end
@@ -191,7 +191,7 @@ class XlsxService
       { header: 'location_description', f: ->(i) { i.location_description } },
       { header: 'attachmens',           f: ->(i) { i.initiative_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
-    columns.concat user_custom_field_columns :author, view_private_attributes
+    columns.concat user_custom_field_columns(:author)
     columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Initiatives', columns, initiatives
   end
@@ -210,7 +210,7 @@ class XlsxService
       { header: 'parent_comment_id',  f: ->(c) { c.parent_id },     skip_sanitization: true },
       { header: 'project',            f: ->(c) { multiloc_service.t(c&.idea&.project&.title_multiloc) } }
     ]
-    columns.concat user_custom_field_columns :author, view_private_attributes
+    columns.concat user_custom_field_columns(:author)
     columns.reject! { |c| %w[author_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Comments', columns, comments
   end
@@ -228,7 +228,7 @@ class XlsxService
       { header: 'created_at', f: ->(c) { c.created_at }, skip_sanitization: true },
       { header: 'parent_comment_id',        f: ->(c) { c.parent_id }, skip_sanitization: true }
     ]
-    columns.concat user_custom_field_columns :author, view_private_attributes
+    columns.concat user_custom_field_columns(:author)
     columns.reject! { |c| %w[author_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Comments', columns, comments
   end
@@ -248,11 +248,7 @@ class XlsxService
     generate_xlsx 'Invites', columns, invites
   end
 
-  # @param [Symbol] record_to_user
-  # @param [Boolean] view_private_attributes
-  def user_custom_field_columns(record_to_user, view_private_attributes)
-    return [] unless view_private_attributes
-
+  def user_custom_field_columns(record_to_user)
     # options keys are only unique in the scope of their field, namespacing to avoid collisions
     options = CustomFieldOption.all.index_by { |option| namespace(option.custom_field_id, option.key) }
     user_custom_fields = CustomField.with_resource_type('User').enabled.order(:ordering)
@@ -303,10 +299,7 @@ class XlsxService
   end
 
   def private_attributes
-    custom_field_attrs = CustomField.with_resource_type('User')&.map do |field|
-      multiloc_service.t(field.title_multiloc)
-    end
-    custom_field_attrs + %w[email gender birthyear domicile education Email author_email author_id assignee_email]
+    %w[email gender birthyear domicile education Email author_email author_id assignee_email]
   end
 
   def header_style(style)
