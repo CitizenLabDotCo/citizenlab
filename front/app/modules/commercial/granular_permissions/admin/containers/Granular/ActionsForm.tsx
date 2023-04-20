@@ -27,7 +27,7 @@ import {
 
 const ActionPermissionWrapper = styled.div`
   margin-left: 0px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 
   &.last {
     margin-bottom: 0;
