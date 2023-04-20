@@ -96,12 +96,8 @@ const InviteUsersWithSeatsModal = ({
       ) : (
         <Box display="flex" flexDirection="column" p="32px">
           <Text color="textPrimary" mt="0" mb="24px">
-            <FormattedMessage
-              {...messages.infoMessage}
-              values={{
-                additionalSeats: additionalSeatsMessage,
-              }}
-            />
+            <FormattedMessage {...messages.infoMessage} />{' '}
+            {additionalSeatsMessage}
           </Text>
           <Box mb="24px">
             {exceedsSeats.admin && <SeatInfo seatType={'admin'} />}
