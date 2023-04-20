@@ -41,6 +41,7 @@
   "app.components.Comments.invisibleTitleComments": "Kommentaren",
   "app.components.Comments.mostUpvoted": "Meescht Stëmmen",
   "app.components.Comments.official": "Offiziell",
+  "app.components.Comments.oldestToNewest": "Déi rezentst",
   "app.components.Comments.replyToComment": "Op Kommentar äntweren",
   "app.components.Comments.reportAsSpam": "Als Spam mellen",
   "app.components.Comments.seeOriginal": "Original uweisen",
