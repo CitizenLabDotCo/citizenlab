@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Analytics::DimensionDate, type: :model do
+RSpec.describe Analytics::DimensionDate do
   subject { build(:dimension_date) }
 
   describe 'validations' do

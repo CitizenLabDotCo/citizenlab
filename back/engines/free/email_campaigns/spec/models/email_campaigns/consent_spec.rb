@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Consent, type: :model do
+RSpec.describe EmailCampaigns::Consent do
   describe 'Factory' do
     it { expect(build_stubbed(:consent)).to be_valid }
   end

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Idea, type: :model do
+RSpec.describe Idea do
   context 'associations' do
     it { is_expected.to have_many(:votes) }
   end

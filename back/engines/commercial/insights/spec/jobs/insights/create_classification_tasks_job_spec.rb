@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Insights::CreateClassificationTasksJob, type: :job do
+RSpec.describe Insights::CreateClassificationTasksJob do
   subject(:job) { described_class.new }
 
   let(:suggestion_service) { instance_spy(Insights::CategorySuggestionsService, 'suggestion_service') }

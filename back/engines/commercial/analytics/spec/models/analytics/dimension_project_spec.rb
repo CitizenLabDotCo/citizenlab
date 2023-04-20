@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Analytics::DimensionProject, type: :model do
+RSpec.describe Analytics::DimensionProject do
   context 'when a project is created' do
     let!(:project) { create(:project) }
 

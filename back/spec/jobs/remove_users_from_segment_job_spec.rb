@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe RemoveUsersFromSegmentJob, type: :job do
+RSpec.describe RemoveUsersFromSegmentJob do
   subject(:job) { described_class.new }
 
   describe '#perform' do

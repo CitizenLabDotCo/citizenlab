@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Area, type: :model do
+RSpec.describe Area do
   subject { build(:area) }
 
   describe 'Default factory' do

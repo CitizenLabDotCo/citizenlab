@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Analytics::DimensionStatus, type: :model do
+RSpec.describe Analytics::DimensionStatus do
   context 'when an idea status is created' do
     let!(:idea_status) { create(:idea_status) }
 

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe User, type: :model do
+RSpec.describe User do
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:user)).to be_valid

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::FirstIdeaPublished, type: :model do
+RSpec.describe EmailCampaigns::Campaigns::FirstIdeaPublished do
   describe 'FirstIdeaPublished Campaign default factory' do
     it 'is valid' do
       expect(build(:first_idea_published_campaign)).to be_valid

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Phase, type: :model do
+RSpec.describe Phase do
   subject { create(:phase) }
 
   describe 'Default factory' do

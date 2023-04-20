@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe NavBarItem, type: :model do
+RSpec.describe NavBarItem do
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:nav_bar_item)).to be_valid

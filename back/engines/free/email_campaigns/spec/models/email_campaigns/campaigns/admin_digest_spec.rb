@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::AdminDigest, type: :model do
+RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
   describe 'AdminDigest Campaign default factory' do
     it { expect(build(:admin_digest_campaign)).to be_valid }
   end

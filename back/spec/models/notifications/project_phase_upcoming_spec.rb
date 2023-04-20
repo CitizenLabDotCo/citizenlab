@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Notifications::ProjectPhaseUpcoming, type: :model do
+RSpec.describe Notifications::ProjectPhaseUpcoming do
   describe 'make_notifications_on' do
     let!(:admin) { create(:admin) }
     let!(:phase) { create(:phase) }

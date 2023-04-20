@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe CustomField, type: :model do
+RSpec.describe CustomField do
   describe 'destroy' do
     let(:cf) { create(:custom_field) }
 

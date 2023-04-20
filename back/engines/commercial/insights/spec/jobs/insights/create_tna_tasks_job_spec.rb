@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Insights::CreateTnaTasksJob, type: :job do
+RSpec.describe Insights::CreateTnaTasksJob do
   subject(:job) { described_class.new }
 
   let(:view) { build(:view) }

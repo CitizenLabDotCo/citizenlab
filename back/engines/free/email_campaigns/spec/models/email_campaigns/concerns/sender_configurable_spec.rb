@@ -6,7 +6,7 @@ class SenderConfigurableCampaignForTest < EmailCampaigns::Campaign
   include EmailCampaigns::SenderConfigurable
 end
 
-RSpec.describe EmailCampaigns::SenderConfigurable, type: :model do
+RSpec.describe EmailCampaigns::SenderConfigurable do
   let(:campaign) { SenderConfigurableCampaignForTest.new }
 
   describe 'validations' do

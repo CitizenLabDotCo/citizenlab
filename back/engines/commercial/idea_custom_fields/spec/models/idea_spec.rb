@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Idea, type: :model do
+RSpec.describe Idea do
   context 'with custom fields' do
     let(:project) { create(:project) }
     let(:form) { create(:custom_form, participation_context: project) }

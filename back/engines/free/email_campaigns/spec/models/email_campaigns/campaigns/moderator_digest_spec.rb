@@ -4,7 +4,7 @@ require 'rails_helper'
 
 skip_reason = defined?(EmailCampaigns::Engine) ? nil : 'email_campaigns engine is not installed'
 
-RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', type: :model, skip: skip_reason do
+RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason do
   describe 'ModeratorDigest Campaign default factory' do
     it 'is valid' do
       expect(build(:moderator_digest_campaign)).to be_valid

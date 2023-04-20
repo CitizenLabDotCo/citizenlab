@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Analytics::DimensionUser, type: :model do
+RSpec.describe Analytics::DimensionUser do
   context 'when a normal user is created' do
     let!(:user) { create(:user) }
 

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
+RSpec.describe EmailCampaigns::Campaigns::UserDigest do
   describe 'UserDigest Campaign default factory' do
     it 'is valid' do
       expect(build(:user_digest_campaign)).to be_valid

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe CustomFieldOption, type: :model do
+RSpec.describe CustomFieldOption do
   subject(:option) { create(:custom_field_option) }
 
   it { is_expected.to be_valid }

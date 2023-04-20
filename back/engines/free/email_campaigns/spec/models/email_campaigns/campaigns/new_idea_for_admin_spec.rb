@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdmin, type: :model do
+RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdmin do
   let(:campaign) { build(:new_idea_for_admin_campaign) }
 
   describe 'NewIdeaForAdmin Campaign default factory' do

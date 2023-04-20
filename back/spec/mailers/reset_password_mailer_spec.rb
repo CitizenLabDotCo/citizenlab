@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ResetPasswordMailer, type: :mailer do
+RSpec.describe ResetPasswordMailer do
   describe 'send_reset_password' do
     let_it_be(:user) { create(:user, locale: 'en') }
     let_it_be(:url) { 'https://example.com' }

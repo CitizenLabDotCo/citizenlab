@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Notifications::CommentOnYourInitiative, type: :model do
+RSpec.describe Notifications::CommentOnYourInitiative do
   describe 'make_notifications_on' do
     it 'makes a notification on created comment activity' do
       comment = create(:comment, post: create(:initiative))

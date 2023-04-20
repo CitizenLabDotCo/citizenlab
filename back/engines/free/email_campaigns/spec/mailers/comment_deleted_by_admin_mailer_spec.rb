@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::CommentDeletedByAdminMailer, type: :mailer do
+RSpec.describe EmailCampaigns::CommentDeletedByAdminMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::CommentDeletedByAdmin.create! }

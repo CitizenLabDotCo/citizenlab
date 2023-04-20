@@ -80,7 +80,7 @@ class TestVisitor < FieldVisitorService
   end
 end
 
-RSpec.describe CustomField, type: :model do
+RSpec.describe CustomField do
   let(:field) { described_class.new input_type: 'not_important_for_this_test' }
 
   describe '#logic?' do
