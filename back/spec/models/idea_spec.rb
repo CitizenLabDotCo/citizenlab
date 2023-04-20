@@ -18,9 +18,9 @@ RSpec.describe Idea, type: :model do
 
     context 'without custom form' do
       it 'can publish an idea without custom fields' do
-        project = create :project
+        project = create(:project)
         project.custom_form&.destroy!
-        idea = build :idea, project: project, custom_field_values: {}
+        idea = build(:idea, project: project, custom_field_values: {})
         expect(idea.save(context: :publication)).to be true
       end
     end
@@ -28,7 +28,7 @@ RSpec.describe Idea, type: :model do
 
   describe '#participation_method_on_creation' do
     context 'in a continuous project' do
-      let(:project) { create :continuous_project }
+      let(:project) { create(:continuous_project) }
       let(:idea) { build(:idea, project: project) }
 
       it 'returns the project' do
@@ -37,7 +37,7 @@ RSpec.describe Idea, type: :model do
     end
 
     context 'in a timeline project when created in a phase' do
-      let(:project) { create :project_with_future_native_survey_phase }
+      let(:project) { create(:project_with_future_native_survey_phase) }
       let(:creation_phase) { project.phases.first }
       let(:idea) { build(:idea, project: project, creation_phase: creation_phase) }
 
@@ -47,7 +47,7 @@ RSpec.describe Idea, type: :model do
     end
 
     context 'in a timeline project when created outside a phase' do
-      let(:project) { create :project_with_future_native_survey_phase }
+      let(:project) { create(:project_with_future_native_survey_phase) }
       let(:phase) { project.phases.first }
       let(:idea) { build(:idea, project: project) }
 
@@ -59,8 +59,8 @@ RSpec.describe Idea, type: :model do
 
   describe '#custom_form' do
     context 'in a continuous project when the form has been defined' do
-      let(:project) { create :continuous_project }
-      let!(:project_form) { create :custom_form, participation_context: project }
+      let(:project) { create(:continuous_project) }
+      let!(:project_form) { create(:custom_form, participation_context: project) }
       let(:idea) { build(:idea, project: project) }
 
       it 'returns the form of the project' do
@@ -69,7 +69,7 @@ RSpec.describe Idea, type: :model do
     end
 
     context 'in a continuous project when the form has not been defined yet' do
-      let(:project) { create :continuous_project }
+      let(:project) { create(:continuous_project) }
       let(:idea) { build(:idea, project: project) }
 
       it 'returns a new form' do
@@ -80,9 +80,9 @@ RSpec.describe Idea, type: :model do
     end
 
     context 'in a timeline project when created in a phase and a form has been defined' do
-      let(:project) { create :project_with_future_native_survey_phase }
+      let(:project) { create(:project_with_future_native_survey_phase) }
       let(:phase) { project.phases.first }
-      let!(:phase_form) { create :custom_form, participation_context: phase }
+      let!(:phase_form) { create(:custom_form, participation_context: phase) }
       let(:idea) { build(:idea, project: project, creation_phase: phase) }
 
       it 'returns the form of the phase in which the input was created' do
@@ -91,7 +91,7 @@ RSpec.describe Idea, type: :model do
     end
 
     context 'in a timeline project when created in a phase and a form has not been defined yet' do
-      let(:project) { create :project_with_future_native_survey_phase }
+      let(:project) { create(:project_with_future_native_survey_phase) }
       let(:phase) { project.phases.first }
       let(:idea) { build(:idea, project: project, creation_phase: phase) }
 
@@ -104,9 +104,9 @@ RSpec.describe Idea, type: :model do
     end
 
     context 'in a timeline project when created in an ideation phase and a form has been defined' do
-      let(:project) { create :project_with_active_ideation_phase }
+      let(:project) { create(:project_with_active_ideation_phase) }
       let(:phase) { project.phases.first }
-      let!(:project_form) { create :custom_form, participation_context: project }
+      let!(:project_form) { create(:custom_form, participation_context: project) }
       let(:idea) { build(:idea, project: project, creation_phase: phase) }
 
       it 'returns the form of the phase in which the input was created' do
@@ -115,7 +115,7 @@ RSpec.describe Idea, type: :model do
     end
 
     context 'in a timeline project when created in an ideation phase and a form has not been defined yet' do
-      let(:project) { create :project_with_active_ideation_phase }
+      let(:project) { create(:project_with_active_ideation_phase) }
       let(:phase) { project.phases.first }
       let(:idea) { build(:idea, project: project, creation_phase: phase) }
 
@@ -128,10 +128,10 @@ RSpec.describe Idea, type: :model do
     end
 
     context 'in a timeline project when created outside a phase' do
-      let(:project) { create :project_with_future_native_survey_phase }
-      let!(:project_form) { create :custom_form, participation_context: project }
+      let(:project) { create(:project_with_future_native_survey_phase) }
+      let!(:project_form) { create(:custom_form, participation_context: project) }
       let(:phase) { project.phases.first }
-      let!(:phase_form) { create :custom_form, participation_context: phase }
+      let!(:phase_form) { create(:custom_form, participation_context: phase) }
       let(:idea) { build(:idea, project: project) }
 
       it 'returns the form of the project' do
@@ -142,8 +142,8 @@ RSpec.describe Idea, type: :model do
 
   describe '#input_term' do
     context 'when the idea belongs to a continuous project' do
-      let(:project) { create :continuous_project, input_term: 'issue' }
-      let!(:project_form) { create :custom_form, participation_context: project }
+      let(:project) { create(:continuous_project, input_term: 'issue') }
+      let!(:project_form) { create(:custom_form, participation_context: project) }
       let(:idea) { build(:idea, project: project) }
 
       it 'returns the input_term of the project' do
@@ -153,7 +153,7 @@ RSpec.describe Idea, type: :model do
 
     context 'when the idea belongs to a timeline project' do
       context 'when the idea is created in a phase' do
-        let(:project) { create :project_with_future_native_survey_phase }
+        let(:project) { create(:project_with_future_native_survey_phase) }
         let(:phase) { project.phases.first }
         let(:idea) { build(:idea, project: project, creation_phase: phase) }
 
@@ -164,7 +164,7 @@ RSpec.describe Idea, type: :model do
       end
 
       context 'when there is an active ideation phase' do
-        let(:project) { create :project_with_active_ideation_phase }
+        let(:project) { create(:project_with_active_ideation_phase) }
         let(:phase) { project.phases.first }
         let(:idea) { build(:idea, project: project) }
 
@@ -174,7 +174,7 @@ RSpec.describe Idea, type: :model do
         end
 
         context 'when there is an active budgeting phase' do
-          let(:project) { create :project_with_active_budgeting_phase }
+          let(:project) { create(:project_with_active_budgeting_phase) }
           let(:phase) { project.phases.first }
           let(:idea) { build(:idea, project: project) }
 
@@ -189,7 +189,7 @@ RSpec.describe Idea, type: :model do
         context 'when the idea does not belong to any phase' do
           # The project and the phase are given an input_term to describe that they
           # do not provide the input_term for the idea without phases.
-          let(:project) { create :project_with_past_ideation_and_current_information_phase, input_term: 'issue' }
+          let(:project) { create(:project_with_past_ideation_and_current_information_phase, input_term: 'issue') }
           let(:phase) { project.phases.first }
           let(:idea) { build(:idea, project: project, phases: []) }
 
@@ -200,7 +200,7 @@ RSpec.describe Idea, type: :model do
         end
 
         context 'when the idea belongs to one phase' do
-          let(:project) { create :project_with_past_ideation_and_current_information_phase }
+          let(:project) { create(:project_with_past_ideation_and_current_information_phase) }
           let(:past_phase) { project.phases.detect(&:ideation?) }
           let(:idea) { build(:idea, project: project, phases: [past_phase]) }
 
@@ -211,7 +211,7 @@ RSpec.describe Idea, type: :model do
         end
 
         context 'when the idea belongs to two phases and the current time is in-between phases' do
-          let(:project) { create :project_with_past_ideation_and_future_ideation_phase }
+          let(:project) { create(:project_with_past_ideation_and_future_ideation_phase) }
           let(:past_phase) { project.phases.min_by(&:start_at) }
           let(:future_phase) { project.phases.max_by(&:start_at) }
           let(:idea) { build(:idea, project: project, phases: [past_phase, future_phase]) }
@@ -224,7 +224,7 @@ RSpec.describe Idea, type: :model do
         end
 
         context 'when the idea belongs to two phases and the current time is before the first phase' do
-          let(:project) { create :project_with_two_future_ideation_phases }
+          let(:project) { create(:project_with_two_future_ideation_phases) }
           let(:past_phase1) { project.phases.min_by(&:start_at) }
           let(:past_phase2) { project.phases.max_by(&:start_at) }
           let(:idea) { build(:idea, project: project, phases: [past_phase1, past_phase2]) }
@@ -237,7 +237,7 @@ RSpec.describe Idea, type: :model do
         end
 
         context 'when the idea belongs to two phases and the current time is after the last phase' do
-          let(:project) { create :project_with_two_past_ideation_phases }
+          let(:project) { create(:project_with_two_past_ideation_phases) }
           let(:future_phase1) { project.phases.min_by(&:start_at) }
           let(:future_phase2) { project.phases.max_by(&:start_at) }
           let(:idea) { build(:idea, project: project, phases: [future_phase1, future_phase2]) }
@@ -250,7 +250,7 @@ RSpec.describe Idea, type: :model do
         end
 
         context 'when the idea belongs to an ideation phase, and the current phase is information' do
-          let(:project) { create :project_with_past_ideation_and_current_information_phase, input_term: 'issue' }
+          let(:project) { create(:project_with_past_ideation_and_current_information_phase, input_term: 'issue') }
           let(:ideation_phase) { project.phases.first }
           let(:idea) { build(:idea, project: project, phases: [ideation_phase]) }
 
@@ -265,7 +265,7 @@ RSpec.describe Idea, type: :model do
 
   context 'with custom fields' do
     context 'when creating ideas' do
-      let(:idea) { build :idea }
+      let(:idea) { build(:idea) }
 
       %i[create publication].each do |validation_context|
         context "on #{validation_context}" do
@@ -278,7 +278,7 @@ RSpec.describe Idea, type: :model do
     end
 
     context 'when updating ideas' do
-      let(:idea) { create :idea }
+      let(:idea) { create(:idea) }
 
       %i[update publication].each do |validation_context|
         context "on #{validation_context}" do
@@ -295,48 +295,48 @@ RSpec.describe Idea, type: :model do
     before { IdeaStatus.create_defaults }
 
     it 'is invalid for a phase that does not belong to the input\'s project' do
-      project = create :project_with_active_native_survey_phase
-      response = build :idea, project: project, creation_phase: create(:native_survey_phase)
+      project = create(:project_with_active_native_survey_phase)
+      response = build(:idea, project: project, creation_phase: create(:native_survey_phase))
       expect(response).to be_invalid
       expect(response.errors.details).to eq({ creation_phase: [{ error: :invalid_project }] })
     end
 
     it 'is valid when nil and in a timeline project' do
-      project = create :project_with_active_native_survey_phase
-      idea = build :idea, project: project, creation_phase: nil
+      project = create(:project_with_active_native_survey_phase)
+      idea = build(:idea, project: project, creation_phase: nil)
       expect(idea).to be_valid
     end
 
     it 'is valid for non-transitive participation methods in a timeline project' do
-      project = create :project_with_active_native_survey_phase
-      response = build :idea, project: project, creation_phase: project.phases.first
+      project = create(:project_with_active_native_survey_phase)
+      response = build(:idea, project: project, creation_phase: project.phases.first)
       expect(response).to be_valid
     end
 
     it 'is invalid for transitive participation methods in a timeline project' do
-      project = create :project_with_active_ideation_phase
-      idea = build :idea, project: project, creation_phase: project.phases.first
+      project = create(:project_with_active_ideation_phase)
+      idea = build(:idea, project: project, creation_phase: project.phases.first)
       expect(idea).to be_invalid
       expect(idea.errors.details).to eq({ creation_phase: [{ error: :invalid_participation_method }] })
     end
 
     it 'is valid when nil and in a continuous project' do
-      project = create :continuous_native_survey_project
-      response = build :idea, project: project, creation_phase: nil
+      project = create(:continuous_native_survey_project)
+      response = build(:idea, project: project, creation_phase: nil)
       expect(response).to be_valid
     end
 
     it 'is invalid when present and in a continuous project' do
-      project = create :continuous_native_survey_project
-      input = build :idea, project: project, creation_phase: build(:native_survey_phase, project: project)
+      project = create(:continuous_native_survey_project)
+      input = build(:idea, project: project, creation_phase: build(:native_survey_phase, project: project))
       expect(input).to be_invalid
       expect(input.errors.details).to eq({ creation_phase: [{ error: :not_in_timeline_project }] })
     end
 
     it 'deleting a phase used as creation phase of an input fails' do
-      project = create :project_with_active_native_survey_phase
+      project = create(:project_with_active_native_survey_phase)
       phase = project.phases.first
-      create :idea, project: project, creation_phase: phase
+      create(:idea, project: project, creation_phase: phase)
 
       expect { phase.destroy }.to raise_error ActiveRecord::InvalidForeignKey
       expect(Project.count).to eq 1
@@ -345,9 +345,9 @@ RSpec.describe Idea, type: :model do
     end
 
     it 'deleting a project with a phase used as creation phase of an input fails' do
-      project = create :project_with_active_native_survey_phase
+      project = create(:project_with_active_native_survey_phase)
       phase = project.phases.first
-      create :idea, project: project, creation_phase: phase
+      create(:idea, project: project, creation_phase: phase)
       project.destroy
 
       expect(Project.count).to eq 0
@@ -369,16 +369,16 @@ RSpec.describe Idea, type: :model do
     end
 
     it 'should generate a slug when there is no current phase' do
-      project = create :project, process_type: 'timeline'
-      create :phase, project: project, start_at: (Time.zone.today - 10), end_at: (Time.zone.today - 5)
-      create :phase, project: project, start_at: (Time.zone.today + 5), end_at: (Time.zone.today + 10)
-      idea = create :idea, slug: nil, project: project.reload
+      project = create(:project, process_type: 'timeline')
+      create(:phase, project: project, start_at: (Time.zone.today - 10), end_at: (Time.zone.today - 5))
+      create(:phase, project: project, start_at: (Time.zone.today + 5), end_at: (Time.zone.today + 10))
+      idea = create(:idea, slug: nil, project: project.reload)
       expect(idea.slug).to be_present
     end
 
     it 'should generate a slug for a timeline project with no phases' do
-      project = create :project, process_type: 'timeline'
-      idea = create :idea, slug: nil, project: project
+      project = create(:project, process_type: 'timeline')
+      idea = create(:idea, slug: nil, project: project)
       expect(idea.slug).to be_present
     end
   end

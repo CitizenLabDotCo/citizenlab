@@ -108,7 +108,7 @@ describe IdeaPolicy do
           let(:disabled_reason) { disabled_reason }
 
           context 'for an admin' do
-            let(:user) { create :admin }
+            let(:user) { create(:admin) }
 
             it { is_expected.to permit(:show)    }
             it { is_expected.to permit(:by_slug) }
@@ -141,7 +141,7 @@ describe IdeaPolicy do
         let(:disabled_reason) { 'not_ideation' }
 
         context 'for an admin' do
-          let(:user) { create :admin }
+          let(:user) { create(:admin) }
 
           it { is_expected.to permit(:show)    }
           it { is_expected.to permit(:by_slug) }

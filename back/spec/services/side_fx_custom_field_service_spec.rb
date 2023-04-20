@@ -4,8 +4,8 @@ require 'rails_helper'
 
 describe SideFxCustomFieldService do
   let(:service) { described_class.new }
-  let(:user) { create :user }
-  let(:field) { create :custom_field }
+  let(:user) { create(:user) }
+  let(:field) { create(:custom_field) }
 
   describe 'after_create' do
     it 'swaps the text images' do

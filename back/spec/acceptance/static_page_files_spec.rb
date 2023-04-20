@@ -8,11 +8,11 @@ resource 'StaticPageFile' do
 
   before do
     header 'Content-Type', 'application/json'
-    @user = create :admin
+    @user = create(:admin)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
-    @page = create :static_page
-    create_list :static_page_file, 2, static_page: @page
+    @page = create(:static_page)
+    create_list(:static_page_file, 2, static_page: @page)
   end
 
   get 'web_api/v1/static_pages/:page_id/files' do

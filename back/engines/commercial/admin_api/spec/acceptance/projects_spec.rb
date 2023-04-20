@@ -51,7 +51,7 @@ resource 'Project', admin_api: true do
     end
 
     let(:tenant) { create(:tenant) }
-    let(:folder) { tenant.switch { create :project_folder } }
+    let(:folder) { tenant.switch { create(:project_folder) } }
     let(:template) do
       create(:tenant).switch do
         project = create(:project_xl, phases_count: 3, images_count: 0, files_count: 0) # no images nor files because URL's will not be available

@@ -26,7 +26,7 @@ resource 'Idea Custom Fields' do
       parameter :title_multiloc, 'A title of the option, as shown to users, in multiple locales', required: false
     end
 
-    let(:context) { create :continuous_project, participation_method: 'ideation' }
+    let(:context) { create(:continuous_project, participation_method: 'ideation') }
     let(:project_id) { context.id }
     let(:participation_method) { Factory.instance.participation_method_for context }
     let(:default_fields_param) do
@@ -44,10 +44,10 @@ resource 'Idea Custom Fields' do
       before { admin_header_token }
 
       context 'when the form is persisted for the first time' do
-        let(:custom_form) { create :custom_form, participation_context: context }
+        let(:custom_form) { create(:custom_form, participation_context: context) }
 
         example 'Updating custom fields', document: false do
-          create :idea, project: context
+          create(:idea, project: context)
           custom_description = { 'en' => 'Custom description' }
 
           do_request(
@@ -64,14 +64,14 @@ resource 'Idea Custom Fields' do
       end
 
       context 'when the form has been persisted before' do
-        let!(:custom_form) { create :custom_form, :with_default_fields, participation_context: context }
+        let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: context) }
 
         example 'Add, update and remove a field' do
           fields_param = default_fields_param # https://stackoverflow.com/a/58695857/3585671
           # Update persisted built-in field
           fields_param[1][:description_multiloc] = { 'en' => 'New title description' }
           # Remove extra field
-          deleted_field = create :custom_field_linear_scale, :for_custom_form
+          deleted_field = create(:custom_field_linear_scale, :for_custom_form)
           # Add extra field
           fields_param += [
             {
@@ -182,7 +182,7 @@ resource 'Idea Custom Fields' do
         end
 
         example 'Updating custom fields when there are responses', document: false do
-          create :idea, project: context
+          create(:idea, project: context)
           custom_description = { 'en' => 'Custom description' }
 
           do_request(
@@ -200,10 +200,10 @@ resource 'Idea Custom Fields' do
     context 'when resident' do
       before { resident_header_token }
 
-      let(:custom_form) { create :custom_form, participation_context: context }
+      let(:custom_form) { create(:custom_form, participation_context: context) }
 
       example '[error] Updating custom fields', document: false do
-        create :idea, project: context
+        create(:idea, project: context)
         custom_description = { 'en' => 'Custom description' }
 
         do_request(

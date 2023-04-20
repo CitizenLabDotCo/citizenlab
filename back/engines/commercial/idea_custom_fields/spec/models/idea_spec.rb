@@ -4,14 +4,14 @@ require 'rails_helper'
 
 RSpec.describe Idea, type: :model do
   context 'with custom fields' do
-    let(:project) { create :project }
-    let(:form) { create :custom_form, participation_context: project }
-    let!(:required_field) { create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number' }
-    let!(:optional_field) { create :custom_field_select, :with_options, :for_custom_form, resource: form, required: false }
-    let!(:disabled_field) { create :custom_field, :for_custom_form, resource: form, enabled: false, required: false, input_type: 'text' }
+    let(:project) { create(:project) }
+    let(:form) { create(:custom_form, participation_context: project) }
+    let!(:required_field) { create(:custom_field, :for_custom_form, resource: form, required: true, input_type: 'number') }
+    let!(:optional_field) { create(:custom_field_select, :with_options, :for_custom_form, resource: form, required: false) }
+    let!(:disabled_field) { create(:custom_field, :for_custom_form, resource: form, enabled: false, required: false, input_type: 'text') }
 
     context 'when creating ideas' do
-      let(:idea) { build :idea, project: project }
+      let(:idea) { build(:idea, project: project) }
 
       context 'on create' do
         it 'can persist an idea' do
@@ -120,7 +120,7 @@ RSpec.describe Idea, type: :model do
     end
 
     context 'when updating ideas' do
-      let(:idea) { create :idea, project: project, custom_field_values: { required_field.key => 1 } }
+      let(:idea) { create(:idea, project: project, custom_field_values: { required_field.key => 1 }) }
 
       %i[update publication].each do |validation_context|
         context "on #{validation_context}" do

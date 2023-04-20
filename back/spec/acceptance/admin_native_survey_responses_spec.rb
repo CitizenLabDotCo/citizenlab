@@ -16,7 +16,7 @@ resource 'Ideas' do
   end
 
   get 'web_api/v1/ideas/:id' do
-    let(:project) { create :project_with_active_native_survey_phase }
+    let(:project) { create(:project_with_active_native_survey_phase) }
     let(:creation_phase) { project.phases.first }
     let!(:input) do
       create(
@@ -37,7 +37,7 @@ resource 'Ideas' do
   end
 
   get 'web_api/v1/ideas/by_slug/:slug' do
-    let(:project) { create :project_with_active_native_survey_phase }
+    let(:project) { create(:project_with_active_native_survey_phase) }
     let(:creation_phase) { project.phases.first }
     let!(:input) do
       create(
@@ -82,7 +82,7 @@ resource 'Ideas' do
       let(:custom_field_name1) { 'Cat' }
 
       context 'in a continuous native survey project' do
-        let(:project) { create :continuous_native_survey_project }
+        let(:project) { create(:continuous_native_survey_project) }
         let(:custom_form) { create(:custom_form, participation_context: project) }
 
         example_request 'Create an input' do
@@ -99,7 +99,7 @@ resource 'Ideas' do
       end
 
       context 'in an active native survey phase' do
-        let(:project) { create :project_with_active_native_survey_phase }
+        let(:project) { create(:project_with_active_native_survey_phase) }
         let(:active_phase) { project.phases.first }
         let(:custom_form) { create(:custom_form, participation_context: active_phase) }
 
@@ -117,7 +117,7 @@ resource 'Ideas' do
       end
 
       context 'without active participation context' do
-        let(:project) { create :project_with_future_native_survey_phase }
+        let(:project) { create(:project_with_future_native_survey_phase) }
         let(:future_phase) { project.phases.first }
         let(:custom_form) { create(:custom_form, participation_context: future_phase) }
 
@@ -144,7 +144,7 @@ resource 'Ideas' do
 
       context 'in a continuous native survey project' do
         let(:phase_ids) { ['1234'] }
-        let(:project) { create :continuous_native_survey_project }
+        let(:project) { create(:continuous_native_survey_project) }
         let(:custom_form) { create(:custom_form, participation_context: project) }
 
         example_request '[error] Trying to create an input' do
@@ -154,7 +154,7 @@ resource 'Ideas' do
       end
 
       context 'with an active native survey phase' do
-        let(:project) { create :project_with_active_and_future_native_survey_phase }
+        let(:project) { create(:project_with_active_and_future_native_survey_phase) }
         let(:active_phase) { project.phases.first }
         let(:future_phase) { project.phases.last }
         let(:phase_ids) { [future_phase.id] }
@@ -175,7 +175,7 @@ resource 'Ideas' do
       end
 
       context 'without active participation context' do
-        let(:project) { create :project_with_future_native_survey_phase }
+        let(:project) { create(:project_with_future_native_survey_phase) }
         let(:future_phase) { project.phases.first }
         let(:phase_ids) { [future_phase.id] }
         let(:custom_form) { create(:custom_form, participation_context: future_phase) }
@@ -229,7 +229,7 @@ resource 'Ideas' do
     end
 
     context 'in a continuous native survey project' do
-      let(:project) { create :continuous_native_survey_project }
+      let(:project) { create(:continuous_native_survey_project) }
       let(:custom_form) { create(:custom_form, participation_context: project) }
 
       example_request '[error] Trying to update an input' do
@@ -240,7 +240,7 @@ resource 'Ideas' do
     end
 
     context 'in a native survey phase' do
-      let(:project) { create :project_with_active_native_survey_phase }
+      let(:project) { create(:project_with_active_native_survey_phase) }
       let(:active_phase) { project.phases.first }
       let(:custom_form) { create(:custom_form, participation_context: active_phase) }
       let(:creation_phase) { active_phase }
@@ -253,7 +253,7 @@ resource 'Ideas' do
     end
 
     context 'without active participation context' do
-      let(:project) { create :project_with_past_and_future_native_survey_phase }
+      let(:project) { create(:project_with_past_and_future_native_survey_phase) }
       let(:past_phase) { project.phases.first }
       let(:custom_form) { create(:custom_form, participation_context: past_phase) }
       let(:creation_phase) { past_phase }

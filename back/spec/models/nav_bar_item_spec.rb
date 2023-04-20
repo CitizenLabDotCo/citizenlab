@@ -12,7 +12,7 @@ RSpec.describe NavBarItem, type: :model do
   describe 'title_multiloc_with_fallback' do
     context 'with default items' do
       it "falls back to the translations when there's no title_multiloc" do
-        item = create :nav_bar_item, code: 'home', title_multiloc: nil
+        item = create(:nav_bar_item, code: 'home', title_multiloc: nil)
         expect(item.title_multiloc_with_fallback).to match({ 'en' => 'Home', 'fr-FR' => 'Accueil', 'nl-NL' => 'Home' })
       end
 

@@ -5,10 +5,10 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::Ideation do
   subject(:participation_method) { described_class.new project }
 
-  let(:project) { create :continuous_project }
+  let(:project) { create(:continuous_project) }
 
   describe '#assign_defaults_for_participation_context' do
-    let(:project) { build :continuous_project }
+    let(:project) { build(:continuous_project) }
 
     it 'sets the posting method to unlimited' do
       participation_method.assign_defaults_for_participation_context
@@ -17,7 +17,7 @@ RSpec.describe ParticipationMethod::Ideation do
   end
 
   describe '#assign_slug' do
-    let(:input) { create :idea }
+    let(:input) { create(:idea) }
 
     it 'sets and persists the slug of the input' do
       input.update_column :slug, nil
@@ -61,18 +61,18 @@ RSpec.describe ParticipationMethod::Ideation do
 
   describe '#assign_defaults' do
     context 'when the proposed idea status is available' do
-      let!(:proposed) { create :idea_status_proposed }
-      let!(:initial_status) { create :idea_status_implemented }
+      let!(:proposed) { create(:idea_status_proposed) }
+      let!(:initial_status) { create(:idea_status_implemented) }
 
       it 'sets a default "proposed" idea_status if not set' do
-        input = build :idea, idea_status: nil
+        input = build(:idea, idea_status: nil)
         participation_method.assign_defaults input
         expect(input.idea_status).to eq proposed
       end
 
       it 'does not change the idea_status if it is already set' do
-        initial_status = create :idea_status_implemented
-        input = build :idea, idea_status: initial_status
+        initial_status = create(:idea_status_implemented)
+        input = build(:idea, idea_status: initial_status)
         participation_method.assign_defaults input
         expect(input.idea_status).to eq initial_status
       end
@@ -80,13 +80,13 @@ RSpec.describe ParticipationMethod::Ideation do
 
     context 'when the proposed idea status is not available' do
       it 'raises ActiveRecord::RecordNotFound when the idea_status is not set' do
-        input = build :idea, idea_status: nil
+        input = build(:idea, idea_status: nil)
         expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
       end
 
       it 'does not change the idea_status if it is already set' do
-        initial_status = create :idea_status_implemented
-        input = build :idea, idea_status: initial_status
+        initial_status = create(:idea_status_implemented)
+        input = build(:idea, idea_status: initial_status)
         participation_method.assign_defaults input
         expect(input.idea_status).to eq initial_status
       end

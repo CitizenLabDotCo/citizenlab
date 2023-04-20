@@ -47,7 +47,7 @@ RSpec.describe CustomFieldOption, type: :model do
 
   describe 'saving a custom field option without title_multiloc' do
     it 'produces validation errors on the key and the title_multiloc' do
-      field = create :custom_field_select
+      field = create(:custom_field_select)
       option = described_class.new custom_field: field, title_multiloc: {}
       expect(option.save).to be false
       expect(option.errors.details).to eq({

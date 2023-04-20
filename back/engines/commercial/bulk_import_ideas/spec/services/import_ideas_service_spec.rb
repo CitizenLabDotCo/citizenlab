@@ -6,14 +6,14 @@ describe BulkImportIdeas::ImportIdeasService do
   let(:service) { described_class.new }
 
   describe 'import_ideas' do
-    before { create :idea_status, code: 'proposed' }
+    before { create(:idea_status, code: 'proposed') }
 
     it 'imports multiple ideas' do
-      project1 = create :project, title_multiloc: { 'fr-BE' => 'Projet un', 'en' => 'Project 1' }
-      project2 = create :project, title_multiloc: { 'nl-BE' => 'Project twee', 'en' => 'Project 2' }
-      create :idea, project: project2
-      user1 = create :user, email: 'userimport@citizenlab.co'
-      user2 = create :user, email: 'userimport2@citizenlab.co'
+      project1 = create(:project, title_multiloc: { 'fr-BE' => 'Projet un', 'en' => 'Project 1' })
+      project2 = create(:project, title_multiloc: { 'nl-BE' => 'Project twee', 'en' => 'Project 2' })
+      create(:idea, project: project2)
+      user1 = create(:user, email: 'userimport@citizenlab.co')
+      user2 = create(:user, email: 'userimport2@citizenlab.co')
 
       idea_rows = [
         {
@@ -45,8 +45,8 @@ describe BulkImportIdeas::ImportIdeasService do
     end
 
     it 'imports ideas with publication info' do
-      create :user, email: 'userimport@citizenlab.co'
-      create :project, title_multiloc: { 'en' => 'Project title' }
+      create(:user, email: 'userimport@citizenlab.co')
+      create(:project, title_multiloc: { 'en' => 'Project title' })
 
       idea_rows = [
         {
@@ -67,8 +67,8 @@ describe BulkImportIdeas::ImportIdeasService do
     end
 
     it 'imports ideas with special date cells' do
-      create :user, email: 'userimport@citizenlab.co'
-      create :project, title_multiloc: { 'en' => 'Project title' }
+      create(:user, email: 'userimport@citizenlab.co')
+      create(:project, title_multiloc: { 'en' => 'Project title' })
 
       idea_rows = [
         {
@@ -89,8 +89,8 @@ describe BulkImportIdeas::ImportIdeasService do
     end
 
     it 'imports ideas with location info' do
-      create :user, email: 'userimport@citizenlab.co'
-      create :project, title_multiloc: { 'en' => 'Project title' }
+      create(:user, email: 'userimport@citizenlab.co')
+      create(:project, title_multiloc: { 'en' => 'Project title' })
 
       idea_rows = [
         {
@@ -114,8 +114,8 @@ describe BulkImportIdeas::ImportIdeasService do
     end
 
     it 'imports ideas in a phase' do
-      create :user, email: 'userimport@citizenlab.co'
-      project = create :project_with_phases, phases_count: 2, title_multiloc: { 'en' => 'Project title' }
+      create(:user, email: 'userimport@citizenlab.co')
+      project = create(:project_with_phases, phases_count: 2, title_multiloc: { 'en' => 'Project title' })
 
       idea_rows = [
         {
@@ -135,11 +135,11 @@ describe BulkImportIdeas::ImportIdeasService do
     end
 
     it 'imports ideas with topics' do
-      create :user, email: 'userimport@citizenlab.co'
-      create :project, title_multiloc: { 'en' => 'Project title' }
-      create :topic
-      topic1 = create :topic, title_multiloc: { 'en' => 'Topic 1' }
-      topic2 = create :topic, title_multiloc: { 'nl-BE' => 'Project twee', 'en' => 'Topic 2' }
+      create(:user, email: 'userimport@citizenlab.co')
+      create(:project, title_multiloc: { 'en' => 'Project title' })
+      create(:topic)
+      topic1 = create(:topic, title_multiloc: { 'en' => 'Topic 1' })
+      topic2 = create(:topic, title_multiloc: { 'nl-BE' => 'Project twee', 'en' => 'Topic 2' })
 
       idea_rows = [
         {
@@ -201,8 +201,8 @@ describe BulkImportIdeas::ImportIdeasService do
     end
 
     it 'does not accept invalid import data' do
-      create :user, email: 'userimport@citizenlab.co'
-      create :project, title_multiloc: { 'en' => 'Project title' }
+      create(:user, email: 'userimport@citizenlab.co')
+      create(:project, title_multiloc: { 'en' => 'Project title' })
 
       idea_rows = [
         {
@@ -227,8 +227,8 @@ describe BulkImportIdeas::ImportIdeasService do
     end
 
     it 'does not accept import data with invalid date format' do
-      create :user, email: 'userimport@citizenlab.co'
-      create :project, title_multiloc: { 'en' => 'Project title' }
+      create(:user, email: 'userimport@citizenlab.co')
+      create(:project, title_multiloc: { 'en' => 'Project title' })
 
       idea_rows = [
         {

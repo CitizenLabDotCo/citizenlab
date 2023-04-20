@@ -63,8 +63,8 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', type: :model, skip:
 
     it 'does not include native survey responses' do
       IdeaStatus.create_defaults
-      survey_project = create :continuous_native_survey_project
-      response = create :idea, project: survey_project
+      survey_project = create(:continuous_native_survey_project)
+      response = create(:idea, project: survey_project)
       moderator.add_role 'project_moderator', project_id: survey_project.id
       moderator.save!
 

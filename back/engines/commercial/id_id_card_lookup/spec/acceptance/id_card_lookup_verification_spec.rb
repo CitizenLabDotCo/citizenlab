@@ -67,9 +67,9 @@ resource 'Verifications' do
 
     describe do
       before do
-        other_user = create :user
+        other_user = create(:user)
         @card_id = '123.46234-78B'
-        create :id_id_card_lookup_id_card, card_id: @card_id
+        create(:id_id_card_lookup_id_card, card_id: @card_id)
         Verification::VerificationService.new.verify_sync(
           user: other_user,
           method_name: 'id_card_lookup',

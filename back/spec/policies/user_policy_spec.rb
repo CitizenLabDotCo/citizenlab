@@ -9,7 +9,7 @@ describe UserPolicy do
 
   context 'for a visitor' do
     let(:current_user) { nil }
-    let(:subject_user) { create :user }
+    let(:subject_user) { create(:user) }
 
     it { is_expected.to     permit(:show)    }
     it { is_expected.not_to permit(:update)  }
@@ -24,7 +24,7 @@ describe UserPolicy do
   end
 
   context 'for a resident' do
-    let(:current_user) { create :user }
+    let(:current_user) { create(:user) }
 
     context 'on theirself' do
       let(:subject_user) { current_user }
@@ -53,7 +53,7 @@ describe UserPolicy do
     end
 
     context 'on someone else' do
-      let(:subject_user) { create :user }
+      let(:subject_user) { create(:user) }
 
       it { is_expected.to     permit(:show)    }
       it { is_expected.not_to permit(:update)  }
@@ -69,7 +69,7 @@ describe UserPolicy do
   end
 
   context 'for an admin' do
-    let(:current_user) { create :admin }
+    let(:current_user) { create(:admin) }
 
     context 'on theirself' do
       let(:subject_user) { current_user }
@@ -87,7 +87,7 @@ describe UserPolicy do
     end
 
     context 'on someone else' do
-      let(:subject_user) { create :user }
+      let(:subject_user) { create(:user) }
 
       it { is_expected.to permit(:show)    }
       it { is_expected.to permit(:update)  }
@@ -103,9 +103,9 @@ describe UserPolicy do
   end
 
   context 'for a project moderator' do
-    let(:project1) { create :project }
-    let(:project2) { create :project }
-    let(:current_user) { create :project_moderator, projects: [project1, project2] }
+    let(:project1) { create(:project) }
+    let(:project2) { create(:project) }
+    let(:current_user) { create(:project_moderator, projects: [project1, project2]) }
 
     context 'on theirself' do
       let(:subject_user) { current_user }
@@ -123,7 +123,7 @@ describe UserPolicy do
     end
 
     context 'on someone else' do
-      let(:subject_user) { create :user }
+      let(:subject_user) { create(:user) }
 
       it { is_expected.to     permit(:show)    }
       it { is_expected.not_to permit(:update)  }
@@ -145,17 +145,17 @@ describe UserPolicy do
       ]
       create(:idea).author
       participant = create(:idea, project: project2).author
-      admin = create :admin
+      admin = create(:admin)
       expect(scope.resolve.ids).to match_array [participant.id, current_user.id, moderators[0].id, moderators[2].id, admin.id]
     end
   end
 
   context 'for a folder moderator' do
-    let(:project1) { create :project }
-    let(:project2) { create :project }
-    let(:folder1) { create :project_folder, projects: [project1] }
-    let(:folder2) { create :project_folder, projects: [project2] }
-    let(:current_user) { create :project_folder_moderator, project_folders: [folder1, folder2] }
+    let(:project1) { create(:project) }
+    let(:project2) { create(:project) }
+    let(:folder1) { create(:project_folder, projects: [project1]) }
+    let(:folder2) { create(:project_folder, projects: [project2]) }
+    let(:current_user) { create(:project_folder_moderator, project_folders: [folder1, folder2]) }
 
     context 'on theirself' do
       let(:subject_user) { current_user }
@@ -173,7 +173,7 @@ describe UserPolicy do
     end
 
     context 'on someone else' do
-      let(:subject_user) { create :user }
+      let(:subject_user) { create(:user) }
 
       it { is_expected.to     permit(:show)    }
       it { is_expected.not_to permit(:update)  }
@@ -196,7 +196,7 @@ describe UserPolicy do
       ]
       create(:comment).author
       participant = create(:idea, project: project2).author
-      admin = create :admin
+      admin = create(:admin)
       expect(scope.resolve.ids).to match_array [participant.id, current_user.id, moderators[0].id, moderators[2].id, admin.id]
     end
   end
