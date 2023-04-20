@@ -1538,6 +1538,7 @@
   "app.errors.locale_inclusion": "Lūdzu, izvēlieties atbalstīto valodu",
   "app.errors.malformed_admin_value": "Rindā {row} atrodamā admin vērtība {value} nav derīga",
   "app.errors.malformed_groups_value": "Rindā {row} atrodamā grupa {vērtība} nav derīga grupa",
+  "app.errors.max_invites_limit_exceeded1": "Ielūgumu skaits pārsniedz 1000.",
   "app.errors.no_invites_specified": "Nevarēja atrast nevienu e-pasta adresi.",
   "app.errors.password_blank": "Tas nevar būt tukšs",
   "app.errors.password_invalid": "Lūdzu, vēlreiz pārbaudiet savu pašreizējo paroli.",
