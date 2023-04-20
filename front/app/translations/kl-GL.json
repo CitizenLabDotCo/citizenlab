@@ -1272,7 +1272,6 @@
   "app.containers.UsersEditPage.blockedVerified": "Una allaffissaq aaqqissuussinnaanngilat akuerisanik paasissutissartaqarmat",
   "app.containers.UsersEditPage.buttonSuccessLabel": "iluatsilluarpoq",
   "app.containers.UsersEditPage.cancel": "Atorunnaarsiguk",
-  "app.containers.UsersEditPage.changePassword": "Change my password",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Akuersinerit nutarterniarukku inussiarnersumik una tooruk.",
   "app.containers.UsersEditPage.conditionsLinkText": "uagut piumasagut",
   "app.containers.UsersEditPage.contactUs": "Ilaajunnaarnissannut peqqut? Una tooruk {feedbackLink}, taava immaqa ikiorsinnaavatsigit.",
