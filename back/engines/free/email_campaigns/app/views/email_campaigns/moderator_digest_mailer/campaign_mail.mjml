@@ -1,4 +1,6 @@
-<mj-section>
+<mj-section
+  padding="0 25px"
+>
   <mj-column>
     <mj-text>
       <h2 style="padding: 20px 0">
