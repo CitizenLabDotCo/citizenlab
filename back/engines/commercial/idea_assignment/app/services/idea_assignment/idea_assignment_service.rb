@@ -6,7 +6,7 @@ module IdeaAssignment
     # - The assignee of an idea should always have
     #   moderation rights over that idea.
     # - New ideas are automatically assigned to a default
-    #   assignee when not yet assigned, exept when the
+    #   assignee when not yet assigned, except when the
     #   idea is a native survey response. This is currently
     #   just the project's default assignee if specified.
     # - When an assignee can no longer moderate an idea,
