@@ -1302,7 +1302,6 @@
   "app.containers.UsersEditPage.blockedVerified": "Doğrulanmış bilgiler içerdiği için bu alanı düzenleyemezsiniz.",
   "app.containers.UsersEditPage.buttonSuccessLabel": "Başarılı",
   "app.containers.UsersEditPage.cancel": "İptal",
-  "app.containers.UsersEditPage.changePassword": "Şifremi değiştir",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Doğrulamanızı güncellemek için lütfen buraya tıklayın.",
   "app.containers.UsersEditPage.conditionsLinkText": "koşullarımız",
   "app.containers.UsersEditPage.contactUs": "Başka bir nedenle mi ayrılmak istiyorsunuz? {feedbackLink}, belki yardımcı olabiliriz.",

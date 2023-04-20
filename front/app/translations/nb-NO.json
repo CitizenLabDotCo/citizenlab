@@ -1302,7 +1302,6 @@
   "app.containers.UsersEditPage.blockedVerified": "Du kan ikke redigere dette feltet fordi det inneholder informasjon som er bekreftet.",
   "app.containers.UsersEditPage.buttonSuccessLabel": "Suksess",
   "app.containers.UsersEditPage.cancel": "Avbryt",
-  "app.containers.UsersEditPage.changePassword": "Endre passord",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Klik her for å oppdatere din bekreftelse.",
   "app.containers.UsersEditPage.conditionsLinkText": "våre vilkår",
   "app.containers.UsersEditPage.contactUs": "Er det en annen grunn til at du forlater oss? {feedbackLink}, så kan vi kanskje hjelpe",

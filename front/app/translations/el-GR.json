@@ -1302,7 +1302,6 @@
   "app.containers.UsersEditPage.blockedVerified": "Δεν μπορείτε να επεξεργαστείτε αυτό το πεδίο επειδή περιέχει επαληθευμένες πληροφορίες.",
   "app.containers.UsersEditPage.buttonSuccessLabel": "Επιτυχία",
   "app.containers.UsersEditPage.cancel": "Ακύρωση",
-  "app.containers.UsersEditPage.changePassword": "Αλλαγή του κωδικού πρόσβασής μου",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Παρακαλούμε κάντε κλικ εδώ για να ενημερώσετε την επαλήθευσή σας.",
   "app.containers.UsersEditPage.conditionsLinkText": "τις προϋποθέσεις μας",
   "app.containers.UsersEditPage.contactUs": "Άλλος ένας λόγος για να φύγετε; {feedbackLink} και ίσως μπορούμε να βοηθήσουμε.",

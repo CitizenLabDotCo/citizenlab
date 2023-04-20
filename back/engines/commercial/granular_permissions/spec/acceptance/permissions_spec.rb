@@ -262,7 +262,6 @@ resource 'Permissions' do
 
         @user.reset_confirmation_and_counts
         @user.update!(
-          email: 'my@email.com',
           first_name: 'Jack',
           last_name: nil,
           password_digest: nil,

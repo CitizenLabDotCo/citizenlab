@@ -37,6 +37,8 @@ import GetAppConfiguration, {
 import { isNilOrError } from 'utils/helperUtils';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import useAuthUser from 'hooks/useAuthUser';
+import GoBackButton from 'components/UI/GoBackButton';
+import clHistory from 'utils/cl-router/history';
 
 type FormValues = {
   current_password: string;
@@ -133,6 +135,13 @@ const ChangePassword = ({ tenant }: Props) => {
         />
         <main>
           <StyledContentContainer>
+            <Box mt="30px">
+              <GoBackButton
+                onClick={() => {
+                  clHistory.goBack();
+                }}
+              />
+            </Box>
             <Title>{formatMessage(pageTitle)}</Title>
             <Form>
               {userHasPreviousPassword && (

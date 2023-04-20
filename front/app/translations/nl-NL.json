@@ -1302,7 +1302,6 @@
   "app.containers.UsersEditPage.blockedVerified": "Je kan dit veld niet aanpassen omdat het geverifieerde informatie bevat.",
   "app.containers.UsersEditPage.buttonSuccessLabel": "Opgeslagen",
   "app.containers.UsersEditPage.cancel": "Annuleren",
-  "app.containers.UsersEditPage.changePassword": "Mijn wachtwoord wijzigen",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Klik hier om je verificatie bij te werken.",
   "app.containers.UsersEditPage.conditionsLinkText": "onze voorwaarden",
   "app.containers.UsersEditPage.contactUs": "Een andere reden om te vertrekken? {feedbackLink} en misschien kunnen we je helpen.",

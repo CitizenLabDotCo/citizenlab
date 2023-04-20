@@ -81,7 +81,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'verification-success': null,
 };
 
-const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
+export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   account_creation_failed: messages.unknownError,
   wrong_confirmation_code: errorMessages.confirmation_code_invalid,
   wrong_password: messages.signInError,

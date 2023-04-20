@@ -1268,7 +1268,6 @@
   "app.containers.UsersEditPage.blockedVerified": "Nu puteți edita acest câmp deoarece conține informații verificate.",
   "app.containers.UsersEditPage.buttonSuccessLabel": "Succes",
   "app.containers.UsersEditPage.cancel": "Anulare",
-  "app.containers.UsersEditPage.changePassword": "Schimbați-mi parola",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Vă rugăm să faceți click aici pentru a vă actualiza verificarea.",
   "app.containers.UsersEditPage.conditionsLinkText": "condițiile noastre",
   "app.containers.UsersEditPage.contactUs": "Aveți un alt motiv pentru a ne părăsi? {feedbackLink} și poate vă putem ajuta.",

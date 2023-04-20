@@ -15,7 +15,6 @@ import CampaignsConsentForm from './CampaignsConsentForm';
 import ProfileDeletion from './ProfileDeletion';
 import UsersEditPageMeta from './UsersEditPageMeta';
 import FragmentForm from './FragmentForm';
-import PasswordChange from './PasswordChange';
 import Unauthorized from 'components/Unauthorized';
 
 // Styles
@@ -27,6 +26,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
 import VerificationStatus from './VerificationStatus';
+import LoginCredentials from './LoginCredentials';
 
 const Container = styled.main`
   width: 100%;
@@ -73,7 +73,7 @@ export default () => {
           <VerificationStatus />
           <ProfileForm />
           <FragmentForm />
-          <PasswordChange user={authUser} />
+          <LoginCredentials user={authUser} />
           <ProfileDeletion />
           <CampaignsConsentForm />
         </Wrapper>

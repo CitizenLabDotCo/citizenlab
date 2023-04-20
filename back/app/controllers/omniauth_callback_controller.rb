@@ -176,7 +176,7 @@ class OmniauthCallbackController < ApplicationController
 
     attrs = authver_method.updateable_user_attrs
     update_hash = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
-    user.confirm # confirm user email if not already confirmed
+    user.confirm! # confirm user email if not already confirmed
 
     if authver_method.overwrite_user_attrs?
       user.update!(update_hash)

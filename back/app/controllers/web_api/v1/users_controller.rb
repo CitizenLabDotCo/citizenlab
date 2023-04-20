@@ -159,8 +159,6 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     remove_image_if_requested!(@user, user_params, :avatar)
 
-    @user.reset_confirmation_and_counts if @user.email_changed?
-
     authorize @user
     if @user.save
       SideFxUserService.new.after_update(@user, current_user)

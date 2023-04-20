@@ -1302,7 +1302,6 @@
   "app.containers.UsersEditPage.blockedVerified": "Du kan ikke redigere dette felt da det indeholder verificerede informationer ",
   "app.containers.UsersEditPage.buttonSuccessLabel": "Succes",
   "app.containers.UsersEditPage.cancel": "Afbryd",
-  "app.containers.UsersEditPage.changePassword": "Ændre min adgangskode",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Klik venligst her for at opdatere din bekræftelse.",
   "app.containers.UsersEditPage.conditionsLinkText": "vores vilkår ",
   "app.containers.UsersEditPage.contactUs": "Endnu en grund til at gå? {feedbackLink}, så kan vi måske hjælpe.",

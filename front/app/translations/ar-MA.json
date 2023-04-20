@@ -1268,7 +1268,6 @@
   "app.containers.UsersEditPage.blockedVerified": "لا يمكنك تعديل هذا الحقل لأنه يحتوي على معلومات تم التحقق منها.",
   "app.containers.UsersEditPage.buttonSuccessLabel": "نجاح",
   "app.containers.UsersEditPage.cancel": "إلغاء المحاولة",
-  "app.containers.UsersEditPage.changePassword": "تغيير كلمة المرور الخاصة بي",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "يُرجى النقر هنا لتحديث التحقق الخاص بك.",
   "app.containers.UsersEditPage.conditionsLinkText": "شروطنا",
   "app.containers.UsersEditPage.contactUs": "ألديك سبب آخر للمغادرة؟ قد نتمكن من مساعدتك {feedbackLink}.",

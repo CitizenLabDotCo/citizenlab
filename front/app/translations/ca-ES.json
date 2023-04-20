@@ -1302,7 +1302,6 @@
   "app.containers.UsersEditPage.blockedVerified": "No podeu editar aquest camp perquè conté informació verificada.",
   "app.containers.UsersEditPage.buttonSuccessLabel": "Èxit",
   "app.containers.UsersEditPage.cancel": "Cancel·lar",
-  "app.containers.UsersEditPage.changePassword": "Canvia la meva contrasenya",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Feu clic aquí per actualitzar la verificació.",
   "app.containers.UsersEditPage.conditionsLinkText": "les nostres condicions",
   "app.containers.UsersEditPage.contactUs": "Un altre motiu per marxar? {feedbackLink} i potser us podem ajudar.",

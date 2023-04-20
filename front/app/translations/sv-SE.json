@@ -1302,7 +1302,6 @@
   "app.containers.UsersEditPage.blockedVerified": "Du kan inte redigera det här fältet eftersom det innehåller verifierad information.",
   "app.containers.UsersEditPage.buttonSuccessLabel": "Lyckades",
   "app.containers.UsersEditPage.cancel": "Avbryt",
-  "app.containers.UsersEditPage.changePassword": "Ändra mitt lösenord",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Klicka här för att uppdatera din verifiering.",
   "app.containers.UsersEditPage.conditionsLinkText": "våra villkor",
   "app.containers.UsersEditPage.contactUs": "Ännu en anledning att lämna? {feedbackLink} så kanske vi kan hjälpa dig.",

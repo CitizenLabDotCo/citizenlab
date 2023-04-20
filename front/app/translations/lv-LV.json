@@ -1302,7 +1302,6 @@
   "app.containers.UsersEditPage.blockedVerified": "Šo lauku jūs nevarat rediģēt, jo tas satur apstiprinātu informāciju.",
   "app.containers.UsersEditPage.buttonSuccessLabel": "Veiksmīgi",
   "app.containers.UsersEditPage.cancel": "Atcelt",
-  "app.containers.UsersEditPage.changePassword": "Mainīt manu paroli",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Lūdzu, noklikšķiniet šeit, lai atjauninātu savu pārbaudi.",
   "app.containers.UsersEditPage.conditionsLinkText": "mūsu nosacījumi",
   "app.containers.UsersEditPage.contactUs": "Vēl viens iemesls doties prom? {feedbackLink}, un varbūt mēs varēsim palīdzēt.",

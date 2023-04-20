@@ -1302,7 +1302,6 @@
   "app.containers.UsersEditPage.blockedVerified": "Ne možete urediti ovo polje jer sadrži potvrđene informacije.",
   "app.containers.UsersEditPage.buttonSuccessLabel": "Uspjeh",
   "app.containers.UsersEditPage.cancel": "Odustani",
-  "app.containers.UsersEditPage.changePassword": "Promijeni moju lozinku",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Kliknite ovdje kako biste ažurirali svoju potvrdu.",
   "app.containers.UsersEditPage.conditionsLinkText": "naši uvjeti",
   "app.containers.UsersEditPage.contactUs": "Drugi razlog za napuštanje? {feedbackLink} i možda vam možemo pomoći.",

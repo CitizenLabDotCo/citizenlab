@@ -11,6 +11,7 @@ import { darken } from 'polished';
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 export const FooterNote = styled.p`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -48,7 +49,7 @@ const FooterNoteSuccessMessageIcon = styled(Icon)`
 interface Props {
   codeResent: boolean;
   onResendCode: (e: FormEvent) => void;
-  onChangeEmail: (e: FormEvent) => void;
+  onChangeEmail?: (e: FormEvent) => void;
 }
 
 const FooterNotes = ({ codeResent, onResendCode, onChangeEmail }: Props) => (
@@ -67,12 +68,14 @@ const FooterNotes = ({ codeResent, onResendCode, onChangeEmail }: Props) => (
         </FooterNoteLink>
       )}
     </FooterNote>
-    <FooterNote>
-      <FormattedMessage {...messages.wrongEmail} />
-      <FooterNoteLink onClick={onChangeEmail}>
-        <FormattedMessage {...messages.changeYourEmail} />
-      </FooterNoteLink>
-    </FooterNote>
+    {!isNilOrError(onChangeEmail) && (
+      <FooterNote>
+        <FormattedMessage {...messages.wrongEmail} />
+        <FooterNoteLink onClick={onChangeEmail}>
+          <FormattedMessage {...messages.changeYourEmail} />
+        </FooterNoteLink>
+      </FooterNote>
+    )}
   </>
 );
 

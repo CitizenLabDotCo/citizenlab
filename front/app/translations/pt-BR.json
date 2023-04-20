@@ -1302,7 +1302,6 @@
   "app.containers.UsersEditPage.blockedVerified": "Você não pode editar este campo porque ele contém informações confirmadas",
   "app.containers.UsersEditPage.buttonSuccessLabel": "Sucesso",
   "app.containers.UsersEditPage.cancel": "Cancelado",
-  "app.containers.UsersEditPage.changePassword": "Alterar a minha palavra-chave",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Por favor clique aqui para actualizar a sua verificação.",
   "app.containers.UsersEditPage.conditionsLinkText": "nossas condições",
   "app.containers.UsersEditPage.contactUs": "Outra razão para sair? {feedbackLink} e talvez nós possamos ajudar.",

@@ -39,4 +39,16 @@ RSpec.describe DeliverConfirmationCode do
       expect(last_email.body.encoded).to include context[:user].reload.email_confirmation_code
     end
   end
+
+  context 'when the user has changed their email' do
+    before do
+      context[:user] = create(:user_with_confirmation, email: 'some_email@email.com', new_email: 'new@email.com')
+    end
+
+    it 'enqueues email delivery job to the changed email address' do
+      result
+      last_email = ActionMailer::Base.deliveries.last
+      expect(last_email.to).to include context[:user].reload.new_email
+    end
+  end
 end

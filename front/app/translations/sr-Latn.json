@@ -1302,7 +1302,6 @@
   "app.containers.UsersEditPage.blockedVerified": "Ne možete menjati polje koje sadrži verifikovane informacije.",
   "app.containers.UsersEditPage.buttonSuccessLabel": "Uspeh",
   "app.containers.UsersEditPage.cancel": "Prekid",
-  "app.containers.UsersEditPage.changePassword": "Promeni moju lozinku",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Kliknite ovde kako biste ažurirali vašu verifikaciju.",
   "app.containers.UsersEditPage.conditionsLinkText": "naši uslovi",
   "app.containers.UsersEditPage.contactUs": "Drugi razlog za napuštanje? {feedbackLink} i možda možemo da vam pomognemo.",

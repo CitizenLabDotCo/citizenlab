@@ -1262,7 +1262,6 @@
   "app.containers.UsersEditPage.blockedVerified": "Не можете изменити ово поље јер садржи верификоване информације.",
   "app.containers.UsersEditPage.buttonSuccessLabel": "Успех",
   "app.containers.UsersEditPage.cancel": "Прекид",
-  "app.containers.UsersEditPage.changePassword": "Промени моју лозинку",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Кликните овде како бисте ажурирали вашу верификацију.",
   "app.containers.UsersEditPage.conditionsLinkText": "наши услови",
   "app.containers.UsersEditPage.contactUs": "Други разлог за напуштање? {feedbackLink} и можда можемо да вам помогнемо.",

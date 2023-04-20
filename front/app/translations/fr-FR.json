@@ -1302,7 +1302,6 @@
   "app.containers.UsersEditPage.blockedVerified": "Vous ne pouvez pas modifier ce champ car il contient des informations vérifiées.",
   "app.containers.UsersEditPage.buttonSuccessLabel": "Enregistré !",
   "app.containers.UsersEditPage.cancel": "Annuler",
-  "app.containers.UsersEditPage.changePassword": "Modifier mon mot de passe",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Veuillez cliquer ici pour mettre à jour votre vérification.",
   "app.containers.UsersEditPage.conditionsLinkText": "nos conditions",
   "app.containers.UsersEditPage.contactUs": "Une autre raison pour partir ? {feedbackLink} et peut-être pouvons-nous vous aider.",

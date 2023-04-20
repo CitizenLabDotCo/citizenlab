@@ -1302,7 +1302,6 @@
   "app.containers.UsersEditPage.blockedVerified": "Nie możesz edytować tego pola, ponieważ zawiera ono zweryfikowane informacje.",
   "app.containers.UsersEditPage.buttonSuccessLabel": "Sukces",
   "app.containers.UsersEditPage.cancel": "Anuluj",
-  "app.containers.UsersEditPage.changePassword": "Zmień moje hasło",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Proszę kliknąć tutaj, aby zaktualizować swoją weryfikację.",
   "app.containers.UsersEditPage.conditionsLinkText": "nasze warunki",
   "app.containers.UsersEditPage.contactUs": "Inny powód opuszczenia platformy? {feedbackLink}, może będziemy mogli pomóc.",
