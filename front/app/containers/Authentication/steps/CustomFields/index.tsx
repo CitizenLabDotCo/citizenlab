@@ -2,13 +2,11 @@ import React, { useEffect, FormEvent } from 'react';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
+import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
 
 // components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import UserCustomFieldsForm, {
-  FormData,
-} from 'components/UserCustomFieldsForm';
-import useUserCustomFieldsSchema from 'hooks/useUserCustomFieldsSchema';
+import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
 import Button from 'components/UI/Button';
 
 // i18n
@@ -24,19 +22,30 @@ import eventEmitter from 'utils/eventEmitter';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { hasRequiredFields } from 'api/custom_fields_json_form_schema/utils';
 
 // typings
-import { Status } from 'containers/Authentication/typings';
+import { AuthenticationData, Status } from 'containers/Authentication/typings';
+import useLocale from 'hooks/useLocale';
 
 interface Props {
+  authenticationData: AuthenticationData;
   status: Status;
-  onSubmit: (id: string, formData: FormData) => void;
+  onSubmit: (id: string, formData: Record<string, any>) => void;
   onSkip: () => void;
 }
 
-const CustomFields = ({ status, onSubmit, onSkip }: Props) => {
+const CustomFields = ({
+  authenticationData,
+  status,
+  onSubmit,
+  onSkip,
+}: Props) => {
   const authUser = useAuthUser();
-  const userCustomFieldsSchema = useUserCustomFieldsSchema();
+  const locale = useLocale();
+  const { data: userCustomFieldsSchema } = useCustomFieldsSchema(
+    authenticationData.context
+  );
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
 
@@ -50,7 +59,7 @@ const CustomFields = ({ status, onSubmit, onSkip }: Props) => {
 
   const loading = status === 'pending';
 
-  const handleSubmit = ({ formData }: { formData: FormData }) => {
+  const handleSubmit = ({ formData }: { formData: Record<string, any> }) => {
     onSubmit(authUser.id, formData);
   };
 
@@ -59,13 +68,19 @@ const CustomFields = ({ status, onSubmit, onSkip }: Props) => {
     eventEmitter.emit('customFieldsSubmitEvent');
   };
 
+  if (isNilOrError(locale)) return null;
+
   return (
     <Box
       w="100%"
       pb={smallerThanPhone ? '14px' : '28px'}
       id="e2e-signup-custom-fields-container"
     >
-      <UserCustomFieldsForm authUser={authUser} onSubmit={handleSubmit} />
+      <UserCustomFieldsForm
+        authUser={authUser}
+        authenticationContext={authenticationData.context}
+        onSubmit={handleSubmit}
+      />
 
       <Box
         display="flex"
@@ -82,7 +97,7 @@ const CustomFields = ({ status, onSubmit, onSkip }: Props) => {
           onClick={handleOnSubmitButtonClick}
         />
 
-        {!userCustomFieldsSchema.hasRequiredFields && (
+        {!hasRequiredFields(userCustomFieldsSchema, locale) && (
           <Button
             id="e2e-signup-custom-fields-skip-btn"
             buttonStyle="text"

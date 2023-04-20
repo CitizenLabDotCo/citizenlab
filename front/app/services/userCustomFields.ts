@@ -1,10 +1,8 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship, Locale, Multiloc } from 'typings';
-import { JsonSchema7, Layout } from '@jsonforms/core';
-
-const userCustomFieldsSchemaApiEndpoint = `${API_PATH}/users/custom_fields/schema`;
-const userCustomFieldsJSONSchemaApiEndpoint = `${API_PATH}/users/custom_fields/json_forms_schema`;
+import { IRelationship, Multiloc } from 'typings';
+import schemaKeys from 'api/custom_fields_json_form_schema/keys';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 export type IUserCustomFieldInputType =
   | 'text'
@@ -69,30 +67,6 @@ export interface UserCustomFieldsInfos {
   hasCustomFields: boolean;
 }
 
-interface IUserCustomFieldSchemas {
-  data: {
-    attributes: {
-      json_schema_multiloc: {
-        [key in Locale]?: any;
-      };
-      ui_schema_multiloc: {
-        [key in Locale]?: any;
-      };
-    };
-  };
-}
-
-export interface IUserJsonFormSchemas {
-  data: {
-    attributes: {
-      json_schema_multiloc: {
-        [key in Locale]?: JsonSchema7;
-      };
-      ui_schema_multiloc: { [key in Locale]?: Layout };
-    };
-  };
-}
-
 export function isBuiltInField(field: IUserCustomFieldData) {
   return !!field.attributes.code;
 }
@@ -128,24 +102,6 @@ export function userCustomFieldsStream(
   });
 }
 
-export function customFieldsSchemaForUsersStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IUserCustomFieldSchemas>({
-    apiEndpoint: userCustomFieldsSchemaApiEndpoint,
-    ...streamParams,
-  });
-}
-
-export function userJsonFormSchemasStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IUserJsonFormSchemas>({
-    apiEndpoint: userCustomFieldsJSONSchemaApiEndpoint,
-    ...streamParams,
-  });
-}
-
 export async function addCustomFieldForUsers(data) {
   const response = await streams.add<IUserCustomField>(
     `${API_PATH}/users/custom_fields`,
@@ -154,12 +110,7 @@ export async function addCustomFieldForUsers(data) {
     }
   );
 
-  await streams.fetchAllWith({
-    apiEndpoint: [
-      userCustomFieldsSchemaApiEndpoint,
-      userCustomFieldsJSONSchemaApiEndpoint,
-    ],
-  });
+  queryClient.invalidateQueries({ queryKey: schemaKeys.all() });
 
   return response;
 }
@@ -171,12 +122,7 @@ export async function updateCustomFieldForUsers(customFieldId: string, object) {
     { custom_field: object }
   );
 
-  await streams.fetchAllWith({
-    apiEndpoint: [
-      userCustomFieldsSchemaApiEndpoint,
-      userCustomFieldsJSONSchemaApiEndpoint,
-    ],
-  });
+  queryClient.invalidateQueries({ queryKey: schemaKeys.all() });
 
   return response;
 }
@@ -191,12 +137,7 @@ export async function reorderCustomFieldForUsers(
     { custom_field: object }
   );
 
-  await streams.fetchAllWith({
-    apiEndpoint: [
-      userCustomFieldsSchemaApiEndpoint,
-      userCustomFieldsJSONSchemaApiEndpoint,
-    ],
-  });
+  queryClient.invalidateQueries({ queryKey: schemaKeys.all() });
 
   return response;
 }
@@ -207,12 +148,7 @@ export async function deleteUserCustomField(customFieldId: string) {
     customFieldId
   );
 
-  await streams.fetchAllWith({
-    apiEndpoint: [
-      userCustomFieldsSchemaApiEndpoint,
-      userCustomFieldsJSONSchemaApiEndpoint,
-    ],
-  });
+  queryClient.invalidateQueries({ queryKey: schemaKeys.all() });
 
   return response;
 }

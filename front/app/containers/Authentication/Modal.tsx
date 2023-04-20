@@ -235,8 +235,9 @@ const AuthModal = ({ setModalOpen }: Props) => {
           />
         )}
 
-        {currentStep === 'sign-up:custom-fields' && (
+        {currentStep === 'sign-up:custom-fields' && authenticationData && (
           <CustomFields
+            authenticationData={authenticationData}
             status={status}
             onSubmit={transition(currentStep, 'SUBMIT')}
             onSkip={transition(currentStep, 'SKIP')}
@@ -344,8 +345,9 @@ const AuthModal = ({ setModalOpen }: Props) => {
           />
         )}
 
-        {currentStep === 'missing-data:custom-fields' && (
+        {currentStep === 'missing-data:custom-fields' && authenticationData && (
           <CustomFields
+            authenticationData={authenticationData}
             status={status}
             onSubmit={transition(currentStep, 'SUBMIT')}
             onSkip={transition(currentStep, 'SKIP')}

@@ -10,9 +10,6 @@ import Form from 'components/Form';
 // i18n
 import messages from './messages';
 
-// constants
-import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
-
 // utils
 import { forOwn } from 'lodash-es';
 
@@ -39,7 +36,7 @@ export interface UserCustomFieldsFormProps {
 
 export default ({
   authUser,
-  authenticationContext = GLOBAL_CONTEXT,
+  authenticationContext,
   onSubmit,
   onChange,
 }: UserCustomFieldsFormProps) => {

@@ -38,6 +38,9 @@ import localize, { InjectedLocalized } from 'utils/localize';
 // styling
 import styled from 'styled-components';
 
+// constants
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
+
 // typings
 import { IOption, UploadFile, Multiloc } from 'typings';
 
@@ -288,6 +291,7 @@ const ProfileForm = ({
         </form>
         <UserCustomFieldsForm
           authUser={authUser}
+          authenticationContext={GLOBAL_CONTEXT}
           onChange={handleCustomFieldsChange}
         />
         <Box display="flex">
