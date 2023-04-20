@@ -5,7 +5,7 @@ const baseKey = {
   type: 'ideas_count',
 };
 
-const userIdeasCount = {
+const userIdeasCountKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: (parameters: IParameters) => [
@@ -13,4 +13,4 @@ const userIdeasCount = {
   ],
 } satisfies QueryKeys;
 
-export default userIdeasCount;
+export default userIdeasCountKeys;

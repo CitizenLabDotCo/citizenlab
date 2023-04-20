@@ -5,7 +5,7 @@ const baseKey = {
   type: 'comments_count',
 };
 
-const userCommentsCount = {
+const userCommentsCountKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: (parameters: IParameters) => [
@@ -13,4 +13,4 @@ const userCommentsCount = {
   ],
 } satisfies QueryKeys;
 
-export default userCommentsCount;
+export default userCommentsCountKeys;
