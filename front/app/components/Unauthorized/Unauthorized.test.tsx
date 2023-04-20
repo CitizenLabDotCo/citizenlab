@@ -1,7 +1,7 @@
 import React from 'react';
 import Unauthorized from '.';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 let mockUser: any = null;
 jest.mock('hooks/useAuthUser', () => () => mockUser);

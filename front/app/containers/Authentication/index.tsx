@@ -1,20 +1,16 @@
 import React from 'react';
-
-import { TAuthUser } from 'hooks/useAuthUser';
-import SignUpIn from './SignUpIn';
+import SuccessActions from './SuccessActions';
+import Modal from './Modal';
 
 interface Props {
-  authUser: TAuthUser;
-  onModalOpenedStateChange: (isOpened: boolean) => void;
+  setModalOpen: (bool: boolean) => void;
 }
 
-const Authentication = ({ authUser, onModalOpenedStateChange }: Props) => {
+const Authentication = ({ setModalOpen }: Props) => {
   return (
     <>
-      <SignUpIn
-        authUser={authUser}
-        onModalOpenedStateChange={onModalOpenedStateChange}
-      />
+      <SuccessActions />
+      <Modal setModalOpen={setModalOpen} />
     </>
   );
 };

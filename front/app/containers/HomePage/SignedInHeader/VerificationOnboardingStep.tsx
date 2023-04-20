@@ -7,7 +7,7 @@ import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
-import { triggerVerificationOnly } from 'containers/NewAuthModal/events';
+import { triggerVerificationOnly } from 'containers/Authentication/events';
 import { colors } from 'utils/styleUtils';
 import OnboardingStep from './OnboardingStep';
 import SkipButton from './SkipButton';

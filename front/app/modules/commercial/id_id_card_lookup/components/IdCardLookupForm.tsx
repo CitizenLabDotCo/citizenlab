@@ -19,7 +19,7 @@ import {
   SubmitButton,
   CancelButton,
   HelpImage,
-} from 'containers/NewAuthModal/steps/AuthProviders/styles';
+} from 'containers/Authentication/steps/AuthProviders/styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';

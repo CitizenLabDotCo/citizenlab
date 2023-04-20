@@ -5,7 +5,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet';
 import { StyledContentContainer } from 'components/smallForm';
 import GoBackButton from 'components/UI/GoBackButton';
-import EmailConfirmation from 'containers/NewAuthModal/steps/EmailConfirmation';
+import EmailConfirmation from 'containers/Authentication/steps/EmailConfirmation';
 import Modal from 'components/UI/Modal';
 import Error from 'components/UI/Error';
 import CancelUpdate from './CancelUpdate';
@@ -29,8 +29,8 @@ import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { Status, ErrorCode } from 'containers/NewAuthModal/typings';
-import { ERROR_CODE_MESSAGES } from 'containers/NewAuthModal/Modal';
+import { Status, ErrorCode } from 'containers/Authentication/typings';
+import { ERROR_CODE_MESSAGES } from 'containers/Authentication/Modal';
 
 export type FormValues = {
   email: string;
@@ -141,7 +141,11 @@ const EmailChange = () => {
             </Box>
           )}
           <EmailConfirmation
-            state={{ email: methods.watch('email'), token: null }}
+            state={{
+              email: methods.watch('email'),
+              token: null,
+              prefilledBuiltInFields: null,
+            }}
             status={confirmationStatus}
             error={confirmationError}
             onConfirm={onEmailConfirmation}

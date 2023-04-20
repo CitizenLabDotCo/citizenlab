@@ -23,7 +23,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // utils
 import { isNilOrError, isPage, isDesktop } from 'utils/helperUtils';

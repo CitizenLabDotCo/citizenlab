@@ -1,9 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
-import { authApiEndpoint } from './auth';
 import { TRole } from 'services/permissions/roles';
-import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import seatsKeys from 'api/seats/keys';
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
@@ -146,20 +144,4 @@ export async function deleteUser(userId: string) {
   queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
 
   return response;
-}
-
-export async function completeRegistration(
-  customFieldValues?: Record<string, any>
-) {
-  const authUser = await streams.add<IUser>(
-    `${apiEndpoint}/complete_registration`,
-    { user: { custom_field_values: customFieldValues || {} } }
-  );
-  await streams.reset();
-  await resetQueryCache();
-  await streams.fetchAllWith({
-    apiEndpoint: [authApiEndpoint],
-  });
-
-  return authUser;
 }

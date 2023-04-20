@@ -10,7 +10,7 @@ import VoteControl from 'components/VoteControl';
 import GoBackButton from 'containers/IdeasShow/GoBackButton';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // styling
 import styled from 'styled-components';

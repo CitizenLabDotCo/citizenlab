@@ -2,11 +2,7 @@ import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 import { IPCAction } from 'typings';
 import keys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
-
-export const GLOBAL_CONTEXT = {
-  type: 'global',
-  action: 'visiting',
-} as const;
+import { GLOBAL_CONTEXT } from './constants';
 
 interface InitiativeContext {
   type: 'initiative';
