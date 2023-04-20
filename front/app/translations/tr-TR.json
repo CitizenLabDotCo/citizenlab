@@ -41,6 +41,7 @@
   "app.components.Comments.invisibleTitleComments": "Yorumlar",
   "app.components.Comments.mostUpvoted": "En çok oylanan",
   "app.components.Comments.official": "Resmi",
+  "app.components.Comments.oldestToNewest": "En yeni",
   "app.components.Comments.replyToComment": "Yorumu yanıtla",
   "app.components.Comments.reportAsSpam": "Spam bildir",
   "app.components.Comments.seeOriginal": "Orijinali göster",
