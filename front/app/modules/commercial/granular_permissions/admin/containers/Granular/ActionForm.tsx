@@ -154,7 +154,12 @@ const ActionForm = ({
             />
           </Box>
           {permittedBy === 'groups' && (
-            <Box mt="24px">
+            <Box
+              mt="10px"
+              border={`solid 1px ${colors.grey300}`}
+              px="20px"
+              pb="20px"
+            >
               <Title variant="h5" fontWeight={'normal'} color={'coolGrey600'}>
                 <FormattedMessage {...messages.selectUserGroups} />
               </Title>
