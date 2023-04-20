@@ -43,7 +43,7 @@ type AddFieldScreenProps = {
 };
 
 export interface FormValues {
-  input_type?: string;
+  input_type?: FieldType;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   options: IOptionsType[];
@@ -89,9 +89,10 @@ export const AddFieldScreen = ({
           const newField = await addCustomFieldForUsers({
             ...formValues,
           });
+
           if (
-            (newField.data.id && formValues?.input_type === 'multi_select') ||
-            formValues?.input_type === 'single_select'
+            (newField.data.id && formValues?.input_type === 'multiselect') ||
+            formValues?.input_type === 'select'
           ) {
             formValues?.options?.forEach(async (option) => {
               await addUserCustomFieldOption(newField.data.id, {
