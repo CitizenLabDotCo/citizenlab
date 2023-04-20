@@ -8,7 +8,7 @@ RSpec.describe Analytics::FactEmailDelivery do
     let!(:delivery) { create(:delivery, campaign: campaign) }
 
     it 'is also available as a email delivery fact' do
-      described_class.find(delivery.id)
+      expect { described_class.find(delivery.id) }.not_to raise_error
     end
   end
 end

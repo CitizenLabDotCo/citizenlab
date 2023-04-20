@@ -8,7 +8,7 @@ RSpec.describe Analytics::FactPost do
     let!(:idea) { create(:idea) }
 
     it 'is also available as a post fact' do
-      described_class.find(idea.id)
+      expect { described_class.find(idea.id) }.not_to raise_error
     end
   end
 
@@ -17,7 +17,7 @@ RSpec.describe Analytics::FactPost do
     let!(:initiative) { create(:initiative) }
 
     it 'is also available as a post fact' do
-      described_class.find(initiative.id)
+      expect { described_class.find(initiative.id) }.not_to raise_error
     end
   end
 end

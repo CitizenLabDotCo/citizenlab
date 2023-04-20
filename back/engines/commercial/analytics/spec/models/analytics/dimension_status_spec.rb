@@ -7,7 +7,7 @@ RSpec.describe Analytics::DimensionStatus do
     let!(:idea_status) { create(:idea_status) }
 
     it 'is also available as a status dimension' do
-      described_class.find(idea_status.id)
+      expect { described_class.find(idea_status.id) }.not_to raise_error
     end
   end
 
@@ -15,7 +15,7 @@ RSpec.describe Analytics::DimensionStatus do
     let!(:initiative_status) { create(:initiative_status) }
 
     it 'is also available as a status dimension' do
-      described_class.find(initiative_status.id)
+      expect { described_class.find(initiative_status.id) }.not_to raise_error
     end
   end
 end
