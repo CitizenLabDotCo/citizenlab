@@ -31,12 +31,6 @@
       <mj-text font-size="16px" align="center">
         <%= format_message("new_users") %>
       </mj-text>
-      <% unless change_users.zero? %>
-        <mj-text color="<%= change_users.positive? ? '#04884C' : '#E52516' %>" font-size="16px" align="center" font-weight="700">
-          <%= '+' if change_users.positive? %>
-          <%= change_users %>%
-        </mj-text>
-      <% end %>
     </mj-column>
 
     <mj-column>
@@ -51,18 +45,6 @@
       <mj-text font-size="16px" align="center">
         <%= format_message("new_ideas") %>
       </mj-text>
-      <!-- <mj-text font-size="28px" align="center" font-weight="700">
-        <%= event.statistics.activities.new_ideas.increase %>
-      </mj-text>
-      <mj-text font-size="16px" align="center">
-        <%= format_message("new_ideas") %>
-      </mj-text> -->
-      <!-- <% unless change_ideas.zero? %>
-        <mj-text color="<%= change_ideas.positive? ? '#04884C' : '#E52516' %>" font-size="16px" align="center" font-weight="700">
-          <%= '+' if change_ideas.positive? %>
-          <%= change_ideas %>%
-        </mj-text>
-      <% end %> -->
     </mj-column>
 
     <mj-column>
@@ -77,12 +59,6 @@
       <mj-text font-size="16px" align="center">
         <%= format_message("new_comments") %>
       </mj-text>
-      <!-- <% unless change_comments.zero? %>
-        <mj-text color="<%= change_comments.positive? ? '#04884C' : '#E52516' %>" font-size="16px" align="center" font-weight="700">
-          <%= '+' if change_comments.positive? %>
-          <%= change_comments %>%
-        </mj-text>
-      <% end %> -->
     </mj-column>
   </mj-section>
 </mj-wrapper>
