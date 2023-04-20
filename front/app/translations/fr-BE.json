@@ -41,6 +41,7 @@
   "app.components.Comments.invisibleTitleComments": "Commentaires",
   "app.components.Comments.mostUpvoted": "Plus votés",
   "app.components.Comments.official": "Officiel",
+  "app.components.Comments.oldestToNewest": "Plus récents",
   "app.components.Comments.replyToComment": "Répondre au commentaire",
   "app.components.Comments.reportAsSpam": "Signaler comme spam",
   "app.components.Comments.seeOriginal": "Afficher l'original",
