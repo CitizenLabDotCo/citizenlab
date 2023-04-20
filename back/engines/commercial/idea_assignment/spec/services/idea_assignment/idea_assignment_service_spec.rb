@@ -58,4 +58,13 @@ describe IdeaAssignment::IdeaAssignmentService do
       expect(idea5.reload.assignee_id).to be_present
     end
   end
+
+  describe 'automatically_assigned_idea_assignee' do
+    it 'returns nil if the idea is a survey response' do
+      project = create(:continuous_native_survey_project, default_assignee_id: create(:admin).id)
+      idea = create(:native_survey_response, project_id: project.id)
+
+      expect(service.automatically_assigned_idea_assignee(idea)).to be_nil
+    end
+  end
 end
