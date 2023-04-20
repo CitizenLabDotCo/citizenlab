@@ -1538,6 +1538,7 @@
   "app.errors.locale_inclusion": "Proszę wybrać wspierany język",
   "app.errors.malformed_admin_value": "Wartość admina {value} znajdująca się w wierszu {row} jest nieważna",
   "app.errors.malformed_groups_value": "Grupa {value} znajdująca się w rzędzie {row} nie jest poprawną grupą",
+  "app.errors.max_invites_limit_exceeded1": "Liczba zaproszeń przekracza limit 1000.",
   "app.errors.no_invites_specified": "Nie znaleziono żadnego adresu e-mail.",
   "app.errors.password_blank": "To pole nie może być puste",
   "app.errors.password_invalid": "Proszę sprawdzić ponownie swoje aktualne hasło.",
