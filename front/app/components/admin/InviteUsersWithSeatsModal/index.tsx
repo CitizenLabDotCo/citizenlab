@@ -21,6 +21,7 @@ import useSeats from 'api/seats/useSeats';
 // Utils
 import { isNil } from 'utils/helperUtils';
 import { TSeatNumber } from 'api/app_configuration/types';
+import BillingWarning from 'components/SeatInfo/BillingWarning';
 
 export type SeatTypeTSeatNumber = {
   [key in TSeatType]: TSeatNumber;
@@ -57,29 +58,29 @@ const InviteUsersWithSeatsModal = ({
   const maximumSeatNumbers: SeatTypeTSeatNumber = {
     admin:
       appConfiguration?.data.attributes.settings.core.maximum_admins_number,
-    collaborator:
+    moderator:
       appConfiguration?.data.attributes.settings.core.maximum_moderators_number,
   };
   const maximumSeatNumber = maximumSeatNumbers[seatType];
   const currentSeatNumbers: SeatTypeNumber = {
     admin: seats.data.attributes.admins_number,
-    collaborator: seats.data.attributes.project_moderators_number,
+    moderator: seats.data.attributes.project_moderators_number,
   };
   const currentSeatNumber = currentSeatNumbers[seatType];
-  const hasExceededSetSeats =
+  const hasExceededPlanSeatLimit =
     !isNil(maximumSeatNumber) && currentSeatNumber > maximumSeatNumber;
 
   const seatTypeMessages: SeatTypeMessageDescriptor = {
     admin: messages.admin,
-    collaborator: messages.collaborator,
+    moderator: messages.moderator,
   };
   const seatTypesMessages: SeatTypeMessageDescriptor = {
     admin: messages.admins,
-    collaborator: messages.collaborators,
+    moderator: messages.moderators,
   };
   const seatTypeModalTitles: SeatTypeMessageDescriptor = {
     admin: messages.giveAdminRights,
-    collaborator: messages.giveCollaboratorRights,
+    moderator: messages.giveModeratorRights,
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,12 +114,12 @@ const InviteUsersWithSeatsModal = ({
             setShowWarning(false);
             setHasAcknowledged(false);
           }}
-          hasExceededSetSeats={hasExceededSetSeats}
-          seatType="collaborator"
+          seatType="moderator"
+          hasExceededPlanSeatLimit={hasExceededPlanSeatLimit}
         />
       ) : (
-        <Box display="flex" flexDirection="column" width="100%" p="32px">
-          <Text color="textPrimary" fontSize="m" my="0px">
+        <Box display="flex" flexDirection="column" p="32px">
+          <Text color="textPrimary" mt="0" mb="24px">
             <FormattedMessage
               {...messages.infoMessage}
               values={{
@@ -127,11 +128,16 @@ const InviteUsersWithSeatsModal = ({
               }}
             />
           </Text>
-          <Box py="32px">
+          <Box mb="24px">
             <SeatInfo seatType={seatType} />
           </Box>
 
+          <Box mb="24px">
+            <BillingWarning />
+          </Box>
+
           <Checkbox
+            mb="24px"
             checked={hasAcknowledged}
             onChange={onChange}
             label={
@@ -144,12 +150,12 @@ const InviteUsersWithSeatsModal = ({
           />
 
           {showWarning && (
-            <Box mt="12px">
+            <Box mb="24px">
               <Error text={formatMessage(messages.acceptWarning)} />
             </Box>
           )}
 
-          <Box display="flex" mt="32px">
+          <Box display="flex">
             <Button
               onClick={handleConfirmClick}
               data-testid="confirm-button-text"
