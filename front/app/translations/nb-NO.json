@@ -41,6 +41,7 @@
   "app.components.Comments.invisibleTitleComments": "Kommentarer",
   "app.components.Comments.mostUpvoted": "Populært",
   "app.components.Comments.official": "Offisiell",
+  "app.components.Comments.oldestToNewest": "Nyeste",
   "app.components.Comments.replyToComment": "Svar på kommentar",
   "app.components.Comments.reportAsSpam": "Rapporter som spam",
   "app.components.Comments.seeOriginal": "Vis  original",
