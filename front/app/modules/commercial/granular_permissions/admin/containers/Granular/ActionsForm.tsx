@@ -16,7 +16,6 @@ import messages from './messages';
 
 // hooks
 import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
@@ -75,7 +74,6 @@ const ActionsForm = memo(
       name: 'permissions_custom_fields',
     });
     const project = useProject({ projectId });
-    const phases = usePhases(projectId);
 
     const handlePermissionChange =
       (permission: IPermissionData) =>
@@ -109,7 +107,6 @@ const ActionsForm = memo(
                     {...getPermissionActionSectionSubtitle({
                       permissionAction,
                       project,
-                      phases,
                       postType,
                     })}
                   />
