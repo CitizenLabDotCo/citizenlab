@@ -138,9 +138,9 @@ export default defineMessages({
     id: 'app.containers.Comments.commentsSortTitle',
     defaultMessage: 'Sort comments by',
   },
-  oldestToNewest: {
-    id: 'app.components.Comments.oldestToNewest',
-    defaultMessage: 'Oldest to Newest',
+  mostRecent: {
+    id: 'app.components.Comments.mostRecent',
+    defaultMessage: 'Most recent',
   },
   mostUpvoted: {
     id: 'app.components.Comments.mostUpvoted',
