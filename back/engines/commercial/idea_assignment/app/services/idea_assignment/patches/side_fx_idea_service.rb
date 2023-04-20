@@ -21,9 +21,10 @@ module IdeaAssignment
 
       def before_publish(idea, user)
         super
-        return if idea.assignee
+        return if idea.assignee || idea.participation_method_on_creation.instance_of?(ParticipationMethod::NativeSurvey)
 
         idea.assignee = IdeaAssignmentService.new.automatically_assigned_idea_assignee idea
+
         @automatic_assignment = true if idea.assignee
       end
     end
