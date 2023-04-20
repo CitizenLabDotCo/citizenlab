@@ -302,11 +302,10 @@ class Sidebar extends PureComponent<
                 height={
                   isPagesAndMenuPage ? `${stylingConsts.menuHeight}px` : '60px'
                 }
-                background={colors.blue500}
+                background="#7FBBCA" // TODO: Use color from component library.
                 mb="10px"
                 display="flex"
                 alignItems="center"
-                w="100%"
               >
                 <IconWrapper>
                   <Icon name="arrow-left-circle" fill={colors.white} />
