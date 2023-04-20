@@ -1,14 +1,15 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isPage } from 'utils/helperUtils';
 import { get } from 'lodash-es';
 
 // router
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+import { Icon, IconNames, Box } from '@citizenlab/cl2-component-library';
 import MenuItem from './MenuItem';
+import Link from 'utils/cl-router/Link';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -56,7 +57,6 @@ const MenuInner = styled.nav`
   position: fixed;
   top: 0;
   bottom: 0;
-  padding-top: ${stylingConsts.menuHeight + 10}px;
   background: ${colors.blue700};
 
   ${media.tablet`
@@ -283,6 +283,7 @@ class Sidebar extends PureComponent<
   render() {
     const { formatMessage } = this.props.intl;
     const { navItems } = this.state;
+    const isPagesAndMenuPage = isPage('pages_menu', location.pathname);
 
     if (!(navItems && navItems.length > 1)) {
       return null;
@@ -295,6 +296,28 @@ class Sidebar extends PureComponent<
           onData={this.handleData}
         />
         <MenuInner id="sidebar">
+          <Box w="100%">
+            <Link to="/">
+              <Box
+                height={
+                  isPagesAndMenuPage ? `${stylingConsts.menuHeight}px` : '60px'
+                }
+                background={colors.blue500}
+                mb="10px"
+                display="flex"
+                alignItems="center"
+                w="100%"
+              >
+                <IconWrapper>
+                  <Icon name="arrow-left-circle" fill={colors.white} />
+                </IconWrapper>
+                <Text color={colors.white}>
+                  {formatMessage({ ...messages.toPlatform })}
+                </Text>
+              </Box>
+            </Link>
+          </Box>
+
           {navItems.map((navItem) => (
             <MenuItem navItem={navItem} key={navItem.name} />
           ))}
