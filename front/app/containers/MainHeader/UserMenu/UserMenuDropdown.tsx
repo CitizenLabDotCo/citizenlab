@@ -21,7 +21,7 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // constants
-import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/types';
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

@@ -22,12 +22,10 @@ import {
 } from '../events';
 
 // constants
-import {
-  AuthenticationContext,
-  GLOBAL_CONTEXT,
-} from 'api/authentication/authentication_requirements/types';
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 
 // typings
+import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 import {
   Status,
   ErrorCode,
