@@ -156,6 +156,7 @@ export interface IAppConfigurationSettings {
   microsoft_forms_surveys?: AppConfigurationFeature;
   survey_xact_surveys?: AppConfigurationFeature;
   snap_survey_surveys?: AppConfigurationFeature;
+  konveio_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
   bulk_import_ideas?: AppConfigurationFeature;
   widgets?: AppConfigurationFeature;

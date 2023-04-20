@@ -235,7 +235,7 @@ nl-BE:
     send_user_blocked_email:
       subject: 'Uw account is tijdelijk uitgeschakeld'
       title_user_blocked: 'Uw account is tijdelijk uitgeschakeld'
-      paragraph_1_without_reason: "Uw account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld wegens overtreding van de communityrichtlijnen."
-      paragraph_1_with_reason: "Uw account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld om de volgende reden:"
+      paragraph_1_without_reason: "Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld wegens overtreding van de communityrichtlijnen."
+      paragraph_1_with_reason: "Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld om de volgende reden:"
       for_more_information: "Voor meer informatie hierover kunt u de %{termsAndConditionsPage}raadplegen."
       you_can_sign_in_again_from: "U kunt zich opnieuw aanmelden vanaf %{date}"

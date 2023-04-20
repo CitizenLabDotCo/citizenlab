@@ -43,7 +43,6 @@ import GetWindowSize, {
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
-import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -154,7 +153,6 @@ interface DataProps {
   project: GetProjectChildProps;
   windowSize: GetWindowSizeChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
-  comments: GetCommentsChildProps;
 }
 
 interface InputProps {
@@ -468,11 +466,6 @@ const Data = adopt<DataProps, InputProps>({
     >
       {render}
     </GetPermission>
-  ),
-  comments: ({ ideaId, render }) => (
-    <GetComments postId={ideaId} postType="idea">
-      {render}
-    </GetComments>
   ),
 });
 

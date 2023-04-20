@@ -141,7 +141,7 @@ resource 'Invites' do
           expect(response_data[:attributes]).to eq(
             newly_added_admins_number: 4,
             # When a moderator is promoted to admin, moderator count is decreased
-            newly_added_project_moderators_number: -1
+            newly_added_moderators_number: -1
           )
         end
       end

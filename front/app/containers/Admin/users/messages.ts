@@ -74,10 +74,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.buyOneAditionalSeat',
     defaultMessage: 'Buy one additional seat',
   },
-  confirmSetCollaboratorAsNormalUserQuestion: {
-    id: 'app.containers.Admin.Users.confirmSetCollaboratorAsNormalUserQuestion',
+  confirmSetManagerAsNormalUserQuestion: {
+    id: 'app.containers.Admin.Users.confirmSetManagerAsNormalUserQuestion',
     defaultMessage:
-      'Are you sure you want to set {name} as a normal user? Please note that they will lose collaborator rights to all the projects and folders that they are assigned to on confirmation.',
+      'Are you sure you want to set {name} as a normal user? Please note that they will lose manager rights to all the projects and folders that they are assigned to on confirmation.',
   },
   permissionToBuy: {
     id: 'app.containers.Admin.Users.permissionToBuy',

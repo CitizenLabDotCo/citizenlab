@@ -40,7 +40,6 @@
   "app.components.Comments.invisibleTitleComments": "Коментари",
   "app.components.Comments.mostUpvoted": "Највише гласано",
   "app.components.Comments.official": "Званично",
-  "app.components.Comments.oldestToNewest": "Најскорије",
   "app.components.Comments.replyToComment": "Одговорите на коментар",
   "app.components.Comments.reportAsSpam": "Пријавите спам",
   "app.components.Comments.seeOriginal": "Погледајте изворну верзију",

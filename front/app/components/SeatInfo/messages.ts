@@ -5,9 +5,9 @@ export default defineMessages({
     id: 'app.components.SeatInfo.currentAdminSeatsTitle',
     defaultMessage: 'Current admin seats',
   },
-  currentModeratorSeatsTitle: {
-    id: 'app.components.SeatInfo.currentCollaboratorSeatsTitle',
-    defaultMessage: 'Current collaborator seats',
+  currentManagerSeatsTitle: {
+    id: 'app.components.SeatInfo.currentManagerSeatsTitle',
+    defaultMessage: 'Current manager seats',
   },
   includedSeats: {
     id: 'app.components.SeatInfo.includedSeats',
@@ -26,13 +26,13 @@ export default defineMessages({
     id: 'app.components.SeatInfo.adminSeatsIncludedText',
     defaultMessage: '{adminSeats} admin seats included',
   },
-  collaboratorInfoTextWithoutBilling: {
-    id: 'app.components.SeatTrackerInfo.collaboratorInfoTextWithoutBilling',
+  managerInfoTextWithoutBilling: {
+    id: 'app.components.SeatTrackerInfo.managerInfoTextWithoutBilling',
     defaultMessage:
-      "Your plan has {collaboratorSeatsIncluded}, eligible for folder managers and project managers. Once you've used all the seats, extra seats will be added under 'Additional seats'.",
+      "Your plan has {managerSeatsIncluded}, eligible for folder managers and project managers. Once you've used all the seats, extra seats will be added under 'Additional seats'.",
   },
-  collaboratorsIncludedText: {
-    id: 'app.components.SeatInfo.collaboratorsIncludedText',
+  managersIncludedText: {
+    id: 'app.components.SeatInfo.managersIncludedText',
     defaultMessage: '{managerSeats} manager seats included',
   },
   includedAdminToolTip: {
@@ -40,10 +40,10 @@ export default defineMessages({
     defaultMessage:
       'This shows the number of available seats for admins included in the yearly contract.',
   },
-  includedCollaboratorToolTip: {
-    id: 'app.components.SeatInfo.includedCollaboratorToolTip',
+  includedManagerToolTip: {
+    id: 'app.components.SeatInfo.includedManagerToolTip',
     defaultMessage:
-      'This shows the number of available seats for collaborators included in the yearly contract.',
+      'This shows the number of available seats for managers included in the yearly contract.',
   },
   additionalSeatsToolTip: {
     id: 'app.components.SeatInfo.additionalSeatsToolTip',
@@ -54,9 +54,9 @@ export default defineMessages({
     id: 'app.components.SeatInfo.adminSeats',
     defaultMessage: 'Admin seats',
   },
-  collaboratorSeats: {
-    id: 'app.components.SeatInfo.collaboratorSeats',
-    defaultMessage: 'Collaborator seats',
+  managerSeats: {
+    id: 'app.components.SeatInfo.managerSeats',
+    defaultMessage: 'Manager seats',
   },
   remainingSeats: {
     id: 'app.components.SeatInfo.remainingSeats',
@@ -89,14 +89,14 @@ export default defineMessages({
       'This shows the summed number of seats within your plan and additional seats you have purchased.',
   },
   adminSeatsTooltip: {
-    id: 'app.components.SeatInfo.adminSeatsTooltip',
+    id: 'app.components.SeatInfo.adminSeatsTooltip1',
     defaultMessage:
-      'Administrators are in charge of the platform and they have collaborator rights for all folders and projects. You can {visitHelpCenter} to learn more about the different roles.',
+      'Administrators are in charge of the platform and they have manager rights for all folders and projects. You can {visitHelpCenter} to learn more about the different roles.',
   },
-  collaboratorSeatsTooltip: {
-    id: 'app.components.SeatInfo.collaboratorSeatsTooltip1',
+  managerSeatsTooltip: {
+    id: 'app.components.SeatInfo.managerSeatsTooltip',
     defaultMessage:
-      'Collaborators are folder/project managers. They can manage an unlimited number of folders/projects. You can {visitHelpCenter} to learn more about the different roles.',
+      'Folder/project managers can manage an unlimited number of folders/projects. You can {visitHelpCenter} to learn more about the different roles.',
   },
   rolesSupportPage: {
     id: 'app.components.SeatInfo.rolesSupportPage',
@@ -106,5 +106,10 @@ export default defineMessages({
   visitHelpCenter: {
     id: 'app.components.SeatInfo.visitHelpCenter',
     defaultMessage: 'visit our help center',
+  },
+  billingWarning: {
+    id: 'app.components.BillingWarning.billingWarning',
+    defaultMessage:
+      'Once additional seats are added, your billing will be increased. Reach out to your GovSuccess Manager to learn more about it.',
   },
 });
