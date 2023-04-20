@@ -310,9 +310,7 @@ class Sidebar extends PureComponent<
                 <IconWrapper>
                   <Icon name="arrow-left-circle" fill={colors.white} />
                 </IconWrapper>
-                <Text color={colors.white}>
-                  {formatMessage({ ...messages.toPlatform })}
-                </Text>
+                <Text>{formatMessage({ ...messages.toPlatform })}</Text>
               </Box>
             </Link>
           </Box>
