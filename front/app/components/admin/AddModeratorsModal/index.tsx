@@ -10,14 +10,9 @@ import SeatSetSuccess from 'components/admin/SeatSetSuccess';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useSeats from 'api/seats/useSeats';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 // Utils
-import { getExceededLimitInfo } from 'components/SeatInfo/utils';
 import BillingWarning from 'components/SeatInfo/BillingWarning';
+import useExceedsSeats from 'hooks/useExceedsSeats';
 
 interface Props {
   showModal: boolean;
@@ -31,31 +26,13 @@ const AddModeratorsModal = ({
   addModerators,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: appConfiguration } = useAppConfiguration();
-  const hasSeatBasedBillingEnabled = useFeatureFlag({
-    name: 'seat_based_billing',
-  });
-  const { data: seats } = useSeats();
   const [showSuccess, setShowSuccess] = useState(false);
-  const additionalModerators =
-    appConfiguration?.data.attributes.settings.core
-      .additional_moderators_number;
-  const maximumModerators =
-    appConfiguration?.data.attributes.settings.core.maximum_moderators_number;
 
-  if (!appConfiguration || !seats) return null;
+  const exceedsSeats = useExceedsSeats()({
+    newlyAddedModeratorsNumber: 1,
+  });
 
-  const currentModeratorSeats = seats.data.attributes.moderators_number;
-
-  const { hasReachedOrIsOverPlanSeatLimit, hasExceededPlanSeatLimit } =
-    getExceededLimitInfo(
-      hasSeatBasedBillingEnabled,
-      currentModeratorSeats,
-      additionalModerators,
-      maximumModerators
-    );
-
-  const buttonText = hasReachedOrIsOverPlanSeatLimit
+  const buttonText = exceedsSeats.moderator
     ? formatMessage(messages.buyAdditionalSeats)
     : formatMessage(messages.confirmButtonText);
 
@@ -74,7 +51,7 @@ const AddModeratorsModal = ({
             closeModal();
           }}
           seatType="moderator"
-          hasExceededPlanSeatLimit={hasExceededPlanSeatLimit}
+          hasExceededPlanSeatLimit={exceedsSeats.moderator}
         />
       ) : (
         <Box
@@ -85,7 +62,7 @@ const AddModeratorsModal = ({
         >
           <Text color="textPrimary" fontSize="m" mt="0" mb="24px">
             <FormattedMessage
-              {...(hasReachedOrIsOverPlanSeatLimit
+              {...(exceedsSeats.moderator
                 ? messages.hasReachedOrIsOverLimit
                 : messages.confirmManagerRights)}
             />

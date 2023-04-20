@@ -6,24 +6,24 @@ export default defineMessages({
     defaultMessage: 'Confirm impact on seat usage',
   },
   infoMessage: {
-    id: 'app.containers.admin.inviteUsersWithSeatsModal.infoMessage1',
+    id: 'app.containers.admin.inviteUsersWithSeatsModal.infoMessage2',
     defaultMessage:
-      'You have reached the limit of available seats within your plan. {additionalSeats} will be added over the limit.',
+      'You have reached the limit of available seats within your plan.',
   },
   additionalAdminSeats: {
-    id: 'app.containers.admin.inviteUsersWithSeatsModal.additionalAdminSeats',
+    id: 'app.containers.admin.inviteUsersWithSeatsModal.additionalAdminSeats1',
     defaultMessage:
-      '{seats, plural, one {1 additional admin seat} other {# additional admin seats}}',
+      '{seats, plural, one {1 additional admin seat will be added over the limit} other {# additional admin seats will be added over the limit}}.',
   },
   additionalManagerSeats: {
-    id: 'app.containers.admin.inviteUsersWithSeatsModal.additionalManagerSeats',
+    id: 'app.containers.admin.inviteUsersWithSeatsModal.additionalManagerSeats1',
     defaultMessage:
-      '{seats, plural, one {1 additional manager seat} other {# additional manager seats}}',
+      '{seats, plural, one {1 additional manager seat will be added over the limit} other {# additional manager seats will be added over the limit}}.',
   },
   additionalAdminAndManagerSeats: {
-    id: 'app.containers.admin.inviteUsersWithSeatsModal.additionalAdminAndManagerSeats',
+    id: 'app.containers.admin.inviteUsersWithSeatsModal.additionalAdminAndManagerSeats1',
     defaultMessage:
-      '{adminSeats, plural, one {1 additional admin seat} other {# additional admin seats}} and {managerSeats, plural, one {1 additional manager seat} other {# additional manager seats}}',
+      '{adminSeats, plural, one {1 additional admin seat} other {# additional admin seats}} and {managerSeats, plural, one {1 additional manager seat} other {# additional manager seats}} will be added over the limit.',
   },
   confirmButtonText: {
     id: 'app.containers.admin.inviteUsersWithSeatsModal.confirmButtonText',
