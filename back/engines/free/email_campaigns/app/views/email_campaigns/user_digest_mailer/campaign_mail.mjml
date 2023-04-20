@@ -1,40 +1,38 @@
 <!-- Notifications -->
-<mj-section
-  padding="0 25px 40px"
-  background-color="#fff"
-  border-radius="5px"
-  text-align="left"
->
-  <mj-column border="1px solid #eaeaea" padding="30px 25px" background-color="#fff" border-radius="5px">
-    <mj-text padding-bottom="20px">
-      <h2>
-        <% if event.notifications_count == 0 %>
-          <%= format_message('no_notifications') %>
-        <% elsif event.notifications_count == 1 %>
-          <%= format_message('one_notification') %>
-        <% elsif event.notifications_count > 1 %>
-          <%= format_message('multiple_notifications', values: { notifCount: event.notifications_count }) %>
-        <% end %>
-      </h2>
-      <p style="margin-top: 10px;">
-        <% if event.notifications_count == 0 %>
-          <%= format_message('no_unread_notifications') %>
-        <% elsif event.notifications_count > 0 %>
-          <%= format_message('unread_notifications') %>
-        <% end %>
-      </p>
-    </mj-text>
-    <mj-button
-      color="#fff"
-      background-color="#044D6C"
+<mj-wrapper>
+  <% if event.notifications_count > 0 %>
+    <mj-section
+      padding="0 25px 40px"
+      background-color="#fff"
       border-radius="5px"
-      href="<%= url_service.home_url(app_configuration: @app_configuration, locale: @locale) %>"
-      align="left"
+      text-align="left"
     >
-      <%= format_message('cta_go_to_the_platform') %>
-    </mj-button>
-  </mj-column>
-</mj-section>
+      <mj-column border="1px solid #eaeaea" padding="30px 25px" background-color="#fff" border-radius="5px">
+        <mj-text padding-bottom="20px">
+          <h2>
+            <% if event.notifications_count == 1 %>
+              <%= format_message('one_notification') %>
+            <% elsif event.notifications_count > 1 %>
+              <%= format_message('multiple_notifications', values: { notifCount: event.notifications_count }) %>
+            <% end %>
+          </h2>
+          <p style="margin-top: 10px;">
+            <%= format_message('unread_notifications') %>
+          </p>
+        </mj-text>
+          <mj-button
+            color="#fff"
+            background-color="#044D6C"
+            border-radius="5px"
+            href="<%= url_service.home_url(app_configuration: @app_configuration, locale: @locale) %>"
+            align="left"
+          >
+            <%= format_message('cta_go_to_the_platform') %>
+          </mj-button>
+      </mj-column>
+    </mj-section>
+  <% end %>
+</mj-wrapper>
 
 <!-- Trending ideas -->
 <mj-section padding-bottom="20px">

@@ -32,7 +32,7 @@ const TrackerInfo = ({ seatType }: SeatInfoProps) => {
   const maximumSeatNumbers: SeatNumbersType = {
     admin:
       appConfiguration?.data.attributes.settings.core.maximum_admins_number,
-    collaborator:
+    moderator:
       appConfiguration?.data.attributes.settings.core.maximum_moderators_number,
   };
   const maximumSeatNumber = maximumSeatNumbers[seatType];
@@ -44,26 +44,21 @@ const TrackerInfo = ({ seatType }: SeatInfoProps) => {
 
   let currentSeatNumber = {
     admin: seats.data.attributes.admins_number,
-    collaborator: seats.data.attributes.project_moderators_number,
+    moderator: seats.data.attributes.moderators_number,
   }[seatType];
   const additionalSeats = currentSeatNumber - maximumSeatNumber;
   const showAdditionalSeats = additionalSeats > 0;
 
   const seatTypeMessage: SeatTypeMessageDescriptor = {
     admin: messages.currentAdminSeatsTitle,
-    collaborator: messages.currentCollaboratorSeatsTitle,
+    moderator: messages.currentManagerSeatsTitle,
   };
   const currentSeatTypeTitle = seatTypeMessage[seatType];
   const tooltipMessages: SeatTypeMessageDescriptor = {
     admin: messages.includedAdminToolTip,
-    collaborator: messages.includedCollaboratorToolTip,
+    moderator: messages.includedManagerToolTip,
   };
   const tooltipMessage = tooltipMessages[seatType];
-
-  const seatTypeInfoMessage = {
-    admin: messages.adminInfoTextWithoutBilling,
-    collaborator: messages.collaboratorInfoTextWithoutBilling,
-  }[seatType];
 
   // Show maximum number of seats if user has used more for this value
   if (currentSeatNumber >= maximumSeatNumber) {
@@ -116,14 +111,14 @@ const TrackerInfo = ({ seatType }: SeatInfoProps) => {
       </Box>
 
       <Box mt="20px">
-        {seatType === 'collaborator' ? (
+        {seatType === 'moderator' ? (
           <Text my="0px" variant="bodyS">
             <FormattedMessage
-              {...seatTypeInfoMessage}
+              {...messages.managerInfoTextWithoutBilling}
               values={{
-                collaboratorSeatsIncluded: (
+                managerSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">
-                    {formatMessage(messages.collaboratorsIncludedText, {
+                    {formatMessage(messages.managersIncludedText, {
                       managerSeats: maximumSeatNumber,
                     })}
                   </Text>
@@ -134,7 +129,7 @@ const TrackerInfo = ({ seatType }: SeatInfoProps) => {
         ) : (
           <Text my="0px" variant="bodyS">
             <FormattedMessage
-              {...seatTypeInfoMessage}
+              {...messages.adminInfoTextWithoutBilling}
               values={{
                 adminSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">

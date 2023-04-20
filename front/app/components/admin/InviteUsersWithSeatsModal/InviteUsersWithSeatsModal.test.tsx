@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, userEvent } from 'utils/testUtils/rtl';
+import { render, screen } from 'utils/testUtils/rtl';
 
 import InviteUsersWithSeatsModal from './';
 
@@ -23,8 +23,8 @@ const mockAppConfiguration: MockAppConfigurationType = {
     attributes: {
       settings: {
         core: {
-          maximum_admins_number: 6,
-          maximum_moderators_number: 9,
+          maximum_admins_number: 3,
+          maximum_moderators_number: 5,
         },
       },
     },
@@ -39,7 +39,7 @@ const mockUserSeatsData = {
   data: {
     attributes: {
       admins_number: 3,
-      project_moderators_number: 5,
+      moderators_number: 5,
     },
   },
 };
@@ -60,8 +60,14 @@ describe('InviteUsersWithSeatsModal', () => {
         inviteUsers={inviteUsers}
         showModal
         closeModal={closeModal}
-        noOfSeatsToAdd={1}
-        seatType="admin"
+        newSeatsResponse={{
+          data: {
+            attributes: {
+              newly_added_admins_number: 1,
+              newly_added_moderators_number: 0,
+            },
+          },
+        }}
       />
     );
 
@@ -69,24 +75,32 @@ describe('InviteUsersWithSeatsModal', () => {
       name: 'Confirm and send out invitations',
     });
 
-    expect(screen.getByText('Give admin rights')).toBeInTheDocument();
+    expect(
+      screen.getByText('Confirm impact on seat usage')
+    ).toBeInTheDocument();
     expect(
       screen.getByText(
-        'You are inviting 1 user with admin rights. Based on how many users are included in the invitation, you may need to buy additional seats.'
+        'You have reached the limit of available seats within your plan. 1 additional admin seat will be added over the limit.'
       )
     ).toBeInTheDocument();
 
     expect(confirmButton).toBeInTheDocument();
   });
 
-  it('shows correct copy for collaborators', () => {
+  it('shows correct copy for moderators', () => {
     render(
       <InviteUsersWithSeatsModal
         inviteUsers={inviteUsers}
         showModal
         closeModal={closeModal}
-        noOfSeatsToAdd={2}
-        seatType="collaborator"
+        newSeatsResponse={{
+          data: {
+            attributes: {
+              newly_added_admins_number: 0,
+              newly_added_moderators_number: 2,
+            },
+          },
+        }}
       />
     );
 
@@ -94,40 +108,15 @@ describe('InviteUsersWithSeatsModal', () => {
       name: 'Confirm and send out invitations',
     });
 
-    expect(screen.queryByText('Give collaborator rights')).toBeInTheDocument();
+    expect(
+      screen.queryByText('Confirm impact on seat usage')
+    ).toBeInTheDocument();
     expect(
       screen.queryByText(
-        'You are inviting 2 users with collaborator rights. Based on how many users are included in the invitation, you may need to buy additional seats.'
+        'You have reached the limit of available seats within your plan. 2 additional manager seats will be added over the limit.'
       )
     ).toBeInTheDocument();
 
     expect(confirmButton).toBeInTheDocument();
-  });
-
-  it('shows an error when user clicks the button without checking the condition checkbox', async () => {
-    const user = userEvent.setup();
-    render(
-      <InviteUsersWithSeatsModal
-        inviteUsers={inviteUsers}
-        showModal
-        closeModal={closeModal}
-        noOfSeatsToAdd={2}
-        seatType="collaborator"
-      />
-    );
-
-    const confirmButton = screen.getByRole('button', {
-      name: 'Confirm and send out invitations',
-    });
-
-    expect(
-      screen.queryByText('Accept the condition to proceed')
-    ).not.toBeInTheDocument();
-
-    await user.click(confirmButton);
-
-    expect(
-      screen.queryByText('Accept the condition to proceed')
-    ).toBeInTheDocument();
   });
 });

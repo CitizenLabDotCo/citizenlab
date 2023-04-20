@@ -13,9 +13,11 @@ import messages from './messages';
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Utils
-import { isNil } from 'utils/helperUtils';
+import { getExceededLimitInfo } from 'components/SeatInfo/utils';
+import BillingWarning from 'components/SeatInfo/BillingWarning';
 
 interface Props {
   showModal: boolean;
@@ -23,35 +25,43 @@ interface Props {
   addModerators: () => void;
 }
 
-const AddCollaboratorsModal = ({
+const AddModeratorsModal = ({
   showModal,
   closeModal,
   addModerators,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
   const { data: seats } = useSeats();
   const [showSuccess, setShowSuccess] = useState(false);
+  const additionalModerators =
+    appConfiguration?.data.attributes.settings.core
+      .additional_moderators_number;
+  const maximumModerators =
+    appConfiguration?.data.attributes.settings.core.maximum_moderators_number;
 
   if (!appConfiguration || !seats) return null;
 
-  const maximumCollaborators =
-    appConfiguration.data.attributes.settings.core.maximum_moderators_number;
-  const currentCollaboratorSeats =
-    seats.data.attributes.project_moderators_number;
-  const hasReachedOrIsOverLimit =
-    !isNil(maximumCollaborators) &&
-    currentCollaboratorSeats >= maximumCollaborators;
-  const hasExceededSetSeats =
-    !isNil(maximumCollaborators) &&
-    currentCollaboratorSeats > maximumCollaborators;
-  const buttonText = hasReachedOrIsOverLimit
+  const currentModeratorSeats = seats.data.attributes.moderators_number;
+
+  const { hasReachedOrIsOverPlanSeatLimit, hasExceededPlanSeatLimit } =
+    getExceededLimitInfo(
+      hasSeatBasedBillingEnabled,
+      currentModeratorSeats,
+      additionalModerators,
+      maximumModerators
+    );
+
+  const buttonText = hasReachedOrIsOverPlanSeatLimit
     ? formatMessage(messages.buyAdditionalSeats)
     : formatMessage(messages.confirmButtonText);
 
   const header = !showSuccess ? (
     <Text color="primary" my="8px" fontSize="l" fontWeight="bold" px="2px">
-      {formatMessage(messages.giveCollaboratorRights)}
+      {formatMessage(messages.giveManagerRights)}
     </Text>
   ) : undefined;
 
@@ -63,33 +73,37 @@ const AddCollaboratorsModal = ({
             setShowSuccess(false);
             closeModal();
           }}
-          hasExceededSetSeats={hasExceededSetSeats}
-          seatType="collaborator"
+          seatType="moderator"
+          hasExceededPlanSeatLimit={hasExceededPlanSeatLimit}
         />
       ) : (
-        <Box display="flex" flexDirection="column" width="100%" p="32px">
-          <Text color="textPrimary" fontSize="m" my="0px">
+        <Box
+          display="flex"
+          flexDirection="column"
+          p="32px"
+          data-cy="e2e-add-moderators-body"
+        >
+          <Text color="textPrimary" fontSize="m" mt="0" mb="24px">
             <FormattedMessage
-              {...(hasReachedOrIsOverLimit
+              {...(hasReachedOrIsOverPlanSeatLimit
                 ? messages.hasReachedOrIsOverLimit
-                : messages.confirmMessage)}
+                : messages.confirmManagerRights)}
             />
           </Text>
-          <Box py="32px">
-            <SeatInfo seatType="collaborator" />
+          <Box mb="24px">
+            <SeatInfo seatType="moderator" />
           </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            width="100%"
-            alignItems="center"
-          >
+
+          <BillingWarning mb="24px" />
+
+          <Box display="flex">
             <Button
-              width="auto"
+              autoFocus
               onClick={() => {
                 addModerators();
                 setShowSuccess(true);
               }}
+              data-cy="e2e-confirm-add-moderator"
             >
               {buttonText}
             </Button>
@@ -100,4 +114,4 @@ const AddCollaboratorsModal = ({
   );
 };
 
-export default AddCollaboratorsModal;
+export default AddModeratorsModal;

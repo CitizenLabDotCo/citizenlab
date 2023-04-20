@@ -4,7 +4,8 @@ import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
-import { isNilOrError, isNil } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getExceededLimitInfo } from 'components/SeatInfo/utils';
 
 // services
 import useProjectFolderModerators from 'hooks/useProjectFolderModerators';
@@ -12,7 +13,7 @@ import {
   addFolderModerator,
   deleteFolderModerator,
 } from 'services/projectFolderModerators';
-import { isCollaborator } from 'services/permissions/roles';
+import { isRegularUser } from 'services/permissions/roles';
 
 // i18n
 import messages from './messages';
@@ -24,8 +25,8 @@ import { IconTooltip, Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
-const AddCollaboratorsModal = lazy(
-  () => import('components/admin/AddCollaboratorsModal')
+const AddModeratorsModal = lazy(
+  () => import('components/admin/AddModeratorsModal')
 );
 import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
 import SeatInfo from 'components/SeatInfo';
@@ -59,15 +60,21 @@ const FolderPermissions = () => {
 
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
+  const maximumModerators =
+    appConfiguration?.data.attributes.settings.core.maximum_moderators_number;
+  const additionalModerators =
+    appConfiguration?.data.attributes.settings.core
+      .additional_moderators_number;
   if (!appConfiguration || !seats) return null;
 
-  const maximumCollaborators =
-    appConfiguration.data.attributes.settings.core.maximum_moderators_number;
-  const currentCollaboratorSeats =
-    seats.data.attributes.project_moderators_number;
-  const hasReachedOrIsOverLimit =
-    !isNil(maximumCollaborators) &&
-    currentCollaboratorSeats >= maximumCollaborators;
+  const currentModeratorSeats = seats.data.attributes.moderators_number;
+
+  const { hasReachedOrIsOverPlanSeatLimit } = getExceededLimitInfo(
+    hasSeatBasedBillingEnabled,
+    currentModeratorSeats,
+    additionalModerators,
+    maximumModerators
+  );
 
   const closeModal = () => {
     setShowModal(false);
@@ -92,10 +99,10 @@ const FolderPermissions = () => {
 
   const handleAddClick = () => {
     const isSelectedUserAModerator =
-      moderatorToAdd && isCollaborator({ data: moderatorToAdd });
+      moderatorToAdd && !isRegularUser({ data: moderatorToAdd });
     const shouldOpenModal =
       hasSeatBasedBillingEnabled &&
-      hasReachedOrIsOverLimit &&
+      hasReachedOrIsOverPlanSeatLimit &&
       !isSelectedUserAModerator;
     if (shouldOpenModal) {
       setShowModal(true);
@@ -145,7 +152,6 @@ const FolderPermissions = () => {
                 selectedUserId={moderatorToAdd?.id || null}
                 onChange={handleOnChange}
                 placeholder={formatMessage(messages.searchFolderManager)}
-                hideAvatar
                 isNotFolderModeratorOfFolderId={projectFolderId}
               />
             </Box>
@@ -158,11 +164,12 @@ const FolderPermissions = () => {
               disabled={!moderatorToAdd}
               processing={processing}
               ml="12px"
+              data-cy="e2e-add-folder-moderator-button"
             />
           </Box>
           {hasSeatBasedBillingEnabled && (
             <Suspense fallback={null}>
-              <AddCollaboratorsModal
+              <AddModeratorsModal
                 addModerators={handleOnAddFolderModeratorsClick}
                 showModal={showModal}
                 closeModal={closeModal}
@@ -208,7 +215,7 @@ const FolderPermissions = () => {
       </Box>
       {!hasSeatBasedBillingEnabled && (
         <Box width="516px" py="32px">
-          <SeatInfo seatType="collaborator" />
+          <SeatInfo seatType="moderator" />
         </Box>
       )}
     </Box>

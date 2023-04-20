@@ -14,7 +14,7 @@ const StyledBox = styled(Box)`
   grid-auto-rows: 1fr;
 `;
 
-const AllUsers = () => {
+const AdminsAndModerators = () => {
   const [search, setSearch] = useState<string | undefined>(undefined);
 
   const searchUser = (searchTerm: string) => {
@@ -36,10 +36,10 @@ const AllUsers = () => {
       />
       <StyledBox mt="20px">
         <SeatInfo seatType="admin" />
-        <SeatInfo seatType="collaborator" />
+        <SeatInfo seatType="moderator" />
       </StyledBox>
     </>
   );
 };
 
-export default AllUsers;
+export default AdminsAndModerators;

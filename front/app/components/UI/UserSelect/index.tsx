@@ -8,13 +8,15 @@ import { debounce } from 'lodash-es';
 import styled from 'styled-components';
 import { IUserData } from 'services/users';
 import Button from 'components/UI/Button';
-import Avatar from './Avatar';
+import useUser from 'hooks/useUser';
 
 interface DataProps {
   users: GetUsersChildProps;
 }
 
 export interface UserOptionTypeBase extends OptionTypeBase, IUserData {
+  // If the option is 'load more' instead of a user, we don't have IUserData
+  // but { value: 'loadMore' }
   value?: string;
 }
 
@@ -25,7 +27,6 @@ interface InputProps {
   className?: string;
   id: string;
   inputId: string;
-  hideAvatar?: boolean;
   // Exclude users that can moderate the project from selectable users.
   // We pass the projectId here.
   isNotProjectModeratorOfProjectId?: string;
@@ -49,15 +50,10 @@ const UserSelect = ({
   className,
   id,
   inputId,
-  hideAvatar = false,
 }: DataProps & Props) => {
   const canLoadMore = users.lastPage !== users.currentPage;
-  const usersList: IUserData[] = Array.isArray(users.usersList)
-    ? users.usersList
-    : [];
-  const selectedUser = selectedUserId
-    ? usersList.find((user) => user.id === selectedUserId)
-    : null;
+  const usersList = Array.isArray(users.usersList) ? users.usersList : [];
+  const selectedUser = useUser({ userId: selectedUserId });
 
   const handleChange = (option: UserOptionTypeBase, { action }) => {
     if (action === 'clear') {
@@ -81,6 +77,10 @@ const UserSelect = ({
     users.onLoadMore();
   };
 
+  const handleClear = () => {
+    onChange();
+  };
+
   const getOptionLabel = (option: UserOptionTypeBase) => {
     if (option.value === 'loadMore' && canLoadMore) {
       return (
@@ -94,8 +94,7 @@ const UserSelect = ({
       );
     } else if (option.attributes) {
       return (
-        <UserOption>
-          {!hideAvatar && <Avatar user={option} />}
+        <UserOption data-cy={`e2e-user-${option.attributes.email}`}>
           {option.attributes.last_name}, {option.attributes.first_name} (
           {option.attributes.email})
         </UserOption>
@@ -105,14 +104,10 @@ const UserSelect = ({
     return null;
   };
 
-  const handleClear = () => {
-    onChange();
-  };
-
   const getOptionId = (option: UserOptionTypeBase) => option.id;
 
   return (
-    <Box id="e2e-user-select">
+    <Box data-cy="e2e-user-select">
       <ReactSelect
         id={id}
         inputId={inputId}
@@ -134,8 +129,8 @@ const UserSelect = ({
         menuPlacement="auto"
         styles={selectStyles}
         onMenuScrollToBottom={handleMenuScrollToBottom}
-        onMenuOpen={handleClear}
         filterOption={() => true}
+        onMenuOpen={handleClear}
       />
     </Box>
   );

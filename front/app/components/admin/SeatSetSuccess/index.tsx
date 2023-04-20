@@ -21,13 +21,13 @@ import { colors } from 'utils/styleUtils';
 type SeatChangeSuccessModalProps = {
   closeModal: () => void;
   seatType: TSeatType;
-  hasExceededSetSeats: boolean;
+  hasExceededPlanSeatLimit: boolean;
 };
 
 const SeatSetSuccess = ({
   closeModal,
   seatType,
-  hasExceededSetSeats,
+  hasExceededPlanSeatLimit,
 }: SeatChangeSuccessModalProps) => {
   const { formatMessage } = useIntl();
   const hasSeatBasedBillingEnabled = useFeatureFlag({
@@ -35,21 +35,21 @@ const SeatSetSuccess = ({
   });
   const seatTypeMessages: SeatTypeMessageDescriptor = {
     admin: messages.admin,
-    collaborator: messages.collaborator,
+    moderator: messages.manager,
   };
   const descriptionMessage =
-    hasSeatBasedBillingEnabled && hasExceededSetSeats
+    hasSeatBasedBillingEnabled && hasExceededPlanSeatLimit
       ? formatMessage(messages.reflectedMessage)
       : formatMessage(messages.rightsGranted, {
           seatType: formatMessage(seatTypeMessages[seatType]),
         });
   const titleMessage =
-    hasSeatBasedBillingEnabled && hasExceededSetSeats
+    hasSeatBasedBillingEnabled && hasExceededPlanSeatLimit
       ? messages.orderCompleted
       : messages.allDone;
 
   return (
-    <Box p="30px">
+    <Box p="30px" data-cy="e2e-seat-set-success-body">
       <Box display="flex" justifyContent="center">
         <Icon
           name="check-circle"
@@ -71,7 +71,9 @@ const SeatSetSuccess = ({
         flexDirection="row"
         justifyContent="center"
       >
-        <Button onClick={closeModal}>{formatMessage(messages.close)}</Button>
+        <Button onClick={closeModal} data-cy="e2e-close-seat-success-button">
+          {formatMessage(messages.close)}
+        </Button>
       </Box>
     </Box>
   );

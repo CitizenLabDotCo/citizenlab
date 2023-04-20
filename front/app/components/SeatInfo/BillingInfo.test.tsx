@@ -44,7 +44,7 @@ let mockUserSeatsData = {
   data: {
     attributes: {
       admins_number: 2,
-      project_moderators_number: 5,
+      moderators_number: 5,
     },
   },
 };
@@ -58,7 +58,7 @@ jest.mock('api/seats/useSeats', () => () => {
 describe('BillingInfo', () => {
   beforeEach(() => {
     mockUserSeatsData.data.attributes.admins_number = 2;
-    mockUserSeatsData.data.attributes.project_moderators_number = 5;
+    mockUserSeatsData.data.attributes.moderators_number = 5;
 
     mockAppConfiguration.data.attributes.settings.core.maximum_admins_number = 6;
     mockAppConfiguration.data.attributes.settings.core.maximum_moderators_number = 9;
@@ -85,6 +85,26 @@ describe('BillingInfo', () => {
     expect(screen.getByText('Seats within plan')).toBeInTheDocument();
   });
 
+  it('shows correct descriptive breakdown for total seats when there are additional seats and the user has not exceeded the limit', () => {
+    mockUserSeatsData.data.attributes.admins_number = 3;
+    mockAppConfiguration.data.attributes.settings.core.additional_admins_number = 7;
+
+    render(<BillingInfo seatType="admin" />);
+
+    // Remaining seats
+    expect(screen.getByText('Remaining seats')).toBeInTheDocument();
+    expect(screen.getByText('10')).toBeInTheDocument();
+
+    // Used seats
+    expect(screen.getByText('Used seats')).toBeInTheDocument();
+    expect(screen.getByText('3')).toBeInTheDocument();
+
+    // Total seats
+    expect(screen.getByText('Total seats')).toBeInTheDocument();
+    expect(screen.getByText('13')).toBeInTheDocument();
+    expect(screen.getByText('6 within plan, 7 additional')).toBeInTheDocument();
+  });
+
   it('shows correct descriptive breakdown for total seats when seats are exceeded', () => {
     mockUserSeatsData.data.attributes.admins_number = 10;
     mockAppConfiguration.data.attributes.settings.core.additional_admins_number = 7;
@@ -105,9 +125,9 @@ describe('BillingInfo', () => {
     expect(screen.getByText('6 within plan, 7 additional')).toBeInTheDocument();
   });
 
-  it('shows correct numbers of seat usage for collaborators', () => {
-    render(<BillingInfo seatType="collaborator" />);
-    expect(screen.getByText('Collaborator seats')).toBeInTheDocument();
+  it('shows correct numbers of seat usage for moderators', () => {
+    render(<BillingInfo seatType="moderator" />);
+    expect(screen.getByText('Manager seats')).toBeInTheDocument();
 
     // Remaining seats
     expect(screen.getByText('Remaining seats')).toBeInTheDocument();
@@ -130,11 +150,11 @@ describe('BillingInfo', () => {
     expect(screen.queryByText('Admin seats')).not.toBeInTheDocument();
   });
 
-  it('shows nothing for collaborator seats when maximum_moderators_number is unlimited (null)', () => {
-    mockUserSeatsData.data.attributes.project_moderators_number = 15;
+  it('shows nothing for moderator seats when maximum_moderators_number is unlimited (null)', () => {
+    mockUserSeatsData.data.attributes.moderators_number = 15;
     mockAppConfiguration.data.attributes.settings.core.maximum_moderators_number =
       null;
-    render(<BillingInfo seatType="collaborator" />);
-    expect(screen.queryByText('Collaborator seats')).not.toBeInTheDocument();
+    render(<BillingInfo seatType="moderator" />);
+    expect(screen.queryByText('Manager seats')).not.toBeInTheDocument();
   });
 });

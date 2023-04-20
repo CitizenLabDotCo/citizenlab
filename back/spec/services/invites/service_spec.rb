@@ -16,6 +16,8 @@ describe Invites::Service do
     let(:xlsx) { Base64.encode64(XlsxService.new.hash_array_to_xlsx(hash_array).read) }
 
     context do
+      let(:service) { described_class.new(inviter) }
+      let!(:inviter) { create(:user) }
       let!(:groups) { create_list(:group, 3) }
       let(:users) { build_list(:user, 10) }
       let(:hash_array) do
@@ -30,10 +32,29 @@ describe Invites::Service do
           }
         end + [{}, {}, {}]).shuffle
       end
-      let(:inviter) { create(:user) }
 
       it 'correctly creates invites when all is fine' do
-        expect { service.bulk_create_xlsx(xlsx, {}, inviter) }.to change(Invite, :count).from(0).to(10)
+        expect do
+          service.bulk_create_xlsx(xlsx, {})
+        end.to change(Invite, :count).from(0).to(10)
+          .and change(User, :count).by(10)
+
+        invites = Invite.includes(:invitee, :inviter).to_a
+        expect(invites.map(&:invitee)).to match_array(User.all.to_a - [inviter])
+        invites.each { |invite| expect(invite.inviter).to eq(inviter) }
+      end
+    end
+
+    context 'when inviter is blank' do
+      let(:hash_array) { [{ email: 'test@email.com' }] }
+
+      it 'creates invite with blank inviter' do
+        expect do
+          service.bulk_create_xlsx(xlsx, {})
+        end.to change(Invite, :count).from(0).to(1)
+          .and change(User, :count).from(0).to(1)
+
+        expect(Invite.first.inviter).to be_nil
       end
     end
 
@@ -334,7 +355,7 @@ describe Invites::Service do
       end
 
       it "doesn't send out invitations to the invited users" do
-        service.bulk_create_xlsx(xlsx)
+        expect { service.bulk_create_xlsx(xlsx) }.not_to change(Invite, :count)
         expect(Invite.count).to eq 1
       end
     end
@@ -424,7 +445,6 @@ describe Invites::Service do
           language: 'en'
         }]
       end
-      let(:inviter) { create(:user) }
 
       before do
         SettingsService.new.activate_feature! 'abbreviated_user_names'
@@ -447,11 +467,10 @@ describe Invites::Service do
         { 'email' => test_email2 }
       ]
     end
-    let(:inviter) { create(:user) }
 
     context 'with multiple emails and no names' do
       it 'creates users with no slugs' do
-        service.bulk_create(hash_array, _default_params = {}, inviter)
+        service.bulk_create(hash_array, _default_params = {})
 
         expect(User.find_by(email: test_email1).slug).to be_nil
         expect(User.find_by(email: test_email2).slug).to be_nil

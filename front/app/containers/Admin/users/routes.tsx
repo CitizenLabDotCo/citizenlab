@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 const AdminUsersIndex = lazy(() => import('.'));
 const AdminAllUsers = lazy(() => import('./AllUsers'));
-const AdminAdminsAndManagers = lazy(() => import('./AdminsAndManagers'));
+const AdminAdminsAndManagers = lazy(() => import('./AdminsAndModerators'));
 const AdminUsersGroup = lazy(() => import('./UsersGroup'));
 const AdminBlockedUsers = lazy(() => import('./BlockedUsers'));
 import PageLoading from 'components/UI/PageLoading';

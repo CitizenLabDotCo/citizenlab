@@ -216,7 +216,7 @@ export const GroupsListPanel = ({
         </GroupName>
         {usercount.administrators_count !== null &&
           usercount.managers_count !== null && (
-            <MembersCount>
+            <MembersCount data-cy="e2e-admin-and-moderator-count">
               {usercount.administrators_count + usercount.managers_count}
             </MembersCount>
           )}

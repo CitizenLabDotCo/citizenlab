@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  giveCollaboratorRights: {
-    id: 'app.containers.admin.addCollaboratorsModal.giveCollaboratorRights',
-    defaultMessage: 'Give collaborator rights',
+  giveManagerRights: {
+    id: 'app.containers.admin.addCollaboratorsModal.giveManagerRights',
+    defaultMessage: 'Give manager rights',
   },
   hasReachedOrIsOverLimit: {
     id: 'app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit',
@@ -14,10 +14,9 @@ export default defineMessages({
     id: 'app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1',
     defaultMessage: 'Buy 1 additional seat',
   },
-  confirmMessage: {
-    id: 'app.containers.admin.addCollaboratorsModal.confirmMessage1',
-    defaultMessage:
-      'Are you sure you want to give 1 person collaborator rights?',
+  confirmManagerRights: {
+    id: 'app.containers.admin.addCollaboratorsModal.confirmManagerRights',
+    defaultMessage: 'Are you sure you want to give 1 person manager rights?',
   },
   confirmButtonText: {
     id: 'app.containers.admin.addCollaboratorsModal.confirmButtonText',

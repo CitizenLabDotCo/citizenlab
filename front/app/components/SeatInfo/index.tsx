@@ -5,7 +5,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { TSeatNumber } from 'api/app_configuration/types';
 import { MessageDescriptor } from 'utils/cl-intl';
 
-export type TSeatType = 'collaborator' | 'admin';
+export type TSeatType = 'moderator' | 'admin';
 
 // Messages
 export type SeatTypeMessageDescriptor = {

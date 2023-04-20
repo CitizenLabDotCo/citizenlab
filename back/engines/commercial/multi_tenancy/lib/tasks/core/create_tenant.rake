@@ -19,7 +19,11 @@ namespace :cl2_back do
           },
           signup_helper_text: {
             en: 'If you don\'t want to register, use hello@citizenlab.co/democrazy as email/password'
-          }
+          },
+          maximum_admins_number: 2,
+          maximum_moderators_number: 2,
+          additional_admins_number: 2,
+          additional_moderators_number: 1
         },
         private_projects: {
           enabled: true,
@@ -163,6 +167,10 @@ namespace :cl2_back do
           allowed: true
         },
         snap_survey_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        konveio_surveys: {
           enabled: true,
           allowed: true
         },
@@ -318,8 +326,8 @@ namespace :cl2_back do
           duration: 90
         },
         seat_based_billing: {
-          enabled: false,
-          allowed: false
+          enabled: true,
+          allowed: true
         }
       }
     )
