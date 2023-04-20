@@ -17,6 +17,7 @@
   <mj-section
     border="1px solid #EAEAEA"
     padding="25px"
+    border-radius="5px"
   >
     <mj-column>
       <mj-text font-size="28px" align="center" font-weight="700">
