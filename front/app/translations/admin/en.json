@@ -1549,6 +1549,7 @@
   "app.containers.AdminPage.SideBar.processing": "Processing",
   "app.containers.AdminPage.SideBar.projects": "Projects",
   "app.containers.AdminPage.SideBar.settings": "Settings",
+  "app.containers.AdminPage.SideBar.toPlatform": "To platform",
   "app.containers.AdminPage.SideBar.users": "Users",
   "app.containers.AdminPage.SideBar.workshops": "Workshops",
   "app.containers.AdminPage.Topics.addTopics": "Add",
