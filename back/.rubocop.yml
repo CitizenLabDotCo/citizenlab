@@ -127,10 +127,6 @@ Layout/MultilineMethodCallIndentation:
 RSpec/DescribeClass:
   IgnoredMetadata:
     type: ['request']
-  Exclude:
-    - 'engines/commercial/multi_tenancy/spec/db/seedfile_spec.rb'
-    - 'engines/commercial/multi_tenancy/spec/tasks/email_campaigns_task_spec.rb'
-    - 'engines/commercial/multi_tenancy/spec/tasks/invalid_data_checker_task_spec.rb'
 
 RSpec/EmptyExampleGroup:
   # `context` and `describe` are found as empty example groups when
