@@ -231,7 +231,7 @@ export default defineMessages({
   userFieldsSelectionDescription: {
     id: 'app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription',
     defaultMessage:
-      'You can ask the existing registration question(s) or create new ones. If a user hasn’t answered to the question(s), they will be asked to answer it before taking the action. Answers to these questions will be stored in user profiles, and will be only accessible to admins.',
+      'Responses to demographic questions will get stored in user profiles. Answers to these questions will be accessible to both admins and moderators to easy participation analysis. Questions will only be asked to users who have not answered them before.',
   },
   selectUserGroups: {
     id: 'app.containers.AdminPage.groups.permissions.selectUserGroups',
@@ -239,15 +239,20 @@ export default defineMessages({
   },
   addQuestion: {
     id: 'app.containers.AdminPage.groups.permissions.addQuestion',
-    defaultMessage: 'Add a question',
+    defaultMessage: 'Add demographic questions',
   },
   userQuestionTitle: {
     id: 'app.containers.AdminPage.groups.permissions.userQuestionTitle',
-    defaultMessage: 'Ask questions to participants',
+    defaultMessage: 'Demographic questions asked during participation',
   },
   useExistingRegistrationQuestions: {
     id: 'app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestions',
-    defaultMessage: 'Use existing registration questions',
+    defaultMessage: 'Ask platform level registration questions',
+  },
+  useExistingRegistrationQuestionsDescription: {
+    id: 'app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription',
+    defaultMessage:
+      'Use this setting if collecting name, last name, and answers to platform level demographic questions is important to you. It may increase the barrier for participation.',
   },
   select: {
     id: 'app.containers.AdminPage.groups.permissions.select',

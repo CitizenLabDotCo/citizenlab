@@ -12,6 +12,7 @@ import {
   colors,
   Toggle,
   Locale,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { FieldSelectionModal } from './FieldSelectionModal';
 
@@ -22,7 +23,7 @@ import useDeletePermissionsCustomField from 'api/permissions_custom_fields/useDe
 import useUpdatePermissionsCustomField from 'api/permissions_custom_fields/useUpdatePermissionsCustomField';
 
 // utils
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FormattedMessageComponent from 'utils/cl-intl/FormattedMessage';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -59,6 +60,7 @@ const UserFieldSelection = ({
   onChange,
 }: UserFieldSelectionProps) => {
   const authUser = useAuthUser();
+  const { formatMessage } = useIntl();
   const globalRegistrationFields = useUserCustomFields();
   const initialFields = usePermissionsCustomFields({
     projectId,
@@ -155,9 +157,21 @@ const UserFieldSelection = ({
                 });
               }}
               label={
-                <FormattedMessage
-                  {...messages.useExistingRegistrationQuestions}
-                />
+                <Box display="flex">
+                  <span style={{ color: colors.primary }}>
+                    <FormattedMessage
+                      {...messages.useExistingRegistrationQuestions}
+                    />
+                  </span>
+
+                  <IconTooltip
+                    ml="4px"
+                    icon="info-solid"
+                    content={formatMessage(
+                      messages.useExistingRegistrationQuestionsDescription
+                    )}
+                  />
+                </Box>
               }
             />
           </Box>
