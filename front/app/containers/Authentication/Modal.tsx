@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 // hooks
 import useSteps from './useSteps';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { useTheme } from 'styled-components';
 
 // components
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
@@ -25,6 +27,7 @@ import BuiltInFields from './steps/BuiltInFields';
 import Password from './steps/Password';
 import Success from './steps/Success';
 import Error from 'components/UI/Error';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // i18n
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -34,6 +37,7 @@ import errorMessages from 'components/UI/Error/messages';
 // typings
 import { ErrorCode } from './typings';
 import VerificationSuccess from './steps/VerificationSuccess';
+import T from 'components/T';
 
 type Step = ReturnType<typeof useSteps>['currentStep'];
 
@@ -86,6 +90,15 @@ const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   invitation_error: messages.invitationError,
 };
 
+type HelperTextKey = 'signup_helper_text' | 'custom_fields_signup_helper_text';
+
+const HELPER_TEXT_KEYS: Partial<Record<Step, HelperTextKey>> = {
+  'sign-up:auth-providers': 'signup_helper_text',
+  'sign-up:email-password': 'signup_helper_text',
+  'sign-up:custom-fields': 'custom_fields_signup_helper_text',
+  'missing-data:custom-fields': 'custom_fields_signup_helper_text',
+};
+
 interface Props {
   setModalOpen: (bool: boolean) => void;
 }
@@ -100,6 +113,9 @@ const AuthModal = ({ setModalOpen }: Props) => {
     transition,
     setError,
   } = useSteps();
+
+  const { data: appConfiguration } = useAppConfiguration();
+  const theme = useTheme();
 
   useEffect(() => {
     setModalOpen(currentStep !== 'closed');
@@ -121,6 +137,11 @@ const AuthModal = ({ setModalOpen }: Props) => {
   };
 
   const marginX = smallerThanPhone ? '16px' : '32px';
+
+  const helperTextKey = HELPER_TEXT_KEYS[currentStep];
+  const helperText = helperTextKey
+    ? appConfiguration?.data.attributes.settings.core[helperTextKey]
+    : undefined;
 
   return (
     <Modal
@@ -156,6 +177,18 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {error && (
           <Box mb="16px">
             <Error text={formatMessage(ERROR_CODE_MESSAGES[error])} />
+          </Box>
+        )}
+
+        {helperText && (
+          <Box mb="16px">
+            <QuillEditedContent
+              textColor={theme.colors.tenantText}
+              fontSize="base"
+              fontWeight={300}
+            >
+              <T value={helperText} supportHtml />
+            </QuillEditedContent>
           </Box>
         )}
 

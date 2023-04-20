@@ -103,7 +103,7 @@ const BuiltInFields = ({
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
           <Text mt="0px" mb="32px">
-            {formatMessage(messages.youNeedToCompleteYourProfile)}
+            {formatMessage(messages.pleaseCompleteYourProfile)}
           </Text>
           {askFirstName && (
             <Box id="e2e-firstName-container">
