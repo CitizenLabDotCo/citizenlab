@@ -557,7 +557,6 @@
   "app.containers.Admin.Users.confirm": "Confermare",
   "app.containers.Admin.Users.confirmAdminQuestion": "Siete sicuri di voler dare a {name} i diritti di amministratore della piattaforma?",
   "app.containers.Admin.Users.confirmNormalUserQuestion": "Siete sicuri di voler impostare {name} come utente normale?",
-  "app.containers.Admin.Users.confirmSetCollaboratorAsNormalUserQuestion": "Siete sicuri di voler impostare {name} come utente normale? Si noti che alla conferma perderà i diritti di collaboratore per tutti i progetti e le cartelle a cui è stato assegnato.",
   "app.containers.Admin.Users.deleteUser": "Cancellare l'utente",
   "app.containers.Admin.Users.email": "Email",
   "app.containers.Admin.Users.folderManager": "Gestione cartelle",

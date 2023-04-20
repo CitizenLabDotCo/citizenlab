@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 
 // Components
-import { Box, Button, Text, Checkbox } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
-import SeatInfo, {
-  SeatTypeMessageDescriptor,
-  TSeatType,
-} from 'components/SeatInfo';
-import Error from 'components/UI/Error';
+import SeatInfo, { TSeatType } from 'components/SeatInfo';
 import SeatSetSuccess from 'components/admin/SeatSetSuccess';
 
 // Translation
@@ -15,13 +11,13 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useSeats from 'api/seats/useSeats';
+import useExceedsSeats from 'hooks/useExceedsSeats';
 
 // Utils
-import { isNil } from 'utils/helperUtils';
 import { TSeatNumber } from 'api/app_configuration/types';
 import BillingWarning from 'components/SeatInfo/BillingWarning';
+
+import { IInvitesNewSeats } from 'services/invites';
 
 export type SeatTypeTSeatNumber = {
   [key in TSeatType]: TSeatNumber;
@@ -35,74 +31,56 @@ interface InviteUsersWithSeatsModalProps {
   showModal: boolean;
   closeModal: () => void;
   inviteUsers: () => void;
-  noOfSeatsToAdd: number;
-  seatType: TSeatType;
+  newSeatsResponse: IInvitesNewSeats;
 }
 
 const InviteUsersWithSeatsModal = ({
   showModal,
   closeModal,
   inviteUsers,
-  noOfSeatsToAdd,
-  seatType,
+  newSeatsResponse,
 }: InviteUsersWithSeatsModalProps) => {
   const { formatMessage } = useIntl();
-  const [hasAcknowledged, setHasAcknowledged] = useState(false);
-  const [showWarning, setShowWarning] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const { data: appConfiguration } = useAppConfiguration();
-  const { data: seats } = useSeats();
+  const newSeats = newSeatsResponse.data.attributes;
 
-  if (!appConfiguration || !seats) return null;
-
-  const maximumSeatNumbers: SeatTypeTSeatNumber = {
-    admin:
-      appConfiguration?.data.attributes.settings.core.maximum_admins_number,
-    moderator:
-      appConfiguration?.data.attributes.settings.core.maximum_moderators_number,
-  };
-  const maximumSeatNumber = maximumSeatNumbers[seatType];
-  const currentSeatNumbers: SeatTypeNumber = {
-    admin: seats.data.attributes.admins_number,
-    moderator: seats.data.attributes.project_moderators_number,
-  };
-  const currentSeatNumber = currentSeatNumbers[seatType];
-  const hasExceededPlanSeatLimit =
-    !isNil(maximumSeatNumber) && currentSeatNumber > maximumSeatNumber;
-
-  const seatTypeMessages: SeatTypeMessageDescriptor = {
-    admin: messages.admin,
-    moderator: messages.moderator,
-  };
-  const seatTypesMessages: SeatTypeMessageDescriptor = {
-    admin: messages.admins,
-    moderator: messages.moderators,
-  };
-  const seatTypeModalTitles: SeatTypeMessageDescriptor = {
-    admin: messages.giveAdminRights,
-    moderator: messages.giveModeratorRights,
-  };
-
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.stopPropagation();
-    setShowWarning(hasAcknowledged);
-    setHasAcknowledged(!hasAcknowledged);
-  };
+  const exceedsSeats = useExceedsSeats()({
+    newlyAddedAdminsNumber: newSeats.newly_added_admins_number,
+    newlyAddedModeratorsNumber: newSeats.newly_added_moderators_number,
+  });
 
   const handleConfirmClick = () => {
-    if (!hasAcknowledged) {
-      setShowWarning(true);
-      return;
-    }
     inviteUsers();
+    // `inviteUsers` can fail in theory, but very unlikely in practice.
+    // Errors should be displayed on the form in this case.
     setShowSuccess(true);
   };
 
   const header = !showSuccess ? (
     <Text color="primary" my="8px" fontSize="l" fontWeight="bold" px="2px">
-      {formatMessage(seatTypeModalTitles[seatType])}
+      {formatMessage(messages.confirmSeatUsageChange)}
     </Text>
   ) : undefined;
+
+  let additionalSeatsMessage: string;
+
+  if (exceedsSeats.all) {
+    additionalSeatsMessage = formatMessage(
+      messages.additionalAdminAndManagerSeats,
+      {
+        adminSeats: newSeats.newly_added_admins_number,
+        managerSeats: newSeats.newly_added_moderators_number,
+      }
+    );
+  } else if (exceedsSeats.admin) {
+    additionalSeatsMessage = formatMessage(messages.additionalAdminSeats, {
+      seats: newSeats.newly_added_admins_number,
+    });
+  } else {
+    additionalSeatsMessage = formatMessage(messages.additionalManagerSeats, {
+      seats: newSeats.newly_added_moderators_number,
+    });
+  }
 
   return (
     <Modal opened={showModal} close={closeModal} header={header}>
@@ -111,49 +89,22 @@ const InviteUsersWithSeatsModal = ({
           closeModal={() => {
             closeModal();
             setShowSuccess(false);
-            setShowWarning(false);
-            setHasAcknowledged(false);
           }}
           seatType="moderator"
-          hasExceededPlanSeatLimit={hasExceededPlanSeatLimit}
+          hasExceededPlanSeatLimit={exceedsSeats.any}
         />
       ) : (
         <Box display="flex" flexDirection="column" p="32px">
           <Text color="textPrimary" mt="0" mb="24px">
-            <FormattedMessage
-              {...messages.infoMessage}
-              values={{
-                noOfUsers: noOfSeatsToAdd,
-                seatType: formatMessage(seatTypeMessages[seatType]),
-              }}
-            />
+            <FormattedMessage {...messages.infoMessage} />{' '}
+            {additionalSeatsMessage}
           </Text>
           <Box mb="24px">
-            <SeatInfo seatType={seatType} />
+            {exceedsSeats.admin && <SeatInfo seatType={'admin'} />}
+            {exceedsSeats.moderator && <SeatInfo seatType={'moderator'} />}
           </Box>
 
-          <Box mb="24px">
-            <BillingWarning />
-          </Box>
-
-          <Checkbox
-            mb="24px"
-            checked={hasAcknowledged}
-            onChange={onChange}
-            label={
-              <Text color="blue500" my="0px">
-                {formatMessage(messages.billingAcknowledgement, {
-                  seatTypes: formatMessage(seatTypesMessages[seatType]),
-                })}
-              </Text>
-            }
-          />
-
-          {showWarning && (
-            <Box mb="24px">
-              <Error text={formatMessage(messages.acceptWarning)} />
-            </Box>
-          )}
+          <BillingWarning mb="24px" />
 
           <Box display="flex">
             <Button
