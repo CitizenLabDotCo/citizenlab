@@ -61,24 +61,6 @@ export interface IIdeasByProject {
   };
 }
 
-export interface IIdeasCount {
-  data: {
-    type: 'ideas_count';
-    attributes: {
-      count: number;
-    };
-  };
-}
-
-interface ICommentsCount {
-  data: {
-    type: 'comments_count';
-    attributes: {
-      count: number;
-    };
-  };
-}
-
 export function ideasByStatusStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeasByStatus>({
     apiEndpoint: `${apiEndpoint}/ideas_by_status`,
@@ -104,12 +86,6 @@ export function ideasByProjectStream(
   return streams.get<IIdeasByProject>({
     apiEndpoint: `${apiEndpoint}/ideas_by_project`,
     ...streamParams,
-  });
-}
-
-export function ideasCountForUser(userId: string) {
-  return streams.get<IIdeasCount>({
-    apiEndpoint: `${API_PATH}/users/${userId}/ideas_count`,
   });
 }
 
@@ -205,12 +181,6 @@ export function commentsByProjectStream(
   return streams.get<ICommentsByProject>({
     apiEndpoint: `${apiEndpoint}/comments_by_project`,
     ...streamParams,
-  });
-}
-
-export function commentsCountForUser(userId: string) {
-  return streams.get<ICommentsCount>({
-    apiEndpoint: `${API_PATH}/users/${userId}/comments_count`,
   });
 }
 

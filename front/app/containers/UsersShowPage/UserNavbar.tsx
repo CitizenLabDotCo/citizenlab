@@ -1,9 +1,6 @@
 import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-// resources
-import GetUserStats, { GetUserStatsChildProps } from 'resources/GetUserStats';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // styles
 import { fontSizes, media } from 'utils/styleUtils';
@@ -17,6 +14,10 @@ import { UserTab } from './';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+
+// api
+import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
+import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
 
 const UserNavbarWrapper = styled.div`
   width: 100%;
@@ -99,21 +100,17 @@ const TabIcon = styled(Icon)`
   margin-right: 10px;
 `;
 
-interface InputProps {
+interface Props {
   currentTab: UserTab;
   selectTab: (tab: UserTab) => () => void;
   userId: string;
 }
 
-interface DataProps {
-  ideasCount: GetUserStatsChildProps;
-  commentsCount: GetUserStatsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const UserNavbar = memo<Props>((props) => {
-  const { currentTab, selectTab, ideasCount, commentsCount } = props;
+const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
+  const { data: ideasCount } = useUserIdeasCount({ userId });
+  const { data: commentsCount } = useUserCommentsCount({
+    userId,
+  });
 
   return (
     <UserNavbarWrapper role="tablist">
@@ -126,10 +123,10 @@ const UserNavbar = memo<Props>((props) => {
       >
         <Border aria-hidden />
         <TabIcon name="idea" ariaHidden />
-        {!isNilOrError(ideasCount) && (
+        {ideasCount && (
           <FormattedMessage
             {...messages.postsWithCount}
-            values={{ ideasCount }}
+            values={{ ideasCount: ideasCount.data.attributes.count }}
           />
         )}
       </UserNavbarButton>
@@ -144,10 +141,10 @@ const UserNavbar = memo<Props>((props) => {
       >
         <Border aria-hidden />
         <TabIcon name="comments" ariaHidden />
-        {!isNilOrError(commentsCount) && (
+        {commentsCount && (
           <FormattedMessage
             {...messages.commentsWithCount}
-            values={{ commentsCount }}
+            values={{ commentsCount: commentsCount.data.attributes.count }}
           />
         )}
       </UserNavbarButton>
@@ -155,23 +152,4 @@ const UserNavbar = memo<Props>((props) => {
   );
 });
 
-const Data = adopt<DataProps, InputProps>({
-  ideasCount: ({ userId, render }) => (
-    <GetUserStats userId={userId} resource="ideas">
-      {render}
-    </GetUserStats>
-  ),
-  commentsCount: ({ userId, render }) => (
-    <GetUserStats userId={userId} resource="comments">
-      {render}
-    </GetUserStats>
-  ),
-});
-
-const WrappedUserNavbar = (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <UserNavbar {...inputProps} {...dataProps} />}
-  </Data>
-);
-
-export default WrappedUserNavbar;
+export default UserNavbar;
