@@ -41,6 +41,7 @@
   "app.components.Comments.invisibleTitleComments": "Komentāri",
   "app.components.Comments.mostUpvoted": "Vislielāko balsu skaitu saņēma",
   "app.components.Comments.official": "Oficiālais",
+  "app.components.Comments.oldestToNewest": "Jaunākais",
   "app.components.Comments.replyToComment": "Atbildēt uz komentāru",
   "app.components.Comments.reportAsSpam": "Ziņot kā par surogātpastu",
   "app.components.Comments.seeOriginal": "Skatīt oriģinālu",
