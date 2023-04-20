@@ -60,13 +60,6 @@ export interface IUserCustomFields {
   data: IUserCustomFieldData[];
 }
 
-export interface UserCustomFieldsInfos {
-  schema: any;
-  uiSchema: any;
-  hasRequiredFields: boolean;
-  hasCustomFields: boolean;
-}
-
 export function isBuiltInField(field: IUserCustomFieldData) {
   return !!field.attributes.code;
 }
