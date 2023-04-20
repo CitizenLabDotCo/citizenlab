@@ -271,7 +271,8 @@ resource 'Permissions' do
 
       let(:action) { @permission.action }
 
-      example_request 'Get the participation requirements of a user requiring confirmation in a timeline phase' do
+      # Note: Custom fields requirements will be {} as they are set globally - which are not allowed for everyone_confirmed_email
+      example_request 'Get the participation requirements of a passwordless user requiring confirmation in a timeline phase' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :requirements)).to eq({
@@ -282,11 +283,7 @@ resource 'Permissions' do
               last_name: 'dont_ask',
               email: 'satisfied'
             },
-            custom_fields: {
-              birthyear: 'require',
-              gender: 'satisfied',
-              extra_field: 'require'
-            },
+            custom_fields: {},
             special: {
               password: 'dont_ask',
               confirmation: 'require',
