@@ -1538,7 +1538,6 @@
   "app.errors.locale_inclusion": "Veuillez choisir une langue prise en charge",
   "app.errors.malformed_admin_value": "La valeur {value} dans la colonne 'administrateur' à la ligne {row} n'est pas valide",
   "app.errors.malformed_groups_value": "Le groupe {value} trouvé à la ligne {row} n'est pas valide",
-  "app.errors.max_invites_limit_exceeded": "Le nombre maximum d'invitations autorisées est dépassé.",
   "app.errors.no_invites_specified": "Aucune adresse e-mail n'a été trouvée.",
   "app.errors.password_blank": "Cela ne peut pas être vide",
   "app.errors.password_invalid": "Veuillez vérifier à nouveau votre mot de passe actuel.",

@@ -1538,7 +1538,6 @@
   "app.errors.locale_inclusion": "Wielt wgl. eng vun den ënnerstëtzten Sproochen",
   "app.errors.malformed_admin_value": "De Verwalter-Wäert{value}, deen a Rei {row} fonnt gouf, ass net gëlteg",
   "app.errors.malformed_groups_value": "De Grupp {value}, aus der Rei {row}, ass kee gëltege Grupp",
-  "app.errors.max_invites_limit_exceeded": "D’maximal Unzuel un erlaabten Invitatiounen ass iwwerschratt.",
   "app.errors.no_invites_specified": "Keng E-Mail-Adress fonnt.",
   "app.errors.password_blank": "Dëst dierf net eidel sinn",
   "app.errors.password_invalid": "Wgl. iwwerpréift Äert neit Passwuert nach eng Kéier.",

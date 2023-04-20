@@ -1538,7 +1538,6 @@
   "app.errors.locale_inclusion": "Välj ett språk som stöds",
   "app.errors.malformed_admin_value": "Administratörsvärdet {value} på rad {row} är inte giltigt",
   "app.errors.malformed_groups_value": "Gruppen {value} som finns på rad {row} är inte en giltig grupp",
-  "app.errors.max_invites_limit_exceeded": "Det maximala antalet tillåtna inbjudningar har överskridits.",
   "app.errors.no_invites_specified": "Ingen e-postadress hittades.",
   "app.errors.password_blank": "Det här får inte vara tomt",
   "app.errors.password_invalid": "Kontrollera ditt nuvarande lösenord igen.",
