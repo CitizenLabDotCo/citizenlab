@@ -271,7 +271,7 @@ resource 'Permissions' do
 
       let(:action) { @permission.action }
 
-      # Note: Custom fields requirements will be {} as they are set globally - which are not allowed for everyone_confirmed_email
+      # NOTE: Custom fields requirements will be {} as they are set globally - which are not allowed for everyone_confirmed_email
       example_request 'Get the participation requirements of a passwordless user requiring confirmation in a timeline phase' do
         assert_status 200
         json_response = json_parse(response_body)
