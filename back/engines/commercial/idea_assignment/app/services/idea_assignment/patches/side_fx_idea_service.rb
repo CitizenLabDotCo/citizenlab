@@ -24,7 +24,6 @@ module IdeaAssignment
         return if idea.assignee
 
         idea.assignee = IdeaAssignmentService.new.automatically_assigned_idea_assignee idea
-
         @automatic_assignment = true if idea.assignee
       end
     end
