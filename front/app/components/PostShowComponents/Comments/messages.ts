@@ -9,14 +9,6 @@ export default defineMessages({
     id: 'app.components.Comments.cancel',
     defaultMessage: 'Cancel',
   },
-  edit: {
-    id: 'app.components.Comments.editComment',
-    defaultMessage: 'Edit',
-  },
-  delete: {
-    id: 'app.components.Comments.deleteComment',
-    defaultMessage: 'Delete',
-  },
   official: {
     id: 'app.components.Comments.official',
     defaultMessage: 'Official',
@@ -146,9 +138,9 @@ export default defineMessages({
     id: 'app.containers.Comments.commentsSortTitle',
     defaultMessage: 'Sort comments by',
   },
-  oldestToNewest: {
-    id: 'app.components.Comments.oldestToNewest',
-    defaultMessage: 'Oldest to Newest',
+  mostRecent: {
+    id: 'app.components.Comments.mostRecent',
+    defaultMessage: 'Most recent',
   },
   mostUpvoted: {
     id: 'app.components.Comments.mostUpvoted',

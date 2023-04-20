@@ -121,7 +121,7 @@ const CommentsMoreActions = ({
     ...(canDelete
       ? [
           {
-            label: <FormattedMessage {...messages.delete} />,
+            label: <FormattedMessage {...messages.deleteComment} />,
             handler: openDeleteModal,
           },
         ]
@@ -129,7 +129,7 @@ const CommentsMoreActions = ({
     ...(canEdit
       ? [
           {
-            label: <FormattedMessage {...messages.edit} />,
+            label: <FormattedMessage {...messages.editComment} />,
             handler: onCommentEdit,
           },
         ]

@@ -66,8 +66,7 @@ const CommentsSection = memo<Props & WrappedComponentProps>(
 
       return () =>
         subscriptions.forEach((subscription) => subscription.unsubscribe());
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [formatMessage]);
 
     const parentComments = useMemo(() => {
       return allComments.filter(
