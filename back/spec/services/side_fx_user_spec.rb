@@ -60,7 +60,7 @@ describe SideFxUserService do
 
   describe 'after_destroy' do
     it "logs a 'deleted' action job when the user is destroyed" do
-      travel_to Time.now do
+      freeze_time do
         frozen_user = user.destroy
         expect { service.after_destroy(frozen_user, current_user) }
           .to have_enqueued_job(LogActivityJob)

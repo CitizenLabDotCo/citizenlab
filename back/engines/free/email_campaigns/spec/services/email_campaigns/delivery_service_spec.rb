@@ -112,7 +112,7 @@ describe EmailCampaigns::DeliveryService do
       let!(:admin) { create(:admin) }
 
       it 'delays enqueueing a job because the command specifies a delay' do
-        travel_to Time.now do
+        freeze_time do
           expect { service.send_on_activity(activity) }
             .to have_enqueued_job(ActionMailer::MailDeliveryJob)
             .exactly(1).times
