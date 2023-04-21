@@ -132,7 +132,7 @@
       today_by_author: 'I dag av %{author}'
       x_days_ago_by_author: '%{x} dager siden av %{author}'
     admin_rights_received:
-      cta_moderate_platform: 'Moderer plattformen din'
+      cta_manage_platform: 'Administrer plattformen din'
       message_you_became_administrator: 'Du har fått administratorrettigheter til %{organizationName} sin plattform for innbyggerinvolvering'
       preheader: 'Du fikk administratorrettigheter til %{organizationName} sin plattform for innbyggerinvolvering'
       subject: 'Du ble administrator på plattformen til %{organizationName}'
@@ -260,7 +260,7 @@
       preheader: 'Prosjektleder-sammendrag av %{organizationName}'
       title_your_weekly_report: '%{firstName}, din ukentlige rapport'
       text_introduction: 'Vi har samlet en oversikt over ideene som har hatt mest aktivitet den siste uken. Finn ut hva som skjer i prosjektet!'
-      cta_moderate: 'Moderer ditt prosjekt'
+      cta_manage: 'Administrer prosjektet ditt'
       new_users: 'Nye brukere'
       new_ideas: 'Nye ideer'
       new_comments: 'Nye kommentarer'
@@ -386,7 +386,7 @@
       subject: 'Du har fått en offisiell oppdatering fra %{organizationName}'
       preheader: '%{officialName} left an official update on your initiative'
     project_moderation_rights_received:
-      cta_moderate_project: 'Moderer dette prosjektet'
+      cta_manage_project: 'Administrer dette prosjektet'
       message_you_became_moderator: 'En administrator på deltakelsesplattformen til %{organizationName} gjorde deg nettopp til moderator for det følgende prosjektet:'
       no_ideas: 'Ingen ideer ennå'
       preheader: 'En administrator på deltakelsesplattformen til %{organizationName} gjorde deg nettopp til moderator for det følgende prosjektet'
