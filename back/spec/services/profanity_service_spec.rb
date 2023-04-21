@@ -103,7 +103,7 @@ describe ProfanityService do
       locale.to_s.split('-').first
     end.uniq.each do |lang|
       it "exists for #{lang}" do
-        expect(File.exist?(Rails.root.join("config/blocked_words/#{lang}.txt"))).to be true
+        expect(Rails.root.join("config/blocked_words/#{lang}.txt").exist?).to be true
       end
     end
   end

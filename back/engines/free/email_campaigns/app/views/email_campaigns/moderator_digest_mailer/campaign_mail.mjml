@@ -1,6 +1,16 @@
 
 <mj-wrapper background-color="#F6F6F6" full-width="full-width" padding="40px 0 0">
 
+  <mj-section>
+    <mj-column>
+      <mj-text>
+        <h2 style="padding: 20px 0">
+          <%= event.project_name %>
+        </h2>
+      </mj-text>
+    </mj-column>
+  </mj-section>
+
   <!-- 3 statistics box-->
   <mj-section
     background-color="#FFFFFF"
@@ -72,14 +82,14 @@
 
   <!-- Activity of the past week -->
 
-  <mj-section padding="20px 25px">
+  <mj-section padding="40px 25px">
     <mj-column>
       <mj-text>
         <h2 style="padding: 20px 0">
           <% if event.top_ideas.blank? %>
-            <%= format_message('title_activity_past_week') %>
+            <%= format_message('title_no_inputs_past_week') %>
           <% else %>
-            <%= format_message('title_no_activity_past_week') %>
+            <%= format_message('title_inputs_past_week') %>
           <% end %>
         </h2>
       </mj-text>
@@ -94,6 +104,6 @@
     </mj-column>
   </mj-section>
 
-  <%= render partial: 'application/cta_button', locals: { href:  "#{url_service.home_url(app_configuration: @app_configuration, locale: @locale)}/admin/projects", message: format_message('cta_moderate') } %>
+  <%= render partial: 'application/cta_button', locals: { href:  "#{url_service.home_url(app_configuration: @app_configuration, locale: @locale)}/admin/projects/#{event.project_id}", message: format_message('cta_moderate') } %>
 
 </mj-wrapper>
