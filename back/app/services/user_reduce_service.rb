@@ -100,7 +100,7 @@ class UserReduceService
       picked_project_sets[set] ||= []
       picked_project_sets[set] += [user]
     end
-    picked_project_sets.values.each(&:shuffle!)
+    picked_project_sets.each_value(&:shuffle!)
     picked_project_sets
   end
 
