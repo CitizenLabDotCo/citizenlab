@@ -5,6 +5,10 @@ import signOut from 'api/authentication/sign_in_out/signOut';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import { handleOnSSOClick } from 'services/singleSignOn';
 
+// cache
+import streams from 'utils/streams';
+import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+
 // events
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
@@ -29,6 +33,18 @@ export const newLightFlow = (
   setError: (errorCode: ErrorCode) => void,
   updateState: UpdateState
 ) => {
+  const close = async () => {
+    await Promise.all([streams.reset(), resetQueryCache()]);
+
+    setStatus('ok');
+    setCurrentStep('closed');
+
+    const { successAction } = getAuthenticationData();
+    if (successAction) {
+      triggerSuccessAction(successAction);
+    }
+  };
+
   return {
     // light flow
     'light-flow:email': {
@@ -171,14 +187,14 @@ export const newLightFlow = (
           await confirmEmail({ code });
 
           const { requirements } = await getRequirements();
-          setStatus('ok');
 
           if (askCustomFields(requirements.custom_fields)) {
             setCurrentStep('sign-up:custom-fields');
+            setStatus('ok');
             return;
           }
 
-          setCurrentStep('success');
+          close();
         } catch (e) {
           setStatus('error');
 
@@ -205,24 +221,20 @@ export const newLightFlow = (
           await signIn({ email, password, rememberMe, tokenLifetime });
 
           const { requirements } = await getRequirements();
-          setStatus('ok');
 
           if (requirements.special.confirmation === 'require') {
             setCurrentStep('missing-data:email-confirmation');
+            setStatus('ok');
             return;
           }
 
           if (requiredCustomFields(requirements.custom_fields)) {
             setCurrentStep('missing-data:custom-fields');
+            setStatus('ok');
             return;
           }
 
-          setCurrentStep('closed');
-
-          const { successAction } = getAuthenticationData();
-          if (successAction) {
-            triggerSuccessAction(successAction);
-          }
+          close();
         } catch {
           setStatus('error');
           setError('wrong_password');
