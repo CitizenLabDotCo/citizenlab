@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe Analytics::DimensionUser, type: :model do
+RSpec.describe Analytics::DimensionUser do
   context 'when a normal user is created' do
     let!(:user) { create(:user) }
 
     it 'is also available as a user dimension' do
-      described_class.find(user.id)
+      expect { described_class.find(user.id) }.not_to raise_error
     end
 
     it 'has the default dimension role of citizen' do
@@ -19,7 +19,7 @@ RSpec.describe Analytics::DimensionUser, type: :model do
     let!(:admin) { create(:admin) }
 
     it 'is also available as a user dimension' do
-      described_class.find(admin.id)
+      expect { described_class.find(admin.id) }.not_to raise_error
     end
 
     it 'has the dimension role of admin' do

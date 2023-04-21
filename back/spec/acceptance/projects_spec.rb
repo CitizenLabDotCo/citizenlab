@@ -597,10 +597,10 @@ resource 'Projects' do
       end
 
       example 'Move a project from one folder to another' do
-        old_folder = create :project_folder, projects: [@project]
-        new_folder = create :project_folder
-        old_folder_moderators = create_list :project_folder_moderator, 2, project_folders: [old_folder]
-        new_folder_moderators = create_list :project_folder_moderator, 3, project_folders: [new_folder]
+        old_folder = create(:project_folder, projects: [@project])
+        new_folder = create(:project_folder)
+        old_folder_moderators = create_list(:project_folder_moderator, 2, project_folders: [old_folder])
+        new_folder_moderators = create_list(:project_folder_moderator, 3, project_folders: [new_folder])
 
         do_request(project: { folder_id: new_folder.id })
         @project.reload
@@ -1093,12 +1093,12 @@ resource 'Projects' do
     end
 
     delete 'web_api/v1/projects/:id/inputs' do
-      let(:project) { create :continuous_project }
+      let(:project) { create(:continuous_project) }
       let(:id) { project.id }
 
       example 'Delete all inputs of a project' do
-        create_list :idea, 2, project: project
-        create :idea
+        create_list(:idea, 2, project: project)
+        create(:idea)
         expect_any_instance_of(SideFxProjectService).to receive(:after_delete_inputs)
 
         do_request
@@ -1223,11 +1223,11 @@ resource 'Projects' do
     end
 
     delete 'web_api/v1/projects/:id/inputs' do
-      let(:project) { create :continuous_project }
+      let(:project) { create(:continuous_project) }
       let(:id) { project.id }
 
       example '[error] Delete all inputs of a project' do
-        create :idea, project: project
+        create(:idea, project: project)
 
         do_request
         assert_status 401

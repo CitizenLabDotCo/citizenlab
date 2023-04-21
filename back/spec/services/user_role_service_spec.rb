@@ -18,30 +18,30 @@ describe UserRoleService do
     end
 
     it 'for a project' do
-      project = create :project
+      project = create(:project)
 
       expect(service.can_moderate?(project, create(:admin))).to be true
       expect(service.can_moderate?(project, create(:user))).to be false
     end
 
     it 'for an idea' do
-      project = create :project
-      idea = create :idea, project: project
+      project = create(:project)
+      idea = create(:idea, project: project)
 
       expect(service.can_moderate?(idea, create(:admin))).to be true
       expect(service.can_moderate?(idea, create(:user))).to be false
     end
 
     it 'for an initiative' do
-      initiative = create :initiative
+      initiative = create(:initiative)
 
       expect(service.can_moderate?(initiative, create(:admin))).to be true
       expect(service.can_moderate?(initiative, create(:user))).to be false
     end
 
     it 'for a comment' do
-      initiative = create :initiative
-      comment = create :comment, post: initiative
+      initiative = create(:initiative)
+      comment = create(:comment, post: initiative)
 
       expect(service.can_moderate?(comment, create(:admin))).to be true
       expect(service.can_moderate?(comment, create(:user))).to be false
@@ -49,8 +49,8 @@ describe UserRoleService do
   end
 
   describe 'can_moderate_project?' do
-    let(:project) { create :project }
-    let(:folder) { create :project_folder, projects: [create(:project), project] }
+    let(:project) { create(:project) }
+    let(:folder) { create(:project_folder, projects: [create(:project), project]) }
 
     it 'permits admins' do
       expect(service.can_moderate_project?(project, create(:admin))).to be true
@@ -94,14 +94,14 @@ describe UserRoleService do
     end
 
     it 'lists all moderators of a project' do
-      project = create :project
-      other_project = create :project
-      folder = create :project_folder, projects: [project]
-      other_folder = create :project_folder, projects: [other_project]
-      create :user
-      admin = create :admin
-      moderator = create :project_moderator, projects: [project, other_project]
-      create :project_moderator, projects: [other_project]
+      project = create(:project)
+      other_project = create(:project)
+      folder = create(:project_folder, projects: [project])
+      other_folder = create(:project_folder, projects: [other_project])
+      create(:user)
+      admin = create(:admin)
+      moderator = create(:project_moderator, projects: [project, other_project])
+      create(:project_moderator, projects: [other_project])
       folder_moderators = [
         create(:project_folder_moderator, project_folders: [other_folder, folder]),
         create(:project_folder_moderator, project_folders: [other_folder])
@@ -111,38 +111,38 @@ describe UserRoleService do
     end
 
     it 'lists all moderators of an idea' do
-      project = create :project
-      other_project = create :project
-      create :user
-      admin = create :admin
-      moderator = create :project_moderator, projects: [other_project, project]
-      also_moderator = create :project_moderator, projects: [project]
-      create :project_moderator, projects: [other_project]
-      idea = create :idea, project: project
+      project = create(:project)
+      other_project = create(:project)
+      create(:user)
+      admin = create(:admin)
+      moderator = create(:project_moderator, projects: [other_project, project])
+      also_moderator = create(:project_moderator, projects: [project])
+      create(:project_moderator, projects: [other_project])
+      idea = create(:idea, project: project)
 
       expect(service.moderators_for(idea).ids).to match_array [admin.id, moderator.id, also_moderator.id]
     end
 
     it 'lists all moderators of a comment' do
-      project = create :project
-      other_project = create :project
-      create :user
-      admin = create :admin
-      moderator = create :project_moderator, projects: [other_project, project]
-      also_moderator = create :project_moderator, projects: [project]
-      create :project_moderator, projects: [other_project]
-      idea = create :idea, project: project
-      comment = create :comment, post: idea
+      project = create(:project)
+      other_project = create(:project)
+      create(:user)
+      admin = create(:admin)
+      moderator = create(:project_moderator, projects: [other_project, project])
+      also_moderator = create(:project_moderator, projects: [project])
+      create(:project_moderator, projects: [other_project])
+      idea = create(:idea, project: project)
+      comment = create(:comment, post: idea)
 
       expect(service.moderators_for(comment).ids).to match_array [admin.id, moderator.id, also_moderator.id]
     end
 
     it 'lists all moderators of an initiative' do
-      project = create :project
-      create :user
-      admin = create :admin
-      create :project_moderator, projects: [project]
-      initiative = create :initiative
+      project = create(:project)
+      create(:user)
+      admin = create(:admin)
+      create(:project_moderator, projects: [project])
+      initiative = create(:initiative)
 
       expect(service.moderators_for(initiative).ids).to match_array [admin.id]
     end
@@ -172,14 +172,14 @@ describe UserRoleService do
 
   describe 'moderatable_projects' do
     it 'lists no projects for normal users' do
-      create_list :project, 2
+      create_list(:project, 2)
 
       expect(service.moderatable_projects(create(:user)).ids).to eq []
     end
 
     it 'lists all projects for admins' do
-      map_projects = create_list :project, 3, presentation_mode: 'map'
-      create :project, presentation_mode: 'card'
+      map_projects = create_list(:project, 3, presentation_mode: 'map')
+      create(:project, presentation_mode: 'card')
 
       expect(
         service.moderatable_projects(create(:admin), Project.where(presentation_mode: 'map')).ids
@@ -187,11 +187,11 @@ describe UserRoleService do
     end
 
     it 'lists some projects for project moderators' do
-      projects = create_list :project, 3
-      other_project = create :project
+      projects = create_list(:project, 3)
+      other_project = create(:project)
 
-      moderator = create :project_moderator, projects: projects
-      create :project_moderator, projects: [other_project, projects.first]
+      moderator = create(:project_moderator, projects: projects)
+      create(:project_moderator, projects: [other_project, projects.first])
 
       expect(service.moderatable_projects(moderator).ids).to match_array projects.map(&:id)
     end

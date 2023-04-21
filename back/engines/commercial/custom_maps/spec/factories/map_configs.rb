@@ -14,7 +14,7 @@ FactoryBot.define do
     end
 
     trait :with_tile_provider do
-      tile_provider { generate :tile_provider }
+      tile_provider { generate(:tile_provider) }
     end
 
     trait :with_layers do

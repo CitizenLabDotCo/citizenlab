@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::UnsubscriptionToken, type: :model do
+RSpec.describe EmailCampaigns::UnsubscriptionToken do
   describe 'UnsubscriptionToken default factory' do
     it 'is valid' do
       expect(build(:email_campaigns_unsubscription_token)).to be_valid

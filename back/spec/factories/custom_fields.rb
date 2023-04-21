@@ -51,8 +51,8 @@ FactoryBot.define do
 
       trait :with_options do
         after(:create) do |cf|
-          create :custom_field_option, custom_field: cf, key: 'option1'
-          create :custom_field_option, custom_field: cf, key: 'option2'
+          create(:custom_field_option, custom_field: cf, key: 'option1')
+          create(:custom_field_option, custom_field: cf, key: 'option2')
         end
       end
     end

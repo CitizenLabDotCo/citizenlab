@@ -80,7 +80,7 @@ class TestVisitor < FieldVisitorService
   end
 end
 
-RSpec.describe CustomField, type: :model do
+RSpec.describe CustomField do
   let(:field) { described_class.new input_type: 'not_important_for_this_test' }
 
   describe '#logic?' do
@@ -180,7 +180,7 @@ RSpec.describe CustomField, type: :model do
   end
 
   describe 'title_multiloc validation' do
-    let(:form) { create :custom_form }
+    let(:form) { create(:custom_form) }
 
     it 'happens when the field is not a page' do
       non_page_field = described_class.new(
@@ -245,7 +245,7 @@ RSpec.describe CustomField, type: :model do
 
     describe 'saving a custom field without title_multiloc' do
       it 'produces validation errors on the key and the title_multiloc' do
-        form = create :custom_form
+        form = create(:custom_form)
         field = described_class.new resource: form, input_type: 'text', title_multiloc: {}
         expect(field.save).to be false
         expect(field.errors.details).to eq({
@@ -329,7 +329,7 @@ RSpec.describe CustomField, type: :model do
 
     described_class::INPUT_TYPES.each do |input_type|
       context "for a #{input_type} field" do
-        subject(:field) { build :custom_field, input_type: input_type }
+        subject(:field) { build(:custom_field, input_type: input_type) }
 
         it 'returns the value returned by the visitor' do
           expect(field.accept(visitor)).to eq "#{input_type} from visitor"
@@ -338,7 +338,7 @@ RSpec.describe CustomField, type: :model do
     end
 
     context 'for an unsupported field type' do
-      subject(:field) { build :custom_field, input_type: 'unsupported' }
+      subject(:field) { build(:custom_field, input_type: 'unsupported') }
 
       it 'raises an error' do
         expect { field.accept(visitor) }.to raise_error 'Unsupported input type: unsupported'
@@ -349,7 +349,7 @@ RSpec.describe CustomField, type: :model do
   describe 'title_multiloc behaviour for ideation section 1' do
     context 'continuous projects' do
       it 'returns a title containing the project input term regardless of what it is set to' do
-        resource = build :custom_form
+        resource = build(:custom_form)
         resource.participation_context.update! input_term: 'option'
         ignored_title = { en: 'anything' }
         section = described_class.new(
@@ -366,8 +366,8 @@ RSpec.describe CustomField, type: :model do
     # Do budget too
     context 'timeline projects' do
       it 'returns a title containing the current ideation/budget phase input term if there is a current phase' do
-        project = create :project_with_current_phase, current_phase_attrs: { input_term: 'question' }
-        resource = build :custom_form, participation_context: project
+        project = create(:project_with_current_phase, current_phase_attrs: { input_term: 'question' })
+        resource = build(:custom_form, participation_context: project)
         ignored_title = { en: 'anything' }
         section = described_class.new(
           resource: resource,
@@ -380,9 +380,9 @@ RSpec.describe CustomField, type: :model do
       end
 
       it 'returns a title containing the last phase input term if there is not a current ideation/budget phase' do
-        project = create :project_with_future_phases
+        project = create(:project_with_future_phases)
         project.phases.last.update! input_term: 'contribution'
-        resource = build :custom_form, participation_context: project
+        resource = build(:custom_form, participation_context: project)
 
         ignored_title = { en: 'anything' }
         section = described_class.new(

@@ -50,8 +50,8 @@ describe LocalProjectCopyService do
       )
     end
 
-    let!(:timeline_project) { create :project_with_past_ideation_and_current_information_phase }
-    let!(:folder) { create :project_folder }
+    let!(:timeline_project) { create(:project_with_past_ideation_and_current_information_phase) }
+    let!(:folder) { create(:project_folder) }
 
     it 'works' do
       project_count = Project.count

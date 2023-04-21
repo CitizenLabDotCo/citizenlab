@@ -61,7 +61,7 @@ describe MultiTenancy::Templates::Serializer do
       # reverted once the issue with projects losing their
       # admin publications is solved.
 
-      project = create :project
+      project = create(:project)
       project.admin_publication.delete
       expect(project.reload).to be_present
       serializer = described_class.new(Tenant.current)
@@ -72,12 +72,12 @@ describe MultiTenancy::Templates::Serializer do
     end
 
     it 'can deal with missing authors' do
-      idea = create :idea, author: nil
-      create :comment, post: idea
+      idea = create(:idea, author: nil)
+      create(:comment, post: idea)
 
       serializer = described_class.new Tenant.current
       template = serializer.run
-      tenant = create :tenant, locales: AppConfiguration.instance.settings('core', 'locales')
+      tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
       Apartment::Tenant.switch(tenant.schema_name) do
         MultiTenancy::TenantTemplateService.new.apply_template template
         expect(Comment.count).to eq 1
@@ -107,23 +107,23 @@ describe MultiTenancy::Templates::Serializer do
     it 'successfully copies over native surveys and responses' do
       IdeaStatus.create_defaults
 
-      continuous_project = create :continuous_native_survey_project
-      timeline_project = create :project_with_future_native_survey_phase
+      continuous_project = create(:continuous_native_survey_project)
+      timeline_project = create(:project_with_future_native_survey_phase)
       survey_phase = timeline_project.phases.last
-      ideation_phase = create :phase, participation_method: 'ideation', project: timeline_project
-      form1 = create :custom_form, participation_context: continuous_project
-      field1 = create :custom_field_linear_scale, :for_custom_form, resource: form1
-      form2 = create :custom_form, participation_context: survey_phase
-      field2 = create :custom_field, :for_custom_form, resource: form2
+      ideation_phase = create(:phase, participation_method: 'ideation', project: timeline_project)
+      form1 = create(:custom_form, participation_context: continuous_project)
+      field1 = create(:custom_field_linear_scale, :for_custom_form, resource: form1)
+      form2 = create(:custom_form, participation_context: survey_phase)
+      field2 = create(:custom_field, :for_custom_form, resource: form2)
 
-      create :idea, project: continuous_project, custom_field_values: { field1.key => 1 }
-      create :idea, project: timeline_project, phases: [ideation_phase]
-      create :idea, project: timeline_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_values: { field2.key => 'My value' }
+      create(:idea, project: continuous_project, custom_field_values: { field1.key => 1 })
+      create(:idea, project: timeline_project, phases: [ideation_phase])
+      create(:idea, project: timeline_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_values: { field2.key => 'My value' })
 
       serializer = described_class.new Tenant.current
       template = serializer.run
 
-      tenant = create :tenant
+      tenant = create(:tenant)
       tenant.switch do
         IdeaStatus.create_defaults
         expect(Project.count).to eq 0
@@ -152,7 +152,7 @@ describe MultiTenancy::Templates::Serializer do
       description_multiloc = {
         'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
       }
-      field = create :custom_field, :for_custom_form, description_multiloc: description_multiloc
+      field = create(:custom_field, :for_custom_form, description_multiloc: description_multiloc)
       field.update! description_multiloc: TextImageService.new.swap_data_images(field, :description_multiloc)
 
       serializer = described_class.new Tenant.current
@@ -174,13 +174,13 @@ describe MultiTenancy::Templates::Serializer do
     end
 
     it 'skips custom field values with ID references' do
-      project = create :continuous_native_survey_project
-      custom_form = create :custom_form, participation_context: project
+      project = create(:continuous_native_survey_project)
+      custom_form = create(:custom_form, participation_context: project)
       supported_fields = %i[custom_field_number custom_field_linear_scale custom_field_checkbox].map do |factory|
-        create factory, :for_custom_form, resource: custom_form
+        create(factory, :for_custom_form, resource: custom_form)
       end
-      unsupported_field = create :custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form
-      response = create :native_survey_response, project: project
+      unsupported_field = create(:custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form)
+      response = create(:native_survey_response, project: project)
       custom_field_values = {
         supported_fields[0].key => 7,
         supported_fields[1].key => 1,
@@ -214,7 +214,7 @@ describe MultiTenancy::Templates::Serializer do
       ordering_of_source_causes = project.causes.order(:title_multiloc['en']).pluck(:ordering)
       serializer = described_class.new Tenant.current
       template = serializer.run
-      tenant = create :tenant, locales: AppConfiguration.instance.settings('core', 'locales')
+      tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
 
       Apartment::Tenant.switch(tenant.schema_name) do
         MultiTenancy::TenantTemplateService.new.apply_template template

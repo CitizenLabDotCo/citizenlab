@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Analytics::DimensionReferrerType, type: :model do
+RSpec.describe Analytics::DimensionReferrerType do
   subject { build(:dimension_referrer_type) }
 
   describe 'validations' do

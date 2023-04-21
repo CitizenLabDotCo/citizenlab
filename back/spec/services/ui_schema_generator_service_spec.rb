@@ -547,7 +547,7 @@ RSpec.describe UiSchemaGeneratorService do
   end
 
   describe '#visit_page' do
-    let(:field) { create :custom_field_page }
+    let(:field) { create(:custom_field_page) }
 
     it 'returns the schema for the given field' do
       expect(generator.visit_page(field)).to be_nil

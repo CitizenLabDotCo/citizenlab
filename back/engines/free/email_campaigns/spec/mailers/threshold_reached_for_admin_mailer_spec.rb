@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::ThresholdReachedForAdminMailer, type: :mailer do
+RSpec.describe EmailCampaigns::ThresholdReachedForAdminMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:assignee) { create(:admin, locale: 'en') }

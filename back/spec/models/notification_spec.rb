@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Notification, type: :model do
+RSpec.describe Notification do
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:notification)).to be_valid

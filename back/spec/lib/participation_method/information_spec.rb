@@ -5,11 +5,11 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::Information do
   subject(:participation_method) { described_class.new project }
 
-  let(:input) { create :idea }
-  let(:project) { create :continuous_project }
+  let(:input) { create(:idea) }
+  let(:project) { create(:continuous_project) }
 
   describe '#assign_defaults_for_participation_context' do
-    let(:project) { build :continuous_project }
+    let(:project) { build(:continuous_project) }
 
     it 'does not change the participation context' do
       expect do

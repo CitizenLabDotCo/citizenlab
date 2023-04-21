@@ -5,7 +5,7 @@ require 'rails_helper'
 # These tests do not verify the response bodies. See the acceptance tests for that.
 # The purpose of these tests is to describe that the side fx service hooks are triggered.
 
-RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, type: :controller do
+RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController do
   routes { ContentBuilder::Engine.routes }
   let(:user) { create(:admin) }
 
