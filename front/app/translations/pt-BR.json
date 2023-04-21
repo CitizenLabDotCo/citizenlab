@@ -38,6 +38,7 @@
   "app.components.Comments.commentingInitiativeNotPermitted": "Comentar está atualmente desativado.",
   "app.components.Comments.commentingMaybeNotPermitted": "Por favor {signInLink} para ver que ações você pode tomar.",
   "app.components.Comments.invisibleTitleComments": "Comentários",
+  "app.components.Comments.mostRecent": "Most recent",
   "app.components.Comments.mostUpvoted": "Mais votados",
   "app.components.Comments.official": "Oficial",
   "app.components.Comments.replyToComment": "Responder ao comentário",
