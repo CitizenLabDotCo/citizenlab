@@ -38,6 +38,7 @@
   "app.components.Comments.commentingInitiativeNotPermitted": "Kommentarer är för närvarande inte aktiverat.",
   "app.components.Comments.commentingMaybeNotPermitted": "Vänligen {signInLink} för att se vilka åtgärder som kan vidtas.",
   "app.components.Comments.invisibleTitleComments": "Kommentarer",
+  "app.components.Comments.mostRecent": "Senast genomförda",
   "app.components.Comments.mostUpvoted": "De flesta röstade",
   "app.components.Comments.official": "Officiell",
   "app.components.Comments.replyToComment": "Svara på kommentar",
