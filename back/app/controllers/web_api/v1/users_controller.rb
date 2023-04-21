@@ -114,11 +114,11 @@ class WebApi::V1::UsersController < ::ApplicationController
     if User::EMAIL_REGEX.match?(params[:email])
       @user = User.find_by email: params[:email]
       if @user && !@user&.no_password?
-        render json: { action: 'password' }
+        render json: raw_json({ action: 'password' })
       elsif @user&.registration_completed_at.present?
-        render json: { action: 'confirm' }
+        render json: raw_json({ action: 'confirm' })
       else
-        render json: { action: 'terms' }
+        render json: raw_json({ action: 'terms' })
       end
     else
       render json: { errors: { email: [{ error: 'invalid', value: params[:email] }] } }, status: :unprocessable_entity
