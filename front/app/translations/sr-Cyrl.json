@@ -1513,7 +1513,7 @@
   "app.errors.locale_inclusion": "Изаберите подржани језик",
   "app.errors.malformed_admin_value": "Администраторска вредност {value} која се налази у реду {row} није важећа",
   "app.errors.malformed_groups_value": "Група {value} која се налази у реду {row} није важећа група",
-  "app.errors.max_invites_limit_exceeded": "Максималан број дозвољених позивница је премашен.",
+  "app.errors.max_invites_limit_exceeded1": "The number of invitations exceeds the limit of 1000.",
   "app.errors.no_invites_specified": "Није могуће пронаћи ниједну адресу е-поште.",
   "app.errors.password_blank": "Ово не може бити празно",
   "app.errors.password_invalid": "Поново проверите своју тренутну лозинку.",
