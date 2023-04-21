@@ -45,7 +45,12 @@ const Invitation = ({ status, onSubmit }: Props) => {
   });
 
   const handleSubmit = ({ token }: FormValues) => {
-    onSubmit(token);
+    try {
+      onSubmit(token);
+    } catch (e) {
+      console.log('hello from catch block');
+      console.log(e);
+    }
   };
 
   const loading = status === 'pending';

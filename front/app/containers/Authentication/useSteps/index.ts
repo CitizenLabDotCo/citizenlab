@@ -10,6 +10,7 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 // hooks
 import useAnySSOEnabled from '../useAnySSOEnabled';
 import { useLocation } from 'react-router-dom';
+import useAuthUser from 'hooks/useAuthUser';
 
 // utils
 import { getStepConfig } from './stepConfig';
@@ -35,12 +36,14 @@ import {
   AuthenticationData,
 } from '../typings';
 import { SSOParams } from 'services/singleSignOn';
+import { isNilOrError } from 'utils/helperUtils';
 
 let initialized = false;
 
 export default function useSteps() {
   const anySSOEnabled = useAnySSOEnabled();
   const { pathname, search } = useLocation();
+  const authUser = useAuthUser();
 
   const authenticationDataRef = useRef<AuthenticationData | null>(null);
 
@@ -151,16 +154,19 @@ export default function useSteps() {
 
   useEffect(() => {
     if (initialized) return;
+    if (authUser === undefined) return;
     initialized = true;
     if (currentStep !== 'closed') return;
 
     if (pathname.endsWith('/invite')) {
-      authenticationDataRef.current = {
-        flow: 'signup',
-        context: GLOBAL_CONTEXT,
-      };
+      if (isNilOrError(authUser)) {
+        authenticationDataRef.current = {
+          flow: 'signup',
+          context: GLOBAL_CONTEXT,
+        };
 
-      transition(currentStep, 'START_INVITE_FLOW')(search);
+        transition(currentStep, 'START_INVITE_FLOW')(search);
+      }
 
       // Remove all parameters from URL as they've already been captured
       window.history.replaceState(null, '', '/');
@@ -195,7 +201,7 @@ export default function useSteps() {
 
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')();
     }
-  }, [pathname, search, currentStep, transition]);
+  }, [pathname, search, currentStep, transition, authUser]);
 
   return {
     currentStep,

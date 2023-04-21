@@ -1,12 +1,9 @@
-import { API_PATH } from 'containers/App/constants';
-import request from 'utils/request';
+import fetcher from 'utils/cl-react-query/fetcher';
 import { IUser } from 'services/users';
 
 export default function getUserDataFromToken(token: string) {
-  return request<IUser>(
-    `${API_PATH}/users/by_invite/${token}`,
-    null,
-    { method: 'GET' },
-    null
-  );
+  return fetcher<IUser>({
+    path: `/users/by_invite/${token}`,
+    action: 'get',
+  });
 }
