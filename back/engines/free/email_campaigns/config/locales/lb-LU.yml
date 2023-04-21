@@ -132,7 +132,7 @@ lb:
       today_by_author: 'Haut vun %{author}'
       x_days_ago_by_author: 'Virun %{x} Deeg vum %{author}'
     admin_rights_received:
-      cta_moderate_platform: 'Är Plattform moderéieren'
+      cta_manage_platform: 'Verwalten Är Plattform'
       message_you_became_administrator: 'Dir krut Administratorrechter fir d''participativ Plattform vum %{organizationName}.'
       preheader: 'Dir krut Administratorrechter fir d''participativ Plattform vum %{organizationName}'
       subject: 'Dir sidd en Administrateur vun der Bedeelegungsplattform vun %{organizationName} ginn'
@@ -260,7 +260,7 @@ lb:
       preheader: 'Zesummefaassung fir Projetsmanagere vun %{organizationName}'
       title_your_weekly_report: '%{firstName}, Äre wéchentleche Rapport'
       text_introduction: 'Hei eng Auswiel vun de Beiträg mat der meeschter Aktivitéit aus der leschter Woch. Fannt eraus wat op Ärer Plattform geschitt!'
-      cta_moderate: 'Moderéiert Äre Projet'
+      cta_manage: 'Verwalte Äre Projet'
       new_users: 'Nei Notzeren'
       new_ideas: 'Nei Iddien'
       new_comments: 'Nei Kommentaren'
@@ -386,7 +386,7 @@ lb:
       subject: 'Dir hutt en offiziellen Update op der Plattform vun %{organizationName} kritt'
       preheader: '%{officialName} huet en offiziellen Update zu Ärem Virschlag hannerlooss'
     project_moderation_rights_received:
-      cta_moderate_project: 'Dëse Projet moderéieren'
+      cta_manage_project: 'Verwalten dëse Projet'
       message_you_became_moderator: 'En Administrateur vun der participativer Plattform %{organizationName} huet Iech grad zum Projetsmanager vum folgende Projet gemaach:'
       no_ideas: 'Nach keng Iddien'
       preheader: 'En Administrateur vun der participativer Plattform %{organizationName} huet Iech grad zum Projetsmanager vum folgende Projet gemaach'
