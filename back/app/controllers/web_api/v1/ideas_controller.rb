@@ -59,10 +59,9 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def index_xlsx
     ideas = IdeasFinder.new(
-      params,
+      params.merge(filter_can_moderate: true),
       scope: policy_scope(Idea).where(publication_status: 'published'),
       current_user: current_user,
-      filter_can_moderate: true,
       includes: %i[author topics project idea_status idea_files],
       paginate: false
     ).find_records
