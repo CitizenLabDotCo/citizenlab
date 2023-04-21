@@ -26,7 +26,8 @@ resource 'Users' do
       parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', " \
                        "'-email', 'role', '-role'", required: false
       parameter :group, 'Filter by group_id', required: false
-      parameter :can_moderate, 'All admins + users with either a project &/or folder moderator role', required: false
+      parameter :can_moderate, 'Return only admins and moderators', required: false
+      parameter :can_admin, 'Return only admins', required: false
       parameter :can_moderate_project, 'All admins + users who can moderate the project (by project id), ' \
                                        'excluding folder moderators of folder containing project ' \
                                        '(who can, in fact, moderate the project), ' \
@@ -344,7 +345,8 @@ resource 'Users' do
         parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
         parameter :group, 'Filter by group_id', required: false
         parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
-        parameter :can_moderate, 'Filter out admins and moderators', required: false
+        parameter :can_moderate, 'Return only admins and moderators', required: false
+        parameter :can_admin, 'Return only admins', required: false
         parameter :blocked, 'Return only blocked users', required: false
 
         example_request 'List all users' do
