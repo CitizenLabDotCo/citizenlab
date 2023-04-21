@@ -217,7 +217,7 @@ namespace :inconsistent_data do
             end
             next unless tups.count > 0
 
-            tups.map { |tup| tup['id'] }.each do |id|
+            tups.pluck('id').each do |id|
               obj = claz.find id
               multiloc = obj[col]
               multiloc.each_key do |k|

@@ -1207,6 +1207,6 @@ resource 'Ideas' do
   private
 
   def encode_file_as_base64(filename)
-    "data:application/pdf;base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
+    "data:application/pdf;base64,#{Base64.encode64(Rails.root.join('spec', 'fixtures', filename).read)}"
   end
 end

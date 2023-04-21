@@ -71,7 +71,7 @@ describe SideFxProjectService do
 
   describe 'after_destroy' do
     it "logs a 'deleted' action job when the project is destroyed" do
-      travel_to Time.now do
+      freeze_time do
         frozen_project = project.destroy
         expect { service.after_destroy(frozen_project, user) }
           .to have_enqueued_job(LogActivityJob)
