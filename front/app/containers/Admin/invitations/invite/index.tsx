@@ -24,9 +24,9 @@ import HelmetIntl from 'components/HelmetIntl';
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
 const InviteUsersWithSeatsModal = lazy(
-  () => import('components/SeatBasedBilling/InviteUsersWithSeatsModal')
+  () => import('components/admin/SeatBasedBilling/InviteUsersWithSeatsModal')
 );
-import SeatInfo from 'components/SeatBasedBilling/SeatInfo';
+import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';

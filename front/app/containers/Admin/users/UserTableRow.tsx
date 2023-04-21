@@ -15,7 +15,7 @@ import BlockUser from 'components/admin/UserBlockModals/BlockUser';
 import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
 import Link from 'utils/cl-router/Link';
 const ChangeSeatModal = lazy(
-  () => import('components/SeatBasedBilling/ChangeSeatModal')
+  () => import('components/admin/SeatBasedBilling/ChangeSeatModal')
 );
 
 // Translation

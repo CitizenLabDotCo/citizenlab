@@ -7,7 +7,7 @@ import SeatSetSuccess from '../SeatSetSuccess';
 
 // Translation
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import SeatInfo from 'components/SeatBasedBilling/SeatInfo';
+import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import messages from './messages';
 
 // hooks
@@ -18,7 +18,7 @@ import useExceedsSeats from 'hooks/useExceedsSeats';
 import { isRegularUser, isAdmin } from 'services/permissions/roles';
 
 import { IUserData } from 'services/users';
-import BillingWarning from 'components/SeatBasedBilling/SeatInfo/BillingWarning';
+import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';
 
 const getInfoText = (
   isUserAdmin: boolean,

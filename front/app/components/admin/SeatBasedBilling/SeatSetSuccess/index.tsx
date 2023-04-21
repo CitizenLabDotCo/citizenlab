@@ -12,7 +12,7 @@ import {
 import {
   SeatTypeMessageDescriptor,
   TSeatType,
-} from 'components/SeatBasedBilling/SeatInfo';
+} from 'components/admin/SeatBasedBilling/SeatInfo';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';

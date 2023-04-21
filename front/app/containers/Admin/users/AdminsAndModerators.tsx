@@ -3,7 +3,7 @@ import { isString, isEmpty } from 'lodash-es';
 
 import UserManager from './UserManager';
 import UsersHeader from './UsersHeader';
-import SeatInfo from 'components/SeatBasedBilling/SeatInfo';
+import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import { Box } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import styled from 'styled-components';
