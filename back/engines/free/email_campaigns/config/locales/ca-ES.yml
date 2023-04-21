@@ -132,7 +132,7 @@ ca:
       today_by_author: 'Avui a les %{author}'
       x_days_ago_by_author: 'fa %{x} dies per %{author}'
     admin_rights_received:
-      cta_moderate_platform: 'Modera la teva plataforma'
+      cta_manage_platform: 'Gestiona la teva plataforma'
       message_you_became_administrator: 'Se t''han concedit drets d''administrador per a la plataforma de participació de %{organizationName}.'
       preheader: 'Se''t van concedir drets d''administrador per a la plataforma de participació de %{organizationName}'
       subject: 'T''has convertit en administrador a la plataforma de %{organizationName}'
@@ -260,7 +260,7 @@ ca:
       preheader: 'Resum del gestor de projectes de %{organizationName}'
       title_your_weekly_report: '%{firstName}, el teu informe setmanal'
       text_introduction: 'Hem seleccionat per a tu l''entrada que ha generat més activitat durant la setmana passada. Descobreix què està passant amb el teu projecte!'
-      cta_moderate: 'Modera el teu projecte'
+      cta_manage: 'Gestiona el teu projecte'
       new_users: 'Usuaris nous'
       new_ideas: 'Noves idees'
       new_comments: 'Nous comentaris'
@@ -386,7 +386,7 @@ ca:
       subject: 'Heu rebut una actualització oficial a la plataforma de %{organizationName}'
       preheader: '%{officialName} ha deixat una actualització oficial de la teva proposta'
     project_moderation_rights_received:
-      cta_moderate_project: 'Modera aquest projecte'
+      cta_manage_project: 'Gestionar aquest projecte'
       message_you_became_moderator: 'Un administrador de la plataforma de participació de %{organizationName} us acaba de fer cap de projecte del següent projecte:'
       no_ideas: 'Encara no hi ha idees'
       preheader: 'Un administrador de la plataforma de participació de %{organizationName} us acaba de convertir en cap de projecte del següent projecte'
