@@ -38,6 +38,7 @@
   "app.components.Comments.commentingInitiativeNotPermitted": "Els comentaris no estan activats actualment.",
   "app.components.Comments.commentingMaybeNotPermitted": "{signInLink} per veure quines accions es poden dur a terme.",
   "app.components.Comments.invisibleTitleComments": "Comentaris",
+  "app.components.Comments.mostRecent": "Més recent",
   "app.components.Comments.mostUpvoted": "La majoria va votar",
   "app.components.Comments.official": "Oficial",
   "app.components.Comments.replyToComment": "Respondre al comentari",
