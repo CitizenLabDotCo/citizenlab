@@ -38,6 +38,7 @@
   "app.components.Comments.commentingInitiativeNotPermitted": "Je hebt niet de nodige rechten om te kunnen reageren.",
   "app.components.Comments.commentingMaybeNotPermitted": "Niet iedereen kan reageren. {signInLink} om te zien of je aan de voorwaarden voldoet.",
   "app.components.Comments.invisibleTitleComments": "Reacties",
+  "app.components.Comments.mostRecent": "Meest recente",
   "app.components.Comments.mostUpvoted": "Meeste stemmen",
   "app.components.Comments.official": "Officieel",
   "app.components.Comments.replyToComment": "Antwoord op de reactie",
