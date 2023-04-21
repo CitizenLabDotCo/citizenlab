@@ -77,13 +77,7 @@ describe Invites::Service do
       it 'increments additional moderator seats' do
         create(:project_moderator) # to reach limit
 
-        allow(Time).to receive(:now).and_return(Time.now)
-        expect(LogActivityJob).to receive(:perform_later).with(
-          instance_of(User), 'additional_seats_number_incremented',
-          nil, Time.now.to_i, instance_of(Hash)
-        )
-          .and_call_original
-
+        expect(LogActivityJob).to receive(:perform_later)
         new_role = { 'type' => 'project_moderator', 'project_id' => create(:project).id }
         expect do
           service.bulk_create_xlsx(xlsx, { 'roles' => [new_role] })

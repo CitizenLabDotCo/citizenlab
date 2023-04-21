@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class IncrementAdditionalSeatsService
+class AdditionalSeatsIncrementer
   class << self
     def increment_if_necessary(updated_user, current_user)
       role = (updated_user.roles - updated_user.roles_previously_was).first
