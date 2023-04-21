@@ -38,6 +38,7 @@
   "app.components.Comments.commentingInitiativeNotPermitted": "ميزة التعليق معطّلة حاليًا.",
   "app.components.Comments.commentingMaybeNotPermitted": "لا يُسمح للجميع بالتعليق. يُرجى {signInLink} لتعرف إن كنت تمتثل للشروط أم لا.",
   "app.components.Comments.invisibleTitleComments": "التعليقات",
+  "app.components.Comments.mostRecent": "الأحدث",
   "app.components.Comments.mostUpvoted": "الأكثر تصويتًا",
   "app.components.Comments.official": "رسمي",
   "app.components.Comments.replyToComment": "رد على التعليق",
