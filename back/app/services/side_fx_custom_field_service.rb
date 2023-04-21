@@ -15,6 +15,7 @@ class SideFxCustomFieldService
   end
 
   def after_update(custom_field, current_user)
+    puts "after_update_custom_field: #{custom_field.inspect}"
     LogActivityJob.perform_later(custom_field, 'changed', current_user, custom_field.updated_at.to_i)
   end
 
@@ -23,6 +24,7 @@ class SideFxCustomFieldService
   end
 
   def after_destroy(frozen_custom_field, current_user)
+    puts "after_destroy_custom_field: #{frozen_custom_field.inspect}"
     serialized_custom_field = clean_time_attributes(frozen_custom_field.attributes)
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_custom_field),
