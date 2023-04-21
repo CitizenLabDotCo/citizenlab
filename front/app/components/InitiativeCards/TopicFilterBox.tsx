@@ -12,7 +12,6 @@ import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import styled from 'styled-components';
 
 // typings
-import { ITopicData } from 'services/topics';
 
 const Container = styled.div``;
 
@@ -45,9 +44,7 @@ const TopicFilterBox = memo<Props>(
       return (
         <Container className={className}>
           <TopicsFilter
-            topics={
-              topics.filter((topic) => !isNilOrError(topic)) as ITopicData[]
-            }
+            topics={topics.filter((topic) => !isNilOrError(topic))}
             selectedTopicIds={selectedTopicIds}
             onChange={handleOnChange}
           />

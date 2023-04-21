@@ -50,7 +50,7 @@ const T = (props: Props) => {
     );
 
     if (children) {
-      return (children as children)(localizedText);
+      return children(localizedText);
     }
 
     if (supportHtml) {

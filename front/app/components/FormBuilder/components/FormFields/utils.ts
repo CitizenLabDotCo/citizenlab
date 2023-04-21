@@ -4,7 +4,6 @@ import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
   IOptionsType,
-  QuestionRuleType,
 } from 'services/formCustomFields';
 
 // styling
@@ -78,7 +77,7 @@ export const getOptionRule = (
       (rule) => rule.if === option.id || rule.if === option.temp_id
     );
     if (rule && rule.if && rule.goto_page_id) {
-      return rule as QuestionRuleType;
+      return rule;
     }
   }
   return undefined;

@@ -22,10 +22,9 @@ describe('SmartSurvey', () => {
         user_id={'user1'}
       />
     );
-    const displayedImage = screen.getByTestId(
-      'smartsurvey'
-    ) as HTMLImageElement;
-    expect(displayedImage.src).toContain(
+    const displayedImage = screen.getByTestId('smartsurvey');
+    expect(displayedImage).toHaveAttribute(
+      'src',
       'https://www.smartsurvey.co.uk/s/LU3JMS/?email=test%40mail.com&user_id=user1'
     );
   });
@@ -39,10 +38,9 @@ describe('SmartSurvey', () => {
         user_id={'user1'}
       />
     );
-    const displayedImage = screen.getByTestId(
-      'smartsurvey'
-    ) as HTMLImageElement;
-    expect(displayedImage.src).toContain(
+    const displayedImage = screen.getByTestId('smartsurvey');
+    expect(displayedImage).toHaveAttribute(
+      'src',
       'https://www.smartsurvey.co.uk/s/LU3JMS/?existingParam=value&email=test%40mail.com&user_id=user1'
     );
   });
