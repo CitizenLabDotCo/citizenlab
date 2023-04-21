@@ -35,7 +35,7 @@ describe SideFxUserService do
 
   describe 'after_update' do
     it "logs a 'changed_avatar' action job when the avatar has changed" do
-      user.update(avatar: File.open(Rails.root.join('spec', 'fixtures', 'lorem-ipsum.jpg')))
+      user.update(avatar: Rails.root.join('spec', 'fixtures', 'lorem-ipsum.jpg').open)
       expect { service.after_update(user, current_user) }
         .to have_enqueued_job(LogActivityJob).with(user, 'changed', current_user, user.updated_at.to_i)
     end
