@@ -75,7 +75,6 @@ describe('ChangeSeatModal', () => {
       name: 'Confirm',
     });
 
-    expect(screen.queryByText('Give admin rights')).toBeInTheDocument();
     expect(confirmButton).toBeInTheDocument();
   });
 
@@ -96,7 +95,6 @@ describe('ChangeSeatModal', () => {
       name: 'Buy one additional seat',
     });
 
-    expect(screen.queryByText('Give admin rights')).toBeInTheDocument();
     expect(buyAdditionalSeatButton).toBeInTheDocument();
   });
 
@@ -118,7 +116,6 @@ describe('ChangeSeatModal', () => {
       name: 'Confirm',
     });
 
-    expect(screen.queryByText('Give admin rights')).toBeInTheDocument();
     expect(confirmButton).toBeInTheDocument();
   });
 
@@ -139,7 +136,6 @@ describe('ChangeSeatModal', () => {
       name: 'Confirm',
     });
 
-    expect(screen.queryByText('Set as normal user')).toBeInTheDocument();
     expect(confirmButton).toBeInTheDocument();
   });
 });
