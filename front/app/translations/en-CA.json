@@ -38,6 +38,7 @@
   "app.components.Comments.commentingInitiativeNotPermitted": "Commenting is currently not enabled.",
   "app.components.Comments.commentingMaybeNotPermitted": "Please {signInLink} to see what actions can be taken.",
   "app.components.Comments.invisibleTitleComments": "Comments",
+  "app.components.Comments.mostRecent": "Most recent",
   "app.components.Comments.mostUpvoted": "Most voted",
   "app.components.Comments.official": "Official",
   "app.components.Comments.replyToComment": "Reply to comment",
