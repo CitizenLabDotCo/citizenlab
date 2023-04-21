@@ -37,7 +37,7 @@ export interface InputProps {
   canModerate?: boolean;
   // Doesn't work with false
   // https://citizenlab.atlassian.net/browse/CL-3226
-  canAdmin?: boolean;
+  canAdmin?: true;
   onlyBlocked?: boolean;
   notCitizenlabMember?: boolean;
   // Not used
