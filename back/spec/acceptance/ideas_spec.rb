@@ -660,6 +660,7 @@ resource 'Ideas' do
             assert_status 201
             idea = Idea.find(json_parse(response_body).dig(:data, :id))
             expect(idea.assignee_id).to be_nil
+            expect(idea.assignee_at).to be_nil
           end
         end
 
