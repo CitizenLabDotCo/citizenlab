@@ -1513,7 +1513,7 @@
   "app.errors.locale_inclusion": "Per favore scegli una lingua supportata",
   "app.errors.malformed_admin_value": "Il valore admin {value} trovato nella riga {row} non è valido",
   "app.errors.malformed_groups_value": "Il gruppo {value} trovato nella riga {row} non è un gruppo valido",
-  "app.errors.max_invites_limit_exceeded": "Il numero massimo di inviti consentiti è stato superato.",
+  "app.errors.max_invites_limit_exceeded1": "Il numero di inviti supera il limite di 1000.",
   "app.errors.no_invites_specified": "Non è stato possibile trovare alcun indirizzo e-mail.",
   "app.errors.password_blank": "Questo non può essere vuoto",
   "app.errors.password_invalid": "Si prega di ricontrollare la password attuale.",
