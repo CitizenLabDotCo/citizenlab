@@ -38,6 +38,7 @@
   "app.components.Comments.commentingInitiativeNotPermitted": "Du kan ikke kommentere.",
   "app.components.Comments.commentingMaybeNotPermitted": "Ikke alle har adgang til å kommentere. Du kan {signInLink} for å se om du har adgang.",
   "app.components.Comments.invisibleTitleComments": "Kommentarer",
+  "app.components.Comments.mostRecent": "Senest",
   "app.components.Comments.mostUpvoted": "Populært",
   "app.components.Comments.official": "Offisiell",
   "app.components.Comments.replyToComment": "Svar på kommentar",
