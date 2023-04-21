@@ -132,7 +132,7 @@ sr-Latn:
       today_by_author: 'Danas od autora %{author}'
       x_days_ago_by_author: 'pre %{x} dana od %{author}'
     admin_rights_received:
-      cta_moderate_platform: 'Moderirajte svoju platformu'
+      cta_manage_platform: 'Управљајте својом платформом'
       message_you_became_administrator: 'Dodeljena su vam administratorska prava za %{organizationName} platformu.'
       preheader: 'Dodeljena su vam administratorska prava za %{organizationName} platformu'
       subject: 'Postali ste administrator na %{organizationName} platformi'
@@ -260,7 +260,7 @@ sr-Latn:
       preheader: 'Sažetak za menadžere projekta %{organizationName}'
       title_your_weekly_report: '%{firstName}, vaš nedeljni izveštaj'
       text_introduction: 'Odabrali smo objave koje su bile najpopularnije tokom prethodne nedelje. Budite u toku sa dešavanjima u vezi vašeg projekta!'
-      cta_moderate: 'Moderirajte svoj projekat'
+      cta_manage: 'Управљајте својим пројектом'
       new_users: 'Novi korisnici'
       new_ideas: 'Nove ideje'
       new_comments: 'Novi komentari'
@@ -386,7 +386,7 @@ sr-Latn:
       subject: 'Dobili ste zvanično obaveštenje na platformi %{organizationName}'
       preheader: '%{officialName} je zvanično ažurirao vaš predlog'
     project_moderation_rights_received:
-      cta_moderate_project: 'Moderirajte ovaj projekat'
+      cta_manage_project: 'Управљајте овим пројектом'
       message_you_became_moderator: 'Administrator %{organizationName} participativne platforme vas je postavio za menadžera sledećeg projekta:'
       no_ideas: 'Još uvek nema ideja'
       preheader: 'Administrator %{organizationName} participativne platforme vas je postavio za menadžera sledećeg projekta'
