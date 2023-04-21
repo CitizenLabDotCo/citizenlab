@@ -38,6 +38,7 @@
   "app.components.Comments.commentingInitiativeNotPermitted": "Du har ikke rettigheder til at kommentere.",
   "app.components.Comments.commentingMaybeNotPermitted": "Brug venligst {signInLink} for at se hvilke handlinger der kan udføres",
   "app.components.Comments.invisibleTitleComments": "Kommentarer",
+  "app.components.Comments.mostRecent": "Seneste",
   "app.components.Comments.mostUpvoted": "Flest stemmer",
   "app.components.Comments.official": "Officiel",
   "app.components.Comments.replyToComment": "Besvar kommentar",
