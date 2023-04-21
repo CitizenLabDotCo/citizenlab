@@ -300,6 +300,13 @@ RSpec/VerifiedDoubles:
     - 'engines/commercial/multi_tenancy/spec/services/track_intercom_service_spec.rb'
     - 'spec/services/track_intercom_service_spec.rb'
 
+# Offense count: 2
+# This cop supports unsafe autocorrection (--autocorrect-all).
+Rails/ActiveSupportOnLoad:
+  Exclude:
+    - 'config/initializers/carrierwave.rb'
+    - 'engines/commercial/multi_tenancy/config/initializers/active_job.rb'
+
 # Offense count: 3
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: Include.
@@ -403,7 +410,19 @@ Rails/ReversibleMigration:
 Rails/SkipsModelValidations:
   Enabled: false
 
-# Offense count: 193
+# Offense count: 10
+# Configuration parameters: Include.
+# Include: db/**/*.rb
+Rails/ThreeStateBooleanColumn:
+  Exclude:
+    - 'db/migrate/20171204155602_add_cl1_migrated_to_users.rb'
+    - 'db/migrate/20180108144026_add_participation_context_to_projects.rb'
+    - 'db/migrate/20180108144119_add_participation_context_to_phases.rb'
+    - 'db/migrate/20180220142344_create_custom_fields.rb'
+    - 'db/migrate/20180815114121_create_campaigns.email_campaigns.rb'
+    - 'db/migrate/20180815114124_create_consents.email_campaigns.rb'
+
+# Offense count: 176
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: strict, flexible
@@ -424,7 +443,7 @@ Rails/UniqueValidationWithoutIndex:
     - 'app/models/vote.rb'
 
 # Offense count: 1
-# Configuration parameters: Environments.
+# Configuration parameters: Severity, Environments.
 # Environments: development, test, production
 Rails/UnknownEnv:
   Exclude:
@@ -482,7 +501,7 @@ Style/FetchEnvVar:
     - 'engines/free/surveys/spec/acceptance/typeform_events_spec.rb'
     - 'spec/spec_helper.rb'
 
-# Offense count: 13
+# Offense count: 12
 Style/MultilineBlockChain:
   Exclude:
     - 'app/models/notifications/threshold_reached_for_admin.rb'

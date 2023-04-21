@@ -112,7 +112,7 @@ resource 'Volunteering Causes' do
       let(:id) { cause.id }
       let(:title_multiloc) { { 'en' => 'Shop for your neighbour' } }
       let(:description_multiloc) { { 'en' => "Because it's fun!" } }
-      let(:image) { "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join('spec/fixtures/image14.png')))}" }
+      let(:image) { "data:image/png;base64,#{Base64.encode64(Rails.root.join('spec/fixtures/image14.png').read)}" }
 
       example_request 'Update a cause' do
         expect(response_status).to eq 200
