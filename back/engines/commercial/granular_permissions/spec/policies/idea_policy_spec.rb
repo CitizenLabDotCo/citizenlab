@@ -7,11 +7,11 @@ describe IdeaPolicy do
 
   before do
     IdeaStatus.create_defaults
-    @idea = create :idea, project: project, author: author
+    @idea = create(:idea, project: project, author: author)
   end
 
   let(:scope) { IdeaPolicy::Scope.new(user, project.ideas) }
-  let(:author) { create :user }
+  let(:author) { create(:user) }
   let(:permitted_by) { 'admins_moderators' }
   let(:participation_method) { 'ideation' }
   let(:posting_enabled) { true }

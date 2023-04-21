@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Notifications::ProjectPhaseStarted, type: :model do
+RSpec.describe Notifications::ProjectPhaseStarted do
   describe 'make_notifications_on' do
     let(:project) { create(:project_with_current_phase) }
     let(:activity) { create(:activity, item: project.phases[2], action: 'started') }

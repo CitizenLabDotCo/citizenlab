@@ -150,8 +150,8 @@ describe XlsxService do
 
     context 'when a project has no custom form - and therefore no fields' do
       before do
-        @project_no_form = create :project
-        @idea = create :idea, project: @project_no_form
+        @project_no_form = create(:project)
+        @idea = create(:idea, project: @project_no_form)
       end
 
       let(:xlsx) { service.generate_ideas_xlsx([@idea], view_private_attributes: false) }
@@ -170,9 +170,9 @@ describe XlsxService do
 
     context 'when there is a mix of projects with custom fields and without' do
       before do
-        @project_no_form = create :project
-        @project_with_form = create :project
-        @form = create :custom_form, participation_context: @project_with_form
+        @project_no_form = create(:project)
+        @project_with_form = create(:project)
+        @form = create(:custom_form, participation_context: @project_with_form)
         create(
           :custom_field,
           :for_custom_form,
@@ -182,8 +182,8 @@ describe XlsxService do
           key: 'number_field',
           title_multiloc: { 'en' => 'How many sugars?' }
         )
-        @idea1 = create :idea, project: @project_no_form
-        @idea2 = create :idea, project: @project_with_form, custom_field_values: { 'number_field' => 5 }
+        @idea1 = create(:idea, project: @project_no_form)
+        @idea2 = create(:idea, project: @project_with_form, custom_field_values: { 'number_field' => 5 })
       end
 
       let(:xlsx) { service.generate_ideas_xlsx([@idea1, @idea2], view_private_attributes: false) }

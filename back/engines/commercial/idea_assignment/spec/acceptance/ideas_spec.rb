@@ -10,7 +10,7 @@ resource 'Ideas' do
 
   context 'when admin' do
     before do
-      @user = create :admin
+      @user = create(:admin)
       token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
@@ -23,9 +23,9 @@ resource 'Ideas' do
       parameter :assignee, 'Filter by assignee (user id)', required: false
 
       example 'List all ideas for an assignee' do
-        assignee = create :admin
-        idea = create :idea, assignee: assignee
-        create_list :idea, 2, assignee: create(:admin)
+        assignee = create(:admin)
+        idea = create(:idea, assignee: assignee)
+        create_list(:idea, 2, assignee: create(:admin))
 
         do_request assignee: assignee.id
 
@@ -44,9 +44,9 @@ resource 'Ideas' do
       parameter :assignee, 'Filter by assignee (user id)', required: false
 
       example 'List all idea markers by assignee' do
-        assignee = create :admin
-        ideas = create_list :idea, 2, assignee: assignee
-        create_list :idea, 3, assignee: create(:admin)
+        assignee = create(:admin)
+        ideas = create_list(:idea, 2, assignee: assignee)
+        create_list(:idea, 3, assignee: create(:admin))
 
         do_request assignee: assignee.id
 
@@ -61,9 +61,9 @@ resource 'Ideas' do
       parameter :assignee, 'Filter by assignee (user id)', required: false
 
       example 'XLSX export by assignee' do
-        assignee = create :admin
-        ideas = create_list :idea, 2, assignee: assignee
-        create :idea
+        assignee = create(:admin)
+        ideas = create_list(:idea, 2, assignee: assignee)
+        create(:idea)
 
         do_request assignee: assignee.id
 
@@ -98,7 +98,7 @@ resource 'Ideas' do
       response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
       before do
-        create :idea_status, code: 'proposed'
+        create(:idea_status, code: 'proposed')
       end
 
       let(:idea) { build(:idea) }
@@ -110,7 +110,7 @@ resource 'Ideas' do
       let(:body_multiloc) { idea.body_multiloc }
 
       example 'Create an idea with assignee' do
-        assignee = create :admin
+        assignee = create(:admin)
         do_request(idea: { assignee_id: assignee.id })
 
         expect(response_status).to eq 201
@@ -136,8 +136,8 @@ resource 'Ideas' do
     response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
     before do
-      @project = create :continuous_project
-      @idea =  create :idea, project: @project
+      @project = create(:continuous_project)
+      @idea =  create(:idea, project: @project)
     end
 
     let(:id) { @idea.id }
@@ -186,7 +186,7 @@ resource 'Ideas' do
 
     context 'when moderator', if: defined?(ProjectManagement::Engine) do
       before do
-        @moderator = create :project_moderator, projects: [@project]
+        @moderator = create(:project_moderator, projects: [@project])
         token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end

@@ -75,7 +75,7 @@ resource 'Ideas' do
       end
 
       context 'when the field value is not valid', skip: 'Cannot be implemented yet' do
-        let!(:select_field) { create :custom_field_select, :with_options, :for_custom_form, key: 'custom_field_name2', resource: form, required: false }
+        let!(:select_field) { create(:custom_field_select, :with_options, :for_custom_form, key: 'custom_field_name2', resource: form, required: false) }
         let(:custom_field_name1) { 'test value' }
         let(:custom_field_name2) { 'unknown_option' }
 
@@ -93,8 +93,8 @@ resource 'Ideas' do
 
     context 'when the extra field is optional' do
       before do
-        form = create :custom_form, :with_default_fields, participation_context: project
-        create :custom_field_extra_custom_form, key: extra_field_name, required: false, resource: form
+        form = create(:custom_form, :with_default_fields, participation_context: project)
+        create(:custom_field_extra_custom_form, key: extra_field_name, required: false, resource: form)
       end
 
       context 'when the field value is given' do
@@ -170,7 +170,7 @@ resource 'Ideas' do
       end
 
       context 'when the field value is given and another field value is added' do
-        let!(:select_field) { create :custom_field_select, :with_options, :for_custom_form, key: extra_field_name2, resource: form, required: false }
+        let!(:select_field) { create(:custom_field_select, :with_options, :for_custom_form, key: extra_field_name2, resource: form, required: false) }
         let(:custom_field_name2) { 'option1' }
 
         patch 'web_api/v1/ideas/:id' do
@@ -234,14 +234,14 @@ resource 'Ideas' do
     patch 'web_api/v1/ideas/:id' do
       with_options(scope: :idea) { parameter :project_id }
 
-      let(:project) { create :project }
+      let(:project) { create(:project) }
       let(:project_id) { project.id }
 
       example 'Moving an idea to a project with required custom custom field', document: false do
         user.add_role 'admin'
         user.save!
-        form = create :custom_form, participation_context: project
-        create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number'
+        form = create(:custom_form, participation_context: project)
+        create(:custom_field, :for_custom_form, resource: form, required: true, input_type: 'number')
         do_request
 
         assert_status 200

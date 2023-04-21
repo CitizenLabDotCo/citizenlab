@@ -33,7 +33,7 @@ describe SideFxAreaService do
 
   describe 'after_destroy' do
     it "logs a 'deleted' action job when the area is destroyed" do
-      travel_to Time.now do
+      freeze_time do
         frozen_area = area.destroy
         expect { service.after_destroy(frozen_area, user) }
           .to have_enqueued_job(LogActivityJob)

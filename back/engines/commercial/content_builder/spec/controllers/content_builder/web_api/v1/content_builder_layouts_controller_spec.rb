@@ -5,7 +5,7 @@ require 'rails_helper'
 # These tests do not verify the response bodies. See the acceptance tests for that.
 # The purpose of these tests is to describe that the side fx service hooks are triggered.
 
-RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, type: :controller do
+RSpec.describe ContentBuilder::WebApi::V1::ContentBuilderLayoutsController do
   routes { ContentBuilder::Engine.routes }
   let(:user) { create(:admin) }
 
@@ -31,8 +31,8 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
           enabled: true,
           craftjs_jsonmultiloc: not_swapped_multiloc
         }
-        layout = ::ContentBuilder::Layout.new(attributes)
-        expect(::ContentBuilder::Layout).to receive(:new).with(attributes).ordered.and_return layout
+        layout = ContentBuilder::Layout.new(attributes)
+        expect(ContentBuilder::Layout).to receive(:new).with(attributes).ordered.and_return layout
         service = controller.send(:side_fx_service)
 
         expect(service).to receive(:before_create).with(
@@ -87,12 +87,12 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
           code: code,
           enabled: true
         }
-        layout = ::ContentBuilder::Layout.new(attributes)
-        expect(::ContentBuilder::Layout).to receive(:new).with(attributes).ordered.and_return layout
+        layout = ContentBuilder::Layout.new(attributes)
+        expect(ContentBuilder::Layout).to receive(:new).with(attributes).ordered.and_return layout
         service = controller.send(:side_fx_service)
 
         expect(service).to receive(:before_create).with(
-          an_instance_of(::ContentBuilder::Layout),
+          an_instance_of(ContentBuilder::Layout),
           user
         ).ordered.and_call_original
         expect(layout).to receive(:save).ordered.and_return false
@@ -124,7 +124,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
         }
         service = controller.send(:side_fx_service)
 
-        expect(::ContentBuilder::Layout).to receive(:find_by!).with(attributes).ordered.and_return layout
+        expect(ContentBuilder::Layout).to receive(:find_by!).with(attributes).ordered.and_return layout
         expect(service).to receive(:before_update).with(
           layout,
           user
@@ -180,7 +180,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
         }
         service = controller.send(:side_fx_service)
 
-        expect(::ContentBuilder::Layout).to receive(:find_by!).with(attributes).ordered.and_return layout
+        expect(ContentBuilder::Layout).to receive(:find_by!).with(attributes).ordered.and_return layout
         expect(service).to receive(:before_update).with(
           layout,
           user
@@ -213,7 +213,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
           code: code
         }
         service = controller.send(:side_fx_service)
-        expect(::ContentBuilder::Layout).to receive(:find_by!).with(attributes).ordered.and_return layout
+        expect(ContentBuilder::Layout).to receive(:find_by!).with(attributes).ordered.and_return layout
 
         expect(service).to receive(:before_destroy).with(
           layout,
@@ -243,7 +243,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
           code: code
         }
         service = controller.send(:side_fx_service)
-        expect(::ContentBuilder::Layout).to receive(:find_by!).with(attributes).ordered.and_return layout
+        expect(ContentBuilder::Layout).to receive(:find_by!).with(attributes).ordered.and_return layout
 
         expect(service).to receive(:before_destroy).with(
           layout,

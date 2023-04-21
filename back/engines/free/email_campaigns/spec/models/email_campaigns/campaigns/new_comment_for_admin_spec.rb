@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin, type: :model do
+RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin do
   describe 'NewCommentForAdmin Campaign default factory' do
     it 'is valid' do
       expect(build(:new_comment_for_admin_campaign)).to be_valid

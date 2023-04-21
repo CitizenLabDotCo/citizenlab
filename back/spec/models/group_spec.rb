@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Group, type: :model do
+RSpec.describe Group do
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:group)).to be_valid

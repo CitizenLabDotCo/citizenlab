@@ -78,7 +78,7 @@ describe SmartGroups::RulesService do
 
   describe 'filter' do
     it 'filters users with a combination of diverse rules' do
-      result = service.filter ::User, rules
+      result = service.filter User, rules
       expect(result.count).to eq 1
     end
   end

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::NewInitiativeForAdmin, type: :model do
+RSpec.describe EmailCampaigns::Campaigns::NewInitiativeForAdmin do
   describe 'NewInitiativeForAdmin Campaign default factory' do
     it 'is valid' do
       expect(build(:new_initiative_for_admin_campaign)).to be_valid

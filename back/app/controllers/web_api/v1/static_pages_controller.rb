@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::StaticPagesController < ::ApplicationController
+class WebApi::V1::StaticPagesController < ApplicationController
   skip_before_action :authenticate_user, only: %i[index show by_slug]
   before_action :set_page, only: %i[show update destroy]
 

@@ -6,9 +6,7 @@ module EmailCampaigns
       recipient = User.admin.first
       command = {
         recipient: recipient,
-        event_payload: {
-
-        }
+        event_payload: {}
       }
       campaign = EmailCampaigns::Campaigns::AdminRightsReceived.first
 

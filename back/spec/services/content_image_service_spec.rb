@@ -57,7 +57,7 @@ describe ContentImageService do
     end
   end
   let(:service) { subclass.new }
-  let(:text_images) { create_list :text_image, 2 }
+  let(:text_images) { create_list(:text_image, 2) }
 
   describe 'swap_data_images' do
     before { allow(TextImage).to receive(:create!).and_return(text_images[0], text_images[1]) }

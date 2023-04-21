@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe TextImage, type: :model do
+RSpec.describe TextImage do
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:text_image)).to be_valid
