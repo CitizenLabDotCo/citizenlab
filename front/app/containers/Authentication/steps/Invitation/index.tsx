@@ -44,9 +44,9 @@ const Invitation = ({ status, onSubmit }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const handleSubmit = ({ token }: FormValues) => {
+  const handleSubmit = async ({ token }: FormValues) => {
     try {
-      onSubmit(token);
+      await onSubmit(token);
     } catch (e) {
       console.log('hello from catch block');
       console.log(e);

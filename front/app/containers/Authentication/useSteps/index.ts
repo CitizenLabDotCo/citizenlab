@@ -111,7 +111,7 @@ export default function useSteps() {
     ) => {
       const action = stepConfig[currentStep][transition];
 
-      const wrappedAction = ((...args) => {
+      const wrappedAction = (async (...args) => {
         setError(null);
         if (transition === 'CLOSE') {
           invalidateAllActionDescriptors();
@@ -119,7 +119,7 @@ export default function useSteps() {
         }
 
         // @ts-ignore
-        action(...args);
+        await action(...args);
       }) as StepConfig[S][T];
 
       return wrappedAction;

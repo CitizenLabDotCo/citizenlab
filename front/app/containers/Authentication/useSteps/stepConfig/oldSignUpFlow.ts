@@ -210,22 +210,17 @@ export const oldSignUpFlow = (
     'sign-up:invite': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (token: string) => {
-        try {
-          const response = await getUserDataFromToken(token);
+        const response = await getUserDataFromToken(token);
 
-          const prefilledBuiltInFields = {
-            first_name: response.data.attributes.first_name ?? undefined,
-            last_name: response.data.attributes.last_name ?? undefined,
-            email: response.data.attributes.email ?? undefined,
-          };
+        const prefilledBuiltInFields = {
+          first_name: response.data.attributes.first_name ?? undefined,
+          last_name: response.data.attributes.last_name ?? undefined,
+          email: response.data.attributes.email ?? undefined,
+        };
 
-          updateState({ token, prefilledBuiltInFields });
+        updateState({ token, prefilledBuiltInFields });
 
-          setCurrentStep('sign-up:email-password');
-        } catch (e) {
-          console.log('hello from catch!');
-          console.log(e);
-        }
+        setCurrentStep('sign-up:email-password');
       },
     },
   };
