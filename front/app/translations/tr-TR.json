@@ -38,6 +38,7 @@
   "app.components.Comments.commentingInitiativeNotPermitted": "Şu an için yorum yapma özelliği etkin değil.",
   "app.components.Comments.commentingMaybeNotPermitted": "Hangi işlemlerin yapılabileceğini görmek için lütfen {signInLink}.",
   "app.components.Comments.invisibleTitleComments": "Yorumlar",
+  "app.components.Comments.mostRecent": "En son",
   "app.components.Comments.mostUpvoted": "En çok oylanan",
   "app.components.Comments.official": "Resmi",
   "app.components.Comments.replyToComment": "Yorumu yanıtla",
