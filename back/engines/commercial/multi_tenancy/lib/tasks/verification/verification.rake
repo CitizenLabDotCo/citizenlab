@@ -8,7 +8,7 @@ namespace :verification do
       tenant.switch do
         if AppConfiguration.instance.feature_activated?('franceconnect_login')
           Identity.where(provider: 'franceconnect').each do |identity|
-            verification = ::Verification::Verification.new(
+            verification = Verification::Verification.new(
               method_name: 'franceconnect',
               hashed_uid: verification_service.send(:hashed_uid, identity.uid, 'franceconnect'),
               user: identity.user,
@@ -17,7 +17,7 @@ namespace :verification do
               updated_at: identity.updated_at
             )
 
-            next if ::Verification::Verification.exists?(method_name: verification.method_name,
+            next if Verification::Verification.exists?(method_name: verification.method_name,
               hashed_uid: verification.hashed_uid,
               active: verification.active,
               user: verification.user,

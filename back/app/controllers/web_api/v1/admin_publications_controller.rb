@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::AdminPublicationsController < ::ApplicationController
+class WebApi::V1::AdminPublicationsController < ApplicationController
   skip_before_action :authenticate_user
   before_action :set_admin_publication, only: %i[reorder show]
 

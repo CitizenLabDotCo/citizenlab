@@ -65,7 +65,7 @@ class UserReduceService
         columns.each do |column|
           query = <<-SQL.squish
             UPDATE #{table_name}
-            SET #{column} = \'#{merged_user.id}\'
+            SET #{column} = '#{merged_user.id}'
             WHERE #{column} IN (#{users_to_merge.map { |u| "'#{u.id}'" }.join(',')})
           SQL
           ActiveRecord::Base.connection.execute query
@@ -100,7 +100,7 @@ class UserReduceService
       picked_project_sets[set] ||= []
       picked_project_sets[set] += [user]
     end
-    picked_project_sets.values.each(&:shuffle!)
+    picked_project_sets.each_value(&:shuffle!)
     picked_project_sets
   end
 
@@ -130,7 +130,7 @@ class UserReduceService
         SELECT table_name
         FROM information_schema.tables
         WHERE table_type = 'BASE TABLE'
-        AND table_schema = \'#{Tenant.current.schema_name}\'
+        AND table_schema = '#{Tenant.current.schema_name}'
       SQL
     ).pluck('table_name').uniq.reject do |table_name|
       MERGE_TABLES_BLACKLIST.include? table_name
@@ -139,9 +139,9 @@ class UserReduceService
         <<-SQL.squish
           SELECT column_name
           FROM information_schema.columns
-          WHERE table_name = \'#{table_name}\'
+          WHERE table_name = '#{table_name}'
           AND data_type = 'uuid'
-          AND table_schema = \'#{Tenant.current.schema_name}\'
+          AND table_schema = '#{Tenant.current.schema_name}'
         SQL
       ).pluck('column_name').uniq
       [table_name, column_names]
