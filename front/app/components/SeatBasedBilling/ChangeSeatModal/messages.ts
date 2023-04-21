@@ -1,21 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  setAsAdmin: {
-    id: 'app.containers.Admin.Users.setAsAdmin',
-    defaultMessage: 'Set as admin',
-  },
-  setAsNormalUser: {
-    id: 'app.containers.Admin.Users.setAsNormalUser',
-    defaultMessage: 'Set as normal user',
-  },
   confirm: {
     id: 'app.containers.Admin.Users.confirm',
     defaultMessage: 'Confirm',
   },
-  giveAdminRights: {
-    id: 'app.containers.Admin.Users.giveAdminRights',
-    defaultMessage: 'Give admin rights',
+  changeUserRights: {
+    id: 'app.containers.Admin.Users.changeUserRights',
+    defaultMessage: 'Change user rights',
   },
   confirmNormalUserQuestion: {
     id: 'app.containers.Admin.Users.confirmNormalUserQuestion',

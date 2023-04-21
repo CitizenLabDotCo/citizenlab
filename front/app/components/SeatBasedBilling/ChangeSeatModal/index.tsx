@@ -87,9 +87,6 @@ const ChangeSeatModal = ({
     isChangingModeratorToNormalUser,
     exceedsSeats.admin
   );
-  const modalTitle = isChangingToNormalUser
-    ? messages.setAsNormalUser
-    : messages.giveAdminRights;
   const buttonText = getButtonText(
     isUserToChangeSeatAdmin,
     isUserToChangeModerator,
@@ -100,7 +97,7 @@ const ChangeSeatModal = ({
   const header = !showSuccess ? (
     <Box px="2px">
       <Text color="primary" my="8px" fontSize="l" fontWeight="bold">
-        {formatMessage(modalTitle)}
+        {formatMessage(messages.changeUserRights)}
       </Text>
     </Box>
   ) : undefined;
