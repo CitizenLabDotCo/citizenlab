@@ -65,7 +65,7 @@ class UserReduceService
         columns.each do |column|
           query = <<-SQL.squish
             UPDATE #{table_name}
-            SET #{column} = \'#{merged_user.id}\'
+            SET #{column} = '#{merged_user.id}'
             WHERE #{column} IN (#{users_to_merge.map { |u| "'#{u.id}'" }.join(',')})
           SQL
           ActiveRecord::Base.connection.execute query
@@ -130,7 +130,7 @@ class UserReduceService
         SELECT table_name
         FROM information_schema.tables
         WHERE table_type = 'BASE TABLE'
-        AND table_schema = \'#{Tenant.current.schema_name}\'
+        AND table_schema = '#{Tenant.current.schema_name}'
       SQL
     ).map do |r|
       r['table_name']
@@ -141,9 +141,9 @@ class UserReduceService
         <<-SQL.squish
           SELECT column_name
           FROM information_schema.columns
-          WHERE table_name = \'#{table_name}\'
+          WHERE table_name = '#{table_name}'
           AND data_type = 'uuid'
-          AND table_schema = \'#{Tenant.current.schema_name}\'
+          AND table_schema = '#{Tenant.current.schema_name}'
         SQL
       ).map do |c|
         c['column_name']

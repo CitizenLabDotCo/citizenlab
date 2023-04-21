@@ -103,7 +103,7 @@ module MultiTenancy
                 SELECT table_name
                 FROM information_schema.tables
                 WHERE table_type = 'BASE TABLE'
-                AND table_schema = \'#{Tenant.current.schema_name}\'
+                AND table_schema = '#{Tenant.current.schema_name}'
             SQL
             ).map do |r|
               r['table_name']
