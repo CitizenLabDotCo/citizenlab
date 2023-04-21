@@ -31,9 +31,6 @@ Style/Documentation:
 
 Style/SymbolProc:
   Enabled: true
-  IgnoredMethods:
-    - attribute
-    - throttle
   Exclude:
     - 'db/migrate/**/*'
 
