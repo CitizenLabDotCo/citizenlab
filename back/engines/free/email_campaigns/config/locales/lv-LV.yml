@@ -132,7 +132,7 @@ lv:
       today_by_author: 'Šodien %{author}'
       x_days_ago_by_author: 'pirms %{x} dienām %{author}'
     admin_rights_received:
-      cta_moderate_platform: 'Moderējiet savu platformu'
+      cta_manage_platform: 'Pārvaldiet savu platformu'
       message_you_became_administrator: 'Jums ir piešķirtas administratora tiesības %{organizationName} līdzdalības platformai.'
       preheader: 'Jums tika piešķirtas administratora tiesības %{organizationName} līdzdalības platformai.'
       subject: 'Jūs kļuvāt par %{organizationName} platformas administratoru.'
@@ -260,7 +260,7 @@ lv:
       preheader: 'Projekta vadītāja pārskats par %{organizationName}'
       title_your_weekly_report: '%{firstName}, jūsu nedēļas pārskats'
       text_introduction: 'Mēs esam atlasījuši tos ievadītos datus, kas pagājušajā nedēļā ir izraisījuši vislielāko aktivitāti. Uzziniet, kas notiek ar jūsu projektu!'
-      cta_moderate: 'Moderējiet savu projektu'
+      cta_manage: 'Projekta pārvaldība'
       new_users: 'Jauni lietotāji'
       new_ideas: 'Jaunas idejas'
       new_comments: 'Jauni komentāri'
@@ -386,7 +386,7 @@ lv:
       subject: 'Jūs esat saņēmis oficiālu atjauninātu informāciju par %{organizationName} platformā.'
       preheader: '%{officialName} atstāja oficiālu atjauninātu informāciju par jūsu priekšlikumu'
     project_moderation_rights_received:
-      cta_moderate_project: 'Moderējiet šo projektu'
+      cta_manage_project: 'Šī projekta pārvaldība'
       message_you_became_moderator: '%{organizationName} līdzdalības platformas administrators tikko iecēla jūs par šā projekta vadītāju:'
       no_ideas: 'Vēl nav ideju'
       preheader: '%{organizationName} līdzdalības platformas administrators tikko iecēla jūs par šā projekta vadītāju'
