@@ -35,6 +35,14 @@ resource 'Permissions' do
         expect(json_response[:data].size).to eq Permission.available_actions(@project).size
       end
 
+      example 'List all permissions of a project when voting has been disabled' do
+        @project.update!(voting_enabled: false)
+        do_request
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response[:data].size).to eq Permission.available_actions(@project).size
+      end
+
       example_request 'List all permissions efficiently include custom fields', document: true do
         permission = @project.permissions.first
         field2 = create :custom_field

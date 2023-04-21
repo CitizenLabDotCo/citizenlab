@@ -11,6 +11,8 @@ class WebApi::V1::PermissionsController < ApplicationController
       .order(created_at: :desc)
     @permissions = paginate @permissions
 
+    # TODO: Seems to be returning correctly in the site, but not in the tests
+
     render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: fastjson_params, include: %i[permissions_custom_fields custom_fields])
   end
 

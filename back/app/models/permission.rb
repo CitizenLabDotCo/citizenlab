@@ -23,7 +23,7 @@ class Permission < ApplicationRecord
   ACTIONS = {
     nil => %w[visiting posting_initiative voting_initiative commenting_initiative],
     'information' => [],
-    'ideation' => %w[posting_idea voting_idea commenting_idea],
+    'ideation' => %w[posting_idea commenting_idea voting_idea],
     'native_survey' => %w[posting_idea],
     'survey' => %w[taking_survey],
     'poll' => %w[taking_poll],
@@ -47,7 +47,15 @@ class Permission < ApplicationRecord
   before_validation :update_global_custom_fields, on: :update
 
   def self.available_actions(permission_scope)
-    ACTIONS[permission_scope&.participation_method]
+    # Remove any actions disabled on the project
+    ACTIONS[permission_scope&.participation_method].filter_map do |action|
+      next if
+        (action == 'posting_idea' && !permission_scope.posting_enabled?) ||
+        (action == 'voting_idea' && !permission_scope.voting_enabled?) ||
+        (action == 'commenting_idea' && !permission_scope.commenting_enabled?)
+
+      action
+    end
   end
 
   def participation_conditions
