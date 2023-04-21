@@ -38,6 +38,7 @@
   "app.components.Comments.commentingInitiativeNotPermitted": "Kommentéieren ass momentan net méiglech. ",
   "app.components.Comments.commentingMaybeNotPermitted": "Wgl {signInLink} fir ze gesinn, wat fir Aktiounen ausgeféiert kënne ginn.",
   "app.components.Comments.invisibleTitleComments": "Kommentaren",
+  "app.components.Comments.mostRecent": "Déi lescht",
   "app.components.Comments.mostUpvoted": "Meescht Stëmmen",
   "app.components.Comments.official": "Offiziell",
   "app.components.Comments.replyToComment": "Op Kommentar äntweren",
