@@ -26,7 +26,8 @@ resource 'Users' do
       parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', " \
                        "'-email', 'role', '-role'", required: false
       parameter :group, 'Filter by group_id', required: false
-      parameter :can_moderate, 'All admins + users with either a project &/or folder moderator role', required: false
+      parameter :can_moderate, 'Return only admins and moderators', required: false
+      parameter :can_admin, 'Return only admins', required: false
       parameter :can_moderate_project, 'All admins + users who can moderate the project (by project id), ' \
                                        'excluding folder moderators of folder containing project ' \
                                        '(who can, in fact, moderate the project), ' \
@@ -344,7 +345,8 @@ resource 'Users' do
         parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
         parameter :group, 'Filter by group_id', required: false
         parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
-        parameter :can_moderate, 'Filter out admins and moderators', required: false
+        parameter :can_moderate, 'Return only admins and moderators', required: false
+        parameter :can_admin, 'Return only admins', required: false
         parameter :blocked, 'Return only blocked users', required: false
 
         example_request 'List all users' do
@@ -586,7 +588,7 @@ resource 'Users' do
           example_request 'XLSX export all users from a group' do
             expect(status).to eq 200
             xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
-            expect(xlsx_hash.map { |r| r['id'] }).to match_array @members.map(&:id)
+            expect(xlsx_hash.pluck('id')).to match_array @members.map(&:id)
           end
         end
 
@@ -602,7 +604,7 @@ resource 'Users' do
           example_request 'XLSX export all users given a list of user ids' do
             expect(status).to eq 200
             xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
-            expect(xlsx_hash.map { |r| r['id'] }).to match_array @selected.map(&:id)
+            expect(xlsx_hash.pluck('id')).to match_array @selected.map(&:id)
           end
         end
 
@@ -624,13 +626,13 @@ resource 'Users' do
             do_request
             expect(status).to eq 200
             xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
-            expect(xlsx_hash.map { |r| r['id'] }).to match_array(@members.map(&:id) & @selected.map(&:id))
+            expect(xlsx_hash.pluck('id')).to match_array(@members.map(&:id) & @selected.map(&:id))
           end
         end
       end
 
       get 'web_api/v1/users/by_slug/:slug' do
-        let(:user) { create :user }
+        let(:user) { create(:user) }
         let(:slug) { user.slug }
 
         example_request 'Get one user by slug includes user block data' do
@@ -750,7 +752,7 @@ resource 'Users' do
           end
 
           context 'on a resident' do
-            let(:resident) { create :user }
+            let(:resident) { create(:user) }
             let(:id) { resident.id }
             let(:roles) { [type: 'admin'] }
 
@@ -763,8 +765,8 @@ resource 'Users' do
           end
 
           context 'on a folder moderator' do
-            let(:folder) { create :project_folder }
-            let(:moderator) { create :project_folder_moderator, project_folders: [folder] }
+            let(:folder) { create(:project_folder) }
+            let(:moderator) { create(:project_folder_moderator, project_folders: [folder]) }
             let(:id) { moderator.id }
             let(:roles) { moderator.roles + [{ 'type' => 'admin' }] }
 
@@ -809,7 +811,7 @@ resource 'Users' do
       end
 
       get 'web_api/v1/users/:id' do
-        let(:user) { create :user }
+        let(:user) { create(:user) }
         let(:id) { user.id }
 
         example_request 'Get a user by id does not include user block data' do
@@ -833,7 +835,7 @@ resource 'Users' do
       end
 
       get 'web_api/v1/users/by_slug/:slug' do
-        let(:user) { create :user }
+        let(:user) { create(:user) }
         let(:slug) { user.slug }
 
         example_request 'Get one user by slug' do
@@ -911,7 +913,7 @@ resource 'Users' do
 
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
-          let(:project) { create :continuous_project, with_permissions: true }
+          let(:project) { create(:continuous_project, with_permissions: true) }
 
           before do
             old_timers = create(:smart_group, rules: [
@@ -1157,7 +1159,7 @@ resource 'Users' do
       delete 'web_api/v1/users/:id' do
         before do
           @user.update!(roles: [{ type: 'admin' }])
-          @subject_user = create :admin
+          @subject_user = create(:admin)
         end
 
         let(:id) { @subject_user.id }

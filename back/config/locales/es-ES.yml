@@ -4,7 +4,7 @@ es:
   idea_statuses:
     proposed: propuesta
     proposed_description: Esta idea ha sido propuesta
-    viewed: revisado
+    viewed: revisada
     viewed_description: Esta idea ha sido vista por alguien de la organización
     under_consideration: bajo consideración
     under_consideration_description: Esta idea está siendo considerada

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ContentBuilder::Patches::Project, type: :model do
+RSpec.describe ContentBuilder::Patches::Project do
   context 'when project has two layouts' do
     subject(:project) { layout.content_buildable }
 

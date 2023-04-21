@@ -28,8 +28,8 @@ resource 'Idea Custom Fields' do
     context 'when admin' do
       before { admin_header_token }
 
-      let(:context) { create :continuous_project, participation_method: 'native_survey' }
-      let(:custom_form) { create :custom_form, participation_context: context }
+      let(:context) { create(:continuous_project, participation_method: 'native_survey') }
+      let(:custom_form) { create(:custom_form, participation_context: context) }
       let(:project_id) { context.id }
 
       context 'when CustomForm custom field has same key as User custom_field' do
@@ -2128,7 +2128,7 @@ resource 'Idea Custom Fields' do
       end
 
       example 'Add, edit, delete and reorder options of an existing custom field' do
-        change_field = create :custom_field_select, :with_options, resource: custom_form
+        change_field = create(:custom_field_select, :with_options, resource: custom_form)
         change_option = change_field.options.first
         delete_option = change_field.options.last
 
@@ -2229,7 +2229,7 @@ resource 'Idea Custom Fields' do
 
       example '[error] Updating custom fields when there are responses' do
         IdeaStatus.create_defaults
-        create :idea, project: context
+        create(:idea, project: context)
 
         do_request(custom_fields: [])
 
@@ -2238,7 +2238,7 @@ resource 'Idea Custom Fields' do
       end
 
       example 'Adding and updating a field with text images' do
-        field_to_update = create :custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' }
+        field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
         request = {
           custom_fields: [
             { input_type: 'page' },

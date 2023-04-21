@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe IdeaStatus, type: :model do
+RSpec.describe IdeaStatus do
   subject { create(:idea_status) }
 
   let(:code) { IdeaStatus::MINIMUM_REQUIRED_CODES.sample }

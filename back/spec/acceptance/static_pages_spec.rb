@@ -9,7 +9,7 @@ resource 'StaticPages' do
   let(:json_response) { json_parse response_body }
 
   before do
-    @pages = create_list :static_page, 2
+    @pages = create_list(:static_page, 2)
     header 'Content-Type', 'application/json'
   end
 
@@ -56,7 +56,7 @@ resource 'StaticPages' do
 
   context 'when admin' do
     before do
-      @admin = create :admin
+      @admin = create(:admin)
       token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
@@ -251,7 +251,7 @@ resource 'StaticPages' do
       ValidationErrorHelper.new.error_fields self, StaticPage
       ValidationErrorHelper.new.error_fields self, NavBarItem
 
-      let(:page) { build :static_page }
+      let(:page) { build(:static_page) }
       let(:title_multiloc) { page.title_multiloc }
       let(:top_info_section_multiloc) { page.top_info_section_multiloc }
 
@@ -314,7 +314,7 @@ resource 'StaticPages' do
 
       example 'Update the NavBarItem title of a static page' do
         title_multiloc = { 'en' => 'Awesome item' }
-        item = create :nav_bar_item, static_page: page
+        item = create(:nav_bar_item, static_page: page)
 
         do_request(static_page: { nav_bar_item_title_multiloc: title_multiloc })
         assert_status 200
@@ -330,7 +330,7 @@ resource 'StaticPages' do
 
       example '[error] Update an invalid NavBarItem title of a static page' do
         title_multiloc = { 'en' => 42 }
-        create :nav_bar_item, static_page: page
+        create(:nav_bar_item, static_page: page)
 
         do_request(static_page: { nav_bar_item_title_multiloc: title_multiloc })
         assert_status 422

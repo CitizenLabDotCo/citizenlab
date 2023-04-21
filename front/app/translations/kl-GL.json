@@ -1509,7 +1509,6 @@
   "app.errors.locale_inclusion": "Oqaatsit nittartakkami atorsinnaasut toqqakkit",
   "app.errors.malformed_admin_value": "Aqutsisup nalinga {value} tulleriiaani {row}-imi nanineqartoq atorsinnaanngilaq",
   "app.errors.malformed_groups_value": "Ataatsimoortut {value} titarnerni quleriiaani nassaat {row} atuuttuunngillat",
-  "app.errors.max_invites_limit_exceeded": "Qaaqquneqarsinnaasut amerlassusaasa killingat qaangerneqarsimapput.",
   "app.errors.no_invites_specified": "E-mailadresse nassaarineqanngilaq.",
   "app.errors.password_blank": "Una allassimasoqassaaq",
   "app.errors.password_invalid": "Please check your current password again.",

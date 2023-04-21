@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Area, type: :model do
+RSpec.describe Area do
   subject { build(:area) }
 
   describe 'Default factory' do
@@ -30,7 +30,7 @@ RSpec.describe Area, type: :model do
 
   describe 'description sanitizer' do
     it 'with invalid locales marks the model as invalid' do
-      area = build :area, description_multiloc: { 'se-BI' => 'awesome area' }
+      area = build(:area, description_multiloc: { 'se-BI' => 'awesome area' })
       expect(area).to be_invalid
     end
   end

@@ -39,14 +39,14 @@ resource 'NavBarItems' do
 
   context 'when admin' do
     before do
-      @admin = create :admin
+      @admin = create(:admin)
       token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
 
     get 'web_api/v1/nav_bar_items/removed_default_items' do
       before do
-        create :nav_bar_item, code: 'events'
+        create(:nav_bar_item, code: 'events')
       end
 
       let(:codes) { json_response_body[:data].map { |d| d.dig(:attributes, :code) } }
@@ -86,7 +86,7 @@ resource 'NavBarItems' do
 
       describe do
         before do
-          %w[projects custom].each { |c| create :nav_bar_item, code: c }
+          %w[projects custom].each { |c| create(:nav_bar_item, code: c) }
         end
 
         let(:code) { 'home' }
@@ -142,8 +142,8 @@ resource 'NavBarItems' do
       end
       ValidationErrorHelper.new.error_fields self, NavBarItem
 
-      let(:page) { create :static_page, title_multiloc: { 'nl-NL' => 'Hoe deelnemen' } }
-      let(:item) { create :nav_bar_item, static_page: page }
+      let(:page) { create(:static_page, title_multiloc: { 'nl-NL' => 'Hoe deelnemen' }) }
+      let(:item) { create(:nav_bar_item, static_page: page) }
       let(:id) { item.id }
       let(:title_multiloc) { { 'en' => 'How to participate' } }
 
@@ -188,7 +188,7 @@ resource 'NavBarItems' do
 
   context 'when normal user' do
     before do
-      @user = create :user
+      @user = create(:user)
       token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
