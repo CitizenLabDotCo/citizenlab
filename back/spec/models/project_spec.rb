@@ -129,7 +129,7 @@ RSpec.describe Project do
       'native_survey' => true
     }
     # Written this way so that additional participation methods will make this spec fail.
-    ::ParticipationContext::PARTICIPATION_METHODS.each do |participation_method|
+    ParticipationContext::PARTICIPATION_METHODS.each do |participation_method|
       expected_result = expected_results[participation_method]
       context "for #{participation_method}" do
         let(:project) { build(:project, participation_method: participation_method) }

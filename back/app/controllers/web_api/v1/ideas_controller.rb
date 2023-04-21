@@ -364,4 +364,4 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 end
 
-::WebApi::V1::IdeasController.prepend(IdeaAssignment::Patches::WebApi::V1::IdeasController)
+WebApi::V1::IdeasController.prepend(IdeaAssignment::Patches::WebApi::V1::IdeasController)
