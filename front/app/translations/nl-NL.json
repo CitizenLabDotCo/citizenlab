@@ -38,6 +38,7 @@
   "app.components.Comments.commentingInitiativeNotPermitted": "Reageren is momenteel niet mogelijk.",
   "app.components.Comments.commentingMaybeNotPermitted": "{signInLink} om acties te ondernemen",
   "app.components.Comments.invisibleTitleComments": "Reacties",
+  "app.components.Comments.mostRecent": "Meest recente",
   "app.components.Comments.mostUpvoted": "Meeste stemmen",
   "app.components.Comments.official": "Officieel",
   "app.components.Comments.replyToComment": "Antwoord op de reactie",
