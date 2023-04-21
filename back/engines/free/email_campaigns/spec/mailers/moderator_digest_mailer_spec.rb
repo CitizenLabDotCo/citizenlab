@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::ModeratorDigestMailer, type: :mailer do
+RSpec.describe EmailCampaigns::ModeratorDigestMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::ModeratorDigest.create! }

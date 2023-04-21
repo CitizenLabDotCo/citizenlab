@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Event, type: :model do
+RSpec.describe Event do
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:event)).to be_valid

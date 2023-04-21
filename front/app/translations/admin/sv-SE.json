@@ -1777,6 +1777,8 @@
   "app.containers.admin.import.importStepOne": "1. Ladda ner och fyll i mallen",
   "app.containers.admin.import.importStepTwo": "2. Ladda upp din färdiga mallfil",
   "app.containers.admin.import.successMessage": "Filen har importerats!",
+  "app.containers.admin.inviteUsersWithSeatsModal.confirmButtonText": "Bekräfta och skicka ut inbjudningar",
+  "app.containers.admin.inviteUsersWithSeatsModal.confirmSeatUsageChange": "Bekräfta inverkan på användningen av säten",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "Förutom registrerade användare kan även oregistrerade användare som anger en e-postadress och bekräftar den utföra åtgärden. Välj det här alternativet för att sänka kravet för deltagande.",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administratörer",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Vem som helst",

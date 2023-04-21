@@ -1777,6 +1777,8 @@
   "app.containers.admin.import.importStepOne": "1. Herunterladen und Ausfüllen der Vorlage",
   "app.containers.admin.import.importStepTwo": "2. Laden Sie Ihre fertige Vorlagendatei hoch",
   "app.containers.admin.import.successMessage": "Datei erfolgreich importiert!",
+  "app.containers.admin.inviteUsersWithSeatsModal.confirmButtonText": "Bestätigen und Versenden von Einladungen",
+  "app.containers.admin.inviteUsersWithSeatsModal.confirmSeatUsageChange": "Bestätigen Sie die Auswirkungen auf die Zugänge",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "Neben registrierten Nutzer:innen können auch nicht registrierte Nutzer:innen, die eine E-Mail angeben und diese bestätigen, sich beteiligen. Wählen Sie diese Option, um die Hürde für die Teilnahme zu senken.",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Admins",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Alle",

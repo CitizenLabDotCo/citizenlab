@@ -17,48 +17,48 @@ describe ParticipationContextService do
 
     it 'returns true when posting is possible' do
       expect(service).to receive(:posting_idea_disabled_reason_for_context).and_return nil
-      project = create :continuous_project, no_participation_attributes
+      project = create(:continuous_project, no_participation_attributes)
       expect(service.participation_possible_for_context?(project, create(:user))).to be true
     end
 
     it 'returns true when commenting is possible' do
       expect(service).to receive(:commenting_idea_disabled_reason_for_context).and_return nil
-      project = create :continuous_project, no_participation_attributes
+      project = create(:continuous_project, no_participation_attributes)
       expect(service.participation_possible_for_context?(project, create(:user))).to be true
     end
 
     it 'returns true when voting is possible' do
       expect(service).to receive(:idea_voting_disabled_reason_for).and_return nil
-      project = create :continuous_project, no_participation_attributes
+      project = create(:continuous_project, no_participation_attributes)
       expect(service.participation_possible_for_context?(project, create(:user))).to be true
     end
 
     it "returns true when it's possible to take a survey" do
       expect(service).to receive(:taking_survey_disabled_reason_for_context).and_return nil
-      project = create :continuous_project, no_participation_attributes
+      project = create(:continuous_project, no_participation_attributes)
       expect(service.participation_possible_for_context?(project, create(:user))).to be true
     end
 
     it "returns true when it's possible to take a poll" do
       expect(service).to receive(:taking_poll_disabled_reason_for_context).and_return nil
-      project = create :continuous_project, no_participation_attributes
+      project = create(:continuous_project, no_participation_attributes)
       expect(service.participation_possible_for_context?(project, create(:user))).to be true
     end
 
     it 'returns true when participatory budgeting is possible' do
       expect(service).to receive(:budgeting_disabled_reason_for_context).and_return nil
-      project = create :continuous_project, no_participation_attributes
+      project = create(:continuous_project, no_participation_attributes)
       expect(service.participation_possible_for_context?(project, create(:user))).to be true
     end
 
     it 'returns true for information contexts' do
       no_participation_attributes[:participation_method] = 'information'
-      project = create :continuous_project, no_participation_attributes
+      project = create(:continuous_project, no_participation_attributes)
       expect(service.participation_possible_for_context?(project, create(:user))).to be true
     end
 
     it 'returns false when no participation is possible' do
-      project = create :continuous_project, no_participation_attributes
+      project = create(:continuous_project, no_participation_attributes)
       expect(service.participation_possible_for_context?(project, create(:user))).to be false
     end
   end
@@ -134,17 +134,17 @@ describe ParticipationContextService do
     end
 
     it 'returns `posting_limited_max_reached` if the posting limit was reached' do
-      user = create :user
-      project = create :continuous_project, posting_enabled: true, posting_method: 'limited', posting_limited_max: 1
-      create :idea, project: project, author: user
+      user = create(:user)
+      project = create(:continuous_project, posting_enabled: true, posting_method: 'limited', posting_limited_max: 1)
+      create(:idea, project: project, author: user)
 
       expect(service.posting_idea_disabled_reason_for_project(project, user)).to eq 'posting_limited_max_reached'
     end
 
     it 'returns nil if the posting limit was not reached' do
-      user = create :user
-      project = create :continuous_project, posting_enabled: true, posting_method: 'limited', posting_limited_max: 1
-      create :idea, project: project
+      user = create(:user)
+      project = create(:continuous_project, posting_enabled: true, posting_method: 'limited', posting_limited_max: 1)
+      create(:idea, project: project)
 
       expect(service.posting_idea_disabled_reason_for_project(project, user)).to be_nil
     end

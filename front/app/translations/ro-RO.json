@@ -1497,7 +1497,6 @@
   "app.errors.locale_inclusion": "Vă rugăm să selectați o limbă acceptată",
   "app.errors.malformed_admin_value": "Valoarea de administrator {value} găsită în rândul {row} nu este validă",
   "app.errors.malformed_groups_value": "Grupul {value} găsit în rândul {row} nu este un grup valid",
-  "app.errors.max_invites_limit_exceeded": "Numărul maxim de invitații permise este depășit.",
   "app.errors.no_invites_specified": "Nu s-a găsit nicio adresă de e-mail.",
   "app.errors.password_blank": "Acest câmp nu poate fi gol",
   "app.errors.password_invalid": "Vă rugăm să verificați din nou parola actuală.",

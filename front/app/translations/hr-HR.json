@@ -1512,7 +1512,6 @@
   "app.errors.locale_inclusion": "Odaberite podržani jezik",
   "app.errors.malformed_admin_value": "Administratorska vrijednost {value} pronađena u redu {row} nije valjana",
   "app.errors.malformed_groups_value": "Grupa {value} pronađena u redu {row} nije valjana",
-  "app.errors.max_invites_limit_exceeded": "Premašen je maksimalan broj dozvoljenih pozivnica.",
   "app.errors.no_invites_specified": "Nismo uspjeli pronaći bilo koju adresu e-pošte.",
   "app.errors.password_blank": "Ovo ne može biti prazno",
   "app.errors.password_invalid": "Ponovno provjerite svoju trenutačnu lozinku.",

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ImpactTracking::Session, type: :model do
+RSpec.describe ImpactTracking::Session do
   subject { build(:session) }
 
   describe 'Default factory' do

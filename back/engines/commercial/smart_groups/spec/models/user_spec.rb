@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe User, type: :model do
+RSpec.describe User do
   describe 'groups and group_ids' do
     let!(:manual_group) { create(:group) }
     let!(:rules_group) do

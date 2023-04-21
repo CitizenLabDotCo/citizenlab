@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Idea, type: :model do
+RSpec.describe Idea do
   describe '#assignee' do
     let(:idea) { build(:idea) }
 

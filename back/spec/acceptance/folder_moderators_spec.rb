@@ -163,10 +163,10 @@ resource 'Moderators' do
 
       describe 'when moderating the projects of a folder' do
         before do
-          @project_folder = create :project_folder
-          other_moderators = create_list :project_folder_moderator, 2, project_folders: [@project_folder]
+          @project_folder = create(:project_folder)
+          other_moderators = create_list(:project_folder_moderator, 2, project_folders: [@project_folder])
           @user = other_moderators.first
-          child_projects = create_list :project, 3
+          child_projects = create_list(:project, 3)
           child_projects.each do |project|
             project.update! folder: @project_folder
             @user.add_role('project_moderator', project_id: project.id)

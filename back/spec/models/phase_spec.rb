@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Phase, type: :model do
+RSpec.describe Phase do
   subject { create(:phase) }
 
   describe 'Default factory' do
@@ -47,20 +47,20 @@ RSpec.describe Phase, type: :model do
     end
 
     it 'can be changed from a transitive method to another one' do
-      phase = create :phase, participation_method: 'ideation'
+      phase = create(:phase, participation_method: 'ideation')
       phase.participation_method = 'budgeting'
       expect(phase.save).to be true
     end
 
     it 'cannot be changed from a transitive method to a non-transitive one' do
-      phase = create :phase, participation_method: 'ideation'
+      phase = create(:phase, participation_method: 'ideation')
       phase.participation_method = 'native_survey'
       expect(phase.save).to be false
       expect(phase.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
     end
 
     it 'cannot be changed from a non-transitive method to a transitive one' do
-      phase = create :phase, participation_method: 'native_survey'
+      phase = create(:phase, participation_method: 'native_survey')
       phase.participation_method = 'budgeting'
       expect(phase.save).to be false
       expect(phase.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
@@ -179,12 +179,12 @@ RSpec.describe Phase, type: :model do
 
   describe '#native_survey?' do
     it 'returns true when the participation method is native_survey' do
-      phase = create :native_survey_phase
+      phase = create(:native_survey_phase)
       expect(phase.native_survey?).to be true
     end
 
     it 'returns false otherwise' do
-      phase = create :poll_phase
+      phase = create(:poll_phase)
       expect(phase.native_survey?).to be false
     end
   end
@@ -217,7 +217,7 @@ RSpec.describe Phase, type: :model do
       # We cannot stub side effects, otherwise we could have set
       # posting_method and posting_limited_max to custom values.
       expect_any_instance_of(ParticipationMethod::Base).to receive(:assign_defaults_for_participation_context).once
-      create :phase
+      create(:phase)
     end
   end
 end

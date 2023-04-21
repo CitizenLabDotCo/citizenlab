@@ -194,9 +194,9 @@ resource 'Permissions' do
       before do
         @permission = @phase.permissions.first
         @permission.update!(permitted_by: 'everyone_confirmed_email')
-        create :custom_field_birthyear, required: true
-        create :custom_field_gender, required: false
-        create :custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field'
+        create(:custom_field_birthyear, required: true)
+        create(:custom_field_gender, required: false)
+        create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
 
         @user.update!(
           email: 'my@email.com',

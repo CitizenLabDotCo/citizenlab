@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :custom_form do
-    participation_context { create :continuous_project }
+    participation_context { create(:continuous_project) }
 
     trait :with_default_fields do
       after(:create) do |cf|

@@ -1512,7 +1512,6 @@
   "app.errors.locale_inclusion": "Por favor escoge un lenguage que soporte la plataforma",
   "app.errors.malformed_admin_value": "El valor de admin {value} encontrado en {row} no es válido",
   "app.errors.malformed_groups_value": "El grupo {value} encontrado en {row} no es un grupo válido",
-  "app.errors.max_invites_limit_exceeded": "El número máximo permitido de invitaciones se ha excedido.",
   "app.errors.no_invites_specified": "No se ha podido encontrar ninguna dirección de correo.",
   "app.errors.password_blank": "Esto no puede estar vacío",
   "app.errors.password_invalid": "Compruebe de nuevo su contraseña actual.",

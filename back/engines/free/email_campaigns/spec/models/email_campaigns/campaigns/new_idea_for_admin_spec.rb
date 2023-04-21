@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdmin, type: :model do
+RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdmin do
   let(:campaign) { build(:new_idea_for_admin_campaign) }
 
   describe 'NewIdeaForAdmin Campaign default factory' do
@@ -50,11 +50,11 @@ RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdmin, type: :model do
   end
 
   describe '#generate_commands' do
-    let(:user) { create :user }
+    let(:user) { create(:user) }
     let(:title_multiloc) { { 'en' => 'My awesome idea' } }
-    let(:idea) { create :idea, author: user, title_multiloc: title_multiloc }
-    let(:activity) { create :activity, item: idea, action: 'published', user: user }
-    let(:reciptient) { create :admin }
+    let(:idea) { create(:idea, author: user, title_multiloc: title_multiloc) }
+    let(:activity) { create(:activity, item: idea, action: 'published', user: user) }
+    let(:reciptient) { create(:admin) }
 
     it 'generates a command with the desired payload and tracked content' do
       command = campaign.generate_commands(recipient: reciptient, activity: activity).first
@@ -65,7 +65,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdmin, type: :model do
     describe do
       before { IdeaStatus.create_defaults }
 
-      let(:idea) { create :idea, author: user, project: create(:continuous_native_survey_project) }
+      let(:idea) { create(:idea, author: user, project: create(:continuous_native_survey_project)) }
 
       it "doesn't get triggered for a native survey response" do
         commands = campaign.generate_commands recipient: user, activity: activity

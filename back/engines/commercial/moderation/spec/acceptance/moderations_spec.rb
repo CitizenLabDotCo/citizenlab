@@ -39,7 +39,7 @@ resource 'Moderations' do
       body_multiloc: { 'en' => 'We must return that CO2 to our atmosphere at all cost' },
       published_at: @time - 1.minute
     )
-    create :idea, project: create(:continuous_native_survey_project)
+    create(:idea, project: create(:continuous_native_survey_project))
   end
 
   get 'web_api/v1/moderations' do

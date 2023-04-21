@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::YourProposedInitiativesDigestMailer, type: :mailer do
+RSpec.describe EmailCampaigns::YourProposedInitiativesDigestMailer do
   describe 'YourProposedInitiativesDigest' do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
     let_it_be(:initiatives) { create_list(:assigned_initiative, 3) }

@@ -1512,7 +1512,6 @@
   "app.errors.locale_inclusion": "Bitte wähle eine der unterstützten Sprachen",
   "app.errors.malformed_admin_value": "Der in Zeile {row} gefundene Admin-Wert {value} ist nicht gültig",
   "app.errors.malformed_groups_value": "Die Gruppe {value} in der Zeile {row} ist keine gültige Gruppe.",
-  "app.errors.max_invites_limit_exceeded": "Die maximale Anzahl zulässiger Einladungen wurde überschritten.",
   "app.errors.no_invites_specified": "Es konnten keine E-Mail-Adressen gefunden werden.",
   "app.errors.password_blank": "Dies kann nicht leer sein",
   "app.errors.password_invalid": "Bitte überprüfen Sie noch einmal Ihr aktuelles Passwort.",

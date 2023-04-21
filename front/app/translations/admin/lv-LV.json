@@ -1777,6 +1777,8 @@
   "app.containers.admin.import.importStepOne": "1. Lejupielādēt un aizpildīt veidni",
   "app.containers.admin.import.importStepTwo": "2. Augšupielādējiet aizpildīto veidnes failu",
   "app.containers.admin.import.successMessage": "Faila importēšana ir veiksmīga!",
+  "app.containers.admin.inviteUsersWithSeatsModal.confirmButtonText": "Apstipriniet un izsūtiet ielūgumus",
+  "app.containers.admin.inviteUsersWithSeatsModal.confirmSeatUsageChange": "Apstipriniet ietekmi uz sēdekļu izmantošanu",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "Papildus reģistrētiem lietotājiem darbību varēs veikt arī nereģistrēti lietotāji, kuri norādīs e-pasta adresi un apstiprinās to. Izvēlieties šo iespēju, lai samazinātu šķēršļus dalībai.",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administratori",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Jebkurš",

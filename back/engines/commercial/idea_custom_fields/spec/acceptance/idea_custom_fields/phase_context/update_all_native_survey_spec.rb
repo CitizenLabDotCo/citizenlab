@@ -24,8 +24,8 @@ resource 'Idea Custom Fields' do
       parameter :title_multiloc, 'A title of the option, as shown to users, in multiple locales', required: false
     end
 
-    let(:context) { create :phase, participation_method: 'native_survey' }
-    let(:custom_form) { create :custom_form, participation_context: context }
+    let(:context) { create(:phase, participation_method: 'native_survey') }
+    let(:custom_form) { create(:custom_form, participation_context: context) }
     let(:phase_id) { context.id }
 
     context 'when admin' do
@@ -108,7 +108,7 @@ resource 'Idea Custom Fields' do
       end
 
       example 'Add a custom field with options and delete a field with options' do
-        delete_field = create :custom_field_select, :with_options, resource: custom_form
+        delete_field = create(:custom_field_select, :with_options, resource: custom_form)
         delete_options = delete_field.options
 
         request = {
@@ -202,7 +202,7 @@ resource 'Idea Custom Fields' do
       end
 
       example 'Remove all custom fields' do
-        create_list :custom_field_select, 2, :with_options, resource: custom_form
+        create_list(:custom_field_select, 2, :with_options, resource: custom_form)
 
         do_request custom_fields: []
 
@@ -215,7 +215,7 @@ resource 'Idea Custom Fields' do
       end
 
       example 'Remove all options of a custom field' do
-        field = create :custom_field_select, :with_options, resource: custom_form
+        field = create(:custom_field_select, :with_options, resource: custom_form)
 
         request = {
           custom_fields: [
@@ -260,7 +260,7 @@ resource 'Idea Custom Fields' do
 
       example '[error] Updating custom fields in a native survey phase when there are responses' do
         IdeaStatus.create_defaults
-        create :idea, project: context.project, creation_phase: context, phases: [context]
+        create(:idea, project: context.project, creation_phase: context, phases: [context])
 
         do_request(custom_fields: [])
 
@@ -269,9 +269,9 @@ resource 'Idea Custom Fields' do
       end
 
       example 'Updating custom fields in a native survey phase when there are no responses' do
-        ideation_phase = create :phase, participation_method: 'ideation', project: context.project, start_at: (context.start_at - 7.days), end_at: (context.start_at - 1.day)
-        create :idea, project: ideation_phase.project, phases: [ideation_phase]
-        create :idea, project: ideation_phase.project
+        ideation_phase = create(:phase, participation_method: 'ideation', project: context.project, start_at: (context.start_at - 7.days), end_at: (context.start_at - 1.day))
+        create(:idea, project: ideation_phase.project, phases: [ideation_phase])
+        create(:idea, project: ideation_phase.project)
 
         do_request(custom_fields: [])
 

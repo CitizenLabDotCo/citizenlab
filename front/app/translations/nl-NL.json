@@ -1512,7 +1512,6 @@
   "app.errors.locale_inclusion": "Kies een taal die ondersteund wordt",
   "app.errors.malformed_admin_value": "De waarde {value} voor de kolom 'admin' in rij {row} is niet geldig",
   "app.errors.malformed_groups_value": "De waarde {value} voor de kolom 'groep' in rij {row} is niet geldig",
-  "app.errors.max_invites_limit_exceeded": "Het maximum aantal toegestane uitnodigingen werd overschreden.",
   "app.errors.no_invites_specified": "Kon geen e-mailadres(sen) vinden.",
   "app.errors.password_blank": "Dit mag niet leeg zijn",
   "app.errors.password_invalid": "Controleer uw huidige wachtwoord opnieuw.",
