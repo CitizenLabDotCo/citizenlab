@@ -175,17 +175,16 @@ class Invites::Service
       end
     end
 
-    invitees
-      .each do |invitee|
-        if @run_side_fx
-          if invitee.previously_new_record?
-            SideFxUserService.new.after_create(invitee, @inviter)
-            SideFxInviteService.new.after_create(invitee.invitee_invite, @inviter)
-          else
-            SideFxUserService.new.after_update(invitee, @inviter)
-          end
+    invitees.each do |invitee|
+      if @run_side_fx
+        if invitee.previously_new_record?
+          SideFxUserService.new.after_create(invitee, @inviter)
+          SideFxInviteService.new.after_create(invitee.invitee_invite, @inviter)
+        else
+          SideFxUserService.new.after_update(invitee, @inviter)
         end
       end
+    end
 
     invitees
   end
