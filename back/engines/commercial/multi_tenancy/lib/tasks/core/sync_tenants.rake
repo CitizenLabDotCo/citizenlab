@@ -88,7 +88,7 @@ namespace :sync_tenants do
     template = YAML.load open(Rails.root.join('config/tenant_templates/base.yml')).read
     instructions = CSV.parse(open(args[:sheet]).read, { headers: true, col_sep: ',', converters: [] })
 
-    Tenant.where(host: instructions.map { |d| d['Tenant host'] }.uniq).each do |tenant|
+    Tenant.where(host: instructions.pluck('Tenant host').uniq).each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         template['models'].each do |model_name, fields|
           classname = model_name.classify

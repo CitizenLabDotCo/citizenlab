@@ -10,7 +10,7 @@ resource 'Users' do
 
   context 'when admin' do
     before do
-      @user = create :admin
+      @user = create(:admin)
       token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
@@ -25,11 +25,11 @@ resource 'Users' do
       let(:roles) { [] }
 
       describe 'when removing admin rights' do
-        let(:assignee) { create :admin }
+        let(:assignee) { create(:admin) }
 
         example 'Remove user as assignee', document: false do
-          assigned_idea = create :idea, assignee: assignee
-          assigned_initiative = create :initiative, assignee: assignee
+          assigned_idea = create(:idea, assignee: assignee)
+          assigned_initiative = create(:initiative, assignee: assignee)
 
           do_request
 
@@ -40,7 +40,7 @@ resource 'Users' do
         end
 
         example 'Remove user as default assignee', document: false do
-          project = create :project, default_assignee: assignee
+          project = create(:project, default_assignee: assignee)
 
           do_request
 
@@ -51,11 +51,11 @@ resource 'Users' do
       end
 
       describe 'when removing project moderator rights', if: defined?(ProjectManagement::Engine) do
-        let(:project) { create :project }
-        let(:assignee) { create :project_moderator, projects: [project] }
+        let(:project) { create(:project) }
+        let(:assignee) { create(:project_moderator, projects: [project]) }
 
         example 'Remove user as assignee', document: false do
-          assigned_idea = create :idea, project: project, assignee: assignee
+          assigned_idea = create(:idea, project: project, assignee: assignee)
 
           do_request
 
@@ -74,11 +74,11 @@ resource 'Users' do
       end
 
       describe 'when removing folder moderator rights', if: defined?(ProjectFolders::Engine) do
-        let(:folder) { create :project_folder }
-        let(:assignee) { create :project_folder_moderator, project_folders: [folder] }
+        let(:folder) { create(:project_folder) }
+        let(:assignee) { create(:project_folder_moderator, project_folders: [folder]) }
 
         example 'Remove user as assignee', document: false do
-          assigned_idea = create :idea, project: create(:project, folder: folder), assignee: assignee
+          assigned_idea = create(:idea, project: create(:project, folder: folder), assignee: assignee)
 
           do_request
 
@@ -87,7 +87,7 @@ resource 'Users' do
         end
 
         example 'Remove user as default assignee', document: false do
-          project = create :project, folder: folder, default_assignee: assignee
+          project = create(:project, folder: folder, default_assignee: assignee)
 
           do_request
 
@@ -97,13 +97,13 @@ resource 'Users' do
       end
 
       describe 'when admin becomes project moderator', if: defined?(ProjectManagement::Engine) do
-        let(:project1) { create :project }
-        let(:project2) { create :project }
-        let(:assignee) { create :admin }
+        let(:project1) { create(:project) }
+        let(:project2) { create(:project) }
+        let(:assignee) { create(:admin) }
 
         example 'Remove user as assignee', document: false do
-          idea1 = create :idea, project: project1, assignee: assignee
-          idea2 = create :idea, project: project2, assignee: assignee
+          idea1 = create(:idea, project: project1, assignee: assignee)
+          idea2 = create(:idea, project: project2, assignee: assignee)
 
           do_request(user: { roles: [{ 'type' => 'project_moderator', 'project_id' => project1.id }] })
 
@@ -129,13 +129,13 @@ resource 'Users' do
       end
 
       describe 'when admin becomes folder moderator', if: defined?(ProjectFolders::Engine) do
-        let(:folder1) { create :project_folder }
-        let(:folder2) { create :project_folder }
-        let(:assignee) { create :admin }
+        let(:folder1) { create(:project_folder) }
+        let(:folder2) { create(:project_folder) }
+        let(:assignee) { create(:admin) }
 
         example 'Remove user as assignee', document: false do
-          idea1 = create :idea, project: create(:project, folder: folder1), assignee: assignee
-          idea2 = create :idea, project: create(:project, folder: folder2), assignee: assignee
+          idea1 = create(:idea, project: create(:project, folder: folder1), assignee: assignee)
+          idea2 = create(:idea, project: create(:project, folder: folder2), assignee: assignee)
 
           do_request(user: { roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => folder1.id }] })
 
@@ -147,8 +147,8 @@ resource 'Users' do
         end
 
         example 'Remove user as default assignee', document: false do
-          project1 = create :project, folder: folder1, default_assignee: assignee
-          project2 = create :project, folder: folder2, default_assignee: assignee
+          project1 = create(:project, folder: folder1, default_assignee: assignee)
+          project2 = create(:project, folder: folder2, default_assignee: assignee)
 
           do_request(user: { roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => folder1.id }] })
 
@@ -161,14 +161,14 @@ resource 'Users' do
       end
 
       describe 'when folder moderator becomes project moderator', if: (defined?(ProjectManagement::Engine) && defined?(ProjectFolders::Engine)) do
-        let(:folder) { create :project_folder }
-        let(:project1) { create :project, folder: folder }
-        let(:project2) { create :project, folder: folder }
-        let(:assignee) { create :project_folder_moderator, project_folders: [folder] }
+        let(:folder) { create(:project_folder) }
+        let(:project1) { create(:project, folder: folder) }
+        let(:project2) { create(:project, folder: folder) }
+        let(:assignee) { create(:project_folder_moderator, project_folders: [folder]) }
 
         example 'Remove user as assignee', document: false do
-          idea1 = create :idea, project: project1, assignee: assignee
-          idea2 = create :idea, project: project2, assignee: assignee
+          idea1 = create(:idea, project: project1, assignee: assignee)
+          idea2 = create(:idea, project: project2, assignee: assignee)
 
           do_request(user: { roles: [{ 'type' => 'project_moderator', 'project_id' => project1.id }] })
 
@@ -199,8 +199,8 @@ resource 'Users' do
       let(:id) { assignee.id }
 
       example 'Remove deleted user as assignee', document: false do
-        assigned_idea = create :idea, assignee: @subject_user
-        assigned_initiative = create :initiative, assignee: @subject_user
+        assigned_idea = create(:idea, assignee: @subject_user)
+        assigned_initiative = create(:initiative, assignee: @subject_user)
 
         do_request
 

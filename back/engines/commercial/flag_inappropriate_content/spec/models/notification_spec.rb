@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Notification, type: :model do
+RSpec.describe Notification do
   describe 'make_notifications_on' do
     it 'makes inappropriate_content_flagged notifications on inappropriate_content_flag created' do
       flag = create(:inappropriate_content_flag)

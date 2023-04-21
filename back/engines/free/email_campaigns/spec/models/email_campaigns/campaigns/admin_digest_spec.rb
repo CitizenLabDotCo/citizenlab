@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::AdminDigest, type: :model do
+RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
   describe 'AdminDigest Campaign default factory' do
     it { expect(build(:admin_digest_campaign)).to be_valid }
   end
@@ -35,7 +35,7 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest, type: :model do
 
     it 'does not include native survey responses' do
       IdeaStatus.create_defaults
-      response = create :idea, project: create(:continuous_native_survey_project)
+      response = create(:idea, project: create(:continuous_native_survey_project))
 
       command = campaign.generate_commands(recipient: admin).first
       expect(

@@ -184,6 +184,8 @@ const CommentFooter = ({
           projectId={projectId}
           comment={comment}
           onCommentEdit={onEditing}
+          postId={postId}
+          postType={postType}
         />
       </Right>
     </Container>

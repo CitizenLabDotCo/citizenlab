@@ -145,7 +145,7 @@ resource 'Campaigns' do
   post 'web_api/v1/campaigns/:id/send' do
     ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
 
-    let(:campaign) { create :manual_campaign }
+    let(:campaign) { create(:manual_campaign) }
     let(:id) { campaign.id }
 
     example_request 'Send out the campaign now' do
@@ -169,9 +169,9 @@ resource 'Campaigns' do
       parameter :size, 'Number of deliveries per page'
     end
 
-    let(:campaign) { create :manual_campaign }
+    let(:campaign) { create(:manual_campaign) }
     let!(:id) { campaign.id }
-    let!(:deliveries) { create_list :delivery, 5, campaign: campaign }
+    let!(:deliveries) { create_list(:delivery, 5, campaign: campaign) }
 
     example_request 'Get the deliveries of a sent campaign. Includes the recipients.' do
       assert_status 200

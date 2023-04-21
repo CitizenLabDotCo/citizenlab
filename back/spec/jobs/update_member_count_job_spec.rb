@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe UpdateMemberCountJob, type: :job do
+RSpec.describe UpdateMemberCountJob do
   subject(:job) { described_class.new }
 
   describe '#perform' do

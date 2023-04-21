@@ -24,15 +24,15 @@ resource 'Projects' do
 
       ValidationErrorHelper.new.error_fields self, Project
 
-      let(:folder) { create :project_folder }
-      let(:assignee) { create :project_folder_moderator, project_folders: [folder] }
-      let(:project1) { create :project, folder: folder, default_assignee: assignee }
-      let(:project2) { create :project, folder: folder, default_assignee: assignee }
+      let(:folder) { create(:project_folder) }
+      let(:assignee) { create(:project_folder_moderator, project_folders: [folder]) }
+      let(:project1) { create(:project, folder: folder, default_assignee: assignee) }
+      let(:project2) { create(:project, folder: folder, default_assignee: assignee) }
       let(:id) { project1.id }
 
       example 'Assignees of moved project remain valid', document: false, if: defined?(ProjectFolders::Engine) do
-        idea1 = create :idea, project: project1, assignee: assignee
-        idea2 = create :idea, project: project2, assignee: assignee
+        idea1 = create(:idea, project: project1, assignee: assignee)
+        idea2 = create(:idea, project: project2, assignee: assignee)
 
         do_request project: { folder_id: create(:project_folder).id }
 

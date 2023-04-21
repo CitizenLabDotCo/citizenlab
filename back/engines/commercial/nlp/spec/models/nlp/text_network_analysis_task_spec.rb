@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe NLP::TextNetworkAnalysisTask, type: :model do
+describe NLP::TextNetworkAnalysisTask do
   subject(:tna_task) { build(:tna_task) }
 
   describe 'factory' do

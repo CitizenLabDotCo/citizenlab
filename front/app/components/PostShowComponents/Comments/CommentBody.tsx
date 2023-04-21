@@ -1,22 +1,13 @@
 // Libraries
-import React, { PureComponent, FormEvent } from 'react';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { get } from 'lodash-es';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Services
-import { updateComment, IUpdatedComment } from 'services/comments';
+import useUpdateComment from 'api/comments/useUpdateComment';
+import { IUpdatedComment } from 'api/comments/types';
 
 // Resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
-import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-
-import { commentTranslateButtonClicked$ } from './events';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
@@ -25,18 +16,23 @@ import messages from './messages';
 
 // Components
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // Styling
-import styled, { withTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 // Typings
 import { CLErrorsJSON, CLErrors } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 import Outlet from 'components/Outlet';
+import useComment from 'api/comments/useComment';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
+import { commentTranslateButtonClicked$ } from './events';
+import { filter } from 'rxjs/operators';
+import { Button } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div``;
 
@@ -62,155 +58,128 @@ const ButtonsWrapper = styled.div`
   }
 `;
 
-interface InputProps {
+interface Props {
   commentId: string;
   commentType: 'parent' | 'child';
   editing: boolean;
-  last?: boolean;
   onCommentSaved: () => void;
   onCancelEditing: () => void;
   className?: string;
+  postId: string;
+  postType: 'idea' | 'initiative';
 }
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenantLocales: GetAppConfigurationLocalesChildProps;
-  comment: GetCommentChildProps;
-}
+const CommentBody = ({
+  commentId,
+  commentType,
+  editing,
+  onCancelEditing,
+  onCommentSaved,
+  className,
+  postId,
+  postType,
+}: Props) => {
+  const theme = useTheme();
+  const { data: comment } = useComment(commentId);
+  const { mutate: updateComment, isLoading: processing } = useUpdateComment({
+    ideaId: postType === 'idea' ? postId : undefined,
+    initiativeId: postType === 'initiative' ? postId : undefined,
+  });
+  const locale = useLocale();
+  const tenantLocales = useAppConfigurationLocales();
 
-interface Props extends InputProps, DataProps {
-  theme: any;
-}
+  const [commentContent, setCommentContent] = useState('');
+  const [editableCommentContent, setEditableCommentContent] = useState('');
+  const [translateButtonClicked, setTranslateButtonClicked] = useState(false);
 
-export interface State {
-  commentContent: string;
-  editableCommentContent: string;
-  translateButtonClicked: boolean;
-  processing: boolean;
-  apiErrors: CLErrors | null;
-  textAreaRef?: HTMLTextAreaElement | null;
-}
+  const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
+  const [textAreaRef, setTextAreaRef] = useState<HTMLTextAreaElement | null>(
+    null
+  );
 
-class CommentBody extends PureComponent<Props, State> {
-  subscriptions: Subscription[] = [];
-  textAreaRef: HTMLTextAreaElement;
+  useEffect(() => {
+    if (
+      !isNilOrError(locale) &&
+      !isNilOrError(tenantLocales) &&
+      !isNilOrError(comment) &&
+      !commentContent
+    ) {
+      const setNewCommentContent = () => {
+        let commentContent = '';
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      commentContent: '',
-      editableCommentContent: '',
-      translateButtonClicked: false,
-      processing: false,
-      apiErrors: null,
-      textAreaRef: null,
+        commentContent = getLocalized(
+          comment.data.attributes.body_multiloc,
+          locale,
+          tenantLocales
+        ).replace(
+          /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
+          '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
+        );
+
+        setCommentContent(commentContent);
+      };
+
+      const setNewEditableCommentContent = () => {
+        let editableCommentContent = '';
+
+        editableCommentContent = getLocalized(
+          comment.data.attributes.body_multiloc,
+          locale,
+          tenantLocales
+        ).replace(
+          /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>@([\S\s]*?)<\/span>/gi,
+          '@[$3]($2)'
+        );
+
+        setEditableCommentContent(editableCommentContent);
+      };
+
+      setNewCommentContent();
+      setNewEditableCommentContent();
+    }
+  }, [comment, locale, tenantLocales, commentContent]);
+
+  useEffect(() => {
+    const subscription = commentTranslateButtonClicked$
+      .pipe(filter(({ eventValue }) => eventValue === commentId))
+      .subscribe(() => {
+        setTranslateButtonClicked(
+          (translateButtonClicked) => !translateButtonClicked
+        );
+      });
+
+    return () => {
+      subscription.unsubscribe();
     };
-  }
+  }, [commentId]);
 
-  componentDidMount() {
-    this.setCommentContent();
-    this.setEditableCommentContent();
-
-    this.subscriptions = [
-      commentTranslateButtonClicked$
-        .pipe(
-          filter(
-            ({ eventValue: commentId }) => commentId === this.props.commentId
-          )
-        )
-        .subscribe(() => {
-          this.setState(({ translateButtonClicked }) => ({
-            translateButtonClicked: !translateButtonClicked,
-          }));
-        }),
-    ];
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.comment !== this.props.comment) {
-      this.setCommentContent();
-      this.setEditableCommentContent();
-    }
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  setCommentContent = () => {
-    let commentContent = '';
-    const { comment, locale, tenantLocales } = this.props;
-
-    if (
-      !isNilOrError(locale) &&
-      !isNilOrError(tenantLocales) &&
-      !isNilOrError(comment)
-    ) {
-      commentContent = getLocalized(
-        comment.attributes.body_multiloc,
-        locale,
-        tenantLocales
-      ).replace(
-        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
-        '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
-      );
-    }
-
-    this.setState({ commentContent });
+  const setNewTextAreaRef = (ref: HTMLTextAreaElement) => {
+    setTextAreaRef(ref);
+    focusEndOfEditingArea();
   };
 
-  setEditableCommentContent = () => {
-    let editableCommentContent = '';
-    const { comment, locale, tenantLocales } = this.props;
-
-    if (
-      !isNilOrError(locale) &&
-      !isNilOrError(tenantLocales) &&
-      !isNilOrError(comment)
-    ) {
-      editableCommentContent = getLocalized(
-        comment.attributes.body_multiloc,
-        locale,
-        tenantLocales
-      ).replace(
-        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>@([\S\s]*?)<\/span>/gi,
-        '@[$3]($2)'
-      );
-    }
-
-    this.setState({ editableCommentContent });
-  };
-
-  setTextAreaRef = (ref: HTMLTextAreaElement) => {
-    this.textAreaRef = ref;
-    this.focusEndOfEditingArea();
-  };
-
-  focusEndOfEditingArea = () => {
-    if (isNilOrError(this.textAreaRef) || !this.props.editing) return;
-    this.textAreaRef.focus();
+  const focusEndOfEditingArea = () => {
+    if (isNilOrError(textAreaRef) || !editing) return;
+    textAreaRef.focus();
 
     // set caret to end if text content exists
-    if (!isNilOrError(this.textAreaRef.textContent)) {
-      this.textAreaRef.setSelectionRange(
-        this.textAreaRef.textContent.length,
-        this.textAreaRef.textContent.length
+    if (!isNilOrError(textAreaRef.textContent)) {
+      textAreaRef.setSelectionRange(
+        textAreaRef.textContent.length,
+        textAreaRef.textContent.length
       );
     }
   };
 
-  onEditableCommentContentChange = (editableCommentContent: string) => {
-    this.setState({ editableCommentContent });
+  const onEditableCommentContentChange = (editableCommentContent: string) => {
+    setEditableCommentContent(editableCommentContent);
   };
 
-  onSubmit = async (event: FormEvent<any>) => {
+  const onSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
 
-    const { locale, commentId, comment } = this.props;
-    const { editableCommentContent } = this.state;
-
     if (!isNilOrError(locale) && !isNilOrError(comment)) {
-      const updatedComment: IUpdatedComment = {
+      const updatedComment: Omit<IUpdatedComment, 'commentId'> = {
         body_multiloc: {
           [locale]: editableCommentContent.replace(
             /@\[(.*?)\]\((.*?)\)/gi,
@@ -223,130 +192,106 @@ class CommentBody extends PureComponent<Props, State> {
       if (authorId) {
         updatedComment.author_id = authorId;
       }
+      setApiErrors(null);
 
-      this.setState({ processing: true, apiErrors: null });
-
-      try {
-        await updateComment(commentId, updatedComment);
-        this.props.onCommentSaved();
-      } catch (error) {
-        if (isCLErrorJSON(error)) {
-          const apiErrors = (error as CLErrorsJSON).json.errors;
-          this.setState({ apiErrors });
+      updateComment(
+        { commentId, ...updatedComment },
+        {
+          onSuccess: () => {
+            onCommentSaved();
+            setCommentContent('');
+          },
+          onError: (error) => {
+            if (isCLErrorJSON(error)) {
+              const apiErrors = (error as CLErrorsJSON).json.errors;
+              setApiErrors(apiErrors);
+            }
+          },
         }
-      }
-
-      this.setState({ processing: false });
+      );
     }
   };
 
-  cancelEditing = (event: React.MouseEvent) => {
+  const cancelEditing = (event: React.MouseEvent) => {
     event.preventDefault();
-    this.setEditableCommentContent();
-    this.props.onCancelEditing();
+    setEditableCommentContent('');
+    onCancelEditing();
   };
 
-  render() {
-    const { editing, commentType, locale, commentId, className, theme } =
-      this.props;
+  let content: JSX.Element | null = null;
 
-    const {
-      commentContent,
-      editableCommentContent,
-      translateButtonClicked,
-      processing,
-      apiErrors,
-    } = this.state;
-
-    let content: JSX.Element | null = null;
-
-    if (!isNilOrError(locale)) {
-      if (!editing) {
-        content = (
-          <CommentWrapper className={`e2e-comment-body ${commentType}`}>
-            <QuillEditedContent
-              fontWeight={400}
-              textColor={theme.colors.tenantText}
-            >
-              <div aria-live="polite">
-                <Outlet
-                  id="app.components.PostShowComponents.CommentBody.translation"
-                  translateButtonClicked={translateButtonClicked}
-                  commentContent={commentContent}
-                  locale={locale}
-                  commentId={commentId}
-                >
-                  {(outletComponents) =>
-                    outletComponents.length > 0 ? (
-                      <>{outletComponents}</>
-                    ) : (
-                      <CommentText
-                        dangerouslySetInnerHTML={{ __html: commentContent }}
-                      />
-                    )
-                  }
-                </Outlet>
-              </div>
-            </QuillEditedContent>
-          </CommentWrapper>
-        );
-      } else {
-        content = (
-          <StyledForm onSubmit={this.onSubmit}>
-            <QuillEditedContent
-              fontWeight={400}
-              textColor={theme.colors.tenantText}
-            >
-              <MentionsTextArea
-                name="body"
-                value={editableCommentContent}
-                rows={1}
-                onChange={this.onEditableCommentContentChange}
-                padding="15px"
-                fontWeight="300"
-                getTextareaRef={this.setTextAreaRef}
-              />
-            </QuillEditedContent>
-            <ButtonsWrapper>
-              {apiErrors &&
-                apiErrors.body_multiloc &&
-                apiErrors.body_multiloc[locale] && (
-                  <Error apiErrors={apiErrors.body_multiloc[locale]} />
-                )}
-              <Button buttonStyle="secondary" onClick={this.cancelEditing}>
-                <FormattedMessage {...messages.cancelCommentEdit} />
-              </Button>
-              <Button
-                buttonStyle="primary"
-                processing={processing}
-                onClick={this.onSubmit}
+  if (!isNilOrError(locale)) {
+    if (!editing) {
+      content = (
+        <CommentWrapper className={`e2e-comment-body ${commentType}`}>
+          <QuillEditedContent
+            fontWeight={400}
+            textColor={theme.colors.tenantText}
+          >
+            <div aria-live="polite">
+              <Outlet
+                id="app.components.PostShowComponents.CommentBody.translation"
+                translateButtonClicked={translateButtonClicked}
+                commentContent={commentContent}
+                locale={locale}
+                commentId={commentId}
               >
-                <FormattedMessage {...messages.saveCommentEdit} />
-              </Button>
-            </ButtonsWrapper>
-          </StyledForm>
-        );
-      }
-
-      return <Container className={className}>{content}</Container>;
+                {(outletComponents) =>
+                  outletComponents.length > 0 ? (
+                    <>{outletComponents}</>
+                  ) : (
+                    <CommentText
+                      dangerouslySetInnerHTML={{ __html: commentContent }}
+                    />
+                  )
+                }
+              </Outlet>
+            </div>
+          </QuillEditedContent>
+        </CommentWrapper>
+      );
+    } else {
+      content = (
+        <StyledForm onSubmit={onSubmit}>
+          <QuillEditedContent
+            fontWeight={400}
+            textColor={theme.colors.tenantText}
+          >
+            <MentionsTextArea
+              name="body"
+              value={editableCommentContent}
+              rows={1}
+              onChange={onEditableCommentContentChange}
+              padding="15px"
+              fontWeight="300"
+              getTextareaRef={setNewTextAreaRef}
+            />
+          </QuillEditedContent>
+          <ButtonsWrapper>
+            {apiErrors &&
+              apiErrors.body_multiloc &&
+              apiErrors.body_multiloc[locale] && (
+                <Error apiErrors={apiErrors.body_multiloc[locale]} />
+              )}
+            <Button buttonStyle="secondary" onClick={cancelEditing}>
+              <FormattedMessage {...messages.cancelCommentEdit} />
+            </Button>
+            <Button
+              buttonStyle="primary"
+              processing={processing}
+              onClick={onSubmit}
+            >
+              <FormattedMessage {...messages.saveCommentEdit} />
+            </Button>
+          </ButtonsWrapper>
+        </StyledForm>
+      );
     }
 
-    return null;
+    return <Container className={className}>{content}</Container>;
   }
-}
 
-const CommentBodyWithHoC = withTheme(CommentBody);
+  return null;
+};
 
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  tenantLocales: <GetAppConfigurationLocales />,
-  comment: ({ commentId, render }) => (
-    <GetComment id={commentId}>{render}</GetComment>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <CommentBodyWithHoC {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default CommentBody;

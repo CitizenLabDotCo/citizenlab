@@ -34,7 +34,7 @@ resource 'BulkImportIdeasImportIdeas' do
   end
 
   context 'when authorized' do
-    let(:user) { create :admin }
+    let(:user) { create(:admin) }
 
     before do
       token = Knock::AuthToken.new(payload: user.to_token_payload).token

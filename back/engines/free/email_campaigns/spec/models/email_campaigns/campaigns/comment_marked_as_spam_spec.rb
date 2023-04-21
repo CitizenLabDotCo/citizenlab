@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::CommentMarkedAsSpam, type: :model do
+RSpec.describe EmailCampaigns::Campaigns::CommentMarkedAsSpam do
   describe 'CommentMarkedAsSpam Campaign default factory' do
     it 'is valid' do
       expect(build(:comment_marked_as_spam_campaign)).to be_valid

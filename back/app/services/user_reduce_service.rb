@@ -132,9 +132,7 @@ class UserReduceService
         WHERE table_type = 'BASE TABLE'
         AND table_schema = \'#{Tenant.current.schema_name}\'
       SQL
-    ).map do |r|
-      r['table_name']
-    end.uniq.reject do |table_name|
+    ).pluck('table_name').uniq.reject do |table_name|
       MERGE_TABLES_BLACKLIST.include? table_name
     end.to_h do |table_name|
       column_names = ActiveRecord::Base.connection.execute(
@@ -145,9 +143,7 @@ class UserReduceService
           AND data_type = 'uuid'
           AND table_schema = \'#{Tenant.current.schema_name}\'
         SQL
-      ).map do |c|
-        c['column_name']
-      end.uniq
+      ).pluck('column_name').uniq
       [table_name, column_names]
     end
   end

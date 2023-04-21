@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Permission, type: :model do
+RSpec.describe Permission do
   describe '#participation_conditions' do
     it 'returns expected output' do
       birthyear = create(:custom_field_number, title_multiloc: { 'en' => 'Birthyear?' }, key: 'birthyear', code: 'birthyear')

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ReportBuilder::Report, type: :model do
+RSpec.describe ReportBuilder::Report do
   subject(:report) { build(:report) }
 
   it { is_expected.to validate_uniqueness_of(:name) }

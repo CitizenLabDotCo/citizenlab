@@ -31,7 +31,7 @@ import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurat
 import { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import { ICommentData } from 'services/comments';
+import { ICommentData } from 'api/comments/types';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { TNotificationData } from 'services/notifications';
 import { IPhaseData } from 'services/phases';

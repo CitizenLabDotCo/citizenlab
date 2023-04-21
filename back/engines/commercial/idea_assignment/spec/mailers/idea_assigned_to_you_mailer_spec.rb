@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe IdeaAssignment::EmailCampaigns::IdeaAssignedToYouMailer, type: :mailer do
+RSpec.describe IdeaAssignment::EmailCampaigns::IdeaAssignedToYouMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { IdeaAssignment::EmailCampaigns::Campaigns::IdeaAssignedToYou.create! }

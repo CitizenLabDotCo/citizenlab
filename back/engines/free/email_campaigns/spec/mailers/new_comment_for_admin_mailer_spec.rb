@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::NewCommentForAdminMailer, type: :mailer do
+RSpec.describe EmailCampaigns::NewCommentForAdminMailer do
   describe 'NewCommentForAdmin' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::NewCommentForAdmin.create! }

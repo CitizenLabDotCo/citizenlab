@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin, type: :model do
+RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin do
   describe 'CommentDeletedByAdmin Campaign default factory' do
     it 'is valid' do
       expect(build(:comment_deleted_by_admin_campaign)).to be_valid

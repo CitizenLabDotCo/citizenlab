@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe GenerateUserAvatarJob, type: :job do
+RSpec.describe GenerateUserAvatarJob do
   subject(:job) { described_class.new }
 
   describe '#perform' do
