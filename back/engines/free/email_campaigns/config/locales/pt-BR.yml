@@ -132,7 +132,7 @@ pt:
       today_by_author: 'Hoje por %{author}'
       x_days_ago_by_author: '%{x} días atrás por %{author}'
     admin_rights_received:
-      cta_moderate_platform: 'Dirigir a sua plataforma'
+      cta_manage_platform: 'Manage your platform'
       message_you_became_administrator: 'Foram-lhe concedidos direitos de administrador para a plataforma de participação de %{organizationName}.'
       preheader: 'Foram-lhe concedidos direitos de administrador para a plataforma de participação de %{organizationName}.'
       subject: 'Você se tornou um administrador na plataforma de %{organizationName}'
@@ -260,7 +260,7 @@ pt:
       preheader: 'Resumo de gerente do projeto de %{organizationName}'
       title_your_weekly_report: '%{firstName}, o seu relatório semanal'
       text_introduction: 'Nós editamos para você a listagem de idéias que geraram mais atividade na semana passada. Descubra o que está acontecendo com o seu projeto!'
-      cta_moderate: 'Dirigir o seu projecto'
+      cta_manage: 'Manage your project'
       new_users: 'Novos usuários'
       new_ideas: 'Novas idéias'
       new_comments: 'Novos comentários'
@@ -386,7 +386,7 @@ pt:
       subject: 'Você recebeu uma atualização de %{organizationName}'
       preheader: '%{officialName} deixou uma atualização oficial sobre a sua proposta'
     project_moderation_rights_received:
-      cta_moderate_project: 'Moderar este projeto'
+      cta_manage_project: 'Manage this project'
       message_you_became_moderator: 'Um administrador da plataforma de %{organizationName} acabou de fazer você gerente do seguinte projeto:'
       no_ideas: 'Nenhuma idéia até o momento'
       preheader: 'Um administrador da plataforma %{organizationName} acabou de fazer você gestor do seguinte projeto'
