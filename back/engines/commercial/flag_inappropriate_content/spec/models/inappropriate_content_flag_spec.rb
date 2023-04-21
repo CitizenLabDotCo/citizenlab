@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe FlagInappropriateContent::InappropriateContentFlag, type: :model do
+RSpec.describe FlagInappropriateContent::InappropriateContentFlag do
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:inappropriate_content_flag)).to be_valid

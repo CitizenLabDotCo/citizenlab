@@ -9,7 +9,7 @@ RSpec.describe UserJsonSchemaGeneratorService do
 
   describe '#visit_number' do
     context 'when the code is birthyear' do
-      let(:field) { create :custom_field, input_type: 'number', code: 'birthyear', key: field_key }
+      let(:field) { create(:custom_field, input_type: 'number', code: 'birthyear', key: field_key) }
 
       it 'returns the schema for the given built-in field' do
         schema = travel_to(Date.parse('1915-01-01')) { generator.visit_number(field) }
@@ -26,7 +26,7 @@ RSpec.describe UserJsonSchemaGeneratorService do
     end
 
     context 'when the code is something else' do
-      let(:field) { create :custom_field, input_type: 'number', key: field_key }
+      let(:field) { create(:custom_field, input_type: 'number', key: field_key) }
 
       it 'returns the schema for the given field' do
         expect(generator.visit_number(field)).to eq({
@@ -38,9 +38,9 @@ RSpec.describe UserJsonSchemaGeneratorService do
 
   describe '#visit_select' do
     context 'when the code is domicile' do
-      let(:field) { create :custom_field, input_type: 'number', code: 'domicile', key: field_key }
-      let!(:area1) { create :area }
-      let!(:area2) { create :area }
+      let(:field) { create(:custom_field, input_type: 'number', code: 'domicile', key: field_key) }
+      let!(:area1) { create(:area) }
+      let!(:area2) { create(:area) }
 
       it 'returns the schema for the given built-in field' do
         schema = travel_to(Date.parse('1915-01-01')) { generator.visit_select(field) }
@@ -57,7 +57,7 @@ RSpec.describe UserJsonSchemaGeneratorService do
 
     context 'when the code is something else' do
       context 'without options' do
-        let(:field) { create :custom_field_select, input_type: 'select', key: field_key }
+        let(:field) { create(:custom_field_select, input_type: 'select', key: field_key) }
 
         it 'returns the schema for the given field' do
           expect(generator.visit_select(field)).to eq({
@@ -67,7 +67,7 @@ RSpec.describe UserJsonSchemaGeneratorService do
       end
 
       context 'with options' do
-        let(:field) { create :custom_field_select, :with_options, input_type: 'select', key: field_key }
+        let(:field) { create(:custom_field_select, :with_options, input_type: 'select', key: field_key) }
 
         it 'returns the schema for the given field' do
           expect(generator.visit_select(field)).to eq({

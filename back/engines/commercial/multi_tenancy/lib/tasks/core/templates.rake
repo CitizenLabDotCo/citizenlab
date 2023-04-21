@@ -16,14 +16,14 @@ namespace :templates do
   desc 'Importing and exporting tenants as yaml files'
 
   task :export, %i[host file] => [:environment] do |_t, args|
-    template = ::MultiTenancy::Templates::Serializer.new(Tenant.find_by(host: args[:host])).run
+    template = MultiTenancy::Templates::Serializer.new(Tenant.find_by(host: args[:host])).run
     File.write(args[:file], template.to_yaml)
   end
 
   task :import, %i[host file] => [:environment] do |_t, args|
     host = args[:host]
     Apartment::Tenant.switch(host.tr('.', '_')) do
-      ::MultiTenancy::TenantTemplateService.new.resolve_and_apply_template YAML.load(open(args[:file]).read)
+      MultiTenancy::TenantTemplateService.new.resolve_and_apply_template YAML.load(open(args[:file]).read)
     end
   end
 
@@ -37,7 +37,7 @@ namespace :templates do
     template_hosts.each do |host|
       template_name = "#{host.split('.').first}_template.yml"
       puts "Generating #{template_name}"
-      template = ::MultiTenancy::Templates::Serializer.new(Tenant.find_by(host: host)).run
+      template = MultiTenancy::Templates::Serializer.new(Tenant.find_by(host: host)).run
       file_path = "config/tenant_templates/generated/#{template_name}"
       File.write(file_path, template.to_yaml)
       if external
@@ -121,7 +121,7 @@ namespace :templates do
 
   task :change_locale, %i[template_name locale_from locale_to] => [:environment] do |_t, args|
     template = YAML.load open(Rails.root.join('config', 'tenant_templates', "#{args[:template_name]}.yml")).read
-    service = ::MultiTenancy::TenantTemplateService.new
+    service = MultiTenancy::TenantTemplateService.new
 
     template = service.change_locales template, args[:locale_from], args[:locale_to]
     File.write("config/tenant_templates/#{args[:locale_to]}_#{args[:template_name]}.yml", template.to_yaml)

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaign, type: :model do
+RSpec.describe EmailCampaigns::Campaign do
   describe '#apply_recipient_filters' do
     let(:campaign) { create(:invite_received_campaign) }
     let(:invite) { create(:invite) }

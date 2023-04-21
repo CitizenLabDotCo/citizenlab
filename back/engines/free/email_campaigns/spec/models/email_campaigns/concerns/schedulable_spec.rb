@@ -6,7 +6,7 @@ class SchedulableCampaignForTest < EmailCampaigns::Campaign
   include EmailCampaigns::Schedulable
 end
 
-RSpec.describe EmailCampaigns::Schedulable, type: :model do
+RSpec.describe EmailCampaigns::Schedulable do
   let(:config_timezone) { AppConfiguration.instance.settings('core', 'timezone') }
   let :schedule do
     IceCube::Schedule.new(Time.find_zone(config_timezone).local(2018)) do |s|

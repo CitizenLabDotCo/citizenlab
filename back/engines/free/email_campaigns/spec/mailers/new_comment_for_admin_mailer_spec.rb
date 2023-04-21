@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::NewCommentForAdminMailer, type: :mailer do
+RSpec.describe EmailCampaigns::NewCommentForAdminMailer do
   describe 'NewCommentForAdmin' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::NewCommentForAdmin.create! }
@@ -16,7 +16,7 @@ RSpec.describe EmailCampaigns::NewCommentForAdminMailer, type: :mailer do
           comment_body_multiloc: {
             en: 'Ruh roooarrgh yrroonn wyaaaaaa ahuma hnn-rowr ma'
           },
-          comment_url: "http:\/\/localhost:3000\/en\/initiatives\/wiki-roulette",
+          comment_url: 'http://localhost:3000/en/initiatives/wiki-roulette',
           post_published_at: 2.weeks.ago.iso8601,
           post_title_multiloc: {
             en: 'Wiki Roulette'

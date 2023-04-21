@@ -7,7 +7,7 @@ RSpec.describe ReportBuilder::SideFxReportService do
 
   # We do not retest logic from `BaseSideFxService`, instead we just check that
   # `ReportBuilder::SideFxReportService` inherits it.
-  specify { expect(described_class).to be < ::BaseSideFxService }
+  specify { expect(described_class).to be < BaseSideFxService }
 
   let_it_be(:user) { create(:user) }
   let_it_be(:report, reload: true) { create(:report) }

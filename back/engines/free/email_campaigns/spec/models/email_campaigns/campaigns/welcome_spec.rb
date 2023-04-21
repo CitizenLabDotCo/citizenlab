@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::Welcome, type: :model do
+RSpec.describe EmailCampaigns::Campaigns::Welcome do
   describe 'Welcome Campaign default factory' do
     it 'is valid' do
       expect(build(:welcome_campaign)).to be_valid

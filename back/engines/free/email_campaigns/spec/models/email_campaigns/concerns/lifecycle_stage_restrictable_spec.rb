@@ -12,7 +12,7 @@ class LifecycleStageNotChurnedCampaignForTest < EmailCampaigns::Campaign
   allow_lifecycle_stages except: ['demo']
 end
 
-RSpec.describe EmailCampaigns::LifecycleStageRestrictable, type: :model do
+RSpec.describe EmailCampaigns::LifecycleStageRestrictable do
   let(:app_configuration) { AppConfiguration.instance }
 
   context 'on a campaign limited to demo and active platforms' do

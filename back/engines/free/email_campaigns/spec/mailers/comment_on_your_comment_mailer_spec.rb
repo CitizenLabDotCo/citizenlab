@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::CommentOnYourCommentMailer, type: :mailer do
+RSpec.describe EmailCampaigns::CommentOnYourCommentMailer do
   describe 'CommentOnYourComment' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::CommentOnYourComment.create! }
@@ -15,9 +15,9 @@ RSpec.describe EmailCampaigns::CommentOnYourCommentMailer, type: :mailer do
           initiating_user_last_name: 'Geeke',
           comment_author_name: 'Matthias Geeke',
           comment_body_multiloc: {
-            'nl-BE': "<span class=\"cl-mention-user\" data-user-id=\"0b36289a-d95e-4998-bb8c-866cb58e0c90\" data-user-slug=\"lieve-kuypers\">@Lieve Kuypers<\/span> Dat zullen de pati\u00c3\u00abnten die op hun huisbezoek of thuisverpleging graag horen. ;) Sommige gezinnen hebben nu eenmaal nood aan meerdere wagens... "
+            'nl-BE': "<span class=\"cl-mention-user\" data-user-id=\"0b36289a-d95e-4998-bb8c-866cb58e0c90\" data-user-slug=\"lieve-kuypers\">@Lieve Kuypers</span> Dat zullen de pati\u00c3\u00abnten die op hun huisbezoek of thuisverpleging graag horen. ;) Sommige gezinnen hebben nu eenmaal nood aan meerdere wagens... "
           },
-          comment_url: "http:\/\/localhost:3000\/nl-BE\/ideas\/afschaffen-of-versoepelen-wetgeving-rond-verharden-van-voortuin",
+          comment_url: 'http://localhost:3000/nl-BE/ideas/afschaffen-of-versoepelen-wetgeving-rond-verharden-van-voortuin',
           post_title_multiloc: {
             'nl-BE': 'Afschaffen of versoepelen wetgeving rond verharden van voortuin'
           },

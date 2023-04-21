@@ -68,7 +68,7 @@ class User < ApplicationRecord
 
     # Returns (and memoize) the schema of all declared roles without restrictions.
     def _roles_json_schema
-      @_roles_json_schema ||= JSON.parse(File.read(Rails.root.join('config/schemas/user_roles.json_schema')))
+      @_roles_json_schema ||= JSON.parse(Rails.root.join('config/schemas/user_roles.json_schema').read)
     end
 
     # Returns the user record from the database which matches the specified
@@ -190,7 +190,7 @@ class User < ApplicationRecord
     end
   end
 
-  EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip)
+  EMAIL_DOMAIN_BLACKLIST = Rails.root.join('config', 'domain_blacklist.txt').readlines.map(&:strip)
   validate :validate_email_domain_blacklist
 
   validates :roles, json: { schema: -> { User.roles_json_schema }, message: ->(errors) { errors } }

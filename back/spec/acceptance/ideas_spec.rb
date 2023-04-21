@@ -79,9 +79,9 @@ resource 'Ideas' do
       describe do
         before do
           @ideas = %w[published published draft published spam published published].map do |ps|
-            create :idea, publication_status: ps
+            create(:idea, publication_status: ps)
           end
-          create :idea, project: create(:continuous_native_survey_project)
+          create(:idea, project: create(:continuous_native_survey_project))
         end
 
         example_request 'List all published ideas (default behaviour)' do
@@ -354,7 +354,7 @@ resource 'Ideas' do
           header 'Authorization', "Bearer #{token}"
 
           @ideas = %w[published published draft published spam published published].map do |ps|
-            create :idea, publication_status: ps
+            create(:idea, publication_status: ps)
           end
         end
 
@@ -554,7 +554,7 @@ resource 'Ideas' do
       let(:project) { create(:project_with_active_ideation_phase) }
       let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
       let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
-      let(:idea) { create :idea, project: project }
+      let(:idea) { create(:idea, project: project) }
       let(:idea_id) { idea.id }
 
       example_request 'Get the jsonforms.io json schema and ui schema for an ideation input' do
@@ -604,7 +604,7 @@ resource 'Ideas' do
 
         let(:idea) { build(:idea) }
         let(:with_permissions) { false }
-        let(:project) { create :continuous_project, with_permissions: with_permissions }
+        let(:project) { create(:continuous_project, with_permissions: with_permissions) }
         let(:project_id) { project.id }
         let(:publication_status) { 'published' }
         let(:title_multiloc) { idea.title_multiloc }
@@ -1041,7 +1041,7 @@ resource 'Ideas' do
 
             context 'when passing an empty array of phase ids' do
               before do
-                @project = create :project_with_phases
+                @project = create(:project_with_phases)
                 @idea.update! project: @project, phases: [phase]
                 do_request(idea: { phase_ids: phase_ids })
               end
@@ -1076,7 +1076,7 @@ resource 'Ideas' do
           describe 'Change the project' do
             before do
               @project.update! allowed_input_topics: create_list(:topic, 2)
-              @project2 = create :project, allowed_input_topics: [@project.allowed_input_topics.first]
+              @project2 = create(:project, allowed_input_topics: [@project.allowed_input_topics.first])
               @idea.update! topics: @project.allowed_input_topics
             end
 
@@ -1110,7 +1110,7 @@ resource 'Ideas' do
 
         context 'when moderator' do
           before do
-            @moderator = create :project_moderator, projects: [@project]
+            @moderator = create(:project_moderator, projects: [@project])
             token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
             header 'Authorization', "Bearer #{token}"
           end
@@ -1128,7 +1128,7 @@ resource 'Ideas' do
 
         context 'when unauthorized' do
           before do
-            @user = create :user
+            @user = create(:user)
             token = Knock::AuthToken.new(payload: @user.to_token_payload).token
             header 'Authorization', "Bearer #{token}"
           end
@@ -1149,8 +1149,8 @@ resource 'Ideas' do
 
       describe do
         before do
-          @project = create :continuous_project
-          @idea = create :idea, author: @user, publication_status: 'draft', project: @project
+          @project = create(:continuous_project)
+          @idea = create(:idea, author: @user, publication_status: 'draft', project: @project)
         end
 
         let(:id) { @idea.id }
@@ -1207,6 +1207,6 @@ resource 'Ideas' do
   private
 
   def encode_file_as_base64(filename)
-    "data:application/pdf;base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
+    "data:application/pdf;base64,#{Base64.encode64(Rails.root.join('spec', 'fixtures', filename).read)}"
   end
 end

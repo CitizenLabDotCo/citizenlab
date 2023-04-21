@@ -50,8 +50,8 @@ describe LocalProjectCopyService do
       )
     end
 
-    let!(:timeline_project) { create :project_with_past_ideation_and_current_information_phase }
-    let!(:folder) { create :project_folder }
+    let!(:timeline_project) { create(:project_with_past_ideation_and_current_information_phase) }
+    let!(:folder) { create(:project_folder) }
 
     it 'works' do
       project_count = Project.count
@@ -303,7 +303,7 @@ describe LocalProjectCopyService do
     end
 
     it 'shifts timelines of phases to start first phase on day of copying' do
-      travel_to Time.now do
+      freeze_time do
         phase1_start = timeline_project.phases.order(:start_at).first.start_at
         phase2_end = timeline_project.phases.order(:start_at).second.end_at
 

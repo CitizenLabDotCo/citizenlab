@@ -7,7 +7,7 @@ module Surveys
         { header: 'submitted_at', f: ->(r) { r.submitted_at }, skip_sanitization: true },
         { header: 'started_at',   f: ->(r) { r.started_at },   skip_sanitization: true }
       ]
-      questions = responses.map { |r| r.answers.map { |a| a['question_text'] } }.flatten.uniq
+      questions = responses.map { |r| r.answers.pluck('question_text') }.flatten.uniq
       columns += questions.map do |q|
         {
           header: q,

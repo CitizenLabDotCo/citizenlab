@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe SideFxCustomFieldOptionService do
   let(:service) { described_class.new }
-  let(:user) { create :user }
+  let(:user) { create(:user) }
 
   describe 'before_delete' do
     let(:custom_field) { create(:custom_field, :for_custom_form, input_type: 'select') }

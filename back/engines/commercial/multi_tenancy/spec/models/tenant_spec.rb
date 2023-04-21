@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Tenant, type: :model do
+RSpec.describe Tenant do
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:tenant)).to be_valid

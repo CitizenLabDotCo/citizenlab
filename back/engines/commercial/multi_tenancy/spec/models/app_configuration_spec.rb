@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe AppConfiguration, type: :model do
+RSpec.describe AppConfiguration do
   context 'when updated' do
     it 'name is synced with tenant' do
       Tenant.current.update(name: 'Karhide')
