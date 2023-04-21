@@ -1513,7 +1513,7 @@
   "app.errors.locale_inclusion": "Lütfen desteklenen bir dil seçin",
   "app.errors.malformed_admin_value": "{row} satırında bulunan {value} yönetici değeri geçerli değil",
   "app.errors.malformed_groups_value": "{row} satırında bulunan {value} grubu geçerli bir grup değildir",
-  "app.errors.max_invites_limit_exceeded": "İzin verilen maksimum davetiye sayısı aşıldı.",
+  "app.errors.max_invites_limit_exceeded1": "Davetiye sayısı 1000 sınırını aşıyor.",
   "app.errors.no_invites_specified": "Herhangi bir e-posta adresi bulunamadı.",
   "app.errors.password_blank": "Bu boş olamaz",
   "app.errors.password_invalid": "Lütfen mevcut şifrenizi tekrar kontrol edin.",
