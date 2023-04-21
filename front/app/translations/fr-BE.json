@@ -38,6 +38,7 @@
   "app.components.Comments.commentingInitiativeNotPermitted": "Vous n'avez pas le droit de commenter.",
   "app.components.Comments.commentingMaybeNotPermitted": "Tout le monde n'est autorisés à commenter. Cliquez ici {signInLink} pour voir si vous avez accès.",
   "app.components.Comments.invisibleTitleComments": "Commentaires",
+  "app.components.Comments.mostRecent": "Les plus récents",
   "app.components.Comments.mostUpvoted": "Plus votés",
   "app.components.Comments.official": "Officiel",
   "app.components.Comments.replyToComment": "Répondre au commentaire",
