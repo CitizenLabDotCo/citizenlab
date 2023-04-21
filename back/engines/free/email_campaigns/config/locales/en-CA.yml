@@ -132,7 +132,7 @@ en-CA:
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
     admin_rights_received:
-      cta_moderate_platform: 'Moderate your platform'
+      cta_manage_platform: 'Manage your platform'
       message_you_became_administrator: 'You have been granted administrator rights for the participation platform of %{organizationName}.'
       preheader: 'You were granted administrator rights for the participation platform of %{organizationName}'
       subject: 'You became an administrator on the platform of %{organizationName}'
@@ -260,7 +260,7 @@ en-CA:
       preheader: 'Project manager digest of %{organizationName}'
       title_your_weekly_report: '%{firstName}, your weekly report'
       text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
-      cta_moderate: 'Moderate your project'
+      cta_manage: 'Manage your project'
       new_users: 'New users'
       new_ideas: 'New ideas'
       new_comments: 'New comments'
@@ -386,7 +386,7 @@ en-CA:
       subject: 'You''ve received an official update on the platform of %{organizationName}'
       preheader: '%{officialName} left an official update on your initiative'
     project_moderation_rights_received:
-      cta_moderate_project: 'Moderate this project'
+      cta_manage_project: 'Manage this project'
       message_you_became_moderator: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
       no_ideas: 'No ideas yet'
       preheader: 'An adminstrator of the participation platform of %{organizationName} just made you a project manager of the following project'
