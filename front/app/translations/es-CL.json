@@ -38,6 +38,7 @@
   "app.components.Comments.commentingInitiativeNotPermitted": "No tienes derecho a hacer comentarios.",
   "app.components.Comments.commentingMaybeNotPermitted": "No todo el mundo puede comentar. Por favor {signInLink} para verificar si puedes hacerlo.",
   "app.components.Comments.invisibleTitleComments": "Respuestas",
+  "app.components.Comments.mostRecent": "Más recientes",
   "app.components.Comments.mostUpvoted": "Más votados",
   "app.components.Comments.official": "Oficial",
   "app.components.Comments.replyToComment": "Responder a la respuesta",
