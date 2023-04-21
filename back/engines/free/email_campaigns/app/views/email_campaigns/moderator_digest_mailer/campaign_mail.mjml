@@ -1,21 +1,22 @@
+<mj-section
+  padding="0 25px"
+>
+  <mj-column>
+    <mj-text>
+      <h2 style="padding: 20px 0">
+        <%= event.project_name %>
+      </h2>
+    </mj-text>
+  </mj-column>
+</mj-section>
 
-<mj-wrapper background-color="#F6F6F6" full-width="full-width" padding="40px 0 0">
-
-  <mj-section>
-    <mj-column>
-      <mj-text>
-        <h2 style="padding: 20px 0">
-          <%= event.project_name %>
-        </h2>
-      </mj-text>
-    </mj-column>
-  </mj-section>
-
-  <!-- 3 statistics box-->
+<!-- 3 statistics box-->
+<mj-wrapper
+  padding="0 25px"
+>
   <mj-section
-    background-color="#FFFFFF"
-    padding="40px 25px"
     border="1px solid #EAEAEA"
+    padding="25px"
     border-radius="5px"
   >
     <mj-column>
@@ -30,12 +31,6 @@
       <mj-text font-size="16px" align="center">
         <%= format_message("new_users") %>
       </mj-text>
-      <% unless change_users.zero? %>
-        <mj-text color="<%= change_users.positive? ? '#2ecc71' : '#fab1a0' %>" font-size="16px" align="center" font-weight="700">
-          <%= '+' if change_users.positive? %>
-          <%= change_users %>%
-        </mj-text>
-      <% end %>
     </mj-column>
 
     <mj-column>
@@ -50,12 +45,6 @@
       <mj-text font-size="16px" align="center">
         <%= format_message("new_ideas") %>
       </mj-text>
-      <% unless change_ideas.zero? %>
-        <mj-text color="<%= change_ideas.positive? ? '#2ecc71' : '#fab1a0' %>" font-size="16px" align="center" font-weight="700">
-          <%= '+' if change_ideas.positive? %>
-          <%= change_ideas %>%
-        </mj-text>
-      <% end %>
     </mj-column>
 
     <mj-column>
@@ -70,40 +59,35 @@
       <mj-text font-size="16px" align="center">
         <%= format_message("new_comments") %>
       </mj-text>
-      <% unless change_comments.zero? %>
-        <mj-text color="<%= change_comments.positive? ? '#2ecc71' : '#fab1a0' %>" font-size="16px" align="center" font-weight="700">
-          <%= '+' if change_comments.positive? %>
-          <%= change_comments %>%
-        </mj-text>
-      <% end %>
     </mj-column>
   </mj-section>
-
-
-  <!-- Activity of the past week -->
-
-  <mj-section padding="40px 25px">
-    <mj-column>
-      <mj-text>
-        <h2 style="padding: 20px 0">
-          <% if event.top_ideas.blank? %>
-            <%= format_message('title_no_inputs_past_week') %>
-          <% else %>
-            <%= format_message('title_inputs_past_week') %>
-          <% end %>
-        </h2>
-      </mj-text>
-
-      <mj-table cellpadding="15">
-        <% event.top_ideas.each do |serialized_idea| %>
-          <%= render 'email_campaigns/ideas/idea-minimal', serialized_idea: serialized_idea %>
-        <% end %>
-      </mj-table>
-
-      <mj-text>&nbsp;</mj-text>
-    </mj-column>
-  </mj-section>
-
-  <%= render partial: 'application/cta_button', locals: { href:  "#{url_service.home_url(app_configuration: @app_configuration, locale: @locale)}/admin/projects/#{event.project_id}", message: format_message('cta_moderate') } %>
-
 </mj-wrapper>
+
+<!-- Activity of the past week -->
+
+<mj-section padding="25px">
+  <mj-column>
+    <mj-text>
+      <h2 style="padding: 20px 0">
+        <% if event.top_ideas.blank? %>
+          <%= format_message('title_no_inputs_past_week') %>
+        <% else %>
+          <%= format_message('title_inputs_past_week') %>
+        <% end %>
+      </h2>
+    </mj-text>
+
+    <mj-table cellpadding="15">
+      <% event.top_ideas.each do |serialized_idea| %>
+        <%= render 'email_campaigns/ideas/idea-minimal', serialized_idea: serialized_idea %>
+      <% end %>
+    </mj-table>
+  </mj-column>
+</mj-section>
+
+<%= 
+  render partial: 'application/cta_button', 
+  locals: { 
+  href:  "#{url_service.home_url(app_configuration: @app_configuration, locale: @locale)}/admin/projects/#{event.project_id}", 
+  message: format_message('cta_manage') } 
+%>
