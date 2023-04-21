@@ -132,7 +132,7 @@ pl:
       today_by_author: 'Dzisiaj wg %{author}'
       x_days_ago_by_author: '%{x} dni temu wg %{author}'
     admin_rights_received:
-      cta_moderate_platform: 'Moderuj swoją platformę'
+      cta_manage_platform: 'Zarządzaj swoją platformą'
       message_you_became_administrator: 'Uzyskałeś uprawnienia administratora do platformy uczestnictwa %{organizationName}.'
       preheader: 'Uzyskałeś uprawnienia administratora do platformy uczestnictwa %{organizationName}'
       subject: 'Zostałeś administratorem na platformie %{organizationName}'
@@ -260,7 +260,7 @@ pl:
       preheader: 'Skrót dla moderatora projektu %{organizationName}'
       title_your_weekly_report: '%{firstName}, twój tygodniowy raport'
       text_introduction: 'Stworzyliśmy dla Ciebie listę pomysłów, które wygenerowały największą aktywność w ciągu ostatniego tygodnia. Dowiedz się, co dzieje się w ramach Twojego projektu!'
-      cta_moderate: 'Moderuj swój projekt'
+      cta_manage: 'Zarządzaj swoim projektem'
       new_users: 'Nowi użytkownicy'
       new_ideas: 'Nowe pomysły'
       new_comments: 'Nowe komentarze'
@@ -386,7 +386,7 @@ pl:
       subject: 'Otrzymałeś oficjalną aktualizację na platformie %{organizationName}'
       preheader: '%{officialName} oficjalnie zaktualizował Twoją propozycję'
     project_moderation_rights_received:
-      cta_moderate_project: 'Moderuj ten projekt'
+      cta_manage_project: 'Zarządzaj tym projektem'
       message_you_became_moderator: 'Administrator platformy partycypacyjnej %{organizationName} właśnie ustanowił Cię moderatorem poniższego projektu:'
       no_ideas: 'Nie ma jeszcze pomysłów'
       preheader: 'Administrator platformy partycypacyjnej %{organizationName} właśnie ustanowił Cię moderatorem poniższego projektu'
