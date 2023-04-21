@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-describe 'Rack::Attack', type: :request do
+describe 'Rack::Attack' do
   include ActiveSupport::Testing::TimeHelpers
 
   before do

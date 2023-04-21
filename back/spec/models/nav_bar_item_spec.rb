@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe NavBarItem, type: :model do
+RSpec.describe NavBarItem do
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:nav_bar_item)).to be_valid
@@ -12,7 +12,7 @@ RSpec.describe NavBarItem, type: :model do
   describe 'title_multiloc_with_fallback' do
     context 'with default items' do
       it "falls back to the translations when there's no title_multiloc" do
-        item = create :nav_bar_item, code: 'home', title_multiloc: nil
+        item = create(:nav_bar_item, code: 'home', title_multiloc: nil)
         expect(item.title_multiloc_with_fallback).to match({ 'en' => 'Home', 'fr-FR' => 'Accueil', 'nl-NL' => 'Home' })
       end
 

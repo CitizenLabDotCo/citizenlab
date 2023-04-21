@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ContentBuilder::LayoutImagePolicy do
   subject(:policy) { described_class.new(user, image) }
 
-  let(:image) { create :layout_image }
+  let(:image) { create(:layout_image) }
   let(:user_role_service) { policy.send(:user_role_service) }
 
   context 'for a visitor' do

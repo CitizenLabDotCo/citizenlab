@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-describe 'clave_unica verification', type: :request do
+describe 'clave_unica verification' do
   before do
     @user = create(:user, first_name: 'Rudolphi', last_name: 'Raindeari')
     @token = Knock::AuthToken.new(payload: @user.to_token_payload).token

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Basket, type: :model do
+RSpec.describe Basket do
   context 'Default factory' do
     it 'is valid' do
       expect(build(:basket)).to be_valid

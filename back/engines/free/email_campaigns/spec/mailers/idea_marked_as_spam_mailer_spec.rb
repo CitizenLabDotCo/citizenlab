@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::IdeaMarkedAsSpamMailer, type: :mailer do
+RSpec.describe EmailCampaigns::IdeaMarkedAsSpamMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::IdeaMarkedAsSpam.create! }

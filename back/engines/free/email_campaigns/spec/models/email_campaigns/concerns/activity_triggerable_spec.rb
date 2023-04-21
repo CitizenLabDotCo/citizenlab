@@ -7,7 +7,7 @@ class ActivityTriggerableCampaignForTest < EmailCampaigns::Campaign
   attr_accessor :activity_triggers
 end
 
-RSpec.describe EmailCampaigns::ActivityTriggerable, type: :model do
+RSpec.describe EmailCampaigns::ActivityTriggerable do
   let(:campaign) { ActivityTriggerableCampaignForTest.create! }
   let(:activity) { create(:published_activity) }
 

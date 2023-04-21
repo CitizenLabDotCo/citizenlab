@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe FileUpload, type: :model do
+RSpec.describe FileUpload do
   let(:idea) { create(:idea) }
   let(:file_upload) do
     create(:file_upload, name: 'some_file_name.notwhitelisted')

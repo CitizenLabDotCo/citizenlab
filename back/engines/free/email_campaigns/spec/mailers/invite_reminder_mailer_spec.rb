@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::InviteReminderMailer, type: :mailer do
+RSpec.describe EmailCampaigns::InviteReminderMailer do
   describe 'InviteReminder' do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::InviteReminder.create! }

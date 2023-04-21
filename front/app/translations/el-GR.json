@@ -1537,7 +1537,6 @@
   "app.errors.locale_inclusion": "Παρακαλούμε επιλέξτε μια υποστηριζόμενη γλώσσα",
   "app.errors.malformed_admin_value": "Η τιμή διαχειριστή {value} που βρέθηκε στη γραμμή {row} δεν είναι έγκυρη",
   "app.errors.malformed_groups_value": "Η ομάδα {value} που βρέθηκε στη γραμμή {row} δεν είναι έγκυρη ομάδα",
-  "app.errors.max_invites_limit_exceeded": "Ο μέγιστος αριθμός των επιτρεπόμενων προσκλήσεων έχει ξεπεραστεί.",
   "app.errors.no_invites_specified": "Δεν μπόρεσε να βρεθεί καμία διεύθυνση email.",
   "app.errors.password_blank": "Αυτό δεν μπορεί να είναι κενό",
   "app.errors.password_invalid": "Ελέγξτε ξανά τον τρέχοντα κωδικό πρόσβασής σας.",

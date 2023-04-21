@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::WelcomeMailer, type: :mailer do
+RSpec.describe EmailCampaigns::WelcomeMailer do
   describe 'Welcome' do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::Welcome.create! }

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe User, type: :model do
+RSpec.describe User do
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:user)).to be_valid
@@ -648,8 +648,8 @@ RSpec.describe User, type: :model do
     end
 
     it 'denies a user from his moderator rights' do
-      project = create :project
-      moderator = create :project_moderator, projects: [project]
+      project = create(:project)
+      moderator = create(:project_moderator, projects: [project])
 
       moderator.delete_role 'project_moderator', project_id: project.id
       expect(moderator.save).to be true

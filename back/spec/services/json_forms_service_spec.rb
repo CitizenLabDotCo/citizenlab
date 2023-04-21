@@ -223,8 +223,8 @@ describe JsonFormsService do
     # - Add author and budget when admin (in JsonFormsService)
     describe 'input_ui_and_json_multiloc_schemas' do
       let(:input_term) { 'question' }
-      let(:project) { create :continuous_budgeting_project, input_term: input_term }
-      let(:custom_form) { create :custom_form, :with_default_fields, participation_context: project }
+      let(:project) { create(:continuous_budgeting_project, input_term: input_term) }
+      let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
       let!(:section) do
         create(
           :custom_field_section,
@@ -249,15 +249,15 @@ describe JsonFormsService do
           required: false,
           title_multiloc: { 'en' => 'My optional field' }
         ).tap do |field|
-          create :custom_field_option, custom_field: field, key: 'option1', title_multiloc: { 'en' => 'Rabbit' }
-          create :custom_field_option, custom_field: field, key: 'option2', title_multiloc: { 'en' => 'Bear' }
+          create(:custom_field_option, custom_field: field, key: 'option1', title_multiloc: { 'en' => 'Rabbit' })
+          create(:custom_field_option, custom_field: field, key: 'option2', title_multiloc: { 'en' => 'Bear' })
         end
       end
       let(:fields) { IdeaCustomFieldsService.new(custom_form).enabled_fields }
       let(:output) { service.input_ui_and_json_multiloc_schemas fields, user, input_term }
 
       context 'when resident' do
-        let(:user) { create :user }
+        let(:user) { create(:user) }
 
         it 'generates expected output for different kinds of fields' do
           topic_field = custom_form.custom_fields.find_by(code: 'topic_ids')
@@ -385,7 +385,7 @@ describe JsonFormsService do
           description_multiloc = {
             'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
           }
-          field = create :custom_field, :for_custom_form, input_type: 'text', description_multiloc: description_multiloc
+          field = create(:custom_field, :for_custom_form, input_type: 'text', description_multiloc: description_multiloc)
           allow_any_instance_of(TextImageService).to(
             receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
           )
@@ -398,7 +398,7 @@ describe JsonFormsService do
           description_multiloc = {
             'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
           }
-          field = create :custom_field, :for_custom_form, input_type: 'page', description_multiloc: description_multiloc
+          field = create(:custom_field, :for_custom_form, input_type: 'page', description_multiloc: description_multiloc)
           allow_any_instance_of(TextImageService).to(
             receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
           )
@@ -414,7 +414,7 @@ describe JsonFormsService do
           SettingsService.new.activate_feature! 'participatory_budgeting'
         end
 
-        let(:user) { create :admin }
+        let(:user) { create(:admin) }
 
         it 'includes budget and author fields' do
           expect(output[:json_schema_multiloc]['en'][:properties]['author_id']).to eq({ type: 'string' })

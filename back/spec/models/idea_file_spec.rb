@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe IdeaFile, type: :model do
+RSpec.describe IdeaFile do
   describe 'extension_whitelist validation' do
     let(:idea) { create(:idea) }
 

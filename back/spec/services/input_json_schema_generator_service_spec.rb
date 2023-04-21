@@ -9,7 +9,7 @@ RSpec.describe InputJsonSchemaGeneratorService do
 
   describe '#generate_for' do
     let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
-    let(:project) { create :continuous_project }
+    let(:project) { create(:continuous_project) }
     let(:custom_form) { create(:custom_form, participation_context: project) }
     let(:ui_schema) { generator.generate_for IdeaCustomFieldsService.new(custom_form).enabled_fields }
 
@@ -72,7 +72,7 @@ RSpec.describe InputJsonSchemaGeneratorService do
     end
 
     context 'when there is a required extra field' do
-      let(:custom_form) { create :custom_form, :with_default_fields, participation_context: project }
+      let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
       let!(:custom_field) { create(:custom_field_number, required: true, resource: custom_form) }
 
       it 'returns the JSON schema for all enabled built-in fields, and the extra field' do
@@ -136,7 +136,7 @@ RSpec.describe InputJsonSchemaGeneratorService do
 
   describe '#visit_text_multiloc' do
     context 'when the code is title_multiloc' do
-      let(:field) { create :custom_field, input_type: 'text_multiloc', code: 'title_multiloc', key: field_key }
+      let(:field) { create(:custom_field, input_type: 'text_multiloc', code: 'title_multiloc', key: field_key) }
 
       it 'returns the schema for the given built-in field' do
         expect(generator.visit_text_multiloc(field)).to eq({
@@ -164,7 +164,7 @@ RSpec.describe InputJsonSchemaGeneratorService do
     end
 
     context 'when the code is something else' do
-      let(:field) { create :custom_field, input_type: 'text_multiloc', key: field_key }
+      let(:field) { create(:custom_field, input_type: 'text_multiloc', key: field_key) }
 
       it 'returns the schema for the given field' do
         expect(generator.visit_text_multiloc(field)).to eq({
@@ -182,7 +182,7 @@ RSpec.describe InputJsonSchemaGeneratorService do
 
   describe '#visit_html_multiloc' do
     context 'when the code is body_multiloc' do
-      let(:field) { create :custom_field, input_type: 'html_multiloc', code: 'body_multiloc', key: field_key }
+      let(:field) { create(:custom_field, input_type: 'html_multiloc', code: 'body_multiloc', key: field_key) }
 
       it 'returns the schema for the given built-in field' do
         expect(generator.visit_html_multiloc(field)).to eq({
@@ -207,7 +207,7 @@ RSpec.describe InputJsonSchemaGeneratorService do
     end
 
     context 'when the code is something else' do
-      let(:field) { create :custom_field, input_type: 'html_multiloc', key: field_key }
+      let(:field) { create(:custom_field, input_type: 'html_multiloc', key: field_key) }
 
       it 'returns the schema for the given field' do
         expect(generator.visit_html_multiloc(field)).to eq({
@@ -231,12 +231,12 @@ RSpec.describe InputJsonSchemaGeneratorService do
       )
     end
     let(:topics) { project.allowed_input_topics }
-    let(:form) { create :custom_form, :with_default_fields, participation_context: project }
+    let(:form) { create(:custom_form, :with_default_fields, participation_context: project) }
     let(:field) { form.custom_fields.find_by(code: 'topic_ids') }
 
     context 'when not required, and without topics' do
       let(:allowed_input_topics_count) { 0 }
-      let(:form) { create :custom_form, :with_default_fields }
+      let(:form) { create(:custom_form, :with_default_fields) }
 
       it 'returns the schema for the given field' do
         expect(generator.visit_topic_ids(field)).to eq({
@@ -304,7 +304,7 @@ RSpec.describe InputJsonSchemaGeneratorService do
 
   describe '#visit_multiselect' do
     context 'when not required, and without options' do
-      let(:field) { create :custom_field_select, input_type: 'multiselect', key: field_key }
+      let(:field) { create(:custom_field_select, input_type: 'multiselect', key: field_key) }
 
       it 'returns the schema for the given field' do
         expect(generator.visit_multiselect(field)).to eq({
@@ -319,7 +319,7 @@ RSpec.describe InputJsonSchemaGeneratorService do
     end
 
     context 'when not required, and with options' do
-      let(:field) { create :custom_field_select, :with_options, input_type: 'multiselect', key: field_key }
+      let(:field) { create(:custom_field_select, :with_options, input_type: 'multiselect', key: field_key) }
 
       it 'returns the schema for the given field' do
         expect(generator.visit_multiselect(field)).to eq({
@@ -344,7 +344,7 @@ RSpec.describe InputJsonSchemaGeneratorService do
     end
 
     context 'when required, and with options' do
-      let(:field) { create :custom_field_select, :with_options, input_type: 'multiselect', key: field_key, required: true }
+      let(:field) { create(:custom_field_select, :with_options, input_type: 'multiselect', key: field_key, required: true) }
 
       it 'returns the schema for the given field' do
         expect(generator.visit_multiselect(field)).to eq({

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Analytics::DimensionType, type: :model do
+RSpec.describe Analytics::DimensionType do
   subject { build(:dimension_type) }
 
   describe 'validations' do

@@ -630,7 +630,7 @@ resource 'Users' do
       end
 
       get 'web_api/v1/users/by_slug/:slug' do
-        let(:user) { create :user }
+        let(:user) { create(:user) }
         let(:slug) { user.slug }
 
         example_request 'Get one user by slug includes user block data' do
@@ -750,7 +750,7 @@ resource 'Users' do
           end
 
           context 'on a resident' do
-            let(:resident) { create :user }
+            let(:resident) { create(:user) }
             let(:id) { resident.id }
             let(:roles) { [type: 'admin'] }
 
@@ -786,8 +786,8 @@ resource 'Users' do
           end
 
           context 'on a folder moderator' do
-            let(:folder) { create :project_folder }
-            let(:moderator) { create :project_folder_moderator, project_folders: [folder] }
+            let(:folder) { create(:project_folder) }
+            let(:moderator) { create(:project_folder_moderator, project_folders: [folder]) }
             let(:id) { moderator.id }
             let(:roles) { moderator.roles + [{ 'type' => 'admin' }] }
 
@@ -832,7 +832,7 @@ resource 'Users' do
       end
 
       get 'web_api/v1/users/:id' do
-        let(:user) { create :user }
+        let(:user) { create(:user) }
         let(:id) { user.id }
 
         example_request 'Get a user by id does not include user block data' do
@@ -856,7 +856,7 @@ resource 'Users' do
       end
 
       get 'web_api/v1/users/by_slug/:slug' do
-        let(:user) { create :user }
+        let(:user) { create(:user) }
         let(:slug) { user.slug }
 
         example_request 'Get one user by slug' do
@@ -934,7 +934,7 @@ resource 'Users' do
 
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
-          let(:project) { create :continuous_project, with_permissions: true }
+          let(:project) { create(:continuous_project, with_permissions: true) }
 
           before do
             old_timers = create(:smart_group, rules: [
@@ -1180,7 +1180,7 @@ resource 'Users' do
       delete 'web_api/v1/users/:id' do
         before do
           @user.update!(roles: [{ type: 'admin' }])
-          @subject_user = create :admin
+          @subject_user = create(:admin)
         end
 
         let(:id) { @subject_user.id }
