@@ -12,7 +12,7 @@ This engine
 http://localhost:4000/rails/mailers/
 
 MailCatcher: http://localhost:1080
- 
+
 # Campaign
 
 Campaign is a class that is not intended to be used directly. It is a unified model that should be subclassed to implement specific campaign.
