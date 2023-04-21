@@ -38,6 +38,7 @@
   "app.components.Comments.commentingInitiativeNotPermitted": "Pašlaik komentāru rakstīšana nav iespējota.",
   "app.components.Comments.commentingMaybeNotPermitted": "Lūdzu, {signInLink}, lai uzzinātu, kādas darbības var veikt.",
   "app.components.Comments.invisibleTitleComments": "Komentāri",
+  "app.components.Comments.mostRecent": "Jaunākais",
   "app.components.Comments.mostUpvoted": "Vislielāko balsu skaitu saņēma",
   "app.components.Comments.official": "Oficiālais",
   "app.components.Comments.replyToComment": "Atbildēt uz komentāru",
