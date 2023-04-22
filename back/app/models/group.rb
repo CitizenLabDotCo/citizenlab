@@ -75,6 +75,8 @@ class Group < ApplicationRecord
   end
 
   def update_memberships_count!
+    return if self.frozen?
+
     update!(memberships_count: memberships.where(user: User.registered).count)
   end
 
