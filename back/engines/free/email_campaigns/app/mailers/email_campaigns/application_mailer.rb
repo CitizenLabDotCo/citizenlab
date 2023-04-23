@@ -11,7 +11,6 @@ module EmailCampaigns
     end
 
     def campaign_mail
-      locale = params[:locale] || locale
       I18n.with_locale(locale) do
         mail(default_config, &:mjml).tap do |message|
           message.mailgun_headers = mailgun_headers if self.class.delivery_method == :mailgun

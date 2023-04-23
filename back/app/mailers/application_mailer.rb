@@ -35,7 +35,11 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def locale
-    @locale ||= recipient.locale
+    @locale ||= if caller.join().include?('action_mailer/preview.rb')
+      params[:locale]
+    else
+      recipient.locale
+    end
   end
 
   def subject
