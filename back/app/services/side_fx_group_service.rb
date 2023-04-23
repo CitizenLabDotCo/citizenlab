@@ -14,10 +14,10 @@ class SideFxGroupService
 
   def after_update(group, user)
     LogActivityJob.perform_later(
-      group,
+      encode_frozen_resource(group),
       'changed',
       user,
-      group.updated_at.to_i,
+      Time.now.to_i,
       payload: { changes: group.previous_changes }
     )
     UpdateMemberCountJob.perform_now(group)
