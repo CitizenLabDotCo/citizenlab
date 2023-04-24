@@ -766,6 +766,7 @@ resource 'Users' do
                 config = AppConfiguration.instance
                 config.settings['core']['maximum_admins_number'] = 2
                 config.settings['core']['additional_admins_number'] = 0
+                config.settings['seat_based_billing'] = { enabled: true, allowed: true }
                 config.save!
               end
 

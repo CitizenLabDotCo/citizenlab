@@ -9,6 +9,7 @@ describe AdditionalSeatsIncrementer do
     config.settings['core']['maximum_moderators_number'] = 1
     config.settings['core']['additional_admins_number'] = 0
     config.settings['core']['additional_moderators_number'] = 0
+    config.settings['seat_based_billing'] = { enabled: true, allowed: true }
     config.save!
 
     ActiveJob::Base.queue_adapter.try(:enqueued_jobs=, [])
@@ -58,6 +59,22 @@ describe AdditionalSeatsIncrementer do
         .and(change { AppConfiguration.instance.settings['core']['additional_moderators_number'] }.from(0).to(1))
 
       expect(LogActivityJob).to have_been_enqueued
+    end
+
+    it 'does not increment additional seats if feature is disabled' do
+      config = AppConfiguration.instance
+      config.settings['seat_based_billing'] = { enabled: false, allowed: false }
+      config.save!
+
+      create(:project_moderator) # to reach limit
+      new_role = { 'type' => 'project_moderator', 'project_id' => create(:project).id }
+      updated_user.update!(roles: [new_role])
+      expect do
+        described_class.increment_if_necessary(updated_user, nil)
+      end.to not_change { AppConfiguration.instance.settings['core']['additional_admins_number'] }
+        .and(not_change { AppConfiguration.instance.settings['core']['additional_moderators_number'] })
+
+      expect(LogActivityJob).not_to have_been_enqueued
     end
 
     it 'increments additional admin seats' do

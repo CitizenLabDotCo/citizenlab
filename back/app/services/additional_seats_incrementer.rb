@@ -3,6 +3,8 @@
 class AdditionalSeatsIncrementer
   class << self
     def increment_if_necessary(updated_user, current_user)
+      return unless AppConfiguration.instance.feature_activated?('seat_based_billing')
+
       role = (updated_user.roles - updated_user.roles_previously_was).first
       return if role.nil?
       return unless increment?(role['type'])

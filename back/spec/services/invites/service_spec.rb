@@ -71,6 +71,7 @@ describe Invites::Service do
         config.settings['core']['maximum_moderators_number'] = 1
         config.settings['core']['additional_admins_number'] = 0
         config.settings['core']['additional_moderators_number'] = 0
+        config.settings['seat_based_billing'] = { enabled: true, allowed: true }
         config.save!
       end
 
