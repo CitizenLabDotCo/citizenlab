@@ -125,11 +125,7 @@ class XlsxService
       { header: 'invite_status', f: ->(u) { u.invite_status }, skip_sanitization: true },
       *user_custom_field_columns(:itself)
     ]
-
-    unless view_private_attributes
-      private_attrs = private_attributes
-      columns.reject! { |c| private_attrs.include?(c[:header]) }
-    end
+    columns.reject! { |c| %w[id email].include?(c[:header]) } unless view_private_attributes
 
     generate_xlsx 'Users', columns, users
   end
@@ -296,10 +292,6 @@ class XlsxService
         user && user.custom_field_values[field.key]
       end
     end
-  end
-
-  def private_attributes
-    %w[email gender birthyear domicile education Email author_email author_id assignee_email]
   end
 
   def header_style(style)
