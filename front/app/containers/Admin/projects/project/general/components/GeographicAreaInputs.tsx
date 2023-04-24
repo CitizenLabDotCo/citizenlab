@@ -7,7 +7,7 @@ import { StyledSectionField, StyledMultipleSelect } from './styling';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { IOption, isIOption } from 'typings';
-import useAreas from 'hooks/useAreas';
+import useAreas from 'api/areas/useAreas';
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 import { IAreaData } from 'services/areas';
@@ -34,7 +34,7 @@ const GeographicAreaInputs = ({
   onProjectAttributesDiffChange,
 }: Props) => {
   const { projectId } = useParams() as { projectId: string };
-  const areas = useAreas();
+  const { data: areas } = useAreas({});
   const project = useProject({ projectId });
   const localize = useLocalize();
   const [areaType, setAreaType] = useState<TProjectAreaType>('none');
@@ -87,8 +87,8 @@ const GeographicAreaInputs = ({
       .filter(isIOption);
   };
 
-  if (!isNilOrError(areas)) {
-    const areaOptions: IOption[] = areas.map((area) => ({
+  if (areas) {
+    const areaOptions: IOption[] = areas.data.map((area) => ({
       value: area.id,
       label: localize(area.attributes.title_multiloc),
     }));
@@ -108,7 +108,7 @@ const GeographicAreaInputs = ({
     ];
     const selectedAreaValues = mapProjectAreaIdsToAreaOptions(
       projectAreaIds,
-      areas
+      areas.data
     );
 
     return (

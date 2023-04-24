@@ -16,7 +16,7 @@ import messages from './messages';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useAreas from 'hooks/useAreas';
+import useAreas from 'api/areas/useAreas';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // services
@@ -33,15 +33,15 @@ const SelectAreas = ({
   intl: { formatMessage },
 }: SelectAreasProps & WrappedComponentProps) => {
   const localize = useLocalize();
-  const areas = useAreas({ forHomepageFilter: true });
+  const { data: areas } = useAreas({ forHomepageFilter: true });
   const { data: appConfig } = useAppConfiguration();
   const isSmallerThanTablet = useBreakpoint('tablet');
 
   if (isNilOrError(appConfig)) return null;
 
   const areasOptions = (): { text: string; value: string }[] => {
-    if (!isNilOrError(areas)) {
-      return areas.map((area) => ({
+    if (areas) {
+      return areas.data.map((area) => ({
         text: localize(area.attributes.title_multiloc),
         value: area.id,
       }));

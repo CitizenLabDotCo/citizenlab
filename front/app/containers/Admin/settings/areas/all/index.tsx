@@ -19,7 +19,7 @@ import { Box, IconTooltip, colors } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // resources
-import useAreas from 'hooks/useAreas';
+import useAreas from 'api/areas/useAreas';
 import useCustomPages from 'hooks/useCustomPages';
 import { reorderArea, IAreaData, deleteArea } from 'services/areas';
 import AreaTermConfig from './AreaTermConfig';
@@ -56,9 +56,9 @@ const AreaList = () => {
     reorderArea(areaId, newOrder);
   };
 
-  const areas = useAreas({ includeStaticPages: true });
+  const { data: areas } = useAreas({ includeStaticPages: true });
 
-  if (isNilOrError(areas)) return null;
+  if (!areas) return null;
 
   return (
     <Section>
@@ -81,11 +81,11 @@ const AreaList = () => {
         </Button>
       </ButtonWrapper>
       <SortableList
-        items={areas}
+        items={areas.data}
         onReorder={handleReorderArea}
         className="areas-list e2e-admin-areas-list"
         id="e2e-admin-areas-list"
-        key={areas.length}
+        key={areas.data.length}
       >
         {({ itemsList, handleDragRow, handleDropRow }) => (
           <>
