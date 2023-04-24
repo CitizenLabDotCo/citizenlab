@@ -1015,17 +1015,17 @@ RSpec.describe User, type: :model do
       end
     end
 
-    describe '#reset_confirmation_required' do
-      it 'resets the confirmation required field' do
+    describe '#set_confirmation_required' do
+      it 'sets the confirmation required field' do
         user.save!
-        user.reset_confirmation_required
+        user.set_confirmation_required
         expect(user.confirmation_required?).to be true
         expect(user.email_confirmed_at).to be_nil
       end
 
       it 'does not perform a commit to the db' do
         user.save!
-        user.reset_confirmation_required
+        user.set_confirmation_required
         expect(user.saved_change_to_confirmation_required?).to be false
         expect(user.saved_change_to_email_confirmed_at?).to be false
       end
