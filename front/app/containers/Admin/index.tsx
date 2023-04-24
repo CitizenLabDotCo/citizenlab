@@ -136,11 +136,11 @@ const AdminPage = memo<Props & WithRouterProps>(
 
     const fullWidth =
       adminFullWidth === true ||
-      endsWith(pathname, 'admin/moderation') ||
+      endsWith(pathname, 'admin/dashboard/moderation') ||
       pathname.includes('admin/dashboard') ||
       pathname.includes('admin/reporting');
 
-    const whiteBg = endsWith(pathname, 'admin/moderation');
+    const whiteBg = endsWith(pathname, 'admin/dashboard/moderation');
 
     return (
       <HasPermission
