@@ -243,7 +243,7 @@
   "app.components.ParticipationCTABars.takeTheSurvey": "Naar de enquête",
   "app.components.ParticipationCTABars.userHasParticipated": "U heeft deelgenomen aan dit project.",
   "app.components.ParticipationCTABars.volunteer": "Vrijwilliger",
-  "app.components.ParticipationCTABars.xDayLeft": "{timeLeft, plural, =0 {Minder dan een dag} one {# dag} other {# dagen}} links",
+  "app.components.ParticipationCTABars.xDayLeft": "{timeLeft, plural, =0 {Minder dan een dag} one {# dag} other {# dagen}} over",
   "app.components.ParticipationCTABars.xWeeksLeft": "nog {timeLeft} weken",
   "app.components.PasswordInput.a11y_passwordHidden": "Wachtwoord verborgen",
   "app.components.PasswordInput.a11y_passwordVisible": "Wachtwoord zichtbaar",
