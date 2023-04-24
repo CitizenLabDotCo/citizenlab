@@ -132,7 +132,7 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     SideFxUserService.new.before_create(@user, current_user)
 
-    if @user.save
+    if @user.save(context: :form_submission)
       SideFxUserService.new.after_create(@user, current_user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
