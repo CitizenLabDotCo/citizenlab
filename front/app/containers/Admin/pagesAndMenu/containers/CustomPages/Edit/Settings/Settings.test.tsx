@@ -2,7 +2,7 @@ import React from 'react';
 import { screen, render, fireEvent, waitFor } from 'utils/testUtils/rtl';
 import EditCustomPageSettings from './';
 
-jest.mock('hooks/useAreas', () => jest.fn(() => []));
+jest.mock('api/areas/useAreas');
 jest.mock('hooks/useTopics', () => jest.fn(() => []));
 
 jest.mock('hooks/useCustomPage', () =>
