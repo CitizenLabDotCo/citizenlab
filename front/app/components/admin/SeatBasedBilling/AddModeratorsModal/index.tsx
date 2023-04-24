@@ -28,7 +28,7 @@ const AddModeratorsModal = ({
   const { formatMessage } = useIntl();
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const exceedsSeats = useExceedsSeats()({
+  const exceedsSeats = useExceedsSeats({
     newlyAddedModeratorsNumber: 1,
   });
 

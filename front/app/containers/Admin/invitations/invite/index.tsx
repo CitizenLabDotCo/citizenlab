@@ -149,7 +149,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
   const [newSeatsResponse, setNewSeatsResponse] =
     useState<IInvitesNewSeats | null>(null);
 
-  const exceedsSeats = useExceedsSeats();
+  const exceedsSeats = useExceedsSeats;
 
   const closeModal = () => {
     setShowModal(false);

@@ -44,7 +44,7 @@ const UserSearch = memo(({ projectId }: Props) => {
   const [moderatorToAdd, setModeratorToAdd] =
     useState<UserOptionTypeBase | null>(null);
 
-  const exceedsSeats = useExceedsSeats()({
+  const exceedsSeats = useExceedsSeats({
     newlyAddedModeratorsNumber: 1,
   });
 

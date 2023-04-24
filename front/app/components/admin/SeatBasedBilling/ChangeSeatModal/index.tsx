@@ -78,7 +78,7 @@ const ChangeSeatModal = ({
   const isChangingModeratorToNormalUser =
     isChangingToNormalUser && isUserToChangeModerator;
 
-  const exceedsSeats = useExceedsSeats()({
+  const exceedsSeats = useExceedsSeats({
     newlyAddedAdminsNumber: 1,
   });
 

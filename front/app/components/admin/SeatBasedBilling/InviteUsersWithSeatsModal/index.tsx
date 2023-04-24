@@ -46,7 +46,7 @@ const InviteUsersWithSeatsModal = ({
   const [showSuccess, setShowSuccess] = useState(false);
   const newSeats = newSeatsResponse.data.attributes;
 
-  const exceedsSeats = useExceedsSeats()({
+  const exceedsSeats = useExceedsSeats({
     newlyAddedAdminsNumber: newSeats.newly_added_admins_number,
     newlyAddedModeratorsNumber: newSeats.newly_added_moderators_number,
   });

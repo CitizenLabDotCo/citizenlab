@@ -100,7 +100,7 @@ const UserTableRow = ({
   const [showChangeSeatModal, setShowChangeSeatModal] = useState(false);
   const [isChangingToNormalUser, setIsChangingToNormalUser] = useState(false);
 
-  const exceedsSeats = useExceedsSeats()({
+  const exceedsSeats = useExceedsSeats({
     newlyAddedAdminsNumber: 1,
   });
 
