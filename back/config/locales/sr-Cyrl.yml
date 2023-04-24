@@ -239,3 +239,5 @@ sr-Cyrl:
       paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
       for_more_information: "За више информација о овоме, можете консултовати %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Можете се поново пријавити од %{date}"
+  user:
+    anon_first_name: "User"
