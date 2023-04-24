@@ -20,6 +20,7 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media, colors, fontSizes, stylingConsts } from 'utils/styleUtils';
 import { lighten } from 'polished';
+import { darkSkyBlue } from 'components/admin/NavigationTabs/Tab';
 
 // resources
 import GetIdeasCount, {
@@ -302,7 +303,7 @@ class Sidebar extends PureComponent<
                 height={
                   isPagesAndMenuPage ? `${stylingConsts.menuHeight}px` : '60px'
                 }
-                background="#7FBBCA" // TODO: Use color from component library.
+                background={darkSkyBlue}
                 mb="10px"
                 display="flex"
                 alignItems="center"
