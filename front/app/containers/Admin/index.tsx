@@ -140,14 +140,12 @@ const AdminPage = memo<Props & WithRouterProps>(
       pathname.includes('admin/dashboard') ||
       pathname.includes('admin/reporting');
 
-    const whiteBg = endsWith(pathname, 'admin/dashboard/moderation');
-
     return (
       <HasPermission
         item={{ type: 'route', path: '/admin/dashboard' }}
         action="access"
       >
-        <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
+        <Container className={className}>
           <Sidebar />
           <RightColumn
             className={`${fullWidth && 'fullWidth'} ${
