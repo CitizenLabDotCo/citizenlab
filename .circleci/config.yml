@@ -635,12 +635,14 @@ jobs:
           COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
-          docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=reports/cypress.xml,toConsole=true" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
+          docker-compose run --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
+      # Uncomment to save XML reports
+      # docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=reports/cypress.xml,toConsole=true" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
       # We run cypress tests in container, so we need to copy the results out.
       # ToDo: fix it. Reporting doesn't work atm.
-      - run: |
-          mkdir -p front/reports
-          docker cp cypress_run:/front/reports/cypress.xml front/reports/cypress.xml
+      # - run: |
+      #     mkdir -p front/reports
+      #     docker cp cypress_run:/front/reports/cypress.xml front/reports/cypress.xml
       - run:
           command: docker cp cypress_run:/front/cypress/screenshots .
           # If `when: always`, it fails on success with

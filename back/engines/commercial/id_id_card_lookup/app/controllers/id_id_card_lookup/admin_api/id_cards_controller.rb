@@ -9,7 +9,7 @@ module IdIdCardLookup
         if parts[2].present?
           IdCard.delete_all
           CSV.parse(Base64.decode64(parts[2])).each_slice(500) do |rows|
-            card_ids = rows.map { |r| r[0] }
+            card_ids = rows.pluck(0)
             LoadIdCardsJob.perform_later(card_ids)
           end
           head :created

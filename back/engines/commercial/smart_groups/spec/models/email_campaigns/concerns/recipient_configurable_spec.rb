@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::RecipientConfigurable do
   let :recipient_configurable_campaign_class do
-    Class.new(::EmailCampaigns::Campaign) do
-      include ::EmailCampaigns::RecipientConfigurable
+    Class.new(EmailCampaigns::Campaign) do
+      include EmailCampaigns::RecipientConfigurable
       def self.name
         'RecipientConfigurableCampaign'
       end

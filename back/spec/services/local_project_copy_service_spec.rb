@@ -303,7 +303,7 @@ describe LocalProjectCopyService do
     end
 
     it 'shifts timelines of phases to start first phase on day of copying' do
-      travel_to Time.now do
+      freeze_time do
         phase1_start = timeline_project.phases.order(:start_at).first.start_at
         phase2_end = timeline_project.phases.order(:start_at).second.end_at
 

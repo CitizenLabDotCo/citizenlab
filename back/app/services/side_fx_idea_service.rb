@@ -105,5 +105,5 @@ class SideFxIdeaService
   end
 end
 
-::SideFxIdeaService.prepend(FlagInappropriateContent::Patches::SideFxIdeaService)
-::SideFxIdeaService.prepend(IdeaAssignment::Patches::SideFxIdeaService)
+SideFxIdeaService.prepend(FlagInappropriateContent::Patches::SideFxIdeaService)
+SideFxIdeaService.prepend(IdeaAssignment::Patches::SideFxIdeaService)

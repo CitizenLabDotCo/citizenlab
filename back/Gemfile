@@ -33,7 +33,6 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'pry-rescue'
-  gem 'pry-stack_explorer'
   gem 'database_cleaner', '~> 2.0.1'
   gem 'factory_bot_rails'
   gem 'license_finder'

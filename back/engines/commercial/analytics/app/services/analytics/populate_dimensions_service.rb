@@ -10,7 +10,7 @@ module Analytics
         populate_referrer_types
       end
 
-    private
+      private
 
       def populate_dates
         from = Time.zone.today
@@ -91,6 +91,6 @@ module Analytics
           Analytics::DimensionReferrerType.create!(key: type[:key], name: type[:name])
         end
       end
-  end
+    end
   end
 end

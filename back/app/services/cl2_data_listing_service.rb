@@ -24,7 +24,7 @@ class Cl2DataListingService
     Zeitwerk::Loader.eager_load_all if Rails.env.development? || (File.basename($PROGRAM_NAME) == 'rake')
     views = ActiveRecord::Base.connection.execute(
       "SELECT table_name FROM information_schema.tables WHERE table_type = 'VIEW'"
-    ).map { |r| r['table_name'] }
+    ).pluck('table_name')
     ActiveRecord::Base.descendants.select do |claz|
       [
         *ActiveRecord::Base.subclasses.map(&:name),

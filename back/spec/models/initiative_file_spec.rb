@@ -20,7 +20,7 @@ RSpec.describe InitiativeFile do
         ['david.xlsx',        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
         ['david.xls',         'application/vnd.ms-excel']
       ].each do |filename, mime_type|
-        base64 = "data:#{mime_type};base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
+        base64 = "data:#{mime_type};base64,#{Base64.encode64(Rails.root.join('spec', 'fixtures', filename).read)}"
         file = initiative.initiative_files.new(file_by_content: { name: filename, content: base64 })
         expect(file.save).to be true
       end

@@ -24,7 +24,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     render json: {
       count: count,
       administrators_count: User.billed_admins.count,
-      managers_count: User.billed_moderators.count
+      moderators_count: User.billed_moderators.count
     }
   end
 
