@@ -23,4 +23,4 @@ class SideFxSpamReportService
   end
 end
 
-::SideFxSpamReportService.prepend(FlagInappropriateContent::Patches::SideFxSpamReportService)
+SideFxSpamReportService.prepend(FlagInappropriateContent::Patches::SideFxSpamReportService)

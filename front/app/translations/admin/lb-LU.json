@@ -557,7 +557,6 @@
   "app.containers.Admin.Users.confirm": "Bestätegen",
   "app.containers.Admin.Users.confirmAdminQuestion": "Sidd Dir sécher, datt Dir der {name}-Plattform Verwalterrechter wëllt ginn?",
   "app.containers.Admin.Users.confirmNormalUserQuestion": "Sidd Dir sécher, datt Dir {name} als normale Benotzer ariichte wëllt?",
-  "app.containers.Admin.Users.confirmSetCollaboratorAsNormalUserQuestion": "Sidd Dir sécher datt Dir {name} als normale Benotzer wëllt setzen? Notéiert w.e.g. datt se d'Kollaborateursrechter op all Projeten an Ordner verléieren, op déi se op d'Bestätegung zougewisen sinn.",
   "app.containers.Admin.Users.deleteUser": "Delete user",
   "app.containers.Admin.Users.email": "Email",
   "app.containers.Admin.Users.folderManager": "Dossier-Verwalter",

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::AdminRightsReceivedMailer, type: :mailer do
+RSpec.describe EmailCampaigns::AdminRightsReceivedMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::AdminRightsReceived.create! }

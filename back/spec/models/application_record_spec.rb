@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ApplicationRecord, type: :model do
+RSpec.describe ApplicationRecord do
   subject(:user) { create(:user) }
 
   describe '#valid_attribute?' do

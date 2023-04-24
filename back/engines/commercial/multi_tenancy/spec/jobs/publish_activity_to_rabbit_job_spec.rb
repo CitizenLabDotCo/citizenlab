@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe PublishActivityToRabbitJob, type: :job do
+RSpec.describe PublishActivityToRabbitJob do
   subject(:job) { described_class.new }
 
   describe '#perform' do

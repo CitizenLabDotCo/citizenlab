@@ -5,7 +5,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getExceededLimitInfo } from 'components/SeatInfo/utils';
 
 // services
 import useProjectFolderModerators from 'hooks/useProjectFolderModerators';
@@ -32,8 +31,7 @@ import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
 import SeatInfo from 'components/SeatInfo';
 
 // Hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useSeats from 'api/seats/useSeats';
+import useExceedsSeats from 'hooks/useExceedsSeats';
 
 const StyledA = styled.a`
   &:hover {
@@ -58,23 +56,9 @@ const FolderPermissions = () => {
   const [moderatorToAdd, setModeratorToAdd] =
     useState<UserOptionTypeBase | null>(null);
 
-  const { data: appConfiguration } = useAppConfiguration();
-  const { data: seats } = useSeats();
-  const maximumModerators =
-    appConfiguration?.data.attributes.settings.core.maximum_moderators_number;
-  const additionalModerators =
-    appConfiguration?.data.attributes.settings.core
-      .additional_moderators_number;
-  if (!appConfiguration || !seats) return null;
-
-  const currentModeratorSeats = seats.data.attributes.project_moderators_number;
-
-  const { hasReachedOrIsOverPlanSeatLimit } = getExceededLimitInfo(
-    hasSeatBasedBillingEnabled,
-    currentModeratorSeats,
-    additionalModerators,
-    maximumModerators
-  );
+  const exceedsSeats = useExceedsSeats()({
+    newlyAddedModeratorsNumber: 1,
+  });
 
   const closeModal = () => {
     setShowModal(false);
@@ -102,7 +86,7 @@ const FolderPermissions = () => {
       moderatorToAdd && !isRegularUser({ data: moderatorToAdd });
     const shouldOpenModal =
       hasSeatBasedBillingEnabled &&
-      hasReachedOrIsOverPlanSeatLimit &&
+      exceedsSeats.moderator &&
       !isSelectedUserAModerator;
     if (shouldOpenModal) {
       setShowModal(true);

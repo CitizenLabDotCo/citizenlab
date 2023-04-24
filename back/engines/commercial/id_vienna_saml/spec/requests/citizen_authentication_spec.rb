@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-describe 'Vienna SAML citizen authentication', type: :request do
+describe 'Vienna SAML citizen authentication' do
   def enable_vienna_citizen_login
     configuration = AppConfiguration.instance
     settings = configuration.settings

@@ -110,7 +110,7 @@ module MultiTenancy
           end
           next unless phase.poll?
 
-          questions = Array.new((rand(1..5))) do
+          questions = Array.new(rand(1..5)) do
             question = Polls::Question.create!(
               title_multiloc: runner.create_for_some_locales { Faker::Lorem.question },
               participation_context: phase

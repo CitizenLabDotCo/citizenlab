@@ -6,7 +6,7 @@ describe ParticipationContextService do
   let(:service) { described_class.new }
 
   describe 'posting_idea_disabled_reason_for_project' do
-    let(:project) { create :project_with_current_phase, current_phase_attrs: { with_permissions: true } }
+    let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
     let(:permission) do
       service
         .get_participation_context(project).permissions
@@ -40,7 +40,7 @@ describe ParticipationContextService do
 
   describe 'commenting_idea_disabled_reason_for_project' do
     let(:user) { create(:user) }
-    let(:project) { create :project_with_current_phase, current_phase_attrs: { with_permissions: true } }
+    let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
     let(:permission) do
       service
         .get_participation_context(project).permissions
@@ -67,7 +67,7 @@ describe ParticipationContextService do
 
     context 'for continuous project' do
       it "returns 'not_permitted' when commenting is disabled in a continuous project" do
-        project = create :continuous_project, with_permissions: true
+        project = create(:continuous_project, with_permissions: true)
         permission = project.permissions.find_by(action: 'commenting_idea')
         permission.update!(
           permitted_by: 'groups',
@@ -85,7 +85,7 @@ describe ParticipationContextService do
     let(:reasons) { ParticipationContextService::VOTING_DISABLED_REASONS }
 
     context 'timeline project' do
-      let(:project) { create :project_with_current_phase, current_phase_attrs: { with_permissions: true } }
+      let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
       let(:idea) { create(:idea, project: project, phases: [project.phases[2]]) }
       let(:permission) do
         service.get_participation_context(project).permissions
@@ -114,7 +114,7 @@ describe ParticipationContextService do
         let(:user) { create(:user) }
 
         it "returns 'not_permitted' if voting is not permitted" do
-          project = create :continuous_project, with_permissions: true
+          project = create(:continuous_project, with_permissions: true)
           idea = create(:idea, project: project)
           permission = project.permissions.find_by(action: 'voting_idea')
           permission.update!(
@@ -132,7 +132,7 @@ describe ParticipationContextService do
         let(:user) { nil }
 
         it "returns 'not_signed_in' if voting is not permitted and verification is not involved" do
-          project = create :continuous_project, with_permissions: true
+          project = create(:continuous_project, with_permissions: true)
           idea = create(:idea, project: project)
           permission = project.permissions.find_by(action: 'voting_idea')
           permission.update!(
@@ -171,7 +171,7 @@ describe ParticipationContextService do
 
     context 'continuous project' do
       it "returns 'not_permitted' if voting is not permitted" do
-        project = create :continuous_project, with_permissions: true
+        project = create(:continuous_project, with_permissions: true)
         idea = create(:idea, project: project)
         permission = project.permissions.find_by(action: 'voting_idea')
         permission.update!(
@@ -185,7 +185,7 @@ describe ParticipationContextService do
 
   describe 'taking_survey_disabled_reason' do
     it 'returns nil when taking the survey is allowed' do
-      project = create :continuous_survey_project, with_permissions: true
+      project = create(:continuous_survey_project, with_permissions: true)
       permission = service.get_participation_context(project).permissions.find_by(action: 'taking_survey')
       groups = create_list(:group, 2, projects: [project])
       permission.update!(permitted_by: 'groups', group_ids: groups.map(&:id))
@@ -197,14 +197,14 @@ describe ParticipationContextService do
     end
 
     it 'returns `not_signed_in` when user needs to be signed in' do
-      project = create :continuous_survey_project, with_permissions: true
+      project = create(:continuous_survey_project, with_permissions: true)
       permission = service.get_participation_context(project).permissions.find_by(action: 'taking_survey')
       permission.update!(permitted_by: 'users')
       expect(service.taking_survey_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
     end
 
     it 'returns `not_permitted` when taking the survey is not permitted' do
-      project = create :continuous_survey_project, with_permissions: true
+      project = create(:continuous_survey_project, with_permissions: true)
       permission = service.get_participation_context(project).permissions.find_by(action: 'taking_survey')
       permission.update!(
         permitted_by: 'groups',
@@ -216,7 +216,7 @@ describe ParticipationContextService do
 
   describe 'taking_poll_disabled_reason' do
     it 'returns nil when taking the poll is allowed' do
-      project = create :continuous_poll_project, with_permissions: true
+      project = create(:continuous_poll_project, with_permissions: true)
       permission = Permission.find_by(action: 'taking_poll', permission_scope: project)
       group = create(:group, projects: [project])
       permission.update!(permitted_by: 'groups', groups: [group])
@@ -227,14 +227,14 @@ describe ParticipationContextService do
     end
 
     it 'returns `not_signed_in` when user needs to be signed in' do
-      project = create :continuous_poll_project, with_permissions: true
+      project = create(:continuous_poll_project, with_permissions: true)
       permission = service.get_participation_context(project).permissions.find_by(action: 'taking_poll')
       permission.update!(permitted_by: 'users')
       expect(service.taking_poll_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
     end
 
     it 'return `not_permitted` when taking the poll is not permitted' do
-      project = create :continuous_poll_project, with_permissions: true
+      project = create(:continuous_poll_project, with_permissions: true)
       permission = service.get_participation_context(project).permissions.find_by(action: 'taking_poll')
       permission.update!(permitted_by: 'admins_moderators')
       expect(service.taking_poll_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
@@ -277,7 +277,7 @@ describe ParticipationContextService do
 
     context 'continuous project' do
       it "returns 'not_permitted' when budgeting is disabled in a continuous project" do
-        project = create :continuous_budgeting_project, with_permissions: true
+        project = create(:continuous_budgeting_project, with_permissions: true)
         permission = project.permissions.find_by(action: 'budgeting')
         permission.update!(
           permitted_by: 'groups',
@@ -288,7 +288,7 @@ describe ParticipationContextService do
       end
 
       it "returns 'project_inactive' when the project is archived" do
-        project = create :continuous_budgeting_project, with_permissions: true, admin_publication_attributes: { publication_status: 'archived' }
+        project = create(:continuous_budgeting_project, with_permissions: true, admin_publication_attributes: { publication_status: 'archived' })
         idea = create(:idea, project: project)
         expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'project_inactive'
       end

@@ -367,7 +367,7 @@ resource 'Comments' do
       let(:id) { comment.id }
 
       example_request 'Mark a comment on an idea as deleted' do
-        expect(response_status).to eq 200
+        expect(response_status).to eq 202
         expect(comment.reload.publication_status).to eq('deleted')
       end
 

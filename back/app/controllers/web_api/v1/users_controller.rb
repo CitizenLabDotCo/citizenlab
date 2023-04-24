@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::UsersController < ::ApplicationController
+class WebApi::V1::UsersController < ApplicationController
   before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count block unblock]
   skip_before_action :authenticate_user, only: %i[create show by_slug by_invite ideas_count initiatives_count comments_count]
 
@@ -60,7 +60,7 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     attributes = {
       admins_number: User.billed_admins.count,
-      project_moderators_number: User.billed_moderators.count
+      moderators_number: User.billed_moderators.count
     }
     render json: raw_json(attributes)
   end

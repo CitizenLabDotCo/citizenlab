@@ -9,11 +9,11 @@ resource 'Idea Custom Fields' do
   before { header 'Content-Type', 'application/json' }
 
   get 'web_api/v1/admin/phases/:phase_id/custom_fields' do
-    let(:context) { create :phase, participation_method: 'native_survey' }
+    let(:context) { create(:phase, participation_method: 'native_survey') }
     let(:phase_id) { context.id }
-    let(:form) { create :custom_form, participation_context: context }
-    let!(:custom_field1) { create :custom_field, resource: form, key: 'extra_field1' }
-    let!(:custom_field2) { create :custom_field, resource: form, key: 'extra_field2' }
+    let(:form) { create(:custom_form, participation_context: context) }
+    let!(:custom_field1) { create(:custom_field, resource: form, key: 'extra_field1') }
+    let!(:custom_field2) { create(:custom_field, resource: form, key: 'extra_field2') }
 
     context 'when admin' do
       before { admin_header_token }

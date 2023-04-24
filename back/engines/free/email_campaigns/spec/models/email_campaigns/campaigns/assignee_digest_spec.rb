@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::AssigneeDigest, type: :model do
+RSpec.describe EmailCampaigns::Campaigns::AssigneeDigest do
   describe 'AssigneeDigest Campaign default factory' do
     it { expect(build(:assignee_digest_campaign)).to be_valid }
   end

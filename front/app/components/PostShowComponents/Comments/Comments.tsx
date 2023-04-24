@@ -6,7 +6,7 @@ import { Spinner } from '@citizenlab/cl2-component-library';
 import Centerer from 'components/UI/Centerer';
 
 // services
-import { ICommentData } from 'services/comments';
+import { ICommentData } from 'api/comments/types';
 
 // events
 import { commentAdded$, commentDeleted$ } from './events';
@@ -66,8 +66,7 @@ const CommentsSection = memo<Props & WrappedComponentProps>(
 
       return () =>
         subscriptions.forEach((subscription) => subscription.unsubscribe());
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [formatMessage]);
 
     const parentComments = useMemo(() => {
       return allComments.filter(

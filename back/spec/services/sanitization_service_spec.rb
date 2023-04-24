@@ -208,7 +208,7 @@ describe SanitizationService do
         <p>
           test
         <SCRIPT SRC=%(jscript)s?<B>
-        <BODY onload!#$%%&()*~+-_.,:;?@[/|\]^`=javascript:alert(1)>
+        <BODY onload!#$%%&()*~+-_.,:;?@[/|]^`=javascript:alert(1)>
         <SCRIPT/SRC="%(jscript)s"></SCRIPT>
         <iframe src="javascript:javascript:alert('ThisPlatformWasHacked!');"></iframe>
         </p>

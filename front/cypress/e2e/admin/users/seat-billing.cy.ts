@@ -51,7 +51,7 @@ describe('Seat based billing', () => {
 
       cy.apiGetUsersCount().then((response) => {
         adminAndmoderatorsCount =
-          response.body.administrators_count + response.body.managers_count;
+          response.body.administrators_count + response.body.moderators_count;
       });
 
       cy.setAdminLoginCookie();
@@ -194,8 +194,7 @@ describe('Seat based billing', () => {
           .maximum_moderators_number;
 
       cy.apiGetSeats().then((seatsResponse) => {
-        const usedSeats =
-          seatsResponse.body.data.attributes.project_moderators_number;
+        const usedSeats = seatsResponse.body.data.attributes.moderators_number;
         const totalSeats = additionalModerators + maximumModerators;
         const hasSeatBeenAdded = previousNoOfUsedSeats !== usedSeats;
 
@@ -311,7 +310,7 @@ describe('Seat based billing', () => {
     beforeEach(() => {
       cy.apiGetSeats().then((reposnse) => {
         noOfUsedModeratorSeats =
-          reposnse.body.data.attributes.project_moderators_number;
+          reposnse.body.data.attributes.moderators_number;
       });
       cy.setAdminLoginCookie();
     });
@@ -372,7 +371,7 @@ describe('Seat based billing', () => {
 
       cy.apiGetUsersCount().then((response) => {
         adminAndmoderatorsCount =
-          response.body.administrators_count + response.body.managers_count;
+          response.body.administrators_count + response.body.moderators_count;
 
         cy.get('[data-cy="e2e-admin-and-moderator-count"]').contains(
           adminAndmoderatorsCount
@@ -414,8 +413,7 @@ describe('Seat based billing', () => {
             .maximum_moderators_number;
 
         cy.apiGetSeats().then((seatsResponse) => {
-          let usedSeats =
-            seatsResponse.body.data.attributes.project_moderators_number;
+          let usedSeats = seatsResponse.body.data.attributes.moderators_number;
           let totalSeats = additionalModerators + maximumModerators;
           let remainingSeats = totalSeats - usedSeats;
 
@@ -553,7 +551,7 @@ describe('Seat based billing', () => {
     beforeEach(() => {
       cy.apiGetSeats().then((reposnse) => {
         noOfUsedModeratorSeats =
-          reposnse.body.data.attributes.project_moderators_number;
+          reposnse.body.data.attributes.moderators_number;
       });
 
       cy.setAdminLoginCookie();
@@ -610,7 +608,7 @@ describe('Seat based billing', () => {
 
       cy.apiGetUsersCount().then((response) => {
         adminAndmoderatorsCount =
-          response.body.administrators_count + response.body.managers_count;
+          response.body.administrators_count + response.body.moderators_count;
 
         cy.get('[data-cy="e2e-admin-and-moderator-count"]').contains(
           `${adminAndmoderatorsCount}`
@@ -647,8 +645,7 @@ describe('Seat based billing', () => {
             .maximum_moderators_number;
 
         cy.apiGetSeats().then((seatsResponse) => {
-          let usedSeats =
-            seatsResponse.body.data.attributes.project_moderators_number;
+          let usedSeats = seatsResponse.body.data.attributes.moderators_number;
           let totalSeats = additionalModerators + maximumModerators;
           let remainingSeats = totalSeats - usedSeats;
 

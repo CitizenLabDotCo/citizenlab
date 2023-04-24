@@ -107,7 +107,7 @@ describe SideFxIdeaService do
   describe 'after_destroy' do
     it "logs a 'deleted' action job when the idea is destroyed" do
       idea = create(:idea)
-      travel_to Time.now do
+      freeze_time do
         frozen_idea = idea.destroy
         expect { service.after_destroy(frozen_idea, user) }
           .to enqueue_job(LogActivityJob).exactly(1).times
