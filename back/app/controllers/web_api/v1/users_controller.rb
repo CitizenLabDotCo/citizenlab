@@ -160,7 +160,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     remove_image_if_requested!(@user, user_params, :avatar)
 
     authorize @user
-    if @user.save
+    if @user.save(context: :form_submission)
       SideFxUserService.new.after_update(@user, current_user)
       render json: WebApi::V1::UserSerializer.new(
         @user,

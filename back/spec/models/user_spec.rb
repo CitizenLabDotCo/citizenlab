@@ -775,10 +775,14 @@ RSpec.describe User, type: :model do
     #   expect { u.save }.to(change { u.errors[:custom_field_values] })
     # end
 
-    it "doesn't validate when custom_field_values hasn't changed" do
+    it "doesn't validate on creation without form submission" do
       u = build(:user, custom_field_values: { somekey: 'somevalue' })
-      u.save(validate: false)
       expect { u.save }.not_to(change { u.errors[:custom_field_values] })
+    end
+
+    it 'validates on form submission' do
+      u = build(:user, custom_field_values: { somekey: 'somevalue' })
+      expect { u.save(context: :form_submission) }.to(change { u.errors[:custom_field_values] })
     end
   end
 
