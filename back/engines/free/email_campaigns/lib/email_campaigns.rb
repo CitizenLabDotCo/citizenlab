@@ -3,5 +3,11 @@
 require 'email_campaigns/engine'
 
 module EmailCampaigns
-  # Your code goes here...
+  module MailerPreviewUser
+    def user
+      @user ||= User.first
+      @user.locale = params[:locale]
+      @user
+    end
+  end
 end
