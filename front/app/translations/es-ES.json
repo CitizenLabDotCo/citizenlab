@@ -656,7 +656,7 @@
   "app.containers.App.loading": "Cargando...",
   "app.containers.App.metaTitle": "Plataforma de participación {orgName} | CitizenLab",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Por favor, introduzca un token",
-  "app.containers.Authentication.steps.Invitation.token": "Ficha",
+  "app.containers.Authentication.steps.Invitation.token": "Token",
   "app.containers.CampaignsConsentForm.adminCategory": "Admin",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "Emails en esta categoría",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "¡Perfecto",
