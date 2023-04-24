@@ -552,6 +552,7 @@
   "app.containers.Admin.PagesAndMenu.viewButton": "View",
   "app.containers.Admin.Users.BlockedUsers.blockedUsers": "Blocked users",
   "app.containers.Admin.Users.BlockedUsers.blockedUsersSubtitle": "Manage blocked users.",
+  "app.containers.Admin.Users.BlockedUsers.inviteUsers": "Invite users",
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Delete Group",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Edit Group",
   "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Admins & managers",
