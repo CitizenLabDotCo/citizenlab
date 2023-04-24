@@ -173,7 +173,7 @@ class User < ApplicationRecord
   validates :custom_field_values, json: {
     schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.with_resource_type('User')) },
     message: ->(errors) { errors }
-  }, if: %i[custom_field_values_changed? active?]
+  }, on: :form_submission
 
   validates :password, length: { maximum: 72 }, allow_nil: true
   # Custom validation is required to deal with the
@@ -204,7 +204,7 @@ class User < ApplicationRecord
     end
   end
 
-  validate :validate_can_update_email, on: :update
+  validate :validate_can_update_email
 
   validate :validate_email_domains_blacklist
 
@@ -533,7 +533,7 @@ class User < ApplicationRecord
   private
 
   def validate_can_update_email
-    return unless new_email_changed? || email_changed?
+    return unless persisted? && (new_email_changed? || email_changed?)
 
     if no_password? && confirmation_required?
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
