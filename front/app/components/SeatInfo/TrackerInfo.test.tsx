@@ -44,7 +44,7 @@ let mockUserSeatsData = {
   data: {
     attributes: {
       admins_number: 3,
-      project_moderators_number: 5,
+      moderators_number: 5,
     },
   },
 };
@@ -58,7 +58,7 @@ jest.mock('api/seats/useSeats', () => () => {
 describe('TrackerInfo', () => {
   beforeEach(() => {
     mockUserSeatsData.data.attributes.admins_number = 3;
-    mockUserSeatsData.data.attributes.project_moderators_number = 5;
+    mockUserSeatsData.data.attributes.moderators_number = 5;
 
     mockAppConfiguration.data.attributes.settings.core.maximum_admins_number = 6;
     mockAppConfiguration.data.attributes.settings.core.maximum_moderators_number = 9;
@@ -90,7 +90,7 @@ describe('TrackerInfo', () => {
   });
 
   it('shows nothing for moderator seats when maximum_moderators_number is unlimited (null)', () => {
-    mockUserSeatsData.data.attributes.project_moderators_number = 15;
+    mockUserSeatsData.data.attributes.moderators_number = 15;
     mockAppConfiguration.data.attributes.settings.core.maximum_moderators_number =
       null;
     render(<TrackerInfo seatType="moderator" />);
@@ -101,7 +101,7 @@ describe('TrackerInfo', () => {
   });
 
   it('shows correct moderators additional seats when user has used more', () => {
-    mockUserSeatsData.data.attributes.project_moderators_number = 15;
+    mockUserSeatsData.data.attributes.moderators_number = 15;
     mockAppConfiguration.data.attributes.settings.core.additional_moderators_number = 7;
     render(<TrackerInfo seatType="moderator" />);
 
