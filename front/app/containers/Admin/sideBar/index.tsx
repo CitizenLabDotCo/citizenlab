@@ -8,6 +8,7 @@ import { Icon, IconNames, Box, Text } from '@citizenlab/cl2-component-library';
 import MenuItem from './MenuItem';
 import Link from 'utils/cl-router/Link';
 import { SupportMenu } from './SupportMenu';
+import { UserMenu } from './UserMenu';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -257,6 +258,7 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
         ))}
 
         <SupportMenu />
+        <UserMenu />
       </MenuInner>
     </Menu>
   );
