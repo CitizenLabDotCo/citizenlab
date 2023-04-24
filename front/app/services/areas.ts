@@ -43,24 +43,6 @@ export interface IArea {
   data: IAreaData;
 }
 
-export function updateArea(areaId: string, object) {
-  return streams.update<IArea>(`${apiEndpoint}/${areaId}`, areaId, {
-    area: object,
-  });
-}
-
 export function deleteArea(areaId: string) {
   return streams.delete(`${apiEndpoint}/${areaId}`, areaId);
-}
-
-export async function reorderArea(areaId: string, newOrder: number) {
-  const response = streams.update<IArea>(`${apiEndpoint}/${areaId}`, areaId, {
-    area: { ordering: newOrder },
-  });
-
-  await streams.fetchAllWith({
-    apiEndpoint: [apiEndpoint],
-  });
-
-  return response;
 }

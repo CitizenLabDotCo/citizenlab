@@ -42,6 +42,7 @@ export interface IAreaAdd {
 }
 
 export interface IAreaUpdate {
+  id: string;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   ordering?: number;

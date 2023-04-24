@@ -7,7 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import useArea from 'api/areas/useArea';
-import { updateArea } from 'services/areas';
+import useUpdateArea from 'api/areas/useUpdateArea';
 
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
@@ -16,14 +16,22 @@ import AreaForm, { FormValues } from '../AreaForm';
 import { useParams } from 'react-router-dom';
 
 const Edit = () => {
+  const { mutate: updateArea } = useUpdateArea();
   const { areaId } = useParams() as { areaId: string };
   const { data: area } = useArea(areaId);
   const handleSubmit = async (values: FormValues) => {
     if (!area) return;
-    await updateArea(area.data.id, {
-      ...values,
-    });
-    clHistory.push('/admin/settings/areas');
+    updateArea(
+      {
+        id: area.data.id,
+        ...values,
+      },
+      {
+        onSuccess: () => {
+          clHistory.push('/admin/settings/areas');
+        },
+      }
+    );
   };
 
   const goBack = () => {

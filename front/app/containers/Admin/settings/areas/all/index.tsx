@@ -21,7 +21,7 @@ import Link from 'utils/cl-router/Link';
 // resources
 import useAreas from 'api/areas/useAreas';
 import useCustomPages from 'hooks/useCustomPages';
-import { reorderArea, IAreaData, deleteArea } from 'services/areas';
+import { IAreaData, deleteArea } from 'services/areas';
 import AreaTermConfig from './AreaTermConfig';
 
 // i18n
@@ -29,6 +29,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import T from 'components/T';
 import useLocalize from 'hooks/useLocalize';
 import messages from '../messages';
+import useUpdateArea from 'api/areas/useUpdateArea';
 
 export const StyledLink = styled(Link)`
   color: ${colors.white} !important;
@@ -40,6 +41,9 @@ export const StyledLink = styled(Link)`
 `;
 
 const AreaList = () => {
+  const { data: areas } = useAreas({ includeStaticPages: true });
+  const { mutate: reorderArea } = useUpdateArea();
+
   const { formatMessage } = useIntl();
 
   const handleDeleteClick =
@@ -53,10 +57,8 @@ const AreaList = () => {
     };
 
   const handleReorderArea = (areaId: string, newOrder: number) => {
-    reorderArea(areaId, newOrder);
+    reorderArea({ id: areaId, ordering: newOrder });
   };
-
-  const { data: areas } = useAreas({ includeStaticPages: true });
 
   if (!areas) return null;
 
