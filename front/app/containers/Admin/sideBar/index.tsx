@@ -4,7 +4,7 @@ import { isNilOrError, isPage } from 'utils/helperUtils';
 import { get } from 'lodash-es';
 
 // components
-import { Icon, IconNames, Box, Text } from '@citizenlab/cl2-component-library';
+import { Icon, Box, Text } from '@citizenlab/cl2-component-library';
 import MenuItem from './MenuItem';
 import Link from 'utils/cl-router/Link';
 import { SupportMenu } from './SupportMenu';
@@ -30,10 +30,12 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import Outlet from 'components/Outlet';
 import { InsertConfigurationOptions } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
-import { TAppConfigurationSetting } from 'api/app_configuration/types';
+
+import defaultNavItems from './navItems';
 
 // Hooks
 import { useLocation } from 'react-router-dom';
+import { NavItem } from './navItems';
 
 const Menu = styled.div`
   z-index: 10;
@@ -82,17 +84,6 @@ interface DataProps {
 }
 interface Props extends InputProps, DataProps {}
 
-export type NavItem = {
-  name: string;
-  link: string;
-  iconName: IconNames;
-  message: keyof typeof messages;
-  featureNames?: TAppConfigurationSetting[];
-  count?: number;
-  onlyCheckAllowed?: boolean;
-  showAtBottom?: boolean;
-};
-
 const getTopAndBottomNavItems = (navItems: NavItem[]) => {
   // Using this to avoid looping twice
   const [topNavItems, bottomNavItems] = navItems.reduce(
@@ -108,81 +99,6 @@ const getTopAndBottomNavItems = (navItems: NavItem[]) => {
   );
   return [topNavItems, bottomNavItems];
 };
-
-const defaultNavItems: NavItem[] = [
-  {
-    name: 'dashboard',
-    link: '/admin/dashboard',
-    iconName: 'sidebar-dashboards',
-    message: 'dashboard',
-  },
-  {
-    name: 'projects',
-    link: '/admin/projects',
-    iconName: 'sidebar-folder',
-    message: 'projects',
-  },
-  {
-    name: 'reporting',
-    link: `/admin/reporting`,
-    iconName: 'sidebar-reporting',
-    message: 'reporting',
-  },
-  {
-    name: 'workshops',
-    link: '/admin/workshops',
-    iconName: 'sidebar-workshops',
-    message: 'workshops',
-    featureNames: ['workshops'],
-  },
-  {
-    name: 'ideas',
-    link: '/admin/ideas',
-    iconName: 'sidebar-input-manager',
-    message: 'inputManager',
-  },
-  {
-    name: 'initiatives',
-    link: '/admin/initiatives',
-    iconName: 'sidebar-proposals',
-    message: 'initiatives',
-    featureNames: ['initiatives'],
-    onlyCheckAllowed: true,
-  },
-  {
-    name: 'userinserts',
-    link: '/admin/users',
-    iconName: 'sidebar-users',
-    message: 'users',
-  },
-  {
-    name: 'invitations',
-    link: '/admin/invitations',
-    iconName: 'sidebar-invitations',
-    message: 'invitations',
-  },
-  {
-    name: 'messaging',
-    link: '/admin/messaging',
-    iconName: 'sidebar-messaging',
-    message: 'messaging',
-    featureNames: ['manual_emailing', 'automated_emailing_control', 'texting'],
-  },
-  {
-    name: 'menu',
-    link: '/admin/pages-menu',
-    iconName: 'sidebar-pages-menu',
-    message: 'menu',
-    showAtBottom: true,
-  },
-  {
-    name: 'settings',
-    link: '/admin/settings/general',
-    iconName: 'sidebar-settings',
-    message: 'settings',
-    showAtBottom: true,
-  },
-];
 
 const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
   const { formatMessage } = useIntl();

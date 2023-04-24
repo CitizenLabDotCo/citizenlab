@@ -1,4 +1,4 @@
-import { NavItem } from 'containers/Admin/sideBar';
+import { NavItem } from 'containers/Admin/sideBar/navItems';
 import { FC, useEffect } from 'react';
 import { InsertConfigurationOptions } from 'typings';
 
