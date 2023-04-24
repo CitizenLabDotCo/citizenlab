@@ -4,7 +4,7 @@ es:
   idea_statuses:
     proposed: propuesta
     proposed_description: Esta idea ha sido propuesta
-    viewed: revisado
+    viewed: revisada
     viewed_description: Esta idea ha sido vista por alguien de la organización
     under_consideration: bajo consideración
     under_consideration_description: Esta idea está siendo considerada
@@ -239,3 +239,5 @@ es:
       paragraph_1_with_reason: "Su cuenta en la plataforma de participación de %{organizationName} ha sido desactivada temporalmente por el siguiente motivo:"
       for_more_information: "Para más información al respecto, puede consultar la página %{termsAndConditionsPage}."
       you_can_sign_in_again_from: "Puedes acceder de nuevo desde %{date}"
+  user:
+    anon_first_name: "Usuario"
