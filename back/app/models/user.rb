@@ -204,7 +204,7 @@ class User < ApplicationRecord
     end
   end
 
-  validate :validate_can_update_email, on: :update
+  validate :validate_can_update_email
 
   validate :validate_email_domains_blacklist
 
@@ -528,7 +528,7 @@ class User < ApplicationRecord
   private
 
   def validate_can_update_email
-    return unless new_email_changed? || email_changed?
+    return unless persisted? && (new_email_changed? || email_changed?)
 
     if no_password? && confirmation_required?
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
