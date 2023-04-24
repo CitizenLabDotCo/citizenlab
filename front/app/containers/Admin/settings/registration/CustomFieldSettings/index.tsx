@@ -40,6 +40,10 @@ import {
   isHiddenField,
 } from 'services/userCustomFields';
 
+// cache
+import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import streams from 'utils/streams';
+
 // styling
 import { colors } from 'utils/styleUtils';
 import useUserCustomFields from 'hooks/useUserCustomFields';
@@ -118,8 +122,9 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
 
       if (window.confirm(deleteMessage)) {
         this.setState({ itemsWhileDragging: null, isProcessing: true });
-        deleteUserCustomField(customFieldId).then(() => {
+        deleteUserCustomField(customFieldId).then(async () => {
           this.setState({ isProcessing: false });
+          await Promise.all([streams.reset(), resetQueryCache()]);
         });
       }
     }
