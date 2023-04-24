@@ -39,13 +39,14 @@ jest.mock('./useFeatureFlag', () => {
 
 describe('useExceedsSeats', () => {
   it('should return correct values when not exceeding any limits', () => {
-    const { result } = renderHook(() => useExceedsSeats());
-    const exceedsSeats = result.current({
-      newlyAddedAdminsNumber: 2,
-      newlyAddedModeratorsNumber: 2,
-    });
+    const { result } = renderHook(() =>
+      useExceedsSeats({
+        newlyAddedAdminsNumber: 2,
+        newlyAddedModeratorsNumber: 2,
+      })
+    );
 
-    expect(exceedsSeats).toEqual({
+    expect(result.current).toEqual({
       admin: false,
       moderator: false,
       any: false,
@@ -54,13 +55,14 @@ describe('useExceedsSeats', () => {
   });
 
   it('should return correct values when exceeding admin limit', () => {
-    const { result } = renderHook(() => useExceedsSeats());
-    const exceedsSeats = result.current({
-      newlyAddedAdminsNumber: 4,
-      newlyAddedModeratorsNumber: 2,
-    });
+    const { result } = renderHook(() =>
+      useExceedsSeats({
+        newlyAddedAdminsNumber: 4,
+        newlyAddedModeratorsNumber: 2,
+      })
+    );
 
-    expect(exceedsSeats).toEqual({
+    expect(result.current).toEqual({
       admin: true,
       moderator: false,
       any: true,
@@ -69,13 +71,14 @@ describe('useExceedsSeats', () => {
   });
 
   it('should return correct values when exceeding moderator limit', () => {
-    const { result } = renderHook(() => useExceedsSeats());
-    const exceedsSeats = result.current({
-      newlyAddedAdminsNumber: 1,
-      newlyAddedModeratorsNumber: 4,
-    });
+    const { result } = renderHook(() =>
+      useExceedsSeats({
+        newlyAddedAdminsNumber: 1,
+        newlyAddedModeratorsNumber: 4,
+      })
+    );
 
-    expect(exceedsSeats).toEqual({
+    expect(result.current).toEqual({
       admin: false,
       moderator: true,
       any: true,
@@ -84,13 +87,14 @@ describe('useExceedsSeats', () => {
   });
 
   it('should return correct values when exceeding both limits', () => {
-    const { result } = renderHook(() => useExceedsSeats());
-    const exceedsSeats = result.current({
-      newlyAddedAdminsNumber: 4,
-      newlyAddedModeratorsNumber: 4,
-    });
+    const { result } = renderHook(() =>
+      useExceedsSeats({
+        newlyAddedAdminsNumber: 4,
+        newlyAddedModeratorsNumber: 4,
+      })
+    );
 
-    expect(exceedsSeats).toEqual({
+    expect(result.current).toEqual({
       admin: true,
       moderator: true,
       any: true,
@@ -99,13 +103,14 @@ describe('useExceedsSeats', () => {
   });
 
   it('should return correct values when equal to the admin limit', () => {
-    const { result } = renderHook(() => useExceedsSeats());
-    const exceedsSeats = result.current({
-      newlyAddedAdminsNumber: 3,
-      newlyAddedModeratorsNumber: 0,
-    });
+    const { result } = renderHook(() =>
+      useExceedsSeats({
+        newlyAddedAdminsNumber: 3,
+        newlyAddedModeratorsNumber: 0,
+      })
+    );
 
-    expect(exceedsSeats).toEqual({
+    expect(result.current).toEqual({
       admin: false,
       moderator: false,
       any: false,
@@ -114,13 +119,14 @@ describe('useExceedsSeats', () => {
   });
 
   it('should return correct values when equal to the moderator limit', () => {
-    const { result } = renderHook(() => useExceedsSeats());
-    const exceedsSeats = result.current({
-      newlyAddedAdminsNumber: 0,
-      newlyAddedModeratorsNumber: 3,
-    });
+    const { result } = renderHook(() =>
+      useExceedsSeats({
+        newlyAddedAdminsNumber: 0,
+        newlyAddedModeratorsNumber: 3,
+      })
+    );
 
-    expect(exceedsSeats).toEqual({
+    expect(result.current).toEqual({
       admin: false,
       moderator: false,
       any: false,
@@ -129,13 +135,14 @@ describe('useExceedsSeats', () => {
   });
 
   it('should return correct values when exceeding the admin limit by 1', () => {
-    const { result } = renderHook(() => useExceedsSeats());
-    const exceedsSeats = result.current({
-      newlyAddedAdminsNumber: 4,
-      newlyAddedModeratorsNumber: 0,
-    });
+    const { result } = renderHook(() =>
+      useExceedsSeats({
+        newlyAddedAdminsNumber: 4,
+        newlyAddedModeratorsNumber: 0,
+      })
+    );
 
-    expect(exceedsSeats).toEqual({
+    expect(result.current).toEqual({
       admin: true,
       moderator: false,
       any: true,
@@ -144,13 +151,14 @@ describe('useExceedsSeats', () => {
   });
 
   it('should return correct values when exceeding the moderator limit by 1', () => {
-    const { result } = renderHook(() => useExceedsSeats());
-    const exceedsSeats = result.current({
-      newlyAddedAdminsNumber: 0,
-      newlyAddedModeratorsNumber: 4,
-    });
+    const { result } = renderHook(() =>
+      useExceedsSeats({
+        newlyAddedAdminsNumber: 0,
+        newlyAddedModeratorsNumber: 4,
+      })
+    );
 
-    expect(exceedsSeats).toEqual({
+    expect(result.current).toEqual({
       admin: false,
       moderator: true,
       any: true,
