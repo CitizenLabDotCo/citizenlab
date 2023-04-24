@@ -27,14 +27,20 @@ const InviteUsersWithSeatsModal = lazy(
   () => import('components/admin/InviteUsersWithSeatsModal')
 );
 import SeatInfo from 'components/SeatInfo';
+
+// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useExceedsSeats from 'hooks/useExceedsSeats';
 
 // services
 import {
   bulkInviteXLSX,
   bulkInviteEmails,
+  bulkInviteCountNewSeatsXLSX,
+  bulkInviteCountNewSeatsEmails,
   IInviteError,
   INewBulkInvite,
+  IInvitesNewSeats,
 } from 'services/invites';
 
 // resources
@@ -140,8 +146,14 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
   const [filetypeError, setFiletypeError] = useState<JSX.Element | null>(null);
   const [unknownError, setUnknownError] = useState<JSX.Element | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [newSeatsResponse, setNewSeatsResponse] =
+    useState<IInvitesNewSeats | null>(null);
+
+  const exceedsSeats = useExceedsSeats();
+
   const closeModal = () => {
     setShowModal(false);
+    setProcessing(false);
   };
 
   const fileInputElement = useRef<HTMLInputElement | null>(null);
@@ -338,7 +350,26 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
     return roles;
   };
 
-  const onSubmit = async () => {
+  const checkNewSeatsResponse = (newSeatsResponse: IInvitesNewSeats) => {
+    setNewSeatsResponse(newSeatsResponse);
+    const {
+      newly_added_admins_number: newlyAddedAdminsNumber,
+      newly_added_moderators_number: newlyAddedModeratorsNumber,
+    } = newSeatsResponse.data.attributes;
+    if (
+      exceedsSeats({
+        newlyAddedAdminsNumber,
+        newlyAddedModeratorsNumber,
+      }).any
+    ) {
+      setShowModal(true);
+    } else {
+      onSubmit({ save: true });
+    }
+  };
+
+  // `save` parameter is used to avoid duplication of import/text and error handling logic
+  const onSubmit = async ({ save }: { save: boolean }) => {
     const hasCorrectSelection =
       (selectedView === 'import' &&
         isString(selectedFileBase64) &&
@@ -366,29 +397,43 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
         };
 
         if (selectedView === 'import' && isString(selectedFileBase64)) {
-          await bulkInviteXLSX({
+          const inviteOptions = {
             xlsx: selectedFileBase64,
             ...bulkInvite,
-          });
+          };
+          if (save) {
+            await bulkInviteXLSX(inviteOptions);
+          } else {
+            const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
+            checkNewSeatsResponse(newSeats);
+          }
         }
 
         if (selectedView === 'text' && isString(selectedEmails)) {
-          await bulkInviteEmails({
+          const inviteOptions = {
             emails: selectedEmails.split(',').map((item) => item.trim()),
             ...bulkInvite,
-          });
+          };
+          if (save) {
+            await bulkInviteEmails(inviteOptions);
+          } else {
+            const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
+            checkNewSeatsResponse(newSeats);
+          }
         }
 
-        // reset file input
-        if (fileInputElement.current) {
-          fileInputElement.current.value = '';
-        }
+        if (save) {
+          // reset file input
+          if (fileInputElement.current) {
+            fileInputElement.current.value = '';
+          }
 
-        // reset state
-        setProcessing(false);
-        setProcessed(true);
-        setSelectedEmails(null);
-        setSelectedFileBase64(null);
+          // reset state
+          setProcessing(false);
+          setProcessed(true);
+          setSelectedEmails(null);
+          setSelectedFileBase64(null);
+        }
       } catch (errors) {
         const apiErrors = get(errors, 'json.errors', null);
 
@@ -413,14 +458,11 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
 
   const handleSubmitAction = (event: React.FormEvent) => {
     event.preventDefault();
-    const showConfirmationModal =
-      hasSeatBasedBillingEnabled &&
-      (inviteesWillHaveAdminRights || inviteesWillHaveModeratorRights);
 
-    if (showConfirmationModal) {
-      setShowModal(true);
+    if (hasSeatBasedBillingEnabled) {
+      onSubmit({ save: false });
     } else {
-      onSubmit();
+      onSubmit({ save: true });
     }
   };
 
@@ -719,15 +761,13 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
           </SectionField>
         </Section>
       </form>
-      {hasSeatBasedBillingEnabled && (
+      {hasSeatBasedBillingEnabled && newSeatsResponse && (
         <Suspense fallback={null}>
           <InviteUsersWithSeatsModal
-            inviteUsers={onSubmit}
+            inviteUsers={() => onSubmit({ save: true })}
             showModal={showModal}
             closeModal={closeModal}
-            //TODO: At the moment this number only includes manually added emails. We need to handle emails from the uploaded file as well when that ticket is completed.
-            noOfSeatsToAdd={selectedEmails?.split(',').length || 0}
-            seatType={inviteesWillHaveAdminRights ? 'admin' : 'moderator'}
+            newSeatsResponse={newSeatsResponse}
           />
         </Suspense>
       )}

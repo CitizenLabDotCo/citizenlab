@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::FolderSerializer < ::WebApi::V1::BaseSerializer
+class WebApi::V1::FolderSerializer < WebApi::V1::BaseSerializer
   attributes :title_multiloc, :description_preview_multiloc, :slug, :created_at, :updated_at
 
   attribute :description_multiloc do |object|

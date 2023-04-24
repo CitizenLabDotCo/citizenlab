@@ -11,7 +11,7 @@ RSpec.describe UserCustomFields::WebApi::V1::BinnedDistributionSerializer do
     specify do
       expect(serializer.serializable_hash).to match(
         data: {
-          id: be_kind_of(String),
+          id: be_a(String),
           type: :binned_distribution,
           attributes: {
             distribution: {

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::ResetPasswordController < ::ApplicationController
+class WebApi::V1::ResetPasswordController < ApplicationController
   skip_after_action :verify_authorized
   skip_before_action :authenticate_user
 

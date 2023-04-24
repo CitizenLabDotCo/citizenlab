@@ -7,7 +7,7 @@ describe ContentBuilder::LayoutImageService do
 
   describe 'swap_data_images' do
     it 'removes the src attribute from image elements' do
-      layout_image = create :layout_image
+      layout_image = create(:layout_image)
       input = {
         'ROOT' => {
           'type' => 'div',
@@ -114,7 +114,7 @@ describe ContentBuilder::LayoutImageService do
         }
       }
 
-      imageable = build :layout, craftjs_jsonmultiloc: { 'nl-BE' => input }
+      imageable = build(:layout, craftjs_jsonmultiloc: { 'nl-BE' => input })
       output = service.swap_data_images imageable, :craftjs_jsonmultiloc
       expect(output).to eq({ 'nl-BE' => expected_json })
     end
@@ -122,7 +122,7 @@ describe ContentBuilder::LayoutImageService do
 
   describe 'render_data_images' do
     it 'adds the src attribute to the image elements' do
-      layout_image = create :layout_image
+      layout_image = create(:layout_image)
       input = {
         'ROOT' => {
           'type' => 'div',
@@ -229,7 +229,7 @@ describe ContentBuilder::LayoutImageService do
         }
       }
 
-      imageable = build :layout, craftjs_jsonmultiloc: { 'fr-BE' => input }
+      imageable = build(:layout, craftjs_jsonmultiloc: { 'fr-BE' => input })
       output = service.render_data_images imageable, :craftjs_jsonmultiloc
       expect(output).to eq({ 'fr-BE' => expected_json })
     end

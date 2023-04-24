@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::NewCommentOnCommentedIdeaMailer, type: :mailer do
+RSpec.describe EmailCampaigns::NewCommentOnCommentedIdeaMailer do
   describe 'NewCommentOnCommentedIdea' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::NewCommentOnCommentedIdea.create! }

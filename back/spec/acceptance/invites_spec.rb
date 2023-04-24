@@ -113,7 +113,7 @@ resource 'Invites' do
 
     describe 'count seats' do
       shared_examples 'a request counting seats' do
-        let(:emails) { Array.new(5) { Faker::Internet.email }.concat([nil]) }
+        let(:emails) { Array.new(5) { Faker::Internet.email }.push(nil) }
         let(:roles) do
           # only the highest role is actually used
           [
@@ -141,7 +141,7 @@ resource 'Invites' do
           expect(response_data[:attributes]).to eq(
             newly_added_admins_number: 4,
             # When a moderator is promoted to admin, moderator count is decreased
-            newly_added_project_moderators_number: -1
+            newly_added_moderators_number: -1
           )
         end
       end
@@ -189,7 +189,7 @@ resource 'Invites' do
       end
 
       describe do
-        let(:emails) { Array.new(5) { Faker::Internet.email }.concat([nil]) }
+        let(:emails) { Array.new(5) { Faker::Internet.email }.push(nil) }
         let(:group_ids) { [create(:group).id] }
         let(:project) { create(:project) }
         let(:locale) { 'nl-NL' }

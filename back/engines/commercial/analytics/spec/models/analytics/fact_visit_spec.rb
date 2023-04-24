@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Analytics::FactVisit, type: :model do
+RSpec.describe Analytics::FactVisit do
   subject(:fact_visit) { build(:fact_visit) }
 
   describe 'validations' do

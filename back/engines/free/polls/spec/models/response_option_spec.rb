@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Polls::ResponseOption, type: :model do
+RSpec.describe Polls::ResponseOption do
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:poll_response_option)).to be_valid

@@ -50,9 +50,7 @@ module EmailCampaigns
 
     def generate_commands(recipient:, activity:, time: nil)
       [{
-        event_payload: {
-
-        }
+        event_payload: {}
       }]
     end
   end

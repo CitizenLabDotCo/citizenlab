@@ -90,4 +90,4 @@ class SideFxInitiativeService
   end
 end
 
-::SideFxInitiativeService.prepend(FlagInappropriateContent::Patches::SideFxInitiativeService)
+SideFxInitiativeService.prepend(FlagInappropriateContent::Patches::SideFxInitiativeService)

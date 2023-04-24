@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Delivery, type: :model do
+RSpec.describe EmailCampaigns::Delivery do
   describe 'Delivery default factory' do
     it 'is valid' do
       expect(build(:delivery)).to be_valid

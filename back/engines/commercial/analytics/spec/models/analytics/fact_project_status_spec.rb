@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Analytics::FactProjectStatus, type: :model do
+RSpec.describe Analytics::FactProjectStatus do
   let(:user) { create(:user) }
 
   it { is_expected.to belong_to(:dimension_project) }

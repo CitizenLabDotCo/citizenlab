@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Analytics::DimensionLocale, type: :model do
+RSpec.describe Analytics::DimensionLocale do
   subject { build(:dimension_locale) }
 
   describe 'validations' do

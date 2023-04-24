@@ -6,7 +6,7 @@ class DisableableCampaignForTest < EmailCampaigns::Campaign
   include EmailCampaigns::Disableable
 end
 
-RSpec.describe EmailCampaigns::Disableable, type: :model do
+RSpec.describe EmailCampaigns::Disableable do
   let(:campaign) { DisableableCampaignForTest.create! }
 
   describe 'run_before_send_hooks' do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::ProjectModeratorSerializer < ::WebApi::V1::BaseSerializer
+class WebApi::V1::ProjectModeratorSerializer < WebApi::V1::BaseSerializer
   attributes :first_name, :last_name, :slug, :roles
 
   attribute :email, if: proc { |object, params|

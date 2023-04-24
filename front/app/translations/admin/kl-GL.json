@@ -557,7 +557,6 @@
   "app.containers.Admin.Users.confirm": "Confirm",
   "app.containers.Admin.Users.confirmAdminQuestion": "Are you sure you want to give {name} platform admin rights?",
   "app.containers.Admin.Users.confirmNormalUserQuestion": "Are you sure you want to set {name} as a normal user?",
-  "app.containers.Admin.Users.confirmSetCollaboratorAsNormalUserQuestion": "Are you sure you want to set {name} as a normal user? Please note that they will lose collaborator rights to all the projects and folders that they are assigned to on confirmation.",
   "app.containers.Admin.Users.deleteUser": "Atuisoq peeruk",
   "app.containers.Admin.Users.email": "E-mail",
   "app.containers.Admin.Users.folderManager": "Folder manager",
