@@ -43,14 +43,6 @@ export interface IArea {
   data: IAreaData;
 }
 
-export function areaByIdStream(areaId: string) {
-  return streams.get<IArea>({ apiEndpoint: `${apiEndpoint}/${areaId}` });
-}
-
-export function addArea(object) {
-  return streams.add<IArea>(apiEndpoint, { area: object });
-}
-
 export function updateArea(areaId: string, object) {
   return streams.update<IArea>(`${apiEndpoint}/${areaId}`, areaId, {
     area: object,

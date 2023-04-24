@@ -35,3 +35,14 @@ export interface IAreas {
 export interface IArea {
   data: IAreaData;
 }
+
+export interface IAreaAdd {
+  title_multiloc: Multiloc;
+  description_multiloc: Multiloc;
+}
+
+export interface IAreaUpdate {
+  title_multiloc?: Multiloc;
+  description_multiloc?: Multiloc;
+  ordering?: number;
+}
