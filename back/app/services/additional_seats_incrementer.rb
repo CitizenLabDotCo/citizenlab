@@ -8,16 +8,16 @@ class AdditionalSeatsIncrementer
       return unless increment?(role['type'])
 
       increment!(role['type'])
-      LogActivityJob.perform_later(updated_user, 'additional_seats_number_incremented',
+      LogActivityJob.perform_later(updated_user, action_by_role_type(role['type']),
         current_user, Time.now.to_i,
         payload: { role: role })
     end
 
     private
 
-    def increment!(seat_type)
+    def increment!(role_type)
       field =
-        case seat_type
+        case role_type
         when 'admin' then 'additional_admins_number'
         when 'project_moderator', 'project_folder_moderator' then 'additional_moderators_number'
         else
@@ -32,9 +32,9 @@ class AdditionalSeatsIncrementer
       end
     end
 
-    def increment?(seat_type)
+    def increment?(role_type)
       max_field, add_field, used_seats =
-        case seat_type
+        case role_type
         when 'admin'
           ['maximum_admins_number', 'additional_admins_number', User.billed_admins.count]
         when 'project_moderator', 'project_folder_moderator'
@@ -47,6 +47,15 @@ class AdditionalSeatsIncrementer
       return false if core[max_field].nil?
 
       used_seats > core[max_field] + (core[add_field] || 0)
+    end
+
+    def action_by_role_type(role_type)
+      case role_type
+      when 'admin' then 'additional_admins_number_incremented'
+      when 'project_moderator', 'project_folder_moderator' then 'additional_moderators_number_incremented'
+      else
+        raise ArgumentError
+      end
     end
   end
 end

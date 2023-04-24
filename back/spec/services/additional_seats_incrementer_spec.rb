@@ -18,7 +18,7 @@ describe AdditionalSeatsIncrementer do
   let(:updated_user) { create(:user) }
 
   describe '.increment_if_necessary' do
-    it 'logs activity', active_job_inline_adapter: true do
+    it 'logs activity for admin', active_job_inline_adapter: true do
       expect(PublishActivityToRabbitJob).to receive(:perform_later)
 
       create(:admin) # to reach limit
@@ -27,8 +27,23 @@ describe AdditionalSeatsIncrementer do
       expect { described_class.increment_if_necessary(updated_user, current_user) }.to change(Activity, :count).from(0).to(1)
 
       activity = Activity.first
-      expect(activity.action).to eq('additional_seats_number_incremented')
-      expect(activity.payload).to eq({ 'role' => { 'type' => 'admin' } })
+      expect(activity.action).to eq('additional_admins_number_incremented')
+      expect(activity.payload).to eq({ 'role' => new_role })
+      expect(activity.item).to eq(updated_user)
+      expect(activity.user).to eq(current_user)
+    end
+
+    it 'logs activity for moderator', active_job_inline_adapter: true do
+      expect(PublishActivityToRabbitJob).to receive(:perform_later)
+
+      create(:project_moderator) # to reach limit
+      new_role = { 'type' => 'project_moderator', 'project_id' => create(:project).id }
+      updated_user.update!(roles: [new_role])
+      expect { described_class.increment_if_necessary(updated_user, current_user) }.to change(Activity, :count).from(0).to(1)
+
+      activity = Activity.first
+      expect(activity.action).to eq('additional_moderators_number_incremented')
+      expect(activity.payload).to eq({ 'role' => new_role })
       expect(activity.item).to eq(updated_user)
       expect(activity.user).to eq(current_user)
     end
@@ -39,7 +54,7 @@ describe AdditionalSeatsIncrementer do
       updated_user.update!(roles: [new_role])
       expect do
         described_class.increment_if_necessary(updated_user, nil)
-      end.to not_change { AppConfiguration.instance.settings['core']['additional_admin_number'] }
+      end.to not_change { AppConfiguration.instance.settings['core']['additional_admins_number'] }
         .and(change { AppConfiguration.instance.settings['core']['additional_moderators_number'] }.from(0).to(1))
 
       expect(LogActivityJob).to have_been_enqueued

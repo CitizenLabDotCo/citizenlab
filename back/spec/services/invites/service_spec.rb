@@ -82,7 +82,7 @@ describe Invites::Service do
         expect do
           service.bulk_create_xlsx(xlsx, { 'roles' => [new_role] })
         end.to change(Invite, :count).from(0).to(1)
-          .and(not_change { AppConfiguration.instance.settings['core']['additional_admin_number'] })
+          .and(not_change { AppConfiguration.instance.settings['core']['additional_admins_number'] })
           .and(change { AppConfiguration.instance.settings['core']['additional_moderators_number'] }.from(0).to(1))
       end
 
