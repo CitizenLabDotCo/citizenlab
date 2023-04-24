@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 import { get } from 'lodash-es';
+import { rgba } from 'polished';
 
 // components
 import { Icon, IconNames, Box, Text } from '@citizenlab/cl2-component-library';
 import MenuItem from './MenuItem';
 import Link from 'utils/cl-router/Link';
+import Button from 'components/UI/Button';
+import { Popup } from 'semantic-ui-react';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -15,7 +18,6 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes, stylingConsts } from 'utils/styleUtils';
-import { lighten } from 'polished';
 import { darkSkyBlue } from 'components/admin/NavigationTabs/Tab';
 
 // resources
@@ -30,6 +32,9 @@ import Outlet from 'components/Outlet';
 import { InsertConfigurationOptions } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { TAppConfigurationSetting } from 'api/app_configuration/types';
+
+// Hooks
+import { useLocation } from 'react-router-dom';
 
 const Menu = styled.div`
   z-index: 10;
@@ -89,44 +94,24 @@ const Spacer = styled.div`
   flex-grow: 1;
 `;
 
-const MenuLink = styled.a`
-  flex: 0 0 auto;
-  width: 210px;
+const StyledButton = styled(Button)`
+  color: ${colors.coolGrey600};
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding-left: 5px;
-  padding-right: 15px;
-  cursor: pointer;
-  border-radius: ${(props) => props.theme.borderRadius};
-  transition: all 100ms ease-out;
-
-  &:hover,
-  &.focus-visible {
-    background: rgba(0, 0, 0, 0.36);
-
-    ${CustomText} {
-      opacity: 1;
-    }
+  width: 100%;
+  &:hover {
+    color: ${colors.coolGrey600};
+    background: ${rgba(colors.teal400, 0.07)};
   }
-
-  ${media.tablet`
-    width: 56px;
-    padding-right: 5px;
-
-    ${CustomText} {
-      display: none;
-    }
-  `}
+  span {
+    width: 100%;
+  }
 `;
 
-const GetStartedLink = styled(MenuLink)`
-  padding-bottom: 1px;
-  margin-bottom: 25px;
-  background: ${lighten(0.05, colors.blue700)};
-
+const StyledBox = styled(Box)`
+  cursor: pointer;
   &:hover {
-    background: ${lighten(0.1, colors.blue700)};
+    background: rgba(0, 0, 0, 0.36);
   }
 `;
 
@@ -242,8 +227,9 @@ const defaultNavItems: NavItem[] = [
 
 const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
   const { formatMessage } = useIntl();
+  const { pathname } = useLocation();
   const [navItems, setNavItems] = useState<NavItem[]>(defaultNavItems);
-  const isPagesAndMenuPage = isPage('pages_menu', location.pathname);
+  const isPagesAndMenuPage = isPage('pages_menu', pathname);
 
   useEffect(() => {
     const updatedNavItems: NavItem[] = navItems.map((navItem: NavItem) => {
@@ -311,22 +297,64 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
           <MenuItem navItem={navItem} key={navItem.name} />
         ))}
 
-        <MenuLink href={formatMessage(messages.linkToAcademy)} target="_blank">
-          <IconWrapper>
-            <Icon name="sidebar-academy" />
-          </IconWrapper>
-          <CustomText>{formatMessage({ ...messages.academy })}</CustomText>
-        </MenuLink>
-
-        <GetStartedLink
-          href={formatMessage(messages.linkToGuide)}
-          target="_blank"
+        <Popup
+          trigger={
+            <StyledBox
+              as="button"
+              width="100%"
+              display="flex"
+              justifyContent="flex-start"
+              mb="25px"
+            >
+              <Box display="flex" alignItems="center">
+                <IconWrapper>
+                  <Icon name="question-circle" fill={colors.green400} />
+                </IconWrapper>
+                <CustomText>
+                  {formatMessage({ ...messages.support })}
+                </CustomText>
+              </Box>
+            </StyledBox>
+          }
+          on="click"
+          position="right center"
+          positionFixed
+          offset={[0, -40]}
+          basic
+          wide
         >
-          <IconWrapper>
-            <Icon name="sidebar-guide" />
-          </IconWrapper>
-          <CustomText>{formatMessage({ ...messages.guide })}</CustomText>
-        </GetStartedLink>
+          <>
+            <StyledButton
+              linkTo={formatMessage(messages.linkToGuide)}
+              buttonStyle="text"
+              openLinkInNewTab
+            >
+              <Box display="flex" justifyContent="space-between" width="100%">
+                {formatMessage({ ...messages.knowledgeBase })}
+                <Icon name="sidebar-guide" />
+              </Box>
+            </StyledButton>
+            <StyledButton
+              linkTo={formatMessage(messages.linkToAcademy)}
+              buttonStyle="text"
+              openLinkInNewTab
+            >
+              <Box display="flex" justifyContent="space-between" w="100%">
+                {formatMessage({ ...messages.academy })}
+                <Icon name="sidebar-academy" />
+              </Box>
+            </StyledButton>
+            <StyledButton
+              linkTo={formatMessage(messages.linkToCommunityPlatform)}
+              buttonStyle="text"
+              openLinkInNewTab
+            >
+              <Box display="flex" justifyContent="space-between" w="100%">
+                {formatMessage({ ...messages.communityPlatform })}
+              </Box>
+            </StyledButton>
+          </>
+        </Popup>
       </MenuInner>
     </Menu>
   );
