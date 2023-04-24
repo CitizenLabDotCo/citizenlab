@@ -421,7 +421,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "Aquesta pàgina us permet comprovar ràpidament totes les publicacions noves que s'han publicat a la vostra plataforma, incloses idees i comentaris. Podeu marcar les publicacions com a \"vistes\" perquè els altres sàpiguen què encara s'ha de processar.",
   "app.containers.Admin.Moderation.noUnviewedItems": "No hi ha elements invisibles",
   "app.containers.Admin.Moderation.noViewedItems": "No hi ha elements vists",
-  "app.containers.Admin.Moderation.pageTitle": "Activitat",
   "app.containers.Admin.Moderation.post": "Publicació",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Bloquejador de paraules brutes",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "Bloquejar les publicacions que contenen les paraules ofensives més habituals.",

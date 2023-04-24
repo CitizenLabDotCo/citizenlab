@@ -421,7 +421,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "Questa pagina ti permette di controllare rapidamente tutti i nuovi input che sono stati aggiunti alla tua piattaforma, compresi i post e i commenti. Puoi contrassegnare i post come \"visti\" in modo che gli altri sappiano quali input devono ancora essere elaborati.",
   "app.containers.Admin.Moderation.noUnviewedItems": "Non ci sono oggetti non visti",
   "app.containers.Admin.Moderation.noViewedItems": "Non ci sono oggetti visti",
-  "app.containers.Admin.Moderation.pageTitle": "Attività",
   "app.containers.Admin.Moderation.post": "Invia",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Blocco delle bestemmie",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "Blocca i post che contengono le parole offensive più comunemente segnalate.",

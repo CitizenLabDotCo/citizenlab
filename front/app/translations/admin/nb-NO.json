@@ -428,7 +428,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "På denne siden kan du raskt se alle nye innlegg som er publisert til plattformen, inkludert ideer og kommentarer. Du kan merke innlegg som «lest» slik at andre vet hva som fortsatt må behandles.",
   "app.containers.Admin.Moderation.noUnviewedItems": "Det er ingen uleste elementer",
   "app.containers.Admin.Moderation.noViewedItems": "Det er ingen leste elementer",
-  "app.containers.Admin.Moderation.pageTitle": "Aktivitet",
   "app.containers.Admin.Moderation.post": "Innlegg",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Blokkering av upassende språk",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "Blokker innlegg som inneholder de oftest rapporterte formene for upassende språk.",

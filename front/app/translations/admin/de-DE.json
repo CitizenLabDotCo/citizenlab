@@ -428,7 +428,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "Auf dieser Seite können Sie schnell alle neuen Beiträge überprüfen, die zu Ihrer Plattform hinzugefügt wurden, einschließlich Ideen und Kommentare. Sie können Beiträge als \"gesehen\" markieren, damit andere wissen, welche Beiträge noch bearbeitet werden müssen.",
   "app.containers.Admin.Moderation.noUnviewedItems": "Es gibt keine ungesehenen Elemente",
   "app.containers.Admin.Moderation.noViewedItems": "Es gibt keine gesehenen Elemente",
-  "app.containers.Admin.Moderation.pageTitle": "Aktivität",
   "app.containers.Admin.Moderation.post": "Beitrag",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Schimpfwort-Blocker",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "Blockiert automatisch Beiträge, die die am häufigsten gemeldeten beleidigenden Wörter enthalten.",

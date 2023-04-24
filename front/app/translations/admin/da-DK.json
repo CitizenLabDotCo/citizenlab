@@ -428,7 +428,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "Denne side giver dig mulighed for hurtigt at kontrollere alle nye indlæg, der er blevet offentliggjort på din platform, herunder idéer og kommentarer. Du kan markere indlæg som værende \"set\", så andre ved, hvad der stadig skal behandles.",
   "app.containers.Admin.Moderation.noUnviewedItems": "Der er ingen usete poster",
   "app.containers.Admin.Moderation.noViewedItems": "Der er ingen sete poster",
-  "app.containers.Admin.Moderation.pageTitle": "Aktivitet",
   "app.containers.Admin.Moderation.post": "Indlæg",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Profanity blocker",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "Bloker indlæg, der indeholder de mest almindeligt rapporterede stødende ord.",

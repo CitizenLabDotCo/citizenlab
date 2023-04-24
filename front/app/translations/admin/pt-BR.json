@@ -428,7 +428,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "Esta página permite que você verifique rapidamente todas as novas entradas que foram adicionadas à sua plataforma, incluindo postagens e comentários. Você pode marcar os posts como sendo 'vistos' para que outros saibam quais inputs ainda precisam ser processados.",
   "app.containers.Admin.Moderation.noUnviewedItems": "Não há itens não vistos",
   "app.containers.Admin.Moderation.noViewedItems": "Não há itens vistos",
-  "app.containers.Admin.Moderation.pageTitle": "Atividade",
   "app.containers.Admin.Moderation.post": "Informação",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Bloqueador de palavras impróprias",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "Bloqueio de postagens contendo as palavras ofensivas mais comumente relatadas.",

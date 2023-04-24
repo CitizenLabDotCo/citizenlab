@@ -428,7 +428,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "På den här sidan kan du snabbt kontrollera alla nya inlägg som har publicerats på din plattform, inklusive idéer och kommentarer. Du kan markera inlägg som \"sedda\" så att andra vet vad som fortfarande behöver bearbetas.",
   "app.containers.Admin.Moderation.noUnviewedItems": "Det finns inga ej visade objekt",
   "app.containers.Admin.Moderation.noViewedItems": "Det finns inga visade objekt",
-  "app.containers.Admin.Moderation.pageTitle": "Aktivitet",
   "app.containers.Admin.Moderation.post": "Inlägg",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Svordomsblockerare",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "Blockera inlägg som innehåller de vanligast rapporterade stötande orden.",

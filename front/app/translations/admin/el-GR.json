@@ -421,7 +421,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "Αυτή η σελίδα σας επιτρέπει να ελέγχετε γρήγορα όλες τις νέες δημοσιεύσεις που έχουν δημοσιευτεί στην πλατφόρμα σας, συμπεριλαμβανομένων των ιδεών και των σχολίων. Μπορείτε να επισημάνετε τις δημοσιεύσεις ως \"αναγνωσμένες\", ώστε οι άλλοι να γνωρίζουν τι χρειάζεται ακόμη να επεξεργαστεί.",
   "app.containers.Admin.Moderation.noUnviewedItems": "Δεν υπάρχουν μη μη αναγνωσμένα στοιχεία",
   "app.containers.Admin.Moderation.noViewedItems": "Δεν υπάρχουν μη αναγνωσμένα στοιχεία",
-  "app.containers.Admin.Moderation.pageTitle": "Δραστηριότητα",
   "app.containers.Admin.Moderation.post": "Δημοσίευση",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Αποκλεισμός αισχρολογίας",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "Αποκλείστε τις δημοσιεύσεις που περιέχουν τις πιο συχνά αναφερόμενες προσβλητικές λέξεις.",
