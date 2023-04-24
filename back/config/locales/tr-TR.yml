@@ -239,3 +239,5 @@ tr:
       paragraph_1_with_reason: "%{organizationName} katılım platformundaki hesabınız aşağıdaki nedenden dolayı geçici olarak devre dışı bırakılmıştır:"
       for_more_information: "Bu konuda daha fazla bilgi için bu sayfaya başvurabilirsiniz: %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "%{date}adresinden tekrar oturum açabilirsiniz."
+  user:
+    anon_first_name: "Kullanıcı"
