@@ -15,8 +15,8 @@ const fetchEvents = (filters: IAreasQueryParams) => {
     path: '/areas',
     action: 'get',
     queryParams: {
-      'page[number]': pageNumber,
-      'page[size]': pageSize,
+      'page[number]': pageNumber || 1,
+      'page[size]': pageSize || 5000,
       for_homepage_filter,
       ...(includeStaticPages && {
         include: 'static_pages',
