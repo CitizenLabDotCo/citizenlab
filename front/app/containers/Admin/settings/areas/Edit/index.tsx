@@ -1,29 +1,26 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { withRouter } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-import GetArea, { GetAreaChildProps } from 'resources/GetArea';
+import useArea from 'api/areas/useArea';
 import { updateArea } from 'services/areas';
 
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
 
 import AreaForm, { FormValues } from '../AreaForm';
+import { useParams } from 'react-router-dom';
 
-interface DataProps {
-  area: GetAreaChildProps;
-}
-
-interface Props extends DataProps {}
-
-const Edit = ({ area }: Props) => {
+const Edit = () => {
+  const { areaId } = useParams() as { areaId: string };
+  const { data: area } = useArea(areaId);
   const handleSubmit = async (values: FormValues) => {
-    if (isNilOrError(area)) return;
-    await updateArea(area.id, {
+    if (!area) return;
+    await updateArea(area.data.id, {
       ...values,
     });
     clHistory.push('/admin/settings/areas');
@@ -42,8 +39,8 @@ const Edit = ({ area }: Props) => {
       {!isNilOrError(area) && (
         <AreaForm
           defaultValues={{
-            title_multiloc: area.attributes.title_multiloc,
-            description_multiloc: area.attributes.description_multiloc,
+            title_multiloc: area.data.attributes.title_multiloc,
+            description_multiloc: area.data.attributes.description_multiloc,
           }}
           onSubmit={handleSubmit}
         />
@@ -52,8 +49,4 @@ const Edit = ({ area }: Props) => {
   );
 };
 
-export default withRouter((inputProps: WithRouterProps) => (
-  <GetArea id={inputProps.params.areaId}>
-    {(area) => <Edit area={area} />}
-  </GetArea>
-));
+export default withRouter(Edit);

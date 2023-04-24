@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 import { Multiloc, IRelationship } from 'typings';
 
 const apiEndpoint = `${API_PATH}/areas`;
@@ -8,10 +8,6 @@ export interface IAreasQueryParams {
   'page[number]'?: number;
   'page[size]'?: number;
   for_homepage_filter?: boolean;
-}
-
-interface IAreasStreamParams extends IStreamParams {
-  queryParameters?: IAreasQueryParams;
 }
 
 export interface IAreaData {
@@ -49,10 +45,6 @@ export interface IArea {
 
 export function areaByIdStream(areaId: string) {
   return streams.get<IArea>({ apiEndpoint: `${apiEndpoint}/${areaId}` });
-}
-
-export function areasStream(streamParams: IAreasStreamParams | null = null) {
-  return streams.get<IAreas>({ apiEndpoint, ...streamParams });
 }
 
 export function addArea(object) {
