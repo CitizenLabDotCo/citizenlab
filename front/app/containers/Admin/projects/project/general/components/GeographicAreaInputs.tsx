@@ -10,7 +10,7 @@ import { IOption, isIOption } from 'typings';
 import useAreas from 'api/areas/useAreas';
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
-import { IAreaData } from 'services/areas';
+import { IAreaData } from 'api/areas/types';
 import { useParams } from 'react-router-dom';
 import { TOnProjectAttributesDiffChangeFunction } from '..';
 import { LabelHeaderDescription } from '../../participationContext/components/labels';

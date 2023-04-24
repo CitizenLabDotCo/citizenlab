@@ -43,7 +43,7 @@ import { useIntl } from 'utils/cl-intl';
 
 // types
 import { Multiloc } from 'typings';
-import { IAreaData } from 'services/areas';
+import { IAreaData } from 'api/areas/types';
 import { ITopicData } from 'services/topics';
 import { ProjectsFilterTypes } from 'services/customPages';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
