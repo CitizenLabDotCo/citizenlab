@@ -892,7 +892,7 @@ GEM
       httpclient
       json-jwt (>= 1.11.0)
       rack (>= 2.1.0)
-    rack-protection (3.0.5)
+    rack-protection (3.0.6)
       rack
     rack-test (2.1.0)
       rack (>= 1.3)
@@ -1073,10 +1073,10 @@ GEM
     simplecov-rcov (0.3.1)
       simplecov (>= 0.4.1)
     simplecov_json_formatter (0.1.4)
-    sinatra (3.0.5)
+    sinatra (3.0.6)
       mustermann (~> 3.0)
       rack (~> 2.2, >= 2.2.4)
-      rack-protection (= 3.0.5)
+      rack-protection (= 3.0.6)
       tilt (~> 2.0)
     smstools (0.2.2)
     socksify (1.7.1)
@@ -1293,7 +1293,7 @@ DEPENDENCIES
   simple_segment (~> 1.5)
   simplecov
   simplecov-rcov
-  sinatra (~> 3.0.5)
+  sinatra (~> 3.0.6)
   smart_groups!
   spring
   spring-commands-rspec
