@@ -239,3 +239,5 @@ el:
       paragraph_1_with_reason: "Ο λογαριασμός σας στην πλατφόρμα συμμετοχής του %{organizationName} έχει απενεργοποιηθεί προσωρινά για τον ακόλουθο λόγο:"
       for_more_information: "Για περισσότερες πληροφορίες σχετικά με αυτό, μπορείτε να συμβουλευτείτε το %{termsAndConditionsPage}."
       you_can_sign_in_again_from: "Μπορείτε να συνδεθείτε ξανά από το %{date}"
+  user:
+    anon_first_name: "Χρήστης"
