@@ -98,23 +98,27 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
   const isPagesAndMenuPage = isPage('pages_menu', pathname);
 
   useEffect(() => {
-    const updatedNavItems: NavItem[] = navItems.map((navItem: NavItem) => {
-      if (
-        navItem.name === 'ideas' &&
-        !isNilOrError(ideasCount.count) &&
-        ideasCount.count
-      ) {
-        return { ...navItem, count: ideasCount.count };
-      } else if (
-        navItem.name === 'initiatives' &&
-        !isNilOrError(initiativesCount.count) &&
-        initiativesCount.count
-      ) {
-        return { ...navItem, count: initiativesCount.count };
-      }
-      return navItem;
+    setNavItems((prevNavItems) => {
+      const updatedNavItems: NavItem[] = prevNavItems.map(
+        (navItem: NavItem) => {
+          if (
+            navItem.name === 'ideas' &&
+            !isNilOrError(ideasCount.count) &&
+            ideasCount.count
+          ) {
+            return { ...navItem, count: ideasCount.count };
+          } else if (
+            navItem.name === 'initiatives' &&
+            !isNilOrError(initiativesCount.count) &&
+            initiativesCount.count
+          ) {
+            return { ...navItem, count: initiativesCount.count };
+          }
+          return navItem;
+        }
+      );
+      return updatedNavItems;
     });
-    setNavItems(updatedNavItems);
   }, [ideasCount.count, initiativesCount.count]);
 
   const handleData = (
