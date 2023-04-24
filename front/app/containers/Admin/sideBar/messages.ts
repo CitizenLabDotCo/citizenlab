@@ -77,4 +77,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.linkToGuide',
     defaultMessage: 'https://community.citizenlab.co/en/folders/guide',
   },
+  toPlatform: {
+    id: 'app.containers.AdminPage.SideBar.toPlatform',
+    defaultMessage: 'To platform',
+  },
 });
