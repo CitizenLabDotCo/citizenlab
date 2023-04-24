@@ -4,11 +4,15 @@ import React from 'react';
 import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import GoBackButton from 'components/UI/GoBackButton';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+
+import clHistory from 'utils/cl-router/history';
 
 const InvitationsPage = (props: WrappedComponentProps) => {
   const tabs = [
@@ -28,16 +32,25 @@ const InvitationsPage = (props: WrappedComponentProps) => {
     subtitle: props.intl.formatMessage(messages.invitationSubtitle),
   };
 
+  const goBack = () => {
+    clHistory.goBack();
+  };
+
   return (
-    <TabbedResource resource={resource} tabs={tabs}>
-      <HelmetIntl
-        title={messages.helmetTitle}
-        description={messages.helmetDescription}
-      />
-      <div id="e2e-invitations-container">
-        <RouterOutlet />
-      </div>
-    </TabbedResource>
+    <>
+      <Box w="100%">
+        <GoBackButton onClick={goBack} />
+      </Box>
+      <TabbedResource resource={resource} tabs={tabs}>
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
+        />
+        <div id="e2e-invitations-container">
+          <RouterOutlet />
+        </div>
+      </TabbedResource>
+    </>
   );
 };
 
