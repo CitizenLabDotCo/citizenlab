@@ -222,8 +222,22 @@ kl:
       subject: "%{organizationName} peqataatitsinikkut nittartagaanut emailit uppernarsaruk"
       header: "Uppernarsaaninnut isissutissat"
       header_message: "Aluu %{firstName}!"
+      confirm_email_address: "Emailit uppernarsaruk"
       thanks_for_signing_up: "Qujanaq, %{organizationName} peqataatitsinikkut nittartagaanut ilaasortanngoravit."
-      please_confirm_your_email_address: "Ilaasortanngornissat naammassiniarlugu, emailit uppernarsaruk."
+      best_regards: "Best regards,"
+      ignore_email: "If you didn't request a code, you can safely ignore this email."
+      expire_code: "This code will be expired in "
+      24_hours: "24 hours."
       copy_paste_the_link_below: "Isissutissaq ataaniittoq ilaasortanngornissamut immersugassamut ikkuguk."
       the_link_is_valid_for: "Una linkeq nalunaaquttap akunneri 24-it atuutissaaq. <a href=\"%{link}\"> qaangiuppat isissutissamik nutaamik qinusinnaavutit."
       did_you_receive_this_email_in_error: "Ajornartoornermi una emaili pissarsiaraajuk? <a href=\"%{link}\">."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Your account has been temporarily disabled'
+      title_user_blocked: 'Your account has been temporarily disabled'
+      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
+      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
+      for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "You can sign in again from %{date}"
+  user:
+    anon_first_name: "User"
