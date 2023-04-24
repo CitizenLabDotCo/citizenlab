@@ -1045,7 +1045,7 @@ RSpec.describe User, type: :model do
         user.reset_confirmation_and_counts
 
         expect(user.confirmation_required?).to be true
-        expect(user.email_confirmed_at).to be_nil
+        expect(user.email_confirmation_code_sent_at).to be_nil
         expect(user.email_confirmation_code).to be_nil
         expect(user.email_confirmation_retry_count).to eq 0
         expect(user.email_confirmation_code_reset_count).to eq 0
