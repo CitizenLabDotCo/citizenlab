@@ -67,15 +67,6 @@ const MenuInner = styled.nav`
   `}
 `;
 
-const IconWrapper = styled.div`
-  flex: 0 0 auto;
-  width: 45px;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 interface InputProps {}
 interface DataProps {
   authUser: GetAuthUserChildProps;
@@ -153,9 +144,16 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
               alignItems="center"
               pl="5px"
             >
-              <IconWrapper>
+              <Box
+                display="flex"
+                flex="0 0 auto"
+                w="45px"
+                h="45px"
+                alignItems="center"
+                justifyContent="center"
+              >
                 <Icon name="arrow-left-circle" fill={colors.white} />
-              </IconWrapper>
+              </Box>
               <Text color="white" fontSize="s" ml="10px">
                 {formatMessage({ ...messages.toPlatform })}
               </Text>
