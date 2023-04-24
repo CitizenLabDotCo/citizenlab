@@ -1,9 +1,7 @@
 import React from 'react';
-import { rgba } from 'polished';
 
 // components
 import { Icon, Box, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
 import { Popup } from 'semantic-ui-react';
 
 // i18n
@@ -11,29 +9,8 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-
-const ItemMenu = styled(Button)`
-  color: ${colors.coolGrey600};
-  display: flex;
-  align-items: center;
-  width: 100%;
-  &:hover {
-    color: ${colors.coolGrey600};
-    background: ${rgba(colors.teal400, 0.07)};
-  }
-  span {
-    width: 100%;
-  }
-`;
-
-const StyledBox = styled(Box)`
-  cursor: pointer;
-  &:hover {
-    background: rgba(0, 0, 0, 0.36);
-  }
-`;
+import { ItemMenu, StyledBox } from './styles';
 
 export const SupportMenu = () => {
   const { formatMessage } = useIntl();
