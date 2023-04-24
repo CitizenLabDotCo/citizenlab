@@ -2,7 +2,7 @@ import React from 'react';
 import { rgba } from 'polished';
 
 // components
-import { Icon, Box } from '@citizenlab/cl2-component-library';
+import { Icon, Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { Popup } from 'semantic-ui-react';
 
@@ -12,9 +12,9 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
-const StyledButton = styled(Button)`
+const ItemMenu = styled(Button)`
   color: ${colors.coolGrey600};
   display: flex;
   align-items: center;
@@ -28,35 +28,11 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const IconWrapper = styled.div`
-  flex: 0 0 auto;
-  width: 45px;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const StyledBox = styled(Box)`
   cursor: pointer;
   &:hover {
     background: rgba(0, 0, 0, 0.36);
   }
-`;
-
-const CustomText = styled.div`
-  flex: 1;
-  color: ${colors.white};
-  opacity: 0.7;
-
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 19px;
-  margin-left: 10px;
-
-  ${media.phone`
-    display: none;
-  `}
 `;
 
 export const SupportMenu = () => {
@@ -70,13 +46,29 @@ export const SupportMenu = () => {
           width="100%"
           display="flex"
           justifyContent="flex-start"
-          mb="25px"
         >
           <Box display="flex" alignItems="center">
-            <IconWrapper>
+            <Box
+              display="flex"
+              flex="0 0 auto"
+              w="45px"
+              h="45px"
+              alignItems="center"
+              justifyContent="center"
+            >
               <Icon name="question-circle" fill={colors.green400} />
-            </IconWrapper>
-            <CustomText>{formatMessage({ ...messages.support })}</CustomText>
+            </Box>
+            <Box
+              display="flex"
+              flex="1"
+              flexDirection="column"
+              opacity={0.7}
+              ml="10px"
+            >
+              <Text color="white" my="0px" fontSize="base">
+                {formatMessage({ ...messages.support })}
+              </Text>
+            </Box>
           </Box>
         </StyledBox>
       }
@@ -87,35 +79,37 @@ export const SupportMenu = () => {
       basic
       wide
     >
-      <StyledButton
-        linkTo={formatMessage(messages.linkToGuide)}
-        buttonStyle="text"
-        openLinkInNewTab
-      >
-        <Box display="flex" justifyContent="space-between" width="100%">
-          {formatMessage({ ...messages.knowledgeBase })}
-          <Icon name="sidebar-guide" />
-        </Box>
-      </StyledButton>
-      <StyledButton
-        linkTo={formatMessage(messages.linkToAcademy)}
-        buttonStyle="text"
-        openLinkInNewTab
-      >
-        <Box display="flex" justifyContent="space-between" w="100%">
-          {formatMessage({ ...messages.academy })}
-          <Icon name="sidebar-academy" />
-        </Box>
-      </StyledButton>
-      <StyledButton
-        linkTo={formatMessage(messages.linkToCommunityPlatform)}
-        buttonStyle="text"
-        openLinkInNewTab
-      >
-        <Box display="flex" justifyContent="space-between" w="100%">
-          {formatMessage({ ...messages.communityPlatform })}
-        </Box>
-      </StyledButton>
+      <Box width="224px">
+        <ItemMenu
+          linkTo={formatMessage(messages.linkToGuide)}
+          buttonStyle="text"
+          openLinkInNewTab
+        >
+          <Box display="flex" justifyContent="space-between" width="100%">
+            {formatMessage({ ...messages.knowledgeBase })}
+            <Icon name="sidebar-guide" />
+          </Box>
+        </ItemMenu>
+        <ItemMenu
+          linkTo={formatMessage(messages.linkToAcademy)}
+          buttonStyle="text"
+          openLinkInNewTab
+        >
+          <Box display="flex" justifyContent="space-between" w="100%">
+            {formatMessage({ ...messages.academy })}
+            <Icon name="sidebar-academy" />
+          </Box>
+        </ItemMenu>
+        <ItemMenu
+          linkTo={formatMessage(messages.linkToCommunityPlatform)}
+          buttonStyle="text"
+          openLinkInNewTab
+        >
+          <Box display="flex" justifyContent="space-between" w="100%">
+            {formatMessage({ ...messages.communityPlatform })}
+          </Box>
+        </ItemMenu>
+      </Box>
     </Popup>
   );
 };
