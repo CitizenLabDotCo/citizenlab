@@ -2,19 +2,20 @@
 
 module EmailCampaigns
   class InviteReminderMailerPreview < ActionMailer::Preview
+    include EmailCampaigns::MailerPreviewRecipient
+
     def campaign_mail
-      invitee = User.first
       inviter = User.last
       token = Invites::Service.new.generate_token
       command = {
-        recipient: invitee,
+        recipient: recipient_user,
         event_payload: {
           inviter_first_name: inviter.first_name,
           inviter_last_name: inviter.last_name,
-          invitee_first_name: invitee.first_name,
-          invitee_last_name: invitee.last_name,
+          invitee_first_name: recipient_user.first_name,
+          invitee_last_name: recipient_user.last_name,
           invite_text: '<p>Would you like to join our awesome platform?</p>',
-          activate_invite_url: Frontend::UrlService.new.invite_url(token, locale: invitee.locale)
+          activate_invite_url: Frontend::UrlService.new.invite_url(token, locale: recipient_user.locale)
         }
       }
       campaign = EmailCampaigns::Campaigns::InviteReminder.first

@@ -2,9 +2,11 @@
 
 module EmailCampaigns
   class ManualCampaignMailerPreview < ActionMailer::Preview
+    include EmailCampaigns::MailerPreviewRecipient
+
     def campaign_mail
       command = {
-        author: User.first,
+        author: recipient_user,
         event_payload: {},
         subject_multiloc: { 'en' => 'Title' },
         body_multiloc: {
