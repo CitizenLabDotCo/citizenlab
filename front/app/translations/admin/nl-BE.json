@@ -1500,7 +1500,6 @@
   "app.containers.AdminPage.SettingsPage.organizationName": "Naam gemeente of organisatie",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Geef een organisatienaam of stad voor alle talen.",
   "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Filter inschakelen",
-  "app.containers.AdminPage.SettingsPage.pageTitle": "Instellingen",
   "app.containers.AdminPage.SettingsPage.phone": "Telefoon",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Platform configuratie",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "Scheldwoordenfilter",

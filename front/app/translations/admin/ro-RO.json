@@ -1374,7 +1374,6 @@
   "app.containers.AdminPage.SettingsPage.no_button": "No button",
   "app.containers.AdminPage.SettingsPage.organizationName": "Name of city or organization",
   "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Enable overlay",
-  "app.containers.AdminPage.SettingsPage.pageTitle": "Setări",
   "app.containers.AdminPage.SettingsPage.phone": "Phone",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Platform configuration",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "Profanity blocker",

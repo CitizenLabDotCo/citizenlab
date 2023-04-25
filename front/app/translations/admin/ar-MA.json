@@ -1374,7 +1374,6 @@
   "app.containers.AdminPage.SettingsPage.no_button": "لا يوجد زر",
   "app.containers.AdminPage.SettingsPage.organizationName": "اسم المدينة أو المؤسسة",
   "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "تمكين التداخل",
-  "app.containers.AdminPage.SettingsPage.pageTitle": "الإعدادات",
   "app.containers.AdminPage.SettingsPage.phone": "هاتف",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "تهيئة المنصة",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "مانع البذاءات",

@@ -1500,7 +1500,6 @@
   "app.containers.AdminPage.SettingsPage.organizationName": "Namn på stad eller organisation",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Ange ett organisationsnamn eller en stad för alla språk.",
   "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Aktivera överlagring",
-  "app.containers.AdminPage.SettingsPage.pageTitle": "Inställningar",
   "app.containers.AdminPage.SettingsPage.phone": "Telefon",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Plattformskonfiguration",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "Svordomsblockerare",

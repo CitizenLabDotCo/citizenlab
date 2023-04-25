@@ -1452,7 +1452,6 @@
   "app.containers.AdminPage.SettingsPage.organizationName": "Nom de la ciutat o organització",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Provide an organization name or city for all languages.",
   "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Enable overlay",
-  "app.containers.AdminPage.SettingsPage.pageTitle": "Settings",
   "app.containers.AdminPage.SettingsPage.phone": "Telèfon",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Configuració de la plataforma",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "Profanity blocker",

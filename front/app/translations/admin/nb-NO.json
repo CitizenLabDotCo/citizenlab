@@ -1500,7 +1500,6 @@
   "app.containers.AdminPage.SettingsPage.organizationName": "Navn på by eller organisasjon",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Oppgi et organisasjonsnavn eller by for alle språk.",
   "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Aktiver overlegg",
-  "app.containers.AdminPage.SettingsPage.pageTitle": "Innstillinger",
   "app.containers.AdminPage.SettingsPage.phone": "Telefon",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Plattformkonfigurasjon",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "Blokkering av upassende språk",

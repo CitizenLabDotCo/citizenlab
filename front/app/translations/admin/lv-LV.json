@@ -1500,7 +1500,6 @@
   "app.containers.AdminPage.SettingsPage.organizationName": "Pilsētas vai organizācijas nosaukums",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Norādiet organizācijas nosaukumu vai pilsētu visām valodām.",
   "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Pārklājuma iespējošana",
-  "app.containers.AdminPage.SettingsPage.pageTitle": "Iestatījumi",
   "app.containers.AdminPage.SettingsPage.phone": "Tālrunis",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Platformas konfigurācija",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "Necenzētu vārdu bloķētājs",

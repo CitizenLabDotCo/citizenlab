@@ -1500,7 +1500,6 @@
   "app.containers.AdminPage.SettingsPage.organizationName": "Naziv grada ili organizacije",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Navedite naziv organizacije ili grad za sve jezike.",
   "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Omogući preklapanje",
-  "app.containers.AdminPage.SettingsPage.pageTitle": "Postavke",
   "app.containers.AdminPage.SettingsPage.phone": "Telefon",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Konfiguracija platforme",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "Blokiranje nepristojnih riječi",

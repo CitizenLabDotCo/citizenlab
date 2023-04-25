@@ -1500,7 +1500,6 @@
   "app.containers.AdminPage.SettingsPage.organizationName": "Nom de l'organisation ou commune",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Indiquez le nom de l'organisation ou la ville pour toutes les langues.",
   "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Activer le filtre",
-  "app.containers.AdminPage.SettingsPage.pageTitle": "Paramètres",
   "app.containers.AdminPage.SettingsPage.phone": "Téléphone",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Configuration de la plateforme",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "Bloqueur de contenu inapproprié",

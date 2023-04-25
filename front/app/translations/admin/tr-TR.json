@@ -1500,7 +1500,6 @@
   "app.containers.AdminPage.SettingsPage.organizationName": "Kentin veya kuruluşun adı",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Tüm diller için bir kuruluş adı veya şehir belirtin.",
   "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Yer paylaşımını etkinleştir",
-  "app.containers.AdminPage.SettingsPage.pageTitle": "Ayarlar",
   "app.containers.AdminPage.SettingsPage.phone": "Telefon",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Platform yapılandırması",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "Küfür engelleyici",

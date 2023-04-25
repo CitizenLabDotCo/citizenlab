@@ -1500,7 +1500,6 @@
   "app.containers.AdminPage.SettingsPage.organizationName": "Nazwa organizacji, miasto lub gmina",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Podaj nazwę organizacji lub miasto dla wszystkich języków.",
   "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Włączenie nakładania",
-  "app.containers.AdminPage.SettingsPage.pageTitle": "Ustawienia",
   "app.containers.AdminPage.SettingsPage.phone": "Telefon",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Konfiguracja platformy",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "Blokada przekleństw",
