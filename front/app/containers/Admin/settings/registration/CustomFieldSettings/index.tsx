@@ -30,7 +30,7 @@ import {
   SubSectionTitle,
 } from 'components/admin/Section';
 
-// services
+// api
 import {
   IUserCustomFieldData,
   deleteUserCustomField,
@@ -40,6 +40,8 @@ import {
   isHiddenField,
 } from 'services/userCustomFields';
 import { API_PATH } from 'containers/App/constants';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
 
 // cache
 import streams from 'utils/streams';
@@ -47,8 +49,6 @@ import streams from 'utils/streams';
 // styling
 import { colors } from 'utils/styleUtils';
 import useUserCustomFields from 'hooks/useUserCustomFields';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
 
 const Buttons = styled.div`
   display: flex;
