@@ -152,24 +152,31 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
     | IInvitesNewSeats['data']['attributes']['newly_added_moderators_number']
     | null
   >(null);
+  const fileInputElement = useRef<HTMLInputElement | null>(null);
 
   const { any: anySeatsExceeded } = useExceedsSeats({
     newlyAddedModeratorsNumber,
     newlyAddedAdminsNumber,
   });
 
-  const closeModal = () => {
-    setShowModal(false);
-    setProcessing(false);
-  };
-
-  const fileInputElement = useRef<HTMLInputElement | null>(null);
+  useEffect(() => {
+    if (anySeatsExceeded) {
+      setShowModal(true);
+    } else {
+      onSubmit({ save: true });
+    }
+  }, [anySeatsExceeded, onSubmit]);
 
   useEffect(() => {
     if (tenantLocales && !selectedLocale) {
       setSelectedLocale(tenantLocales[0]);
     }
   }, [tenantLocales, selectedLocale]);
+
+  const closeModal = () => {
+    setShowModal(false);
+    setProcessing(false);
+  };
 
   const getProjectOptions = (
     projects: GetProjectsChildProps,
@@ -356,14 +363,6 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
 
     return roles;
   };
-
-  useEffect(() => {
-    if (anySeatsExceeded) {
-      setShowModal(true);
-    } else {
-      onSubmit({ save: true });
-    }
-  }, [anySeatsExceeded]);
 
   // `save` parameter is used to avoid duplication of import/text and error handling logic
   const onSubmit = async ({ save }: { save: boolean }) => {
