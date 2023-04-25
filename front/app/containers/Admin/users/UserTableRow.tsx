@@ -14,7 +14,9 @@ import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import BlockUser from 'components/admin/UserBlockModals/BlockUser';
 import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
 import Link from 'utils/cl-router/Link';
-const ChangeSeatModal = lazy(() => import('./ChangeSeatModal'));
+const ChangeSeatModal = lazy(
+  () => import('components/admin/SeatBasedBilling/ChangeSeatModal')
+);
 
 // Translation
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';

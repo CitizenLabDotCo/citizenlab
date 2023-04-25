@@ -16,7 +16,7 @@ import messages from './messages';
 // Components
 import Button from 'components/UI/Button';
 const AddModeratorsModal = lazy(
-  () => import('components/admin/AddModeratorsModal')
+  () => import('components/admin/SeatBasedBilling/AddModeratorsModal')
 );
 import { Box } from '@citizenlab/cl2-component-library';
 import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
