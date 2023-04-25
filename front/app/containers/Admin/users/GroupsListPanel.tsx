@@ -280,7 +280,7 @@ export const GroupsListPanel = ({
           ))}
       </GroupsList>
       <Box display="flex" flexGrow={1} />
-      <Button linkTo="/admin/invitations" icon="email">
+      <Button linkTo="/admin/users/invitations" icon="email">
         <FormattedMessage {...messages.inviteUsers} />
       </Button>
     </Container>

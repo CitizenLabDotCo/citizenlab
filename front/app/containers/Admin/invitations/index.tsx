@@ -20,12 +20,12 @@ const InvitationsPage = (props: WrappedComponentProps) => {
   const tabs = [
     {
       label: props.intl.formatMessage(messages.tabInviteUsers),
-      url: '/admin/invitations',
+      url: '/admin/users/invitations',
       name: 'index',
     },
     {
       label: props.intl.formatMessage(messages.tabAllInvitations),
-      url: '/admin/invitations/all',
+      url: '/admin/users/invitations/all',
       name: 'all',
     },
   ];
