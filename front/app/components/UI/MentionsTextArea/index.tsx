@@ -186,7 +186,7 @@ const MentionsTextArea = ({
     onBlur?.();
   };
 
-  const setRef = () => {
+  const setMentionsInputRef = () => {
     if (textareaElement && textareaElement.current && getTextareaRef) {
       getTextareaRef(textareaElement.current as HTMLTextAreaElement);
     }
@@ -239,7 +239,7 @@ const MentionsTextArea = ({
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
           aria-label={ariaLabel}
-          ref={setRef}
+          ref={setMentionsInputRef}
           inputRef={textareaElement}
         >
           <Mention
