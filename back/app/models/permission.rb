@@ -32,6 +32,17 @@ class Permission < ApplicationRecord
   }
   SCOPE_TYPES = [nil, 'Project', 'Phase'].freeze
 
+  scope :order_by_action, lambda {
+    order(Arel.sql(
+      "CASE action
+      WHEN 'posting_idea' THEN 1
+      WHEN 'commenting_idea' THEN 2
+      WHEN 'voting_idea' THEN 3
+      ELSE 4
+      END"
+    ))
+  }
+
   belongs_to :permission_scope, polymorphic: true, optional: true
   has_many :groups_permissions, dependent: :destroy
   has_many :groups, through: :groups_permissions

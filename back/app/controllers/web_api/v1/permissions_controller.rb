@@ -8,8 +8,7 @@ class WebApi::V1::PermissionsController < ApplicationController
     @permissions = policy_scope(Permission)
       .includes(:permission_scope, :custom_fields, permissions_custom_fields: [:custom_field])
       .where(permission_scope: permission_scope)
-      .order(created_at: :desc)
-    @permissions = sort_permissions @permissions
+      .order_by_action
     @permissions = paginate @permissions
 
     render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: fastjson_params, include: %i[permissions_custom_fields custom_fields])
@@ -46,22 +45,6 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   private
-
-  def sort_permissions(permissions)
-    binding.pry
-    permissions.sort_by do |permission|
-      case permission.action
-      when 'posting_idea'
-        1
-      when 'commenting_idea'
-        2
-      when 'voting_idea'
-        3
-      else
-        4
-      end
-    end
-  end
 
   def serialize(permission)
     WebApi::V1::PermissionSerializer.new(
