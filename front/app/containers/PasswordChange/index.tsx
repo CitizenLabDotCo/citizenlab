@@ -180,6 +180,7 @@ const ChangePassword = ({ tenant }: Props) => {
               </LabelContainer>
               <PasswordInput name="password" autocomplete="new-password" />
               <StyledButton
+                id="password-submit-button"
                 type="submit"
                 size="m"
                 processing={methods.formState.isSubmitting}
