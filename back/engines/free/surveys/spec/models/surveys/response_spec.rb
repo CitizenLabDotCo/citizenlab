@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Surveys::Response, type: :model do
+RSpec.describe Surveys::Response do
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:survey_response)).to be_valid

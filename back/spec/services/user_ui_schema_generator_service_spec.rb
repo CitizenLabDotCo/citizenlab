@@ -8,8 +8,8 @@ RSpec.describe UserUiSchemaGeneratorService do
   let(:field_key) { 'field_key' }
 
   describe '#generate_for' do
-    let(:project) { create :continuous_project, input_term: 'contribution' }
-    let(:custom_form) { create :custom_form, participation_context: project }
+    let(:project) { create(:continuous_project, input_term: 'contribution') }
+    let(:custom_form) { create(:custom_form, participation_context: project) }
     let(:field1) do
       create(
         :custom_field_birthyear,

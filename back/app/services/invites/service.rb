@@ -7,7 +7,9 @@ class Invites::Service
 
   delegate :add_error, :fail_now, to: :@error_storage
 
-  def initialize
+  def initialize(inviter = nil, run_side_fx: true)
+    @inviter = inviter
+    @run_side_fx = run_side_fx
     @error_storage = Invites::ErrorStorage.new
   end
 
@@ -15,10 +17,11 @@ class Invites::Service
     [*('a'..'z'), *('0'..'9')].sample(9).join
   end
 
-  def bulk_create_xlsx(xlsx_param, default_params = {}, inviter = nil)
-    hash_array, map_rows = Invites::XlsxProcessor.new(@error_storage).param_to_hash_array(xlsx_param)
+  def bulk_create_xlsx(xlsx_param, default_params = {})
+    xlsx_processor = Invites::XlsxProcessor.new(@error_storage, custom_field_schema)
+    hash_array, map_rows = xlsx_processor.param_to_hash_array(xlsx_param)
 
-    bulk_create(hash_array, default_params, inviter)
+    bulk_create(hash_array, default_params)
   rescue Invites::FailedError => e
     e.errors.each do |error|
       error.row && (error.row = (map_rows[error.row] + 2))
@@ -27,8 +30,8 @@ class Invites::Service
     raise e
   end
 
-  def bulk_create(hash_array, default_params = {}, inviter = nil)
-    invitees = build_invitees(hash_array, default_params, inviter)
+  def bulk_create(hash_array, default_params = {})
+    invitees = build_invitees(hash_array, default_params)
     check_invitees(invitees)
     if @error_storage.no_critical_errors?
       save_invitees(invitees - ignored_invitees(invitees))
@@ -61,7 +64,7 @@ class Invites::Service
     custom_field_schema[:properties].keys
   end
 
-  def build_invitees(hash_array, default_params = {}, inviter = nil)
+  def build_invitees(hash_array, default_params = {})
     if hash_array.size > MAX_INVITES
       add_error(:max_invites_limit_exceeded, row: (hash_array.size - 1), value: MAX_INVITES)
       fail_now
@@ -70,7 +73,7 @@ class Invites::Service
       fail_now
     else
       invitees = hash_array.map do |invite_params|
-        build_invitee(invite_params, default_params, inviter)
+        build_invitee(invite_params, default_params)
       end
 
       UserSlugService.new.generate_slugs(invitees)
@@ -78,13 +81,13 @@ class Invites::Service
     end
   end
 
-  def build_invitee(params, default_params = {}, inviter = nil)
+  def build_invitee(params, default_params = {})
     invitee = prepare_invitee(params, default_params)
 
     if invitee.new_record?
       invitee.invitee_invite = Invite.new(
         invitee: invitee,
-        inviter: inviter,
+        inviter: @inviter,
         invite_text: params['invite_text'] || default_params['invite_text'],
         send_invite_email: params['send_invite_email'].nil? ? true : params['send_invite_email']
       )
@@ -96,7 +99,7 @@ class Invites::Service
   def prepare_invitee(params, default_params)
     email = params['email']&.strip
     group_ids = params['group_ids'] || default_params['group_ids'] || []
-    roles = params['roles'] || default_params['roles'] || []
+    roles = ((params['roles'] || []) + (default_params['roles'] || [])).uniq
 
     user =
       User.find_by_cimail(email) ||
@@ -161,22 +164,28 @@ class Invites::Service
   def save_invitees(invitees)
     ActiveRecord::Base.transaction do
       invitees.each do |invitee|
-        if invitee.new_record?
-          SideFxUserService.new.before_create(invitee, invitee.invitee_invite.inviter)
-        else
-          SideFxUserService.new.before_update(invitee, invitee.invitee_invite&.inviter)
+        if @run_side_fx
+          if invitee.new_record?
+            SideFxUserService.new.before_create(invitee, @inviter)
+          else
+            SideFxUserService.new.before_update(invitee, @inviter)
+          end
         end
         invitee.save!
       end
     end
+
     invitees.each do |invitee|
-      if invitee.previously_new_record?
-        SideFxUserService.new.after_create(invitee, invitee.invitee_invite.inviter)
-        SideFxInviteService.new.after_create(invitee.invitee_invite, invitee.invitee_invite.inviter)
-      else
-        SideFxUserService.new.after_update(invitee, invitee.invitee_invite&.inviter)
+      if @run_side_fx
+        if invitee.previously_new_record?
+          SideFxUserService.new.after_create(invitee, @inviter)
+          SideFxInviteService.new.after_create(invitee.invitee_invite, @inviter)
+        else
+          SideFxUserService.new.after_update(invitee, @inviter)
+        end
       end
     end
+
     invitees
   end
 

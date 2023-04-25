@@ -16,6 +16,8 @@ describe Invites::Service do
     let(:xlsx) { Base64.encode64(XlsxService.new.hash_array_to_xlsx(hash_array).read) }
 
     context do
+      let(:service) { described_class.new(inviter) }
+      let!(:inviter) { create(:user) }
       let!(:groups) { create_list(:group, 3) }
       let(:users) { build_list(:user, 10) }
       let(:hash_array) do
@@ -30,10 +32,143 @@ describe Invites::Service do
           }
         end + [{}, {}, {}]).shuffle
       end
-      let(:inviter) { create(:user) }
 
       it 'correctly creates invites when all is fine' do
-        expect { service.bulk_create_xlsx(xlsx, {}, inviter) }.to change(Invite, :count).from(0).to(10)
+        expect do
+          service.bulk_create_xlsx(xlsx, {})
+        end.to change(Invite, :count).from(0).to(10)
+          .and change(User, :count).by(10)
+
+        invites = Invite.includes(:invitee, :inviter).to_a
+        expect(invites.map(&:invitee)).to match_array(User.all.to_a - [inviter])
+        invites.each { |invite| expect(invite.inviter).to eq(inviter) }
+      end
+    end
+
+    context 'when inviter is blank' do
+      let(:hash_array) { [{ email: 'test@email.com' }] }
+
+      it 'creates invite with blank inviter' do
+        expect do
+          service.bulk_create_xlsx(xlsx, {})
+        end.to change(Invite, :count).from(0).to(1)
+          .and change(User, :count).from(0).to(1)
+
+        expect(Invite.first.inviter).to be_nil
+      end
+    end
+
+    context 'when additional seats are incremented' do
+      let(:hash_array) do
+        [
+          { email: 'user@domain.net' }
+        ]
+      end
+
+      before do
+        config = AppConfiguration.instance
+        config.settings['core']['maximum_admins_number'] = 1
+        config.settings['core']['maximum_moderators_number'] = 1
+        config.settings['core']['additional_admins_number'] = 0
+        config.settings['core']['additional_moderators_number'] = 0
+        config.settings['seat_based_billing'] = { enabled: true, allowed: true }
+        config.save!
+      end
+
+      it 'increments additional moderator seats' do
+        create(:project_moderator) # to reach limit
+
+        expect(LogActivityJob).to receive(:perform_later)
+        new_role = { 'type' => 'project_moderator', 'project_id' => create(:project).id }
+        expect do
+          service.bulk_create_xlsx(xlsx, { 'roles' => [new_role] })
+        end.to change(Invite, :count).from(0).to(1)
+          .and(not_change { AppConfiguration.instance.settings['core']['additional_admins_number'] })
+          .and(change { AppConfiguration.instance.settings['core']['additional_moderators_number'] }.from(0).to(1))
+      end
+
+      it 'increments additional admin seats' do
+        create(:admin)
+        new_role = { 'type' => 'admin' }
+        expect do
+          service.bulk_create_xlsx(xlsx, { 'roles' => [new_role] })
+        end.to change { AppConfiguration.instance.settings['core']['additional_admins_number'] }.from(0).to(1)
+          .and(not_change { AppConfiguration.instance.settings['core']['additional_moderators_number'] })
+      end
+
+      it 'does not increment additional seats if limit is not reached' do
+        new_role = { 'type' => 'admin' }
+        expect do
+          service.bulk_create_xlsx(xlsx, { 'roles' => [new_role] })
+        end.to not_change { AppConfiguration.instance.settings['core']['additional_admins_number'] }
+          .and(not_change { AppConfiguration.instance.settings['core']['additional_moderators_number'] })
+      end
+
+      context 'when updating existing user' do
+        before do
+          create(:project_moderator, email: hash_array.first[:email])
+        end
+
+        it 'does not increment additional seats if new moderator role was added to moderator' do
+          # limit is already reached
+          new_role = { 'type' => 'project_moderator', 'project_id' => create(:project).id }
+          expect do
+            service.bulk_create_xlsx(xlsx, { 'roles' => [new_role] })
+          end.to not_change { AppConfiguration.instance.settings['core']['additional_admins_number'] }
+            .and(not_change { AppConfiguration.instance.settings['core']['additional_moderators_number'] })
+        end
+
+        it 'increments additional seats if admin role was added to moderator' do
+          create(:admin) # to reach limit
+          new_role = { 'type' => 'admin' }
+          expect do
+            service.bulk_create_xlsx(xlsx, { 'roles' => [new_role] })
+          end.to change { AppConfiguration.instance.settings['core']['additional_admins_number'] }.from(0).to(1)
+            .and(not_change { AppConfiguration.instance.settings['core']['additional_moderators_number'] })
+        end
+      end
+
+      context 'when both admin and moderator seats are incremented' do
+        let(:hash_array) do
+          [
+            { email: 'user@domain.net', admin: 'TRUE' },
+            { email: 'user2@domain.net' }
+          ]
+        end
+
+        it 'increments both kinds of additional seats' do
+          create(:project_moderator) # to reach limit
+          create(:admin) # to reach limit
+          new_role = { 'type' => 'project_moderator', 'project_id' => create(:project).id }
+          expect do
+            service.bulk_create_xlsx(xlsx, { 'roles' => [new_role] })
+          end.to change { AppConfiguration.instance.settings['core']['additional_admins_number'] }.from(0).to(1)
+            .and(change { AppConfiguration.instance.settings['core']['additional_moderators_number'] }.from(0).to(1))
+        end
+      end
+
+      # If the implementation is wrong (e.g., if we call after_* sideFx in the same iteraion as save!),
+      # making user2@domain.net a moderator can cause increment of
+      # additional_moderators_number before decrementing total number of moderators by changing user@domain.net
+      # from moderator to admin.
+      context 'when two users are updated, but only admin seats should be incremented' do
+        let(:hash_array) do
+          [
+            { email: 'user2@domain.net' },
+            { email: 'user@domain.net', admin: 'TRUE' } # the order is important for the test. Admin should go after moderator
+          ]
+        end
+
+        it 'increments admin additional seats' do
+          create(:project_moderator, email: 'user@domain.net')
+          create(:admin) # to reach limit
+
+          new_role = { 'type' => 'project_moderator', 'project_id' => create(:project).id }
+          expect do
+            service.bulk_create_xlsx(xlsx, { 'roles' => [new_role] })
+          end.to change { AppConfiguration.instance.settings['core']['additional_admins_number'] }.from(0).to(1)
+            .and(not_change { AppConfiguration.instance.settings['core']['additional_moderators_number'] })
+        end
       end
     end
 
@@ -298,7 +433,6 @@ describe Invites::Service do
       it 'adds roles and groups to user' do
         expect { service.bulk_create_xlsx(xlsx) }.to change(Invite, :count).from(0).to(1)
 
-        service.bulk_create_xlsx(xlsx)
         user.reload
         expect(user.roles).to match_array([{ 'type' => 'admin' }, old_role])
         expect(user.manual_groups).to match_array([old_group, new_group])
@@ -317,7 +451,6 @@ describe Invites::Service do
           default_params = ActionController::Parameters.new(roles: [old_role]).permit!
           expect { service.bulk_create_xlsx(xlsx, default_params) }.to change(Invite, :count).from(0).to(1)
 
-          service.bulk_create_xlsx(xlsx)
           user.reload
           expect(user.roles).to match_array([old_role])
           expect(user.manual_groups).to match_array([old_group])
@@ -334,7 +467,7 @@ describe Invites::Service do
       end
 
       it "doesn't send out invitations to the invited users" do
-        service.bulk_create_xlsx(xlsx)
+        expect { service.bulk_create_xlsx(xlsx) }.not_to change(Invite, :count)
         expect(Invite.count).to eq 1
       end
     end
@@ -424,7 +557,6 @@ describe Invites::Service do
           language: 'en'
         }]
       end
-      let(:inviter) { create(:user) }
 
       before do
         SettingsService.new.activate_feature! 'abbreviated_user_names'
@@ -447,11 +579,10 @@ describe Invites::Service do
         { 'email' => test_email2 }
       ]
     end
-    let(:inviter) { create(:user) }
 
     context 'with multiple emails and no names' do
       it 'creates users with no slugs' do
-        service.bulk_create(hash_array, _default_params = {}, inviter)
+        service.bulk_create(hash_array, _default_params = {})
 
         expect(User.find_by(email: test_email1).slug).to be_nil
         expect(User.find_by(email: test_email2).slug).to be_nil

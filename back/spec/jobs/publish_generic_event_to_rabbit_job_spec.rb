@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe PublishGenericEventToRabbitJob, type: :job do
+RSpec.describe PublishGenericEventToRabbitJob do
   subject(:job) { described_class.new }
 
   describe '#perform' do

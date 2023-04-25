@@ -15,7 +15,7 @@ interface Props extends InputProps {
 interface State {
   count: number | null;
   administrators_count: number | null;
-  managers_count: number | null;
+  moderators_count: number | null;
 }
 
 export type GetUserCountChildProps = State;
@@ -28,7 +28,7 @@ export default class GetUserCount extends React.PureComponent<Props, State> {
     this.state = {
       count: null,
       administrators_count: null,
-      managers_count: null,
+      moderators_count: null,
     };
   }
 
@@ -38,7 +38,7 @@ export default class GetUserCount extends React.PureComponent<Props, State> {
         this.setState({
           count: response.count,
           administrators_count: response.administrators_count,
-          managers_count: response.managers_count,
+          moderators_count: response.moderators_count,
         });
       }
     });
@@ -50,11 +50,11 @@ export default class GetUserCount extends React.PureComponent<Props, State> {
 
   render() {
     const { children } = this.props;
-    const { count, administrators_count, managers_count } = this.state;
+    const { count, administrators_count, moderators_count } = this.state;
     return (children as children)({
       count,
       administrators_count,
-      managers_count,
+      moderators_count,
     });
   }
 }

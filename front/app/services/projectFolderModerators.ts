@@ -51,7 +51,7 @@ export async function addFolderModerator(
 
   invalidateSeatsCache();
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/users`],
+    apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/stats/users_count`],
   });
 
   return response;

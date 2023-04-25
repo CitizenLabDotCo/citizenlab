@@ -7,7 +7,7 @@ namespace :cl2back do
     template = YAML.load(File.read(template_path))
     template['models'].slice!('initiative_status')
 
-    tenant_deserializer = ::MultiTenancy::Templates::TenantDeserializer.new
+    tenant_deserializer = MultiTenancy::Templates::TenantDeserializer.new
 
     Tenant.all.each do |tenant|
       tenant.switch do

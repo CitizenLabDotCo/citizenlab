@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Copies a project within a tenant.
-class LocalProjectCopyService < ::ProjectCopyService
+class LocalProjectCopyService < ProjectCopyService
   def copy(source_project)
     new_title_multiloc = add_suffix_to_title(source_project.title_multiloc)
 

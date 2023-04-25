@@ -26,7 +26,6 @@ import { colors } from 'utils/styleUtils';
 
 // typings
 import { Locale, UploadFile } from 'typings';
-import { ITopicData } from 'services/topics';
 
 // hooks
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
@@ -100,9 +99,7 @@ const InitiativesEditPage = ({
   ) {
     return null;
   }
-  const initiativeTopics = topics.filter(
-    (topic) => !isNilOrError(topic)
-  ) as ITopicData[];
+  const initiativeTopics = topics.filter((topic) => !isNilOrError(topic));
 
   return (
     <Container>

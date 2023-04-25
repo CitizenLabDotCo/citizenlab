@@ -2,11 +2,11 @@
 
 require 'rails_helper'
 
-RSpec.describe Notifications::ProjectPhaseUpcoming, type: :model do
+RSpec.describe Notifications::ProjectPhaseUpcoming do
   describe 'make_notifications_on' do
-    let!(:admin) { create :admin }
-    let!(:phase) { create :phase }
-    let!(:activity) { create :activity, item: phase, action: 'upcoming' }
+    let!(:admin) { create(:admin) }
+    let!(:phase) { create(:phase) }
+    let!(:activity) { create(:activity, item: phase, action: 'upcoming') }
 
     it 'makes a notification on created comment activity' do
       notifications = described_class.make_notifications_on activity

@@ -67,9 +67,7 @@ module EmailCampaigns
       discover_projects = discover_projects @users_to_projects[recipient.id]
 
       @notifications_counts ||= notifications_counts
-      @top_ideas ||= top_ideas.select do |idea|
-        idea.participation_method_on_creation.include_data_in_email?
-      end
+      @top_ideas ||= top_ideas
       @new_initiatives ||= new_initiatives(name_service, time: time)
       @successful_initiatives ||= successful_initiatives(name_service, time: time)
       @initiative_ids ||= (@new_initiatives + @successful_initiatives).pluck(:id).compact
@@ -96,9 +94,9 @@ module EmailCampaigns
 
     # @return [Boolean]
     def content_worth_sending?(_)
-      @content_worth_sending ||= TrendingIdeaService.new.filter_trending(
-        IdeaPolicy::Scope.new(nil, Idea).resolve.where(publication_status: 'published')
-      ).count('*') >= N_TOP_IDEAS
+      # Check positive? as fetching a non-integer env var would result in zero and this hook would return true,
+      # whilst top_ideas would be limited to zero ideas, possibly resulting in no content being sent.
+      @content_worth_sending ||= trending_ideas.size >= N_TOP_IDEAS && N_TOP_IDEAS.positive?
     end
 
     private
@@ -114,14 +112,19 @@ module EmailCampaigns
     end
 
     def top_ideas
+      trending_ideas.limit N_TOP_IDEAS
+    end
+
+    def trending_ideas
       ti_service = TrendingIdeaService.new
-      top_ideas = IdeaPolicy::Scope.new(nil, Idea).resolve
+
+      ideas = IdeaPolicy::Scope.new(nil, Idea).resolve
         .published
         .includes(:comments)
 
-      truly_trending_ids = ti_service.filter_trending(top_ideas).ids
-      top_ideas = ti_service.sort_trending top_ideas.where(id: truly_trending_ids)
-      top_ideas.limit N_TOP_IDEAS
+      input_ideas = IdeasFinder.new({}, scope: ideas).find_records
+      trending_ids = ti_service.filter_trending(input_ideas).ids
+      ti_service.sort_trending ideas.where(id: trending_ids)
     end
 
     def users_to_projects

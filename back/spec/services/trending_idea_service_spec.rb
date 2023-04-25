@@ -8,10 +8,10 @@ describe TrendingIdeaService do
   end
 
   describe 'filter_trending' do
-    it 'filters trending ideas in accordance with the trending criterea (those that have a positive trending score)' do
+    it 'filters trending ideas in accordance with the trending criteria (those that have a positive trending score)' do
       trending_filter = nil
       expected_selection = nil
-      travel_to Time.now do
+      freeze_time do
         trending_filter = described_class.new.filter_trending(Idea.all).map(&:id)
         expected_selection = Idea.all.select { |i| described_class.new.trending? i }.map(&:id)
       end
@@ -32,7 +32,7 @@ describe TrendingIdeaService do
     it 'sorts trending to untrending in accordance with the trending score' do
       trending_score_sorted =  nil
       expected_order = nil
-      travel_to Time.now do
+      freeze_time do
         trending_score_sorted = described_class.new.sort_trending(Idea.all).map(&:id)
         expected_order = Idea.all.sort_by { |i| described_class.new.trending_score i }.map(&:id).reverse
       end

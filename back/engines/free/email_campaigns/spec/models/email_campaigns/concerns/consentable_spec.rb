@@ -6,7 +6,7 @@ class ConsentableCampaign < EmailCampaigns::Campaign
   include EmailCampaigns::Consentable
 end
 
-RSpec.describe EmailCampaigns::Consentable, type: :model do
+RSpec.describe EmailCampaigns::Consentable do
   before do
     @campaign = ConsentableCampaign.create
   end

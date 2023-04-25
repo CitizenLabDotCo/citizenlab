@@ -18,7 +18,7 @@ describe TextImageService do
         <img src="data:image/jpeg;base64,/9j/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/yQALCAABAAEBAREA/8wABgAQEAX/2gAIAQEAAD8A0s8g/9k=" />
         <img src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg" />
       HTML
-      imageable = build :project, description_multiloc: { 'fr-BE' => input }
+      imageable = build(:project, description_multiloc: { 'fr-BE' => input })
       output = service.swap_data_images imageable, :description_multiloc
       codes = imageable.reload.text_images.order(:created_at).pluck :text_reference
       expected_html = <<~HTML
@@ -31,14 +31,14 @@ describe TextImageService do
 
     it 'does not modify the empty string' do
       input = ''
-      imageable = build :project, description_multiloc: { 'en' => input }
+      imageable = build(:project, description_multiloc: { 'en' => input })
       expect(service.swap_data_images(imageable, :description_multiloc)).to eq({ 'en' => input })
     end
   end
 
   describe 'render_data_images' do
     it 'adds src attributes to the img tags' do
-      text_image1, text_image2 = create_list :text_image, 2
+      text_image1, text_image2 = create_list(:text_image, 2)
       input = <<~HTML
         <img data-cl2-text-image-text-reference="#{text_image1.text_reference}">
         <div>no image here</div>
@@ -50,13 +50,13 @@ describe TextImageService do
         <img data-cl2-text-image-text-reference="#{text_image2.text_reference}" src="#{text_image2.image.url}">
       HTML
 
-      imageable = build :project, description_multiloc: { 'de' => input }
+      imageable = build(:project, description_multiloc: { 'de' => input })
       output = service.render_data_images imageable, :description_multiloc
       expect(output).to eq({ 'de' => expected_html })
     end
 
     it 'gets all text images in one query' do
-      imageable = create :project
+      imageable = create(:project)
       input = <<~HTML
         <img data-cl2-text-image-text-reference="#{create(:text_image, imageable: imageable).text_reference}">
         <img data-cl2-text-image-text-reference="#{create(:text_image, imageable: imageable).text_reference}">

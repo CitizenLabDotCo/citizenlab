@@ -94,7 +94,7 @@ class Comment < ApplicationRecord
   end
 
   def author_name
-    @author_name ||= author.nil? ? nil : author.full_name
+    @author_name ||= author&.full_name
   end
 
   def project_id

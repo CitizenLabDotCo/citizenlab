@@ -5,15 +5,15 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::NativeSurvey do
   subject(:participation_method) { described_class.new participation_context }
 
-  let(:participation_context) { create :continuous_native_survey_project }
+  let(:participation_context) { create(:continuous_native_survey_project) }
 
   describe '#assign_slug' do
-    let(:input) { create :input, slug: nil }
+    let(:input) { create(:input, slug: nil) }
 
-    before { create :idea_status_proposed }
+    before { create(:idea_status_proposed) }
 
     describe '#assign_defaults_for_participation_context' do
-      let(:participation_context) { build :continuous_native_survey_project }
+      let(:participation_context) { build(:continuous_native_survey_project) }
 
       it 'sets the limits posting to max one' do
         participation_method.assign_defaults_for_participation_context
@@ -89,8 +89,8 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
   describe '#assign_defaults' do
     context 'when the proposed idea status is available' do
-      let!(:proposed) { create :idea_status_proposed }
-      let(:input) { build :idea, publication_status: 'draft', idea_status: nil }
+      let!(:proposed) { create(:idea_status_proposed) }
+      let(:input) { build(:idea, publication_status: 'draft', idea_status: nil) }
 
       it 'sets the publication_status to "publised" and the idea_status to "proposed"' do
         participation_method.assign_defaults input
@@ -100,7 +100,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
 
     context 'when the proposed idea status is not available' do
-      let(:input) { build :idea }
+      let(:input) { build(:idea) }
 
       it 'raises ActiveRecord::RecordNotFound' do
         expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
@@ -122,7 +122,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
   describe '#form_in_phase?' do
     context 'for a timeline project' do
-      let(:project) { create :project_with_active_native_survey_phase }
+      let(:project) { create(:project_with_active_native_survey_phase) }
       let(:participation_context) { project.phases.first }
 
       it 'returns true' do
@@ -147,7 +147,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     context 'when there are responses' do
       before do
         IdeaStatus.create_defaults
-        create :idea, project: participation_context
+        create(:idea, project: participation_context)
       end
 
       it 'returns false' do

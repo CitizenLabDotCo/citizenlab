@@ -197,6 +197,8 @@ Rails.application.routes.draw do
         post 'by_token/:token/accept', on: :collection, to: 'invites#accept'
         post :bulk_create, on: :collection
         post :bulk_create_xlsx, on: :collection
+        post :count_new_seats_xlsx, on: :collection # it is POST because we need to send a file in body
+        post :count_new_seats, on: :collection # it is POST to make it similar to other bulk_create_ and count_new_ actions
         get :example_xlsx, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
       end

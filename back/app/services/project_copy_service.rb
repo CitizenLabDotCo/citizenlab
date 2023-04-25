@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ProjectCopyService < ::TemplateService
+class ProjectCopyService < TemplateService
   def import(template, folder: nil, local_copy: false)
     same_template = MultiTenancy::Templates::Utils.translate_and_fix_locales(template)
 

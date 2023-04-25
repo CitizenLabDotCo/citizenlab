@@ -111,6 +111,67 @@ resource 'Invites' do
       end
     end
 
+    describe 'count seats' do
+      shared_examples 'a request counting seats' do
+        let(:emails) { Array.new(5) { Faker::Internet.email }.push(nil) }
+        let(:roles) do
+          # only the highest role is actually used
+          [
+            { 'type' => 'admin' },
+            { 'type' => 'project_moderator', 'project_id' => @project.id }
+          ]
+        end
+
+        before do
+          @project = create(:project)
+          create(:project_moderator, projects: [@project])
+          create(:admin)
+          create(:project_moderator, email: emails[0], projects: [@project])
+          create(:admin, email: emails[1])
+        end
+
+        example 'Returns newly added admin and moderator counts' do
+          expect { do_request }.to not_change(Invite, :count)
+            .and not_change(User, :count)
+            .and not_change(User.billed_admins, :count)
+            .and not_change(User.billed_moderators, :count)
+          do_request
+          assert_status 200
+
+          expect(response_data[:attributes]).to eq(
+            newly_added_admins_number: 4,
+            # When a moderator is promoted to admin, moderator count is decreased
+            newly_added_moderators_number: -1
+          )
+        end
+      end
+
+      post 'web_api/v1/invites/count_new_seats' do
+        with_options scope: :invites do
+          parameter :emails, 'Array of e-mail addresses of invitees. E-mails can be null for anonymous invites', required: true
+          parameter :roles, 'Roles for all invitees, defaults to normal user', required: false
+        end
+
+        it_behaves_like 'a request counting seats'
+      end
+
+      post 'web_api/v1/invites/count_new_seats_xlsx' do
+        with_options scope: :invites do
+          parameter :xlsx, 'Base64 encoded xlsx file with invite details. See web_api/v1/invites/example_xlsx for the format', required: true
+          parameter :roles, 'Roles for invitees without a specified admin column in xlsx, default to no roles', required: false
+        end
+
+        let(:xlsx) do
+          hash_array = emails.map { |email| { email: email, admin: true } }
+          xlsx_stringio = XlsxService.new.hash_array_to_xlsx(hash_array)
+
+          "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{Base64.encode64(xlsx_stringio.read)}"
+        end
+
+        it_behaves_like 'a request counting seats'
+      end
+    end
+
     post 'web_api/v1/invites/bulk_create' do
       with_options scope: :invites do
         parameter :emails, 'Array of e-mail addresses of invitees. E-mails can be null for anonymous invites', required: true
@@ -128,7 +189,7 @@ resource 'Invites' do
       end
 
       describe do
-        let(:emails) { Array.new(5) { Faker::Internet.email }.concat([nil]) }
+        let(:emails) { Array.new(5) { Faker::Internet.email }.push(nil) }
         let(:group_ids) { [create(:group).id] }
         let(:project) { create(:project) }
         let(:locale) { 'nl-NL' }
@@ -190,8 +251,11 @@ resource 'Invites' do
         response_field 'raw_error', 'Extra internal error information, if available'
       end
 
-      let(:xlsx_stringio) { XlsxService.new.hash_array_to_xlsx(hash_array) }
-      let(:xlsx) { "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{Base64.encode64(xlsx_stringio.read)}" }
+      let(:xlsx) do
+        xlsx_stringio = XlsxService.new.hash_array_to_xlsx(hash_array)
+
+        "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{Base64.encode64(xlsx_stringio.read)}"
+      end
 
       describe do
         let(:users) { build_list(:user, 6) }

@@ -91,7 +91,7 @@ const evaluateCondition = (
     return value === condition.expectedValue;
   } else if (isSchemaCondition(condition)) {
     const value = resolveData(data, getConditionScope(condition, path));
-    return ajv.validate(condition.schema, value) as boolean;
+    return ajv.validate(condition.schema, value);
   } else {
     // unknown condition
     return true;

@@ -303,7 +303,7 @@ const Notification = ({ notification }: Props) => {
       return (
         <Outlet
           id="app.components.NotificationMenu.Notification"
-          notification={notification as TNotificationData}
+          notification={notification}
         />
       );
   }

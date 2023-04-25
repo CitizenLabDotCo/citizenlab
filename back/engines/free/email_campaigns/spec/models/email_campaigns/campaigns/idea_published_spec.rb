@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::IdeaPublished, type: :model do
+RSpec.describe EmailCampaigns::Campaigns::IdeaPublished do
   describe 'IdeaPublished Campaign default factory' do
     it 'is valid' do
       expect(build(:idea_published_campaign)).to be_valid
@@ -24,7 +24,7 @@ RSpec.describe EmailCampaigns::Campaigns::IdeaPublished, type: :model do
     describe do
       before { IdeaStatus.create_defaults }
 
-      let(:idea) { create :idea, author: user, project: create(:continuous_native_survey_project) }
+      let(:idea) { create(:idea, author: user, project: create(:continuous_native_survey_project)) }
 
       it "doesn't get triggered for a native survey response" do
         commands = campaign.generate_commands recipient: user, activity: activity

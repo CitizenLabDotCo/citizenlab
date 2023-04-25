@@ -15,7 +15,8 @@ export type TSurveyService =
   | 'qualtrics'
   | 'smart_survey'
   | 'microsoft_forms'
-  | 'snap_survey';
+  | 'snap_survey'
+  | 'konveio';
 
 export type ParticipationMethod =
   | 'ideation'

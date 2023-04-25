@@ -41,7 +41,8 @@ export async function addProjectModerator(projectId: string, user_id: string) {
   );
   invalidateSeatsCache();
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/users`],
+    apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/stats/users_count`],
   });
+
   return response;
 }

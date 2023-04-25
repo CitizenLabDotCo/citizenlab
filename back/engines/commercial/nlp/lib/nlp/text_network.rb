@@ -92,7 +92,7 @@ module NLP
     def prune_communities(n)
       return [] if n >= communities.length
 
-      keep = communities.sort_by(&:importance_score).reverse.take(n).map(&:id).to_set
+      keep = communities.sort_by(&:importance_score).reverse.take(n).to_set(&:id)
       @communities, removed = communities.partition { |c| keep.include?(c.id) }
       remove_nodes(removed.flat_map(&:children), update_communities: false)
 

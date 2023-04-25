@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe MakeNotificationsForClassJob, type: :job do
+RSpec.describe MakeNotificationsForClassJob do
   subject(:job) { described_class.new }
 
   describe '#perform' do

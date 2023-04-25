@@ -3,7 +3,7 @@ import FilterSelector from 'components/FilterSelector';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import styled from 'styled-components';
-import { CommentsSort } from 'services/comments';
+import { CommentsSort } from 'api/comments/types';
 
 const Container = styled.div``;
 
@@ -25,7 +25,7 @@ export default class CommentSorting extends PureComponent<Props, State> {
   title = (<FormattedMessage {...messages.commentsSortTitle} />);
 
   sortOptions = [
-    { text: <FormattedMessage {...messages.oldestToNewest} />, value: '-new' },
+    { text: <FormattedMessage {...messages.mostRecent} />, value: 'new' },
     {
       text: <FormattedMessage {...messages.mostUpvoted} />,
       value: '-upvotes_count',

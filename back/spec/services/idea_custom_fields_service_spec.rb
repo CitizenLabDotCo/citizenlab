@@ -3,12 +3,12 @@
 require 'rails_helper'
 
 describe IdeaCustomFieldsService do
-  let(:project) { create :continuous_project, participation_method: 'ideation' }
+  let(:project) { create(:continuous_project, participation_method: 'ideation') }
   let(:service) { described_class.new custom_form }
   let(:participation_context) { Factory.instance.participation_method_for project }
 
   context 'without persisted fields' do
-    let(:custom_form) { create :custom_form, participation_context: project }
+    let(:custom_form) { create(:custom_form, participation_context: project) }
 
     describe 'all_fields' do
       it 'outputs valid custom fields' do
@@ -127,9 +127,9 @@ describe IdeaCustomFieldsService do
   end
 
   context 'with persisted fields' do
-    let(:custom_form) { create :custom_form, :with_default_fields, participation_context: project }
-    let!(:extra_field1) { create :custom_field, resource: custom_form, key: 'extra_field1', enabled: true }
-    let!(:extra_field2) { create :custom_field, resource: custom_form, key: 'extra_field2', enabled: false }
+    let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+    let!(:extra_field1) { create(:custom_field, resource: custom_form, key: 'extra_field1', enabled: true) }
+    let!(:extra_field2) { create(:custom_field, resource: custom_form, key: 'extra_field2', enabled: false) }
 
     describe 'all_fields' do
       it 'outputs valid custom fields' do
@@ -298,7 +298,7 @@ describe IdeaCustomFieldsService do
   end
 
   context 'constraints/locks on changing attributes' do
-    let(:custom_form) { create :custom_form, :with_default_fields, participation_context: project }
+    let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
     describe 'validate_constraints_against_defaults' do
       it 'validates if locked attributes are not changed from defaults' do
@@ -460,7 +460,7 @@ describe IdeaCustomFieldsService do
 
   context 'validate form structure' do
     describe 'ideation form' do
-      let(:custom_form) { create :custom_form, :with_default_fields, participation_context: project }
+      let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
       it 'returns no errors if the form has a section field as the first element' do
         fields = service.all_fields
@@ -498,8 +498,8 @@ describe IdeaCustomFieldsService do
     end
 
     describe 'survey form' do
-      let(:survey_project) { create :continuous_project, participation_method: 'native_survey' }
-      let(:custom_form) { create :custom_form, participation_context: survey_project }
+      let(:survey_project) { create(:continuous_project, participation_method: 'native_survey') }
+      let(:custom_form) { create(:custom_form, participation_context: survey_project) }
 
       it 'returns no errors if the form has a page field as the first element' do
         create(:custom_field_page, resource: custom_form, key: 'a_page')

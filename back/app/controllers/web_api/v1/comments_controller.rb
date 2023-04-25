@@ -184,7 +184,7 @@ class WebApi::V1::CommentsController < ApplicationController
       @comment.publication_status = 'deleted'
       if @comment.save
         SideFxCommentService.new.after_mark_as_deleted(@comment, current_user, reason_code, other_reason)
-        head :ok
+        head :accepted
       else
         render json: { errors: @comment.errors.details }, status: :unprocessable_entity
       end
