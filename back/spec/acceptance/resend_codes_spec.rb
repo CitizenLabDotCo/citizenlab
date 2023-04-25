@@ -29,24 +29,17 @@ resource 'Code Resends' do
       end
 
       context 'when passing a valid new email' do
+        let(:success) { double }
+
         before do
+          allow(SendConfirmationCode).to receive(:call).and_return(success)
+          allow(success).to receive(:success?).and_return(true)
           do_request(new_email: 'test@test.com')
         end
 
         example 'returns an ok status when passing a valid email' do
           assert_status 200
-        end
-
-        example 'delivers an email to the user' do
-          do_request
-          last_email = ActionMailer::Base.deliveries.last
-          expect(last_email.to).to eq ['test@test.com']
-        end
-
-        example 'delivers an email with the confirmation code' do
-          do_request
-          last_email = ActionMailer::Base.deliveries.last
-          expect(last_email.body.encoded).to include user.reload.email_confirmation_code
+          expect(SendConfirmationCode).to have_received(:call).with(user: user, new_email: 'test@test.com').once
         end
       end
 
@@ -67,21 +60,15 @@ resource 'Code Resends' do
       end
 
       context 'for a normal request without params' do
+        let(:success) { double }
+
         example 'returns an ok status when performing the request without params' do
+          allow(SendConfirmationCode).to receive(:call).and_return(success)
+          allow(success).to receive(:success?).and_return(true)
+
           do_request
           assert_status 200
-        end
-
-        example 'delivers an email to the user' do
-          do_request
-          last_email = ActionMailer::Base.deliveries.last
-          expect(last_email.to).to eq [user.email]
-        end
-
-        example 'delivers an email with the confirmation code' do
-          do_request
-          last_email = ActionMailer::Base.deliveries.last
-          expect(last_email.body.encoded).to include user.reload.email_confirmation_code
+          expect(SendConfirmationCode).to have_received(:call).with(user: user, new_email: nil).once
         end
       end
     end
