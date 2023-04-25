@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ContentBuilder::Layout, type: :model do
+RSpec.describe ContentBuilder::Layout do
   context 'when the layout is not initialized' do
     subject { build(:default_layout) }
 

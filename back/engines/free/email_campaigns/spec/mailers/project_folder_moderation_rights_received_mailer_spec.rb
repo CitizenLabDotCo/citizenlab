@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsReceivedMailer, type: :mailer do
+RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsReceivedMailer do
   describe 'campaign_mail' do
     let(:project_folder) { create(:project_folder) }
     let!(:recipient) { create(:project_folder_moderator, locale: 'en', project_folders: [project_folder]) }

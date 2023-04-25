@@ -35,7 +35,7 @@ describe SideFxUserService do
 
   describe 'after_update' do
     it "logs a 'changed_avatar' action job when the avatar has changed" do
-      user.update(avatar: File.open(Rails.root.join('spec', 'fixtures', 'lorem-ipsum.jpg')))
+      user.update(avatar: Rails.root.join('spec', 'fixtures', 'lorem-ipsum.jpg').open)
       expect { service.after_update(user, current_user) }
         .to have_enqueued_job(LogActivityJob).with(user, 'changed', current_user, user.updated_at.to_i)
     end
@@ -60,7 +60,7 @@ describe SideFxUserService do
 
   describe 'after_destroy' do
     it "logs a 'deleted' action job when the user is destroyed" do
-      travel_to Time.now do
+      freeze_time do
         frozen_user = user.destroy
         expect { service.after_destroy(frozen_user, current_user) }
           .to have_enqueued_job(LogActivityJob)

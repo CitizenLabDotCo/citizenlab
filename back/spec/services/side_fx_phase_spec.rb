@@ -50,7 +50,7 @@ describe SideFxPhaseService do
 
   describe 'after_destroy' do
     it "logs a 'deleted' action job when the phase is destroyed" do
-      travel_to Time.now do
+      freeze_time do
         frozen_phase = phase.destroy
         expect(sfx_pc).to receive(:after_destroy).with(frozen_phase, user)
         expect { service.after_destroy(frozen_phase, user) }

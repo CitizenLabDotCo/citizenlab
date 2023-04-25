@@ -20,7 +20,7 @@ class TrendingIdeaService
           ideas.id,
           NOT (
             ideas.upvotes_count - ideas.downvotes_count < 0 OR
-            ideas.created_at < timestamp \'#{Time.at(Time.now.to_i - IdeaTrendingInfo::TREND_SINCE_ACTIVITY)}\' OR
+            ideas.created_at < timestamp '#{Time.at(Time.now.to_i - IdeaTrendingInfo::TREND_SINCE_ACTIVITY)}' OR
             idea_statuses.code = 'rejected'
           ) AS is_trending,
           GREATEST(((ideas.upvotes_count - ideas.downvotes_count) + 1), 1) / GREATEST((#{Time.now.to_i} - extract(epoch from idea_trending_infos.mean_activity_at)), 1) AS score_abs

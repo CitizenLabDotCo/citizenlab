@@ -7,7 +7,7 @@ describe ParticipationContextService do
 
   describe 'posting_disabled_reason' do
     it 'returns nil when a permitted group requires verification for a verified user' do
-      project = create :continuous_project, with_permissions: true
+      project = create(:continuous_project, with_permissions: true)
       permission = project.permissions.find_by(action: 'posting_idea')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
@@ -15,7 +15,7 @@ describe ParticipationContextService do
     end
 
     it 'returns `not_verified` when not permitted and a permitted group requires verification, while the user is not verified' do
-      project = create :continuous_project, with_permissions: true
+      project = create(:continuous_project, with_permissions: true)
       permission = project.permissions.find_by(action: 'posting_idea')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
@@ -23,7 +23,7 @@ describe ParticipationContextService do
     end
 
     it 'returns `not_signed_in` when not permitted and a permitted group requires verification, while the user is not signed in' do
-      project = create :continuous_project, with_permissions: true
+      project = create(:continuous_project, with_permissions: true)
       permission = project.permissions.find_by(action: 'posting_idea')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
@@ -31,7 +31,7 @@ describe ParticipationContextService do
     end
 
     it 'returns `not_permitted` when not permitted and a permitted group requires verification, while the user is verified' do
-      project = create :continuous_project, with_permissions: true
+      project = create(:continuous_project, with_permissions: true)
       permission = project.permissions.find_by(action: 'posting_idea')
       birthyear = create(:custom_field_birthyear)
       verified_members = create(
@@ -46,7 +46,7 @@ describe ParticipationContextService do
     end
 
     it 'returns `not_permitted` when only permitted to admins but a group requires verification' do
-      project = create :continuous_project, with_permissions: true
+      project = create(:continuous_project, with_permissions: true)
       permission = project.permissions.find_by(action: 'posting_idea')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'admins_moderators', groups: [create(:group), verified_members])
@@ -71,7 +71,7 @@ describe ParticipationContextService do
 
     context 'for continuous project' do
       it "returns 'not_verified' when not permitted and a permitted group requires verification in a continuous project" do
-        project = create :continuous_project, with_permissions: true
+        project = create(:continuous_project, with_permissions: true)
         permission = project.permissions.find_by(action: 'commenting_idea')
         verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
         permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
@@ -102,7 +102,7 @@ describe ParticipationContextService do
 
       context 'continuous project' do
         it "returns 'not_verified' if voting is not permitted and a permitted group requires verification" do
-          project = create :continuous_project, with_permissions: true
+          project = create(:continuous_project, with_permissions: true)
           idea = create(:idea, project: project)
           permission = project.permissions.find_by(action: 'voting_idea')
           verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
@@ -119,7 +119,7 @@ describe ParticipationContextService do
       let(:user) { nil }
 
       it "returns 'not_signed_in' if voting is not permitted and a permitted group requires verification" do
-        project = create :continuous_project, with_permissions: true
+        project = create(:continuous_project, with_permissions: true)
         idea = create(:idea, project: project)
         permission = project.permissions.find_by(action: 'voting_idea')
         group = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
@@ -149,7 +149,7 @@ describe ParticipationContextService do
 
     context 'continuous project' do
       it "returns 'not_verified' if voting is not permitted and a permitted group requires verification" do
-        project = create :continuous_project, with_permissions: true
+        project = create(:continuous_project, with_permissions: true)
         idea = create(:idea, project: project)
         permission = project.permissions.find_by(action: 'voting_idea')
         verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
@@ -161,7 +161,7 @@ describe ParticipationContextService do
 
   describe 'taking_survey_disabled_reason' do
     it 'returns `not_verified` when taking the survey is not permitted and a permitted group requires verification' do
-      project = create :continuous_survey_project, with_permissions: true
+      project = create(:continuous_survey_project, with_permissions: true)
       permission = service.get_participation_context(project).permissions.find_by(action: 'taking_survey')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
@@ -171,7 +171,7 @@ describe ParticipationContextService do
 
   describe 'taking_poll_disabled_reason' do
     it 'return `not_verified` when taking the poll is not permitted and a permitted group requires verification' do
-      project = create :continuous_poll_project, with_permissions: true
+      project = create(:continuous_poll_project, with_permissions: true)
       permission = service.get_participation_context(project).permissions.find_by(action: 'taking_poll')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
@@ -194,7 +194,7 @@ describe ParticipationContextService do
 
     context 'continuous project' do
       it "returns 'not_verified' when budgeting is disabled in a continuous project and a permitted group requires verification" do
-        project = create :continuous_budgeting_project, with_permissions: true
+        project = create(:continuous_budgeting_project, with_permissions: true)
         permission = project.permissions.find_by(action: 'budgeting')
         verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
         permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])

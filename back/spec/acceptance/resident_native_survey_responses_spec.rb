@@ -16,7 +16,7 @@ resource 'Ideas' do
   end
 
   get 'web_api/v1/ideas/:id' do
-    let(:project) { create :project_with_active_native_survey_phase }
+    let(:project) { create(:project_with_active_native_survey_phase) }
     let(:creation_phase) { project.phases.first }
     let!(:input) do
       create(
@@ -37,7 +37,7 @@ resource 'Ideas' do
   end
 
   get 'web_api/v1/ideas/by_slug/:slug' do
-    let(:project) { create :project_with_active_native_survey_phase }
+    let(:project) { create(:project_with_active_native_survey_phase) }
     let(:creation_phase) { project.phases.first }
     let!(:input) do
       create(
@@ -111,7 +111,7 @@ resource 'Ideas' do
             name: filename2
           }
         end
-        let(:project) { create :continuous_native_survey_project }
+        let(:project) { create(:continuous_native_survey_project) }
         let(:custom_form) { create(:custom_form, participation_context: project) }
 
         example_request 'Create an input with a file upload field' do
@@ -160,7 +160,7 @@ resource 'Ideas' do
         let(:custom_field_name1) { 'Cat' }
 
         describe 'in a continuous native survey project' do
-          let(:project) { create :continuous_native_survey_project }
+          let(:project) { create(:continuous_native_survey_project) }
           let(:custom_form) { create(:custom_form, participation_context: project) }
 
           example_request 'Create an input' do
@@ -177,7 +177,7 @@ resource 'Ideas' do
         end
 
         describe 'with an active native survey phase' do
-          let(:project) { create :project_with_active_native_survey_phase }
+          let(:project) { create(:project_with_active_native_survey_phase) }
           let(:active_phase) { project.phases.first }
           let(:custom_form) { create(:custom_form, participation_context: active_phase) }
 
@@ -196,7 +196,7 @@ resource 'Ideas' do
       end
 
       context 'without active participation context' do
-        let(:project) { create :project_with_future_native_survey_phase }
+        let(:project) { create(:project_with_future_native_survey_phase) }
 
         example_request '[error] Trying to create an input' do
           assert_status 400
@@ -210,7 +210,7 @@ resource 'Ideas' do
       let(:project_id) { project.id }
 
       describe 'in a continuous native survey project' do
-        let(:project) { create :continuous_native_survey_project }
+        let(:project) { create(:continuous_native_survey_project) }
 
         example_request '[error] Trying to create an input' do
           assert_status 400
@@ -219,7 +219,7 @@ resource 'Ideas' do
       end
 
       describe 'in an active native survey phase' do
-        let(:project) { create :project_with_active_native_survey_phase }
+        let(:project) { create(:project_with_active_native_survey_phase) }
 
         example_request '[error] Trying to create an input' do
           assert_status 400
@@ -228,7 +228,7 @@ resource 'Ideas' do
       end
 
       context 'without active participation context' do
-        let(:project) { create :project_with_future_native_survey_phase }
+        let(:project) { create(:project_with_future_native_survey_phase) }
 
         example_request '[error] Trying to create an input' do
           assert_status 400
@@ -244,7 +244,7 @@ resource 'Ideas' do
       parameter :custom_field_name1, 'A value for one custom field'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
-    let(:project) { create :project_with_active_native_survey_phase }
+    let(:project) { create(:project_with_active_native_survey_phase) }
     let(:active_phase) { project.phases.first }
     let(:custom_form) { create(:custom_form, participation_context: active_phase) }
     let(:creation_phase) { active_phase }
@@ -279,7 +279,7 @@ resource 'Ideas' do
         end
 
         describe 'in a continuous native survey project' do
-          let(:project) { create :continuous_native_survey_project }
+          let(:project) { create(:continuous_native_survey_project) }
           let(:custom_form) { create(:custom_form, participation_context: project) }
 
           example_request '[error] Trying to update an input' do
@@ -290,7 +290,7 @@ resource 'Ideas' do
         end
 
         describe 'in a native survey phase' do
-          let(:project) { create :project_with_active_native_survey_phase }
+          let(:project) { create(:project_with_active_native_survey_phase) }
           let(:active_phase) { project.phases.first }
           let(:custom_form) { create(:custom_form, participation_context: active_phase) }
           let(:creation_phase) { active_phase }
@@ -305,7 +305,7 @@ resource 'Ideas' do
 
       context 'without active participation context' do
         describe 'before all phases' do
-          let(:project) { create :project_with_future_phases }
+          let(:project) { create(:project_with_future_phases) }
 
           example_request '[error] Trying to update an input' do
             assert_status 401
@@ -315,7 +315,7 @@ resource 'Ideas' do
         end
 
         describe 'after all phases' do
-          let(:project) { create :project_with_past_phases }
+          let(:project) { create(:project_with_past_phases) }
 
           example_request '[error] Trying to update an input' do
             assert_status 401

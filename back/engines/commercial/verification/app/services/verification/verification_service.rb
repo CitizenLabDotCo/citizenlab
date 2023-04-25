@@ -38,7 +38,7 @@ module Verification
       return [] unless app_configuration.feature_activated?('verification')
 
       active_methods = app_configuration.settings['verification']['verification_methods']
-      active_method_names = active_methods.map { |vm| vm['name'] }
+      active_method_names = active_methods.pluck('name')
       all_methods.select { |method| active_method_names.include?(method.name) }
     end
 

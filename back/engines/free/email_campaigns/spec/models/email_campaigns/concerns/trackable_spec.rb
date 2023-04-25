@@ -6,7 +6,7 @@ class TrackableCampaignForTest < EmailCampaigns::Campaign
   include EmailCampaigns::Trackable
 end
 
-RSpec.describe EmailCampaigns::Trackable, type: :model do
+RSpec.describe EmailCampaigns::Trackable do
   let(:campaign) { TrackableCampaignForTest.create! }
 
   describe 'sent?' do

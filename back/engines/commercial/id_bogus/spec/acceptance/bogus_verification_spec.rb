@@ -6,7 +6,7 @@ require 'rspec_api_documentation/dsl'
 resource 'Verifications' do
   before do
     set_api_content_type
-    @user = create :user
+    @user = create(:user)
     header_token_for @user
 
     configuration = AppConfiguration.instance
@@ -16,7 +16,7 @@ resource 'Verifications' do
       enabled: true,
       verification_methods: [{ name: 'bogus' }]
     }
-    create :custom_field, key: 'gender'
+    create(:custom_field, key: 'gender')
     configuration.save!
   end
 
@@ -81,7 +81,7 @@ resource 'Verifications' do
 
     describe do
       before do
-        other_user = create :user
+        other_user = create(:user)
         Verification::VerificationService.new.verify_sync(
           user: other_user,
           method_name: 'bogus',

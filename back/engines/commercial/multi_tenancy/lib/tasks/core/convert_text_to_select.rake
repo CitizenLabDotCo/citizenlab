@@ -47,7 +47,7 @@ namespace :fix_existing_tenants do
       return false unless answer == 'Y'
 
       puts 'Updating users with the following IDs:'
-      puts users_updates.select { |u| u[2] }.map { |u| u[0] }.join(' ')
+      puts users_updates.select { |u| u[2] }.pluck(0).join(' ')
 
       users_updates.each do |user_id, new_option, update|
         next unless update

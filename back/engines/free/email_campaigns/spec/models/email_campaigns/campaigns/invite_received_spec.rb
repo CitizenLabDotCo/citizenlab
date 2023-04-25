@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::InviteReceived, type: :model do
+RSpec.describe EmailCampaigns::Campaigns::InviteReceived do
   describe 'InviteReceived Campaign default factory' do
     it 'is valid' do
       expect(build(:invite_received_campaign)).to be_valid

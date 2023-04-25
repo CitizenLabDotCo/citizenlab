@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Project, type: :model do
+RSpec.describe Project do
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:project)).to be_valid
@@ -86,20 +86,20 @@ RSpec.describe Project, type: :model do
     end
 
     it 'can be changed from a transitive method to another one' do
-      project = create :continuous_project, participation_method: 'ideation', max_budget: 17
+      project = create(:continuous_project, participation_method: 'ideation', max_budget: 17)
       project.participation_method = 'budgeting'
       expect(project.save).to be true
     end
 
     it 'cannot be changed from a transitive method to a non-transitive one' do
-      project = create :continuous_project, participation_method: 'ideation'
+      project = create(:continuous_project, participation_method: 'ideation')
       project.participation_method = 'native_survey'
       expect(project.save).to be false
       expect(project.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
     end
 
     it 'cannot be changed from a non-transitive method to a transitive one' do
-      project = create :continuous_project, participation_method: 'native_survey', max_budget: 63
+      project = create(:continuous_project, participation_method: 'native_survey', max_budget: 63)
       project.participation_method = 'budgeting'
       expect(project.save).to be false
       expect(project.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
@@ -108,12 +108,12 @@ RSpec.describe Project, type: :model do
 
   describe '#native_survey?' do
     it 'returns true when the participation method is native_survey' do
-      project = create :continuous_native_survey_project
+      project = create(:continuous_native_survey_project)
       expect(project.native_survey?).to be true
     end
 
     it 'returns false otherwise' do
-      project = create :continuous_project
+      project = create(:continuous_project)
       expect(project.native_survey?).to be false
     end
   end
@@ -129,7 +129,7 @@ RSpec.describe Project, type: :model do
       'native_survey' => true
     }
     # Written this way so that additional participation methods will make this spec fail.
-    ::ParticipationContext::PARTICIPATION_METHODS.each do |participation_method|
+    ParticipationContext::PARTICIPATION_METHODS.each do |participation_method|
       expected_result = expected_results[participation_method]
       context "for #{participation_method}" do
         let(:project) { build(:project, participation_method: participation_method) }
@@ -146,7 +146,7 @@ RSpec.describe Project, type: :model do
       # We cannot stub side effects, otherwise we could have set
       # posting_method and posting_limited_max to custom values.
       expect_any_instance_of(ParticipationMethod::Base).to receive(:assign_defaults_for_participation_context).once
-      create :continuous_project
+      create(:continuous_project)
     end
   end
 end
