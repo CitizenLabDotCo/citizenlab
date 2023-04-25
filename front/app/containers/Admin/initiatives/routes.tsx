@@ -16,7 +16,7 @@ const createAdminInitiativesRoutes = () => ({
   children: [
     {
       path: '',
-      element: <Navigate to="settings" />,
+      element: <Navigate to="proposals" />,
     },
     {
       path: 'settings',
@@ -27,7 +27,7 @@ const createAdminInitiativesRoutes = () => ({
       ),
     },
     {
-      path: 'manage',
+      path: 'proposals',
       element: (
         <PageLoading>
           <AdminInitiativesManage />

@@ -38,14 +38,14 @@ const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
   ({ intl: { formatMessage }, location }) => {
     const [tabs, setTabs] = useState<ITab[]>([
       {
+        label: formatMessage(messages.proposals),
+        name: 'proposals',
+        url: '/admin/initiatives/proposals',
+      },
+      {
         label: formatMessage(messages.settingsTab),
         name: 'settings',
         url: '/admin/initiatives/settings',
-      },
-      {
-        label: formatMessage(messages.manageTab),
-        name: 'manage',
-        url: '/admin/initiatives/manage',
       },
     ]);
 
