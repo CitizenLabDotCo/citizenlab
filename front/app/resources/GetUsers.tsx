@@ -24,26 +24,24 @@ export type Sort =
   | '-role';
 
 export interface InputProps {
-  // Not used
-  pageNumber?: number;
-  pageSize?: number;
-  sort?: Sort;
-  search?: string;
-  // Not used
-  groupId?: string;
-  // Unclear what they are supposed to do
+  // Not used?
+  pageNumber?: IQueryParameters['page[number]'];
+  pageSize?: IQueryParameters['page[size]'];
+  sort?: IQueryParameters['sort'];
+  search?: IQueryParameters['search'];
+  groupId?: IQueryParameters['group'];
   // https://citizenlab.atlassian.net/browse/CL-3240
-  canModerateProject?: string;
-  canModerate?: boolean;
-  // Doesn't work with false
+  // project id needs to be passed
+  canModerateProject?: IQueryParameters['can_moderate_project'];
+  // Don't work with false
   // https://citizenlab.atlassian.net/browse/CL-3226
-  canAdmin?: true;
-  onlyBlocked?: boolean;
-  notCitizenlabMember?: boolean;
-  // Not used
-  includeInactive?: boolean;
-  isNotProjectModeratorOfProjectId?: string;
-  isNotFolderModeratorOfFolderId?: string;
+  canModerate?: IQueryParameters['can_moderate'];
+  canAdmin?: IQueryParameters['can_admin'];
+  onlyBlocked?: IQueryParameters['only_blocked'];
+  notCitizenlabMember?: IQueryParameters['not_citizenlab_member'];
+  includeInactive?: IQueryParameters['include_inactive'];
+  isNotProjectModeratorOfProjectId?: IQueryParameters['is_not_project_moderator'];
+  isNotFolderModeratorOfFolderId?: IQueryParameters['is_not_folder_moderator'];
 }
 
 interface IQueryParameters {
@@ -53,8 +51,8 @@ interface IQueryParameters {
   search?: string;
   group?: string;
   can_moderate_project?: string;
-  can_moderate?: boolean;
-  can_admin?: boolean;
+  can_moderate?: true;
+  can_admin?: true;
   only_blocked?: boolean;
   not_citizenlab_member?: boolean;
   include_inactive?: boolean;
