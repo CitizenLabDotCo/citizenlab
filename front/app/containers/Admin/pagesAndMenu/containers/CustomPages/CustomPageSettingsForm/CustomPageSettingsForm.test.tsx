@@ -11,7 +11,7 @@ const editedTitleNL = 'edited title nl';
 const slug = 'title-en';
 
 jest.mock('hooks/useAreas', () => jest.fn(() => []));
-jest.mock('hooks/useTopics', () => jest.fn(() => []));
+jest.mock('api/topics/useTopics');
 
 jest.mock('hooks/useAppConfigurationLocales', () =>
   jest.fn(() => ['en', 'nl-NL'])
