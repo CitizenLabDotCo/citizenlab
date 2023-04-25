@@ -143,7 +143,11 @@ resource 'Users' do
         end
 
         context 'when the user_confirmation module is active' do
+          let(:success) { double }
+
           before do
+            allow(SendConfirmationCode).to receive(:call).and_return(success)
+            allow(success).to receive(:success?).and_return(true)
             SettingsService.new.activate_feature! 'user_confirmation'
           end
 
@@ -153,15 +157,11 @@ resource 'Users' do
             expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_nil # when no custom fields
           end
 
-          example_request 'Sends a confirmation email' do
-            last_email = ActionMailer::Base.deliveries.last
-            user       = User.order(:created_at).last
-            expect(last_email.body.encoded).to include user.reload.email_confirmation_code
-          end
-
           example_request 'Requires confirmation' do
             assert_status 201
             json_response = json_parse(response_body)
+            user = User.order(:created_at).last
+            expect(SendConfirmationCode).to have_received(:call).with(user: user).once
             expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true # when no custom fields
           end
         end
@@ -281,26 +281,25 @@ resource 'Users' do
       context 'light registration without a password' do
         let(:email) { Faker::Internet.email }
         let(:locale) { 'en' }
+        let(:success) { double }
 
         before do
+          allow(SendConfirmationCode).to receive(:call).and_return(success)
+          allow(success).to receive(:success?).and_return(true)
           SettingsService.new.activate_feature! 'user_confirmation'
         end
 
         describe 'create a user with no password' do
           example_request 'User successfully created and requires confirmation' do
             assert_status 201
+            user = User.order(:created_at).last
+            expect(SendConfirmationCode).to have_received(:call).with(user: user).once
             expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
           end
 
           example_request 'Registration is not completed by default' do
             assert_status 201
             expect(response_data.dig(:attributes, :registration_completed_at)).to be_nil
-          end
-
-          example_request 'Sends a confirmation email' do
-            last_email = ActionMailer::Base.deliveries.last
-            user       = User.order(:created_at).last
-            expect(last_email.body.encoded).to include user.reload.email_confirmation_code
           end
         end
 
@@ -313,18 +312,7 @@ resource 'Users' do
               do_request
               assert_status 200
               expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
-              expect(existing_user.email_confirmation_code_reset_count).to eq(0)
-              expect(ActionMailer::Base.deliveries.last.body.encoded).to include existing_user.reload.email_confirmation_code
-            end
-
-            example 'existing unconfirmed user is successfully returned, email sent, but resend stats are incremented', document: false do
-              existing_user = create(:user_no_password, email: email)
-
-              do_request
-              assert_status 200
-              expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
-              expect(existing_user.reload.email_confirmation_code_reset_count).to eq(1)
-              expect(ActionMailer::Base.deliveries.last.body.encoded).to include existing_user.reload.email_confirmation_code
+              expect(SendConfirmationCode).to have_received(:call).with(user: existing_user).once
             end
 
             context 'when the request tries to pass additional changed attributes', document: false do
