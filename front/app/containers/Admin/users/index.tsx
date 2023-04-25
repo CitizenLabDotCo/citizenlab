@@ -26,7 +26,6 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Wrapper = styled.div`
-  height: calc(100vh - ${(props) => props.theme.menuHeight}px);
   display: flex;
   background: #fff;
   position: fixed;

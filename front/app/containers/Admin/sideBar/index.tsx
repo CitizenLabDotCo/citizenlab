@@ -211,12 +211,6 @@ class Sidebar extends PureComponent<
           message: 'users',
         },
         {
-          name: 'invitations',
-          link: '/admin/invitations',
-          iconName: 'sidebar-invitations',
-          message: 'invitations',
-        },
-        {
           name: 'messaging',
           link: '/admin/messaging',
           iconName: 'sidebar-messaging',

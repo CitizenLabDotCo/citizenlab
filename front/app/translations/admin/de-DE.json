@@ -1540,7 +1540,6 @@
   "app.containers.AdminPage.SideBar.initiatives": "Vorschläge",
   "app.containers.AdminPage.SideBar.inputManager": "Beitragsmanager",
   "app.containers.AdminPage.SideBar.insights": "Berichterstattung",
-  "app.containers.AdminPage.SideBar.invitations": "Einladungen",
   "app.containers.AdminPage.SideBar.linkToAcademy": "https://academy.citizenlab.co/",
   "app.containers.AdminPage.SideBar.linkToGuide": "https://community.citizenlab.co/de-DE/folders/guide",
   "app.containers.AdminPage.SideBar.menu": "Navigation",
