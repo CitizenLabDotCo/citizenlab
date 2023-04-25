@@ -428,7 +428,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "Esta página te permite verificar rápidamente todas los aportes nuevos que se han agregado a tu plataforma, incluidas las publicaciones y los comentarios. Puedes marcar las publicaciones como \"vistas\" para que otros sepan qué aportes faltan por procesar.",
   "app.containers.Admin.Moderation.noUnviewedItems": "No hay elementos no vistos",
   "app.containers.Admin.Moderation.noViewedItems": "No hay elementos vistos",
-  "app.containers.Admin.Moderation.pageTitle": "Actividad",
   "app.containers.Admin.Moderation.post": "Aporte",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Bloqueador de insultos",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "Bloquear los aportes, propuestas y comentarios que contengan palabras ofensivas.",

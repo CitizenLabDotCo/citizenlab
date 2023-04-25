@@ -428,7 +428,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "Bu sayfa, fikirler ve yorumlar da dahil olmak üzere platformunuzda yayımlanan tüm yeni yayınları hızlı bir şekilde kontrol etmenizi sağlar. Diğer kişilerin nelerin hala işlenmesi gerektiğini anlayabilmesi için yayınları 'görüldü' olarak işaretleyebilirsiniz.",
   "app.containers.Admin.Moderation.noUnviewedItems": "Görülmeyen öğe yok",
   "app.containers.Admin.Moderation.noViewedItems": "Görülen öğe yok",
-  "app.containers.Admin.Moderation.pageTitle": "Etkinlik",
   "app.containers.Admin.Moderation.post": "Yayın",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Küfür engelleyici",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "En sık bildirilen saldırgan kelimeleri içeren yayınları engelleyin.",

@@ -403,7 +403,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "تتيح لك هذه الصفحة التحقق سريعًا من جميع المنشورات الجديدة التي تم نشرها في منصتك، بما فيها الأفكار والتعليقات. يمكنك تمييز منشورات بعلامة \"مرئية\" بحيث يعرف الآخرون المنشورات التي لا تزال بحاجة إلى معالجة.",
   "app.containers.Admin.Moderation.noUnviewedItems": "لا توجد عناصر لم تتم مشاهدتها",
   "app.containers.Admin.Moderation.noViewedItems": "لا توجد عناصر تمت مشاهدتها",
-  "app.containers.Admin.Moderation.pageTitle": "النشاط",
   "app.containers.Admin.Moderation.post": "منشور",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "مانع البذاءات",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "حظر المنشورات التي تحتوي على الألفاظ المسيئة الأكثر شيوعًا المبلَّغ عنها.",

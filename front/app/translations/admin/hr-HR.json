@@ -428,7 +428,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "Ova stranica vam omogućuje da brzo provjerite sve nove objave na platformi, uključujući ideje i komentare. Unose možete označiti kao „pregledane“ kako bi drugi mogli pratiti koji od njih još uvijek čekaju na obradu.",
   "app.containers.Admin.Moderation.noUnviewedItems": "Trenutačno nema nepregledanih stavki",
   "app.containers.Admin.Moderation.noViewedItems": "Trenutačno nema pregledanih stavki",
-  "app.containers.Admin.Moderation.pageTitle": "Aktivnost",
   "app.containers.Admin.Moderation.post": "Objava",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Blokiranje nepristojnih riječi",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "Blokirajte objave koje sadrže najčešće prijavljene uvredljive riječi.",

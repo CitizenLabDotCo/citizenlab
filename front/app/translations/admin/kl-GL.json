@@ -421,7 +421,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "Quppernermi uani qupperninni ilanngussat saqqummiunneqartut nutaat tamaasa sukkasuumik takusinnaavatit Ilanngussat 'takuneqareerpoq'-tut nalunaaqutsikkit, allat suut suli suliassaasut takusinnaaniassammatigit.",
   "app.containers.Admin.Moderation.noUnviewedItems": "Elementinik suli takuneqanngitsunik soqanngilaq",
   "app.containers.Admin.Moderation.noViewedItems": "Elementinik takuneqareersunik soqanngilaq",
-  "app.containers.Admin.Moderation.pageTitle": "Sammisaq",
   "app.containers.Admin.Moderation.post": "Allagarsiussaq",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Oqaasipilunnik blokeriineq",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "Ilanngussat oqaasipilunnik nalunaarutigineqarajunnerpaanik imallit blokerikkit.",

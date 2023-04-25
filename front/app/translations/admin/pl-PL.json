@@ -428,7 +428,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "Ta strona pozwala na szybkie sprawdzenie wszystkich nowych inicjatyw, które zostały dodane do Twojej platformy, w tym postów i komentarzy. Możesz oznaczyć posty jako \"przejrzane\", aby udzielić informacji zwrotnej.",
   "app.containers.Admin.Moderation.noUnviewedItems": "Nie ma żadnych nieobejrzanych elementów",
   "app.containers.Admin.Moderation.noViewedItems": "Nie ma żadnych obejrzanych elementów",
-  "app.containers.Admin.Moderation.pageTitle": "Aktywności",
   "app.containers.Admin.Moderation.post": "Dane",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Blokada przekleństw",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "Blokuj posty zawierające najczęściej zgłaszane obraźliwe słowa.",

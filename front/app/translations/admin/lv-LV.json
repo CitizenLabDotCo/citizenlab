@@ -428,7 +428,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "Šajā lapā varat ātri pārbaudīt visus jaunos ierakstus, kas publicēti jūsu platformā, tostarp idejas un komentārus. Varat atzīmēt ierakstus kā \"apskatītus\", lai citi zinātu, kas vēl jāapstrādā.",
   "app.containers.Admin.Moderation.noUnviewedItems": "Nav jaunu vienumu",
   "app.containers.Admin.Moderation.noViewedItems": "Nav apskatītu vienumu",
-  "app.containers.Admin.Moderation.pageTitle": "Pasākums",
   "app.containers.Admin.Moderation.post": "Ieraksts",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Necenzētu vārdu bloķētājs",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "Bloķējiet ierakstus, kuros visbiežāk sastopami aizskaroši vārdi.",

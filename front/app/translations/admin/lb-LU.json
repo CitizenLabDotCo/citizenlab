@@ -421,7 +421,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "This page allows you to quickly check all new posts that have been published to your platform, including ideas and comments. You can mark posts as being 'seen' so that others know what still needs to be processed.",
   "app.containers.Admin.Moderation.noUnviewedItems": "There are no unseen items",
   "app.containers.Admin.Moderation.noViewedItems": "There are no seen items",
-  "app.containers.Admin.Moderation.pageTitle": "Activity",
   "app.containers.Admin.Moderation.post": "Post",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Profanity blocker",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "Block posts containing the most commonly reported offensive words.",

@@ -428,7 +428,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "Cette page vous permet de vérifier rapidement tous les nouveaux contenus publiés votre plateforme, dont les contributions et les commentaires. Vous pouvez marquer les articles comme étant « vus » afin que les autres administrateurs sachent quelles contributions doivent encore être traitées.",
   "app.containers.Admin.Moderation.noUnviewedItems": "Il n'y a pas d'éléments non vus",
   "app.containers.Admin.Moderation.noViewedItems": "Il n'y a pas d'éléments vus",
-  "app.containers.Admin.Moderation.pageTitle": "Activité",
   "app.containers.Admin.Moderation.post": "Contribution",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Bloquer les contenus inappropriés",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "Bloquer les contenus contenant les injures les plus fréquemment signalées.",

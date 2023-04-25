@@ -428,7 +428,6 @@
   "app.containers.Admin.Moderation.moderationsTooltip": "Op deze pagina kun je snel alle nieuwe bijdragen bekijken die aan je platform is toegevoegd, inclusief reacties en voorstellen. Je kunt ze markeren als 'gezien' zodat andere beheerders weten welke bijdragen nog moeten worden verwerkt.",
   "app.containers.Admin.Moderation.noUnviewedItems": "Er zijn geen ongeziene items",
   "app.containers.Admin.Moderation.noViewedItems": "Er zijn geen geziene items",
-  "app.containers.Admin.Moderation.pageTitle": "Activiteit",
   "app.containers.Admin.Moderation.post": "Bijdrage",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Filter grof taalgebruik",
   "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "Blokkeer input, voorstellen en reacties die het meest voorkomend grof taalgebruik bevatten.",
