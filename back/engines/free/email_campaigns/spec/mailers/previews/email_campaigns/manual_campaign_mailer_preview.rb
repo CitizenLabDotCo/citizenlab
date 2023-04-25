@@ -6,7 +6,7 @@ module EmailCampaigns
 
     def campaign_mail
       command = {
-        author: recipient_user,
+        author: User.first,
         event_payload: {},
         subject_multiloc: { 'en' => 'Title' },
         body_multiloc: {
@@ -21,7 +21,7 @@ module EmailCampaigns
         },
         sender: 'organization',
         reply_to: 'replyto',
-        recipient: User.second
+        recipient: recipient_user
       }
 
       campaign = EmailCampaigns::Campaigns::Manual.first_or_create(
