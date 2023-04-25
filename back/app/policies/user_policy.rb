@@ -122,10 +122,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def enabled_custom_fields
-    CustomField
-      .with_resource_type('User')
-      .enabled
-      .not_hidden
+    CustomField.with_resource_type('User').not_hidden
   end
 end
 
