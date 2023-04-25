@@ -1540,7 +1540,6 @@
   "app.containers.AdminPage.SideBar.initiatives": "Forslag",
   "app.containers.AdminPage.SideBar.inputManager": "Innspillsadministrator",
   "app.containers.AdminPage.SideBar.insights": "Rapportering",
-  "app.containers.AdminPage.SideBar.invitations": "Invitasjoner",
   "app.containers.AdminPage.SideBar.linkToAcademy": "https://academy.citizenlab.co/",
   "app.containers.AdminPage.SideBar.linkToGuide": "https://community.citizenlab.co/folders/guide",
   "app.containers.AdminPage.SideBar.menu": "Sider og meny",
