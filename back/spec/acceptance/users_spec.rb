@@ -1008,7 +1008,7 @@ resource 'Users' do
             expect(@user.custom_field_values[cf.key]).to eq(some_value)
           end
 
-          example 'Cannot modify values of disabled custom fields' do
+          example 'Can modify values of disabled custom fields' do
             cf = create(:custom_field, hidden: false, enabled: false)
             some_value = 'some_value'
             @user.update!(custom_field_values: { cf.key => some_value })
@@ -1016,7 +1016,7 @@ resource 'Users' do
             do_request(user: { custom_field_values: { cf.key => 'another_value' } })
             json_response = json_parse(response_body)
 
-            expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
+            expect(json_response.dig(:data, :attributes, :custom_field_values)).to include(cf.key.to_sym)
             expect(@user.custom_field_values[cf.key]).to eq(some_value)
           end
 
