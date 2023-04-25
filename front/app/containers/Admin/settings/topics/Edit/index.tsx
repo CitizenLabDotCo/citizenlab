@@ -10,7 +10,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // hooks
-import useTopic from 'hooks/useTopic';
+import useTopic from 'api/topics/useTopic';
 
 // services
 import { updateTopic, ITopicUpdate } from 'services/topics';
@@ -24,12 +24,12 @@ import TopicForm from '../TopicForm';
 
 const Edit = () => {
   const { topicId } = useParams() as { topicId: string };
-  const topic = useTopic(topicId);
+  const { data: topic } = useTopic(topicId);
 
   const handleSubmit = async (values: ITopicUpdate) => {
-    if (isNilOrError(topic)) return;
+    if (!topic) return;
 
-    await updateTopic(topic.id, {
+    await updateTopic(topic.data.id, {
       ...values,
     });
     clHistory.push('/admin/settings/topics');
@@ -48,7 +48,7 @@ const Edit = () => {
       {!isNilOrError(topic) && (
         <TopicForm
           defaultValues={{
-            title_multiloc: topic.attributes.title_multiloc,
+            title_multiloc: topic.data.attributes.title_multiloc,
           }}
           onSubmit={handleSubmit}
         />

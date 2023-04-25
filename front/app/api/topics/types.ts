@@ -57,3 +57,13 @@ export interface ITopicsQueryParams {
   forHomepageFilter?: boolean;
   includeStaticPages?: boolean;
 }
+
+export interface ITopicAdd {
+  title_multiloc: Multiloc;
+  description_multiloc: Multiloc;
+}
+
+export interface ITopicUpdate {
+  title_multiloc?: Multiloc;
+  description_multiloc?: Multiloc;
+}

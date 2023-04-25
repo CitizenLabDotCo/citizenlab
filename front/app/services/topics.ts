@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 import { Multiloc, IRelationship } from 'typings';
 
 export const apiEndpoint = `${API_PATH}/topics`;
@@ -56,27 +56,9 @@ export interface ITopicsQueryParams {
   for_homepage_filter?: boolean;
 }
 
-interface ITopicsStreamParams extends IStreamParams {
-  queryParameters: ITopicsQueryParams;
-}
-
-export function topicByIdStream(topicId: string) {
-  return streams.get<ITopic>({ apiEndpoint: `${apiEndpoint}/${topicId}` });
-}
-
-export function topicsStream(streamParams: ITopicsStreamParams | null = null) {
-  return streams.get<ITopics>({ apiEndpoint, ...streamParams });
-}
-
 export interface ITopicUpdate {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
-}
-
-export async function addTopic(object: ITopicUpdate) {
-  const response = await streams.add<ITopic>(apiEndpoint, { topic: object });
-  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
-  return response;
 }
 
 export async function updateTopic(topicId: string, object: ITopicUpdate) {
