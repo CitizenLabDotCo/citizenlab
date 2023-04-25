@@ -117,7 +117,7 @@ export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
       ) : (
         <>
           {message && (
-            <StyledWarning icon="lock">
+            <StyledWarning icon="lock" data-testid="poll-styled-warning">
               <FormattedMessage
                 {...message}
                 values={{
