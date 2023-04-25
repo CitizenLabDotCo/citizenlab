@@ -1828,7 +1828,7 @@
 
 ### Fixed
 
-- On the admin activity page (/admin/dashboard/moderation), items about proposals now correctly link to proposals (instead of to projects). Also, the copy of the links at the end of the item rows is now correct for different types of content (correct conjugation of 'this post', 'this project', etc. for all languages).
+- On the admin activity page (/admin/moderation), items about proposals now correctly link to proposals (instead of to projects). Also, the copy of the links at the end of the item rows is now correct for different types of content (correct conjugation of 'this post', 'this project', etc. for all languages).
 
 ## 2021-07-14
 
