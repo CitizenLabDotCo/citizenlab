@@ -17,4 +17,21 @@ namespace :fix_existing_tenants do
       end
     end
   end
+
+  desc 'Remove assignees from ideas that are survey responses'
+  task remove_assignees_from_survey_responses: [:environment] do
+    Tenant.all.each do |tn|
+      Apartment::Tenant.switch(tn.schema_name) do
+        total = Idea.all.count
+
+        ideas = Idea.all.select do |idea|
+          idea.participation_method_on_creation.instance_of?(ParticipationMethod::NativeSurvey)
+        end
+
+        ideas.each { |idea| idea.update!(assignee_id: nil, assigned_at: nil) }
+
+        puts "#{tn.host}: Updated #{ideas.count} ideas out of #{total} total ideas"
+      end
+    end
+  end
 end

@@ -63,7 +63,7 @@ export const getTileOptions = () => {
 
 export const convertLatLngToDMS = (lat: any, lng: any) => {
   if (!isNil(lat) && !isNil(lng)) {
-    return formatcoords(parseFloat(lat), parseFloat(lng)).format() as string;
+    return formatcoords(parseFloat(lat), parseFloat(lng)).format();
   }
 
   return null;

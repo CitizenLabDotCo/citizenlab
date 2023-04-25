@@ -38,7 +38,7 @@
   "app.components.Comments.commentingInitiativeNotPermitted": "Il n’est pas possible de commenter actuellement.",
   "app.components.Comments.commentingMaybeNotPermitted": "Veuillez vous {signInLink} sur la plateforme pour voir quelles actions vous pouvez entreprendre.",
   "app.components.Comments.invisibleTitleComments": "Commentaires",
-  "app.components.Comments.mostRecent": "Les plus récents",
+  "app.components.Comments.mostRecent": "Plus récents",
   "app.components.Comments.mostUpvoted": "Plus votés",
   "app.components.Comments.official": "Officiel",
   "app.components.Comments.replyToComment": "Répondre au commentaire",

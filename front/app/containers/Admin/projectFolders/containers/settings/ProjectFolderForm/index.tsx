@@ -321,14 +321,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             const filesToAddPromises = projectFolderFiles
               .filter((file) => !file.remote)
               .map((file) =>
-                addProjectFolderFile(
-                  projectFolderId as string,
-                  file.base64,
-                  file.name
-                )
+                addProjectFolderFile(projectFolderId, file.base64, file.name)
               );
             const filesToRemovePromises = projectFolderFilesToRemove.map((id) =>
-              deleteProjectFolderFile(projectFolderId as string, id)
+              deleteProjectFolderFile(projectFolderId, id)
             );
 
             await Promise.all<any>([

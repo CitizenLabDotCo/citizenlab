@@ -7,7 +7,7 @@ import Error from 'components/UI/Error';
 import { confirm, resendCode, IConfirmation } from 'services/confirmation';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
-import { CLErrors, CLError } from 'typings';
+import { CLErrors } from 'typings';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
@@ -200,10 +200,7 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
               onChange={handleEmailChange}
             />
             {apiErrors.email && (
-              <Error
-                apiErrors={apiErrors.email as CLError[]}
-                fieldName="email"
-              />
+              <Error apiErrors={apiErrors.email} fieldName="email" />
             )}
           </FormField>
 
@@ -256,10 +253,7 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
               onChange={handleCodeChange}
             />
             {apiErrors.code && (
-              <Error
-                apiErrors={apiErrors.code as CLError[]}
-                fieldName="confirmation_code"
-              />
+              <Error apiErrors={apiErrors.code} fieldName="confirmation_code" />
             )}
           </FormField>
 
