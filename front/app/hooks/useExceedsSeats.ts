@@ -3,8 +3,8 @@ import { isNil } from 'utils/helperUtils';
 import useTotalSeats from './useTotalSeats';
 
 interface NewlyAddedSeats {
-  newlyAddedAdminsNumber?: number;
-  newlyAddedModeratorsNumber?: number;
+  newlyAddedAdminsNumber?: number | null;
+  newlyAddedModeratorsNumber?: number | null;
 }
 
 interface ExceedsSeats {

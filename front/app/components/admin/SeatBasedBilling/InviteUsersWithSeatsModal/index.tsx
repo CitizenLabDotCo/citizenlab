@@ -19,8 +19,6 @@ import useExceedsSeats from 'hooks/useExceedsSeats';
 import { TSeatNumber } from 'api/app_configuration/types';
 import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';
 
-import { IInvitesNewSeats } from 'services/invites';
-
 export type SeatTypeTSeatNumber = {
   [key in TSeatType]: TSeatNumber;
 };
@@ -33,22 +31,23 @@ interface InviteUsersWithSeatsModalProps {
   showModal: boolean;
   closeModal: () => void;
   inviteUsers: () => void;
-  newSeatsResponse: IInvitesNewSeats;
+  newlyAddedAdminsNumber: number;
+  newlyAddedModeratorsNumber: number;
 }
 
 const InviteUsersWithSeatsModal = ({
   showModal,
   closeModal,
   inviteUsers,
-  newSeatsResponse,
+  newlyAddedAdminsNumber,
+  newlyAddedModeratorsNumber,
 }: InviteUsersWithSeatsModalProps) => {
   const { formatMessage } = useIntl();
   const [showSuccess, setShowSuccess] = useState(false);
-  const newSeats = newSeatsResponse.data.attributes;
 
   const exceedsSeats = useExceedsSeats({
-    newlyAddedAdminsNumber: newSeats.newly_added_admins_number,
-    newlyAddedModeratorsNumber: newSeats.newly_added_moderators_number,
+    newlyAddedAdminsNumber,
+    newlyAddedModeratorsNumber,
   });
 
   const handleConfirmClick = () => {
@@ -70,17 +69,17 @@ const InviteUsersWithSeatsModal = ({
     additionalSeatsMessage = formatMessage(
       messages.additionalAdminAndManagerSeats,
       {
-        adminSeats: newSeats.newly_added_admins_number,
-        managerSeats: newSeats.newly_added_moderators_number,
+        adminSeats: newlyAddedAdminsNumber,
+        managerSeats: newlyAddedModeratorsNumber,
       }
     );
   } else if (exceedsSeats.admin) {
     additionalSeatsMessage = formatMessage(messages.additionalAdminSeats, {
-      seats: newSeats.newly_added_admins_number,
+      seats: newlyAddedAdminsNumber,
     });
   } else {
     additionalSeatsMessage = formatMessage(messages.additionalManagerSeats, {
-      seats: newSeats.newly_added_moderators_number,
+      seats: newlyAddedModeratorsNumber,
     });
   }
 

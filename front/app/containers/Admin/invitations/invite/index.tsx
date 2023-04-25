@@ -126,9 +126,9 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
     null
   );
   const [inviteesWillHaveAdminRights, setInviteesWillHaveAdminRights] =
-    useState<boolean>(false);
+    useState(false);
   const [inviteesWillHaveModeratorRights, setInviteesWillHaveModeratorRights] =
-    useState<boolean>(false);
+    useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
   const [selectedProjects, setSelectedProjects] = useState<IOption[] | null>(
     null
@@ -137,19 +137,26 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
   const [selectedInviteText, setSelectedInviteText] = useState<string | null>(
     null
   );
-  const [invitationOptionsOpened, setInvitationOptionsOpened] =
-    useState<boolean>(false);
+  const [invitationOptionsOpened, setInvitationOptionsOpened] = useState(false);
   const [selectedView, setSelectedView] = useState<'import' | 'text'>('import');
-  const [processing, setProcessing] = useState<boolean>(false);
-  const [processed, setProcessed] = useState<boolean>(false);
+  const [processing, setProcessing] = useState(false);
+  const [processed, setProcessed] = useState(false);
   const [apiErrors, setApiErrors] = useState<IInviteError[] | null>(null);
   const [filetypeError, setFiletypeError] = useState<JSX.Element | null>(null);
   const [unknownError, setUnknownError] = useState<JSX.Element | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [newSeatsResponse, setNewSeatsResponse] =
-    useState<IInvitesNewSeats | null>(null);
+  const [newlyAddedAdminsNumber, setNewlyAddedAdminsNumber] = useState<
+    IInvitesNewSeats['data']['attributes']['newly_added_admins_number'] | null
+  >(null);
+  const [newlyAddedModeratorsNumber, setNewlyAddedModeratorsNumber] = useState<
+    | IInvitesNewSeats['data']['attributes']['newly_added_moderators_number']
+    | null
+  >(null);
 
-  const exceedsSeats = useExceedsSeats;
+  const { any: anySeatsExceeded } = useExceedsSeats({
+    newlyAddedModeratorsNumber,
+    newlyAddedAdminsNumber,
+  });
 
   const closeModal = () => {
     setShowModal(false);
@@ -350,23 +357,13 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
     return roles;
   };
 
-  const checkNewSeatsResponse = (newSeatsResponse: IInvitesNewSeats) => {
-    setNewSeatsResponse(newSeatsResponse);
-    const {
-      newly_added_admins_number: newlyAddedAdminsNumber,
-      newly_added_moderators_number: newlyAddedModeratorsNumber,
-    } = newSeatsResponse.data.attributes;
-    if (
-      exceedsSeats({
-        newlyAddedAdminsNumber,
-        newlyAddedModeratorsNumber,
-      }).any
-    ) {
+  useEffect(() => {
+    if (anySeatsExceeded) {
       setShowModal(true);
     } else {
       onSubmit({ save: true });
     }
-  };
+  }, [anySeatsExceeded]);
 
   // `save` parameter is used to avoid duplication of import/text and error handling logic
   const onSubmit = async ({ save }: { save: boolean }) => {
@@ -405,7 +402,12 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
             await bulkInviteXLSX(inviteOptions);
           } else {
             const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
-            checkNewSeatsResponse(newSeats);
+            setNewlyAddedAdminsNumber(
+              newSeats.data.attributes.newly_added_admins_number
+            );
+            setNewlyAddedModeratorsNumber(
+              newSeats.data.attributes.newly_added_moderators_number
+            );
           }
         }
 
@@ -418,7 +420,12 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
             await bulkInviteEmails(inviteOptions);
           } else {
             const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
-            checkNewSeatsResponse(newSeats);
+            setNewlyAddedAdminsNumber(
+              newSeats.data.attributes.newly_added_admins_number
+            );
+            setNewlyAddedModeratorsNumber(
+              newSeats.data.attributes.newly_added_moderators_number
+            );
           }
         }
 
@@ -761,16 +768,19 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
           </SectionField>
         </Section>
       </form>
-      {hasSeatBasedBillingEnabled && newSeatsResponse && (
-        <Suspense fallback={null}>
-          <InviteUsersWithSeatsModal
-            inviteUsers={() => onSubmit({ save: true })}
-            showModal={showModal}
-            closeModal={closeModal}
-            newSeatsResponse={newSeatsResponse}
-          />
-        </Suspense>
-      )}
+      {hasSeatBasedBillingEnabled &&
+        typeof newlyAddedAdminsNumber === 'number' &&
+        typeof newlyAddedModeratorsNumber === 'number' && (
+          <Suspense fallback={null}>
+            <InviteUsersWithSeatsModal
+              inviteUsers={() => onSubmit({ save: true })}
+              showModal={showModal}
+              closeModal={closeModal}
+              newlyAddedAdminsNumber={newlyAddedAdminsNumber}
+              newlyAddedModeratorsNumber={newlyAddedModeratorsNumber}
+            />
+          </Suspense>
+        )}
     </>
   );
 };
