@@ -77,4 +77,32 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.toPlatform',
     defaultMessage: 'To platform',
   },
+  support: {
+    id: 'app.containers.AdminPage.SideBar.support',
+    defaultMessage: 'Support',
+  },
+  knowledgeBase: {
+    id: 'app.containers.AdminPage.SideBar.knowledgeBase',
+    defaultMessage: 'Knowledge base',
+  },
+  communityPlatform: {
+    id: 'app.containers.AdminPage.SideBar.communityPlatform',
+    defaultMessage: 'Community platform',
+  },
+  linkToCommunityPlatform: {
+    id: 'app.containers.AdminPage.SideBar.linkToCommunityPlatform',
+    defaultMessage: 'https://community.citizenlab.co',
+  },
+  notifications: {
+    id: 'app.containers.AdminPage.SideBar.notifications',
+    defaultMessage: 'Notifications',
+  },
+  language: {
+    id: 'app.containers.AdminPage.SideBar.language',
+    defaultMessage: 'Language',
+  },
+  signOut: {
+    id: 'app.containers.AdminPage.SideBar.signOut',
+    defaultMessage: 'Sign out',
+  },
 });
