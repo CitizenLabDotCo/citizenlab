@@ -111,7 +111,7 @@ export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
     : null;
 
   return (
-    <Container data-testid="poll-container" id="poll-container">
+    <Container data-testid="poll-container">
       {disabled_reason === 'already_responded' ? (
         <FormCompleted />
       ) : (
