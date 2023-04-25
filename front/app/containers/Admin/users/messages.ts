@@ -282,7 +282,7 @@ export default defineMessages({
     defaultMessage: 'Manage blocked users.',
   },
   inviteUsers: {
-    id: 'app.containers.Admin.Users.BlockedUsers.inviteUsers',
+    id: 'app.containers.Admin.Users.inviteUsers',
     defaultMessage: 'Invite users',
   },
 });
