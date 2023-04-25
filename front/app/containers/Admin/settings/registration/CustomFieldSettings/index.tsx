@@ -39,14 +39,16 @@ import {
   isBuiltInField,
   isHiddenField,
 } from 'services/userCustomFields';
+import { API_PATH } from 'containers/App/constants';
 
 // cache
-import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import streams from 'utils/streams';
 
 // styling
 import { colors } from 'utils/styleUtils';
 import useUserCustomFields from 'hooks/useUserCustomFields';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
 
 const Buttons = styled.div`
   display: flex;
@@ -124,7 +126,12 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
         this.setState({ itemsWhileDragging: null, isProcessing: true });
         deleteUserCustomField(customFieldId).then(async () => {
           this.setState({ isProcessing: false });
-          await Promise.all([streams.reset(), resetQueryCache()]);
+          streams.fetchAllWith({
+            partialApiEndpoint: [`${API_PATH}/users/custom_fields`],
+          });
+          queryClient.invalidateQueries({
+            queryKey: permissionsCustomFieldsKeys.all(),
+          });
         });
       }
     }
