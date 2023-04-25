@@ -675,7 +675,6 @@
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Zapisane!",
   "app.containers.Admin.initiatives.initiativeSettingsFormSuccess": "Twoje zmiany zostały zapisane.",
   "app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError": "Próg do głosowania musi wynosić co najmniej 2",
-  "app.containers.Admin.initiatives.manageTab": "Zarządzaj",
   "app.containers.Admin.initiatives.metaDescription": "Zarządzaj propozycjami na Twojej platformie",
   "app.containers.Admin.initiatives.metaTitle": "Strona panelu propozycji",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Kryteria kwalifikowalności",

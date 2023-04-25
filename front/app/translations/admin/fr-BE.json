@@ -675,7 +675,6 @@
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Enregistré !",
   "app.containers.Admin.initiatives.initiativeSettingsFormSuccess": "Vos modifications ont été sauvegardées.",
   "app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError": "Le seuil de vote doit être d'au moins 2",
-  "app.containers.Admin.initiatives.manageTab": "Gérer",
   "app.containers.Admin.initiatives.metaDescription": "Gérer les propositions sur votre plateforme",
   "app.containers.Admin.initiatives.metaTitle": "Page d'administration des propositions",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Critères d'éligibilité",

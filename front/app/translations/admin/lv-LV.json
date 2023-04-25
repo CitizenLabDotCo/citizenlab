@@ -675,7 +675,6 @@
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Saglabāts!",
   "app.containers.Admin.initiatives.initiativeSettingsFormSuccess": "Jūsu veiktās izmaiņas ir saglabātas.",
   "app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError": "Balsošanas slieksnim jābūt vismaz 2",
-  "app.containers.Admin.initiatives.manageTab": "Pārvaldīt",
   "app.containers.Admin.initiatives.metaDescription": "Pārvaldiet priekšlikumus jūsu platformā",
   "app.containers.Admin.initiatives.metaTitle": "Administrēt priekšlikumu lapu",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Atbilstības kritēriji",

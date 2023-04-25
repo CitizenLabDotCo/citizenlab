@@ -675,7 +675,6 @@
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Sparad!",
   "app.containers.Admin.initiatives.initiativeSettingsFormSuccess": "Dina ändringar har sparats.",
   "app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError": "Rösttröskeln måste vara minst 2",
-  "app.containers.Admin.initiatives.manageTab": "Hantera",
   "app.containers.Admin.initiatives.metaDescription": "Hantera förslag på din plattform",
   "app.containers.Admin.initiatives.metaTitle": "Sida med förslag för administratörer",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Berättighetskriterier",

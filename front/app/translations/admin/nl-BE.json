@@ -675,7 +675,6 @@
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Opgeslagen!",
   "app.containers.Admin.initiatives.initiativeSettingsFormSuccess": "Je wijzigingen zijn opgeslagen.",
   "app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError": "Het aantal stemmen moet ten minste 2 bedragen",
-  "app.containers.Admin.initiatives.manageTab": "Beheren",
   "app.containers.Admin.initiatives.metaDescription": "Beheer de voorstellen op je platform",
   "app.containers.Admin.initiatives.metaTitle": "Pagina voor het beheer van de voorstellen",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Criteria om in aanmerking te komen",

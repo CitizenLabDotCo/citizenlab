@@ -666,7 +666,6 @@
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Αποθηκεύτηκε!",
   "app.containers.Admin.initiatives.initiativeSettingsFormSuccess": "Οι αλλαγές σας έχουν αποθηκευτεί.",
   "app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError": "Το όριο ψήφου πρέπει να είναι τουλάχιστον 2",
-  "app.containers.Admin.initiatives.manageTab": "Manage",
   "app.containers.Admin.initiatives.metaDescription": "Διαχείριση προτάσεων στην πλατφόρμα σας",
   "app.containers.Admin.initiatives.metaTitle": "Σελίδα προτάσεων διαχειριστή",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Κριτήρια επιλεξιμότητας",

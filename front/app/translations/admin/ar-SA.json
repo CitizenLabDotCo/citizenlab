@@ -675,7 +675,6 @@
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "تم الحفظ!",
   "app.containers.Admin.initiatives.initiativeSettingsFormSuccess": "تم حفظ التغييرات.",
   "app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError": "يجب أن يكون حد التصويت صوتيْن اثنين على الأقل",
-  "app.containers.Admin.initiatives.manageTab": "إدارة",
   "app.containers.Admin.initiatives.metaDescription": "إدارة المُقترحات على منصتك",
   "app.containers.Admin.initiatives.metaTitle": "صفحة مُقترحات المسؤول",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "معايير الأهلية",

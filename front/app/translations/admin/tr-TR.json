@@ -675,7 +675,6 @@
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Kaydedildi!",
   "app.containers.Admin.initiatives.initiativeSettingsFormSuccess": "Yaptığınız değişiklikler kaydedildi.",
   "app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError": "Oylama eşiğinin en az 2 olması gerekir",
-  "app.containers.Admin.initiatives.manageTab": "Yönet",
   "app.containers.Admin.initiatives.metaDescription": "Platformunuzdaki önerileri yönetin",
   "app.containers.Admin.initiatives.metaTitle": "Yönetici öneri sayfası",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Uygunluk kriterleri",

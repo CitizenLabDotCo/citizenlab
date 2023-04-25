@@ -675,7 +675,6 @@
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Lagret!",
   "app.containers.Admin.initiatives.initiativeSettingsFormSuccess": "Endringene dine er lagret.",
   "app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError": "Stemmeterskelen må være minst 2",
-  "app.containers.Admin.initiatives.manageTab": "Administrer",
   "app.containers.Admin.initiatives.metaDescription": "Administrer forslag på plattformen",
   "app.containers.Admin.initiatives.metaTitle": "Administratorside for forslag",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Kvalifikasjonskriterier",

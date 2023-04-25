@@ -675,7 +675,6 @@
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Gespeichert!",
   "app.containers.Admin.initiatives.initiativeSettingsFormSuccess": "Ihre Änderungen wurden gespeichert.",
   "app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError": "Der Schwellenwert für die Stimmabgabe muss mindestens 2 betragen",
-  "app.containers.Admin.initiatives.manageTab": "Verwalten",
   "app.containers.Admin.initiatives.metaDescription": "Verwalten Sie Vorschläge auf Ihrer Plattform",
   "app.containers.Admin.initiatives.metaTitle": "Admin-Seite für Vorschläge",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Kriterien für die Eignung",

@@ -675,7 +675,6 @@
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "¡Guardado!",
   "app.containers.Admin.initiatives.initiativeSettingsFormSuccess": "Los cambios han sido guardados.",
   "app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError": "El umbral de votación tiene que ser al menos 2",
-  "app.containers.Admin.initiatives.manageTab": "Gestiona",
   "app.containers.Admin.initiatives.metaDescription": "Administra las propuestas de tu plataforma",
   "app.containers.Admin.initiatives.metaTitle": "Página de administración de propuestas",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Criterios de elegibilidad",

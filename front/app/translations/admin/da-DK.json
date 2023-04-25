@@ -675,7 +675,6 @@
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Gemt!",
   "app.containers.Admin.initiatives.initiativeSettingsFormSuccess": "Dine ændringer er blevet gemt.",
   "app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError": "Afstemningstærsklen skal være på mindst 2",
-  "app.containers.Admin.initiatives.manageTab": "Administrere",
   "app.containers.Admin.initiatives.metaDescription": "Administrer forslag på din platform",
   "app.containers.Admin.initiatives.metaTitle": "Admin-siden for forslag",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Kriterier for at opnå støtte til projektet",

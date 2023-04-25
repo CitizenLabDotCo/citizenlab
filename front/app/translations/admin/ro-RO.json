@@ -615,7 +615,6 @@
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Saved!",
   "app.containers.Admin.initiatives.initiativeSettingsFormSuccess": "Your changes have been saved.",
   "app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError": "The voting threshold needs to be at least 2",
-  "app.containers.Admin.initiatives.manageTab": "Administrează",
   "app.containers.Admin.initiatives.metaDescription": "Manage proposals on your platform",
   "app.containers.Admin.initiatives.metaTitle": "Admin proposals page",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Eligibility criteria",

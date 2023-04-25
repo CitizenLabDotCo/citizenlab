@@ -675,7 +675,6 @@
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Spremljeno!",
   "app.containers.Admin.initiatives.initiativeSettingsFormSuccess": "Vaše promjene su spremljene.",
   "app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError": "Prag broja glasova mora iznositi najmanje 2",
-  "app.containers.Admin.initiatives.manageTab": "Upravljanje",
   "app.containers.Admin.initiatives.metaDescription": "Upravljajte prijedlozima na svojoj platformi",
   "app.containers.Admin.initiatives.metaTitle": "Administatorska stranica za prijedloge",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Kriteriji prihvatljivosti",

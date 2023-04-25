@@ -666,7 +666,6 @@
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Toqqoqqapput!",
   "app.containers.Admin.initiatives.initiativeSettingsFormSuccess": "Allannguutitit toqqorneqarput.",
   "app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError": "Taasisinnaanermut killigititaq minnerpaamik 2-ussaaq",
-  "app.containers.Admin.initiatives.manageTab": "Manage",
   "app.containers.Admin.initiatives.metaDescription": "Qupperninni siunnersuutit allanngortikkit",
   "app.containers.Admin.initiatives.metaTitle": "Qupperneq aqutsisut siunnersuutaannik imalik",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Eligibility criteria",

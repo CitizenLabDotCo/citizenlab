@@ -675,7 +675,6 @@
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Sačuvano!",
   "app.containers.Admin.initiatives.initiativeSettingsFormSuccess": "Vaše izmene su sačuvane.",
   "app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError": "Neophodan broj glasova mora iznositi najmanje 2",
-  "app.containers.Admin.initiatives.manageTab": "Upravljajte",
   "app.containers.Admin.initiatives.metaDescription": "Upravljajte predlozima na vašoj platformi",
   "app.containers.Admin.initiatives.metaTitle": "Administatorska stranica za predloge",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Kriterijumi",

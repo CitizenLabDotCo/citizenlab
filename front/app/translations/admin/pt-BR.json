@@ -675,7 +675,6 @@
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Salvo!",
   "app.containers.Admin.initiatives.initiativeSettingsFormSuccess": "Suas alterações foram salvas.",
   "app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError": "O limite de votação deve ser de pelo menos 2",
-  "app.containers.Admin.initiatives.manageTab": "Gerenciar",
   "app.containers.Admin.initiatives.metaDescription": "Gerenciar propostas em sua plataforma",
   "app.containers.Admin.initiatives.metaTitle": "Página de propostas de administração",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Critério de eleição",
