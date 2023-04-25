@@ -7,6 +7,7 @@ import { ITopics, TopicsKeys, ITopicsQueryParams } from './types';
 const fetchTopics = ({
   forHomepageFilter,
   includeStaticPages,
+  excludeCode,
   ...queryParameters
 }: ITopicsQueryParams) =>
   fetcher<ITopics>({
@@ -15,6 +16,7 @@ const fetchTopics = ({
     queryParams: {
       ...queryParameters,
       for_homepage_filter: forHomepageFilter,
+      exclude_code: excludeCode,
       ...(includeStaticPages && {
         include: 'static_pages',
       }),

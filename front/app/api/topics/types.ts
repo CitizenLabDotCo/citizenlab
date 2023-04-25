@@ -52,7 +52,7 @@ export interface ITopics {
 
 export interface ITopicsQueryParams {
   code?: Code;
-  exclude_code?: Code;
+  excludeCode?: Code;
   sort?: 'new' | 'custom';
   forHomepageFilter?: boolean;
   includeStaticPages?: boolean;
