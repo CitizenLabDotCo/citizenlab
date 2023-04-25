@@ -26,7 +26,7 @@ const PermissionsInitiatives = memo<DataProps>(({ permissions }) => {
   return (
     <>
       <Title color="primary" mb="30px">
-        <FormattedMessage {...messages.permissions} />
+        <FormattedMessage {...messages.permissionsText} />
       </Title>
       <Box background={colors.white} p="40px">
         <Section>
