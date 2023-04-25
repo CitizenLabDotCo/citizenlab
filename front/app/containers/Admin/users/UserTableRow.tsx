@@ -36,7 +36,7 @@ import { colors } from 'utils/styleUtils';
 
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useExceedsSeats from 'hooks/useExceedsSeats';
+import useExceededSeats from 'hooks/useExceededSeats';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
@@ -100,7 +100,7 @@ const UserTableRow = ({
   const [showChangeSeatModal, setShowChangeSeatModal] = useState(false);
   const [isChangingToNormalUser, setIsChangingToNormalUser] = useState(false);
 
-  const exceedsSeats = useExceedsSeats({
+  const exceedsSeats = useExceededSeats({
     newlyAddedAdminsNumber: 1,
   });
 

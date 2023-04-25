@@ -30,7 +30,7 @@ import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useExceedsSeats from 'hooks/useExceedsSeats';
+import useExceededSeats from 'hooks/useExceededSeats';
 
 // services
 import {
@@ -154,7 +154,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
   >(null);
   const fileInputElement = useRef<HTMLInputElement | null>(null);
 
-  const { any: anySeatsExceeded } = useExceedsSeats({
+  const { any: anySeatsExceeded } = useExceededSeats({
     newlyAddedModeratorsNumber,
     newlyAddedAdminsNumber,
   });

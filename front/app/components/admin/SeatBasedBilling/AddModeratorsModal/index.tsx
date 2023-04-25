@@ -12,7 +12,7 @@ import messages from './messages';
 
 // Utils
 import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';
-import useExceedsSeats from 'hooks/useExceedsSeats';
+import useExceededSeats from 'hooks/useExceededSeats';
 
 interface Props {
   showModal: boolean;
@@ -28,7 +28,7 @@ const AddModeratorsModal = ({
   const { formatMessage } = useIntl();
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const exceedsSeats = useExceedsSeats({
+  const exceedsSeats = useExceededSeats({
     newlyAddedModeratorsNumber: 1,
   });
 

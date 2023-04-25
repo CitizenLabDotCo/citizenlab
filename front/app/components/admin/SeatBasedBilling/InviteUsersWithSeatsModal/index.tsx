@@ -13,7 +13,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
-import useExceedsSeats from 'hooks/useExceedsSeats';
+import useExceededSeats from 'hooks/useExceededSeats';
 
 // Utils
 import { TSeatNumber } from 'api/app_configuration/types';
@@ -45,7 +45,7 @@ const InviteUsersWithSeatsModal = ({
   const { formatMessage } = useIntl();
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const exceedsSeats = useExceedsSeats({
+  const exceedsSeats = useExceededSeats({
     newlyAddedAdminsNumber,
     newlyAddedModeratorsNumber,
   });

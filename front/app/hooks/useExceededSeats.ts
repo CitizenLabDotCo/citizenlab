@@ -14,7 +14,7 @@ interface ExceedsSeats {
   all: boolean;
 }
 
-export default function useExceedsSeats({
+export default function useExceededSeats({
   newlyAddedAdminsNumber,
   newlyAddedModeratorsNumber,
 }: NewlyAddedSeats): ExceedsSeats {

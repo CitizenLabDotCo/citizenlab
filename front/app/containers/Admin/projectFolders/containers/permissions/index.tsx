@@ -31,7 +31,7 @@ import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 
 // Hooks
-import useExceedsSeats from 'hooks/useExceedsSeats';
+import useExceededSeats from 'hooks/useExceededSeats';
 
 const StyledA = styled.a`
   &:hover {
@@ -56,7 +56,7 @@ const FolderPermissions = () => {
   const [moderatorToAdd, setModeratorToAdd] =
     useState<UserOptionTypeBase | null>(null);
 
-  const exceedsSeats = useExceedsSeats({
+  const exceedsSeats = useExceededSeats({
     newlyAddedModeratorsNumber: 1,
   });
 

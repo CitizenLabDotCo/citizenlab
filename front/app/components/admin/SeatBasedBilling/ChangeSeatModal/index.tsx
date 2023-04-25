@@ -12,7 +12,7 @@ import messages from './messages';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useExceedsSeats from 'hooks/useExceedsSeats';
+import useExceededSeats from 'hooks/useExceededSeats';
 
 // Utils
 import { isRegularUser, isAdmin } from 'services/permissions/roles';
@@ -78,7 +78,7 @@ const ChangeSeatModal = ({
   const isChangingModeratorToNormalUser =
     isChangingToNormalUser && isUserToChangeModerator;
 
-  const exceedsSeats = useExceedsSeats({
+  const exceedsSeats = useExceededSeats({
     newlyAddedAdminsNumber: 1,
   });
 

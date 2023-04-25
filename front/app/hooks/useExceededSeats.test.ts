@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import useExceedsSeats from './useExceedsSeats';
+import useExceededSeats from './useExceededSeats';
 
 jest.mock('api/seats/useSeats', () =>
   jest.fn(() => ({
@@ -40,7 +40,7 @@ jest.mock('./useFeatureFlag', () => {
 describe('useExceedsSeats', () => {
   it('should return correct values when not exceeding any limits', () => {
     const { result } = renderHook(() =>
-      useExceedsSeats({
+      useExceededSeats({
         newlyAddedAdminsNumber: 2,
         newlyAddedModeratorsNumber: 2,
       })
@@ -56,7 +56,7 @@ describe('useExceedsSeats', () => {
 
   it('should return correct values when exceeding admin limit', () => {
     const { result } = renderHook(() =>
-      useExceedsSeats({
+      useExceededSeats({
         newlyAddedAdminsNumber: 4,
         newlyAddedModeratorsNumber: 2,
       })
@@ -72,7 +72,7 @@ describe('useExceedsSeats', () => {
 
   it('should return correct values when exceeding moderator limit', () => {
     const { result } = renderHook(() =>
-      useExceedsSeats({
+      useExceededSeats({
         newlyAddedAdminsNumber: 1,
         newlyAddedModeratorsNumber: 4,
       })
@@ -88,7 +88,7 @@ describe('useExceedsSeats', () => {
 
   it('should return correct values when exceeding both limits', () => {
     const { result } = renderHook(() =>
-      useExceedsSeats({
+      useExceededSeats({
         newlyAddedAdminsNumber: 4,
         newlyAddedModeratorsNumber: 4,
       })
@@ -104,7 +104,7 @@ describe('useExceedsSeats', () => {
 
   it('should return correct values when equal to the admin limit', () => {
     const { result } = renderHook(() =>
-      useExceedsSeats({
+      useExceededSeats({
         newlyAddedAdminsNumber: 3,
         newlyAddedModeratorsNumber: 0,
       })
@@ -120,7 +120,7 @@ describe('useExceedsSeats', () => {
 
   it('should return correct values when equal to the moderator limit', () => {
     const { result } = renderHook(() =>
-      useExceedsSeats({
+      useExceededSeats({
         newlyAddedAdminsNumber: 0,
         newlyAddedModeratorsNumber: 3,
       })
@@ -136,7 +136,7 @@ describe('useExceedsSeats', () => {
 
   it('should return correct values when exceeding the admin limit by 1', () => {
     const { result } = renderHook(() =>
-      useExceedsSeats({
+      useExceededSeats({
         newlyAddedAdminsNumber: 4,
         newlyAddedModeratorsNumber: 0,
       })
@@ -152,7 +152,7 @@ describe('useExceedsSeats', () => {
 
   it('should return correct values when exceeding the moderator limit by 1', () => {
     const { result } = renderHook(() =>
-      useExceedsSeats({
+      useExceededSeats({
         newlyAddedAdminsNumber: 0,
         newlyAddedModeratorsNumber: 4,
       })

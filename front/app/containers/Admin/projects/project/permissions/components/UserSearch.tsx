@@ -7,7 +7,7 @@ import { isRegularUser } from 'services/permissions/roles';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useExceedsSeats from 'hooks/useExceedsSeats';
+import useExceededSeats from 'hooks/useExceededSeats';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -44,7 +44,7 @@ const UserSearch = memo(({ projectId }: Props) => {
   const [moderatorToAdd, setModeratorToAdd] =
     useState<UserOptionTypeBase | null>(null);
 
-  const exceedsSeats = useExceedsSeats({
+  const exceedsSeats = useExceededSeats({
     newlyAddedModeratorsNumber: 1,
   });
 
