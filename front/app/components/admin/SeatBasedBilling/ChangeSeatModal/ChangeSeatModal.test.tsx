@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 
-import ChangeSeatModal from './ChangeSeatModal';
+import ChangeSeatModal from '.';
 import { makeAdmin, makeUser } from 'services/__mocks__/users';
 
 type MockAppConfigurationType = {
@@ -75,7 +75,6 @@ describe('ChangeSeatModal', () => {
       name: 'Confirm',
     });
 
-    expect(screen.queryByText('Give admin rights')).toBeInTheDocument();
     expect(confirmButton).toBeInTheDocument();
   });
 
@@ -96,7 +95,6 @@ describe('ChangeSeatModal', () => {
       name: 'Buy one additional seat',
     });
 
-    expect(screen.queryByText('Give admin rights')).toBeInTheDocument();
     expect(buyAdditionalSeatButton).toBeInTheDocument();
   });
 
@@ -118,7 +116,6 @@ describe('ChangeSeatModal', () => {
       name: 'Confirm',
     });
 
-    expect(screen.queryByText('Give admin rights')).toBeInTheDocument();
     expect(confirmButton).toBeInTheDocument();
   });
 
@@ -139,7 +136,6 @@ describe('ChangeSeatModal', () => {
       name: 'Confirm',
     });
 
-    expect(screen.queryByText('Set as normal user')).toBeInTheDocument();
     expect(confirmButton).toBeInTheDocument();
   });
 });
