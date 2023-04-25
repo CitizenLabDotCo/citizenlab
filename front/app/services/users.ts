@@ -81,7 +81,7 @@ export interface IUserUpdate {
 
 interface IChangePassword {
   current_password: string;
-  new_password: string;
+  password: string;
 }
 
 export function usersStream(streamParams: IStreamParams | null = null) {
@@ -126,7 +126,10 @@ export async function updateUser(userId: string, object: IUserUpdate) {
 
 export async function changePassword(object: IChangePassword) {
   const response = await streams.add<IUser>(`${apiEndpoint}/update_password`, {
-    user: object,
+    user: {
+      current_password: object.current_password,
+      new_password: object.password,
+    },
   });
   return response;
 }
