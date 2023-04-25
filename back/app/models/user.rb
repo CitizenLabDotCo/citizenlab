@@ -132,6 +132,8 @@ class User < ApplicationRecord
   has_many :votes, dependent: :nullify
 
   after_initialize do
+    next unless has_attribute?('roles')
+
     @highest_role_after_initialize = highest_role
   end
 
