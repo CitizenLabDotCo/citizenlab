@@ -32,7 +32,7 @@ resource 'Permissions' do
       example_request 'List all permissions of a project' do
         assert_status 200
         json_response = json_parse response_body
-        expect(json_response[:data].size).to eq Permission.available_actions(@project).size
+        expect(json_response[:data].size).to eq Permission.enabled_actions(@project).size
       end
 
       example 'List all permissions of a project when voting has been disabled' do
@@ -41,7 +41,7 @@ resource 'Permissions' do
         do_request
         assert_status 200
         json_response = json_parse response_body
-        expect(json_response[:data].size).to eq Permission.available_actions(@project).size
+        expect(json_response[:data].size).to eq Permission.enabled_actions(@project).size
       end
 
       example_request 'List all permissions efficiently include custom fields', document: true do

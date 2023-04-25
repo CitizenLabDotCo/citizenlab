@@ -32,7 +32,7 @@ class Permission < ApplicationRecord
   }
   SCOPE_TYPES = [nil, 'Project', 'Phase'].freeze
 
-  scope :filter_actions, ->(permission_scope) { where(action: available_actions(permission_scope)) }
+  scope :filter_enabled_actions, ->(permission_scope) { where(action: enabled_actions(permission_scope)) }
   scope :order_by_action, lambda {
     order(Arel.sql(
       "CASE action
@@ -59,12 +59,16 @@ class Permission < ApplicationRecord
   before_validation :update_global_custom_fields, on: :update
 
   def self.available_actions(permission_scope)
-    # Remove any actions disabled on the project
-    ACTIONS[permission_scope&.participation_method].filter_map do |action|
+    ACTIONS[permission_scope&.participation_method]
+  end
+
+  def self.enabled_actions(permission_scope)
+    # Remove any actions that are not enabled on the project
+    available_actions(permission_scope).filter_map do |action|
       next if
         (action == 'posting_idea' && !permission_scope&.posting_enabled?) ||
-        (action == 'voting_idea' && !permission_scope&.voting_enabled?) ||
-        (action == 'commenting_idea' && !permission_scope&.commenting_enabled?)
+          (action == 'voting_idea' && !permission_scope&.voting_enabled?) ||
+          (action == 'commenting_idea' && !permission_scope&.commenting_enabled?)
 
       action
     end
