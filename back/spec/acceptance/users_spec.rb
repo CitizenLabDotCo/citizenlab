@@ -762,6 +762,30 @@ resource 'Users' do
               expect(json_response.dig(:data, :id)).to eq id
               expect(json_response.dig(:data, :attributes, :roles)).to eq [{ type: 'admin' }]
             end
+
+            context 'with limited seats' do
+              before do
+                config = AppConfiguration.instance
+                config.settings['core']['maximum_admins_number'] = 2
+                config.settings['core']['additional_admins_number'] = 0
+                config.settings['seat_based_billing'] = { enabled: true, allowed: true }
+                config.save!
+              end
+
+              context 'when limit is reached' do
+                before { create(:admin) } # to reach limit of 2
+
+                example_request 'Increments additional seats', document: false do
+                  assert_status 200
+                  expect(AppConfiguration.instance.settings['core']['additional_admins_number']).to eq(1)
+                end
+              end
+
+              example_request 'Does not increment additional seats if limit is not reached', document: false do
+                assert_status 200
+                expect(AppConfiguration.instance.settings['core']['additional_admins_number']).to eq(0)
+              end
+            end
           end
 
           context 'on a folder moderator' do

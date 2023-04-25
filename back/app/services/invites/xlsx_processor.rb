@@ -38,9 +38,7 @@ class Invites::XlsxProcessor
       end
       hash.delete('groups')
 
-      if hash['admin'].present?
-        hash['roles'] = xlsx_admin_to_roles(hash['admin'])
-      end
+      hash['roles'] = xlsx_admin_to_roles(hash['admin'])
       hash.delete('admin')
 
       if hash['language'].present?
@@ -75,7 +73,7 @@ class Invites::XlsxProcessor
   def xlsx_admin_to_roles(admin)
     if [true, 'TRUE', 'true', '1', 1].include? admin
       [{ 'type' => 'admin' }]
-    elsif [false, 'FALSE', 'false', '0', 0].include? admin
+    elsif [false, 'FALSE', 'false', '0', 0, nil].include? admin
       []
     else
       @error_storage.add_error(:malformed_admin_value, row: @current_row, value: admin)

@@ -151,7 +151,7 @@ const Data = adopt<DataProps>({
   topics: <GetTopics excludeCode={'custom'} />,
   previousPathName: ({ render }) => (
     <PreviousPathnameContext.Consumer>
-      {render as any}
+      {render}
     </PreviousPathnameContext.Consumer>
   ),
   postingPermission: <GetInitiativesPermissions action="posting_initiative" />,

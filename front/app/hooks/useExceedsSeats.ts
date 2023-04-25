@@ -20,13 +20,14 @@ export default function useExceedsSeats(): (
   const totalSeats = useTotalSeats();
   const { data: seats } = useSeats();
 
-  if (isNil(seats) || isNil(totalSeats))
+  if (isNil(seats) || isNil(totalSeats)) {
     return (_params: NewlyAddedSeats) => ({
       admin: false,
       moderator: false,
       any: false,
       all: false,
     });
+  }
 
   const { totalAdminSeats, totalModeratorSeats } = totalSeats;
 

@@ -3,6 +3,7 @@ import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
 import ideasCountKeys from 'api/idea_count/keys';
 import ideaImagesKeys from 'api/idea_images/keys';
 import ideaMarkersKeys from 'api/idea_markers/keys';
+import userIdeaCountKeys from 'api/user_ideas_count/keys';
 import { API_PATH } from 'containers/App/constants';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -26,6 +27,7 @@ const useAddIdea = () => {
       queryClient.invalidateQueries({ queryKey: ideaMarkersKeys.lists() });
       queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
       queryClient.invalidateQueries({ queryKey: ideasCountKeys.items() });
+      queryClient.invalidateQueries({ queryKey: userIdeaCountKeys.items() });
       queryClient.invalidateQueries({
         queryKey: ideaImagesKeys.list({ ideaId: idea.data.id }),
       });
