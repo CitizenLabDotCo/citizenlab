@@ -1,4 +1,12 @@
-import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  lazy,
+  Suspense,
+  useCallback,
+  useMemo,
+} from 'react';
 import { isString, isEmpty, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -330,113 +338,133 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
     saveAs(blob, 'example.xlsx');
   };
 
-  const getRoles = () => {
-    const roles: INewBulkInvite['roles'] = [];
+  const bulkInvite: INewBulkInvite = useMemo(() => {
+    const getRoles = () => {
+      const roles: INewBulkInvite['roles'] = [];
 
-    if (inviteesWillHaveAdminRights) {
-      roles.push({ type: 'admin' });
-    }
+      if (inviteesWillHaveAdminRights) {
+        roles.push({ type: 'admin' });
+      }
 
-    if (
-      inviteesWillHaveModeratorRights &&
-      selectedProjects &&
-      selectedProjects.length > 0
-    ) {
-      selectedProjects.forEach((project) => {
-        roles.push({ type: 'project_moderator', project_id: project.value });
-      });
-    }
+      if (
+        inviteesWillHaveModeratorRights &&
+        selectedProjects &&
+        selectedProjects.length > 0
+      ) {
+        selectedProjects.forEach((project) => {
+          roles.push({ type: 'project_moderator', project_id: project.value });
+        });
+      }
 
-    return roles;
-  };
+      return roles;
+    };
+
+    return {
+      locale: selectedLocale,
+      roles: getRoles(),
+      group_ids:
+        selectedGroups && selectedGroups.length > 0
+          ? selectedGroups.map((group) => group.value)
+          : null,
+      invite_text: selectedInviteText,
+    };
+  }, [
+    selectedLocale,
+    selectedGroups,
+    selectedInviteText,
+    inviteesWillHaveModeratorRights,
+    inviteesWillHaveAdminRights,
+    selectedProjects,
+  ]);
 
   // `save` parameter is used to avoid duplication of import/text and error handling logic
-  const onSubmit = async ({ save }: { save: boolean }) => {
-    const hasCorrectSelection =
-      (selectedView === 'import' &&
-        isString(selectedFileBase64) &&
-        !selectedEmails) ||
-      (selectedView === 'text' &&
-        !selectedFileBase64 &&
-        isString(selectedEmails));
+  const onSubmit = useCallback(
+    async ({ save }: { save: boolean }) => {
+      const hasCorrectSelection =
+        (selectedView === 'import' &&
+          isString(selectedFileBase64) &&
+          !selectedEmails) ||
+        (selectedView === 'text' &&
+          !selectedFileBase64 &&
+          isString(selectedEmails));
 
-    if (selectedLocale && hasCorrectSelection) {
-      try {
-        setProcessing(true);
-        setProcessed(false);
-        setApiErrors(null);
-        setFiletypeError(null);
-        setUnknownError(null);
+      if (selectedLocale && hasCorrectSelection) {
+        try {
+          setProcessing(true);
+          setProcessed(false);
+          setApiErrors(null);
+          setFiletypeError(null);
+          setUnknownError(null);
 
-        const bulkInvite: INewBulkInvite = {
-          locale: selectedLocale,
-          roles: getRoles(),
-          group_ids:
-            selectedGroups && selectedGroups.length > 0
-              ? selectedGroups.map((group) => group.value)
-              : null,
-          invite_text: selectedInviteText,
-        };
+          if (selectedView === 'import' && isString(selectedFileBase64)) {
+            const inviteOptions = {
+              xlsx: selectedFileBase64,
+              ...bulkInvite,
+            };
+            if (save) {
+              await bulkInviteXLSX(inviteOptions);
+            } else {
+              const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
+              setNewlyAddedAdminsNumber(
+                newSeats.data.attributes.newly_added_admins_number
+              );
+              setNewlyAddedModeratorsNumber(
+                newSeats.data.attributes.newly_added_moderators_number
+              );
+            }
+          }
 
-        if (selectedView === 'import' && isString(selectedFileBase64)) {
-          const inviteOptions = {
-            xlsx: selectedFileBase64,
-            ...bulkInvite,
-          };
+          if (selectedView === 'text' && isString(selectedEmails)) {
+            const inviteOptions = {
+              emails: selectedEmails.split(',').map((item) => item.trim()),
+              ...bulkInvite,
+            };
+            if (save) {
+              await bulkInviteEmails(inviteOptions);
+            } else {
+              const newSeats = await bulkInviteCountNewSeatsEmails(
+                inviteOptions
+              );
+              setNewlyAddedAdminsNumber(
+                newSeats.data.attributes.newly_added_admins_number
+              );
+              setNewlyAddedModeratorsNumber(
+                newSeats.data.attributes.newly_added_moderators_number
+              );
+            }
+          }
+
           if (save) {
-            await bulkInviteXLSX(inviteOptions);
-          } else {
-            const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
-            setNewlyAddedAdminsNumber(
-              newSeats.data.attributes.newly_added_admins_number
-            );
-            setNewlyAddedModeratorsNumber(
-              newSeats.data.attributes.newly_added_moderators_number
-            );
-          }
-        }
+            // reset file input
+            if (fileInputElement.current) {
+              fileInputElement.current.value = '';
+            }
 
-        if (selectedView === 'text' && isString(selectedEmails)) {
-          const inviteOptions = {
-            emails: selectedEmails.split(',').map((item) => item.trim()),
-            ...bulkInvite,
-          };
-          if (save) {
-            await bulkInviteEmails(inviteOptions);
-          } else {
-            const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
-            setNewlyAddedAdminsNumber(
-              newSeats.data.attributes.newly_added_admins_number
-            );
-            setNewlyAddedModeratorsNumber(
-              newSeats.data.attributes.newly_added_moderators_number
-            );
+            // reset state
+            setProcessing(false);
+            setProcessed(true);
+            setSelectedEmails(null);
+            setSelectedFileBase64(null);
           }
-        }
+        } catch (errors) {
+          const apiErrors = get(errors, 'json.errors', null);
 
-        if (save) {
-          // reset file input
-          if (fileInputElement.current) {
-            fileInputElement.current.value = '';
-          }
-
-          // reset state
+          setApiErrors(apiErrors);
+          setUnknownError(
+            !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
+          );
           setProcessing(false);
-          setProcessed(true);
-          setSelectedEmails(null);
-          setSelectedFileBase64(null);
         }
-      } catch (errors) {
-        const apiErrors = get(errors, 'json.errors', null);
-
-        setApiErrors(apiErrors);
-        setUnknownError(
-          !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
-        );
-        setProcessing(false);
       }
-    }
-  };
+    },
+    [
+      selectedEmails,
+      selectedFileBase64,
+      selectedLocale,
+      selectedView,
+      bulkInvite,
+    ]
+  );
 
   const validateInvitation = () => {
     const isValidEmails = isString(selectedEmails) && !isEmpty(selectedEmails);
