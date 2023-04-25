@@ -3,15 +3,15 @@ import React, { useState } from 'react';
 // Components
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
-import SeatInfo from 'components/SeatInfo';
-import SeatSetSuccess from 'components/admin/SeatSetSuccess';
+import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
+import SeatSetSuccess from 'components/admin/SeatBasedBilling/SeatSetSuccess';
 
 // Translation
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Utils
-import BillingWarning from 'components/SeatInfo/BillingWarning';
+import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';
 import useExceedsSeats from 'hooks/useExceedsSeats';
 
 interface Props {
