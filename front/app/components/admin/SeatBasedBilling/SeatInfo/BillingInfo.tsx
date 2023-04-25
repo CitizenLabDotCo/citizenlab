@@ -58,10 +58,10 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
       appConfiguration?.data.attributes.settings.core
         .additional_moderators_number,
   };
-  const additionalSeats = additionalSeatNumbers[seatType];
+  const additionalSeats = additionalSeatNumbers[seatType] || 0;
 
   // Maximum seat number being null means that there are unlimited seats so we don't show the seat info
-  if (isNil(maximumSeatNumber) || isNil(additionalSeats) || !seats) {
+  if (isNil(maximumSeatNumber) || !seats) {
     return null;
   }
 
@@ -83,7 +83,7 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
   const remainingSeats = totalSeats - usedSeats;
 
   let totalSeatsBreakdownMessage = formatMessage(messages.seatsWithinPlanText);
-  if (additionalSeats) {
+  if (additionalSeats > 0) {
     totalSeatsBreakdownMessage = formatMessage(messages.seatsExceededPlanText, {
       noOfSeatsInPlan: maximumSeatNumber,
       noOfAdditionalSeats: additionalSeats,
