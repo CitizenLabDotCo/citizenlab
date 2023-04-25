@@ -1,10 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { API_PATH } from 'containers/App/constants';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import streams from 'utils/streams';
 import commentKeys from './keys';
 import { DeleteReason, IComment } from './types';
+import userCommentsCount from 'api/user_comments_count/keys';
 
 interface MarkForDeletion {
   commentId: string;
@@ -34,15 +33,16 @@ const useMarkCommentForDeletion = ({
   const queryClient = useQueryClient();
   return useMutation<IComment, CLErrors, MarkForDeletion>({
     mutationFn: markForDeletion,
-    onSuccess: (_data, variables) => {
+    onSuccess: (_data) => {
       queryClient.invalidateQueries({
         queryKey: commentKeys.list({
           ideaId,
           initiativeId,
         }),
       });
-      streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/users/${variables.authorId}/comments_count`],
+
+      queryClient.invalidateQueries({
+        queryKey: userCommentsCount.items(),
       });
     },
   });
