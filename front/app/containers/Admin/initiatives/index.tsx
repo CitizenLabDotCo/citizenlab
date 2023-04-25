@@ -4,8 +4,13 @@ import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource from 'components/admin/TabbedResource';
 import Button from 'components/UI/Button';
+import NavigationTabs, {
+  Tab,
+  TabsPageLayout,
+} from 'components/admin/NavigationTabs';
+import Link from 'utils/cl-router/Link';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';
@@ -20,6 +25,14 @@ import tracks from './tracks';
 import { InsertConfigurationOptions, ITab } from 'typings';
 import Outlet from 'components/Outlet';
 import { insertConfiguration } from 'utils/moduleUtils';
+import styled from 'styled-components';
+
+// utils
+import { matchPathToUrl } from 'utils/helperUtils';
+
+const StyledTabsPageLayout = styled(TabsPageLayout)`
+  padding-left: 44px;
+`;
 
 const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
   ({ intl: { formatMessage }, location }) => {
@@ -54,10 +67,29 @@ const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
           onData={handleData}
           formatMessage={formatMessage}
         />
-        <TabbedResource
-          resource={{
-            title: formatMessage(messages.titleInitiatives),
-            rightSideCTA: (
+        <NavigationTabs>
+          {tabs.map(({ url, label }) => (
+            <Tab key={url} active={matchPathToUrl(url).test(pathname)}>
+              <Link to={url}>{label}</Link>
+            </Tab>
+          ))}
+        </NavigationTabs>
+
+        <StyledTabsPageLayout>
+          <Box
+            mb="30px"
+            width="100%"
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            className="e2e-resource-header"
+          >
+            <Box>
+              <Title color="primary">
+                {formatMessage(messages.titleInitiatives)}
+              </Title>
+            </Box>
+            <Box ml="60px">
               <Button
                 id="e2e-new-proposal"
                 buttonStyle="cl-blue"
@@ -66,10 +98,8 @@ const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
                 text={formatMessage(messages.addNewProposal)}
                 onClick={onNewProposal(pathname)}
               />
-            ),
-          }}
-          tabs={tabs}
-        >
+            </Box>
+          </Box>
           <HelmetIntl
             title={messages.metaTitle}
             description={messages.metaDescription}
@@ -77,7 +107,7 @@ const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
           <div id="e2e-initiatives-admin-container">
             <RouterOutlet />
           </div>
-        </TabbedResource>
+        </StyledTabsPageLayout>
       </>
     );
   }
