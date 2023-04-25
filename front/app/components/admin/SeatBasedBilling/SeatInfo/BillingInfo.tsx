@@ -81,7 +81,7 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
   const seatTypeTooltipMessage = seatTypeTooltipMessages[seatType];
   const totalSeats =
     typeof additionalSeats === 'number'
-      ? additionalSeats + maximumSeatNumber
+      ? maximumSeatNumber + additionalSeats
       : maximumSeatNumber;
   const remainingSeats = totalSeats - usedSeats;
 
