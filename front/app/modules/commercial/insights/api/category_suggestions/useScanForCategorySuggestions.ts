@@ -8,7 +8,6 @@ import categorySuggestionsKeys from './keys';
 import {
   IInsightsCategorySuggestionsTasks,
   QueryParameters,
-  ScanStatus,
   CategorySuggestionsKeys,
 } from './types';
 
@@ -183,13 +182,12 @@ const useScanForCategorySuggestions = (
 
   const initialCount = data ? data.data.initialCount : 0;
   const isLoading = cancelScanLoading || triggerScanLoading;
-  const status = (
+  const status =
     isError || isTriggerError || isCancelError
       ? 'isError'
       : data
       ? data.data.status
-      : 'isIdle'
-  ) as ScanStatus;
+      : 'isIdle';
 
   return {
     isLoading,

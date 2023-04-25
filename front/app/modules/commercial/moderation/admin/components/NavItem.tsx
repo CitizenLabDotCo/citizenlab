@@ -1,23 +1,21 @@
-import { NavItem } from 'containers/Admin/sideBar/navItems';
 import { FC, useEffect } from 'react';
-import { InsertConfigurationOptions } from 'typings';
+import { ITabsOutlet } from 'utils/moduleUtils';
+import messages from './messages';
 
-type Props = {
-  onData: (data: InsertConfigurationOptions<NavItem>) => void;
-};
-
-const NavItemComponent: FC<Props> = ({ onData }) => {
+const NavItemComponent: FC<ITabsOutlet> = ({
+  onData,
+  formatMessage,
+}: ITabsOutlet) => {
   useEffect(
     () =>
       onData({
         configuration: {
+          label: formatMessage(messages.feed),
           name: 'moderation',
-          link: '/admin/moderation',
-          iconName: 'sidebar-activity',
-          message: 'moderation',
-          featureNames: ['moderation'],
+          url: '/admin/dashboard/moderation',
+          feature: 'moderation',
         },
-        insertAfterName: 'dashboard',
+        insertAfterName: 'overview',
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

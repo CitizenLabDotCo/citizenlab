@@ -308,9 +308,7 @@ class InitiativeForm extends React.Component<
     const mapsLoaded = window.googleMaps;
 
     if (!isNilOrError(topics)) {
-      const availableTopics = topics.filter(
-        (topic) => !isNilOrError(topic)
-      ) as ITopicData[];
+      const availableTopics = topics.filter((topic) => !isNilOrError(topic));
 
       return (
         <Form id="initiative-form">

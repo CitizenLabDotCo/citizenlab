@@ -6,7 +6,8 @@ module IdeaAssignment
     # - The assignee of an idea should always have
     #   moderation rights over that idea.
     # - New ideas are automatically assigned to a default
-    #   assignee when not yet assigned. This is currently
+    #   assignee when not yet assigned, except when the
+    #   idea is a native survey response. This is currently
     #   just the project's default assignee if specified.
     # - When an assignee can no longer moderate an idea,
     #   the idea should have no assignee.
@@ -24,6 +25,8 @@ module IdeaAssignment
     end
 
     def automatically_assigned_idea_assignee(idea)
+      return if idea.participation_method_on_creation.instance_of?(ParticipationMethod::NativeSurvey)
+
       idea&.project&.default_assignee
     end
   end

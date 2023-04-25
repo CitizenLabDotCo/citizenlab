@@ -27,12 +27,6 @@ const navItems: NavItem[] = [
     message: 'projects',
   },
   {
-    name: 'reporting',
-    link: `/admin/reporting`,
-    iconName: 'sidebar-reporting',
-    message: 'reporting',
-  },
-  {
     name: 'workshops',
     link: '/admin/workshops',
     iconName: 'sidebar-workshops',
@@ -60,17 +54,17 @@ const navItems: NavItem[] = [
     message: 'users',
   },
   {
-    name: 'invitations',
-    link: '/admin/invitations',
-    iconName: 'sidebar-invitations',
-    message: 'invitations',
-  },
-  {
     name: 'messaging',
     link: '/admin/messaging',
     iconName: 'sidebar-messaging',
     message: 'messaging',
     featureNames: ['manual_emailing', 'automated_emailing_control', 'texting'],
+  },
+  {
+    name: 'reporting',
+    link: `/admin/reporting`,
+    iconName: 'sidebar-reporting',
+    message: 'reporting',
   },
   {
     name: 'menu',

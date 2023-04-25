@@ -109,10 +109,7 @@ const AttachmentsControl = ({
           await Promise.all(
             remoteFiles.data.map(
               async (f) =>
-                await convertUrlToUploadFile(
-                  f.attributes.file.url as string,
-                  f.id
-                )
+                await convertUrlToUploadFile(f.attributes.file.url, f.id)
             )
           )
         ).filter((f) => f);

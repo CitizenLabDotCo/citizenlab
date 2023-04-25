@@ -172,9 +172,7 @@ const ProjectReport = memo(
           ? []
           : phases.map((phase) => phase.attributes.participation_method)
         : [project.attributes.participation_method]
-    ).filter(
-      (el, i, arr) => el && arr.indexOf(el) === i
-    ) as ParticipationMethod[];
+    ).filter((el, i, arr) => el && arr.indexOf(el) === i);
 
     const projectTitle = localize(project.attributes.title_multiloc);
 

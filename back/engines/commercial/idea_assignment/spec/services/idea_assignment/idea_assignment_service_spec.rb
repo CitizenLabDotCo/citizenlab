@@ -58,4 +58,23 @@ describe IdeaAssignment::IdeaAssignmentService do
       expect(idea5.reload.assignee_id).to be_present
     end
   end
+
+  describe 'automatically_assigned_idea_assignee' do
+    it 'does not set assignee for idea that is a survey response', document: false do
+      continuous_survey_project = create(:continuous_native_survey_project, default_assignee_id: create(:admin).id)
+      idea1 = create(:native_survey_response, project: continuous_survey_project)
+
+      timeline_survey_project = create(:project_with_active_native_survey_phase, default_assignee_id: create(:admin).id)
+      expect(timeline_survey_project.phases[0].participation_method).to eq('native_survey')
+
+      idea2 = create(
+        :native_survey_response,
+        creation_phase_id: timeline_survey_project.phases[0].id,
+        project: timeline_survey_project
+      )
+
+      expect(service.automatically_assigned_idea_assignee(idea1)).to be_nil
+      expect(service.automatically_assigned_idea_assignee(idea2)).to be_nil
+    end
+  end
 end

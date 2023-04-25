@@ -9,6 +9,8 @@ import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { updateGlobalPermission } from 'services/actionPermissions';
 import FeatureFlag from 'components/FeatureFlag';
+import { Box, Title } from '@citizenlab/cl2-component-library';
+import { colors } from 'utils/styleUtils';
 
 interface DataProps {
   permissions: GetGlobalPermissionsChildProps;
@@ -22,21 +24,28 @@ const PermissionsInitiatives = memo<DataProps>(({ permissions }) => {
     });
   };
   return (
-    <Section>
-      <FeatureFlag name="granular_permissions">
-        <SectionTitle>
-          <FormattedMessage {...messages.granularPermissionsTitle} />
-        </SectionTitle>
-        {!isNilOrError(permissions) && (
-          <ActionsForm
-            permissions={permissions}
-            onChange={handlePermissionChange}
-            postType="initiative"
-            projectId={null}
-          />
-        )}
-      </FeatureFlag>
-    </Section>
+    <>
+      <Title color="primary" mb="30px">
+        <FormattedMessage {...messages.permissionsText} />
+      </Title>
+      <Box background={colors.white} p="40px">
+        <Section>
+          <FeatureFlag name="granular_permissions">
+            <SectionTitle>
+              <FormattedMessage {...messages.granularPermissionsTitle} />
+            </SectionTitle>
+            {!isNilOrError(permissions) && (
+              <ActionsForm
+                permissions={permissions}
+                onChange={handlePermissionChange}
+                postType="initiative"
+                projectId={null}
+              />
+            )}
+          </FeatureFlag>
+        </Section>
+      </Box>
+    </>
   );
 });
 
