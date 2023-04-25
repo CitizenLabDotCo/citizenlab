@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 
 // router
-import { Outlet as RouterOutlet } from 'react-router-dom';
+import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource from 'components/admin/TabbedResource';
+import NavigationTabs, {
+  Tab,
+  TabsPageLayout,
+} from 'components/admin/NavigationTabs';
+import Link from 'utils/cl-router/Link';
 
 // i18n
 import messages from './messages';
@@ -14,9 +19,12 @@ import { useIntl } from 'utils/cl-intl';
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 import Outlet from 'components/Outlet';
+import { matchPathToUrl } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
 
 const SettingsPage = () => {
   const { formatMessage } = useIntl();
+  const { pathname } = useLocation();
 
   const [tabs, setTabs] = useState<ITab[]>([
     {
@@ -55,22 +63,30 @@ const SettingsPage = () => {
     setTabs(insertConfiguration(insertTabOptions)(tabs));
   };
 
-  const resource = {
-    title: formatMessage(messages.pageTitle),
-  };
-
   return (
     <>
       <Outlet id="app.containers.Admin.settings.tabs" onData={handleData} />
-      <TabbedResource resource={resource} tabs={tabs}>
+      <NavigationTabs>
+        {tabs.map(({ url, label }) => (
+          <Tab key={url} active={matchPathToUrl(url).test(pathname)}>
+            <Link to={url}>{label}</Link>
+          </Tab>
+        ))}
+      </NavigationTabs>
+
+      <TabsPageLayout>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        <div id="e2e-settings-container">
+        <Box
+          id="e2e-initiatives-admin-container"
+          background={colors.white}
+          p="40px"
+        >
           <RouterOutlet />
-        </div>
-      </TabbedResource>
+        </Box>
+      </TabsPageLayout>
     </>
   );
 };
