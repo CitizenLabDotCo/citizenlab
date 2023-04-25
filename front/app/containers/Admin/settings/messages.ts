@@ -15,10 +15,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.helmetDescription',
     defaultMessage: 'Admin settings page',
   },
-  pageTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.pageTitle',
-    defaultMessage: 'Settings',
-  },
   tabSettings: {
     id: 'app.containers.AdminPage.SettingsPage.tabSettings',
     defaultMessage: 'General',
