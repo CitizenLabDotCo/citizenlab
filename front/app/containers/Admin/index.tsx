@@ -133,6 +133,7 @@ const AdminPage = memo<Props & WithRouterProps>(
       adminNoPadding ||
       pathname.includes('admin/dashboard') ||
       pathname.includes('admin/initiatives') ||
+      pathname.includes('admin/settings') ||
       pathname.includes('admin/reporting');
 
     const fullWidth =
@@ -140,6 +141,7 @@ const AdminPage = memo<Props & WithRouterProps>(
       endsWith(pathname, 'admin/dashboard/moderation') ||
       pathname.includes('admin/dashboard') ||
       pathname.includes('admin/initiatives') ||
+      pathname.includes('admin/settings') ||
       pathname.includes('admin/reporting');
 
     return (
