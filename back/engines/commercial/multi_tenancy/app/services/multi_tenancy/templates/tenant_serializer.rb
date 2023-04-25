@@ -68,7 +68,9 @@ module MultiTenancy
           # 'domicile' custom field because they will be created automatically from
           # the areas when loading the template.
           CustomFieldOption => serialize_records(
-            CustomFieldOption.where(custom_field: CustomField.where.not(code: 'domicile'))
+            CustomFieldOption.where(
+              custom_field: CustomField.where.not(code: 'domicile').or(CustomField.where(code: nil))
+            )
           ),
 
           # Custom maps
@@ -119,11 +121,11 @@ module MultiTenancy
           Membership => serialize_records(Membership.where(user: users)),
 
           TextImage => serialize_records(TextImage.where(imageable: [
-            CustomField,
-            Event,
-            Phase,
-            Project,
-            StaticPage,
+            CustomField.all,
+            Event.all,
+            Phase.all,
+            Project.all,
+            StaticPage.all,
             email_campaigns,
             ideas,
             initiatives
