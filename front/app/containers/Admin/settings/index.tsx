@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // router
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
@@ -10,96 +9,70 @@ import TabbedResource from 'components/admin/TabbedResource';
 
 // i18n
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 import Outlet from 'components/Outlet';
 
-export interface InputProps {}
+const SettingsPage = () => {
+  const { formatMessage } = useIntl();
 
-export interface Props extends InputProps {}
+  const [tabs, setTabs] = useState<ITab[]>([
+    {
+      name: 'general',
+      label: formatMessage(messages.tabSettings),
+      url: '/admin/settings/general',
+    },
+    {
+      name: 'customize',
+      label: formatMessage(messages.tabCustomize),
+      url: '/admin/settings/customize',
+    },
+    {
+      name: 'registration',
+      label: formatMessage(messages.tabRegistration),
+      url: '/admin/settings/registration',
+    },
+    {
+      label: formatMessage(messages.tabTopics),
+      name: 'topics',
+      url: '/admin/settings/topics',
+    },
+    {
+      name: 'areas',
+      label: formatMessage(messages.tabAreas),
+      url: '/admin/settings/areas',
+    },
+    {
+      name: 'policies',
+      label: formatMessage(messages.tabPolicies),
+      url: '/admin/settings/policies',
+    },
+  ]);
 
-interface State {
-  tabs: ITab[];
-}
-
-class SettingsPage extends React.PureComponent<
-  Props & WrappedComponentProps & WithRouterProps,
-  State
-> {
-  constructor(props: Props & WrappedComponentProps & WithRouterProps) {
-    super(props);
-    const { formatMessage } = this.props.intl;
-
-    this.state = {
-      tabs: [
-        {
-          name: 'general',
-          label: formatMessage(messages.tabSettings),
-          url: '/admin/settings/general',
-        },
-        {
-          name: 'customize',
-          label: formatMessage(messages.tabCustomize),
-          url: '/admin/settings/customize',
-        },
-        {
-          name: 'registration',
-          label: formatMessage(messages.tabRegistration),
-          url: '/admin/settings/registration',
-        },
-        {
-          label: formatMessage(messages.tabTopics),
-          name: 'topics',
-          url: '/admin/settings/topics',
-        },
-        {
-          name: 'areas',
-          label: formatMessage(messages.tabAreas),
-          url: '/admin/settings/areas',
-        },
-        {
-          name: 'policies',
-          label: formatMessage(messages.tabPolicies),
-          url: '/admin/settings/policies',
-        },
-      ],
-    };
-  }
-
-  handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) => {
-    this.setState(({ tabs }) => ({
-      tabs: insertConfiguration(insertTabOptions)(tabs),
-    }));
+  const handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) => {
+    setTabs(insertConfiguration(insertTabOptions)(tabs));
   };
 
-  render() {
-    const { formatMessage } = this.props.intl;
+  const resource = {
+    title: formatMessage(messages.pageTitle),
+  };
 
-    const resource = {
-      title: formatMessage(messages.pageTitle),
-    };
-
-    return (
-      <>
-        <Outlet
-          id="app.containers.Admin.settings.tabs"
-          onData={this.handleData}
+  return (
+    <>
+      <Outlet id="app.containers.Admin.settings.tabs" onData={handleData} />
+      <TabbedResource resource={resource} tabs={tabs}>
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
-        <TabbedResource resource={resource} tabs={this.state.tabs}>
-          <HelmetIntl
-            title={messages.helmetTitle}
-            description={messages.helmetDescription}
-          />
-          <div id="e2e-settings-container">
-            <RouterOutlet />
-          </div>
-        </TabbedResource>
-      </>
-    );
-  }
-}
+        <div id="e2e-settings-container">
+          <RouterOutlet />
+        </div>
+      </TabbedResource>
+    </>
+  );
+};
 
-export default withRouter(injectIntl(SettingsPage));
+export default SettingsPage;
