@@ -124,7 +124,7 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
 
       if (window.confirm(deleteMessage)) {
         this.setState({ itemsWhileDragging: null, isProcessing: true });
-        deleteUserCustomField(customFieldId).then(async () => {
+        deleteUserCustomField(customFieldId).then(() => {
           this.setState({ isProcessing: false });
           streams.fetchAllWith({
             partialApiEndpoint: [`${API_PATH}/users/custom_fields`],
