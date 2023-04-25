@@ -3,7 +3,7 @@ import { IOption } from 'typings';
 import useTopics from 'api/topics/useTopics';
 import useLocalize from 'hooks/useLocalize';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 
 export interface Props {
   value: string;

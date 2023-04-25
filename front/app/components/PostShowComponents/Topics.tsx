@@ -12,7 +12,7 @@ import { fontSizes, isRtl } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 // typings
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 
 const Container = styled.div`
   display: flex;

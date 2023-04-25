@@ -1,4 +1,4 @@
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 import { NilOrError } from 'utils/helperUtils';
 import { ITopicsQueryParams } from 'api/topics/types';
 import useTopics from 'api/topics/useTopics';

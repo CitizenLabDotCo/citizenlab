@@ -7,7 +7,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, lighten } from 'polished';
 
 // types
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 
 // intl
 import T from 'components/T';

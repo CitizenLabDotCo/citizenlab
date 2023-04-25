@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 
-// resources
-import { deleteTopic } from 'services/topics';
-
 // hooks
 import useTopics from 'api/topics/useTopics';
 
@@ -29,13 +26,14 @@ import Modal, {
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import useDeleteTopic from 'api/topics/useDeleteTopic';
 
 const AllTopics = () => {
   const { data: topics } = useTopics({ includeStaticPages: true });
+  const { mutate: deleteTopic, isLoading } = useDeleteTopic();
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);
   const [topicIdToDelete, setTopicIdToDelete] = useState<string | null>(null);
-  const [processingDeletion, setProcessingDeletion] = useState<boolean>(false);
 
   if (isNilOrError(topics)) return null;
 
@@ -54,17 +52,12 @@ const AllTopics = () => {
 
   const handleTopicDeletionConfirm = () => {
     if (topicIdToDelete) {
-      setProcessingDeletion(true);
-
-      deleteTopic(topicIdToDelete)
-        .then(() => {
-          setProcessingDeletion(false);
+      deleteTopic(topicIdToDelete, {
+        onSuccess: () => {
           setShowConfirmationModal(false);
           setTopicIdToDelete(null);
-        })
-        .catch(() => {
-          setProcessingDeletion(false);
-        });
+        },
+      });
     }
   };
 
@@ -120,7 +113,7 @@ const AllTopics = () => {
             <Button
               buttonStyle="delete"
               onClick={handleTopicDeletionConfirm}
-              processing={processingDeletion}
+              processing={isLoading}
               id="e2e-custom-topic-delete-confirmation-button"
             >
               <FormattedMessage {...messages.delete} />
