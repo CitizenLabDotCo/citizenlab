@@ -60,7 +60,7 @@ export const RightColumn = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 1400px;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
+  min-height: 100vh;
   padding-top: 45px;
   padding-right: 51px;
   padding-bottom: 45px;
