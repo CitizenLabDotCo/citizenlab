@@ -37,6 +37,7 @@ resource 'Permissions' do
 
       example 'List all permissions of a project when voting has been disabled' do
         @project.update!(voting_enabled: false)
+
         do_request
         assert_status 200
         json_response = json_parse response_body

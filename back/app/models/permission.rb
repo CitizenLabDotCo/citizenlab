@@ -32,6 +32,7 @@ class Permission < ApplicationRecord
   }
   SCOPE_TYPES = [nil, 'Project', 'Phase'].freeze
 
+  scope :filter_actions, ->(permission_scope) { where(action: available_actions(permission_scope)) }
   scope :order_by_action, lambda {
     order(Arel.sql(
       "CASE action
