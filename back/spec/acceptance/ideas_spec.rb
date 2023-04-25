@@ -651,6 +651,19 @@ resource 'Ideas' do
           end
         end
 
+        describe 'when creating an idea that is a survey response' do
+          let(:project) { create(:continuous_native_survey_project, default_assignee_id: create(:admin).id) }
+          let(:idea) { build(:native_survey_response, project: project) }
+
+          example 'does not assign anyone to the created idea', document: false do
+            do_request
+            assert_status 201
+            idea = Idea.find(json_parse(response_body).dig(:data, :id))
+            expect(idea.assignee_id).to be_nil
+            expect(idea.assigned_at).to be_nil
+          end
+        end
+
         describe 'when posting an idea in an active ideation phase, the correct form is used' do
           let(:project) { create(:project_with_active_ideation_phase) }
           let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }

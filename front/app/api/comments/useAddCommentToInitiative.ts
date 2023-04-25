@@ -1,11 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import commentKeys from 'api/comments/keys';
 import initiativesKeys from 'api/initiatives/keys';
-import { API_PATH } from 'containers/App/constants';
 import { CLErrorsJSON } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import streams from 'utils/streams';
 import { INewComment, IComment } from './types';
+import userCommentsCount from 'api/user_comments_count/keys';
 
 const addCommentToInitiative = async ({
   initiativeId,
@@ -31,18 +30,15 @@ const useAddCommentToInitiative = () => {
       queryClient.invalidateQueries({
         queryKey: initiativesKeys.item({ id: variables.initiativeId }),
       });
+      queryClient.invalidateQueries({
+        queryKey: userCommentsCount.items(),
+      });
 
       if (variables.parent_id) {
         queryClient.invalidateQueries({
           queryKey: commentKeys.list({ commentId: variables.parent_id }),
         });
       }
-
-      streams.fetchAllWith({
-        apiEndpoint: [
-          `${API_PATH}/users/${variables.author_id}/comments_count`,
-        ],
-      });
     },
   });
 };

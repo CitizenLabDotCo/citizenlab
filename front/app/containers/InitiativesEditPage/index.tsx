@@ -11,7 +11,6 @@ import {
   isSuperAdmin,
   isRegularUser,
 } from 'services/permissions/roles';
-import { ITopicData } from 'services/topics';
 
 // resources
 import HasPermission from 'components/HasPermission';
@@ -126,9 +125,7 @@ const InitiativesEditPage = ({
     }
   };
 
-  const initiativeTopics = topics.filter(
-    (topic) => !isNilOrError(topic)
-  ) as ITopicData[];
+  const initiativeTopics = topics.filter((topic) => !isNilOrError(topic));
   return (
     <HasPermission item={initiative.data} action="edit" context={initiative}>
       <InitiativesEditMeta />
