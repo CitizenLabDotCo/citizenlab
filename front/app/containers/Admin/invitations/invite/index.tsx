@@ -159,20 +159,6 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
     newlyAddedAdminsNumber,
   });
 
-  useEffect(() => {
-    if (anySeatsExceeded) {
-      setShowModal(true);
-    } else {
-      onSubmit({ save: true });
-    }
-  }, [anySeatsExceeded, onSubmit]);
-
-  useEffect(() => {
-    if (tenantLocales && !selectedLocale) {
-      setSelectedLocale(tenantLocales[0]);
-    }
-  }, [tenantLocales, selectedLocale]);
-
   const closeModal = () => {
     setShowModal(false);
     setProcessing(false);
@@ -471,6 +457,20 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
       onSubmit({ save: true });
     }
   };
+
+  useEffect(() => {
+    if (anySeatsExceeded) {
+      setShowModal(true);
+    } else {
+      onSubmit({ save: true });
+    }
+  }, [anySeatsExceeded, onSubmit]);
+
+  useEffect(() => {
+    if (tenantLocales && !selectedLocale) {
+      setSelectedLocale(tenantLocales[0]);
+    }
+  }, [tenantLocales, selectedLocale]);
 
   const projectOptions = getProjectOptions(projects, locale, tenantLocales);
   const groupOptions = getGroupOptions(groups, locale, tenantLocales);
