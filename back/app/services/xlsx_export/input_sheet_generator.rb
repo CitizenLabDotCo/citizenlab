@@ -177,8 +177,6 @@ module XlsxExport
     end
 
     def user_report_fields
-      return [] unless include_private_attributes
-
       user_fields.map do |field|
         if field.code == 'domicile'
           DomicileFieldForReport.new(field, :author)

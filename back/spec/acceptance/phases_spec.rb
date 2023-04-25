@@ -999,8 +999,9 @@ resource 'Phases' do
         end
 
         example 'Download phase inputs without private user data', document: false do
+          custom_field = create :custom_field
           do_request
-          expect(status).to eq 200
+          assert_status 200
           expect(xlsx_contents(response_body)).to match([
             {
               sheet_name: ideation_phase.title_multiloc['en'],
@@ -1026,7 +1027,8 @@ resource 'Phases' do
                 'URL',
                 'Project',
                 'Status',
-                'Assignee'
+                'Assignee',
+                custom_field.title_multiloc['en']
               ],
               rows: [
                 [
@@ -1051,7 +1053,8 @@ resource 'Phases' do
                   "http://example.org/ideas/#{ideation_response.slug}",
                   project.title_multiloc['en'],
                   ideation_response.idea_status.title_multiloc['en'],
-                  "#{assignee.first_name} #{assignee.last_name}"
+                  "#{assignee.first_name} #{assignee.last_name}",
+                  ''
                 ]
               ]
             }

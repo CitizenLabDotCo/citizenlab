@@ -289,16 +289,12 @@ resource 'Users' do
         describe 'create a user with no password' do
           example_request 'User successfully created and requires confirmation' do
             assert_status 201
-
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :confirmation_required)).to be(true)
+            expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
           end
 
           example_request 'Registration is not completed by default' do
             assert_status 201
-
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_nil
+            expect(response_data.dig(:attributes, :registration_completed_at)).to be_nil
           end
 
           example_request 'Sends a confirmation email' do
@@ -310,50 +306,50 @@ resource 'Users' do
 
         describe 'Reusing an existing user with no password' do
           context 'when there is an existing user that has no password' do
-            before do
-              light_user = create(:user_no_password, email: email)
-              light_user.confirm!
-            end
+            example 'existing confirmed user is successfully returned, confirmation requirement is reset and email sent' do
+              existing_user = create(:user_no_password, email: email)
+              existing_user.confirm!
 
-            example_request 'existing user is successfully returned and confirmation requirement is reset and email resent' do
+              do_request
               assert_status 200
-
-              json_response = json_parse(response_body)
-              expect(json_response.dig(:data, :attributes, :confirmation_required)).to be(true)
-
-              last_email = ActionMailer::Base.deliveries.last
-              user       = User.order(:created_at).last
-              expect(last_email.body.encoded).to include user.reload.email_confirmation_code
+              expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
+              expect(existing_user.email_confirmation_code_reset_count).to eq(0)
+              expect(ActionMailer::Base.deliveries.last.body.encoded).to include existing_user.reload.email_confirmation_code
             end
 
-            context 'when the request tries to pass additional changed attributes' do
+            example 'existing unconfirmed user is successfully returned, email sent, but resend stats are incremented', document: false do
+              existing_user = create(:user_no_password, email: email)
+
+              do_request
+              assert_status 200
+              expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
+              expect(existing_user.reload.email_confirmation_code_reset_count).to eq(1)
+              expect(ActionMailer::Base.deliveries.last.body.encoded).to include existing_user.reload.email_confirmation_code
+            end
+
+            context 'when the request tries to pass additional changed attributes', document: false do
               let(:first_name) { Faker::Name.first_name }
 
-              example_request 'email taken error is returned and confirmation requirement is not reset' do
+              example 'email taken error is returned and confirmation requirement is not reset' do
+                existing_user = create(:user_no_password, email: email)
+                existing_user.confirm!
+
+                do_request
                 assert_status 422
-
-                json_response = json_parse(response_body)
-                expect(json_response.dig(:errors, :email, 0, :error)).to eq('taken')
-
-                user = User.order(:created_at).last
-                expect(user.confirmation_required?).to be(false)
+                expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
+                expect(existing_user.confirmation_required?).to be(false)
               end
             end
           end
 
           context 'when there is an existing user WITH a password' do
-            before do
-              create(:user, email: email, password: 'gravy123')
-            end
+            example 'email taken error is returned and confirmation requirement is not reset' do
+              existing_user = create(:user, email: email, password: 'gravy123')
 
-            example_request 'email taken error is returned and confirmation requirement is not reset' do
+              do_request
               assert_status 422
-
-              json_response = json_parse(response_body)
-              expect(json_response.dig(:errors, :email, 0, :error)).to eq('taken')
-
-              user = User.order(:created_at).last
-              expect(user.confirmation_required?).to be(false)
+              expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
+              expect(existing_user.confirmation_required?).to be(false)
             end
           end
         end
@@ -598,7 +594,7 @@ resource 'Users' do
           expect(response_data[:type]).to eq 'seats'
           attributes = response_data[:attributes]
           expect(attributes[:admins_number]).to eq @admins.size
-          expect(attributes[:project_moderators_number]).to eq @moderators.size
+          expect(attributes[:moderators_number]).to eq @moderators.size
         end
       end
 
