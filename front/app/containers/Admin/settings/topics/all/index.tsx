@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { deleteTopic } from 'services/topics';
 
 // hooks
-import useTopics from 'hooks/useTopics';
+import useTopics from 'api/topics/useTopics';
 
 // i18n
 import messages from '../messages';
@@ -31,7 +31,7 @@ import Modal, {
 import { isNilOrError } from 'utils/helperUtils';
 
 const AllTopics = () => {
-  const topics = useTopics({ includeStaticPages: true });
+  const { data: topics } = useTopics({ includeStaticPages: true });
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);
   const [topicIdToDelete, setTopicIdToDelete] = useState<string | null>(null);
@@ -99,7 +99,7 @@ const AllTopics = () => {
         </Button>
       </ButtonWrapper>
 
-      <TopicsList topics={topics} handleDeleteClick={handleDeleteClick} />
+      <TopicsList topics={topics.data} handleDeleteClick={handleDeleteClick} />
 
       <Modal
         opened={showConfirmationModal}

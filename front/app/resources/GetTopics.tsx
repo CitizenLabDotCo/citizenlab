@@ -9,7 +9,19 @@ import {
   topicsStream,
 } from 'services/topics';
 import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
-import { Parameters as InputProps } from 'hooks/useTopics';
+import { Code } from 'api/topics/types';
+
+type InputProps = {
+  /** Don't use the ids and the query parameters (code, exclude_code, sort) together.
+   *  Only one of the two at a time.
+   */
+  topicIds?: string[];
+  code?: Code;
+  excludeCode?: Code;
+  sort?: 'new' | 'custom';
+  forHomepageFilter?: boolean;
+  includeStaticPages?: boolean;
+};
 
 type children = (renderProps: GetTopicsChildProps) => JSX.Element | null;
 

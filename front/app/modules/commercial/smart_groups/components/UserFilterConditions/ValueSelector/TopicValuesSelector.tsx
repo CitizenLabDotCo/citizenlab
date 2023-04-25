@@ -1,9 +1,8 @@
 import React, { memo } from 'react';
 import { IOption } from 'typings';
-import useTopics from 'hooks/useTopics';
+import useTopics from 'api/topics/useTopics';
 import useLocalize from 'hooks/useLocalize';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import { isNilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';
 
 export interface Props {
@@ -12,13 +11,13 @@ export interface Props {
 }
 
 const TopicValuesSelector = memo(({ value, onChange }: Props) => {
-  const topics = useTopics({});
+  const { data: topics } = useTopics({});
   const localize = useLocalize();
 
   const generateOptions = (): IOption[] => {
-    return isNilOrError(topics)
+    return !topics
       ? []
-      : topics.map((topic: ITopicData) => ({
+      : topics.data.map((topic: ITopicData) => ({
           value: topic.id,
           label: localize(topic.attributes.title_multiloc),
         }));
