@@ -111,9 +111,6 @@ const ChangePassword = ({ tenant }: Props) => {
       await streams.fetchAllWith({
         apiEndpoint: [`${API_PATH}/users/me`],
       });
-      await streams.fetchAllWith({
-        partialApiEndpoint: [`${API_PATH}/users/custom_fields`],
-      });
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
