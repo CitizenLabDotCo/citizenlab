@@ -69,7 +69,7 @@ describe.skip('Initaitve manager', () => {
     });
 
     it('Filters on All initiatives', () => {
-      cy.visit('/admin/initiatives/proposals/');
+      cy.visit('/admin/initiatives/');
       // grab and open assignee filter menu
       cy.get('#e2e-select-assignee-filter').click();
       // click on All initiatives filter
@@ -81,7 +81,7 @@ describe.skip('Initaitve manager', () => {
     });
     it('Filters on Assigned to me', () => {
       // do a refresh for the new initiative to appear
-      cy.visit('/admin/initiatives/proposals');
+      cy.visit('/admin/initiatives');
       // grab and open assignee filter menu
       cy.get('#e2e-select-assignee-filter').click();
       // click on Assigned to me filter
@@ -122,13 +122,13 @@ describe.skip('Initaitve manager', () => {
   // //   });
 
   // //   it('Filters on ideas that need feedback', () => {
-  // //     cy.visit('/admin/initiatives/proposals');
+  // //     cy.visit('/admin/initiatives');
 
   // //     // grab and open assignee filter menu
   // //     cy.get('#e2e-select-assignee-filter').click();
   // //     // click on Assigned to me filter
   // //     cy.get('#e2e-assignee-filter-assigned-to-user').click();
-  // //     cy.visit('/admin/initiatives/proposals');
+  // //     cy.visit('/admin/initiatives');
 
   // //     // Turn the 'need feedback' toggle on and check whether it only shows the idea assigned to user without official feedback
   // //     cy.get('#e2e-feedback_needed_filter_toggle').click();
@@ -138,7 +138,7 @@ describe.skip('Initaitve manager', () => {
 
   describe('Initiative preview ', () => {
     it('Opens when you click an initiative title and closes again when you click the X (close button)', () => {
-      cy.visit('/admin/initiatives/proposals/');
+      cy.visit('/admin/initiatives/');
       // grab and open assignee filter menu
       cy.get('#e2e-select-assignee-filter').click();
       // click on All ideas filter
@@ -184,7 +184,7 @@ describe.skip('Initaitve manager', () => {
           const newAdminLastName = newAdmin.body.data.attributes.last_name;
 
           // Refresh page to make sure new admin is picked up
-          cy.visit('/admin/initiatives/proposals/');
+          cy.visit('/admin/initiatives/');
           // grab and open assignee filter menu
           cy.get('#e2e-select-assignee-filter').click();
           // click on All initiatives filter

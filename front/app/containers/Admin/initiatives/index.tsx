@@ -34,7 +34,7 @@ const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
       {
         label: formatMessage(messages.proposals),
         name: 'proposals',
-        url: '/admin/initiatives/proposals',
+        url: '/admin/initiatives',
       },
       {
         label: formatMessage(messages.settingsTab),
