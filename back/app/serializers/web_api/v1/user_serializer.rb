@@ -42,8 +42,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   attribute :custom_field_values, if: proc { |object, params|
     view_private_attributes? object, params
   } do |object|
-    custom_field_values = CustomFieldService.remove_hidden_custom_fields(object.custom_field_values)
-    CustomFieldService.remove_disabled_custom_fields(custom_field_values)
+    CustomFieldService.remove_hidden_custom_fields(object.custom_field_values)
   end
 
   attribute :avatar, if: proc { |object|
