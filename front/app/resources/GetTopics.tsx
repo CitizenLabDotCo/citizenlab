@@ -7,7 +7,7 @@ type children = (renderProps: GetTopicsChildProps) => JSX.Element | null;
 
 type Props = ITopicsQueryParams & {
   topicIds?: string[];
-  children: children;
+  children?: children;
 };
 
 export type GetTopicsChildProps = ITopicData[] | NilOrError;
