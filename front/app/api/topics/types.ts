@@ -64,6 +64,7 @@ export interface ITopicAdd {
 }
 
 export interface ITopicUpdate {
+  id: string;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
 }

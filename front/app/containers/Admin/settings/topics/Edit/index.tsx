@@ -13,26 +13,36 @@ import messages from '../messages';
 import useTopic from 'api/topics/useTopic';
 
 // services
-import { updateTopic, ITopicUpdate } from 'services/topics';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
 import TopicForm from '../TopicForm';
 
+import useUpdateTopic from 'api/topics/useUpdateTopic';
+import { ITopicUpdate } from 'api/topics/types';
+
 // typings
 
 const Edit = () => {
   const { topicId } = useParams() as { topicId: string };
   const { data: topic } = useTopic(topicId);
+  const { mutate: updateTopic } = useUpdateTopic();
 
-  const handleSubmit = async (values: ITopicUpdate) => {
+  const handleSubmit = (values: Omit<ITopicUpdate, 'id'>) => {
     if (!topic) return;
 
-    await updateTopic(topic.data.id, {
-      ...values,
-    });
-    clHistory.push('/admin/settings/topics');
+    updateTopic(
+      {
+        id: topic.data.id,
+        ...values,
+      },
+      {
+        onSuccess: () => {
+          clHistory.push('/admin/settings/topics');
+        },
+      }
+    );
   };
 
   const goBack = () => {
