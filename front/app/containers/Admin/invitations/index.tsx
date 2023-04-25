@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -15,6 +16,7 @@ import { injectIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 const InvitationsPage = (props: WrappedComponentProps) => {
+  const location = useLocation();
   const tabs = [
     {
       label: props.intl.formatMessage(messages.tabInviteUsers),
@@ -35,12 +37,15 @@ const InvitationsPage = (props: WrappedComponentProps) => {
   const goBack = () => {
     clHistory.goBack();
   };
+  const hasGoBackLink = location.key !== 'default';
 
   return (
     <>
-      <Box w="100%">
-        <GoBackButton onClick={goBack} />
-      </Box>
+      {hasGoBackLink && (
+        <Box w="100%">
+          <GoBackButton onClick={goBack} />
+        </Box>
+      )}
       <TabbedResource resource={resource} tabs={tabs}>
         <HelmetIntl
           title={messages.helmetTitle}
