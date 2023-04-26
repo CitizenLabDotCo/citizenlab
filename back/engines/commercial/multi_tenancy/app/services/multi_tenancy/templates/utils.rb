@@ -49,15 +49,16 @@ module MultiTenancy
           .tap { |template_names| raise_if_duplicates(template_names) }
       end
 
-      def required_locales(template_name, external_subfolder: release_prefix)
+      def required_locales(template_name, external_subfolder: nil)
         serialized_models = fetch_template_models(template_name, external_subfolder: external_subfolder)
         self.class.user_locales(serialized_models)
       end
 
-      def fetch_template_models(template_name, external_subfolder: release_prefix)
+      def fetch_template_models(template_name, external_subfolder: nil)
         if internal_template?(template_name)
           fetch_internal_template_models(template_name)
         else
+          external_subfolder ||= release_prefix
           fetch_external_template_models(template_name, prefix: external_subfolder)
         end
       end

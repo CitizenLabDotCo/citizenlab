@@ -23,7 +23,9 @@ describe MultiTenancy::Templates::ApplyService do
         tenant_name = template_name.tr('._', '-')
         tenant = create(:tenant, name: tenant_name, host: "#{tenant_name}.localhost", locales: locales, lifecycle: 'active')
 
-        tenant.switch { service.apply(template_name) }
+        tenant.switch do
+          expect { service.apply(template_name) }.not_to raise_error
+        end
       end
     end
   end
