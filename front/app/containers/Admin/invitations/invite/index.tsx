@@ -338,6 +338,21 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
     saveAs(blob, 'example.xlsx');
   };
 
+  const handleInvitationFlowConfirmation = (newSeats: IInvitesNewSeats) => {
+    setNewlyAddedAdminsNumber(
+      newSeats.data.attributes.newly_added_admins_number
+    );
+    setNewlyAddedModeratorsNumber(
+      newSeats.data.attributes.newly_added_moderators_number
+    );
+
+    if (anySeatsExceeded) {
+      setShowModal(true);
+    } else {
+      onSubmit({ save: true });
+    }
+  };
+
   const bulkInvite: INewBulkInvite = useMemo(() => {
     const getRoles = () => {
       const roles: INewBulkInvite['roles'] = [];
@@ -405,12 +420,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
               await bulkInviteXLSX(inviteOptions);
             } else {
               const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
-              setNewlyAddedAdminsNumber(
-                newSeats.data.attributes.newly_added_admins_number
-              );
-              setNewlyAddedModeratorsNumber(
-                newSeats.data.attributes.newly_added_moderators_number
-              );
+              handleInvitationFlowConfirmation(newSeats);
             }
           }
 
@@ -425,12 +435,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
               const newSeats = await bulkInviteCountNewSeatsEmails(
                 inviteOptions
               );
-              setNewlyAddedAdminsNumber(
-                newSeats.data.attributes.newly_added_admins_number
-              );
-              setNewlyAddedModeratorsNumber(
-                newSeats.data.attributes.newly_added_moderators_number
-              );
+              handleInvitationFlowConfirmation(newSeats);
             }
           }
 
@@ -485,14 +490,6 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
       onSubmit({ save: true });
     }
   };
-
-  useEffect(() => {
-    if (anySeatsExceeded) {
-      setShowModal(true);
-    } else {
-      onSubmit({ save: true });
-    }
-  }, [anySeatsExceeded, onSubmit]);
 
   useEffect(() => {
     if (tenantLocales && !selectedLocale) {
