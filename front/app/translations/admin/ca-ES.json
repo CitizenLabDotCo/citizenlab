@@ -548,7 +548,6 @@
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Eliminar el grup",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Editar el grup",
   "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Administradors i gestors",
-  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle": "Veure qui estan seleccionats com a administradors, administradors de carpetes i gestors de projectes.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Usuaris registrats",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grups",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Obteniu una visió general de totes les persones i organitzacions que s'han registrat a la plataforma. Afegiu una selecció d'usuaris a grups manuals o grups intel·ligents.",

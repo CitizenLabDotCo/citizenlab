@@ -548,7 +548,6 @@
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Gruppe peeruk",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Gruppe allanngortiteruk",
   "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Admins & managers",
-  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle": "View who are selected as admins, folder admins, and project managers.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Atuisut nalunaarsukkat",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Gruppit",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Inuit suliniaqatigiiffiillu quppernermi nalunaarsimasut tamakkiisumik takusinnaalikkit. Atuisut toqqakkat gruppinut nammineq aaqqissukkanut smart gruppinulluunniit ilanngukkit.",

@@ -580,7 +580,6 @@
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Delete Group",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Edit Group",
   "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Admins & managers",
-  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle": "View who are selected as admins, folder admins, and project managers.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Registered users",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Groups",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Get an overview of all the people and organisations that registered on the platform. Add a selection of users to Manual groups or Smart groups.",

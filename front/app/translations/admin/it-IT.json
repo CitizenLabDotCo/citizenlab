@@ -548,7 +548,6 @@
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Cancellare il gruppo",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Modifica gruppo",
   "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Amministratori e manager",
-  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle": "Visualizzare chi è selezionato come amministratore, amministratore di cartella e project manager.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Utenti registrati",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Gruppi",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Ottieni una panoramica di tutte le persone e organizzazioni che si sono registrate sulla piattaforma. Aggiungi una selezione di utenti ai gruppi manuali o ai gruppi Smart.",
