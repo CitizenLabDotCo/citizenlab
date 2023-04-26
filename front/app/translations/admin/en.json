@@ -1650,7 +1650,7 @@
   "app.containers.AdminPage.groups.permissions.selectValueError": "Please select an answer type",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestions": "Ask platform level registration questions",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Use this setting if collecting name, last name, and answers to platform level demographic questions is important to you. It may increase the barrier for participation.",
-  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription": "Responses to demographic questions will get stored in user profiles. Answers to these questions will be accessible to both admins and moderators to easy participation analysis. Questions will only be asked to users who have not answered them before.",
+  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription2": "Responses to demographic questions will get stored in user profiles. Answers to these questions will be accessible to both admins and moderators to easy participation analysis. Questions will only be asked to users who have not answered them before.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Ask questions to participants",
   "app.containers.AdminPage.projects.all.existingProjects": "Existing projects",
   "app.containers.AdminPage.projects.all.newProjectFolder": "Create a project folder",
