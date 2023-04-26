@@ -34,12 +34,6 @@ export interface IGroup {
   data: IGroupData;
 }
 
-export interface GetGroupsQueryParameters {
-  'page[number]'?: number;
-  'page[size]'?: number;
-  membership_type?: MembershipType;
-}
-
 export function addGroup(object: GroupDiff) {
   return streams.add<IGroups>(`${API_PATH}/groups`, { group: object });
 }
