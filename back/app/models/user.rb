@@ -511,27 +511,27 @@ class User < ApplicationRecord
   private
 
   def validate_not_duplicate_new_email
-    if new_email
-      if User.find_by_cimail(new_email)
-        errors.add(:email, :taken, value: new_email)
-      elsif errors[:new_email].present?
-        ErrorsService.new.remove errors, :new_email, :invalid, value: new_email
-        errors.add(:email, :invalid, value: new_email)
-      end
+    return unless new_email
+
+    if User.find_by_cimail(new_email)
+      errors.add(:email, :taken, value: new_email)
+    elsif errors[:new_email].present?
+      ErrorsService.new.remove errors, :new_email, :invalid, value: new_email
+      errors.add(:email, :invalid, value: new_email)
     end
   end
 
   def validate_not_duplicate_email
-    if email && (duplicate_user = User.find_by_cimail(email)).present? && duplicate_user.id != id
-      if duplicate_user.invite_pending?
-        ErrorsService.new.remove errors, :email, :taken, value: email
-        errors.add(:email, :taken_by_invite, value: email, inviter_email: duplicate_user.invitee_invite&.inviter&.email)
-      elsif duplicate_user.email != email
-        # We're only checking this case, as the other case is covered
-        # by the uniqueness constraint which can "cleverly" distinguish
-        # true duplicates from the record itself.
-        errors.add(:email, :taken, value: email)
-      end
+    return unless email && (duplicate_user = User.find_by_cimail(email)).present? && duplicate_user.id != id
+
+    if duplicate_user.invite_pending?
+      ErrorsService.new.remove errors, :email, :taken, value: email
+      errors.add(:email, :taken_by_invite, value: email, inviter_email: duplicate_user.invitee_invite&.inviter&.email)
+    elsif duplicate_user.email != email
+      # We're only checking this case, as the other case is covered
+      # by the uniqueness constraint which can "cleverly" distinguish
+      # true duplicates from the record itself.
+      errors.add(:email, :taken, value: email)
     end
   end
 
