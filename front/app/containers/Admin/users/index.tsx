@@ -53,14 +53,16 @@ import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 
 // Services
-import { IGroupData, addGroup, MembershipType } from 'services/groups';
+import { IGroupData, MembershipType } from 'api/groups/types';
 
 import Outlet from 'components/Outlet';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAddGroup from 'api/groups/useAddGroup';
 
 export type GroupCreationModal = false | 'step1' | MembershipType;
 
 const UsersPage = () => {
+  const { mutate: addGroup } = useAddGroup();
   const [groupCreationModal, setGroupCreationModal] =
     useState<GroupCreationModal>(false);
   const isVerificationEnabled = useFeatureFlag({ name: 'verification' });
@@ -79,9 +81,15 @@ const UsersPage = () => {
     setGroupCreationModal(groupType);
   };
 
-  const handleSubmitForm = async (values: NormalFormValues) => {
-    await addGroup({ ...values });
-    closeGroupCreationModal();
+  const handleSubmitForm = (values: NormalFormValues) => {
+    addGroup(
+      { ...values },
+      {
+        onSuccess: () => {
+          closeGroupCreationModal();
+        },
+      }
+    );
   };
 
   const renderModalHeader = () => {

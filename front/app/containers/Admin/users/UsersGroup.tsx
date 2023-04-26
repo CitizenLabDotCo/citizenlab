@@ -23,7 +23,7 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // Services
-import { updateGroup, MembershipType } from 'services/groups';
+import { updateGroup } from 'services/groups';
 import { deleteMembershipByUserId } from 'services/groupMemberships';
 
 // tracking
@@ -34,6 +34,7 @@ import Outlet from 'components/Outlet';
 import { useParams } from 'react-router-dom';
 import useGroup from 'api/groups/useGroup';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { MembershipType } from 'api/groups/types';
 
 const UsersGroup = () => {
   const isVerificationEnabled = useFeatureFlag({ name: 'verification' });

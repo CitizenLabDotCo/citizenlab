@@ -23,8 +23,8 @@ export interface IGroupData {
   attributes: IGroupDataAttributes;
 }
 
-export interface GroupDiff {
-  title_multiloc?: IGroupData['attributes']['title_multiloc'];
+export interface IGroupAdd {
+  title_multiloc: IGroupData['attributes']['title_multiloc'];
   membership_type: IGroupData['attributes']['membership_type'];
 }
 

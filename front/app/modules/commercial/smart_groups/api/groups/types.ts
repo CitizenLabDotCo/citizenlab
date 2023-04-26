@@ -1,7 +1,7 @@
-import 'services/groups';
-import { TRule } from '../components/UserFilterConditions/rules';
+import 'api/groups/types';
+import { TRule } from '../../components/UserFilterConditions/rules';
 
-declare module 'services/groups' {
+declare module 'api/groups/types' {
   export interface IMembershipTypeMap {
     rules: 'rules';
   }

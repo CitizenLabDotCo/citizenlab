@@ -20,7 +20,7 @@ import GetUsers, {
 } from 'resources/GetUsers';
 
 // Services
-import { MembershipType } from 'services/groups';
+import { MembershipType } from 'api/groups/types';
 
 // Typings
 interface InputProps {

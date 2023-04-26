@@ -1,4 +1,4 @@
-import { IGroupData } from 'services/groups';
+import { IGroupData } from 'api/groups/types';
 import useGroup from 'api/groups/useGroup';
 
 interface InputProps {

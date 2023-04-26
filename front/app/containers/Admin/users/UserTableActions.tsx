@@ -10,7 +10,7 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 
 // Services
-import { MembershipType } from 'services/groups';
+import { MembershipType } from 'api/groups/types';
 import {
   addGroupMembership,
   IGroupMembership,

@@ -1,6 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { Multiloc } from 'typings';
+import { MembershipType } from 'api/groups/types';
 
 export interface IMembershipTypeMap {
   manual: 'manual';
@@ -12,8 +13,6 @@ export interface IGroupDataAttributes {
   memberships_count: number;
   membership_type: MembershipType;
 }
-
-export type MembershipType = IMembershipTypeMap[keyof IMembershipTypeMap];
 
 export interface IGroupData {
   id: string;
