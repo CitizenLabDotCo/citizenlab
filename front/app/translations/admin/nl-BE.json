@@ -1365,7 +1365,6 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSave": "Antwoordoptie opslaan",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess": "Antwoordoptie succesvol opgeslagen",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Antwoordmogelijkheden",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation": "Bent u zeker dat u dit registratieveld wilt verwijderen?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "Weet je zeker dat je deze optie wilt verwijderen?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle": "Velden",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip": "Sleep de velden om te bepalen in welke volgorde deze getoond worden in het registratieformulier.",

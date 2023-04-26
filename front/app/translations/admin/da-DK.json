@@ -1365,7 +1365,6 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSave": "Gem svarmulighed",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess": "Svarmulighed gemt med succes",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Svarvalg",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation": "Er du sikker på, at du ønsker at slette dette brugerdefinerede felt?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "Er du sikker på, at du ønsker at slette denne brugerdefinerede feltindstilling?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle": "Felter",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip": "Træk og slip felterne for at bestemme den rækkefølge, de skal vises i tilmeldingsformularen.",
