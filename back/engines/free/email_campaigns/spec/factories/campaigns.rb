@@ -42,10 +42,6 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :first_idea_published_campaign, class: EmailCampaigns::Campaigns::FirstIdeaPublished do
-    enabled { true }
-  end
-
   factory :idea_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::IdeaMarkedAsSpam do
     enabled { true }
   end
