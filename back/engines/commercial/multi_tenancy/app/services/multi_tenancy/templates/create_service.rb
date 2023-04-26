@@ -102,6 +102,14 @@ module MultiTenancy
         end
 
         [prefix, *class_parts, attribute_name, identifier, filename].join('/')
+      rescue NameError
+        # NameErrors are raised when the model class cannot be inferred from the key.
+        # This can be caused by:
+        # - some pollution in the tenant bucket (e.g., some files that were moved
+        #   manually)
+        # - some changes to the file path structure over time. In the past, some uploads
+        #   had a different path structure that did not include the model class.
+        nil
       end
 
       def s3_utils
