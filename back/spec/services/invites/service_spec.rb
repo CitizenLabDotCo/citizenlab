@@ -131,8 +131,8 @@ describe Invites::Service do
       context 'when both admin and moderator seats are incremented' do
         let(:hash_array) do
           [
-            { email: 'user@domain.net', admin: 'TRUE' },
-            { email: 'user2@domain.net' }
+            { email: 'admin@domain.net', admin: 'TRUE' },
+            { email: 'moder@domain.net' }
           ]
         end
 
@@ -144,6 +144,71 @@ describe Invites::Service do
             service.bulk_create_xlsx(xlsx, { 'roles' => [new_role] })
           end.to change { AppConfiguration.instance.settings['core']['additional_admins_number'] }.from(0).to(1)
             .and(change { AppConfiguration.instance.settings['core']['additional_moderators_number'] }.from(0).to(1))
+        end
+
+        it 'logs activity with correct user' do
+          ActiveJob::Base.queue_adapter.enqueued_jobs = []
+
+          create(:project_moderator) # to reach limit
+          create(:admin) # to reach limit
+          new_role = { 'type' => 'project_moderator', 'project_id' => create(:project).id }
+          service.bulk_create_xlsx(xlsx, { 'roles' => [new_role] })
+
+          additional_moder_job = ActiveJob::Base.queue_adapter.enqueued_jobs.find do |job|
+            job['job_class'] == 'LogActivityJob' && job['arguments'][1] == 'additional_moderators_number_incremented'
+          end
+          additional_admin_job = ActiveJob::Base.queue_adapter.enqueued_jobs.find do |job|
+            job['job_class'] == 'LogActivityJob' && job['arguments'][1] == 'additional_admins_number_incremented'
+          end
+          additional_moder = GlobalID::Locator.locate(additional_moder_job['arguments'][0]['_aj_globalid'])
+          additional_admin = GlobalID::Locator.locate(additional_admin_job['arguments'][0]['_aj_globalid'])
+
+          expect(additional_moder.email).to eq('moder@domain.net')
+          expect(additional_admin.email).to eq('admin@domain.net')
+        end
+      end
+
+      context 'when adding one more moderator role to existing user' do
+        let(:hash_array) do
+          [
+            { email: 'user1@domain.net' },
+            { email: 'user2@domain.net' }
+          ]
+        end
+
+        shared_examples 'logs activity with correct user' do
+          it 'logs activity with correct user' do
+            ActiveJob::Base.queue_adapter.enqueued_jobs = []
+
+            new_role = { 'type' => 'project_moderator', 'project_id' => create(:project).id }
+            expect do
+              service.bulk_create_xlsx(xlsx, { 'roles' => [new_role] })
+            end.to change { AppConfiguration.instance.settings['core']['additional_moderators_number'] }.from(0).to(1)
+
+            additional_moder_job = ActiveJob::Base.queue_adapter.enqueued_jobs.find do |job|
+              job['job_class'] == 'LogActivityJob' && job['arguments'][1] == 'additional_moderators_number_incremented'
+            end
+            additional_moder = GlobalID::Locator.locate(additional_moder_job['arguments'][0]['_aj_globalid'])
+
+            expect(additional_moder.email).to eq('user2@domain.net') # the first user has already had a role before
+          end
+        end
+
+        context 'when existing user is moderator' do
+          before do
+            create(:project_moderator, email: 'user1@domain.net') # to reach limit
+          end
+
+          it_behaves_like 'logs activity with correct user'
+        end
+
+        context 'when existing user is admin' do
+          before do
+            create(:project_moderator) # to reach limit
+            create(:admin, email: 'user1@domain.net')
+          end
+
+          it_behaves_like 'logs activity with correct user'
         end
       end
 

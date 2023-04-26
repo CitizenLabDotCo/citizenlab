@@ -1185,6 +1185,8 @@ workflows:
           env_file: ".env-web"
       # Disabling the check for the UK cluster for now, as it is likely the root cause of CL-3026.
       # See: https://citizenlab.atlassian.net/browse/CL-3026
+      # Don't forget to uncomment the "UK" requirement in 'slack-invalid-data-success'
+      # when re-enabling this.
       # - check-for-inconsistent-data:
       #     <<: *slack-fail-post-step-inconsistent-data
       #     name: "UK"
@@ -1200,4 +1202,4 @@ workflows:
             - "South America"
             - "Canada"
             - "US West"
-            - "UK"
+      #     - "UK"
