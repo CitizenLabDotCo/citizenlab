@@ -1531,8 +1531,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Geef aan welke informatie mensen gevraagd wordt te delen bij het aanmelden.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologie",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Instellingen succesvol bijgewerkt.",
-  "app.containers.AdminPage.SettingsPage.tabAreas": "Geografische gebieden",
-  "app.containers.AdminPage.SettingsPage.tabCustomize": "Startpagina en stijl",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Beleidspagina's",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registratiegegevens",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Algemeen",

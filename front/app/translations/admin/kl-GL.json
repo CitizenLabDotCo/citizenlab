@@ -1483,8 +1483,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Inuit nalunaaraangamik paasissutissanik sunik tunniussinissaannik qinnuigineqartassanersut allagit.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Taaguusersuutit",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Settings updated successfully.",
-  "app.containers.AdminPage.SettingsPage.tabAreas": "Nunami immikkoortut",
-  "app.containers.AdminPage.SettingsPage.tabCustomize": "Naleqqussaagit",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Politikkit",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registration",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Nalinginnaasumik",

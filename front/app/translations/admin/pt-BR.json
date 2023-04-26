@@ -1531,8 +1531,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Especifique quais informações as pessoas são solicitadas a fornecer quando se inscrevem.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologia",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Configurações atualizadas com sucesso.",
-  "app.containers.AdminPage.SettingsPage.tabAreas": "Áreas geográficas",
-  "app.containers.AdminPage.SettingsPage.tabCustomize": "Página inicial e estilo",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Políticas",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Inscrição",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Geral",

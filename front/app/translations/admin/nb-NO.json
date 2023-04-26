@@ -1531,8 +1531,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Spesifiser hvilken informasjon folk må oppgi når de registrere seg.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologi",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Innstillingene er oppdatert.",
-  "app.containers.AdminPage.SettingsPage.tabAreas": "Geografiske områder",
-  "app.containers.AdminPage.SettingsPage.tabCustomize": "Tilpass",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Retningslinjer",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registrering",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Generelt",

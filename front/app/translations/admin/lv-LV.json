@@ -1531,8 +1531,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Norādīt, kāda informācija ir jāsniedz, piesakoties.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminoloģija",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Iestatījumi veiksmīgi atjaunināti.",
-  "app.containers.AdminPage.SettingsPage.tabAreas": "Ģeogrāfiskās zonas",
-  "app.containers.AdminPage.SettingsPage.tabCustomize": "Pielāgot",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Politikas",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Reģistrācija",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Vispārīgi",

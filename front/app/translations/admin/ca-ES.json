@@ -1483,8 +1483,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Especifiqueu quina informació es demana que proporcionin les persones en registrar-se.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologia",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Settings updated successfully.",
-  "app.containers.AdminPage.SettingsPage.tabAreas": "Àrees geogràfiques",
-  "app.containers.AdminPage.SettingsPage.tabCustomize": "Personalitza",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Polítiques",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registration",
   "app.containers.AdminPage.SettingsPage.tabSettings": "General",

@@ -1531,8 +1531,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Ange vilken information som personer ombeds lämna när de registrerar sig.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologi",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Inställningarna har uppdaterats framgångsrikt.",
-  "app.containers.AdminPage.SettingsPage.tabAreas": "Geografiska områden",
-  "app.containers.AdminPage.SettingsPage.tabCustomize": "Anpassa",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Policyer",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registrering",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Allmän",

@@ -1531,8 +1531,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Angiv, hvilke oplysninger man bliver bedt om at opgive, når man tilmelder sig.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologi",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Indstillinger er opdateret med succes.",
-  "app.containers.AdminPage.SettingsPage.tabAreas": "Geografiske områder",
-  "app.containers.AdminPage.SettingsPage.tabCustomize": "Tilpas",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Politikker",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registrerings",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Generelt",

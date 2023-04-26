@@ -1531,8 +1531,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Legen Sie fest, welche Informationen die Benutzerinnen bei der Anmeldung angeben müssen.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologie",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Einstellungen erfolgreich gespeichert",
-  "app.containers.AdminPage.SettingsPage.tabAreas": "Geografische Gebiete",
-  "app.containers.AdminPage.SettingsPage.tabCustomize": "Anpassen",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Richtlinien",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registrierung",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Allgemein",

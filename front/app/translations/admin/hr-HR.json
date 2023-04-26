@@ -1531,8 +1531,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Odredite koje informacije se zahtijevaju od korisnika prilikom registracije.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologija",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Postavke su uspješno ažurirane.",
-  "app.containers.AdminPage.SettingsPage.tabAreas": "Geografsko područje",
-  "app.containers.AdminPage.SettingsPage.tabCustomize": "Prilagodi",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Pravila",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registracija",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Općenito",

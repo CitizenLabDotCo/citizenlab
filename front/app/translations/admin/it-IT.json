@@ -1483,8 +1483,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminology",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Impostazioni aggiornate con successo.",
-  "app.containers.AdminPage.SettingsPage.tabAreas": "Geographic areas",
-  "app.containers.AdminPage.SettingsPage.tabCustomize": "Customize",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Politiche",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registration",
   "app.containers.AdminPage.SettingsPage.tabSettings": "General",
