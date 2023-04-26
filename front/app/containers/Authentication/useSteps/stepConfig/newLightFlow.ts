@@ -9,6 +9,10 @@ import { handleOnSSOClick } from 'services/singleSignOn';
 import streams from 'utils/streams';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
+// tracks
+import tracks from '../../tracks';
+import { trackEventByName } from 'utils/analytics';
+
 // events
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
@@ -38,6 +42,8 @@ export const newLightFlow = (
 
     setStatus('ok');
     setCurrentStep('closed');
+
+    trackEventByName(tracks.signUpFlowCompleted);
 
     const { successAction } = getAuthenticationData();
     if (successAction) {
