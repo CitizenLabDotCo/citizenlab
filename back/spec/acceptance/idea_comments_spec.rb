@@ -219,7 +219,7 @@ resource 'Comments' do
         expect(status).to eq 200
 
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        comments_ids = worksheet.drop(1).collect {|row| row[0].value}
+        comments_ids = worksheet.drop(1).collect { |row| row[0].value }
 
         expect(comments_ids).to match_array @comments.pluck(:id)
         expect(comments_ids).not_to include(@unmoderated_comment.id)
