@@ -30,7 +30,6 @@ Initiative changed_body
 Initiative changed_status
 Initiative changed_title
 Initiative deleted
-Initiative first_published_by_user
 Initiative published
 Invite accepted
 Invite created
