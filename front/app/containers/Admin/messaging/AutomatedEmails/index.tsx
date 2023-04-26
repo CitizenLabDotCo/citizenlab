@@ -4,22 +4,15 @@ import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
 import { ICampaignData, updateCampaign } from 'services/campaigns';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
-import { Toggle } from '@citizenlab/cl2-component-library';
+import { Toggle, Box, Text, Title } from '@citizenlab/cl2-component-library';
 import {
   List as AutomatedEmailsList,
   Row,
   TextCell,
 } from 'components/admin/ResourceList';
-import Warning from 'components/UI/Warning';
-import styled from 'styled-components';
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-
-const StyledWarning = styled(Warning)`
-  max-width: 600px;
-  margin-bottom: 30px;
-`;
+import { colors } from 'utils/styleUtils';
 
 type Props = GetCampaignsChildProps;
 
@@ -34,28 +27,37 @@ const AutomatedCampaigns = ({ campaigns }: Props) => {
 
   return (
     <>
-      <StyledWarning
-        text={<FormattedMessage {...messages.automatedEmailCampaignsInfo} />}
-      />
-      <AutomatedEmailsList>
-        {campaigns.map((campaign) => (
-          <Row key={campaign.id}>
-            <Toggle
-              disabled={isUndefined(campaign.attributes.enabled)}
-              checked={
-                isUndefined(campaign.attributes.enabled) ||
-                campaign.attributes.enabled
-              }
-              onChange={handleOnEnabledToggle(campaign)}
-            />
-            <TextCell className="expand">
-              <T
-                value={campaign.attributes.admin_campaign_description_multiloc}
+      <Box mb="28px">
+        <Title color="primary">
+          <FormattedMessage {...messages.automatedEmails} />
+        </Title>
+        <Text color="coolGrey600">
+          <FormattedMessage {...messages.automatedEmailCampaignsInfo} />
+        </Text>
+      </Box>
+      <Box background={colors.white} p="40px">
+        <AutomatedEmailsList>
+          {campaigns.map((campaign) => (
+            <Row key={campaign.id}>
+              <Toggle
+                disabled={isUndefined(campaign.attributes.enabled)}
+                checked={
+                  isUndefined(campaign.attributes.enabled) ||
+                  campaign.attributes.enabled
+                }
+                onChange={handleOnEnabledToggle(campaign)}
               />
-            </TextCell>
-          </Row>
-        ))}
-      </AutomatedEmailsList>
+              <TextCell className="expand">
+                <T
+                  value={
+                    campaign.attributes.admin_campaign_description_multiloc
+                  }
+                />
+              </TextCell>
+            </Row>
+          ))}
+        </AutomatedEmailsList>
+      </Box>
     </>
   );
 };

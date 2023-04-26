@@ -19,7 +19,6 @@ import NavigationTabs, {
 } from 'components/admin/NavigationTabs';
 import Link from 'utils/cl-router/Link';
 import { matchPathToUrl } from 'utils/helperUtils';
-import { colors } from 'utils/styleUtils';
 
 interface DataProps {
   canManageAutomatedCampaigns: GetPermissionChildProps;
@@ -96,11 +95,7 @@ const MessagingDashboard = ({
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        <Box
-          id="e2e-initiatives-admin-container"
-          background={colors.white}
-          p="40px"
-        >
+        <Box id="e2e-initiatives-admin-container">
           <RouterOutlet />
         </Box>
       </TabsPageLayout>

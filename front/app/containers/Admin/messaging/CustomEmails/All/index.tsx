@@ -8,7 +8,7 @@ import { isDraft } from 'services/campaigns';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import { List } from 'components/admin/ResourceList';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Box } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/admin/Pagination';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import DraftCampaignRow from './DraftCampaignRow';
@@ -55,7 +55,7 @@ const Campaigns = ({
 
   if (campaigns.length === 0) {
     return (
-      <>
+      <Box background={colors.white} p="40px">
         <NoCampaignsWrapper>
           <Icon name="email-2" width="80px" height="80px" />
           <NoCampaignsHeader>
@@ -66,11 +66,11 @@ const Campaigns = ({
           </NoCampaignsDescription>
           <NewCampaignButton />
         </NoCampaignsWrapper>
-      </>
+      </Box>
     );
   } else {
     return (
-      <>
+      <Box background={colors.white} p="40px">
         <ButtonWrapper>
           <NewCampaignButton />
         </ButtonWrapper>
@@ -88,7 +88,7 @@ const Campaigns = ({
           totalPages={lastPage}
           loadPage={onChangePage}
         />
-      </>
+      </Box>
     );
   }
 };

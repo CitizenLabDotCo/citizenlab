@@ -222,15 +222,35 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.noTextingCampaignsHeader',
     defaultMessage: 'No SMS has been drafted or sent yet',
   },
+  message: {
+    id: 'app.containers.Admin.emails.message',
+    defaultMessage: 'Message',
+  },
+  dateSent: {
+    id: 'app.containers.Admin.emails.dateSent',
+    defaultMessage: 'Date sent',
+  },
+  recipients: {
+    id: 'app.containers.Admin.emails.recipients',
+    defaultMessage: 'Recipients',
+  },
+  status: {
+    id: 'app.containers.Admin.emails.status',
+    defaultMessage: 'Status',
+  },
   noCampaignsDescription: {
     id: 'app.containers.Admin.emails.noCampaignsDescription',
     defaultMessage:
       'Custom email campaigns are emails created from scratch. Their content and recipients can be chosen and you can follow up on their results through statistics.',
   },
   automatedEmailCampaignsInfo: {
-    id: 'app.containers.Admin.emails.automatedEmailCampaignsInfo',
+    id: 'app.containers.Admin.emails.automatedEmailCampaignsInfo1',
     defaultMessage:
-      'Automated email campaigns are sent out by default and are triggered by a user’s actions. Some of them can be turned off. Others are an inherent part of user interactions with the platform and therefore can’t be turned off.',
+      "Automated emails are automatically sent out and are triggered by a user's actions. You can turn some of them off for all users of your platform. The other automated emails can not be turned off because they are required for the proper functioning of your platform.",
+  },
+  automatedEmails: {
+    id: 'app.containers.Admin.emails.automatedEmails',
+    defaultMessage: 'Automated emails',
   },
   allUsers: {
     id: 'app.containers.Admin.emails.allUsers',
