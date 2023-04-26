@@ -30,7 +30,8 @@ module ProjectFolders
     mount_base64_file_uploader :file, FileUploader
     belongs_to :project_folder, class_name: 'Folder' # TODO: rename to :folder
 
-    validates :project_folder, :file, :name, presence: true
+    validates :project_folder, :name, presence: true
+    validates :file, presence: true, unless: proc { Current.loading_tenant_template }
     validate :extension_whitelist
 
     private

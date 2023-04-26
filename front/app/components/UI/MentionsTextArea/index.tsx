@@ -1,23 +1,22 @@
-import React, { PureComponent } from 'react';
+import React, { useRef } from 'react';
 import { isString, isEmpty, capitalize } from 'lodash-es';
-import { first } from 'rxjs/operators';
 
 // libraries
 import { MentionsInput, Mention } from 'react-mentions';
 
 // services
-import { mentionsStream } from 'services/mentions';
 
 // components
 import Error from 'components/UI/Error';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 // typings
 import { Locale } from 'typings';
+import getMentions from 'api/mentions/getMentions';
 
 const Container = styled.div`
   position: relative;
@@ -52,7 +51,7 @@ const StyledMentionsInput = styled(MentionsInput)`
   word-break: break-word;
 `;
 
-export interface InputProps {
+export interface Props {
   id?: string;
   className?: string;
   name: string;
@@ -77,62 +76,49 @@ export interface InputProps {
   boxShadow?: string;
   background?: string;
   ariaLabel?: string;
+  children?: React.ReactNode;
 }
 
-interface Props extends InputProps {
-  theme: any;
-}
+const MentionsTextArea = ({
+  color = colors.textPrimary,
+  fontSize = `${fontSizes.base}px`,
+  fontWeight = '400',
+  lineHeight = '24px',
+  padding = '24px',
+  border = `solid 1px ${colors.borderDark}`,
+  borderRadius = '3px',
+  boxShadow = 'none',
+  background = '#fff',
+  rows,
+  onChange,
+  onBlur,
+  onFocus,
+  locale,
+  getTextareaRef,
+  postId,
+  postType,
+  id,
+  className,
+  ariaLabel,
+  value,
+  placeholder,
+  name,
+  error,
+  children,
+}: Props) => {
+  const textareaElement = useRef<HTMLTextAreaElement | null>(null);
+  const theme = useTheme();
 
-interface State {
-  style: Record<string, unknown> | null;
-  mentionStyle: Record<string, unknown> | null;
-}
-
-class MentionsTextArea extends PureComponent<Props, State> {
-  textareaElement = React.createRef();
-
-  static defaultProps = {
-    color: colors.textPrimary,
-    fontSize: `${fontSizes.base}px`,
-    fontWeight: '400',
-    lineHeight: '24px',
-    padding: '24px',
-    border: `solid 1px ${colors.borderDark}`,
+  const mentionStyle = {
+    paddingTop: '3px',
+    paddingBottom: '3px',
+    paddingLeft: '0px',
+    paddingRight: '1px',
     borderRadius: '3px',
-    boxShadow: 'none',
-    background: '#fff',
+    backgroundColor: transparentize(0.85, theme.colors.tenantText),
   };
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      style: null,
-      mentionStyle: null,
-    };
-  }
-
-  componentDidMount() {
-    const style = this.getStyle();
-    const mentionStyle = {
-      paddingTop: '3px',
-      paddingBottom: '3px',
-      paddingLeft: '0px',
-      paddingRight: '1px',
-      borderRadius: '3px',
-      backgroundColor: transparentize(0.85, this.props.theme.colors.tenantText),
-    };
-    this.setState({ style, mentionStyle });
-  }
-
-  componentDidUpdate(prevProps: Props, _prevState: State) {
-    if (this.props.rows !== prevProps.rows) {
-      this.setState({ style: this.getStyle() });
-    }
-  }
-
-  getStyle = () => {
-    const { rows } = this.props;
-
+  const getStyle = () => {
     const style = {
       '&multiLine': {
         control: {
@@ -144,19 +130,17 @@ class MentionsTextArea extends PureComponent<Props, State> {
         },
         input: {
           margin: 0,
-          padding: this.props.padding,
-          color: this.props.color,
-          fontSize: this.props.fontSize,
-          fontWeight: this.props.fontWeight,
-          lineHeight: this.props.lineHeight,
-          minHeight: `${
-            rows * parseInt(this.props.lineHeight as string, 10)
-          }px`,
+          padding,
+          color,
+          fontSize,
+          fontWeight,
+          lineHeight,
+          minHeight: `${rows * parseInt(lineHeight as string, 10)}px`,
           outline: 'none',
-          border: this.props.border,
-          borderRadius: this.props.borderRadius,
-          boxShadow: this.props.boxShadow,
-          background: this.props.background,
+          border,
+          borderRadius,
+          boxShadow,
+          background,
           appearance: 'none',
           WebkitAppearance: 'none',
           transition: 'min-height 180ms cubic-bezier(0.165, 0.84, 0.44, 1)',
@@ -186,50 +170,42 @@ class MentionsTextArea extends PureComponent<Props, State> {
     return style;
   };
 
-  mentionDisplayTransform = (_id, display) => {
+  const mentionDisplayTransform = (_id, display) => {
     return `@${display}`;
   };
 
-  handleOnChange = (event) => {
-    this.props?.onChange?.(event.target.value, this.props.locale);
+  const handleOnChange = (event) => {
+    onChange?.(event.target.value, locale);
   };
 
-  handleOnFocus = () => {
-    this.props?.onFocus?.();
+  const handleOnFocus = () => {
+    onFocus?.();
   };
 
-  handleOnBlur = () => {
-    this.props?.onBlur?.();
+  const handleOnBlur = () => {
+    onBlur?.();
   };
 
-  setRef = () => {
-    if (
-      this.textareaElement &&
-      this.textareaElement.current &&
-      this.props.getTextareaRef
-    ) {
-      this.props.getTextareaRef(
-        this.textareaElement.current as HTMLTextAreaElement
-      );
+  const setMentionsInputRef = () => {
+    if (textareaElement && textareaElement.current && getTextareaRef) {
+      getTextareaRef(textareaElement.current as HTMLTextAreaElement);
     }
   };
 
-  getUsers = async (query: string, callback) => {
-    let users: any[] = [];
+  const getUsers = async (
+    query: string,
+    callback: (users: { id: string; display: string }[]) => void
+  ) => {
+    let users: { id: string; display: string }[] = [];
 
     if (isString(query) && !isEmpty(query)) {
-      const mention = query.toLowerCase();
-      const queryParameters = { mention };
-      const { postId, postType } = this.props;
+      const queryParameters = {
+        mention: query.toLowerCase(),
+        post_id: postId,
+        post_type: capitalize(postType) as 'Idea' | 'Initiative',
+      };
 
-      if (postId && postType) {
-        queryParameters['post_id'] = postId;
-        queryParameters['post_type'] = capitalize(postType);
-      }
-
-      const response = await mentionsStream({ queryParameters })
-        .observable.pipe(first())
-        .toPromise();
+      const response = await getMentions(queryParameters);
 
       if (response && response.data && response.data.length > 0) {
         users = response.data.map((user) => ({
@@ -239,62 +215,47 @@ class MentionsTextArea extends PureComponent<Props, State> {
           id: user.attributes.slug,
         }));
       }
-    }
 
-    callback(users);
+      callback(users);
+    }
   };
 
-  render() {
-    const { style, mentionStyle } = this.state;
-    const {
-      name,
-      placeholder,
-      value,
-      error,
-      children,
-      rows,
-      id,
-      className,
-      ariaLabel,
-    } = this.props;
-
-    if (style) {
-      return (
-        <Container className={className}>
-          <StyledMentionsInput
-            id={id}
-            style={style}
-            className={`textareaWrapper ${
-              this.props.border !== 'none' ? 'hasBorder' : 'noBorder'
-            }`}
-            name={name || ''}
-            rows={rows}
-            value={value || ''}
-            placeholder={placeholder}
-            displayTransform={this.mentionDisplayTransform}
-            markup={'@[__display__](__id__)'}
-            onChange={this.handleOnChange}
-            onFocus={this.handleOnFocus}
-            onBlur={this.handleOnBlur}
-            aria-label={ariaLabel}
-            ref={this.setRef}
-            inputRef={this.textareaElement}
-          >
-            <Mention
-              trigger="@"
-              data={this.getUsers}
-              appendSpaceOnAdd={true}
-              style={mentionStyle}
-            />
-          </StyledMentionsInput>
-          {children}
-          <Error text={error} />
-        </Container>
-      );
-    }
-
-    return null;
+  if (getStyle()) {
+    return (
+      <Container className={className}>
+        <StyledMentionsInput
+          id={id}
+          style={getStyle()}
+          className={`textareaWrapper ${
+            border !== 'none' ? 'hasBorder' : 'noBorder'
+          }`}
+          name={name || ''}
+          rows={rows}
+          value={value || ''}
+          placeholder={placeholder}
+          displayTransform={mentionDisplayTransform}
+          markup={'@[__display__](__id__)'}
+          onChange={handleOnChange}
+          onFocus={handleOnFocus}
+          onBlur={handleOnBlur}
+          aria-label={ariaLabel}
+          ref={setMentionsInputRef}
+          inputRef={textareaElement}
+        >
+          <Mention
+            trigger="@"
+            data={getUsers}
+            appendSpaceOnAdd={true}
+            style={mentionStyle}
+          />
+        </StyledMentionsInput>
+        {children}
+        <Error text={error} />
+      </Container>
+    );
   }
-}
 
-export default withTheme(MentionsTextArea);
+  return null;
+};
+
+export default MentionsTextArea;

@@ -2,12 +2,13 @@
 
 module EmailCampaigns
   class CommentMarkedAsSpamMailerPreview < ActionMailer::Preview
+    include EmailCampaigns::MailerPreviewRecipient
+
     def campaign_mail
       comment = Comment.first
-      recipient = User.first
       initiating_user = User.last
       command = {
-        recipient: recipient,
+        recipient: recipient_user,
         event_payload: {
           initiating_user_first_name: initiating_user&.first_name,
           initiating_user_last_name: initiating_user&.last_name,
@@ -15,7 +16,7 @@ module EmailCampaigns
           post_type: comment.post_type,
           comment_author_name: comment.author_name,
           comment_body_multiloc: comment.body_multiloc,
-          comment_url: Frontend::UrlService.new.model_to_url(comment, locale: recipient.locale),
+          comment_url: Frontend::UrlService.new.model_to_url(comment, locale: recipient_user.locale),
           spam_report_reason_code: 'inappropriate',
           spam_report_other_reason: nil
         }

@@ -2,15 +2,16 @@
 
 module EmailCampaigns
   class InappropriateContentFlaggedPreview < ActionMailer::Preview
+    include EmailCampaigns::MailerPreviewRecipient
+
     def campaign_mail
       flaggable = Initiative.first
-      recipient = User.first
       command = {
-        recipient: recipient,
+        recipient: recipient_user,
         event_payload: {
           flaggable_type: flaggable.class.name,
-          flaggable_author_name: UserDisplayNameService.new(AppConfiguration.instance, recipient).display_name!(flaggable.author),
-          flaggable_url: Frontend::UrlService.new.model_to_url(flaggable, locale: recipient.locale),
+          flaggable_author_name: UserDisplayNameService.new(AppConfiguration.instance, recipient_user).display_name!(flaggable.author),
+          flaggable_url: Frontend::UrlService.new.model_to_url(flaggable, locale: recipient_user.locale),
           flaggable_title_multiloc: flaggable.title_multiloc,
           flaggable_body_multiloc: flaggable.body_multiloc
         }
