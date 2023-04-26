@@ -201,6 +201,31 @@ resource 'Comments' do
       end
     end
 
+    context 'when a moderator exports all comments' do
+      before do
+        @project = create(:project)
+
+        @comments = Array.new(3) do |_i|
+          create(:comment, post: create(:idea, project: @project))
+        end
+        @unmoderated_comment = create(:comment)
+
+        @user = create(:project_moderator, projects: [@project])
+        header_token_for(@user)
+      end
+
+      example 'XLSX export', document: false do
+        do_request
+        expect(status).to eq 200
+
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        comments_ids = worksheet.drop(1).collect {|row| row[0].value}
+
+        expect(comments_ids).to match_array @comments.pluck(:id)
+        expect(comments_ids).not_to include(@unmoderated_comment.id)
+      end
+    end
+
     describe do
       before do
         @user = create(:user)
