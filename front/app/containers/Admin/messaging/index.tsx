@@ -56,19 +56,19 @@ const MessagingDashboard = ({
         url: '/admin/messaging/emails/custom',
       });
     }
+    if (canManageAutomatedCampaigns && automatedEmailingEnabled) {
+      tabs.push({
+        name: 'automated-emails',
+        label: formatMessage(messages.tabAutomatedEmails),
+        url: '/admin/messaging/emails/automated',
+      });
+    }
     if (textingEnabled) {
       tabs.push({
         name: 'texting',
         label: formatMessage(messages.tabTexting),
         url: '/admin/messaging/texting',
         statusLabel: 'Beta',
-      });
-    }
-    if (canManageAutomatedCampaigns && automatedEmailingEnabled) {
-      tabs.push({
-        name: 'automated-emails',
-        label: formatMessage(messages.tabAutomatedEmails),
-        url: '/admin/messaging/emails/automated',
       });
     }
 
