@@ -1372,7 +1372,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSave": "حفظ خيار الإجابة",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess": "تم حفظ خيار الإجابة بنجاح",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "خيارات الإجابة",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation": "هل تريد حذف هذا الحقل المخصص بالتأكيد؟",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation2": "هل أنت متأكد أنك تريد حذف هذا الحقل المخصص؟ بحذف هذا الحقل ، سيتم أيضًا حذف أي إجابة قدمها المستخدمون ، ولن يتم طرحها بعد الآن في المشروعات أو المقترحات.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "هل تريد بالتأكيد حذف خيار الحقل المخصص هذا؟",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle": "الحقول",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip": "اسحب الحقول وأسقطها لتحديد الترتيب التي تظهر به في نموذج تسجيل الاشتراك.",
