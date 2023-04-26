@@ -60,7 +60,7 @@ export const RightColumn = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 1400px;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
+  min-height: 100vh;
   padding-top: 45px;
   padding-right: 51px;
   padding-bottom: 45px;
@@ -134,6 +134,7 @@ const AdminPage = memo<Props & WithRouterProps>(
       pathname.includes('admin/dashboard') ||
       pathname.includes('admin/initiatives') ||
       pathname.includes('admin/messaging') ||
+      pathname.includes('admin/settings') ||
       pathname.includes('admin/reporting');
 
     const fullWidth =
@@ -142,6 +143,7 @@ const AdminPage = memo<Props & WithRouterProps>(
       pathname.includes('admin/dashboard') ||
       pathname.includes('admin/initiatives') ||
       pathname.includes('admin/messaging') ||
+      pathname.includes('admin/settings') ||
       pathname.includes('admin/reporting');
 
     return (
