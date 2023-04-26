@@ -73,7 +73,7 @@ export default defineMessages({
     defaultMessage: 'Phase ',
   },
   userFieldsSelectionDescription: {
-    id: 'app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription',
+    id: 'app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription2',
     defaultMessage:
       'Responses to demographic questions will get stored in user profiles. Answers to these questions will be accessible to both admins and moderators to easy participation analysis. Questions will only be asked to users who have not answered them before.',
   },
