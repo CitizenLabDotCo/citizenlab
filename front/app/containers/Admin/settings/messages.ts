@@ -24,9 +24,9 @@ export default defineMessages({
     defaultMessage:
       'Add the name of your organisation or city, a url to your website and the languages in which this platform should be made available.',
   },
-  tabCustomize: {
-    id: 'app.containers.AdminPage.SettingsPage.tabCustomize',
-    defaultMessage: 'Customize',
+  tabBranding: {
+    id: 'app.containers.AdminPage.SettingsPage.tabBranding',
+    defaultMessage: 'Branding',
   },
   tabPolicies: {
     id: 'app.containers.AdminPage.SettingsPage.tabPolicies',
@@ -78,7 +78,7 @@ export default defineMessages({
     defaultMessage: 'Registration',
   },
   tabAreas: {
-    id: 'app.containers.AdminPage.SettingsPage.tabAreas',
+    id: 'app.containers.AdminPage.SettingsPage.tabAreas1',
     defaultMessage: 'Areas',
   },
   urlError: {

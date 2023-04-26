@@ -33,9 +33,9 @@ const SettingsPage = () => {
       url: '/admin/settings/general',
     },
     {
-      name: 'customize',
-      label: formatMessage(messages.tabCustomize),
-      url: '/admin/settings/customize',
+      name: 'branding',
+      label: formatMessage(messages.tabBranding),
+      url: '/admin/settings/branding',
     },
     {
       name: 'registration',

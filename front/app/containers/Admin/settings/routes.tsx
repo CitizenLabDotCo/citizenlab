@@ -45,7 +45,7 @@ export default () => ({
       ),
     },
     {
-      path: 'customize',
+      path: 'branding',
       element: (
         <PageLoading>
           <AdminSettingsCustomize />
