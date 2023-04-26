@@ -219,26 +219,11 @@ function emailConfirmation(jwt: any) {
   });
 }
 
-function completeRegistration(jwt: any) {
-  return cy.request({
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
-    },
-    method: 'POST',
-    url: 'web_api/v1/users/complete_registration',
-    body: {
-      user: { custom_field_values: {} },
-    },
-  });
-}
-
 export function apiSignup(
   firstName: string,
   lastName: string,
   email: string,
-  password: string,
-  options?: { skipCustomFields: boolean }
+  password: string
 ) {
   let originalResponse: Cypress.Response<any>;
 
@@ -249,8 +234,7 @@ export function apiSignup(
       const jwt = response.body.jwt;
 
       return emailConfirmation(jwt).then(() => {
-        if (options?.skipCustomFields) return originalResponse;
-        return completeRegistration(jwt).then(() => originalResponse);
+        return originalResponse;
       });
     });
   });
