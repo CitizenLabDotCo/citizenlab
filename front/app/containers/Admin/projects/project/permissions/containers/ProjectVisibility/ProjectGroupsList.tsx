@@ -14,7 +14,7 @@ import GroupAvatar from './GroupAvatar';
 import { List, Row } from 'components/admin/ResourceList';
 
 // Services
-import { IGroups, IGroupData } from 'services/groups';
+import { IGroups, IGroupData } from 'api/groups/types';
 import {
   addProjectGroup,
   deleteProjectGroup,
@@ -26,7 +26,6 @@ import styled from 'styled-components';
 
 // Typings
 import { IOption, Locale } from 'typings';
-import { GetAppConfigurationChildProps } from 'resources/GetAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -65,7 +64,6 @@ const GroupMembershipCount = styled.p``;
 interface Props {
   projectId: string;
   onAddButtonClicked: () => void;
-  appConfiguration: GetAppConfigurationChildProps;
 }
 
 const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {

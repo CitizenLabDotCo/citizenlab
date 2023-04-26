@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 import { Multiloc } from 'typings';
 
 export interface IMembershipTypeMap {
@@ -34,33 +34,10 @@ export interface IGroup {
   data: IGroupData;
 }
 
-interface GetGroupsStreamParams extends IStreamParams {
-  queryParameters?: GetGroupsQueryParameters;
-}
-
 export interface GetGroupsQueryParameters {
   'page[number]'?: number;
   'page[size]'?: number;
   membership_type?: MembershipType;
-}
-
-export function getGroups(streamParams: GetGroupsStreamParams | null = null) {
-  return streams.get<IGroups>({
-    apiEndpoint: `${API_PATH}/groups`,
-    ...streamParams,
-    cacheStream: false,
-  });
-}
-
-export function getGroup(
-  groupId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IGroup>({
-    apiEndpoint: `${API_PATH}/groups/${groupId}`,
-    ...streamParams,
-    cacheStream: false,
-  });
 }
 
 export function addGroup(object: GroupDiff) {
