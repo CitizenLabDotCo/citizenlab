@@ -51,7 +51,7 @@ const MessagingDashboard = ({
     if (canManageManualCampaigns && manualEmailingEnabled) {
       tabs.push({
         name: 'manual-emails',
-        label: formatMessage(messages.tabCustomEmail),
+        label: formatMessage(messages.customEmails),
         url: '/admin/messaging/emails/custom',
       });
     }

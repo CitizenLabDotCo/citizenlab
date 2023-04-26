@@ -185,9 +185,13 @@ export default defineMessages({
     defaultMessage:
       'When you added one or more links to your email, the number of users who clicked a link will be shown here.',
   },
-  tabCustomEmail: {
-    id: 'app.containers.Admin.Campaigns.tabCustomEmail1',
+  customEmails: {
+    id: 'app.containers.Admin.Campaigns.customEmails',
     defaultMessage: 'Custom emails',
+  },
+  customEmailsDescription: {
+    id: 'app.containers.Admin.Campaigns.customEmailsDescription',
+    defaultMessage: 'Send out custom emails and check statistics.',
   },
   tabAutomatedEmails: {
     id: 'app.containers.Admin.Campaigns.tabAutomatedEmails',
