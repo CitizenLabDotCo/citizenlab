@@ -168,7 +168,9 @@ const UserFieldSelection = ({
                     ml="4px"
                     icon="info-solid"
                     content={formatMessage(
-                      messages.useExistingRegistrationQuestionsDescription
+                      userIsAdmin
+                        ? messages.useExistingRegistrationQuestionsDescription
+                        : messages.onlyAdmins
                     )}
                   />
                 </Box>
