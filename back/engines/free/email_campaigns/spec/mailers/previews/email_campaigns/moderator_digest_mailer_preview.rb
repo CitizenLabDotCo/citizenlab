@@ -2,15 +2,21 @@
 
 module EmailCampaigns
   class ModeratorDigestMailerPreview < ActionMailer::Preview
+    include EmailCampaigns::MailerPreviewRecipient
+
     def campaign_mail
       campaign = EmailCampaigns::Campaigns::ModeratorDigest.first
       top_ideas = Idea.first(3)
-      recipient = User.first
-      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient_user)
+      project = Idea.first.project
+      project_id = project.id
+      project_name = project.title_multiloc[recipient_user.locale] || project.title_multiloc[I18n.default_locale]
 
       command = {
-        recipient: recipient,
+        recipient: recipient_user,
         event_payload: {
+          project_id: project_id,
+          project_name: project_name,
           statistics: {
             activities: {
               new_ideas: {

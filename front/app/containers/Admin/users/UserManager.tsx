@@ -14,22 +14,25 @@ import eventEmitter from 'utils/eventEmitter';
 import events from './events';
 
 // Resources
-import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
+import GetUsers, {
+  GetUsersChildProps,
+  InputProps as GetUsersInputProps,
+} from 'resources/GetUsers';
 
 // Services
 import { MembershipType } from 'services/groups';
 
 // Typings
 interface InputProps {
-  search: string | undefined;
-  groupId?: string;
+  search: GetUsersInputProps['search'];
+  groupId?: GetUsersInputProps['groupId'];
   groupType?: MembershipType;
-  onlyBlocked?: boolean;
+  onlyBlocked?: GetUsersInputProps['onlyBlocked'];
   deleteUsersFromGroup?: (userIds: string[]) => void;
   // These are used in the inputProps for GetUsers
-  canModerate?: boolean;
-  notCitizenlabMember?: boolean;
-  includeInactive?: boolean;
+  canModerate?: GetUsersInputProps['canModerate'];
+  notCitizenlabMember?: GetUsersInputProps['notCitizenlabMember'];
+  includeInactive?: GetUsersInputProps['includeInactive'];
 }
 
 interface DataProps {

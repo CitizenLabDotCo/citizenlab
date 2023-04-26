@@ -2,13 +2,15 @@
 
 module EmailCampaigns
   class AdminDigestMailerPreview < ActionMailer::Preview
+    include EmailCampaigns::MailerPreviewRecipient
+
     def campaign_mail
       campaign = EmailCampaigns::Campaigns::AdminDigest.first
       initiative = Initiative.first
       idea = Idea.first
 
       command = {
-        recipient: User.first,
+        recipient: recipient_user,
         event_payload: {
           statistics: {
             activities: {

@@ -2,11 +2,12 @@
 
 module EmailCampaigns
   class YourProposedInitiativesDigestMailerPreview < ActionMailer::Preview
+    include EmailCampaigns::MailerPreviewRecipient
+
     def campaign_mail
-      recipient = User.first
       initiatives = Initiative.take(3)
       command = {
-        recipient: recipient,
+        recipient: recipient_user,
         event_payload: {
           initiatives: initiatives.map do |initiative|
             {

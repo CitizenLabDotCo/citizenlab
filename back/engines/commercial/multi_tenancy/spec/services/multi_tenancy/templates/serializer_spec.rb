@@ -85,7 +85,7 @@ describe MultiTenancy::Templates::Serializer do
     end
 
     it 'includes a reference to an existing home_page header_bg' do
-      create(:home_page, header_bg: File.open(Rails.root.join('spec/fixtures/header.jpg')))
+      create(:home_page, header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
 
       serializer = described_class.new(Tenant.current)
       template = serializer.run
@@ -95,7 +95,7 @@ describe MultiTenancy::Templates::Serializer do
     end
 
     it 'includes a reference to an existing static_page header_bg' do
-      create(:static_page, header_bg: File.open(Rails.root.join('spec/fixtures/header.jpg')))
+      create(:static_page, header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
 
       serializer = described_class.new(Tenant.current)
       template = serializer.run

@@ -66,7 +66,7 @@ describe SideFxCommentService do
 
   describe 'after_destroy' do
     it "logs a 'deleted' action job when the comment is destroyed" do
-      travel_to Time.now do
+      freeze_time do
         frozen_comment = comment.destroy
         expect { service.after_destroy(frozen_comment, user) }
           .to enqueue_job(LogActivityJob)

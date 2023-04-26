@@ -2,11 +2,13 @@
 
 module EmailCampaigns
   class ProjectPhaseStartedMailerPreview < ActionMailer::Preview
+    include EmailCampaigns::MailerPreviewRecipient
+
     def campaign_mail
       campaign = EmailCampaigns::Campaigns::ProjectPhaseStarted.first
 
       command = {
-        recipient: User.first,
+        recipient: recipient_user,
         event_payload: {
           phase_title_multiloc: { 'en' => 'Being implemented' },
           phase_description_multiloc: { 'en' => 'Project is now being implemented' },

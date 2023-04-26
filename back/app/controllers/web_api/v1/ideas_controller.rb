@@ -282,7 +282,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def idea_simple_attributes(submittable_field_keys)
     simple_attributes = %i[location_description proposed_budget] & submittable_field_keys
-    simple_attributes.concat %i[publication_status project_id author_id]
+    simple_attributes.push(:publication_status, :project_id, :author_id)
     if submittable_field_keys.include?(:idea_images_attributes)
       simple_attributes << [idea_images_attributes: [:image]]
     end
@@ -364,4 +364,4 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 end
 
-::WebApi::V1::IdeasController.prepend(IdeaAssignment::Patches::WebApi::V1::IdeasController)
+WebApi::V1::IdeasController.prepend(IdeaAssignment::Patches::WebApi::V1::IdeasController)
