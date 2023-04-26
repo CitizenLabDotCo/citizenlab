@@ -2,9 +2,9 @@ import * as React from 'react';
 import { isEmpty } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource from 'components/admin/TabbedResource';
+import { Box } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import GetPermission, {
   GetPermissionChildProps,
@@ -13,6 +13,13 @@ import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
+import NavigationTabs, {
+  Tab,
+  TabsPageLayout,
+} from 'components/admin/NavigationTabs';
+import Link from 'utils/cl-router/Link';
+import { matchPathToUrl } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
 
 interface DataProps {
   canManageAutomatedCampaigns: GetPermissionChildProps;
@@ -76,25 +83,27 @@ const MessagingDashboard = ({
 
   return (
     <>
-      <TabbedResource
-        resource={{
-          title: formatMessage(messages.titleMessaging),
-          subtitle: formatMessage(messages.subtitleMessaging),
-        }}
-        tabs={tabs}
-      >
+      <NavigationTabs>
+        {tabs.map(({ url, label }) => (
+          <Tab key={url} active={matchPathToUrl(url).test(pathname)}>
+            <Link to={url}>{label}</Link>
+          </Tab>
+        ))}
+      </NavigationTabs>
+
+      <TabsPageLayout>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        <div id="e2e-messaging-container">
-          {isEmpty(tabs) ? (
-            <FormattedMessage {...messages.noAccess} />
-          ) : (
-            <RouterOutlet />
-          )}
-        </div>
-      </TabbedResource>
+        <Box
+          id="e2e-initiatives-admin-container"
+          background={colors.white}
+          p="40px"
+        >
+          <RouterOutlet />
+        </Box>
+      </TabsPageLayout>
     </>
   );
 };

@@ -7,15 +7,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  titleMessaging: {
-    id: 'app.containers.Admin.emails.titleMessaging',
-    defaultMessage: 'Messaging',
-  },
-  subtitleMessaging: {
-    id: 'app.containers.Admin.emails.subtitleMessaging',
-    defaultMessage:
-      'Send out your own messages and control what automated messages your users receive.',
-  },
   helmetTitle: {
     id: 'app.containers.Admin.messaging.helmetTitle',
     defaultMessage: 'Messaging',
