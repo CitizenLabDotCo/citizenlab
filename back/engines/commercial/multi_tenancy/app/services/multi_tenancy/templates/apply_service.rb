@@ -9,12 +9,15 @@ module MultiTenancy
         internal_template_dir: Rails.root.join('config/tenant_templates'),
         tenant_bucket: ENV.fetch('AWS_S3_BUCKET', nil),
         template_bucket: ENV.fetch('TEMPLATE_BUCKET', nil),
-        s3_client: Aws::S3::Client.new(region: 'eu-central-1')
+        s3_client: nil
       )
         @internal_template_dir = internal_template_dir
         @tenant_bucket = tenant_bucket
         @template_bucket = template_bucket
-        @s3_client = s3_client
+
+        @s3_client ||= Aws::S3::Client.new(
+          region: ENV.fetch('AWS_REGION', 'eu-central-1')
+        )
       end
 
       def apply(template_name, external_template_group: nil)
