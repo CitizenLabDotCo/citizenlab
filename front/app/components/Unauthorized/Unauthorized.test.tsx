@@ -1,12 +1,12 @@
 import React from 'react';
 import Unauthorized from '.';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 let mockUser: any = null;
 jest.mock('hooks/useAuthUser', () => () => mockUser);
 
-jest.mock('containers/NewAuthModal/events', () => ({
+jest.mock('containers/Authentication/events', () => ({
   triggerAuthenticationFlow: jest.fn(),
 }));
 
@@ -25,11 +25,6 @@ describe('<Unauthorized />', () => {
     expect(triggerAuthenticationFlow).toHaveBeenCalledTimes(1);
     expect(triggerAuthenticationFlow).toHaveBeenCalledWith({
       flow: 'signin',
-      context: {
-        action: 'visiting',
-        type: 'global',
-      },
-      pathname: '/en/',
     });
   });
 

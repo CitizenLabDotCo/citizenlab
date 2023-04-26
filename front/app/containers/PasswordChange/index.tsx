@@ -37,10 +37,14 @@ import GetAppConfiguration, {
 import { isNilOrError } from 'utils/helperUtils';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import useAuthUser from 'hooks/useAuthUser';
+import GoBackButton from 'components/UI/GoBackButton';
+import clHistory from 'utils/cl-router/history';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 type FormValues = {
   current_password: string;
-  new_password: string;
+  password: string;
 };
 
 type Props = {
@@ -66,7 +70,7 @@ const ChangePassword = ({ tenant }: Props) => {
     current_password: string().required(
       formatMessage(messages.currentPasswordRequired)
     ),
-    new_password: string()
+    password: string()
       .required(formatMessage(messages.newPasswordRequired))
       .min(
         minimumPasswordLength,
@@ -77,7 +81,7 @@ const ChangePassword = ({ tenant }: Props) => {
   });
 
   const schemaNoPreviousPassword = object({
-    new_password: string()
+    password: string()
       .required(formatMessage(messages.newPasswordRequired))
       .min(
         minimumPasswordLength,
@@ -95,7 +99,7 @@ const ChangePassword = ({ tenant }: Props) => {
     mode: 'onBlur',
     defaultValues: {
       current_password: '',
-      new_password: '',
+      password: '',
     },
     resolver: yupResolver(schema),
   });
@@ -104,6 +108,9 @@ const ChangePassword = ({ tenant }: Props) => {
     try {
       await changePassword(formValues);
       setSuccess(true);
+      await streams.fetchAllWith({
+        apiEndpoint: [`${API_PATH}/users/me`],
+      });
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
@@ -133,6 +140,13 @@ const ChangePassword = ({ tenant }: Props) => {
         />
         <main>
           <StyledContentContainer>
+            <Box mt="30px">
+              <GoBackButton
+                onClick={() => {
+                  clHistory.goBack();
+                }}
+              />
+            </Box>
             <Title>{formatMessage(pageTitle)}</Title>
             <Form>
               {userHasPreviousPassword && (
@@ -157,13 +171,13 @@ const ChangePassword = ({ tenant }: Props) => {
                   width="max-content"
                   margin-right="5px"
                   labelMessage={messages.newPasswordLabel}
-                  htmlFor="new_password"
+                  htmlFor="password"
                 />
                 <StyledPasswordIconTooltip />
               </LabelContainer>
-              <PasswordInput name="new_password" autocomplete="new-password" />
-
+              <PasswordInput name="password" autocomplete="new-password" />
               <StyledButton
+                id="password-submit-button"
                 type="submit"
                 size="m"
                 processing={methods.formState.isSubmitting}

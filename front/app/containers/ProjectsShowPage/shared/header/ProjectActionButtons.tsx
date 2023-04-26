@@ -13,7 +13,7 @@ import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
@@ -39,7 +39,7 @@ import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 // router
 import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
-import { SuccessAction } from 'containers/NewAuthModal/SuccessActions/actions';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 const Container = styled.div``;

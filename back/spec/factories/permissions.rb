@@ -20,6 +20,10 @@ FactoryBot.define do
       permitted_by { 'users' }
     end
 
+    trait :by_everyone_confirmed_email do
+      permitted_by { 'everyone_confirmed_email' }
+    end
+
     factory :global_permission do
       permission_scope_id { nil }
       permission_scope_type { nil }

@@ -12,6 +12,7 @@ import {
   colors,
   Toggle,
   Locale,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { FieldSelectionModal } from './FieldSelectionModal';
 
@@ -22,17 +23,21 @@ import useDeletePermissionsCustomField from 'api/permissions_custom_fields/useDe
 import useUpdatePermissionsCustomField from 'api/permissions_custom_fields/useUpdatePermissionsCustomField';
 
 // utils
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FormattedMessageComponent from 'utils/cl-intl/FormattedMessage';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { IPermissionData } from 'services/actionPermissions';
-import useUserCustomFields from 'hooks/useUserCustomFields';
-import useLocale from 'hooks/useLocale';
-import { isNilOrError } from 'utils/helperUtils';
 import { IUserCustomFieldData } from 'services/userCustomFields';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import { HandlePermissionChangeProps } from '../../containers/Granular/utils';
+import { isAdmin } from 'services/permissions/roles';
+
+// hooks
+import useUserCustomFields from 'hooks/useUserCustomFields';
+import useLocale from 'hooks/useLocale';
+import useAuthUser from 'hooks/useAuthUser';
 
 type UserFieldSelectionProps = {
   permission: IPermissionData;
@@ -54,6 +59,8 @@ const UserFieldSelection = ({
   initiativeContext,
   onChange,
 }: UserFieldSelectionProps) => {
+  const authUser = useAuthUser();
+  const { formatMessage } = useIntl();
   const globalRegistrationFields = useUserCustomFields();
   const initialFields = usePermissionsCustomFields({
     projectId,
@@ -114,9 +121,18 @@ const UserFieldSelection = ({
 
   const groupIds = permission.relationships.groups.data.map((p) => p.id);
 
-  if (isNilOrError(locale)) {
+  if (isNilOrError(locale) || isNilOrError(authUser)) {
     return null;
   }
+
+  const userIsAdmin = authUser && isAdmin({ data: authUser });
+
+  const showQuestionToggle =
+    permission.attributes.permitted_by !== 'everyone_confirmed_email';
+
+  const showQuestions =
+    !permission.attributes.global_custom_fields ||
+    permission.attributes.permitted_by === 'everyone_confirmed_email';
 
   return (
     <Box>
@@ -127,26 +143,44 @@ const UserFieldSelection = ({
         <FormattedMessage {...messages.userFieldsSelectionDescription} />
       </Text>
       <Box>
-        <Box mb="30px">
-          <Toggle
-            checked={permission.attributes.global_custom_fields}
-            onChange={() => {
-              onChange({
-                permission,
-                groupIds,
-                globalCustomFields: !permission.attributes.global_custom_fields,
-              });
-            }}
-            label={
-              <FormattedMessage
-                {...messages.useExistingRegistrationQuestions}
-              />
-            }
-          />
-        </Box>
-        {!permission.attributes.global_custom_fields && (
+        {showQuestionToggle && (
+          <Box mb="10px">
+            <Toggle
+              checked={permission.attributes.global_custom_fields}
+              disabled={!userIsAdmin}
+              onChange={() => {
+                onChange({
+                  permission,
+                  groupIds,
+                  globalCustomFields:
+                    !permission.attributes.global_custom_fields,
+                });
+              }}
+              label={
+                <Box display="flex">
+                  <span style={{ color: colors.primary }}>
+                    <FormattedMessage
+                      {...messages.useExistingRegistrationQuestions}
+                    />
+                  </span>
+
+                  <IconTooltip
+                    ml="4px"
+                    icon="info-solid"
+                    content={formatMessage(
+                      userIsAdmin
+                        ? messages.useExistingRegistrationQuestionsDescription
+                        : messages.onlyAdmins
+                    )}
+                  />
+                </Box>
+              }
+            />
+          </Box>
+        )}
+        {showQuestions && (
           <>
-            <Box>
+            <Box mt="20px">
               {initialFieldArray?.map((field) => (
                 <Box
                   display="flex"

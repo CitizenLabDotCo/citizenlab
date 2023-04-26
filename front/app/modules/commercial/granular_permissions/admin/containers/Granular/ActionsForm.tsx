@@ -1,12 +1,9 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import styled from 'styled-components';
 import { isEmpty } from 'lodash-es';
 
 // services
-import {
-  IGlobalPermissionAction,
-  IPermissionData,
-} from 'services/actionPermissions';
+import { IPermissionData } from 'services/actionPermissions';
 
 // components
 import ActionForm from './ActionForm';
@@ -19,37 +16,20 @@ import messages from './messages';
 
 // hooks
 import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import {
-  getPermissionActionMessage,
   getPermissionActionSectionSubtitle,
   HandlePermissionChangeProps,
 } from './utils';
-import { IPCAction } from 'typings';
 
 const ActionPermissionWrapper = styled.div`
-  margin-left: 20px;
-  margin-bottom: 60px;
+  margin-left: 0px;
+  margin-bottom: 20px;
 
   &.last {
     margin-bottom: 0;
-  }
-`;
-
-// Styled title was used to add a horizontal line after the text which extends to the right
-const StyledTitle = styled(Title)`
-  display: flex;
-  align-items: center;
-
-  ::after {
-    content: '';
-    flex: 1;
-    margin-left: 1rem;
-    height: 1px;
-    background-color: ${colors.grey400};
   }
 `;
 
@@ -79,21 +59,6 @@ type SharedProps = {
   }: HandlePermissionChangeProps) => void;
 };
 
-const showDivider = (
-  action: IPCAction | IGlobalPermissionAction,
-  postType: 'defaultInput' | 'nativeSurvey' | 'initiative'
-) => {
-  if (postType === 'nativeSurvey') return false;
-
-  switch (action) {
-    case 'taking_poll':
-    case 'taking_survey':
-      return false;
-    default:
-      return true;
-  }
-};
-
 type Props = PostTypeProps & SharedProps;
 
 const ActionsForm = memo(
@@ -109,14 +74,42 @@ const ActionsForm = memo(
       name: 'permissions_custom_fields',
     });
     const project = useProject({ projectId });
-    const phases = usePhases(projectId);
+    const [
+      previousUsersGlobalCustomFields,
+      setPreviousUsersGlobalCustomFields,
+    ] = useState(true);
+    const [
+      previousGroupsGlobalCustomFields,
+      setPreviousGroupsGlobalCustomFields,
+    ] = useState(true);
+
     const handlePermissionChange =
       (permission: IPermissionData) =>
       (
         permittedBy: IPermissionData['attributes']['permitted_by'],
         groupIds: string[]
       ) => {
-        onChange({ permission, permittedBy, groupIds });
+        // Remember what the last values of global custom fields toggles were for 'users' & 'groups'
+        const previousPermittedBy = permission.attributes.permitted_by;
+        if (previousPermittedBy === 'users') {
+          setPreviousUsersGlobalCustomFields(
+            permission.attributes.global_custom_fields
+          );
+        } else if (previousPermittedBy === 'groups') {
+          setPreviousGroupsGlobalCustomFields(
+            permission.attributes.global_custom_fields
+          );
+        }
+
+        // Set global custom fields toggle back to the old value when switching back to 'users' & 'groups'
+        let globalCustomFields = false;
+        if (permittedBy === 'users') {
+          globalCustomFields = previousUsersGlobalCustomFields;
+        } else if (permittedBy === 'groups') {
+          globalCustomFields = previousGroupsGlobalCustomFields;
+        }
+
+        onChange({ permission, permittedBy, groupIds, globalCustomFields });
       };
 
     if (isEmpty(permissions)) {
@@ -137,30 +130,11 @@ const ActionsForm = memo(
                   index === permissions.length - 1 ? 'last' : ''
                 }`}
               >
-                {showDivider(permissionAction, postType) && (
-                  <StyledTitle
-                    className="title-with-line"
-                    variant="h5"
-                    color="coolGrey600"
-                    marginTop="0px"
-                  >
-                    <FormattedMessage
-                      {...getPermissionActionMessage({
-                        permissionAction,
-                        project,
-                        phases,
-                        postType,
-                      })}
-                    />
-                  </StyledTitle>
-                )}
-
-                <Title variant="h4" color="primary">
+                <Title variant="h3" color="primary">
                   <FormattedMessage
                     {...getPermissionActionSectionSubtitle({
                       permissionAction,
                       project,
-                      phases,
                       postType,
                     })}
                   />
@@ -174,8 +148,14 @@ const ActionsForm = memo(
                   onChange={handlePermissionChange(permission)}
                 />
                 {permission.attributes.permitted_by !== 'everyone' &&
+                  permission.attributes.permitted_by !== 'admins_moderators' &&
                   includePermissionsCustomFields && (
-                    <Box mt="42px">
+                    <Box
+                      mt="10px"
+                      border={`solid 1px ${colors.grey300}`}
+                      px="20px"
+                      pb="20px"
+                    >
                       <UserFieldSelection
                         permission={permission}
                         projectId={projectId}

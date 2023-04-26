@@ -23,7 +23,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // styling
 import styled from 'styled-components';

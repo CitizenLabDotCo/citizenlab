@@ -1,15 +1,16 @@
 import React, { useCallback } from 'react';
 
-// services
-import { ICauseData } from 'api/causes/types';
+// api
 import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
-import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/types';
+
+// constants
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // components
 import Image from 'components/UI/Image';
@@ -39,6 +40,9 @@ import {
 } from 'utils/styleUtils';
 import useAddVolunteer from 'api/causes/useAddVolunteer';
 import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
+
+// typings
+import { ICauseData } from 'api/causes/types';
 
 const Container = styled.div`
   padding: 20px;

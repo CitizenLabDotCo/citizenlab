@@ -46,7 +46,7 @@ export type FieldType =
   | 'number'
   | 'date';
 
-export const fieldTypes = [
+export const fieldTypes: FieldType[] = [
   'select',
   'multiselect',
   'checkbox',

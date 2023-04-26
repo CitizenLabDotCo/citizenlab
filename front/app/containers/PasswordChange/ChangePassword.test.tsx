@@ -52,12 +52,12 @@ describe('ChangePassword', () => {
     const newPasswordInput = screen.getByLabelText(/new password/i);
     await user.type(newPasswordInput, 'test-new-password');
 
-    fireEvent.click(container.querySelector('button[type="submit"]'));
+    fireEvent.click(container.querySelector('#password-submit-button'));
 
     await waitFor(async () => {
       expect(changePassword).toHaveBeenCalledWith({
         current_password: 'test-current-password',
-        new_password: 'test-new-password',
+        password: 'test-new-password',
       });
 
       const successMessage = await screen.findByText(
@@ -75,7 +75,7 @@ describe('ChangePassword', () => {
     const newPasswordInput = screen.getByLabelText(/new password/i);
     await user.type(newPasswordInput, 'test');
 
-    fireEvent.click(container.querySelector('button[type="submit"]'));
+    fireEvent.click(container.querySelector('#password-submit-button'));
 
     const currentPasswordError = await screen.findByText(
       'Enter your current password'

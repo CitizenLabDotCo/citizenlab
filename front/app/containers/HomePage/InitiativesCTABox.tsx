@@ -4,7 +4,7 @@ import React, { memo, useCallback } from 'react';
 import useAuthUser from 'hooks/useAuthUser';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // styling
 import styled, { withTheme } from 'styled-components';

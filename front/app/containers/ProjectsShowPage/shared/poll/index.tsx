@@ -25,7 +25,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -67,7 +67,7 @@ const disabledMessages = {
   not_signed_in: messages.pollDisabledMaybeNotPermitted,
 } as const;
 
-const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
+export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
   const project = useProject({ projectId });
   const phase = usePhase(phaseId);
 
@@ -111,13 +111,13 @@ const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
     : null;
 
   return (
-    <Container>
+    <Container data-testid="poll-container">
       {disabled_reason === 'already_responded' ? (
         <FormCompleted />
       ) : (
         <>
           {message && (
-            <StyledWarning icon="lock">
+            <StyledWarning icon="lock" data-testid="poll-styled-warning">
               <FormattedMessage
                 {...message}
                 values={{

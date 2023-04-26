@@ -4,7 +4,7 @@ import React from 'react';
 import useAuthUser from 'hooks/useAuthUser';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // styling
 import { useTheme } from 'styled-components';
