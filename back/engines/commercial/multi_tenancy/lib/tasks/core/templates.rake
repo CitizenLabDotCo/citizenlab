@@ -17,7 +17,7 @@ namespace :templates do
 
   task :export, %i[host file] => [:environment] do |_t, args|
     tenant = Tenant.find_by(host: args[:host])
-    template = ::MultiTenancy::Templates::TenantSerializer.new(tenant, uploads_full_urls: true).run
+    template = MultiTenancy::Templates::TenantSerializer.new(tenant, uploads_full_urls: true).run
     File.write(args[:file], template.to_yaml)
   end
 

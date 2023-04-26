@@ -3,7 +3,7 @@
 namespace :cl2back do
   desc 'Add the built in demographic fields to existing tenants. Should run only once'
   task add_builtin_custom_fields: :environment do
-    tenant_deserializer = ::MultiTenancy::Templates::TenantDeserializer.new
+    tenant_deserializer = MultiTenancy::Templates::TenantDeserializer.new
 
     template_path = Rails.root.join('config/tenant_templates/base.yml')
     template = YAML.load(File.read(template_path)) # rubocop:disable Security/YAMLLoad
