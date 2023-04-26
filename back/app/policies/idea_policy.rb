@@ -26,7 +26,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def index_xlsx?
-    admin? && active?
+    active? && (admin? || user&.project_moderator?)
   end
 
   def index_mini?

@@ -347,15 +347,17 @@ resource 'Ideas' do
       parameter :project, 'Filter by project', required: false
       parameter :ideas, 'Filter by a given list of idea ids', required: false
 
+      before do
+        @ideas = %w[published published draft published spam published published].map do |ps|
+          create(:idea, publication_status: ps)
+        end
+      end
+
       describe do
         before do
           @user = create(:admin)
           token = Knock::AuthToken.new(payload: @user.to_token_payload).token
           header 'Authorization', "Bearer #{token}"
-
-          @ideas = %w[published published draft published spam published published].map do |ps|
-            create(:idea, publication_status: ps)
-          end
         end
 
         example_request 'XLSX export' do
@@ -393,18 +395,76 @@ resource 'Ideas' do
             expect(worksheet.count).to eq(@selected_ideas.size + 1)
           end
         end
+      end
 
-        describe do
-          before do
-            @user = create(:user)
-            token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-            header 'Authorization', "Bearer #{token}"
+      describe do
+        before do
+          @project = create(:project)
+          @user = create(:project_moderator, projects: [@project])
+          header_token_for(@user)
+        end
+
+        context 'when the user moderates the project' do
+
+          let(:project) { @project.id }
+    
+          example 'XLSX export', document: false do
+            do_request
+            expect(status).to eq 200
           end
-
-          example '[error] XLSX export by a normal user', document: false do
+        end
+    
+        context 'when the user moderates another project' do
+          before do
+            @project = create(:project)
+            @user = create(:project_moderator, projects: [create(:project)])
+            header_token_for(@user)
+          end
+    
+          let(:project) { @project.id }
+    
+          example '[error] XLSX export', document: false do
             do_request
             expect(status).to eq 401
           end
+        end
+
+        context 'when a moderator exports all comments' do
+          before do
+            @project = create(:project)
+    
+            @ideas = Array.new(3) do |_i|
+              create(:idea, project: @project)
+            end
+            @unmoderated_idea = create(:idea)
+    
+            @user = create(:project_moderator, projects: [@project])
+            header_token_for(@user)
+          end
+    
+          example 'XLSX export', document: false do
+            do_request
+            expect(status).to eq 200
+
+            worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+            ideas_ids = worksheet.drop(1).collect {|row| row[0].value}
+    
+            expect(ideas_ids).to match_array @ideas.pluck(:id)
+            expect(ideas_ids).not_to include(@unmoderated_idea.id)
+          end
+        end
+      end
+      
+      describe do
+        before do
+          @user = create(:user)
+          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+          header 'Authorization', "Bearer #{token}"
+        end
+
+        example '[error] XLSX export by a normal user', document: false do
+          do_request
+          expect(status).to eq 401
         end
       end
     end
