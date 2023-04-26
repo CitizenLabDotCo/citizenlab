@@ -1372,7 +1372,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSave": "Saglabāt atbildes iespēju",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess": "Veiksmīgi saglabāta atbildes iespēja",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Atbildes variantu izvēle",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation": "Vai esat pārliecināts, ka vēlaties dzēst šo pielāgoto lauku?",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation2": "Vai esat pārliecināts, ka vēlaties dzēst šo pielāgoto lauku? Dzēšot šo lauku, tiks dzēstas arī visas atbildes, ko lietotāji ir snieguši, un tas vairs netiks jautāts projektos vai priekšlikumos.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "Vai esat pārliecināts, ka vēlaties dzēst šo pielāgotā lauka iespēju?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle": "Lauki",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip": "Velciet un nometiet laukus, lai noteiktu, kādā secībā tie tiks parādīti pieteikšanās veidlapā.",
