@@ -35,6 +35,7 @@ import useGroup from 'api/groups/useGroup';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { MembershipType } from 'api/groups/types';
 import useUpdateGroup from 'api/groups/useUpdateGroup';
+import useDeleteGroup from 'api/groups/useDeleteGroup';
 
 const UsersGroup = () => {
   const isVerificationEnabled = useFeatureFlag({ name: 'verification' });
@@ -42,6 +43,7 @@ const UsersGroup = () => {
   const { groupId } = useParams() as { groupId: string };
   const { data: group } = useGroup(groupId);
   const { mutate: updateGroup } = useUpdateGroup();
+  const { mutate: deleteGroup } = useDeleteGroup();
   const [groupEditionModal, setGroupEditionModal] = useState<
     false | MembershipType
   >(false);
@@ -76,7 +78,7 @@ const UsersGroup = () => {
       );
     };
 
-  const deleteGroup = (groupId: string) => () => {
+  const handleDeleteGroup = (groupId: string) => () => {
     const deleteMessage = formatMessage(messages.groupDeletionConfirmation);
 
     if (window.confirm(deleteMessage)) {
@@ -137,7 +139,7 @@ const UsersGroup = () => {
           title={group.data.attributes.title_multiloc}
           groupType={group.data.attributes.membership_type}
           onEdit={openGroupEditionModal}
-          onDelete={deleteGroup(group.data.id)}
+          onDelete={handleDeleteGroup(group.data.id)}
           onSearch={searchGroup}
         />
 

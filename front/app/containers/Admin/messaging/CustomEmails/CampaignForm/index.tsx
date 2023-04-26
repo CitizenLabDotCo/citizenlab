@@ -34,7 +34,7 @@ import MultipleSelect from 'components/HookForm/MultipleSelect';
 import useLocalize from 'hooks/useLocalize';
 import useAuthUser from 'hooks/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IGroupData } from 'services/groups';
+import { IGroupData } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';
 
 const StyledSection = styled(Section)`

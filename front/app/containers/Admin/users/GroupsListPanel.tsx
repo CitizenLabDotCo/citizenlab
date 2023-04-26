@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 
 // Resources
 import GetUserCount, { GetUserCountChildProps } from 'resources/GetUserCount';
-import { IGroupData } from 'services/groups';
+import { IGroupData } from 'api/groups/types';
 
 // hooks
 import useBlockedUsercount from 'api/blocked_users/useBlockedUsersCount';
