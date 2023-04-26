@@ -1838,7 +1838,7 @@
   "app.containers.admin.project.permissions.permissionsAdministrators": "Admins",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Alle",
   "app.containers.admin.project.permissions.permissionsEveryoneEmailLabel": "Jede Person mit einer bestätigten E-Mail-Adresse",
-  "app.containers.admin.project.permissions.permissionsSelectionLabel": "Auswahl",
+  "app.containers.admin.project.permissions.permissionsSelectionLabel": "Gruppe",
   "app.containers.admin.project.permissions.permissionsUsersLabel": "Registrierte NutzerInnen",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Wer kann dieses Projekt sehen?",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.activeUsers": "Aktive Nutzer*innen",
