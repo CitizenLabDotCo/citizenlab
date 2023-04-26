@@ -62,6 +62,9 @@ describe('BillingInfo', () => {
 
     mockAppConfiguration.data.attributes.settings.core.maximum_admins_number = 6;
     mockAppConfiguration.data.attributes.settings.core.maximum_moderators_number = 9;
+
+    mockAppConfiguration.data.attributes.settings.core.additional_admins_number = 0;
+    mockAppConfiguration.data.attributes.settings.core.additional_moderators_number = 0;
   });
 
   const showsCorrectNumbers = () => {
