@@ -28,6 +28,12 @@ export interface IGroupAdd {
   membership_type: IGroupData['attributes']['membership_type'];
 }
 
+export interface IGroupUpdate {
+  id: string;
+  title_multiloc?: IGroupData['attributes']['title_multiloc'];
+  membership_type?: IGroupData['attributes']['membership_type'];
+}
+
 export interface IGroups {
   data: IGroupData[];
 }

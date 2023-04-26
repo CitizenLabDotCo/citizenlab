@@ -23,7 +23,6 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // Services
-import { updateGroup } from 'services/groups';
 import { deleteMembershipByUserId } from 'services/groupMemberships';
 
 // tracking
@@ -35,12 +34,14 @@ import { useParams } from 'react-router-dom';
 import useGroup from 'api/groups/useGroup';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { MembershipType } from 'api/groups/types';
+import useUpdateGroup from 'api/groups/useUpdateGroup';
 
 const UsersGroup = () => {
   const isVerificationEnabled = useFeatureFlag({ name: 'verification' });
   const { formatMessage } = useIntl();
   const { groupId } = useParams() as { groupId: string };
   const { data: group } = useGroup(groupId);
+  const { mutate: updateGroup } = useUpdateGroup();
   const [groupEditionModal, setGroupEditionModal] = useState<
     false | MembershipType
   >(false);
@@ -65,14 +66,14 @@ const UsersGroup = () => {
 
   const handleSubmitForm =
     (groupId: string) => async (values: NormalFormValues) => {
-      await updateGroup(groupId, { ...values });
-
-      await streams.fetchAllWith({
-        dataId: [groupId],
-        apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/groups`],
-        onlyFetchActiveStreams: true,
-      });
-      closeGroupEditionModal();
+      updateGroup(
+        { id: groupId, ...values },
+        {
+          onSuccess: () => {
+            closeGroupEditionModal();
+          },
+        }
+      );
     };
 
   const deleteGroup = (groupId: string) => () => {

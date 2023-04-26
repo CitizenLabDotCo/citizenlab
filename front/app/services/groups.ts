@@ -33,10 +33,6 @@ export interface IGroup {
   data: IGroupData;
 }
 
-export function addGroup(object: GroupDiff) {
-  return streams.add<IGroups>(`${API_PATH}/groups`, { group: object });
-}
-
 export function updateGroup(groupId: string, object: GroupDiff) {
   return streams.update<IGroup>(`${API_PATH}/groups/${groupId}`, groupId, {
     group: object,
