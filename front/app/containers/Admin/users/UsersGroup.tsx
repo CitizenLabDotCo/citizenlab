@@ -1,7 +1,5 @@
 // Libraries
-import React from 'react';
-import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import React, { useState } from 'react';
 import { isEmpty, isString } from 'lodash-es';
 
 // utils
@@ -22,17 +20,10 @@ import events from './events';
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-
-// Resources
-import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
+import { useIntl } from 'utils/cl-intl';
 
 // Services
-import { deleteGroup, updateGroup, MembershipType } from 'services/groups';
+import { updateGroup, MembershipType } from 'services/groups';
 import { deleteMembershipByUserId } from 'services/groupMemberships';
 
 // tracking
@@ -40,90 +31,69 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 import Outlet from 'components/Outlet';
+import { useParams } from 'react-router-dom';
+import useGroup from 'api/groups/useGroup';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
-export interface InputProps {}
+const UsersGroup = () => {
+  const isVerificationEnabled = useFeatureFlag({ name: 'verification' });
+  const { formatMessage } = useIntl();
+  const { groupId } = useParams() as { groupId: string };
+  const { data: group } = useGroup(groupId);
+  const [groupEditionModal, setGroupEditionModal] = useState<
+    false | MembershipType
+  >(false);
+  const [search, setSearch] = useState<string | undefined>(undefined);
 
-interface DataProps {
-  group: GetGroupChildProps;
-  isVerificationEnabled: GetFeatureFlagChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-export interface State {
-  groupEditionModal: false | MembershipType;
-  search: string | undefined;
-}
-
-export class UsersGroup extends React.PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      groupEditionModal: false,
-      search: undefined,
-    };
-  }
-
-  closeGroupEditionModal = () => {
-    this.setState({ groupEditionModal: false });
+  const closeGroupEditionModal = () => {
+    setGroupEditionModal(false);
   };
 
-  openGroupEditionModal = () => {
-    const { group } = this.props;
-
-    if (!isNilOrError(group)) {
-      const groupType = group.attributes.membership_type;
+  const openGroupEditionModal = () => {
+    if (group) {
+      const groupType = group.data.attributes.membership_type;
       trackEventByName(tracks.editGroup.name, {
         extra: {
           groupType,
         },
       });
 
-      this.setState({ groupEditionModal: groupType });
+      setGroupEditionModal(groupType);
     }
   };
 
-  handleSubmitForm = (groupId: string) => async (values: NormalFormValues) => {
-    await updateGroup(groupId, { ...values });
+  const handleSubmitForm =
+    (groupId: string) => async (values: NormalFormValues) => {
+      await updateGroup(groupId, { ...values });
 
-    await streams.fetchAllWith({
-      dataId: [groupId],
-      apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/groups`],
-      onlyFetchActiveStreams: true,
-    });
-    this.closeGroupEditionModal();
-  };
+      await streams.fetchAllWith({
+        dataId: [groupId],
+        apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/groups`],
+        onlyFetchActiveStreams: true,
+      });
+      closeGroupEditionModal();
+    };
 
-  deleteGroup = (groupId: string) => () => {
-    const deleteMessage = this.props.intl.formatMessage(
-      messages.groupDeletionConfirmation
-    );
+  const deleteGroup = (groupId: string) => () => {
+    const deleteMessage = formatMessage(messages.groupDeletionConfirmation);
 
     if (window.confirm(deleteMessage)) {
       deleteGroup(groupId);
     }
   };
 
-  searchGroup = (searchTerm: string) => {
-    this.setState({
-      search: isString(searchTerm) && !isEmpty(searchTerm) ? searchTerm : '',
-    });
+  const searchGroup = (searchTerm: string) => {
+    setSearch(isString(searchTerm) && !isEmpty(searchTerm) ? searchTerm : '');
   };
 
-  deleteUsersFromGroup = async (userIds: string[]) => {
-    if (
-      !isNilOrError(this.props.group) &&
-      this.props.group.attributes.membership_type === 'manual'
-    ) {
-      const deleteMessage = this.props.intl.formatMessage(
+  const deleteUsersFromGroup = async (userIds: string[]) => {
+    if (group && group.data.attributes.membership_type === 'manual') {
+      const deleteMessage = formatMessage(
         messages.membershipDeleteConfirmation
       );
 
       if (window.confirm(deleteMessage)) {
-        const groupId = this.props.group.id;
+        const groupId = group.data.id;
         const promises: Promise<any>[] = [];
 
         userIds.forEach((userId) =>
@@ -146,8 +116,7 @@ export class UsersGroup extends React.PureComponent<
     }
   };
 
-  renderModalHeader = () => {
-    const { groupEditionModal } = this.state;
+  const renderModalHeader = () => {
     if (groupEditionModal === 'manual') {
       return <FormattedMessage {...messages.modalHeaderManual} />;
     }
@@ -159,69 +128,52 @@ export class UsersGroup extends React.PureComponent<
     );
   };
 
-  render() {
-    const { group } = this.props;
-    const { groupEditionModal, search } = this.state;
+  if (!isNilOrError(group)) {
+    return (
+      <>
+        <UsersGroupHeader
+          title={group.data.attributes.title_multiloc}
+          groupType={group.data.attributes.membership_type}
+          onEdit={openGroupEditionModal}
+          onDelete={deleteGroup(group.data.id)}
+          onSearch={searchGroup}
+        />
 
-    if (!isNilOrError(group)) {
-      return (
-        <>
-          <UsersGroupHeader
-            title={group.attributes.title_multiloc}
-            groupType={group.attributes.membership_type}
-            onEdit={this.openGroupEditionModal}
-            onDelete={this.deleteGroup(group.id)}
-            onSearch={this.searchGroup}
-          />
+        <UserManager
+          search={search}
+          groupId={group.data.id}
+          groupType={group.data.attributes.membership_type}
+          deleteUsersFromGroup={deleteUsersFromGroup}
+        />
 
-          <UserManager
-            search={search}
-            groupId={group.id}
-            groupType={group.attributes.membership_type}
-            deleteUsersFromGroup={this.deleteUsersFromGroup}
-          />
-
-          <Modal
-            header={this.renderModalHeader()}
-            fixedHeight={true}
-            opened={groupEditionModal !== false}
-            close={this.closeGroupEditionModal}
-          >
-            <>
-              {groupEditionModal === 'manual' && (
-                <NormalGroupForm
-                  defaultValues={group.attributes}
-                  onSubmit={this.handleSubmitForm(group.id)}
-                />
-              )}
-
-              <Outlet
-                id="app.containers.Admin.users.UsersGroup.form"
-                initialValues={group.attributes}
-                type={groupEditionModal}
-                onSubmit={this.handleSubmitForm(group.id)}
-                isVerificationEnabled={this.props.isVerificationEnabled}
+        <Modal
+          header={renderModalHeader()}
+          fixedHeight={true}
+          opened={groupEditionModal !== false}
+          close={closeGroupEditionModal}
+        >
+          <>
+            {groupEditionModal === 'manual' && (
+              <NormalGroupForm
+                defaultValues={group.data.attributes}
+                onSubmit={handleSubmitForm(group.data.id)}
               />
-            </>
-          </Modal>
-        </>
-      );
-    }
+            )}
 
-    return null;
+            <Outlet
+              id="app.containers.Admin.users.UsersGroup.form"
+              initialValues={group.data.attributes}
+              type={groupEditionModal}
+              onSubmit={handleSubmitForm(group.data.id)}
+              isVerificationEnabled={isVerificationEnabled}
+            />
+          </>
+        </Modal>
+      </>
+    );
   }
-}
-const UsersGroupWithIntl = injectIntl(UsersGroup);
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  group: ({ params, render }) => (
-    <GetGroup id={params.groupId}>{render}</GetGroup>
-  ),
-  isVerificationEnabled: <GetFeatureFlag name="verification" />,
-});
+  return null;
+};
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <UsersGroupWithIntl {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default UsersGroup;
