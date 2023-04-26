@@ -194,10 +194,16 @@ module MultiTenancy
         end
 
         def user_locales(serialized_models)
-          serialized_models
-            .dig('models', 'user')
-            .to_a # convert to array if nil
-            .pluck('locale').uniq
+          serialized_models = serialized_models.with_indifferent_access
+
+          # Support both formats of serialized models.
+          users = (
+            serialized_models.dig('models', 'user').presence ||
+            serialized_models.dig('models', User)&.values ||
+            []
+          )
+
+          users.pluck('locale').uniq
         end
 
         private
