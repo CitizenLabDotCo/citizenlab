@@ -1,11 +1,9 @@
 // Libraries
-import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
-import { find, map } from 'lodash-es';
+import React, { useState } from 'react';
+import { find } from 'lodash-es';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 
@@ -16,13 +14,11 @@ import GroupAvatar from './GroupAvatar';
 import { List, Row } from 'components/admin/ResourceList';
 
 // Services
-import { localeStream } from 'services/locale';
-import { getGroups, IGroups, IGroupData } from 'services/groups';
+import { IGroups, IGroupData } from 'services/groups';
 import {
   addProjectGroup,
   deleteProjectGroup,
-  projectGroupsByProjectIdStream,
-  IProjectGroups,
+  IProjectGroupData,
 } from 'services/projectGroups';
 
 // Style
@@ -30,10 +26,12 @@ import styled from 'styled-components';
 
 // Typings
 import { IOption, Locale } from 'typings';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
+import { GetAppConfigurationChildProps } from 'resources/GetAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
+import useLocale from 'hooks/useLocale';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useProjectGroups from 'hooks/useProjectGroups';
+import useGroups from 'api/groups/useGroups';
 
 const Container = styled.div`
   width: 100%;
@@ -64,110 +62,46 @@ const GroupTitle = styled.p``;
 
 const GroupMembershipCount = styled.p``;
 
-interface IProjectGroup {
-  group_id: string;
-  group_project_id: string;
-  title: string;
-  membership_count: number;
-}
-
 interface Props {
   projectId: string;
   onAddButtonClicked: () => void;
   appConfiguration: GetAppConfigurationChildProps;
 }
 
-interface State {
-  locale: Locale | null;
-  currentTenantLocales: Locale[] | null;
-  groupsOptions: IOption[] | null;
-  projectGroups: IProjectGroup[] | null;
-  selectedGroups: IOption[] | null;
-  loading: boolean;
-}
+const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
+  const { formatMessage } = useIntl();
+  const locale = useLocale();
+  const currentTenantLocales = useAppConfigurationLocales();
 
-class ProjectGroupsList extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  subscriptions: Subscription[];
+  const groupsProjects = useProjectGroups({ projectId });
 
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      locale: null,
-      currentTenantLocales: null,
-      groupsOptions: null,
-      projectGroups: null,
-      selectedGroups: null,
-      loading: true,
-    };
-    this.subscriptions = [];
-  }
+  const [selectedGroups, setSelectedGroups] = useState<IOption[] | null>(null);
+  const { data: groups } = useGroups({});
 
-  componentDidMount() {
-    const { projectId, appConfiguration } = this.props;
-    const locale$ = localeStream().observable;
+  const projectGroups =
+    !isNilOrError(groupsProjects) &&
+    groupsProjects.map((groupProject) => {
+      const group = find(
+        groups?.data,
+        (group) => group.id === groupProject.relationships.group.data.id
+      ) as IGroupData;
+      return {
+        group_id: group.id,
+        group_project_id: groupProject.id,
+        title: getLocalized(
+          group.attributes.title_multiloc,
+          locale,
+          currentTenantLocales
+        ),
+        membership_count: group.attributes.memberships_count,
+      };
+    });
 
-    const groups$ = getGroups().observable;
-    const groupsProjects$ =
-      projectGroupsByProjectIdStream(projectId).observable;
-
-    this.subscriptions = [
-      combineLatest([locale$, groups$, groupsProjects$]).subscribe(
-        ([locale, groups, groupsProjects]) => {
-          const currentTenantLocales = !isNilOrError(appConfiguration)
-            ? appConfiguration.attributes.settings.core.locales
-            : [];
-          const projectGroups = map(groupsProjects.data, (groupProject) => {
-            const group = find(
-              groups.data,
-              (group) => group.id === groupProject.relationships.group.data.id
-            ) as IGroupData;
-
-            return {
-              group_id: group.id,
-              group_project_id: groupProject.id,
-              title: getLocalized(
-                group.attributes.title_multiloc,
-                locale,
-                currentTenantLocales
-              ),
-              membership_count: group.attributes.memberships_count,
-            };
-          }).reverse();
-          const groupsOptions = this.getOptions(
-            groups,
-            groupsProjects,
-            locale,
-            currentTenantLocales
-          );
-          const loading = false;
-
-          this.setState({
-            locale,
-            currentTenantLocales,
-            projectGroups,
-            groupsOptions,
-            loading,
-          });
-        }
-      ),
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  handleGroupsOnChange = (selectedGroups: IOption[]) => {
-    this.setState({ selectedGroups });
+  const handleGroupsOnChange = (selectedGroups: IOption[]) => {
+    setSelectedGroups(selectedGroups);
   };
 
-  handleOnAddGroupClick = async () => {
-    const { projectId } = this.props;
-    const { selectedGroups } = this.state;
-
+  const handleOnAddGroupClick = async () => {
     if (selectedGroups && selectedGroups.length > 0) {
       const promises = selectedGroups.map((selectedGroup) =>
         addProjectGroup(projectId, selectedGroup.value)
@@ -175,8 +109,9 @@ class ProjectGroupsList extends PureComponent<
 
       try {
         await Promise.all(promises);
-        this.setState({ selectedGroups: null });
-        this.props.onAddButtonClicked();
+        setSelectedGroups(null);
+
+        onAddButtonClicked();
       } catch (error) {
         // eslint-disable-next-line no-console
         if (process.env.NODE_ENV === 'development') console.log(error);
@@ -184,16 +119,16 @@ class ProjectGroupsList extends PureComponent<
     }
   };
 
-  getOptions = (
+  const getOptions = (
     groups: IGroups | null,
-    groupsProjects: IProjectGroups,
+    groupsProjects: IProjectGroupData[],
     locale: Locale,
     currentTenantLocales: Locale[]
   ) => {
     if (groupsProjects && groups) {
       return groups.data
         .filter((group) => {
-          return !groupsProjects.data.some(
+          return !groupsProjects.some(
             (groupProject) =>
               groupProject.relationships.group.data.id === group.id
           );
@@ -211,10 +146,23 @@ class ProjectGroupsList extends PureComponent<
     return null;
   };
 
-  createDeleteGroupHandler = (groupProjectId: string) => {
-    const deletionMessage = this.props.intl.formatMessage(
-      messages.groupDeletionConfirmation
-    );
+  if (
+    isNilOrError(groupsProjects) ||
+    isNilOrError(locale) ||
+    isNilOrError(currentTenantLocales)
+  ) {
+    return null;
+  }
+
+  const groupsOptions = getOptions(
+    groups || null,
+    groupsProjects,
+    locale,
+    currentTenantLocales
+  );
+
+  const createDeleteGroupHandler = (groupProjectId: string) => {
+    const deletionMessage = formatMessage(messages.groupDeletionConfirmation);
 
     return (event) => {
       event.preventDefault();
@@ -225,81 +173,63 @@ class ProjectGroupsList extends PureComponent<
     };
   };
 
-  render() {
-    const { formatMessage } = this.props.intl;
-    const { groupsOptions, projectGroups, selectedGroups, loading } =
-      this.state;
-    const groupsMultipleSelectPlaceholder = formatMessage(
-      messages.groupsMultipleSelectPlaceholder
-    );
+  const groupsMultipleSelectPlaceholder = formatMessage(
+    messages.groupsMultipleSelectPlaceholder
+  );
 
-    const selectGroups = !loading ? (
-      <SelectGroupsContainer>
-        <StyledMultipleSelect
-          options={groupsOptions}
-          value={selectedGroups}
-          onChange={this.handleGroupsOnChange}
-          placeholder={groupsMultipleSelectPlaceholder}
-        />
+  const selectGroups = (
+    <SelectGroupsContainer>
+      <StyledMultipleSelect
+        options={groupsOptions}
+        value={selectedGroups}
+        onChange={handleGroupsOnChange}
+        placeholder={groupsMultipleSelectPlaceholder}
+      />
 
-        <AddGroupButton
-          text={formatMessage(messages.add)}
-          buttonStyle="cl-blue"
-          icon="plus-circle"
-          onClick={this.handleOnAddGroupClick}
-          disabled={!selectedGroups || selectedGroups.length === 0}
-        />
-      </SelectGroupsContainer>
+      <AddGroupButton
+        text={formatMessage(messages.add)}
+        buttonStyle="cl-blue"
+        icon="plus-circle"
+        onClick={handleOnAddGroupClick}
+        disabled={!selectedGroups || selectedGroups.length === 0}
+      />
+    </SelectGroupsContainer>
+  );
+
+  const groupsList =
+    projectGroups && projectGroups.length > 0 ? (
+      <List key={projectGroups.length}>
+        {projectGroups.map((projectGroup, index) => (
+          <Row
+            key={projectGroup.group_project_id}
+            isLastItem={index === projectGroups.length - 1}
+          >
+            <GroupAvatar groupId={projectGroup.group_id} />
+            <GroupTitle className="expand">{projectGroup.title}</GroupTitle>
+            <GroupMembershipCount className="expand">
+              <FormattedMessage
+                {...messages.members}
+                values={{ count: projectGroup.membership_count }}
+              />
+            </GroupMembershipCount>
+            <Button
+              onClick={createDeleteGroupHandler(projectGroup.group_project_id)}
+              buttonStyle="text"
+              icon="delete"
+            >
+              <FormattedMessage {...messages.deleteButtonLabel} />
+            </Button>
+          </Row>
+        ))}
+      </List>
     ) : null;
 
-    const groupsList =
-      !loading && projectGroups && projectGroups.length > 0 ? (
-        <List key={projectGroups.length}>
-          {projectGroups.map((projectGroup, index) => (
-            <Row
-              key={projectGroup.group_project_id}
-              isLastItem={index === projectGroups.length - 1}
-            >
-              <GroupAvatar groupId={projectGroup.group_id} />
-              <GroupTitle className="expand">{projectGroup.title}</GroupTitle>
-              <GroupMembershipCount className="expand">
-                <FormattedMessage
-                  {...messages.members}
-                  values={{ count: projectGroup.membership_count }}
-                />
-              </GroupMembershipCount>
-              <Button
-                onClick={this.createDeleteGroupHandler(
-                  projectGroup.group_project_id
-                )}
-                buttonStyle="text"
-                icon="delete"
-              >
-                <FormattedMessage {...messages.deleteButtonLabel} />
-              </Button>
-            </Row>
-          ))}
-        </List>
-      ) : null;
+  return (
+    <Container>
+      {selectGroups}
+      {groupsList}
+    </Container>
+  );
+};
 
-    return (
-      <Container>
-        {selectGroups}
-        {groupsList}
-      </Container>
-    );
-  }
-}
-
-const ProjectGroupsListWithHocs = injectIntl(ProjectGroupsList);
-
-export default (props) => (
-  <GetAppConfiguration>
-    {(appConfiguration) => (
-      <ProjectGroupsListWithHocs
-        appConfiguration={appConfiguration}
-        {...props}
-      />
-    )}
-  </GetAppConfiguration>
-);
+export default ProjectGroupsList;
