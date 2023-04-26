@@ -8,7 +8,7 @@ export interface ISeats {
     type: 'seats';
     attributes: {
       admins_number: number;
-      project_moderators_number: number;
+      moderators_number: number;
     };
   };
 }
