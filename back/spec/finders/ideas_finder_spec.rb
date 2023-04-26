@@ -245,6 +245,7 @@ describe IdeasFinder do
     let(:params) { { basket_id: basket.id } }
 
     it 'filters ideas by basket' do
+      expect(result_record_ids).to be_present
       expect(result_record_ids).to match_array idea_ids
     end
 

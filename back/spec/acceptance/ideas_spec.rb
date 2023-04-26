@@ -66,7 +66,7 @@ resource 'Ideas' do
       parameter :topics, 'Filter by topics (OR)', required: false
       parameter :projects, 'Filter by projects (OR)', required: false
       parameter :phase, 'Filter by project phase', required: false
-      parameter :basket, 'Filter by basket', required: false
+      parameter :basket_id, 'Filter by basket', required: false
       parameter :author, 'Filter by author (user id)', required: false
       parameter :idea_status, 'Filter by status (idea status id)', required: false
       parameter :search, 'Filter by searching in title and body', required: false
