@@ -23,6 +23,7 @@ import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
+
 const InviteUsersWithSeatsModal = lazy(
   () => import('components/admin/SeatBasedBilling/InviteUsersWithSeatsModal')
 );
@@ -31,6 +32,7 @@ import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useExceedsSeats from 'hooks/useExceedsSeats';
+import useGroups from 'api/groups/useGroups';
 
 // services
 import {
@@ -48,7 +50,6 @@ import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // i18n
@@ -69,6 +70,7 @@ import { darken } from 'polished';
 
 // typings
 import { Locale, IOption } from 'typings';
+import { IGroupData } from 'api/groups/types';
 
 const StyledTabs = styled(Tabs)`
   margin-bottom: 35px;
@@ -110,13 +112,13 @@ interface DataProps {
   projects: GetProjectsChildProps;
   locale: GetLocaleChildProps;
   tenantLocales: GetAppConfigurationLocalesChildProps;
-  groups: GetGroupsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
+const Invitations = ({ projects, locale, tenantLocales }: Props) => {
   const { formatMessage } = useIntl();
+  const { data: groups } = useGroups({ membershipType: 'manual' });
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
   });
@@ -191,17 +193,16 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
   };
 
   const getGroupOptions = (
-    groups: GetGroupsChildProps,
+    groups: IGroupData[],
     locale: GetLocaleChildProps,
     tenantLocales: GetAppConfigurationLocalesChildProps
   ) => {
     if (
       !isNilOrError(locale) &&
       !isNilOrError(tenantLocales) &&
-      !isNilOrError(groups.groupsList) &&
-      groups.groupsList.length > 0
+      groups.length > 0
     ) {
-      return groups.groupsList.map((group) => ({
+      return groups.map((group) => ({
         value: group.id,
         label: getLocalized(
           group.attributes.title_multiloc,
@@ -467,7 +468,11 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
   };
 
   const projectOptions = getProjectOptions(projects, locale, tenantLocales);
-  const groupOptions = getGroupOptions(groups, locale, tenantLocales);
+  const groupOptions = getGroupOptions(
+    groups?.data || [],
+    locale,
+    tenantLocales
+  );
 
   const invitationTabs = [
     {
@@ -781,7 +786,6 @@ const Data = adopt<DataProps>({
   ),
   locale: <GetLocale />,
   tenantLocales: <GetAppConfigurationLocales />,
-  groups: <GetGroups membershipType="manual" />,
 });
 
 export default (inputProps: InputProps) => (
