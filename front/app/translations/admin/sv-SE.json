@@ -1372,7 +1372,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSave": "Spara svarsalternativ",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess": "Svarsalternativet har sparats",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Svarsval",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation": "Är du säker på att du vill ta bort det här anpassade fältet?",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation2": "Är du säker på att du vill ta bort det här anpassade fältet? Om du raderar det här fältet raderas också alla svar som användarna har gett, och det kommer inte längre att frågas i projekt eller förslag.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "Är du säker på att du vill ta bort det här anpassade fältalternativet?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle": "Fält",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip": "Dra och släpp fälten för att bestämma i vilken ordning de visas i registreringsformuläret.",
