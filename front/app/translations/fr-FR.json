@@ -1068,7 +1068,7 @@
   "app.containers.NewAuthModal.steps.Success.allDone": "Terminé",
   "app.containers.NewAuthModal.steps.Success.nowContinueYourParticipation": "Maintenant, reprenez votre participation.",
   "app.containers.NewAuthModal.steps.VerificationSuccess.userVerifiedSubtitle": "Votre identité a été vérifiée. Vous êtes maintenant un membre à part entière de la communauté sur cette plateforme.",
-  "app.containers.NewAuthModal.steps.VerificationSuccess.userVerifiedTitle": "Vous êtes maintenant vérifié !",
+  "app.containers.NewAuthModal.steps.VerificationSuccess.userVerifiedTitle": "Votre compte a été vérifié avec succès !",
   "app.containers.NewAuthModal.steps.close": "Fermer",
   "app.containers.NewAuthModal.steps.continue": "Continuer",
   "app.containers.NotificationMenu.a11y_notificationsLabel": "{count, plural, =0 {aucune notification non vue} one {1 notification non vue} other {# notifications non vues}}",
