@@ -174,7 +174,12 @@ const AuthModal = ({ setModalOpen }: Props) => {
       }
       niceHeader
     >
-      <Box px={marginX} py="32px" w={fullscreenModalEnabled ? '580px' : '100%'}>
+      <Box
+        id="e2e-authentication-modal"
+        px={marginX}
+        py="32px"
+        w={fullscreenModalEnabled ? '580px' : '100%'}
+      >
         {error && (
           <Box mb="16px">
             <Error text={formatMessage(ERROR_CODE_MESSAGES[error])} />

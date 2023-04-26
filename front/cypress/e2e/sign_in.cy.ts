@@ -4,7 +4,9 @@ describe('Sign in page', () => {
   beforeEach(() => {
     cy.goToLandingPage();
     cy.get('#e2e-navbar-login-menu-item').click();
-    cy.get('#e2e-sign-in-container');
+    cy.get('#e2e-authentication-modal').should('exist');
+    cy.get('#e2e-login-with-email').should('exist');
+    cy.get('#e2e-login-with-email').click();
   });
 
   it('has a working email field', () => {
@@ -19,30 +21,31 @@ describe('Sign in page', () => {
     cy.get('#password').type('test');
     cy.get('#e2e-signin-password-submit-button').click();
 
-    const emailErrorMessage = cy.get('#email').siblings('.e2e-input-error');
-    expect(emailErrorMessage).to.exist;
+    cy.get('#e2e-email-container').should('exist');
+    cy.get('#e2e-email-container').within(() => {
+      cy.get('[data-testid="error-message-text"]').should('exist');
+    });
   });
 
   it('shows an error when no valid email is provided', () => {
-    cy.get('#email').type('test');
+    cy.get('#email').type('test@t');
     cy.get('#password').type('test');
     cy.get('#e2e-signin-password-submit-button').click();
 
-    const emailErrorMessage = cy.get('#email').siblings('.e2e-input-error');
-    expect(emailErrorMessage).to.exist;
+    cy.get('#e2e-email-container').should('exist');
+    cy.get('#e2e-email-container').within(() => {
+      cy.get('[data-testid="error-message-text"]').should('exist');
+    });
   });
 
   it('shows an error when no password is provided', () => {
     cy.get('#email').type('test@test.com');
     cy.get('#e2e-signin-password-submit-button').click();
 
-    const passwordErrorMessage = cy
-      .get('#password')
-      .parent()
-      .parent()
-      .siblings('.e2e-error-message');
-
-    expect(passwordErrorMessage).to.exist;
+    cy.get('#e2e-password-container').should('exist');
+    cy.get('#e2e-password-container').within(() => {
+      cy.get('[data-testid="error-message-text"]').should('exist');
+    });
   });
 
   it('has a working link to the password recovery page', () => {
@@ -51,6 +54,8 @@ describe('Sign in page', () => {
   });
 
   it('has a working link to the sign up flow', () => {
+    cy.get('#e2e-login-options').should('exist');
+    cy.get('#e2e-login-options').click();
     cy.get('#e2e-goto-signup').click();
     cy.get('#e2e-sign-up-container');
   });

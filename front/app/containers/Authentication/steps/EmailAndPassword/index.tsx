@@ -118,7 +118,7 @@ const EmailAndPassword = ({
     <Box id="e2e-sign-in-email-password-container">
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
-          <Box>
+          <Box id="e2e-email-container">
             <Input
               name="email"
               id="email"
@@ -131,7 +131,7 @@ const EmailAndPassword = ({
               }
             />
           </Box>
-          <Box mt="16px">
+          <Box id="e2e-password-container" mt="16px">
             <PasswordInput
               name="password"
               id="password"
