@@ -17,7 +17,7 @@ module MultiTenancy
         @s3_client = s3_client
       end
 
-      def apply(template_name, external_template_group: 'release')
+      def apply(template_name, external_template_group: template_utils.release_prefix)
         if template_utils.internal_template?(template_name)
           apply_internal_template(template_name)
         else
@@ -30,7 +30,7 @@ module MultiTenancy
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(serialized_models)
       end
 
-      def apply_external_template(template_name, prefix: 'release')
+      def apply_external_template(template_name, prefix: template_utils.release_prefix)
         template_models = template_utils.fetch_external_template_models(template_name, prefix: prefix)
         model_id_mapping = generate_model_identifiers!(template_models)
 

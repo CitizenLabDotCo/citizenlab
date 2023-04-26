@@ -36,7 +36,7 @@ module MultiTenancy
 
       # @param [Object] tenant The tenant to create a template from.
       # @param [String] prefix The S3 prefix to use for the template.
-      def create(tenant, prefix: 'release')
+      def create(tenant, prefix: template_utils.test_prefix)
         serialized_models = MultiTenancy::Templates::TenantSerializer.new(tenant).run
         template_name = send(:template_name, tenant)
         template_s3_prefix = template_utils.template_prefix(template_name, prefix: prefix)
