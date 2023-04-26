@@ -1,13 +1,7 @@
 import React from 'react';
 
 // components
-import {
-  Box,
-  Text,
-  Button,
-  colors,
-  Badge,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
 
 // api
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
@@ -62,19 +56,6 @@ export const SelectionScreen = ({
                 <Text color="primary" mr="12px">
                   {field.attributes.title_multiloc[locale]}
                 </Text>
-                {field.attributes.required && (
-                  <Badge
-                    className="inverse"
-                    color={colors.error}
-                    style={{
-                      height: '24px',
-                      marginTop: 'auto',
-                      marginBottom: 'auto',
-                    }}
-                  >
-                    <FormattedMessage {...messages.required} />
-                  </Badge>
-                )}
               </Box>
 
               <Box display="flex">
