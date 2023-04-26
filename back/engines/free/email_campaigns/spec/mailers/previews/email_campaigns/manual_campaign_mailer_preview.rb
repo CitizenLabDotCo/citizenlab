@@ -2,6 +2,8 @@
 
 module EmailCampaigns
   class ManualCampaignMailerPreview < ActionMailer::Preview
+    include EmailCampaigns::MailerPreviewRecipient
+
     def campaign_mail
       command = {
         author: User.first,
@@ -19,7 +21,7 @@ module EmailCampaigns
         },
         sender: 'organization',
         reply_to: 'replyto',
-        recipient: User.second
+        recipient: recipient_user
       }
 
       campaign = EmailCampaigns::Campaigns::Manual.first_or_create(

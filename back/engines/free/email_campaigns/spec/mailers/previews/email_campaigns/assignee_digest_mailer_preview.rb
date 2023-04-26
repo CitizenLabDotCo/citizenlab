@@ -2,13 +2,14 @@
 
 module EmailCampaigns
   class AssigneeDigestMailerPreview < ActionMailer::Preview
+    include EmailCampaigns::MailerPreviewRecipient
+
     def campaign_mail
-      recipient = User.first
-      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient_user)
       ideas = Idea.take(2)
       initiatives = Initiative.take(3)
       command = {
-        recipient: recipient,
+        recipient: recipient_user,
         event_payload: {
           assigned_ideas: ideas.map do |idea|
             {

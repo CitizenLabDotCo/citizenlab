@@ -2,12 +2,14 @@
 
 module EmailCampaigns
   class ThresholdReachedForAdminMailerPreview < ActionMailer::Preview
+    include EmailCampaigns::MailerPreviewRecipient
+
     def campaign_mail
       campaign = EmailCampaigns::Campaigns::ThresholdReachedForAdmin.first
       post = Initiative.first
 
       command = {
-        recipient: User.first,
+        recipient: recipient_user,
         event_payload: {
           post_title_multiloc: { 'en' => 'A nice idea' },
           post_body_multiloc: { 'en' => 'A nice idea' },
