@@ -794,7 +794,7 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     netrc (0.11.0)
-    nio4r (2.5.8)
+    nio4r (2.5.9)
     nokogiri (1.14.3-aarch64-linux)
       racc (~> 1.4)
     nokogiri (1.14.3-arm64-darwin)
@@ -872,7 +872,7 @@ GEM
       interception (>= 0.5)
       pry (>= 0.12.0)
     public_suffix (4.0.7)
-    puma (6.1.1)
+    puma (6.2.2)
       nio4r (~> 2.0)
     qonfig (0.28.0)
     que-web (0.9.3)
@@ -1253,7 +1253,7 @@ DEPENDENCIES
   pry-rails
   pry-rescue
   public_api!
-  puma (~> 6.1.1)
+  puma (~> 6.2.2)
   pundit!
   que!
   que-web
