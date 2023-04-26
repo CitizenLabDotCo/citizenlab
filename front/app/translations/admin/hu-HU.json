@@ -427,7 +427,6 @@
   "app.containers.Admin.emails.addCampaignButton": "Create a new email",
   "app.containers.Admin.emails.addCampaignTitle": "Create a new email",
   "app.containers.Admin.emails.allUsers": "Registered users",
-  "app.containers.Admin.emails.automatedEmailCampaignsInfo": "Automated emails are automatically sent out and are triggered by a user's actions. You can turn some of them off for all users of your platform. The other automated emails can not be turned off because they are required for the proper functioning of your platform.",
   "app.containers.Admin.emails.campaignDeletionConfirmation": "Are you sure?",
   "app.containers.Admin.emails.changeRecipientsButton": "Change recipients",
   "app.containers.Admin.emails.confirmSendHeader": "Email to all users?",
