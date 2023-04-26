@@ -1365,7 +1365,6 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSave": "Yanıt seçeneğini kaydet",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess": "Yanıt seçeneği başarıyla kaydedildi",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Yanıt seçenekleri",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation": "Bu özel alanı silmek istediğinizden emin misiniz?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "Bu özel alan seçeneğini silmek istediğinizden emin misiniz?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle": "Alanlar",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip": "Kayıt formunda görünecekleri sırayı belirlemek için alanları sürükleyip bırakın.",
