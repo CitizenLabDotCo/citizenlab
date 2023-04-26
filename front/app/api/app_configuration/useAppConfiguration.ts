@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import appConfiguationKeys from './keys';
+import appConfigurationKeys from './keys';
 import { IAppConfiguration, AppConfigurationKeys } from './types';
 
 export const fetchAppConfiguration = () =>
@@ -14,7 +14,7 @@ const useAppConfiguration = () => {
     IAppConfiguration,
     AppConfigurationKeys
   >({
-    queryKey: appConfiguationKeys.all(),
+    queryKey: appConfigurationKeys.all(),
     queryFn: fetchAppConfiguration,
   });
 };

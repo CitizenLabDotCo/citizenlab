@@ -1,12 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { IUsers } from 'services/users';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import seatsKeys from 'api/seats/keys';
-
-const invalidateSeatsCache = () => {
-  queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
-};
+import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 
 export function projectModeratorsStream(projectId: string) {
   return streams.get<IUsers>({
