@@ -116,7 +116,7 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
   handleOnDeleteClick = (customFieldId: string) => (event: MouseEvent) => {
     if (!this.state.isProcessing) {
       const deleteMessage = this.props.intl.formatMessage(
-        messages.customFieldDeletionConfirmation
+        messages.customFieldDeletionConfirmation2
       );
       event.preventDefault();
 
