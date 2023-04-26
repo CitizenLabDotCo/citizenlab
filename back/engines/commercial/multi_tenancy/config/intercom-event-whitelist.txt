@@ -23,8 +23,6 @@ Idea changed_body
 Idea changed_status
 Idea changed_title
 Idea deleted
-Idea first published by user
-Idea first_published_by_user
 Idea published
 IdeaAssignment::Notifications::IdeaAssignedToYou created
 Initiative changed
