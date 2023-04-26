@@ -1,7 +1,6 @@
-import seatsKeys from 'api/seats/keys';
 import { API_PATH } from 'containers/App/constants';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 import streams, { IStreamParams } from 'utils/streams';
+import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 
 export interface IInviteData {
   id: string;
@@ -96,7 +95,7 @@ export async function bulkInviteEmails(object: INewBulkInviteEmails) {
     invites: object,
   });
   await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/invites`] });
-  queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+  invalidateSeatsCache();
   return response;
 }
 
@@ -105,7 +104,7 @@ export async function bulkInviteXLSX(object: INewBulkXLSXInviteXLSX) {
     invites: object,
   });
   await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/invites`] });
-  queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+  invalidateSeatsCache();
   return response;
 }
 
