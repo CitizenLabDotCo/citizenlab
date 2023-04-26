@@ -1372,7 +1372,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSave": "Salvar opção de resposta",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess": "Opção de resposta salva com sucesso",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Escolha da resposta",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation": "Tem certeza de que deseja excluir este campo personalizado?",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation2": "Are you sure you want to delete this custom field? By deleting this field, any answer that users have given will also be deleted, and it will no longer be asked in projects or proposals.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "Tem certeza de que deseja excluir esta opção de campo personalizado?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle": "Campos",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip": "Arrastar e largar os campos para determinar a ordem em que aparecem no formulário de inscrição.",
