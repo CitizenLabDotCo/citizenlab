@@ -12,7 +12,7 @@ gem 'rails', '~> 6.1.7.3'
 # Use postgresql as the database for Active Record
 gem 'pg' # , '~> 0.18'
 # Use Puma as the app server
-gem 'puma', '~> 6.1.1'
+gem 'puma', '~> 6.2.2'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -91,7 +91,7 @@ gem 'active_model_serializers', '~> 0.10.12'
 # Installs v2.2 which is not available on rubygems.org
 gem 'knock', git: 'https://github.com/nsarno/knock', branch: 'master', ref: '9214cd027422df8dc31eb67c60032fbbf8fc100b'
 gem 'que', git: 'https://github.com/que-rb/que', branch: 'master', ref: '77c6b92952b821898c393239ce0e4047b17d7dae'
-gem 'sinatra', '~> 3.0.5' # Fixes CVE-2022-45442. Sinatra is a dependency of que-web, but que-web depends on sinatra >= 0.
+gem 'sinatra', '~> 3.0.6' # Fixes CVE-2022-45442. Sinatra is a dependency of que-web, but que-web depends on sinatra >= 0.
 gem 'que-web'
 
 gem 'activerecord-import', '~> 1.4'
