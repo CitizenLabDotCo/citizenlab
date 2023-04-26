@@ -2,11 +2,13 @@
 
 module EmailCampaigns
   class OfficialFeedbackOnCommentedIdeaMailerPreview < ActionMailer::Preview
+    include EmailCampaigns::MailerPreviewRecipient
+
     def campaign_mail
       campaign = EmailCampaigns::Campaigns::OfficialFeedbackOnCommentedIdea.first
 
       command = {
-        recipient: User.first,
+        recipient: recipient_user,
         event_payload: {
           official_feedback_author_multiloc: { 'en' => 'Citizenlab person' },
           official_feedback_body_multiloc: { 'en' => 'Nice idea, bruh' },
