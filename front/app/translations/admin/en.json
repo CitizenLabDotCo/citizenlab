@@ -1625,6 +1625,7 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Are you sure?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Project managers not found",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Nothing is shown, because there are no actions the user can take in this project.",
+  "app.containers.AdminPage.groups.permissions.onlyAdmins": "Only admins can change this setting.",
   "app.containers.AdminPage.groups.permissions.option1": "Option 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Pending invitation",
   "app.containers.AdminPage.groups.permissions.permissionAction_budgeting_subtitle": "Who can spend the budget?",
