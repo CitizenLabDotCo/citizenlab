@@ -31,6 +31,7 @@ import {
   IconTooltip,
   colors,
   Title,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import DraftCampaignDetails from './DraftCampaignDetails';
 import SentCampaignDetails from './SentCampaignDetails';
@@ -43,8 +44,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styling
 import { fontSizes } from 'utils/styleUtils';
-
-const Container = styled.div``;
 
 const PageHeader = styled.div`
   display: flex;
@@ -230,7 +229,7 @@ class Show extends React.Component<
       const noGroupsSelected = groupIds.length === 0;
 
       return (
-        <Container id="e2e-custom-email-container">
+        <Box background={colors.white} p="40px" id="e2e-custom-email-container">
           <PageHeader>
             <PageTitleWrapper>
               <Title mr="12px">
@@ -368,7 +367,7 @@ class Show extends React.Component<
               </ButtonsWrapper>
             </ModalContainer>
           </Modal>
-        </Container>
+        </Box>
       );
     }
 

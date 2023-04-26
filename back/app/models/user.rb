@@ -99,6 +99,10 @@ class User < ApplicationRecord
 
       not_invited.find_by_cimail(email_or_embedded_phone)
     end
+
+    def oldest_admin
+      active.admin.order(:created_at).reject(&:super_admin?).first
+    end
   end
 
   has_secure_password validations: false
@@ -126,6 +130,14 @@ class User < ApplicationRecord
   has_many :comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
   has_many :votes, dependent: :nullify
+
+  after_initialize do
+    next unless has_attribute?('roles')
+
+    @highest_role_after_initialize = highest_role
+  end
+
+  attr_reader :highest_role_after_initialize
 
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
@@ -272,10 +284,6 @@ class User < ApplicationRecord
     # use any conditions before `or` very carefully (inspect the generated SQL)
     project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
   }
-
-  def self.oldest_admin
-    active.admin.order(:created_at).reject(&:super_admin?).first
-  end
 
   def assign_email_or_phone
     # Hack to embed phone numbers in email

@@ -49,6 +49,27 @@ RSpec.describe User do
     end
   end
 
+  describe '.after_initialize' do
+    it "stores new user's role" do
+      user = build(:user)
+      user.roles = [{ 'type' => 'admin' }]
+      expect(user.highest_role_after_initialize).to eq(:user)
+    end
+
+    it "stores existing user's role" do
+      create(:admin)
+      user = described_class.first
+      user.roles = [{ 'type' => 'project_moderator', 'project_id' => 1 }]
+      expect(user.highest_role_after_initialize).to eq(:admin)
+    end
+
+    it 'does not store role if roles attributes is not loaded by AR' do
+      create(:admin)
+      user = described_class.select(:id).first
+      expect(user.highest_role_after_initialize).to be_nil
+    end
+  end
+
   describe 'blocked?' do
     let!(:user1) { create(:user, block_end_at: 1.day.from_now) }
     let!(:user2) { create(:user, block_end_at: 5.minutes.ago) }

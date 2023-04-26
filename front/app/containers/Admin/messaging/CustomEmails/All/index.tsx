@@ -8,7 +8,7 @@ import { isDraft } from 'services/campaigns';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import { List } from 'components/admin/ResourceList';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/admin/Pagination';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import DraftCampaignRow from './DraftCampaignRow';
@@ -55,7 +55,7 @@ const Campaigns = ({
 
   if (campaigns.length === 0) {
     return (
-      <>
+      <Box background={colors.white} p="40px">
         <NoCampaignsWrapper>
           <Icon name="email-2" width="80px" height="80px" />
           <NoCampaignsHeader>
@@ -66,28 +66,41 @@ const Campaigns = ({
           </NoCampaignsDescription>
           <NewCampaignButton />
         </NoCampaignsWrapper>
-      </>
+      </Box>
     );
   } else {
     return (
       <>
-        <ButtonWrapper>
-          <NewCampaignButton />
-        </ButtonWrapper>
-        <List key={campaigns.map((c) => c.id).join()}>
-          {campaigns.map((campaign) =>
-            isDraft(campaign) ? (
-              <DraftCampaignRow key={campaign.id} campaign={campaign} />
-            ) : (
-              <SentCampaignRow key={campaign.id} campaign={campaign} />
-            )
-          )}
-        </List>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={lastPage}
-          loadPage={onChangePage}
-        />
+        <Box mb="28px" display="flex" w="100%" justifyContent="space-between">
+          <Box>
+            <Title color="primary">
+              <FormattedMessage {...messages.customEmails} />
+            </Title>
+            <Text color="coolGrey600">
+              <FormattedMessage {...messages.customEmailsDescription} />
+            </Text>
+          </Box>
+          <ButtonWrapper>
+            <NewCampaignButton />
+          </ButtonWrapper>
+        </Box>
+
+        <Box background={colors.white} p="40px">
+          <List key={campaigns.map((c) => c.id).join()}>
+            {campaigns.map((campaign) =>
+              isDraft(campaign) ? (
+                <DraftCampaignRow key={campaign.id} campaign={campaign} />
+              ) : (
+                <SentCampaignRow key={campaign.id} campaign={campaign} />
+              )
+            )}
+          </List>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={lastPage}
+            loadPage={onChangePage}
+          />
+        </Box>
       </>
     );
   }

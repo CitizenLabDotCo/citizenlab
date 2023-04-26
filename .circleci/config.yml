@@ -1183,13 +1183,17 @@ workflows:
             - slack-dev-notifications-inconsistent-data
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
           env_file: ".env-web"
-      - check-for-inconsistent-data:
-          <<: *slack-fail-post-step-inconsistent-data
-          name: "UK"
-          context:
-            - slack-dev-notifications-inconsistent-data
-          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
-          env_file: ".env-web"
+      # Disabling the check for the UK cluster for now, as it is likely the root cause of CL-3026.
+      # See: https://citizenlab.atlassian.net/browse/CL-3026
+      # Don't forget to uncomment the "UK" requirement in 'slack-invalid-data-success'
+      # when re-enabling this.
+      # - check-for-inconsistent-data:
+      #     <<: *slack-fail-post-step-inconsistent-data
+      #     name: "UK"
+      #     context:
+      #       - slack-dev-notifications-inconsistent-data
+      #     ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
+      #     env_file: ".env-web"
       - slack-invalid-data-success:
           name: ":tada: SUCCESS: No invalid data was detected!" # Mentions are not supported for basic_success_1
           context:
@@ -1198,4 +1202,4 @@ workflows:
             - "South America"
             - "Canada"
             - "US West"
-            - "UK"
+      #     - "UK"

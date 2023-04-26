@@ -2,9 +2,11 @@
 
 module EmailCampaigns
   class WelcomeMailerPreview < ActionMailer::Preview
+    include EmailCampaigns::MailerPreviewRecipient
+
     def campaign_mail
       command = {
-        recipient: User.first
+        recipient: recipient_user
       }
       campaign = EmailCampaigns::Campaigns::Welcome.first
 
