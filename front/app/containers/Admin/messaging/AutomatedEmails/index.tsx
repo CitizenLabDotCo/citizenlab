@@ -4,47 +4,38 @@ import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
 import { ICampaignData, updateCampaign } from 'services/campaigns';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
-import { Toggle } from '@citizenlab/cl2-component-library';
+import { Toggle, Box, Text, Title } from '@citizenlab/cl2-component-library';
 import {
   List as AutomatedEmailsList,
   Row,
   TextCell,
 } from 'components/admin/ResourceList';
-import Warning from 'components/UI/Warning';
-import styled from 'styled-components';
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import { colors } from 'utils/styleUtils';
 
-const StyledWarning = styled(Warning)`
-  max-width: 600px;
-  margin-bottom: 30px;
-`;
+type Props = GetCampaignsChildProps;
 
-type DataProps = GetCampaignsChildProps;
-
-type Props = DataProps;
-
-class AutomatedCampaigns extends React.PureComponent<
-  Props & WrappedComponentProps
-> {
-  handleOnEnabledToggle = (campaign: ICampaignData) => () => {
+const AutomatedCampaigns = ({ campaigns }: Props) => {
+  const handleOnEnabledToggle = (campaign: ICampaignData) => () => {
     updateCampaign(campaign.id, {
       enabled: !campaign.attributes.enabled,
     });
   };
 
-  render() {
-    const { campaigns } = this.props;
+  if (isNilOrError(campaigns)) return null;
 
-    if (isNilOrError(campaigns)) return null;
-
-    return (
-      <>
-        <StyledWarning
-          text={<FormattedMessage {...messages.automatedEmailCampaignsInfo} />}
-        />
+  return (
+    <>
+      <Box mb="28px">
+        <Title color="primary">
+          <FormattedMessage {...messages.automatedEmails} />
+        </Title>
+        <Text color="coolGrey600">
+          <FormattedMessage {...messages.automatedEmailCampaignsInfo} />
+        </Text>
+      </Box>
+      <Box background={colors.white} p="40px">
         <AutomatedEmailsList>
           {campaigns.map((campaign) => (
             <Row key={campaign.id}>
@@ -54,7 +45,7 @@ class AutomatedCampaigns extends React.PureComponent<
                   isUndefined(campaign.attributes.enabled) ||
                   campaign.attributes.enabled
                 }
-                onChange={this.handleOnEnabledToggle(campaign)}
+                onChange={handleOnEnabledToggle(campaign)}
               />
               <TextCell className="expand">
                 <T
@@ -66,15 +57,13 @@ class AutomatedCampaigns extends React.PureComponent<
             </Row>
           ))}
         </AutomatedEmailsList>
-      </>
-    );
-  }
-}
-
-const AutomatedCampaignsWithIntl = injectIntl(AutomatedCampaigns);
+      </Box>
+    </>
+  );
+};
 
 export default () => (
   <GetCampaigns withoutCampaignNames={['manual']} pageSize={250}>
-    {(campaigns) => <AutomatedCampaignsWithIntl {...campaigns} />}
+    {(campaigns) => <AutomatedCampaigns {...campaigns} />}
   </GetCampaigns>
 );

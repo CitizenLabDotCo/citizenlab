@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { isEmpty } from 'lodash-es';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource from 'components/admin/TabbedResource';
-import { WrappedComponentProps } from 'react-intl';
+import { Box } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import GetPermission, {
   GetPermissionChildProps,
@@ -14,7 +12,13 @@ import GetPermission, {
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
-import { Outlet as RouterOutlet } from 'react-router-dom';
+import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
+import NavigationTabs, {
+  Tab,
+  TabsPageLayout,
+} from 'components/admin/NavigationTabs';
+import Link from 'utils/cl-router/Link';
+import { matchPathToUrl } from 'utils/helperUtils';
 
 interface DataProps {
   canManageAutomatedCampaigns: GetPermissionChildProps;
@@ -26,17 +30,17 @@ interface DataProps {
 
 interface Props extends DataProps {}
 
-interface State {}
+const MessagingDashboard = ({
+  canManageAutomatedCampaigns,
+  canManageManualCampaigns,
+  manualEmailingEnabled,
+  automatedEmailingEnabled,
+  textingEnabled,
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const { pathname } = useLocation();
 
-class MessagingDashboard extends React.PureComponent<
-  Props & WrappedComponentProps & WithRouterProps,
-  State
-> {
-  tabs = () => {
-    const {
-      intl: { formatMessage },
-      location: { pathname },
-    } = this.props;
+  const getTabs = () => {
     const tabs: {
       name: string;
       label: string;
@@ -44,32 +48,26 @@ class MessagingDashboard extends React.PureComponent<
       statusLabel?: string;
     }[] = [];
 
-    if (
-      this.props.canManageManualCampaigns &&
-      this.props.manualEmailingEnabled
-    ) {
+    if (canManageManualCampaigns && manualEmailingEnabled) {
       tabs.push({
         name: 'manual-emails',
-        label: formatMessage(messages.tabCustomEmail),
+        label: formatMessage(messages.customEmails),
         url: '/admin/messaging/emails/custom',
       });
     }
-    if (this.props.textingEnabled) {
+    if (canManageAutomatedCampaigns && automatedEmailingEnabled) {
+      tabs.push({
+        name: 'automated-emails',
+        label: formatMessage(messages.tabAutomatedEmails),
+        url: '/admin/messaging/emails/automated',
+      });
+    }
+    if (textingEnabled) {
       tabs.push({
         name: 'texting',
         label: formatMessage(messages.tabTexting),
         url: '/admin/messaging/texting',
         statusLabel: 'Beta',
-      });
-    }
-    if (
-      this.props.canManageAutomatedCampaigns &&
-      this.props.automatedEmailingEnabled
-    ) {
-      tabs.push({
-        name: 'automated-emails',
-        label: formatMessage(messages.tabAutomatedEmails),
-        url: '/admin/messaging/emails/automated',
       });
     }
 
@@ -80,39 +78,30 @@ class MessagingDashboard extends React.PureComponent<
     return tabs;
   };
 
-  render() {
-    const {
-      intl: { formatMessage },
-    } = this.props;
-    const tabs = this.tabs();
+  const tabs = getTabs();
 
-    return (
-      <>
-        <TabbedResource
-          resource={{
-            title: formatMessage(messages.titleMessaging),
-            subtitle: formatMessage(messages.subtitleMessaging),
-          }}
-          tabs={this.tabs()}
-        >
-          <HelmetIntl
-            title={messages.helmetTitle}
-            description={messages.helmetDescription}
-          />
-          <div id="e2e-messaging-container">
-            {isEmpty(tabs) ? (
-              <FormattedMessage {...messages.noAccess} />
-            ) : (
-              <RouterOutlet />
-            )}
-          </div>
-        </TabbedResource>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <NavigationTabs>
+        {tabs.map(({ url, label }) => (
+          <Tab key={url} active={matchPathToUrl(url).test(pathname)}>
+            <Link to={url}>{label}</Link>
+          </Tab>
+        ))}
+      </NavigationTabs>
 
-const MessagingDashboardWithHOCs = withRouter(injectIntl(MessagingDashboard));
+      <TabsPageLayout>
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
+        />
+        <Box id="e2e-initiatives-admin-container">
+          <RouterOutlet />
+        </Box>
+      </TabsPageLayout>
+    </>
+  );
+};
 
 const Data = adopt({
   canManageAutomatedCampaigns: (
@@ -129,7 +118,5 @@ const Data = adopt({
 });
 
 export default () => (
-  <Data>
-    {(dataProps: DataProps) => <MessagingDashboardWithHOCs {...dataProps} />}
-  </Data>
+  <Data>{(dataProps: DataProps) => <MessagingDashboard {...dataProps} />}</Data>
 );
