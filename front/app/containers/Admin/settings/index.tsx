@@ -79,11 +79,7 @@ const SettingsPage = () => {
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        <Box
-          id="e2e-initiatives-admin-container"
-          background={colors.white}
-          p="40px"
-        >
+        <Box id="e2e-settings-container" background={colors.white} p="40px">
           <RouterOutlet />
         </Box>
       </TabsPageLayout>
