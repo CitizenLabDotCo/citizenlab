@@ -999,7 +999,7 @@ resource 'Phases' do
         end
 
         example 'Download phase inputs without private user data', document: false do
-          custom_field = create :custom_field
+          custom_field = create :custom_field, enabled: false
           do_request
           assert_status 200
           expect(xlsx_contents(response_body)).to match([
