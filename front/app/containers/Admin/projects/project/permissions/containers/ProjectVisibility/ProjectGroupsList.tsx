@@ -78,9 +78,10 @@ const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
 
   const projectGroups =
     !isNilOrError(groupsProjects) &&
+    groups &&
     groupsProjects.map((groupProject) => {
       const group = find(
-        groups?.data,
+        groups.data,
         (group) => group.id === groupProject.relationships.group.data.id
       ) as IGroupData;
       return {
