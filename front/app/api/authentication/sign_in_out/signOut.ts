@@ -13,7 +13,6 @@ export default async function signOut() {
     const decodedJwt = decode(jwt);
 
     removeJwt();
-
     if (decodedJwt.logout_supported) {
       const { provider, sub } = decodedJwt;
       const url = `${AUTH_PATH}/${provider}/logout?user_id=${sub}`;
@@ -22,12 +21,15 @@ export default async function signOut() {
       await streams.reset();
       await resetQueryCache();
       const { pathname } = removeLocale(location.pathname);
-
       if (
         pathname &&
         (endsWith(pathname, '/sign-up') || pathname.startsWith('/admin'))
       ) {
         clHistory.push('/');
+      }
+
+      if (pathname && endsWith(pathname, '/ideas/new')) {
+        clHistory.push(pathname.split('/ideas/new')[0]);
       }
     }
   }
