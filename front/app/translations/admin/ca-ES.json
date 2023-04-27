@@ -1650,7 +1650,7 @@
   "app.containers.AdminPage.groups.permissions.selectValueError": "Seleccioneu un tipus de resposta",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestions": "Feu preguntes de registre a nivell de plataforma",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Utilitzeu aquesta configuració si és important per a vostè recollir el nom, els cognoms i les respostes a preguntes demogràfiques a nivell de plataforma. Pot augmentar la barrera per a la participació.",
-  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription2": "Les respostes a preguntes demogràfiques s'emmagatzemaran als perfils d'usuari. Les respostes a aquestes preguntes seran accessibles tant per als administradors com per als moderadors per facilitar l'anàlisi de la participació. Només es faran preguntes als usuaris que no les hagin respost abans.",
+  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3": "Les respostes a preguntes demogràfiques s'emmagatzemaran als perfils d'usuari. Només es faran preguntes als usuaris que no les hagin respost abans. Les respostes a aquestes preguntes també seran accessibles mitjançant l'exportació de dades de participació, que és accessible tant per als moderadors com per als administradors.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Feu preguntes als participants",
   "app.containers.AdminPage.projects.all.existingProjects": "Projectes existents",
   "app.containers.AdminPage.projects.all.newProjectFolder": "Creeu una carpeta de projecte",
