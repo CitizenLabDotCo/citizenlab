@@ -44,7 +44,7 @@ describe('Idea commenting permissions for active users', () => {
       cy.get('.e2e-comments-container');
       cy.get('#submit-comment').should('not.exist');
       cy.get('.e2e-commenting-disabled').find('button').click();
-      cy.get('#e2e-verification-wizard-root');
+      cy.get('#e2e-authentication-modal').should('exist');
     });
 
     it('lets verified users comment', () => {
@@ -73,9 +73,7 @@ describe('idea commenting permissions for non-active users', () => {
     // create user
     cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
       customFieldId = response.body.data.id;
-      cy.apiSignup(firstName, lastName, email, password, {
-        skipCustomFields: true,
-      }).then((response) => {
+      cy.apiSignup(firstName, lastName, email, password).then((response) => {
         userId = response.body.data.id;
       });
       cy.setLoginCookie(email, password);
@@ -88,7 +86,7 @@ describe('idea commenting permissions for non-active users', () => {
     cy.get('.e2e-comments-container');
     cy.get('#submit-comment').should('not.exist');
     cy.get('.e2e-commenting-disabled').find('button').click();
-    cy.get('#e2e-sign-up-container').should('exist');
+    cy.get('#e2e-authentication-modal').should('exist');
   });
 
   after(() => {
