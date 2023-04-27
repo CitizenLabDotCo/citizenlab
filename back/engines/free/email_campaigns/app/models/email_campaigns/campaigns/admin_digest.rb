@@ -65,6 +65,18 @@ module EmailCampaigns
       'admin'
     end
 
+    def self.target_role_label
+      I18n.t('email_campaigns.target_role.admins')
+    end
+
+    def self.target_segment_label
+      I18n.t('email_campaigns.target_segment.admins')
+    end
+
+    def self.content_type_label
+      I18n.t('email_campaigns.content_type.general')
+    end
+
     def generate_commands(recipient:, time: Time.now)
       [{
         event_payload: {

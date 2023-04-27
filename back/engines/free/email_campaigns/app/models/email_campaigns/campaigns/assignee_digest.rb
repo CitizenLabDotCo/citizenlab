@@ -56,6 +56,18 @@ module EmailCampaigns
       'admin'
     end
 
+    def self.target_role_label
+      I18n.t('email_campaigns.target_role.admins_and_moderators')
+    end
+
+    def self.target_segment_label
+      I18n.t('email_campaigns.target_segment.admins')
+    end
+
+    def self.content_type_label
+      I18n.t('email_campaigns.content_type.ideas')
+    end
+
     def mailer_class
       AssigneeDigestMailer
     end

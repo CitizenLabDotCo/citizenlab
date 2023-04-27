@@ -53,5 +53,21 @@ module EmailCampaigns
         event_payload: {}
       }]
     end
+
+    def self.target_role_label
+      I18n.t('email_campaigns.target_role.admins_and_moderators')
+    end
+
+    def self.target_segment_label
+      I18n.t('email_campaigns.target_segment.user_receiving_admin_rights')
+    end
+
+    def self.content_type_label
+      I18n.t('email_campaigns.content_type.permissions')
+    end
+
+    def self.trigger_label
+      I18n.t('email_campaigns.trigger.user_is_given_admin_rights')
+    end
   end
 end
