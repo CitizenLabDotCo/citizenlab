@@ -1638,6 +1638,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_input_subtitle": "Who can vote on inputs?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Who can vote on proposals?",
   "app.containers.AdminPage.groups.permissions.phase": "Phase",
+  "app.containers.AdminPage.groups.permissions.premiumUsersOnly": "Asking custom questions is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Question description",
   "app.containers.AdminPage.groups.permissions.questionTitle": "Question title",
   "app.containers.AdminPage.groups.permissions.required": "Required",
