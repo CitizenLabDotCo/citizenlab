@@ -90,8 +90,9 @@ namespace :setup_and_support do
     template = { 'models' => {
       'email_campaigns/campaigns' => campaigns
     } }
-    Apartment::Tenant.switch(args[:to_host].tr('.', '_')) do
-      MultiTenancy::TenantTemplateService.new.apply_template template
+
+    Tenant.find_by(host: args[:to_host]).switch do
+      MultiTenancy::Templates::TenantDeserializer.new.deserialize template
     end
   end
 

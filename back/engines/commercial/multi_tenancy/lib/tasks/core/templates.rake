@@ -16,124 +16,99 @@ namespace :templates do
   desc 'Importing and exporting tenants as yaml files'
 
   task :export, %i[host file] => [:environment] do |_t, args|
-    template = MultiTenancy::Templates::Serializer.new(Tenant.find_by(host: args[:host])).run
+    tenant = Tenant.find_by(host: args[:host])
+    template = MultiTenancy::Templates::TenantSerializer.new(tenant, uploads_full_urls: true).run
     File.write(args[:file], template.to_yaml)
   end
 
   task :import, %i[host file] => [:environment] do |_t, args|
-    host = args[:host]
-    Apartment::Tenant.switch(host.tr('.', '_')) do
-      MultiTenancy::TenantTemplateService.new.resolve_and_apply_template YAML.load(open(args[:file]).read)
+    Tenant.find_by(host: args[:host]).switch do
+      serialized_models = YAML.load(File.read(args[:file]))
+      MultiTenancy::Templates::TenantDeserializer.new.deserialize(serialized_models)
     end
   end
 
-  task :generate, [:external] => [:environment] do |_t, args|
-    external = args[:external] || false
-    template_hosts = Tenant.pluck(:host).select do |host|
-      host.ends_with? ENV.fetch('TEMPLATE_URL_SUFFIX', '.localhost') # '.template.citizenlab.co'
-    end
+  task :generate, [:s3_prefix] => [:environment] do |_t, args|
+    s3_prefix = args[:s3_prefix] || MultiTenancy::Templates::Utils.new.test_prefix
 
-    s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
-    template_hosts.each do |host|
-      template_name = "#{host.split('.').first}_template.yml"
-      puts "Generating #{template_name}"
-      template = MultiTenancy::Templates::Serializer.new(Tenant.find_by(host: host)).run
-      file_path = "config/tenant_templates/generated/#{template_name}"
-      File.write(file_path, template.to_yaml)
-      if external
-        s3.bucket(ENV.fetch('TEMPLATE_BUCKET',
-          'cl2-tenant-templates')).object("test/#{template_name}").upload_file(file_path)
-      end
+    template_creator = MultiTenancy::Templates::CreateService.new(
+      tenant_bucket: ENV.fetch('AWS_S3_BUCKET', 'cl2-tenants-production-benelux'),
+      template_bucket: ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates')
+    )
+
+    template_host_suffix = ENV.fetch('TEMPLATE_URL_SUFFIX', '.localhost')
+    template_tenants = Tenant.where("host LIKE '%#{template_host_suffix}'")
+    puts({ event: 'templates_generation', nb_templates: template_tenants.size }.to_json)
+
+    template_tenants.each do |template_tenant|
+      puts({ event: 'template_creation', tenant_id: template_tenant.id, tenant_host: template_tenant.host }.to_json)
+      template_creator.create(template_tenant, prefix: s3_prefix)
     end
+    puts({ event: 'templates_generation_finished', prefix: s3_prefix }.to_json)
   end
 
   task :verify, [:output_file] => [:environment] do |_t, args|
-    pool_size = 1 # 4 # Debugging
-    failed_templates = []
-    templates = MultiTenancy::TenantTemplateService.new.available_templates(
-      external_subfolder: 'test'
-    )[:external]
-    templates.in_groups_of(pool_size).map(&:compact).map do |pool_templates|
-      futures = pool_templates.index_with do |template|
-        unless templates.empty?
-          max_time = if MAX_VERIFICATION_TIMES.key?(template)
-            MAX_VERIFICATION_TIMES[template].minutes
-          else
-            3.hours / templates.size
-          end
-        end
-        Concurrent::Future.execute { verify_template template, max_time }
-      end
-      sleep 1 until futures.values.all?(&:complete?)
+    test_prefix = MultiTenancy::Templates::Utils.new.test_prefix
+    templates = MultiTenancy::Templates::Utils.new.available_external_templates(prefix: test_prefix)
+    puts({ event: 'templates_verification', prefix: test_prefix, nb_templates: templates.size }.to_json)
+    next if templates.empty?
 
-      rejected_futures = futures.select do |_, future|
-        future.rejected?
-      end
-      rejected_futures.map do |template, future|
-        puts "Template application #{template} failed!"
-        puts future.reason.message
-        ErrorReporter.report future.reason
-        failed_templates += [template]
-      end
+    default_max_time = 3.hours / templates.size
+
+    failed_templates = templates.filter_map do |template|
+      max_time = MAX_VERIFICATION_TIMES[template]&.minutes || default_max_time
+      puts({ event: 'template_verification', template: template }.to_json)
+      verify_template(template, max_time, test_prefix)
+      nil
+    rescue StandardError => e
+      ErrorReporter.report(e)
+      "#{template}: #{e.message}"
     end
 
-    File.open(args[:output_file], 'w+') do |f|
-      failed_templates.each { |template| f.puts template }
-    end
+    report_content = failed_templates.join("\n") + "\n" # rubocop:disable Style/StringConcatenation
+    File.write(args[:output_file], report_content)
   end
 
-  task :release, [:failed_templates_file] => [:environment] do |_t, args|
-    failed_templates = []
-    failed_templates += File.readlines(args[:failed_templates_file]).map(&:strip) if args[:failed_templates_file]
-
-    s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
-    bucket = s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'))
-    # The release folder itself is also returned as an object, but should not be deleted.
-    bucket.objects(prefix: 'release').reject { |obj| obj.key == 'release/' }.each(&:delete)
-
-    # This code no longer works due to a bug in AWS S3: the folder part of the keys has disappeared.
-    # bucket.objects(prefix: 'test') # .reject { |obj| obj.key == 'test/' }
-    #   .each do |template|
-    #   template_name = template.key.to_s
-    #   template_name.slice! 'test/'
-    #   if template_name.present? && failed_templates.exclude?(template_name.split('.').first)
-    #     template.copy_to(bucket: ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'), key: "release/#{template_name}")
-    #   end
-    # end
-
-    bucket.objects(prefix: 'test').reject { |obj| obj.key == 'test/' }.each do |template|
-      # Download
-      template_name = template.key.to_s
-      template_name.slice! 'test/'
-      template_object = bucket.object("test/#{template_name}")
-      template_content = template_object.get.body.read
-
-      # Upload
-      bucket.object("release/#{template_name}").upload_stream do |stream|
-        stream << template_content
-      end
+  task :release_templates, [:failed_templates_file] => [:environment] do |_t, args|
+    failed_template_file = args[:failed_templates_file]
+    failed_templates = if failed_template_file.present?
+      File.readlines(failed_template_file).map(&:strip).filter_map(&:presence)
+    else
+      []
     end
 
     if failed_templates.present?
-      raise "Some templates are invalid: #{failed_templates.join(', ')}"
+      puts({ event: 'templates_release', status: 'failed', failed_templates: failed_templates }.to_json)
+      next
     end
+
+    release_prefix = MultiTenancy::Templates::Utils.new.release_templates
+    puts({ event: 'templates_release', status: 'success', release_prefix: release_prefix }.to_json)
   end
 
   task :change_locale, %i[template_name locale_from locale_to] => [:environment] do |_t, args|
-    template = YAML.load open(Rails.root.join('config', 'tenant_templates', "#{args[:template_name]}.yml")).read
-    service = MultiTenancy::TenantTemplateService.new
+    template_path = Rails.root.join('config/tenant_templates', "#{args[:template_name]}.yml")
+    serialized_models = YAML.load(File.read(template_path))
 
-    template = service.change_locales template, args[:locale_from], args[:locale_to]
-    File.write("config/tenant_templates/#{args[:locale_to]}_#{args[:template_name]}.yml", template.to_yaml)
+    serialized_models = MultiTenancy::Templates::Utils.change_locales(
+      serialized_models,
+      args[:locale_from],
+      args[:locale_to]
+    )
+
+    output_filename = "#{args[:locale_to]}_#{args[:template_name]}.yml"
+    output_path = Rails.root.join('config/tenant_templates', output_filename)
+    File.write(output_path, serialized_models.to_yaml)
   end
 
-  def verify_template(template, max_time)
-    template_service = MultiTenancy::TenantTemplateService.new
-    locales = template_service.required_locales(template, external_subfolder: 'test')
+  def verify_template(template_name, max_time, prefix)
+    template_utils = MultiTenancy::Templates::Utils.new
+    locales = template_utils.required_locales(template_name, external_subfolder: prefix)
     locales = ['en'] if locales.blank?
 
-    name = template.split('_').join
-    tenant_attrs = { name: name, host: "#{name}.localhost" }
+    name = template_name.tr('._', '-')
+    host = "#{name}-#{SecureRandom.uuid}.localhost"
+    tenant_attrs = { name: name, host: host }
     config_attrs = { settings: SettingsService.new.minimal_required_settings(
       locales: locales,
       lifecycle_stage: 'demo'
@@ -144,10 +119,13 @@ namespace :templates do
     )
 
     tenant.switch do
-      puts "Verifying #{template}"
-      template_service.resolve_and_apply_template(template, external_subfolder: 'test', max_time: max_time)
-    end
+      puts "Verifying #{template_name}"
+      template = MultiTenancy::Templates::Utils.new.fetch_external_template_models(template_name, prefix: prefix)
+      MultiTenancy::Templates::TenantSerializer.format_for_deserializer!(template)
 
-    tenant.destroy!
+      MultiTenancy::Templates::TenantDeserializer.new.deserialize(template, max_time: max_time)
+    end
+  ensure
+    tenant&.destroy!
   end
 end

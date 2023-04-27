@@ -2,45 +2,10 @@
 
 require 'rails_helper'
 
-describe MultiTenancy::TenantTemplateService do
+describe MultiTenancy::Templates::TenantDeserializer do
   let(:service) { described_class.new }
 
-  describe 'available_templates' do
-    it 'returns a non-empty list' do
-      expect(service.available_templates.values.flatten.uniq).not_to be_empty
-    end
-  end
-
-  describe 'resolve_and_apply_template', template_test: true do
-    it 'raises an error if the requested template was not found' do
-      expect do
-        service.resolve_and_apply_template('a_tenant_template_name_that_doesnt_exist',
-          external_subfolder: 'test')
-      end.to raise_error('Unknown template')
-    end
-  end
-
-  describe 'resolve_and_apply_template' do
-    described_class.new.available_templates[:internal].map do |template|
-      it "Successfully applies '#{template}' template" do
-        name = template.split('_').join
-        locales = described_class.new.required_locales(template, external_subfolder: 'test')
-        locales = ['en'] if locales.blank?
-        create(:tenant, name: name, host: "#{name}.localhost", locales: locales, lifecycle: 'active')
-        Apartment::Tenant.switch("#{name}_localhost") do
-          service.resolve_and_apply_template template
-        end
-      end
-    end
-
-    it 'raises an error if the requested template was not found' do
-      expect do
-        service.resolve_and_apply_template('a_tenant_template_name_that_doesnt_exist')
-      end.to raise_error('Unknown template')
-    end
-  end
-
-  describe 'apply_template' do
+  describe '#deserialize' do
     it 'associates refs correctly, when the target of the ref has exactly the same attributes' do
       yml = <<~YAML
         ---
@@ -81,9 +46,10 @@ describe MultiTenancy::TenantTemplateService do
                 nl-BE: Minima et ipsa debitis.
               code: title_multiloc
       YAML
-      template = YAML.load(yml)
 
-      service.apply_template(template)
+      template = YAML.load(yml) # rubocop:disable Security/YAMLLoad
+
+      service.deserialize(template)
 
       expect(CustomForm.count).to eq 2
       expect(CustomField.count).to eq 2
@@ -94,7 +60,7 @@ describe MultiTenancy::TenantTemplateService do
       yml = <<~YAML
         ---
         models:
-          project_folder:
+          project_folders/folder:
           - title_multiloc:
               en: Folder title
             admin_publication_attributes: &1
@@ -111,9 +77,10 @@ describe MultiTenancy::TenantTemplateService do
                 publication_status: published
                 parent_attributes_ref: *1
       YAML
-      template = YAML.load(yml)
 
-      service.apply_template(template)
+      template = YAML.load(yml) # rubocop:disable Security/YAMLLoad
+
+      service.deserialize(template)
 
       expect(ProjectFolders::Folder.count).to eq 1
       expect(Project.count).to eq 2
@@ -160,7 +127,7 @@ describe MultiTenancy::TenantTemplateService do
       end
 
       it 'removes non-platform locales from citizen inputs' do
-        service.apply_template(template)
+        service.deserialize(template)
 
         idea = Idea.first
         expect(idea.title_multiloc.keys).to eq(platform_locales)
@@ -168,7 +135,7 @@ describe MultiTenancy::TenantTemplateService do
       end
 
       it 'does not remove locales from other models (non-citizen inputs)' do
-        service.apply_template(template)
+        service.deserialize(template)
 
         project = Project.first
         expect(project.title_multiloc.keys).to eq(%w[en nl-BE])
@@ -177,7 +144,7 @@ describe MultiTenancy::TenantTemplateService do
       it 'falls back to another (unspecified) locale if all locales are filtered out' do
         template.dig('models', 'idea', 0, 'body_multiloc').except!(*platform_locales)
 
-        service.apply_template(template)
+        service.deserialize(template)
 
         idea = Idea.first
         expect(idea.body_multiloc.keys).to contain_exactly('nl-BE')

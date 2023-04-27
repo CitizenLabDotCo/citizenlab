@@ -1,12 +1,26 @@
 # frozen_string_literal: true
 
+# Our current approach with AdditionalSeatsIncrementer called as a side effect works,
+# but it requires an insane amount of tests to cover all the edge cases.
+
+# Another approach of incrementing additional seats could be sending the new number (or the delta) from the FE.
+# So, the FE just sends { new_additional_moderators: X, new_additional_admins: Y } and the BE applies this change.
+# It would make the logic of update much simpler. Disadvantage: this way we couldn't log an activity with
+# the specific user that caused the update (we could log an activity with HTTP request or some other info though).
+#
+# History: https://citizenlabco.slack.com/archives/C04SPA1LN74/p1682353783786709
+#
 class AdditionalSeatsIncrementer
   class << self
     def increment_if_necessary(updated_user, current_user)
       return unless AppConfiguration.instance.feature_activated?('seat_based_billing')
 
-      role = (updated_user.roles - updated_user.roles_previously_was).first
-      return if role.nil?
+      roles = updated_user.roles - updated_user.roles_previously_was
+      return if roles.blank?
+
+      return if updated_user.highest_role_after_initialize == updated_user.highest_role
+
+      role = highest_role(roles)
       return unless increment?(role['type'])
 
       increment!(role['type'])
@@ -16,6 +30,10 @@ class AdditionalSeatsIncrementer
     end
 
     private
+
+    def highest_role(roles)
+      roles.find { |role| role['type'] == 'admin' } || roles.first
+    end
 
     def increment!(role_type)
       field =
