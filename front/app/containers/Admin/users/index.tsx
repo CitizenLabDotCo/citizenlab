@@ -14,13 +14,6 @@ import GroupsListPanel from './GroupsListPanel';
 import GroupCreationStep1 from './GroupCreationStep1';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
 
-// Global state
-import {
-  globalState,
-  IAdminNoPadding,
-  IGlobalStateService,
-} from 'services/globalState';
-
 // Styling
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -79,22 +72,12 @@ interface State {
 }
 
 class UsersPage extends PureComponent<Props & WithRouterProps, State> {
-  globalState: IGlobalStateService<IAdminNoPadding>;
-
   constructor(props: Props & WithRouterProps) {
     super(props);
-    this.globalState = globalState.init('AdminNoPadding', { enabled: true });
+
     this.state = {
       groupCreationModal: false,
     };
-  }
-
-  componentDidMount() {
-    this.globalState.set({ enabled: true });
-  }
-
-  componentWillUnmount() {
-    this.globalState.set({ enabled: false });
   }
 
   openGroupCreationModal = () => {

@@ -8,7 +8,6 @@ import { ideaStatusesData } from 'api/idea_statuses/__mocks__/useIdeaStatuses';
 import { initiativeStatusesData } from 'api/initiative_statuses/__mocks__/useInitiativeStatuses';
 
 // mocking dependencies
-jest.mock('services/globalState');
 jest.mock('resources/GetIdeaStatuses', () => 'GetIdeaStatuses');
 jest.mock('resources/GetInitiativeStatuses', () => 'GetInitiativeStatuses');
 jest.mock('resources/GetIdeas', () => 'GetIdeas');
@@ -88,31 +87,6 @@ describe('<PostManager />', () => {
     Wrapper.find('ActionBar').prop('handleClickEdit')();
     expect(getPreviewProps().postId).toEqual('idea1');
     expect(getPreviewProps().mode).toEqual('edit');
-  });
-
-  it('Sets globalState AdminFullWidth and back', () => {
-    const topics = [mockTopicData];
-    const postStatuses = [ideaStatusesData];
-    const defaultFilterMenu = 'projects';
-
-    const Wrapper = shallow(
-      <PostManager
-        type="AllIdeas"
-        defaultFilterMenu={defaultFilterMenu}
-        visibleFilterMenus={[defaultFilterMenu, 'statuses', 'topics']}
-        posts={posts}
-        postStatuses={postStatuses}
-        topics={topics}
-      />
-    );
-    const mockSet = Wrapper.instance().globalState.set;
-
-    expect(mockSet).toBeCalledTimes(1);
-    expect(mockSet).toBeCalledWith({ enabled: true });
-
-    Wrapper.unmount();
-    expect(mockSet).toBeCalledTimes(2);
-    expect(mockSet).toBeCalledWith({ enabled: false });
   });
 
   it('Handles the selection', () => {

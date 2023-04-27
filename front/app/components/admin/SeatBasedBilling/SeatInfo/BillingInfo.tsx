@@ -61,7 +61,7 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
   const additionalSeats = additionalSeatNumbers[seatType];
 
   // Maximum seat number being null means that there are unlimited seats so we don't show the seat info
-  if (isNil(maximumSeatNumber) || isNil(additionalSeats) || !seats) {
+  if (isNil(maximumSeatNumber) || !seats) {
     return null;
   }
 
@@ -79,11 +79,14 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
     moderator: messages.managerSeatsTooltip,
   };
   const seatTypeTooltipMessage = seatTypeTooltipMessages[seatType];
-  const totalSeats = additionalSeats + maximumSeatNumber;
+  const totalSeats =
+    typeof additionalSeats === 'number'
+      ? maximumSeatNumber + additionalSeats
+      : maximumSeatNumber;
   const remainingSeats = totalSeats - usedSeats;
 
   let totalSeatsBreakdownMessage = formatMessage(messages.seatsWithinPlanText);
-  if (additionalSeats) {
+  if (typeof additionalSeats === 'number' && additionalSeats > 0) {
     totalSeatsBreakdownMessage = formatMessage(messages.seatsExceededPlanText, {
       noOfSeatsInPlan: maximumSeatNumber,
       noOfAdditionalSeats: additionalSeats,
