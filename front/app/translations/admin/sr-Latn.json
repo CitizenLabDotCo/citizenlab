@@ -1418,6 +1418,8 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.newCustomFieldAnswerOptionFormTitle": "Dodajte opciju odgovora",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton": "Prekid",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton": "Izbriši",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionAnswerOptionDeletionConfirmation": "Да ли сте сигурни да желите да избришете ову опцију одговора на питање за регистрацију? Сви записи на које су одређени корисници одговорили овом опцијом биће трајно избрисани. Ова радња се не може опозвати.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation": "Да ли сте сигурни да желите да избришете ово питање за регистрацију? Сви одговори које су корисници дали на ово питање биће трајно избрисани. Ова радња се не може опозвати.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.required": "Obavezno",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveField": "Sačuvaj polje",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveFieldSuccess": "Polje je uspešno sačuvano",
