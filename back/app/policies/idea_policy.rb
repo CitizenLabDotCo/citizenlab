@@ -13,6 +13,8 @@ class IdeaPolicy < ApplicationPolicy
     def resolve
       if user&.admin?
         scope.all
+      elsif user&.project_moderator?
+        scope.where(project_id: user.moderatable_project_ids)
       elsif user
         projects = Pundit.policy_scope(user, Project)
         scope.where(project: projects, publication_status: %w[published closed])

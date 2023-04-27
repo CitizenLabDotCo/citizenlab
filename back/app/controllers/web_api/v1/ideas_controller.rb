@@ -65,9 +65,6 @@ class WebApi::V1::IdeasController < ApplicationController
       includes: %i[author topics project idea_status idea_files],
       paginate: false
     ).find_records
-    if current_user.project_moderator? && params[:project].blank?
-      ideas = ideas.where(project_id: current_user.moderatable_project_ids)
-    end
     I18n.with_locale(current_user&.locale) do
       xlsx = XlsxService.new.generate_ideas_xlsx ideas, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
