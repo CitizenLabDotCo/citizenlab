@@ -1650,7 +1650,7 @@
   "app.containers.AdminPage.groups.permissions.selectValueError": "الرجاء تحديد نوع الإجابة",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestions": "اطرح أسئلة التسجيل على مستوى المنصة",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "استخدم هذا الإعداد إذا كان تجميع الاسم والاسم الأخير والإجابات على الأسئلة الديموغرافية على مستوى النظام الأساسي أمرًا مهمًا بالنسبة لك. قد يزيد من حاجز المشاركة.",
-  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription2": "سيتم تخزين الردود على الأسئلة الديموغرافية في ملفات تعريف المستخدمين. ستكون الإجابات على هذه الأسئلة متاحة لكل من المسؤولين والمشرفين لتحليل المشاركة بسهولة. سيتم طرح الأسئلة فقط على المستخدمين الذين لم يجيبوا عليها من قبل.",
+  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3": "سيتم تخزين الردود على الأسئلة الديموغرافية في ملفات تعريف المستخدمين. سيتم طرح الأسئلة فقط على المستخدمين الذين لم يجيبوا عليها من قبل. سيتم أيضًا الوصول إلى إجابات هذه الأسئلة من خلال تصدير بيانات المشاركة ، والتي يمكن الوصول إليها من قبل كل من الوسطاء والمسؤولين.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "اطرح أسئلة على المشاركين",
   "app.containers.AdminPage.projects.all.existingProjects": "المشاريع الحالية",
   "app.containers.AdminPage.projects.all.newProjectFolder": "أنشئ مجلد مشروع",
