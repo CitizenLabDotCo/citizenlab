@@ -352,6 +352,7 @@ resource 'Ideas' do
           @user = create(:admin)
           token = Knock::AuthToken.new(payload: @user.to_token_payload).token
           header 'Authorization', "Bearer #{token}"
+
           @ideas = %w[published published draft published spam published published].map do |ps|
             create(:idea, publication_status: ps)
           end
