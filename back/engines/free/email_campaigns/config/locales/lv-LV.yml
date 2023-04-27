@@ -227,7 +227,7 @@ lv:
       cta_view_initiative: 'Pārejiet uz savu priekšlikumu'
       link: saite
       main_header: 'Jūs publicējāt priekšlikumu! Savāksim atbalstu tam.'
-      message_next_steps: '%{userFirstName}, jūsu priekšlikums ir veiksmīgi publicēts %{organzationName} līdzdalības platformā. Jums tiks paziņots, kad cilvēki mijiedarbosies ar jūsu priekšlikumu. Uzziniet, kādus turpmākos soļus varat veikt.'
+      message_next_steps: '%{userFirstName}, jūsu priekšlikums ir veiksmīgi publicēts %{organizationName} līdzdalības platformā. Jums tiks paziņots, kad cilvēki mijiedarbosies ar jūsu priekšlikumu. Uzziniet, kādus turpmākos soļus varat veikt.'
       message_get_votes: 'Sasniedziet balsošanas slieksni:'
       preheader: 'Paldies, ka dalījāties ar savu priekšlikumu %{initiativeTitle} ar %{organizationName}. Nākamais solis ir savākt atbalstu jūsu priekšlikumam, daloties ar to savā tīklā.'
       send_email: e-pasts
