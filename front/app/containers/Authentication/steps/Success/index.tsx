@@ -32,6 +32,7 @@ const Success = ({ status, onContinue }: Props) => {
         {formatMessage(messages.nowContinueYourParticipation)}
       </Text>
       <Button
+        id="e2e-success-continue-button"
         mb="0"
         width="auto"
         disabled={loading}

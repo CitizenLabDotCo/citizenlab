@@ -106,6 +106,7 @@ const EmailConfirmation = ({
         </Box>
         <Box w="100%" display="flex" mt="32px">
           <Button
+            id="e2e-verify-email-button"
             type="submit"
             width="auto"
             disabled={loading}
