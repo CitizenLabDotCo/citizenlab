@@ -227,7 +227,7 @@ lv:
       cta_view_initiative: 'Pārejiet uz savu priekšlikumu'
       link: saite
       main_header: 'Jūs publicējāt priekšlikumu! Savāksim atbalstu tam.'
-      message_next_steps: '%{userFirstName}, jūsu priekšlikums ir veiksmīgi publicēts %{organzationName} līdzdalības platformā. Jums tiks paziņots, kad cilvēki mijiedarbosies ar jūsu priekšlikumu. Uzziniet, kādus turpmākos soļus varat veikt.'
+      message_next_steps: '%{userFirstName}, jūsu priekšlikums ir veiksmīgi publicēts %{organizationName} līdzdalības platformā. Jums tiks paziņots, kad cilvēki mijiedarbosies ar jūsu priekšlikumu. Uzziniet, kādus turpmākos soļus varat veikt.'
       message_get_votes: 'Sasniedziet balsošanas slieksni:'
       preheader: 'Paldies, ka dalījāties ar savu priekšlikumu %{initiativeTitle} ar %{organizationName}. Nākamais solis ir savākt atbalstu jūsu priekšlikumam, daloties ar to savā tīklā.'
       send_email: e-pasts
@@ -340,7 +340,7 @@ lv:
       replied: '%{authorFirstName} atbildēja:'
     official_feedback_on_commented_initiative:
       by_author: 'autors: %{authorName}'
-      updated: '%{ofificialName} rakstīja:'
+      updated: '%{officialName} rakstīja:'
       cta_view: 'Pāriet uz šo priekšlikumu'
       event_description: '%{officialName} sniedza atjauninātu informāciju par priekšlikumu "%{initiativeTitle}". Noklikšķiniet uz zemāk redzamās pogas, lai iesaistītos sarunā ar %{organizationName}.'
       main_header: 'Ir atjaunināta informācija par to priekšlikumu, kuru esat komentējis.'
@@ -348,7 +348,7 @@ lv:
       preheader: '%{officialName} atstāja oficiālu atjauninātu informāciju par to priekšlikumu, kuru esat komentējis'
     official_feedback_on_voted_idea:
       by_author: 'autors: %{authorName}'
-      updated: '%{ofificialName} rakstīja:'
+      updated: '%{officialName} rakstīja:'
       cta_view: 'Pāriet uz šo ideju'
       event_description: '%{officialName} sniedza atjauninātu informāciju par ideju "%{ideaTitle}". Noklikšķiniet uz zemāk redzamās pogas, lai iesaistītos sarunā ar %{officialName}.'
       subject: 'Ideja, par kuru balsojāt, ir atjaunināta %{organizationName} platformā.'
@@ -356,7 +356,7 @@ lv:
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'autors: %{authorName}'
-      updated: '%{ofificialName} rakstīja:'
+      updated: '%{officialName} rakstīja:'
       cta_view: 'Pāriet uz šo ideju'
       event_description: '%{officialName} sniedza atjauninātu informāciju par ideju "%{ideaTitle}". Noklikšķiniet uz zemāk redzamās pogas, lai iesaistītos sarunā ar %{officialName}.'
       main_header: 'Ir atjaunināta informācija par to ideju, kuru esat komentējis.'
@@ -364,7 +364,7 @@ lv:
       preheader: '%{officialName} atstāja oficiālu atjauninātu informāciju par to ideju, kuru esat komentējis'
     official_feedback_on_your_idea:
       by_author: 'autors: %{authorName}'
-      updated: '%{ofificialName} rakstīja:'
+      updated: '%{officialName} rakstīja:'
       cta_view: 'Pāriet uz jūsu ideju'
       event_description: '%{officialName} sniedza atjauninātu informāciju par jūsu ideju ''%{ideaTitle}''. Noklikšķiniet uz zemāk redzamās pogas, lai iesaistītos sarunā ar %{officialName}.'
       main_header: 'Jūs saņēmāt atjauninātu informāciju no %{organizationName}'
@@ -372,14 +372,14 @@ lv:
       preheader: '%{officialName} atstāja oficiālu atjauninātu informāciju par jūsu ideju'
     official_feedback_on_voted_initiative:
       by_author: 'autors: %{authorName}'
-      updated: '%{ofificialName} rakstīja:'
+      updated: '%{officialName} rakstīja:'
       cta_view: 'Pāriet uz šo priekšlikumu'
       event_description: '%{officialName} sniedza atjauninātu informāciju par priekšlikumu "%{initiativeTitle}". Noklikšķiniet uz zemāk redzamās pogas, lai iesaistītos sarunā ar %{organizationName}.'
       main_header: 'Ir atjaunināta informācija par to priekšlikumu, par kuru jūs balsojāt.'
       subject: 'Priekšlikums, par kuru balsojāt, ir oficiāli atjaunināts %{organizationName} platformā.'
       preheader: '%{officialName} atstāja oficiālu atjauninātu informāciju par to priekšlikumu, par kuru jūs balsojāt'
     official_feedback_on_your_initiative:
-      updated: '%{ofificialName} rakstīja:'
+      updated: '%{officialName} rakstīja:'
       cta_view: 'Pārejiet uz savu priekšlikumu'
       event_description: '%{officialName} sniedza atjauninātu informāciju par jūsu priekšlikumu ''%{initiativeTitle}''. Noklikšķiniet uz zemāk redzamās pogas, lai iesaistītos sarunā ar %{organizationName}.'
       main_header: 'Jūs saņēmāt atjauninātu informāciju no %{officialName}'
@@ -434,7 +434,7 @@ lv:
     status_change_of_commented_idea:
       status_change: 'Šīs idejas jaunais statuss ir ''%{ideaStatus}'''
       cta_view_idea: 'Pāriet uz šo ideju'
-      event_description: '%{organizationName} atjaunināja idejas "%{idejaTitle}" statusu savā digitālās līdzdalības platformā.'
+      event_description: '%{organizationName} atjaunināja idejas "%{ideaTitle}" statusu savā digitālās līdzdalības platformā.'
       main_header: 'Idejai, kuru esat komentējis, ir jauns statuss'
       subject: 'Ir mainīts idejas, kuru esat komentējis, statuss.'
       preheader: '%{organizationName} mainīja idejas, kuru esat komentējis, statusu'
@@ -448,7 +448,7 @@ lv:
     status_change_of_voted_idea:
       status_change: 'Šīs idejas jaunais statuss ir ''%{ideaStatus}'''
       cta_view_idea: 'Pāriet uz šo ideju'
-      event_description: '%{organizationName} atjaunināja idejas "%{idejaTitle}" statusu savā digitālās līdzdalības platformā.'
+      event_description: '%{organizationName} atjaunināja idejas "%{ideaTitle}" statusu savā digitālās līdzdalības platformā.'
       main_header: 'Idejai, par kuru balsojāt, ir jauns statuss'
       subject: 'Ir mainīts idejas, par kuru balsojāt, statuss.'
       preheader: '%{organizationName} mainīja statusu tai idejai, par kuru jūs balsojāt'
