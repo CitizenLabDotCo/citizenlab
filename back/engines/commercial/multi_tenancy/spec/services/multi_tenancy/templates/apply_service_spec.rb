@@ -5,10 +5,10 @@ require 'rails_helper'
 describe MultiTenancy::Templates::ApplyService do
   let(:service) { described_class.new }
 
-  describe '#apply', template_test: true do
+  describe '#apply_internal_template', template_test: true do
     it 'raises an error if the template does not exist' do
       expect do
-        service.apply('non_existing_template', external_template_group: 'test')
+        service.apply_internal_template('non_existing_template')
       end.to raise_error(MultiTenancy::Templates::Utils::UnknownTemplateError)
     end
   end
