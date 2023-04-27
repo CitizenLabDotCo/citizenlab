@@ -1650,7 +1650,7 @@
   "app.containers.AdminPage.groups.permissions.selectValueError": "Selecteer een type antwoord",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestions": "Stel de registratievragen van het platformniveau",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Gebruik deze instelling als u het verzamelen van naam, achternaam en antwoorden op demografische vragen op platformniveau belangrijk vindt. Het kan de drempel voor deelname verhogen.",
-  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription2": "Antwoorden op demografische vragen worden opgeslagen in gebruikersprofielen. Antwoorden op deze vragen zullen toegankelijk zijn voor zowel admins als moderators om deelname gemakkelijk te analyseren. Vragen zullen alleen worden gesteld aan gebruikers die ze nog niet eerder hebben beantwoord.",
+  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3": "Antwoorden op demografische vragen worden opgeslagen in gebruikersprofielen. De vragen zullen alleen gesteld worden aan gebruikers die ze nog niet eerder beantwoord hebben. Antwoorden op deze vragen zullen ook toegankelijk zijn via de export van deelnamegegevens, die toegankelijk is voor zowel moderators als admins.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Vragen stellen aan de deelnemers",
   "app.containers.AdminPage.projects.all.existingProjects": "Bestaande projecten",
   "app.containers.AdminPage.projects.all.newProjectFolder": "Maak een projectmap aan",
