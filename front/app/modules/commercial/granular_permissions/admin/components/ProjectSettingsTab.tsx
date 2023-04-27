@@ -19,6 +19,7 @@ const Tab: FC<Props & WrappedComponentProps> = ({
         url: `permissions`,
         feature: 'private_projects',
         name: 'permissions',
+        statusLabel: 'Beta',
       },
       insertAfterName: 'events',
     });

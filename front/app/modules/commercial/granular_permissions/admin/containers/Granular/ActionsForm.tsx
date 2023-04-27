@@ -16,7 +16,6 @@ import messages from './messages';
 
 // hooks
 import useProject from 'hooks/useProject';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import {
@@ -70,9 +69,6 @@ const ActionsForm = memo(
     initiativeContext,
     phaseId,
   }: Props) => {
-    const includePermissionsCustomFields = useFeatureFlag({
-      name: 'permissions_custom_fields',
-    });
     const project = useProject({ projectId });
     const [
       previousUsersGlobalCustomFields,
@@ -148,8 +144,8 @@ const ActionsForm = memo(
                   onChange={handlePermissionChange(permission)}
                 />
                 {permission.attributes.permitted_by !== 'everyone' &&
-                  permission.attributes.permitted_by !== 'admins_moderators' &&
-                  includePermissionsCustomFields && (
+                  permission.attributes.permitted_by !==
+                    'admins_moderators' && (
                     <Box
                       mt="10px"
                       border={`solid 1px ${colors.grey300}`}
