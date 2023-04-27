@@ -96,7 +96,7 @@ describe('Native survey project page actions', () => {
     // Action as unregistered user
     cy.visit(`/projects/${projectSlugContinous}`);
     cy.get('#e2e-cta-button').find('button').click({ force: true });
-    cy.get('#e2e-sign-up-in-modal').should('exist');
+    cy.get('#e2e-authentication-modal').should('exist');
 
     // Action as registered user
     cy.setLoginCookie(userEmail, userPassword);
