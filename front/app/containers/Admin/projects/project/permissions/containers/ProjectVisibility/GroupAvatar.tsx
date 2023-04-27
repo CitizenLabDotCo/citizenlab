@@ -64,30 +64,29 @@ const GroupAvatar = ({ groupId, className }: Props) => {
     },
   });
 
-  const user1 = useUser({
-    userId: memberships?.data[0]?.relationships?.user?.data?.id,
-  });
-  const user2 = useUser({
-    userId: memberships?.data[1]?.relationships?.user?.data?.id,
-  });
-  const user3 = useUser({
-    userId: memberships?.data[2]?.relationships?.user?.data?.id,
-  });
-
-  const users = [user1, user2, user3];
-
-  const count = users.length;
+  const count = memberships?.data.length;
 
   return (
-    <GroupAvatarWrapper className={className} count={count}>
-      {users.map((user) =>
-        !isNilOrError(user) ? (
-          <AvatarWrapper key={user.id}>
-            <Avatar userId={user.id} size={30} />
-          </AvatarWrapper>
-        ) : null
-      )}
+    <GroupAvatarWrapper className={className} count={count || 0}>
+      {memberships?.data.map((membership) => (
+        <UserAvatar
+          key={membership.id}
+          userId={membership.relationships.user.data.id}
+        />
+      ))}
     </GroupAvatarWrapper>
+  );
+};
+
+const UserAvatar = ({ userId }: { userId?: string }) => {
+  const user = useUser({
+    userId,
+  });
+  if (isNilOrError(user)) return null;
+  return (
+    <AvatarWrapper>
+      <Avatar userId={user.id} size={30} />
+    </AvatarWrapper>
   );
 };
 
