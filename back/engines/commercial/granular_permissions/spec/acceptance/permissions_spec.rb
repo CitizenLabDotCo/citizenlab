@@ -31,8 +31,15 @@ resource 'Permissions' do
 
       example_request 'List all permissions of a project' do
         assert_status 200
-        json_response = json_parse response_body
-        expect(json_response[:data].size).to eq Permission.available_actions(@project).size
+        expect(response_data.size).to eq Permission.enabled_actions(@project).size
+      end
+
+      example 'List all permissions of a project when voting has been disabled' do
+        @project.update!(voting_enabled: false)
+
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq Permission.enabled_actions(@project).size
       end
 
       example_request 'List all permissions efficiently include custom fields', document: true do
@@ -405,13 +412,11 @@ resource 'Permissions' do
         @permission = Permission.find_by permission_scope_type: nil, action: 'visiting'
         @field1 = create :custom_field, required: true
         @field2 = create :custom_field, required: false
-        create :permissions_custom_field, permission: @permission, custom_field: @field1, required: false
-        create :permissions_custom_field, permission: @permission, custom_field: @field2, required: true
       end
 
       let(:action) { 'visiting' }
 
-      example_request 'Get the json and ui schema for a global permission' do
+      example_request 'Get the json and ui schema for a global permission with custom fields' do
         assert_status 200
         json_response = json_parse response_body
         expect(json_response.dig(:data, :type)).to eq 'schema'
@@ -433,7 +438,7 @@ resource 'Permissions' do
       before do
         @permission = @project.permissions.first
         @permission.update!(global_custom_fields: false)
-        @field1 = create :custom_field, required: true
+        @field1 = create :custom_field, required: true, enabled: false # Field should be returned even if not enabled globally
         @field2 = create :custom_field, required: false
         create :permissions_custom_field, permission: @permission, custom_field: @field1, required: false
         create :permissions_custom_field, permission: @permission, custom_field: @field2, required: true

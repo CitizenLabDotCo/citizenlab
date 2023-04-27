@@ -66,7 +66,7 @@ resource 'Ideas' do
       parameter :topics, 'Filter by topics (OR)', required: false
       parameter :projects, 'Filter by projects (OR)', required: false
       parameter :phase, 'Filter by project phase', required: false
-      parameter :basket, 'Filter by basket', required: false
+      parameter :basket_id, 'Filter by basket', required: false
       parameter :author, 'Filter by author (user id)', required: false
       parameter :idea_status, 'Filter by status (idea status id)', required: false
       parameter :search, 'Filter by searching in title and body', required: false
@@ -189,7 +189,7 @@ resource 'Ideas' do
           basket = create(:basket)
           [@ideas[1], @ideas[2], @ideas[5]].each { _1.baskets << basket }
 
-          do_request(basket: basket.id)
+          do_request(basket_id: basket.id)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 2
           expect(json_response[:data].pluck(:id)).to match_array [@ideas[1].id, @ideas[5].id]

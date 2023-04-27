@@ -240,15 +240,21 @@ describe IdeasFinder do
   end
 
   describe '#basket_condition' do
-    let(:basket_id) { Basket.pick(:id) }
-    let(:expected_record_ids) { Idea.joins(:baskets).where('baskets.id': basket_id).pluck(:id) }
+    let(:idea_ids) { timeline_project.idea_ids.shuffle.take(2) }
+    let(:basket) { create :basket, idea_ids: idea_ids }
+    let(:params) { { basket_id: basket.id } }
 
-    before do
-      params[:basket] = basket_id
+    it 'filters ideas by basket' do
+      expect(result_record_ids).to be_present
+      expect(result_record_ids).to match_array idea_ids
     end
 
-    it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
+    context 'when the basket is empty' do
+      let(:idea_ids) { [] }
+
+      it 'returns no records' do
+        expect(result_record_ids).to eq []
+      end
     end
   end
 

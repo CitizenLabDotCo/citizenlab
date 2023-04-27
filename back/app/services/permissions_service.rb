@@ -67,6 +67,7 @@ class PermissionsService
     else
       permission.permissions_custom_fields.map do |permissions_custom_field|
         permissions_custom_field.custom_field.tap do |field|
+          field.enabled = true # Need to overide this to ensure it gets displayed when not enabled at platform level
           field.required = permissions_custom_field.required
         end
       end

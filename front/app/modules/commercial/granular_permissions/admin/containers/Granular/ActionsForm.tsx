@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import styled from 'styled-components';
 import { isEmpty } from 'lodash-es';
 
@@ -74,6 +74,14 @@ const ActionsForm = memo(
       name: 'permissions_custom_fields',
     });
     const project = useProject({ projectId });
+    const [
+      previousUsersGlobalCustomFields,
+      setPreviousUsersGlobalCustomFields,
+    ] = useState(true);
+    const [
+      previousGroupsGlobalCustomFields,
+      setPreviousGroupsGlobalCustomFields,
+    ] = useState(true);
 
     const handlePermissionChange =
       (permission: IPermissionData) =>
@@ -81,7 +89,27 @@ const ActionsForm = memo(
         permittedBy: IPermissionData['attributes']['permitted_by'],
         groupIds: string[]
       ) => {
-        onChange({ permission, permittedBy, groupIds });
+        // Remember what the last values of global custom fields toggles were for 'users' & 'groups'
+        const previousPermittedBy = permission.attributes.permitted_by;
+        if (previousPermittedBy === 'users') {
+          setPreviousUsersGlobalCustomFields(
+            permission.attributes.global_custom_fields
+          );
+        } else if (previousPermittedBy === 'groups') {
+          setPreviousGroupsGlobalCustomFields(
+            permission.attributes.global_custom_fields
+          );
+        }
+
+        // Set global custom fields toggle back to the old value when switching back to 'users' & 'groups'
+        let globalCustomFields = false;
+        if (permittedBy === 'users') {
+          globalCustomFields = previousUsersGlobalCustomFields;
+        } else if (permittedBy === 'groups') {
+          globalCustomFields = previousGroupsGlobalCustomFields;
+        }
+
+        onChange({ permission, permittedBy, groupIds, globalCustomFields });
       };
 
     if (isEmpty(permissions)) {

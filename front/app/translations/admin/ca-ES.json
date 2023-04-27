@@ -1355,7 +1355,6 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSave": "Desa l'opció de resposta",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess": "L'opció de resposta s'ha desat correctament",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Answer choices",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation": "Esteu segur que voleu eliminar aquest camp personalitzat?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "Esteu segur que voleu eliminar aquesta opció de camp personalitzat?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle": "Camps",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip": "Arrossegueu i deixeu anar els camps per determinar l'ordre en què apareixen al formulari d'inscripció.",
