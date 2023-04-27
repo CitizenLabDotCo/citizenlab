@@ -36,7 +36,7 @@
   "app.components.ProjectTemplatePreview.typeProjectName": "Tapez le nom du projet",
   "app.components.ProjectTemplatePreview.useTemplate": "Utiliser le modèle",
   "app.components.SeatInfo.additionalSeats": "Sièges supplémentaires",
-  "app.components.SeatInfo.additionalSeatsToolTip": "Ceci indique le nombre de sièges supplémentaires que vous avez achetés en plus des \"sièges inclus\".",
+  "app.components.SeatInfo.additionalSeatsToolTip": "Ceci indique le nombre de sièges supplémentaires que vous avez achetés en plus des \"Sièges inclus\".",
   "app.components.SeatInfo.adminSeats": "Sièges administrateurs",
   "app.components.SeatInfo.adminSeatsIncludedText": "{adminSeats} sièges administrateurs",
   "app.components.SeatInfo.adminSeatsTooltip1": "Les administrateurs sont responsables de la plateforme et ont des droits de gestion sur tous les dossiers et projets. Vous pouvez {visitHelpCenter} pour en savoir plus sur les différents rôles.",
