@@ -1418,6 +1418,8 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.newCustomFieldAnswerOptionFormTitle": "Adicionar opção de resposta",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton": "Cancelado",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton": "Deletar",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionAnswerOptionDeletionConfirmation": "Are you sure you want to delete this registration question answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation": "Are you sure you want to delete this registration question? All answers that users have given to this question will be permanently deleted. This action cannot be undone.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.required": "Campo requerido",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveField": "Salvar campo",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveFieldSuccess": "Página salva com sucesso",
