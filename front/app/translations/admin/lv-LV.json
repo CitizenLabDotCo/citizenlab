@@ -1650,7 +1650,7 @@
   "app.containers.AdminPage.groups.permissions.selectValueError": "Lūdzu, izvēlieties atbildes veidu",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestions": "Uzdot platformas līmeņa reģistrācijas jautājumus",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Izmantojiet šo iestatījumu, ja jums ir svarīgi apkopot vārdu, uzvārdu un atbildes uz platformas līmeņa demogrāfiskajiem jautājumiem. Tas var palielināt šķēršļus dalībai.",
-  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription2": "Atbildes uz demogrāfiskajiem jautājumiem tiks saglabātas lietotāju profilos. Atbildes uz šiem jautājumiem būs pieejamas gan administratoriem, gan moderatoriem, lai atvieglotu līdzdalības analīzi. Jautājumi tiks uzdoti tikai tiem lietotājiem, kuri iepriekš uz tiem nav atbildējuši.",
+  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3": "Atbildes uz demogrāfiskajiem jautājumiem tiks saglabātas lietotāju profilos. Jautājumi tiks uzdoti tikai tiem lietotājiem, kuri iepriekš uz tiem nav atbildējuši. Atbildes uz šiem jautājumiem būs pieejamas arī, izmantojot dalības datu eksportu, kas ir pieejams gan moderatoriem, gan administratoriem.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Uzdodiet jautājumus dalībniekiem",
   "app.containers.AdminPage.projects.all.existingProjects": "Esošie projekti",
   "app.containers.AdminPage.projects.all.newProjectFolder": "Izveidot projekta mapi",
