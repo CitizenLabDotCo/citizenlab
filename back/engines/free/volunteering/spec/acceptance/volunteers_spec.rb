@@ -97,7 +97,7 @@ resource 'Volunteering Volunteers' do
         worksheets = RubyXL::Parser.parse_buffer(response_body).worksheets
         expect(worksheets.size).to eq 2
         # sheet names can only be 31 characters long
-        expect(worksheets[0].sheet_name).to eq 'For sure works with very long t'
+        expect(worksheets[0].sheet_name).to eq '1 - For sure works with very long t'
         expect(worksheets[1].sheet_name).to eq @cause2.title_multiloc['en']
 
         expect(worksheets[0].count).to eq 4

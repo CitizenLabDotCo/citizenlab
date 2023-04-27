@@ -26,7 +26,7 @@ module Volunteering
       pa = Axlsx::Package.new
 
       participation_context.causes.order(:ordering).each_with_index do |cause, i|
-        sheetname = "#{i+1} - " + @@multiloc_service.t(cause.title_multiloc)
+        sheetname = "#{i + 1} - " + @@multiloc_service.t(cause.title_multiloc)
         xlsx_service.generate_sheet pa.workbook, sheetname, columns, volunteers.where(cause: cause)
       end
 
