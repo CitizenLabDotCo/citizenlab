@@ -49,7 +49,7 @@ describe('Comment voting permissions for active users', () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       cy.visit('ideas/verified-idea');
       cy.get('.e2e-comment-vote').click();
-      cy.get('#e2e-verification-wizard-method-selection-step');
+      cy.get('#e2e-authentication-modal').should('exist');
     });
   });
 
@@ -72,9 +72,7 @@ describe('Comment voting permissions for non-active users', () => {
     // create user
     cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
       customFieldId = response.body.data.id;
-      cy.apiSignup(firstName, lastName, email, password, {
-        skipCustomFields: true,
-      }).then((response) => {
+      cy.apiSignup(firstName, lastName, email, password).then((response) => {
         userId = response.body.data.id;
       });
       cy.setLoginCookie(email, password);
@@ -85,7 +83,7 @@ describe('Comment voting permissions for non-active users', () => {
     cy.setLoginCookie(email, password);
     cy.visit('ideas/verified-idea');
     cy.get('.e2e-comment-vote').click();
-    cy.get('#e2e-sign-up-container').should('exist');
+    cy.get('#e2e-authentication-modal').should('exist');
   });
 
   after(() => {
