@@ -50,7 +50,7 @@ export const Notifications = ({ notifications }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box width="300px" data-testid="notifications-dropdown">
+    <Box data-testid="notifications-dropdown">
       <InfiniteScroll
         pageStart={0}
         loadMore={notifications.onLoadMore}

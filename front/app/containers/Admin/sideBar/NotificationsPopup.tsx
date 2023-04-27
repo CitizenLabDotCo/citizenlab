@@ -26,7 +26,9 @@ export const NotificationsPopup = () => {
       basic
       wide
     >
-      <Notifications />
+      <Box minHeight="200px">
+        <Notifications />
+      </Box>
     </Popup>
   );
 };
