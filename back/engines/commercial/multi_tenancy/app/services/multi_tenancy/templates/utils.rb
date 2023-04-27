@@ -44,8 +44,8 @@ module MultiTenancy
 
       def available_external_templates(prefix: release_prefix)
         Aws::S3::Utils
-          .new(@s3_client)
-          .common_prefixes(bucket: template_bucket, prefix: prefix, delimiter: '/models.yml')
+          .new
+          .common_prefixes(@s3_client, bucket: template_bucket, prefix: prefix, delimiter: '/models.yml')
           .map { |common_prefix| common_prefix.chomp('/models.yml').split('/').last }
           .tap { |template_names| raise_if_duplicates(template_names) }
       end
