@@ -1,7 +1,7 @@
 import { randomString, randomEmail } from '../support/commands';
 
 describe('Verification modal', () => {
-  describe('shows the additionnal rules', () => {
+  describe('shows the additional rules', () => {
     const firstName = randomString();
     const lastName = randomString();
     const email = randomEmail();
@@ -18,12 +18,12 @@ describe('Verification modal', () => {
       beforeEach(() => {
         cy.setLoginCookie(email, password);
         cy.visit('/profile/edit');
-        cy.get('#e2e-user-edit-profile-page');
+        cy.get('#e2e-user-edit-profile-page').should('exist');
         cy.acceptCookies();
       });
 
       it('shows the verification modal and successfully verifies the user', () => {
-        cy.get('#e2e-user-edit-profile-page');
+        cy.get('#e2e-verify-user-button').should('exist');
         cy.get('#e2e-verify-user-button').click();
         cy.get('#e2e-verification-wizard-method-selection-step');
         cy.get(
