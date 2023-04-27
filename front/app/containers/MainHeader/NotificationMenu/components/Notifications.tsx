@@ -63,6 +63,7 @@ export const Notifications = ({ notifications }: Props) => {
             alignItems="center"
             justifyContent="center"
             width="100%"
+            key="0"
           >
             <Spinner />
           </Box>
