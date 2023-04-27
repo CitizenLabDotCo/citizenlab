@@ -29,6 +29,10 @@ export default async function signOut() {
       ) {
         clHistory.push('/');
       }
+
+      if (pathname && endsWith(pathname, '/ideas/new')) {
+        clHistory.push(pathname.split('/ideas/new')[0]);
+      }
     }
   }
 }

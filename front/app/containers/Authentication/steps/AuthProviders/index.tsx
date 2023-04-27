@@ -89,7 +89,7 @@ const AuthProviders = memo<Props>(
         (flow === 'signup' && tenantSettings?.password_login?.enable_signup));
 
     return (
-      <Container className={className}>
+      <Container id="e2e-sign-up-container" className={className}>
         {franceconnectLoginEnabled &&
           // (metaData.error?.code === 'franceconnect_merging_failed' ? (
           (TODO_REMOVE ? (
@@ -195,7 +195,11 @@ const AuthProviders = memo<Props>(
             {...(flow === 'signup' ? messages.goToLogIn : messages.goToSignUp)}
             values={{
               goToOtherFlowLink: (
-                <TextButton onClick={handleGoToOtherFlow} className="link">
+                <TextButton
+                  id="e2e-goto-signup"
+                  onClick={handleGoToOtherFlow}
+                  className="link"
+                >
                   {formatMessage(
                     flow === 'signup' ? messages.logIn2 : messages.signUp2
                   )}
