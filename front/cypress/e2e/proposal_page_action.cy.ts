@@ -180,13 +180,12 @@ describe('Initiative show page actions', () => {
         cy.get('#submit-comment')
           .type(commentBody)
           .should('have.value', commentBody);
-        cy.contains('Post your comment').click();
-        cy.contains('Reply').click();
-        cy.get('.e2e-comment-reply-button').first().click();
-        cy.wait(1000);
+        cy.get('.e2e-submit-parentcomment').click({ force: true });
+        cy.get('.e2e-comment-reply-button').first().click({ force: true });
+        cy.get('.e2e-childcomment-form textarea').should('exist');
         cy.get('.e2e-childcomment-form textarea').first().type(commentBody);
         cy.get('.e2e-submit-childcomment').first().click();
-        cy.wait(2000);
+        cy.get('.e2e-parent-and-childcomments').should('exist');
         cy.get('.e2e-parent-and-childcomments')
           .get('.e2e-childcomment')
           .last()
