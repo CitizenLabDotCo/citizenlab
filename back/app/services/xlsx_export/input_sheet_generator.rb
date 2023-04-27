@@ -151,7 +151,7 @@ module XlsxExport
           author_id_report_field
         ]
       else
-        [author_name_report_field]
+        []
       end
     end
 
