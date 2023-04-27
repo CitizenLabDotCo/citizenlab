@@ -46,8 +46,7 @@ describe('Idea posting permissions', () => {
       cy.visit('projects/verified-ideation');
       cy.acceptCookies();
       cy.get('#e2e-idea-button').first().click();
-      cy.wait(4000); // sometimes the next line fails on CI. Not sure how to properly fix it
-      cy.get('#e2e-verification-wizard-root').should('exist');
+      cy.get('#e2e-authentication-modal').should('exist');
     });
 
     it('lets verified users post', () => {
@@ -78,9 +77,7 @@ describe('idea posting permissions for non-active users', () => {
     // create user
     cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
       customFieldId = response.body.data.id;
-      cy.apiSignup(firstName, lastName, email, password, {
-        skipCustomFields: true,
-      }).then((response) => {
+      cy.apiSignup(firstName, lastName, email, password).then((response) => {
         userId = response.body.data.id;
       });
       cy.setLoginCookie(email, password);
@@ -92,7 +89,7 @@ describe('idea posting permissions for non-active users', () => {
     cy.visit('projects/verified-ideation');
     cy.acceptCookies();
     cy.get('.e2e-idea-button:visible').first().click();
-    cy.get('#e2e-sign-up-container').should('exist');
+    cy.get('#e2e-authentication-modal').should('exist');
   });
 
   after(() => {
