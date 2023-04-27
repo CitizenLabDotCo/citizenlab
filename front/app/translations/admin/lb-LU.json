@@ -1650,7 +1650,7 @@
   "app.containers.AdminPage.groups.permissions.selectValueError": "Wielt w.e.g. eng Äntwerttyp",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestions": "Stellt Plattformniveau Aschreiwung Froen",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Benotzt dës Astellung wann Numm, Familljennumm an Äntwerten op demographesch Froen op Plattformniveau fir Iech wichteg ass. Et kann d'Barrière fir d'Participatioun erhéijen.",
-  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription2": "Äntwerten op demographesch Froen ginn a Benotzerprofile gespäichert. Äntwerten op dës Froen wäerte souwuel fir Administrateuren wéi Moderatoren zougänglech sinn fir eng einfach Participatiounsanalyse. Froen ginn nëmme fir Benotzer gefrot, déi se net virdrun geäntwert hunn.",
+  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3": "Äntwerten op demographesch Froen ginn a Benotzerprofile gespäichert. Froen ginn nëmme fir Benotzer gefrot, déi se net virdrun geäntwert hunn. Äntwerten op dës Froen wäerten och zougänglech sinn iwwer den Export vun Participatiounsdaten, dee souwuel fir Moderatoren wéi och Admins zougänglech ass.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Stellt Froen un d'Participanten",
   "app.containers.AdminPage.projects.all.existingProjects": "Existing projects",
   "app.containers.AdminPage.projects.all.newProjectFolder": "Create a project folder",
