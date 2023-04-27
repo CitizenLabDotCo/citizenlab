@@ -3,6 +3,7 @@ import React from 'react';
 // components
 import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
+import NotificationsPopup from './NotificationsPopup';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -65,7 +66,7 @@ export const UserMenu = () => {
       <Box width="224px">
         <ItemMenu buttonStyle="text">
           <Box display="flex" justifyContent="space-between" width="100%">
-            {formatMessage({ ...messages.notifications })}
+            <NotificationsPopup />
           </Box>
         </ItemMenu>
         <ItemMenu buttonStyle="text">
