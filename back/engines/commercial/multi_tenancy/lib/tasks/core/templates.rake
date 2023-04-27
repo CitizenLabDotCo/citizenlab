@@ -69,7 +69,7 @@ namespace :templates do
     File.write(args[:output_file], report_content)
   end
 
-  task :release_templates, [:failed_templates_file] => [:environment] do |_t, args|
+  task :release, [:failed_templates_file] => [:environment] do |_t, args|
     failed_template_file = args[:failed_templates_file]
     failed_templates = if failed_template_file.present?
       File.readlines(failed_template_file).map(&:strip).filter_map(&:presence)
