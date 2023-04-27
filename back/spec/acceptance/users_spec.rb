@@ -72,7 +72,7 @@ resource 'Users' do
       context 'when a user does not exist' do
         example_request 'Returns "terms"' do
           assert_status 200
-          expect(json_response_body[:action]).to eq('terms')
+          expect(json_response_body[:data][:attributes][:action]).to eq('terms')
         end
       end
 
@@ -81,7 +81,7 @@ resource 'Users' do
 
         example_request 'Returns "confirm"' do
           assert_status 200
-          expect(json_response_body[:action]).to eq('confirm')
+          expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
         end
       end
 
@@ -90,7 +90,7 @@ resource 'Users' do
 
         example_request 'Returns "password"' do
           assert_status 200
-          expect(json_response_body[:action]).to eq('password')
+          expect(json_response_body[:data][:attributes][:action]).to eq('password')
         end
       end
 

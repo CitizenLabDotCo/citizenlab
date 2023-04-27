@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
 
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
@@ -23,9 +24,11 @@ import { isValidEmail } from 'utils/validate';
 
 // typings
 import { SSOProvider } from 'services/singleSignOn';
+import { Locale } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
-  onSubmit: (email: string) => void;
+  onSubmit: (email: string, locale: Locale) => void;
   onSwitchToSSO: (ssoProvider: SSOProvider) => void;
 }
 
@@ -39,6 +42,7 @@ const DEFAULT_VALUES: Partial<FormValues> = {
 
 const LightFlowStart = ({ onSubmit, onSwitchToSSO }: Props) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
+  const locale = useLocale();
 
   const { formatMessage } = useIntl();
 
@@ -63,8 +67,10 @@ const LightFlowStart = ({ onSubmit, onSwitchToSSO }: Props) => {
     resolver: yupResolver(schema),
   });
 
+  if (isNilOrError(locale)) return null;
+
   const handleSubmit = ({ email }: FormValues) => {
-    onSubmit(email);
+    onSubmit(email, locale);
   };
 
   return (
