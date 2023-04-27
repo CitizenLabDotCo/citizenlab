@@ -4,6 +4,7 @@ import React from 'react';
 import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
 import NotificationsPopup from './NotificationsPopup';
+import { NewNotificationsIndicator } from 'containers/MainHeader/NotificationMenu/components/NotificationCount';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -30,6 +31,8 @@ export const UserMenu = () => {
   if (isNilOrError(authUser)) {
     return null;
   }
+
+  const unreadNotificationsCount = authUser.attributes.unread_notifications;
 
   return (
     <Popup
@@ -67,6 +70,11 @@ export const UserMenu = () => {
         <ItemMenu buttonStyle="text">
           <Box display="flex" justifyContent="space-between" width="100%">
             <NotificationsPopup />
+            {unreadNotificationsCount > 0 && (
+              <NewNotificationsIndicator>
+                {unreadNotificationsCount}
+              </NewNotificationsIndicator>
+            )}
           </Box>
         </ItemMenu>
         <ItemMenu buttonStyle="text">
