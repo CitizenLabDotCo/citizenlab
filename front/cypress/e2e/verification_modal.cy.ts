@@ -32,8 +32,7 @@ describe('Verification modal', () => {
         cy.get('#e2e-verification-bogus-form');
         cy.get('#e2e-verification-bogus-submit-button').click();
         cy.get('#e2e-verification-success');
-        cy.get('.e2e-modal-close-button').click();
-        cy.wait(1000);
+        cy.get('#e2e-verification-success-close-button').click();
         cy.get('#e2e-user-edit-profile-page');
         cy.get('.e2e-verified');
         cy.get('#e2e-user-menu-container.e2e-verified');
