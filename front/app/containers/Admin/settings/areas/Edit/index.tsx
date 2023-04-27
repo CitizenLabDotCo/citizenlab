@@ -1,5 +1,4 @@
 import React from 'react';
-import { withRouter } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
@@ -57,4 +56,4 @@ const Edit = () => {
   );
 };
 
-export default withRouter(Edit);
+export default Edit;

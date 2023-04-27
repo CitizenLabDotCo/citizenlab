@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import eventsKeys from './keys';
 import { IAreas, AreasKeys, IAreasQueryParams } from './types';
 
-const fetchEvents = (filters: IAreasQueryParams) => {
+const fetchAreas = (filters: IAreasQueryParams) => {
   const {
     pageNumber,
     pageSize,
@@ -28,7 +28,7 @@ const fetchEvents = (filters: IAreasQueryParams) => {
 const useAreas = (queryParams: IAreasQueryParams) => {
   return useQuery<IAreas, CLErrors, IAreas, AreasKeys>({
     queryKey: eventsKeys.list(queryParams),
-    queryFn: () => fetchEvents(queryParams),
+    queryFn: () => fetchAreas(queryParams),
   });
 };
 
