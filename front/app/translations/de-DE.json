@@ -1659,7 +1659,7 @@
   "app.utils.errors.default.ajv_error_gender_required": "Bitte geben Sie Ihr Geschlecht ein",
   "app.utils.errors.default.ajv_error_invalid": "Ist ungültig",
   "app.utils.errors.default.ajv_error_maxItems": "Kann nicht mehr enthalten, als {limit, plural, one {# artikel} other {# artikel}}",
-  "app.utils.errors.default.ajv_error_minItems": "Muss mindestens enthalten {limit, plural, one {# artikel} other {# artikel}}",
+  "app.utils.errors.default.ajv_error_minItems": "Mindestens {limit, plural, one {# Antwort} other {# Antworten}} auswählen",
   "app.utils.errors.default.ajv_error_number_any": "Bitte geben Sie eine gültige Zahl ein",
   "app.utils.errors.default.ajv_error_politician_required": "Bitte geben Sie ein, ob Sie ein Politiker/in sind",
   "app.utils.errors.default.ajv_error_required": "Dieses Feld ist erforderlich",
