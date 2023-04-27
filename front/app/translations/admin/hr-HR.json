@@ -1418,6 +1418,8 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.newCustomFieldAnswerOptionFormTitle": "Dodaj opciju odgovora",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton": "Odustani",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton": "Izbriši",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionAnswerOptionDeletionConfirmation": "Jeste li sigurni da želite izbrisati ovu opciju odgovora na pitanje o registraciji? Svi zapisi na koje su određeni korisnici odgovorili ovom opcijom bit će trajno izbrisani. Ova se radnja ne može poništiti.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation": "Jeste li sigurni da želite izbrisati ovo registracijsko pitanje? Svi odgovori koje su korisnici dali na ovo pitanje bit će trajno izbrisani. Ova se radnja ne može poništiti.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.required": "Potrebno",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveField": "Spremi polje",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveFieldSuccess": "Polje uspješno spremljeno",
