@@ -19,9 +19,10 @@ import { Box, IconTooltip, colors } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // resources
-import useAreas from 'hooks/useAreas';
+import useAreas from 'api/areas/useAreas';
+import useDeleteArea from 'api/areas/useDeleteArea';
 import useCustomPages from 'hooks/useCustomPages';
-import { reorderArea, IAreaData, deleteArea } from 'services/areas';
+import useUpdateArea from 'api/areas/useUpdateArea';
 import AreaTermConfig from './AreaTermConfig';
 
 // i18n
@@ -29,6 +30,8 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import T from 'components/T';
 import useLocalize from 'hooks/useLocalize';
 import messages from '../messages';
+
+import { IAreaData } from 'api/areas/types';
 
 export const StyledLink = styled(Link)`
   color: ${colors.white} !important;
@@ -40,6 +43,10 @@ export const StyledLink = styled(Link)`
 `;
 
 const AreaList = () => {
+  const { data: areas } = useAreas({ includeStaticPages: true });
+  const { mutate: deleteArea } = useDeleteArea();
+  const { mutate: reorderArea } = useUpdateArea();
+
   const { formatMessage } = useIntl();
 
   const handleDeleteClick =
@@ -53,12 +60,10 @@ const AreaList = () => {
     };
 
   const handleReorderArea = (areaId: string, newOrder: number) => {
-    reorderArea(areaId, newOrder);
+    reorderArea({ id: areaId, ordering: newOrder });
   };
 
-  const areas = useAreas({ includeStaticPages: true });
-
-  if (isNilOrError(areas)) return null;
+  if (!areas) return null;
 
   return (
     <Section>
@@ -81,11 +86,11 @@ const AreaList = () => {
         </Button>
       </ButtonWrapper>
       <SortableList
-        items={areas}
+        items={areas.data}
         onReorder={handleReorderArea}
         className="areas-list e2e-admin-areas-list"
         id="e2e-admin-areas-list"
-        key={areas.length}
+        key={areas.data.length}
       >
         {({ itemsList, handleDragRow, handleDropRow }) => (
           <>

@@ -4,7 +4,7 @@ import { API_PATH } from 'containers/App/constants';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Locale } from '@citizenlab/cl2-component-library';
 import { IRelationship, Multiloc, UploadFile, CLError } from 'typings';
-import { IAreaData } from './areas';
+import { IAreaData } from 'api/areas/types';
 import { IAppConfiguration } from 'api/app_configuration/types';
 
 import streams, { IStreamParams } from 'utils/streams';
