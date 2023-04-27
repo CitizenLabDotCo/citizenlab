@@ -31,20 +31,20 @@ export const areasData: IAreaData[] = [
     type: 'area',
     attributes: {
       title_multiloc: {
-        en: 'Area 1',
+        en: 'Area 2',
       },
       description_multiloc: {
-        en: 'Description of area 1',
+        en: 'Description of area 2',
       },
 
       ordering: 1,
-      static_page_ids: ['3'],
+      static_page_ids: ['4'],
     },
     relationships: {
       static_pages: {
         data: [
           {
-            id: '3',
+            id: '4',
             type: 'static_page',
           },
         ],
