@@ -1650,7 +1650,7 @@
   "app.containers.AdminPage.groups.permissions.selectValueError": "Proszę wybrać rodzaj odpowiedzi",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestions": "Zadaj pytanie dotyczące rejestracji na poziomie platformy",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Użyj tego ustawienia, jeśli zbieranie imienia, nazwiska i odpowiedzi na pytania demograficzne na poziomie platformy jest dla Ciebie ważne. Może to zwiększyć barierę uczestnictwa.",
-  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription2": "Odpowiedzi na pytania demograficzne będą przechowywane w profilach użytkowników. Odpowiedzi na te pytania będą dostępne zarówno dla adminów jak i moderatorów w celu łatwej analizy uczestnictwa. Pytania będą zadawane tylko tym użytkownikom, którzy wcześniej na nie nie odpowiadali.",
+  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3": "Odpowiedzi na pytania demograficzne będą przechowywane w profilach użytkowników. Pytania będą zadawane tylko tym użytkownikom, którzy wcześniej na nie nie odpowiadali. Odpowiedzi na te pytania będą również dostępne poprzez eksport danych o uczestnictwie, do którego dostęp mają zarówno moderatorzy, jak i administratorzy.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Zadawanie pytań uczestnikom",
   "app.containers.AdminPage.projects.all.existingProjects": "Istniejące projekty",
   "app.containers.AdminPage.projects.all.newProjectFolder": "Utwórz folder projektu",
