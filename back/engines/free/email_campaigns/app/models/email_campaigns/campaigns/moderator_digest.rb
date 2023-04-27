@@ -40,7 +40,7 @@ module EmailCampaigns
 
     before_send :content_worth_sending?
 
-    N_TOP_IDEAS = ENV.fetch('N_MODERATOR_DIGEST_IDEAS', 12).to_i
+    N_TOP_IDEAS = 12
 
     def mailer_class
       ModeratorDigestMailer

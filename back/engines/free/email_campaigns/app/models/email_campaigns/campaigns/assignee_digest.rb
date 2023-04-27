@@ -38,7 +38,7 @@ module EmailCampaigns
 
     recipient_filter :user_filter_admins_moderators_only
 
-    N_TOP_IDEAS = ENV.fetch('N_ASSIGNEE_WEEKLY_REPORT_IDEAS', 12).to_i
+    N_TOP_IDEAS = 12
 
     def self.default_schedule
       IceCube::Schedule.new(Time.find_zone(AppConfiguration.instance.settings('core', 'timezone')).local(2019)) do |s|
