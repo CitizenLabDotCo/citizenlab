@@ -4,6 +4,7 @@ import React from 'react';
 import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
 import NotificationsPopup from './NotificationsPopup';
+import LanguageSelectorPopup from './LanguageSelectorPopup';
 import { NewNotificationsIndicator } from 'containers/MainHeader/NotificationMenu/components/NotificationCount';
 
 // i18n
@@ -79,7 +80,7 @@ export const UserMenu = () => {
         </ItemMenu>
         <ItemMenu buttonStyle="text">
           <Box display="flex" justifyContent="space-between" w="100%">
-            {formatMessage({ ...messages.language })}
+            <LanguageSelectorPopup />
           </Box>
         </ItemMenu>
         <ItemMenu
