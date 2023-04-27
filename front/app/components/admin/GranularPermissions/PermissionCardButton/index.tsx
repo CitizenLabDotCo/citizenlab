@@ -17,6 +17,7 @@ type PermissionCardButtonProps = {
   iconName?: IconNames;
   title: MessageDescriptor;
   subtitle: MessageDescriptor;
+  id?: string;
 };
 export const PermissionCardButton = ({
   onClick,
@@ -24,6 +25,7 @@ export const PermissionCardButton = ({
   iconName,
   title,
   subtitle,
+  id,
 }: PermissionCardButtonProps) => {
   const [isHover, setIsHover] = useState(false);
 
@@ -32,6 +34,7 @@ export const PermissionCardButton = ({
 
   return (
     <Box
+      id={id}
       width="240px"
       minHeight="210px"
       background={selected || isHover ? backgroundColor : colors.white}
