@@ -1418,6 +1418,8 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.newCustomFieldAnswerOptionFormTitle": "Lägg till svarsalternativ",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton": "Avbryt",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton": "Radera",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionAnswerOptionDeletionConfirmation": "Är du säker på att du vill ta bort det här svarsalternativet för registreringsfrågan? Alla poster som specifika användare har besvarat med det här alternativet kommer att raderas permanent. Den här åtgärden kan inte ångras.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation": "Är du säker på att du vill radera denna registreringsfråga? Alla svar som användare har gett på den här frågan kommer att raderas permanent. Den här åtgärden kan inte ångras.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.required": "Krävs",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveField": "Spara fält",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveFieldSuccess": "Fältet har sparats",
