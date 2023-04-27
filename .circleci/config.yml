@@ -348,7 +348,7 @@ jobs:
         type: string
         default: .env-production-benelux
     steps:
-      - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake templates:generate[true]"
+      - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake templates:generate"
 
   check-for-inconsistent-data:
     resource_class: small
