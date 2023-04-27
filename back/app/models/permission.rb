@@ -21,7 +21,8 @@
 class Permission < ApplicationRecord
   PERMITTED_BIES = %w[everyone everyone_confirmed_email users groups admins_moderators].freeze
   ACTIONS = {
-    nil => %w[visiting posting_initiative voting_initiative commenting_initiative],
+    # NOTE: Order of actions in each array is used when using :order_by_action
+    nil => %w[visiting posting_initiative commenting_initiative voting_initiative],
     'information' => [],
     'ideation' => %w[posting_idea commenting_idea voting_idea],
     'native_survey' => %w[posting_idea],
@@ -33,15 +34,8 @@ class Permission < ApplicationRecord
   SCOPE_TYPES = [nil, 'Project', 'Phase'].freeze
 
   scope :filter_enabled_actions, ->(permission_scope) { where(action: enabled_actions(permission_scope)) }
-  scope :order_by_action, lambda {
-    order(Arel.sql(
-      "CASE action
-      WHEN 'posting_idea' THEN 1
-      WHEN 'commenting_idea' THEN 2
-      WHEN 'voting_idea' THEN 3
-      ELSE 4
-      END"
-    ))
+  scope :order_by_action, lambda { |permission_scope|
+    order(Arel.sql(order_by_action_sql(permission_scope)))
   }
 
   belongs_to :permission_scope, polymorphic: true, optional: true
@@ -72,6 +66,14 @@ class Permission < ApplicationRecord
 
       action
     end
+  end
+
+  def self.order_by_action_sql(permission_scope)
+    sql = 'CASE action '
+    actions = enabled_actions(permission_scope)
+    actions.each_with_index { |action, order| sql += "WHEN '#{action}' THEN #{order} " }
+    sql += "ELSE #{actions.size} END"
+    sql
   end
 
   def participation_conditions
