@@ -156,11 +156,11 @@ const ActionForm = ({
           {permittedBy === 'groups' && (
             <Box
               mt="10px"
-              border={`solid 1px ${colors.grey300}`}
+              borderLeft={`solid 1px ${colors.grey300}`}
               px="20px"
               pb="20px"
             >
-              <Title variant="h5" fontWeight={'normal'} color={'coolGrey600'}>
+              <Title variant="h4" color="primary" style={{ fontWeight: 600 }}>
                 <FormattedMessage {...messages.selectUserGroups} />
               </Title>
               <StyledMultipleSelect
@@ -172,7 +172,7 @@ const ActionForm = ({
             </Box>
           )}
           {permittedBy === 'everyone_confirmed_email' && (
-            <Box mt="16px" maxWidth="740px">
+            <Box mt="16px" maxWidth="740px" mb="20px">
               <Warning>
                 {formatMessage(messages.permissionEveryoneEmailWarning)}
               </Warning>

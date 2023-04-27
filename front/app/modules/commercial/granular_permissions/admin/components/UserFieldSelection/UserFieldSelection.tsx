@@ -39,6 +39,7 @@ import { isAdmin } from 'services/permissions/roles';
 import useUserCustomFields from 'hooks/useUserCustomFields';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'hooks/useAuthUser';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type UserFieldSelectionProps = {
   permission: IPermissionData;
@@ -62,10 +63,9 @@ const UserFieldSelection = ({
 }: UserFieldSelectionProps) => {
   const authUser = useAuthUser();
   const { formatMessage } = useIntl();
-  // const permissionsCustomFieldsEnabled = useFeatureFlag({
-  //   name: 'permissions_custom_fields',
-  // });
-  const permissionsCustomFieldsEnabled = false;
+  const permissionsCustomFieldsEnabled = useFeatureFlag({
+    name: 'permissions_custom_fields',
+  });
   const globalRegistrationFields = useUserCustomFields();
   const initialFields = usePermissionsCustomFields({
     projectId,
@@ -139,87 +139,85 @@ const UserFieldSelection = ({
     !permission.attributes.global_custom_fields ||
     permission.attributes.permitted_by === 'everyone_confirmed_email';
 
-  const toggleDisabled = !userIsAdmin || !permissionsCustomFieldsEnabled;
-  const toggleDisabledMessage = !permissionsCustomFieldsEnabled
-    ? messages.premiumUsersOnly
-    : messages.onlyAdmins;
-
-  const fieldsDisabled = !permissionsCustomFieldsEnabled;
-  const fieldsDisabledMessage = messages.premiumUsersOnly;
+  const featureDisabled = !permissionsCustomFieldsEnabled;
 
   return (
-    <Box>
-      <Title variant="h4" color="primary" style={{ fontWeight: 600 }}>
-        <FormattedMessage {...messages.userQuestionTitle} />
-      </Title>
-      <Text fontSize="s" color="coolGrey600" pb="8px">
-        <FormattedMessage {...messages.userFieldsSelectionDescription} />
-      </Text>
-
+    <Tippy
+      interactive={true}
+      placement={'top-start'}
+      disabled={!featureDisabled}
+      theme={'dark'}
+      content={
+        <Box style={{ cursor: 'default' }}>
+          <Text my="8px" color="white" fontSize="s">
+            {formatMessage(messages.premiumUsersOnly)}
+          </Text>
+        </Box>
+      }
+    >
       <Box>
-        {showQuestionToggle && (
-          <Tippy
-            interactive={true}
-            placement={'right-end'}
-            disabled={!toggleDisabled}
-            theme={'dark'}
-            content={
-              <Box style={{ cursor: 'default' }}>
-                <Text my="8px" color="white" fontSize="s">
-                  {formatMessage(toggleDisabledMessage)}
-                </Text>
-              </Box>
-            }
-          >
-            <Box mb="10px">
-              <Toggle
-                checked={permission.attributes.global_custom_fields}
-                disabled={toggleDisabled}
-                onChange={() => {
-                  onChange({
-                    permission,
-                    groupIds,
-                    globalCustomFields:
-                      !permission.attributes.global_custom_fields,
-                  });
-                }}
-                label={
-                  <Box display="flex">
-                    <span style={{ color: colors.primary }}>
-                      <FormattedMessage
-                        {...messages.useExistingRegistrationQuestions}
-                      />
-                    </span>
+        <Title
+          variant="h4"
+          color="primary"
+          style={{ fontWeight: 600 }}
+          mt="5px"
+        >
+          <FormattedMessage {...messages.userQuestionTitle} />
+        </Title>
+        <Text fontSize="s" color="coolGrey600" pb="8px">
+          <FormattedMessage {...messages.userFieldsSelectionDescription} />
+        </Text>
 
-                    <IconTooltip
-                      ml="4px"
-                      icon="info-solid"
-                      content={formatMessage(
-                        toggleDisabled
-                          ? toggleDisabledMessage
-                          : messages.useExistingRegistrationQuestionsDescription
+        <Box>
+          {showQuestionToggle && (
+            <Tippy
+              interactive={true}
+              placement={'right-end'}
+              disabled={userIsAdmin}
+              theme={'dark'}
+              content={
+                <Box style={{ cursor: 'default' }}>
+                  <Text my="8px" color="white" fontSize="s">
+                    {formatMessage(messages.onlyAdmins)}
+                  </Text>
+                </Box>
+              }
+            >
+              <Box mb="10px">
+                <Toggle
+                  checked={permission.attributes.global_custom_fields}
+                  disabled={featureDisabled || !userIsAdmin}
+                  onChange={() => {
+                    onChange({
+                      permission,
+                      groupIds,
+                      globalCustomFields:
+                        !permission.attributes.global_custom_fields,
+                    });
+                  }}
+                  label={
+                    <Box display="flex">
+                      <span style={{ color: colors.primary }}>
+                        <FormattedMessage
+                          {...messages.useExistingRegistrationQuestions}
+                        />
+                      </span>
+                      {!featureDisabled && (
+                        <IconTooltip
+                          ml="4px"
+                          icon="info-solid"
+                          content={formatMessage(
+                            messages.useExistingRegistrationQuestionsDescription
+                          )}
+                        />
                       )}
-                    />
-                  </Box>
-                }
-              />
-            </Box>
-          </Tippy>
-        )}
-        {showQuestions && (
-          <Tippy
-            interactive={true}
-            placement={'right-end'}
-            disabled={fieldsDisabled}
-            theme={'dark'}
-            content={
-              <Box style={{ cursor: 'default' }}>
-                <Text my="8px" color="white" fontSize="s">
-                  {formatMessage(fieldsDisabledMessage)}
-                </Text>
+                    </Box>
+                  }
+                />
               </Box>
-            }
-          >
+            </Tippy>
+          )}
+          {showQuestions && (
             <>
               <Box mt="20px">
                 {initialFieldArray?.map((field) => (
@@ -238,7 +236,7 @@ const UserFieldSelection = ({
                     <Box display="flex">
                       <Toggle
                         checked={field.attributes.required}
-                        disabled={fieldsDisabled}
+                        disabled={featureDisabled}
                         onChange={() => {
                           updatePermissionCustomField({
                             id: field.id,
@@ -254,7 +252,7 @@ const UserFieldSelection = ({
                       <Button
                         buttonStyle="text"
                         icon="delete"
-                        disabled={fieldsDisabled}
+                        disabled={featureDisabled}
                         onClick={() => {
                           handleDeleteField(field.id);
                         }}
@@ -269,7 +267,7 @@ const UserFieldSelection = ({
                 <Button
                   icon="plus-circle"
                   bgColor={colors.primary}
-                  disabled={fieldsDisabled}
+                  disabled={featureDisabled}
                   onClick={() => {
                     setShowSelectionModal(true);
                   }}
@@ -287,10 +285,10 @@ const UserFieldSelection = ({
                 locale={locale}
               />
             </>
-          </Tippy>
-        )}
+          )}
+        </Box>
       </Box>
-    </Box>
+    </Tippy>
   );
 };
 

@@ -147,8 +147,8 @@ const ActionsForm = memo(
                   permission.attributes.permitted_by !==
                     'admins_moderators' && (
                     <Box
-                      mt="10px"
-                      border={`solid 1px ${colors.grey300}`}
+                      pt="10px"
+                      borderLeft={`solid 1px ${colors.grey300}`}
                       px="20px"
                       pb="20px"
                     >
