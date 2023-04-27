@@ -22,9 +22,6 @@ import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
-// Services
-import { deleteMembershipByUserId } from 'services/groupMemberships';
-
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
@@ -36,12 +33,14 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { MembershipType } from 'api/groups/types';
 import useUpdateGroup from 'api/groups/useUpdateGroup';
 import useDeleteGroup from 'api/groups/useDeleteGroup';
+import useDeleteMembership from 'api/group_memberships/useDeleteMembership';
 
 const UsersGroup = () => {
   const isVerificationEnabled = useFeatureFlag({ name: 'verification' });
   const { formatMessage } = useIntl();
   const { groupId } = useParams() as { groupId: string };
   const { data: group } = useGroup(groupId);
+  const { mutateAsync: deleteMembershipByUserId } = useDeleteMembership();
   const { mutate: updateGroup } = useUpdateGroup();
   const { mutate: deleteGroup } = useDeleteGroup();
   const [groupEditionModal, setGroupEditionModal] = useState<
@@ -101,7 +100,7 @@ const UsersGroup = () => {
         const promises: Promise<any>[] = [];
 
         userIds.forEach((userId) =>
-          promises.push(deleteMembershipByUserId(groupId, userId))
+          promises.push(deleteMembershipByUserId({ groupId, userId }))
         );
 
         try {
