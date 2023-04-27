@@ -44,7 +44,7 @@ RSpec.describe Permission, type: :model do
     let!(:permission_voting) { create(:permission, action: 'voting_idea', permission_scope: project) }
 
     it 'Returns permissions in the correct order' do
-      permissions = described_class.all.order_by_action
+      permissions = described_class.all.order_by_action(project)
       expect(permissions).to eq([permission_posting, permission_commenting, permission_voting])
     end
 
