@@ -56,14 +56,6 @@ jest.mock('api/seats/useSeats', () => () => {
 });
 
 describe('BillingInfo', () => {
-  beforeEach(() => {
-    mockUserSeatsData.data.attributes.admins_number = 2;
-    mockUserSeatsData.data.attributes.moderators_number = 5;
-
-    mockAppConfiguration.data.attributes.settings.core.maximum_admins_number = 6;
-    mockAppConfiguration.data.attributes.settings.core.maximum_moderators_number = 9;
-  });
-
   const showsCorrectNumbers = () => {
     it('shows correct numbers of seat usage for admins', () => {
       render(<BillingInfo seatType="admin" />);
