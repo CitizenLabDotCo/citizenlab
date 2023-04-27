@@ -1392,8 +1392,6 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSave": "Lagre svaralternativ",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess": "Svaralternativet er lagret",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Svarvalg",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation": "Er du sikker på at du ønsker å slette dette egendefinerte feltet? ",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "Er du sikker på at du vil slette dette egendefinerte feltalternativet?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle": "Felter",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip": "Dra og slipp feltene for å bestemme rekkefølgen de vises i registreringsskjemaet.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultField": "Standardfelt",
