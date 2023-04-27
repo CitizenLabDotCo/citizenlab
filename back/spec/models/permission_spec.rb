@@ -44,13 +44,13 @@ RSpec.describe Permission, type: :model do
     let!(:permission_voting) { create(:permission, action: 'voting_idea', permission_scope: project) }
 
     it 'Returns permissions in the correct order' do
-      permissions = described_class.all.order_by_action(project)
+      permissions = described_class.order_by_action(project)
       expect(permissions).to eq([permission_posting, permission_commenting, permission_voting])
     end
 
     it 'Only returns permissions that are enabled in a project' do
       project.update!(voting_enabled: false)
-      permissions = described_class.all.filter_enabled_actions(project)
+      permissions = described_class.filter_enabled_actions(project)
       expect(permissions.size).to eq(2)
       expect(permissions).not_to include(permission_voting)
     end

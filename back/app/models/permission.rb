@@ -21,6 +21,7 @@
 class Permission < ApplicationRecord
   PERMITTED_BIES = %w[everyone everyone_confirmed_email users groups admins_moderators].freeze
   ACTIONS = {
+    # NOTE: Order of actions in each array is used when using :order_by_action
     nil => %w[visiting posting_initiative commenting_initiative voting_initiative],
     'information' => [],
     'ideation' => %w[posting_idea commenting_idea voting_idea],
@@ -69,8 +70,9 @@ class Permission < ApplicationRecord
 
   def self.order_by_action_sql(permission_scope)
     sql = 'CASE action '
-    enabled_actions(permission_scope).each_with_index { |action, order| sql += "WHEN '#{action}' THEN #{order} " }
-    sql += 'ELSE 10 END'
+    actions = enabled_actions(permission_scope)
+    actions.each_with_index { |action, order| sql += "WHEN '#{action}' THEN #{order} " }
+    sql += "ELSE #{actions.size} END"
     sql
   end
 
