@@ -62,9 +62,6 @@ describe('BillingInfo', () => {
 
     mockAppConfiguration.data.attributes.settings.core.maximum_admins_number = 6;
     mockAppConfiguration.data.attributes.settings.core.maximum_moderators_number = 9;
-
-    mockAppConfiguration.data.attributes.settings.core.additional_admins_number = 0;
-    mockAppConfiguration.data.attributes.settings.core.additional_moderators_number = 0;
   });
 
   const showsCorrectNumbers = () => {
@@ -106,22 +103,35 @@ describe('BillingInfo', () => {
     });
   };
 
-  describe('when additional seats are not empty', () => {
-    showsCorrectNumbers();
+  describe('when additional seats are set (numbers)', () => {
+    mockAppConfiguration.data.attributes.settings.core.additional_admins_number = 0;
+    mockAppConfiguration.data.attributes.settings.core.additional_moderators_number = 0;
 
-    it('shows correct descriptive breakdown for total seats the user has not exceeded the limit', () => {
-      mockUserSeatsData.data.attributes.admins_number = 3;
+    showsCorrectNumbers();
+  });
+
+  describe('when additional seats are not set (null)', () => {
+    mockAppConfiguration.data.attributes.settings.core.additional_admins_number =
+      null;
+    mockAppConfiguration.data.attributes.settings.core.additional_moderators_number =
+      null;
+
+    showsCorrectNumbers();
+  });
+
+  describe('breakdown of seats', () => {
+    it('shows correct descriptive breakdown for total seats when the user has not exceeded the limit', () => {
       mockAppConfiguration.data.attributes.settings.core.additional_admins_number = 7;
 
       render(<BillingInfo seatType="admin" />);
 
       // Remaining seats
       expect(screen.getByText('Remaining seats')).toBeInTheDocument();
-      expect(screen.getByText('10')).toBeInTheDocument();
+      expect(screen.getByText('11')).toBeInTheDocument();
 
       // Used seats
       expect(screen.getByText('Used seats')).toBeInTheDocument();
-      expect(screen.getByText('3')).toBeInTheDocument();
+      expect(screen.getByText('2')).toBeInTheDocument();
 
       // Total seats
       expect(screen.getByText('Total seats')).toBeInTheDocument();
@@ -152,32 +162,24 @@ describe('BillingInfo', () => {
         screen.getByText('6 within plan, 7 additional')
       ).toBeInTheDocument();
     });
+  });
 
-    it('shows nothing for admin seats when maximum_admins_number is unlimited (null)', () => {
+  describe('when maximum number of seats are unlimited', () => {
+    beforeEach(() => {
       mockAppConfiguration.data.attributes.settings.core.maximum_admins_number =
         null;
+      mockAppConfiguration.data.attributes.settings.core.maximum_moderators_number =
+        null;
+    });
 
+    it('shows nothing for admin seats when maximum_admins_number is unlimited (null)', () => {
       render(<BillingInfo seatType="admin" />);
       expect(screen.queryByText('Admin seats')).not.toBeInTheDocument();
     });
 
     it('shows nothing for moderator seats when maximum_moderators_number is unlimited (null)', () => {
-      mockAppConfiguration.data.attributes.settings.core.maximum_moderators_number =
-        null;
-
       render(<BillingInfo seatType="moderator" />);
       expect(screen.queryByText('Manager seats')).not.toBeInTheDocument();
     });
-  });
-
-  describe('when additional seats are empty', () => {
-    beforeEach(() => {
-      mockAppConfiguration.data.attributes.settings.core.additional_admins_number =
-        null;
-      mockAppConfiguration.data.attributes.settings.core.additional_moderators_number =
-        null;
-    });
-
-    showsCorrectNumbers();
   });
 });
