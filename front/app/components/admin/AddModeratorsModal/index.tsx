@@ -45,7 +45,7 @@ const AddModeratorsModal = ({
 
   if (!appConfiguration || !seats) return null;
 
-  const currentModeratorSeats = seats.data.attributes.project_moderators_number;
+  const currentModeratorSeats = seats.data.attributes.moderators_number;
 
   const { hasReachedOrIsOverPlanSeatLimit, hasExceededPlanSeatLimit } =
     getExceededLimitInfo(

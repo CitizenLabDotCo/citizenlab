@@ -23,7 +23,7 @@ class Permission < ApplicationRecord
   ACTIONS = {
     nil => %w[visiting posting_initiative voting_initiative commenting_initiative],
     'information' => [],
-    'ideation' => %w[posting_idea voting_idea commenting_idea],
+    'ideation' => %w[posting_idea commenting_idea voting_idea],
     'native_survey' => %w[posting_idea],
     'survey' => %w[taking_survey],
     'poll' => %w[taking_poll],
@@ -31,6 +31,18 @@ class Permission < ApplicationRecord
     'volunteering' => []
   }
   SCOPE_TYPES = [nil, 'Project', 'Phase'].freeze
+
+  scope :filter_enabled_actions, ->(permission_scope) { where(action: enabled_actions(permission_scope)) }
+  scope :order_by_action, lambda {
+    order(Arel.sql(
+      "CASE action
+      WHEN 'posting_idea' THEN 1
+      WHEN 'commenting_idea' THEN 2
+      WHEN 'voting_idea' THEN 3
+      ELSE 4
+      END"
+    ))
+  }
 
   belongs_to :permission_scope, polymorphic: true, optional: true
   has_many :groups_permissions, dependent: :destroy
@@ -48,6 +60,18 @@ class Permission < ApplicationRecord
 
   def self.available_actions(permission_scope)
     ACTIONS[permission_scope&.participation_method]
+  end
+
+  def self.enabled_actions(permission_scope)
+    # Remove any actions that are not enabled on the project
+    available_actions(permission_scope).filter_map do |action|
+      next if
+        (action == 'posting_idea' && !permission_scope&.posting_enabled?) ||
+        (action == 'voting_idea' && !permission_scope&.voting_enabled?) ||
+        (action == 'commenting_idea' && !permission_scope&.commenting_enabled?)
+
+      action
+    end
   end
 
   def participation_conditions

@@ -60,7 +60,7 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     attributes = {
       admins_number: User.billed_admins.count,
-      project_moderators_number: User.billed_moderators.count
+      moderators_number: User.billed_moderators.count
     }
     render json: raw_json(attributes)
   end
@@ -132,7 +132,7 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     SideFxUserService.new.before_create(@user, current_user)
 
-    if @user.save
+    if @user.save(context: :form_submission)
       SideFxUserService.new.after_create(@user, current_user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
@@ -160,7 +160,8 @@ class WebApi::V1::UsersController < ::ApplicationController
     remove_image_if_requested!(@user, user_params, :avatar)
 
     authorize @user
-    if @user.save
+    save_params = user_params.key?(:custom_field_values) ? { context: :form_submission } : {}
+    if @user.save save_params
       SideFxUserService.new.after_update(@user, current_user)
       render json: WebApi::V1::UserSerializer.new(
         @user,

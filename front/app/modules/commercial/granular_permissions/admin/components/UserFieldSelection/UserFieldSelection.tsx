@@ -32,10 +32,12 @@ import { IPermissionData } from 'services/actionPermissions';
 import { IUserCustomFieldData } from 'services/userCustomFields';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import { HandlePermissionChangeProps } from '../../containers/Granular/utils';
+import { isAdmin } from 'services/permissions/roles';
 
 // hooks
 import useUserCustomFields from 'hooks/useUserCustomFields';
 import useLocale from 'hooks/useLocale';
+import useAuthUser from 'hooks/useAuthUser';
 
 type UserFieldSelectionProps = {
   permission: IPermissionData;
@@ -57,6 +59,7 @@ const UserFieldSelection = ({
   initiativeContext,
   onChange,
 }: UserFieldSelectionProps) => {
+  const authUser = useAuthUser();
   const { formatMessage } = useIntl();
   const globalRegistrationFields = useUserCustomFields();
   const initialFields = usePermissionsCustomFields({
@@ -118,9 +121,11 @@ const UserFieldSelection = ({
 
   const groupIds = permission.relationships.groups.data.map((p) => p.id);
 
-  if (isNilOrError(locale)) {
+  if (isNilOrError(locale) || isNilOrError(authUser)) {
     return null;
   }
+
+  const userIsAdmin = authUser && isAdmin({ data: authUser });
 
   const showQuestionToggle =
     permission.attributes.permitted_by !== 'everyone_confirmed_email';
@@ -142,6 +147,7 @@ const UserFieldSelection = ({
           <Box mb="10px">
             <Toggle
               checked={permission.attributes.global_custom_fields}
+              disabled={!userIsAdmin}
               onChange={() => {
                 onChange({
                   permission,
@@ -162,7 +168,9 @@ const UserFieldSelection = ({
                     ml="4px"
                     icon="info-solid"
                     content={formatMessage(
-                      messages.useExistingRegistrationQuestionsDescription
+                      userIsAdmin
+                        ? messages.useExistingRegistrationQuestionsDescription
+                        : messages.onlyAdmins
                     )}
                   />
                 </Box>
