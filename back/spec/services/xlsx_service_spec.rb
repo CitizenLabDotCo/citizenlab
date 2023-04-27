@@ -81,6 +81,8 @@ describe XlsxService do
         custom_field = create(:custom_field)
         expect(worksheet[0].cells.map(&:value)).not_to include 'id'
         expect(worksheet[0].cells.map(&:value)).not_to include 'email'
+        expect(worksheet[0].cells.map(&:value)).not_to include 'first_name'
+        expect(worksheet[0].cells.map(&:value)).not_to include 'last_name'
         expect(worksheet[0].cells.map(&:value)).to include custom_field.title_multiloc['en']
       end
     end
@@ -111,6 +113,9 @@ describe XlsxService do
       it 'hides private attributes' do
         custom_field = create :custom_field
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_email'
+        expect(worksheet[0].cells.map(&:value)).not_to include 'author_name'
+        expect(worksheet[0].cells.map(&:value)).not_to include 'assignee'
+        expect(worksheet[0].cells.map(&:value)).not_to include 'assignee_email'
         expect(worksheet[0].cells.map(&:value)).to include custom_field.title_multiloc['en']
       end
     end
@@ -165,6 +170,7 @@ describe XlsxService do
         custom_field = create :custom_field
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_id'
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_email'
+        expect(worksheet[0].cells.map(&:value)).not_to include 'author_name'
         expect(worksheet[0].cells.map(&:value)).to include custom_field.title_multiloc['en']
       end
     end
@@ -189,6 +195,7 @@ describe XlsxService do
         custom_field = create :custom_field
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_id'
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_email'
+        expect(worksheet[0].cells.map(&:value)).not_to include 'author_name'
         expect(worksheet[0].cells.map(&:value)).to include custom_field.title_multiloc['en']
       end
     end
