@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 
 export interface IGroupMembership {
   id: string;
@@ -16,17 +16,6 @@ export interface IGroupMembership {
 
 export interface IGroupMemberships {
   data: IGroupMembership[];
-}
-
-export function getGroupMemberships(
-  groupId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IGroupMemberships>({
-    apiEndpoint: `${API_PATH}/groups/${groupId}/memberships`,
-    ...streamParams,
-    cacheStream: false,
-  });
 }
 
 export async function addGroupMembership(groupId: string, user_id: string) {

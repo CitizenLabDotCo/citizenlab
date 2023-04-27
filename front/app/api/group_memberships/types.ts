@@ -27,3 +27,8 @@ export type IParameters = {
     number: number;
   };
 };
+
+export type MembershipAdd = {
+  userId: string;
+  groupId: string;
+};

@@ -9,12 +9,11 @@ import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 
-// Services
+// api
 import { MembershipType } from 'api/groups/types';
-import {
-  addGroupMembership,
-  IGroupMembership,
-} from 'services/groupMemberships';
+import { IGroupMemberships } from 'api/group_memberships/types';
+import useAddMembership from 'api/group_memberships/useAddMembership';
+import useGroups from 'api/groups/useGroups';
 
 // Utils
 import { requestBlob } from 'utils/request';
@@ -29,8 +28,6 @@ import events, { MembershipAdd } from './events';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// Resources
-
 // I18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -39,6 +36,10 @@ import messages from './messages';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
+
+// Typings
+import { CLErrorsJSON } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 const TableOptions = styled.div`
   min-height: 60px;
@@ -154,11 +155,6 @@ const DropdownFooterButton = styled(Button)`
   }
 `;
 
-// Typings
-import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
-import useGroups from 'api/groups/useGroups';
-
 interface Props {
   groupType?: MembershipType;
   selectedUsers: string[] | 'none' | 'all';
@@ -180,6 +176,7 @@ const UserTableActions = ({
 }: Props) => {
   const { formatDate, formatMessage } = useIntl();
   const { data: manualGroups } = useGroups({ membershipType: 'manual' });
+  const { mutateAsync: addGroupMembership } = useAddMembership();
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([]);
   const [processing, setProcessing] = useState(false);
@@ -232,7 +229,7 @@ const UserTableActions = ({
   const addUsersToGroups = async () => {
     if (selectedGroupIds && selectedGroupIds.length > 0) {
       const usersIds = selectedUsers === 'all' ? allUsersIds : selectedUsers;
-      const promises: Promise<IGroupMembership | CLErrorsJSON>[] = [];
+      const promises: Promise<IGroupMemberships | CLErrorsJSON>[] = [];
       const timeout = (ms) => new Promise((res) => setTimeout(res, ms));
       const success = () => {
         eventEmitter.emit<MembershipAdd>(events.membershipAdd, {
@@ -261,7 +258,7 @@ const UserTableActions = ({
       if (isArray(usersIds)) {
         selectedGroupIds.forEach((groupId) => {
           usersIds.forEach((userId) => {
-            promises.push(addGroupMembership(groupId, userId));
+            promises.push(addGroupMembership({ groupId, userId }));
           });
         });
       }
