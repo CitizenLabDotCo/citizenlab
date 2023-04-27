@@ -1650,7 +1650,7 @@
   "app.containers.AdminPage.groups.permissions.selectValueError": "Молимо изаберите тип одговора",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestions": "Поставите питања за регистрацију на нивоу платформе",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Користите ово подешавање ако вам је важно прикупљање имена, презимена и одговора на демографска питања на нивоу платформе. То може повећати баријеру за учешће.",
-  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription2": "Одговори на демографска питања биће сачувани у корисничким профилима. Одговори на ова питања биће доступни и администраторима и модераторима ради једноставне анализе учешћа. Питања ће бити постављена само корисницима који раније нису одговорили на њих.",
+  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3": "Одговори на демографска питања биће сачувани у корисничким профилима. Питања ће бити постављена само корисницима који раније нису одговорили на њих. Одговори на ова питања биће доступни и путем извоза података о учешћу, који је доступан и модераторима и администраторима.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Постављајте питања учесницима",
   "app.containers.AdminPage.projects.all.existingProjects": "Postojeći projekti",
   "app.containers.AdminPage.projects.all.newProjectFolder": "Kreirajte projektni folder",
