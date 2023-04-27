@@ -4,10 +4,15 @@ import signIn from 'api/authentication/sign_in_out/signIn';
 import signOut from 'api/authentication/sign_in_out/signOut';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import { handleOnSSOClick } from 'services/singleSignOn';
+import checkUser from 'api/users/checkUser';
 
 // cache
 import streams from 'utils/streams';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+
+// tracks
+import tracks from '../../tracks';
+import { trackEventByName } from 'utils/analytics';
 
 // events
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
@@ -39,6 +44,8 @@ export const newLightFlow = (
     setStatus('ok');
     setCurrentStep('closed');
 
+    trackEventByName(tracks.signUpFlowCompleted);
+
     const { successAction } = getAuthenticationData();
     if (successAction) {
       triggerSuccessAction(successAction);
@@ -49,9 +56,28 @@ export const newLightFlow = (
     // light flow
     'light-flow:email': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT_EMAIL: (email: string) => {
+      SUBMIT_EMAIL: async (email: string, locale: Locale) => {
+        setStatus('pending');
         updateState({ email });
-        setCurrentStep('light-flow:email-policies');
+
+        const response = await checkUser(email);
+        const { action } = response.data.attributes;
+
+        if (action === 'terms') {
+          setCurrentStep('light-flow:email-policies');
+          setStatus('ok');
+        }
+
+        if (action === 'password') {
+          setCurrentStep('light-flow:password');
+          setStatus('ok');
+        }
+
+        if (action === 'confirm') {
+          await createEmailOnlyAccount({ email, locale });
+          setCurrentStep('light-flow:email-confirmation');
+          setStatus('ok');
+        }
       },
       CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
         switch (ssoProvider) {

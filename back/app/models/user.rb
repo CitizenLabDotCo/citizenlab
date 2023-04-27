@@ -181,34 +181,12 @@ class User < ApplicationRecord
   validate :validate_minimum_password_length
   validate :validate_password_not_common
 
-  validate do |record|
-    if record.email && (duplicate_user = User.find_by_cimail(record.email)).present? && duplicate_user.id != id
-      if duplicate_user.invite_pending?
-        ErrorsService.new.remove record.errors, :email, :taken, value: record.email
-        record.errors.add(:email, :taken_by_invite, value: record.email, inviter_email: duplicate_user.invitee_invite&.inviter&.email)
-      elsif duplicate_user.email != record.email
-        # We're only checking this case, as the other case is covered
-        # by the uniqueness constraint which can "cleverly" distinguish
-        # true duplicates from the record itself.
-        record.errors.add(:email, :taken, value: record.email)
-      end
-    end
-    # new_email should raise email errors
-    if record.new_email
-      if User.find_by_cimail(record.new_email)
-        record.errors.add(:email, :taken, value: record.new_email)
-      elsif record.errors[:new_email].present?
-        ErrorsService.new.remove record.errors, :new_email, :invalid, value: record.new_email
-        record.errors.add(:email, :invalid, value: record.new_email)
-      end
-    end
-  end
-
-  validate :validate_can_update_email
-
-  validate :validate_email_domains_blacklist
-
   validates :roles, json: { schema: -> { User.roles_json_schema }, message: ->(errors) { errors } }
+
+  validate :validate_not_duplicate_email
+  validate :validate_not_duplicate_new_email
+  validate :validate_can_update_email
+  validate :validate_email_domains_blacklist
 
   with_options if: -> { user_confirmation_enabled? } do
     validates :email_confirmation_code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
@@ -531,6 +509,31 @@ class User < ApplicationRecord
   end
 
   private
+
+  def validate_not_duplicate_new_email
+    return unless new_email
+
+    if User.find_by_cimail(new_email)
+      errors.add(:email, :taken, value: new_email)
+    elsif errors[:new_email].present?
+      ErrorsService.new.remove errors, :new_email, :invalid, value: new_email
+      errors.add(:email, :invalid, value: new_email)
+    end
+  end
+
+  def validate_not_duplicate_email
+    return unless email && (duplicate_user = User.find_by_cimail(email)).present? && duplicate_user.id != id
+
+    if duplicate_user.invite_pending?
+      ErrorsService.new.remove errors, :email, :taken, value: email
+      errors.add(:email, :taken_by_invite, value: email, inviter_email: duplicate_user.invitee_invite&.inviter&.email)
+    elsif duplicate_user.email != email
+      # We're only checking this case, as the other case is covered
+      # by the uniqueness constraint which can "cleverly" distinguish
+      # true duplicates from the record itself.
+      errors.add(:email, :taken, value: email)
+    end
+  end
 
   def validate_can_update_email
     return unless persisted? && (new_email_changed? || email_changed?)
