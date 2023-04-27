@@ -580,6 +580,7 @@
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Usuń grupę",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Edytuj grupę",
   "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Administratorzy i kierownicy",
+  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle1": "Zobacz, kto jest wybrany jako administrator, kierownik folderu lub kierownik projektu.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Użytkownicy",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grupy",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Utwórz grupę i dodaj do nich użytkowników.",
