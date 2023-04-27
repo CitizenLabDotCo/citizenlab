@@ -202,7 +202,7 @@ module XlsxExport
     end
 
     def user_fields
-      CustomField.with_resource_type('User').includes(:options).enabled.order(:ordering).all
+      CustomField.with_resource_type('User').includes(:options).order(:ordering).all
     end
 
     def column_header_for(translation_key)
