@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 import membershipsKeys from './keys';
+import groupsKeys from 'api/groups/keys';
 
 const deleteMembership = ({
   groupId,
@@ -23,6 +24,7 @@ const useDeleteMembership = () => {
       queryClient.invalidateQueries({
         queryKey: membershipsKeys.lists(),
       });
+      queryClient.invalidateQueries({ queryKey: groupsKeys.lists() });
     },
   });
 };

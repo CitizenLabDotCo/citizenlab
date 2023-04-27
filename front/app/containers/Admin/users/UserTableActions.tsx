@@ -266,8 +266,10 @@ const UserTableActions = ({
       try {
         setProcessing(true);
         await Promise.all(promises);
+        await streams.fetchAllWith({
+          apiEndpoint: [`${API_PATH}/users`],
+        });
         await timeout(1000);
-        await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/groups`] });
         success();
         return true;
       } catch (error) {

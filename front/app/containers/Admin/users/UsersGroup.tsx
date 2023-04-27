@@ -106,8 +106,7 @@ const UsersGroup = () => {
         try {
           await Promise.all(promises);
           await streams.fetchAllWith({
-            dataId: [groupId],
-            apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`],
+            apiEndpoint: [`${API_PATH}/users`],
           });
         } catch (error) {
           eventEmitter.emit<JSX.Element>(
