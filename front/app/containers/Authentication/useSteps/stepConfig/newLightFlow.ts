@@ -59,18 +59,19 @@ export const newLightFlow = (
 
         if (action === 'terms') {
           setCurrentStep('light-flow:email-policies');
+          setStatus('ok');
         }
 
         if (action === 'password') {
           setCurrentStep('light-flow:password');
+          setStatus('ok');
         }
 
         if (action === 'confirm') {
           await createEmailOnlyAccount({ email, locale });
           setCurrentStep('light-flow:email-confirmation');
+          setStatus('ok');
         }
-
-        setStatus('ok');
       },
       CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
         switch (ssoProvider) {
