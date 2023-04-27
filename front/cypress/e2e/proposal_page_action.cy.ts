@@ -7,7 +7,7 @@ describe('Initiative show page actions', () => {
     let initiativeId: string;
     let initiativeSlug: string;
 
-    before(() => {
+    beforeEach(() => {
       cy.apiCreateInitiative({ initiativeTitle, initiativeContent })
         .then((initiative) => {
           initiativeId = initiative.body.data.id;
@@ -21,18 +21,13 @@ describe('Initiative show page actions', () => {
         });
     });
 
-    after(() => {
+    afterEach(() => {
       cy.apiRemoveInitiative(initiativeId);
     });
 
     it('asks unauthorised users to log in or sign up before they vote', () => {
-      cy.wait(500);
-      cy.get(
-        '#e2e-initiative-vote-control #e2e-initiative-upvote-button'
-      ).should('exist');
-      cy.get(
-        '#e2e-initiative-vote-control #e2e-initiative-upvote-button'
-      ).click({ force: true });
+      cy.get('#e2e-initiative-upvote-button').should('exist');
+      cy.get('#e2e-initiative-upvote-button').click('center');
       cy.get('#e2e-authentication-modal').should('exist');
     });
   });
