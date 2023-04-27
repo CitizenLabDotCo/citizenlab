@@ -1418,6 +1418,8 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.newCustomFieldAnswerOptionFormTitle": "إضافة خيار إجابة",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton": "إلغاء",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton": "حذف",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionAnswerOptionDeletionConfirmation": "هل أنت متأكد أنك تريد حذف خيار إجابة سؤال التسجيل هذا؟ سيتم حذف جميع السجلات التي أجاب عليها مستخدمون محددون بهذا الخيار نهائيًا. لا يمكن التراجع عن هذا الإجراء.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation": "هل أنت متأكد أنك تريد حذف سؤال التسجيل هذا؟ سيتم حذف جميع الإجابات التي قدمها المستخدمون على هذا السؤال نهائيًا. لا يمكن التراجع عن هذا الإجراء.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.required": "مطلوب",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveField": "حفظ الحقل",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveFieldSuccess": "تم حفظ الحقل بنجاح",
