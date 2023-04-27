@@ -42,14 +42,16 @@ const AddModeratorsModal = ({
     </Text>
   ) : undefined;
 
+  const resetModal = () => {
+    closeModal();
+    setShowSuccess(false);
+  };
+
   return (
-    <Modal opened={showModal} close={closeModal} header={header}>
+    <Modal opened={showModal} close={resetModal} header={header}>
       {showSuccess ? (
         <SeatSetSuccess
-          closeModal={() => {
-            setShowSuccess(false);
-            closeModal();
-          }}
+          closeModal={resetModal}
           seatType="moderator"
           hasExceededPlanSeatLimit={exceedsSeats.moderator}
         />
