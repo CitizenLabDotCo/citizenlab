@@ -1650,7 +1650,7 @@
   "app.containers.AdminPage.groups.permissions.selectValueError": "Vennligst velg en svartype",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestions": "Still registreringsspørsmål på plattformnivå",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Bruk denne innstillingen hvis det er viktig for deg å samle inn navn, etternavn og svar på demografiske spørsmål på plattformnivå. Det kan øke barrieren for deltakelse.",
-  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription2": "Svar på demografiske spørsmål vil bli lagret i brukerprofiler. Svar på disse spørsmålene vil være tilgjengelige for både administratorer og moderatorer for enkel deltakelsesanalyse. Spørsmål vil kun bli stilt til brukere som ikke har svart på dem før.",
+  "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3": "Svar på demografiske spørsmål vil bli lagret i brukerprofiler. Spørsmål vil kun bli stilt til brukere som ikke har svart på dem før. Svar på disse spørsmålene vil også være tilgjengelige via deltakelsesdataeksporten, som er tilgjengelig for både moderatorer og administratorer.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Still spørsmål til deltakerne",
   "app.containers.AdminPage.projects.all.existingProjects": "Eksisterende prosjekter",
   "app.containers.AdminPage.projects.all.newProjectFolder": "Opprett en prosjektmappe",
