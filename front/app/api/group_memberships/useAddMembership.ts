@@ -8,7 +8,7 @@ const addMembership = async ({ groupId, userId }: MembershipAdd) =>
   fetcher<IGroupMemberships>({
     path: `/groups/${groupId}/memberships`,
     action: 'post',
-    body: { memberships: { user_id: userId } },
+    body: { membership: { user_id: userId } },
   });
 
 const useAddMembership = () => {
