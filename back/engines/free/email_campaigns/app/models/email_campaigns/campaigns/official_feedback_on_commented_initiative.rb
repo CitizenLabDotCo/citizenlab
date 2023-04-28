@@ -55,19 +55,19 @@ module EmailCampaigns
     end
 
     def self.recipient_role_multiloc_key
-      # 'email_campaigns.admin_labels.recipient_role.registered_users'
+      'email_campaigns.admin_labels.recipient_role.registered_users'
     end
 
     def self.recipient_segment_multiloc_key
-      # 'email_campaigns.admin_labels.recipient_segment.users_engaged_with_the_proposal'
+      'email_campaigns.admin_labels.recipient_segment.users_engaged_with_the_proposal'
     end
 
     def self.content_type_multiloc_key
-      # 'email_campaigns.admin_labels.content_type.comments'
+      'email_campaigns.admin_labels.content_type.comments'
     end
 
     def self.trigger_multiloc_key
-      # 'email_campaigns.admin_labels.trigger.proposal_status_is_changed'
+      'email_campaigns.admin_labels.trigger.proposal_status_is_changed'
     end
 
     def generate_commands(recipient:, activity:, time: nil)
