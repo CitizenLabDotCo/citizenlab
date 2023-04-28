@@ -1185,7 +1185,6 @@
   "app.containers.AdminPage.ProjectEdit.inputVotingEnabled": "Votar nas contribuições",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Visualização padrão",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Escolha a visualização padrão das entradas do participante: cartões em uma visualização em grade ou pinos em um mapa. Os participantes podem alternar manualmente entre as duas visualizações.",
-  "app.containers.AdminPage.ProjectEdit.konveio": "Konveio",
   "app.containers.AdminPage.ProjectEdit.limited": "Limitada",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Baixar mais modelos",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "No mapa",

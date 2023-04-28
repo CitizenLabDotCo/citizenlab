@@ -1185,7 +1185,6 @@
   "app.containers.AdminPage.ProjectEdit.inputVotingEnabled": "Yayınlara oy verme",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Varsayılan görünüm",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Girdi görüntülemek için varsayılan görünümü seçin: ızgara görünümünde kartlar veya harita üzerinde iğneler. Katılımcılar iki görünüm arasında manuel olarak geçiş yapabilirler.",
-  "app.containers.AdminPage.ProjectEdit.konveio": "Konveio",
   "app.containers.AdminPage.ProjectEdit.limited": "Sınırlı",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Daha fazla şablon yükle",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Harita",

@@ -1185,7 +1185,6 @@
   "app.containers.AdminPage.ProjectEdit.inputVotingEnabled": "التصويت",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "طريقة العرض الافتراضية",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "اختر طريقة العرض الافتراضية لعرض المدخلات: بطاقات بطريقة عرض الشبكة أو دبابيس على خريطة. باستطاعة المشاركين التبديل بين طريقتي العرض يدويًا.",
-  "app.containers.AdminPage.ProjectEdit.konveio": "كونفيو",
   "app.containers.AdminPage.ProjectEdit.limited": "محدود",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "تحميل المزيد من القوالب",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "على الخريطة",

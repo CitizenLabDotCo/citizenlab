@@ -1185,7 +1185,6 @@
   "app.containers.AdminPage.ProjectEdit.inputVotingEnabled": "Votez sur les contributions",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Vue par défaut",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Choisissez la vue par défaut des contributions des participants : cartes dans une vue en grille ou épingles sur une carte. Les participants peuvent basculer manuellement entre les deux vues.",
-  "app.containers.AdminPage.ProjectEdit.konveio": "Konveio",
   "app.containers.AdminPage.ProjectEdit.limited": "Limité",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Voir plus de modèles",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Sur une carte",

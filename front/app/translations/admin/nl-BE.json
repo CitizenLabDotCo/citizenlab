@@ -1185,7 +1185,6 @@
   "app.containers.AdminPage.ProjectEdit.inputVotingEnabled": "Stemmen voor bijdragen",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Standaardweergave",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "De standaardweergave van de bijdragen van de deelnemer kiezen: kaarten in een rasterweergave of pins op een kaart. Deelnemers kunnen handmatig schakelen tussen de twee weergaven.",
-  "app.containers.AdminPage.ProjectEdit.konveio": "Konveio",
   "app.containers.AdminPage.ProjectEdit.limited": "Beperkt",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Meer sjablonen tonen",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Op een kaart",

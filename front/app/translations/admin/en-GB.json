@@ -1185,7 +1185,6 @@
   "app.containers.AdminPage.ProjectEdit.inputVotingEnabled": "Voting on posts",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Default view",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Choose the default view to show input: cards in a grid view or pins on a map. Participants can manually switch between the two views.",
-  "app.containers.AdminPage.ProjectEdit.konveio": "Konveio",
   "app.containers.AdminPage.ProjectEdit.limited": "Limited",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Load more templates",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Map",

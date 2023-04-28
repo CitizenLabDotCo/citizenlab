@@ -1185,7 +1185,6 @@
   "app.containers.AdminPage.ProjectEdit.inputVotingEnabled": "Abstimmen von Beiträgen",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Standardansicht",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Wählen Sie die Standardansicht für die Anzeige von Einträgen: Karten in einer Listenansicht oder Pins auf einer Karte. Die Teilnehmenden können manuell zwischen den beiden Ansichten wechseln.",
-  "app.containers.AdminPage.ProjectEdit.konveio": "Konveio",
   "app.containers.AdminPage.ProjectEdit.limited": "Beschränkt",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Weitere Vorlagen laden",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Karte",

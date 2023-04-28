@@ -1185,7 +1185,6 @@
   "app.containers.AdminPage.ProjectEdit.inputVotingEnabled": "Balsošana par ierakstiem",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Noklusējuma skatījums",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Izvēlēties noklusējuma skatījumu ievades datu parādīšanai: kartes režģa skatā vai kā spraudītes kartē. Dalībnieki var manuāli pārslēgties starp abiem skatījumiem.",
-  "app.containers.AdminPage.ProjectEdit.konveio": "Konveio",
   "app.containers.AdminPage.ProjectEdit.limited": "Ierobežoti",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Ielādēt vairāk veidņu",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Karte",

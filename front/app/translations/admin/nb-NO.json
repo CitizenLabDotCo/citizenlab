@@ -1185,7 +1185,6 @@
   "app.containers.AdminPage.ProjectEdit.inputVotingEnabled": "Stemme på innlegg",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Standardvisning",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Velg standardvisningen for å vise oppføringer: kort i en rutenettvisning eller nåler på et kart. Deltakerne kan manuelt bytte mellom de to visningene.",
-  "app.containers.AdminPage.ProjectEdit.konveio": "Konveio",
   "app.containers.AdminPage.ProjectEdit.limited": "Begrenset",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Last inn flere maler",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Kart",
