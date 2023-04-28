@@ -151,7 +151,7 @@ module XlsxExport
           author_id_report_field
         ]
       else
-        [author_name_report_field]
+        []
       end
     end
 
@@ -170,7 +170,7 @@ module XlsxExport
         meta_fields << project_report_field
         meta_fields << status_report_field if participation_method.supports_status?
         if participation_method.supports_assignment?
-          meta_fields << assignee_fullname_report_field
+          meta_fields << assignee_fullname_report_field if include_private_attributes
           meta_fields << assignee_email_report_field if include_private_attributes
         end
       end

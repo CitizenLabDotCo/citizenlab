@@ -125,7 +125,7 @@ class XlsxService
       { header: 'invite_status', f: ->(u) { u.invite_status }, skip_sanitization: true },
       *user_custom_field_columns(:itself)
     ]
-    columns.reject! { |c| %w[id email].include?(c[:header]) } unless view_private_attributes
+    columns.reject! { |c| %w[id email first_name last_name].include?(c[:header]) } unless view_private_attributes
 
     generate_xlsx 'Users', columns, users
   end
@@ -156,7 +156,7 @@ class XlsxService
       { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
     columns.concat user_custom_field_columns(:author)
-    columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
+    columns.reject! { |c| %w[author_name author_email assignee assignee_email author_id].include?(c[:header]) } unless view_private_attributes
     columns
   end
 
@@ -188,7 +188,7 @@ class XlsxService
       { header: 'attachmens',           f: ->(i) { i.initiative_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
     columns.concat user_custom_field_columns(:author)
-    columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
+    columns.reject! { |c| %w[author_name author_email assignee assignee_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Initiatives', columns, initiatives
   end
 
@@ -207,7 +207,7 @@ class XlsxService
       { header: 'project',            f: ->(c) { multiloc_service.t(c&.idea&.project&.title_multiloc) } }
     ]
     columns.concat user_custom_field_columns(:author)
-    columns.reject! { |c| %w[author_email author_id].include?(c[:header]) } unless view_private_attributes
+    columns.reject! { |c| %w[author_name author_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Comments', columns, comments
   end
 
@@ -225,7 +225,7 @@ class XlsxService
       { header: 'parent_comment_id',        f: ->(c) { c.parent_id }, skip_sanitization: true }
     ]
     columns.concat user_custom_field_columns(:author)
-    columns.reject! { |c| %w[author_email author_id].include?(c[:header]) } unless view_private_attributes
+    columns.reject! { |c| %w[author_name author_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Comments', columns, comments
   end
 
