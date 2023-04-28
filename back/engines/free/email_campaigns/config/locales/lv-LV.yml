@@ -97,6 +97,15 @@ lv:
       "assignee_digest": Nedēļas pārskats par piešķirtajām idejām - administratori un projektu vadītāji
       "user_digest": Nedēļas pārskats - visi lietotāji
       "your_proposed_initiatives_digest": Nedēļas pārskats par jūsu priekšlikumiem - visi lietotāji
+    schedules:
+      weekly:
+        "1": "Ik nedēļu pirmdienās %{atHour}"
+        "2": "Ik nedēļu otrdienās %{atHour}"
+        "3": "Ik nedēļu trešdienās %{atHour}"
+        "4": "Ik nedēļu ceturtdienās %{atHour}"
+        "5": "Ik nedēļu piektdienās %{atHour}"
+        "6": "Ik nedēļu sestdienās %{atHour}"
+        "7": "Ik nedēļu svētdienās %{atHour}"
     footer:
       "link_privacy_policy": "Privātuma politika"
       "link_terms_conditions": "Noteikumi un nosacījumi"
