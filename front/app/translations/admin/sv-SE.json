@@ -1185,7 +1185,6 @@
   "app.containers.AdminPage.ProjectEdit.inputVotingEnabled": "Röstar på inlägg",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Standardvy",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Välj standardvy för att visa indata – kort i en rutnätsvy eller nålar på en karta. Deltagare kan växla manuellt mellan de två vyerna.",
-  "app.containers.AdminPage.ProjectEdit.konveio": "Konveio",
   "app.containers.AdminPage.ProjectEdit.limited": "Begränsade",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Läs in fler mallar",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Karta",

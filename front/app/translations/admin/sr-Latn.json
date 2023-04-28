@@ -1185,7 +1185,6 @@
   "app.containers.AdminPage.ProjectEdit.inputVotingEnabled": "Glasanje za unose",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Podrazumevani pregled",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Odaberite podrazumevajući prikaz korisničkih unosa: kartice ili tačke na mapi. Učesnici mogu samostalno odlučivati o izboru ova dva prikaza.",
-  "app.containers.AdminPage.ProjectEdit.konveio": "Конвеио",
   "app.containers.AdminPage.ProjectEdit.limited": "Ograničeno",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Učitajte još šablona",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Na mapi",

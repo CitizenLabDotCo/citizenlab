@@ -1185,7 +1185,6 @@
   "app.containers.AdminPage.ProjectEdit.inputVotingEnabled": "Afstemning om indlæg",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Standardvisning",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Udvalgt standardvisningen til at vise input: liste i en gittervisning eller pins på et kort. Deltagerne kan manuelt skifte mellem de to visninger.",
-  "app.containers.AdminPage.ProjectEdit.konveio": "Konveio",
   "app.containers.AdminPage.ProjectEdit.limited": "Begrænset",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Indlæs flere skabeloner",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Kort",

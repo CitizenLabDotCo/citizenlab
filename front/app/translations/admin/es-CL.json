@@ -1185,7 +1185,6 @@
   "app.containers.AdminPage.ProjectEdit.inputVotingEnabled": "Vota sobre los aportes",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Vista predeterminada",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Elija la vista predeterminada de los aportes de los participantes: como vista de tarjetas en una cuadrícula o puntos en un mapa. Los participantes pueden cambiar manualmente entre las dos visualizaciones.",
-  "app.containers.AdminPage.ProjectEdit.konveio": "Konveio",
   "app.containers.AdminPage.ProjectEdit.limited": "Limitada",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Cargar más plantillas",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "En una mapa",

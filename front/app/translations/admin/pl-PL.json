@@ -1185,7 +1185,6 @@
   "app.containers.AdminPage.ProjectEdit.inputVotingEnabled": "Głosowanie na pomysły",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Widok domyślny",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Wybierz domyślny widok inicjatyw użytkowników: karty w widoku siatki lub pinezki na mapie. Uczestnicy mogą ręcznie przełączać się pomiędzy oboma widokami.",
-  "app.containers.AdminPage.ProjectEdit.konveio": "Konveio",
   "app.containers.AdminPage.ProjectEdit.limited": "Ograniczona",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Załaduj więcej szablonów",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Na mapie",
