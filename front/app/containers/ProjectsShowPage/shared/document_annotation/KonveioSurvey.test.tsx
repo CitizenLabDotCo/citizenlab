@@ -1,14 +1,14 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 
-import KonveioSurvey from './KonveioSurvey';
+import Konveio from './Konveio';
 
-describe('KonveioSurvey', () => {
+describe('Konveio', () => {
   it('should render', () => {
     render(
-      <KonveioSurvey
+      <Konveio
         email={null}
-        konveioSurveyUrl={'https://demo.konveio.com/node/93?iframe=true'}
+        documentUrl={'https://demo.konveio.com/node/93?iframe=true'}
       />
     );
     expect(screen.getByTestId('konveiosurvey')).toBeInTheDocument();
@@ -16,9 +16,9 @@ describe('KonveioSurvey', () => {
 
   it('append email on query', () => {
     render(
-      <KonveioSurvey
+      <Konveio
         email={'test@mail.com'}
-        konveioSurveyUrl={'https://demo.konveio.com/node/93?iframe=true'}
+        documentUrl={'https://demo.konveio.com/node/93?iframe=true'}
       />
     );
     const displayedIframe = screen.getByTestId('konveiosurvey');

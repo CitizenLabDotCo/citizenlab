@@ -11,14 +11,14 @@ const StyledIframe = styled.iframe`
 `;
 
 type Props = {
-  konveioSurveyUrl: string;
+  documentUrl: string;
   className?: string;
   email: string | null;
 };
 
-const SmartSurvey = ({ konveioSurveyUrl, className, email }: Props) => {
+const Konveio = ({ documentUrl, className, email }: Props) => {
   // Parse survey URL
-  const urlSplit = konveioSurveyUrl.split('?');
+  const urlSplit = documentUrl.split('?');
   const urlParams = parse(urlSplit[1] ? urlSplit[1] : {});
 
   urlParams['integration'] = 'CitizenLab';
@@ -44,4 +44,4 @@ const SmartSurvey = ({ konveioSurveyUrl, className, email }: Props) => {
   );
 };
 
-export default SmartSurvey;
+export default Konveio;

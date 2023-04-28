@@ -10,7 +10,6 @@ import QualtricsSurvey from './QualtricsSurvey';
 import SmartSurvey from './SmartSurvey';
 import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
 import SnapSurvey from './SnapSurvey';
-import KonveioSurvey from './KonveioSurvey';
 import Warning from 'components/UI/Warning';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
@@ -36,6 +35,7 @@ import SurveyXact from './SurveyXact';
 import usePhase from 'hooks/usePhase';
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
+import { TSurveyService } from 'services/participationContexts';
 
 const Container = styled.div`
   position: relative;
@@ -49,7 +49,7 @@ interface Props {
   projectId: string;
   phaseId?: string | null;
   surveyEmbedUrl: string;
-  surveyService: string;
+  surveyService: TSurveyService;
   className?: string;
 }
 
@@ -189,10 +189,6 @@ const Survey = ({
 
           {surveyService === 'snap_survey' && (
             <SnapSurvey snapSurveyUrl={surveyEmbedUrl} />
-          )}
-
-          {surveyService === 'konveio' && (
-            <KonveioSurvey konveioSurveyUrl={surveyEmbedUrl} email={email} />
           )}
         </Container>
       );

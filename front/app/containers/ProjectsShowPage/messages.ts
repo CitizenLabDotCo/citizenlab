@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.containers.Projects.invisibleTitleSurvey',
     defaultMessage: 'Take the survey',
   },
+  invisbleTitleDocumentAnnotation: {
+    id: 'app.containers.Projects.invisbleTitleDocumentAnnotation',
+    defaultMessage: 'Annotate the document',
+  },
   invisibleTitlePoll: {
     id: 'app.containers.Projects.invisibleTitlePoll',
     defaultMessage: 'Take the poll',
@@ -399,5 +403,9 @@ export default defineMessages({
     id: 'app.containers.Projects.emailSharingBody',
     defaultMessage:
       'What do you think of this project? Join the discussion at {projectUrl} to make your voice heard!',
+  },
+  document: {
+    id: 'app.containers.Projects.document',
+    defaultMessage: 'Document',
   },
 });
