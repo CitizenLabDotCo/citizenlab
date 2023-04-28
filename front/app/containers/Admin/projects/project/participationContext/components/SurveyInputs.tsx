@@ -7,8 +7,7 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { StyledA, StyledWarning, SurveyServiceRadio } from './styling';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // typings
@@ -24,16 +23,17 @@ interface Props {
   handleSurveyEmbedUrlChange: (survey_embed_url: string) => void;
 }
 
-export default injectIntl<Props & WrappedComponentProps>(
-  ({
-    intl: { formatMessage },
-    survey_service,
-    survey_embed_url,
-    apiErrors,
-    surveyProviders,
-    handleSurveyProviderChange,
-    handleSurveyEmbedUrlChange,
-  }) => (
+const SurveyInputs = ({
+  survey_service,
+  survey_embed_url,
+  apiErrors,
+  surveyProviders,
+  handleSurveyProviderChange,
+  handleSurveyEmbedUrlChange,
+}: Props) => {
+  const { formatMessage } = useIntl();
+
+  return (
     <>
       <SectionField>
         <SubSectionTitle>
@@ -155,5 +155,7 @@ export default injectIntl<Props & WrappedComponentProps>(
         <Error apiErrors={apiErrors && apiErrors.survey_embed_url} />
       </SectionField>
     </>
-  )
-);
+  );
+};
+
+export default SurveyInputs;
