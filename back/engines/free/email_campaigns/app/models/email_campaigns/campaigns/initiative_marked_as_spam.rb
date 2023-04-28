@@ -59,19 +59,23 @@ module EmailCampaigns
     end
 
     def self.recipient_role_label
-      I18n.t('email_campaigns.admin_labels.recipient_role.admins')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_role.admins')
     end
 
     def self.recipient_segment_label
-      I18n.t('email_campaigns.admin_labels.recipient_segment.admins_and_managers')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_segment.admins_and_managers')
     end
 
     def self.content_type_label
-      I18n.t('email_campaigns.admin_labels.content_type.proposals')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.content_type.proposals')
     end
 
     def self.trigger_label
-      I18n.t('email_campaigns.admin_labels.trigger.proposal_gets_reported_as_spam')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.trigger.proposal_gets_reported_as_spam')
     end
 
     def generate_commands(recipient:, activity:, time: nil)

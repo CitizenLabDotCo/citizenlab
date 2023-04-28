@@ -48,19 +48,23 @@ module FlagInappropriateContent
       end
 
       def self.recipient_role_label
-        I18n.t('email_campaigns.admin_labels.recipient_role.admin')
+        @multiloc_service ||= MultilocService.new
+        @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_role.admins')
       end
 
       def self.recipient_segment_label
-        I18n.t('email_campaigns.admin_labels.recipient_segment.admins')
+        @multiloc_service ||= MultilocService.new
+        @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_segment.admins')
       end
 
       def self.content_type_label
-        I18n.t('email_campaigns.admin_labels.content_type.content_moderation')
+        @multiloc_service ||= MultilocService.new
+        @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.content_type.content_moderation')
       end
 
       def self.trigger_label
-        I18n.t('email_campaigns.admin_labels.trigger.content_gets_flagged_as_innapropiate')
+        @multiloc_service ||= MultilocService.new
+        @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.trigger.content_gets_flagged_as_innapropiate')
       end
 
       def mailer_class

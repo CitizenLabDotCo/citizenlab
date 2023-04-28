@@ -55,17 +55,20 @@ module EmailCampaigns
     end
 
     def self.recipient_role_label
-      I18n.t('email_campaigns.admin_labels.recipient_role.project_participants')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_role.project_participants')
     end
 
     def self.recipient_segment_label
-      I18n.t('email_campaigns.admin_labels.recipient_segment.users_engaged_with_the_project')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_segment.users_engaged_with_the_project')
     end
 
     def self.content_type_label; end
 
     def self.trigger_label
-      I18n.t('email_campaigns.admin_labels.trigger.project_changes_phase')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.trigger.project_changes_phase')
     end
 
     def generate_commands(recipient:, activity:, time: nil)

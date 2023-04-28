@@ -71,19 +71,23 @@ module EmailCampaigns
     end
 
     def self.recipient_role_label
-      I18n.t('email_campaigns.admin_labels.recipient_role.registered_users')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_role.registered_users')
     end
 
     def self.recipient_segment_label
-      I18n.t('email_campaigns.admin_labels.recipient_segment.user_who_was_invited')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_segment.user_who_was_invited')
     end
 
     def self.content_type_label
-      I18n.t('email_campaigns.admin_labels.content_type.general')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.content_type.general')
     end
 
     def self.trigger_label
-      I18n.t('email_campaigns.admin_labels.trigger.7_days_after_invite_is_sent')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.trigger.7_days_after_invite_is_sent')
     end
   end
 end

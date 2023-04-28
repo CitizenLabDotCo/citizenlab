@@ -55,19 +55,23 @@ module EmailCampaigns
     end
 
     def self.recipient_role_label
-      I18n.t('email_campaigns.admin_labels.recipient_role.registered_users')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_role.registered_users')
     end
 
     def self.recipient_segment_label
-      I18n.t('email_campaigns.admin_labels.recipient_segment.user_who_published_the_idea')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_segment.user_who_published_the_idea')
     end
 
     def self.content_type_label
-      I18n.t('email_campaigns.admin_labels.content_type.ideas')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.content_type.ideas')
     end
 
     def self.trigger_label
-      I18n.t('email_campaigns.admin_labels.trigger.idea_changes_status')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.trigger.idea_changes_status')
     end
 
     def generate_commands(recipient:, activity:)

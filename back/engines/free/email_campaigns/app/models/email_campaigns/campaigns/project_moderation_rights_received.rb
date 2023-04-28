@@ -62,19 +62,23 @@ module EmailCampaigns
     end
 
     def self.recipient_role_label
-      I18n.t('email_campaigns.admin_labels.recipient_role.admins_and_managers')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_role.admins_and_moderators')
     end
 
     def self.recipient_segment_label
-      I18n.t('email_campaigns.admin_labels.recipient_segment.user_receiving_project_moderator_rights')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_segment.user_receiving_project_moderator_rights')
     end
 
     def self.content_type_label
-      I18n.t('email_campaigns.admin_labels.content_type.permissions')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.content_type.permissions')
     end
 
     def self.trigger_label
-      I18n.t('email_campaigns.admin_labels.trigger.user_is_given_project_moderator_rights')
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.trigger.user_is_given_project_moderator_rights')
     end
   end
 end

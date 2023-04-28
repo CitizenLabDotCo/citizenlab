@@ -56,19 +56,23 @@ module IdeaAssignment
       end
 
       def self.recipient_role_label
-        I18n.t('email_campaigns.admin_labels.recipient_role.admins_and_moderators')
+        @multiloc_service ||= MultilocService.new
+        @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_role.admins_and_moderators')
       end
 
       def self.recipient_segment_label
-        I18n.t('email_campaigns.admin_labels.recipient_segment.user_assigned_to_the_idea')
+        @multiloc_service ||= MultilocService.new
+        @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_segment.user_assigned_to_the_idea')
       end
 
       def self.content_type_label
-        I18n.t('email_campaigns.admin_labels.content_type.ideas')
+        @multiloc_service ||= MultilocService.new
+        @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.content_type.ideas')
       end
 
       def self.trigger_label
-        I18n.t('email_campaigns.admin_labels.trigger.idea_is_assigned')
+        @multiloc_service ||= MultilocService.new
+        @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.trigger.idea_is_assigned')
       end
 
       def filter_notification_recipient(users_scope, activity:, time: nil)
