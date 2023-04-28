@@ -97,6 +97,15 @@ de:
       "assignee_digest": Wöchentlicher Überblick über die zugewiesenen Ideen - Admins und Projektmanager*innen
       "user_digest": Wochenübersicht - alle Nutzer*innen
       "your_proposed_initiatives_digest": Wöchentlicher Überblick über eigenen Vorschläge - alle Nutzer*innen
+    schedules:
+      weekly:
+        "1": "Wöchentlich, montags %{atHour}"
+        "2": "Wöchentlich dienstags %{atHour}"
+        "3": "Wöchentlich, mittwochs %{atHour}"
+        "4": "Wöchentlich donnerstags %{atHour}"
+        "5": "Wöchentlich freitags %{atHour}"
+        "6": "Wöchentlich an Samstagen %{atHour}"
+        "7": "Wöchentlich an Sonntagen %{atHour}"
     footer:
       "link_privacy_policy": "Impressum & Datenschutz"
       "link_terms_conditions": "Nutzungsbedingungen"
