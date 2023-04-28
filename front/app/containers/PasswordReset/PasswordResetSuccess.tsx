@@ -14,11 +14,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import clHistory from 'utils/cl-router/history';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 export const PasswordResetSuccess = () => {
   const signIn = () => {
-    clHistory.push('/sign-in');
+    triggerAuthenticationFlow({ flow: 'signin' });
   };
 
   return (
