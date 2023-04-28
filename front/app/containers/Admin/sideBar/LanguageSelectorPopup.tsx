@@ -61,19 +61,17 @@ export const LanguageSelectorPopup = ({ setIsOpen, isOpen }: Props) => {
       wide
     >
       <Box width="172px">
-        <>
-          {tenantLocales.map((tenantLocale) => (
-            <ItemMenu
-              key={tenantLocale}
-              buttonStyle="text"
-              onClick={() => updateLocale(tenantLocale, appConfig)}
-            >
-              <Box display="flex" justifyContent="space-between" w="100%">
-                {shortenedAppLocalePairs[tenantLocale]}
-              </Box>
-            </ItemMenu>
-          ))}
-        </>
+        {tenantLocales.map((tenantLocale) => (
+          <ItemMenu
+            key={tenantLocale}
+            buttonStyle="text"
+            onClick={() => updateLocale(tenantLocale, appConfig)}
+          >
+            <Box display="flex" justifyContent="space-between" w="100%">
+              {shortenedAppLocalePairs[tenantLocale]}
+            </Box>
+          </ItemMenu>
+        ))}
       </Box>
     </Popup>
   );
