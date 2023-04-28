@@ -139,13 +139,11 @@ const UserFieldSelection = ({
     !permission.attributes.global_custom_fields ||
     permission.attributes.permitted_by === 'everyone_confirmed_email';
 
-  const featureDisabled = !permissionsCustomFieldsEnabled;
-
   return (
     <Tippy
       interactive={true}
       placement={'top-start'}
-      disabled={!featureDisabled}
+      disabled={permissionsCustomFieldsEnabled}
       theme={'dark'}
       content={
         <Box style={{ cursor: 'default' }}>
@@ -186,7 +184,7 @@ const UserFieldSelection = ({
               <Box mb="10px">
                 <Toggle
                   checked={permission.attributes.global_custom_fields}
-                  disabled={featureDisabled || !userIsAdmin}
+                  disabled={!permissionsCustomFieldsEnabled || !userIsAdmin}
                   onChange={() => {
                     onChange({
                       permission,
@@ -202,7 +200,7 @@ const UserFieldSelection = ({
                           {...messages.useExistingRegistrationQuestions}
                         />
                       </span>
-                      {!featureDisabled && (
+                      {permissionsCustomFieldsEnabled && (
                         <IconTooltip
                           ml="4px"
                           icon="info-solid"
@@ -236,7 +234,7 @@ const UserFieldSelection = ({
                     <Box display="flex">
                       <Toggle
                         checked={field.attributes.required}
-                        disabled={featureDisabled}
+                        disabled={!permissionsCustomFieldsEnabled}
                         onChange={() => {
                           updatePermissionCustomField({
                             id: field.id,
@@ -252,7 +250,7 @@ const UserFieldSelection = ({
                       <Button
                         buttonStyle="text"
                         icon="delete"
-                        disabled={featureDisabled}
+                        disabled={!permissionsCustomFieldsEnabled}
                         onClick={() => {
                           handleDeleteField(field.id);
                         }}
@@ -267,7 +265,7 @@ const UserFieldSelection = ({
                 <Button
                   icon="plus-circle"
                   bgColor={colors.primary}
-                  disabled={featureDisabled}
+                  disabled={!permissionsCustomFieldsEnabled}
                   onClick={() => {
                     setShowSelectionModal(true);
                   }}

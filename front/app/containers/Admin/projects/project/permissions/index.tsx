@@ -19,7 +19,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 // style
 import styled from 'styled-components';
 import Outlet from 'components/Outlet';
-import { colors } from '../../../../../utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;
