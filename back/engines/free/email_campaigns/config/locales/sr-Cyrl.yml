@@ -97,6 +97,15 @@ sr-Cyrl:
       "assignee_digest": Недељни преглед додељених идеја - администратори и пројектни менаџери
       "user_digest": Недељни преглед - сви корисници
       "your_proposed_initiatives_digest": Недељни преглед сопствених предлога - сви корисници
+    schedules:
+      weekly:
+        "0": "Weekly, on Sundays at %{hourOfDay}"
+        "1": "Weekly, on Mondays at %{hourOfDay}"
+        "2": "Weekly, on Tuesdays at %{hourOfDay}"
+        "3": "Weekly, on Wednesdays at %{hourOfDay}"
+        "4": "Weekly, on Thursdays at %{hourOfDay}"
+        "5": "Weekly, on Fridays at %{hourOfDay}"
+        "6": "Weekly, on Saturdays at %{hourOfDay}"
     footer:
       "link_privacy_policy": "Правила о приватности"
       "link_terms_conditions": "Услови коришћења"
@@ -488,7 +497,7 @@ sr-Cyrl:
       today_by_author: "Данас до %{author}"
       yesterday_by_author: "Јуче до %{author}"
       x_days_ago_by_author: "Пре %{x} дана до %{author}"
-      trending_ideas: "Идеје у тренду"
+      trending_ideas: "U trendu"
       trending_ideas_text: "Занима вас шта се дешава на платформи? Ево три идеје које су у тренду и шта људи говоре о њима."
       no_notifications: "Нема обавештења"
       one_notification: "1 обавештење"
