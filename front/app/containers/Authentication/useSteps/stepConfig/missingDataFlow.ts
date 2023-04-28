@@ -61,8 +61,6 @@ export const missingDataFlow = (
 
           setCurrentStep('success');
         } catch (e) {
-          setStatus('error');
-
           if (e?.code?.[0]?.error === 'invalid') {
             setError('wrong_confirmation_code');
           } else {
@@ -85,7 +83,6 @@ export const missingDataFlow = (
           setCurrentStep('missing-data:email-confirmation');
           setStatus('ok');
         } catch (e) {
-          setStatus('error');
           setError('unknown');
         }
       },
@@ -142,7 +139,6 @@ export const missingDataFlow = (
           setStatus('ok');
           setCurrentStep('success');
         } catch {
-          setStatus('error');
           setError('unknown');
         }
       },

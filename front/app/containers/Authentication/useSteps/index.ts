@@ -81,7 +81,6 @@ export default function useSteps() {
       );
       return response.data.attributes.requirements;
     } catch (e) {
-      setStatus('error');
       setError('requirements_fetching_failed');
 
       throw e;

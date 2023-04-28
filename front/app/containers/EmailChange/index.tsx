@@ -71,19 +71,21 @@ const EmailChange = () => {
   }, [authUser, methods]);
 
   const onEmailConfirmation = async (code: string) => {
+    setConfirmationStatus('pending');
+
     try {
       await confirmEmail({ code });
-      setConfirmationStatus('ok');
       setConfirmationError(null);
       setOpenConfirmationModal(false);
       setUpdateSuccessful(true);
     } catch (e) {
-      setConfirmationStatus('error');
       if (e?.code?.[0]?.error === 'invalid') {
         setConfirmationError('wrong_confirmation_code');
       } else {
         setConfirmationError('unknown');
       }
+    } finally {
+      setConfirmationStatus('ok');
     }
   };
 

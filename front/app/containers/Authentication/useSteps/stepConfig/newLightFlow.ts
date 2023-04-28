@@ -110,7 +110,6 @@ export const newLightFlow = (
         }
 
         if (result === 'error') {
-          setStatus('error');
           setError('account_creation_failed');
         }
       },
@@ -216,8 +215,6 @@ export const newLightFlow = (
 
           close();
         } catch (e) {
-          setStatus('error');
-
           if (e?.code?.[0]?.error === 'invalid') {
             setError('wrong_confirmation_code');
           } else {
@@ -256,7 +253,6 @@ export const newLightFlow = (
 
           close();
         } catch {
-          setStatus('error');
           setError('wrong_password');
         }
       },

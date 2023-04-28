@@ -105,7 +105,6 @@ export const oldSignUpFlow = (
 
           setCurrentStep('success');
         } catch {
-          setStatus('error');
           setError('account_creation_failed');
           trackEventByName(tracks.signInEmailPasswordFailed);
         }
@@ -138,8 +137,6 @@ export const oldSignUpFlow = (
 
           setCurrentStep('success');
         } catch (e) {
-          setStatus('error');
-
           if (e?.code?.[0]?.error === 'invalid') {
             setError('wrong_confirmation_code');
           } else {
@@ -162,7 +159,6 @@ export const oldSignUpFlow = (
           setCurrentStep('sign-up:email-confirmation');
           setStatus('ok');
         } catch {
-          setStatus('error');
           setError('unknown');
         }
       },
@@ -196,7 +192,6 @@ export const oldSignUpFlow = (
           setCurrentStep('success');
           trackEventByName(tracks.signUpCustomFieldsStepCompleted);
         } catch {
-          setStatus('error');
           setError('unknown');
           trackEventByName(tracks.signUpCustomFieldsStepFailed);
         }
