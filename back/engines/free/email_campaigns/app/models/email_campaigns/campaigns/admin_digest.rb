@@ -65,12 +65,12 @@ module EmailCampaigns
       'admin'
     end
 
-    def self.target_role_label
-      I18n.t('email_campaigns.target_role.admins')
+    def self.recipient_role_label
+      I18n.t('email_campaigns.recipient_role.admins')
     end
 
-    def self.target_segment_label
-      I18n.t('email_campaigns.target_segment.admins')
+    def self.recipient_segment_label
+      I18n.t('email_campaigns.recipient_segment.admins')
     end
 
     def self.content_type_label

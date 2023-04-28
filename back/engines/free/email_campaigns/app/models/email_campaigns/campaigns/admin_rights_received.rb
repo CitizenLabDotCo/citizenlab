@@ -54,12 +54,12 @@ module EmailCampaigns
       }]
     end
 
-    def self.target_role_label
-      I18n.t('email_campaigns.target_role.admins_and_moderators')
+    def self.recipient_role_label
+      I18n.t('email_campaigns.recipient_role.admins_and_moderators')
     end
 
-    def self.target_segment_label
-      I18n.t('email_campaigns.target_segment.user_receiving_admin_rights')
+    def self.recipient_segment_label
+      I18n.t('email_campaigns.recipient_segment.user_receiving_admin_rights')
     end
 
     def self.content_type_label

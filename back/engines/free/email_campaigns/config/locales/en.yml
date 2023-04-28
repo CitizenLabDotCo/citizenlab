@@ -555,13 +555,13 @@ en:
       remaining_votes: 'Votes remaining'
       remaining_days: 'Days remaining'
     admin_labels:
-      target_role:
+      recipient_role:
         admins: 'To admins'
         admins_and_moderators: 'To admins & moderators'
         managers: 'To managers'
         project_participants: 'To project participants'
         registered_users: 'To registered users'
-      target_segment:
+      recipient_segment:
         admins: 'Admins'
         admins_and_managers: 'Admins and managers'
         all_users: 'All users'
