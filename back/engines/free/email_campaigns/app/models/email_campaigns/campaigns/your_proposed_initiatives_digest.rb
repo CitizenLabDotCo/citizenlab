@@ -50,22 +50,19 @@ module EmailCampaigns
       'scheduled'
     end
 
-    def self.recipient_role_label
-      @multiloc_service ||= MultilocService.new
-      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_role.registered_users')
+    def self.recipient_segment_multiloc_key
+      'email_campaigns.admin_labels.recipient_role.registered_users'
     end
 
-    def self.recipient_segment_label
-      @multiloc_service ||= MultilocService.new
-      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_segment.all_users_who_uploaded_proposals')
+    def self.recipient_segment_multiloc_key
+      'email_campaigns.admin_labels.recipient_segment.all_users_who_uploaded_proposals'
     end
 
-    def self.content_type_label
-      @multiloc_service ||= MultilocService.new
-      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.content_type.proposals')
+    def self.content_type_multiloc_key
+      'email_campaigns.admin_labels.content_type.proposals'
     end
 
-    def self.trigger_label
+    def self.trigger_multiloc_key
       'scheduled'
     end
 

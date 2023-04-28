@@ -75,13 +75,13 @@ module EmailCampaigns
       "EmailCampaigns::Campaigns::#{name.camelize}"
     end
 
-    def self.recipient_role_label; end
+    def self.recipient_segment_multiloc_key; end
 
-    def self.recipient_segment_label; end
+    def self.recipient_segment_multiloc_key; end
 
-    def self.content_type_label; end
+    def self.content_type_multiloc_key; end
 
-    def self.trigger_label; end
+    def self.trigger_multiloc_key; end
 
     def apply_recipient_filters(activity: nil, time: nil)
       self.class.recipient_filters.inject(User.where.not(email: nil)) do |users_scope, action_symbol|

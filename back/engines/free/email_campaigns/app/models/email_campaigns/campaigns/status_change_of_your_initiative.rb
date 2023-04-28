@@ -54,24 +54,20 @@ module EmailCampaigns
       'own'
     end
 
-    def self.recipient_role_label
-      @multiloc_service ||= MultilocService.new
-      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_role.registered_users')
+    def self.recipient_segment_multiloc_key
+      'email_campaigns.admin_labels.recipient_role.registered_users'
     end
 
-    def self.recipient_segment_label
-      @multiloc_service ||= MultilocService.new
-      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_segment.user_who_published_proposal')
+    def self.recipient_segment_multiloc_key
+      'email_campaigns.admin_labels.recipient_segment.user_who_published_proposal'
     end
 
-    def self.content_type_label
-      @multiloc_service ||= MultilocService.new
-      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.content_type.proposals')
+    def self.content_type_multiloc_key
+      'email_campaigns.admin_labels.content_type.proposals'
     end
 
-    def self.trigger_label
-      @multiloc_service ||= MultilocService.new
-      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.trigger.proposal_changes_status')
+    def self.trigger_multiloc_key
+      'email_campaigns.admin_labels.trigger.proposal_changes_status'
     end
 
     def generate_commands(recipient:, activity:)

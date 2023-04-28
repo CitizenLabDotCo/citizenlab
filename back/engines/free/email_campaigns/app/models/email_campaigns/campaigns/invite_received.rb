@@ -69,18 +69,12 @@ module EmailCampaigns
       !!activity.item&.send_invite_email
     end
 
-    def self.recipient_role_label
-      @multiloc_service ||= MultilocService.new
-      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.recipient_role.registered_users')
+    def self.recipient_segment_multiloc_key
+      'email_campaigns.admin_labels.recipient_role.registered_users'
     end
 
-    def self.recipient_segment_label; end
-
-    def self.content_type_label
-      @multiloc_service ||= MultilocService.new
-      @multiloc_service.i18n_to_multiloc('email_campaigns.admin_labels.content_type.general')
+    def self.content_type_multiloc_key
+      'email_campaigns.admin_labels.content_type.general'
     end
-
-    def self.trigger_label; end
   end
 end

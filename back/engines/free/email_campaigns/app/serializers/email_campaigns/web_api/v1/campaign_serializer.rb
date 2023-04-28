@@ -12,20 +12,32 @@ module EmailCampaigns
       object.class.admin_campaign_description_multiloc
     end
 
-    attribute :recipient_role_label do |object|
-      object.class.recipient_role_label
+    attribute :recipient_role_multiloc do |object|
+      if object.class.recipient_segment_multiloc_key.present?
+        @multiloc_service ||= MultilocService.new
+        @multiloc_service.i18n_to_multiloc(object.class.recipient_segment_multiloc_key)
+      end
     end
 
-    attribute :recipient_segment_label do |object|
-      object.class.recipient_segment_label
+    attribute :recipient_segment_multiloc do |object|
+      if object.class.recipient_segment_multiloc_key.present?
+        @multiloc_service ||= MultilocService.new
+        @multiloc_service.i18n_to_multiloc(object.class.recipient_segment_multiloc_key)
+      end
     end
 
-    attribute :content_type_label do |object|
-      object.class.content_type_label
+    attribute :content_type_multiloc do |object|
+      if object.class.content_type_multiloc_key.present?
+        @multiloc_service ||= MultilocService.new
+        @multiloc_service.i18n_to_multiloc(object.class.content_type_multiloc_key)
+      end
     end
 
-    attribute :trigger_label do |object|
-      object.class.trigger_label
+    attribute :trigger_multiloc do |object|
+      if object.class.trigger_multiloc_key.present? && object.class.trigger_multiloc_key != 'scheduled'
+        @multiloc_service ||= MultilocService.new
+        @multiloc_service.i18n_to_multiloc(object.class.trigger_multiloc_key)
+      end
     end
 
     attribute :enabled, if: proc { |object|
