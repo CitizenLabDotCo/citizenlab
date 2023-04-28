@@ -8,18 +8,22 @@ describe('Verification modal', () => {
     const password = randomString();
     let userId: string;
 
-    before(() => {
-      cy.apiSignup(firstName, lastName, email, password).then((user) => {
-        userId = user.body.data.id;
-      });
-    });
-
     describe('verifies a user', () => {
       beforeEach(() => {
-        cy.setLoginCookie(email, password);
-        cy.visit('/profile/edit');
-        cy.get('#e2e-user-edit-profile-page').should('exist');
-        cy.acceptCookies();
+        cy.apiSignup(firstName, lastName, email, password)
+          .then((user) => {
+            userId = user.body.data.id;
+          })
+          .then(() => {
+            cy.setLoginCookie(email, password);
+            cy.visit('/profile/edit');
+            cy.get('#e2e-user-edit-profile-page').should('exist');
+            cy.acceptCookies();
+          });
+      });
+
+      afterEach(() => {
+        cy.apiRemoveUser(userId);
       });
 
       it('shows the verification modal and successfully verifies the user', () => {
@@ -38,13 +42,9 @@ describe('Verification modal', () => {
         cy.get('#e2e-user-menu-container.e2e-verified');
       });
     });
-
-    after(() => {
-      cy.apiRemoveUser(userId);
-    });
   });
 
-  describe('shows the additionnal rules', () => {
+  describe('shows the additional rules', () => {
     const firstName = randomString();
     const lastName = randomString();
     const email = randomEmail();
