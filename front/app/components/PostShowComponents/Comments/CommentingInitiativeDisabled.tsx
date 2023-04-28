@@ -42,7 +42,7 @@ const calculateMessageDescriptor = (
     authUser &&
     authenticationRequirements === 'complete_registration'
   ) {
-    return messages.completeRegistrationToComment;
+    return messages.completeProfileToComment;
   } else if (authenticationRequirements === 'sign_in_up') {
     return messages.signInToCommentInitiative;
   } else if (authenticationRequirements === 'sign_in_up_and_verify') {
@@ -104,7 +104,7 @@ const CommentingInitiativesDisabled = () => {
                   triggerAuthenticationFlow();
                 }}
               >
-                <FormattedMessage {...messages.completeRegistrationLinkText} />
+                <FormattedMessage {...messages.completeProfileLinkText} />
               </button>
             ),
             verifyIdentityLink: (
