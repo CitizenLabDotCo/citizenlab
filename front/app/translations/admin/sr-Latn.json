@@ -1140,7 +1140,6 @@
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Postavite anketu bez napuštanja platforme.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Kreirajte anketu",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Podesite anketu sa više odgovora",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription1": "Уградите Типеформ, Гоогле Форм, Анализер, СурвеиКсацт, Куалтрицс, СмартСурвеи, Снап Сурвеи, Мицрософт Формс или Конвеио анкету.",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Možete podesiti podrazumevajući redosled postova koji se prikazuju na centralnoj strani projekta.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sortiranje",
   "app.containers.AdminPage.ProjectEdit.departments": "Departmani",

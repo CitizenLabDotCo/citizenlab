@@ -1140,7 +1140,6 @@
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Stel een enquête op zonder ons platform te verlaten.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Een poll maken",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Stel een meerkeuze-vragenlijst op.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription1": "Een Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey, Microsoft Forms of Konveio enquête insluiten.",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Je kunt de standaardvolgorde instellen voor berichten die op de hoofdpagina van het project dienen te worden weergegeven.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sorteren",
   "app.containers.AdminPage.ProjectEdit.departments": "Departementen",

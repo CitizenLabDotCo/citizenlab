@@ -1140,7 +1140,6 @@
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Konfigurer en spørreundersøkelse uten å forlate plattformen.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Opprett en meningsmåling",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Konfigurer et flervalgsspørreskjema.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription1": "Bygg inn en Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey, Microsoft Forms eller Konveio-undersøkelse.",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Du kan konfigurere standardrekkefølgen for innlegg som skal vises på prosjektets hovedside.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sorter",
   "app.containers.AdminPage.ProjectEdit.departments": "Avdelinger",

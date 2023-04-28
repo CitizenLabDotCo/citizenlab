@@ -1140,7 +1140,6 @@
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Opret en undersøgelse uden at forlade vores platform.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Opret en afstemning",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Opsæt et spørgeskema med flere valgmuligheder.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription1": "Indlejr en Typeform-, Google Form-, Enalyzer-, SurveyXact-, Qualtrics-, SmartSurvey-, Snap Survey-, Microsoft Forms- eller Konveio-undersøgelse.",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Du kan indstille standardrækkefølgen for de indlæg, der skal vises på projektets hovedside.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sortering",
   "app.containers.AdminPage.ProjectEdit.departments": "Afdelinger",

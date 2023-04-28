@@ -1140,7 +1140,6 @@
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Configurar una encuesta sin salir de nuestra plataforma.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Crear una encuesta",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Prepara un cuestionario de opción múltiple.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription1": "Inserte una encuesta de Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey, Microsoft Forms o Konveio.",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Puedes escoger por defecto el orden en el cual se desplegarán en la página del proyecto principal.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Ordenar",
   "app.containers.AdminPage.ProjectEdit.departments": "Departamentos",

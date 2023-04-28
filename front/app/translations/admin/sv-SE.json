@@ -1140,7 +1140,6 @@
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Skapa en undersökning utan att lämna vår plattform.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Skapa en omröstning",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Skapa ett flervalsformulär.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription1": "Bädda in en enkät från Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey, Microsoft Forms eller Konveio.",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Du kan ange standardordningen för inlägg som ska visas på huvudprojektsidan.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sortering",
   "app.containers.AdminPage.ProjectEdit.departments": "Avdelningar",
