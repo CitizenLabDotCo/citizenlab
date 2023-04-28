@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
 
 // i18n
@@ -21,6 +21,7 @@ import { ItemMenu } from './styles';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { getSelectedLocale } from 'containers/MainHeader/LanguageSelector/utils';
 
 interface Props {
   setIsOpen: (open: boolean) => void;
@@ -37,10 +38,19 @@ export const LanguageSelectorPopup = ({ setIsOpen, isOpen }: Props) => {
   }
 
   const tenantLocales = appConfig.data.attributes.settings.core.locales;
+  const selectedLocale = getSelectedLocale(locale);
 
   return (
     <Popup
-      trigger={<Box w="100%">{formatMessage({ ...messages.language })}</Box>}
+      trigger={
+        <Box display="flex" justifyContent="space-between" w="100%">
+          {formatMessage({ ...messages.language })}
+          <Box display="flex" justifyContent="center" alignItems="center">
+            {selectedLocale}
+            <Icon name="chevron-right" fill={colors.grey600} />
+          </Box>
+        </Box>
+      }
       open={isOpen}
       onClose={() => setIsOpen(false)}
       on="click"
