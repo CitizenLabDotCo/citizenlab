@@ -11,6 +11,17 @@ module EmailCampaigns
       before_validation :force_schedule_start_in_config_timezone
     end
 
+    def schedule_multiloc
+      # We currently only support weekly schedules here.
+      weekly_day_key = "email_campaigns.schedules.weekly.#{schedule['rrules'][0]['validations']['day'][0]}"
+      weekly_hour = schedule['rrules'][0]['validations']['hour_of_day'][0]
+
+      multiloc = MultilocService.new.i18n_to_multiloc(weekly_day_key)
+      multiloc.each_value { |v| v << " @ #{weekly_hour}:00" }
+
+      multiloc
+    end
+
     def filter_campaign_scheduled(time:, activity: nil)
       # TODO: prevent being here when time is nil
       # This happened when triggering comment on your comment notification

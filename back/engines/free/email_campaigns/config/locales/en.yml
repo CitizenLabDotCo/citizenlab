@@ -97,6 +97,15 @@ en:
       "assignee_digest": Weekly overview of assigned ideas - admins and project managers
       "user_digest": Weekly overview - all users
       "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+    schedules:
+      weekly:
+        "1": "Weekly on Mondays"
+        "2": "Weekly on Tuesdays"
+        "3": "Weekly on Wednesdays"
+        "4": "Weekly on Thursdays"
+        "5": "Weekly on Fridays"
+        "6": "Weekly on Saturdays"
+        "7": "Weekly on Sundays"
     footer:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"

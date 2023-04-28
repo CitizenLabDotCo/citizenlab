@@ -22,16 +22,7 @@ module EmailCampaigns
     attribute :schedule_multiloc, if: proc { |object|
       schedulable? object
     } do |object|
-      # Temporary fix until CL2-3052 is solved
-      AppConfiguration.instance.settings('core', 'locales').each_with_object({}) do |locale, result|
-        I18n.with_locale('en') do
-          result[locale] = object.ic_schedule.to_s
-        end
-      end
-
-      # MultilocService.new.block_to_multiloc do |locale|
-      #   object.ic_schedule.to_s
-      # end
+      object.schedule_multiloc
     end
 
     attribute :sender, if: proc { |object|
