@@ -1,6 +1,7 @@
 import { CLErrorsJSON, CLErrors } from 'typings';
 import messages from './messages';
 import { isArray } from 'lodash-es';
+import { isObject } from './helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 export function isCLErrorJSON(value: unknown): value is CLErrorsJSON {
@@ -146,29 +147,43 @@ export function getDefaultAjvErrorMessage({
   );
 }
 
+// There's a similar function above but it's kind of insane, so
+// I'm creating a new one
+export const isCLErrorsJSON = (value: any): value is CLErrorsJSON => {
+  return 'json' in value && isObject(value.json.errors);
+};
+
+export const handleCLErrorsJSON = (
+  error: CLErrorsJSON,
+  handleError: (error: string, options: Record<string, any>) => void,
+  fieldArrayKey?: string
+) => {
+  Object.keys(error.json.errors).forEach((key) => {
+    if (fieldArrayKey) {
+      Object.keys(error.json.errors[key]).forEach((errorKey) => {
+        const errorValue = error.json.errors[key][errorKey][0];
+        handleError(
+          `${fieldArrayKey}.${key}.${errorKey}`,
+          errorValue === 'string' ? { error: errorValue } : errorValue
+        );
+      });
+    } else {
+      const errorValue = error.json.errors[key][0];
+      handleError(
+        key,
+        typeof errorValue === 'string' ? { error: errorValue } : errorValue
+      );
+    }
+  });
+};
+
 export const handleHookFormSubmissionError = (
   error: Error | CLErrorsJSON,
   handleError: (error: string, options: Record<string, any>) => void,
   fieldArrayKey?: string
 ) => {
-  if ('json' in error && error.json.errors) {
-    Object.keys(error.json.errors).forEach((key) => {
-      if (fieldArrayKey) {
-        Object.keys(error.json.errors[key]).forEach((errorKey) => {
-          const errorValue = error.json.errors[key][errorKey][0];
-          handleError(
-            `${fieldArrayKey}.${key}.${errorKey}`,
-            errorValue === 'string' ? { error: errorValue } : errorValue
-          );
-        });
-      } else {
-        const errorValue = error.json.errors[key][0];
-        handleError(
-          key,
-          typeof errorValue === 'string' ? { error: errorValue } : errorValue
-        );
-      }
-    });
+  if (isCLErrorsJSON(error)) {
+    handleCLErrorsJSON(error, handleError, fieldArrayKey);
   } else {
     handleError('submissionError', {
       type: 'server',
