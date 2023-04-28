@@ -62,8 +62,7 @@ module EmailCampaigns
       I18n.t('email_campaigns.admin_labels.recipient_segment.users_engaged_with_the_project')
     end
 
-    def self.content_type_label
-    end
+    def self.content_type_label; end
 
     def self.trigger_label
       I18n.t('email_campaigns.admin_labels.trigger.project_changes_phase')

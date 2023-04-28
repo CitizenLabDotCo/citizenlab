@@ -50,15 +50,15 @@ module FlagInappropriateContent
       def self.recipient_role_label
         I18n.t('email_campaigns.admin_labels.recipient_role.admin')
       end
-  
+
       def self.recipient_segment_label
         I18n.t('email_campaigns.admin_labels.recipient_segment.admins')
       end
-  
+
       def self.content_type_label
         I18n.t('email_campaigns.admin_labels.content_type.content_moderation')
       end
-  
+
       def self.trigger_label
         I18n.t('email_campaigns.admin_labels.trigger.content_gets_flagged_as_innapropiate')
       end
