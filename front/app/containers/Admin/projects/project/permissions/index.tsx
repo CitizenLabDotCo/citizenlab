@@ -27,6 +27,7 @@ const StyledSection = styled(Section)`
 
 const BetaLabel = styled(StatusLabel)`
   margin-left: 12px;
+  vertical-align: text-bottom;
 `;
 
 export const StyledSectionTitle = styled(SectionTitle)`
