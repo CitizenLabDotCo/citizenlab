@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
 
@@ -29,24 +29,26 @@ interface Props {
   language: string | null;
 }
 
-const TypeformSurvey = memo<Props>(
-  ({ typeformUrl, email, user_id, className, language }) => {
-    const isSmallerThanTablet = useBreakpoint('tablet');
-    const queryString = stringify(omitBy({ email, user_id, language }, isNil));
-    const surveyUrl = `${typeformUrl}?${queryString}&disable-auto-focus=true`;
+const TypeformSurvey = ({
+  typeformUrl,
+  email,
+  user_id,
+  className,
+  language,
+}: Props) => {
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const queryString = stringify(omitBy({ email, user_id, language }, isNil));
+  const surveyUrl = `${typeformUrl}?${queryString}&disable-auto-focus=true`;
 
-    return (
-      <Container className={className || ''}>
-        <Iframe
-          url={surveyUrl}
-          width="100%"
-          height={
-            isSmallerThanTablet ? surveyHeightMobile : surveyHeightDesktop
-          }
-        />
-      </Container>
-    );
-  }
-);
+  return (
+    <Container className={className || ''}>
+      <Iframe
+        url={surveyUrl}
+        width="100%"
+        height={isSmallerThanTablet ? surveyHeightMobile : surveyHeightDesktop}
+      />
+    </Container>
+  );
+};
 
 export default TypeformSurvey;

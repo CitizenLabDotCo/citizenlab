@@ -210,6 +210,27 @@ const surveyConfig: ParticipationMethodConfig = {
   },
 };
 
+const documentAnnotationConfig: ParticipationMethodConfig = {
+  formEditor: null,
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.createSurveyText} />;
+  },
+  getModalContent: () => {
+    return null;
+  },
+  onFormSubmission: () => {
+    return;
+  },
+  postType: 'defaultInput',
+  showInputManager: false,
+  isMethodLocked: false,
+  renderCTABar: (props: CTABarProps) => {
+    return (
+      <EmbeddedSurveyCTABar project={props.project} phases={props.phases} />
+    );
+  },
+};
+
 const budgetingConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
   getMethodPickerMessage: () => {
@@ -311,6 +332,7 @@ const methodToConfig: {
   budgeting: budgetingConfig,
   poll: pollConfig,
   volunteering: volunteeringConfig,
+  document_annotation: documentAnnotationConfig,
 };
 
 /** Get the configuration object for the given participation method
