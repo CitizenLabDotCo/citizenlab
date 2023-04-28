@@ -39,6 +39,7 @@ import { isAdmin } from 'services/permissions/roles';
 import useUserCustomFields from 'hooks/useUserCustomFields';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'hooks/useAuthUser';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type UserFieldSelectionProps = {
   permission: IPermissionData;
@@ -62,11 +63,9 @@ const UserFieldSelection = ({
 }: UserFieldSelectionProps) => {
   const authUser = useAuthUser();
   const { formatMessage } = useIntl();
-  // const permissionsCustomFieldsEnabled = useFeatureFlag({
-  //   name: 'permissions_custom_fields',
-  // });
-
-  const permissionsCustomFieldsEnabled = false;
+  const permissionsCustomFieldsEnabled = useFeatureFlag({
+    name: 'permissions_custom_fields',
+  });
   const globalRegistrationFields = useUserCustomFields();
   const initialFields = usePermissionsCustomFields({
     projectId,
