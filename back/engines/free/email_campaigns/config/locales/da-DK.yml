@@ -99,12 +99,12 @@ da:
       "your_proposed_initiatives_digest": Ugentlig oversigt over dine egne forslag - alle brugere
     schedules:
       weekly:
-        "1": "Ugentligt om mandagen %{atHour}"
-        "2": "Ugentligt om tirsdagen %{atHour}"
-        "3": "Ugentligt om onsdagen %{atHour}"
-        "4": "Ugentligt om torsdagen %{atHour}"
-        "5": "Ugentligt om fredagen %{atHour}"
-        "6": "Ugentligt om lørdagen %{atHour}"
+        "1": "Hver uge om mandagen %{atHour}"
+        "2": "Hver uge om tirsdagen %{atHour}"
+        "3": "Hver uge om onsdagen %{atHour}"
+        "4": "Hver uge om torsdagen %{atHour}"
+        "5": "Hver uge om fredagen %{atHour}"
+        "6": "Hver uge om lørdagen %{atHour}"
         "7": "Hver uge om søndagen %{atHour}"
     footer:
       "link_privacy_policy": "Anonymitetspolitik"
