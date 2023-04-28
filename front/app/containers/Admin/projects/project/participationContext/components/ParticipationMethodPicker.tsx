@@ -181,6 +181,22 @@ export const ParticipationMethodPicker = ({
               }
             />
           )}
+          {/* Add feature flag? */}
+          <ParticipationMethodRadio
+            onChange={handleParticipationMethodOnChange}
+            currentValue={participation_method}
+            value="konveio"
+            name="participationmethod"
+            id={'participationmethod-konveio'}
+            label={
+              <LabelHeaderDescription
+                header={<FormattedMessage {...messages.konveioMethod} />}
+                description={
+                  <FormattedMessage {...messages.konveioMethodDescription} />
+                }
+              />
+            }
+          />
           <FeatureFlag name="volunteering">
             <ParticipationMethodRadio
               onChange={handleParticipationMethodOnChange}
