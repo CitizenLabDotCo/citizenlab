@@ -50,7 +50,7 @@ const calculateMessageDescriptor = (
     (isLoggedIn && commentingDisabledReason === 'not_active') ||
     commentingDisabledReason === 'missing_data'
   ) {
-    return messages.completeRegistrationToComment;
+    return messages.completeProfileToComment;
   } else if (!isLoggedIn) {
     return messages.commentingMaybeNotPermitted;
   }
@@ -125,7 +125,7 @@ const CommentingDisabled = ({
                   triggerAuthenticationFlow();
                 }}
               >
-                <FormattedMessage {...messages.completeRegistrationLinkText} />
+                <FormattedMessage {...messages.completeProfileLinkText} />
               </button>
             ),
             verifyIdentityLink: (
