@@ -46,7 +46,6 @@ describe('email consent', () => {
 
     cy.get('#e2e-custom-email-container iframe').then(($iframe) => {
       const $body = $iframe.contents().find('body');
-      cy.wrap($body).find('#e2e-email-settings-page');
       cy.wrap($body).find('#e2e-consent-form');
       cy.wrap($body)
         .find('.e2e-unsubscribe-status')
