@@ -97,6 +97,15 @@ fr-BE:
       "assignee_digest": Aperçu hebdomadaire des idées attribuées - administrateurs et administrateurs projet
       "user_digest": Aperçu hebdomadaire (tous les utilisateurs)
       "your_proposed_initiatives_digest": Aperçu hebdomadaire de vos propres propositions - tous les utilisateurs
+    schedules:
+      weekly:
+        "1": "Hebdomadaire le lundi %{atHour}"
+        "2": "Hebdomadaire le mardi %{atHour}"
+        "3": "Hebdomadaire le mercredi %{atHour}"
+        "4": "Hebdomadaire le jeudi %{atHour}"
+        "5": "Hebdomadaire le vendredi %{atHour}"
+        "6": "Hebdomadaire le samedi %{atHour}"
+        "7": "Hebdomadaire le dimanche %{atHour}"
     footer:
       "link_privacy_policy": "Politique de confidentialité"
       "link_terms_conditions": "Conditions Générales d'Utilisation"
