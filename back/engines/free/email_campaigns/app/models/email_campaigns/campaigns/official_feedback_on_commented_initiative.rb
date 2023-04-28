@@ -67,7 +67,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.proposal_status_is_changed'
+      'email_campaigns.admin_labels.trigger.proposal_is_updated'
     end
 
     def generate_commands(recipient:, activity:, time: nil)
