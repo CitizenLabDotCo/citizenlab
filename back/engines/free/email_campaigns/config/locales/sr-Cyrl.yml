@@ -97,6 +97,15 @@ sr-Cyrl:
       "assignee_digest": Недељни преглед додељених идеја - администратори и пројектни менаџери
       "user_digest": Недељни преглед - сви корисници
       "your_proposed_initiatives_digest": Недељни преглед сопствених предлога - сви корисници
+    schedules:
+      weekly:
+        "1": "Weekly on Mondays %{atHour}"
+        "2": "Weekly on Tuesdays %{atHour}"
+        "3": "Weekly on Wednesdays %{atHour}"
+        "4": "Weekly on Thursdays %{atHour}"
+        "5": "Weekly on Fridays %{atHour}"
+        "6": "Weekly on Saturdays %{atHour}"
+        "7": "Weekly on Sundays %{atHour}"
     footer:
       "link_privacy_policy": "Правила о приватности"
       "link_terms_conditions": "Услови коришћења"
