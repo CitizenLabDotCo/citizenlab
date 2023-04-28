@@ -99,13 +99,13 @@ en:
       "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
     schedules:
       weekly:
-        "1": "Weekly on Mondays"
-        "2": "Weekly on Tuesdays"
-        "3": "Weekly on Wednesdays"
-        "4": "Weekly on Thursdays"
-        "5": "Weekly on Fridays"
-        "6": "Weekly on Saturdays"
-        "7": "Weekly on Sundays"
+        "1": "Weekly on Mondays %{atHour}"
+        "2": "Weekly on Tuesdays %{atHour}"
+        "3": "Weekly on Wednesdays %{atHour}"
+        "4": "Weekly on Thursdays %{atHour}"
+        "5": "Weekly on Fridays %{atHour}"
+        "6": "Weekly on Saturdays %{atHour}"
+        "7": "Weekly on Sundays %{atHour}"
     footer:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"

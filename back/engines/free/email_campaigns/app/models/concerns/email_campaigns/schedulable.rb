@@ -43,10 +43,11 @@ module EmailCampaigns
       weekly_day_key = "email_campaigns.schedules.weekly.#{schedule['rrules'][0]['validations']['day'][0]}"
       hour_of_day = schedule['rrules'][0]['validations']['hour_of_day'][0]
 
-      multiloc = MultilocService.new.i18n_to_multiloc(weekly_day_key)
-      multiloc.each_value { |v| v << " @ #{hour_of_day}:00" }
-
-      multiloc
+      AppConfiguration.instance.settings('core', 'locales').each_with_object({}) do |locale, result|
+        I18n.with_locale(locale) do
+          result[locale] = I18n.t(weekly_day_key, atHour: "@ #{hour_of_day}:00")
+        end
+      end
     end
   end
 end
