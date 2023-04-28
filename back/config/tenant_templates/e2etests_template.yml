@@ -646,7 +646,7 @@ models:
       user_ref: *77
     - token: eWx6b1kAKBJsBY8F0FYGgKCXpLaGbVjTTvuJiGoRqxiLUyRSlQwz1F06agHXJd1D
       user_ref: *67
-  project_folder:
+  project_folders/folder:
   - &folder1
     # hard dependance of folder_page test case
     title_multiloc:
@@ -808,6 +808,7 @@ models:
     voting_enabled: true
     upvoting_method: unlimited
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
+    admin_publication_attributes: {}
   - &121
     title_multiloc:
       en: Continuous ideation map

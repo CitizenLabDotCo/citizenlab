@@ -42,7 +42,7 @@ module EmailCampaigns
 
     before_send :content_worth_sending?
 
-    N_TOP_IDEAS = ENV.fetch('N_ADMIN_WEEKLY_REPORT_IDEAS', 12).to_i
+    N_TOP_IDEAS = 12
 
     def self.default_schedule
       config_timezone = Time.find_zone(AppConfiguration.instance.settings('core', 'timezone'))

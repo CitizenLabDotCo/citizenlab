@@ -8,7 +8,7 @@ import UserTable from './UserTable';
 import UserTableActions from './UserTableActions';
 import Error from 'components/UI/Error';
 import NoUsers from './NoUsers';
-
+import { Box } from '@citizenlab/cl2-component-library';
 // Events
 import eventEmitter from 'utils/eventEmitter';
 import events from './events';
@@ -163,10 +163,14 @@ export class UserManager extends PureComponent<Props, State> {
     const { selectedUsers, errors } = this.state;
 
     if (isArray(users.usersList) && users.usersList.length === 0) {
-      return search ? (
-        <NoUsers noSuchSearchResult={true} />
-      ) : (
-        <NoUsers groupType={groupType} />
+      return (
+        <Box mb="40px">
+          {search ? (
+            <NoUsers noSuchSearchResult={true} />
+          ) : (
+            <NoUsers groupType={groupType} />
+          )}
+        </Box>
       );
     }
 
