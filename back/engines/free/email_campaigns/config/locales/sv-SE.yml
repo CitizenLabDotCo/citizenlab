@@ -97,6 +97,15 @@ sv:
       "assignee_digest": Veckoöversikt över tilldelade idéer – administratörer och projektledare
       "user_digest": Veckoöversikt – alla användare
       "your_proposed_initiatives_digest": Veckoöversikt över dina egna förslag – alla användare
+    schedules:
+      weekly:
+        "1": "Veckovis på måndagar %{atHour}"
+        "2": "Varje vecka på tisdagar %{atHour}"
+        "3": "Veckovis på onsdagar %{atHour}"
+        "4": "Varje vecka på torsdagar %{atHour}"
+        "5": "Veckovis på fredagar %{atHour}"
+        "6": "Veckovis på lördagar %{atHour}"
+        "7": "Veckovis på söndagar %{atHour}"
     footer:
       "link_privacy_policy": "Sekretesspolicy"
       "link_terms_conditions": "Villkor"
