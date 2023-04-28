@@ -38,7 +38,7 @@
   "app.components.Comments.commentingInitiativeNotPermitted": "Коментарисање тренутно није омогућено.",
   "app.components.Comments.commentingMaybeNotPermitted": "Молимо {signInLink} да видите које радње се могу предузети.",
   "app.components.Comments.invisibleTitleComments": "Коментари",
-  "app.components.Comments.mostRecent": "Most recent",
+  "app.components.Comments.mostRecent": "Најновијe",
   "app.components.Comments.mostUpvoted": "Највише гласано",
   "app.components.Comments.official": "званичник",
   "app.components.Comments.replyToComment": "Одговорите на коментар",
