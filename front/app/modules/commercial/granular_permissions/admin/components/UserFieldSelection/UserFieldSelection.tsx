@@ -39,7 +39,6 @@ import { isAdmin } from 'services/permissions/roles';
 import useUserCustomFields from 'hooks/useUserCustomFields';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'hooks/useAuthUser';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type UserFieldSelectionProps = {
   permission: IPermissionData;
@@ -63,9 +62,11 @@ const UserFieldSelection = ({
 }: UserFieldSelectionProps) => {
   const authUser = useAuthUser();
   const { formatMessage } = useIntl();
-  const permissionsCustomFieldsEnabled = useFeatureFlag({
-    name: 'permissions_custom_fields',
-  });
+  // const permissionsCustomFieldsEnabled = useFeatureFlag({
+  //   name: 'permissions_custom_fields',
+  // });
+
+  const permissionsCustomFieldsEnabled = false;
   const globalRegistrationFields = useUserCustomFields();
   const initialFields = usePermissionsCustomFields({
     projectId,
@@ -142,7 +143,7 @@ const UserFieldSelection = ({
   return (
     <Tippy
       interactive={true}
-      placement={'top-start'}
+      placement={'bottom'}
       disabled={permissionsCustomFieldsEnabled}
       theme={'dark'}
       content={
@@ -170,7 +171,7 @@ const UserFieldSelection = ({
           {showQuestionToggle && (
             <Tippy
               interactive={true}
-              placement={'right-end'}
+              placement={'bottom'}
               disabled={userIsAdmin}
               theme={'dark'}
               content={
@@ -195,7 +196,13 @@ const UserFieldSelection = ({
                   }}
                   label={
                     <Box display="flex">
-                      <span style={{ color: colors.primary }}>
+                      <span
+                        style={
+                          !permissionsCustomFieldsEnabled || !userIsAdmin
+                            ? { color: colors.disabled }
+                            : { color: colors.primary }
+                        }
+                      >
                         <FormattedMessage
                           {...messages.useExistingRegistrationQuestions}
                         />
@@ -228,7 +235,13 @@ const UserFieldSelection = ({
                     borderWidth="1px"
                     borderColor={colors.grey300}
                   >
-                    <Text color="primary">
+                    <Text
+                      style={
+                        !permissionsCustomFieldsEnabled
+                          ? { color: colors.disabled }
+                          : { color: colors.primary }
+                      }
+                    >
                       {getTitleFromGlobalFieldId(field, locale)}
                     </Text>
                     <Box display="flex">
@@ -242,7 +255,14 @@ const UserFieldSelection = ({
                           });
                         }}
                         label={
-                          <Text color="primary" fontSize="s">
+                          <Text
+                            fontSize="s"
+                            style={
+                              !permissionsCustomFieldsEnabled
+                                ? { color: colors.disabled }
+                                : { color: colors.primary }
+                            }
+                          >
                             <FormattedMessage {...messages.required} />
                           </Text>
                         }
