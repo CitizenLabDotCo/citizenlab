@@ -437,7 +437,7 @@
   "app.components.VoteControl.budgetingNotPermitted": "Participatory budgeting is not currently enabled.",
   "app.components.VoteControl.budgetingNotPossible": "Making changes to your budget is not possible at this time.",
   "app.components.VoteControl.budgetingNotVerified": "Please {verifyAccountLink} to continue.",
-  "app.components.VoteControl.completeRegistrationToVote": "Complete registration to vote",
+  "app.components.VoteControl.completeProfileToVote": "Complete your profile to vote",
   "app.components.VoteControl.downvote": "Downvote",
   "app.components.VoteControl.downvotingDisabledMaxReached": "You've reached your maximum number of downvotes in {projectName}",
   "app.components.VoteControl.upvote": "Upvote",
