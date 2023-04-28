@@ -7,6 +7,7 @@ import PageNotFound from 'components/PageNotFound';
 import ProjectHeader from './shared/header/ProjectHeader';
 import ContinuousIdeas from './continuous/Ideas';
 import ContinuousSurvey from './continuous/Survey';
+import ContinuousDocumentAnnotation from './continuous/DocumentAnnotation';
 import ContinuousPoll from './continuous/Poll';
 import ContinuousVolunteering from './continuous/Volunteering';
 import TimelineContainer from './timeline';
@@ -76,14 +77,12 @@ const ContentWrapper = styled.div`
 `;
 
 interface Props {
-  project: IProjectData | Error | null;
+  project: IProjectData;
 }
 
 const ProjectsShowPage = ({ project }: Props) => {
-  const projectId = !isNilOrError(project) ? project.id : undefined;
-  const processType = !isNilOrError(project)
-    ? project.attributes.process_type
-    : undefined;
+  const projectId = project.id;
+  const processType = project.attributes.process_type;
 
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { formatMessage } = useIntl();
@@ -96,7 +95,7 @@ const ProjectsShowPage = ({ project }: Props) => {
   const scrollToEventId = search.get('scrollToEventId');
 
   const { data: events } = useEvents({
-    projectIds: projectId ? [projectId] : undefined,
+    projectIds: [projectId],
     sort: '-start_at',
   });
 
@@ -126,7 +125,7 @@ const ProjectsShowPage = ({ project }: Props) => {
         <Spinner />
       </Centerer>
     );
-  } else if (projectId && processType) {
+  } else {
     content = (
       <ContentWrapper id="e2e-project-page">
         <ProjectHeader projectId={projectId} />
@@ -135,7 +134,13 @@ const ProjectsShowPage = ({ project }: Props) => {
           {processType === 'continuous' ? (
             <>
               <ContinuousIdeas projectId={projectId} />
-              <ContinuousSurvey projectId={projectId} />
+              {project.attributes.participation_method === 'survey' && (
+                <ContinuousSurvey project={project} />
+              )}
+              {project.attributes.participation_method ===
+                'document_annotation' && (
+                <ContinuousDocumentAnnotation project={project} />
+              )}
               <ContinuousPoll projectId={projectId} />
               <ContinuousVolunteering projectId={projectId} />
             </>
@@ -185,7 +190,7 @@ const ProjectsShowPage = ({ project }: Props) => {
 
   return (
     <Container background={bgColor}>
-      {!isNilOrError(project) && <ProjectHelmet project={project} />}
+      <ProjectHelmet project={project} />
       {content}
     </Container>
   );
@@ -236,7 +241,7 @@ const ProjectsShowPageWrapper = () => {
     return <Unauthorized />;
   }
 
-  if (isError(project)) {
+  if (isError(project) || project === null) {
     return <PageNotFound />;
   }
 
