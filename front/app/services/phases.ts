@@ -54,6 +54,7 @@ export interface IPhaseAttributes {
   max_budget?: number;
   survey_service?: TSurveyService;
   survey_embed_url?: string;
+  document_annotation_embed_url?: string;
   poll_anonymous?: boolean;
   ideas_count: number;
   ideas_order?: IdeaDefaultSortMethod;

@@ -121,6 +121,7 @@ export interface IProjectAttributes {
   max_budget?: number;
   survey_service?: TSurveyService;
   survey_embed_url?: string;
+  document_annotation_embed_url?: string;
   ordering: number;
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;

@@ -185,14 +185,18 @@ export const ParticipationMethodPicker = ({
           <ParticipationMethodRadio
             onChange={handleParticipationMethodOnChange}
             currentValue={participation_method}
-            value="konveio"
+            value="document_annotation"
             name="participationmethod"
-            id={'participationmethod-konveio'}
+            id={'participationmethod-document_annotation'}
             label={
               <LabelHeaderDescription
-                header={<FormattedMessage {...messages.konveioMethod} />}
+                header={
+                  <FormattedMessage {...messages.documentAnnotationMethod} />
+                }
                 description={
-                  <FormattedMessage {...messages.konveioMethodDescription} />
+                  <FormattedMessage
+                    {...messages.documentAnnotationMethodDescription}
+                  />
                 }
               />
             }

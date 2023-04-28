@@ -24,7 +24,8 @@ export type ParticipationMethod =
   | 'survey'
   | 'budgeting'
   | 'poll'
-  | 'volunteering';
+  | 'volunteering'
+  | 'document_annotation';
 
 export type IdeaDefaultSortMethod =
   | 'trending'

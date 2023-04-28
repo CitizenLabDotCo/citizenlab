@@ -370,18 +370,22 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.google_forms',
     defaultMessage: 'Google Forms',
   },
-  konveioMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.konveioMethod',
+  documentAnnotationMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.documentAnnotationMethod',
     defaultMessage: 'Collect feedback on document',
   },
-  konveioMethodDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.konveioMethodDescription',
+  documentAnnotationMethodDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.documentAnnotationMethodDescription',
     defaultMessage:
       'Embed an interactive PDF and collect comments and feedback with Konveio',
   },
   surveyEmbedUrl: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyEmbedUrl',
     defaultMessage: 'Survey Embed URL',
+  },
+  documentAnnotationEmbedUrl: {
+    id: 'app.containers.AdminPage.ProjectEdit.documentAnnotationEmbedUrl',
+    defaultMessage: 'Embed URL',
   },
   titleSurveyResults: {
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.titleSurveyResults',

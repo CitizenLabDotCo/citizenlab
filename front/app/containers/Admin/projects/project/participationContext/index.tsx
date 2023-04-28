@@ -9,7 +9,10 @@ import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInp
 import PollInputs from './components/PollInputs';
 import SurveyInputs from './components/SurveyInputs';
 import { Container, StyledSection } from './components/styling';
-
+import IdeationInputs from './components/IdeationInputs';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import { Input } from '@citizenlab/cl2-component-library';
+import Error from 'components/UI/Error';
 // services
 import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import { phaseStream, IPhase } from 'services/phases';
@@ -42,7 +45,6 @@ import { IOption } from '@citizenlab/cl2-component-library';
 import getOutput from './utils/getOutput';
 import validate from './utils/validate';
 import { anyIsDefined } from 'utils/helperUtils';
-import IdeationInputs from './components/IdeationInputs';
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
@@ -62,6 +64,7 @@ export interface IParticipationContextConfig {
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
+  document_annotation_embed_url?: string | null;
 }
 
 interface DataProps {
@@ -132,6 +135,7 @@ class ParticipationContext extends PureComponent<
       poll_anonymous: false,
       ideas_order: 'trending',
       input_term: 'idea',
+      document_annotation_embed_url: null,
     };
     this.subscriptions = [];
   }
@@ -170,6 +174,8 @@ class ParticipationContext extends PureComponent<
               ideas_order: newData.ideas_order,
               input_term: newData.input_term,
               loaded: true,
+              document_annotation_embed_url:
+                newData.document_annotation_embed_url,
             };
           });
         } else {
@@ -229,6 +235,7 @@ class ParticipationContext extends PureComponent<
       downvoting_method: ideation ? 'unlimited' : null,
       presentation_mode: ideationOrBudgeting ? 'card' : null,
       survey_embed_url: null,
+      document_annotation_embed_url: null,
       survey_service: survey ? 'typeform' : null,
       min_budget: budgeting ? 0 : null,
       max_budget: budgeting ? 1000 : null,
@@ -244,6 +251,12 @@ class ParticipationContext extends PureComponent<
 
   handleSurveyEmbedUrlChange = (survey_embed_url: string) => {
     this.setState({ survey_embed_url });
+  };
+
+  handleDocumentAnnotationEmbedUrlChange = (
+    document_annotation_embed_url: string
+  ) => {
+    this.setState({ document_annotation_embed_url });
   };
 
   togglePostingEnabled = () => {
@@ -406,6 +419,7 @@ class ParticipationContext extends PureComponent<
       min_budget,
       max_budget,
       survey_embed_url,
+      document_annotation_embed_url,
       survey_service,
       loaded,
       noUpvotingLimitError,
@@ -529,6 +543,26 @@ class ParticipationContext extends PureComponent<
                 apiErrors={apiErrors}
                 togglePollAnonymous={this.togglePollAnonymous}
               />
+            )}
+
+            {participation_method === 'document_annotation' && (
+              <SectionField>
+                <SubSectionTitle>
+                  {this.props.intl.formatMessage(
+                    messages.documentAnnotationEmbedUrl
+                  )}
+                </SubSectionTitle>
+                <Input
+                  onChange={this.handleDocumentAnnotationEmbedUrlChange}
+                  type="text"
+                  value={document_annotation_embed_url}
+                />
+                <Error
+                  apiErrors={
+                    apiErrors && apiErrors.document_annotation_embed_url
+                  }
+                />
+              </SectionField>
             )}
 
             {participation_method === 'survey' && (
