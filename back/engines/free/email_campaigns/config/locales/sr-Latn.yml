@@ -97,6 +97,15 @@ sr-Latn:
       "assignee_digest": Nedeljni pregled dodeljenih ideja - administratori i menadžeri projekata
       "user_digest": Nedeljni pregled - svi korisnici
       "your_proposed_initiatives_digest": Nedeljni pregled sopstvenih predloga - svi korisnici
+    schedules:
+      weekly:
+        "0": "Седмично, недељом у %{hourOfDay}"
+        "1": "Недељно понедељком %{atHour}"
+        "2": "Недељно уторком %{atHour}"
+        "3": "Недељно средом %{atHour}"
+        "4": "Седмично четвртком %{atHour}"
+        "5": "Недељно петком %{atHour}"
+        "6": "Седмично суботом %{atHour}"
     footer:
       "link_privacy_policy": "Politika privatnosti"
       "link_terms_conditions": "Uslovi korišćenja"
