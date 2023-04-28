@@ -97,6 +97,15 @@ pl:
       "assignee_digest": Cotygodniowy przegląd przydzielonych pomysłów - administratorzy i menadżerowie projektu
       "user_digest": Przegląd tygodniowy - wszyscy użytkownicy
       "your_proposed_initiatives_digest": Tygodniowy przegląd własnych propozycji - wszyscy użytkownicy
+    schedules:
+      weekly:
+        "1": "Co tydzień w poniedziałki %{atHour}"
+        "2": "Co tydzień we wtorki %{atHour}"
+        "3": "Co tydzień w środy %{atHour}"
+        "4": "Co tydzień w czwartki %{atHour}"
+        "5": "Co tydzień w piątki %{atHour}"
+        "6": "Co tydzień w soboty %{atHour}"
+        "7": "Co tydzień w niedziele %{atHour}"
     footer:
       "link_privacy_policy": "Polityka prywatności"
       "link_terms_conditions": "Regulamin"
