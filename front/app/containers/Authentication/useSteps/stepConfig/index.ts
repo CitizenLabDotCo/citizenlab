@@ -16,7 +16,7 @@ import {
 import { Step } from './typings';
 
 export const getStepConfig = (
-  getAuthenticationData: () => AuthenticationData,
+  authenticationData: AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
@@ -26,7 +26,7 @@ export const getStepConfig = (
 ) => {
   return {
     ...sharedSteps(
-      getAuthenticationData,
+      authenticationData,
       getRequirements,
       setCurrentStep,
       setStatus,
@@ -35,7 +35,7 @@ export const getStepConfig = (
     ),
 
     ...oldSignInFlow(
-      getAuthenticationData,
+      authenticationData,
       getRequirements,
       setCurrentStep,
       setStatus,
@@ -44,7 +44,7 @@ export const getStepConfig = (
     ),
 
     ...oldSignUpFlow(
-      getAuthenticationData,
+      authenticationData,
       getRequirements,
       setCurrentStep,
       setStatus,
@@ -54,7 +54,7 @@ export const getStepConfig = (
     ),
 
     ...newLightFlow(
-      getAuthenticationData,
+      authenticationData,
       getRequirements,
       setCurrentStep,
       setStatus,

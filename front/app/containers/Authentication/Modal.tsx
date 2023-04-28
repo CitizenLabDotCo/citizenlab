@@ -269,7 +269,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
           />
         )}
 
-        {currentStep === 'sign-up:custom-fields' && authenticationData && (
+        {currentStep === 'sign-up:custom-fields' && (
           <CustomFields
             authenticationData={authenticationData}
             status={status}
@@ -345,7 +345,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         )}
 
         {/* missing data flow */}
-        {currentStep === 'missing-data:built-in' && authenticationData && (
+        {currentStep === 'missing-data:built-in' && (
           <BuiltInFields
             status={status}
             authenticationData={authenticationData}
@@ -379,7 +379,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
           />
         )}
 
-        {currentStep === 'missing-data:custom-fields' && authenticationData && (
+        {currentStep === 'missing-data:custom-fields' && (
           <CustomFields
             authenticationData={authenticationData}
             status={status}

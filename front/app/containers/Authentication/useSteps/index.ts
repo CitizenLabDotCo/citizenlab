@@ -45,7 +45,15 @@ export default function useSteps() {
   const { pathname, search } = useLocation();
   const authUser = useAuthUser();
 
-  const authenticationDataRef = useRef<AuthenticationData | null>(null);
+  // The authentication data will be initialized with the global sign up flow.
+  // In practice, this will be overwritten before firing the flow (see event
+  // listeners below). But this is easier typescript-wise
+  const authenticationDataRef = useRef<AuthenticationData>({
+    flow: 'signup',
+    context: GLOBAL_CONTEXT,
+  });
+
+  const authenticationData = authenticationDataRef.current;
 
   const [currentStep, setCurrentStep] = useState<Step>('closed');
   const [state, setState] = useState<State>({
@@ -56,36 +64,13 @@ export default function useSteps() {
   const [status, setStatus] = useState<Status>('ok');
   const [error, setError] = useState<ErrorCode | null>(null);
 
-  const getAuthenticationData = useCallback(() => {
-    const authenticationData = authenticationDataRef.current;
-
-    // This should never be possible
-    if (!authenticationData) {
-      throw new Error('Authentication data not available.');
-    }
-
-    return authenticationData;
-  }, []);
-
   const getRequirements = useCallback(async () => {
-    const authenticationContext = authenticationDataRef.current?.context;
+    const authenticationContext = authenticationData.context;
 
-    // This should never be possible
-    if (!authenticationContext) {
-      throw new Error('Authentication context not available.');
-    }
+    const response = await getAuthenticationRequirements(authenticationContext);
 
-    try {
-      const response = await getAuthenticationRequirements(
-        authenticationContext
-      );
-      return response.data.attributes.requirements;
-    } catch (e) {
-      setError('requirements_fetching_failed');
-
-      throw e;
-    }
-  }, []);
+    return response.data.attributes.requirements;
+  }, [authenticationData]);
 
   const updateState = useCallback((newState: Partial<State>) => {
     setState((state) => ({ ...state, ...newState }));
@@ -93,7 +78,7 @@ export default function useSteps() {
 
   const stepConfig = useMemo(() => {
     return getStepConfig(
-      getAuthenticationData,
+      authenticationData,
       getRequirements,
       setCurrentStep,
       setStatus,
@@ -101,7 +86,7 @@ export default function useSteps() {
       updateState,
       anySSOEnabled
     );
-  }, [getAuthenticationData, getRequirements, updateState, anySSOEnabled]);
+  }, [authenticationData, getRequirements, updateState, anySSOEnabled]);
 
   const transition = useCallback(
     <S extends Step, T extends keyof StepConfig[S]>(
@@ -207,7 +192,7 @@ export default function useSteps() {
     state,
     status,
     error,
-    authenticationData: authenticationDataRef.current,
+    authenticationData,
     transition,
     setError,
   };

@@ -5,7 +5,7 @@ import tracks from './tracks';
 import { AuthenticationData } from 'containers/Authentication/typings';
 
 interface Props {
-  authenticationData: AuthenticationData | null;
+  authenticationData: AuthenticationData;
   onCompleted: () => void;
   onError: () => void;
 }
@@ -29,7 +29,7 @@ const VerificationSignUpStep = ({
     <VerificationSteps
       onCompleted={handleOnCompleted}
       onError={handleOnError}
-      context={authenticationData?.context || null}
+      context={authenticationData.context}
     />
   );
 };

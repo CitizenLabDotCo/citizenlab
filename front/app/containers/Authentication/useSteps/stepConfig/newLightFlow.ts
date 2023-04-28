@@ -27,7 +27,7 @@ import { Locale } from 'typings';
 import { askCustomFields, requiredCustomFields } from './utils';
 
 export const newLightFlow = (
-  getAuthenticationData: () => AuthenticationData,
+  authenticationData: AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
@@ -40,7 +40,7 @@ export const newLightFlow = (
     setStatus('ok');
     setCurrentStep('closed');
 
-    const { successAction } = getAuthenticationData();
+    const { successAction } = authenticationData;
     if (successAction) {
       triggerSuccessAction(successAction);
     }
@@ -119,7 +119,6 @@ export const newLightFlow = (
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: async () => {
         setStatus('pending');
-        const authenticationData = getAuthenticationData();
         const { requirements } = await getRequirements();
 
         const verificationRequired =
@@ -137,7 +136,6 @@ export const newLightFlow = (
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: async () => {
         setStatus('pending');
-        const authenticationData = getAuthenticationData();
         const { requirements } = await getRequirements();
 
         const verificationRequired =
@@ -155,7 +153,6 @@ export const newLightFlow = (
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: async () => {
         setStatus('pending');
-        const authenticationData = getAuthenticationData();
         const { requirements } = await getRequirements();
 
         const verificationRequired =
@@ -173,7 +170,6 @@ export const newLightFlow = (
       CLOSE: () => setCurrentStep('closed'),
       LOGIN: async () => {
         setStatus('pending');
-        const authenticationData = getAuthenticationData();
         const { requirements } = await getRequirements();
 
         const verificationRequired =

@@ -27,7 +27,7 @@ import {
 import { Step } from './typings';
 
 export const oldSignUpFlow = (
-  getAuthenticationData: () => AuthenticationData,
+  authenticationData: AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
@@ -55,7 +55,7 @@ export const oldSignUpFlow = (
 
         handleOnSSOClick(
           authProvider,
-          { ...getAuthenticationData(), flow: 'signup' },
+          { ...authenticationData, flow: 'signup' },
           verificationRequired
         );
       },
