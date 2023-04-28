@@ -97,6 +97,15 @@ es-CL:
       "assignee_digest": Resumen semanal de ideas asignadas - administradores y administradores de proyecto
       "user_digest": 'Resumen semanal: todos los usuarios'
       "your_proposed_initiatives_digest": 'Resumen semanal de tus propias propuestas: todos los usuarios'
+    schedules:
+      weekly:
+        "1": "Semanalmente los lunes %{atHour}"
+        "2": "Semanalmente los martes %{atHour}"
+        "3": "Semanalmente los miércoles %{atHour}"
+        "4": "Semanalmente los jueves %{atHour}"
+        "5": "Semanalmente los viernes %{atHour}"
+        "6": "Semanalmente los sábados %{atHour}"
+        "7": "Semanalmente los domingos %{atHour}"
     footer:
       "link_privacy_policy": "Política de privacidad"
       "link_terms_conditions": "Términos & Condiciones"
