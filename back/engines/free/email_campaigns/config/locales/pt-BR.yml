@@ -97,6 +97,15 @@ pt:
       "assignee_digest": Visão geral semanal das ideias atribuídas - administradores e gestores de projeto
       "user_digest": Visão geral semanal - todos os usuários
       "your_proposed_initiatives_digest": Visão semanal das suas propostas - todos os usuários
+    schedules:
+      weekly:
+        "0": "Weekly, on Sundays at %{hourOfDay}"
+        "1": "Weekly, on Mondays at %{hourOfDay}"
+        "2": "Weekly, on Tuesdays at %{hourOfDay}"
+        "3": "Weekly, on Wednesdays at %{hourOfDay}"
+        "4": "Weekly, on Thursdays at %{hourOfDay}"
+        "5": "Weekly, on Fridays at %{hourOfDay}"
+        "6": "Weekly, on Saturdays at %{hourOfDay}"
     footer:
       "link_privacy_policy": "Política de Privacidade"
       "link_terms_conditions": "Termos e condições"
