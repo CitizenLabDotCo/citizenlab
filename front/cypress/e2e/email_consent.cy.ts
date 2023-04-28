@@ -44,13 +44,18 @@ describe('email consent', () => {
 
     cy.wait(2000);
 
-    cy.get('#e2e-custom-email-container iframe').then(($iframe) => {
-      const $body = $iframe.contents().find('body');
-      cy.wrap($body).find('#e2e-consent-form');
-      cy.wrap($body)
-        .find('.e2e-unsubscribe-status')
-        .contains('success')
-        .contains('Official');
-    });
+    cy.get('#e2e-custom-email-container iframe')
+      .its('0.contentDocument.body')
+      .should('not.be.empty')
+      .then(cy.wrap)
+      .find('#e2e-consent-form');
+
+    cy.get('#e2e-custom-email-container iframe')
+      .its('0.contentDocument.body')
+      .should('not.be.empty')
+      .then(cy.wrap)
+      .find('.e2e-unsubscribe-status')
+      .contains('success')
+      .contains('Official');
   });
 });
