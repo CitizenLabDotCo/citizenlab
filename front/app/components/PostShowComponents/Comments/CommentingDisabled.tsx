@@ -46,7 +46,10 @@ const calculateMessageDescriptor = (
     return messages.commentingDisabledUnverified;
   } else if (isLoggedIn && commentingDisabledReason === 'not_permitted') {
     return messages.commentingDisabledProject;
-  } else if (isLoggedIn && commentingDisabledReason === 'not_active') {
+  } else if (
+    (isLoggedIn && commentingDisabledReason === 'not_active') ||
+    commentingDisabledReason === 'missing_data'
+  ) {
     return messages.completeRegistrationToComment;
   } else if (!isLoggedIn) {
     return messages.commentingMaybeNotPermitted;
