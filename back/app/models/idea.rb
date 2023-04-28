@@ -73,7 +73,7 @@ class Idea < ApplicationRecord
   belongs_to :assignee, class_name: 'User', optional: true
 
   has_many :ideas_topics, dependent: :destroy
-  has_many :topics, through: :ideas_topics
+  has_many :topics, -> { order(:ordering) }, through: :ideas_topics
   has_many :ideas_phases, dependent: :destroy
   has_many :phases, through: :ideas_phases, after_add: :update_phase_ideas_count, after_remove: :update_phase_ideas_count
   has_many :baskets_ideas, dependent: :destroy
