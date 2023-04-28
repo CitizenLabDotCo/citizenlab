@@ -5,7 +5,6 @@ import { shallow } from 'enzyme';
 import { getIdea } from 'api/ideas/__mocks__/useIdeaById';
 
 // mocking dependencies
-jest.mock('services/globalState');
 jest.mock('./Row', () => 'Row');
 jest.mock('./NoPost', () => 'NoPost');
 jest.mock('./header/IdeaHeaderRow', () => 'IdeaHeaderRow');

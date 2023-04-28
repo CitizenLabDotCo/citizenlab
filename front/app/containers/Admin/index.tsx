@@ -1,6 +1,5 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { globalState } from 'services/globalState';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // permissions
@@ -93,9 +92,6 @@ const AdminPage = memo<Props & WithRouterProps>(
   ({ className, location: { pathname } }) => {
     const authUser = useAuthUser();
 
-    const [adminFullWidth, setAdminFullWidth] = useState(false);
-    const [adminNoPadding, setAdminNoPadding] = useState(false);
-
     // The check in front/app/containers/Admin/routes.tsx already should do the same.
     // TODO: double check it and remove `userCanViewAdmin`
     const userCanViewPath = usePermission({
@@ -104,20 +100,6 @@ const AdminPage = memo<Props & WithRouterProps>(
       item: { type: 'route', path: pathname },
       action: 'access',
     });
-
-    useEffect(() => {
-      const subscriptions = [
-        globalState
-          .init('AdminFullWidth', { enabled: false })
-          .observable.subscribe(({ enabled }) => setAdminFullWidth(enabled)),
-        globalState
-          .init('AdminNoPadding', { enabled: false })
-          .observable.subscribe(({ enabled }) => setAdminNoPadding(enabled)),
-      ];
-      return () => {
-        subscriptions.forEach((subscription) => subscription.unsubscribe());
-      };
-    }, []);
 
     useEffect(() => {
       if (authUser === null || (authUser !== undefined && !userCanViewPath)) {
@@ -130,7 +112,6 @@ const AdminPage = memo<Props & WithRouterProps>(
     }
 
     const noPadding =
-      adminNoPadding ||
       pathname.includes('admin/dashboard') ||
       pathname.includes('admin/initiatives') ||
       pathname.includes('admin/messaging') ||
@@ -138,7 +119,6 @@ const AdminPage = memo<Props & WithRouterProps>(
       pathname.includes('admin/reporting');
 
     const fullWidth =
-      adminFullWidth === true ||
       endsWith(pathname, 'admin/dashboard/moderation') ||
       pathname.includes('admin/dashboard') ||
       pathname.includes('admin/initiatives') ||

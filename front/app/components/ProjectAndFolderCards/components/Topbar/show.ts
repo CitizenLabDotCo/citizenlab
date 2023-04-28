@@ -1,7 +1,7 @@
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';
-import { IAreaData } from 'services/areas';
+import { IAreaData } from 'api/areas/types';
 
 interface GetShowFiltersParams {
   isSmallerThanPhone: boolean;

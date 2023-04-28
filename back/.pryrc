@@ -11,6 +11,6 @@ if defined?(PryByebug)
   Pry.commands.alias_command 'f', 'finish'
   Pry.commands.alias_command 'bt', 'backtrace'
   Pry::Commands.command(/^$/, 'repeat last command') do
-    _pry_.run_command Pry.history.to_a.last
+    pry_instance.input = StringIO.new(Pry.history.to_a.last)
   end
 end

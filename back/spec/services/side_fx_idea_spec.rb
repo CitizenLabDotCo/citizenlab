@@ -14,9 +14,6 @@ describe SideFxIdeaService do
         .to enqueue_job(LogActivityJob)
         .with(idea, 'published', user, idea.created_at.to_i, project_id: idea.project_id)
         .exactly(1).times
-        .and enqueue_job(LogActivityJob)
-        .with(idea, 'first_published_by_user', user, idea.created_at.to_i, project_id: idea.project_id)
-        .exactly(1).times
         .and enqueue_job(Seo::ScrapeFacebookJob).exactly(1).times
     end
 
@@ -25,26 +22,16 @@ describe SideFxIdeaService do
       expect { service.after_create(idea, user) }
         .not_to enqueue_job(LogActivityJob)
     end
-
-    it "doesn't logs a 'first published by user' action job when ideas are created after the first one" do
-      create(:idea, publication_status: 'published', author: user)
-      idea2 = create(:idea, publication_status: 'published', author: user)
-      expect { service.after_create(idea2, user) }
-        .not_to enqueue_job(LogActivityJob).with(idea2, 'first_published_by_user', user, idea2.created_at.to_i)
-    end
   end
 
   describe 'after_update' do
-    it "logs a 'published' action job when publication_state goes from draft to published, as well as a first idea published log when the idea was first published" do
+    it "logs a 'published' action job when publication_state goes from draft to published" do
       idea = create(:idea, publication_status: 'draft', author: user)
       idea.update(publication_status: 'published')
 
       expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob)
         .with(idea, 'published', user, idea.published_at.to_i, project_id: idea.project_id)
-        .exactly(1).times
-        .and enqueue_job(LogActivityJob)
-        .with(idea, 'first_published_by_user', user, idea.published_at.to_i, project_id: idea.project_id)
         .exactly(1).times
     end
 
