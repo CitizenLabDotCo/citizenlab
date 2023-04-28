@@ -46,7 +46,7 @@ const Container = styled.div`
 `;
 
 interface Props {
-  projectId: string | null;
+  projectId: string;
   phaseId?: string | null;
   surveyEmbedUrl: string;
   surveyService: string;
@@ -128,11 +128,14 @@ const Survey = ({
     });
 
     if (enabled) {
-      const email = !isNilOrError(authUser) ? authUser.attributes.email : null;
+      const email =
+        !isNilOrError(authUser) && authUser.attributes.email
+          ? authUser.attributes.email
+          : null;
       const user_id = !isNilOrError(authUser) ? authUser.id : null;
       const language = !isNilOrError(authUser)
         ? authUser.attributes.locale
-        : undefined;
+        : null;
 
       return (
         <Container
@@ -146,9 +149,9 @@ const Survey = ({
           {surveyService === 'typeform' && (
             <TypeformSurvey
               typeformUrl={surveyEmbedUrl}
-              email={email || null}
+              email={email}
               user_id={user_id}
-              language={language || undefined}
+              language={language}
             />
           )}
 
@@ -171,7 +174,7 @@ const Survey = ({
           {surveyService === 'smart_survey' && (
             <SmartSurvey
               smartSurveyUrl={surveyEmbedUrl}
-              email={email || null}
+              email={email}
               user_id={user_id}
             />
           )}
@@ -189,10 +192,7 @@ const Survey = ({
           )}
 
           {surveyService === 'konveio' && (
-            <KonveioSurvey
-              konveioSurveyUrl={surveyEmbedUrl}
-              email={email || null}
-            />
+            <KonveioSurvey konveioSurveyUrl={surveyEmbedUrl} email={email} />
           )}
         </Container>
       );

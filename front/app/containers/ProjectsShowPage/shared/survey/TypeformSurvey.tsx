@@ -26,7 +26,7 @@ interface Props {
   email: string | null;
   user_id: string | null;
   className?: string;
-  language?: string;
+  language: string | null;
 }
 
 const TypeformSurvey = memo<Props>(
