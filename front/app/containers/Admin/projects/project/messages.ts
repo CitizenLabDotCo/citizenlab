@@ -127,9 +127,9 @@ export default defineMessages({
     defaultMessage: 'Create an external survey',
   },
   createSurveyDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription1',
+    id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription',
     defaultMessage:
-      'Embed a Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey, Microsoft Forms or Konveio survey.',
+      'Embed a Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey or Microsoft Forms survey.',
   },
   conductParticipatoryBudgetingText: {
     id: 'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText',
