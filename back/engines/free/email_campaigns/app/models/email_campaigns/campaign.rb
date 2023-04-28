@@ -75,7 +75,7 @@ module EmailCampaigns
       "EmailCampaigns::Campaigns::#{name.camelize}"
     end
 
-    def self.recipient_segment_multiloc_key; end
+    def self.recipient_role_multiloc_key; end
 
     def self.recipient_segment_multiloc_key; end
 

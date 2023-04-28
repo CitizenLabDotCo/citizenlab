@@ -69,7 +69,7 @@ module EmailCampaigns
       @url_service ||= Frontend::UrlService.new
     end
 
-    def self.recipient_segment_multiloc_key
+    def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.admins_and_moderators'
     end
 

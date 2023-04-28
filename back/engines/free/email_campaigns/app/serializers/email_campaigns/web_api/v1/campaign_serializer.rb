@@ -13,9 +13,9 @@ module EmailCampaigns
     end
 
     attribute :recipient_role_multiloc do |object|
-      if object.class.recipient_segment_multiloc_key.present?
+      if object.class.recipient_role_multiloc_key.present?
         @multiloc_service ||= MultilocService.new
-        @multiloc_service.i18n_to_multiloc(object.class.recipient_segment_multiloc_key)
+        @multiloc_service.i18n_to_multiloc(object.class.recipient_role_multiloc_key)
       end
     end
 
