@@ -28,7 +28,7 @@
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Registrieren mit Telefon oder E-Mail",
   "app.components.Author.a11y_postedBy": "Geschrieben von:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} BenutzerInnen",
-  "app.components.BillingWarning.billingWarning": "Sobald zusätzliche Zugänge hinzugefügt werden, wird Ihre Rechnung erhöht. Wenden Sie sich an Ihre Kundenbetreuerin, um mehr darüber zu erfahren.",
+  "app.components.BillingWarning.billingWarning": "Wenn Sie zusätzliche Zugänge hinzufügen, bekommen Sie eine separate Rechnung bzw. wird Ihre Jahresabrechnung erhöht. Wenden Sie sich an Ihre Kundenbetreuerin für mehr Informationen.",
   "app.components.CityLogoSection.iframeTitle": "Weitere Informationen zu {orgName}",
   "app.components.Comments.cancel": "Abbrechen",
   "app.components.Comments.commentingDisabledInCurrentPhase": "In der gegenwärtigen Phase können keine Kommentare abgegeben werden.",
