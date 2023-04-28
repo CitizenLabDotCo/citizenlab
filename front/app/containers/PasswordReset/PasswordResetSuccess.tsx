@@ -15,9 +15,11 @@ import messages from './messages';
 
 // utils
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import clHistory from 'utils/cl-router/history';
 
 export const PasswordResetSuccess = () => {
   const signIn = () => {
+    clHistory.push('/');
     triggerAuthenticationFlow({ flow: 'signin' });
   };
 
