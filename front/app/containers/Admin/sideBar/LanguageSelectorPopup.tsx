@@ -22,7 +22,12 @@ import { ItemMenu } from './styles';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-export const LanguageSelectorPopup = () => {
+interface Props {
+  setIsOpen: (open: boolean) => void;
+  isOpen: boolean;
+}
+
+export const LanguageSelectorPopup = ({ setIsOpen, isOpen }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
   const locale = useLocale();
@@ -36,10 +41,17 @@ export const LanguageSelectorPopup = () => {
   return (
     <Popup
       trigger={
-        <Box display="flex" justifyContent="space-between" width="100%">
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          width="100%"
+          onClick={() => setIsOpen(true)}
+        >
           {formatMessage({ ...messages.language })}
         </Box>
       }
+      open={isOpen}
+      onClose={() => setIsOpen(false)}
       on="click"
       position="right center"
       positionFixed

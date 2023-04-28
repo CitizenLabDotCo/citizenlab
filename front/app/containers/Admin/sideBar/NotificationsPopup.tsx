@@ -9,16 +9,28 @@ import Notifications from 'containers/MainHeader/NotificationMenu/components/Not
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-export const NotificationsPopup = () => {
+interface Props {
+  setIsOpen: (open: boolean) => void;
+  isOpen: boolean;
+}
+
+export const NotificationsPopup = ({ setIsOpen, isOpen }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
     <Popup
       trigger={
-        <Box display="flex" justifyContent="space-between" width="100%">
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          width="100%"
+          onClick={() => setIsOpen(true)}
+        >
           {formatMessage({ ...messages.notifications })}
         </Box>
       }
+      open={isOpen}
+      onClose={() => setIsOpen(false)}
       on="click"
       position="right center"
       positionFixed

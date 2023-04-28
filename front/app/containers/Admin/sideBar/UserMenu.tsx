@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // components
 import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
@@ -28,6 +28,17 @@ import { signOut } from 'services/auth';
 export const UserMenu = () => {
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
+  const [isUserMenuPopupOpen, setIsUserMenuPopupOpen] = useState(false);
+  const [isNotificationsPopupOpen, setIsNotificationsPopupOpen] =
+    useState(false);
+  const [isLanguagePopupOpen, setIsLanguagePopupOpen] = useState(false);
+
+  const handleUserMenuPopupClose = () => {
+    // We only close the user menu popup if no other popup is open
+    if (!isLanguagePopupOpen && !isNotificationsPopupOpen) {
+      setIsUserMenuPopupOpen(false);
+    }
+  };
 
   if (isNilOrError(authUser)) {
     return null;
@@ -44,6 +55,7 @@ export const UserMenu = () => {
           display="flex"
           justifyContent="flex-start"
           mb="25px"
+          onClick={() => setIsUserMenuPopupOpen(true)}
         >
           <Box display="flex" alignItems="center">
             <Avatar userId={authUser.id} size={30} addVerificationBadge />
@@ -60,17 +72,22 @@ export const UserMenu = () => {
           </Box>
         </StyledBox>
       }
+      open={isUserMenuPopupOpen}
+      onClose={handleUserMenuPopupClose}
       on="click"
       position="right center"
       positionFixed
-      offset={[0, -40]}
+      offset={[-60, -40]}
       basic
       wide
     >
       <Box width="224px">
         <ItemMenu buttonStyle="text">
           <Box display="flex" justifyContent="space-between" width="100%">
-            <NotificationsPopup />
+            <NotificationsPopup
+              setIsOpen={setIsNotificationsPopupOpen}
+              isOpen={isNotificationsPopupOpen}
+            />
             {unreadNotificationsCount > 0 && (
               <NewNotificationsIndicator>
                 {unreadNotificationsCount}
@@ -80,7 +97,10 @@ export const UserMenu = () => {
         </ItemMenu>
         <ItemMenu buttonStyle="text">
           <Box display="flex" justifyContent="space-between" w="100%">
-            <LanguageSelectorPopup />
+            <LanguageSelectorPopup
+              setIsOpen={setIsLanguagePopupOpen}
+              isOpen={isLanguagePopupOpen}
+            />
           </Box>
         </ItemMenu>
         <ItemMenu
