@@ -20,14 +20,7 @@ export const NotificationsPopup = ({ setIsOpen, isOpen }: Props) => {
   return (
     <Popup
       trigger={
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          width="100%"
-          onClick={() => setIsOpen(true)}
-        >
-          {formatMessage({ ...messages.notifications })}
-        </Box>
+        <Box w="100%">{formatMessage({ ...messages.notifications })}</Box>
       }
       open={isOpen}
       onClose={() => setIsOpen(false)}

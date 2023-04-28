@@ -82,7 +82,10 @@ export const UserMenu = () => {
       wide
     >
       <Box width="224px">
-        <ItemMenu buttonStyle="text">
+        <ItemMenu
+          buttonStyle="text"
+          onClick={() => setIsNotificationsPopupOpen(true)}
+        >
           <Box display="flex" justifyContent="space-between" width="100%">
             <NotificationsPopup
               setIsOpen={setIsNotificationsPopupOpen}
@@ -95,7 +98,10 @@ export const UserMenu = () => {
             )}
           </Box>
         </ItemMenu>
-        <ItemMenu buttonStyle="text">
+        <ItemMenu
+          buttonStyle="text"
+          onClick={() => setIsLanguagePopupOpen(true)}
+        >
           <Box display="flex" justifyContent="space-between" w="100%">
             <LanguageSelectorPopup
               setIsOpen={setIsLanguagePopupOpen}

@@ -40,16 +40,7 @@ export const LanguageSelectorPopup = ({ setIsOpen, isOpen }: Props) => {
 
   return (
     <Popup
-      trigger={
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          width="100%"
-          onClick={() => setIsOpen(true)}
-        >
-          {formatMessage({ ...messages.language })}
-        </Box>
-      }
+      trigger={<Box w="100%">{formatMessage({ ...messages.language })}</Box>}
       open={isOpen}
       onClose={() => setIsOpen(false)}
       on="click"
