@@ -3,14 +3,14 @@ import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'react-router-dom';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
 import { Section, SectionTitle } from 'components/admin/Section';
 import ProjectManagement from './containers/ProjectManagement';
 import ProjectVisibility from './containers/ProjectVisibility';
-import { Title, Text } from '@citizenlab/cl2-component-library';
+import { Title, Text, StatusLabel } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -19,9 +19,15 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 // style
 import styled from 'styled-components';
 import Outlet from 'components/Outlet';
+import { colors } from 'utils/styleUtils';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;
+`;
+
+const BetaLabel = styled(StatusLabel)`
+  margin-left: 12px;
+  vertical-align: text-bottom;
 `;
 
 export const StyledSectionTitle = styled(SectionTitle)`
@@ -31,6 +37,7 @@ export const StyledSectionTitle = styled(SectionTitle)`
 const ProjectPermissions = () => {
   const { projectId } = useParams() as { projectId: string };
   const project = useProject({ projectId });
+  const { formatMessage } = useIntl();
 
   const isProjectVisibilityEnabled = useFeatureFlag({
     name: 'project_visibility',
@@ -65,6 +72,11 @@ const ProjectPermissions = () => {
                 <Title variant="h2" color="primary">
                   <FormattedMessage
                     {...messages.participationRequirementsTitle}
+                  />
+                  <BetaLabel
+                    text={formatMessage(messages.betaLabel)}
+                    backgroundColor={colors.background}
+                    variant="outlined"
                   />
                 </Title>
                 <Text color="coolGrey600" pb="8px">

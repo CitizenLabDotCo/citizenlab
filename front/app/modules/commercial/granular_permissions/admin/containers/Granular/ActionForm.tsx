@@ -114,7 +114,7 @@ const ActionForm = ({
       </Box>
       {permittedBy !== 'admins_moderators' && (
         <Box mt="20px">
-          <Box display="flex" gap="16px">
+          <Box display="flex" gap="16px" mb="20px">
             {/* TODO: Take a decision on which action we should use for native surveys versus ideation. One or separate?
             If separate, we will need to update code where we check for attributes.posting_idea */}
             {(action === 'taking_survey' || projectType === 'nativeSurvey') && (
@@ -156,11 +156,17 @@ const ActionForm = ({
           {permittedBy === 'groups' && (
             <Box
               mt="10px"
-              border={`solid 1px ${colors.grey300}`}
+              borderLeft={`solid 1px ${colors.grey300}`}
               px="20px"
+              pt="10px"
               pb="20px"
             >
-              <Title variant="h5" fontWeight={'normal'} color={'coolGrey600'}>
+              <Title
+                variant="h4"
+                color="primary"
+                style={{ fontWeight: 600 }}
+                mt="5px"
+              >
                 <FormattedMessage {...messages.selectUserGroups} />
               </Title>
               <StyledMultipleSelect
@@ -172,7 +178,7 @@ const ActionForm = ({
             </Box>
           )}
           {permittedBy === 'everyone_confirmed_email' && (
-            <Box mt="16px" maxWidth="740px">
+            <Box mt="16px" maxWidth="740px" mb="20px">
               <Warning>
                 {formatMessage(messages.permissionEveryoneEmailWarning)}
               </Warning>

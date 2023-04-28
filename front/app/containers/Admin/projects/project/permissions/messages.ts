@@ -65,4 +65,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle2',
     defaultMessage: 'Participation',
   },
+  betaLabel: {
+    id: 'app.containers.AdminPage.permissions.betaLabel',
+    defaultMessage: 'Beta',
+  },
 });
