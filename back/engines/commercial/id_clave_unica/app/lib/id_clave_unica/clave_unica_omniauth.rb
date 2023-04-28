@@ -15,6 +15,11 @@ module IdClaveUnica
       if (ln = auth.dig('extra', 'raw_info', 'name', 'apellidos'))
         info[:last_name] = ln.join(' ')
       end
+
+      rut = auth.dig('extra', 'raw_info', 'sub')
+      rut_location = SsoCustomFieldMapping.find_by(key_custom_field_id: CustomField.find_by(key: 'rut').id, key_custom_field_value: rut).value_custom_field_value
+      info[:custom_field_values] = { rut: rut, rut_location: rut_location }
+
       info
     end
 
@@ -53,7 +58,7 @@ module IdClaveUnica
     end
 
     def updateable_user_attrs
-      %i[first_name last_name]
+      %i[first_name last_name custom_field_values]
     end
 
     def logout_url(_user)

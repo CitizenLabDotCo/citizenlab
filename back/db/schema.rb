@@ -11,6 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -1386,6 +1387,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
     t.index ["user_id"], name: "index_spam_reports_on_user_id"
   end
 
+  create_table "sso_custom_field_mappings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "key_custom_field_id"
+    t.string "key_custom_field_value"
+    t.uuid "value_custom_field_id"
+    t.string "value_custom_field_value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["key_custom_field_id", "key_custom_field_value"], name: "index_sso_custom_field_mappings_on_key"
+    t.index ["key_custom_field_id"], name: "index_sso_custom_field_mappings_on_key_custom_field_id"
+    t.index ["value_custom_field_id"], name: "index_sso_custom_field_mappings_on_value_custom_field_id"
+  end
+
   create_table "static_page_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "static_page_id"
     t.string "file"
@@ -1688,6 +1701,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
   add_foreign_key "reactions", "users"
   add_foreign_key "report_builder_reports", "users", column: "owner_id"
   add_foreign_key "spam_reports", "users"
+  add_foreign_key "sso_custom_field_mappings", "custom_fields", column: "key_custom_field_id"
+  add_foreign_key "sso_custom_field_mappings", "custom_fields", column: "value_custom_field_id"
   add_foreign_key "static_page_files", "static_pages"
   add_foreign_key "static_pages_topics", "static_pages"
   add_foreign_key "static_pages_topics", "topics"
