@@ -31,7 +31,13 @@ export const NotificationsPopup = ({ setIsOpen, isOpen }: Props) => {
       basic
       wide
     >
-      <Box minHeight="200px">
+      <Box
+        minHeight="200px"
+        minWidth="200px"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
         <Notifications />
       </Box>
     </Popup>
