@@ -97,6 +97,15 @@ kl:
       "assignee_digest": Isumassarsiatut siammarterneqartut sap. ak. takussutissartai - administrator-it aamma suliniutinik aqutsisut
       "user_digest": Sap. ak. pisut - atuisut tamaasa
       "your_proposed_initiatives_digest": Siunnersuutitit sap. ak. ingerlanerani takussutissartai - atuisut tamaasa
+    schedules:
+      weekly:
+        "0": "Weekly, on Sundays at %{hourOfDay}"
+        "1": "Weekly, on Mondays at %{hourOfDay}"
+        "2": "Weekly, on Tuesdays at %{hourOfDay}"
+        "3": "Weekly, on Wednesdays at %{hourOfDay}"
+        "4": "Weekly, on Thursdays at %{hourOfDay}"
+        "5": "Weekly, on Fridays at %{hourOfDay}"
+        "6": "Weekly, on Saturdays at %{hourOfDay}"
     footer:
       "link_privacy_policy": "Kinaasutsimik isertuusinermi politikki"
       "link_terms_conditions": "Piumasaqaatit atugassarititaasullu"
@@ -132,7 +141,7 @@ kl:
       today_by_author: 'Ullumi %{author}-mit'
       x_days_ago_by_author: 'Ullut %{x} matuma siorna %{author}-mit'
     admin_rights_received:
-      cta_moderate_platform: 'Platformit tigujuk'
+      cta_manage_platform: 'Manage your platform'
       message_you_became_administrator: 'Peqataasunut platformimut aqutsisutut pisinnaatitaalerputit'
       preheader: '%{organizationName}mut peqataasunut platformimut aqutsisutut pisinnaatitaalerputit'
       subject: '%{organizationName}p platformiani aqutsisunngorputit'
@@ -260,12 +269,12 @@ kl:
       preheader: '%{organizationName}mut suliami oqallinnermi aqutsinermi eqikkaaneq'
       title_your_weekly_report: '%{firstName}, sapaatip akunnikkaartumik nalunaarusiat'
       text_introduction: 'Sapaatip akunnerani kingullermi isumassarsiat suliat malunnaataanerusut allattorlugit katersorpavut. Illit sulianni susoqarnersoq paasiniaruk!'
-      cta_moderate: 'Sulianni ingerlatsineq tigujuk'
+      cta_manage: 'Manage your project'
       new_users: 'Atuisut nutaat'
       new_ideas: 'Isumassarsiat nutaat'
       new_comments: 'Oqaaseqaatit nutaat'
-      title_activity_past_week: 'Sapaatip akunnerani kingullermi suliat'
-      title_no_activity_past_week: 'Sapaatip akunnerani kingullermi suliaqanngilaq'
+      title_inputs_past_week: 'New inputs in the past week'
+      title_no_inputs_past_week: 'No new inputs in past week'
       yesterday_by_author: 'Ippassaq %{author}-mit'
       today_by_author: 'Ullumi %{author}-mit'
       x_days_ago_by_author: 'Ullut %{x} matuma siorna %{author}-mit'
@@ -386,7 +395,7 @@ kl:
       subject: '%{organizationName}mi peqataasunut platformimi paasissutissat kingulliit ilanngullugit takussutissinneqarputit'
       preheader: '%{officialName} innuttaasunut siunnersuutinnut tamanut paasissutissat kingulliit ilanngullugit takussutissiivoq'
     project_moderation_rights_received:
-      cta_moderate_project: 'Suliniut una tigujuk'
+      cta_manage_project: 'Manage this project'
       message_you_became_moderator: '%{organizationName}p ilaasortaanut aqutsisup suliniutit ukua ilinnut tunniuppai:'
       no_ideas: 'Suli isumassarsiaqanngilaq'
       preheader: '%{organizationName}p platformimi ilaasortanut aqutsisup suliniutit ukua ilinnut tunniuppai'
