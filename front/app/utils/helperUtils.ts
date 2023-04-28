@@ -68,6 +68,8 @@ type pageKeys =
   | 'idea_edit'
   | 'initiative_edit'
   | 'native_survey'
+  | 'sign_in'
+  | 'sign_up'
   | 'email-settings';
 
 export function isPage(pageKey: pageKeys, pathName: string) {
@@ -99,6 +101,10 @@ export function isPage(pageKey: pageKeys, pathName: string) {
       return pathnameWithoutLocale.startsWith('/initiatives/edit/');
     case 'native_survey':
       return pathnameWithoutLocale.endsWith('/survey');
+    case 'sign_in':
+      return pathnameWithoutLocale.startsWith('/sign-in');
+    case 'sign_up':
+      return pathnameWithoutLocale.startsWith('/sign-up');
   }
 }
 
