@@ -24,7 +24,7 @@ module EmailCampaigns
     } do |object|
       AppConfiguration.instance.settings('core', 'locales').each_with_object({}) do |locale, result|
         I18n.with_locale(locale) do
-          result[locale] = object.schedule_multiloc
+          result[locale] = object.schedule_multiloc_value(locale)
         end
       end
     end

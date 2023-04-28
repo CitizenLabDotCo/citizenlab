@@ -38,12 +38,15 @@ module EmailCampaigns
       self.ic_schedule = ics
     end
 
-    def schedule_multiloc
+    def schedule_multiloc_value(locale)
       # We currently only support weekly schedules here.
-      weekly_day_key = "email_campaigns.schedules.weekly.#{schedule['rrules'][0]['validations']['day'][0]}"
-      hour_of_day = schedule['rrules'][0]['validations']['hour_of_day'][0]
+      weekly_day_key = "email_campaigns.schedules.weekly.#{schedule['rrules'][0]['validations']['day'][0].to_i % 7}"
+      hour = schedule['rrules'][0]['validations']['hour_of_day'][0].to_i
 
-      I18n.t(weekly_day_key, atHour: "@ #{hour_of_day}:00")
+      hour_of_day = "#{hour}:00"
+      hour_of_day = hour > 12 ? "#{hour % 12}.00 PM" : "#{hour}.00 AM" if %w[en en-GB en-US en-CA].include?(locale)
+
+      I18n.t(weekly_day_key, hourOfDay: hour_of_day)
     end
   end
 end
