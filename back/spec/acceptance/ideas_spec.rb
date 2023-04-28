@@ -394,6 +394,59 @@ resource 'Ideas' do
           end
         end
 
+        context 'when the user moderates the project' do
+          before do
+            @project = create(:project)
+            @user = create(:project_moderator, projects: [@project])
+            header_token_for(@user)
+          end
+
+          let(:project) { @project.id }
+
+          example 'XLSX export', document: false do
+            do_request
+            expect(status).to eq 200
+          end
+        end
+
+        context 'when the user moderates another project' do
+          before do
+            @project = create(:project)
+            @user = create(:project_moderator, projects: [create(:project)])
+            header_token_for(@user)
+          end
+
+          let(:project) { @project.id }
+
+          example '[error] XLSX export', document: false do
+            do_request
+            expect(status).to eq 401
+          end
+        end
+
+        context 'when a moderator exports all comments' do
+          before do
+            @project = create(:project)
+
+            @ideas = create_list(:idea, 3, project: @project)
+            @unmoderated_idea = create(:idea)
+
+            @user = create(:project_moderator, projects: [@project])
+            header_token_for(@user)
+          end
+
+          example 'XLSX export', document: false do
+            do_request
+            expect(status).to eq 200
+
+            worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+            ideas_ids = worksheet.drop(1).collect { |row| row[0].value }
+
+            expect(ideas_ids).to match_array @ideas.pluck(:id)
+            expect(ideas_ids).not_to include(@unmoderated_idea.id)
+          end
+        end
+
         describe do
           before do
             @user = create(:user)
