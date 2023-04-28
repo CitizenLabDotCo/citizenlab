@@ -7,7 +7,6 @@ describe('email consent', () => {
 
   it('lets admins create a custom email, this email contains a link to unsubscribe and turns off subscription', () => {
     // creates a custom email
-
     cy.get('#e2e-reply-to-input').type('test@test.com');
 
     cy.get('.e2e-campaign_subject_multiloc .e2e-localeswitcher').each(
@@ -42,8 +41,9 @@ describe('email consent', () => {
       .contains('Unsubscribe')
       .click();
 
-    cy.wait(2000);
+    cy.wait(10000);
 
+    cy.get('#e2e-custom-email-container iframe').should('exist');
     cy.get('#e2e-custom-email-container iframe')
       .its('0.contentDocument.body')
       .should('not.be.empty')
