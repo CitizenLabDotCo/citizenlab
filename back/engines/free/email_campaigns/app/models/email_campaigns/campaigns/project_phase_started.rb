@@ -54,6 +54,21 @@ module EmailCampaigns
       'official'
     end
 
+    def self.recipient_role_label
+      I18n.t('email_campaigns.admin_labels.recipient_role.project_participants')
+    end
+
+    def self.recipient_segment_label
+      I18n.t('email_campaigns.admin_labels.recipient_segment.users_engaged_with_the_project')
+    end
+
+    def self.content_type_label
+    end
+
+    def self.trigger_label
+      I18n.t('email_campaigns.admin_labels.trigger.project_changes_phase')
+    end
+
     def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
       [{

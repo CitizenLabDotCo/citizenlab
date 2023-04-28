@@ -57,6 +57,22 @@ module EmailCampaigns
       'admin'
     end
 
+    def self.recipient_role_label
+      I18n.t('email_campaigns.admin_labels.recipient_role.admins')
+    end
+
+    def self.recipient_segment_label
+      I18n.t('email_campaigns.admin_labels.recipient_segment.managers_assigned_to_a_proposal')
+    end
+
+    def self.content_type_label
+      I18n.t('email_campaigns.admin_labels.content_type.proposals')
+    end
+
+    def self.trigger_label
+      I18n.t('email_campaigns.admin_labels.trigger.proposal_is_assigned_to_user')
+    end
+
     def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)

@@ -68,5 +68,19 @@ module EmailCampaigns
     def check_send_invite_email_toggle(activity:, time: nil)
       !!activity.item&.send_invite_email
     end
+
+    def self.recipient_role_label
+      I18n.t('email_campaigns.admin_labels.recipient_role.registered_users')
+    end
+
+    def self.recipient_segment_label
+    end
+
+    def self.content_type_label
+      I18n.t('email_campaigns.admin_labels.content_type.general')
+    end
+
+    def self.trigger_label
+    end
   end
 end

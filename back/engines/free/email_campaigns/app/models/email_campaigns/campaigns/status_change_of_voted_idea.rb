@@ -57,6 +57,22 @@ module EmailCampaigns
       'voted'
     end
 
+    def self.recipient_role_label
+      I18n.t('email_campaigns.admin_labels.recipient_role.registered_users')
+    end
+
+    def self.recipient_segment_label
+      I18n.t('email_campaigns.admin_labels.recipient_segment.users_engaged_with_the_idea')
+    end
+
+    def self.content_type_label
+      I18n.t('email_campaigns.admin_labels.content_type.votes')
+    end
+
+    def self.trigger_label
+      I18n.t('email_campaigns.admin_labels.trigger.idea_changes_status')
+    end
+
     def generate_commands(recipient:, activity:)
       idea = activity.item
       status = idea.idea_status

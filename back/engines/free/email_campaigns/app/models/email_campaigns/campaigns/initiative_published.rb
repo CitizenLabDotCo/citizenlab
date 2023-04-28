@@ -54,6 +54,22 @@ module EmailCampaigns
       'own'
     end
 
+    def self.recipient_role_label
+      I18n.t('email_campaigns.admin_labels.recipient_role.registered_users')
+    end
+
+    def self.recipient_segment_label
+      I18n.t('email_campaigns.admin_labels.recipient_segment.user_who_published_proposal')
+    end
+
+    def self.content_type_label
+      I18n.t('email_campaigns.admin_labels.content_type.proposals')
+    end
+
+    def self.trigger_label
+      I18n.t('email_campaigns.admin_labels.trigger.user_publishes_proposal')
+    end
+
     def generate_commands(recipient:, activity:)
       initiative = activity.item
       [{

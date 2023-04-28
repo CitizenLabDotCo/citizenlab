@@ -56,5 +56,21 @@ module EmailCampaigns
         event_payload: {}
       }]
     end
+
+    def self.recipient_role_label
+      I18n.t('email_campaigns.admin_labels.recipient_role.registered_users')
+    end
+
+    def self.recipient_segment_label
+      I18n.t('email_campaigns.admin_labels.recipient_segment.user_who_registers')
+    end
+
+    def self.content_type_label
+      I18n.t('email_campaigns.admin_labels.content_type.general')
+    end
+
+    def self.trigger_label
+      I18n.t('email_campaigns.admin_labels.trigger.user_registers_for_the_first_time')
+    end
   end
 end

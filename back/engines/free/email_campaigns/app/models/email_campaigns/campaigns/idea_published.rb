@@ -54,6 +54,22 @@ module EmailCampaigns
       'own'
     end
 
+    def self.recipient_role_label
+      I18n.t('email_campaigns.admin_labels.recipient_role.registered_users')
+    end
+
+    def self.recipient_segment_label
+      I18n.t('email_campaigns.admin_labels.recipient_segment.user_who_published_the_idea')
+    end
+
+    def self.content_type_label
+      I18n.t('email_campaigns.admin_labels.content_type.ideas')
+    end
+
+    def self.trigger_label
+      I18n.t('email_campaigns.admin_labels.trigger.user_publishes_an_idea')
+    end
+
     def generate_commands(recipient:, activity:)
       idea = activity.item
       return [] unless idea.participation_method_on_creation.include_data_in_email?

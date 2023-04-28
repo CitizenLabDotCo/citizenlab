@@ -57,15 +57,19 @@ module EmailCampaigns
     end
 
     def self.recipient_role_label
-      I18n.t('email_campaigns.recipient_role.admins_and_moderators')
+      I18n.t('email_campaigns.admin_labels.recipient_role.admins_and_moderators')
     end
 
     def self.recipient_segment_label
-      I18n.t('email_campaigns.recipient_segment.admins')
+      I18n.t('email_campaigns.admin_labels.recipient_segment.admins')
     end
 
     def self.content_type_label
-      I18n.t('email_campaigns.content_type.ideas')
+      I18n.t('email_campaigns.admin_labels.content_type.ideas')
+    end
+
+    def self.trigger_label
+      'scheduled'
     end
 
     def mailer_class

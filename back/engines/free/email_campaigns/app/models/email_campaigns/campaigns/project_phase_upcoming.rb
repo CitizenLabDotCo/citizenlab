@@ -54,6 +54,22 @@ module EmailCampaigns
       'admin'
     end
 
+    def self.recipient_role_label
+      I18n.t('email_campaigns.admin_labels.recipient_role.admins_and_moderators')
+    end
+
+    def self.recipient_segment_label
+      I18n.t('email_campaigns.admin_labels.recipient_segment.users_engaged_with_the_project')
+    end
+
+    def self.content_type_label
+      I18n.t('email_campaigns.admin_labels.content_type.projects')
+    end
+
+    def self.trigger_label
+      I18n.t('email_campaigns.admin_labels.trigger.project_changes_phase')
+    end
+
     def filter_notification_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.recipient.id)
     end

@@ -55,6 +55,22 @@ module EmailCampaigns
       'scheduled'
     end
 
+    def self.recipient_role_label
+      # I18n.t('email_campaigns.admin_labels.recipient_role.')
+    end
+
+    def self.recipient_segment_label
+      # I18n.t('email_campaigns.admin_labels.recipient_segment.')
+    end
+
+    def self.content_type_label
+      # I18n.t('email_campaigns.admin_labels.content_type.')
+    end
+
+    def self.trigger_label
+      # I18n.t('email_campaigns.admin_labels.trigger.')
+    end
+
     def mailer_class
       UserDigestMailer
     end

@@ -50,6 +50,22 @@ module EmailCampaigns
       'scheduled'
     end
 
+    def self.recipient_role_label
+      I18n.t('email_campaigns.admin_labels.recipient_role.registered_users')
+    end
+
+    def self.recipient_segment_label
+      I18n.t('email_campaigns.admin_labels.recipient_segment.all_users_who_uploaded_proposals')
+    end
+
+    def self.content_type_label
+      I18n.t('email_campaigns.admin_labels.content_type.proposals')
+    end
+
+    def self.trigger_label
+      'scheduled'
+    end
+
     def mailer_class
       YourProposedInitiativesDigestMailer
     end

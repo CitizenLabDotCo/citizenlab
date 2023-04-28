@@ -67,6 +67,22 @@ module EmailCampaigns
       'admin'
     end
 
+    def self.recipient_role_label
+      I18n.t('email_campaigns.admin_labels.recipient_role.admins_and_moderators')
+    end
+
+    def self.recipient_segment_label
+      I18n.t('email_campaigns.admin_labels.recipient_segment.admins')
+    end
+
+    def self.content_type_label
+      I18n.t('email_campaigns.admin_labels.content_type.comments')
+    end
+
+    def self.trigger_label
+      I18n.t('email_campaigns.admin_labels.trigger.user_comments')
+    end
+
     def mailer_class
       NewCommentForAdminMailer
     end

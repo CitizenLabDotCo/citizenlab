@@ -66,15 +66,19 @@ module EmailCampaigns
     end
 
     def self.recipient_role_label
-      I18n.t('email_campaigns.recipient_role.admins')
+      I18n.t('email_campaigns.admin_labels.recipient_role.admins')
     end
 
     def self.recipient_segment_label
-      I18n.t('email_campaigns.recipient_segment.admins')
+      I18n.t('email_campaigns.admin_labels.recipient_segment.admins')
     end
 
     def self.content_type_label
-      I18n.t('email_campaigns.content_type.general')
+      I18n.t('email_campaigns.admin_labels.content_type.general')
+    end
+
+    def self.trigger_label
+      'scheduled'
     end
 
     def generate_commands(recipient:, time: Time.now)

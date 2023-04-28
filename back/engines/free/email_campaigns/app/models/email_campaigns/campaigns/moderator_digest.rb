@@ -62,6 +62,22 @@ module EmailCampaigns
       'admin'
     end
 
+    def self.recipient_role_label
+      I18n.t('email_campaigns.admin_labels.recipient_role.managers')
+    end
+
+    def self.recipient_segment_label
+      I18n.t('email_campaigns.admin_labels.recipient_segment.managers')
+    end
+
+    def self.content_type_label
+      I18n.t('email_campaigns.admin_labels.content_type.general')
+    end
+
+    def self.trigger_label
+      'scheduled'
+    end
+
     def generate_commands(recipient:, time: nil)
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       recipient.moderatable_project_ids.filter_map do |project_id|

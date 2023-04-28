@@ -55,19 +55,19 @@ module EmailCampaigns
     end
 
     def self.recipient_role_label
-      I18n.t('email_campaigns.recipient_role.admins_and_moderators')
+      I18n.t('email_campaigns.admin_labels.recipient_role.admins_and_moderators')
     end
 
     def self.recipient_segment_label
-      I18n.t('email_campaigns.recipient_segment.user_receiving_admin_rights')
+      I18n.t('email_campaigns.admin_labels.recipient_segment.user_receiving_admin_rights')
     end
 
     def self.content_type_label
-      I18n.t('email_campaigns.content_type.permissions')
+      I18n.t('email_campaigns.admin_labels.content_type.permissions')
     end
 
     def self.trigger_label
-      I18n.t('email_campaigns.trigger.user_is_given_admin_rights')
+      I18n.t('email_campaigns.admin_labels.trigger.user_is_given_admin_rights')
     end
   end
 end
