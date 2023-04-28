@@ -27,7 +27,8 @@ describe('Initiative show page actions', () => {
 
     it('asks unauthorised users to log in or sign up before they vote', () => {
       cy.get('#e2e-initiative-upvote-button').should('exist');
-      cy.get('#e2e-initiative-upvote-button').click('center');
+      cy.wait(2000);
+      cy.get('#e2e-initiative-upvote-button').click();
       cy.get('#e2e-authentication-modal').should('exist');
     });
   });
