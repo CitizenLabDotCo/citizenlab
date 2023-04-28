@@ -99,13 +99,13 @@ nl-BE:
       "your_proposed_initiatives_digest": Weekoverzicht van je eigen voorstellen - alle gebruikers
     schedules:
       weekly:
+        "0": "Wekelijks, op zondag op %{hourOfDay}"
         "1": "Wekelijks op maandag %{atHour}"
         "2": "Wekelijks op dinsdag %{atHour}"
         "3": "Wekelijks op woensdag %{atHour}"
         "4": "Wekelijks op donderdag %{atHour}"
         "5": "Wekelijks op vrijdag %{atHour}"
         "6": "Wekelijks op zaterdag %{atHour}"
-        "7": "Wekelijks op zondag %{atHour}"
     footer:
       "link_privacy_policy": "Privacybeleid"
       "link_terms_conditions": "Gebruiksvoorwaarden"
