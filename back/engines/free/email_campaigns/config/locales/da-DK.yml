@@ -97,6 +97,15 @@ da:
       "assignee_digest": Ugentlig oversigt over tildelte idéer - administratorer og projektledere
       "user_digest": Ugentlig oversigt - alle brugere
       "your_proposed_initiatives_digest": Ugentlig oversigt over dine egne forslag - alle brugere
+    schedules:
+      weekly:
+        "1": "Ugentligt om mandagen %{atHour}"
+        "2": "Ugentligt om tirsdagen %{atHour}"
+        "3": "Ugentligt om onsdagen %{atHour}"
+        "4": "Ugentligt om torsdagen %{atHour}"
+        "5": "Ugentligt om fredagen %{atHour}"
+        "6": "Ugentligt om lørdagen %{atHour}"
+        "7": "Hver uge om søndagen %{atHour}"
     footer:
       "link_privacy_policy": "Anonymitetspolitik"
       "link_terms_conditions": "Betingelser og vilkår"
