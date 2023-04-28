@@ -133,7 +133,6 @@ export default injectIntl<Props & WrappedComponentProps>(
                     smart_survey: formatMessage(messages.smart_survey),
                     snap_survey: formatMessage(messages.snap_survey),
                     microsoft_forms: formatMessage(messages.microsoft_forms),
-                    konveio: formatMessage(messages.konveio),
                   }[provider]
                 }
                 key={provider}
