@@ -99,13 +99,13 @@ hr:
       "your_proposed_initiatives_digest": Tjedni pregled vlastitih prijedloga – svi korisnici
     schedules:
       weekly:
+        "0": "Tjedno, nedjeljom u %{hourOfDay}"
         "1": "Tjedno ponedjeljkom %{atHour}"
         "2": "Tjedno utorkom %{atHour}"
         "3": "Tjedno srijedom %{atHour}"
         "4": "Tjedno četvrtkom %{atHour}"
         "5": "Tjedno petkom %{atHour}"
         "6": "Tjedno subotom %{atHour}"
-        "7": "Tjedno nedjeljom %{atHour}"
     footer:
       "link_privacy_policy": "Pravila o privatnosti"
       "link_terms_conditions": "Uvjeti korištenja"
