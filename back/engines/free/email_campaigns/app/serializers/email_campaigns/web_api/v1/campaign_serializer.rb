@@ -22,7 +22,11 @@ module EmailCampaigns
     attribute :schedule_multiloc, if: proc { |object|
       schedulable? object
     } do |object|
-      object.schedule_multiloc
+      AppConfiguration.instance.settings('core', 'locales').each_with_object({}) do |locale, result|
+        I18n.with_locale(locale) do
+          result[locale] = object.schedule_multiloc
+        end
+      end
     end
 
     attribute :sender, if: proc { |object|
