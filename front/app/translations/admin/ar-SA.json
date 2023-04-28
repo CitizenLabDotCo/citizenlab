@@ -1140,7 +1140,6 @@
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "قم بإعداد استبيان بدون مغادرة المنصة.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "إنشاء استطلاع",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "قم بإعداد استقصاء متعدد الاختيارات.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription1": "قم بتضمين Typeform أو Google Form أو Enalyzer أو SurveyXact أو Qualtrics أو SmartSurvey أو Snap Survey أو Microsoft Forms أو استبيان Konveio.",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "يمكنك تعيين الترتيب الافتراضي للمنشورات المطلوب عرضها في صفحة المشروع الرئيسية.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "فرز",
   "app.containers.AdminPage.ProjectEdit.departments": "الأقسام",

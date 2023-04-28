@@ -1140,7 +1140,6 @@
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Skonfiguruj ankietę bez opuszczania naszej platformy.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Stwórz badanie",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Formularz wielokrotnego wyboru.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription1": "Osadź ankietę Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey, Microsoft Forms lub Konveio.",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Możesz ustawić domyślną kolejność wyświetlania postów na stronie głównej projektu.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sortowanie",
   "app.containers.AdminPage.ProjectEdit.departments": "Departamenty",

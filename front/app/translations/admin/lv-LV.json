@@ -1140,7 +1140,6 @@
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Iestatīt apsekojumu, neatstājot mūsu platformu.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Izveidot aptauju",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Izveidot anketu ar vairākām atbilžu iespējām.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription1": "Ievietojiet Typeform, Google veidlapu, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey, Microsoft Forms vai Konveio aptauju.",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Jūs varat iestatīt noklusējuma secību, kādā ieraksti tiks rādīti galvenajā projekta lapā.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Šķirošana",
   "app.containers.AdminPage.ProjectEdit.departments": "Nodaļas",

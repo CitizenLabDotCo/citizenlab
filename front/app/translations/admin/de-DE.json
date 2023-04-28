@@ -1140,7 +1140,6 @@
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Erstellen Sie eine Umfrage, ohne Ihre Plattform zu verlassen.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Abstimmung erstellen",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Erstellen Sie einen Multiple-Choice-Fragebogen.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription1": "Betten Sie eine Umfrage von Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey, Microsoft Forms oder Konveio ein.",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Sie können die Standardreihenfolge der Beiträge festlegen, die auf der Hauptprojektseite angezeigt werden sollen.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sortieren",
   "app.containers.AdminPage.ProjectEdit.departments": "Abteilungen",
