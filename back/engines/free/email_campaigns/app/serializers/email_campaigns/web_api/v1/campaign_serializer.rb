@@ -12,6 +12,22 @@ module EmailCampaigns
       object.class.admin_campaign_description_multiloc
     end
 
+    attribute :recipient_role_label do |object|
+      object.class.recipient_role_label
+    end
+
+    attribute :recipient_segment_label do |object|
+      object.class.recipient_segment_label
+    end
+
+    attribute :content_type_label do |object|
+      object.class.content_type_label
+    end
+
+    attribute :trigger_label do |object|
+      object.class.trigger_label
+    end
+
     attribute :enabled, if: proc { |object|
       disableable? object
     }
