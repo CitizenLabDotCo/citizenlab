@@ -239,3 +239,8 @@ ca:
       paragraph_1_with_reason: "El vostre compte a la plataforma de participació de %{organizationName} s'ha desactivat temporalment pel motiu següent:"
       for_more_information: "Per a més informació sobre això, podeu consultar el %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Podeu tornar a iniciar la sessió des %{date}"
+  time:
+    am: soc
+    formats:
+      hour_of_day: "%l %p"
+    pm: pm
