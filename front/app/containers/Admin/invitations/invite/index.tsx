@@ -4,7 +4,6 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import TextArea from 'components/UI/TextArea';
 import Error from 'components/UI/Error';
 import {
   Radio,
@@ -62,6 +61,7 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 // typings
 import { Locale, IOption } from 'typings';
 import ImportTab from './ImportTab';
+import TextTab from './TextTab';
 
 const StyledTabs = styled(Tabs)`
   margin-bottom: 35px;
@@ -586,20 +586,10 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
           )}
 
           {selectedView === 'text' && (
-            <>
-              <SectionField>
-                <Label htmlFor="e2e-emails">
-                  <FormattedMessage {...messages.emailListLabel} />
-                </Label>
-                <TextArea
-                  value={selectedEmails || ''}
-                  onChange={handleEmailListOnChange}
-                  id="e2e-emails"
-                />
-              </SectionField>
-
-              {invitationOptions}
-            </>
+            <TextTab
+              selectedEmails={selectedEmails}
+              handleEmailListOnChange={handleEmailListOnChange}
+            />
           )}
 
           <SectionField>
