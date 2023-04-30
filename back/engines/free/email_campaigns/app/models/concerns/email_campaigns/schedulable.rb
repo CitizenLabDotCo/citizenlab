@@ -38,7 +38,7 @@ module EmailCampaigns
       self.ic_schedule = ics
     end
 
-    def schedule_multiloc_value(locale)
+    def schedule_multiloc_value
       # We currently only support weekly schedules here.
       weekly_day_key = "email_campaigns.schedules.weekly.#{schedule['rrules'][0]['validations']['day'][0].to_i % 7}"
       hour = schedule['rrules'][0]['validations']['hour_of_day'][0].to_i
