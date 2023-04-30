@@ -42,8 +42,9 @@ module EmailCampaigns
       # We currently only support weekly schedules here.
       weekly_day_key = "email_campaigns.schedules.weekly.#{schedule['rrules'][0]['validations']['day'][0].to_i % 7}"
       hour = schedule['rrules'][0]['validations']['hour_of_day'][0].to_i
+      time_obj = Time.new(-2000, 1, 1, hour, 0, 0)
 
-      I18n.t(weekly_day_key, hourOfDay: LocalizationService.new.hour_of_day_string(hour, locale))
+      I18n.t(weekly_day_key, hourOfDay: (I18n.l time_obj, format: :shorter))
     end
   end
 end
