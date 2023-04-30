@@ -12,16 +12,14 @@ import {
   Toggle,
   Label,
   Box,
-  Text,
 } from '@citizenlab/cl2-component-library';
 import Tabs from 'components/UI/Tabs';
 import Collapse from 'components/UI/Collapse';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionField, SectionTitle } from 'components/admin/Section';
+import { Section, SectionField } from 'components/admin/Section';
 import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
-import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
 const InviteUsersWithSeatsModal = lazy(
   () => import('components/admin/SeatBasedBilling/InviteUsersWithSeatsModal')
@@ -54,21 +52,16 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import { API_PATH, appLocalePairs } from 'containers/App/constants';
+import { appLocalePairs } from 'containers/App/constants';
 import { getLocalized } from 'utils/i18n';
-
-// utils
-import { getBase64FromFile } from 'utils/fileUtils';
-import { saveAs } from 'file-saver';
-import { requestBlob } from 'utils/request';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, stylingConsts } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { colors, stylingConsts } from 'utils/styleUtils';
 
 // typings
 import { Locale, IOption } from 'typings';
+import ImportTab from './ImportTab';
 
 const StyledTabs = styled(Tabs)`
   margin-bottom: 35px;
@@ -76,28 +69,6 @@ const StyledTabs = styled(Tabs)`
 
 const StyledToggle = styled(Toggle)`
   margin-bottom: 10px;
-`;
-
-const StyledSectionTitle = styled(SectionTitle)`
-  margin-bottom: 15px;
-  font-size: ${fontSizes.l}px;
-  font-weight: bold;
-`;
-
-const SectionParagraph = styled.p`
-  a {
-    color: ${colors.teal};
-    text-decoration: underline;
-
-    &:hover {
-      color: ${darken(0.2, colors.teal)};
-      text-decoration: underline;
-    }
-  }
-`;
-
-const DownloadButton = styled(Button)`
-  margin-bottom: 15px;
 `;
 
 const StyledWarning = styled(Warning)`
@@ -143,7 +114,6 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
   const [processing, setProcessing] = useState<boolean>(false);
   const [processed, setProcessed] = useState<boolean>(false);
   const [apiErrors, setApiErrors] = useState<IInviteError[] | null>(null);
-  const [filetypeError, setFiletypeError] = useState<JSX.Element | null>(null);
   const [unknownError, setUnknownError] = useState<JSX.Element | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [newSeatsResponse, setNewSeatsResponse] =
@@ -225,34 +195,6 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
     setSelectedEmails(selectedEmails);
   };
 
-  const handleFileInputOnChange = async (event) => {
-    let selectedFile: File | null =
-      event.target.files && event.target.files.length === 1
-        ? event.target.files['0']
-        : null;
-    let filetypeError: JSX.Element | null = null;
-
-    if (
-      selectedFile &&
-      selectedFile.type !==
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    ) {
-      filetypeError = <FormattedMessage {...messages.filetypeError} />;
-      selectedFile = null;
-
-      if (fileInputElement.current) {
-        fileInputElement.current.value = '';
-      }
-    }
-
-    const selectedFileBase64 = selectedFile
-      ? await getBase64FromFile(selectedFile)
-      : null;
-    resetErrorAndSuccessState();
-    setSelectedFileBase64(selectedFileBase64);
-    setFiletypeError(filetypeError);
-  };
-
   const handleAdminRightsOnToggle = () => {
     resetErrorAndSuccessState();
     setInviteesWillHaveAdminRights(!inviteesWillHaveAdminRights);
@@ -315,19 +257,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
     setInvitationOptionsOpened(false);
     setProcessed(false);
     setApiErrors(null);
-    setFiletypeError(null);
     setUnknownError(null);
-  };
-
-  const downloadExampleFile = async (
-    event: React.MouseEvent<Element, MouseEvent>
-  ) => {
-    event.preventDefault();
-    const blob = await requestBlob(
-      `${API_PATH}/invites/example_xlsx`,
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    );
-    saveAs(blob, 'example.xlsx');
   };
 
   const getRoles = () => {
@@ -651,66 +581,8 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
             selectedValue={selectedView || 'import'}
             onClick={resetWithView}
           />
-
           {selectedView === 'import' && (
-            <>
-              <SectionField>
-                <StyledSectionTitle>
-                  <FormattedMessage {...messages.downloadFillOutTemplate} />
-                </StyledSectionTitle>
-                <Text fontSize="base">
-                  <Box display="flex" justifyContent="space-between">
-                    <DownloadButton
-                      buttonStyle="secondary"
-                      icon="download"
-                      onClick={downloadExampleFile}
-                    >
-                      <FormattedMessage {...messages.downloadTemplate} />
-                    </DownloadButton>
-                  </Box>
-                  <SectionParagraph>
-                    <FormattedMessage
-                      {...messages.visitSupportPage}
-                      values={{
-                        supportPageLink: (
-                          <a
-                            href={formatMessage(messages.invitesSupportPageURL)}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <FormattedMessage
-                              {...messages.supportPageLinkText}
-                            />
-                          </a>
-                        ),
-                      }}
-                    />
-                  </SectionParagraph>
-                  <SectionParagraph>
-                    <FormattedMessage {...messages.fileRequirements} />
-                  </SectionParagraph>
-                </Text>
-
-                <StyledSectionTitle>
-                  <FormattedMessage {...messages.uploadCompletedFile} />
-                </StyledSectionTitle>
-
-                <Box marginBottom="20px" marginTop="15px">
-                  <input
-                    type="file"
-                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                    onChange={handleFileInputOnChange}
-                    ref={fileInputElement}
-                  />
-                </Box>
-                <Error text={filetypeError} />
-              </SectionField>
-
-              <StyledSectionTitle>
-                <FormattedMessage {...messages.configureInvitations} />
-              </StyledSectionTitle>
-              {invitationOptions}
-            </>
+            <ImportTab resetErrorAndSuccessState={resetErrorAndSuccessState} />
           )}
 
           {selectedView === 'text' && (
