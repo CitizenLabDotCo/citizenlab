@@ -239,3 +239,8 @@ nl-BE:
       paragraph_1_with_reason: "Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld om de volgende reden:"
       for_more_information: "Voor meer informatie hierover kunt u de %{termsAndConditionsPage}raadplegen."
       you_can_sign_in_again_from: "U kunt zich opnieuw aanmelden vanaf %{date}"
+  time:
+    am: ben
+    formats:
+      hour_of_day: "%l %p"
+    pm: pm
