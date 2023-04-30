@@ -242,5 +242,5 @@ en:
   time:
     am: am
     formats:
-      shorter: "%I.%M %p"
+      hour_of_day: "%l %p"
     pm: pm
