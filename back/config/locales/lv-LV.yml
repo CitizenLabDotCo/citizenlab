@@ -239,3 +239,8 @@ lv:
       paragraph_1_with_reason: "Jūsu konts %{organizationName} dalības platformā ir uz laiku atspējots šāda iemesla dēļ:"
       for_more_information: "Plašāku informāciju par šo tēmu var atrast vietnē %{termsAndConditionsPage}."
       you_can_sign_in_again_from: "Varat atkal pierakstīties no %{date}"
+  time:
+    am: am
+    formats:
+      hour_of_day: "%l %p"
+    pm: pm
