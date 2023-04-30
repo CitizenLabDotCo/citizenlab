@@ -241,4 +241,4 @@ nl-BE:
       you_can_sign_in_again_from: "U kunt zich opnieuw aanmelden vanaf %{date}"
   time:
     formats:
-      shorter: "%H:%M"
+      hour_of_day: "%H:%M"

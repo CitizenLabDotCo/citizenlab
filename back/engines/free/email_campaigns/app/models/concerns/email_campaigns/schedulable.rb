@@ -44,7 +44,7 @@ module EmailCampaigns
       hour = schedule['rrules'][0]['validations']['hour_of_day'][0].to_i
       time_obj = Time.new(-2000, 1, 1, hour, 0, 0)
 
-      I18n.t(weekly_day_key, hourOfDay: (I18n.l time_obj, format: :shorter))
+      I18n.t(weekly_day_key, hourOfDay: (I18n.l time_obj, format: :hour_of_day).lstrip)
     end
   end
 end

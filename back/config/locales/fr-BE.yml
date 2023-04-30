@@ -241,4 +241,4 @@ fr-BE:
       you_can_sign_in_again_from: "Vous pouvez vous reconnecter à partir de %{date}"
   time:
     formats:
-      shorter: "%Hh%M"
+      hour_of_day: "%Hh"
