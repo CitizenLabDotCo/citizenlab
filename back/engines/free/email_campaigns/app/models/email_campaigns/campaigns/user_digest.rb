@@ -56,19 +56,19 @@ module EmailCampaigns
     end
 
     def self.recipient_role_multiloc_key
-      # 'email_campaigns.admin_labels.recipient_role.'
+      'email_campaigns.admin_labels.recipient_role.registered_users'
     end
 
     def self.recipient_segment_multiloc_key
-      # 'email_campaigns.admin_labels.recipient_segment.'
+      'email_campaigns.admin_labels.recipient_segment.all_users'
     end
 
     def self.content_type_multiloc_key
-      # 'email_campaigns.admin_labels.content_type.'
+      'email_campaigns.admin_labels.content_type.general'
     end
 
     def self.trigger_multiloc_key
-      # 'email_campaigns.admin_labels.trigger.'
+      'scheduled'
     end
 
     def mailer_class
