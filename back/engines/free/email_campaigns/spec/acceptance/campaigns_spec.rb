@@ -45,7 +45,7 @@ resource 'Campaigns' do
       expect(json_response[:data].size).to eq 2
     end
 
-    example 'List all non-manual campaigns with correct attributes' do
+    example 'List all non-manual campaigns with expected attributes' do
       do_request(without_campaign_names: ['manual'])
       json_response = json_parse(response_body)
 
