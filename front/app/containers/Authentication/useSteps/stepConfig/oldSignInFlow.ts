@@ -15,7 +15,6 @@ import { requiredCustomFields } from './utils';
 // typings
 import {
   Status,
-  ErrorCode,
   AuthenticationData,
   AuthProvider,
   GetRequirements,
@@ -27,7 +26,6 @@ export const oldSignInFlow = (
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
-  setError: (errorCode: ErrorCode) => void,
   anySSOProviderEnabled: boolean
 ) => {
   return {

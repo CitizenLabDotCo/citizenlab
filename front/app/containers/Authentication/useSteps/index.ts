@@ -82,7 +82,6 @@ export default function useSteps() {
       getRequirements,
       setCurrentStep,
       setStatus,
-      setError,
       updateState,
       anySSOEnabled
     );

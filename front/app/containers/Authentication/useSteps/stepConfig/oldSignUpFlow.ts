@@ -20,7 +20,6 @@ import {
   Status,
   AuthenticationData,
   AuthProvider,
-  ErrorCode,
   GetRequirements,
   UpdateState,
 } from '../../typings';
@@ -31,7 +30,6 @@ export const oldSignUpFlow = (
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
-  setError: (errorCode: ErrorCode) => void,
   updateState: UpdateState,
   anySSOProviderEnabled: boolean
 ) => {

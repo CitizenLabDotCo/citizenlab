@@ -17,7 +17,6 @@ import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 import {
   GetRequirements,
   Status,
-  ErrorCode,
   UpdateState,
   SSOProviderWithoutVienna,
   AuthenticationData,
@@ -31,7 +30,6 @@ export const newLightFlow = (
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
-  setError: (errorCode: ErrorCode) => void,
   updateState: UpdateState
 ) => {
   const close = async () => {

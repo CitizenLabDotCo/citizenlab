@@ -9,18 +9,13 @@ import signOut from 'api/authentication/sign_in_out/signOut';
 import { requiredCustomFields, requiredBuiltInFields } from './utils';
 
 // typings
-import {
-  GetRequirements,
-  Status,
-  ErrorCode,
-} from 'containers/Authentication/typings';
+import { GetRequirements, Status } from 'containers/Authentication/typings';
 import { Step, BuiltInFieldsUpdate } from './typings';
 
 export const missingDataFlow = (
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
-  setStatus: (status: Status) => void,
-  setError: (errorCode: ErrorCode) => void
+  setStatus: (status: Status) => void
 ) => {
   return {
     'missing-data:email-confirmation': {
