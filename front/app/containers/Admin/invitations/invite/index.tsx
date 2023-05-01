@@ -83,11 +83,11 @@ const Invitations = () => {
   const [processing, setProcessing] = useState<boolean>(false);
   const [processed, setProcessed] = useState<boolean>(false);
   const [apiErrors, setApiErrors] = useState<IInviteError[] | null>(null);
+  const [filetypeError, setFiletypeError] = useState<JSX.Element | null>(null);
   const [unknownError, setUnknownError] = useState<JSX.Element | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [newSeatsResponse, setNewSeatsResponse] =
     useState<IInvitesNewSeats | null>(null);
-  const [filetypeError, setFiletypeError] = useState<JSX.Element | null>(null);
 
   const exceedsSeats = useExceedsSeats();
 
@@ -113,36 +113,6 @@ const Invitations = () => {
   const handleEmailListOnChange = (selectedEmails: string) => {
     resetErrorAndSuccessState();
     setSelectedEmails(selectedEmails);
-  };
-
-  const handleAdminRightsOnToggle = () => {
-    resetErrorAndSuccessState();
-    setInviteesWillHaveAdminRights(!inviteesWillHaveAdminRights);
-  };
-
-  const handleModeratorRightsOnToggle = () => {
-    resetErrorAndSuccessState();
-    setInviteesWillHaveModeratorRights(!inviteesWillHaveModeratorRights);
-  };
-
-  const handleLocaleOnChange = (selectedLocale: Locale) => {
-    resetErrorAndSuccessState();
-    setSelectedLocale(selectedLocale);
-  };
-
-  const handleSelectedProjectsOnChange = (selectedProjects: IOption[]) => {
-    resetErrorAndSuccessState();
-    setSelectedProjects(selectedProjects.length > 0 ? selectedProjects : null);
-  };
-
-  const handleSelectedGroupsOnChange = (selectedGroups: IOption[]) => {
-    resetErrorAndSuccessState();
-    setSelectedGroups(selectedGroups.length > 0 ? selectedGroups : null);
-  };
-
-  const handleInviteTextOnChange = (selectedInviteText: string) => {
-    resetErrorAndSuccessState();
-    setSelectedInviteText(selectedInviteText);
   };
 
   const handleFileInputOnChange = async (
@@ -173,6 +143,36 @@ const Invitations = () => {
     resetErrorAndSuccessState();
     setSelectedFileBase64(selectedFileBase64);
     setFiletypeError(filetypeError);
+  };
+
+  const handleAdminRightsOnToggle = () => {
+    resetErrorAndSuccessState();
+    setInviteesWillHaveAdminRights(!inviteesWillHaveAdminRights);
+  };
+
+  const handleModeratorRightsOnToggle = () => {
+    resetErrorAndSuccessState();
+    setInviteesWillHaveModeratorRights(!inviteesWillHaveModeratorRights);
+  };
+
+  const handleLocaleOnChange = (selectedLocale: Locale) => {
+    resetErrorAndSuccessState();
+    setSelectedLocale(selectedLocale);
+  };
+
+  const handleSelectedProjectsOnChange = (selectedProjects: IOption[]) => {
+    resetErrorAndSuccessState();
+    setSelectedProjects(selectedProjects.length > 0 ? selectedProjects : null);
+  };
+
+  const handleSelectedGroupsOnChange = (selectedGroups: IOption[]) => {
+    resetErrorAndSuccessState();
+    setSelectedGroups(selectedGroups.length > 0 ? selectedGroups : null);
+  };
+
+  const handleInviteTextOnChange = (selectedInviteText: string) => {
+    resetErrorAndSuccessState();
+    setSelectedInviteText(selectedInviteText);
   };
 
   const getSubmitState = (
