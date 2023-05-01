@@ -19,13 +19,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
 
+// errors
+import { isCLErrorsJSON, handleCLErrorsJSON } from 'utils/errorUtils';
+
 // typings
-import { State, Status, ErrorCode } from '../../typings';
+import { State, Status, SetError } from '../../typings';
 
 interface Props {
   state: State;
   status: Status;
-  error: ErrorCode | null;
+  setError: SetError;
   onConfirm: (code: string) => void;
   onChangeEmail?: () => void;
 }
@@ -38,9 +41,14 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   code: undefined,
 };
 
+const isWrongConfirmationCodeError = (e: any) => {
+  return e?.code?.[0]?.error === 'invalid';
+};
+
 const EmailConfirmation = ({
   state,
   status,
+  setError,
   onConfirm,
   onChangeEmail,
 }: Props) => {
@@ -66,10 +74,25 @@ const EmailConfirmation = ({
     resolver: yupResolver(schema),
   });
 
-  const handleConfirm = ({ code }: FormValues) => {
+  const handleConfirm = async ({ code }: FormValues) => {
     setResendingCode(false);
     setCodeResent(false);
-    onConfirm(code);
+
+    try {
+      await onConfirm(code);
+    } catch (e) {
+      if (isCLErrorsJSON(e)) {
+        handleCLErrorsJSON(e, methods.setError);
+        return;
+      }
+
+      if (isWrongConfirmationCodeError(e)) {
+        setError('wrong_confirmation_code');
+        return;
+      }
+
+      setError('unknown');
+    }
   };
 
   const handleResendCode = (e: FormEvent) => {

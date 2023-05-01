@@ -103,7 +103,7 @@ export const oldSignUpFlow = (
 
           setCurrentStep('success');
         } catch {
-          setError('account_creation_failed');
+          // setError('account_creation_failed');
           trackEventByName(tracks.signInEmailPasswordFailed);
         }
       },
@@ -117,30 +117,22 @@ export const oldSignUpFlow = (
       SUBMIT_CODE: async (code: string) => {
         setStatus('pending');
 
-        try {
-          await confirmEmail({ code });
-          setStatus('ok');
+        await confirmEmail({ code });
+        setStatus('ok');
 
-          const { requirements } = await getRequirements();
+        const { requirements } = await getRequirements();
 
-          if (requirements.special.verification === 'require') {
-            setCurrentStep('sign-up:verification');
-            return;
-          }
-
-          if (askCustomFields(requirements.custom_fields)) {
-            setCurrentStep('sign-up:custom-fields');
-            return;
-          }
-
-          setCurrentStep('success');
-        } catch (e) {
-          if (e?.code?.[0]?.error === 'invalid') {
-            setError('wrong_confirmation_code');
-          } else {
-            setError('unknown');
-          }
+        if (requirements.special.verification === 'require') {
+          setCurrentStep('sign-up:verification');
+          return;
         }
+
+        if (askCustomFields(requirements.custom_fields)) {
+          setCurrentStep('sign-up:custom-fields');
+          return;
+        }
+
+        setCurrentStep('success');
       },
     },
 
@@ -157,7 +149,7 @@ export const oldSignUpFlow = (
           setCurrentStep('sign-up:email-confirmation');
           setStatus('ok');
         } catch {
-          setError('unknown');
+          // setError('unknown');
         }
       },
     },
@@ -190,7 +182,7 @@ export const oldSignUpFlow = (
           setCurrentStep('success');
           trackEventByName(tracks.signUpCustomFieldsStepCompleted);
         } catch {
-          setError('unknown');
+          // setError('unknown');
           trackEventByName(tracks.signUpCustomFieldsStepFailed);
         }
       },

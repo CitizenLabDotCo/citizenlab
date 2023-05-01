@@ -33,6 +33,8 @@ export type GetRequirements = () => Promise<AuthenticationRequirements>;
 export type StepConfig = ReturnType<typeof getStepConfig>;
 export type Step = keyof StepConfig;
 
+export type SetError = (errorCode: ErrorCode) => void;
+
 export type SignUpInFlow = 'signup' | 'signin';
 export type SignUpInError = 'general' | 'franceconnect_merging_failed';
 

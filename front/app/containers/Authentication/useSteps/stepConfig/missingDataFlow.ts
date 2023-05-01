@@ -33,35 +33,27 @@ export const missingDataFlow = (
       SUBMIT_CODE: async (code: string) => {
         setStatus('pending');
 
-        try {
-          await confirmEmail({ code });
-          const { requirements } = await getRequirements();
+        await confirmEmail({ code });
+        const { requirements } = await getRequirements();
 
-          setStatus('ok');
+        setStatus('ok');
 
-          if (requiredBuiltInFields(requirements)) {
-            setCurrentStep('missing-data:built-in');
-            return;
-          }
-
-          if (requirements.special.verification === 'require') {
-            setCurrentStep('missing-data:verification');
-            return;
-          }
-
-          if (requiredCustomFields(requirements.custom_fields)) {
-            setCurrentStep('missing-data:custom-fields');
-            return;
-          }
-
-          setCurrentStep('success');
-        } catch (e) {
-          if (e?.code?.[0]?.error === 'invalid') {
-            setError('wrong_confirmation_code');
-          } else {
-            setError('unknown');
-          }
+        if (requiredBuiltInFields(requirements)) {
+          setCurrentStep('missing-data:built-in');
+          return;
         }
+
+        if (requirements.special.verification === 'require') {
+          setCurrentStep('missing-data:verification');
+          return;
+        }
+
+        if (requiredCustomFields(requirements.custom_fields)) {
+          setCurrentStep('missing-data:custom-fields');
+          return;
+        }
+
+        setCurrentStep('success');
       },
     },
 
@@ -78,7 +70,7 @@ export const missingDataFlow = (
           setCurrentStep('missing-data:email-confirmation');
           setStatus('ok');
         } catch (e) {
-          setError('unknown');
+          // setError('unknown');
         }
       },
     },
@@ -134,7 +126,7 @@ export const missingDataFlow = (
           setStatus('ok');
           setCurrentStep('success');
         } catch {
-          setError('unknown');
+          // setError('unknown');
         }
       },
       SKIP: async () => {

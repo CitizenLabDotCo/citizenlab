@@ -107,7 +107,7 @@ export const oldSignInFlow = (
 
           trackEventByName(tracks.signInEmailPasswordCompleted);
         } catch {
-          setError('wrong_password');
+          // setError('wrong_password');
           trackEventByName(tracks.signInEmailPasswordFailed);
         }
       },

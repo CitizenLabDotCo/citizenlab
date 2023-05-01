@@ -247,7 +247,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
           <EmailConfirmation
             state={state}
             status={status}
-            error={error}
+            setError={setError}
             onConfirm={transition(currentStep, 'SUBMIT_CODE')}
             onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
           />
@@ -330,7 +330,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
           <EmailConfirmation
             state={state}
             status={status}
-            error={error}
+            setError={setError}
             onConfirm={transition(currentStep, 'SUBMIT_CODE')}
             onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
           />
@@ -357,7 +357,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
           <EmailConfirmation
             state={state}
             status={status}
-            error={error}
+            setError={setError}
             onConfirm={transition(currentStep, 'SUBMIT_CODE')}
             onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
           />

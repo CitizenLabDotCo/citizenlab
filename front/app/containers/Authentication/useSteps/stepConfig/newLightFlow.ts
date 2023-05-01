@@ -108,7 +108,7 @@ export const newLightFlow = (
         }
 
         if (result === 'error') {
-          setError('account_creation_failed');
+          // setError('account_creation_failed');
         }
       },
     },
@@ -196,25 +196,17 @@ export const newLightFlow = (
       SUBMIT_CODE: async (code: string) => {
         setStatus('pending');
 
-        try {
-          await confirmEmail({ code });
+        await confirmEmail({ code });
 
-          const { requirements } = await getRequirements();
+        const { requirements } = await getRequirements();
 
-          if (askCustomFields(requirements.custom_fields)) {
-            setCurrentStep('sign-up:custom-fields');
-            setStatus('ok');
-            return;
-          }
-
-          close();
-        } catch (e) {
-          if (e?.code?.[0]?.error === 'invalid') {
-            setError('wrong_confirmation_code');
-          } else {
-            setError('unknown');
-          }
+        if (askCustomFields(requirements.custom_fields)) {
+          setCurrentStep('sign-up:custom-fields');
+          setStatus('ok');
+          return;
         }
+
+        close();
       },
     },
 
@@ -247,7 +239,7 @@ export const newLightFlow = (
 
           close();
         } catch {
-          setError('wrong_password');
+          // setError('wrong_password');
         }
       },
     },
