@@ -13,14 +13,6 @@ export interface IConsentData {
     recipient_role_multiloc: Multiloc;
     content_type_multiloc: Multiloc;
     consented: boolean;
-    category:
-      | 'own'
-      | 'official'
-      | 'weekly'
-      | 'mention'
-      | 'commented'
-      | 'voted'
-      | 'admin';
   };
 }
 

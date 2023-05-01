@@ -61,7 +61,10 @@ const CampaignConsentForm = () => {
             <Title variant="h3">{role}</Title>
             {Object.entries(consentsByRole as object).map(
               ([contentType, consentsByContentType], ii) => (
-                <Accordion key={ii} title={contentType}>
+                <Accordion
+                  key={ii}
+                  title={<Title variant="h4">{contentType}</Title>}
+                >
                   <div>
                     {consentsByContentType.map((consent) => (
                       <T
