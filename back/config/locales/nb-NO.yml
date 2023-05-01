@@ -242,5 +242,5 @@
   time:
     am: er
     formats:
-      hour_of_day: "%l %p"
+      hour_of_day: "%H:%M"
     pm: pm
