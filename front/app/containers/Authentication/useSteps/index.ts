@@ -62,15 +62,31 @@ export default function useSteps() {
     prefilledBuiltInFields: null,
   });
   const [status, setStatus] = useState<Status>('ok');
-  const [error, setError] = useState<ErrorCode | null>(null);
+  const [error, _setError] = useState<ErrorCode | null>(null);
+
+  const setError = useCallback((newError: ErrorCode | null) => {
+    _setError((currentError) => {
+      if (currentError === null) {
+        return newError;
+      } else {
+        return currentError;
+      }
+    });
+  }, []);
 
   const getRequirements = useCallback(async () => {
     const authenticationContext = authenticationData.context;
 
-    const response = await getAuthenticationRequirements(authenticationContext);
-
-    return response.data.attributes.requirements;
-  }, [authenticationData]);
+    try {
+      const response = await getAuthenticationRequirements(
+        authenticationContext
+      );
+      return response.data.attributes.requirements;
+    } catch (e) {
+      setError('requirements_fetching_failed');
+      throw e;
+    }
+  }, [authenticationData, setError]);
 
   const updateState = useCallback((newState: Partial<State>) => {
     setState((state) => ({ ...state, ...newState }));
@@ -107,7 +123,7 @@ export default function useSteps() {
 
       return wrappedAction;
     },
-    [stepConfig]
+    [stepConfig, setError]
   );
 
   useEffect(() => {
