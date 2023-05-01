@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { SectionField, SectionTitle } from 'components/admin/Section';
 // i18n
@@ -16,7 +16,6 @@ import Error from 'components/UI/Error';
 import { saveAs } from 'file-saver';
 import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
-import { getBase64FromFile } from 'utils/fileUtils';
 
 const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 15px;
@@ -41,16 +40,14 @@ const SectionParagraph = styled.p`
 `;
 
 interface Props {
-  resetErrorAndSuccessState: () => void;
+  filetypeError: JSX.Element | null;
+  handleFileInputOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const ImportTab = ({ resetErrorAndSuccessState }: Props) => {
+const ImportTab = ({ filetypeError, handleFileInputOnChange }: Props) => {
   const { formatMessage } = useIntl();
   const fileInputElement = useRef<HTMLInputElement | null>(null);
-  const [filetypeError, setFiletypeError] = useState<JSX.Element | null>(null);
-  const [selectedFileBase64, setSelectedFileBase64] = useState<string | null>(
-    null
-  );
+
   const downloadExampleFile = async (
     event: React.MouseEvent<Element, MouseEvent>
   ) => {
@@ -60,34 +57,6 @@ const ImportTab = ({ resetErrorAndSuccessState }: Props) => {
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     );
     saveAs(blob, 'example.xlsx');
-  };
-
-  const handleFileInputOnChange = async (event) => {
-    let selectedFile: File | null =
-      event.target.files && event.target.files.length === 1
-        ? event.target.files['0']
-        : null;
-    let filetypeError: JSX.Element | null = null;
-
-    if (
-      selectedFile &&
-      selectedFile.type !==
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    ) {
-      filetypeError = <FormattedMessage {...messages.filetypeError} />;
-      selectedFile = null;
-
-      if (fileInputElement.current) {
-        fileInputElement.current.value = '';
-      }
-    }
-
-    const selectedFileBase64 = selectedFile
-      ? await getBase64FromFile(selectedFile)
-      : null;
-    resetErrorAndSuccessState();
-    setSelectedFileBase64(selectedFileBase64);
-    setFiletypeError(filetypeError);
   };
 
   return (

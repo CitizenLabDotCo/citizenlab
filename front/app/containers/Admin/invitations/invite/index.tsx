@@ -1,4 +1,11 @@
-import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  lazy,
+  Suspense,
+  ChangeEvent,
+} from 'react';
 import { isString, isEmpty, get } from 'lodash-es';
 
 // components
@@ -41,6 +48,7 @@ import ImportTab from './ImportTab';
 import TextTab from './TextTab';
 import InvitationOptions from './InvitationOptions';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import { getBase64FromFile } from 'utils/fileUtils';
 
 const StyledTabs = styled(Tabs)`
   margin-bottom: 35px;
@@ -79,6 +87,7 @@ const Invitations = () => {
   const [showModal, setShowModal] = useState(false);
   const [newSeatsResponse, setNewSeatsResponse] =
     useState<IInvitesNewSeats | null>(null);
+  const [filetypeError, setFiletypeError] = useState<JSX.Element | null>(null);
 
   const exceedsSeats = useExceedsSeats();
 
@@ -134,6 +143,36 @@ const Invitations = () => {
   const handleInviteTextOnChange = (selectedInviteText: string) => {
     resetErrorAndSuccessState();
     setSelectedInviteText(selectedInviteText);
+  };
+
+  const handleFileInputOnChange = async (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    let selectedFile: File | null =
+      event.target.files && event.target.files.length === 1
+        ? event.target.files['0']
+        : null;
+    let filetypeError: JSX.Element | null = null;
+
+    if (
+      selectedFile &&
+      selectedFile.type !==
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    ) {
+      filetypeError = <FormattedMessage {...messages.filetypeError} />;
+      selectedFile = null;
+
+      if (fileInputElement.current) {
+        fileInputElement.current.value = '';
+      }
+    }
+
+    const selectedFileBase64 = selectedFile
+      ? await getBase64FromFile(selectedFile)
+      : null;
+    resetErrorAndSuccessState();
+    setSelectedFileBase64(selectedFileBase64);
+    setFiletypeError(filetypeError);
   };
 
   const getSubmitState = (
@@ -210,16 +249,33 @@ const Invitations = () => {
   };
 
   // `save` parameter is used to avoid duplication of import/text and error handling logic
-  const onSubmit = async ({ save }: { save: boolean }) => {
-    const hasCorrectSelection =
-      (selectedView === 'import' &&
-        isString(selectedFileBase64) &&
-        !selectedEmails) ||
-      (selectedView === 'text' &&
-        !selectedFileBase64 &&
-        isString(selectedEmails));
+  const onSubmit = ({ save }: { save: boolean }) => {
+    const bulkInvite: INewBulkInvite = {
+      locale: selectedLocale,
+      roles: getRoles(),
+      group_ids:
+        selectedGroups && selectedGroups.length > 0
+          ? selectedGroups.map((group) => group.value)
+          : null,
+      invite_text: selectedInviteText,
+    };
 
-    if (selectedLocale && hasCorrectSelection) {
+    if (selectedView === 'import') {
+      onSubmitImportTab(bulkInvite, save);
+    }
+
+    if (selectedView === 'text') {
+      onSubmitTextTab(bulkInvite, save);
+    }
+  };
+
+  const onSubmitImportTab = async (
+    bulkInvite: INewBulkInvite,
+    save: boolean
+  ) => {
+    const hasCorrectSelection = isString(selectedFileBase64) && !selectedEmails;
+
+    if (hasCorrectSelection) {
       try {
         setProcessing(true);
         setProcessed(false);
@@ -227,17 +283,7 @@ const Invitations = () => {
         setFiletypeError(null);
         setUnknownError(null);
 
-        const bulkInvite: INewBulkInvite = {
-          locale: selectedLocale,
-          roles: getRoles(),
-          group_ids:
-            selectedGroups && selectedGroups.length > 0
-              ? selectedGroups.map((group) => group.value)
-              : null,
-          invite_text: selectedInviteText,
-        };
-
-        if (selectedView === 'import' && isString(selectedFileBase64)) {
+        if (isString(selectedFileBase64)) {
           const inviteOptions = {
             xlsx: selectedFileBase64,
             ...bulkInvite,
@@ -250,11 +296,46 @@ const Invitations = () => {
           }
         }
 
+        if (save) {
+          // reset file input
+          if (fileInputElement.current) {
+            fileInputElement.current.value = '';
+          }
+
+          // reset state
+          setProcessing(false);
+          setProcessed(true);
+          setSelectedFileBase64(null);
+        }
+      } catch (errors) {
+        const apiErrors = get(errors, 'json.errors', null);
+
+        setApiErrors(apiErrors);
+        setUnknownError(
+          !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
+        );
+        setProcessing(false);
+      }
+    }
+  };
+
+  const onSubmitTextTab = async (bulkInvite: INewBulkInvite, save: boolean) => {
+    const hasCorrectSelection = isString(selectedEmails);
+
+    if (hasCorrectSelection) {
+      try {
+        setProcessing(true);
+        setProcessed(false);
+        setApiErrors(null);
+        setFiletypeError(null);
+        setUnknownError(null);
+
         if (selectedView === 'text' && isString(selectedEmails)) {
           const inviteOptions = {
             emails: selectedEmails.split(',').map((item) => item.trim()),
             ...bulkInvite,
           };
+
           if (save) {
             await bulkInviteEmails(inviteOptions);
           } else {
@@ -273,7 +354,6 @@ const Invitations = () => {
           setProcessing(false);
           setProcessed(true);
           setSelectedEmails(null);
-          setSelectedFileBase64(null);
         }
       } catch (errors) {
         const apiErrors = get(errors, 'json.errors', null);
@@ -332,7 +412,10 @@ const Invitations = () => {
             onClick={resetWithView}
           />
           {selectedView === 'import' && (
-            <ImportTab resetErrorAndSuccessState={resetErrorAndSuccessState} />
+            <ImportTab
+              filetypeError={filetypeError}
+              handleFileInputOnChange={handleFileInputOnChange}
+            />
           )}
 
           {selectedView === 'text' && (
