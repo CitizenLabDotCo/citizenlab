@@ -207,6 +207,7 @@ const Invitations = () => {
     setInvitationOptionsOpened(false);
     setProcessed(false);
     setApiErrors(null);
+    setFiletypeError(null);
     setUnknownError(null);
   };
 
