@@ -145,8 +145,6 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
 
     if (
       !isNilOrError(project) &&
-      !isNilOrError(phases) &&
-      phases.length > 0 &&
       selectedPhase
     ) {
       const selectedPhaseId = selectedPhase.id;
