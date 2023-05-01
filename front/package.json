@@ -121,7 +121,7 @@
     "react-intl": "6.0.5",
     "react-jsonschema-form": "1.8.1",
     "react-mentions": "2.x",
-    "react-password-strength-bar": "0.4.0",
+    "react-password-strength-bar": "0.4.1",
     "react-places-autocomplete": "7.x",
     "react-range": "1.8.14",
     "react-resize-detector": "8.0.3",
