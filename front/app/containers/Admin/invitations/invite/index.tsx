@@ -7,6 +7,7 @@ import React, {
   ChangeEvent,
 } from 'react';
 import { isString, isEmpty, get } from 'lodash-es';
+import { getBase64FromFile } from 'utils/fileUtils';
 
 // components
 import Error from 'components/UI/Error';
@@ -18,10 +19,14 @@ import HelmetIntl from 'components/HelmetIntl';
 const InviteUsersWithSeatsModal = lazy(
   () => import('components/admin/SeatBasedBilling/InviteUsersWithSeatsModal')
 );
+import ImportTab from './ImportTab';
+import TextTab from './TextTab';
+const InvitationOptions = lazy(() => import('./InvitationOptions'));
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useExceedsSeats from 'hooks/useExceedsSeats';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // services
 import {
@@ -44,11 +49,6 @@ import { colors } from 'utils/styleUtils';
 
 // typings
 import { Locale, IOption } from 'typings';
-import ImportTab from './ImportTab';
-import TextTab from './TextTab';
-import InvitationOptions from './InvitationOptions';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { getBase64FromFile } from 'utils/fileUtils';
 
 const StyledTabs = styled(Tabs)`
   margin-bottom: 35px;
@@ -426,23 +426,25 @@ const Invitations = () => {
             />
           )}
 
-          <InvitationOptions
-            invitationOptionsOpened={invitationOptionsOpened}
-            onToggleOptions={toggleOptions}
-            selectedView={selectedView}
-            inviteesWillHaveAdminRights={inviteesWillHaveAdminRights}
-            inviteesWillHaveModeratorRights={inviteesWillHaveModeratorRights}
-            handleAdminRightsOnToggle={handleAdminRightsOnToggle}
-            handleModeratorRightsOnToggle={handleModeratorRightsOnToggle}
-            onLocaleOnChange={handleLocaleOnChange}
-            selectedLocale={selectedLocale}
-            handleSelectedProjectsOnChange={handleSelectedProjectsOnChange}
-            handleSelectedGroupsOnChange={handleSelectedGroupsOnChange}
-            handleInviteTextOnChange={handleInviteTextOnChange}
-            selectedProjects={selectedProjects}
-            selectedGroups={selectedGroups}
-            selectedInviteText={selectedInviteText}
-          />
+          <Suspense fallback={null}>
+            <InvitationOptions
+              invitationOptionsOpened={invitationOptionsOpened}
+              onToggleOptions={toggleOptions}
+              selectedView={selectedView}
+              inviteesWillHaveAdminRights={inviteesWillHaveAdminRights}
+              inviteesWillHaveModeratorRights={inviteesWillHaveModeratorRights}
+              handleAdminRightsOnToggle={handleAdminRightsOnToggle}
+              handleModeratorRightsOnToggle={handleModeratorRightsOnToggle}
+              onLocaleOnChange={handleLocaleOnChange}
+              selectedLocale={selectedLocale}
+              handleSelectedProjectsOnChange={handleSelectedProjectsOnChange}
+              handleSelectedGroupsOnChange={handleSelectedGroupsOnChange}
+              handleInviteTextOnChange={handleInviteTextOnChange}
+              selectedProjects={selectedProjects}
+              selectedGroups={selectedGroups}
+              selectedInviteText={selectedInviteText}
+            />
+          </Suspense>
 
           <SectionField>
             <Box display="flex" alignItems="center" paddingTop="30px">
