@@ -102,9 +102,9 @@ export const oldSignUpFlow = (
           }
 
           setCurrentStep('success');
-        } catch {
-          // setError('account_creation_failed');
+        } catch (e) {
           trackEventByName(tracks.signInEmailPasswordFailed);
+          throw e;
         }
       },
     },
@@ -144,13 +144,9 @@ export const oldSignUpFlow = (
       RESEND_CODE: async (newEmail: string) => {
         setStatus('pending');
 
-        try {
-          await resendEmailConfirmationCode(newEmail);
-          setCurrentStep('sign-up:email-confirmation');
-          setStatus('ok');
-        } catch {
-          // setError('unknown');
-        }
+        await resendEmailConfirmationCode(newEmail);
+        setCurrentStep('sign-up:email-confirmation');
+        setStatus('ok');
       },
     },
 
@@ -181,9 +177,9 @@ export const oldSignUpFlow = (
           setStatus('ok');
           setCurrentStep('success');
           trackEventByName(tracks.signUpCustomFieldsStepCompleted);
-        } catch {
-          // setError('unknown');
+        } catch (e) {
           trackEventByName(tracks.signUpCustomFieldsStepFailed);
+          throw e;
         }
       },
       SKIP: async () => {

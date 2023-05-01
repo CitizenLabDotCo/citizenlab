@@ -106,10 +106,6 @@ export const newLightFlow = (
           setStatus('ok');
           setCurrentStep('light-flow:password');
         }
-
-        if (result === 'error') {
-          // setError('account_creation_failed');
-        }
       },
     },
 
@@ -239,6 +235,7 @@ export const newLightFlow = (
 
           close();
         } catch {
+          // TODO figure out what this error response really looks like
           // setError('wrong_password');
         }
       },

@@ -215,6 +215,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'sign-in:email-password' && (
           <EmailAndPassword
             status={status}
+            setError={setError}
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onSubmit={transition(currentStep, 'SIGN_IN')}
@@ -237,6 +238,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
           <EmailAndPasswordSignUp
             state={state}
             status={status}
+            setError={setError}
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onSubmit={transition(currentStep, 'SUBMIT')}
@@ -256,6 +258,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'sign-up:change-email' && (
           <ChangeEmail
             status={status}
+            setError={setError}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onChangeEmail={transition(currentStep, 'RESEND_CODE')}
           />
@@ -264,8 +267,8 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'sign-up:verification' && (
           <Verification
             authenticationData={authenticationData}
+            setError={setError}
             onCompleted={transition(currentStep, 'CONTINUE')}
-            onError={() => setError('unknown')}
           />
         )}
 
@@ -273,6 +276,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
           <CustomFields
             authenticationData={authenticationData}
             status={status}
+            setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT')}
             onSkip={transition(currentStep, 'SKIP')}
           />
@@ -281,6 +285,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'sign-up:invite' && (
           <Invitation
             status={status}
+            setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
@@ -288,6 +293,8 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {/* light flow */}
         {currentStep === 'light-flow:email' && (
           <LightFlowStart
+            status={status}
+            setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
             onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
           />
@@ -297,6 +304,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
           <EmailPolicies
             state={state}
             status={status}
+            setError={setError}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
@@ -340,6 +348,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
           <Password
             state={state}
             status={status}
+            setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT_PASSWORD')}
           />
         )}
@@ -366,6 +375,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'missing-data:change-email' && (
           <ChangeEmail
             status={status}
+            setError={setError}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onChangeEmail={transition(currentStep, 'RESEND_CODE')}
           />
@@ -374,8 +384,8 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'missing-data:verification' && (
           <Verification
             authenticationData={authenticationData}
+            setError={setError}
             onCompleted={transition(currentStep, 'CONTINUE')}
-            onError={() => setError('unknown')}
           />
         )}
 
@@ -383,6 +393,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
           <CustomFields
             authenticationData={authenticationData}
             status={status}
+            setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT')}
             onSkip={transition(currentStep, 'SKIP')}
           />
@@ -392,8 +403,8 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'verification-only' && (
           <Verification
             authenticationData={authenticationData}
+            setError={setError}
             onCompleted={transition(currentStep, 'CONTINUE')}
-            onError={() => setError('unknown')}
           />
         )}
 

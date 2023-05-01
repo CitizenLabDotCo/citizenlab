@@ -15,8 +15,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
 
+// errors
+import { isCLErrorsJSON, handleCLErrorsJSON } from 'utils/errorUtils';
+
 // typings
-import { Status } from 'containers/Authentication/typings';
+import { SetError, Status } from 'containers/Authentication/typings';
 
 interface FormValues {
   token: string;
@@ -28,10 +31,11 @@ const DEFAULT_VALUES: Partial<FormValues> = {
 
 interface Props {
   status: Status;
+  setError: SetError;
   onSubmit: (token: string) => void;
 }
 
-const Invitation = ({ status, onSubmit }: Props) => {
+const Invitation = ({ status, setError, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
 
   const schema = object({
@@ -48,8 +52,12 @@ const Invitation = ({ status, onSubmit }: Props) => {
     try {
       await onSubmit(token);
     } catch (e) {
-      console.log('hello from catch block');
-      console.log(e);
+      if (isCLErrorsJSON(e)) {
+        handleCLErrorsJSON(e, methods.setError);
+        return;
+      }
+
+      setError('unknown');
     }
   };
 

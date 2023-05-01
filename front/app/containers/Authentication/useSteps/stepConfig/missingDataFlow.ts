@@ -65,13 +65,9 @@ export const missingDataFlow = (
       RESEND_CODE: async (newEmail: string) => {
         setStatus('pending');
 
-        try {
-          await resendEmailConfirmationCode(newEmail);
-          setCurrentStep('missing-data:email-confirmation');
-          setStatus('ok');
-        } catch (e) {
-          // setError('unknown');
-        }
+        await resendEmailConfirmationCode(newEmail);
+        setCurrentStep('missing-data:email-confirmation');
+        setStatus('ok');
       },
     },
 
@@ -121,13 +117,9 @@ export const missingDataFlow = (
       SUBMIT: async (userId: string, formData: FormData) => {
         setStatus('pending');
 
-        try {
-          await updateUser(userId, { custom_field_values: formData });
-          setStatus('ok');
-          setCurrentStep('success');
-        } catch {
-          // setError('unknown');
-        }
+        await updateUser(userId, { custom_field_values: formData });
+        setStatus('ok');
+        setCurrentStep('success');
       },
       SKIP: async () => {
         setCurrentStep('success');

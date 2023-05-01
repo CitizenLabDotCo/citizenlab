@@ -2,18 +2,21 @@ import React from 'react';
 import VerificationSteps from './VerificationSteps';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
-import { AuthenticationData } from 'containers/Authentication/typings';
+import {
+  AuthenticationData,
+  SetError,
+} from 'containers/Authentication/typings';
 
 interface Props {
   authenticationData: AuthenticationData;
+  setError: SetError;
   onCompleted: () => void;
-  onError: () => void;
 }
 
 const VerificationSignUpStep = ({
   authenticationData,
+  setError,
   onCompleted,
-  onError,
 }: Props) => {
   const handleOnCompleted = () => {
     trackEventByName(tracks.signUpVerificationStepCompleted);
@@ -22,7 +25,7 @@ const VerificationSignUpStep = ({
 
   const handleOnError = () => {
     trackEventByName(tracks.signUpVerificationStepFailed);
-    onError();
+    setError('unknown');
   };
 
   return (

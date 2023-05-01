@@ -19,6 +19,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
 
+// errors
+import { isCLErrorsJSON, handleCLErrorsJSON } from 'utils/errorUtils';
+
 // utils
 import { isValidEmail } from 'utils/validate';
 
@@ -26,8 +29,11 @@ import { isValidEmail } from 'utils/validate';
 import { SSOProvider } from 'services/singleSignOn';
 import { Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
+import { SetError, Status } from 'containers/Authentication/typings';
 
 interface Props {
+  status: Status;
+  setError: SetError;
   onSubmit: (email: string, locale: Locale) => void;
   onSwitchToSSO: (ssoProvider: SSOProvider) => void;
 }
@@ -40,7 +46,12 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   email: undefined,
 };
 
-const LightFlowStart = ({ onSubmit, onSwitchToSSO }: Props) => {
+const LightFlowStart = ({
+  status,
+  setError,
+  onSubmit,
+  onSwitchToSSO,
+}: Props) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const locale = useLocale();
 
@@ -69,8 +80,19 @@ const LightFlowStart = ({ onSubmit, onSwitchToSSO }: Props) => {
 
   if (isNilOrError(locale)) return null;
 
-  const handleSubmit = ({ email }: FormValues) => {
-    onSubmit(email, locale);
+  const loading = status === 'pending';
+
+  const handleSubmit = async ({ email }: FormValues) => {
+    try {
+      await onSubmit(email, locale);
+    } catch (e) {
+      if (isCLErrorsJSON(e)) {
+        handleCLErrorsJSON(e, methods.setError);
+        return;
+      }
+
+      setError('unknown');
+    }
   };
 
   return (
@@ -89,7 +111,12 @@ const LightFlowStart = ({ onSubmit, onSwitchToSSO }: Props) => {
               />
             </Box>
             <Box w="100%" display="flex" mt="32px">
-              <Button type="submit" width="100%">
+              <Button
+                type="submit"
+                width="100%"
+                disabled={loading}
+                processing={loading}
+              >
                 {formatMessage(sharedMessages.continue)}
               </Button>
             </Box>

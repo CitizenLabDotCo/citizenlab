@@ -46,5 +46,5 @@ export default async function createEmailOnlyAccount({
     return 'email_taken';
   }
 
-  return 'error';
+  throw new Error();
 }

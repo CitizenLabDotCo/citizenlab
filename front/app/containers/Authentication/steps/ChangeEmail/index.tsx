@@ -16,11 +16,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
 
+// errors
+import { isCLErrorsJSON, handleCLErrorsJSON } from 'utils/errorUtils';
+
 // typings
-import { Status } from 'containers/Authentication/typings';
+import { SetError, Status } from 'containers/Authentication/typings';
 
 interface Props {
   status: Status;
+  setError: SetError;
   onGoBack: () => void;
   onChangeEmail: (newEmail: string) => void;
 }
@@ -54,8 +58,15 @@ const ChangeEmail = ({ status, onGoBack, onChangeEmail }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const handleSubmit = ({ email }: FormValues) => {
-    onChangeEmail(email);
+  const handleSubmit = async ({ email }: FormValues) => {
+    try {
+      await onChangeEmail(email);
+    } catch (e) {
+      if (isCLErrorsJSON(e)) {
+        handleCLErrorsJSON(e, methods.setError);
+        return;
+      }
+    }
   };
 
   return (
