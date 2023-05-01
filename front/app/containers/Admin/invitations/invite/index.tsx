@@ -1,29 +1,16 @@
 import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
 import { isString, isEmpty, get } from 'lodash-es';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Error from 'components/UI/Error';
-import {
-  Radio,
-  IconTooltip,
-  Toggle,
-  Label,
-  Box,
-} from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import Tabs from 'components/UI/Tabs';
-import Collapse from 'components/UI/Collapse';
-import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
-import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
-import Warning from 'components/UI/Warning';
 const InviteUsersWithSeatsModal = lazy(
   () => import('components/admin/SeatBasedBilling/InviteUsersWithSeatsModal')
 );
-import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -40,57 +27,31 @@ import {
   IInvitesNewSeats,
 } from 'services/invites';
 
-// resources
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import { appLocalePairs } from 'containers/App/constants';
-import { getLocalized } from 'utils/i18n';
 
 // styling
 import styled from 'styled-components';
-import { colors, stylingConsts } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // typings
 import { Locale, IOption } from 'typings';
 import ImportTab from './ImportTab';
 import TextTab from './TextTab';
+import InvitationOptions from './InvitationOptions';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 const StyledTabs = styled(Tabs)`
   margin-bottom: 35px;
 `;
 
-const StyledToggle = styled(Toggle)`
-  margin-bottom: 10px;
-`;
-
-const StyledWarning = styled(Warning)`
-  margin-top: 5px;
-`;
-
-export interface InputProps {}
-
-interface DataProps {
-  projects: GetProjectsChildProps;
-  locale: GetLocaleChildProps;
-  tenantLocales: GetAppConfigurationLocalesChildProps;
-  groups: GetGroupsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
+const Invitations = () => {
   const { formatMessage } = useIntl();
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
   });
+  const tenantLocales = useAppConfigurationLocales();
 
   const [selectedEmails, setSelectedEmails] = useState<string | null>(null);
   const [selectedFileBase64, setSelectedFileBase64] = useState<string | null>(
@@ -133,56 +94,6 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
       setSelectedLocale(tenantLocales[0]);
     }
   }, [tenantLocales, selectedLocale]);
-
-  const getProjectOptions = (
-    projects: GetProjectsChildProps,
-    locale: GetLocaleChildProps,
-    tenantLocales: GetAppConfigurationLocalesChildProps
-  ) => {
-    const { projectsList } = projects;
-
-    if (
-      !isNilOrError(locale) &&
-      !isNilOrError(tenantLocales) &&
-      !isNilOrError(projectsList) &&
-      projectsList.length > 0
-    ) {
-      return projectsList.map((project) => ({
-        value: project.id,
-        label: getLocalized(
-          project.attributes.title_multiloc,
-          locale,
-          tenantLocales
-        ),
-      }));
-    }
-
-    return null;
-  };
-
-  const getGroupOptions = (
-    groups: GetGroupsChildProps,
-    locale: GetLocaleChildProps,
-    tenantLocales: GetAppConfigurationLocalesChildProps
-  ) => {
-    if (
-      !isNilOrError(locale) &&
-      !isNilOrError(tenantLocales) &&
-      !isNilOrError(groups.groupsList) &&
-      groups.groupsList.length > 0
-    ) {
-      return groups.groupsList.map((group) => ({
-        value: group.id,
-        label: getLocalized(
-          group.attributes.title_multiloc,
-          locale,
-          tenantLocales
-        ),
-      }));
-    }
-
-    return null;
-  };
 
   const resetErrorAndSuccessState = () => {
     setProcessed(false);
@@ -396,9 +307,6 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
     }
   };
 
-  const projectOptions = getProjectOptions(projects, locale, tenantLocales);
-  const groupOptions = getGroupOptions(groups, locale, tenantLocales);
-
   const invitationTabs = [
     {
       name: 'import',
@@ -409,164 +317,6 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
       label: formatMessage(messages.textTab),
     },
   ];
-
-  const invitationOptions = (
-    <Collapse
-      opened={invitationOptionsOpened}
-      onToggle={toggleOptions}
-      label={<FormattedMessage {...messages.invitationOptions} />}
-      labelTooltipText={
-        selectedView === 'import' ? (
-          <FormattedMessage
-            {...messages.importOptionsInfo}
-            values={{
-              supportPageLink: (
-                <a
-                  href={formatMessage(messages.invitesSupportPageURL)}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <FormattedMessage {...messages.supportPage} />
-                </a>
-              ),
-            }}
-          />
-        ) : null
-      }
-    >
-      <Box
-        width="497px"
-        padding="20px"
-        borderRadius={stylingConsts.borderRadius}
-        border="solid 1px #ddd"
-        background={colors.white}
-      >
-        <SectionField>
-          <Box display="flex" justifyContent="space-between">
-            <Label>
-              <FormattedMessage {...messages.adminLabel} />
-              <IconTooltip
-                content={<FormattedMessage {...messages.adminLabelTooltip} />}
-              />
-            </Label>
-            <Toggle
-              checked={inviteesWillHaveAdminRights}
-              onChange={handleAdminRightsOnToggle}
-            />
-          </Box>
-          {!hasSeatBasedBillingEnabled && inviteesWillHaveAdminRights && (
-            <Box marginTop="20px">
-              <SeatInfo seatType="admin" />
-            </Box>
-          )}
-        </SectionField>
-
-        <SectionField>
-          <Box display="flex" justifyContent="space-between">
-            <Label>
-              <FormattedMessage {...messages.moderatorLabel} />
-              <IconTooltip
-                content={
-                  <FormattedMessage
-                    {...messages.moderatorLabelTooltip}
-                    values={{
-                      moderatorLabelTooltipLink: (
-                        <a
-                          href={formatMessage(
-                            messages.moderatorLabelTooltipLink
-                          )}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <FormattedMessage
-                            {...messages.moderatorLabelTooltipLinkText}
-                          />
-                        </a>
-                      ),
-                    }}
-                  />
-                }
-              />
-            </Label>
-            <StyledToggle
-              checked={inviteesWillHaveModeratorRights}
-              onChange={handleModeratorRightsOnToggle}
-            />
-          </Box>
-
-          {inviteesWillHaveModeratorRights && (
-            <>
-              <MultipleSelect
-                value={selectedProjects}
-                options={projectOptions}
-                onChange={handleSelectedProjectsOnChange}
-                placeholder={
-                  <FormattedMessage {...messages.projectSelectorPlaceholder} />
-                }
-              />
-              {isNilOrError(selectedProjects) && (
-                <StyledWarning>
-                  <FormattedMessage {...messages.required} />
-                </StyledWarning>
-              )}
-              {!hasSeatBasedBillingEnabled && (
-                <Box marginTop="20px">
-                  <SeatInfo seatType="moderator" />
-                </Box>
-              )}
-            </>
-          )}
-        </SectionField>
-
-        {!isNilOrError(tenantLocales) && tenantLocales.length > 1 && (
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.localeLabel} />
-            </Label>
-
-            {tenantLocales.map((currentTenantLocale) => (
-              <Radio
-                key={currentTenantLocale}
-                onChange={handleLocaleOnChange}
-                currentValue={selectedLocale}
-                value={currentTenantLocale}
-                label={appLocalePairs[currentTenantLocale]}
-                name="locales"
-                id={`locale-${currentTenantLocale}`}
-              />
-            ))}
-          </SectionField>
-        )}
-
-        <SectionField>
-          <Label>
-            <FormattedMessage {...messages.addToGroupLabel} />
-          </Label>
-          <MultipleSelect
-            value={selectedGroups}
-            options={groupOptions}
-            onChange={handleSelectedGroupsOnChange}
-            placeholder={<FormattedMessage {...messages.groupsPlaceholder} />}
-          />
-        </SectionField>
-
-        <SectionField>
-          <Label>
-            <FormattedMessage {...messages.inviteTextLabel} />
-          </Label>
-          <QuillEditor
-            id="invite-text"
-            value={selectedInviteText || ''}
-            onChange={handleInviteTextOnChange}
-            limitedTextFormatting
-            noImages
-            noVideos
-            withCTAButton
-          />
-        </SectionField>
-      </Box>
-    </Collapse>
-  );
 
   return (
     <>
@@ -591,6 +341,24 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
               handleEmailListOnChange={handleEmailListOnChange}
             />
           )}
+
+          <InvitationOptions
+            invitationOptionsOpened={invitationOptionsOpened}
+            onToggleOptions={toggleOptions}
+            selectedView={selectedView}
+            inviteesWillHaveAdminRights={inviteesWillHaveAdminRights}
+            inviteesWillHaveModeratorRights={inviteesWillHaveModeratorRights}
+            handleAdminRightsOnToggle={handleAdminRightsOnToggle}
+            handleModeratorRightsOnToggle={handleModeratorRightsOnToggle}
+            onLocaleOnChange={handleLocaleOnChange}
+            selectedLocale={selectedLocale}
+            handleSelectedProjectsOnChange={handleSelectedProjectsOnChange}
+            handleSelectedGroupsOnChange={handleSelectedGroupsOnChange}
+            handleInviteTextOnChange={handleInviteTextOnChange}
+            selectedProjects={selectedProjects}
+            selectedGroups={selectedGroups}
+            selectedInviteText={selectedInviteText}
+          />
 
           <SectionField>
             <Box display="flex" alignItems="center" paddingTop="30px">
@@ -637,17 +405,4 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
   );
 };
 
-const Data = adopt<DataProps>({
-  projects: (
-    <GetProjects publicationStatuses={['draft', 'published', 'archived']} />
-  ),
-  locale: <GetLocale />,
-  tenantLocales: <GetAppConfigurationLocales />,
-  groups: <GetGroups membershipType="manual" />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps: DataProps) => <Invitations {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default Invitations;

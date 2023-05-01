@@ -145,7 +145,6 @@ const ImportTab = ({ resetErrorAndSuccessState }: Props) => {
       <StyledSectionTitle>
         <FormattedMessage {...messages.configureInvitations} />
       </StyledSectionTitle>
-      {/* {invitationOptions} */}
     </>
   );
 };

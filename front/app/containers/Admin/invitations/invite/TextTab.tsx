@@ -12,20 +12,16 @@ interface Props {
 
 const TextTab = ({ selectedEmails, handleEmailListOnChange }: Props) => {
   return (
-    <>
-      <SectionField>
-        <Label htmlFor="e2e-emails">
-          <FormattedMessage {...messages.emailListLabel} />
-        </Label>
-        <TextArea
-          value={selectedEmails || ''}
-          onChange={handleEmailListOnChange}
-          id="e2e-emails"
-        />
-      </SectionField>
-
-      {/* {invitationOptions} */}
-    </>
+    <SectionField>
+      <Label htmlFor="e2e-emails">
+        <FormattedMessage {...messages.emailListLabel} />
+      </Label>
+      <TextArea
+        value={selectedEmails || ''}
+        onChange={handleEmailListOnChange}
+        id="e2e-emails"
+      />
+    </SectionField>
   );
 };
 
