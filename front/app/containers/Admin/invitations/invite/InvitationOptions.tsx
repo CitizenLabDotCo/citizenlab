@@ -28,6 +28,7 @@ import { IProjectData } from 'services/projects';
 import { adopt } from 'react-adopt';
 import GetGroups from 'resources/GetGroups';
 import { GetGroupsChildProps } from 'resources/GetGroups';
+import { TInviteTabName } from '.';
 
 const StyledWarning = styled(Warning)`
   margin-top: 5px;
@@ -44,7 +45,7 @@ interface DataProps {
 interface InputProps {
   invitationOptionsOpened: boolean;
   onToggleOptions: () => void;
-  selectedView: 'import' | 'text';
+  selectedView: TInviteTabName;
   inviteesWillHaveAdminRights: boolean;
   inviteesWillHaveModeratorRights: boolean;
   handleAdminRightsOnToggle: () => void;
@@ -122,7 +123,7 @@ const InvitationOptions = ({
       onToggle={onToggleOptions}
       label={<FormattedMessage {...messages.invitationOptions} />}
       labelTooltipText={
-        selectedView === 'import' ? (
+        selectedView === 'template' ? (
           <FormattedMessage
             {...messages.importOptionsInfo}
             values={{

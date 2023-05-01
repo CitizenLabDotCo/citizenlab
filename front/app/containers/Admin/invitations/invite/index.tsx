@@ -54,6 +54,8 @@ const StyledTabs = styled(Tabs)`
   margin-bottom: 35px;
 `;
 
+export type TInviteTabName = 'template' | 'manual';
+
 const Invitations = () => {
   const { formatMessage } = useIntl();
   const hasSeatBasedBillingEnabled = useFeatureFlag({
@@ -79,7 +81,7 @@ const Invitations = () => {
   );
   const [invitationOptionsOpened, setInvitationOptionsOpened] =
     useState<boolean>(false);
-  const [selectedView, setSelectedView] = useState<'import' | 'text'>('import');
+  const [selectedView, setSelectedView] = useState<TInviteTabName>('template');
   const [processing, setProcessing] = useState<boolean>(false);
   const [processed, setProcessed] = useState<boolean>(false);
   const [apiErrors, setApiErrors] = useState<IInviteError[] | null>(null);
@@ -194,7 +196,7 @@ const Invitations = () => {
     setInvitationOptionsOpened(!invitationOptionsOpened);
   };
 
-  const resetWithView = (selectedView: 'import' | 'text') => {
+  const resetWithView = (selectedView: TInviteTabName) => {
     setSelectedView(selectedView);
     setSelectedEmails(null);
     setSelectedFileBase64(null);
@@ -261,16 +263,16 @@ const Invitations = () => {
       invite_text: selectedInviteText,
     };
 
-    if (selectedView === 'import') {
-      onSubmitImportTab(bulkInvite, save);
+    if (selectedView === 'template') {
+      onSubmitTemplateTab(bulkInvite, save);
     }
 
-    if (selectedView === 'text') {
-      onSubmitTextTab(bulkInvite, save);
+    if (selectedView === 'manual') {
+      onSubmitManualTab(bulkInvite, save);
     }
   };
 
-  const onSubmitImportTab = async (
+  const onSubmitTemplateTab = async (
     bulkInvite: INewBulkInvite,
     save: boolean
   ) => {
@@ -320,7 +322,10 @@ const Invitations = () => {
     }
   };
 
-  const onSubmitTextTab = async (bulkInvite: INewBulkInvite, save: boolean) => {
+  const onSubmitManualTab = async (
+    bulkInvite: INewBulkInvite,
+    save: boolean
+  ) => {
     const hasCorrectSelection = isString(selectedEmails);
 
     if (hasCorrectSelection) {
@@ -331,7 +336,7 @@ const Invitations = () => {
         setFiletypeError(null);
         setUnknownError(null);
 
-        if (selectedView === 'text' && isString(selectedEmails)) {
+        if (selectedView === 'manual' && isString(selectedEmails)) {
           const inviteOptions = {
             emails: selectedEmails.split(',').map((item) => item.trim()),
             ...bulkInvite,
@@ -388,13 +393,13 @@ const Invitations = () => {
     }
   };
 
-  const invitationTabs = [
+  const invitationTabs: { name: TInviteTabName; label: string }[] = [
     {
-      name: 'import',
+      name: 'template',
       label: formatMessage(messages.importTab),
     },
     {
-      name: 'text',
+      name: 'manual',
       label: formatMessage(messages.textTab),
     },
   ];
@@ -412,14 +417,14 @@ const Invitations = () => {
             selectedValue={selectedView || 'import'}
             onClick={resetWithView}
           />
-          {selectedView === 'import' && (
+          {selectedView === 'template' && (
             <ImportTab
               filetypeError={filetypeError}
               handleFileInputOnChange={handleFileInputOnChange}
             />
           )}
 
-          {selectedView === 'text' && (
+          {selectedView === 'manual' && (
             <TextTab
               selectedEmails={selectedEmails}
               handleEmailListOnChange={handleEmailListOnChange}
