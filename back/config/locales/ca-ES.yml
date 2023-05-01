@@ -242,5 +242,5 @@ ca:
   time:
     am: soc
     formats:
-      hour_of_day: "%l %p"
+      hour_of_day: "%H:%M"
     pm: pm
