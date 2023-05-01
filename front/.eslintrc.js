@@ -22,7 +22,6 @@ module.exports = {
     'eslint-plugin-react',
     'jsx-a11y',
     '@typescript-eslint',
-    // '@typescript-eslint/tslint',
     'unused-imports',
     'import',
   ],
@@ -166,16 +165,6 @@ module.exports = {
         markers: ['/'],
       },
     ],
-    // '@typescript-eslint/tslint/config': [
-    //   'error',
-    //   {
-    //     lintFile: './tslint.json',
-    //     rulesDirectory: ['node_modules/tslint-react/rules'],
-    //     rules: {
-    //       'no-module-references': true,
-    //     },
-    //   },
-    // ],
   },
   ignorePatterns: [
     '.eslintrc.js',
