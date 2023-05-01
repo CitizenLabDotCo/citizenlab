@@ -44,6 +44,8 @@ import { colors, viewportWidths, isRtl } from 'utils/styleUtils';
 // other
 import { isValidPhase } from '../phaseParam';
 import setPhaseURL from './setPhaseURL';
+import DocumentAnnotation from '../shared/document_annotation';
+import { useParams } from 'react-router-dom';
 
 const Container = styled.div``;
 
@@ -84,132 +86,120 @@ interface Props {
   className?: string;
 }
 
-const ProjectTimelineContainer = memo<Props & WithRouterProps>(
-  ({ projectId, className, params: { phaseNumber } }) => {
-    const project = useProject({ projectId });
-    const phases = usePhases(projectId);
-    const locale = useLocale();
-    const windowSize = useWindowSize();
+const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
+  const { phaseNumber } = useParams() as {
+    phaseNumber: string;
+  };
+  const project = useProject({ projectId });
+  const phases = usePhases(projectId);
+  const locale = useLocale();
+  const windowSize = useWindowSize();
 
-    const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
-    const currentPhase = getCurrentPhase(phases);
+  const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
+  const currentPhase = getCurrentPhase(phases);
 
-    useEffect(() => {
-      const subscription = selectedPhase$.subscribe((selectedPhase) => {
-        setSelectedPhase(selectedPhase);
-      });
+  useEffect(() => {
+    const subscription = selectedPhase$.subscribe((selectedPhase) => {
+      setSelectedPhase(selectedPhase);
+    });
 
-      return () => {
-        subscription.unsubscribe();
-        selectPhase(null);
-      };
-    }, []);
-
-    useEffect(() => {
-      if (
-        selectedPhase !== null &&
-        !isNilOrError(phases) &&
-        project &&
-        !isNilOrError(locale)
-      ) {
-        setPhaseURL(
-          selectedPhase.id,
-          currentPhase?.id,
-          phases,
-          project,
-          locale
-        );
-      }
-    }, [selectedPhase, phases, project, locale, currentPhase]);
-
-    useEffect(() => {
-      if (!isNilOrError(phases) && phases.length > 0) {
-        const latestRelevantPhase = getLatestRelevantPhase(phases);
-
-        // if a phase parameter was provided, and it is valid, we set that as phase.
-        // otherwise, use the most logical phase
-        if (isValidPhase(phaseNumber, phases)) {
-          const phaseIndex = Number(phaseNumber) - 1;
-          selectPhase(phases[phaseIndex]);
-        } else if (latestRelevantPhase) {
-          selectPhase(latestRelevantPhase);
-        } else {
-          selectPhase(null);
-        }
-      }
-    }, [phaseNumber, phases]);
-
-    const handleSetSelectedPhase = (phase: IPhaseData) => {
-      setSelectedPhase(phase);
+    return () => {
+      subscription.unsubscribe();
+      selectPhase(null);
     };
+  }, []);
 
+  useEffect(() => {
     if (
-      !isNilOrError(project) &&
-      selectedPhase
+      selectedPhase !== null &&
+      !isNilOrError(phases) &&
+      project &&
+      !isNilOrError(locale)
     ) {
-      const selectedPhaseId = selectedPhase.id;
-      const isPBPhase =
-        selectedPhase.attributes.participation_method === 'budgeting';
-      const participationMethod = selectedPhase.attributes.participation_method;
-      const smallerThanSmallTablet = windowSize
-        ? windowSize.windowWidth <= viewportWidths.tablet
-        : false;
+      setPhaseURL(selectedPhase.id, currentPhase?.id, phases, project, locale);
+    }
+  }, [selectedPhase, phases, project, locale, currentPhase]);
 
-      return (
-        <Container className={`${className || ''} e2e-project-process-page`}>
-          <StyledSectionContainer>
-            <div>
-              <ContentContainer maxWidth={maxPageWidth}>
-                <Header>
-                  <StyledProjectPageSectionTitle>
-                    <FormattedMessage {...messages.phases} />
-                  </StyledProjectPageSectionTitle>
-                  <PhaseNavigation projectId={project.id} buttonStyle="white" />
-                </Header>
-                <StyledTimeline
-                  projectId={project.id}
-                  selectedPhase={selectedPhase}
-                  setSelectedPhase={handleSetSelectedPhase}
+  useEffect(() => {
+    if (!isNilOrError(phases) && phases.length > 0) {
+      const latestRelevantPhase = getLatestRelevantPhase(phases);
+
+      // if a phase parameter was provided, and it is valid, we set that as phase.
+      // otherwise, use the most logical phase
+      if (isValidPhase(phaseNumber, phases)) {
+        const phaseIndex = Number(phaseNumber) - 1;
+        selectPhase(phases[phaseIndex]);
+      } else if (latestRelevantPhase) {
+        selectPhase(latestRelevantPhase);
+      } else {
+        selectPhase(null);
+      }
+    }
+  }, [phaseNumber, phases]);
+
+  const handleSetSelectedPhase = (phase: IPhaseData) => {
+    setSelectedPhase(phase);
+  };
+
+  if (!isNilOrError(project) && selectedPhase) {
+    const selectedPhaseId = selectedPhase.id;
+    const isPBPhase =
+      selectedPhase.attributes.participation_method === 'budgeting';
+    const participationMethod = selectedPhase.attributes.participation_method;
+    const smallerThanSmallTablet = windowSize
+      ? windowSize.windowWidth <= viewportWidths.tablet
+      : false;
+
+    return (
+      <Container className={`${className || ''} e2e-project-process-page`}>
+        <StyledSectionContainer>
+          <div>
+            <ContentContainer maxWidth={maxPageWidth}>
+              <Header>
+                <StyledProjectPageSectionTitle>
+                  <FormattedMessage {...messages.phases} />
+                </StyledProjectPageSectionTitle>
+                <PhaseNavigation projectId={project.id} buttonStyle="white" />
+              </Header>
+              <StyledTimeline
+                projectId={project.id}
+                selectedPhase={selectedPhase}
+                setSelectedPhase={handleSetSelectedPhase}
+              />
+              {isPBPhase && (
+                <StyledPBExpenses
+                  participationContextId={selectedPhaseId}
+                  participationContextType="phase"
+                  viewMode={smallerThanSmallTablet ? 'column' : 'row'}
                 />
-                {isPBPhase && (
-                  <StyledPBExpenses
-                    participationContextId={selectedPhaseId}
-                    participationContextType="phase"
-                    viewMode={smallerThanSmallTablet ? 'column' : 'row'}
+              )}
+              <PhaseSurvey projectId={project.id} phaseId={selectedPhaseId} />
+              <DocumentAnnotation projectId={projectId} />
+            </ContentContainer>
+          </div>
+          <div>
+            <ContentContainer maxWidth={maxPageWidth}>
+              <PhasePoll projectId={project.id} phaseId={selectedPhaseId} />
+              <PhaseVolunteering
+                projectId={project.id}
+                phaseId={selectedPhaseId}
+              />
+              {(participationMethod === 'ideation' ||
+                participationMethod === 'budgeting') &&
+                selectedPhaseId && (
+                  <PhaseIdeas
+                    projectId={project.id}
+                    phaseId={selectedPhaseId}
                   />
                 )}
-                <PhaseSurvey projectId={project.id} phaseId={selectedPhaseId} />
-              </ContentContainer>
-            </div>
-            <div>
-              <ContentContainer maxWidth={maxPageWidth}>
-                <PhasePoll projectId={project.id} phaseId={selectedPhaseId} />
-                <PhaseVolunteering
-                  projectId={project.id}
-                  phaseId={selectedPhaseId}
-                />
-              </ContentContainer>
-            </div>
-
-            {(participationMethod === 'ideation' ||
-              participationMethod === 'budgeting') &&
-              selectedPhaseId && (
-                <div>
-                  <ContentContainer maxWidth={maxPageWidth}>
-                    <PhaseIdeas
-                      projectId={project.id}
-                      phaseId={selectedPhaseId}
-                    />
-                  </ContentContainer>
-                </div>
-              )}
-          </StyledSectionContainer>
-        </Container>
-      );
-    }
-
-    return null;
+            </ContentContainer>
+          </div>
+        </StyledSectionContainer>
+      </Container>
+    );
   }
-);
 
-export default withRouter(ProjectTimelineContainer);
+  return null;
+});
+
+export default ProjectTimelineContainer;

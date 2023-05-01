@@ -28,6 +28,10 @@ const DocumentAnnotation = ({ project, className }: Props) => {
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
   const documentUrl = project.attributes.document_annotation_embed_url;
+  const email =
+    !isNilOrError(authUser) && authUser.attributes.email
+      ? authUser.attributes.email
+      : null;
 
   // const { enabled, disabledReason } = getSurveyTakingRules({
   //   project,
@@ -36,11 +40,6 @@ const DocumentAnnotation = ({ project, className }: Props) => {
   // });
 
   if (documentUrl) {
-    const email =
-      !isNilOrError(authUser) && authUser.attributes.email
-        ? authUser.attributes.email
-        : null;
-
     return (
       <Box
         className={`e2e-continuous-project-document-annotation-container ${
