@@ -273,7 +273,7 @@ const Invitations = () => {
     bulkInvite: INewBulkInvite,
     save: boolean
   ) => {
-    const hasCorrectSelection = isString(selectedFileBase64) && !selectedEmails;
+    const hasCorrectSelection = isString(selectedFileBase64);
 
     if (hasCorrectSelection) {
       try {
