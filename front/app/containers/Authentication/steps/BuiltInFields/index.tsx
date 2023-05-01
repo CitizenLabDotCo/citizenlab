@@ -22,6 +22,9 @@ import { DEFAULT_VALUES, getSchema } from './form';
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
 
+// errors
+import { isCLErrorsJSON, handleCLErrorsJSON } from 'utils/errorUtils';
+
 // tracks
 import tracks from '../../tracks';
 import { trackEventByName } from 'utils/analytics';
@@ -34,11 +37,16 @@ import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 
 // typings
 import { BuiltInFieldsUpdate } from '../../useSteps/stepConfig/typings';
-import { Status, AuthenticationData } from 'containers/Authentication/typings';
+import {
+  Status,
+  AuthenticationData,
+  SetError,
+} from 'containers/Authentication/typings';
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 
 interface BaseProps {
   status: Status;
+  setError: SetError;
   onSubmit: (userId: string, update: BuiltInFieldsUpdate) => void;
 }
 
@@ -48,6 +56,7 @@ interface Props extends BaseProps {
 
 const BuiltInFields = ({
   status,
+  setError,
   authenticationRequirements,
   onSubmit,
 }: Props) => {
@@ -80,16 +89,25 @@ const BuiltInFields = ({
 
   if (isNilOrError(locale) || isNilOrError(authUser)) return null;
 
-  const handleSubmit = ({
+  const handleSubmit = async ({
     first_name,
     last_name,
     password,
   }: BuiltInFieldsUpdate) => {
-    onSubmit(authUser.id, {
-      first_name,
-      last_name,
-      password,
-    });
+    try {
+      await onSubmit(authUser.id, {
+        first_name,
+        last_name,
+        password,
+      });
+    } catch (e) {
+      if (isCLErrorsJSON(e)) {
+        handleCLErrorsJSON(e, methods.setError);
+        return;
+      }
+
+      setError('unknown');
+    }
   };
 
   const builtIn = authenticationRequirements.requirements.built_in;
