@@ -5,10 +5,12 @@ import useAuthUser from 'hooks/useAuthUser';
 // components
 import ContentContainer from 'components/ContentContainer';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import {
+  maxPageWidth,
+  ProjectPageSectionTitle,
+} from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
 import { Box } from '@citizenlab/cl2-component-library';
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 import Konveio from '../shared/document_annotation/Konveio';
 
 // i18n

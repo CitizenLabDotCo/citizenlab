@@ -11,7 +11,7 @@ import SurveyInputs from './components/SurveyInputs';
 import { Container, StyledSection } from './components/styling';
 import IdeationInputs from './components/IdeationInputs';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { Input } from '@citizenlab/cl2-component-library';
+import { Input, IOption } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 // services
 import { projectByIdStream, IProject, IProjectData } from 'services/projects';
@@ -39,7 +39,6 @@ import messages from '../messages';
 // typings
 import { CLErrors } from 'typings';
 import { adopt } from 'react-adopt';
-import { IOption } from '@citizenlab/cl2-component-library';
 
 // utils
 import getOutput from './utils/getOutput';
