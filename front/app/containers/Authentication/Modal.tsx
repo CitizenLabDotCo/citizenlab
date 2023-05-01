@@ -358,6 +358,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
           <BuiltInFields
             status={status}
             authenticationData={authenticationData}
+            setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
