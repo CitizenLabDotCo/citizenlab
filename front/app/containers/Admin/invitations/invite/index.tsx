@@ -19,8 +19,8 @@ import HelmetIntl from 'components/HelmetIntl';
 const InviteUsersWithSeatsModal = lazy(
   () => import('components/admin/SeatBasedBilling/InviteUsersWithSeatsModal')
 );
-import ImportTab from './ImportTab';
-import TextTab from './TextTab';
+import TemplateTab from './TemplateTab';
+import ManualTab from './ManualTab';
 const InvitationOptions = lazy(() => import('./InvitationOptions'));
 
 // hooks
@@ -418,14 +418,14 @@ const Invitations = () => {
             onClick={resetWithView}
           />
           {selectedView === 'template' && (
-            <ImportTab
+            <TemplateTab
               filetypeError={filetypeError}
               handleFileInputOnChange={handleFileInputOnChange}
             />
           )}
 
           {selectedView === 'manual' && (
-            <TextTab
+            <ManualTab
               selectedEmails={selectedEmails}
               handleEmailListOnChange={handleEmailListOnChange}
             />

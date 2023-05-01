@@ -44,7 +44,7 @@ interface Props {
   handleFileInputOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const ImportTab = ({ filetypeError, handleFileInputOnChange }: Props) => {
+const TemplateTab = ({ filetypeError, handleFileInputOnChange }: Props) => {
   const { formatMessage } = useIntl();
   const fileInputElement = useRef<HTMLInputElement | null>(null);
 
@@ -118,4 +118,4 @@ const ImportTab = ({ filetypeError, handleFileInputOnChange }: Props) => {
   );
 };
 
-export default ImportTab;
+export default TemplateTab;

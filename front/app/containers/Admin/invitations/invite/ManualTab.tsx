@@ -10,7 +10,7 @@ interface Props {
   handleEmailListOnChange: (selectedEmails: string) => void;
 }
 
-const TextTab = ({ selectedEmails, handleEmailListOnChange }: Props) => {
+const ManualTab = ({ selectedEmails, handleEmailListOnChange }: Props) => {
   return (
     <SectionField>
       <Label htmlFor="e2e-emails">
@@ -25,4 +25,4 @@ const TextTab = ({ selectedEmails, handleEmailListOnChange }: Props) => {
   );
 };
 
-export default TextTab;
+export default ManualTab;
