@@ -106,10 +106,9 @@ export const oldSignInFlow = (
           }
 
           trackEventByName(tracks.signInEmailPasswordCompleted);
-        } catch {
-          // TODO figure out what this error response really looks like
-          // setError('wrong_password');
+        } catch (e) {
           trackEventByName(tracks.signInEmailPasswordFailed);
+          throw e;
         }
       },
     },

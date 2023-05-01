@@ -216,28 +216,23 @@ export const newLightFlow = (
       ) => {
         setStatus('pending');
 
-        try {
-          await signIn({ email, password, rememberMe, tokenLifetime });
+        await signIn({ email, password, rememberMe, tokenLifetime });
 
-          const { requirements } = await getRequirements();
+        const { requirements } = await getRequirements();
 
-          if (requirements.special.confirmation === 'require') {
-            setCurrentStep('missing-data:email-confirmation');
-            setStatus('ok');
-            return;
-          }
-
-          if (requiredCustomFields(requirements.custom_fields)) {
-            setCurrentStep('missing-data:custom-fields');
-            setStatus('ok');
-            return;
-          }
-
-          close();
-        } catch {
-          // TODO figure out what this error response really looks like
-          // setError('wrong_password');
+        if (requirements.special.confirmation === 'require') {
+          setCurrentStep('missing-data:email-confirmation');
+          setStatus('ok');
+          return;
         }
+
+        if (requiredCustomFields(requirements.custom_fields)) {
+          setCurrentStep('missing-data:custom-fields');
+          setStatus('ok');
+          return;
+        }
+
+        close();
       },
     },
   };

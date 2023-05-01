@@ -124,6 +124,7 @@ const EmailAndPassword = ({
         return;
       }
 
+      // TODO check more specifically?
       setError('unknown');
     }
   };
