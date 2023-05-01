@@ -149,7 +149,7 @@ const EmailChange = () => {
               prefilledBuiltInFields: null,
             }}
             status={confirmationStatus}
-            error={confirmationError}
+            setError={setConfirmationError}
             onConfirm={onEmailConfirmation}
           />
         </Box>

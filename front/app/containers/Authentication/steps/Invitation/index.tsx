@@ -57,7 +57,8 @@ const Invitation = ({ status, setError, onSubmit }: Props) => {
         return;
       }
 
-      setError('unknown');
+      // TODO get more clear overview of what (can) go wrong here
+      setError('invitation_error');
     }
   };
 
