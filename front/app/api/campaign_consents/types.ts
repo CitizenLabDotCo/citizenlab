@@ -10,7 +10,6 @@ export interface IConsentData {
   attributes: {
     campaign_name: string;
     campaign_type_description_multiloc: Multiloc;
-    recipient_role_multiloc: Multiloc;
     content_type_multiloc: Multiloc;
     consented: boolean;
   };

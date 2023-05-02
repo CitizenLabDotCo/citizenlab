@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 // form
 // import { useForm, FormProvider } from 'react-hook-form';
 
 // components
-import { Title, Accordion } from '@citizenlab/cl2-component-library';
+import { Accordion } from '@citizenlab/cl2-component-library';
+import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
 
 // i18n
-// import { useIntl } from 'utils/cl-intl';
 // import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 import T from 'components/T';
@@ -20,65 +20,91 @@ import useCampaignConsents from 'api/campaign_consents/useCampaignConsents';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
+// typings
+import { IConsentData, ICampaignConsents } from 'api/campaign_consents/types';
+
+const groupConsentCampaigns = (campaignConsents: ICampaignConsents, t) => {
+  return campaignConsents.data.reduce((group, consent) => {
+    const content_type = t(consent.attributes.content_type_multiloc);
+    group[content_type] = group[content_type] ?? [];
+    group[content_type].push(consent);
+
+    return group;
+  }, {});
+};
+
+const isGroupConsentedEntries = ([contentType, consentsByContentType]: [
+  string,
+  IConsentData[]
+]) => [
+  contentType,
+  consentsByContentType.every((consent) => consent.attributes.consented),
+];
+
 const CampaignConsentForm = () => {
+  const { data: campaignConsents } = useCampaignConsents();
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
-  const { data: campaignConsents } = useCampaignConsents();
-  if (isNilOrError(campaignConsents)) return null;
+  const t = (multiloc) => getLocalized(multiloc, locale, tenantLocales);
+  const [consents, setConsents] = useState({});
+  const [consentsGroups, setConsentsGroups] = useState({});
+  const [groupedCampaignConsents, setGroupedCampaignConsents] = useState({});
 
-  const groupedCampaignConsents = campaignConsents.data.reduce(
-    (acc, consent) => {
-      const recipient_role = getLocalized(
-        consent.attributes.recipient_role_multiloc,
-        locale,
-        tenantLocales
+  useEffect(() => {
+    if (!isNilOrError(campaignConsents)) {
+      setGroupedCampaignConsents(groupConsentCampaigns(campaignConsents, t));
+      setConsents(
+        Object.fromEntries(
+          campaignConsents.data.map((consent) => [
+            consent.id,
+            consent.attributes.consented,
+          ])
+        )
       );
-      const content_type = getLocalized(
-        consent.attributes.content_type_multiloc,
-        locale,
-        tenantLocales
+      setConsentsGroups(
+        Object.fromEntries(
+          Object.entries(groupedCampaignConsents).map(isGroupConsentedEntries)
+        )
       );
-      return {
-        ...acc,
-        [recipient_role]: {
-          ...acc[recipient_role],
-          [content_type]: [
-            ...((acc[recipient_role] && acc[recipient_role][content_type]) ||
-              []),
-            consent,
-          ],
-        },
-      };
-    },
-    {}
-  );
+    }
+  }, [campaignConsents]);
+
+  if (isNilOrError(campaignConsents)) return null;
 
   return (
     <>
       {Object.entries(groupedCampaignConsents).map(
-        ([role, consentsByRole], i) => (
-          <div key={i}>
-            <Title variant="h3">{role}</Title>
-            {Object.entries(consentsByRole as object).map(
-              ([contentType, consentsByContentType], ii) => (
-                <Accordion
-                  key={ii}
-                  title={<Title variant="h4">{contentType}</Title>}
-                >
-                  <div>
-                    {consentsByContentType.map((consent) => (
-                      <T
-                        as="p"
-                        value={
-                          consent.attributes.campaign_type_description_multiloc
-                        }
-                      />
-                    ))}
-                  </div>
-                </Accordion>
-              )
-            )}
-          </div>
+        ([contentType, consentsByContentType]: [string, IConsentData[]], i) => (
+          <Accordion
+            key={i}
+            title={
+              <CheckboxWithPartialCheck
+                id={contentType}
+                checked={consentsGroups[contentType]}
+                onChange={(x) => console.log(x)}
+                label={`${contentType} (${consentsByContentType.length})`}
+              />
+            }
+          >
+            <div>
+              {consentsByContentType.map((consent) => (
+                <CheckboxWithPartialCheck
+                  key={consent.id}
+                  id={consent.id}
+                  checked={consents[consent.id]}
+                  onChange={(x) => console.log(x)}
+                  label={
+                    <T
+                      as="p"
+                      value={
+                        consent.attributes.campaign_type_description_multiloc
+                      }
+                    />
+                  }
+                />
+              ))}
+            </div>
+          </Accordion>
         )
       )}
     </>
