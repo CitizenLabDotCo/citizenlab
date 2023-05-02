@@ -11,7 +11,6 @@ export type Status = 'pending' | 'ok';
 export type ErrorCode =
   | 'account_creation_failed'
   | 'wrong_confirmation_code'
-  | 'wrong_password'
   | 'sign_in_failed'
   | 'requirements_fetching_failed'
   | 'invitation_error'

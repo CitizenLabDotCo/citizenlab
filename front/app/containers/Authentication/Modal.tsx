@@ -84,7 +84,6 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
 export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   account_creation_failed: messages.unknownError,
   wrong_confirmation_code: errorMessages.confirmation_code_invalid,
-  wrong_password: messages.signInError,
   sign_in_failed: messages.signInError,
   requirements_fetching_failed: messages.unknownError,
   unknown: messages.unknownError,
