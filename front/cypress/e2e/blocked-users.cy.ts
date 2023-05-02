@@ -62,6 +62,7 @@ describe('Blocked user', () => {
 
   it('Should not be able to vote comments', () => {
     cy.visit('ideas/verified-idea');
+    cy.get('.e2e-comment-vote').should('exist');
     cy.get('.e2e-comment-vote').click({ force: true });
     cy.get('.e2e-comment-vote.voted').should('not.exist');
   });
