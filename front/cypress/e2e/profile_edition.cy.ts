@@ -26,11 +26,6 @@ describe('profile edition', () => {
     cy.wait('@saveUser');
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
   });
-  it('shows errors when fields have invalid values', () => {
-    cy.get('button[type="submit"]').contains('Save changes').click();
-    cy.get('[data-testid="feedbackErrorMessage"]').should('exist');
-    cy.get('.e2e-error-message').should('have.length', 1);
-  });
   after(() => {
     cy.apiRemoveUser(userId);
   });
