@@ -105,6 +105,7 @@ const EmailAndPasswordSignUp = ({
         token: state.token,
       });
     } catch (e) {
+      // TODO test this works like before
       if (isCLErrorsJSON(e)) {
         handleCLErrorsJSON(e, methods.setError);
         return;
