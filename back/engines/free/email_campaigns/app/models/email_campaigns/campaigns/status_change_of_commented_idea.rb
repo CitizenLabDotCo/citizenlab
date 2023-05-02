@@ -61,7 +61,7 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.users_engaged_with_the_idea'
+      'email_campaigns.admin_labels.recipient_segment.users_engaged_with_the_input'
     end
 
     def self.content_type_multiloc_key
@@ -69,7 +69,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.idea_status_is_changed'
+      'email_campaigns.admin_labels.trigger.input_status_is_changed'
     end
 
     def generate_commands(recipient:, activity:)

@@ -62,7 +62,7 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.managers_assigned_to_a_proposal'
+      'email_campaigns.admin_labels.recipient_segment.admins_assigned_to_a_proposal'
     end
 
     def self.content_type_multiloc_key
@@ -70,7 +70,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.proposal_is_assigned_to_user'
+      'email_campaigns.admin_labels.trigger.proposal_is_assigned_to_admin'
     end
 
     def generate_commands(recipient:, activity:, time: nil)

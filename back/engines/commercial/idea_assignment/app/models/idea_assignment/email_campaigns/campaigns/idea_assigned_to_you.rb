@@ -56,19 +56,19 @@ module IdeaAssignment
       end
 
       def self.recipient_role_multiloc_key
-        'email_campaigns.admin_labels.recipient_role.admins_and_moderators'
+        'email_campaigns.admin_labels.recipient_role.admins_and_managers'
       end
 
       def self.recipient_segment_multiloc_key
-        'email_campaigns.admin_labels.recipient_segment.user_assigned_to_the_idea'
+        'email_campaigns.admin_labels.recipient_segment.admins_and_managers_assigned_to_a_proposal'
       end
 
       def self.content_type_multiloc_key
-        'email_campaigns.admin_labels.content_type.ideas'
+        'email_campaigns.admin_labels.content_type.inputs'
       end
 
       def self.trigger_multiloc_key
-        'email_campaigns.admin_labels.trigger.idea_is_assigned'
+        'email_campaigns.admin_labels.trigger.input_is_assigned'
       end
 
       def filter_notification_recipient(users_scope, activity:, time: nil)
