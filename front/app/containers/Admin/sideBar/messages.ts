@@ -105,4 +105,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.signOut',
     defaultMessage: 'Sign out',
   },
+  administrator: {
+    id: 'app.containers.AdminPage.SideBar.administrator',
+    defaultMessage: 'Administrator',
+  },
+  folderManager: {
+    id: 'app.containers.AdminPage.SideBar.folderManager',
+    defaultMessage: 'Folder manager',
+  },
+  projectManager: {
+    id: 'app.containers.AdminPage.SideBar.projectManager',
+    defaultMessage: 'Project manager',
+  },
 });

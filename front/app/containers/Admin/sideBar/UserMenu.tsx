@@ -8,7 +8,7 @@ import LanguageSelectorPopup from './LanguageSelectorPopup';
 import { NewNotificationsIndicator } from 'containers/MainHeader/NotificationMenu/components/NotificationCount';
 
 // i18n
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -24,6 +24,7 @@ import Avatar from 'components/Avatar';
 
 // services
 import { signOut } from 'services/auth';
+import { IUserData } from 'services/users';
 
 export const UserMenu = () => {
   const { formatMessage } = useIntl();
@@ -46,6 +47,18 @@ export const UserMenu = () => {
 
   const unreadNotificationsCount = authUser.attributes.unread_notifications;
 
+  const getRole = (user: IUserData): MessageDescriptor => {
+    const highestRole = user.attributes.highest_role;
+    const roleMessage = {
+      admin: messages.administrator,
+      super_admin: messages.administrator,
+      project_folder_moderator: messages.folderManager,
+      project_moderator: messages.projectManager,
+    };
+
+    return roleMessage[highestRole];
+  };
+
   return (
     <Popup
       trigger={
@@ -57,16 +70,44 @@ export const UserMenu = () => {
           mb="25px"
           onClick={() => setIsUserMenuPopupOpen(true)}
         >
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" w="100%">
             <Avatar userId={authUser.id} size={30} addVerificationBadge />
-            <Box display="flex" flex="1" flexDirection="column" opacity={0.7}>
+            <Box
+              display="flex"
+              flex="1"
+              flexDirection="column"
+              opacity={0.7}
+              w="100%"
+              ml="18px"
+              overflow="hidden"
+            >
               <Text
                 color="white"
                 my="0px"
-                fontSize="base"
-              >{`${authUser.attributes.first_name} ${authUser.attributes.last_name}`}</Text>
+                fontSize="s"
+                textOverflow="ellipsis"
+                whiteSpace="nowrap"
+                overflow="hidden"
+                w="100%"
+                textAlign="left"
+                fontWeight="bold"
+              >
+                {`${authUser.attributes.first_name} ${authUser.attributes.last_name}`}
+              </Text>
+              <Text
+                color="white"
+                my="0px"
+                fontSize="xs"
+                textOverflow="ellipsis"
+                whiteSpace="nowrap"
+                overflow="hidden"
+                w="100%"
+                textAlign="left"
+              >
+                {formatMessage({ ...getRole(authUser) })}
+              </Text>
             </Box>
-            <Box mr="20px">
+            <Box>
               <Icon name="chevron-down" fill={colors.white} />
             </Box>
           </Box>
