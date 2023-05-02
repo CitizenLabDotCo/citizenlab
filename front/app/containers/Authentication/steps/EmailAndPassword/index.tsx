@@ -124,8 +124,7 @@ const EmailAndPassword = ({
         return;
       }
 
-      // TODO check more specifically?
-      setError('unknown');
+      setError('sign_in_failed');
     }
   };
 

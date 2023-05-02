@@ -95,6 +95,7 @@ const Password = ({ state, status, setError, onSubmit }: Props) => {
       }
 
       // TODO check more specifically for this error?
+      // and have better copy? or just re-use sign in failed?
       setError('wrong_password');
     }
   };

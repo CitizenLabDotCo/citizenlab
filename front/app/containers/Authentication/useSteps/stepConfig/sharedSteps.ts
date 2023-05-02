@@ -96,6 +96,7 @@ export const sharedSteps = (
       // When the authentication flow is triggered by an action
       // done by the user
       TRIGGER_REGISTRATION_FLOW: async () => {
+        setStatus('ok');
         updateState({
           email: null,
           token: null,

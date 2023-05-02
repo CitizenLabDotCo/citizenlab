@@ -73,7 +73,6 @@ const CustomFields = ({
     try {
       await onSubmit(authUser.id, formData);
     } catch (e) {
-      // TODO how to deal with errors in this json schema situation?
       setError('unknown');
     }
   };

@@ -107,6 +107,7 @@ export const oldSignInFlow = (
 
           trackEventByName(tracks.signInEmailPasswordCompleted);
         } catch (e) {
+          setStatus('ok');
           trackEventByName(tracks.signInEmailPasswordFailed);
           throw e;
         }
