@@ -23,7 +23,12 @@ const Success = ({ status, onContinue }: Props) => {
   const loading = status === 'pending';
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center">
+    <Box
+      id="e2e-sign-up-success-modal"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+    >
       <Image src={SuccessImageSrc} alt="" />
       <Title variant="h4" as="h2" mt="24px" mb="0">
         {formatMessage(messages.allDone)}
