@@ -9,6 +9,7 @@ import { CLError, Message } from 'typings';
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import messages from './messages';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const timeout = 350;
 
@@ -188,6 +189,7 @@ export const findErrorMessage = (
 
 const Error = (props: Props) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const { data: appConfiguration } = useAppConfiguration();
 
   const {
     text,
@@ -212,6 +214,8 @@ const Error = (props: Props) => {
         });
     }
   }, [scrollIntoView]);
+
+  if (!appConfiguration) return null;
 
   const dedupApiErrors =
     apiErrors && isArray(apiErrors) && !isEmpty(apiErrors)
@@ -271,6 +275,10 @@ const Error = (props: Props) => {
                         const value = error?.value ?? null;
                         const row = error?.row ?? null;
                         const rows = error?.rows ?? null;
+                        const supportEmail =
+                          (error as any)?.inviter_email ??
+                          appConfiguration.data.attributes.settings.core
+                            .reply_to_email;
 
                         let values = {
                           row: <strong>{row}</strong>,
@@ -279,6 +287,7 @@ const Error = (props: Props) => {
                           ) : null,
                           // eslint-disable-next-line react/no-unescaped-entities
                           value: <strong>'{value}'</strong>,
+                          supportEmail: <strong>{supportEmail}</strong>,
                         };
 
                         values = payload ? { ...payload, ...values } : values;

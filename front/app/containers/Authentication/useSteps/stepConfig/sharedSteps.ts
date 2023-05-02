@@ -105,8 +105,6 @@ export const sharedSteps = (
 
         const { requirements } = await getRequirements();
 
-        console.log(requirements);
-
         const isLightFlow = requirements.special.password === 'dont_ask';
         const signedIn = requirements.built_in.email === 'satisfied';
 
