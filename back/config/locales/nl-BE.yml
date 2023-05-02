@@ -240,7 +240,7 @@ nl-BE:
       for_more_information: "Voor meer informatie hierover kunt u de %{termsAndConditionsPage}raadplegen."
       you_can_sign_in_again_from: "U kunt zich opnieuw aanmelden vanaf %{date}"
   time:
-    am: am
+    am: '--'
     formats:
       hour_of_day: "%H:%M"
-    pm: pm
+    pm: '--'
