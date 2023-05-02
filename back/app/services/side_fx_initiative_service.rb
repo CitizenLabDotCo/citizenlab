@@ -80,14 +80,7 @@ class SideFxInitiativeService
 
   def log_activity_jobs_after_published(initiative, user)
     LogActivityJob.set(wait: 20.seconds).perform_later(initiative, 'published', user, initiative.published_at.to_i)
-    return unless first_user_initiative? initiative, user
-
-    LogActivityJob.set(wait: 20.seconds).perform_later(initiative, 'first_published_by_user', user, initiative.published_at.to_i)
-  end
-
-  def first_user_initiative?(initiative, user)
-    (user.initiatives.size == 1) && (user.initiatives.first.id == initiative.id)
   end
 end
 
-::SideFxInitiativeService.prepend(FlagInappropriateContent::Patches::SideFxInitiativeService)
+SideFxInitiativeService.prepend(FlagInappropriateContent::Patches::SideFxInitiativeService)

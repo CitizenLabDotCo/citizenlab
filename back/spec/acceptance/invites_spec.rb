@@ -113,7 +113,7 @@ resource 'Invites' do
 
     describe 'count seats' do
       shared_examples 'a request counting seats' do
-        let(:emails) { Array.new(5) { Faker::Internet.email }.concat([nil]) }
+        let(:emails) { Array.new(5) { Faker::Internet.email }.push(nil) }
         let(:roles) do
           # only the highest role is actually used
           [
@@ -189,7 +189,7 @@ resource 'Invites' do
       end
 
       describe do
-        let(:emails) { Array.new(5) { Faker::Internet.email }.concat([nil]) }
+        let(:emails) { Array.new(5) { Faker::Internet.email }.push(nil) }
         let(:group_ids) { [create(:group).id] }
         let(:project) { create(:project) }
         let(:locale) { 'nl-NL' }

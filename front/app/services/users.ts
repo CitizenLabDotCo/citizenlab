@@ -3,7 +3,7 @@ import streams, { IStreamParams } from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { TRole } from 'services/permissions/roles';
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import seatsKeys from 'api/seats/keys';
+import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 
 const apiEndpoint = `${API_PATH}/users`;
@@ -116,7 +116,7 @@ export async function updateUser(userId: string, object: IUserUpdate) {
 
   // Invalidate seats if the user's roles have changed
   if (object.roles) {
-    queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+    invalidateSeatsCache();
   }
 
   queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
@@ -144,7 +144,7 @@ export async function deleteUser(userId: string) {
     ],
   });
 
-  queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+  invalidateSeatsCache();
 
   return response;
 }

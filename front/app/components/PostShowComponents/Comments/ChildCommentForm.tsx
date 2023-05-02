@@ -1,9 +1,7 @@
 // libraries
-import React, { PureComponent } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { get } from 'lodash-es';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -18,26 +16,11 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import {
-  addCommentToIdeaComment,
-  addCommentToInitiativeComment,
-} from 'services/comments';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 
 // events
 import { commentReplyButtonClicked$, commentAdded } from './events';
@@ -45,7 +28,13 @@ import { commentReplyButtonClicked$, commentAdded } from './events';
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
-import { colors, defaultStyles, viewportWidths } from 'utils/styleUtils';
+import { colors, defaultStyles } from 'utils/styleUtils';
+import useLocale from 'hooks/useLocale';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'hooks/useAuthUser';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
+import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 
 const Container = styled.div`
   display: flex;
@@ -96,100 +85,85 @@ const CancelButton = styled(Button)`
   margin-right: 8px;
 `;
 
-interface InputProps {
+interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
   projectId?: string | null;
   parentId: string;
-  waitForChildCommentsRefetch: boolean;
   className?: string;
 }
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  authUser: GetAuthUserChildProps;
-  windowSize: GetWindowSizeChildProps;
-  appConfiguration: GetAppConfigurationChildProps;
-}
+const ChildCommentForm = ({
+  parentId,
+  postId,
+  postType,
+  projectId,
+  className,
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const locale = useLocale();
+  const { data: appConfiguration } = useAppConfiguration();
+  const authUser = useAuthUser();
+  const smallerThanTablet = useBreakpoint('tablet');
 
-interface Props extends InputProps, DataProps {}
+  const {
+    mutate: addCommentToIdeaComment,
+    isLoading: isAddCommentToIdeaLoading,
+  } = useAddCommentToIdea();
+  const {
+    mutate: addCommentToInitiativeComment,
+    isLoading: isAddCommentToInitiativeLoading,
+  } = useAddCommentToInitiative();
+  const [inputValue, setInputValue] = useState('');
+  const [focused, setFocused] = useState(false);
+  const [canSubmit, setCanSubmit] = useState(false);
+  const [profanityApiError, setProfanityApiError] = useState(false);
+  const [hasApiError, setHasApiError] = useState(false);
 
-interface State {
-  inputValue: string;
-  focused: boolean;
-  processing: boolean;
-  canSubmit: boolean;
-  profanityApiError: boolean;
-  hasApiError: boolean;
-}
-
-class ChildCommentForm extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  textareaElement: HTMLTextAreaElement;
-  subscriptions: Subscription[] = [];
-
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      inputValue: '',
-      focused: false,
-      processing: false,
-      canSubmit: false,
-      hasApiError: false,
-      profanityApiError: false,
-    };
-  }
-
-  componentDidMount() {
-    this.subscriptions = [
+  const textareaElement = useRef<HTMLTextAreaElement | null>(null);
+  const processing =
+    isAddCommentToIdeaLoading || isAddCommentToInitiativeLoading;
+  useEffect(() => {
+    const subscriptions: Subscription[] = [
       commentReplyButtonClicked$
         .pipe(
-          tap(() => this.setState({ inputValue: '', focused: false })),
+          tap(() => setInputValue('')),
           filter(({ eventValue }) => {
             const { commentId, parentCommentId } = eventValue;
-            return (
-              commentId === this.props.parentId ||
-              parentCommentId === this.props.parentId
-            );
+            return commentId === parentId || parentCommentId === parentId;
           })
         )
         .subscribe(({ eventValue }) => {
           const { authorFirstName, authorLastName, authorSlug } = eventValue;
           const tag = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
-          this.setState({ inputValue: tag, focused: true });
+          setInputValue(tag);
+          setFocused(true);
         }),
     ];
-  }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
+    return () => {
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
+    };
+  }, [parentId]);
 
-  setCaretAtEnd(element: HTMLTextAreaElement) {
+  const setCaretAtEnd = (element: HTMLTextAreaElement) => {
     if (element.setSelectionRange && element.textContent) {
       element.setSelectionRange(
         element.textContent.length,
         element.textContent.length
       );
     }
-  }
-
-  onChange = (inputValue: string) => {
-    const hasEmptyError = inputValue.trim() === '';
-
-    this.setState(({ focused }) => ({
-      inputValue,
-      hasApiError: false,
-      profanityApiError: false,
-      canSubmit: focused && !hasEmptyError,
-    }));
   };
 
-  onFocus = () => {
-    const { postId, postType, parentId } = this.props;
+  const onChange = (inputValue: string) => {
+    const hasEmptyError = inputValue.trim() === '';
+    setInputValue(inputValue);
+    setHasApiError(false);
+    setProfanityApiError(false);
+    setCanSubmit(focused && !hasEmptyError);
+  };
 
+  const onFocus = () => {
     trackEventByName(tracks.focusChildCommentEditor, {
       extra: {
         postId,
@@ -198,35 +172,21 @@ class ChildCommentForm extends PureComponent<
       },
     });
 
-    this.setState({ focused: true });
+    setFocused(true);
   };
 
-  onCancel = () => {
-    this.setState({ focused: false, inputValue: '' });
+  const onCancel = () => {
+    setFocused(false);
+    setInputValue('');
   };
 
-  onSubmit = async () => {
-    const {
-      postId,
-      postType,
-      projectId,
-      parentId,
-      waitForChildCommentsRefetch,
-      locale,
-      authUser,
-      appConfiguration,
-    } = this.props;
-    const { inputValue, canSubmit } = this.state;
-
+  const onSubmit = async () => {
     if (!isNilOrError(locale) && !isNilOrError(authUser) && canSubmit) {
       const commentBodyMultiloc = {
         [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
       };
 
-      this.setState({
-        processing: true,
-        canSubmit: false,
-      });
+      setCanSubmit(false);
 
       trackEventByName(tracks.clickChildCommentPublish, {
         extra: {
@@ -239,45 +199,72 @@ class ChildCommentForm extends PureComponent<
 
       try {
         if (postType === 'idea' && projectId) {
-          await addCommentToIdeaComment(
-            postId,
-            projectId,
-            authUser.id,
-            parentId,
-            commentBodyMultiloc,
-            waitForChildCommentsRefetch
+          addCommentToIdeaComment(
+            {
+              ideaId: postId,
+              author_id: authUser.id,
+              parent_id: parentId,
+              body_multiloc: commentBodyMultiloc,
+            },
+            {
+              onSuccess: () => {
+                commentAdded();
+                setInputValue('');
+                setFocused(false);
+              },
+              onError: (error) => {
+                const apiErrors = error.json.errors;
+                const profanityApiError = apiErrors.base.find(
+                  (apiError) => apiError.error === 'includes_banned_words'
+                );
+
+                setHasApiError(true);
+
+                if (profanityApiError) {
+                  trackEventByName(tracks.childCommentProfanityError.name, {
+                    locale,
+                    postId,
+                    postType,
+                    projectId,
+                    profaneMessage: commentBodyMultiloc[locale],
+                    location: 'InitiativesNewFormWrapper (citizen side)',
+                    userId: authUser.id,
+                    host: !isNilOrError(appConfiguration)
+                      ? appConfiguration.data.attributes.host
+                      : null,
+                  });
+
+                  setProfanityApiError(true);
+                }
+              },
+            }
           );
         }
 
         if (postType === 'initiative') {
-          await addCommentToInitiativeComment(
-            postId,
-            authUser.id,
-            parentId,
-            commentBodyMultiloc,
-            waitForChildCommentsRefetch
+          addCommentToInitiativeComment(
+            {
+              initiativeId: postId,
+              author_id: authUser.id,
+              parent_id: parentId,
+              body_multiloc: commentBodyMultiloc,
+            },
+            {
+              onSuccess: () => {
+                commentAdded();
+                setInputValue('');
+                setFocused(false);
+              },
+            }
           );
         }
-
-        commentAdded();
-
-        this.setState({
-          inputValue: '',
-          processing: false,
-          focused: false,
-        });
       } catch (error) {
-        // eslint-disable-next-line no-console
-        if (process.env.NODE_ENV === 'development') console.log(error);
-        const apiErrors = get(error, 'json.errors');
+        const apiErrors = error.json.errors;
         const profanityApiError = apiErrors.base.find(
           (apiError) => apiError.error === 'includes_banned_words'
         );
 
-        this.setState({
-          hasApiError: true,
-          processing: false,
-        });
+        setHasApiError(true);
 
         if (profanityApiError) {
           trackEventByName(tracks.childCommentProfanityError.name, {
@@ -289,48 +276,39 @@ class ChildCommentForm extends PureComponent<
             location: 'InitiativesNewFormWrapper (citizen side)',
             userId: authUser.id,
             host: !isNilOrError(appConfiguration)
-              ? appConfiguration.attributes.host
+              ? appConfiguration.data.attributes.host
               : null,
           });
 
-          this.setState({
-            profanityApiError: true,
-          });
+          setProfanityApiError(true);
         }
       }
     }
   };
 
-  setRef = (element: HTMLTextAreaElement) => {
-    this.textareaElement = element;
+  const setRef = (element: HTMLTextAreaElement) => {
+    textareaElement.current = element;
 
-    if (this.textareaElement) {
-      this.textareaElement.scrollIntoView({
+    if (textareaElement.current) {
+      textareaElement.current.scrollIntoView({
         behavior: 'smooth',
         block: 'center',
         inline: 'center',
       });
 
       setTimeout(() => {
-        this.textareaElement.focus();
+        textareaElement?.current?.focus();
       }, 100);
 
       setTimeout(() => {
-        this.setCaretAtEnd(this.textareaElement);
+        textareaElement?.current && setCaretAtEnd(textareaElement.current);
       }, 200);
     }
   };
 
-  placeholder = this.props.intl.formatMessage(
-    messages.childCommentBodyPlaceholder
-  );
+  const placeholder = formatMessage(messages.childCommentBodyPlaceholder);
 
-  getErrorMessage = () => {
-    const { hasApiError, profanityApiError } = this.state;
-    const {
-      intl: { formatMessage },
-    } = this.props;
-
+  const getErrorMessage = () => {
     if (hasApiError) {
       // Profanity error is the only error we're checking specifically
       // at the moment to provide a specific error message.
@@ -356,95 +334,72 @@ class ChildCommentForm extends PureComponent<
     return null;
   };
 
-  render() {
-    const { focused } = this.state;
-    const { postId, postType, parentId, authUser, windowSize, className } =
-      this.props;
+  if (!isNilOrError(authUser) && focused) {
+    const isModerator =
+      !isNilOrError(authUser) && canModerateProject(postId, { data: authUser });
 
-    if (!isNilOrError(authUser) && focused) {
-      const { inputValue, canSubmit, processing, focused } = this.state;
-      const isModerator =
-        !isNilOrError(authUser) &&
-        canModerateProject(postId, { data: authUser });
-      const smallerThanSmallTablet =
-        !isNilOrError(windowSize) && windowSize <= viewportWidths.tablet;
-
-      return (
-        <Container className={`${className || ''} e2e-childcomment-form`}>
-          <StyledAvatar
-            userId={authUser?.id}
-            size={30}
-            isLinkToProfile={!!authUser?.id}
-            moderator={isModerator}
-          />
-          <FormContainer
-            onClickOutside={this.onCancel}
-            closeOnClickOutsideEnabled={false}
-          >
-            <Form className={focused ? 'focused' : ''}>
-              <label>
-                <HiddenLabel>
-                  <FormattedMessage {...messages.replyToComment} />
-                </HiddenLabel>
-                <MentionsTextArea
-                  className={`childcommentform-${parentId}`}
-                  name="comment"
-                  placeholder={this.placeholder}
-                  rows={3}
-                  postId={postId}
-                  postType={postType}
-                  value={inputValue}
-                  error={this.getErrorMessage()}
-                  onChange={this.onChange}
-                  onFocus={this.onFocus}
-                  fontWeight="300"
-                  padding="10px"
-                  borderRadius="none"
-                  border="none"
-                  boxShadow="none"
-                  getTextareaRef={this.setRef}
-                />
-                <ButtonWrapper>
-                  <CancelButton
-                    disabled={processing}
-                    onClick={this.onCancel}
-                    buttonStyle="secondary"
-                    padding={smallerThanSmallTablet ? '6px 12px' : undefined}
-                  >
-                    <FormattedMessage {...messages.cancel} />
-                  </CancelButton>
-                  <Button
-                    className="e2e-submit-childcomment"
-                    processing={processing}
-                    onClick={this.onSubmit}
-                    disabled={!canSubmit}
-                    padding={smallerThanSmallTablet ? '6px 12px' : undefined}
-                  >
-                    <FormattedMessage {...messages.publishComment} />
-                  </Button>
-                </ButtonWrapper>
-              </label>
-            </Form>
-          </FormContainer>
-        </Container>
-      );
-    }
-
-    return null;
+    return (
+      <Container className={`${className || ''} e2e-childcomment-form`}>
+        <StyledAvatar
+          userId={authUser?.id}
+          size={30}
+          isLinkToProfile={!!authUser?.id}
+          moderator={isModerator}
+        />
+        <FormContainer
+          onClickOutside={onCancel}
+          closeOnClickOutsideEnabled={false}
+        >
+          <Form className={focused ? 'focused' : ''}>
+            <label>
+              <HiddenLabel>
+                <FormattedMessage {...messages.replyToComment} />
+              </HiddenLabel>
+              <MentionsTextArea
+                className={`childcommentform-${parentId}`}
+                name="comment"
+                placeholder={placeholder}
+                rows={3}
+                postId={postId}
+                postType={postType}
+                value={inputValue}
+                error={getErrorMessage()}
+                onChange={onChange}
+                onFocus={onFocus}
+                fontWeight="300"
+                padding="10px"
+                borderRadius="none"
+                border="none"
+                boxShadow="none"
+                getTextareaRef={setRef}
+              />
+              <ButtonWrapper>
+                <CancelButton
+                  disabled={processing}
+                  onClick={onCancel}
+                  buttonStyle="secondary"
+                  padding={smallerThanTablet ? '6px 12px' : undefined}
+                >
+                  <FormattedMessage {...messages.cancel} />
+                </CancelButton>
+                <Button
+                  className="e2e-submit-childcomment"
+                  processing={processing}
+                  onClick={onSubmit}
+                  disabled={!canSubmit}
+                  padding={smallerThanTablet ? '6px 12px' : undefined}
+                >
+                  <FormattedMessage {...messages.publishComment} />
+                </Button>
+              </ButtonWrapper>
+            </label>
+          </Form>
+        </FormContainer>
+      </Container>
+    );
   }
-}
 
-const ChildCommentFormWithHoCs = injectIntl(ChildCommentForm);
+  return null;
+};
 
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  authUser: <GetAuthUser />,
-  windowSize: <GetWindowSize />,
-  appConfiguration: <GetAppConfiguration />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <ChildCommentFormWithHoCs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default ChildCommentForm;

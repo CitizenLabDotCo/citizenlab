@@ -9,7 +9,7 @@ describe ProjectPolicy do
   let(:inverse_scope) { ProjectPolicy::InverseScope.new(project, User) }
 
   context 'on a public continuous project' do
-    let!(:project) { create :continuous_project }
+    let!(:project) { create(:continuous_project) }
 
     context 'for a visitor' do
       let(:user) { nil }
@@ -94,7 +94,7 @@ describe ProjectPolicy do
   end
 
   context 'on a continuous private admins project' do
-    let!(:project) { create :continuous_project, visible_to: 'admins' }
+    let!(:project) { create(:continuous_project, visible_to: 'admins') }
 
     context 'for a moderator' do
       let(:user) { create(:project_moderator, projects: [project]) }
@@ -117,7 +117,7 @@ describe ProjectPolicy do
   end
 
   context 'on a private admins timeline project' do
-    let!(:project) { create :project_with_phases, visible_to: 'admins' }
+    let!(:project) { create(:project_with_phases, visible_to: 'admins') }
 
     context 'for a visitor' do
       let(:user) { nil }

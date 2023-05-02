@@ -1,7 +1,7 @@
 {
   "churn": {
     "changes": [
-      { "file_path": "app/services/areas.js", "times_changed": 5 },
+      { "file_path": "app/api/areas/types.js", "times_changed": 5 },
       { "file_path": "app/services/ideas.js", "times_changed": 3 },
       { "file_path": "app/services/projects.js", "times_changed": 3 },
       { "file_path": "app/services/topics.js", "times_changed": 3 },

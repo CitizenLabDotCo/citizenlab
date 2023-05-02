@@ -11,7 +11,7 @@ RSpec.describe UserCustomFields::WebApi::V1::CategoricalDistributionSerializer d
     specify do
       expect(serializer.serializable_hash).to match(
         data: {
-          id: be_kind_of(String),
+          id: be_a(String),
           type: :categorical_distribution,
           attributes: {
             distribution: distribution.probabilities_and_counts

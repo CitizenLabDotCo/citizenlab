@@ -51,7 +51,7 @@ describe('Seat based billing', () => {
 
       cy.apiGetUsersCount().then((response) => {
         adminAndmoderatorsCount =
-          response.body.administrators_count + response.body.managers_count;
+          response.body.administrators_count + response.body.moderators_count;
       });
 
       cy.setAdminLoginCookie();
@@ -371,7 +371,7 @@ describe('Seat based billing', () => {
 
       cy.apiGetUsersCount().then((response) => {
         adminAndmoderatorsCount =
-          response.body.administrators_count + response.body.managers_count;
+          response.body.administrators_count + response.body.moderators_count;
 
         cy.get('[data-cy="e2e-admin-and-moderator-count"]').contains(
           adminAndmoderatorsCount
@@ -608,7 +608,7 @@ describe('Seat based billing', () => {
 
       cy.apiGetUsersCount().then((response) => {
         adminAndmoderatorsCount =
-          response.body.administrators_count + response.body.managers_count;
+          response.body.administrators_count + response.body.moderators_count;
 
         cy.get('[data-cy="e2e-admin-and-moderator-count"]').contains(
           `${adminAndmoderatorsCount}`

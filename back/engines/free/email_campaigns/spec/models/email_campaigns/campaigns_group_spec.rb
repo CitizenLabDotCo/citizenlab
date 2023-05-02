@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::CampaignsGroup, type: :model do
+RSpec.describe EmailCampaigns::CampaignsGroup do
   describe 'CampaignsGroup default factory' do
     it 'is valid' do
       expect(build(:campaigns_group)).to be_valid

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::ProjectModerationRightsReceivedMailer, type: :mailer do
+RSpec.describe EmailCampaigns::ProjectModerationRightsReceivedMailer do
   describe 'campaign_mail' do
     let_it_be(:project) { create(:project) }
     let_it_be(:recipient) { create(:project_moderator, locale: 'en', projects: [project]) }

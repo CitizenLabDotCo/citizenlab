@@ -67,8 +67,8 @@ export default defineMessages({
     id: 'app.containers.Comments.signInToComment',
     defaultMessage: 'Please {signUpLink} or {signInLink} to comment.',
   },
-  completeRegistrationToComment: {
-    id: 'app.containers.Comments.completeRegistrationToComment',
+  completeProfileToComment: {
+    id: 'app.containers.Comments.completeProfileToComment',
     defaultMessage: 'Please {completeRegistrationLink} to comment.',
   },
   commentingInitiativeNotPermitted: {
@@ -97,9 +97,9 @@ export default defineMessages({
     id: 'app.containers.Comments.signUpLinkText',
     defaultMessage: 'sign up',
   },
-  completeRegistrationLinkText: {
-    id: 'app.containers.Comments.completeRegistrationLinkText',
-    defaultMessage: 'complete registration',
+  completeProfileLinkText: {
+    id: 'app.containers.Comments.completeProfileLinkText',
+    defaultMessage: 'complete your profile',
   },
   verifyIdentityLinkText: {
     id: 'app.containers.Comments.verifyIdentityLinkText',
@@ -146,9 +146,9 @@ export default defineMessages({
     id: 'app.containers.Comments.commentsSortTitle',
     defaultMessage: 'Sort comments by',
   },
-  oldestToNewest: {
-    id: 'app.components.Comments.oldestToNewest',
-    defaultMessage: 'Oldest to Newest',
+  mostRecent: {
+    id: 'app.components.Comments.mostRecent',
+    defaultMessage: 'Most recent',
   },
   mostUpvoted: {
     id: 'app.components.Comments.mostUpvoted',

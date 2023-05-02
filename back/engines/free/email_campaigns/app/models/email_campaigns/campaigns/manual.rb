@@ -50,6 +50,14 @@ module EmailCampaigns
       'official'
     end
 
+    def self.recipient_role_multiloc_key
+      'email_campaigns.admin_labels.recipient_role.registered_users'
+    end
+
+    def self.content_type_multiloc_key
+      'email_campaigns.admin_labels.content_type.general'
+    end
+
     def generate_commands(recipient:, time: nil, activity: nil)
       [{
         author: author,

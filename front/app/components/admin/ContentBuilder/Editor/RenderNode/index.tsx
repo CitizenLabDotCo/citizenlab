@@ -40,7 +40,7 @@ const RenderNode = ({ render }) => {
   } = useNode((node) => ({
     props: node.data.props,
     isHover: node.events.hovered,
-    name: node.data.name as string,
+    name: node.data.name,
     hasError: node.data.props.hasError,
     title: node.data.custom?.title as MessageDescriptor | undefined,
     noPointerEvents: node.data.custom?.noPointerEvents as boolean | undefined,

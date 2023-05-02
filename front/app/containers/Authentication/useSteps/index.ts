@@ -58,6 +58,7 @@ export default function useSteps() {
   const [currentStep, setCurrentStep] = useState<Step>('closed');
   const [state, setState] = useState<State>({
     email: null,
+    /** the invite token, set in case the flow started with an invitation */
     token: null,
     prefilledBuiltInFields: null,
   });
@@ -92,6 +93,10 @@ export default function useSteps() {
     setState((state) => ({ ...state, ...newState }));
   }, []);
 
+  /** stepConfig defines each step (similar to a state, in a statemachine), and
+   * for each step the supported transition functions. It the stepConfig
+   * function aggregates all steps from all different flows (in ./stepConfig*)
+   * in one big object */
   const stepConfig = useMemo(() => {
     return getStepConfig(
       authenticationData,
@@ -103,6 +108,7 @@ export default function useSteps() {
     );
   }, [authenticationData, getRequirements, updateState, anySSOEnabled]);
 
+  /** given the current step and a transition supported by that step, performs the transition */
   const transition = useCallback(
     <S extends Step, T extends keyof StepConfig[S]>(
       currentStep: S,
@@ -126,6 +132,8 @@ export default function useSteps() {
     [stepConfig, setError]
   );
 
+  // Listen for any action that triggers the authentication flow, and initialize
+  // the flow if no flow is ongoing
   useEffect(() => {
     const subscription = triggerAuthenticationFlow$.subscribe((event) => {
       if (currentStep !== 'closed') return;
@@ -137,6 +145,8 @@ export default function useSteps() {
     return () => subscription.unsubscribe();
   }, [currentStep, transition]);
 
+  // Listen for any action that triggers the VERIFICATION flow, and initialize
+  // the flow in no flow is ongoing
   useEffect(() => {
     const subscription = triggerVerificationOnly$.subscribe(() => {
       if (currentStep !== 'closed') return;
@@ -151,12 +161,14 @@ export default function useSteps() {
     return () => subscription.unsubscribe();
   }, [currentStep, transition]);
 
+  // Logic to launch other flows
   useEffect(() => {
     if (initialized) return;
     if (authUser === undefined) return;
     initialized = true;
     if (currentStep !== 'closed') return;
 
+    // launch invitation flow, derived from route
     if (pathname.endsWith('/invite')) {
       if (isNilOrError(authUser)) {
         authenticationDataRef.current = {
@@ -176,6 +188,9 @@ export default function useSteps() {
       ignoreQueryPrefix: true,
     }) as any;
 
+    // detect whether we're entering from a redirect of a 3rd party
+    // authentication method through an URL param, and launch the corresponding
+    // flow
     if (urlSearchParams.sso_response === 'true') {
       const {
         sso_flow,

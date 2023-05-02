@@ -10,15 +10,21 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
 import AreaForm, { FormValues } from '../AreaForm';
 
-import { addArea } from 'services/areas';
+import useAddArea from 'api/areas/useAddArea';
 
 const New = () => {
+  const { mutate: addArea } = useAddArea();
   const handleSubmit = async (values: FormValues) => {
-    await addArea({
-      ...values,
-    });
-
-    clHistory.push('/admin/settings/areas');
+    addArea(
+      {
+        ...values,
+      },
+      {
+        onSuccess: () => {
+          clHistory.push('/admin/settings/areas');
+        },
+      }
+    );
   };
 
   const goBack = () => {

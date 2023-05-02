@@ -1,6 +1,5 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 import { groupBy } from 'lodash-es';
 
 // components
@@ -8,13 +7,9 @@ import PostCommentGroup from './PostCommentGroup';
 import Button from 'components/UI/Button';
 
 // resources
-import GetCommentsForUser, {
-  GetCommentsForUserChildProps,
-} from 'resources/GetCommentsForUser';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -22,6 +17,8 @@ import messages from './messages';
 import { darken, rgba } from 'polished';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import useComments from 'api/comments/useComments';
+import useAuthUser from 'hooks/useAuthUser';
 
 const Container = styled.div`
   display: flex;
@@ -54,127 +51,106 @@ const MessageContainer = styled.div`
   font-weight: 400;
 `;
 
-const LoadMoreButton = styled(Button)``;
-
-interface InputProps {
+interface Props {
   userId: string;
 }
 
-interface DataProps {
-  comments: GetCommentsForUserChildProps;
-  authUser: GetAuthUserChildProps;
-}
+export const UserComments = ({ userId }: Props) => {
+  const theme = useTheme();
+  const authUser = useAuthUser();
+  const {
+    data: comments,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useComments({ userId });
+  const commentsList = comments?.pages.flatMap((page) => page.data);
 
-interface Props extends InputProps, DataProps {
-  theme: any;
-}
+  if (commentsList === undefined) {
+    return (
+      <MessageContainer>
+        <FormattedMessage {...messages.loadingComments} />
+      </MessageContainer>
+    );
+  }
 
-export const UserComments = memo<Props>(
-  ({ comments, userId, theme, authUser }) => {
-    if (!isNilOrError(comments)) {
-      const { commentsList } = comments;
-
-      if (commentsList === undefined) {
-        return (
-          <MessageContainer>
-            <FormattedMessage {...messages.loadingComments} />
-          </MessageContainer>
-        );
-      }
-
-      if (
-        commentsList === null ||
-        (!isNilOrError(commentsList) && commentsList.length === 0)
-      ) {
-        if (!isNilOrError(authUser) && userId === authUser.id) {
-          return (
-            <MessageContainer>
-              <FormattedMessage {...messages.noCommentsForYou} />
-            </MessageContainer>
-          );
-        }
-
-        return (
-          <MessageContainer>
-            <FormattedMessage {...messages.noCommentsForUser} />
-          </MessageContainer>
-        );
-      }
-
-      if (!isNilOrError(commentsList) && commentsList.length > 0) {
-        const commentGroups = groupBy(
-          commentsList,
-          (comment) => comment.relationships.post.data.id
-        );
-
-        return (
-          <Container className="e2e-profile-comments">
-            <ScreenReaderOnly>
-              <FormattedMessage
-                tagName="h2"
-                {...messages.invisibleTitleUserComments}
-              />
-            </ScreenReaderOnly>
-            <>
-              {Object.keys(commentGroups).map((postId) => {
-                const commentGroup = commentGroups[postId];
-                const postType = commentGroup[0].relationships.post.data
-                  .type as 'idea' | 'initiative';
-
-                return (
-                  <PostCommentGroup
-                    key={postId}
-                    postId={postId}
-                    postType={postType}
-                    comments={commentGroup}
-                    userId={userId}
-                  />
-                );
-              })}
-            </>
-
-            {comments.hasMore && (
-              <Footer>
-                <LoadMoreButton
-                  onClick={comments.loadMore}
-                  processing={comments.loadingMore}
-                  icon="refresh"
-                  textColor={theme.colors.tenantText}
-                  textHoverColor={darken(0.1, theme.colors.tenantText)}
-                  bgColor={rgba(theme.colors.tenantText, 0.08)}
-                  bgHoverColor={rgba(theme.colors.tenantText, 0.12)}
-                  height="50px"
-                >
-                  <FormattedMessage {...messages.loadMoreComments} />
-                </LoadMoreButton>
-              </Footer>
-            )}
-          </Container>
-        );
-      }
+  if (
+    commentsList === null ||
+    (!isNilOrError(commentsList) && commentsList.length === 0)
+  ) {
+    if (!isNilOrError(authUser) && userId === authUser.id) {
+      return (
+        <MessageContainer>
+          <FormattedMessage {...messages.noCommentsForYou} />
+        </MessageContainer>
+      );
     }
 
     return (
       <MessageContainer>
-        <FormattedMessage {...messages.tryAgain} />
+        <FormattedMessage {...messages.noCommentsForUser} />
       </MessageContainer>
     );
   }
-);
 
-const Data = adopt<DataProps, InputProps>({
-  comments: ({ userId, render }) => (
-    <GetCommentsForUser userId={userId}>{render}</GetCommentsForUser>
-  ),
-  authUser: <GetAuthUser />,
-});
+  if (commentsList.length > 0) {
+    const commentGroups = groupBy(
+      commentsList,
+      (comment) => comment.relationships.post.data.id
+    );
 
-const UserCommentsWithHocs = withTheme(UserComments);
+    return (
+      <Container className="e2e-profile-comments">
+        <ScreenReaderOnly>
+          <FormattedMessage
+            tagName="h2"
+            {...messages.invisibleTitleUserComments}
+          />
+        </ScreenReaderOnly>
+        <>
+          {Object.keys(commentGroups).map((postId) => {
+            const commentGroup = commentGroups[postId];
+            const postType = commentGroup[0].relationships.post.data.type as
+              | 'idea'
+              | 'initiative';
 
-const WrappedUserComments = (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <UserCommentsWithHocs {...inputProps} {...dataProps} />}
-  </Data>
-);
+            return (
+              <PostCommentGroup
+                key={postId}
+                postId={postId}
+                postType={postType}
+                comments={commentGroup}
+                userId={userId}
+              />
+            );
+          })}
+        </>
 
-export default WrappedUserComments;
+        {hasNextPage && (
+          <Footer>
+            <Button
+              onClick={() => fetchNextPage()}
+              processing={isFetchingNextPage}
+              icon="refresh"
+              textColor={theme.colors.tenantText}
+              textHoverColor={darken(0.1, theme.colors.tenantText)}
+              bgColor={rgba(theme.colors.tenantText, 0.08)}
+              bgHoverColor={rgba(theme.colors.tenantText, 0.12)}
+              height="50px"
+            >
+              <FormattedMessage {...messages.loadMoreComments} />
+            </Button>
+          </Footer>
+        )}
+      </Container>
+    );
+  }
+
+  return (
+    <MessageContainer>
+      <FormattedMessage {...messages.tryAgain} />
+    </MessageContainer>
+  );
+};
+
+export default UserComments;

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe ConfirmationsMailer do
   describe 'send_confirmation_code' do
-    let!(:user) { create :user_with_confirmation, email: 'some_email@email.com' }
+    let!(:user) { create(:user_with_confirmation, email: 'some_email@email.com') }
     let(:message) { described_class.with(user: user).send_confirmation_code.deliver_now }
 
     before do
@@ -34,6 +34,19 @@ RSpec.describe ConfirmationsMailer do
 
     it 'shows the code to the user' do
       expect(message.body.encoded).to match(user.email_confirmation_code)
+    end
+  end
+
+  describe 'when sent to users with a different locale set for each' do
+    let_it_be(:recipient1) { create(:user, locale: 'en') }
+    let_it_be(:recipient2) { create(:user, locale: 'nl-NL') }
+
+    let_it_be(:mail1) { described_class.with(user: recipient1).send_confirmation_code.deliver_now }
+    let_it_be(:mail2) { described_class.with(user: recipient2).send_confirmation_code.deliver_now }
+
+    it 'renders the mails in the correct language' do
+      expect(mail1.body.encoded).to include('Confirm your email address')
+      expect(mail2.body.encoded).to include('Bevestig je e-mailadres')
     end
   end
 end

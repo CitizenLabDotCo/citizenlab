@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe AdminPublication, type: :model do
+RSpec.describe AdminPublication do
   subject(:admin_publication) { create(:admin_publication) }
 
   describe 'create(:admin_publication)' do

@@ -116,7 +116,7 @@ const EmailAndPasswordSignUp = ({
   };
 
   return (
-    <Box id="e2e-sign-in-email-password-container">
+    <Box id="e2e-sign-up-email-password-container">
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
           <Box id="e2e-firstName-container">

@@ -190,4 +190,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.onlyAdmins',
     defaultMessage: 'Only admins can change this setting.',
   },
+  premiumUsersOnly: {
+    id: 'app.containers.AdminPage.groups.permissions.premiumUsersOnly',
+    defaultMessage:
+      'Asking custom questions is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
+  },
 });

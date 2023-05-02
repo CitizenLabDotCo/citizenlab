@@ -121,10 +121,10 @@ const GetInitiatives = ({ children }: Props) => {
     currentPage: currentPage || 1,
     lastPage: lastPage || 1,
     sortAttribute: filter.sort
-      ? getSortAttribute<Sort, SortAttribute>(filter.sort as Sort)
+      ? getSortAttribute<Sort, SortAttribute>(filter.sort)
       : 'new',
     sortDirection: filter.sort
-      ? getSortDirection<Sort>(filter.sort as Sort)
+      ? getSortDirection<Sort>(filter.sort)
       : 'ascending',
   });
 };

@@ -1,4 +1,4 @@
-# cl2_back
+# cl2-back
 
 ## Getting started
 
@@ -167,11 +167,9 @@ In this section, we explain what you need to do (and what you shouldn't forget) 
 
 ## Running the profiler
 
-1. Run the backend
-
-2. Execute the requests you want to profile
-
-3. Go to http://localhost:4000/profiler.html?pp=normal-backtrace
+1. Run the backend.
+2. Execute the requests you want to profile.
+3. Go to http://localhost:4000/rack-mini-profiler/requests.
 
 
 ## Finding back JSON-formatted events from RabbitMQ

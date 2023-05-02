@@ -52,7 +52,7 @@ class User < ApplicationRecord
   ROLES = %w[admin project_moderator project_folder_moderator].freeze
   CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlab.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i.freeze
-  EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip).freeze
+  EMAIL_DOMAIN_BLACKLIST = Rails.root.join('config', 'domain_blacklist.txt').readlines.map(&:strip).freeze
 
   class << self
     # Deletes all users asynchronously (with side effects).
@@ -72,7 +72,7 @@ class User < ApplicationRecord
 
     # Returns (and memoize) the schema of all declared roles without restrictions.
     def _roles_json_schema
-      @_roles_json_schema ||= JSON.parse(File.read(Rails.root.join('config/schemas/user_roles.json_schema')))
+      @_roles_json_schema ||= JSON.parse(Rails.root.join('config/schemas/user_roles.json_schema').read)
     end
 
     # Returns the user record from the database which matches the specified
@@ -103,6 +103,10 @@ class User < ApplicationRecord
 
       not_invited.find_by_cimail(email_or_embedded_phone)
     end
+
+    def oldest_admin
+      active.admin.order(:created_at).reject(&:super_admin?).first
+    end
   end
 
   has_secure_password validations: false
@@ -130,6 +134,14 @@ class User < ApplicationRecord
   has_many :comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
   has_many :votes, dependent: :nullify
+
+  after_initialize do
+    next unless has_attribute?('roles')
+
+    @highest_role_after_initialize = highest_role
+  end
+
+  attr_reader :highest_role_after_initialize
 
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
@@ -181,34 +193,12 @@ class User < ApplicationRecord
   validate :validate_minimum_password_length
   validate :validate_password_not_common
 
-  validate do |record|
-    if record.email && (duplicate_user = User.find_by_cimail(record.email)).present? && duplicate_user.id != id
-      if duplicate_user.invite_pending?
-        ErrorsService.new.remove record.errors, :email, :taken, value: record.email
-        record.errors.add(:email, :taken_by_invite, value: record.email, inviter_email: duplicate_user.invitee_invite&.inviter&.email)
-      elsif duplicate_user.email != record.email
-        # We're only checking this case, as the other case is covered
-        # by the uniqueness constraint which can "cleverly" distinguish
-        # true duplicates from the record itself.
-        record.errors.add(:email, :taken, value: record.email)
-      end
-    end
-    # new_email should raise email errors
-    if record.new_email
-      if User.find_by_cimail(record.new_email)
-        record.errors.add(:email, :taken, value: record.new_email)
-      elsif record.errors[:new_email].present?
-        ErrorsService.new.remove record.errors, :new_email, :invalid, value: record.new_email
-        record.errors.add(:email, :invalid, value: record.new_email)
-      end
-    end
-  end
-
-  validate :validate_can_update_email
-
-  validate :validate_email_domains_blacklist
-
   validates :roles, json: { schema: -> { User.roles_json_schema }, message: ->(errors) { errors } }
+
+  validate :validate_not_duplicate_email
+  validate :validate_not_duplicate_new_email
+  validate :validate_can_update_email
+  validate :validate_email_domains_blacklist
 
   with_options if: -> { user_confirmation_enabled? } do
     validates :email_confirmation_code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
@@ -284,10 +274,6 @@ class User < ApplicationRecord
     # use any conditions before `or` very carefully (inspect the generated SQL)
     project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
   }
-
-  def self.oldest_admin
-    active.admin.order(:created_at).reject(&:super_admin?).first
-  end
 
   def assign_email_or_phone
     # Hack to embed phone numbers in email
@@ -531,6 +517,31 @@ class User < ApplicationRecord
   end
 
   private
+
+  def validate_not_duplicate_new_email
+    return unless new_email
+
+    if User.find_by_cimail(new_email)
+      errors.add(:email, :taken, value: new_email)
+    elsif errors[:new_email].present?
+      ErrorsService.new.remove errors, :new_email, :invalid, value: new_email
+      errors.add(:email, :invalid, value: new_email)
+    end
+  end
+
+  def validate_not_duplicate_email
+    return unless email && (duplicate_user = User.find_by_cimail(email)).present? && duplicate_user.id != id
+
+    if duplicate_user.invite_pending?
+      ErrorsService.new.remove errors, :email, :taken, value: email
+      errors.add(:email, :taken_by_invite, value: email, inviter_email: duplicate_user.invitee_invite&.inviter&.email)
+    elsif duplicate_user.email != email
+      # We're only checking this case, as the other case is covered
+      # by the uniqueness constraint which can "cleverly" distinguish
+      # true duplicates from the record itself.
+      errors.add(:email, :taken, value: email)
+    end
+  end
 
   def validate_can_update_email
     return unless persisted? && (new_email_changed? || email_changed?)

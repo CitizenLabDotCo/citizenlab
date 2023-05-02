@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import GetSerieFromStream, { ISupportedDataType } from './GetSerieFromStream';
 import { BehaviorSubject } from 'rxjs';
 
-jest.mock('services/areas');
+jest.mock('api/areas/types');
 
 let mockData: ISupportedDataType | null | undefined = null;
 

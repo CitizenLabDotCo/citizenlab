@@ -6,7 +6,7 @@ class RecipientConfigurableCampaignForTest < EmailCampaigns::Campaign
   include EmailCampaigns::RecipientConfigurable
 end
 
-RSpec.describe EmailCampaigns::RecipientConfigurable, type: :model do
+RSpec.describe EmailCampaigns::RecipientConfigurable do
   let(:campaign) { RecipientConfigurableCampaignForTest.create! }
 
   describe 'apply_recipient_filters' do

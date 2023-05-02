@@ -7,11 +7,7 @@ import { DndProvider } from 'react-dnd';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import {
-  globalState,
-  IAdminFullWidth,
-  IGlobalStateService,
-} from 'services/globalState';
+
 import { IProjectData } from 'services/projects';
 import { getTopicIds } from 'services/projectAllowedInputTopics';
 
@@ -133,8 +129,6 @@ interface State {
 }
 
 export class PostManager extends React.PureComponent<Props, State> {
-  globalState: IGlobalStateService<IAdminFullWidth>;
-
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -144,15 +138,6 @@ export class PostManager extends React.PureComponent<Props, State> {
       previewPostId: null,
       previewMode: 'view',
     };
-    this.globalState = globalState.init('AdminFullWidth');
-  }
-
-  componentDidMount() {
-    this.globalState.set({ enabled: true });
-  }
-
-  componentWillUnmount() {
-    this.globalState.set({ enabled: false });
   }
 
   componentDidUpdate(prevProps: Props) {

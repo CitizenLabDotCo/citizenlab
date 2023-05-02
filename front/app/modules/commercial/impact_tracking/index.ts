@@ -7,7 +7,7 @@ import { events$ } from 'utils/analytics';
 import { API_PATH } from 'containers/App/constants';
 
 const signUpInTracks = {
-  signInFlowCompleted: 'Sign in flow completed',
+  signInEmailPasswordCompleted: 'Sign in - email & password sign-in completed',
   signUpFlowCompleted: 'Sign up flow completed',
 };
 
@@ -30,7 +30,7 @@ const configuration: ModuleConfiguration = {
 
     events$.subscribe((event) => {
       if (
-        event.name === signUpInTracks.signInFlowCompleted ||
+        event.name === signUpInTracks.signInEmailPasswordCompleted ||
         event.name === signUpInTracks.signUpFlowCompleted
       ) {
         upgradeSession();

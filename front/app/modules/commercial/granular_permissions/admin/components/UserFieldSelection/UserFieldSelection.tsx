@@ -15,6 +15,7 @@ import {
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { FieldSelectionModal } from './FieldSelectionModal';
+import Tippy from '@tippyjs/react';
 
 // api
 import useAddPermissionCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
@@ -38,6 +39,7 @@ import { isAdmin } from 'services/permissions/roles';
 import useUserCustomFields from 'hooks/useUserCustomFields';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'hooks/useAuthUser';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type UserFieldSelectionProps = {
   permission: IPermissionData;
@@ -61,6 +63,9 @@ const UserFieldSelection = ({
 }: UserFieldSelectionProps) => {
   const authUser = useAuthUser();
   const { formatMessage } = useIntl();
+  const permissionsCustomFieldsEnabled = useFeatureFlag({
+    name: 'permissions_custom_fields',
+  });
   const globalRegistrationFields = useUserCustomFields();
   const initialFields = usePermissionsCustomFields({
     projectId,
@@ -135,117 +140,172 @@ const UserFieldSelection = ({
     permission.attributes.permitted_by === 'everyone_confirmed_email';
 
   return (
-    <Box>
-      <Title variant="h4" color="primary" style={{ fontWeight: 600 }}>
-        <FormattedMessage {...messages.userQuestionTitle} />
-      </Title>
-      <Text fontSize="s" color="coolGrey600" pb="8px">
-        <FormattedMessage {...messages.userFieldsSelectionDescription} />
-      </Text>
+    <Tippy
+      interactive={true}
+      placement={'bottom'}
+      disabled={permissionsCustomFieldsEnabled}
+      theme={'dark'}
+      content={
+        <Box style={{ cursor: 'default' }}>
+          <Text my="8px" color="white" fontSize="s">
+            {formatMessage(messages.premiumUsersOnly)}
+          </Text>
+        </Box>
+      }
+    >
       <Box>
-        {showQuestionToggle && (
-          <Box mb="10px">
-            <Toggle
-              checked={permission.attributes.global_custom_fields}
-              disabled={!userIsAdmin}
-              onChange={() => {
-                onChange({
-                  permission,
-                  groupIds,
-                  globalCustomFields:
-                    !permission.attributes.global_custom_fields,
-                });
-              }}
-              label={
-                <Box display="flex">
-                  <span style={{ color: colors.primary }}>
-                    <FormattedMessage
-                      {...messages.useExistingRegistrationQuestions}
-                    />
-                  </span>
+        <Title
+          variant="h4"
+          color="primary"
+          style={{ fontWeight: 600 }}
+          mt="5px"
+        >
+          <FormattedMessage {...messages.userQuestionTitle} />
+        </Title>
+        <Text fontSize="s" color="coolGrey600" pb="8px">
+          <FormattedMessage {...messages.userFieldsSelectionDescription} />
+        </Text>
 
-                  <IconTooltip
-                    ml="4px"
-                    icon="info-solid"
-                    content={formatMessage(
-                      userIsAdmin
-                        ? messages.useExistingRegistrationQuestionsDescription
-                        : messages.onlyAdmins
-                    )}
-                  />
+        <Box>
+          {showQuestionToggle && (
+            <Tippy
+              interactive={true}
+              placement={'bottom'}
+              disabled={userIsAdmin}
+              theme={'dark'}
+              content={
+                <Box style={{ cursor: 'default' }}>
+                  <Text my="8px" color="white" fontSize="s">
+                    {formatMessage(messages.onlyAdmins)}
+                  </Text>
                 </Box>
               }
-            />
-          </Box>
-        )}
-        {showQuestions && (
-          <>
-            <Box mt="20px">
-              {initialFieldArray?.map((field) => (
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  key={field.id}
-                  py="0px"
-                  borderTop="solid"
-                  borderWidth="1px"
-                  borderColor={colors.grey300}
-                >
-                  <Text color="primary">
-                    {getTitleFromGlobalFieldId(field, locale)}
-                  </Text>
-                  <Box display="flex">
-                    <Toggle
-                      checked={field.attributes.required}
-                      onChange={() => {
-                        updatePermissionCustomField({
-                          id: field.id,
-                          required: !field.attributes.required,
-                        });
-                      }}
-                      label={
-                        <Text color="primary" fontSize="s">
-                          <FormattedMessage {...messages.required} />
-                        </Text>
+            >
+              <Box mb="10px">
+                <Toggle
+                  checked={permission.attributes.global_custom_fields}
+                  disabled={!permissionsCustomFieldsEnabled || !userIsAdmin}
+                  onChange={() => {
+                    onChange({
+                      permission,
+                      groupIds,
+                      globalCustomFields:
+                        !permission.attributes.global_custom_fields,
+                    });
+                  }}
+                  label={
+                    <Box display="flex">
+                      <span
+                        style={
+                          !permissionsCustomFieldsEnabled || !userIsAdmin
+                            ? { color: colors.disabled }
+                            : { color: colors.primary }
+                        }
+                      >
+                        <FormattedMessage
+                          {...messages.useExistingRegistrationQuestions}
+                        />
+                      </span>
+                      {permissionsCustomFieldsEnabled && (
+                        <IconTooltip
+                          ml="4px"
+                          icon="info-solid"
+                          content={formatMessage(
+                            messages.useExistingRegistrationQuestionsDescription
+                          )}
+                        />
+                      )}
+                    </Box>
+                  }
+                />
+              </Box>
+            </Tippy>
+          )}
+          {showQuestions && (
+            <>
+              <Box mt="20px">
+                {initialFieldArray?.map((field) => (
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    key={field.id}
+                    py="0px"
+                    borderTop="solid"
+                    borderWidth="1px"
+                    borderColor={colors.grey300}
+                  >
+                    <Text
+                      style={
+                        !permissionsCustomFieldsEnabled
+                          ? { color: colors.disabled }
+                          : { color: colors.primary }
                       }
-                    />
-                    <Button
-                      buttonStyle="text"
-                      icon="delete"
-                      onClick={() => {
-                        handleDeleteField(field.id);
-                      }}
                     >
-                      <FormattedMessage {...messages.delete} />
-                    </Button>
+                      {getTitleFromGlobalFieldId(field, locale)}
+                    </Text>
+                    <Box display="flex">
+                      <Toggle
+                        checked={field.attributes.required}
+                        disabled={!permissionsCustomFieldsEnabled}
+                        onChange={() => {
+                          updatePermissionCustomField({
+                            id: field.id,
+                            required: !field.attributes.required,
+                          });
+                        }}
+                        label={
+                          <Text
+                            fontSize="s"
+                            style={
+                              !permissionsCustomFieldsEnabled
+                                ? { color: colors.disabled }
+                                : { color: colors.primary }
+                            }
+                          >
+                            <FormattedMessage {...messages.required} />
+                          </Text>
+                        }
+                      />
+                      <Button
+                        buttonStyle="text"
+                        icon="delete"
+                        disabled={!permissionsCustomFieldsEnabled}
+                        onClick={() => {
+                          handleDeleteField(field.id);
+                        }}
+                      >
+                        <FormattedMessage {...messages.delete} />
+                      </Button>
+                    </Box>
                   </Box>
-                </Box>
-              ))}
-            </Box>
-            <Box display="flex" mt="12px">
-              <Button
-                icon="plus-circle"
-                bgColor={colors.primary}
-                onClick={() => {
-                  setShowSelectionModal(true);
-                }}
-              >
-                <FormattedMessageComponent {...messages.addQuestion} />
-              </Button>
-            </Box>
-            <FieldSelectionModal
-              showSelectionModal={showSelectionModal}
-              setShowSelectionModal={setShowSelectionModal}
-              selectedFields={initialFieldArray}
-              handleAddField={handleAddField}
-              isLoading={isLoading}
-              registrationFieldList={globalRegistrationFields}
-              locale={locale}
-            />
-          </>
-        )}
+                ))}
+              </Box>
+              <Box display="flex" mt="12px">
+                <Button
+                  icon="plus-circle"
+                  bgColor={colors.primary}
+                  disabled={!permissionsCustomFieldsEnabled}
+                  onClick={() => {
+                    setShowSelectionModal(true);
+                  }}
+                >
+                  <FormattedMessageComponent {...messages.addQuestion} />
+                </Button>
+              </Box>
+              <FieldSelectionModal
+                showSelectionModal={showSelectionModal}
+                setShowSelectionModal={setShowSelectionModal}
+                selectedFields={initialFieldArray}
+                handleAddField={handleAddField}
+                isLoading={isLoading}
+                registrationFieldList={globalRegistrationFields}
+                locale={locale}
+              />
+            </>
+          )}
+        </Box>
       </Box>
-    </Box>
+    </Tippy>
   );
 };
 

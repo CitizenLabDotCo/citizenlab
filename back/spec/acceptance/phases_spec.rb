@@ -81,7 +81,7 @@ resource 'Phases' do
     let(:id) { active_phase.id }
 
     example '[error] Delete all inputs of a phase' do
-      create :idea, project: project, phases: [active_phase]
+      create(:idea, project: project, phases: [active_phase])
 
       do_request
       assert_status 401
@@ -420,12 +420,12 @@ resource 'Phases' do
       end
 
       context 'on a native survey phase' do
-        let(:phase) { create :phase, participation_method: 'native_survey', project: @project }
+        let(:phase) { create(:phase, participation_method: 'native_survey', project: @project) }
 
         example 'Deleting a phase deletes all survey responses', document: false do
-          ideation_phase = create :phase, participation_method: 'ideation', project: @project, start_at: (phase.start_at - 7.days), end_at: (phase.start_at - 1.day)
-          idea = create :idea, project: @project, phases: [ideation_phase]
-          responses = create_list :idea, 2, project: @project, creation_phase: phase, phases: [phase]
+          ideation_phase = create(:phase, participation_method: 'ideation', project: @project, start_at: (phase.start_at - 7.days), end_at: (phase.start_at - 1.day))
+          idea = create(:idea, project: @project, phases: [ideation_phase])
+          responses = create_list(:idea, 2, project: @project, creation_phase: phase, phases: [phase])
 
           do_request
 
@@ -437,10 +437,10 @@ resource 'Phases' do
       end
 
       context 'on an ideation phase' do
-        let(:phase) { create :phase, participation_method: 'ideation', project: @project }
+        let(:phase) { create(:phase, participation_method: 'ideation', project: @project) }
 
         example 'Deleting a phase does not delete the ideas', document: false do
-          idea = create :idea, project: @project, phases: [phase]
+          idea = create(:idea, project: @project, phases: [phase])
 
           do_request
 
@@ -943,8 +943,8 @@ resource 'Phases' do
           start_at: (Time.now - 2.months),
           end_at: (Time.now - 1.month)
         )
-        create_list :idea, 2, project: project, phases: [active_phase]
-        create :idea, project: project, phases: [ideation_phase]
+        create_list(:idea, 2, project: project, phases: [active_phase])
+        create(:idea, project: project, phases: [ideation_phase])
         expect_any_instance_of(SideFxPhaseService).to receive(:after_delete_inputs)
 
         do_request
@@ -999,7 +999,7 @@ resource 'Phases' do
         end
 
         example 'Download phase inputs without private user data', document: false do
-          custom_field = create :custom_field
+          custom_field = create(:custom_field, enabled: false)
           do_request
           assert_status 200
           expect(xlsx_contents(response_body)).to match([
@@ -1016,7 +1016,6 @@ resource 'Phases' do
                 'Location',
                 'Proposed Budget',
                 extra_idea_field.title_multiloc['en'],
-                'Author name',
                 'Submitted at',
                 'Published at',
                 'Comments',
@@ -1027,7 +1026,6 @@ resource 'Phases' do
                 'URL',
                 'Project',
                 'Status',
-                'Assignee',
                 custom_field.title_multiloc['en']
               ],
               rows: [
@@ -1042,7 +1040,6 @@ resource 'Phases' do
                   ideation_response.location_description,
                   ideation_response.proposed_budget,
                   'Answer',
-                  ideation_response.author_name,
                   an_instance_of(DateTime), # created_at
                   an_instance_of(DateTime), # published_at
                   0,
@@ -1053,7 +1050,6 @@ resource 'Phases' do
                   "http://example.org/ideas/#{ideation_response.slug}",
                   project.title_multiloc['en'],
                   ideation_response.idea_status.title_multiloc['en'],
-                  "#{assignee.first_name} #{assignee.last_name}",
                   ''
                 ]
               ]
@@ -1100,7 +1096,6 @@ resource 'Phases' do
               column_headers: [
                 'ID',
                 multiselect_field.title_multiloc['en'],
-                'Author name',
                 'Submitted at',
                 'Project'
               ],
@@ -1108,7 +1103,6 @@ resource 'Phases' do
                 [
                   survey_response.id,
                   'Cat, Dog',
-                  survey_response.author_name,
                   an_instance_of(DateTime), # created_at
                   project.title_multiloc['en']
                 ]

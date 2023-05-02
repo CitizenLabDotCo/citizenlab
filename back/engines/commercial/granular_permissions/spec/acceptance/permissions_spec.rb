@@ -44,9 +44,9 @@ resource 'Permissions' do
 
       example_request 'List all permissions efficiently include custom fields', document: true do
         permission = @project.permissions.first
-        field2 = create :custom_field
-        field1 = create :custom_field
-        field3 = create :custom_field
+        field2 = create(:custom_field)
+        field1 = create(:custom_field)
+        field3 = create(:custom_field)
         field1.move_to_top
         field2.reload
         field3.reload
@@ -263,9 +263,9 @@ resource 'Permissions' do
         SettingsService.new.activate_feature! 'user_confirmation'
         @permission = @phase.permissions.first
         @permission.update!(permitted_by: 'everyone_confirmed_email')
-        create :custom_field_birthyear, required: true
-        create :custom_field_gender, required: false
-        create :custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field'
+        create(:custom_field_birthyear, required: true)
+        create(:custom_field_gender, required: false)
+        create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
 
         @user.reset_confirmation_and_counts
         @user.update!(
@@ -333,10 +333,10 @@ resource 'Permissions' do
 
     get 'web_api/v1/permissions/:action/requirements' do
       before do
-        create :custom_field_birthyear, required: true
-        create :custom_field_gender, required: false
-        create :custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field'
-        create :custom_field, resource_type: 'User', enabled: false, key: 'disabled_field' # Should not be returned
+        create(:custom_field_birthyear, required: true)
+        create(:custom_field_gender, required: false)
+        create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
+        create(:custom_field, resource_type: 'User', enabled: false, key: 'disabled_field') # Should not be returned
 
         @user.update!(
           email: 'my@email.com',
@@ -382,7 +382,7 @@ resource 'Permissions' do
       end
 
       let(:action) { @permission.action }
-      let(:idea) { create :idea, project: @project }
+      let(:idea) { create(:idea, project: @project) }
       let(:idea_id) { idea.id }
 
       example_request 'Get the participation requirements of a user in an idea' do
@@ -410,8 +410,8 @@ resource 'Permissions' do
     get 'web_api/v1/permissions/:action/schema' do
       before do
         @permission = Permission.find_by permission_scope_type: nil, action: 'visiting'
-        @field1 = create :custom_field, required: true
-        @field2 = create :custom_field, required: false
+        @field1 = create(:custom_field, required: true)
+        @field2 = create(:custom_field, required: false)
       end
 
       let(:action) { 'visiting' }
@@ -438,10 +438,10 @@ resource 'Permissions' do
       before do
         @permission = @project.permissions.first
         @permission.update!(global_custom_fields: false)
-        @field1 = create :custom_field, required: true, enabled: false # Field should be returned even if not enabled globally
-        @field2 = create :custom_field, required: false
-        create :permissions_custom_field, permission: @permission, custom_field: @field1, required: false
-        create :permissions_custom_field, permission: @permission, custom_field: @field2, required: true
+        @field1 = create(:custom_field, required: true, enabled: false) # Field should be returned even if not enabled globally
+        @field2 = create(:custom_field, required: false)
+        create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
+        create(:permissions_custom_field, permission: @permission, custom_field: @field2, required: true)
       end
 
       let(:action) { @permission.action }
@@ -469,14 +469,14 @@ resource 'Permissions' do
       before do
         @permission = @project.permissions.first
         @permission.update!(global_custom_fields: false)
-        @field1 = create :custom_field, required: true
-        @field2 = create :custom_field, required: false
-        create :permissions_custom_field, permission: @permission, custom_field: @field1, required: false
-        create :permissions_custom_field, permission: @permission, custom_field: @field2, required: true
+        @field1 = create(:custom_field, required: true)
+        @field2 = create(:custom_field, required: false)
+        create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
+        create(:permissions_custom_field, permission: @permission, custom_field: @field2, required: true)
       end
 
       let(:action) { @permission.action }
-      let(:idea) { create :idea, project: @project }
+      let(:idea) { create(:idea, project: @project) }
       let(:idea_id) { idea.id }
 
       example_request 'Get the json and ui schema for an idea permission' do
@@ -501,10 +501,10 @@ resource 'Permissions' do
       before do
         @permission = @phase.permissions.first
         @permission.update!(global_custom_fields: false)
-        @field1 = create :custom_field, required: true
-        @field2 = create :custom_field, required: false
-        create :permissions_custom_field, permission: @permission, custom_field: @field1, required: false
-        create :permissions_custom_field, permission: @permission, custom_field: @field2, required: true
+        @field1 = create(:custom_field, required: true)
+        @field2 = create(:custom_field, required: false)
+        create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
+        create(:permissions_custom_field, permission: @permission, custom_field: @field2, required: true)
       end
 
       let(:action) { @permission.action }

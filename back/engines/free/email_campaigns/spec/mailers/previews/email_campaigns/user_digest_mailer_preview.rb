@@ -2,9 +2,11 @@
 
 module EmailCampaigns
   class UserDigestMailerPreview < ActionMailer::Preview
+    include EmailCampaigns::MailerPreviewRecipient
+
     def campaign_mail
       command = {
-        recipient: User.first,
+        recipient: recipient_user,
         event_payload: {
           notifications_count: 2,
           top_ideas: [

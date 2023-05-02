@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Idea, type: :model do
+RSpec.describe Idea do
   describe 'callbacks' do
     context 'when destroyed' do
       subject(:idea) { create(:idea) }

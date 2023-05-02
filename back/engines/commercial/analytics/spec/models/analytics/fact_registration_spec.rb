@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Analytics::FactRegistration, type: :model do
+RSpec.describe Analytics::FactRegistration do
   context 'when a user registers without invite and has completed registration' do
     let!(:user) { create(:user, invite_status: nil) }
 

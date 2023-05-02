@@ -85,4 +85,4 @@ module Moderation
   end
 end
 
-::Moderation::WebApi::V1::ModerationsController.prepend(FlagInappropriateContent::Patches::WebApi::V1::ModerationsController)
+Moderation::WebApi::V1::ModerationsController.prepend(FlagInappropriateContent::Patches::WebApi::V1::ModerationsController)

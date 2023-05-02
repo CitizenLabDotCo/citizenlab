@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe WebApi::V1::CustomFieldSerializer do
   context 'for user custom fields' do
-    let(:field) { create :custom_field, resource_type: 'User' }
+    let(:field) { create(:custom_field, resource_type: 'User') }
 
     it "includes the attribute 'hidden'" do
       serialized_field = described_class.new(field).serializable_hash
@@ -14,7 +14,7 @@ describe WebApi::V1::CustomFieldSerializer do
   end
 
   context 'for idea custom fields' do
-    let(:field) { create :custom_field, :for_custom_form, key: 'extra' }
+    let(:field) { create(:custom_field, :for_custom_form, key: 'extra') }
 
     it "does not include the attribute 'hidden'" do
       serialized_field = described_class.new(field).serializable_hash
@@ -51,7 +51,7 @@ describe WebApi::V1::CustomFieldSerializer do
   end
 
   it 'swaps data images' do
-    field = create :custom_field
+    field = create(:custom_field)
     expect_any_instance_of(TextImageService).to(
       receive(:render_data_images)
         .with(field, :description_multiloc)
@@ -64,7 +64,7 @@ describe WebApi::V1::CustomFieldSerializer do
   end
 
   context 'linear_scale field' do
-    let(:field) { create :custom_field_linear_scale, :for_custom_form, key: 'scale' }
+    let(:field) { create(:custom_field_linear_scale, :for_custom_form, key: 'scale') }
 
     it 'includes maximum, minimum_label_multiloc, and maximum_label_multiloc' do
       serialized_field = described_class.new(field).serializable_hash

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Pin, type: :model do
+RSpec.describe Pin do
   let(:home_page) { create(:home_page) }
   let(:project) { create(:project) }
   let(:project_folder) { create(:project_folder) }

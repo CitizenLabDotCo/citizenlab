@@ -46,8 +46,11 @@ const calculateMessageDescriptor = (
     return messages.commentingDisabledUnverified;
   } else if (isLoggedIn && commentingDisabledReason === 'not_permitted') {
     return messages.commentingDisabledProject;
-  } else if (isLoggedIn && commentingDisabledReason === 'not_active') {
-    return messages.completeRegistrationToComment;
+  } else if (
+    (isLoggedIn && commentingDisabledReason === 'not_active') ||
+    commentingDisabledReason === 'missing_data'
+  ) {
+    return messages.completeProfileToComment;
   } else if (!isLoggedIn) {
     return messages.commentingMaybeNotPermitted;
   }
@@ -122,7 +125,7 @@ const CommentingDisabled = ({
                   triggerAuthenticationFlow();
                 }}
               >
-                <FormattedMessage {...messages.completeRegistrationLinkText} />
+                <FormattedMessage {...messages.completeProfileLinkText} />
               </button>
             ),
             verifyIdentityLink: (

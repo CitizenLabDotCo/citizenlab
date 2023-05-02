@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::NavBarItemSerializer < ::WebApi::V1::BaseSerializer
+class WebApi::V1::NavBarItemSerializer < WebApi::V1::BaseSerializer
   attributes :code, :ordering, :created_at, :updated_at
 
   attribute :title_multiloc do |item|

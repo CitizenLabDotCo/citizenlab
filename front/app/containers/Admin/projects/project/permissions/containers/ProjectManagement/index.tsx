@@ -14,7 +14,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import ModeratorList from '../../components/ModeratorList';
 import UserSearch from '../../components/UserSearch';
-import SeatInfo from 'components/SeatInfo';
+import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import { Section } from 'components/admin/Section';
 
 // hooks
