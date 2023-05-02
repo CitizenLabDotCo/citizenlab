@@ -44,7 +44,7 @@ class Initiative < ApplicationRecord
   has_many :initiative_files, -> { order(:ordering) }, dependent: :destroy
 
   has_many :initiatives_topics, dependent: :destroy
-  has_many :topics, through: :initiatives_topics
+  has_many :topics, -> { order(:ordering) }, through: :initiatives_topics
   has_many :areas_initiatives, dependent: :destroy
   has_many :areas, through: :areas_initiatives
   has_many :initiative_status_changes, dependent: :destroy

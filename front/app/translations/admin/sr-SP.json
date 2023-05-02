@@ -1266,7 +1266,6 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSave": "Сачувај опцију одговора",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess": "Опција одговора је успешно сачувана",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Answer choices",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "Are you sure you want to delete this custom field option?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle": "Fields",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip": "Drag and drop the fields to determine the order in which they appear in the sign-up form.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultField": "Default field",
