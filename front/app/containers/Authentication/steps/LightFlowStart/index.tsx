@@ -20,7 +20,7 @@ import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
 
 // errors
-import { isCLErrorsJSON, handleCLErrorsJSON } from 'utils/errorUtils';
+import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
 
 // utils
 import { isValidEmail } from 'utils/validate';
@@ -86,8 +86,8 @@ const LightFlowStart = ({
     try {
       await onSubmit(email, locale);
     } catch (e) {
-      if (isCLErrorsJSON(e)) {
-        handleCLErrorsJSON(e, methods.setError);
+      if (isCLErrorsIsh(e)) {
+        handleCLErrorsIsh(e, methods.setError);
         return;
       }
 

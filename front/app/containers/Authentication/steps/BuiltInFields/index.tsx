@@ -23,7 +23,7 @@ import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
 
 // errors
-import { isCLErrorsJSON, handleCLErrorsJSON } from 'utils/errorUtils';
+import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
 
 // tracks
 import tracks from '../../tracks';
@@ -101,8 +101,8 @@ const BuiltInFields = ({
         password,
       });
     } catch (e) {
-      if (isCLErrorsJSON(e)) {
-        handleCLErrorsJSON(e, methods.setError);
+      if (isCLErrorsIsh(e)) {
+        handleCLErrorsIsh(e, methods.setError);
         return;
       }
 

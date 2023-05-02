@@ -16,7 +16,7 @@ import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
 
 // errors
-import { isCLErrorsJSON, handleCLErrorsJSON } from 'utils/errorUtils';
+import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
 
 // typings
 import { SetError, Status } from 'containers/Authentication/typings';
@@ -52,8 +52,8 @@ const Invitation = ({ status, setError, onSubmit }: Props) => {
     try {
       await onSubmit(token);
     } catch (e) {
-      if (isCLErrorsJSON(e)) {
-        handleCLErrorsJSON(e, methods.setError);
+      if (isCLErrorsIsh(e)) {
+        handleCLErrorsIsh(e, methods.setError);
         return;
       }
 

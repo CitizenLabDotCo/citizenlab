@@ -25,7 +25,7 @@ import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
 
 // errors
-import { isCLErrorsJSON, handleCLErrorsJSON } from 'utils/errorUtils';
+import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
 
 // tracks
 import tracks from '../../tracks';
@@ -95,7 +95,7 @@ const EmailAndPasswordSignUp = ({
     password,
   }: FormValues) => {
     try {
-      onSubmit({
+      await onSubmit({
         firstName: first_name,
         lastName: last_name,
         email,
@@ -105,9 +105,8 @@ const EmailAndPasswordSignUp = ({
         token: state.token,
       });
     } catch (e) {
-      // TODO test this works like before
-      if (isCLErrorsJSON(e)) {
-        handleCLErrorsJSON(e, methods.setError);
+      if (isCLErrorsIsh(e)) {
+        handleCLErrorsIsh(e, methods.setError);
         return;
       }
 

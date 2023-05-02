@@ -25,7 +25,7 @@ import PasswordInput from 'components/HookForm/PasswordInput';
 import Checkbox from 'components/HookForm/Checkbox';
 
 // errors
-import { isCLErrorsJSON, handleCLErrorsJSON } from 'utils/errorUtils';
+import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
 
 // typings
 import { SetError, State, Status } from '../../typings';
@@ -89,8 +89,8 @@ const Password = ({ state, status, setError, onSubmit }: Props) => {
     try {
       await onSubmit(email, password, rememberMe, tokenLifetime);
     } catch (e) {
-      if (isCLErrorsJSON(e)) {
-        handleCLErrorsJSON(e, methods.setError);
+      if (isCLErrorsIsh(e)) {
+        handleCLErrorsIsh(e, methods.setError);
         return;
       }
 
