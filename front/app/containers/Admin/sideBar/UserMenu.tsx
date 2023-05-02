@@ -70,7 +70,7 @@ export const UserMenu = () => {
           mb="25px"
           onClick={() => setIsUserMenuPopupOpen(true)}
         >
-          <Box display="flex" alignItems="center" w="100%">
+          <Box display="flex" alignItems="center" w="100%" pr="6px">
             <Avatar userId={authUser.id} size={30} addVerificationBadge />
             <Box
               display="flex"
