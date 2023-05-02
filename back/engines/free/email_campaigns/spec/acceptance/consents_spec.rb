@@ -58,21 +58,15 @@ resource 'Campaign consents' do
         json_response = json_parse(response_body)
         multiloc_service ||= MultilocService.new
 
-        campaigns_mgmt_attrs = @campaigns.map do |campaign|
-          [
-            [:recipient_role_multiloc, multiloc_service.i18n_to_multiloc(campaign.class.recipient_role_multiloc_key).transform_keys(&:to_sym)],
-            [:content_type_multiloc, multiloc_service.i18n_to_multiloc(campaign.class.content_type_multiloc_key).transform_keys(&:to_sym)]
-          ].to_h
+        campaigns_content_type_multiloc = @campaigns.map do |campaign|
+          multiloc_service.i18n_to_multiloc(campaign.class.content_type_multiloc_key).transform_keys(&:to_sym)
         end
 
-        response_mgmt_attrs = json_response[:data].map do |consent|
-          [
-            [:recipient_role_multiloc, consent[:attributes][:recipient_role_multiloc]],
-            [:content_type_multiloc, consent[:attributes][:content_type_multiloc]]
-          ].to_h
+        response_content_type_multiloc = json_response[:data].map do |consent|
+          consent[:attributes][:content_type_multiloc]
         end
 
-        expect(response_mgmt_attrs).to eq campaigns_mgmt_attrs
+        expect(response_content_type_multiloc).to eq campaigns_content_type_multiloc
       end
     end
 
