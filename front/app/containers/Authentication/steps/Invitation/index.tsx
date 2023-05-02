@@ -57,7 +57,10 @@ const Invitation = ({ status, setError, onSubmit }: Props) => {
         return;
       }
 
-      // TODO get more clear overview of what (can) go wrong here
+      // this error always says that your code
+      // has 'expired' or 'been used already' even
+      // when it's just a wrong code. we can consider
+      // adding more fine-grained error messages in the future
       setError('invitation_error');
     }
   };

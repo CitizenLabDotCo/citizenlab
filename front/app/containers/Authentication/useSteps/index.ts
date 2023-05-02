@@ -180,7 +180,13 @@ export default function useSteps() {
           context: GLOBAL_CONTEXT,
         };
 
-        transition(currentStep, 'START_INVITE_FLOW')(search);
+        transition(
+          currentStep,
+          'START_INVITE_FLOW'
+        )(search).catch(() => {
+          setCurrentStep('sign-up:invite');
+          setError('invitation_error');
+        });
       }
 
       // Remove all parameters from URL as they've already been captured
