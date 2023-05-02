@@ -71,7 +71,7 @@ describe XlsxService do
       let(:xlsx) { service.generate_users_xlsx(users, view_private_attributes: false) }
 
       it 'hides private attributes' do
-        custom_field = create :custom_field, enabled: false
+        custom_field = create(:custom_field, enabled: false)
         expect(worksheet[0].cells.map(&:value)).not_to include 'id'
         expect(worksheet[0].cells.map(&:value)).not_to include 'email'
         expect(worksheet[0].cells.map(&:value)).not_to include 'first_name'
@@ -104,7 +104,7 @@ describe XlsxService do
       let(:xlsx) { service.generate_ideas_xlsx(ideas, view_private_attributes: false) }
 
       it 'hides private attributes' do
-        custom_field = create :custom_field, enabled: false
+        custom_field = create(:custom_field, enabled: false)
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_email'
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_name'
         expect(worksheet[0].cells.map(&:value)).not_to include 'assignee'
@@ -132,7 +132,7 @@ describe XlsxService do
       let(:xlsx) { service.generate_initiatives_xlsx(initiatives, view_private_attributes: false) }
 
       it 'hides private attributes' do
-        custom_field = create :custom_field, enabled: false
+        custom_field = create(:custom_field, enabled: false)
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_id'
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_email'
         expect(worksheet[0].cells.map(&:value)).not_to include 'assignee_email'
@@ -160,7 +160,7 @@ describe XlsxService do
       let(:xlsx) { service.generate_idea_comments_xlsx(comments, view_private_attributes: false) }
 
       it 'hides private attributes' do
-        custom_field = create :custom_field, enabled: false
+        custom_field = create(:custom_field, enabled: false)
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_id'
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_email'
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_name'
@@ -185,7 +185,7 @@ describe XlsxService do
       let(:xlsx) { service.generate_initiative_comments_xlsx(comments, view_private_attributes: false) }
 
       it 'hides private attributes' do
-        custom_field = create :custom_field, enabled: false
+        custom_field = create(:custom_field, enabled: false)
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_id'
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_email'
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_name'

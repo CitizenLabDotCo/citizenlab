@@ -241,7 +241,7 @@ describe IdeasFinder do
 
   describe '#basket_condition' do
     let(:idea_ids) { timeline_project.idea_ids.shuffle.take(2) }
-    let(:basket) { create :basket, idea_ids: idea_ids }
+    let(:basket) { create(:basket, idea_ids: idea_ids) }
     let(:params) { { basket_id: basket.id } }
 
     it 'filters ideas by basket' do

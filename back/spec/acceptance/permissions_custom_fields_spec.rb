@@ -13,7 +13,7 @@ resource 'PermissionsCustomField' do
 
   let(:permission_scope) { nil }
   let(:action) { 'visiting' }
-  let(:permission) { create :permission, permission_scope: permission_scope, action: action }
+  let(:permission) { create(:permission, permission_scope: permission_scope, action: action) }
 
   get 'web_api/v1/ideas/:idea_id/permissions/:action/permissions_custom_fields' do
     with_options scope: :page do
@@ -21,14 +21,14 @@ resource 'PermissionsCustomField' do
       parameter :size, 'Number of permissions custom fields per page'
     end
 
-    let(:permission_scope) { create :continuous_project }
+    let(:permission_scope) { create(:continuous_project) }
     let(:action) { 'commenting_idea' }
     let(:idea_id) { create(:idea, project: permission_scope).id }
 
     example 'List all permissions custom fields of a permission' do
-      field1, field2 = create_list :custom_field, 2
+      field1, field2 = create_list(:custom_field, 2)
       [{ required: true, custom_field: field1 }, { required: false, custom_field: field2 }].each do |attributes|
-        create :permissions_custom_field, attributes.merge(permission: permission)
+        create(:permissions_custom_field, attributes.merge(permission: permission))
       end
 
       do_request
@@ -83,7 +83,7 @@ resource 'PermissionsCustomField' do
     end
     ValidationErrorHelper.new.error_fields self, PermissionsCustomField
 
-    let(:permissions_custom_field) { create :permissions_custom_field, required: false }
+    let(:permissions_custom_field) { create(:permissions_custom_field, required: false) }
     let(:id) { permissions_custom_field.id }
     let(:required) { true }
 
@@ -96,7 +96,7 @@ resource 'PermissionsCustomField' do
   end
 
   delete 'web_api/v1/permissions_custom_fields/:id' do
-    let(:permissions_custom_field) { create :permissions_custom_field }
+    let(:permissions_custom_field) { create(:permissions_custom_field) }
     let(:id) { permissions_custom_field.id }
     example_request 'Delete a permissions custom field' do
       assert_status 200

@@ -357,7 +357,7 @@ describe PermissionsService do
     end
 
     context 'when permitted_by is set to everyone' do
-      let(:permission) { create :permission, permitted_by: 'everyone', global_custom_fields: false }
+      let(:permission) { create(:permission, permitted_by: 'everyone', global_custom_fields: false) }
 
       it 'permits a visitor' do
         expect(service.requirements(permission, nil)).to eq({
@@ -440,11 +440,11 @@ describe PermissionsService do
     end
 
     context 'when permitted_by is set to everyone_confirmed_email' do
-      let(:permission) { create :permission, permitted_by: 'everyone_confirmed_email', global_custom_fields: false }
+      let(:permission) { create(:permission, permitted_by: 'everyone_confirmed_email', global_custom_fields: false) }
 
       before do
         field = CustomField.find_by code: 'birthyear'
-        create :permissions_custom_field, permission: permission, custom_field: field, required: false
+        create(:permissions_custom_field, permission: permission, custom_field: field, required: false)
       end
 
       it 'does not permit a visitor' do
@@ -603,11 +603,11 @@ describe PermissionsService do
     end
 
     context 'when permitted_by is set to users' do
-      let(:permission) { create :permission, permitted_by: 'users', global_custom_fields: true }
+      let(:permission) { create(:permission, permitted_by: 'users', global_custom_fields: true) }
 
       before do
         field = CustomField.find_by code: 'birthyear'
-        create :permissions_custom_field, permission: permission, custom_field: field, required: false
+        create(:permissions_custom_field, permission: permission, custom_field: field, required: false)
       end
 
       it 'does not permit a visitor' do
@@ -761,11 +761,11 @@ describe PermissionsService do
     end
 
     context 'when permitted_by is set to groups' do
-      let(:permission) { create :permission, permitted_by: 'groups', global_custom_fields: false }
+      let(:permission) { create(:permission, permitted_by: 'groups', global_custom_fields: false) }
 
       before do
         field = CustomField.find_by code: 'birthyear'
-        create :permissions_custom_field, permission: permission, custom_field: field, required: true
+        create(:permissions_custom_field, permission: permission, custom_field: field, required: true)
       end
 
       it 'does not permit a visitor' do
@@ -880,7 +880,7 @@ describe PermissionsService do
     end
 
     context 'when permitted_by is set to admins_moderators' do
-      let(:permission) { create :permission, permitted_by: 'admins_moderators', global_custom_fields: false }
+      let(:permission) { create(:permission, permitted_by: 'admins_moderators', global_custom_fields: false) }
 
       before { SettingsService.new.deactivate_feature! 'user_confirmation' }
 
@@ -988,11 +988,11 @@ describe PermissionsService do
   end
 
   describe '#requirements_fields' do
-    let(:custom_fields) { [true, false, false].map { |required| create :custom_field, required: required } }
+    let(:custom_fields) { [true, false, false].map { |required| create(:custom_field, required: required) } }
     let(:permission) do
       create(:permission, global_custom_fields: global_custom_fields).tap do |permission|
         custom_fields.take(2).each do |field|
-          create :permissions_custom_field, permission: permission, custom_field: field, required: !field.required
+          create(:permissions_custom_field, permission: permission, custom_field: field, required: !field.required)
         end
         permission.reload
       end

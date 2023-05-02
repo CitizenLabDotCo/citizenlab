@@ -78,7 +78,7 @@ resource 'Users' do
       end
 
       context 'when a user exists without a password and has completed registration', document: false do
-        before { create :user_no_password, email: 'test@test.com', registration_completed_at: Time.now }
+        before { create(:user_no_password, email: 'test@test.com', registration_completed_at: Time.now) }
 
         example_request 'Returns "confirm"' do
           assert_status 200
@@ -87,7 +87,7 @@ resource 'Users' do
       end
 
       context 'when a user exists with a password', document: false do
-        before { create :user, email: 'test@test.com' }
+        before { create(:user, email: 'test@test.com') }
 
         example_request 'Returns "password"' do
           assert_status 200
@@ -960,7 +960,7 @@ resource 'Users' do
 
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
-          let(:project) { create :continuous_project }
+          let(:project) { create(:continuous_project) }
 
           example_request 'Update a user' do
             assert_status 200

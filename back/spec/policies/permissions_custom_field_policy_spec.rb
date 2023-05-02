@@ -5,9 +5,9 @@ require 'rails_helper'
 describe PermissionsCustomFieldPolicy do
   subject { described_class.new(user, permissions_custom_field) }
 
-  let(:project) { create :continuous_project }
-  let(:permission) { create :permission, permission_scope: project }
-  let(:permissions_custom_field) { create :permissions_custom_field, permission: permission }
+  let(:project) { create(:continuous_project) }
+  let(:permission) { create(:permission, permission_scope: project) }
+  let(:permissions_custom_field) { create(:permissions_custom_field, permission: permission) }
 
   context 'for a visitor' do
     let(:user) { nil }
@@ -20,7 +20,7 @@ describe PermissionsCustomFieldPolicy do
   end
 
   context 'for a resident' do
-    let(:user) { create :user }
+    let(:user) { create(:user) }
 
     it { is_expected.not_to permit(:index) }
     it { is_expected.not_to permit(:show) }
@@ -30,7 +30,7 @@ describe PermissionsCustomFieldPolicy do
   end
 
   context 'for a project moderator' do
-    let(:user) { create :project_moderator, projects: [project] }
+    let(:user) { create(:project_moderator, projects: [project]) }
 
     it { is_expected.to permit(:index) }
     it { is_expected.to permit(:show) }

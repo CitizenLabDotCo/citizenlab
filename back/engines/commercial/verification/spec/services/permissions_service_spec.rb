@@ -50,7 +50,7 @@ describe PermissionsService do
   describe '#requirements' do
     context 'when permitted_by is set to a verification group' do
       let(:groups) { [create(:group), create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])] }
-      let(:group_permission) { create :permission, permitted_by: 'groups', groups: groups }
+      let(:group_permission) { create(:permission, permitted_by: 'groups', groups: groups) }
 
       context 'there is no user' do
         it 'requires verification' do
@@ -61,7 +61,7 @@ describe PermissionsService do
       end
 
       context 'a user is not verified' do
-        let(:user) { create :user, verified: false }
+        let(:user) { create(:user, verified: false) }
 
         it 'requires verification' do
           requirements = service.requirements(group_permission, user)
@@ -71,7 +71,7 @@ describe PermissionsService do
       end
 
       context 'a user is verified' do
-        let(:user) { create :user, verified: true }
+        let(:user) { create(:user, verified: true) }
 
         it 'verification is satisfied' do
           requirements = service.requirements(group_permission, user)
@@ -83,7 +83,7 @@ describe PermissionsService do
 
     context 'when permitted_by group is NOT set to a verification group' do
       let(:groups) { [create(:group), create(:smart_group)] }
-      let(:group_permission) { create :permission, permitted_by: 'groups', groups: groups }
+      let(:group_permission) { create(:permission, permitted_by: 'groups', groups: groups) }
 
       it 'verification is not required' do
         requirements = service.requirements(group_permission, nil)
@@ -92,7 +92,7 @@ describe PermissionsService do
     end
 
     context 'when permitted_by is NOT set to groups' do
-      let(:permission) { create :permission, permitted_by: 'users' }
+      let(:permission) { create(:permission, permitted_by: 'users') }
 
       it 'verification is not required' do
         requirements = service.requirements(permission, nil)
