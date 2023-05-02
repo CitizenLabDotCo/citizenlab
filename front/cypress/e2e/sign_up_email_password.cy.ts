@@ -139,8 +139,6 @@ describe('Sign up - Email + password step', () => {
     signUp();
     cy.get('#code').click().type('1234');
     cy.get('#e2e-verify-email-button').click();
-    cy.get('#e2e-signup-custom-fields-skip-btn').should('exist');
-    cy.get('#e2e-signup-custom-fields-skip-btn').click();
     cy.get('#e2e-success-continue-button').click();
     cy.get('#e2e-authentication-modal').should('not.exist');
     cy.get('#e2e-user-menu-container');

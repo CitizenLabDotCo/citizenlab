@@ -3,7 +3,7 @@ import { randomString, randomEmail } from '../support/commands';
 describe('profile edition', () => {
   const firstName = randomString();
   const lastName = randomString();
-  let email = randomEmail();
+  const email = randomEmail();
   const password = randomString();
   let userId = '';
 
@@ -22,18 +22,14 @@ describe('profile edition', () => {
     cy.get('input[type="file"]').attachFile('icon.png');
     cy.get('#first_name').clear();
     cy.get('#last_name').clear().type('Doe');
-    const newEmail = randomEmail();
-    email = newEmail;
-    cy.get('#email').clear().type(newEmail);
     cy.get('button[type="submit"]').contains('Save changes').click();
     cy.wait('@saveUser');
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
   });
   it('shows errors when fields have invalid values', () => {
-    cy.get('#email').clear();
     cy.get('button[type="submit"]').contains('Save changes').click();
     cy.get('[data-testid="feedbackErrorMessage"]').should('exist');
-    cy.get('.e2e-error-message').should('have.length', 2);
+    cy.get('.e2e-error-message').should('have.length', 1);
   });
   after(() => {
     cy.apiRemoveUser(userId);

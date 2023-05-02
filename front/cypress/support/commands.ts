@@ -109,11 +109,10 @@ export function login(email: string, password: string) {
   cy.get('#e2e-landing-page');
   cy.get('#e2e-navbar');
   cy.get('#e2e-navbar-login-menu-item').click();
-  cy.get('#e2e-sign-in-container');
+  cy.get('#e2e-authentication-modal');
   cy.get('#email').type(email);
   cy.get('#password').type(password);
   cy.get('#e2e-signin-password-submit-button').click();
-  cy.get('#e2e-sign-up-in-modal').should('not.exist');
   cy.get('#e2e-user-menu-container');
   cy.wait(500);
 }
