@@ -149,7 +149,7 @@ class SanitizationService
 
     def initialize(features = [])
       super()
-      features_w_default = features.concat([:default])
+      features_w_default = features.push(:default)
       @tags = features_w_default.flat_map { |f| EDITOR_FEATURES[f][:tags] }.uniq
       @attributes = features_w_default.flat_map { |f| EDITOR_FEATURES[f][:attributes] }.uniq
     end

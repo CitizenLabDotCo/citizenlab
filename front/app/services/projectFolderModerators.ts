@@ -1,18 +1,13 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { IUsers } from 'services/users';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import seatsKeys from 'api/seats/keys';
+import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 
 const indexPath = (projectFolderId: string) =>
   `${API_PATH}/project_folders/${projectFolderId}/moderators`;
 
 const showPath = (projectFolderId: string, moderatorId: string) =>
   `${indexPath(projectFolderId)}/${moderatorId}`;
-
-const invalidateSeatsCache = () => {
-  queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
-};
 
 export function folderModeratorsStream(projectFolderId: string) {
   return streams.get<IUsers>({

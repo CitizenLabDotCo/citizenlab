@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::Manual, type: :model do
+RSpec.describe EmailCampaigns::Campaigns::Manual do
   describe 'Manual Campaign default factory' do
     it 'is valid' do
       expect(build(:manual_campaign)).to be_valid

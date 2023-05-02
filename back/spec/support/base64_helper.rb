@@ -6,6 +6,6 @@ module Base64Helper
   end
 
   def file_as_base64(filename, mime_type)
-    "data:#{mime_type};base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
+    "data:#{mime_type};base64,#{Base64.encode64(Rails.root.join('spec', 'fixtures', filename).read)}"
   end
 end

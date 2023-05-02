@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe User, type: :model do
+RSpec.describe User do
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:user)).to be_valid
@@ -53,6 +53,27 @@ RSpec.describe User, type: :model do
       u = described_class.new(email: 'test@test.com', locale: 'en')
       u.save
       expect(u).to be_valid
+    end
+  end
+
+  describe '.after_initialize' do
+    it "stores new user's role" do
+      user = build(:user)
+      user.roles = [{ 'type' => 'admin' }]
+      expect(user.highest_role_after_initialize).to eq(:user)
+    end
+
+    it "stores existing user's role" do
+      create(:admin)
+      user = described_class.first
+      user.roles = [{ 'type' => 'project_moderator', 'project_id' => 1 }]
+      expect(user.highest_role_after_initialize).to eq(:admin)
+    end
+
+    it 'does not store role if roles attributes is not loaded by AR' do
+      create(:admin)
+      user = described_class.select(:id).first
+      expect(user.highest_role_after_initialize).to be_nil
     end
   end
 
@@ -693,8 +714,8 @@ RSpec.describe User, type: :model do
     end
 
     it 'denies a user from his moderator rights' do
-      project = create :project
-      moderator = create :project_moderator, projects: [project]
+      project = create(:project)
+      moderator = create(:project_moderator, projects: [project])
 
       moderator.delete_role 'project_moderator', project_id: project.id
       expect(moderator.save).to be true

@@ -9,7 +9,7 @@ describe PermissionPolicy do
 
   context 'for a visitor' do
     let(:user) { nil }
-    let!(:permission) { create :permission, :by_everyone }
+    let!(:permission) { create(:permission, :by_everyone) }
 
     it { is_expected.not_to permit(:show)         }
     it { is_expected.not_to permit(:update)       }
@@ -24,7 +24,7 @@ describe PermissionPolicy do
 
   context 'for a user' do
     let(:user) { create(:user) }
-    let!(:permission) { create :permission, :by_everyone }
+    let!(:permission) { create(:permission, :by_everyone) }
 
     it { is_expected.not_to permit(:show)         }
     it { is_expected.not_to permit(:update)       }
@@ -40,7 +40,7 @@ describe PermissionPolicy do
   context 'for a member of a group with granular permissions' do
     let(:user) { create(:user) }
     let(:group) { create(:group) }
-    let!(:permission) { create :permission, permitted_by: 'groups', groups: [group] }
+    let!(:permission) { create(:permission, permitted_by: 'groups', groups: [group]) }
 
     before do
       group.members << user
@@ -59,7 +59,7 @@ describe PermissionPolicy do
 
   context 'for an admin' do
     let(:user) { create(:admin) }
-    let!(:permission) { create :permission, :by_admins_moderators }
+    let!(:permission) { create(:permission, :by_admins_moderators) }
 
     it { is_expected.to permit(:show)             }
     it { is_expected.to permit(:update)           }

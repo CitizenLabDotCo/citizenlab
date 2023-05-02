@@ -22,7 +22,7 @@ import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { trackUpvote, trackCancelUpvote } from './trackVote';
 
 // typings
-import { ICommentData } from 'services/comments';
+import { ICommentData } from 'api/comments/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 interface Props {

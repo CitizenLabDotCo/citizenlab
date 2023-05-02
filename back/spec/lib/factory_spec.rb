@@ -40,8 +40,8 @@ RSpec.describe Factory do
       'native_survey' => ParticipationMethod::NativeSurvey
     }.each do |method_name, method_class|
       context "when the given participation_context's method is #{method_name}" do
-        let(:project) { build :project, participation_method: method_name }
-        let(:phase) { build :phase, participation_method: method_name }
+        let(:project) { build(:project, participation_method: method_name) }
+        let(:phase) { build(:phase, participation_method: method_name) }
 
         it "returns an instance of #{method_class}" do
           expect(project_participation_method).to be_an_instance_of(method_class)

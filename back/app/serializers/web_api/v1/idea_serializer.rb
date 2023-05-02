@@ -82,5 +82,5 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   end
 end
 
-::WebApi::V1::IdeaSerializer.include(IdeaAssignment::Extensions::WebApi::V1::IdeaSerializer)
-::WebApi::V1::IdeaSerializer.include(IdeaCustomFields::Extensions::WebApi::V1::IdeaSerializer)
+WebApi::V1::IdeaSerializer.include(IdeaAssignment::Extensions::WebApi::V1::IdeaSerializer)
+WebApi::V1::IdeaSerializer.include(IdeaCustomFields::Extensions::WebApi::V1::IdeaSerializer)

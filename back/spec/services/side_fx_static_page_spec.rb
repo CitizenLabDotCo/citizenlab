@@ -42,7 +42,7 @@ describe SideFxStaticPageService do
 
   describe 'after_destroy' do
     it "logs a 'deleted' action job when the page is destroyed" do
-      travel_to Time.now do
+      freeze_time do
         frozen_page = page.destroy!
         expect { service.after_destroy(frozen_page, user) }
           .to have_enqueued_job(LogActivityJob)

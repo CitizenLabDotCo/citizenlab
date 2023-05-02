@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::ProjectModerationRightsReceived, type: :model do
+RSpec.describe EmailCampaigns::Campaigns::ProjectModerationRightsReceived do
   describe 'ProjectModerationRightsReceived Campaign default factory' do
     it 'is valid' do
       expect(build(:project_moderation_rights_received_campaign)).to be_valid

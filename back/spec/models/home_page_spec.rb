@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe HomePage, type: :model do
+RSpec.describe HomePage do
   describe 'validations' do
     it 'only allows once instance of homepage to exist' do
       create(:home_page)

@@ -17,7 +17,7 @@ resource 'Campaigns' do
   get '/web_api/v1/campaigns' do
     before do
       @campaigns = create_list(:manual_campaign, 3)
-      create_list(:official_feedback_on_voted_initiative_campaign, 2)
+      @automated_campaigns = create_list(:official_feedback_on_voted_initiative_campaign, 2)
     end
 
     with_options scope: :page do
@@ -43,6 +43,22 @@ resource 'Campaigns' do
       do_request(without_campaign_names: ['manual'])
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
+    end
+
+    example 'List all non-manual campaigns with expected management labels' do
+      do_request(without_campaign_names: ['manual'])
+      json_response = json_parse(response_body)
+
+      multiloc_service ||= MultilocService.new
+      recipient_role_multiloc = multiloc_service.i18n_to_multiloc(@automated_campaigns[0].class.recipient_role_multiloc_key).transform_keys(&:to_sym)
+      recipient_segment_multiloc = multiloc_service.i18n_to_multiloc(@automated_campaigns[0].class.recipient_segment_multiloc_key).transform_keys(&:to_sym)
+      content_type_multiloc = multiloc_service.i18n_to_multiloc(@automated_campaigns[0].class.content_type_multiloc_key).transform_keys(&:to_sym)
+      trigger_multiloc = multiloc_service.i18n_to_multiloc(@automated_campaigns[0].class.trigger_multiloc_key).transform_keys(&:to_sym)
+
+      expect(json_response[:data][0][:attributes][:recipient_role_multiloc]).to eq    recipient_role_multiloc
+      expect(json_response[:data][0][:attributes][:recipient_segment_multiloc]).to eq recipient_segment_multiloc
+      expect(json_response[:data][0][:attributes][:content_type_multiloc]).to eq      content_type_multiloc
+      expect(json_response[:data][0][:attributes][:trigger_multiloc]).to eq           trigger_multiloc
     end
   end
 
@@ -145,7 +161,7 @@ resource 'Campaigns' do
   post 'web_api/v1/campaigns/:id/send' do
     ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
 
-    let(:campaign) { create :manual_campaign }
+    let(:campaign) { create(:manual_campaign) }
     let(:id) { campaign.id }
 
     example_request 'Send out the campaign now' do
@@ -169,9 +185,9 @@ resource 'Campaigns' do
       parameter :size, 'Number of deliveries per page'
     end
 
-    let(:campaign) { create :manual_campaign }
+    let(:campaign) { create(:manual_campaign) }
     let!(:id) { campaign.id }
-    let!(:deliveries) { create_list :delivery, 5, campaign: campaign }
+    let!(:deliveries) { create_list(:delivery, 5, campaign: campaign) }
 
     example_request 'Get the deliveries of a sent campaign. Includes the recipients.' do
       assert_status 200

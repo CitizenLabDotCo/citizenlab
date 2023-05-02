@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe FlagInappropriateContent::EmailCampaigns::InappropriateContentFlaggedMailer, type: :mailer do
+RSpec.describe FlagInappropriateContent::EmailCampaigns::InappropriateContentFlaggedMailer do
   describe 'campaign_mail' do
     let!(:recipient) { create(:user, locale: 'en') }
     let!(:campaign) { FlagInappropriateContent::EmailCampaigns::Campaigns::InappropriateContentFlagged.create! }

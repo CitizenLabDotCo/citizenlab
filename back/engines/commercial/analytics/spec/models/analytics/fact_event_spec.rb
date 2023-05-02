@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Analytics::FactEvent, type: :model do
+RSpec.describe Analytics::FactEvent do
   context 'when an event is created' do
     let!(:event) { create(:event) }
 

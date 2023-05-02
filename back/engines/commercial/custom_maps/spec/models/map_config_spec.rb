@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe CustomMaps::MapConfig, type: :model do
+RSpec.describe CustomMaps::MapConfig do
   describe 'Default factory' do
     it 'is valid' do
       map_config = build(:map_config)

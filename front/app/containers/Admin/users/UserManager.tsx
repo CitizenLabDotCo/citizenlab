@@ -8,28 +8,31 @@ import UserTable from './UserTable';
 import UserTableActions from './UserTableActions';
 import Error from 'components/UI/Error';
 import NoUsers from './NoUsers';
-
+import { Box } from '@citizenlab/cl2-component-library';
 // Events
 import eventEmitter from 'utils/eventEmitter';
 import events from './events';
 
 // Resources
-import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
+import GetUsers, {
+  GetUsersChildProps,
+  InputProps as GetUsersInputProps,
+} from 'resources/GetUsers';
 
 // Services
 import { MembershipType } from 'services/groups';
 
 // Typings
 interface InputProps {
-  search: string | undefined;
-  groupId?: string;
+  search: GetUsersInputProps['search'];
+  groupId?: GetUsersInputProps['groupId'];
   groupType?: MembershipType;
-  onlyBlocked?: boolean;
+  onlyBlocked?: GetUsersInputProps['onlyBlocked'];
   deleteUsersFromGroup?: (userIds: string[]) => void;
   // These are used in the inputProps for GetUsers
-  canModerate?: boolean;
-  notCitizenlabMember?: boolean;
-  includeInactive?: boolean;
+  canModerate?: GetUsersInputProps['canModerate'];
+  notCitizenlabMember?: GetUsersInputProps['notCitizenlabMember'];
+  includeInactive?: GetUsersInputProps['includeInactive'];
 }
 
 interface DataProps {
@@ -160,10 +163,14 @@ export class UserManager extends PureComponent<Props, State> {
     const { selectedUsers, errors } = this.state;
 
     if (isArray(users.usersList) && users.usersList.length === 0) {
-      return search ? (
-        <NoUsers noSuchSearchResult={true} />
-      ) : (
-        <NoUsers groupType={groupType} />
+      return (
+        <Box mb="40px">
+          {search ? (
+            <NoUsers noSuchSearchResult={true} />
+          ) : (
+            <NoUsers groupType={groupType} />
+          )}
+        </Box>
       );
     }
 

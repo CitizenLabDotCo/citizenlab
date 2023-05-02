@@ -16,7 +16,7 @@ RSpec.describe HeaderBgUploader do
 
   before do
     described_class.enable_processing = true
-    File.open(Rails.root.join('spec/fixtures/header.jpg')) { |f| uploader.store!(f) }
+    Rails.root.join('spec/fixtures/header.jpg').open { |f| uploader.store!(f) }
   end
 
   after do

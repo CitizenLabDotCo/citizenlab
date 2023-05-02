@@ -178,9 +178,9 @@ describe ProjectFolders::FolderPolicy do
   end
 
   context 'when there\'s a folder with a project with group permissions' do
-    let(:member) { create :user }
-    let(:project) { create :private_groups_project, user: member }
-    let(:subject_folder) { create :project_folder, projects: [project] }
+    let(:member) { create(:user) }
+    let(:project) { create(:private_groups_project, user: member) }
+    let(:subject_folder) { create(:project_folder, projects: [project]) }
 
     before { subject_folder.admin_publication.update! publication_status: 'published' }
 
@@ -191,7 +191,7 @@ describe ProjectFolders::FolderPolicy do
     end
 
     context 'when not member' do
-      let(:user) { create :user }
+      let(:user) { create(:user) }
 
       it { is_expected.not_to permit(:show) }
     end
@@ -203,27 +203,27 @@ describe ProjectFolders::FolderPolicy do
     end
 
     context 'when project moderator' do
-      let(:user) { create :project_moderator, projects: [project] }
+      let(:user) { create(:project_moderator, projects: [project]) }
 
       it { is_expected.to permit(:show) }
     end
 
     context 'when folder moderator' do
-      let(:user) { create :project_folder_moderator, project_folders: [subject_folder] }
+      let(:user) { create(:project_folder_moderator, project_folders: [subject_folder]) }
 
       it { is_expected.to permit(:show) }
     end
 
     context 'when admin' do
-      let(:user) { create :admin }
+      let(:user) { create(:admin) }
 
       it { is_expected.to permit(:show) }
     end
   end
 
   context 'when the folder is a draft' do
-    let(:project) { create :project }
-    let(:subject_folder) { create :project_folder, projects: [project] }
+    let(:project) { create(:project) }
+    let(:subject_folder) { create(:project_folder, projects: [project]) }
 
     before { subject_folder.admin_publication.update! publication_status: 'draft' }
 
@@ -234,25 +234,25 @@ describe ProjectFolders::FolderPolicy do
     end
 
     context 'when not member' do
-      let(:user) { create :user }
+      let(:user) { create(:user) }
 
       it { is_expected.not_to permit(:show) }
     end
 
     context 'when project moderator' do
-      let(:user) { create :project_moderator, projects: [project] }
+      let(:user) { create(:project_moderator, projects: [project]) }
 
       it { is_expected.not_to permit(:show) }
     end
 
     context 'when folder moderator' do
-      let(:user) { create :project_folder_moderator, project_folders: [subject_folder] }
+      let(:user) { create(:project_folder_moderator, project_folders: [subject_folder]) }
 
       it { is_expected.to permit(:show) }
     end
 
     context 'when admin' do
-      let(:user) { create :admin }
+      let(:user) { create(:admin) }
 
       it { is_expected.to permit(:show) }
     end

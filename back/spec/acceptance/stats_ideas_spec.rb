@@ -63,7 +63,7 @@ resource 'Stats - Ideas' do
       @ideas_with_topics += create_list(:idea_with_topics, 3, project: @project1, idea_status: @proposed)
       create(:idea, project: @project2, idea_status: @proposed)
     end
-    create :idea, project: create(:continuous_native_survey_project)
+    create(:idea, project: create(:continuous_native_survey_project))
   end
 
   get 'web_api/v1/stats/ideas_count' do

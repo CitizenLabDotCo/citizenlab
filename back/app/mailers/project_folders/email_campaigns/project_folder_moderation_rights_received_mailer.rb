@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-return unless defined? ::EmailCampaigns::ApplicationMailer
+return unless defined? EmailCampaigns::ApplicationMailer
 
 module ProjectFolders
   module EmailCampaigns

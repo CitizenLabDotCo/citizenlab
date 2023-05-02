@@ -54,7 +54,7 @@ module AdminApi
     end
 
     def templates
-      render json: MultiTenancy::TenantTemplateService.new.available_templates.values.flatten.uniq
+      render json: MultiTenancy::Templates::Utils.new.available_templates
     end
 
     private

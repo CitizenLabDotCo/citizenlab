@@ -263,9 +263,9 @@ resource 'Permissions' do
         SettingsService.new.activate_feature! 'user_confirmation'
         @permission = @phase.permissions.first
         @permission.update!(permitted_by: 'everyone_confirmed_email')
-        create :custom_field_birthyear, required: true
-        create :custom_field_gender, required: false
-        create :custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field'
+        create(:custom_field_birthyear, required: true)
+        create(:custom_field_gender, required: false)
+        create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
 
         @user.reset_confirmation_and_counts
         @user.update!(

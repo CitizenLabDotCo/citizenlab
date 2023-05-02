@@ -52,7 +52,7 @@ class User < ApplicationRecord
   ROLES = %w[admin project_moderator project_folder_moderator].freeze
   CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlab.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i.freeze
-  EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip).freeze
+  EMAIL_DOMAIN_BLACKLIST = Rails.root.join('config', 'domain_blacklist.txt').readlines.map(&:strip).freeze
 
   class << self
     # Deletes all users asynchronously (with side effects).
@@ -72,7 +72,7 @@ class User < ApplicationRecord
 
     # Returns (and memoize) the schema of all declared roles without restrictions.
     def _roles_json_schema
-      @_roles_json_schema ||= JSON.parse(File.read(Rails.root.join('config/schemas/user_roles.json_schema')))
+      @_roles_json_schema ||= JSON.parse(Rails.root.join('config/schemas/user_roles.json_schema').read)
     end
 
     # Returns the user record from the database which matches the specified
@@ -103,6 +103,10 @@ class User < ApplicationRecord
 
       not_invited.find_by_cimail(email_or_embedded_phone)
     end
+
+    def oldest_admin
+      active.admin.order(:created_at).reject(&:super_admin?).first
+    end
   end
 
   has_secure_password validations: false
@@ -130,6 +134,14 @@ class User < ApplicationRecord
   has_many :comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
   has_many :votes, dependent: :nullify
+
+  after_initialize do
+    next unless has_attribute?('roles')
+
+    @highest_role_after_initialize = highest_role
+  end
+
+  attr_reader :highest_role_after_initialize
 
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
@@ -262,10 +274,6 @@ class User < ApplicationRecord
     # use any conditions before `or` very carefully (inspect the generated SQL)
     project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
   }
-
-  def self.oldest_admin
-    active.admin.order(:created_at).reject(&:super_admin?).first
-  end
 
   def assign_email_or_phone
     # Hack to embed phone numbers in email

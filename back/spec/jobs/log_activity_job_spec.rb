@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe LogActivityJob, type: :job do
+RSpec.describe LogActivityJob do
   subject(:job) { described_class.new }
 
   describe '#perform' do

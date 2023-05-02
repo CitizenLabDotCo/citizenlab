@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Vote, type: :model do
+RSpec.describe Vote do
   context 'associations' do
     it { is_expected.to belong_to(:user).optional }
     it { is_expected.to belong_to(:votable) }

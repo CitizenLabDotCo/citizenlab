@@ -40,7 +40,7 @@ module EmailCampaigns
 
     before_send :content_worth_sending?
 
-    N_TOP_IDEAS = ENV.fetch('N_MODERATOR_DIGEST_IDEAS', 12).to_i
+    N_TOP_IDEAS = 12
 
     def mailer_class
       ModeratorDigestMailer
@@ -62,6 +62,22 @@ module EmailCampaigns
       'admin'
     end
 
+    def self.recipient_role_multiloc_key
+      'email_campaigns.admin_labels.recipient_role.managers'
+    end
+
+    def self.recipient_segment_multiloc_key
+      'email_campaigns.admin_labels.recipient_segment.managers'
+    end
+
+    def self.content_type_multiloc_key
+      'email_campaigns.admin_labels.content_type.general'
+    end
+
+    def self.trigger_multiloc_key
+      'scheduled'
+    end
+
     def generate_commands(recipient:, time: nil)
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       recipient.moderatable_project_ids.filter_map do |project_id|
@@ -71,10 +87,13 @@ module EmailCampaigns
         statistics = statistics project
         next unless nonzero_statistics? statistics
 
+        project_name = project.title_multiloc[recipient.locale] || project.title_multiloc[I18n.default_locale]
         top_ideas = top_ideas project, name_service
         idea_ids = top_ideas.pluck(:id)
         {
           event_payload: {
+            project_id: project.id,
+            project_name: project_name,
             statistics: statistics,
             top_ideas: top_ideas,
             has_new_ideas: top_ideas.any?

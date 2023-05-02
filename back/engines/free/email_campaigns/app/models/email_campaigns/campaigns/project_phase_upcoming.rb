@@ -54,6 +54,22 @@ module EmailCampaigns
       'admin'
     end
 
+    def self.recipient_role_multiloc_key
+      'email_campaigns.admin_labels.recipient_role.admins_and_moderators'
+    end
+
+    def self.recipient_segment_multiloc_key
+      'email_campaigns.admin_labels.recipient_segment.users_engaged_with_the_project'
+    end
+
+    def self.content_type_multiloc_key
+      'email_campaigns.admin_labels.content_type.projects'
+    end
+
+    def self.trigger_multiloc_key
+      'email_campaigns.admin_labels.trigger.project_changes_phase'
+    end
+
     def filter_notification_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.recipient.id)
     end

@@ -36,10 +36,10 @@ describe PermissionsService do
 
   describe '#denied_reason_for_permission' do
     before do
-      create :custom_field_birthyear, required: true
-      create :custom_field_gender, required: false
-      create :custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_required_field'
-      create :custom_field_number, resource_type: 'User', required: false, key: 'extra_optional_field'
+      create(:custom_field_birthyear, required: true)
+      create(:custom_field_gender, required: false)
+      create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_required_field')
+      create(:custom_field_number, resource_type: 'User', required: false, key: 'extra_optional_field')
     end
 
     let(:user) do
@@ -60,7 +60,7 @@ describe PermissionsService do
       )
     end
 
-    let(:permission) { create :permission, permitted_by: permitted_by }
+    let(:permission) { create(:permission, permitted_by: permitted_by) }
     let(:denied_reason) { service.denied_reason_for_permission permission, user }
 
     context 'when permitted by everyone' do
@@ -246,8 +246,8 @@ describe PermissionsService do
     end
 
     context 'when permitted by groups' do
-      let(:groups) { create_list :group, 2 }
-      let(:permission) { create :permission, permitted_by: 'groups', groups: groups }
+      let(:groups) { create_list(:group, 2) }
+      let(:permission) { create(:permission, permitted_by: 'groups', groups: groups) }
 
       context 'when not signed in' do
         let(:user) { nil }
@@ -333,10 +333,10 @@ describe PermissionsService do
 
   describe '#requirements' do
     before do
-      create :custom_field_birthyear, required: true
-      create :custom_field_gender, required: false
-      create :custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_required_field'
-      create :custom_field_number, resource_type: 'User', required: false, key: 'extra_optional_field'
+      create(:custom_field_birthyear, required: true)
+      create(:custom_field_gender, required: false)
+      create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_required_field')
+      create(:custom_field_number, resource_type: 'User', required: false, key: 'extra_optional_field')
     end
 
     let(:user) do

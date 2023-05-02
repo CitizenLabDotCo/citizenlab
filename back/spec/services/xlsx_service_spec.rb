@@ -27,12 +27,12 @@ describe XlsxService do
     end
 
     it 'contains extra columns for custom user fields' do
-      create :custom_field_domicile
-      custom_select = create :custom_field_select, title_multiloc: { 'en' => 'Select' }
-      custom_multiselect = create :custom_field_multiselect, title_multiloc: { 'en' => 'Multiselect' }
-      select_option = create :custom_field_option, custom_field: custom_select, title_multiloc: { 'en' => 'Option 1' }
-      multiselect_option = create :custom_field_option, custom_field: custom_multiselect, title_multiloc: { 'en' => 'Option 2' }
-      area = create :area, title_multiloc: { 'en' => 'Center' }
+      create(:custom_field_domicile)
+      custom_select = create(:custom_field_select, title_multiloc: { 'en' => 'Select' })
+      custom_multiselect = create(:custom_field_multiselect, title_multiloc: { 'en' => 'Multiselect' })
+      select_option = create(:custom_field_option, custom_field: custom_select, title_multiloc: { 'en' => 'Option 1' })
+      multiselect_option = create(:custom_field_option, custom_field: custom_multiselect, title_multiloc: { 'en' => 'Option 2' })
+      area = create(:area, title_multiloc: { 'en' => 'Center' })
       users.first.update!(
         custom_field_values: {
           'domicile' => area.id,
@@ -61,7 +61,7 @@ describe XlsxService do
     end
 
     it 'includes hidden custom fields' do
-      create :custom_field, hidden: true, title_multiloc: { 'en' => 'Hidden field' }
+      create(:custom_field, hidden: true, title_multiloc: { 'en' => 'Hidden field' })
       headers = worksheet[0].cells.map(&:value)
       field_idx = headers.find_index 'Hidden field'
       expect(field_idx).to be_present

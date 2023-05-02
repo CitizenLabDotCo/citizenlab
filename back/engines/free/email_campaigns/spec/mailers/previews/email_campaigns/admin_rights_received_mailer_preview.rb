@@ -2,13 +2,12 @@
 
 module EmailCampaigns
   class AdminRightsReceivedMailerPreview < ActionMailer::Preview
-    def campaign_mail
-      recipient = User.admin.first
-      command = {
-        recipient: recipient,
-        event_payload: {
+    include EmailCampaigns::MailerPreviewRecipient
 
-        }
+    def campaign_mail
+      command = {
+        recipient: recipient_admin,
+        event_payload: {}
       }
       campaign = EmailCampaigns::Campaigns::AdminRightsReceived.first
 

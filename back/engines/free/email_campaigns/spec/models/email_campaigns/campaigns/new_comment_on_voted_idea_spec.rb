@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::NewCommentOnVotedIdea, type: :model do
+RSpec.describe EmailCampaigns::Campaigns::NewCommentOnVotedIdea do
   describe 'NewCommentOnVotedIdea Campaign default factory' do
     it 'is valid' do
       expect(build(:new_comment_on_voted_idea_campaign)).to be_valid

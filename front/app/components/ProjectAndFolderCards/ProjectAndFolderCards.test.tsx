@@ -104,7 +104,9 @@ const DEFAULT_AREA_DATA = [
 
 let mockAreaData = DEFAULT_AREA_DATA;
 
-jest.mock('hooks/useAreas', () => jest.fn(() => mockAreaData));
+jest.mock('api/areas/useAreas', () =>
+  jest.fn(() => ({ data: { data: mockAreaData } }))
+);
 
 const DEFAULT_TOPIC_DATA = [
   { id: '1', attributes: { title_multiloc: { en: 'Topic 1' } } },

@@ -3,14 +3,16 @@
 namespace :cl2back do
   desc 'Add the built in demographic fields to existing tenants. Should run only once'
   task add_builtin_custom_fields: :environment do
-    tts = ::MultiTenancy::TenantTemplateService.new
-    base_template = YAML.load_file(Rails.root.join('config/tenant_templates/base.yml'))
-    template = base_template
-    template['models'] = template['models'].slice('custom_field', 'custom_field_option')
+    tenant_deserializer = MultiTenancy::Templates::TenantDeserializer.new
+
+    template_path = Rails.root.join('config/tenant_templates/base.yml')
+    template = YAML.load(File.read(template_path)) # rubocop:disable Security/YAMLLoad
+    template['models'].slice!('custom_field', 'custom_field_option')
+
     Tenant.all.each do |tenant|
-      Apartment::Tenant.switch(tenant.schema_name) do
+      tenant.switch do
         puts "Adding custom fields for tenant #{tenant.name}"
-        tts.resolve_and_apply_template(template)
+        tenant_deserializer.deserialize(template)
       end
     end
   end

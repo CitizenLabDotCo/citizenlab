@@ -1,10 +1,10 @@
 import useSeats from 'api/seats/useSeats';
 import { isNil } from 'utils/helperUtils';
-import { useAvailableSeats } from './useAvailableSeats';
+import useTotalSeats from './useTotalSeats';
 
-interface ReturnFunctionParameters {
-  newlyAddedAdminsNumber: number;
-  newlyAddedModeratorsNumber: number;
+interface NewlyAddedSeats {
+  newlyAddedAdminsNumber?: number;
+  newlyAddedModeratorsNumber?: number;
 }
 
 interface ExceedsSeats {
@@ -14,36 +14,38 @@ interface ExceedsSeats {
   all: boolean;
 }
 
-export const useExceedsSeats = (): ((
-  params: ReturnFunctionParameters
-) => ExceedsSeats) => {
-  const availableSeats = useAvailableSeats();
+export default function useExceedsSeats(): (
+  params: NewlyAddedSeats
+) => ExceedsSeats {
+  const totalSeats = useTotalSeats();
   const { data: seats } = useSeats();
 
-  if (isNil(seats) || isNil(availableSeats))
-    return (_params: ReturnFunctionParameters) => ({
+  if (isNil(seats) || isNil(totalSeats)) {
+    return (_params: NewlyAddedSeats) => ({
       admin: false,
       moderator: false,
       any: false,
       all: false,
     });
+  }
 
-  const { availableAdminSeats, availableModeratorSeats } = availableSeats;
+  const { totalAdminSeats, totalModeratorSeats } = totalSeats;
 
   return ({
     newlyAddedAdminsNumber,
     newlyAddedModeratorsNumber,
-  }: ReturnFunctionParameters) => {
+  }: NewlyAddedSeats) => {
     const expectedNewAdminSeats =
-      seats.data.attributes.admins_number + newlyAddedAdminsNumber;
+      seats.data.attributes.admins_number + (newlyAddedAdminsNumber ?? 0);
     const expectedNewModeratorSeats =
-      seats.data.attributes.moderators_number + newlyAddedModeratorsNumber;
+      seats.data.attributes.moderators_number +
+      (newlyAddedModeratorsNumber ?? 0);
 
-    const exceedsAdminSeats = availableAdminSeats
-      ? expectedNewAdminSeats > availableAdminSeats
+    const exceedsAdminSeats = totalAdminSeats
+      ? expectedNewAdminSeats > totalAdminSeats
       : false;
-    const exceedsModeratorSeats = availableModeratorSeats
-      ? expectedNewModeratorSeats > availableModeratorSeats
+    const exceedsModeratorSeats = totalModeratorSeats
+      ? expectedNewModeratorSeats > totalModeratorSeats
       : false;
     return {
       admin: exceedsAdminSeats,
@@ -52,4 +54,4 @@ export const useExceedsSeats = (): ((
       all: exceedsAdminSeats && exceedsModeratorSeats,
     };
   };
-};
+}

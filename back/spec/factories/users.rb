@@ -16,7 +16,7 @@ FactoryBot.define do
     registration_completed_at { Time.now }
     # Although the avatar is not part of the minimal model, generating it
     # really slows down the tests, so we fix it here
-    avatar { File.open(Rails.root.join('spec/fixtures/robot.jpg')) }
+    avatar { Rails.root.join('spec/fixtures/robot.jpg').open }
     invite_status { 'accepted' }
 
     factory :admin do

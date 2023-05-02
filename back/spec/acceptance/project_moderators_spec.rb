@@ -104,6 +104,30 @@ resource 'Moderators' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq user_id
       end
+
+      context 'with limited seats' do
+        before do
+          config = AppConfiguration.instance
+          config.settings['core']['maximum_moderators_number'] = 2
+          config.settings['core']['additional_moderators_number'] = 0
+          config.settings['seat_based_billing'] = { enabled: true, allowed: true }
+          config.save!
+        end
+
+        context 'when limit is reached' do
+          before { create(:project_moderator) } # to reach limit of 2
+
+          example_request 'Increments additional seats', document: false do
+            assert_status 201
+            expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(1)
+          end
+        end
+
+        example_request 'Does not increment additional seats if limit is not reached', document: false do
+          assert_status 201
+          expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(0)
+        end
+      end
     end
   end
 

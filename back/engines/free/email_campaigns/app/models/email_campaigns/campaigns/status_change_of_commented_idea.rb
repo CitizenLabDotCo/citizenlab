@@ -56,6 +56,22 @@ module EmailCampaigns
       'commented'
     end
 
+    def self.recipient_role_multiloc_key
+      'email_campaigns.admin_labels.recipient_role.registered_users'
+    end
+
+    def self.recipient_segment_multiloc_key
+      'email_campaigns.admin_labels.recipient_segment.users_engaged_with_the_idea'
+    end
+
+    def self.content_type_multiloc_key
+      'email_campaigns.admin_labels.content_type.comments'
+    end
+
+    def self.trigger_multiloc_key
+      'email_campaigns.admin_labels.trigger.idea_status_is_changed'
+    end
+
     def generate_commands(recipient:, activity:)
       idea = activity.item
       status = idea.idea_status

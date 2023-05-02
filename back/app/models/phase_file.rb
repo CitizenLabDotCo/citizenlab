@@ -26,7 +26,8 @@ class PhaseFile < ApplicationRecord
   mount_base64_file_uploader :file, PhaseFileUploader
   belongs_to :phase
 
-  validates :phase, :file, :name, presence: true
+  validates :phase, :name, presence: true
+  validates :file, presence: true, unless: proc { Current.loading_tenant_template }
   validate :extension_whitelist
 
   private

@@ -8,8 +8,8 @@ describe IdeasFinder do
   let(:params) { {} }
   let(:options) { {} }
   let(:result_record_ids) { finder.find_records.pluck(:id) }
-  let(:timeline_project) { create :project_with_phases }
-  let!(:ideas) { create_list :idea_with_topics, 5, project: timeline_project }
+  let(:timeline_project) { create(:project_with_phases) }
+  let!(:ideas) { create_list(:idea_with_topics, 5, project: timeline_project) }
 
   before_all do
     IdeaStatus.create_defaults
@@ -450,16 +450,16 @@ describe IdeasFinder do
   end
 
   def initialize_inputs_for_scope_filtering
-    timeline_project = create :project, process_type: 'timeline'
-    create :phase, project: timeline_project, participation_method: 'ideation', start_at: (Time.zone.today - 1.month), end_at: (Time.zone.today - 1.day)
-    create :phase, project: timeline_project, participation_method: 'budgeting', start_at: Time.zone.today, end_at: (Time.zone.today + 1.day)
-    survey_phase = create :phase, project: timeline_project, participation_method: 'native_survey', start_at: (Time.zone.today + 2.days), end_at: (Time.zone.today + 1.month)
-    ideation_project = create :continuous_project, participation_method: 'ideation'
-    budgeting_project = create :continuous_budgeting_project
-    survey_project = create :continuous_project, participation_method: 'native_survey'
+    timeline_project = create(:project, process_type: 'timeline')
+    create(:phase, project: timeline_project, participation_method: 'ideation', start_at: (Time.zone.today - 1.month), end_at: (Time.zone.today - 1.day))
+    create(:phase, project: timeline_project, participation_method: 'budgeting', start_at: Time.zone.today, end_at: (Time.zone.today + 1.day))
+    survey_phase = create(:phase, project: timeline_project, participation_method: 'native_survey', start_at: (Time.zone.today + 2.days), end_at: (Time.zone.today + 1.month))
+    ideation_project = create(:continuous_project, participation_method: 'ideation')
+    budgeting_project = create(:continuous_budgeting_project)
+    survey_project = create(:continuous_project, participation_method: 'native_survey')
 
-    create :idea, project: timeline_project, creation_phase: survey_phase
-    create :idea, project: survey_project
+    create(:idea, project: timeline_project, creation_phase: survey_phase)
+    create(:idea, project: survey_project)
 
     [
       create(:idea, project: ideation_project).id,

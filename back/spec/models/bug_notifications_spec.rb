@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Notification, type: :model do
+RSpec.describe Notification do
   describe 'Deleting stuff related to notifications works when' do
     let!(:project) { create(:project) }
     let!(:idea) { create(:idea, project: project) }

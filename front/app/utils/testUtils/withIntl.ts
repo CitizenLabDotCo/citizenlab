@@ -1,5 +1,5 @@
 import { WrappedComponentProps, createIntl } from 'react-intl';
-import { shallow, ShallowRendererProps, ShallowWrapper } from 'enzyme';
+import { shallow, ShallowRendererProps } from 'enzyme';
 import React from 'react';
 import messages from 'i18n/en';
 
@@ -29,11 +29,10 @@ function nodeWithIntlProp<P>(node: React.ReactElement<P>) {
 }
 
 // shallow() with React Intl context
-export function shallowWithIntl<
-  C extends React.Component,
-  P = C['props'],
-  S = C['state']
->(node: React.ReactElement<P>, additional: ShallowRendererProps = {}) {
+export function shallowWithIntl<C extends React.Component, P = C['props']>(
+  node: React.ReactElement<P>,
+  additional: ShallowRendererProps = {}
+) {
   const { context, ...options } = additional;
   return shallow(nodeWithIntlProp(node), {
     ...options,
@@ -41,5 +40,5 @@ export function shallowWithIntl<
       ...context,
       intl,
     },
-  }) as ShallowWrapper<P & WrappedComponentProps, S, C>;
+  });
 }

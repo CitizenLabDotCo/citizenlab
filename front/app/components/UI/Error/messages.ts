@@ -72,8 +72,8 @@ export default defineMessages({
     defaultMessage: 'The selected Excel file could not be processed.',
   },
   max_invites_limit_exceeded: {
-    id: 'app.errors.max_invites_limit_exceeded',
-    defaultMessage: 'The maximum number of allowed invitations is exceeded.',
+    id: 'app.errors.max_invites_limit_exceeded1',
+    defaultMessage: 'The number of invitations exceeds the limit of 1000.',
   },
   no_invites_specified: {
     id: 'app.errors.no_invites_specified',
