@@ -1663,7 +1663,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_input_subtitle": "Wie kan stemmen op bijdragen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Wie kan stemmen op voorstellen?",
   "app.containers.AdminPage.groups.permissions.phase": "Fase",
-  "app.containers.AdminPage.groups.permissions.premiumUsersOnly": "Aangepaste vragen stellen maakt deel uit van de premium licentie. Neem contact op met je GovSuccess Manager voor meer informatie.",
+  "app.containers.AdminPage.groups.permissions.premiumUsersOnly": "Aangepaste vragen stellen maakt deel uit van de premium licentie. Neem contact op met je Government Success Manager voor meer informatie.",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Beschrijving van de vraag",
   "app.containers.AdminPage.groups.permissions.questionTitle": "Titel van de vraag",
   "app.containers.AdminPage.groups.permissions.required": "Vereist",
