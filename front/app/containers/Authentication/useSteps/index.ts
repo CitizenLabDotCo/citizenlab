@@ -71,7 +71,7 @@ export default function useSteps() {
 
   const setError = useCallback((newError: ErrorCode | null) => {
     _setError((currentError) => {
-      if (currentError === null) {
+      if (currentError === null || newError === null) {
         return newError;
       } else {
         return currentError;
@@ -121,6 +121,7 @@ export default function useSteps() {
       const action = stepConfig[currentStep][transition];
 
       const wrappedAction = (async (...args) => {
+        console.log('???????');
         setError(null);
         if (transition === 'CLOSE') {
           invalidateAllActionDescriptors();
@@ -225,7 +226,7 @@ export default function useSteps() {
 
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')();
     }
-  }, [pathname, search, currentStep, transition, authUser]);
+  }, [pathname, search, currentStep, transition, authUser, setError]);
 
   return {
     currentStep,
