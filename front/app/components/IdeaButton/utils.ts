@@ -14,6 +14,9 @@ export const getButtonMessage = (
   } else if (participationMethod === 'native_survey') {
     return messages.takeTheSurvey;
   }
+
+  // Add Konveio
+
   return getInputTermMessage(inputTerm, {
     idea: messages.submitYourIdea,
     option: messages.addAnOption,

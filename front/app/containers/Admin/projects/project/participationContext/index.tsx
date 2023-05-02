@@ -223,6 +223,7 @@ class ParticipationContext extends PureComponent<
     const budgeting = participation_method === 'budgeting';
     const survey = participation_method === 'survey';
     const ideationOrBudgeting = ideation || budgeting;
+    // Add Konveio?
 
     this.setState({
       participation_method,
