@@ -80,7 +80,7 @@ export default function useSteps() {
   }, []);
 
   const getRequirements = useCallback(async () => {
-    const authenticationContext = authenticationData.context;
+    const authenticationContext = getAuthenticationData().context;
 
     try {
       const response = await getAuthenticationRequirements(
@@ -91,7 +91,7 @@ export default function useSteps() {
       setError('requirements_fetching_failed');
       throw e;
     }
-  }, [authenticationData, setError]);
+  }, [getAuthenticationData, setError]);
 
   const updateState = useCallback((newState: Partial<State>) => {
     setState((state) => ({ ...state, ...newState }));
