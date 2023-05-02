@@ -128,7 +128,7 @@ const Password = ({ state, status, setError, onSubmit }: Props) => {
           <Checkbox
             name="rememberMe"
             label={
-              <Text mt="0" mb="0" mr="4px">
+              <Text mt="0" mb="0" mr="4px" color="tenantText">
                 {formatMessage(sharedMessages.rememberMe)}
               </Text>
             }

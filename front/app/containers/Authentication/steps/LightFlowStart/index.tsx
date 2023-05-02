@@ -100,7 +100,7 @@ const LightFlowStart = ({
       {passwordLoginEnabled && (
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(handleSubmit)}>
-            <Text mt="0px" mb="32px">
+            <Text mt="0px" mb="32px" color="tenantText">
               {formatMessage(sharedMessages.enterYourEmailAddress)}
             </Text>
             <Box>

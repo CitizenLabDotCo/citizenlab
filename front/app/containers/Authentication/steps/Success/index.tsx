@@ -28,7 +28,7 @@ const Success = ({ status, onContinue }: Props) => {
       <Title variant="h4" as="h2" mt="24px" mb="0">
         {formatMessage(messages.allDone)}
       </Title>
-      <Text mt="8px" mb="24px">
+      <Text mt="8px" mb="24px" color="tenantText">
         {formatMessage(messages.nowContinueYourParticipation)}
       </Text>
       <Button

@@ -1342,7 +1342,6 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSave": "Akissutissatut toqqagassaq toqqoruk",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess": "Akissutissatut toqqagassap toqqornera iluatsippoq",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Answer choices",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "Ilumoortumik nammineq toqqagassiaq una peerniarpiuk?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle": "Immersugassat",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip": "Nalunaarsorneqarnermi immersugassat nikisinnerisigut qanoq tulleriiaassanersut aalajangeruk.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultField": "Felti nalinginnaasoq",

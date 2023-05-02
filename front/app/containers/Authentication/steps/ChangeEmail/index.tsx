@@ -71,7 +71,7 @@ const ChangeEmail = ({ status, onGoBack, onChangeEmail }: Props) => {
 
   return (
     <>
-      <Text mt="0px" mb="32px">
+      <Text mt="0px" mb="32px" color="tenantText">
         {formatMessage(messages.enterNewEmail)}
       </Text>
       <FormProvider {...methods}>

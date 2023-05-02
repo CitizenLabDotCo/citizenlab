@@ -103,6 +103,15 @@ resource 'Users' do
           expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('invalid')
         end
       end
+
+      context 'when an email used by a pending invite is used', document: false do
+        before { create(:invited_user, email: 'test@test.com') }
+
+        example_request '[error] Taken by invite' do
+          assert_status 422
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken_by_invite')
+        end
+      end
     end
 
     post 'web_api/v1/users' do
