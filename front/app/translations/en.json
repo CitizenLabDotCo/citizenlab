@@ -1597,6 +1597,7 @@
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.twitterMessage": "{projectFolderName}",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.whatsAppMessage": "{projectFolderName} | from the participation platform of {orgName}",
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Conduct a budget allocation exercise",
+  "app.utils.AdminPage.ProjectEdit.createDocumentAnnotation": "Collect feedback on a document",
   "app.utils.AdminPage.ProjectEdit.createNativeSurvey": "Create an in-platform survey",
   "app.utils.AdminPage.ProjectEdit.createPoll": "Create a poll",
   "app.utils.AdminPage.ProjectEdit.createSurveyText": "Embed an external survey",
