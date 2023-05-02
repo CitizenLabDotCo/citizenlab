@@ -15,7 +15,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 export const FooterNote = styled.p`
   color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.s}px;
+  font-size: ${fontSizes.base}px;
   line-height: normal;
 
   &:not(:last-child) {
@@ -24,7 +24,7 @@ export const FooterNote = styled.p`
 `;
 
 export const FooterNoteLink = styled.button`
-  font-size: ${fontSizes.s}px;
+  font-size: ${fontSizes.base}px;
   padding-left: 4px;
   color: ${({ theme }) => theme.colors.tenantText};
   text-decoration: underline;

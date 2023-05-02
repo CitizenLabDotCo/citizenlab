@@ -14,7 +14,7 @@ import messages from './messages';
 import { trackEventByName } from 'utils/analytics';
 
 // styling
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { darken } from 'polished';
 import { colors } from 'utils/styleUtils';
 
@@ -131,7 +131,7 @@ const AuthProviderButton = memo<Props>(
     const [tacError, setTacError] = useState(false);
     const [privacyAccepted, setPrivacyAccepted] = useState(false);
     const [privacyError, setPrivacyError] = useState(false);
-
+    const theme = useTheme();
     useEffect(() => {
       // reset
       setTacAccepted(false);
@@ -194,7 +194,9 @@ const AuthProviderButton = memo<Props>(
           icon={icon}
           iconSize="22px"
           iconColor={
-            authProvider === 'facebook' ? colors.facebook : colors.textPrimary
+            authProvider === 'facebook'
+              ? colors.facebook
+              : theme.colors.tenantText
           }
           buttonStyle="white"
           fullWidth={true}
@@ -202,6 +204,7 @@ const AuthProviderButton = memo<Props>(
           whiteSpace="wrap"
           onClick={handleExpandButtonClicked}
           padding="10px 18px"
+          textColor={theme.colors.tenantText}
         >
           {children}
         </Button>

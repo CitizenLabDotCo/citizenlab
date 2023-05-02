@@ -1,19 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 export const StyledButton = styled.button`
   font-size: ${fontSizes.base}px;
-  color: ${colors.textSecondary};
+  color: ${({ theme }) => theme.colors.tenantText};
   text-decoration: underline;
 
   &:hover {
-    color: ${colors.textPrimary};
+    color: ${({ theme }) => darken(0.2, theme.colors.tenantText)};
     text-decoration: underline;
   }
 
   cursor: pointer;
   padding: 0px;
+  margin-top: 10px;
 `;
 
 export default (props: React.HTMLProps<HTMLButtonElement>) => (
