@@ -62,9 +62,10 @@ describe('Blocked user', () => {
 
   it('Should not be able to vote comments', () => {
     cy.visit('ideas/verified-idea');
+    cy.acceptCookies();
     cy.scrollTo('bottom');
     cy.get('#e2e-comment-upvote-button').should('exist');
-    cy.get('#e2e-comment-upvote-button').click();
+    cy.get('#e2e-comment-upvote-button').click({ force: true });
     cy.get('.e2e-comment-vote.voted').should('not.exist');
   });
 });
