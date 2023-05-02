@@ -557,17 +557,17 @@ fr:
     admin_labels:
       recipient_role:
         admins: 'Aux administrateurs'
-        admins_and_moderators: 'Aux administrateurs et modérateurs'
-        managers: 'Aux responsables'
+        admins_and_moderators: 'Aux administrateurs et gestionnaires'
+        managers: 'Aux gestionnaires'
         project_participants: 'Aux participants au projet'
-        registered_users: 'Pour les utilisateurs enregistrés'
+        registered_users: 'Aux utilisateurs enregistrés'
       recipient_segment:
         admins: 'Administrateurs'
-        admins_and_managers: 'Admins et managers'
+        admins_and_managers: 'Administrateurs et gestionnaires'
         all_users: 'Tous les utilisateurs'
-        all_users_who_uploaded_proposals: 'Tous les utilisateurs qui ont téléchargé des propositions'
+        all_users_who_uploaded_proposals: 'Tous les utilisateurs qui ont soumis des propositions'
         managers: 'Gestionnaires'
-        managers_assigned_to_a_proposal: 'Gestionnaires affectés à une proposition'
+        managers_assigned_to_a_proposal: 'Gestionnaires assignés à une proposition'
         user_assigned_to_the_idea: 'Utilisateur assigné à l''idée'
         user_receiving_admin_rights: 'Utilisateur recevant des droits d''administrateur'
         user_receiving_folder_moderator_rights: 'Utilisateur recevant les droits de modérateur de dossier'
