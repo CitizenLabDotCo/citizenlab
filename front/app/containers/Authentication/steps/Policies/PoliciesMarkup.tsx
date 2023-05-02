@@ -18,7 +18,7 @@ import Checkbox from 'components/HookForm/Checkbox';
 
 export const ConsentText = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.s}px;
   line-height: 21px;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -84,7 +84,7 @@ const PoliciesMarkup = () => {
           }
         />
       </Box>
-      <Text mt="24px" mb="0px" fontSize="base" color="tenantText">
+      <Text mt="24px" mb="0px" fontSize="s" color="tenantText">
         {formatMessage(messages.byContinuing)}
       </Text>
     </>
