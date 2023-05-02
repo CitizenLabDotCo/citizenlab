@@ -30,7 +30,7 @@ import { Locale } from 'typings';
 import { askCustomFields, requiredCustomFields } from './utils';
 
 export const newLightFlow = (
-  authenticationData: AuthenticationData,
+  getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
@@ -44,7 +44,7 @@ export const newLightFlow = (
 
     trackEventByName(tracks.signUpFlowCompleted);
 
-    const { successAction } = authenticationData;
+    const { successAction } = getAuthenticationData();
     if (successAction) {
       triggerSuccessAction(successAction);
     }
@@ -126,7 +126,7 @@ export const newLightFlow = (
 
         handleOnSSOClick(
           'google',
-          { ...authenticationData, flow: 'signin' },
+          { ...getAuthenticationData(), flow: 'signin' },
           verificationRequired
         );
       },
@@ -143,7 +143,7 @@ export const newLightFlow = (
 
         handleOnSSOClick(
           'facebook',
-          { ...authenticationData, flow: 'signin' },
+          { ...getAuthenticationData(), flow: 'signin' },
           verificationRequired
         );
       },
@@ -160,7 +160,7 @@ export const newLightFlow = (
 
         handleOnSSOClick(
           'azureactivedirectory',
-          { ...authenticationData, flow: 'signin' },
+          { ...getAuthenticationData(), flow: 'signin' },
           verificationRequired
         );
       },
@@ -177,7 +177,7 @@ export const newLightFlow = (
 
         handleOnSSOClick(
           'franceconnect',
-          { ...authenticationData, flow: 'signin' },
+          { ...getAuthenticationData(), flow: 'signin' },
           verificationRequired
         );
       },

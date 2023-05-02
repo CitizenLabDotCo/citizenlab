@@ -31,7 +31,7 @@ import {
 import { Step } from './typings';
 
 export const sharedSteps = (
-  authenticationData: AuthenticationData,
+  getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
@@ -63,7 +63,7 @@ export const sharedSteps = (
 
       // When the user returns from SSO
       RESUME_FLOW_AFTER_SSO: async () => {
-        const { flow } = authenticationData;
+        const { flow } = getAuthenticationData();
         const { requirements } = await getRequirements();
 
         if (flow === 'signup') {
@@ -144,7 +144,7 @@ export const sharedSteps = (
           return;
         }
 
-        const { flow } = authenticationData;
+        const { flow } = getAuthenticationData();
 
         if (flow === 'signin') {
           anySSOEnabled
@@ -177,7 +177,7 @@ export const sharedSteps = (
 
         trackEventByName(tracks.signUpFlowCompleted);
 
-        const { successAction } = authenticationData;
+        const { successAction } = getAuthenticationData();
         if (successAction) {
           triggerSuccessAction(successAction);
         }

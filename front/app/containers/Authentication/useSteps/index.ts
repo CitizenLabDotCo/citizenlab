@@ -55,6 +55,10 @@ export default function useSteps() {
 
   const authenticationData = authenticationDataRef.current;
 
+  const getAuthenticationData = useCallback(() => {
+    return authenticationDataRef.current;
+  }, []);
+
   const [currentStep, setCurrentStep] = useState<Step>('closed');
   const [state, setState] = useState<State>({
     email: null,
@@ -99,14 +103,14 @@ export default function useSteps() {
    * in one big object */
   const stepConfig = useMemo(() => {
     return getStepConfig(
-      authenticationData,
+      getAuthenticationData,
       getRequirements,
       setCurrentStep,
       setStatus,
       updateState,
       anySSOEnabled
     );
-  }, [authenticationData, getRequirements, updateState, anySSOEnabled]);
+  }, [getAuthenticationData, getRequirements, updateState, anySSOEnabled]);
 
   /** given the current step and a transition supported by that step, performs the transition */
   const transition = useCallback(

@@ -22,7 +22,7 @@ import {
 import { Step } from './typings';
 
 export const oldSignInFlow = (
-  authenticationData: AuthenticationData,
+  getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
@@ -48,7 +48,7 @@ export const oldSignInFlow = (
 
         handleOnSSOClick(
           authProvider,
-          { ...authenticationData, flow: 'signin' },
+          { ...getAuthenticationData(), flow: 'signin' },
           verificationRequired
         );
       },
@@ -100,7 +100,7 @@ export const oldSignInFlow = (
 
           setCurrentStep('closed');
 
-          const { successAction } = authenticationData;
+          const { successAction } = getAuthenticationData();
           if (successAction) {
             triggerSuccessAction(successAction);
           }
