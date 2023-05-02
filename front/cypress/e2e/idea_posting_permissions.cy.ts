@@ -46,7 +46,7 @@ describe('Idea posting permissions', () => {
       cy.visit('projects/verified-ideation');
       cy.acceptCookies();
       cy.get('#e2e-idea-button').first().click();
-      cy.get('#e2e-authentication-modal').should('exist');
+      cy.get('#e2e-verification-wizard-root').should('exist');
     });
 
     it('lets verified users post', () => {

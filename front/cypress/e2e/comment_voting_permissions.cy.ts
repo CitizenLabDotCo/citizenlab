@@ -49,7 +49,7 @@ describe('Comment voting permissions for active users', () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       cy.visit('ideas/verified-idea');
       cy.get('.e2e-comment-vote').click();
-      cy.get('#e2e-authentication-modal').should('exist');
+      cy.get('#e2e-verification-wizard-root').should('exist');
     });
   });
 

@@ -44,7 +44,7 @@ describe('Idea commenting permissions for active users', () => {
       cy.get('.e2e-comments-container');
       cy.get('#submit-comment').should('not.exist');
       cy.get('.e2e-commenting-disabled').find('button').click();
-      cy.get('#e2e-authentication-modal').should('exist');
+      cy.get('#e2e-verification-wizard-root').should('exist');
     });
 
     it('lets verified users comment', () => {
