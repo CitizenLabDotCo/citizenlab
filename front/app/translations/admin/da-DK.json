@@ -1418,6 +1418,8 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.newCustomFieldAnswerOptionFormTitle": "Tilføj svarmulighed",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton": "Annuller",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton": "Slet",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionAnswerOptionDeletionConfirmation": "Er du sikker på, at du vil slette denne svarmulighed for registreringsspørgsmål? Alle registreringer, som bestemte brugere har besvaret med denne mulighed, slettes permanent. Denne handling kan ikke fortrydes.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation": "Er du sikker på, at du vil slette dette registreringsspørgsmål? Alle svar, som brugere har givet på dette spørgsmål, vil blive slettet permanent. Denne handling kan ikke fortrydes.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.required": "Påkrævet",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveField": "Gem feltet",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveFieldSuccess": "Feltet er gemt med succes",

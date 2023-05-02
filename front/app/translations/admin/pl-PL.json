@@ -1418,6 +1418,8 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.newCustomFieldAnswerOptionFormTitle": "Dodaj opcję odpowiedzi",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton": "Anuluj",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton": "Usuń",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionAnswerOptionDeletionConfirmation": "Czy na pewno chcesz usunąć tę opcję odpowiedzi na pytanie rejestracyjne? Wszystkie rekordy, w których dany użytkownik udzielił odpowiedzi za pomocą tej opcji, zostaną trwale usunięte. Tego działania nie można cofnąć.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation": "Czy na pewno chcesz usunąć to pytanie rejestracyjne? Wszystkie odpowiedzi udzielone przez użytkowników na to pytanie zostaną trwale usunięte. Tego działania nie można cofnąć.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.required": "Wymagane",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveField": "Zapisz pole",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveFieldSuccess": "Pole pomyślnie zapisane",
