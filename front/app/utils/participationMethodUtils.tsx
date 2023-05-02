@@ -27,6 +27,7 @@ import { CTABarProps } from 'components/ParticipationCTABars/utils';
 import { isNilOrError } from './helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { IIdea } from 'api/ideas/types';
+import { DocumentAnnotationCTABar } from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
 
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
@@ -225,11 +226,11 @@ const documentAnnotationConfig: ParticipationMethodConfig = {
   showInputManager: false,
   isMethodLocked: false,
   // Add Konveio
-  // renderCTABar: (props: CTABarProps) => {
-  //   return (
-  //     <EmbeddedSurveyCTABar project={props.project} phases={props.phases} />
-  //   );
-  // },
+  renderCTABar: (props: CTABarProps) => {
+    return (
+      <DocumentAnnotationCTABar project={props.project} phases={props.phases} />
+    );
+  },
 };
 
 const budgetingConfig: ParticipationMethodConfig = {
