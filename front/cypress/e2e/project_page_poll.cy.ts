@@ -174,7 +174,7 @@ describe('Timeline project with poll phase', () => {
   it('lets non-admin, registered users answer it', () => {
     // set normal user cookie
     cy.clearCookies();
-    cy.setLoginCookie(email, password);
+    cy.setLoginCookie('user@citizenlab.co', 'democracy2.0');
     cy.visit(`/projects/${projectSlug}`);
 
     cy.wait(100);
@@ -202,11 +202,9 @@ describe('poll submission for non-active users', () => {
 
   before(() => {
     // create user
-    cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
+    cy.apiCreateCustomField(randomFieldName, true, true).then((response) => {
       customFieldId = response.body.data.id;
-      cy.apiSignup(firstName, lastName, email, password, {
-        skipCustomFields: true,
-      }).then((response) => {
+      cy.apiSignup(firstName, lastName, email, password).then((response) => {
         userId = response.body.data.id;
       });
       cy.setLoginCookie(email, password);
@@ -218,7 +216,7 @@ describe('poll submission for non-active users', () => {
     cy.visit('/projects/the-big-poll');
     cy.get('#e2e-complete-registration-link').should('exist');
     cy.get('#e2e-complete-registration-link').click();
-    cy.get('#e2e-sign-up-container').should('exist');
+    cy.get('#e2e-authentication-modal').should('exist');
   });
 
   after(() => {
