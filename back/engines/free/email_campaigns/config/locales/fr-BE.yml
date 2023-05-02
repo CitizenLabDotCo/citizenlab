@@ -557,8 +557,8 @@ fr-BE:
     admin_labels:
       recipient_role:
         admins: 'Aux administrateurs'
-        admins_and_moderators: 'Aux administrateurs et modérateurs'
-        managers: 'Aux responsables'
+        admins_and_moderators: 'Aux administrateurs et gestionnaires'
+        managers: 'Aux gestionnaires'
         project_participants: 'Aux participants au projet'
         registered_users: 'Pour les utilisateurs enregistrés'
       recipient_segment:
