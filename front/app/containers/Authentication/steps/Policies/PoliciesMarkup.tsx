@@ -6,7 +6,7 @@ import Link from 'utils/cl-router/Link';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 // i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
@@ -17,7 +17,7 @@ import authProvidersMessages from 'containers/Authentication/steps/AuthProviders
 import Checkbox from 'components/HookForm/Checkbox';
 
 export const ConsentText = styled.div`
-  color: ${colors.textSecondary};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   line-height: 21px;
   overflow-wrap: break-word;
@@ -25,7 +25,7 @@ export const ConsentText = styled.div`
   word-break: break-word;
 
   a {
-    color: ${colors.textSecondary};
+    color: ${({ theme }) => theme.colors.tenantText};
     font-weight: 400;
     text-decoration: underline;
     overflow-wrap: break-word;
@@ -84,7 +84,7 @@ const PoliciesMarkup = () => {
           }
         />
       </Box>
-      <Text mt="24px" mb="0px" fontSize="s" color="textSecondary">
+      <Text mt="24px" mb="0px" fontSize="s" color="tenantText">
         {formatMessage(messages.byContinuing)}
       </Text>
     </>

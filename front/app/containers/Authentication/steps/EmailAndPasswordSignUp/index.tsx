@@ -159,7 +159,7 @@ const EmailAndPasswordSignUp = ({
             </Button>
           </Box>
         </form>
-        <Box mt="32px">
+        <Box mt="24px">
           {anySSOEnabled ? (
             <TextButton onClick={onGoBack} className="link">
               {formatMessage(messages.backToSignUpOptions)}
