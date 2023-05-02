@@ -1392,8 +1392,6 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSave": "Sauvegarder l'option de réponse",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess": "Option de réponse sauvegardée avec succès",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Options de réponses",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation": "Êtes-vous sûrs de vouloir supprimer ce champ personnalisé ?",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "Etes-vous sûr de vouloir supprimer ce champ personnalisé ?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle": "Champs",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip": "Faites glisser et déposez les champs pour déterminer l'ordre dans lequel ils apparaissent dans le formulaire d'inscription.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultField": "Champ par défaut",

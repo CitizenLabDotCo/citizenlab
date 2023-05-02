@@ -1344,8 +1344,6 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSave": "Αποθήκευση επιλογής απάντησης",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess": "Επιλογή απάντησης αποθηκεύτηκε επιτυχώς",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Answer choices",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το προσαρμοσμένο πεδίο;",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή την επιλογή προσαρμοσμένου πεδίου;",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle": "Πεδία",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip": "Σύρετε και αποθέστε τα πεδία για να καθορίσετε τη σειρά με την οποία εμφανίζονται στη φόρμα εγγραφής.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultField": "Προεπιλεγμένο πεδίο",
