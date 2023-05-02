@@ -213,7 +213,7 @@ const surveyConfig: ParticipationMethodConfig = {
 const documentAnnotationConfig: ParticipationMethodConfig = {
   formEditor: null,
   getMethodPickerMessage: () => {
-    return <FormattedMessage {...messages.createSurveyText} />;
+    return <FormattedMessage {...messages.createDocumentAnnotation} />;
   },
   getModalContent: () => {
     return null;
@@ -224,11 +224,12 @@ const documentAnnotationConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
-  renderCTABar: (props: CTABarProps) => {
-    return (
-      <EmbeddedSurveyCTABar project={props.project} phases={props.phases} />
-    );
-  },
+  // Add Konveio
+  // renderCTABar: (props: CTABarProps) => {
+  //   return (
+  //     <EmbeddedSurveyCTABar project={props.project} phases={props.phases} />
+  //   );
+  // },
 };
 
 const budgetingConfig: ParticipationMethodConfig = {

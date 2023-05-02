@@ -371,8 +371,8 @@ export default defineMessages({
     defaultMessage: 'Google Forms',
   },
   documentAnnotationMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.documentAnnotationMethod',
-    defaultMessage: 'Collect feedback on document',
+    id: 'app.containers.AdminPage.ProjectEdit.documentAnnotationMethod1',
+    defaultMessage: 'Collect feedback on a document',
   },
   documentAnnotationMethodDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.documentAnnotationMethodDescription',
