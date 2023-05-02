@@ -597,7 +597,7 @@ fr:
         idea_is_assigned: 'Assignation d''une idée'
         idea_is_flagged_as_spam: 'L''idée est signalée comme étant du spam'
         idea_is_updated: 'Mise à jour d''une idée'
-        idea_status_is_changed: 'Le statut de l''idée est modifié'
+        idea_status_is_changed: 'Modification du statut d''une idée'
         new_idea_is_published: 'Publication d''une nouvelle idée'
         new_proposal_is_posted: 'Publication d''une nouvelle proposition'
         project_changes_phase: 'Phase de changement de projet'
