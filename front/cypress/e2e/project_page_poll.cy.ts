@@ -174,7 +174,7 @@ describe('Timeline project with poll phase', () => {
   it('lets non-admin, registered users answer it', () => {
     // set normal user cookie
     cy.clearCookies();
-    cy.setLoginCookie('user@citizenlab.co', 'democracy2.0');
+    cy.setLoginCookie(email, password);
     cy.visit(`/projects/${projectSlug}`);
 
     cy.wait(100);
