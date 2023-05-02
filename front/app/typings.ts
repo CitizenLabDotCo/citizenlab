@@ -168,6 +168,8 @@ export interface CLErrorsJSON {
   };
 }
 
+export type CLErrorsWrapper = CLErrorsJSON['json'];
+
 export type RHFErrors =
   | { message?: string; error?: string; type?: string }
   | undefined;

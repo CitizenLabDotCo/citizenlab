@@ -1,4 +1,4 @@
-import { CLErrorsJSON, CLErrors } from 'typings';
+import { CLErrorsJSON, CLErrors, CLErrorsWrapper } from 'typings';
 import messages from './messages';
 import { isArray } from 'lodash-es';
 import { isObject } from './helperUtils';
@@ -149,8 +149,46 @@ export function getDefaultAjvErrorMessage({
 
 // There's a similar function above but it's kind of insane, so
 // I'm creating a new one
-export const isCLErrorsJSON = (value: any): value is CLErrorsJSON => {
-  return 'json' in value && isObject(value.json.errors);
+export const isCLErrorsJSON = (value: unknown): value is CLErrorsJSON => {
+  return isObject(value) && 'json' in value && isObject(value.json.errors);
+};
+
+// This is to check if it's not the JSON wrapper but the normal response
+export const isCLErrorsWrapper = (value: unknown): value is CLErrorsWrapper => {
+  return isObject(value) && isObject(value.errors);
+};
+
+// This one checks both. Needed because right now the 'old' utils/request
+// and the new fetcher deal with errors differently (the former wraps it in json)
+// attribute, the latter doesn't)
+export const isCLErrorsIsh = (
+  value: unknown
+): value is CLErrorsJSON | CLErrorsWrapper => {
+  return isCLErrorJSON(value) || isCLErrorsWrapper(value);
+};
+
+export const handleCLErrorWrapper = (
+  error: CLErrorsWrapper,
+  handleError: (error: string, options: Record<string, any>) => void,
+  fieldArrayKey?: string
+) => {
+  Object.keys(error.errors).forEach((key) => {
+    if (fieldArrayKey) {
+      Object.keys(error.errors[key]).forEach((errorKey) => {
+        const errorValue = error.errors[key][errorKey][0];
+        handleError(
+          `${fieldArrayKey}.${key}.${errorKey}`,
+          errorValue === 'string' ? { error: errorValue } : errorValue
+        );
+      });
+    } else {
+      const errorValue = error.errors[key][0];
+      handleError(
+        key,
+        typeof errorValue === 'string' ? { error: errorValue } : errorValue
+      );
+    }
+  });
 };
 
 export const handleCLErrorsJSON = (
@@ -158,23 +196,20 @@ export const handleCLErrorsJSON = (
   handleError: (error: string, options: Record<string, any>) => void,
   fieldArrayKey?: string
 ) => {
-  Object.keys(error.json.errors).forEach((key) => {
-    if (fieldArrayKey) {
-      Object.keys(error.json.errors[key]).forEach((errorKey) => {
-        const errorValue = error.json.errors[key][errorKey][0];
-        handleError(
-          `${fieldArrayKey}.${key}.${errorKey}`,
-          errorValue === 'string' ? { error: errorValue } : errorValue
-        );
-      });
-    } else {
-      const errorValue = error.json.errors[key][0];
-      handleError(
-        key,
-        typeof errorValue === 'string' ? { error: errorValue } : errorValue
-      );
-    }
-  });
+  handleCLErrorWrapper(error.json, handleError, fieldArrayKey);
+};
+
+// This one handles both. Needed because right now the 'old' utils/request
+// and the new fetcher deal with errors differently (the former wraps it in json)
+// attribute, the latter doesn't)
+export const handleCLErrorsIsh = (
+  error: CLErrorsJSON | CLErrorsWrapper,
+  handleError: (error: string, options: Record<string, any>) => void,
+  fieldArrayKey?: string
+) => {
+  isCLErrorJSON(error)
+    ? handleCLErrorsJSON(error, handleError, fieldArrayKey)
+    : handleCLErrorWrapper(error, handleError, fieldArrayKey);
 };
 
 export const handleHookFormSubmissionError = (
