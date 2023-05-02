@@ -1663,7 +1663,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_input_subtitle": "Hvem kan stemme om input?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Hvem kan stemme om forslag?",
   "app.containers.AdminPage.groups.permissions.phase": "Fase",
-  "app.containers.AdminPage.groups.permissions.premiumUsersOnly": "At stille brugerdefinerede spørgsmål er en del af premium-licensen. Kontakt din GovSuccess Manager for at få mere at vide om det.",
+  "app.containers.AdminPage.groups.permissions.premiumUsersOnly": "At stille brugerdefinerede spørgsmål er en del af Premium licensen. Kontakt Søren Kielgast på soren@citizenlab.dk for at få mere at vide om det.",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Beskrivelse af spørgsmålet",
   "app.containers.AdminPage.groups.permissions.questionTitle": "Spørgsmålets titel",
   "app.containers.AdminPage.groups.permissions.required": "Påkrævet",
