@@ -105,7 +105,10 @@ const UpvoteButton = ({
   const { formatMessage } = useIntl();
 
   return (
-    <Container className={`vote ${className || ''}`}>
+    <Container
+      id="e2e-comment-upvote-button"
+      className={`vote ${className || ''}`}
+    >
       <ButtonWrapper
         onClick={onClick}
         disabled={disabled}
