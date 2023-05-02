@@ -84,14 +84,16 @@ const InviteUsersWithSeatsModal = ({
     });
   }
 
+  const resetModal = () => {
+    closeModal();
+    setShowSuccess(false);
+  };
+
   return (
-    <Modal opened={showModal} close={closeModal} header={header}>
+    <Modal opened={showModal} close={resetModal} header={header}>
       {showSuccess ? (
         <SeatSetSuccess
-          closeModal={() => {
-            closeModal();
-            setShowSuccess(false);
-          }}
+          closeModal={resetModal}
           seatType="moderator"
           hasExceededPlanSeatLimit={exceedsSeats.any}
         />
