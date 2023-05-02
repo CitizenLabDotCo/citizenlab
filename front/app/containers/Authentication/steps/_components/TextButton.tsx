@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { darken } from 'polished'; // TODO: Remove when we have a better system
 
 export const StyledButton = styled.button`
   font-size: ${fontSizes.base}px;
@@ -15,7 +15,7 @@ export const StyledButton = styled.button`
 
   cursor: pointer;
   padding: 0px;
-  margin-top: 10px;
+  margin-top: 12px;
 `;
 
 export default (props: React.HTMLProps<HTMLButtonElement>) => (
