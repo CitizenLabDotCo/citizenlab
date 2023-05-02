@@ -23,9 +23,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.geographicAreasTabLinkText',
     defaultMessage: 'Geographic areas tab',
   },
-  customFieldDeletionConfirmation: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation',
-    defaultMessage: 'Are you sure you want to delete this custom field?',
+  registrationQuestionDeletionConfirmation: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation',
+    defaultMessage:
+      'Are you sure you want to delete this registration question? All answers that users have given to this question will be permanently deleted. This action cannot be undone.',
   },
   customFieldsTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip',
