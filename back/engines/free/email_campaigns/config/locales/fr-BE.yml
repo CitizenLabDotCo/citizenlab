@@ -578,9 +578,9 @@ fr-BE:
         user_who_published_the_idea: 'Utilisateur qui a publié l''idée'
         user_who_registers: 'Utilisateur qui s''inscrit'
         user_who_was_invited: 'Utilisateur invité'
-        users_engaged_with_the_idea: 'Les utilisateurs ont adhéré à l''idée'
-        users_engaged_with_the_project: 'Les utilisateurs s''engagent dans le projet'
-        users_engaged_with_the_proposal: 'Les utilisateurs s''engagent dans la proposition'
+        users_engaged_with_the_idea: 'Utilisateurs qui ont interagi avec l''idée'
+        users_engaged_with_the_project: 'Utilisateurs qui ont participé au projet'
+        users_engaged_with_the_proposal: 'Utilisateurs qui ont interagi avec la proposition'
       content_type:
         comments: 'Commentaires'
         content_moderation: 'Modération du contenu'
