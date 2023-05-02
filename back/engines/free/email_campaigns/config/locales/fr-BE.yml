@@ -603,7 +603,7 @@ fr-BE:
         project_changes_phase: 'Phase de changement de projet'
         proposal_gets_reported_as_spam: 'La proposition est signalée comme étant du spam'
         proposal_is_assigned_to_user: 'La proposition est attribuée à l''utilisateur'
-        proposal_is_updated: 'La proposition est mise à jour'
+        proposal_is_updated: 'Mise à jour d''une proposition'
         proposal_is_upvoted_above_threshold: 'La proposition est votée à la hausse au-delà du seuil'
         proposal_status_is_changed: 'Le statut de la proposition est modifié'
         user_comments: 'Commentaires des utilisateurs'
