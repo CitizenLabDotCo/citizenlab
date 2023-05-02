@@ -3,7 +3,7 @@
 module MultiTenancy
   module Templates
     module Serializers
-      class PermissionCustomField < Base
+      class PermissionsCustomField < Base
         attribute :required
         ref_attributes %i[custom_field permission]
       end
