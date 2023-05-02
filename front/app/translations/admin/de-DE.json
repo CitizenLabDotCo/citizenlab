@@ -1392,6 +1392,8 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSave": "Antwortoption speichern",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess": "Antwortoption erfolgreich gespeichert",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Antwortmöglichkeiten",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation": "Sind Sie sicher, dass Sie dieses benutzerdefinierte Feld löschen möchten?",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "Sind Sie sicher, dass Sie diese benutzerdefinierte Feldoption löschen möchten?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle": "Felder",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip": "Ziehen Sie die Felder und legen Sie diese ab, um die Reihenfolge festzulegen, in der sie im Registrierungsformular erscheinen.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultField": "Standardfeld",
