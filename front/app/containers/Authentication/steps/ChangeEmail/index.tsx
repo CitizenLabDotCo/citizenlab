@@ -37,7 +37,7 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   email: undefined,
 };
 
-const ChangeEmail = ({ status, onGoBack, onChangeEmail }: Props) => {
+const ChangeEmail = ({ status, setError, onGoBack, onChangeEmail }: Props) => {
   const { formatMessage } = useIntl();
 
   const loading = status === 'pending';
@@ -66,6 +66,8 @@ const ChangeEmail = ({ status, onGoBack, onChangeEmail }: Props) => {
         handleCLErrorsIsh(e, methods.setError);
         return;
       }
+
+      setError('unknown');
     }
   };
 
