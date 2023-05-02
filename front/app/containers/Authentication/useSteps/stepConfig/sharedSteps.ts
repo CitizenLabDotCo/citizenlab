@@ -26,7 +26,6 @@ import {
   GetRequirements,
   UpdateState,
   AuthenticationData,
-  Status,
 } from '../../typings';
 import { Step } from './typings';
 
@@ -34,7 +33,6 @@ export const sharedSteps = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
-  setStatus: (status: Status) => void,
   updateState: UpdateState,
   anySSOEnabled: boolean
 ) => {
@@ -96,7 +94,6 @@ export const sharedSteps = (
       // When the authentication flow is triggered by an action
       // done by the user
       TRIGGER_REGISTRATION_FLOW: async () => {
-        setStatus('ok');
         updateState({
           email: null,
           token: null,
@@ -168,11 +165,7 @@ export const sharedSteps = (
 
     success: {
       CONTINUE: async () => {
-        setStatus('pending');
-
         await Promise.all([streams.reset(), resetQueryCache()]);
-
-        setStatus('ok');
         setCurrentStep('closed');
 
         trackEventByName(tracks.signUpFlowCompleted);

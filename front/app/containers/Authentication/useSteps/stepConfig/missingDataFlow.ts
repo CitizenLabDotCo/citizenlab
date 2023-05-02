@@ -9,13 +9,12 @@ import signOut from 'api/authentication/sign_in_out/signOut';
 import { requiredCustomFields, requiredBuiltInFields } from './utils';
 
 // typings
-import { GetRequirements, Status } from 'containers/Authentication/typings';
+import { GetRequirements } from 'containers/Authentication/typings';
 import { Step, BuiltInFieldsUpdate } from './typings';
 
 export const missingDataFlow = (
   getRequirements: GetRequirements,
-  setCurrentStep: (step: Step) => void,
-  setStatus: (status: Status) => void
+  setCurrentStep: (step: Step) => void
 ) => {
   return {
     'missing-data:email-confirmation': {
@@ -31,12 +30,8 @@ export const missingDataFlow = (
         }
       },
       SUBMIT_CODE: async (code: string) => {
-        setStatus('pending');
-
         await confirmEmail({ code });
         const { requirements } = await getRequirements();
-
-        setStatus('ok');
 
         if (requiredBuiltInFields(requirements)) {
           setCurrentStep('missing-data:built-in');
@@ -63,11 +58,8 @@ export const missingDataFlow = (
         setCurrentStep('missing-data:email-confirmation');
       },
       RESEND_CODE: async (newEmail: string) => {
-        setStatus('pending');
-
         await resendEmailConfirmationCode(newEmail);
         setCurrentStep('missing-data:email-confirmation');
-        setStatus('ok');
       },
     },
 
@@ -77,12 +69,8 @@ export const missingDataFlow = (
         userId: string,
         builtInFieldUpdate: BuiltInFieldsUpdate
       ) => {
-        setStatus('pending');
-
         await updateUser(userId, builtInFieldUpdate);
         const { requirements } = await getRequirements();
-
-        setStatus('ok');
 
         if (requirements.special.verification === 'require') {
           setCurrentStep('missing-data:verification');
@@ -115,10 +103,7 @@ export const missingDataFlow = (
     'missing-data:custom-fields': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (userId: string, formData: FormData) => {
-        setStatus('pending');
-
         await updateUser(userId, { custom_field_values: formData });
-        setStatus('ok');
         setCurrentStep('success');
       },
       SKIP: async () => {

@@ -17,7 +17,6 @@ import { askCustomFields } from './utils';
 
 // typings
 import {
-  Status,
   AuthenticationData,
   AuthProvider,
   GetRequirements,
@@ -29,7 +28,6 @@ export const oldSignUpFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
-  setStatus: (status: Status) => void,
   updateState: UpdateState,
   anySSOProviderEnabled: boolean
 ) => {
@@ -46,7 +44,6 @@ export const oldSignUpFlow = (
           return;
         }
 
-        setStatus('pending');
         const { requirements } = await getRequirements();
         const verificationRequired =
           requirements.special.verification === 'require';
@@ -75,11 +72,8 @@ export const oldSignUpFlow = (
         }
       },
       SUBMIT: async (params: CreateAccountParameters) => {
-        setStatus('pending');
-
         try {
           await createAccountWithPassword(params);
-          setStatus('ok');
           trackEventByName(tracks.signUpCustomFieldsStepCompleted);
 
           const { requirements } = await getRequirements();
@@ -115,10 +109,7 @@ export const oldSignUpFlow = (
         setCurrentStep('sign-up:change-email');
       },
       SUBMIT_CODE: async (code: string) => {
-        setStatus('pending');
-
         await confirmEmail({ code });
-        setStatus('ok');
 
         const { requirements } = await getRequirements();
 
@@ -142,11 +133,8 @@ export const oldSignUpFlow = (
         setCurrentStep('sign-up:email-confirmation');
       },
       RESEND_CODE: async (newEmail: string) => {
-        setStatus('pending');
-
         await resendEmailConfirmationCode(newEmail);
         setCurrentStep('sign-up:email-confirmation');
-        setStatus('ok');
       },
     },
 
@@ -170,11 +158,8 @@ export const oldSignUpFlow = (
         trackEventByName(tracks.signUpCustomFieldsStepExited);
       },
       SUBMIT: async (userId: string, formData: FormData) => {
-        setStatus('pending');
-
         try {
           await updateUser(userId, { custom_field_values: formData });
-          setStatus('ok');
           setCurrentStep('success');
           trackEventByName(tracks.signUpCustomFieldsStepCompleted);
         } catch (e) {

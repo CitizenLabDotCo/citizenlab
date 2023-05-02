@@ -106,7 +106,6 @@ export default function useSteps() {
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
-      setStatus,
       updateState,
       anySSOEnabled
     );
@@ -127,8 +126,15 @@ export default function useSteps() {
           queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
         }
 
-        // @ts-ignore
-        await action(...args);
+        setStatus('pending');
+        try {
+          // @ts-ignore
+          await action(...args);
+          setStatus('ok');
+        } catch (e) {
+          setStatus('ok');
+          throw e;
+        }
       }) as StepConfig[S][T];
 
       return wrappedAction;

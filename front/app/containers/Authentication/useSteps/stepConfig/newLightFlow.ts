@@ -20,7 +20,6 @@ import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 // typings
 import {
   GetRequirements,
-  Status,
   UpdateState,
   SSOProviderWithoutVienna,
   AuthenticationData,
@@ -33,13 +32,10 @@ export const newLightFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
-  setStatus: (status: Status) => void,
   updateState: UpdateState
 ) => {
   const close = async () => {
     await Promise.all([streams.reset(), resetQueryCache()]);
-
-    setStatus('ok');
     setCurrentStep('closed');
 
     trackEventByName(tracks.signUpFlowCompleted);
@@ -55,7 +51,6 @@ export const newLightFlow = (
     'light-flow:email': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT_EMAIL: async (email: string, locale: Locale) => {
-        setStatus('pending');
         updateState({ email });
 
         const response = await checkUser(email);
@@ -63,18 +58,15 @@ export const newLightFlow = (
 
         if (action === 'terms') {
           setCurrentStep('light-flow:email-policies');
-          setStatus('ok');
         }
 
         if (action === 'password') {
           setCurrentStep('light-flow:password');
-          setStatus('ok');
         }
 
         if (action === 'confirm') {
           await createEmailOnlyAccount({ email, locale });
           setCurrentStep('light-flow:email-confirmation');
-          setStatus('ok');
         }
       },
       CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
@@ -98,18 +90,15 @@ export const newLightFlow = (
     'light-flow:email-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: async (email: string, locale: Locale) => {
-        setStatus('pending');
         updateState({ email });
 
         const result = await createEmailOnlyAccount({ email, locale });
 
         if (result === 'account_created_successfully') {
-          setStatus('ok');
           setCurrentStep('light-flow:email-confirmation');
         }
 
         if (result === 'email_taken') {
-          setStatus('ok');
           setCurrentStep('light-flow:password');
         }
       },
@@ -118,7 +107,6 @@ export const newLightFlow = (
     'light-flow:google-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: async () => {
-        setStatus('pending');
         const { requirements } = await getRequirements();
 
         const verificationRequired =
@@ -135,7 +123,6 @@ export const newLightFlow = (
     'light-flow:facebook-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: async () => {
-        setStatus('pending');
         const { requirements } = await getRequirements();
 
         const verificationRequired =
@@ -152,7 +139,6 @@ export const newLightFlow = (
     'light-flow:azure-ad-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: async () => {
-        setStatus('pending');
         const { requirements } = await getRequirements();
 
         const verificationRequired =
@@ -169,7 +155,6 @@ export const newLightFlow = (
     'light-flow:france-connect-login': {
       CLOSE: () => setCurrentStep('closed'),
       LOGIN: async () => {
-        setStatus('pending');
         const { requirements } = await getRequirements();
 
         const verificationRequired =
@@ -186,29 +171,22 @@ export const newLightFlow = (
     'light-flow:email-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: async () => {
-        setStatus('pending');
-
         await signOut();
 
         updateState({ email: null });
-
         setCurrentStep('light-flow:email');
-        setStatus('ok');
       },
       SUBMIT_CODE: async (code: string) => {
-        setStatus('pending');
-
         await confirmEmail({ code });
 
         const { requirements } = await getRequirements();
 
         if (askCustomFields(requirements.custom_fields)) {
           setCurrentStep('sign-up:custom-fields');
-          setStatus('ok');
           return;
         }
 
-        close();
+        await close();
       },
     },
 
@@ -220,25 +198,21 @@ export const newLightFlow = (
         rememberMe: boolean,
         tokenLifetime: number
       ) => {
-        setStatus('pending');
-
         await signIn({ email, password, rememberMe, tokenLifetime });
 
         const { requirements } = await getRequirements();
 
         if (requirements.special.confirmation === 'require') {
           setCurrentStep('missing-data:email-confirmation');
-          setStatus('ok');
           return;
         }
 
         if (requiredCustomFields(requirements.custom_fields)) {
           setCurrentStep('missing-data:custom-fields');
-          setStatus('ok');
           return;
         }
 
-        close();
+        await close();
       },
     },
   };

@@ -8,7 +8,6 @@ import { missingDataFlow } from './missingDataFlow';
 // typings
 import {
   GetRequirements,
-  Status,
   UpdateState,
   AuthenticationData,
 } from '../../typings';
@@ -18,7 +17,6 @@ export const getStepConfig = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
-  setStatus: (status: Status) => void,
   updateState: UpdateState,
   anySSOEnabled: boolean
 ) => {
@@ -27,7 +25,6 @@ export const getStepConfig = (
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
-      setStatus,
       updateState,
       anySSOEnabled
     ),
@@ -36,7 +33,6 @@ export const getStepConfig = (
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
-      setStatus,
       anySSOEnabled
     ),
 
@@ -44,7 +40,6 @@ export const getStepConfig = (
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
-      setStatus,
       updateState,
       anySSOEnabled
     ),
@@ -53,11 +48,10 @@ export const getStepConfig = (
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
-      setStatus,
       updateState
     ),
 
-    ...missingDataFlow(getRequirements, setCurrentStep, setStatus),
+    ...missingDataFlow(getRequirements, setCurrentStep),
 
     'verification-only': {
       CLOSE: () => setCurrentStep('closed'),
