@@ -49,9 +49,7 @@ describe('Sign up - custom fields step', () => {
         .click()
         .should('have.class', 'checked');
       cy.get('#privacyPolicyAccepted .e2e-checkbox')
-        .wait(500)
         .click()
-        .wait(500)
         .should('have.class', 'checked');
       cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
 
