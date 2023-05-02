@@ -1392,6 +1392,8 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSave": "Spremi opciju odgovora",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess": "Opcija odgovora uspješno spremljena",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Izbori odgovora",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation": "Jeste li sigurni da želite izbrisati ovo prilagođeno polje?",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "Jeste li sigurni da želite da obrišete ovu opciju prilagođenog polja?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle": "Polja",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip": "Povucite i ispustite polja kako biste odredili redoslijed kojim se pojavljuju na obrascu za registraciju.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultField": "Zadano polje",
