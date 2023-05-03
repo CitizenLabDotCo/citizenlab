@@ -34,18 +34,6 @@ export const newLightFlow = (
   setCurrentStep: (step: Step) => void,
   updateState: UpdateState
 ) => {
-  const close = async () => {
-    await Promise.all([streams.reset(), resetQueryCache()]);
-    setCurrentStep('closed');
-
-    trackEventByName(tracks.signUpFlowCompleted);
-
-    const { successAction } = getAuthenticationData();
-    if (successAction) {
-      triggerSuccessAction(successAction);
-    }
-  };
-
   return {
     // light flow
     'light-flow:email': {
@@ -186,7 +174,7 @@ export const newLightFlow = (
           return;
         }
 
-        await close();
+        setCurrentStep('success');
       },
     },
 
@@ -212,7 +200,15 @@ export const newLightFlow = (
           return;
         }
 
-        await close();
+        await Promise.all([streams.reset(), resetQueryCache()]);
+        setCurrentStep('closed');
+
+        trackEventByName(tracks.signUpFlowCompleted);
+
+        const { successAction } = getAuthenticationData();
+        if (successAction) {
+          triggerSuccessAction(successAction);
+        }
       },
     },
   };

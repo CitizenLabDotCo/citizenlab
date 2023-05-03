@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
-import { cloneDeep } from 'lodash-es';
+import { cloneDeep, get } from 'lodash-es';
 
 // react hook form
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
@@ -125,7 +125,7 @@ const OptionList = ({
   };
 
   const defaultOptionValues = [];
-  const errors = formContextErrors[name] as RHFErrors;
+  const errors = get(formContextErrors, name) as RHFErrors;
   const apiError = errors?.error && ([errors] as CLError[]);
   const validationError = errors?.message;
 

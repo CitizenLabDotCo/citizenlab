@@ -71,7 +71,6 @@ export default ({
 
   if (userCustomFieldsSchema && !isNilOrError(locale)) {
     if (!userCustomFieldsSchema.data.attributes) return null;
-
     const { json_schema_multiloc, ui_schema_multiloc } =
       userCustomFieldsSchema.data.attributes;
 

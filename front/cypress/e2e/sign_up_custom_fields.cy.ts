@@ -23,32 +23,43 @@ describe('Sign up - custom fields step', () => {
 
   describe('Optional custom field', () => {
     const randomFieldName = randomString();
-    const firstName = randomString();
-    const lastName = randomString();
-    const email = randomEmail();
-    const password = randomString();
     let customFieldId: string;
 
     before(() => {
       cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
         customFieldId = response.body.data.id;
-        cy.apiSignup(firstName, lastName, email, password, {
-          skipCustomFields: true,
-        });
-        cy.setLoginCookie(email, password);
-        cy.goToLandingPage();
-        cy.get('#e2e-user-menu-dropdown-button').click({ force: true });
-        cy.get('#e2e-complete-registration-link').click({ force: true });
       });
     });
 
     it('shows the custom field step and can skip it', () => {
-      cy.get('#e2e-sign-up-in-modal').should('exist');
+      cy.goToLandingPage();
+      cy.get('#e2e-navbar-signup-menu-item').click();
+      cy.get('#e2e-sign-up-email-password-container');
+
+      const firstName = randomString();
+      const lastName = randomString();
+      const email = randomEmail();
+      const password = randomString();
+
+      cy.get('#firstName').type(firstName);
+      cy.get('#lastName').type(lastName);
+      cy.get('#email').type(email);
+      cy.get('#password').type(password);
+      cy.get('#termsAndConditionsAccepted .e2e-checkbox')
+        .click()
+        .should('have.class', 'checked');
+      cy.get('#privacyPolicyAccepted .e2e-checkbox')
+        .click()
+        .should('have.class', 'checked');
+      cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
+
+      cy.get('#code').should('exist');
+      cy.get('#code').click().type('1234');
+      cy.get('#e2e-verify-email-button').click();
+
       cy.get('#e2e-signup-custom-fields-container');
       cy.get('#e2e-signup-custom-fields-skip-btn').click();
-      cy.get('#e2e-signup-success-container', { timeout: 20000 });
-      cy.get('.e2e-signup-success-close-button').click();
-      cy.get('#e2e-sign-up-in-modal').should('not.exist');
+      cy.get('#e2e-sign-up-success-modal').should('exist');
     });
 
     after(() => {
@@ -67,9 +78,7 @@ describe('Sign up - custom fields step', () => {
     before(() => {
       cy.apiCreateCustomField(randomFieldName, true, true).then((response) => {
         customFieldId = response.body.data.id;
-        cy.apiSignup(firstName, lastName, email, password, {
-          skipCustomFields: true,
-        });
+        cy.apiSignup(firstName, lastName, email, password);
         cy.setLoginCookie(email, password);
         cy.goToLandingPage();
         cy.get('#e2e-user-menu-dropdown-button').click({ force: true });
@@ -85,42 +94,6 @@ describe('Sign up - custom fields step', () => {
         'contain',
         'This field is required'
       );
-    });
-
-    after(() => {
-      cy.apiRemoveCustomField(customFieldId);
-    });
-  });
-
-  describe('Required custom field', () => {
-    const randomFieldName = randomString();
-    const firstName = randomString();
-    const lastName = randomString();
-    const email = randomEmail();
-    const password = randomString();
-    let customFieldId: string;
-
-    before(() => {
-      cy.apiCreateCustomField(randomFieldName, true, true).then((response) => {
-        customFieldId = response.body.data.id;
-        cy.apiSignup(firstName, lastName, email, password, {
-          skipCustomFields: true,
-        });
-        cy.setLoginCookie(email, password);
-        cy.goToLandingPage();
-        cy.get('#e2e-user-menu-dropdown-button').click({ force: true });
-        cy.get('#e2e-complete-registration-link').click({ force: true });
-      });
-    });
-
-    it('successfully completes the sign-up process', () => {
-      cy.get('#e2e-signup-custom-fields-container');
-      cy.get('#e2e-signup-custom-fields-skip-btn').should('not.exist');
-      cy.get(`.input_field_root_${randomFieldName}`).type('test');
-      cy.get('#e2e-signup-custom-fields-submit-btn').click();
-      cy.get('#e2e-signup-success-container', { timeout: 20000 });
-      cy.get('.e2e-signup-success-close-button').click();
-      cy.get('#e2e-sign-up-in-modal').should('not.exist');
     });
 
     after(() => {

@@ -137,6 +137,7 @@ const ActionForm = ({
               />
             )}
             <PermissionCardButton
+              id="e2e-permission-registered-users"
               iconName="user-circle"
               title={messages.permissionsUsersLabel}
               subtitle={messages.permissionsUsersLabelDescription}

@@ -10,6 +10,7 @@ import QuillMultilocWithLocaleSwitcherComponent, {
 } from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import { get } from 'lodash-es';
 
 type Props = {
   name: string;
@@ -37,7 +38,7 @@ const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
     {}
   );
 
-  const errors = formContextErrors[name] as RHFErrors;
+  const errors = get(formContextErrors, name) as RHFErrors;
   // Select the first error messages from the field's multiloc validation error
   const validationError = Object.values(
     (errors as Record<Locale, FieldError> | undefined) || {}

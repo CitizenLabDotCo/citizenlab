@@ -5,7 +5,6 @@ import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import Or from 'components/UI/Or';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Outlet from 'components/Outlet';
-import Error from 'components/UI/Error';
 import { Text } from '@citizenlab/cl2-component-library';
 import TextButton from '../_components/TextButton';
 
@@ -22,6 +21,7 @@ import styled from 'styled-components';
 
 // typings
 import { SSOProvider } from 'services/singleSignOn';
+import { ErrorCode } from 'containers/Authentication/typings';
 
 const Container = styled.div`
   display: flex;
@@ -37,16 +37,15 @@ export const StyledAuthProviderButton = styled(AuthProviderButton)`
 interface Props {
   flow: 'signup' | 'signin';
   className?: string;
+  error: ErrorCode | null;
   onSelectAuthProvider: TOnContinueFunction;
   onSwitchFlow: () => void;
 }
 
 export type AuthProvider = 'email' | SSOProvider;
 
-const TODO_REMOVE = false;
-
 const AuthProviders = memo<Props>(
-  ({ flow, className, onSwitchFlow, onSelectAuthProvider }) => {
+  ({ flow, className, error, onSwitchFlow, onSelectAuthProvider }) => {
     const { formatMessage } = useIntl();
     const { data: tenant } = useAppConfiguration();
     const tenantSettings = tenant?.data.attributes.settings;
@@ -88,36 +87,20 @@ const AuthProviders = memo<Props>(
       (flow === 'signin' ||
         (flow === 'signup' && tenantSettings?.password_login?.enable_signup));
 
+    const showFCButton =
+      franceconnectLoginEnabled && error !== 'franceconnect_merging_failed';
+
     return (
       <Container id="e2e-sign-up-container" className={className}>
-        {franceconnectLoginEnabled &&
-          // (metaData.error?.code === 'franceconnect_merging_failed' ? (
-          (TODO_REMOVE ? (
-            <Error
-              text={
-                <FormattedMessage
-                  {...messages.franceConnectMergingFailed}
-                  values={{ br: <br /> }}
-                />
-              }
-              animate={false}
-              marginBottom="30px"
-            />
-          ) : (
-            <FranceConnectButton
-              onClick={handleOnFranceConnectSelected}
-              logoAlt={formatMessage(messages.signUpButtonAltText, {
-                loginMechanismName: 'FranceConnect',
-              })}
-            />
-          ))}
+        {showFCButton && (
+          <FranceConnectButton
+            onClick={handleOnFranceConnectSelected}
+            logoAlt={formatMessage(messages.signUpButtonAltText, {
+              loginMechanismName: 'FranceConnect',
+            })}
+          />
+        )}
 
-        {/* {(isPasswordSigninOrSignupAllowed ||
-          facebookLoginEnabled ||
-          azureAdLoginEnabled ||
-          viennaCitizenLoginEnabled) &&
-          franceconnectLoginEnabled &&
-          !metaData.error && <Or />} */}
         {(isPasswordSigninOrSignupAllowed ||
           facebookLoginEnabled ||
           azureAdLoginEnabled ||

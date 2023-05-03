@@ -44,26 +44,28 @@ const PoliciesMarkup = () => {
 
   return (
     <>
-      <Checkbox
-        name="termsAndConditionsAccepted"
-        label={
-          <ConsentText>
-            <FormattedMessage
-              {...authProvidersMessages.iHaveReadAndAgreeTo}
-              values={{
-                link: (
-                  <Link target="_blank" to="/pages/terms-and-conditions">
-                    <FormattedMessage
-                      {...authProvidersMessages.theTermsAndConditions}
-                    />
-                  </Link>
-                ),
-              }}
-            />
-          </ConsentText>
-        }
-      />
-      <Box mt="8px">
+      <Box id="e2e-terms-conditions-container">
+        <Checkbox
+          name="termsAndConditionsAccepted"
+          label={
+            <ConsentText>
+              <FormattedMessage
+                {...authProvidersMessages.iHaveReadAndAgreeTo}
+                values={{
+                  link: (
+                    <Link target="_blank" to="/pages/terms-and-conditions">
+                      <FormattedMessage
+                        {...authProvidersMessages.theTermsAndConditions}
+                      />
+                    </Link>
+                  ),
+                }}
+              />
+            </ConsentText>
+          }
+        />
+      </Box>
+      <Box mt="8px" id="e2e-privacy-policy-container">
         <Checkbox
           name="privacyPolicyAccepted"
           label={

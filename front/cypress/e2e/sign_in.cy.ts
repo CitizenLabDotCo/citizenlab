@@ -5,8 +5,6 @@ describe('Sign in page', () => {
     cy.goToLandingPage();
     cy.get('#e2e-navbar-login-menu-item').click();
     cy.get('#e2e-authentication-modal').should('exist');
-    cy.get('#e2e-login-with-email').should('exist');
-    cy.get('#e2e-login-with-email').click();
   });
 
   it('has a working email field', () => {
@@ -54,10 +52,8 @@ describe('Sign in page', () => {
   });
 
   it('has a working link to the sign up flow', () => {
-    cy.get('#e2e-login-options').should('exist');
-    cy.get('#e2e-login-options').click();
     cy.get('#e2e-goto-signup').click();
-    cy.get('#e2e-sign-up-container');
+    cy.get('#e2e-sign-up-email-password-container');
   });
 
   it('logs in with valid credentials', () => {

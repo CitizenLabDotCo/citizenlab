@@ -256,7 +256,8 @@ describe('Native survey CTA bar', () => {
 
     cy.visit(`admin/projects/${projectId}/permissions`);
     cy.get('#e2e-granular-permissions').within(() => {
-      cy.get('[type="radio"]').eq(1).check({ force: true });
+      cy.get('#e2e-permission-registered-users').should('exist');
+      cy.get('#e2e-permission-registered-users').click();
     });
 
     cy.logout();
