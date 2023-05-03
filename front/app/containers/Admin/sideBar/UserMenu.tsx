@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 // components
 import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
@@ -28,6 +28,7 @@ import { IUserData } from 'services/users';
 
 export const UserMenu = () => {
   const { formatMessage } = useIntl();
+  const contextRef = useRef<HTMLDivElement | null>(null);
   const authUser = useAuthUser();
   const [isUserMenuPopupOpen, setIsUserMenuPopupOpen] = useState(false);
   const [isNotificationsPopupOpen, setIsNotificationsPopupOpen] =
@@ -107,7 +108,7 @@ export const UserMenu = () => {
                 {formatMessage({ ...getRole(authUser) })}
               </Text>
             </Box>
-            <Box>
+            <Box ref={contextRef}>
               <Icon name="chevron-down" fill={colors.white} />
             </Box>
           </Box>
@@ -116,9 +117,9 @@ export const UserMenu = () => {
       open={isUserMenuPopupOpen}
       onClose={handleUserMenuPopupClose}
       on="click"
-      position="right center"
+      position="top right"
       positionFixed
-      offset={[-60, -40]}
+      context={contextRef}
       basic
       wide
     >
