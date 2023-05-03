@@ -2,6 +2,10 @@ import eventEmitter from 'utils/eventEmitter';
 import { AuthenticationData } from './typings';
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 
+// Tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 const TRIGGER_AUTHENTICATION_FLOW = 'triggerAuthenticationFlow';
 
 export function triggerAuthenticationFlow(
@@ -12,6 +16,13 @@ export function triggerAuthenticationFlow(
     context: partialAuthenticationData?.context ?? GLOBAL_CONTEXT,
     successAction: partialAuthenticationData?.successAction,
   };
+
+  if (partialAuthenticationData?.flow === 'signin') {
+    trackEventByName(tracks.signInFlowEntered);
+  }
+  if (partialAuthenticationData?.flow === 'signup') {
+    trackEventByName(tracks.signUpFlowEntered);
+  }
 
   eventEmitter.emit(TRIGGER_AUTHENTICATION_FLOW, authenticationData);
 }
