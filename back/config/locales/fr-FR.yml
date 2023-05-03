@@ -240,7 +240,7 @@ fr:
       for_more_information: "Pour plus d'informations à ce sujet, vous pouvez consulter le site %{termsAndConditionsPage}."
       you_can_sign_in_again_from: "Vous pourrez vous connecter à nouveau à partir du %{date}"
   time:
-    am: am
+    am: du matin
     formats:
       hour_of_day: "%Hh"
-    pm: pm
+    pm: de l'après-midi
