@@ -45,7 +45,7 @@ RSpec.describe EmailCampaigns::IdeaMarkedAsSpamMailer do
     end
 
     it 'assigns the reason' do
-      expect(mail.body.encoded).to match('This content is not an idea and does not belong here.')
+      expect(mail.body.encoded).to match('This content is not an input and does not belong here.')
     end
 
     it 'assigns go to idea CTA' do

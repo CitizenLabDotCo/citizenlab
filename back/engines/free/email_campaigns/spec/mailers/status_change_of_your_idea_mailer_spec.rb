@@ -36,7 +36,7 @@ RSpec.describe EmailCampaigns::StatusChangeOfYourIdeaMailer do
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('The status of your idea has been changed')
+      expect(mail.subject).to start_with('The status of your input has been changed')
     end
 
     it 'renders the sender email' do

@@ -3,7 +3,7 @@
   text-align="left">
   <mj-column background-color="#F2F6F8" padding="25px">
     <mj-text font-size="14px">
-      <%= format_message('status_change', values: {
+      <%= format_message('status_change1', values: {
         organizationName: organization_name,
         ideaStatus: localize_for_recipient(event.idea_status_title_multiloc)
       }) %>

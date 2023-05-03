@@ -30,7 +30,7 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('Your idea on the platform of')
+      expect(mail.subject).to start_with('Your input on the platform of')
     end
 
     it 'renders the receiver email' do
