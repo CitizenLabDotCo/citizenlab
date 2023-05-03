@@ -239,3 +239,8 @@ pt:
       paragraph_1_with_reason: "A sua conta na plataforma de participação de %{organizationName} foi temporariamente desactivada pela seguinte razão:"
       for_more_information: "Para mais informações sobre este assunto, pode consultar o %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Pode voltar a assinar a partir de %{date}"
+  time:
+    am: am
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm
