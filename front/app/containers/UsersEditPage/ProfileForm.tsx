@@ -96,7 +96,11 @@ const ProfileForm = ({
   }>({});
 
   const schema = object({
-    first_name: string(),
+    first_name: string().when('last_name', ([last_name], schema) => {
+      return last_name
+        ? schema.required(formatMessage(messages.provideFirstNameIfLastName))
+        : schema;
+    }),
     last_name: string(),
     ...(!disableBio && {
       bio_multiloc: object(),
