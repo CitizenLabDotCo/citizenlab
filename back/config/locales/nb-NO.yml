@@ -241,3 +241,8 @@
       you_can_sign_in_again_from: "Du kan logge på igjen fra %{date}"
   user:
     anon_first_name: "Bruker"
+  time:
+    am: er
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm
