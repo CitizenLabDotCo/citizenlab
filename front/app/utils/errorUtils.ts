@@ -200,7 +200,7 @@ export const handleCLErrorsJSON = (
 };
 
 // This one handles both. Needed because right now the 'old' utils/request
-// and the new fetcher deal with errors differently (the former wraps it in json)
+// and the new fetcher deal with errors differently (the former wraps it in json
 // attribute, the latter doesn't)
 export const handleCLErrorsIsh = (
   error: CLErrorsJSON | CLErrorsWrapper,
