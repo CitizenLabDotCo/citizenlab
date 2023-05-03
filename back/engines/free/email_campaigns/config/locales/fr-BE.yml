@@ -100,12 +100,12 @@ fr-BE:
     schedules:
       weekly:
         "0": "Chaque semaine, le dimanche à %{hourOfDay}"
-        "1": "Hebdomadaire le lundi %{atHour}"
-        "2": "Hebdomadaire le mardi %{atHour}"
-        "3": "Hebdomadaire le mercredi %{atHour}"
-        "4": "Hebdomadaire le jeudi %{atHour}"
-        "5": "Hebdomadaire le vendredi %{atHour}"
-        "6": "Hebdomadaire le samedi %{atHour}"
+        "1": "Chaque semaine, le lundi à %{hourOfDay}"
+        "2": "Chaque semaine, le mardi à %{hourOfDay}"
+        "3": "Chaque semaine, le mercredi à %{hourOfDay}"
+        "4": "Chaque semaine, le jeudi à %{hourOfDay}"
+        "5": "Chaque semaine, le vendredi à %{hourOfDay}"
+        "6": "Chaque semaine, le samedi à %{hourOfDay}"
     footer:
       "link_privacy_policy": "Politique de confidentialité"
       "link_terms_conditions": "Conditions Générales d'Utilisation"
