@@ -86,7 +86,10 @@ export default memo<Props>(({ onClose, className }) => {
           <FormattedMessage {...messages.userVerifiedSubtitle} />
         </Subtitle>
         <ButtonWrapper>
-          <Button onClick={handleOnClose}>
+          <Button
+            id="e2e-verification-success-close-button"
+            onClick={handleOnClose}
+          >
             <FormattedMessage {...messages.close} />
           </Button>
         </ButtonWrapper>

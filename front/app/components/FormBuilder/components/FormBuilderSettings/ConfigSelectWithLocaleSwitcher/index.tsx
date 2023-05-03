@@ -29,6 +29,7 @@ import { Locale, CLError, RHFErrors } from 'typings';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { generateTempId } from '../utils';
+import { get } from 'lodash-es';
 
 interface Props {
   name: string;
@@ -92,7 +93,7 @@ const ConfigSelectWithLocaleSwitcher = ({
   };
 
   const defaultOptionValues = [{}];
-  const errors = formContextErrors[name] as RHFErrors;
+  const errors = get(formContextErrors, name) as RHFErrors;
   const apiError = errors?.error && ([errors] as CLError[]);
   const validationError = errors?.message;
 

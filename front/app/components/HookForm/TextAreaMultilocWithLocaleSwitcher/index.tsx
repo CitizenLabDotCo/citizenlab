@@ -7,6 +7,7 @@ import { Controller, FieldError, useFormContext } from 'react-hook-form';
 import { CLError, Locale, RHFErrors } from 'typings';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { isNilOrError } from 'utils/helperUtils';
+import { get } from 'lodash-es';
 
 type TextAreaProps = Props & {
   name: string;
@@ -40,7 +41,7 @@ const TextAreaMultilocWithLocaleSwitcher = ({
     {}
   );
 
-  const errors = formContextErrors[name] as RHFErrors;
+  const errors = get(formContextErrors, name) as RHFErrors;
 
   // Select the first error messages from the field's multiloc validation error
   const validationError = Object.values(

@@ -17,30 +17,37 @@ describe('Idea voting permissions', () => {
       cy.get('.e2e-ideacard-upvote-button').click();
 
       // sign up modal check
-      cy.get('#e2e-sign-up-container');
+      cy.get('#e2e-authentication-modal').should('exist');
       cy.get('#firstName').type(firstName);
       cy.get('#lastName').type(lastName);
       cy.get('#email').type(email);
       cy.get('#password').type(password);
-      cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
-      cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
+      cy.get('#termsAndConditionsAccepted .e2e-checkbox')
+        .click()
+        .should('have.class', 'checked');
+      cy.get('#privacyPolicyAccepted .e2e-checkbox')
+        .click()
+        .should('have.class', 'checked');
       cy.get('#e2e-signup-password-submit-button').click();
 
       // enter confirmation code
-      cy.get('#e2e-confirmation-code-input').type('1234');
-      cy.get('#e2e-confirmation-button').click();
+      cy.get('#code').should('exist');
+      cy.get('#code').type('1234');
+      cy.get('#e2e-verify-email-button').click();
 
       // verification step check
+      cy.get(
+        '#e2e-verification-wizard-method-selection-step #e2e-bogus-button'
+      ).should('exist');
       cy.get(
         '#e2e-verification-wizard-method-selection-step #e2e-bogus-button'
       ).click();
       cy.get('#e2e-verification-bogus-submit-button').click();
 
       // success check
-      cy.get('#e2e-signup-success-container', { timeout: 20000 });
-      cy.get(
-        '#e2e-signup-success-container .e2e-signup-success-close-button'
-      ).click();
+      cy.get('#e2e-sign-up-success-modal', { timeout: 20000 });
+      cy.wait(2000);
+      cy.get('#e2e-success-continue-button').click();
       cy.get('#e2e-sign-up-in-modal').should('not.exist');
       cy.get('#e2e-user-menu-container.e2e-verified');
       cy.get('.e2e-ideacard-upvote-button.enabled');
@@ -129,37 +136,39 @@ describe('Idea voting permissions', () => {
 
       // Go to an idea of a project that doesn't require verification
       // and try to vote
-      cy.visit('ideas/very-old-idea');
+      cy.visit('ideas/very-new-idea');
       cy.get('.e2e-ideacard-upvote-button').click();
 
       // Sign up flow
-      cy.get('#e2e-sign-up-container');
+      cy.get('#e2e-authentication-modal');
       cy.get('#firstName').type(firstName);
       cy.get('#lastName').type(lastName);
       cy.get('#email').type(email);
       cy.get('#password').type(password);
-      cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
-      cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
+      cy.get('#termsAndConditionsAccepted .e2e-checkbox')
+        .click()
+        .should('have.class', 'checked');
+      cy.get('#privacyPolicyAccepted .e2e-checkbox')
+        .click()
+        .should('have.class', 'checked');
       cy.get('#e2e-signup-password-submit-button').click();
 
       // enter confirmation code
-      cy.get('#e2e-confirmation-code-input').type('1234');
-      cy.get('#e2e-confirmation-button').click();
+      cy.get('#code').should('exist');
+      cy.get('#code').click().type('1234');
+      cy.get('#e2e-verify-email-button').click();
 
       // verification step check
       cy.get(
         '#e2e-verification-wizard-method-selection-step #e2e-bogus-button'
-      ).click();
-      cy.get('#e2e-verification-bogus-submit-button').click();
+      ).should('not.exist');
 
       // success check
-      cy.get('#e2e-signup-success-container', { timeout: 20000 });
+      cy.get('#e2e-sign-up-success-modal', { timeout: 20000 });
       cy.wait(2000);
-      cy.get(
-        '#e2e-signup-success-container .e2e-signup-success-close-button'
-      ).click();
+      cy.get('#e2e-success-continue-button').click();
       cy.wait(2000);
-      cy.get('#e2e-sign-up-in-modal').should('not.exist');
+      cy.get('#e2e-authentication-modal').should('not.exist');
       cy.get('#e2e-user-menu-container');
       cy.get('.e2e-ideacard-upvote-button')
         .first()
@@ -179,11 +188,9 @@ describe('idea voting permissions for non-active users', () => {
 
   before(() => {
     // create user
-    cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
+    cy.apiCreateCustomField(randomFieldName, true, true).then((response) => {
       customFieldId = response.body.data.id;
-      cy.apiSignup(firstName, lastName, email, password, {
-        skipCustomFields: true,
-      }).then((response) => {
+      cy.apiSignup(firstName, lastName, email, password).then((response) => {
         userId = response.body.data.id;
       });
       cy.setLoginCookie(email, password);
@@ -196,7 +203,7 @@ describe('idea voting permissions for non-active users', () => {
     cy.get('#e2e-ideas-container').should('exist');
     cy.get('.e2e-ideacard-upvote-button').should('exist');
     cy.get('.e2e-ideacard-upvote-button').first().click();
-    cy.get('#e2e-sign-up-container').should('exist');
+    cy.get('#e2e-authentication-modal').should('exist');
   });
 
   after(() => {

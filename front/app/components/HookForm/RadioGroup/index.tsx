@@ -6,6 +6,7 @@ import { CLError, RHFErrors } from 'typings';
 
 import Radio from './Radio';
 import { Box } from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
 
 interface Props {
   name: string;
@@ -17,7 +18,7 @@ const RadioGroup = ({ name, children }: Props) => {
     formState: { errors: formContextErrors },
   } = useFormContext();
 
-  const errors = formContextErrors[name] as RHFErrors;
+  const errors = get(formContextErrors, name) as RHFErrors;
   const validationError = errors?.message;
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item

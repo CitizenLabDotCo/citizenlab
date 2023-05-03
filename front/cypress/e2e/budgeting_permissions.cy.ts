@@ -12,9 +12,7 @@ describe('Idea budgeting permissions test with non active users', () => {
   before(() => {
     cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
       customFieldId = response.body.data.id;
-      cy.apiSignup(firstName, lastName, email, password, {
-        skipCustomFields: true,
-      }).then((response) => {
+      cy.apiSignup(firstName, lastName, email, password).then((response) => {
         userId = response.body.data.id;
       });
       cy.setLoginCookie(email, password);
@@ -28,7 +26,7 @@ describe('Idea budgeting permissions test with non active users', () => {
     cy.wait(1000);
     cy.get('.e2e-idea-card').first().as('ideaCard');
     cy.get('@ideaCard').find('.e2e-assign-budget-button').click();
-    cy.get('#e2e-sign-up-container').should('exist');
+    cy.get('#e2e-authentication-modal').should('exist');
   });
 
   after(() => {
