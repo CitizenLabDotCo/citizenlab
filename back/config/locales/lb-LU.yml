@@ -241,3 +241,8 @@ lb:
       you_can_sign_in_again_from: "Dir kënnt erëm ab %{date}umellen"
   user:
     anon_first_name: "Benotzer"
+  time:
+    am: am
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm
