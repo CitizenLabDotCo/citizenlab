@@ -1417,7 +1417,6 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton": "Annuleren",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton": "Verwijderen",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionAnswerOptionDeletionConfirmation": "Weet je zeker dat je deze antwoordoptie voor registratievragen wilt verwijderen? Alle records die specifieke gebruikers met deze optie hebben beantwoord worden permanent verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation": "Weet je zeker dat je deze registratievraag wilt verwijderen? Alle antwoorden die gebruikers op deze vraag hebben gegeven, worden permanent verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.required": "Vereist",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveField": "Veld opslaan",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveFieldSuccess": "Veld succesvol opgeslagen",

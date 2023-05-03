@@ -1417,7 +1417,6 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton": "İptal",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton": "Sil",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionAnswerOptionDeletionConfirmation": "Bu kayıt sorusu cevap seçeneğini silmek istediğinizden emin misiniz? Belirli kullanıcıların bu seçenekle yanıtladığı tüm kayıtlar kalıcı olarak silinecektir. Bu işlem geri alınamaz.",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation": "Bu kayıt sorusunu silmek istediğinizden emin misiniz? Kullanıcıların bu soruya verdikleri tüm yanıtlar kalıcı olarak silinecektir. Bu işlem geri alınamaz.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.required": "Zorunlu",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveField": "Alanı kaydet",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveFieldSuccess": "Alan başarıyla kaydedildi",
