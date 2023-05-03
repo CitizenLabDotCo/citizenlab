@@ -6,8 +6,13 @@ import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'containers/Authentication/tracks';
+
 export default async function signOut() {
   const jwt = getJwt();
+  trackEventByName(tracks.signOutClicked);
 
   if (jwt) {
     const decodedJwt = decode(jwt);

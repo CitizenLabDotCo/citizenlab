@@ -8,6 +8,7 @@ export default {
   signInWithSSOClicked: 'Sign in - Switch to SSO sign-in clicked',
   signInFlowEntered: 'Sign in flow entered',
   signInAuthProviderSelected: 'Sign in - auth provider selected: ',
+
   // sign up
   signUpFlowEntered: 'Sign up flow entered',
   signUpAuthProviderSelected: 'Sign up - auth provider selected: ',
@@ -43,6 +44,9 @@ export default {
   signUpWithSSOClicked: 'Sign up - Switch to SSO sign-up clicked',
 
   signUpInviteTokenError: 'Sign up - invite token error',
+
+  // sign out
+  signOutClicked: 'Sign out clicked',
 
   // change email
   changeEmailSubmit: 'Change email - submit',
