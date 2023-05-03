@@ -21,88 +21,138 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
 // typings
-import { IConsentData, ICampaignConsents } from 'api/campaign_consents/types';
+import { Multiloc } from 'typings';
 
-const groupConsentCampaigns = (campaignConsents: ICampaignConsents, t) => {
-  return campaignConsents.data.reduce((group, consent) => {
-    const content_type = t(consent.attributes.content_type_multiloc);
-    group[content_type] = group[content_type] ?? [];
-    group[content_type].push(consent);
+interface Consent {
+  id: string;
+  campaign_type_description_multiloc: Multiloc;
+  content_type_multiloc: Multiloc;
+  consented: boolean;
+}
 
-    return group;
-  }, {});
+const groupConsentCampaigns = (campaignConsents, t) => {
+  return Object.entries(campaignConsents).reduce(
+    (
+      groups,
+      [
+        id,
+        {
+          consented,
+          content_type_multiloc,
+          campaign_type_description_multiloc,
+        },
+      ]: [string, Consent]
+    ) => {
+      const contentType = t(content_type_multiloc);
+      const consent = {
+        id,
+        consented,
+        campaign_type_description_multiloc,
+        content_type_multiloc,
+      };
+
+      groups[contentType] = groups[contentType] ?? {
+        children: [],
+        group_consented: consented,
+      };
+      groups[contentType].group_consented =
+        groups[contentType].group_consented === consented ? consented : 'mixed';
+      groups[contentType].children.push(consent);
+
+      return groups;
+    },
+    {}
+  );
 };
 
-const isGroupConsentedEntries = ([contentType, consentsByContentType]: [
-  string,
-  IConsentData[]
-]) => [
-  contentType,
-  consentsByContentType.every((consent) => consent.attributes.consented),
-];
-
 const CampaignConsentForm = () => {
-  const { data: campaignConsents } = useCampaignConsents();
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
   const t = (multiloc) => getLocalized(multiloc, locale, tenantLocales);
-  const [consents, setConsents] = useState({});
-  const [consentsGroups, setConsentsGroups] = useState({});
+  const { data: originalCampaignConsents } = useCampaignConsents();
+  const [campaignConsents, setCampaignConsents] = useState({});
   const [groupedCampaignConsents, setGroupedCampaignConsents] = useState({});
 
   useEffect(() => {
-    if (!isNilOrError(campaignConsents)) {
-      setGroupedCampaignConsents(groupConsentCampaigns(campaignConsents, t));
-      setConsents(
+    if (!isNilOrError(originalCampaignConsents)) {
+      setCampaignConsents(
         Object.fromEntries(
-          campaignConsents.data.map((consent) => [
+          originalCampaignConsents.data.map((consent) => [
             consent.id,
-            consent.attributes.consented,
+            consent.attributes,
           ])
         )
       );
-      setConsentsGroups(
-        Object.fromEntries(
-          Object.entries(groupedCampaignConsents).map(isGroupConsentedEntries)
-        )
-      );
     }
+  }, [originalCampaignConsents]);
+
+  useEffect(() => {
+    setGroupedCampaignConsents(groupConsentCampaigns(campaignConsents, t));
   }, [campaignConsents]);
 
-  if (isNilOrError(campaignConsents)) return null;
+  if (isNilOrError(originalCampaignConsents)) return null;
+
+  const onChange = (id: string) => () => {
+    setCampaignConsents({
+      ...campaignConsents,
+      [id]: {
+        ...campaignConsents[id],
+        consented: !campaignConsents[id].consented,
+      },
+    });
+  };
+
+  const toggleGroup = (contentType: string) => (e) => {
+    e.stopPropagation();
+    const newGroupValue =
+      groupedCampaignConsents[contentType].group_consented == false
+        ? true
+        : false;
+    const newConsentsValues = Object.fromEntries(
+      groupedCampaignConsents[contentType].children.map((consent) => [
+        consent.id,
+        { ...consent, consented: newGroupValue },
+      ])
+    );
+
+    setCampaignConsents({ ...campaignConsents, ...newConsentsValues });
+  };
 
   return (
     <>
       {Object.entries(groupedCampaignConsents).map(
-        ([contentType, consentsByContentType]: [string, IConsentData[]], i) => (
+        (
+          [contentType, { children, group_consented }]: [
+            string,
+            { children: Consent[]; group_consented: boolean | 'mixed' }
+          ],
+          i
+        ) => (
           <Accordion
             key={i}
             title={
               <CheckboxWithPartialCheck
                 id={contentType}
-                checked={consentsGroups[contentType]}
-                onChange={(x) => console.log(x)}
-                label={`${contentType} (${consentsByContentType.length})`}
+                checked={group_consented}
+                onChange={toggleGroup(contentType)}
+                label={`${contentType} (${children.length})`}
               />
             }
           >
             <div>
-              {consentsByContentType.map((consent) => (
-                <CheckboxWithPartialCheck
-                  key={consent.id}
-                  id={consent.id}
-                  checked={consents[consent.id]}
-                  onChange={(x) => console.log(x)}
-                  label={
-                    <T
-                      as="p"
-                      value={
-                        consent.attributes.campaign_type_description_multiloc
-                      }
-                    />
-                  }
-                />
-              ))}
+              {children.map(
+                ({ id, consented, campaign_type_description_multiloc }) => (
+                  <CheckboxWithPartialCheck
+                    key={id}
+                    id={id}
+                    checked={consented}
+                    onChange={onChange(id)}
+                    label={
+                      <T as="p" value={campaign_type_description_multiloc} />
+                    }
+                  />
+                )
+              )}
             </div>
           </Accordion>
         )
