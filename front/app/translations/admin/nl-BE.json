@@ -1804,7 +1804,7 @@
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "Koop 1 extra account",
   "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Bevestig",
   "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "Weet je zeker dat je 1 persoon map-/projectbeheerdersrechten wilt geven?",
-  "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Geef beheerdersrechten",
+  "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Geef map-/projectbeheerdersrechten",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Je hebt de limiet van inbegrepen accounts binnen je licentie bereikt, {noOfSeats} extra {noOfSeats, plural, one {account zal} other {accounts zullen}} worden toegevoegd.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Voeg een status toe",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "De standaardstatus kan niet worden verwijderd.",
