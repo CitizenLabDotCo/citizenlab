@@ -241,3 +241,8 @@ pl:
       you_can_sign_in_again_from: "Możesz zalogować się ponownie z %{date}."
   user:
     anon_first_name: "Użytkownik"
+  time:
+    am: am
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm
