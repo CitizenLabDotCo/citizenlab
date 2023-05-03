@@ -239,3 +239,8 @@ sr-Latn:
       paragraph_1_with_reason: "Ваш налог на платформи за учешће %{organizationName} је привремено онемогућен из следећег разлога:"
       for_more_information: "За више информација о овоме, можете консултовати %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Можете се поново пријавити од %{date}"
+  time:
+    am: сам
+    formats:
+      hour_of_day: "%H:%M"
+    pm: после подне
