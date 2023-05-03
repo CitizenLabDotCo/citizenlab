@@ -241,3 +241,8 @@ lv:
       you_can_sign_in_again_from: "Varat atkal pierakstīties no %{date}"
   user:
     anon_first_name: "Lietotājs"
+  time:
+    am: am
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm
