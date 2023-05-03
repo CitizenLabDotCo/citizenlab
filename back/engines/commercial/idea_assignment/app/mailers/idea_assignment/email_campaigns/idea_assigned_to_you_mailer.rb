@@ -16,11 +16,11 @@ module IdeaAssignment
       end
 
       def header_message
-        format_message('event_description_idea')
+        format_message('event_description_input')
       end
 
       def preheader
-        format_message('preheader_idea', values: { organizationName: organization_name, authorName: event.post_author_name })
+        format_message('preheader_input', values: { organizationName: organization_name, authorName: event.post_author_name })
       end
     end
   end
