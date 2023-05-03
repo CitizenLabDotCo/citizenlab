@@ -7,9 +7,10 @@ export default {
   signInEmailPasswordFailed: 'Sign in - email & password sign-in failed',
   signInWithSSOClicked: 'Sign in - Switch to SSO sign-in clicked',
   signInFlowEntered: 'Sign in flow entered',
-
+  signInAuthProviderSelected: 'Sign in - auth provider selected: ',
   // sign up
   signUpFlowEntered: 'Sign up flow entered',
+  signUpAuthProviderSelected: 'Sign up - auth provider selected: ',
   signUpEmailPasswordStepEntered:
     'Sign up - email & password sign-up step entered',
   signUpEmailPasswordStepExited:

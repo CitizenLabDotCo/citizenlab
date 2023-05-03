@@ -42,7 +42,7 @@ export const oldSignInFlow = (
         const { requirements } = await getRequirements();
         const verificationRequired =
           requirements.special.verification === 'require';
-
+        trackEventByName(`${tracks.signInAuthProviderSelected}${authProvider}`);
         handleOnSSOClick(
           authProvider,
           { ...getAuthenticationData(), flow: 'signin' },

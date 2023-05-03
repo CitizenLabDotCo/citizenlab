@@ -48,6 +48,7 @@ export const oldSignUpFlow = (
         const verificationRequired =
           requirements.special.verification === 'require';
 
+        trackEventByName(`${tracks.signUpAuthProviderSelected}${authProvider}`);
         handleOnSSOClick(
           authProvider,
           { ...getAuthenticationData(), flow: 'signup' },
