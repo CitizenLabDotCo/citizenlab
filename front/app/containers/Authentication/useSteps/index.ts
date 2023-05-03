@@ -231,7 +231,8 @@ export default function useSteps() {
           setCurrentStep('sign-up:auth-providers');
           setError('franceconnect_merging_failed');
         } else {
-          // TODO
+          setCurrentStep('sign-up:auth-providers');
+          setError('unknown');
         }
 
         // Remove all parameters from URL as they've already been captured
