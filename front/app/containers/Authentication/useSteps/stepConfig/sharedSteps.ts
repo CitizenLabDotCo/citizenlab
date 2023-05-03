@@ -60,7 +60,12 @@ export const sharedSteps = (
       },
 
       // When the user returns from SSO
-      RESUME_FLOW_AFTER_SSO: async () => {
+      RESUME_FLOW_AFTER_SSO: async (isClaveUnica: boolean) => {
+        if (isClaveUnica) {
+          setCurrentStep('sign-up:clave-unica');
+          return;
+        }
+
         const { flow } = getAuthenticationData();
         const { requirements } = await getRequirements();
 
@@ -160,6 +165,10 @@ export const sharedSteps = (
 
       TRIGGER_VERIFICATION_ONLY: () => {
         setCurrentStep('verification-only');
+      },
+
+      REOPEN_CLAVE_UNICA: () => {
+        setCurrentStep('sign-up:clave-unica');
       },
     },
 

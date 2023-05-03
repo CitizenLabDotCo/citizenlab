@@ -189,5 +189,14 @@ export const oldSignUpFlow = (
         setCurrentStep('sign-up:email-password');
       },
     },
+
+    'sign-up:clave-unica': {
+      // do you want the modal to be closable? if so, uncomment line below
+      // CLOSE: () => setCurrentStep('closed'),
+      SUBMIT: (email: string) => {
+        // await addEmailClaveUnica(email);
+        // setCurrentStep('success');
+      },
+    },
   };
 };

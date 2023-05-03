@@ -215,7 +215,8 @@ export default function useSteps() {
         sso_verification_id,
         sso_verification_type,
         error_code,
-      } = urlSearchParams as SSOParams;
+        sso_clave_unica,
+      } = urlSearchParams as SSOParams as any;
 
       authenticationDataRef.current = {
         flow: sso_flow,
@@ -247,9 +248,20 @@ export default function useSteps() {
         window.history.replaceState(null, '', '/');
       }
 
-      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')();
+      const isClaveUnica = sso_clave_unica === 'true';
+
+      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(isClaveUnica);
     }
   }, [pathname, search, currentStep, transition, authUser, setError]);
+
+  // example to keep bothering user with modal
+  useEffect(() => {
+    if (isNilOrError(authUser)) return;
+    if (currentStep !== 'closed') return;
+    if (authUser.attributes.email === undefined) {
+      transition(currentStep, 'REOPEN_CLAVE_UNICA')();
+    }
+  }, [authUser, currentStep, transition]);
 
   return {
     currentStep,

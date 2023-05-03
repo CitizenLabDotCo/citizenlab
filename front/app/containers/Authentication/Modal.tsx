@@ -26,6 +26,7 @@ import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
 import BuiltInFields from './steps/BuiltInFields';
 import Password from './steps/Password';
 import Success from './steps/Success';
+import ClaveUnicaEmail from './steps/ClaveUnicaEmail';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -58,6 +59,8 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sign-up:verification': messages.verifyYourIdentity,
   'sign-up:custom-fields': messages.completeYourProfile,
   'sign-up:invite': messages.signUp,
+  // change this if you want a custom header message
+  'sign-up:clave-unica': messages.signUp,
 
   // light flow
   'light-flow:email': messages.beforeYouParticipate,
@@ -129,7 +132,12 @@ const AuthModal = ({ setModalOpen }: Props) => {
   });
   const fullscreenModalEnabled = _fullscreenModalEnabled && false;
 
-  const closable = currentStep !== 'closed' && currentStep !== 'success';
+  const closable =
+    currentStep !== 'closed' &&
+    currentStep !== 'success' &&
+    currentStep !== 'sign-up:clave-unica';
+  // want modal to be closable? delete line above and uncomment line below
+  // const closable = currentStep !== 'closed' && currentStep !== 'success';
 
   const headerMessage = HEADER_MESSAGES[currentStep];
 
@@ -303,6 +311,11 @@ const AuthModal = ({ setModalOpen }: Props) => {
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
+        )}
+
+        {currentStep === 'sign-up:clave-unica' && (
+          // Add more props here
+          <ClaveUnicaEmail />
         )}
 
         {/* light flow */}
