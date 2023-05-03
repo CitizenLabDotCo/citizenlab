@@ -1416,6 +1416,8 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.newCustomFieldAnswerOptionFormTitle": "Legg til svaralternativ",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton": "Avbryt",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton": "Slett",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionAnswerOptionDeletionConfirmation": "Er du sikker på at du vil slette dette svaralternativet for registreringsspørsmålet? Alle poster som spesifikke brukere svarte med dette alternativet vil bli slettet permanent. Denne handlingen kan ikke angres.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation": "Er du sikker på at du vil slette dette registreringsspørsmålet? Alle svar som brukere har gitt på dette spørsmålet vil bli permanent slettet. Denne handlingen kan ikke angres.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.required": "Påkrevd",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveField": "Lagre felt",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveFieldSuccess": "Feltet er lagret",

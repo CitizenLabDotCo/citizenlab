@@ -1416,6 +1416,8 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.newCustomFieldAnswerOptionFormTitle": "Ajouter une option de réponse",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton": "Annuler",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton": "Supprimer",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionAnswerOptionDeletionConfirmation": "Êtes-vous certain(e) de vouloir supprimer cette option de réponse pour la question d'inscription ? Cela entraînera la suppression permanente de toutes les réponses associées que les utilisateurs ont données en choisissant cette option. Cette action est irréversible.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation": "Êtes-vous certain(e) de vouloir supprimer cette question d'inscription ? Si vous la supprimez, toutes les réponses fournies par les utilisateurs seront définitivement supprimées. Cette action est irréversible.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.required": "Obligatoire",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveField": "Sauvegarder le champ",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveFieldSuccess": "Champ sauvegardé avec succès",
