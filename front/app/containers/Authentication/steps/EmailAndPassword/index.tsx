@@ -25,16 +25,20 @@ import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
 import Checkbox from 'components/HookForm/Checkbox';
 
+// errors
+import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
+
 // utils
 import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 
 // typings
-import { Status } from 'containers/Authentication/typings';
+import { SetError, Status } from 'containers/Authentication/typings';
 
 interface Props {
   status: Status;
+  setError: SetError;
   onSubmit: (
     email: string,
     password: string,
@@ -59,6 +63,7 @@ const DEFAULT_VALUES: Partial<FormValues> = {
 
 const EmailAndPassword = ({
   status,
+  setError,
   onSubmit,
   onGoBack,
   onSwitchFlow,
@@ -110,8 +115,17 @@ const EmailAndPassword = ({
 
   if (!passwordLoginEnabled || tokenLifetime === undefined) return null;
 
-  const handleSubmit = ({ email, password, rememberMe }: FormValues) => {
-    onSubmit(email, password, rememberMe, tokenLifetime);
+  const handleSubmit = async ({ email, password, rememberMe }: FormValues) => {
+    try {
+      await onSubmit(email, password, rememberMe, tokenLifetime);
+    } catch (e) {
+      if (isCLErrorsIsh(e)) {
+        handleCLErrorsIsh(e, methods.setError);
+        return;
+      }
+
+      setError('sign_in_failed');
+    }
   };
 
   return (

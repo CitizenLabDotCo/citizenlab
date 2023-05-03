@@ -16,11 +16,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
 
+// errors
+import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
+
 // typings
-import { Status } from 'containers/Authentication/typings';
+import { SetError, Status } from 'containers/Authentication/typings';
 
 interface Props {
   status: Status;
+  setError: SetError;
   onGoBack: () => void;
   onChangeEmail: (newEmail: string) => void;
 }
@@ -33,7 +37,7 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   email: undefined,
 };
 
-const ChangeEmail = ({ status, onGoBack, onChangeEmail }: Props) => {
+const ChangeEmail = ({ status, setError, onGoBack, onChangeEmail }: Props) => {
   const { formatMessage } = useIntl();
 
   const loading = status === 'pending';
@@ -54,8 +58,17 @@ const ChangeEmail = ({ status, onGoBack, onChangeEmail }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const handleSubmit = ({ email }: FormValues) => {
-    onChangeEmail(email);
+  const handleSubmit = async ({ email }: FormValues) => {
+    try {
+      await onChangeEmail(email);
+    } catch (e) {
+      if (isCLErrorsIsh(e)) {
+        handleCLErrorsIsh(e, methods.setError);
+        return;
+      }
+
+      setError('unknown');
+    }
   };
 
   return (

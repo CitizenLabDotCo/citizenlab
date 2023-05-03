@@ -17,10 +17,8 @@ import { askCustomFields } from './utils';
 
 // typings
 import {
-  Status,
   AuthenticationData,
   AuthProvider,
-  ErrorCode,
   GetRequirements,
   UpdateState,
 } from '../../typings';
@@ -30,8 +28,6 @@ export const oldSignUpFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
-  setStatus: (status: Status) => void,
-  setError: (errorCode: ErrorCode) => void,
   updateState: UpdateState,
   anySSOProviderEnabled: boolean
 ) => {
@@ -48,7 +44,6 @@ export const oldSignUpFlow = (
           return;
         }
 
-        setStatus('pending');
         const { requirements } = await getRequirements();
         const verificationRequired =
           requirements.special.verification === 'require';
@@ -77,11 +72,8 @@ export const oldSignUpFlow = (
         }
       },
       SUBMIT: async (params: CreateAccountParameters) => {
-        setStatus('pending');
-
         try {
           await createAccountWithPassword(params);
-          setStatus('ok');
           trackEventByName(tracks.signUpCustomFieldsStepCompleted);
 
           const { requirements } = await getRequirements();
@@ -104,10 +96,9 @@ export const oldSignUpFlow = (
           }
 
           setCurrentStep('success');
-        } catch {
-          setStatus('error');
-          setError('account_creation_failed');
+        } catch (e) {
           trackEventByName(tracks.signInEmailPasswordFailed);
+          throw e;
         }
       },
     },
@@ -118,34 +109,21 @@ export const oldSignUpFlow = (
         setCurrentStep('sign-up:change-email');
       },
       SUBMIT_CODE: async (code: string) => {
-        setStatus('pending');
+        await confirmEmail({ code });
 
-        try {
-          await confirmEmail({ code });
-          setStatus('ok');
+        const { requirements } = await getRequirements();
 
-          const { requirements } = await getRequirements();
-
-          if (requirements.special.verification === 'require') {
-            setCurrentStep('sign-up:verification');
-            return;
-          }
-
-          if (askCustomFields(requirements.custom_fields)) {
-            setCurrentStep('sign-up:custom-fields');
-            return;
-          }
-
-          setCurrentStep('success');
-        } catch (e) {
-          setStatus('error');
-
-          if (e?.code?.[0]?.error === 'invalid') {
-            setError('wrong_confirmation_code');
-          } else {
-            setError('unknown');
-          }
+        if (requirements.special.verification === 'require') {
+          setCurrentStep('sign-up:verification');
+          return;
         }
+
+        if (askCustomFields(requirements.custom_fields)) {
+          setCurrentStep('sign-up:custom-fields');
+          return;
+        }
+
+        setCurrentStep('success');
       },
     },
 
@@ -155,16 +133,8 @@ export const oldSignUpFlow = (
         setCurrentStep('sign-up:email-confirmation');
       },
       RESEND_CODE: async (newEmail: string) => {
-        setStatus('pending');
-
-        try {
-          await resendEmailConfirmationCode(newEmail);
-          setCurrentStep('sign-up:email-confirmation');
-          setStatus('ok');
-        } catch {
-          setStatus('error');
-          setError('unknown');
-        }
+        await resendEmailConfirmationCode(newEmail);
+        setCurrentStep('sign-up:email-confirmation');
       },
     },
 
@@ -188,17 +158,13 @@ export const oldSignUpFlow = (
         trackEventByName(tracks.signUpCustomFieldsStepExited);
       },
       SUBMIT: async (userId: string, formData: FormData) => {
-        setStatus('pending');
-
         try {
           await updateUser(userId, { custom_field_values: formData });
-          setStatus('ok');
           setCurrentStep('success');
           trackEventByName(tracks.signUpCustomFieldsStepCompleted);
-        } catch {
-          setStatus('error');
-          setError('unknown');
+        } catch (e) {
           trackEventByName(tracks.signUpCustomFieldsStepFailed);
+          throw e;
         }
       },
       SKIP: async () => {

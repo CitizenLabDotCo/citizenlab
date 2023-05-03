@@ -24,13 +24,17 @@ import { string, object, boolean } from 'yup';
 import PasswordInput from 'components/HookForm/PasswordInput';
 import Checkbox from 'components/HookForm/Checkbox';
 
+// errors
+import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
+
 // typings
-import { State, Status } from '../../typings';
+import { SetError, State, Status } from '../../typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   state: State;
   status: Status;
+  setError: SetError;
   onSubmit: (
     email: string,
     password: string,
@@ -49,7 +53,7 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   rememberMe: false,
 };
 
-const Password = ({ state, status, onSubmit }: Props) => {
+const Password = ({ state, status, setError, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
 
@@ -77,12 +81,21 @@ const Password = ({ state, status, onSubmit }: Props) => {
   const { email } = state;
   if (email === null) return null;
 
-  const handleSubmit = ({ password, rememberMe }: FormValues) => {
+  const handleSubmit = async ({ password, rememberMe }: FormValues) => {
     const tokenLifetime =
       appConfiguration.data.attributes.settings.core
         .authentication_token_lifetime_in_days;
 
-    onSubmit(email, password, rememberMe, tokenLifetime);
+    try {
+      await onSubmit(email, password, rememberMe, tokenLifetime);
+    } catch (e) {
+      if (isCLErrorsIsh(e)) {
+        handleCLErrorsIsh(e, methods.setError);
+        return;
+      }
+
+      setError('sign_in_failed');
+    }
   };
 
   return (

@@ -10,6 +10,7 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 // hooks
 import useAnySSOEnabled from '../useAnySSOEnabled';
 import { useLocation } from 'react-router-dom';
+import useAuthUser from 'hooks/useAuthUser';
 
 // utils
 import { getStepConfig } from './stepConfig';
@@ -35,14 +36,28 @@ import {
   AuthenticationData,
 } from '../typings';
 import { SSOParams } from 'services/singleSignOn';
+import { isNilOrError } from 'utils/helperUtils';
 
 let initialized = false;
 
 export default function useSteps() {
   const anySSOEnabled = useAnySSOEnabled();
   const { pathname, search } = useLocation();
+  const authUser = useAuthUser();
 
-  const authenticationDataRef = useRef<AuthenticationData | null>(null);
+  // The authentication data will be initialized with the global sign up flow.
+  // In practice, this will be overwritten before firing the flow (see event
+  // listeners below). But this is easier typescript-wise
+  const authenticationDataRef = useRef<AuthenticationData>({
+    flow: 'signup',
+    context: GLOBAL_CONTEXT,
+  });
+
+  const authenticationData = authenticationDataRef.current;
+
+  const getAuthenticationData = useCallback(() => {
+    return authenticationDataRef.current;
+  }, []);
 
   const [currentStep, setCurrentStep] = useState<Step>('closed');
   const [state, setState] = useState<State>({
@@ -52,26 +67,20 @@ export default function useSteps() {
     prefilledBuiltInFields: null,
   });
   const [status, setStatus] = useState<Status>('ok');
-  const [error, setError] = useState<ErrorCode | null>(null);
+  const [error, _setError] = useState<ErrorCode | null>(null);
 
-  const getAuthenticationData = useCallback(() => {
-    const authenticationData = authenticationDataRef.current;
-
-    // This should never be possible
-    if (!authenticationData) {
-      throw new Error('Authentication data not available.');
-    }
-
-    return authenticationData;
+  const setError = useCallback((newError: ErrorCode | null) => {
+    _setError((currentError) => {
+      if (currentError === null || newError === null) {
+        return newError;
+      } else {
+        return currentError;
+      }
+    });
   }, []);
 
   const getRequirements = useCallback(async () => {
-    const authenticationContext = authenticationDataRef.current?.context;
-
-    // This should never be possible
-    if (!authenticationContext) {
-      throw new Error('Authentication context not available.');
-    }
+    const authenticationContext = getAuthenticationData().context;
 
     try {
       const response = await getAuthenticationRequirements(
@@ -79,12 +88,10 @@ export default function useSteps() {
       );
       return response.data.attributes.requirements;
     } catch (e) {
-      setStatus('error');
       setError('requirements_fetching_failed');
-
       throw e;
     }
-  }, []);
+  }, [getAuthenticationData, setError]);
 
   const updateState = useCallback((newState: Partial<State>) => {
     setState((state) => ({ ...state, ...newState }));
@@ -99,8 +106,6 @@ export default function useSteps() {
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
-      setStatus,
-      setError,
       updateState,
       anySSOEnabled
     );
@@ -114,20 +119,27 @@ export default function useSteps() {
     ) => {
       const action = stepConfig[currentStep][transition];
 
-      const wrappedAction = ((...args) => {
+      const wrappedAction = (async (...args) => {
         setError(null);
         if (transition === 'CLOSE') {
           invalidateAllActionDescriptors();
           queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
         }
 
-        // @ts-ignore
-        action(...args);
+        setStatus('pending');
+        try {
+          // @ts-ignore
+          await action(...args);
+          setStatus('ok');
+        } catch (e) {
+          setStatus('ok');
+          throw e;
+        }
       }) as StepConfig[S][T];
 
       return wrappedAction;
     },
-    [stepConfig]
+    [stepConfig, setError]
   );
 
   // Listen for any action that triggers the authentication flow, and initialize
@@ -162,17 +174,26 @@ export default function useSteps() {
   // Logic to launch other flows
   useEffect(() => {
     if (initialized) return;
+    if (authUser === undefined) return;
     initialized = true;
     if (currentStep !== 'closed') return;
 
     // launch invitation flow, derived from route
     if (pathname.endsWith('/invite')) {
-      authenticationDataRef.current = {
-        flow: 'signup',
-        context: GLOBAL_CONTEXT,
-      };
+      if (isNilOrError(authUser)) {
+        authenticationDataRef.current = {
+          flow: 'signup',
+          context: GLOBAL_CONTEXT,
+        };
 
-      transition(currentStep, 'START_INVITE_FLOW')(search);
+        transition(
+          currentStep,
+          'START_INVITE_FLOW'
+        )(search).catch(() => {
+          setCurrentStep('sign-up:invite');
+          setError('invitation_error');
+        });
+      }
 
       // Remove all parameters from URL as they've already been captured
       window.history.replaceState(null, '', '/');
@@ -210,14 +231,14 @@ export default function useSteps() {
 
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')();
     }
-  }, [pathname, search, currentStep, transition]);
+  }, [pathname, search, currentStep, transition, authUser, setError]);
 
   return {
     currentStep,
     state,
     status,
     error,
-    authenticationData: authenticationDataRef.current,
+    authenticationData,
     transition,
     setError,
   };

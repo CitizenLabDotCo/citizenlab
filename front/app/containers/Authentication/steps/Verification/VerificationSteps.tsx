@@ -45,10 +45,10 @@ const VerificationSteps = memo<Props>(({ context, onCompleted, onError }) => {
       onCompleted();
     }
 
-    if (activeStep === 'error' && context === null && onError) {
+    if (activeStep === 'error' && onError) {
       onError();
     }
-  }, [onCompleted, onError, context, activeStep]);
+  }, [onCompleted, onError, activeStep]);
 
   const onMethodSelected = (selectedMethod: TVerificationMethod) => {
     setMethod(selectedMethod);

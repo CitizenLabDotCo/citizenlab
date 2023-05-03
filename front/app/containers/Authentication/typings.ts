@@ -6,12 +6,12 @@ import {
 import { SSOProvider } from 'services/singleSignOn';
 import { SuccessAction } from './SuccessActions/actions';
 
-export type Status = 'pending' | 'error' | 'ok';
+export type Status = 'pending' | 'ok';
 
 export type ErrorCode =
   | 'account_creation_failed'
   | 'wrong_confirmation_code'
-  | 'wrong_password'
+  | 'sign_in_failed'
   | 'requirements_fetching_failed'
   | 'invitation_error'
   | 'unknown';
@@ -32,6 +32,8 @@ export type GetRequirements = () => Promise<AuthenticationRequirements>;
 
 export type StepConfig = ReturnType<typeof getStepConfig>;
 export type Step = keyof StepConfig;
+
+export type SetError = (errorCode: ErrorCode) => void;
 
 export type SignUpInFlow = 'signup' | 'signin';
 export type SignUpInError = 'general' | 'franceconnect_merging_failed';

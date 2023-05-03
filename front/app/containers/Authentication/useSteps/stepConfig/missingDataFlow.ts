@@ -9,18 +9,12 @@ import signOut from 'api/authentication/sign_in_out/signOut';
 import { requiredCustomFields, requiredBuiltInFields } from './utils';
 
 // typings
-import {
-  GetRequirements,
-  Status,
-  ErrorCode,
-} from 'containers/Authentication/typings';
+import { GetRequirements } from 'containers/Authentication/typings';
 import { Step, BuiltInFieldsUpdate } from './typings';
 
 export const missingDataFlow = (
   getRequirements: GetRequirements,
-  setCurrentStep: (step: Step) => void,
-  setStatus: (status: Status) => void,
-  setError: (errorCode: ErrorCode) => void
+  setCurrentStep: (step: Step) => void
 ) => {
   return {
     'missing-data:email-confirmation': {
@@ -36,39 +30,25 @@ export const missingDataFlow = (
         }
       },
       SUBMIT_CODE: async (code: string) => {
-        setStatus('pending');
+        await confirmEmail({ code });
+        const { requirements } = await getRequirements();
 
-        try {
-          await confirmEmail({ code });
-          const { requirements } = await getRequirements();
-
-          setStatus('ok');
-
-          if (requiredBuiltInFields(requirements)) {
-            setCurrentStep('missing-data:built-in');
-            return;
-          }
-
-          if (requirements.special.verification === 'require') {
-            setCurrentStep('missing-data:verification');
-            return;
-          }
-
-          if (requiredCustomFields(requirements.custom_fields)) {
-            setCurrentStep('missing-data:custom-fields');
-            return;
-          }
-
-          setCurrentStep('success');
-        } catch (e) {
-          setStatus('error');
-
-          if (e?.code?.[0]?.error === 'invalid') {
-            setError('wrong_confirmation_code');
-          } else {
-            setError('unknown');
-          }
+        if (requiredBuiltInFields(requirements)) {
+          setCurrentStep('missing-data:built-in');
+          return;
         }
+
+        if (requirements.special.verification === 'require') {
+          setCurrentStep('missing-data:verification');
+          return;
+        }
+
+        if (requiredCustomFields(requirements.custom_fields)) {
+          setCurrentStep('missing-data:custom-fields');
+          return;
+        }
+
+        setCurrentStep('success');
       },
     },
 
@@ -78,16 +58,8 @@ export const missingDataFlow = (
         setCurrentStep('missing-data:email-confirmation');
       },
       RESEND_CODE: async (newEmail: string) => {
-        setStatus('pending');
-
-        try {
-          await resendEmailConfirmationCode(newEmail);
-          setCurrentStep('missing-data:email-confirmation');
-          setStatus('ok');
-        } catch (e) {
-          setStatus('error');
-          setError('unknown');
-        }
+        await resendEmailConfirmationCode(newEmail);
+        setCurrentStep('missing-data:email-confirmation');
       },
     },
 
@@ -97,12 +69,8 @@ export const missingDataFlow = (
         userId: string,
         builtInFieldUpdate: BuiltInFieldsUpdate
       ) => {
-        setStatus('pending');
-
         await updateUser(userId, builtInFieldUpdate);
         const { requirements } = await getRequirements();
-
-        setStatus('ok');
 
         if (requirements.special.verification === 'require') {
           setCurrentStep('missing-data:verification');
@@ -135,16 +103,8 @@ export const missingDataFlow = (
     'missing-data:custom-fields': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (userId: string, formData: FormData) => {
-        setStatus('pending');
-
-        try {
-          await updateUser(userId, { custom_field_values: formData });
-          setStatus('ok');
-          setCurrentStep('success');
-        } catch {
-          setStatus('error');
-          setError('unknown');
-        }
+        await updateUser(userId, { custom_field_values: formData });
+        setCurrentStep('success');
       },
       SKIP: async () => {
         setCurrentStep('success');

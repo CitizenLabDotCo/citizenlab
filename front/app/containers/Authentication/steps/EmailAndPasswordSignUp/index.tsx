@@ -24,6 +24,9 @@ import { DEFAULT_VALUES, getSchema, FormValues } from './form';
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
 
+// errors
+import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
+
 // tracks
 import tracks from '../../tracks';
 import { trackEventByName } from 'utils/analytics';
@@ -36,11 +39,12 @@ import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 
 // typings
 import { Parameters as CreateAccountParameters } from 'api/authentication/sign_up/createAccountWithPassword';
-import { State, Status } from 'containers/Authentication/typings';
+import { SetError, State, Status } from 'containers/Authentication/typings';
 
 interface Props {
   state: State;
   status: Status;
+  setError: SetError;
   onSwitchFlow: () => void;
   onGoBack: () => void;
   onSubmit: (parameters: CreateAccountParameters) => void;
@@ -49,11 +53,11 @@ interface Props {
 const EmailAndPasswordSignUp = ({
   state,
   status,
+  setError,
   onSwitchFlow,
   onGoBack,
   onSubmit,
 }: Props) => {
-  // const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const anySSOEnabled = useAnySSOEnabled();
   const { data: appConfiguration } = useAppConfiguration();
   const locale = useLocale();
@@ -84,21 +88,30 @@ const EmailAndPasswordSignUp = ({
 
   if (isNilOrError(locale)) return null;
 
-  const handleSubmit = ({
+  const handleSubmit = async ({
     first_name,
     last_name,
     email,
     password,
   }: FormValues) => {
-    onSubmit({
-      firstName: first_name,
-      lastName: last_name,
-      email,
-      password,
-      locale,
-      isInvitation: !!state.token,
-      token: state.token,
-    });
+    try {
+      await onSubmit({
+        firstName: first_name,
+        lastName: last_name,
+        email,
+        password,
+        locale,
+        isInvitation: !!state.token,
+        token: state.token,
+      });
+    } catch (e) {
+      if (isCLErrorsIsh(e)) {
+        handleCLErrorsIsh(e, methods.setError);
+        return;
+      }
+
+      setError('account_creation_failed');
+    }
   };
 
   return (

@@ -14,8 +14,6 @@ import { requiredCustomFields } from './utils';
 
 // typings
 import {
-  Status,
-  ErrorCode,
   AuthenticationData,
   AuthProvider,
   GetRequirements,
@@ -26,8 +24,6 @@ export const oldSignInFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
-  setStatus: (status: Status) => void,
-  setError: (errorCode: ErrorCode) => void,
   anySSOProviderEnabled: boolean
 ) => {
   return {
@@ -43,7 +39,6 @@ export const oldSignInFlow = (
           return;
         }
 
-        setStatus('pending');
         const { requirements } = await getRequirements();
         const verificationRequired =
           requirements.special.verification === 'require';
@@ -72,8 +67,6 @@ export const oldSignInFlow = (
         rememberMe: boolean,
         tokenLifetime: number
       ) => {
-        setStatus('pending');
-
         try {
           await signIn({
             email,
@@ -83,7 +76,6 @@ export const oldSignInFlow = (
           });
 
           const { requirements } = await getRequirements();
-          setStatus('ok');
 
           if (requirements.special.confirmation === 'require') {
             setCurrentStep('missing-data:email-confirmation');
@@ -108,10 +100,9 @@ export const oldSignInFlow = (
           }
 
           trackEventByName(tracks.signInEmailPasswordCompleted);
-        } catch {
-          setStatus('error');
-          setError('wrong_password');
+        } catch (e) {
           trackEventByName(tracks.signInEmailPasswordFailed);
+          throw e;
         }
       },
     },
