@@ -239,3 +239,10 @@ fr:
       paragraph_1_with_reason: "Votre compte sur la plateforme de participation de %{organizationName} a été temporairement désactivé pour la raison suivante :"
       for_more_information: "Pour plus d'informations à ce sujet, vous pouvez consulter le site %{termsAndConditionsPage}."
       you_can_sign_in_again_from: "Vous pourrez vous connecter à nouveau à partir du %{date}"
+  user:
+    anon_first_name: "Utilisateur"
+  time:
+    am: du matin
+    formats:
+      hour_of_day: "%Hh"
+    pm: de l'après-midi
