@@ -656,7 +656,7 @@
   "app.containers.ChangeEmail.emailTaken": "Cette adresse e-mail est déjà utilisée.",
   "app.containers.ChangeEmail.emailUpdateCancelled": "La modification de l'adresse e-mail a été annulée.",
   "app.containers.ChangeEmail.emailUpdateCancelledDescription": "Pour modifier votre adresse e-mail, veuillez recommencer la procédure.",
-  "app.containers.ChangeEmail.helmetDescription": "Changez la page de votre courrier électronique",
+  "app.containers.ChangeEmail.helmetDescription": "Page pour modifier votre adresse e-mail",
   "app.containers.ChangeEmail.helmetTitle": "Modifiez votre adresse e-mail",
   "app.containers.ChangeEmail.newEmailLabel": "Nouvelle adresse e-mail",
   "app.containers.ChangeEmail.submitButton": "Soumettre",
