@@ -241,3 +241,8 @@ en-GB:
       you_can_sign_in_again_from: "You can sign in again from %{date}"
   user:
     anon_first_name: "User"
+  time:
+    am: am
+    formats:
+      hour_of_day: "%l %p"
+    pm: pm
