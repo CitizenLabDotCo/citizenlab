@@ -19,7 +19,7 @@ RSpec.describe ScheduleCodeExpiration do
     end
 
     it 'enqueues a code expiration job' do
-      expect { result }.to enqueue_job(ExpireConfirmationCodeJob)
+      expect { result }.to enqueue_job(ExpireConfirmationCodeOrDeleteJob)
     end
   end
 end

@@ -1,10 +1,16 @@
 import React, { useCallback } from 'react';
 
-// services
-import { ICauseData } from 'api/causes/types';
+// api
+import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
 
-// resource hooks
+// constants
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
+
+// hooks
 import useAuthUser from 'hooks/useAuthUser';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // components
 import Image from 'components/UI/Image';
@@ -15,7 +21,6 @@ import Warning from 'components/UI/Warning';
 
 // utils
 import { isEmptyMultiloc } from 'utils/helperUtils';
-import { openSignUpInModal } from 'events/openSignUpInModal';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
@@ -35,6 +40,9 @@ import {
 } from 'utils/styleUtils';
 import useAddVolunteer from 'api/causes/useAddVolunteer';
 import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
+
+// typings
+import { ICauseData } from 'api/causes/types';
 
 const Container = styled.div`
   padding: 20px;
@@ -179,7 +187,7 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
 
-  const handleOnVolunteerButtonClick = useCallback(() => {
+  const volunteer = useCallback(() => {
     if (cause.relationships?.user_volunteer?.data) {
       deleteVolunteer({
         causeId: cause.id,
@@ -190,17 +198,26 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
     }
   }, [cause, addVolunteer, deleteVolunteer]);
 
-  const signIn = () =>
-    openSignUpInModal({
-      flow: 'signin',
-      action: () => handleOnVolunteerButtonClick(),
-    });
+  const successAction = {
+    name: 'volunteer',
+    params: { cause },
+  } as const;
 
+  const handleOnVolunteerButtonClick = async () => {
+    const response = await getAuthenticationRequirements(GLOBAL_CONTEXT);
+    const { requirements } = response.data.attributes;
+
+    if (requirements.permitted) {
+      volunteer();
+    } else {
+      triggerAuthenticationFlow({ successAction });
+    }
+  };
+
+  const signIn = () =>
+    triggerAuthenticationFlow({ flow: 'signin', successAction });
   const signUp = () =>
-    openSignUpInModal({
-      flow: 'signup',
-      action: () => handleOnVolunteerButtonClick(),
-    });
+    triggerAuthenticationFlow({ flow: 'signup', successAction });
 
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;

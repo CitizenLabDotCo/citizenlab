@@ -97,6 +97,15 @@ da:
       "assignee_digest": Ugentlig oversigt over tildelte idéer - administratorer og projektledere
       "user_digest": Ugentlig oversigt - alle brugere
       "your_proposed_initiatives_digest": Ugentlig oversigt over dine egne forslag - alle brugere
+    schedules:
+      weekly:
+        "0": "Hver uge, om søndagen på %{hourOfDay}"
+        "1": "Hver uge om mandagen %{atHour}"
+        "2": "Hver uge om tirsdagen %{atHour}"
+        "3": "Hver uge om onsdagen %{atHour}"
+        "4": "Hver uge om torsdagen %{atHour}"
+        "5": "Hver uge om fredagen %{atHour}"
+        "6": "Hver uge om lørdagen %{atHour}"
     footer:
       "link_privacy_policy": "Anonymitetspolitik"
       "link_terms_conditions": "Betingelser og vilkår"
@@ -566,8 +575,8 @@ da:
         admins_and_managers: 'Administratorer og projektledere'
         all_users: 'Alle brugere'
         all_users_who_uploaded_proposals: 'Alle brugere der har uploadet borgerforslag'
-        managers: 'Chefer'
-        managers_assigned_to_a_proposal: 'Chefer, der er tilknyttet et forslag'
+        managers: 'Projektledere'
+        managers_assigned_to_a_proposal: 'Projektledere der er tilknyttet et forslag'
         user_assigned_to_the_idea: 'Bruger, der er tildelt ideen'
         user_receiving_admin_rights: 'Bruger, der får administratorrettigheder'
         user_receiving_folder_moderator_rights: 'Bruger der får rettigheder som mappemoderator'

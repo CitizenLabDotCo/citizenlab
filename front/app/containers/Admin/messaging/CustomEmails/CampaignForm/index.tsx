@@ -194,6 +194,7 @@ const CampaignForm = ({
 
           <StyledSectionField>
             <Input
+              id="e2e-reply-to-input"
               name="reply_to"
               type="email"
               label={formatMessage(messages.fieldReplyTo)}
@@ -230,7 +231,11 @@ const CampaignForm = ({
           </SectionField>
         </StyledSection>
         <Box display="flex">
-          <Button type="submit" processing={methods.formState.isSubmitting}>
+          <Button
+            id="e2e-campaign-form-save-button"
+            type="submit"
+            processing={methods.formState.isSubmitting}
+          >
             {formatMessage(messages.formSave)}
           </Button>
         </Box>

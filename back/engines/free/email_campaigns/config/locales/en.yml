@@ -55,10 +55,11 @@ en:
         "comment_deleted_by_admin": Deletion of your comment - all users
         "comment_marked_as_spam": Comment spam report - admins and project managers
         "comment_on_your_comment": Reply on your comment - all users
-        "comment_on_your_idea": Comment on your input - all users
+        "comment_on_your_idea": Comment on your idea - all users
         "comment_on_your_initiative": Comment on your proposal - all users
+        "first_idea_published": Publication of your first idea - all users
         "idea_marked_as_spam": Idea spam report - admins and project managers
-        "idea_published": Publication of your input - all users
+        "idea_published": Publication of your idea - all users
         "initiative_assigned_to_you": Assignment of a proposal - admins
         "initiative_marked_as_spam": Proposal spam report - admins
         "initiative_published": Publication of your proposal - all users
@@ -67,36 +68,45 @@ en:
         "mention_in_comment": Mention in a comment - all users
         "mention_in_official_feedback": Mention in an update - all users
         "new_comment_for_admin": New comment - admins and project managers
-        "new_comment_on_commented_idea": New comment on an input you commented on - all users
+        "new_comment_on_commented_idea": New comment on an idea you commented on - all users
         "new_comment_on_commented_initiative": New comment on a proposal you commented on - all users
-        "new_comment_on_voted_idea": New comment on an input you voted for - all users
+        "new_comment_on_voted_idea": New comment on an idea you voted for - all users
         "new_comment_on_voted_initiative": New comment on a proposal you voted for - all users
         "new_idea_for_admin": New idea - admins and project managers
         "new_initiative_for_admin": New proposal - admins
-        "official_feedback_on_commented_idea": Update on an input you commented on - all users
+        "official_feedback_on_commented_idea": Update on an idea you commented on - all users
         "official_feedback_on_commented_initiative": Update on a proposal you commented on - all users
-        "official_feedback_on_voted_idea": Update on an input you voted on - all users
+        "official_feedback_on_voted_idea": Update on an idea you voted on - all users
         "official_feedback_on_voted_initiative": Update on a proposal you voted on - all users
-        "official_feedback_on_your_idea": Update on your input - all users
+        "official_feedback_on_your_idea": Update on your idea - all users
         "official_feedback_on_your_initiative": Update on your proposal - all users
         "password_reset": Password reset - all users
         "project_moderation_rights_received": Project moderation rights received - project managers
         "project_folder_moderation_rights_received": Folder manager rights received
         "project_phase_started": New project phase - project participants
         "project_phase_upcoming": Upcoming new project phase - admins and project managers
-        "status_change_of_commented_idea": Status change of an input you commented on - all users
+        "status_change_of_commented_idea": Status change of an idea you commented on - all users
         "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
-        "status_change_of_voted_idea": Status change of an input you voted on - all users
+        "status_change_of_voted_idea": Status change of an idea you voted on - all users
         "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
-        "status_change_of_your_idea": Status change of your input - all users
+        "status_change_of_your_idea": Status change of your idea - all users
         "status_change_of_your_initiative": Status change of your proposal - all users
         "threshold_reached_for_admin": Proposal reached the voting threshold - admins
         "welcome": Welcome email to new users - all users
         "admin_digest": Weekly overview - admins
         "moderator_digest": Weekly overview - project managers
-        "assignee_digest": Weekly overview of assigned inputs - admins and project managers
+        "assignee_digest": Weekly overview of assigned ideas - admins and project managers
         "user_digest": Weekly overview - all users
         "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+    schedules:
+      weekly:
+        "0": "Weekly, on Sundays at %{hourOfDay}"
+        "1": "Weekly, on Mondays at %{hourOfDay}"
+        "2": "Weekly, on Tuesdays at %{hourOfDay}"
+        "3": "Weekly, on Wednesdays at %{hourOfDay}"
+        "4": "Weekly, on Thursdays at %{hourOfDay}"
+        "5": "Weekly, on Fridays at %{hourOfDay}"
+        "6": "Weekly, on Saturdays at %{hourOfDay}"
     footer:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"

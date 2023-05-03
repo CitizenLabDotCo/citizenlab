@@ -3,7 +3,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { IIdeaVote } from './types';
 import ideaKeys from 'api/ideas/keys';
 
-const deleteVote = async ({
+export const deleteIdeaVote = async ({
   ideaId: _ideaId,
   voteId,
 }: {
@@ -15,10 +15,10 @@ const deleteVote = async ({
     action: 'delete',
   });
 
-const useDeleteVote = () => {
+const useDeleteIdeaVote = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: deleteVote,
+    mutationFn: deleteIdeaVote,
     onSuccess: (_data, { ideaId }) => {
       queryClient.invalidateQueries({
         queryKey: ideaKeys.item({ id: ideaId }),
@@ -27,4 +27,4 @@ const useDeleteVote = () => {
   });
 };
 
-export default useDeleteVote;
+export default useDeleteIdeaVote;

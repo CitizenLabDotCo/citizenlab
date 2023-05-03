@@ -9,8 +9,8 @@ import useAuthUser from 'hooks/useAuthUser';
 import VoteControl from 'components/VoteControl';
 import GoBackButton from 'containers/IdeasShow/GoBackButton';
 
-// utils
-import { openVerificationModal } from 'events/verificationModal';
+// events
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // styling
 import styled from 'styled-components';
@@ -79,7 +79,7 @@ const IdeaShowPageTopBar = ({
       const pcId = project.relationships?.current_phase?.data?.id || project.id;
 
       if (pcId && pcType) {
-        openVerificationModal({
+        triggerAuthenticationFlow({
           context: {
             action: 'voting_idea',
             id: pcId,
