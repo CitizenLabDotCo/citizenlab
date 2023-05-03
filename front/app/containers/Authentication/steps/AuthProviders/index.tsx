@@ -21,6 +21,7 @@ import styled from 'styled-components';
 
 // typings
 import { SSOProvider } from 'services/singleSignOn';
+import { ErrorCode } from 'containers/Authentication/typings';
 
 const Container = styled.div`
   display: flex;
@@ -36,6 +37,7 @@ export const StyledAuthProviderButton = styled(AuthProviderButton)`
 interface Props {
   flow: 'signup' | 'signin';
   className?: string;
+  error: ErrorCode | null;
   onSelectAuthProvider: TOnContinueFunction;
   onSwitchFlow: () => void;
 }
@@ -43,7 +45,7 @@ interface Props {
 export type AuthProvider = 'email' | SSOProvider;
 
 const AuthProviders = memo<Props>(
-  ({ flow, className, onSwitchFlow, onSelectAuthProvider }) => {
+  ({ flow, className, error, onSwitchFlow, onSelectAuthProvider }) => {
     const { formatMessage } = useIntl();
     const { data: tenant } = useAppConfiguration();
     const tenantSettings = tenant?.data.attributes.settings;
@@ -85,9 +87,12 @@ const AuthProviders = memo<Props>(
       (flow === 'signin' ||
         (flow === 'signup' && tenantSettings?.password_login?.enable_signup));
 
+    const showFCButton =
+      franceconnectLoginEnabled && error !== 'franceconnect_merging_failed';
+
     return (
       <Container id="e2e-sign-up-container" className={className}>
-        {franceconnectLoginEnabled && (
+        {showFCButton && (
           <FranceConnectButton
             onClick={handleOnFranceConnectSelected}
             logoAlt={formatMessage(messages.signUpButtonAltText, {

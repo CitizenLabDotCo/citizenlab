@@ -217,6 +217,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'sign-in:auth-providers' && (
           <AuthProviders
             flow="signin"
+            error={error}
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onSelectAuthProvider={transition(
               currentStep,
@@ -239,6 +240,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'sign-up:auth-providers' && (
           <AuthProviders
             flow="signup"
+            error={error}
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onSelectAuthProvider={transition(
               currentStep,
