@@ -125,7 +125,7 @@ export const UserMenu = () => {
       <Box width="224px">
         <ItemMenu
           buttonStyle="text"
-          onClick={() => setIsNotificationsPopupOpen(true)}
+          onClick={() => setIsNotificationsPopupOpen(!isNotificationsPopupOpen)}
         >
           <Box display="flex" justifyContent="space-between" width="100%">
             <NotificationsPopup
@@ -141,7 +141,7 @@ export const UserMenu = () => {
         </ItemMenu>
         <ItemMenu
           buttonStyle="text"
-          onClick={() => setIsLanguagePopupOpen(true)}
+          onClick={() => setIsLanguagePopupOpen(!isLanguagePopupOpen)}
         >
           <Box display="flex" justifyContent="space-between" w="100%">
             <LanguageSelectorPopup
