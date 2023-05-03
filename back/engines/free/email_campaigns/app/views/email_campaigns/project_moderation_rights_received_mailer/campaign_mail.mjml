@@ -13,9 +13,9 @@
       </h2>
       <p style="margin-top: 10px">
         <% if event.project_ideas_count == 0 %>
-          <%= format_message("no_ideas") %>
+          <%= format_message("no_inputs") %>
         <% else %>
-          <%= format_message("x_ideas", values: { numberOfIdeas: event.project_ideas_count }) %>
+          <%= format_message("x_inputs", values: { numberOfIdeas: event.project_ideas_count }) %>
         <% end %>
       </p>
     </mj-text>
@@ -43,11 +43,11 @@
     <mj-text>
       <h2 style="font-size: 18px; margin-bottom: 40px"><%= format_message('title_what_can_you_do_moderator') %></h2>
       <h3 style="font-size: 15px;"><%= format_message('title_design_participatory_process') %></h3>
-      <p><%= format_message('text_design_participatory_process') %></p>
+      <p><%= format_message('text_design_participatory_process1') %></p>
       <h3 style="font-size: 15px;"><%= format_message('title_share_project_information') %></h3>
-      <p><%= format_message('text_share_project_information') %></p>
+      <p><%= format_message('text_share_project_information1') %></p>
       <h3 style="font-size: 15px;"><%= format_message('title_moderate_analyse_input') %></h3>
-      <p><%= format_message('text_moderate_analyse_input') %></p>
+      <p><%= format_message('text_moderate_analyse_input1') %></p>
     </mj-text>
   </mj-column>
 </mj-section>

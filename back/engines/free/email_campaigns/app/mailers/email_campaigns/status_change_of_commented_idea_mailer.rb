@@ -5,16 +5,16 @@ module EmailCampaigns
     private
 
     def subject
-      format_message('subject')
+      format_message('subject1')
     end
 
     def header_title
-      format_message('main_header', values: { organizationName: organization_name })
+      format_message('main_header1', values: { organizationName: organization_name })
     end
 
     def header_message
       format_message(
-        'event_description',
+        'event_description1',
         values: {
           ideaTitle: localize_for_recipient(event.post_title_multiloc),
           organizationName: organization_name
@@ -23,7 +23,7 @@ module EmailCampaigns
     end
 
     def preheader
-      format_message('preheader', values: { organizationName: organization_name })
+      format_message('preheader1', values: { organizationName: organization_name })
     end
   end
 end

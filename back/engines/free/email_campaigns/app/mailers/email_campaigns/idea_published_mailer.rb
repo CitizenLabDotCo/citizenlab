@@ -5,13 +5,13 @@ module EmailCampaigns
     protected
 
     def subject
-      format_message('subject', values: { organizationName: organization_name })
+      format_message('subject1', values: { organizationName: organization_name })
     end
 
     private
 
     def header_title
-      format_message('main_header')
+      format_message('main_header1')
     end
 
     def header_message
@@ -26,7 +26,7 @@ module EmailCampaigns
     end
 
     def preheader
-      format_message('preheader', values: { firstName: recipient_first_name, organizationName: organization_name })
+      format_message('preheader1', values: { firstName: recipient_first_name, organizationName: organization_name })
     end
   end
 end

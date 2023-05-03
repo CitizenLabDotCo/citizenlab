@@ -5,15 +5,15 @@ module EmailCampaigns
     protected
 
     def subject
-      format_message('subject')
+      format_message('subject1')
     end
 
     def header_title
-      format_message('main_header', values: { commentAuthor: event.initiating_user_first_name })
+      format_message('main_header1', values: { commentAuthor: event.initiating_user_first_name })
     end
 
     def header_message
-      format_message('event_description', values: {
+      format_message('event_description1', values: {
         commentAuthorFull: "#{event.initiating_user_first_name} #{event.initiating_user_last_name}",
         commentAuthor: event.initiating_user_first_name,
         ideaTitle: localize_for_recipient(event.post_title_multiloc),
@@ -22,7 +22,7 @@ module EmailCampaigns
     end
 
     def preheader
-      format_message('preheader', values: { organizationName: organization_name, commentAuthor: event.initiating_user_first_name })
+      format_message('preheader1, values: { organizationName: organization_name, commentAuthor: event.initiating_user_first_name })
     end
   end
 end

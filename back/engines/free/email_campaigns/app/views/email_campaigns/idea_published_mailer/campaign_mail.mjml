@@ -3,7 +3,7 @@
   <mj-column>
     <mj-text>
       <p style="margin-bottom: 20px; font-weight: 700;">
-        <%= format_message("message_get_votes") %>
+        <%= format_message("message_get_votes1") %>
       </p>
     </mj-text>
     <mj-table>
@@ -16,7 +16,7 @@
         </td>
         <td style="padding-left: 10px; padding-bottom:15px">
           <span style="text-decoration: line-through;">
-            <%= format_message('action_published_idea') %>
+            <%= format_message('action_published_input') %>
           </span>
         </td>
       </tr>
@@ -133,4 +133,4 @@
   </mj-column>
 </mj-section>
 
-<%= render partial: 'application/cta_button', locals: { href: event.post_url, message: format_message('cta_view_idea') } %>
+<%= render partial: 'application/cta_button', locals: { href: event.post_url, message: format_message('cta_view_input') } %>

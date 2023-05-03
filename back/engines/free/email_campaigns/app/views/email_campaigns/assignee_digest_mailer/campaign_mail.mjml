@@ -34,9 +34,9 @@
     <mj-text>
       <h3>
         <% if event.assigned_ideas.present? %>
-          <%= format_message('title_assignment_past_week') %>
+          <%= format_message('title_assignment_past_week1') %>
         <% else %>
-          <%= format_message('title_no_assignment_past_week') %>
+          <%= format_message('title_no_assignment_past_week1') %>
         <% end %>
       </h3>
     </mj-text>

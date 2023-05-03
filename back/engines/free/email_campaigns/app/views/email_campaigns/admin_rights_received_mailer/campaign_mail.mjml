@@ -10,9 +10,9 @@
       <h3 style="font-size: 15px;"><%= format_message('title_platform_setup') %></h3>
       <p><%= format_message('text_platform_setup') %></p>
       <h3 style="font-size: 15px;"><%= format_message('title_create_participatory_process') %></h3>
-      <p><%= format_message('text_create_participatory_process') %></p>
+      <p><%= format_message('text_create_participatory_process1') %></p>
       <h3 style="font-size: 15px;"><%= format_message('title_moderate_analyse_input') %></h3>
-      <p><%= format_message('text_moderate_analyse_input') %></p>
+      <p><%= format_message('text_moderate_analyse_input1') %></p>
     </mj-text>
 
   </mj-column>

@@ -15,7 +15,7 @@ module EmailCampaigns
     end
 
     def header_message
-      format_message('event_description', values: { organizationName: organization_name })
+      format_message('event_description1', values: { organizationName: organization_name })
     end
 
     def preheader

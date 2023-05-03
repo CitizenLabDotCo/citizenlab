@@ -40,12 +40,12 @@
     <mj-text padding="0 25px">
       <h2>
         <% if event.top_ideas.present? %>
-          <%= format_message('trending_ideas') %>
+          <%= format_message('trending_inputs') %>
         <% end %>
       </h2>
       <p>
         <% if event.top_ideas.present? %>
-          <%= format_message("trending_ideas_text") %>
+          <%= format_message("trending_inputs_text") %>
         <% end %>
       </p>
     </mj-text>
@@ -122,7 +122,7 @@
       </h2>
       <p>
         <%  if event.new_initiatives.present? %>
-          <%= format_message('proposals_started_text') %>
+          <%= format_message('proposals_started_text1') %>
         <% end %>
       </p>
     </mj-text>

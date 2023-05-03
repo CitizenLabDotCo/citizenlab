@@ -11,15 +11,15 @@ module EmailCampaigns
     private
 
     def header_title
-      format_message('main_header', values: { firstName: recipient_first_name })
+      format_message('main_header1', values: { firstName: recipient_first_name })
     end
 
     def header_message
-      format_message('event_description', values: { authorName: event.post_author_name, organizationName: organization_name })
+      format_message('event_description1', values: { authorName: event.post_author_name, organizationName: organization_name })
     end
 
     def preheader
-      format_message('preheader', values: { authorName: event.post_author_name, organizationName: organization_name })
+      format_message('preheader1', values: { authorName: event.post_author_name, organizationName: organization_name })
     end
   end
 end

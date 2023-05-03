@@ -31,7 +31,7 @@
             <% when 'inappropriate' %>
               <%= format_message('report_inappropriate_offensive_content') %>
             <% when 'wrong_content' %>
-              <%= format_message('report_not_an_idea') %>
+              <%= format_message('report_not_an_input') %>
             <% end %>
           </p>
         </mj-text>
@@ -39,4 +39,4 @@
     </mj-section>
 
 
-    <%= render partial: 'application/cta_button', locals: { href: event.post_url, message: format_message('cta_review_idea') } %>
+    <%= render partial: 'application/cta_button', locals: { href: event.post_url, message: format_message('cta_review_input') } %>

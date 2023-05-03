@@ -390,7 +390,6 @@ Rails/OutputSafety:
     - 'app/mailers/application_mailer.rb'
     - 'engines/free/email_campaigns/app/helpers/email_campaigns/campaign_helper.rb'
     - 'engines/free/email_campaigns/app/mailers/email_campaigns/application_mailer.rb'
-    - 'engines/free/email_campaigns/app/mailers/email_campaigns/first_idea_published_mailer.rb'
     - 'engines/free/email_campaigns/app/mailers/email_campaigns/idea_published_mailer.rb'
 
 # Offense count: 56

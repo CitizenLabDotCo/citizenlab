@@ -14,7 +14,7 @@ module EmailCampaigns
 
     def header_message
       format_message(
-        'event_description',
+        'event_description1',
         values: {
           post: localize_for_recipient(event.post_title_multiloc),
           organizationName: organization_name

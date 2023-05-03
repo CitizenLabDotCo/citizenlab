@@ -104,14 +104,14 @@ module EmailCampaigns
     def self.campaign_description_multiloc
       @multiloc_service ||= MultilocService.new
       @multiloc_service.i18n_to_multiloc(
-        "email_campaigns.campaign_type_description.#{campaign_name}"
+        "email_campaigns.campaign_type_description.1.#{campaign_name}"
       )
     end
 
     def self.admin_campaign_description_multiloc
       @multiloc_service ||= MultilocService.new
       @multiloc_service.i18n_to_multiloc(
-        "email_campaigns.admin_campaign_type_description.#{campaign_name}"
+        "email_campaigns.admin_campaign_type_description.1.#{campaign_name}"
       )
     end
 

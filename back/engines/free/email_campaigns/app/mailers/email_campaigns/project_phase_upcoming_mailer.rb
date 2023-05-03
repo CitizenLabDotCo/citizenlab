@@ -17,7 +17,7 @@ module EmailCampaigns
     end
 
     def header_message
-      format_message('event_description', values: { projectName: project_title })
+      format_message('event_description1', values: { projectName: project_title })
     end
 
     def preheader
