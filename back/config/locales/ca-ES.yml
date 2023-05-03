@@ -241,3 +241,8 @@ ca:
       you_can_sign_in_again_from: "Podeu tornar a iniciar la sessió des %{date}"
   user:
     anon_first_name: "Usuari"
+  time:
+    am: soc
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm
