@@ -97,6 +97,15 @@ lb:
       "assignee_digest": Wéchentlechen Iwwerbléck iwwer zougeuerdent Iddien - Verwalter a Projetsmanager
       "user_digest": Wéchentlechen Iwwerbléck - all Benotzer
       "your_proposed_initiatives_digest": Wéchentlechen Iwwerbléck iwwer Är eege Propositiounen - all Benotzer
+    schedules:
+      weekly:
+        "0": "Wochemaart, Sonndes um %{hourOfDay}"
+        "1": "Wochemaart op Méindes %{atHour}"
+        "2": "Wochemaart op Dënschdes %{atHour}"
+        "3": "Wochemaart Mëttwochs %{atHour}"
+        "4": "Wochemaart op Donneschden %{atHour}"
+        "5": "Wochemaart Freideg %{atHour}"
+        "6": "Wochemaart Samschdes %{atHour}"
     footer:
       "link_privacy_policy": "Dateschutzrichtlinn"
       "link_terms_conditions": "Geschäftsbedéngungen"
