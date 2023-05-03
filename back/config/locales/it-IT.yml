@@ -239,3 +239,10 @@ it:
       paragraph_1_with_reason: "Il vostro account sulla piattaforma di partecipazione di %{organizationName} è stato temporaneamente disabilitato per il seguente motivo:"
       for_more_information: "Per ulteriori informazioni, è possibile consultare il sito %{termsAndConditionsPage}."
       you_can_sign_in_again_from: "È possibile accedere nuovamente a %{date}"
+  user:
+    anon_first_name: "Utente"
+  time:
+    am: sono
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm

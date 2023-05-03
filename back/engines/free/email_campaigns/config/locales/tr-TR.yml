@@ -97,6 +97,15 @@ tr:
       "assignee_digest": Atanmış fikirlere haftalık genel bakış - yöneticiler ve proje yöneticileri
       "user_digest": Haftalık genel bakış - tüm kullanıcılar
       "your_proposed_initiatives_digest": Kendi önerilerinize haftalık genel bakış - tüm kullanıcılar
+    schedules:
+      weekly:
+        "0": "Haftalık, Pazar günleri %{hourOfDay}adresinde"
+        "1": "Haftalık Pazartesi günleri %{atHour}"
+        "2": "Haftalık Salı günleri %{atHour}"
+        "3": "Haftalık Çarşamba günleri %{atHour}"
+        "4": "Haftalık Perşembe günleri %{atHour}"
+        "5": "Haftalık Cuma günleri %{atHour}"
+        "6": "Haftalık Cumartesi günleri %{atHour}"
     footer:
       "link_privacy_policy": "Gi̇zli̇li̇k Poli̇ti̇kası"
       "link_terms_conditions": "Hüküm ve Koşullar"
