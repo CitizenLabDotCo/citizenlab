@@ -1424,7 +1424,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton": "Abbrechen",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton": "Löschen",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionAnswerOptionDeletionConfirmation": "Sind Sie sicher, dass Sie diese Antwortoption für die Registrierungsfrage löschen möchten? Alle Datensätze, die bestimmte Nutzer*innen mit dieser Option beantwortet haben, werden dauerhaft gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation3": "Bist du sicher, dass du diese Registrierungsfrage löschen möchtest? Alle Antworten, die Nutzer/innen auf diese Frage gegeben haben, werden dauerhaft gelöscht und die Frage wird nicht mehr in Projekten oder Vorschlägen gestellt. Diese Aktion kann nicht rückgängig gemacht werden.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation3": "Sind Sie sicher, dass Sie diese Registrierungsfrage löschen möchten? Alle Antworten, die Nutzer*innen auf diese Frage gegeben haben, werden dauerhaft gelöscht, und sie wird in Projekten oder Vorschlägen nicht mehr gestellt. Diese Aktion kann nicht rückgängig gemacht werden.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.required": "Erforderlich",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveField": "Feld speichern",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.saveFieldSuccess": "Feld erfolgreich gespeichert",
