@@ -239,6 +239,8 @@ ar:
       paragraph_1_with_reason: "تم تعطيل حسابك على منصة المشاركة %{organizationName} مؤقتًا للأسباب التالية:"
       for_more_information: "لمزيد من المعلومات حول هذا الموضوع ، يمكنك الرجوع إلى %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "يمكنك تسجيل الدخول مرة أخرى من %{date}"
+  user:
+    anon_first_name: "مستخدم"
   time:
     am: أكون
     formats:
