@@ -97,6 +97,15 @@
       "assignee_digest": Ukentlig oversikt over tildelte ideer – administratorer og prosjektledere
       "user_digest": Ukentlig oversikt – alle brukere
       "your_proposed_initiatives_digest": Ukentlig oversikt over dine egne forslag – alle brukere
+    schedules:
+      weekly:
+        "0": "Ukentlig, på søndager kl %{hourOfDay}"
+        "1": "Ukentlig på mandager %{atHour}"
+        "2": "Ukentlig på tirsdager %{atHour}"
+        "3": "Ukentlig på onsdager %{atHour}"
+        "4": "Ukentlig på torsdager %{atHour}"
+        "5": "Ukentlig på fredager %{atHour}"
+        "6": "Ukentlig på lørdager %{atHour}"
     footer:
       "link_privacy_policy": "Personvernerklæring"
       "link_terms_conditions": "Vilkår og betingelser"
