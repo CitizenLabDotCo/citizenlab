@@ -30,7 +30,7 @@ import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // i18n
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import errorMessages from 'components/UI/Error/messages';
 
@@ -88,6 +88,7 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   requirements_fetching_failed: messages.unknownError,
   unknown: messages.unknownError,
   invitation_error: messages.invitationError,
+  franceconnect_merging_failed: messages.franceConnectMergingFailed,
 };
 
 type HelperTextKey = 'signup_helper_text' | 'custom_fields_signup_helper_text';
@@ -182,7 +183,14 @@ const AuthModal = ({ setModalOpen }: Props) => {
       >
         {error && (
           <Box mb="16px">
-            <Error text={formatMessage(ERROR_CODE_MESSAGES[error])} />
+            <Error
+              text={
+                <FormattedMessage
+                  {...ERROR_CODE_MESSAGES[error]}
+                  values={{ br: <br /> }}
+                />
+              }
+            />
           </Box>
         )}
 

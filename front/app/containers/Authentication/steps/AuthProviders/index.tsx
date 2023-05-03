@@ -5,7 +5,6 @@ import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import Or from 'components/UI/Or';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Outlet from 'components/Outlet';
-import Error from 'components/UI/Error';
 import { Text } from '@citizenlab/cl2-component-library';
 import TextButton from '../_components/TextButton';
 
@@ -42,8 +41,6 @@ interface Props {
 }
 
 export type AuthProvider = 'email' | SSOProvider;
-
-const TODO_REMOVE = false;
 
 const AuthProviders = memo<Props>(
   ({ flow, className, onSwitchFlow, onSelectAuthProvider }) => {
@@ -90,34 +87,15 @@ const AuthProviders = memo<Props>(
 
     return (
       <Container id="e2e-sign-up-container" className={className}>
-        {franceconnectLoginEnabled &&
-          // (metaData.error?.code === 'franceconnect_merging_failed' ? (
-          (TODO_REMOVE ? (
-            <Error
-              text={
-                <FormattedMessage
-                  {...messages.franceConnectMergingFailed}
-                  values={{ br: <br /> }}
-                />
-              }
-              animate={false}
-              marginBottom="30px"
-            />
-          ) : (
-            <FranceConnectButton
-              onClick={handleOnFranceConnectSelected}
-              logoAlt={formatMessage(messages.signUpButtonAltText, {
-                loginMechanismName: 'FranceConnect',
-              })}
-            />
-          ))}
+        {franceconnectLoginEnabled && (
+          <FranceConnectButton
+            onClick={handleOnFranceConnectSelected}
+            logoAlt={formatMessage(messages.signUpButtonAltText, {
+              loginMechanismName: 'FranceConnect',
+            })}
+          />
+        )}
 
-        {/* {(isPasswordSigninOrSignupAllowed ||
-          facebookLoginEnabled ||
-          azureAdLoginEnabled ||
-          viennaCitizenLoginEnabled) &&
-          franceconnectLoginEnabled &&
-          !metaData.error && <Or />} */}
         {(isPasswordSigninOrSignupAllowed ||
           facebookLoginEnabled ||
           azureAdLoginEnabled ||

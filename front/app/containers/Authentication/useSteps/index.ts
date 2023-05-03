@@ -149,7 +149,7 @@ export default function useSteps() {
       if (currentStep !== 'closed') return;
 
       authenticationDataRef.current = event.eventValue;
-      transition(currentStep, 'TRIGGER_REGISTRATION_FLOW')();
+      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')();
     });
 
     return () => subscription.unsubscribe();
@@ -214,7 +214,19 @@ export default function useSteps() {
         sso_verification_action,
         sso_verification_id,
         sso_verification_type,
+        error_code,
       } = urlSearchParams as SSOParams;
+
+      if (pathname.endsWith('authentication-error')) {
+        if (error_code === 'franceconnect_merging_failed') {
+          setCurrentStep('sign-up:auth-providers');
+          setError('franceconnect_merging_failed');
+        }
+
+        // Remove all parameters from URL as they've already been captured
+        window.history.replaceState(null, '', '/');
+        return;
+      }
 
       authenticationDataRef.current = {
         flow: sso_flow,
@@ -227,6 +239,9 @@ export default function useSteps() {
 
       if (sso_pathname) {
         clHistory.replace(sso_pathname);
+      } else {
+        // Remove all parameters from URL as they've already been captured
+        window.history.replaceState(null, '', '/');
       }
 
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')();
