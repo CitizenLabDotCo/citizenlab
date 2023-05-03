@@ -21,6 +21,8 @@ import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
 
 // typings
 import { SetError, Status } from 'containers/Authentication/typings';
+import tracks from 'containers/Authentication/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 interface Props {
   status: Status;
@@ -61,9 +63,11 @@ const ChangeEmail = ({ status, setError, onGoBack, onChangeEmail }: Props) => {
   const handleSubmit = async ({ email }: FormValues) => {
     try {
       await onChangeEmail(email);
+      trackEventByName(tracks.changeEmailSubmit);
     } catch (e) {
       if (isCLErrorsIsh(e)) {
         handleCLErrorsIsh(e, methods.setError);
+        trackEventByName(tracks.changeEmailSubmitError);
         return;
       }
 

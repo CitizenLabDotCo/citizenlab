@@ -52,12 +52,17 @@ export const oldSignInFlow = (
     },
 
     'sign-in:email-password': {
-      CLOSE: () => setCurrentStep('closed'),
+      CLOSE: () => {
+        setCurrentStep('closed');
+        trackEventByName(tracks.signInEmailPasswordClosed);
+      },
       SWITCH_FLOW: () => {
+        trackEventByName(tracks.signInEmailPasswordExited);
         setCurrentStep('sign-up:email-password');
       },
       GO_BACK: () => {
         if (anySSOProviderEnabled) {
+          trackEventByName(tracks.signInEmailPasswordExited);
           setCurrentStep('sign-in:auth-providers');
         }
       },

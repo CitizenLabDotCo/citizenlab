@@ -22,6 +22,8 @@ import styled from 'styled-components';
 // typings
 import { SSOProvider } from 'services/singleSignOn';
 import { ErrorCode } from 'containers/Authentication/typings';
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'containers/Authentication/tracks';
 
 const Container = styled.div`
   display: flex;

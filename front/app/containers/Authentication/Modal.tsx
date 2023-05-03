@@ -38,6 +38,8 @@ import errorMessages from 'components/UI/Error/messages';
 import { ErrorCode } from './typings';
 import VerificationSuccess from './steps/VerificationSuccess';
 import T from 'components/T';
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 type Step = ReturnType<typeof useSteps>['currentStep'];
 
@@ -230,7 +232,10 @@ const AuthModal = ({ setModalOpen }: Props) => {
           <EmailAndPassword
             status={status}
             setError={setError}
-            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
+            onSwitchFlow={() => {
+              trackEventByName(tracks.signInWithSSOClicked);
+              transition(currentStep, 'SWITCH_FLOW');
+            }}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onSubmit={transition(currentStep, 'SIGN_IN')}
           />
@@ -254,7 +259,10 @@ const AuthModal = ({ setModalOpen }: Props) => {
             state={state}
             status={status}
             setError={setError}
-            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
+            onSwitchFlow={() => {
+              trackEventByName(tracks.signUpWithSSOClicked);
+              transition(currentStep, 'SWITCH_FLOW');
+            }}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onSubmit={transition(currentStep, 'SUBMIT')}
           />

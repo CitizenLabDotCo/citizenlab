@@ -104,8 +104,12 @@ export const oldSignUpFlow = (
     },
 
     'sign-up:email-confirmation': {
-      CLOSE: () => setCurrentStep('closed'),
+      CLOSE: () => {
+        setCurrentStep('closed');
+        trackEventByName(tracks.signUpEmailConfirmationStepClosed);
+      },
       CHANGE_EMAIL: () => {
+        trackEventByName(tracks.signUpEmailConfirmationStepChangeEmail);
         setCurrentStep('sign-up:change-email');
       },
       SUBMIT_CODE: async (code: string) => {
@@ -114,26 +118,31 @@ export const oldSignUpFlow = (
         const { requirements } = await getRequirements();
 
         if (requirements.special.verification === 'require') {
+          trackEventByName(tracks.signUpEmailConfirmationStepExited);
           setCurrentStep('sign-up:verification');
           return;
         }
 
         if (askCustomFields(requirements.custom_fields)) {
+          trackEventByName(tracks.signUpEmailConfirmationStepExited);
           setCurrentStep('sign-up:custom-fields');
           return;
         }
-
         setCurrentStep('success');
       },
     },
 
     'sign-up:change-email': {
-      CLOSE: () => setCurrentStep('closed'),
+      CLOSE: () => {
+        setCurrentStep('closed');
+        trackEventByName(tracks.signUpChangeEmailClosed);
+      },
       GO_BACK: () => {
         setCurrentStep('sign-up:email-confirmation');
       },
       RESEND_CODE: async (newEmail: string) => {
         await resendEmailConfirmationCode(newEmail);
+        trackEventByName(tracks.signUpChangeEmailResendCode);
         setCurrentStep('sign-up:email-confirmation');
       },
     },

@@ -37,6 +37,8 @@ import {
 } from '../typings';
 import { SSOParams } from 'services/singleSignOn';
 import { isNilOrError } from 'utils/helperUtils';
+import tracks from '../tracks';
+import { trackEventByName } from 'utils/analytics';
 
 let initialized = false;
 
@@ -192,6 +194,7 @@ export default function useSteps() {
         )(search).catch(() => {
           setCurrentStep('sign-up:invite');
           setError('invitation_error');
+          trackEventByName(tracks.signUpInviteTokenError);
         });
       }
 

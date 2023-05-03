@@ -1,4 +1,4 @@
-import React, { useMemo, useState, FormEvent } from 'react';
+import React, { useMemo, useState, FormEvent, useEffect } from 'react';
 
 // services
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
@@ -24,6 +24,10 @@ import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
 
 // typings
 import { State, Status, SetError } from '../../typings';
+
+// tracking
+import tracks from 'containers/Authentication/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 interface Props {
   state: State;
@@ -73,6 +77,10 @@ const EmailConfirmation = ({
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    trackEventByName(tracks.signUpEmailConfirmationStepEntered);
+  }, []);
 
   const handleConfirm = async ({ code }: FormValues) => {
     setResendingCode(false);
