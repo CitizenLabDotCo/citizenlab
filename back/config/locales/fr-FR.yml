@@ -241,3 +241,8 @@ fr:
       you_can_sign_in_again_from: "Vous pourrez vous connecter à nouveau à partir du %{date}"
   user:
     anon_first_name: "Utilisateur"
+  time:
+    am: am
+    formats:
+      hour_of_day: "%Hh"
+    pm: pm
