@@ -217,17 +217,6 @@ export default function useSteps() {
         error_code,
       } = urlSearchParams as SSOParams;
 
-      if (pathname.endsWith('authentication-error')) {
-        if (error_code === 'franceconnect_merging_failed') {
-          setCurrentStep('sign-up:auth-providers');
-          setError('franceconnect_merging_failed');
-        }
-
-        // Remove all parameters from URL as they've already been captured
-        window.history.replaceState(null, '', '/');
-        return;
-      }
-
       authenticationDataRef.current = {
         flow: sso_flow,
         context: {
@@ -236,6 +225,19 @@ export default function useSteps() {
           id: sso_verification_id,
         } as AuthenticationContext,
       };
+
+      if (pathname.endsWith('authentication-error')) {
+        if (error_code === 'franceconnect_merging_failed') {
+          setCurrentStep('sign-up:auth-providers');
+          setError('franceconnect_merging_failed');
+        } else {
+          // TODO
+        }
+
+        // Remove all parameters from URL as they've already been captured
+        window.history.replaceState(null, '', '/');
+        return;
+      }
 
       if (sso_pathname) {
         clHistory.replace(sso_pathname);
