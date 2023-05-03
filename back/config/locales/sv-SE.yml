@@ -241,3 +241,8 @@ sv:
       you_can_sign_in_again_from: "Du kan logga in igen från %{date}"
   user:
     anon_first_name: "Användare"
+  time:
+    am: Jag är
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm
