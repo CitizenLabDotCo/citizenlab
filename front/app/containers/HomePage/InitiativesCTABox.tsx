@@ -3,6 +3,9 @@ import React, { memo, useCallback } from 'react';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 
+// events
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
 // styling
 import styled, { withTheme } from 'styled-components';
 import {
@@ -18,9 +21,7 @@ import Button from 'components/UI/Button';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // utils
-import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import { openSignUpInModal } from 'events/openSignUpInModal';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -137,9 +138,16 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
   const signUp = useCallback(() => {
-    openSignUpInModal({
+    triggerAuthenticationFlow({
       flow: 'signup',
-      action: () => clHistory.push('/initiatives/new'),
+      context: {
+        type: 'initiative',
+        action: 'posting_initiative',
+      },
+      successAction: {
+        name: 'redirectToInitiativeForm',
+        params: {},
+      },
     });
   }, []);
 

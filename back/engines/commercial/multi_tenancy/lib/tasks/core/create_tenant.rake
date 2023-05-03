@@ -33,6 +33,14 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        permission_option_email_confirmation: {
+          enabled: true,
+          allowed: true
+        },
+        permissions_custom_fields: {
+          enabled: true,
+          allowed: true
+        },
         representativeness: {
           enabled: true,
           allowed: true

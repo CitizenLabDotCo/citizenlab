@@ -1147,6 +1147,18 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "permissions_custom_fields": {
+        "type": "object",
+        "title": "Permission custom fields on project actions",
+        "description": "Enables the option for admins to add custom questions to project action permissions.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {

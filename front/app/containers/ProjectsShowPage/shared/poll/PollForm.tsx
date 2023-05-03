@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import { isNilOrError, toggleElementInArray } from 'utils/helperUtils';
 
 import { IParticipationContextType } from 'typings';
@@ -64,47 +64,32 @@ interface Props {
   disabled: boolean;
 }
 
-interface State {
-  answers: {
-    [questionId: string]: string[];
-  };
+interface Answers {
+  [questionId: string]: string[];
 }
 
-export class PollForm extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      answers: {},
-    };
-  }
+const PollForm = ({ questions, projectId, id, type, disabled }: Props) => {
+  const [answers, setAnswers] = useState<Answers>({});
 
-  changeAnswerSingle = (questionId: string, optionId: string) => () => {
-    this.setState((state) => ({
-      answers: { ...state.answers, [questionId]: [optionId] },
-    }));
+  const changeAnswerSingle = (questionId: string, optionId: string) => () => {
+    setAnswers({ ...answers, [questionId]: [optionId] });
   };
 
-  changeAnswerMultiple = (questionId: string, optionId: string) => () => {
-    this.setState((state) => {
-      const oldAnswer = state.answers[questionId] || [];
+  const changeAnswerMultiple = (questionId: string, optionId: string) => () => {
+    const oldAnswer = answers[questionId] || [];
 
-      toggleElementInArray(oldAnswer, optionId);
+    toggleElementInArray(oldAnswer, optionId);
 
-      return { answers: { ...state.answers, [questionId]: oldAnswer } };
-    });
+    setAnswers({ ...answers, [questionId]: oldAnswer });
   };
 
-  sendAnswer = () => {
-    const { id, type, projectId } = this.props;
-    const { answers } = this.state;
-    if (this.validate() && id) {
+  const sendAnswer = () => {
+    if (validate() && id) {
       addPollResponse(id, type, Object.values(answers).flat(), projectId);
     }
   };
 
-  validate = () => {
-    const { answers } = this.state;
-    const { questions, disabled } = this.props;
+  const validate = () => {
     // you can submit the form...
     return (
       !disabled && // when it's not disabled and...
@@ -126,55 +111,48 @@ export class PollForm extends PureComponent<Props, State> {
     );
   };
 
-  //
+  if (!isNilOrError(questions) && questions.length > 0) {
+    const isValid = validate();
 
-  render() {
-    const { answers } = this.state;
-    const { questions, disabled } = this.props;
-
-    if (!isNilOrError(questions) && questions.length > 0) {
-      const isValid = this.validate();
-
-      return (
-        <>
-          <PollContainer id="project-poll" className="e2e-poll-form">
-            {questions.map((question, questionIndex) =>
-              question.attributes.question_type === 'single_option' ? (
-                <PollSingleChoice
-                  key={questionIndex}
-                  question={question}
-                  index={questionIndex}
-                  value={(answers[question.id] || [])[0]}
-                  disabled={disabled}
-                  onChange={this.changeAnswerSingle}
-                />
-              ) : (
-                <PollMultipleChoice
-                  key={questionIndex}
-                  question={question}
-                  index={questionIndex}
-                  value={answers[question.id]}
-                  disabled={disabled}
-                  onChange={this.changeAnswerMultiple}
-                />
-              )
-            )}
-          </PollContainer>
-          <Button
-            onClick={this.sendAnswer}
-            size="m"
-            fullWidth={true}
-            disabled={!isValid}
-            className="e2e-send-poll"
-          >
-            <FormattedMessage {...messages.sendAnswer} />
-          </Button>
-        </>
-      );
-    }
-
-    return null;
+    return (
+      <>
+        <PollContainer id="project-poll" className="e2e-poll-form">
+          {questions.map((question, questionIndex) =>
+            question.attributes.question_type === 'single_option' ? (
+              <PollSingleChoice
+                key={questionIndex}
+                question={question}
+                index={questionIndex}
+                value={(answers[question.id] || [])[0]}
+                disabled={disabled}
+                onChange={changeAnswerSingle}
+              />
+            ) : (
+              <PollMultipleChoice
+                key={questionIndex}
+                question={question}
+                index={questionIndex}
+                value={answers[question.id]}
+                disabled={disabled}
+                onChange={changeAnswerMultiple}
+              />
+            )
+          )}
+        </PollContainer>
+        <Button
+          onClick={sendAnswer}
+          size="m"
+          fullWidth={true}
+          disabled={!isValid}
+          className="e2e-send-poll"
+        >
+          <FormattedMessage {...messages.sendAnswer} />
+        </Button>
+      </>
+    );
   }
-}
+
+  return null;
+};
 
 export default PollForm;

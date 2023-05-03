@@ -27,8 +27,7 @@ import {
 } from 'components/smallForm';
 
 // services
-import { resetPassword } from 'services/auth';
-import { CLError } from 'typings';
+import resetPassword from 'api/authentication/reset_password/resetPassword';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -42,6 +41,9 @@ import { stylingConsts } from 'utils/styleUtils';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+
+// typings
+import { CLError } from 'typings';
 
 interface DataProps {
   tenant: GetAppConfigurationChildProps;
@@ -147,7 +149,7 @@ class PasswordReset extends React.PureComponent<
     if (this.validate() && password && token) {
       try {
         this.setState({ processing: true, success: false });
-        await resetPassword(password, token);
+        await resetPassword({ password, token });
         this.setState({ password: null, processing: false, success: true });
       } catch (errors) {
         const apiErrors = errors.json.errors;

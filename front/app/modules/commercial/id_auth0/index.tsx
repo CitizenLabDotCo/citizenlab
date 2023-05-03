@@ -5,7 +5,7 @@ import {
   TVerificationMethodName,
 } from 'services/verificationMethods';
 import Auth0Button from './components/Auth0Button';
-import isLastVerificationMethod from 'containers/Authentication/VerificationModal/isLastVerificationMethod';
+import { isLastVerificationMethod } from 'services/verificationMethods';
 
 const verificationMethodName: TVerificationMethodName = 'auth0';
 const configuration: ModuleConfiguration = {

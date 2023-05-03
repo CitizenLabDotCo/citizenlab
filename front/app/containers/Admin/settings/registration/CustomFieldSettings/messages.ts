@@ -24,9 +24,9 @@ export default defineMessages({
     defaultMessage: 'Geographic areas tab',
   },
   registrationQuestionDeletionConfirmation: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation',
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation3',
     defaultMessage:
-      'Are you sure you want to delete this registration question? All answers that users have given to this question will be permanently deleted. This action cannot be undone.',
+      'Are you sure you want to delete this registration question? All answers that users have given to this question will be permanently deleted, and it will no longer be asked in projects or proposals. This action cannot be undone.',
   },
   customFieldsTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip',

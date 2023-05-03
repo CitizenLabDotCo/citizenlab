@@ -35,7 +35,7 @@ const EditedText = ({ createdAt, updatedAt, userId }: Props) => {
       {' • '}
       {formatMessage(messages.lastUpdate, {
         days: lastUpdateDaysAgo,
-        author: user.attributes.first_name,
+        author: user.attributes.first_name ?? '',
       })}
     </Text>
   );
