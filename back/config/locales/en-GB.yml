@@ -239,3 +239,10 @@ en-GB:
       paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
       for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "You can sign in again from %{date}"
+  user:
+    anon_first_name: "User"
+  time:
+    am: am
+    formats:
+      hour_of_day: "%l %p"
+    pm: pm
