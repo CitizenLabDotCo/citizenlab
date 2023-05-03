@@ -97,6 +97,15 @@ fr-BE:
       "assignee_digest": Aperçu hebdomadaire des idées attribuées - administrateurs et administrateurs projet
       "user_digest": Aperçu hebdomadaire (tous les utilisateurs)
       "your_proposed_initiatives_digest": Aperçu hebdomadaire de vos propres propositions - tous les utilisateurs
+    schedules:
+      weekly:
+        "0": "Chaque semaine, le dimanche à %{hourOfDay}"
+        "1": "Hebdomadaire le lundi %{atHour}"
+        "2": "Hebdomadaire le mardi %{atHour}"
+        "3": "Hebdomadaire le mercredi %{atHour}"
+        "4": "Hebdomadaire le jeudi %{atHour}"
+        "5": "Hebdomadaire le vendredi %{atHour}"
+        "6": "Hebdomadaire le samedi %{atHour}"
     footer:
       "link_privacy_policy": "Politique de confidentialité"
       "link_terms_conditions": "Conditions Générales d'Utilisation"
@@ -593,7 +602,7 @@ fr-BE:
       trigger:
         comment_is_deleted: 'Le commentaire est supprimé'
         comment_is_flagged_as_spam: 'Le commentaire est signalé comme spam'
-        content_gets_flagged_as_innapropiate: 'Le contenu est signalé comme innapropiate.'
+        content_gets_flagged_as_innapropiate: 'Contenu signalé comme inapproprié'
         idea_is_assigned: 'Assignation d''une idée'
         idea_is_flagged_as_spam: 'L''idée est signalée comme étant du spam'
         idea_is_updated: 'Mise à jour d''une idée'
