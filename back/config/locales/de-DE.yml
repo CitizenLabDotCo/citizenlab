@@ -241,3 +241,8 @@ de:
       you_can_sign_in_again_from: "Sie können sich ab dem %{date} erneut anmelden"
   user:
     anon_first_name: "Nutzer*in"
+  time:
+    am: am
+    formats:
+      hour_of_day: "%H%M"
+    pm: pm
