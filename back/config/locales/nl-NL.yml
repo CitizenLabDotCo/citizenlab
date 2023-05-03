@@ -241,3 +241,8 @@ nl:
       you_can_sign_in_again_from: "Je kan opnieuw inloggen vanaf %{date}"
   user:
     anon_first_name: "Gebruiker"
+  time:
+    am: '--'
+    formats:
+      hour_of_day: "%H%M"
+    pm: '--'
