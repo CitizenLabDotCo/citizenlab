@@ -14,7 +14,8 @@ export type ErrorCode =
   | 'sign_in_failed'
   | 'requirements_fetching_failed'
   | 'invitation_error'
-  | 'unknown';
+  | 'unknown'
+  | 'franceconnect_merging_failed';
 
 export interface State {
   email: string | null;
@@ -42,9 +43,6 @@ export interface AuthenticationData {
   flow: SignUpInFlow;
   context: AuthenticationContext;
   successAction?: SuccessAction;
-
-  // TODO clean this up
-  error?: { code: SignUpInError };
 }
 
 export type SSOProviderWithoutVienna = Exclude<SSOProvider, 'id_vienna_saml'>;

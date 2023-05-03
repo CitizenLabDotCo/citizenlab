@@ -11,7 +11,6 @@ export function triggerAuthenticationFlow(
     flow: partialAuthenticationData?.flow ?? 'signup',
     context: partialAuthenticationData?.context ?? GLOBAL_CONTEXT,
     successAction: partialAuthenticationData?.successAction,
-    error: partialAuthenticationData?.error,
   };
 
   eventEmitter.emit(TRIGGER_AUTHENTICATION_FLOW, authenticationData);
