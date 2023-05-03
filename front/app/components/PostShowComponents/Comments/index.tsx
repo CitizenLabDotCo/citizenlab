@@ -22,8 +22,8 @@ import { Title } from '@citizenlab/cl2-component-library';
 
 // typings
 import { CommentsSort } from 'api/comments/types';
-import { IdeaCommentingDisabledReason } from 'api/ideas/types';
 import CommentingInitiativeDisabled from './CommentingInitiativeDisabled';
+import { IIdea } from 'api/ideas/types';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -135,13 +135,7 @@ const CommentsSection = memo<Props>(({ postId, postType, className }) => {
     setPosting(isPosting);
   }, []);
 
-  if (post && commentsList) {
-    const commentingEnabled =
-      idea?.data.attributes.action_descriptor.commenting_idea.enabled;
-
-    const commentingDisabledReason =
-      idea?.data.attributes.action_descriptor.commenting_idea.disabled_reason ||
-      (null as IdeaCommentingDisabledReason | null);
+  if (!isNilOrError(post) && !isNilOrError(commentsList)) {
     const phaseId = isNilOrError(project)
       ? undefined
       : project.relationships?.current_phase?.data?.id;
@@ -160,15 +154,8 @@ const CommentsSection = memo<Props>(({ postId, postType, className }) => {
           />
         </Header>
 
-        {postType === 'idea' ? (
-          <CommentingDisabled
-            commentingEnabled={!!commentingEnabled}
-            commentingDisabledReason={commentingDisabledReason}
-            projectId={idea?.data.relationships.project.data.id || null}
-            phaseId={phaseId}
-            postId={postId}
-            postType={postType}
-          />
+        {postType === 'idea' && idea ? (
+          <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
         ) : (
           <CommentingInitiativeDisabled />
         )}
@@ -205,5 +192,28 @@ const CommentsSection = memo<Props>(({ postId, postType, className }) => {
 
   return null;
 });
+
+const CommentingIdeaDisabled = ({
+  idea,
+  phaseId,
+}: {
+  idea: IIdea;
+  phaseId?: string;
+}) => {
+  const actionDescriptor =
+    idea.data.attributes.action_descriptor.commenting_idea;
+
+  const commentingEnabled = actionDescriptor.enabled;
+  const commentingDisabledReason = actionDescriptor.disabled_reason;
+
+  return (
+    <CommentingDisabled
+      commentingEnabled={!!commentingEnabled}
+      commentingDisabledReason={commentingDisabledReason}
+      projectId={idea?.data.relationships.project.data.id || null}
+      phaseId={phaseId}
+    />
+  );
+};
 
 export default CommentsSection;

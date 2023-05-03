@@ -353,6 +353,11 @@ const VoteButton = ({
         : messages.votingDisabledPhaseOver;
     } else if (disabledReason === 'not_permitted') {
       return messages.votingNotPermitted;
+    } else if (
+      (authUser && disabledReason === 'not_active') ||
+      disabledReason === 'missing_data'
+    ) {
+      return messages.completeProfileToVote;
     } else if (disabledReason === 'not_signed_in') {
       return messages.votingNotSignedIn;
     } else if (authUser && disabledReason === 'not_verified') {

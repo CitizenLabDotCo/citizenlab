@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
-import { get } from 'lodash-es';
 
 // react hook form
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
@@ -30,6 +29,7 @@ import { Locale, CLError, RHFErrors } from 'typings';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { generateTempId } from '../utils';
+import { get } from 'lodash-es';
 
 interface Props {
   name: string;

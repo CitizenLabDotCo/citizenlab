@@ -10,9 +10,7 @@ jest.mock('utils/cl-router/history', () => ({
   push: jest.fn(),
 }));
 
-jest.mock('services/auth', () => ({
-  resetPassword: () => jest.fn(),
-}));
+jest.mock('api/authentication/reset_password/resetPassword', () => jest.fn());
 
 import PasswordReset from './index';
 

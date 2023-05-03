@@ -1,353 +1,280 @@
 // @ts-nocheck
 import React from 'react';
 
-import { shallow } from 'enzyme';
+// services & hooks
+import { getProject } from 'services/__mocks__/projects';
+import { mockQuestion } from 'services/__mocks__/pollQuestions';
+import useProject from 'hooks/useProject';
+import usePhase from 'hooks/usePhase';
+import { mockPhasePollData } from 'services/__mocks__/phases';
 
-jest.mock('./FormCompleted', () => 'FormCompleted');
-jest.mock('./PollForm', () => 'PollForm');
+// utils
+import { render, screen } from 'utils/testUtils/rtl';
+
+// components
+import { Poll } from './index';
+
+// Mocks
+const mockProject = getProject('projectId', 'continuous', 'poll');
+const mockPollQuestions = [
+  'How are you today?',
+  'What is on the menu for dinner tonight?',
+  "What's your favourite ice cream flavor?",
+].map((item, index) => mockQuestion(index, item));
+
+jest.mock('hooks/useResourceFiles', () => jest.fn(() => []));
+jest.mock('hooks/useProject', () => jest.fn(() => mockProject));
+jest.mock('hooks/usePhase', () => jest.fn(() => mockPhasePollData));
 jest.mock('components/UI/Warning', () => 'Warning');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 
-import { makeUser } from 'services/__mocks__/users';
-import { mockQuestion } from 'services/__mocks__/pollQuestions';
-import { getProject } from 'services/__mocks__/projects';
-import { mockPhasePollData } from 'services/__mocks__/phases';
-
-import { Poll } from './';
+const warningIdPrefix = 'app.containers.Projects.PollForm.';
 
 describe('<Poll/>', () => {
-  describe('boundaries', () => {
-    it('renders null when project is null', () => {
-      const pollQuestions = [
-        'How are you today?',
-        'What is on the menu for dinner tonight?',
-        "What's your favourite ice cream flavor?",
-      ].map((item, index) => mockQuestion(index, item));
-      const wrapper = shallow(
-        <Poll
-          type="project"
-          phaseId={null}
-          projectId="projectId"
-          authUser={null}
-          project={null}
-          phase={null}
-          pollQuestions={pollQuestions}
-        />
-      );
-      expect(wrapper.type()).toBe(null);
-    });
-    it('renders null when project is undefined', () => {
-      const pollQuestions = [
-        'How are you today?',
-        'What is on the menu for dinner tonight?',
-        "What's your favourite ice cream flavor?",
-      ].map((item, index) => mockQuestion(index, item));
-      const wrapper = shallow(
-        <Poll
-          type="phase"
-          phaseId="MockPhasePollId"
-          projectId="projectId"
-          authUser={null}
-          project={undefined}
-          phase={mockPhasePollData}
-          pollQuestions={pollQuestions}
-        />
-      );
-      expect(wrapper.type()).toBe(null);
-    });
-    it('renders null when project is error', () => {
-      const pollQuestions = [
-        'How are you today?',
-        'What is on the menu for dinner tonight?',
-        "What's your favourite ice cream flavor?",
-      ].map((item, index) => mockQuestion(index, item));
-      const wrapper = shallow(
-        <Poll
-          type="phase"
-          phaseId="MockPhasePollId"
-          projectId="projectId"
-          authUser={null}
-          project={new Error()}
-          phase={mockPhasePollData}
-          pollQuestions={pollQuestions}
-        />
-      );
-      expect(wrapper.type()).toBe(null);
-    });
-    it('renders null when pollQuestions is null', () => {
-      const mockProject = getProject('projectId', 'continuous', 'poll');
-      const wrapper = shallow(
-        <Poll
-          type="phase"
-          phaseId="MockPhasePollId"
-          projectId="projectId"
-          authUser={null}
-          project={mockProject}
-          phase={mockPhasePollData}
-          pollQuestions={null}
-        />
-      );
-      expect(wrapper.type()).toBe(null);
-    });
-    it('renders null when pollQuestions is undefined', () => {
-      const wrapper = shallow(
-        <Poll
-          type="project"
-          phaseId={null}
-          projectId="projectId"
-          authUser={null}
-          project={null}
-          phase={null}
-          pollQuestions={undefined}
-        />
-      );
-      expect(wrapper.type()).toBe(null);
-    });
-    it('renders null when pollQuestions is error', () => {
-      const wrapper = shallow(
-        <Poll
-          type="project"
-          phaseId={null}
-          projectId="projectId"
-          authUser={null}
-          project={null}
-          phase={null}
-          pollQuestions={new Error()}
-        />
-      );
-      expect(wrapper.type()).toBe(null);
-    });
-    it('renders null when type is phase and phase is null', () => {
-      const pollQuestions = [
-        'How are you today?',
-        'What is on the menu for dinner tonight?',
-        "What's your favourite ice cream flavor?",
-      ].map((item, index) => mockQuestion(index, item));
-      const mockProject = getProject('projectId', 'continuous', 'poll');
-      const wrapper = shallow(
-        <Poll
-          type="phase"
-          phaseId="MockPhasePollId"
-          projectId="projectId"
-          authUser={null}
-          project={mockProject}
-          phase={null}
-          pollQuestions={pollQuestions}
-        />
-      );
-      expect(wrapper.type()).toBe(null);
-    });
-    it('renders null when type is phase and phase is undefined', () => {
-      const pollQuestions = [
-        'How are you today?',
-        'What is on the menu for dinner tonight?',
-        "What's your favourite ice cream flavor?",
-      ].map((item, index) => mockQuestion(index, item));
-      const mockProject = getProject('projectId', 'continuous', 'poll');
-      const wrapper = shallow(
-        <Poll
-          type="phase"
-          phaseId="MockPhasePollId"
-          projectId="projectId"
-          authUser={null}
-          project={mockProject}
-          phase={undefined}
-          pollQuestions={pollQuestions}
-        />
-      );
-      expect(wrapper.type()).toBe(null);
-    });
-    it('renders null when type is phase and phase is error', () => {
-      const pollQuestions = [
-        'How are you today?',
-        'What is on the menu for dinner tonight?',
-        "What's your favourite ice cream flavor?",
-      ].map((item, index) => mockQuestion(index, item));
-      const mockProject = getProject('projectId', 'continuous', 'poll');
-      const wrapper = shallow(
-        <Poll
-          type="phase"
-          phaseId="MockPhasePollId"
-          projectId="projectId"
-          authUser={null}
-          project={mockProject}
-          phase={new Error()}
-          pollQuestions={pollQuestions}
-        />
-      );
-      expect(wrapper.type()).toBe(null);
-    });
+  it('renders null when project is null', () => {
+    useProject.mockReturnValue(null);
+    render(
+      <Poll
+        type="project"
+        projectId="projectId"
+        pollQuestions={mockPollQuestions}
+      />
+    );
+    expect(screen.queryByTestId('poll-container')).not.toBeInTheDocument();
   });
-  describe('permissions', () => {
-    it('shows maybe permitted if user is not logged in', () => {
-      const pollQuestions = [
-        'How are you today?',
-        'What is on the menu for dinner tonight?',
-        "What's your favourite ice cream flavor?",
-      ].map((item, index) => mockQuestion(index, item));
-      const mockProjectGeneric = getProject('projectId', 'continuous', 'poll');
-      const mockProject = {
-        ...mockProjectGeneric,
-        attributes: { action_descriptor: { taking_poll: { enabled: true } } },
-      };
-      const wrapper = shallow(
-        <Poll
-          type="project"
-          phaseId={null}
-          projectId="projectId"
-          authUser={null}
-          project={mockProject}
-          phase={null}
-          pollQuestions={pollQuestions}
-        />
-      );
-      expect(wrapper.find('PollForm').prop('disabled')).toBe(true);
-      const splitMessageId = wrapper
-        .find('poll__StyledWarning')
-        .find('FormattedMessage')
-        .prop('id')
-        .split('.');
-      expect(splitMessageId[splitMessageId.length - 1]).toBe(
-        'pollDisabledMaybeNotPermitted'
-      );
-    });
-    it('is enabled if user can anwser', () => {
-      const pollQuestions = [
-        'How are you today?',
-        'What is on the menu for dinner tonight?',
-        "What's your favourite ice cream flavor?",
-      ].map((item, index) => mockQuestion(index, item));
-      const mockProjectGeneric = getProject('projectId', 'continuous', 'poll');
-      const mockProject = {
-        ...mockProjectGeneric,
-        attributes: { action_descriptor: { taking_poll: { enabled: true } } },
-      };
-      const mockUser = makeUser();
-      const wrapper = shallow(
-        <Poll
-          type="project"
-          phaseId={null}
-          projectId="projectId"
-          authUser={mockUser}
-          project={mockProject}
-          phase={null}
-          pollQuestions={pollQuestions}
-        />
-      );
-      expect(wrapper.find('PollForm').prop('disabled')).toBe(false);
-      expect(wrapper.find('poll__StyledWarning').length).toBe(0);
-    });
-    it('shows already responded if user already responded', () => {
-      const pollQuestions = [
-        'How are you today?',
-        'What is on the menu for dinner tonight?',
-        "What's your favourite ice cream flavor?",
-      ].map((item, index) => mockQuestion(index, item));
-      const mockProjectGeneric = getProject('projectId', 'continuous', 'poll');
-      const mockProject = {
-        ...mockProjectGeneric,
-        attributes: {
-          action_descriptor: {
-            taking_poll: {
-              enabled: false,
-              disabled_reason: 'already_responded',
-            },
+
+  it('renders null when project is undefined', () => {
+    useProject.mockReturnValue(undefined);
+    render(
+      <Poll
+        type="project"
+        projectId="projectId"
+        pollQuestions={mockPollQuestions}
+      />
+    );
+    expect(screen.queryByTestId('poll-container')).not.toBeInTheDocument();
+  });
+
+  it('renders null when project is error', () => {
+    useProject.mockReturnValue(new Error());
+    render(
+      <Poll
+        type="project"
+        projectId="projectId"
+        pollQuestions={mockPollQuestions}
+      />
+    );
+    expect(screen.queryByTestId('poll-container')).not.toBeInTheDocument();
+  });
+
+  it('renders null when pollQuestions is null', () => {
+    useProject.mockReturnValue(mockProject);
+    render(<Poll type="project" projectId="projectId" pollQuestions={null} />);
+    expect(screen.queryByTestId('poll-container')).not.toBeInTheDocument();
+  });
+
+  it('renders null when pollQuestions is undefined', () => {
+    useProject.mockReturnValue(mockProject);
+    render(
+      <Poll type="project" projectId="projectId" pollQuestions={undefined} />
+    );
+    expect(screen.queryByTestId('poll-container')).not.toBeInTheDocument();
+  });
+
+  it('renders null when pollQuestions is error', () => {
+    useProject.mockReturnValue(mockProject);
+    render(
+      <Poll type="project" projectId="projectId" pollQuestions={new Error()} />
+    );
+    expect(screen.queryByTestId('poll-container')).not.toBeInTheDocument();
+  });
+
+  it('renders null when type is phase and phase is null', () => {
+    useProject.mockReturnValue(mockProject);
+    usePhase.mockReturnValue(null);
+    render(
+      <Poll
+        type="phase"
+        projectId="projectId"
+        phase={null}
+        pollQuestions={new Error()}
+      />
+    );
+    expect(screen.queryByTestId('poll-container')).not.toBeInTheDocument();
+  });
+
+  it('renders null when type is phase and phase is undefined', () => {
+    useProject.mockReturnValue(mockProject);
+    usePhase.mockReturnValue(undefined);
+    render(
+      <Poll
+        type="phase"
+        projectId="projectId"
+        phase={null}
+        pollQuestions={new Error()}
+      />
+    );
+    expect(screen.queryByTestId('poll-container')).not.toBeInTheDocument();
+  });
+
+  it('renders null when type is phase and phase is error', () => {
+    useProject.mockReturnValue(mockProject);
+    usePhase.mockReturnValue(new Error());
+    render(
+      <Poll
+        type="phase"
+        projectId="projectId"
+        phase={null}
+        pollQuestions={new Error()}
+      />
+    );
+    expect(screen.queryByTestId('poll-container')).not.toBeInTheDocument();
+  });
+});
+
+describe('permissions', () => {
+  it('shows maybe permitted if user is not logged in', async () => {
+    useProject.mockReturnValue({
+      ...mockProject,
+      attributes: {
+        action_descriptor: {
+          taking_poll: {
+            enabled: false,
+            disabled_reason: 'not_signed_in',
           },
         },
-      };
-      const mockUser = makeUser();
-      const wrapper = shallow(
-        <Poll
-          type="project"
-          phaseId={null}
-          projectId="projectId"
-          authUser={mockUser}
-          project={mockProject}
-          phase={null}
-          pollQuestions={pollQuestions}
-        />
-      );
-      expect(wrapper.find('PollForm').exists()).toBe(false);
-      expect(wrapper.find('poll__StyledWarning').exists()).toBe(false);
-      expect(wrapper.find('FormCompleted').exists()).toBe(true);
+      },
     });
-    it('shows a matching explicative message if the phase is not active', () => {
-      const pollQuestions = [
-        'How are you today?',
-        'What is on the menu for dinner tonight?',
-        "What's your favourite ice cream flavor?",
-      ].map((item, index) => mockQuestion(index, item));
-      const mockProjectGeneric = getProject('projectId', 'continuous', 'poll');
-      const mockProject = {
-        ...mockProjectGeneric,
-        attributes: { action_descriptor: { taking_poll: { enabled: true } } },
-      };
-      const mockUser = makeUser();
-      const mockPastPollPhase = {
-        ...mockPhasePollData,
-        attributes: { start_at: '2019-05-10', end_at: '2019-05-30' },
-      };
-      const wrapper = shallow(
-        <Poll
-          type="phase"
-          phaseId={null}
-          projectId="projectId"
-          authUser={mockUser}
-          project={mockProject}
-          phase={mockPastPollPhase}
-          pollQuestions={pollQuestions}
-        />
-      );
-      expect(wrapper.find('PollForm').prop('disabled')).toBe(true);
-      const splitMessageId = wrapper
-        .find('poll__StyledWarning')
-        .find('FormattedMessage')
-        .prop('id')
-        .split('.');
-      expect(splitMessageId[splitMessageId.length - 1]).toBe(
-        'pollDisabledNotActivePhase'
-      );
-    });
-    it('shows a matching explicative message if the project is not active', () => {
-      const pollQuestions = [
-        'How are you today?',
-        'What is on the menu for dinner tonight?',
-        "What's your favourite ice cream flavor?",
-      ].map((item, index) => mockQuestion(index, item));
-      const mockProjectGeneric = getProject('projectId', 'continuous', 'poll');
-      const mockProject = {
-        ...mockProjectGeneric,
-        attributes: {
-          action_descriptor: {
-            taking_poll: {
-              enabled: false,
-              disabled_reason: 'project_inactive',
-            },
+
+    await render(
+      <Poll
+        type="project"
+        phaseId={null}
+        projectId="projectId"
+        authUser={null}
+        phase={null}
+        pollQuestions={mockPollQuestions}
+      />
+    );
+    expect(screen.getByTestId('poll-styled-warning')).toBeInTheDocument();
+    const formattedMessage = screen.getByTestId('poll-styled-warning')
+      .children[0];
+    expect(formattedMessage.getAttribute('id')).toBe(
+      `${warningIdPrefix}pollDisabledMaybeNotPermitted`
+    );
+  });
+
+  it('is enabled if user can anwser', async () => {
+    useProject.mockReturnValue({
+      ...mockProject,
+      attributes: {
+        action_descriptor: {
+          taking_poll: {
+            enabled: true,
           },
         },
-      };
-      const mockUser = makeUser();
-      const wrapper = shallow(
-        <Poll
-          type="project"
-          phaseId={null}
-          projectId="projectId"
-          authUser={mockUser}
-          project={mockProject}
-          phase={null}
-          pollQuestions={pollQuestions}
-        />
-      );
-      expect(wrapper.find('PollForm').prop('disabled')).toBe(true);
-      const splitMessageId = wrapper
-        .find('poll__StyledWarning')
-        .find('FormattedMessage')
-        .prop('id')
-        .split('.');
-      expect(splitMessageId[splitMessageId.length - 1]).toBe(
-        'pollDisabledProjectInactive'
-      );
+      },
     });
-    // this is not exhaustive
+
+    await render(
+      <Poll
+        type="project"
+        phaseId={null}
+        projectId="projectId"
+        authUser={null}
+        phase={null}
+        pollQuestions={mockPollQuestions}
+      />
+    );
+    expect(screen.queryByTestId('poll-styled-warning')).not.toBeInTheDocument();
+  });
+
+  it('shows already responded if user already responded', async () => {
+    useProject.mockReturnValue({
+      ...mockProject,
+      attributes: {
+        action_descriptor: {
+          taking_poll: {
+            enabled: false,
+            disabled_reason: 'already_responded',
+          },
+        },
+      },
+    });
+
+    await render(
+      <Poll
+        type="project"
+        phaseId={null}
+        projectId="projectId"
+        authUser={null}
+        phase={null}
+        pollQuestions={mockPollQuestions}
+      />
+    );
+    expect(screen.queryByTestId('form-completed')).toBeInTheDocument();
+  });
+
+  it('shows a matching explicative message if the phase is not active', async () => {
+    useProject.mockReturnValue({
+      ...mockProject,
+      attributes: {
+        action_descriptor: {
+          taking_poll: {
+            enabled: false,
+            disabled_reason: 'phase_not_active',
+          },
+        },
+      },
+    });
+    usePhase.mockReturnValue({
+      ...mockPhasePollData,
+      attributes: { start_at: '2019-05-10', end_at: '2019-05-30' },
+    });
+
+    await render(
+      <Poll
+        type="phase"
+        phaseId={'phaseId'}
+        projectId="projectId"
+        authUser={null}
+        pollQuestions={mockPollQuestions}
+      />
+    );
+    expect(screen.getByTestId('poll-styled-warning')).toBeInTheDocument();
+    const formattedMessage = screen.getByTestId('poll-styled-warning')
+      .children[0];
+    expect(formattedMessage.getAttribute('id')).toBe(
+      `${warningIdPrefix}pollDisabledNotPossible`
+    );
+  });
+
+  it('shows a matching explicative message if the project is not active', async () => {
+    useProject.mockReturnValue({
+      ...mockProject,
+      attributes: {
+        action_descriptor: {
+          taking_poll: {
+            enabled: false,
+            disabled_reason: 'project_inactive',
+          },
+        },
+      },
+    });
+
+    await render(
+      <Poll
+        type="project"
+        projectId="projectId"
+        authUser={null}
+        pollQuestions={mockPollQuestions}
+      />
+    );
+    expect(screen.getByTestId('poll-styled-warning')).toBeInTheDocument();
+    const formattedMessage = screen.getByTestId('poll-styled-warning')
+      .children[0];
+    expect(formattedMessage.getAttribute('id')).toBe(
+      `${warningIdPrefix}pollDisabledProjectInactive`
+    );
   });
 });

@@ -11,7 +11,6 @@ import Error from 'components/UI/Error';
 import Collapse from 'components/UI/Collapse';
 import {
   FormContainer,
-  Title,
   Form,
   FormField,
   StyledLabel,
@@ -19,7 +18,7 @@ import {
   Footer,
   SubmitButton,
   CancelButton,
-} from 'components/AuthProviders/styles';
+} from 'containers/Authentication/steps/AuthProviders/styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -38,14 +37,12 @@ import { TVerificationMethod } from 'services/verificationMethods';
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
-  showHeader?: boolean;
-  inModal: boolean;
   method: TVerificationMethod;
   className?: string;
 }
 
 const VerificationFormGentRrn = memo<Props & WrappedComponentProps>(
-  ({ onCancel, onVerified, showHeader, inModal, className, intl }) => {
+  ({ onCancel, onVerified, className, intl }) => {
     const authUser = useAuthUser();
 
     const [rrn, setRrn] = useState('');
@@ -147,16 +144,8 @@ const VerificationFormGentRrn = memo<Props & WrappedComponentProps>(
     }, []);
 
     return (
-      <FormContainer className={className} inModal={inModal}>
-        {showHeader && (
-          <Title>
-            <strong>
-              <FormattedMessage {...messages.verifyYourIdentity} />
-            </strong>
-          </Title>
-        )}
-
-        <Form inModal={inModal}>
+      <FormContainer className={className} inModal={true}>
+        <Form inModal={true}>
           <FormField>
             <StyledLabel htmlFor="rrn">
               <LabelTextContainer>

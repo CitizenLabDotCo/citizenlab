@@ -221,3 +221,9 @@ export const byId = (array: ObjectWithId[]) =>
   }, {});
 
 export const indices = (n: number) => [...Array(n)].map((_, i) => i);
+
+export const isObject = (
+  v: any
+): v is Record<string | number | symbol, any> => {
+  return Object.prototype.toString.call(v) === '[object Object]';
+};

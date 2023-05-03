@@ -1214,7 +1214,6 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "Видљиво само администратору",
   "app.containers.AdminPage.ProjectEdit.optionNo": "Не",
   "app.containers.AdminPage.ProjectEdit.optionYes": "Да (изаберите фолдер)",
-  "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "Учешће",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Нивои учешћа",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Шта желиш да радиш?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Одаберите како корисници могу да учествују.",
