@@ -241,3 +241,8 @@ it:
       you_can_sign_in_again_from: "È possibile accedere nuovamente a %{date}"
   user:
     anon_first_name: "Utente"
+  time:
+    am: sono
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm
