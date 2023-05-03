@@ -97,6 +97,15 @@ fr:
       "assignee_digest": Aperçu hebdomadaire des idées attribuées - administrateurs et administrateurs projet
       "user_digest": Aperçu hebdomadaire (tous les utilisateurs)
       "your_proposed_initiatives_digest": Aperçu hebdomadaire de vos propres propositions - tous les utilisateurs
+    schedules:
+      weekly:
+        "0": "Chaque semaine, le dimanche à %{hourOfDay}"
+        "1": "Hebdomadaire le lundi %{atHour}"
+        "2": "Hebdomadaire le mardi %{atHour}"
+        "3": "Hebdomadaire le mercredi %{atHour}"
+        "4": "Hebdomadaire le jeudi %{atHour}"
+        "5": "Hebdomadaire le vendredi %{atHour}"
+        "6": "Hebdomadaire le samedi %{atHour}"
     footer:
       "link_privacy_policy": "Politique de confidentialité"
       "link_terms_conditions": "Conditions Générales d'Utilisation"
@@ -574,7 +583,7 @@ fr:
         user_receiving_project_moderator_rights: 'Octroi des droits de gestionnaire de projet'
         user_who_commented: 'Utilisateur qui a commenté'
         user_who_is_mentioned: 'Utilisateur mentionné'
-        user_who_published_proposal: 'Utilisateur qui a publié la proposition'
+        user_who_published_proposal: 'Auteur de la proposition'
         user_who_published_the_idea: 'Utilisateur qui a publié l''idée'
         user_who_registers: 'Utilisateur qui s''inscrit'
         user_who_was_invited: 'Utilisateur invité'
