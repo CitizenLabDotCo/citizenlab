@@ -97,6 +97,15 @@ de:
       "assignee_digest": Wöchentlicher Überblick über die zugewiesenen Ideen - Admins und Projektmanager*innen
       "user_digest": Wochenübersicht - alle Nutzer*innen
       "your_proposed_initiatives_digest": Wöchentlicher Überblick über eigenen Vorschläge - alle Nutzer*innen
+    schedules:
+      weekly:
+        "0": "Wöchentlich, sonntags um %{hourOfDay}"
+        "1": "Wöchentlich, montags um %{hourOfDay}"
+        "2": "Wöchentlich, dienstags um %{hourOfDay}"
+        "3": "Wöchentlich, mittwochs um %{hourOfDay}"
+        "4": "Wöchentlich, donnerstags um %{hourOfDay}"
+        "5": "Wöchentlich, freitags um %{hourOfDay}"
+        "6": "Wöchentlich, samstags um %{hourOfDay}"
     footer:
       "link_privacy_policy": "Impressum & Datenschutz"
       "link_terms_conditions": "Nutzungsbedingungen"
@@ -575,21 +584,21 @@ de:
         user_who_commented: 'Nutzer*in, die*der kommentiert hat'
         user_who_is_mentioned: 'Nutzer*in, die*der erwähnt wird'
         user_who_published_proposal: 'Nutzer*in, die*der den Vorschlag veröffentlicht hat'
-        user_who_published_the_idea: 'Benutzer, der die Idee veröffentlicht hat'
-        user_who_registers: 'Benutzer, der sich registriert'
-        user_who_was_invited: 'Benutzer, der eingeladen wurde'
-        users_engaged_with_the_idea: 'Die Nutzer haben sich mit der Idee beschäftigt'
-        users_engaged_with_the_project: 'Nutzer, die sich mit dem Projekt beschäftigen'
-        users_engaged_with_the_proposal: 'Die Nutzer haben sich mit dem Vorschlag beschäftigt'
+        user_who_published_the_idea: 'Nutzer*in, die*der die Idee veröffentlicht hat'
+        user_who_registers: 'Nutzer*in, die*der sich registriert'
+        user_who_was_invited: 'Nutzer*in, die*der eingeladen wurde'
+        users_engaged_with_the_idea: 'Nutzer*innen, die mit der Idee interagiert haben'
+        users_engaged_with_the_project: 'Nutzer*innen, die mit dem Projekt interagiert haben'
+        users_engaged_with_the_proposal: 'Nutzer*innen, die mit dem Vorschlag interagiert haben'
       content_type:
         comments: 'Kommentare'
         content_moderation: 'Inhaltsmoderation'
         general: 'Allgemein'
         ideas: 'Ideen'
-        permissions: 'Erlaubnisse'
+        permissions: 'Berechtigungen'
         projects: 'Projekte'
         proposals: 'Vorschläge'
-        votes: 'Abstimmungen'
+        votes: 'Stimmen'
       trigger:
         comment_is_deleted: 'Kommentar wird gelöscht'
         comment_is_flagged_as_spam: 'Kommentar wird als Spam markiert'
@@ -597,24 +606,24 @@ de:
         idea_is_assigned: 'Idee wird zugewiesen'
         idea_is_flagged_as_spam: 'Idee wird als Spam gekennzeichnet'
         idea_is_updated: 'Idee wird aktualisiert'
-        idea_status_is_changed: 'Der Status einer Idee wird geändert'
+        idea_status_is_changed: 'Status einer Idee wird geändert'
         new_idea_is_published: 'Neue Idee wird veröffentlicht'
         new_proposal_is_posted: 'Neuer Vorschlag wird veröffentlicht'
-        project_changes_phase: 'Phase der Projektänderungen'
+        project_changes_phase: 'Projekt wechselt in neue Phase'
         proposal_gets_reported_as_spam: 'Vorschlag wird als Spam gemeldet'
-        proposal_is_assigned_to_user: 'Vorschlag wird dem Benutzer zugewiesen'
+        proposal_is_assigned_to_user: 'Vorschlag wird Nutzer*in zugewiesen'
         proposal_is_updated: 'Vorschlag wird aktualisiert'
-        proposal_is_upvoted_above_threshold: 'Vorschlag wird über der Schwelle hochgestimmt'
+        proposal_is_upvoted_above_threshold: 'Vorschlag erreicht Schwellenwert'
         proposal_status_is_changed: 'Der Status des Vorschlags wird geändert'
-        user_comments: 'Benutzer-Kommentare'
-        user_comments_on_idea: 'Benutzerkommentare zur Idee'
-        user_comments_on_proposal: 'Kommentare der Nutzer zum Vorschlag'
-        user_is_given_admin_rights: 'Der Benutzer erhält Admin-Rechte'
-        user_is_given_folder_moderator_rights: 'Der Benutzer erhält Ordner-Moderator-Rechte'
-        user_is_given_project_moderator_rights: 'Benutzer erhält Rechte als Projektmoderator'
-        user_is_mentioned: 'Benutzer wird erwähnt'
-        user_publishes_an_idea: 'Nutzer veröffentlicht eine Idee'
-        user_publishes_proposal: 'Nutzer veröffentlicht Vorschlag'
-        user_registers_for_the_first_time: 'Benutzer registriert sich zum ersten Mal'
-        user_replies_to_comment: 'Benutzer antwortet auf Kommentar'
+        user_comments: 'Nutzer*in kommentiert'
+        user_comments_on_idea: 'Nutzer*in kommentiert Idee'
+        user_comments_on_proposal: 'Nutzer*in kommentiert Vorschlag'
+        user_is_given_admin_rights: 'Nutzer*in erhält Admin-Rechte'
+        user_is_given_folder_moderator_rights: 'Nutzer*in erhält Ordner-Moderatorenrechte'
+        user_is_given_project_moderator_rights: 'Nutzer*in erhält Projektmanagementrechte'
+        user_is_mentioned: 'Nutzer*in wird erwähnt'
+        user_publishes_an_idea: 'Nutzer*in veröffentlicht eine Idee'
+        user_publishes_proposal: 'Nutzer*in veröffentlicht Vorschlag'
+        user_registers_for_the_first_time: 'Nutzer*in registriert sich zum ersten Mal'
+        user_replies_to_comment: 'Nutzer*in antwortet auf Kommentar'
         7_days_after_invite_is_sent: '7 Tage nach Versand der Einladung'
