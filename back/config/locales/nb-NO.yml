@@ -239,3 +239,8 @@
       paragraph_1_with_reason: "Kontoen din på deltakelsesplattformen til %{organizationName} har blitt midlertidig deaktivert av følgende grunn:"
       for_more_information: "For mer informasjon om dette, kan du konsultere %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Du kan logge på igjen fra %{date}"
+  time:
+    am: er
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm
