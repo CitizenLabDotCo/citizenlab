@@ -239,3 +239,8 @@ hr:
       paragraph_1_with_reason: "Vaš račun na platformi za sudjelovanje %{organizationName} privremeno je onemogućen iz sljedećeg razloga:"
       for_more_information: "Za više informacija o tome, možete konzultirati %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Možete se ponovno prijaviti od %{date}"
+  time:
+    am: am
+    formats:
+      hour_of_day: "%H:%M"
+    pm: popodne
