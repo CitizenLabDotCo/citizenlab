@@ -241,3 +241,8 @@ el:
       you_can_sign_in_again_from: "Μπορείτε να συνδεθείτε ξανά από το %{date}"
   user:
     anon_first_name: "Χρήστης"
+  time:
+    am: Είμαι
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm
