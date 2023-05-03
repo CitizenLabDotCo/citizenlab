@@ -22,7 +22,7 @@ module EmailCampaigns
     end
 
     def preheader
-      format_message('preheader1, values: { organizationName: organization_name, commentAuthor: event.initiating_user_first_name })
+      format_message('preheader1', values: { organizationName: organization_name, commentAuthor: event.initiating_user_first_name })
     end
   end
 end
