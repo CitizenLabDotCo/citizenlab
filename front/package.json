@@ -160,7 +160,7 @@
     "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/user-event": "^14.3.0",
     "@types/d3-force": "^3.0.4",
-    "@types/enzyme": "3.10.12",
+    "@types/enzyme": "3.10.13",
     "@types/enzyme-adapter-react-16": "1.0.6",
     "@types/file-saver": "2.0.5",
     "@types/formatcoords": "^1.1.0",
