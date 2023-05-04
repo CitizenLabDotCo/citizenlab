@@ -1,13 +1,15 @@
 nl-BE:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Toewijzing van een idee aan mij
+      1:
+        "idea_assigned_to_you": Toewijzing van een ingang aan mij
     admin_campaign_type_description:
-      "idea_assigned_to_you": Toewijzing van een idee - admins en projectbeheerders
+      1:
+        "idea_assigned_to_you": Toewijzing van een ingang - admins en projectmanagers
     idea_assigned_to_you:
       by_author: 'door %{authorName}'
       cta_reply_to: 'Geef %{authorName} feedback'
-      event_description_idea: 'Je kreeg een idee toegewezen. Geef feedback door het schrijven van een officiële update of door het wijzigen van de status van het idee.'
+      event_description_input: 'Er is een ingang aan je toegewezen. Geef feedback door een officiële update te schrijven of door de status ervan te veranderen.'
       main_header: '%{firstName}, je hebt een nieuwe toewijzing'
       subject: 'Je hebt een toewijzing op het platform van %{organizationName}'
-      preheader_idea: 'Je kreeg het idee van %{authorName} toegewezen'
+      preheader_input: 'De ingang van %{authorName} is aan jou toegewezen'
