@@ -17,6 +17,8 @@ import { ItemMenu, StyledBox } from './styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useLocale from 'hooks/useLocale';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -28,6 +30,11 @@ import { IUserData } from 'services/users';
 
 export const UserMenu = () => {
   const { formatMessage } = useIntl();
+  const { data: appConfig } = useAppConfiguration();
+  const locale = useLocale();
+  const tenantLocales = !isNilOrError(appConfig)
+    ? appConfig.data.attributes.settings.core.locales
+    : [];
   const iconDivRef = useRef<HTMLDivElement | null>(null);
   const authUser = useAuthUser();
   const [isUserMenuPopupOpen, setIsUserMenuPopupOpen] = useState(false);
@@ -141,17 +148,19 @@ export const UserMenu = () => {
             )}
           </Box>
         </ItemMenu>
-        <ItemMenu
-          buttonStyle="text"
-          onClick={() => setIsLanguagePopupOpen(!isLanguagePopupOpen)}
-        >
-          <Box display="flex" justifyContent="space-between" w="100%">
-            <LanguageSelectorPopup
-              setIsOpen={setIsLanguagePopupOpen}
-              isOpen={isLanguagePopupOpen}
-            />
-          </Box>
-        </ItemMenu>
+        {tenantLocales.length > 1 && locale && (
+          <ItemMenu
+            buttonStyle="text"
+            onClick={() => setIsLanguagePopupOpen(!isLanguagePopupOpen)}
+          >
+            <Box display="flex" justifyContent="space-between" w="100%">
+              <LanguageSelectorPopup
+                setIsOpen={setIsLanguagePopupOpen}
+                isOpen={isLanguagePopupOpen}
+              />
+            </Box>
+          </ItemMenu>
+        )}
         <ItemMenu
           linkTo={formatMessage(messages.linkToCommunityPlatform)}
           buttonStyle="text"
