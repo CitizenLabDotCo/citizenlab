@@ -1,13 +1,15 @@
 pl:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Przydzielenie mi pomysłu
+      1:
+        "idea_assigned_to_you": Przypisanie wejścia do mnie
     admin_campaign_type_description:
-      "idea_assigned_to_you": Przydzielenie pomysłu - administratorzy i menadżerowie projektu
+      1:
+        "idea_assigned_to_you": Przypisanie wejścia - administratorzy i kierownicy projektów
     idea_assigned_to_you:
       by_author: 'wg %{authorName}'
       cta_reply_to: 'Przekaż informację zwrotną do %{authorName}'
-      event_description_idea: 'Przydzielono ci pomysł. Przekaż informację zwrotną, pisząc oficjalną aktualizację lub zmieniając jej status.'
+      event_description_input: 'Przydzielono ci wejście. Przekaż informację zwrotną, pisząc oficjalną aktualizację lub zmieniając jej status.'
       main_header: '%{firstName}, masz nowe zadanie'
       subject: 'Zostałeś przypisany na platformie %{organizationName}'
-      preheader_idea: 'Został do ciebie przypisany pomysł %{authorName}'
+      preheader_input: 'Wejście %{authorName} zostało przypisane do Ciebie'
