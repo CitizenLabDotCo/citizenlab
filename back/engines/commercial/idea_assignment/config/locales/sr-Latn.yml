@@ -1,13 +1,15 @@
 sr-Latn:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Dodeljena mi je ideja
+      1:
+        "idea_assigned_to_you": Додељивање инпута мени
     admin_campaign_type_description:
-      "idea_assigned_to_you": Dodela ideje - administratori i menadžeri projekata
+      1:
+        "idea_assigned_to_you": Додељивање инпута - администратори и пројект менаџери
     idea_assigned_to_you:
       by_author: 'od %{authorName}'
       cta_reply_to: 'Pošaljite utiske za %{authorName}'
-      event_description_idea: 'Dodeljenа vam je ideja. Ažurirajte informacije pisanjem zvaničnog obaveštenja ili promenom njeног statusa.'
+      event_description_input: 'Улаз вам је додељен. Дајте повратне информације писањем званичног ажурирања или променом његовог статуса.'
       main_header: '%{firstName}, imate novi zadatak'
       subject: 'Imate zadatak na %{organizationName} platformi '
-      preheader_idea: 'Dodeljena vam je ideja od %{authorName}'
+      preheader_input: 'Унос %{authorName} је додељен вама'
