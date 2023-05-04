@@ -1,9 +1,11 @@
 lb:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": Net ugemiessen Inhalter gemellt
+      1:
+        "inappropriate_content_flagged": Onpassend Inhalt markéiert
     admin_campaign_type_description:
-      "inappropriate_content_flagged": Net ugemiessen Inhalter geellt - Verwalteren
+      1:
+        "inappropriate_content_flagged": Onpassend Inhalt markéiert - Admins
     inappropriate_content_flagged:
       subject: 'E Post op Ärer Plattform gouf fir ze iwwerpréiwe gemellt'
       header_title: 'E Post op Ärer Plattform gouf fir ze iwwerpréiwe gemellt'
