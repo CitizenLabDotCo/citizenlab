@@ -11,11 +11,13 @@ export const getButtonMessage = (
 ) => {
   if (buttonText) {
     return buttonText;
-  } else if (participationMethod === 'native_survey') {
+  }
+
+  if (participationMethod === 'native_survey') {
     return messages.takeTheSurvey;
   }
 
-  // Add Konveio
+  // Add Konveio after BE
 
   return getInputTermMessage(inputTerm, {
     idea: messages.submitYourIdea,

@@ -223,7 +223,6 @@ class ParticipationContext extends PureComponent<
     const budgeting = participation_method === 'budgeting';
     const survey = participation_method === 'survey';
     const ideationOrBudgeting = ideation || budgeting;
-    // Add Konveio?
 
     this.setState({
       participation_method,
@@ -235,8 +234,8 @@ class ParticipationContext extends PureComponent<
       downvoting_method: ideation ? 'unlimited' : null,
       presentation_mode: ideationOrBudgeting ? 'card' : null,
       survey_embed_url: null,
-      document_annotation_embed_url: null,
       survey_service: survey ? 'typeform' : null,
+      document_annotation_embed_url: null,
       min_budget: budgeting ? 0 : null,
       max_budget: budgeting ? 1000 : null,
       ideas_order: ideationOrBudgeting

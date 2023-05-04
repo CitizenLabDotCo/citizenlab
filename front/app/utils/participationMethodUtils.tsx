@@ -225,7 +225,6 @@ const documentAnnotationConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
-  // Add Konveio
   renderCTABar: (props: CTABarProps) => {
     return (
       <DocumentAnnotationCTABar project={props.project} phases={props.phases} />
