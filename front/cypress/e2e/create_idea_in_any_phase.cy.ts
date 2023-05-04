@@ -53,7 +53,7 @@ describe('Idea creation', () => {
   });
 
   it('allows the admin to add an idea to an old phase', () => {
-    const newIdeaTitle = randomString(40);
+    const randomSuffix = randomString(15);
 
     cy.visit(`/admin/projects/${projectId}/timeline`);
     cy.get('#e2e-add-an-input').click();
@@ -64,7 +64,13 @@ describe('Idea creation', () => {
     cy.contains('Add new idea').should('exist');
 
     // add a title and description
-    cy.get('#e2e-idea-title-input input').type(newIdeaTitle);
+    // The next line was flaky on CI where the "type" command resulted in skipped letters
+    // Seems to be a known problem, and one solution is to type then clear to "warm up" Cypress
+    // Related: https://github.com/cypress-io/cypress/issues/3817
+    cy.get('#e2e-idea-title-input input')
+      .type('x')
+      .clear()
+      .type(`new-idea-${randomSuffix}`);
     cy.get('#e2e-idea-description-input .ql-editor').type(newIdeaContent);
 
     // add a topic
@@ -96,15 +102,15 @@ describe('Idea creation', () => {
 
     // save the form
     cy.get('.e2e-submit-idea-form').click();
-    cy.wait(3000);
+    cy.wait(5000);
 
     // verify the content of the newly created idea page
-    cy.location('pathname').should('eq', `/en/ideas/${newIdeaTitle}`);
+    cy.location('pathname').should('eq', `/en/ideas/new-idea-${randomSuffix}`);
 
     cy.visit(`/en/projects/${projectSlug}`);
     cy.get('.e2e-previous-phase').click();
 
     // the card should contain the title
-    cy.get('.e2e-card-title').contains(newIdeaTitle);
+    cy.get('.e2e-card-title').contains(`new-idea-${randomSuffix}`);
   });
 });
