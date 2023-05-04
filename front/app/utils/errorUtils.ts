@@ -229,6 +229,8 @@ export const handleHookFormSubmissionError = (
 export const handleBlockedUserError = (status: number, data: CLErrors) => {
   if (
     status === 401 &&
+    isObject(data) &&
+    isObject(data.errors) &&
     'base' in data.errors &&
     isArray(data.errors.base) &&
     data.errors.base.length >= 0 &&
