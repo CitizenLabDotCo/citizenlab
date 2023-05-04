@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isEmpty } from 'lodash-es';
+import { isEmpty, isNil } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 import { useIntl } from 'utils/cl-intl';
@@ -39,6 +39,10 @@ const MessagingDashboard = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
+
+  if (isNil(canManageAutomatedCampaigns) || isNil(canManageManualCampaigns)) {
+    return null;
+  }
 
   const getTabs = () => {
     const tabs: {
