@@ -77,6 +77,7 @@ interface Props {
   defaultValues?: Partial<FormValues>;
   showNavBarItemTitle?: boolean;
   mode: TMode;
+  hideSlug?: boolean;
   onSubmit: (formValues: FormValues) => void | Promise<void>;
 }
 
@@ -91,6 +92,7 @@ const fieldMarginBottom = '40px';
 const CustomPageSettingsForm = ({
   showNavBarItemTitle,
   mode,
+  hideSlug,
   onSubmit,
   defaultValues,
 }: Props) => {
@@ -249,7 +251,7 @@ const CustomPageSettingsForm = ({
                 />
               </Box>
             )}
-            {slug && previewUrl && (
+            {slug && previewUrl && !hideSlug && (
               <Box mb={fieldMarginBottom}>
                 <SlugInput
                   slug={slug}
