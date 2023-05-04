@@ -1,9 +1,11 @@
 pt:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": Conteúdo inapropriado assinalado
+      1:
+        "inappropriate_content_flagged": Conteúdo inadequado assinalado
     admin_campaign_type_description:
-      "inappropriate_content_flagged": Conteúdo inapropriado assinalado - admins
+      1:
+        "inappropriate_content_flagged": Conteúdo inapropriado assinalado - administradores
     inappropriate_content_flagged:
       subject: 'Um posto na sua plataforma foi assinalado para revisão'
       header_title: 'Um posto na sua plataforma foi assinalado para revisão'
