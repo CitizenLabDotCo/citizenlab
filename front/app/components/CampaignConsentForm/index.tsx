@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
 
-// form
-// import { useForm, FormProvider } from 'react-hook-form';
-
 // components
-import { Accordion } from '@citizenlab/cl2-component-library';
+import {
+  Accordion,
+  Box,
+  Button,
+  Checkbox,
+} from '@citizenlab/cl2-component-library';
+import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
+// import { SectionField } from 'components/admin/Section';
+import Feedback from './feedback';
 
 // i18n
-// import messages from './messages';
+import messages from './messages';
 import { getLocalized } from 'utils/i18n';
+import { useIntl } from 'utils/cl-intl';
 import T from 'components/T';
 
 // utils
@@ -69,9 +75,12 @@ const CampaignConsentForm = () => {
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
   const t = (multiloc) => getLocalized(multiloc, locale, tenantLocales);
+  const { formatMessage } = useIntl();
   const { data: originalCampaignConsents } = useCampaignConsents();
   const [campaignConsents, setCampaignConsents] = useState({});
   const [groupedCampaignConsents, setGroupedCampaignConsents] = useState({});
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   useEffect(() => {
     if (!isNilOrError(originalCampaignConsents)) {
@@ -118,8 +127,46 @@ const CampaignConsentForm = () => {
     setCampaignConsents({ ...campaignConsents, ...newConsentsValues });
   };
 
+  const onFormSubmit = () => {
+    const changedConsents: { id: string; consented: boolean }[] = [];
+    originalCampaignConsents.data.forEach((originalConsent) => {
+      if (
+        originalConsent.attributes.consented !==
+        campaignConsents[originalConsent.id].consented
+      ) {
+        changedConsents.push({
+          id: originalConsent.id,
+          consented: campaignConsents[originalConsent.id].consented,
+        });
+      }
+    });
+
+    try {
+      console.log(changedConsents);
+      setShowSuccess(true);
+    } catch (error) {
+      setShowError(true);
+    }
+  };
+
+  const closeFeedback = () => {
+    setShowSuccess(false);
+    setShowError(false);
+  };
+
   return (
-    <>
+    <FormSection>
+      <FormSectionTitle
+        message={messages.notificationsTitle}
+        subtitleMessage={messages.notificationsSubTitle}
+      />
+      <Feedback
+        successMessage={formatMessage(messages.messageSuccess)}
+        errorMessage={formatMessage(messages.messageError)}
+        showSuccess={showSuccess}
+        showError={showError}
+        closeFeedback={closeFeedback}
+      />
       {Object.entries(groupedCampaignConsents).map(
         (
           [contentType, { children, group_consented }]: [
@@ -135,29 +182,37 @@ const CampaignConsentForm = () => {
                 id={contentType}
                 checked={group_consented}
                 onChange={toggleGroup(contentType)}
-                label={`${contentType} (${children.length})`}
+                label={
+                  <Box m="14px 0">{`${contentType} (${children.length})`}</Box>
+                }
               />
             }
           >
-            <div>
+            <Box ml="34px">
               {children.map(
                 ({ id, consented, campaign_type_description_multiloc }) => (
-                  <CheckboxWithPartialCheck
+                  <Checkbox
                     key={id}
-                    id={id}
+                    size="20px"
+                    mb="12px"
                     checked={consented}
                     onChange={onChange(id)}
                     label={
-                      <T as="p" value={campaign_type_description_multiloc} />
+                      <T as="span" value={campaign_type_description_multiloc} />
                     }
                   />
                 )
               )}
-            </div>
+            </Box>
           </Accordion>
         )
       )}
-    </>
+      <Box mt="20px" display="flex">
+        <Button type="submit" processing={false} onClick={onFormSubmit}>
+          {formatMessage(messages.submit)}
+        </Button>
+      </Box>
+    </FormSection>
   );
 };
 

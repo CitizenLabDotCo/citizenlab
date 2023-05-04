@@ -20,6 +20,6 @@ export interface ICampaignConsents {
   links: ILinks;
 }
 
-export interface IConsent {
+export interface ICampaignConsent {
   data: IConsentData;
 }
