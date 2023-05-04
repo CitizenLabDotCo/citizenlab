@@ -1190,7 +1190,7 @@
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Eis dat deelnemers aan een minimumbudget voldoen om hun mandje in te dienen (vul '0' in als je geen minimum wenst in te stellen).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "in ons Helpcentrum",
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Projectbeheerdersrechten",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel": "Wie zijn de projectmoderatoren?",
+  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel": "Wie zijn de projectbeheerders?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Meer details",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink": "https://support.citizenlab.co/articles/2672884",
   "app.containers.AdminPage.ProjectEdit.newProject": "Nieuw project",

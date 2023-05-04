@@ -100,12 +100,12 @@ pl:
     schedules:
       weekly:
         "0": "Co tydzień, w niedziele, na stronie %{hourOfDay}."
-        "1": "Co tydzień w poniedziałki %{atHour}"
-        "2": "Co tydzień we wtorki %{atHour}"
-        "3": "Co tydzień w środy %{atHour}"
-        "4": "Co tydzień w czwartki %{atHour}"
-        "5": "Co tydzień w piątki %{atHour}"
-        "6": "Co tydzień w soboty %{atHour}"
+        "1": "Co tydzień, w poniedziałki %{hourOfDay}"
+        "2": "Co tydzień, we wtorki %{hourOfDay}"
+        "3": "Co tydzień, w środy %{hourOfDay}"
+        "4": "Co tydzień, w czwartki %{hourOfDay}"
+        "5": "Co tydzień, w piątki %{hourOfDay}"
+        "6": "Co tydzień, w soboty %{hourOfDay}"
     footer:
       "link_privacy_policy": "Polityka prywatności"
       "link_terms_conditions": "Regulamin"

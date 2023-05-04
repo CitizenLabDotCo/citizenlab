@@ -100,12 +100,12 @@ da:
     schedules:
       weekly:
         "0": "Hver uge, om søndagen på %{hourOfDay}"
-        "1": "Hver uge om mandagen %{atHour}"
-        "2": "Hver uge om tirsdagen %{atHour}"
-        "3": "Hver uge om onsdagen %{atHour}"
-        "4": "Hver uge om torsdagen %{atHour}"
-        "5": "Hver uge om fredagen %{atHour}"
-        "6": "Hver uge om lørdagen %{atHour}"
+        "1": "Hver uge, om mandagen %{hourOfDay}"
+        "2": "Hver uge, om tirsdagen %{hourOfDay}"
+        "3": "Hver uge, om onsdagen %{hourOfDay}"
+        "4": "Hver uge, om torsdagen %{hourOfDay}"
+        "5": "Hver uge, om fredagen %{hourOfDay}"
+        "6": "Hver uge, om lørdagen %{hourOfDay}"
     footer:
       "link_privacy_policy": "Anonymitetspolitik"
       "link_terms_conditions": "Betingelser og vilkår"
