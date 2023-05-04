@@ -1,9 +1,11 @@
 tr:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": Uygunsuz içerik işaretlendi
+      1:
+        "inappropriate_content_flagged": Uygunsuz içerik işaretlendi
     admin_campaign_type_description:
-      "inappropriate_content_flagged": Uygunsuz içerik işaretlendi - yöneticiler
+      1:
+        "inappropriate_content_flagged": Uygunsuz içerik işaretlendi - yöneticiler
     inappropriate_content_flagged:
       subject: 'Platformunuzdaki bir yayın, incelenmek üzere işaretlendi'
       header_title: 'Platformunuzdaki bir yayın, incelenmek üzere işaretlendi'
