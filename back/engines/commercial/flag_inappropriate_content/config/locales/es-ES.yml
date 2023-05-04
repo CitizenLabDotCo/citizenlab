@@ -1,9 +1,11 @@
 es:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": Marcado contenido inapropiado
+      1:
+        "inappropriate_content_flagged": Contenido inapropiado marcado
     admin_campaign_type_description:
-      "inappropriate_content_flagged": Marcado contenido inapropiado - administradores/as
+      1:
+        "inappropriate_content_flagged": Contenido inapropiado marcado - admins
     inappropriate_content_flagged:
       subject: 'Una publicación ha sido marcada para tu revisión en la plataforma'
       header_title: 'Una publicación ha sido marcada para tu revisión en la plataforma'
