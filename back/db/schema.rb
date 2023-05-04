@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_14_110825) do
+ActiveRecord::Schema.define(version: 2023_05_04_123930) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -929,6 +929,7 @@ ActiveRecord::Schema.define(version: 2023_03_14_110825) do
     t.integer "downvoting_limited_max", default: 10
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
+    t.string "document_annotation_embed_url"
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -1066,6 +1067,7 @@ ActiveRecord::Schema.define(version: 2023_03_14_110825) do
     t.boolean "include_all_areas", default: false, null: false
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
+    t.string "document_annotation_embed_url"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 

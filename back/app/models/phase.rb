@@ -4,34 +4,35 @@
 #
 # Table name: phases
 #
-#  id                     :uuid             not null, primary key
-#  project_id             :uuid
-#  title_multiloc         :jsonb
-#  description_multiloc   :jsonb
-#  start_at               :date
-#  end_at                 :date
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  participation_method   :string           default("ideation"), not null
-#  posting_enabled        :boolean          default(TRUE)
-#  commenting_enabled     :boolean          default(TRUE)
-#  voting_enabled         :boolean          default(TRUE), not null
-#  upvoting_method        :string           default("unlimited"), not null
-#  upvoting_limited_max   :integer          default(10)
-#  survey_embed_url       :string
-#  survey_service         :string
-#  presentation_mode      :string           default("card")
-#  max_budget             :integer
-#  poll_anonymous         :boolean          default(FALSE), not null
-#  downvoting_enabled     :boolean          default(TRUE), not null
-#  ideas_count            :integer          default(0), not null
-#  ideas_order            :string
-#  input_term             :string           default("idea")
-#  min_budget             :integer          default(0)
-#  downvoting_method      :string           default("unlimited"), not null
-#  downvoting_limited_max :integer          default(10)
-#  posting_method         :string           default("unlimited"), not null
-#  posting_limited_max    :integer          default(1)
+#  id                            :uuid             not null, primary key
+#  project_id                    :uuid
+#  title_multiloc                :jsonb
+#  description_multiloc          :jsonb
+#  start_at                      :date
+#  end_at                        :date
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#  participation_method          :string           default("ideation"), not null
+#  posting_enabled               :boolean          default(TRUE)
+#  commenting_enabled            :boolean          default(TRUE)
+#  voting_enabled                :boolean          default(TRUE), not null
+#  upvoting_method               :string           default("unlimited"), not null
+#  upvoting_limited_max          :integer          default(10)
+#  survey_embed_url              :string
+#  survey_service                :string
+#  presentation_mode             :string           default("card")
+#  max_budget                    :integer
+#  poll_anonymous                :boolean          default(FALSE), not null
+#  downvoting_enabled            :boolean          default(TRUE), not null
+#  ideas_count                   :integer          default(0), not null
+#  ideas_order                   :string
+#  input_term                    :string           default("idea")
+#  min_budget                    :integer          default(0)
+#  downvoting_method             :string           default("unlimited"), not null
+#  downvoting_limited_max        :integer          default(10)
+#  posting_method                :string           default("unlimited"), not null
+#  posting_limited_max           :integer          default(1)
+#  document_annotation_embed_url :string
 #
 # Indexes
 #
