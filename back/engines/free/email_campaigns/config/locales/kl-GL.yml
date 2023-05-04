@@ -16,58 +16,58 @@ kl:
         "initiative_published": Publication of my proposal
         "invite_received": Invitation
         "invite_reminder": Invitation reminder
-        "mention_in_official_feedback": Mention in an update
+        "mention_in_official_feedback": Nutarterinermi taaneqarneq
         "new_comment_for_admin": New comment in a project I moderate
         "new_comment_on_commented_idea": New comment on an input I commented on
-        "new_comment_on_commented_initiative": New comment on a proposal I commented on
+        "new_comment_on_commented_initiative": Innuttaasup isumassarsiaanut oqaaseqarfigisimasannut oqaaseqaat nutaaq
         "new_comment_on_voted_idea": New comment on an input I voted for
-        "new_comment_on_voted_initiative": New comment on a proposal I voted for
-        "new_idea_for_admin": New idea in a project I moderate
-        "new_initiative_for_admin": New proposal
+        "new_comment_on_voted_initiative": Isumassarsiamut siunnersuummut taasiffigisimasannut oqaaseqaat nutaaq
+        "new_idea_for_admin": Suliniummut ingerlatannut isumassarsiaq nutaaq
+        "new_initiative_for_admin": Innuttaasup siunnersuutaa nutaaq
         "official_feedback_on_commented_idea": Update on an input I commented on
-        "official_feedback_on_commented_initiative": Update on a proposal I commented on
+        "official_feedback_on_commented_initiative": Innuttaasup siunnersuutaanut oqaaseqarfigisimasannut nutarterineq
         "official_feedback_on_voted_idea": Update on an input I voted on
-        "official_feedback_on_voted_initiative": Update on a proposal I voted on
+        "official_feedback_on_voted_initiative": Innuttaasutut siunnersuummut taasiffigisimasannut nutarterineq
         "official_feedback_on_your_idea": Update on my input
-        "official_feedback_on_your_initiative": Update on my proposal
-        "password_reset": Password reset
-        "project_moderation_rights_received": Project moderation rights received
-        "project_folder_moderation_rights_received": Folder manager rights received
-        "project_phase_started": New project phase
-        "project_phase_upcoming": Upcoming new project phase
+        "official_feedback_on_your_initiative": Innutaasutut siunnersuutigisimasannik nutarterineq
+        "password_reset": Kodemik isissutissamik allannguineq
+        "project_moderation_rights_received": Suliniummik ingerlataqarsinnaasutut pisinnaatitaaffiit tiguneqarput
+        "project_folder_moderation_rights_received": Mappinut aqutsisutut pisinnaatitaaffeqalerpoq
+        "project_phase_started": Suliniummut nikeriarfik nutaaq
+        "project_phase_upcoming": Suliniummut nikeriarfik nutaaq takkuttussaq
         "status_change_of_commented_idea": Status change of an input I commented on
-        "status_change_of_commented_initiative": Status change of a proposal I commented on
+        "status_change_of_commented_initiative": Innuttaasumut isumassarsiap oqaaseqarfigisimasama klliffiani allanngorneq
         "status_change_of_voted_idea": Status change of an input I voted for
-        "status_change_of_voted_initiative": Status change of a proposal I voted for
+        "status_change_of_voted_initiative": Innuttaasutut siunnersuutip taasiffigisimasama killiffiani allanngorneq
         "status_change_of_your_idea": Status change of my input
-        "status_change_of_your_initiative": Status change of my proposal
-        "threshold_reached_for_admin": Proposal reached the voting threshold
-        "welcome": After registration
-        "admin_digest": Weekly overview for admins
-        "moderator_digest": Weekly overview for project managers
+        "status_change_of_your_initiative": Innuttaasutut siunnersuusiami killiffiani allanngorneq
+        "threshold_reached_for_admin": Innuttaasut siunnersuutaasa taasiffigineqarsinnaanerata amerlassusaat anguneqarpoq
+        "welcome": Nalunaarsorneqareerpat
+        "admin_digest": Aqutsisut takussutissartaat sapaatip akunnikkaartoq
+        "moderator_digest": Suliniummik ingerlatsisut takussutissartaat sapaatip akunnikkaartoq
         "assignee_digest": Weekly overview of assigned inputs
-        "user_digest": Weekly overview
-        "your_proposed_initiatives_digest": Weekly overview of your proposals
+        "user_digest": Sapaatip akunneranut takussutissaq
+        "your_proposed_initiatives_digest": Sapaatip akunnikkaartumik innuttaasutut siunnersuusiannut takussutissaq
     admin_campaign_type_description:
       1:
-        "manual": Official message - all users
-        "admin_rights_received": Admin rights received - admins
-        "comment_deleted_by_admin": Deletion of your comment - all users
-        "comment_marked_as_spam": Comment spam report - admins and project managers
-        "comment_on_your_comment": Reply on your comment - all users
-        "comment_on_your_idea": Comment on your idea - all users
-        "comment_on_your_initiative": Comment on your proposal - all users
-        "first_idea_published": Publication of your first idea - all users
-        "idea_marked_as_spam": Idea spam report - admins and project managers
-        "idea_published": Publication of your idea - all users
-        "initiative_assigned_to_you": Assignment of a proposal - admins
-        "initiative_marked_as_spam": Proposal spam report - admins
-        "initiative_published": Publication of your proposal - all users
-        "invite_received": Invitation - all users
-        "invite_reminder": Invitation reminder - all users
-        "mention_in_comment": Mention in a comment - all users
-        "mention_in_official_feedback": Mention in an update - all users
-        "new_comment_for_admin": New comment - admins and project managers
+        "manual": Pisortatigoortumik nalunaarut - atuisunut tamanut
+        "admin_rights_received": Naleqqussaanissamut pisinnaatitaaffiit tiguneqarput - administrator-it
+        "comment_deleted_by_admin": Oqaaseqaativit peernera - atuisut tamaasa
+        "comment_marked_as_spam": Oqaaseqaatit spam-iunerinik nalunaaruteqarneq - administrator-it aamma suliniutinik aqutsisut
+        "comment_on_your_comment": Oqaaseqaatinnut akissut - atuisut tamaasa
+        "comment_on_your_idea": Isumassarsiat oqaaseqaatileruk - atuisut tamaasa
+        "comment_on_your_initiative": Siunnersuutit oqaaseqaatileruk - atuisut tamaasa
+        "first_idea_published": Isumassarsiavit siulliup saqqummersinnera - atuisut tamaasa
+        "idea_marked_as_spam": Isumassarsiat spam-iunerinik nalunaaruteqarneq - administrator-it aamma suliniutinut aqutsisut
+        "idea_published": Isumassarsiavit saqqummersinnera - atuisut tamaasa
+        "initiative_assigned_to_you": Siunnersuummik siammarterineq - administrator-it
+        "initiative_marked_as_spam": Siunnersuutit spam-iunerinik nalunaaruteqarneq - administrator-it
+        "initiative_published": Siunnersuutivit saqqummersinnera - administratorer-it
+        "invite_received": Aggersaaneq - atuisut tamaasa
+        "invite_reminder": Aggersaanermut eqqaasissut - atuisut tamaasa
+        "mention_in_comment": Oqaaseqaammi taaneqarpoq - atuisut tamaasa
+        "mention_in_official_feedback": Nutartikkami taaneqarpoq - atuisut tamaasa
+        "new_comment_for_admin": Oqaaseqaat nutaaq - administrator-it aamma suliniutinik aqutsisut
         "new_comment_on_commented_idea": New comment on an idea you commented on - all users
         "new_comment_on_commented_initiative": New comment on a proposal you commented on - all users
         "new_comment_on_voted_idea": New comment on an idea you voted for - all users
