@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 
@@ -14,19 +13,14 @@ import {
 } from 'services/actionTakingRules';
 import { getInputTerm } from 'services/participationContexts';
 
-// resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
 import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
 // utils
@@ -48,6 +42,9 @@ import { darken } from 'polished';
 import { LatLng } from 'leaflet';
 import { getButtonMessage } from './utils';
 import { IPhaseData } from 'services/phases';
+import useAuthUser from 'hooks/useAuthUser';
+import useProject from 'hooks/useProject';
+import usePhases from 'hooks/usePhases';
 
 const Container = styled.div``;
 
@@ -99,13 +96,7 @@ const TooltipContentText = styled.div`
   }
 `;
 
-interface DataProps {
-  project: GetProjectChildProps;
-  phases: GetPhasesChildProps;
-  authUser: GetAuthUserChildProps;
-}
-
-interface InputProps extends Omit<ButtonProps, 'onClick'> {
+interface Props extends Omit<ButtonProps, 'onClick'> {
   id?: string;
   projectId: string;
   latLng?: LatLng | null;
@@ -116,14 +107,9 @@ interface InputProps extends Omit<ButtonProps, 'onClick'> {
   phase: IPhaseData | undefined | null;
 }
 
-interface Props extends InputProps, DataProps {}
-
-const IdeaButton = memo<Props & WrappedComponentProps>(
+const IdeaButton = memo<Props>(
   ({
     id,
-    project,
-    phases,
-    authUser,
     participationContextType,
     projectId,
     inMap,
@@ -131,9 +117,12 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
     latLng,
     buttonText,
     phase,
-    intl: { formatMessage },
     ...buttonContainerProps
   }) => {
+    const { formatMessage } = useIntl();
+    const authUser = useAuthUser();
+    const project = useProject({ projectId });
+    const phases = usePhases(projectId);
     const disabledMessages: {
       [key in IIdeaPostingDisabledReason]: MessageDescriptor;
     } = {
@@ -346,20 +335,4 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
   }
 );
 
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  project: ({ projectId, render }) => (
-    <GetProject projectId={projectId}>{render}</GetProject>
-  ),
-  phases: ({ projectId, render }) => (
-    <GetPhases projectId={projectId}>{render}</GetPhases>
-  ),
-});
-
-const IdeaButtonWithHoC = injectIntl(IdeaButton);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <IdeaButtonWithHoC {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default IdeaButton;
