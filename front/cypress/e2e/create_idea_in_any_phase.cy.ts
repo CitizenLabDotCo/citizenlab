@@ -101,7 +101,7 @@ describe('Idea creation', () => {
 
     // save the form
     cy.get('.e2e-submit-idea-form').click();
-    cy.wait(5000);
+    cy.wait(3000);
 
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
