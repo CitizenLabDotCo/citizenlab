@@ -244,5 +244,5 @@ es:
   time:
     am: soy
     formats:
-      hour_of_day: "%H%M"
+      hour_of_day: "%H:%M"
     pm: pm
