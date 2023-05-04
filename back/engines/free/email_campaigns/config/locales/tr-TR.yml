@@ -409,7 +409,7 @@ tr:
       title_share_project_information: 'Proje açıklaması girin'
       title_what_can_you_do_moderator: 'Proje yöneticisi olarak neler yapabilirsiniz?'
       title_you_became_moderator: 'Proje yöneticisi oldunuz'
-      x_inputs: '%{numberOfIdeas} inputs'
+      x_inputs: '%{numberOfIdeas} girdiler'
     project_folder_moderation_rights_received:
       cta_view_folder_button: 'Bu klasörü görüntüle'
       message_added_as_folderadmin: '%{organizationName} katılım platformunda şu klasör için klasör yöneticisi hakları aldınız:'
@@ -435,33 +435,33 @@ tr:
       preheader: '%{projectName} adlı proje için yeni bir aşama başladı'
     project_phase_upcoming:
       cta_view_phase: 'Bu yeni aşamayı ayarlayın'
-      event_description1: 'The project ''%{projectName}'' will be entering a new phase soon. Make sure everything is set up for this phase: Is there an adequate description? Are selected inputs transferred to this phase? Do you want to inform your citizens on the specifics of this phase through a custom email campaign?'
+      event_description1: '''%{projectName}'' projesi yakında yeni bir aşamaya girecek. Bu aşama için her şeyin ayarlandığından emin olun: Yeterli bir açıklama var mı? Seçilen girdiler bu aşamaya aktarıldı mı? Özel bir e-posta kampanyası aracılığıyla vatandaşlarınızı bu aşamanın özellikleri hakkında bilgilendirmek istiyor musunuz?'
       main_header: '%{firstName}, bir proje yakında yeni bir aşamaya geçiyor'
       subtitle: 'Hakkında ''%{projectName}'''
       new_phase: 'Proje ''%{phaseTitle}'' aşamasına geçecek'
       subject: '%{projectName} için yeni aşama ile ilgili her şeyi ayarlayın'
       preheader: '%{projectName} için yakında yeni bir aşama başlıyor'
     status_change_of_commented_idea:
-      status_change1: 'The new status of this input is ''%{ideaStatus}'''
-      cta_view_input: 'Go to this input'
-      event_description1: '%{organizationName} updated the status of the input ''%{ideaTitle}'' on their digital participation platform.'
-      main_header1: 'An input you commented on has a new status'
-      subject1: 'The status of an input you commented on has been changed'
-      preheader1: '%{organizationName} changed the status of an input you commented on'
+      status_change1: 'Bu girişin yeni durumu ''%{ideaStatus}'' şeklindedir.'
+      cta_view_input: 'Bu girişe gidin'
+      event_description1: '%{organizationName} dijital katılım platformunda ''%{ideaTitle}'' girdisinin durumunu güncelledi.'
+      main_header1: 'Yorum yaptığınız bir girdinin yeni bir durumu var'
+      subject1: 'Yorum yaptığınız bir girdinin durumu değiştirildi'
+      preheader1: '%{organizationName} yorum yaptığınız bir girdinin durumunu değiştirdi'
     status_change_of_your_idea:
-      status_change1: 'The new status of your input is ''%{ideaStatus}'''
-      cta_view_input: 'Go to your input'
-      event_description1: '%{organizationName} updated the status of your input ''%{ideaTitle}'' on their digital participation platform.'
-      main_header1: 'Your input has a new status'
-      subject1: 'The status of your input has been changed'
-      preheader1: '%{organizationName} changed the status of your input'
+      status_change1: 'Girişinizin yeni durumu ''%{ideaStatus}'''
+      cta_view_input: 'Girişinize gidin'
+      event_description1: '%{organizationName} dijital katılım platformlarında ''%{ideaTitle}'' adresindeki girdinizin durumunu güncelledi.'
+      main_header1: 'Girdinizin yeni bir durumu var'
+      subject1: 'Girişinizin durumu değiştirildi'
+      preheader1: '%{organizationName} girişinizin durumunu değiştirdi'
     status_change_of_voted_idea:
-      status_change1: 'The new status of this input is ''%{ideaStatus}'''
-      cta_view_input: 'Go to this input'
-      event_description1: '%{organizationName} updated the status of the input ''%{ideaTitle}'' on their digital participation platform.'
-      main_header1: 'An input you voted on has a new status'
-      subject1: 'The status of an input you voted on has been changed'
-      preheader1: '%{organizationName} changed the status of an input you voted on'
+      status_change1: 'Bu girişin yeni durumu ''%{ideaStatus}'' şeklindedir.'
+      cta_view_input: 'Bu girişe gidin'
+      event_description1: '%{organizationName} dijital katılım platformunda ''%{ideaTitle}'' girdisinin durumunu güncelledi.'
+      main_header1: 'Oyladığınız bir girdinin yeni bir durumu var'
+      subject1: 'Oy verdiğiniz bir girdinin durumu değiştirildi'
+      preheader1: '%{organizationName} oyladığınız bir girdinin durumunu değiştirdi'
     status_change_of_voted_initiative:
       status_change: 'Bu önerinin yeni durumu ''%{initiativeStatus}'''
       cta_view_initiative: 'Bu öneriye gidin'
@@ -492,14 +492,14 @@ tr:
       cta_go_to_the_platform: "Platforma gidin"
       title_no_activity_past_week: "Geçen hafta etkinlik yoktu"
       title_proposals: "Başlatılan öneriler"
-      proposals_started_text1: "Proposals are inputs that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
+      proposals_started_text1: "Teklifler, ilerleyebilmek için başkalarından (sizin gibi insanlardan!) ilgi ve destek görmesi gereken girdilerdir. Aşağıda son bir hafta içinde ortaya konan tekliflerin bir listesi bulunmaktadır. Bir göz atmak ve desteğinizi ve geri bildiriminizi sunmak için herhangi birine tıklayın!"
       title_successful_proposals: "Eşiğe ulaşan öneriler"
       successful_proposals_text: "Bu öneriler, bir sonraki aşamaya geçmek için yeterli desteği aldı! Bundan sonra ne olacağı ile ilgili daha fazla bilgi için öneriye tıklayın."
       today_by_author: "%{author} tarafından bugün"
       yesterday_by_author: "%{author} tarafından dün"
       x_days_ago_by_author: "%{author} tarafından %{x} gün önce"
-      trending_inputs: "Trending inputs"
-      trending_inputs_text: "Interested in what’s been happening on the platform? Here are the three most trending inputs and what people are saying about them."
+      trending_inputs: "Trend girdiler"
+      trending_inputs_text: "Platformda neler olup bittiğini merak ediyor musunuz? İşte en trend üç girdi ve insanların onlar hakkında söyledikleri."
       no_notifications: "Bildirim yok"
       one_notification: "1 bildirim"
       multiple_notifications: "%{notifCount} bildirim"
@@ -520,21 +520,21 @@ tr:
       preheader: '%{organizationName} platformunda şunları yapabilirsiniz'
     idea_published:
       action_add_image: 'Görünürlüğünüzü artırmak için %{addImageLink}'
-      action_published_input: 'Published input'
+      action_published_input: 'Yayınlanmış girdi'
       action_send_email: 'İlgili kişilerinize bir %{sendEmailLink} gönderin'
       action_share_fb: '%{fbLink} arkadaşlarınıza haber verin'
       action_share_link: '%{link} kopyalayarak her tür kanaldan paylaşın'
       action_share_twitter: '%{twitterLink} takipçilerinize haber verin'
       add_image: 'Görsel ekleyin'
-      cta_view_input: 'Go to your input'
-      event_description1: '%{firstName}, your input has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your input. Find out what next steps you can take below.'
+      cta_view_input: 'Girişinize gidin'
+      event_description1: '%{firstName}, girdiniz %{organizationName}katılım platformunda başarıyla yayınlanmıştır. İnsanlar girdinizle etkileşime geçtiğinde bilgilendirileceksiniz. Atabileceğiniz sonraki adımları aşağıda bulabilirsiniz.'
       link: Bağlantı
-      main_header1: 'You posted an input! Let''s make sure it gets read.'
-      message_get_votes1: 'Reach more people with your input:'
-      preheader1: '%{firstName}, congratulations on posting your input on the platform of %{organizationName}. Now gather support.'
+      main_header1: 'Bir girdi gönderdin! Okunduğundan emin olalım.'
+      message_get_votes1: 'Katkılarınızla daha fazla kişiye ulaşın:'
+      preheader1: '%{firstName} %{organizationName}platformunda görüşlerinizi paylaştığınız için tebrikler. Şimdi destek toplayın.'
       see_you: 'Platformda görüşmek üzere!'
       send_email: e-posta
-      subject1: 'Your input on the platform of %{organizationName}'
+      subject1: '%{organizationName}platformu hakkındaki görüşleriniz'
       message_next_steps: ""
     your_proposed_initiatives_digest:
       subject: 'Önerilerinizle ilgili haftalık bildirim'
@@ -549,35 +549,35 @@ tr:
     admin_labels:
       recipient_role:
         admins: 'Yöneticilere'
-        admins_and_managers: 'To admins & managers'
+        admins_and_managers: 'Yöneticilere ve müdürlere'
         managers: 'Yöneticilere'
         registered_users: 'Kayıtlı kullanıcılara'
       recipient_segment:
         admins: 'Yöneticiler'
-        admins_and_managers: 'Admins & managers'
-        admins_and_managers_managing_the_project: 'Admins & managers managing the project'
+        admins_and_managers: 'Yöneticiler ve müdürler'
+        admins_and_managers_managing_the_project: 'Projeyi yöneten yöneticiler ve müdürler'
         all_users: 'Tüm kullanıcılar'
         all_users_who_uploaded_proposals: 'Teklif yükleyen tüm kullanıcılar'
         managers: 'Yöneticiler'
-        admins_assigned_to_a_proposal: 'Admins assigned to a proposal'
-        admins_and_managers_assigned_to_the_input: 'Admins & managers assigned to the input'
+        admins_assigned_to_a_proposal: 'Bir teklife atanan yöneticiler'
+        admins_and_managers_assigned_to_the_input: 'Girişe atanan yöneticiler ve müdürler'
         user_receiving_admin_rights: 'Yönetici hakları alan kullanıcı'
         user_receiving_folder_moderator_rights: 'Klasör moderatör haklarını alan kullanıcı'
         user_receiving_project_moderator_rights: 'Proje moderatörü haklarını alan kullanıcı'
         user_who_commented: 'Yorum yapan kullanıcı'
         user_who_is_mentioned: 'Bahsi geçen kullanıcı'
-        user_who_published_the_proposal: 'User who published the proposal'
-        user_who_published_the_input: 'User who published the input'
+        user_who_published_the_proposal: 'Teklifi yayınlayan kullanıcı'
+        user_who_published_the_input: 'Girdiyi yayınlayan kullanıcı'
         user_who_registers: 'Kayıt olan kullanıcı'
         user_who_was_invited: 'Davet edilen kullanıcı'
-        users_engaged_with_the_input: 'Users engaged with the input'
+        users_engaged_with_the_input: 'Kullanıcılar girdiyle etkileşime geçti'
         users_engaged_with_the_project: 'Kullanıcıların projeye katılımı'
         users_engaged_with_the_proposal: 'Kullanıcılar teklifle etkileşime geçti'
       content_type:
         comments: 'Yorumlar'
         content_moderation: 'İçerik moderasyonu'
         general: 'Genel'
-        inputs: 'Inputs'
+        inputs: 'Girişler'
         permissions: 'İzinler'
         projects: 'Projeler'
         proposals: 'Teklifler'
@@ -586,28 +586,28 @@ tr:
         comment_is_deleted: 'Yorum silindi'
         comment_is_flagged_as_spam: 'Yorum spam olarak işaretlendi'
         content_gets_flagged_as_innapropiate: 'İçerik uygunsuz olarak işaretlenir'
-        input_is_assigned: 'Input is assigned'
-        input_is_flagged_as_spam: 'Input is flagged as spam'
-        input_is_updated: 'Input is updated'
-        input_status_is_changed: 'Input status is changed'
-        new_input_is_published: 'New input is published'
-        new_proposal_is_published: 'New proposal is published'
+        input_is_assigned: 'Giriş atanmıştır'
+        input_is_flagged_as_spam: 'Girdi spam olarak işaretlendi'
+        input_is_updated: 'Girdi güncellenir'
+        input_status_is_changed: 'Giriş durumu değiştirildi'
+        new_input_is_published: 'Yeni girdi yayınlandı'
+        new_proposal_is_published: 'Yeni teklif yayınlandı'
         project_changes_phase: 'Proje değişiklikleri aşaması'
         proposal_gets_reported_as_spam: 'Teklif spam olarak bildiriliyor'
-        proposal_is_assigned_to_admin: 'Proposal is assigned to admin'
+        proposal_is_assigned_to_admin: 'Teklif yöneticiye atanır'
         proposal_is_updated: 'Teklif güncellendi'
         proposal_is_upvoted_above_threshold: 'Teklif eşik değerin üzerinde oylandı'
         proposal_status_is_changed: 'Teklif durumu değiştirildi'
         user_comments: 'Kullanıcı yorumları'
-        user_comments_on_input: 'User comments on input'
+        user_comments_on_input: 'Giriş hakkında kullanıcı yorumları'
         user_comments_on_proposal: 'Teklifle ilgili kullanıcı yorumları'
         user_is_given_admin_rights: 'Kullanıcıya yönetici hakları verilir'
         user_is_given_folder_moderator_rights: 'Kullanıcıya klasör moderatörü hakları verilir'
         user_is_given_project_moderator_rights: 'Kullanıcıya proje moderatörü hakları verilir'
         user_is_mentioned: 'Kullanıcıdan bahsedilir'
-        user_publishes_an_input: 'User publishes an input'
-        user_publishes_a_proposal: 'User publishes a proposal'
+        user_publishes_an_input: 'Kullanıcı bir girdi yayınlar'
+        user_publishes_a_proposal: 'Kullanıcı bir teklif yayınlar'
         user_registers_for_the_first_time: 'Kullanıcı ilk kez kaydolur'
         user_replies_to_comment: 'Kullanıcı yoruma yanıt veriyor'
         7_days_after_invite_is_sent: 'Davetiye gönderildikten 7 gün sonra'
-        7_days_before_the_project_changes_phase: '7 days before the project changes phase'
+        7_days_before_the_project_changes_phase: 'Proje değişiklik aşamasından 7 gün önce'
