@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
 import Notifications from 'containers/MainHeader/NotificationMenu/components/Notifications';
 
@@ -20,7 +20,12 @@ export const NotificationsPopup = ({ setIsOpen, isOpen }: Props) => {
   return (
     <Popup
       trigger={
-        <Box w="100%">{formatMessage({ ...messages.notifications })}</Box>
+        <Box display="flex" justifyContent="space-between" w="100%">
+          {formatMessage({ ...messages.notifications })}
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Icon name="chevron-right" fill={colors.grey600} />
+          </Box>
+        </Box>
       }
       open={isOpen}
       onClose={() => setIsOpen(false)}

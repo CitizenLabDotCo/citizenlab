@@ -28,7 +28,7 @@ import { IUserData } from 'services/users';
 
 export const UserMenu = () => {
   const { formatMessage } = useIntl();
-  const contextRef = useRef<HTMLDivElement | null>(null);
+  const iconDivRef = useRef<HTMLDivElement | null>(null);
   const authUser = useAuthUser();
   const [isUserMenuPopupOpen, setIsUserMenuPopupOpen] = useState(false);
   const [isNotificationsPopupOpen, setIsNotificationsPopupOpen] =
@@ -79,7 +79,7 @@ export const UserMenu = () => {
               flexDirection="column"
               opacity={0.7}
               w="100%"
-              ml="18px"
+              ml="17px"
               overflow="hidden"
             >
               <Text
@@ -108,8 +108,8 @@ export const UserMenu = () => {
                 {formatMessage({ ...getRole(authUser) })}
               </Text>
             </Box>
-            <Box ref={contextRef}>
-              <Icon name="chevron-down" fill={colors.white} />
+            <Box ref={iconDivRef}>
+              <Icon name="chevron-right" fill={colors.white} />
             </Box>
           </Box>
         </StyledBox>
@@ -118,8 +118,9 @@ export const UserMenu = () => {
       onClose={handleUserMenuPopupClose}
       on="click"
       position="top right"
+      offset={[40, -60]}
       positionFixed
-      context={contextRef}
+      context={iconDivRef}
       basic
       wide
     >
