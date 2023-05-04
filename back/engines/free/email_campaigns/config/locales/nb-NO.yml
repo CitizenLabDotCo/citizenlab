@@ -1,102 +1,103 @@
 "nb-NO":
   email_campaigns:
     campaign_type_description:
-      "manual": Offisielle beskjed
-      "admin_rights_received": Administratorrettigheter mottatt
-      "comment_deleted_by_admin": Sletting  av min kommentar
-      "comment_marked_as_spam": Kommenter spamrapport
-      "comment_on_your_comment": Et svar på min kommentar
-      "comment_on_your_idea": En kommentar på min idé
-      "comment_on_your_initiative": En kommentar på mitt forslag
-      "first_idea_published": Publisering av min  første idé
-      "idea_marked_as_spam": Rapportere idé-spam
-      "idea_published": Publisering av min idé
-      "initiative_assigned_to_you": Et forslag tildelt meg
-      "initiative_marked_as_spam": Forslag til spam-rapport
-      "initiative_published": Publisering av mitt forslag
-      "invite_received": Invitasjon
-      "invite_reminder": 'Påminnelse: invitasjon'
-      "mention_in_official_feedback": Nevne i en oppdatering
-      "new_comment_for_admin": Ny kommentar i et prosjekt jeg moderer
-      "new_comment_on_commented_idea": Ny kommentar på en idé jeg har kommentert
-      "new_comment_on_commented_initiative": Ny kommentar på et forslag jeg har kommentert
-      "new_comment_on_voted_idea": Ny kommentar på en idé jeg stemte på
-      "new_comment_on_voted_initiative": Ny kommentar på et forslag jeg stemte på
-      "new_idea_for_admin": Ny idé i et prosjekt jeg modererer
-      "new_initiative_for_admin": Nytt forslag
-      "official_feedback_on_commented_idea": Oppdatering på en idé jeg kommenterte
-      "official_feedback_on_commented_initiative": Oppdatering på en idé jeg kommenterte på
-      "official_feedback_on_voted_idea": Oppdatering på en forslag jeg kommenterte
-      "official_feedback_on_voted_initiative": Oppdatering på en idé jeg stemte på
-      "official_feedback_on_your_idea": Oppdatering på min idé
-      "official_feedback_on_your_initiative": Oppdatering på mitt forslag
-      "password_reset": Nullstill passord
-      "project_moderation_rights_received": Rettigheter til å moderere prosjekter mottatt
-      "project_folder_moderation_rights_received": Mappeadministrator-rettigheter mottatt
-      "project_phase_started": Ny prosjektfase
-      "project_phase_upcoming": Kommende ny prosjektfase
-      "status_change_of_commented_idea": Statusendring på en idé jeg kommenterte
-      "status_change_of_commented_initiative": Statusendring på et forslag jeg kommenterte
-      "status_change_of_voted_idea": Statusendring på en idé jeg stemte på
-      "status_change_of_voted_initiative": Statusendring på et forslag jeg stemte på
-      "status_change_of_your_idea": Statusendring på min idé
-      "status_change_of_your_initiative": Statusendring på mitt forslag
-      "threshold_reached_for_admin": Forslaget har nådd stemmegrensen
-      "welcome": Etter registrering
-      "admin_digest": Ukentlig oversikt for administratorer
-      "moderator_digest": Ukentlig oversikt for prosjektledere
-      "assignee_digest": Ukentlig oversikt over tildelte ideer
-      "user_digest": Ukentlig oversikt
-      "your_proposed_initiatives_digest": Ukentlig oversikt over dine forslag
+      1:
+        "manual": Offisielle meldinger
+        "admin_rights_received": Administratorrettigheter mottatt
+        "comment_deleted_by_admin": Sletting av kommentaren min
+        "comment_marked_as_spam": Kommentar spam-rapport
+        "comment_on_your_comment": Et svar på kommentaren min
+        "comment_on_your_idea": En kommentar til mine innspill
+        "comment_on_your_initiative": En kommentar til mitt forslag
+        "idea_marked_as_spam": Idé spam-rapport
+        "idea_published": Publisering av mine innspill
+        "initiative_assigned_to_you": Tildeling av et forslag til meg
+        "initiative_marked_as_spam": Spamrapport for forslag
+        "initiative_published": Offentliggjøring av mitt forslag
+        "invite_received": Invitasjon
+        "invite_reminder": Påminnelse om invitasjon
+        "mention_in_official_feedback": Nevn i en oppdatering
+        "new_comment_for_admin": Ny kommentar i et prosjekt jeg modererer
+        "new_comment_on_commented_idea": Ny kommentar til et innspill jeg kommenterte
+        "new_comment_on_commented_initiative": Ny kommentar til et forslag jeg kommenterte
+        "new_comment_on_voted_idea": Ny kommentar til et innspill jeg stemte på
+        "new_comment_on_voted_initiative": Ny kommentar til et forslag jeg stemte for
+        "new_idea_for_admin": Ny idé i et prosjekt jeg modererer
+        "new_initiative_for_admin": Nytt forslag
+        "official_feedback_on_commented_idea": Oppdatering på et innspill jeg kommenterte
+        "official_feedback_on_commented_initiative": Oppdatering på et forslag jeg kommenterte
+        "official_feedback_on_voted_idea": Oppdatering på et innspill jeg stemte på
+        "official_feedback_on_voted_initiative": Oppdatering om et forslag jeg stemte på
+        "official_feedback_on_your_idea": Oppdatering på mine innspill
+        "official_feedback_on_your_initiative": Oppdatering på forslaget mitt
+        "password_reset": Reset passord
+        "project_moderation_rights_received": Prosjektmoderasjonsrettigheter mottatt
+        "project_folder_moderation_rights_received": Mappebehandlerrettigheter mottatt
+        "project_phase_started": Ny prosjektfase
+        "project_phase_upcoming": Kommende ny prosjektfase
+        "status_change_of_commented_idea": Statusendring på et innspill jeg kommenterte
+        "status_change_of_commented_initiative": Statusendring på et forslag jeg kommenterte
+        "status_change_of_voted_idea": Statusendring på et innspill jeg stemte på
+        "status_change_of_voted_initiative": Statusendring av et forslag jeg stemte for
+        "status_change_of_your_idea": Statusendring av innspillet mitt
+        "status_change_of_your_initiative": Statusendring av mitt forslag
+        "threshold_reached_for_admin": Forslaget nådde stemmegrensen
+        "welcome": Etter registrering
+        "admin_digest": Ukentlig oversikt for administratorer
+        "moderator_digest": Ukentlig oversikt for prosjektledere
+        "assignee_digest": Ukentlig oversikt over tildelte innganger
+        "user_digest": Ukentlig oversikt
+        "your_proposed_initiatives_digest": Ukentlig oversikt over forslagene dine
     admin_campaign_type_description:
-      "manual": Offisiell melding – alle brukere
-      "admin_rights_received": Administratorrettigheter mottatt – administratorer
-      "comment_deleted_by_admin": Sletting av kommentaren – alle brukere
-      "comment_marked_as_spam": Rapport om søppelpostkommentar – administratorer og prosjektledere
-      "comment_on_your_comment": Svar på kommentaren – alle brukere
-      "comment_on_your_idea": Kommenter på ideen – alle brukere
-      "comment_on_your_initiative": Kommenter på forslaget – alle brukere
-      "first_idea_published": Publisering av din første idé – alle brukere
-      "idea_marked_as_spam": Rapport om søppelpost i ideer – administratorer og prosjektledere
-      "idea_published": Publisering av ideen – alle brukere
-      "initiative_assigned_to_you": Tildeling av et forslag – administratorer
-      "initiative_marked_as_spam": Rapport om søppelpost i forslag – administratorer
-      "initiative_published": Publisering av forslaget – alle brukere
-      "invite_received": Invitasjon – alle brukere
-      "invite_reminder": Invitasjonspåminnelse – alle brukere
-      "mention_in_comment": Omtale i en kommentar – alle brukere
-      "mention_in_official_feedback": Omtale i en oppdatering – alle brukere
-      "new_comment_for_admin": Ny kommentar – administratorer og prosjektledere
-      "new_comment_on_commented_idea": Ny kommentar på en idé du har kommentert på – alle brukere
-      "new_comment_on_commented_initiative": Ny kommentar på et forslag du har kommentert – alle brukere
-      "new_comment_on_voted_idea": Ny kommentar på en idé du har stemt på – alle brukere
-      "new_comment_on_voted_initiative": Ny kommentar på et forslag du har stemt på – alle brukere
-      "new_idea_for_admin": Ny idé – administratorer og prosjektledere
-      "new_initiative_for_admin": Nytt forslag – administratorer
-      "official_feedback_on_commented_idea": Oppdatering på en idé du har kommentert – alle brukere
-      "official_feedback_on_commented_initiative": Oppdatering på et forslag du har kommentert – alle brukere
-      "official_feedback_on_voted_idea": Oppdatering på en idé du har stemt på – alle brukere
-      "official_feedback_on_voted_initiative": Oppdatering på et forslag du har stemt på – alle brukere
-      "official_feedback_on_your_idea": Oppdatering på ideen din – alle brukere
-      "official_feedback_on_your_initiative": Oppdatering på forslaget ditt – alle brukere
-      "password_reset": Tilbakestilling av passord – alle brukere
-      "project_moderation_rights_received": Prosjektmodereringsrettigheter mottatt – prosjektledere
-      "project_folder_moderation_rights_received": Mappeadministrator-rettigheter mottatt
-      "project_phase_started": Ny prosjektfase – prosjektdeltakere
-      "project_phase_upcoming": Kommende ny prosjektfase – administratorer og prosjektledere
-      "status_change_of_commented_idea": Statusendring av en idé du har kommentert på – alle brukere
-      "status_change_of_commented_initiative": Statusendring av et forslag du har kommentert på – alle brukere
-      "status_change_of_voted_idea": Statusendring for en idé du har stemt på – alle brukere
-      "status_change_of_voted_initiative": Statusendring for et forslag du har stemt på – alle brukere
-      "status_change_of_your_idea": Statusendring for ideen din – alle brukere
-      "status_change_of_your_initiative": Statusendring for forslaget ditt – alle brukere
-      "threshold_reached_for_admin": Et forslag har nådd stemmeterskelen – administratorer
-      "welcome": Velkomst-e-postmelding til nye brukere – alle brukere
-      "admin_digest": Ukentlig oversikt – administratorer
-      "moderator_digest": Ukentlig oversikt – prosjektledere
-      "assignee_digest": Ukentlig oversikt over tildelte ideer – administratorer og prosjektledere
-      "user_digest": Ukentlig oversikt – alle brukere
-      "your_proposed_initiatives_digest": Ukentlig oversikt over dine egne forslag – alle brukere
+      1:
+        "manual": Offisiell melding - alle brukere
+        "admin_rights_received": Admin rettigheter mottatt - admins
+        "comment_deleted_by_admin": Sletting av kommentaren din - alle brukere
+        "comment_marked_as_spam": Kommentar spam-rapport - administratorer og prosjektledere
+        "comment_on_your_comment": Svar på kommentaren din - alle brukere
+        "comment_on_your_idea": Kommenter ideen din – alle brukere
+        "comment_on_your_initiative": Kommenter forslaget ditt – alle brukere
+        "first_idea_published": Publisering av din første idé - alle brukere
+        "idea_marked_as_spam": Idéspamrapport - administratorer og prosjektledere
+        "idea_published": Publisering av ideen din - alle brukere
+        "initiative_assigned_to_you": Tildeling av forslag - admins
+        "initiative_marked_as_spam": Forslag spam-rapport - administratorer
+        "initiative_published": Offentliggjøring av ditt forslag - alle brukere
+        "invite_received": Invitasjon - alle brukere
+        "invite_reminder": Invitasjonspåminnelse - alle brukere
+        "mention_in_comment": Nevn i en kommentar - alle brukere
+        "mention_in_official_feedback": Nevn i en oppdatering - alle brukere
+        "new_comment_for_admin": Ny kommentar - administratorer og prosjektledere
+        "new_comment_on_commented_idea": Ny kommentar på en idé du har kommentert - alle brukere
+        "new_comment_on_commented_initiative": Ny kommentar til et forslag du har kommentert - alle brukere
+        "new_comment_on_voted_idea": Ny kommentar på en idé du stemte på – alle brukere
+        "new_comment_on_voted_initiative": Ny kommentar til et forslag du stemte på - alle brukere
+        "new_idea_for_admin": Ny idé - administratorer og prosjektledere
+        "new_initiative_for_admin": Nytt forslag - administratorer
+        "official_feedback_on_commented_idea": Oppdater på en idé du har kommentert - alle brukere
+        "official_feedback_on_commented_initiative": Oppdatering på et forslag du har kommentert – alle brukere
+        "official_feedback_on_voted_idea": Oppdater på en idé du stemte på – alle brukere
+        "official_feedback_on_voted_initiative": Oppdatering på et forslag du stemte på – alle brukere
+        "official_feedback_on_your_idea": Oppdater ideen din – alle brukere
+        "official_feedback_on_your_initiative": Oppdater forslaget ditt – alle brukere
+        "password_reset": Tilbakestill passord - alle brukere
+        "project_moderation_rights_received": Prosjektmoderasjonsrettigheter mottatt - prosjektledere
+        "project_folder_moderation_rights_received": Mappebehandlerrettigheter mottatt
+        "project_phase_started": Ny prosjektfase - prosjektdeltakere
+        "project_phase_upcoming": Kommende ny prosjektfase - administratorer og prosjektledere
+        "status_change_of_commented_idea": Statusendring av en idé du har kommentert - alle brukere
+        "status_change_of_commented_initiative": Statusendring av et forslag du har kommentert - alle brukere
+        "status_change_of_voted_idea": Statusendring for en idé du stemte på - alle brukere
+        "status_change_of_voted_initiative": Statusendring for et forslag du stemte på - alle brukere
+        "status_change_of_your_idea": Statusendring av ideen din - alle brukere
+        "status_change_of_your_initiative": Statusendring av forslaget ditt - alle brukere
+        "threshold_reached_for_admin": Forslaget nådde stemmegrensen - admins
+        "welcome": Velkommen e-post til nye brukere - alle brukere
+        "admin_digest": Ukentlig oversikt - admins
+        "moderator_digest": Ukentlig oversikt - prosjektledere
+        "assignee_digest": Ukentlig oversikt over tildelte ideer - administratorer og prosjektledere
+        "user_digest": Ukentlig oversikt - alle brukere
+        "your_proposed_initiatives_digest": Ukentlig oversikt over egne forslag – alle brukere
     schedules:
       weekly:
         "0": "Ukentlig, på søndager kl %{hourOfDay}"
@@ -115,8 +116,8 @@
       "unsubscribe_text": "meld av"
     comment_deleted_by_admin:
       reason: 'Grunnen til at din kommentar ble slettet:'
-      cta_view: 'Sjekk ut denne ideen'
-      event_description: '%{organizationName} slettet kommentaren du skrev  under en idé'
+      cta_view1: 'Se denne inngangen'
+      event_description1: '%{organizationName} slettet kommentaren du skrev på en inngang.'
       main_header: '%{organizationName} slettet din kommentar'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Din kommentar ble vurdert som upassende'
@@ -131,7 +132,7 @@
       text_introduction: 'Vi har satt sammen en liste over ideene som har skapt mest aktivitet den siste uken. Finn ut hva som skjer på plattformen din!'
       cta_visit_the_platform: 'Besøk plattformen '
       new_users: 'Nye brukere'
-      new_ideas: 'Nye ideer'
+      new_inputs: 'Nye innganger'
       new_comments: 'Nye kommentarer'
       title_activity_past_week: 'Aktivitet den siste uken'
       title_no_activity_past_week: 'Det var ingen aktivitet den siste uken'
@@ -145,8 +146,8 @@
       message_you_became_administrator: 'Du har fått administratorrettigheter til %{organizationName} sin plattform for innbyggerinvolvering'
       preheader: 'Du fikk administratorrettigheter til %{organizationName} sin plattform for innbyggerinvolvering'
       subject: 'Du ble administrator på plattformen til %{organizationName}'
-      text_create_participatory_process: 'Som administrator kan du opprette nye deltakelsesprosjekter. Du kan legge til nye faser ved hjelp av tidslinjen. For hver av fasene kan du bestemme hvordan  brukerne skal legge til ideer, kommentarer og stemme.  '
-      text_moderate_analyse_input: 'Når prosjekter er lansert kommer de første ideene. Du vil motta ukentlige rapporter med alle viktige aktiviteter slik at du holder deg oppdatert. Ideenes oversikt vil hjelpe deg med å moderere innspillene og samarbeide om å behandle de.'
+      text_create_participatory_process1: 'Som administrator kan du opprette og konfigurere nye deltakelsesprosjekter. Du kan legge til nye faser ved å bruke tidslinjen. Hver av disse fasene kan ha sin egen oppførsel med hensyn til innlegg, kommentarer og stemmegivning.'
+      text_moderate_analyse_input1: 'Når prosjekter er lansert, vil de første innspillene komme inn. Du vil motta ukentlige rapporter med alle nøkkelaktiviteter slik at du holder deg oppdatert. Inndataoversikten hjelper deg med å moderere innspillene og samarbeide om å behandle dem.'
       text_platform_setup: 'Som administrator kan du sette opp din plattform. Velg logo, bilder og farger, skriv en personlig melding på siden, send ut invitasjoner, definer hva du vil vite om brukerne dine, ...'
       title_create_participatory_process: 'Utform deltakelsesprosessen'
       title_moderate_analyse_input: 'Moderer og analyser innspillene'
@@ -180,8 +181,8 @@
       title_your_weekly_report: '%{firstName}, venter på en tilbakemelding'
       cta_manage_your_input: 'Manage your input'
       assigned_ideas: 'Ideer som du må gi en tilbakemelding på'
-      title_assignment_past_week: 'De siste ideene som ble tidelt deg'
-      title_no_assignment_past_week: 'Du fikk ingen nye ideer tildelt forrige uke'
+      title_assignment_past_week1: 'Siste innganger tildelt deg'
+      title_no_assignment_past_week1: 'Ingen nye innganger tildelt deg forrige uke'
       yesterday_by_author: 'I går av %{author}'
       today_by_author: 'I dag av %{author}'
       x_days_ago_by_author: '%{x} dager siden av %{author}'
@@ -191,9 +192,9 @@
       title_successful_initiatives_past_week: 'Initiatives assigned to you that reached the threshold'
     idea_marked_as_spam:
       by_author: 'av %{authorName}'
-      cta_review_idea: 'Gjennomgå idé'
+      cta_review_input: 'Gjennomgå innspill'
       report_inappropriate_offensive_content: 'Jeg synes dette innholdet er upassende eller støtende.'
-      report_not_an_idea: 'Dette innholdet er ikke en idé og hører ikke hjemme her.'
+      report_not_an_input: 'Dette innholdet er ikke en inngang og hører ikke hjemme her.'
       subject: 'Du har fått en spam rapport på %{organizationName}''s plattform'
       preheader: 'Håndter spamrapporten'
       reported_this_because: '%{reporterFirstName} rapporterte dette fordi:'
@@ -245,17 +246,17 @@
       by_author: 'av %{authorName}'
       commented: '%{organizationName} skrev:'
       cta_reply_to: 'Svar %{organizationName}'
-      event_description: '%{organizationName} nevnte deg i deres tilbakemelding på ideen ''%{post}‘. Klikk på lenken nedenfor for å bli med i samtalen med %{organizationName}'
+      event_description1: '%{organizationName} nevnte deg i sin tilbakemelding på input ''%{post}''. Klikk på lenken nedenfor for å gå inn i samtalen med %{organizationName}'
       main_header: 'Du har blitt nevnt'
       subject: '%{organizationName} nevnte deg i deres svar'
       preheader: '%{commentAuthor} nevnte deg i deres svar'
     new_comment_on_commented_idea:
       commented: '%{commentAuthor} skrev:'
       cta_reply_to: 'Svar %{commentAuthor}'
-      event_description: '%{commentAuthorFull} skrev også en kommentar til ideen ''%{ideaTitle}'' på plattformen til %{organizationName}. Klikk på knappen nedenfor for å starte samtalen med %{commentAuthor}.'
-      main_header: '%{commentAuthor} skrev en kommentar til den samme ideen'
-      subject: 'Det er en annen kommentar på ideen du kommenterte'
-      preheader: '%{commentAuthor} la også igjen en kommentar til en idé for %{organizationName}'
+      event_description1: '%{commentAuthorFull} skrev også en kommentar til innspillet ''%{ideaTitle}'' på deltakelsesplattformen til %{organizationName}. Klikk på knappen nedenfor for å starte samtalen med %{commentAuthor}.'
+      main_header1: '%{commentAuthor} skrev en kommentar til samme innspill'
+      subject1: 'Det er en annen kommentar til innspillet du kommenterte'
+      preheader1: '%{commentAuthor} har også lagt igjen en kommentar til en inngang for %{organizationName}'
     mention_in_comment:
       by_author: 'av %{authorName}'
       commented: '%{commentAuthor} skrev:'
@@ -271,7 +272,7 @@
       text_introduction: 'Vi har samlet en oversikt over ideene som har hatt mest aktivitet den siste uken. Finn ut hva som skjer i prosjektet!'
       cta_manage: 'Administrer prosjektet ditt'
       new_users: 'Nye brukere'
-      new_ideas: 'Nye ideer'
+      new_inputs: 'Nye innganger'
       new_comments: 'Nye kommentarer'
       title_inputs_past_week: 'Nye innspill den siste uken'
       title_no_inputs_past_week: 'Ingen nye innspill den siste uken'
@@ -300,10 +301,10 @@
       by_author: 'av %{authorName}'
       commented: '%{authorFirstName} skrev:'
       cta_reply_to: 'Svar %{commentAuthor}'
-      event_description: '%{authorNameFull} plasserte en reaksjon på ideen din ''%{ideaTitle}''. Klikk på knappen for å fortsette samtalen med  %{authorName}.'
-      main_header: '%{authorName} la igjen en kommentar på din idé'
+      event_description1: '%{authorNameFull} la en reaksjon på inndata ''%{ideaTitle}''. Klikk på knappen nedenfor for å fortsette samtalen med %{authorName}.'
+      main_header1: '%{authorName} kommenterte dine innspill'
       subject: 'Du har fått en kommentar på plattformen til %{organizationName}'
-      preheader: '%{authorName} la igjen en kommentar på ideen din for %{organizationName}'
+      preheader1: '%{authorName} la igjen en kommentar til innspillet ditt for %{organizationName}'
     new_comment_on_voted_initiative:
       commented: '%{commentAuthor} skrev:'
       cta_reply_to: 'View this initiative'
@@ -315,10 +316,10 @@
       commented: '%{commentAuthor} kommenterte:'
       cta_reply_to: 'Svar %{commentAuthor}'
       days_ago: '%{numberOfDays} dager siden'
-      event_description: '%{commentAuthor} har kommentert ideen ''%{ideaTitle}'' som du har stemt på. Bli med på diskusjonen på plattformen til %{organizationName}!'
-      main_header: '%{firstName}, det er en ny kommentar til ideen du har stemt på'
-      subject: 'Det er en ny kommentar til ideen du har stemt på'
-      preheader: '%{commentAuthor} la igjen en kommentar til ideen du har stemt på plattformen til %{organizationName}'
+      event_description1: '%{commentAuthor} har kommentert innspillet ''%{ideaTitle}'' som du har stemt på. Bli med i diskusjonen på plattformen til %{organizationName}!'
+      main_header1: '%{firstName}, det er en ny kommentar til innspillet du har stemt på'
+      subject1: 'Det er en ny kommentar til innspillet du har stemt på'
+      preheader1: '%{commentAuthor} la igjen en kommentar til innspillet du har stemt på på plattformen til %{organizationName}'
       today: I dag
       yesterday: I går
     new_initiative_for_admin:
@@ -334,10 +335,10 @@
       commented: '%{authorFirstName} kommenterte:'
       cta_reply_to: 'Gi en tilbakemelding til %{authorName}'
       days_ago: '%{numberOfDays} dager siden'
-      event_description: '%{authorName} har publisert en ny idé på plattformen din. Oppdag den nå, gi en tilbakemelding eller endre status!'
-      main_header: '%{firstName}, en ny idé har blitt publisert på din plattform'
+      event_description1: '%{authorName} har publisert en ny input på plattformen din. Oppdag det nå, gi tilbakemelding eller endre status!'
+      main_header1: '%{firstName}, en ny inngang er publisert på plattformen din'
       subject: 'Noen publiserte en ny idé på plattformen til %{organizationName}'
-      preheader: '%{authorName} publiserte en ny idé på plattformen din'
+      preheader1: '%{authorName} publiserte et nytt innspill på plattformen din'
       today: I dag
       yesterday: I går
     comment_on_your_comment:
@@ -358,27 +359,27 @@
     official_feedback_on_voted_idea:
       by_author: 'av %{authorName}'
       updated: '%{officialName} skrev:'
-      cta_view: 'Gå til ideen'
-      event_description: '%{officialName} ga en oppdatering på ideen ''%{ideaTitle}''. Klikk på knappen nedenfor for å bli med i samtalen %{officialName}.'
-      subject: '%{organizationName} ga en oppdatering på en av ideene du stemte på'
-      preheader: '%{officialName} la til oppdatering på en av ideene du stemte på'
+      cta_view1: 'Gå til denne inngangen'
+      event_description1: '%{officialName} ga en oppdatering på inngangen ''%{ideaTitle}''. Klikk på knappen nedenfor for å gå inn i samtalen med %{officialName}.'
+      subject1: 'Et innspill du stemte på har fått en oppdatering på plattformen på %{organizationName}'
+      preheader1: '%{officialName} la igjen en oppdatering på et innspill du stemte på'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'av %{authorName}'
       updated: '%{officialName} skrev:'
-      cta_view: 'Gå til ideen'
-      event_description: '%{officialName} ga en oppdatering på ideen ''%{ideaTitle}''. Klikk på knappen nedenfor for å bli med i samtalen %{officialName}.'
-      main_header: 'Det er en oppdatering på en av ideene du kommenterte'
-      subject: '%{organizationName} har lagt til en offisiell oppdatering på en ideene du kommenterte'
-      preheader: '%{officialName} la til offisiell oppdatering på en ideene du kommenterte'
+      cta_view1: 'Gå til denne inngangen'
+      event_description1: '%{officialName} ga en oppdatering på inngangen ''%{ideaTitle}''. Klikk på knappen nedenfor for å gå inn i samtalen med %{officialName}.'
+      main_header1: 'Det er en oppdatering på et innspill du har kommentert'
+      subject1: 'Et innspill du kommenterte har mottatt en offisiell oppdatering på plattformen til %{organizationName}'
+      preheader1: '%{officialName} la igjen en offisiell oppdatering på et input du kommenterte'
     official_feedback_on_your_idea:
       by_author: 'av %{authorName}'
       updated: '%{officialName} skrev:'
-      cta_view: 'Gå til din idé'
-      event_description: '%{officialName} ga en oppdatering på din idé ''%{ideaTitle}''. Klikk på knappen nedenfor for å bli med i samtalen %{officialName}.'
+      cta_view1: 'Gå til innspillet ditt'
+      event_description1: '%{officialName} ga en oppdatering på inndata ''%{ideaTitle}''. Klikk på knappen nedenfor for å gå inn i samtalen med %{officialName}.'
       main_header: 'Du mottok en oppdatering fra %{organizationName}'
       subject: 'Du mottok en oppdatering fra %{organizationName}'
-      preheader: '%{officialName} la igjen en offisiell oppdatering på din idé'
+      preheader1: '%{officialName} la igjen en offisiell oppdatering på innspillet ditt'
     official_feedback_on_voted_initiative:
       by_author: 'av %{authorName}'
       updated: '%{officialName} skrev:'
@@ -397,18 +398,18 @@
     project_moderation_rights_received:
       cta_manage_project: 'Administrer dette prosjektet'
       message_you_became_moderator: 'En administrator på deltakelsesplattformen til %{organizationName} gjorde deg nettopp til moderator for det følgende prosjektet:'
-      no_ideas: 'Ingen ideer ennå'
+      no_inputs: 'Ingen innspill ennå'
       preheader: 'En administrator på deltakelsesplattformen til %{organizationName} gjorde deg nettopp til moderator for det følgende prosjektet'
       subject: 'Du har blitt moderator på plattformen til %{organizationName}'
-      text_design_participatory_process: 'Som prosjektmoderator kan du konfigurere hvordan brukere samhandler på prosjektet ditt. Du kan legge til nye faser ved bruk av tidslinjen. Hver av disse fasene kan ha sin egen atferd når det gjelder å legge ut ideer, kommentere og stemme.'
-      text_moderate_analyse_input: 'Så snart prosjektet er lansert, vil de første ideene komme inn. Du vil motta ukentlige rapporter med alle nøkkelaktivitetene, slik at du holder deg à jour. Idéoversikten i prosjektmoderatorvisningen vil hjelpe deg med å forstå hvilke ideer som fikk flest opp-stemmer og ned-stemmer.'
-      text_share_project_information: 'For å øke kvaliteten på ideene du får, er det avgjørende at du deler nok informasjon: Legg til en prosjektbeskrivelse, legg ved bilder (inkl. skisser og planer) og kommuniser alle relaterte arrangementer som pågår. Husk: God informasjon fører til god deltakelse!'
+      text_design_participatory_process1: 'Som prosjektleder kan du konfigurere hvordan brukere samhandler i prosjektet ditt. Du kan legge til nye faser ved å bruke tidslinjen. Hver av disse fasene kan ha sin egen oppførsel med hensyn til innlegg, kommentarer og stemmegivning.'
+      text_moderate_analyse_input1: 'Når prosjektet er lansert, vil de første innspillene komme inn. Du vil motta ukentlige rapporter med alle nøkkelaktiviteter slik at du holder deg oppdatert. Inndataoversikten i prosjektledervisningen din vil hjelpe deg å forstå hvilke innspill som fikk flest opp- og nedstemmer.'
+      text_share_project_information1: 'For å øke kvaliteten på innspillene du får, er det nøkkelen å dele tilstrekkelig informasjon: legg til en prosjektbeskrivelse, legg ved bilder (inkl. skisser og planer), og kommuniser alle relaterte hendelser som pågår. Husk: god informasjon går foran god deltakelse!'
       title_design_participatory_process: 'Utform deltakelsesprosessen'
       title_moderate_analyse_input: 'Moderer og analyser innspillene'
       title_share_project_information: 'Oppgi prosjektinformasjon'
       title_what_can_you_do_moderator: 'Hva kan du gjøre som prosjektmoderator?'
       title_you_became_moderator: 'Du har blitt moderator'
-      x_ideas: '%{numberOfIdeas} ideer'
+      x_inputs: '%{numberOfIdeas} innganger'
     project_folder_moderation_rights_received:
       cta_view_folder_button: 'Vis denne mappen'
       message_added_as_folderadmin: 'Du er tildelt mappeadministrator-rettigheter for følgende mappe på %{organizationName}s deltagelsesplattform:'
@@ -434,33 +435,33 @@
       preheader: 'En ny fase har startet  for %{projectName}'
     project_phase_upcoming:
       cta_view_phase: 'Sett opp den nye fasen'
-      event_description: ' ''%{projectName}'' går snart over i en ny fase. Sørg for at alt er klart: Har du en god nok beskrivelse? Er de valgte ideene flyttet til fasen? Vil du informere innbyggerne om utviklingen via e-post? ?'
+      event_description1: 'Prosjektet ''%{projectName}'' går snart inn i en ny fase. Sørg for at alt er satt opp for denne fasen: Er det en tilstrekkelig beskrivelse? Blir valgte innganger overført til denne fasen? Vil du informere innbyggerne dine om detaljene i denne fasen gjennom en tilpasset e-postkampanje?'
       main_header: '%{firstName}, et prosjekt vil snart gå over i en ny fase'
       subtitle: 'Om «%{projectName}»'
       new_phase: 'Prosjektet vil gå over i en ny fase ''%{phaseTitle}'''
       subject: 'Sett opp alt for den nye fasen %{projectName}'
       preheader: '%{projectName} går snart over i en ny fase'
     status_change_of_commented_idea:
-      status_change: 'Den nye statusen til denne ideen er ''%{ideaStatus}'''
-      cta_view_idea: 'Gå til ideen'
-      event_description: '%{organizationName} oppdaterte statusen til ideen ''%{ideaTitle}'' på deres digitale deltakelsesplattform.'
-      main_header: 'En ide du kommenterte har en ny status'
-      subject: 'Status til en idé du kommenterte på har blitt endret'
-      preheader: '%{organizationName} endret statusen til en idé du kommenterte'
+      status_change1: 'Den nye statusen til denne inngangen er ''%{ideaStatus}'''
+      cta_view_input: 'Gå til denne inngangen'
+      event_description1: '%{organizationName} oppdaterte statusen til inngangen ''%{ideaTitle}'' på deres digitale deltakelsesplattform.'
+      main_header1: 'Et innspill du kommenterte har en ny status'
+      subject1: 'Statusen til et innspill du kommenterte er endret'
+      preheader1: '%{organizationName} endret statusen til en inngang du kommenterte'
     status_change_of_your_idea:
-      status_change: 'Den nye statusen til ideen din er ''%{ideaStatus}'''
-      cta_view_idea: 'Gå til din idé'
-      event_description: '%{organizationName} oppdaterte statusen til ideen din ''%{ideaTitle}'' på deres plattform for innbyggerinvolvering'
-      main_header: 'Ideen din har en ny status'
-      subject: 'Status for ideen din er endret'
-      preheader: '%{organizationName} endret statusen til ideen din'
+      status_change1: 'Den nye statusen for inndata er ''%{ideaStatus}'''
+      cta_view_input: 'Gå til innspillet ditt'
+      event_description1: '%{organizationName} oppdaterte statusen til innspillet ditt ''%{ideaTitle}'' på deres digitale deltakelsesplattform.'
+      main_header1: 'Innspillet ditt har en ny status'
+      subject1: 'Statusen for innspillet ditt er endret'
+      preheader1: '%{organizationName} endret statusen til inndataene dine'
     status_change_of_voted_idea:
-      status_change: 'Den nye statusen til denne ideen er ''%{ideaStatus}'''
-      cta_view_idea: 'Gå til ideen'
-      event_description: '%{organizationName} oppdaterte statusen til ideen ''%{ideaTitle}'' på deres digitale deltakelsesplattform.'
-      main_header: 'En idé du stemte på har en ny status'
-      subject: 'Status til en idé du stemte på har blitt endret'
-      preheader: '%{organizationName} endret statusen til en idé du stemte på'
+      status_change1: 'Den nye statusen til denne inngangen er ''%{ideaStatus}'''
+      cta_view_input: 'Gå til denne inngangen'
+      event_description1: '%{organizationName} oppdaterte statusen til inngangen ''%{ideaTitle}'' på deres digitale deltakelsesplattform.'
+      main_header1: 'Et innspill du stemte på har en ny status'
+      subject1: 'Statusen til et innspill du stemte på er endret'
+      preheader1: '%{organizationName} endret statusen til et innspill du stemte på'
     status_change_of_voted_initiative:
       status_change: 'The new status of this initiative is ''%{initiativeStatus}'''
       cta_view_initiative: 'Go to this initiative'
@@ -491,14 +492,14 @@
       cta_go_to_the_platform: "Gå til plattformen"
       title_no_activity_past_week: "Ingen aktivitet den siste uken"
       title_proposals: "Forslag startet"
-      proposals_started_text: "Forslag er ideer som trenger å blomstre og få støtte fra andre (personer som deg) for å komme videre. Nedenfor er en liste over forslag som er fremmet den siste uken. Klikk på en av dem for å ta en titt og tilby din støtte og tilbakemelding!"
+      proposals_started_text1: "Forslag er innspill som trenger å få gjennomslag og støtte fra andre (sånn som deg!) for å komme videre. Nedenfor er en liste over forslag som er fremmet den siste uken. Klikk på en av dem for å ta en titt og gi din støtte og tilbakemelding!"
       title_successful_proposals: "Oppdag forslag"
       successful_proposals_text: "Disse forslagene har fått nok støtte til å flytte til neste nivå! Klikk på forslaget for å lære mer om hva som skjer videre."
       today_by_author: "I dag av %{author}"
       yesterday_by_author: "I går av %{author}"
       x_days_ago_by_author: "%{x} dager siden av %{author}"
-      trending_ideas: "Trending ideer"
-      trending_ideas_text: "Interessert i hva som har skjedd på plattformen? Her er de tre mest trendskapende ideene og hva folk sier om dem."
+      trending_inputs: "Trendende innganger"
+      trending_inputs_text: "Interessert i hva som har skjedd på plattformen? Her er de tre mest populære inngangene og hva folk sier om dem."
       no_notifications: "No notifications"
       one_notification: "1 notification"
       multiple_notifications: "%{notifCount} varsler"
@@ -511,24 +512,6 @@
       main_header: 'Et forslag har nådd terskelen for antall stemmer!'
       subject: 'Et forslag på din plattform har nådd terskelen for antall stemmer. '
       preheader: 'Husk å gå videre til neste steg.'
-    first_idea_published:
-      action_add_image: '%{addImageLink} for å øke synligheten'
-      action_comment: '%{textComment} eksisterende ideer'
-      action_published_idea: 'Publisert idé'
-      action_send_email: 'Send dine kontakter en %{sendEmailLink}'
-      action_share_fb: 'Del med dine venner %{fbLink}'
-      action_share_link: 'Kopier lenken og del i den kanalen du måtte ønske %{link}'
-      action_share_twitter: 'Del med dine følgere på %{twitterLink}'
-      add_image: 'Legg til et bilde'
-      cta_view_idea: 'Gå til din idé'
-      event_description: '%{firstName} gratulerer med din første idé på plattformen til %{organizationName}. Du vil bli varslet når folk samhandler med ideen din. Finn ut hva som er neste steg nedenfor'
-      link: lenke
-      main_header: '%{firstName} du la ut din første idé'
-      message_get_votes: 'Nå ut til flere med ideen din:'
-      preheader: 'Gratulerer, %{firstName}, du la ut din første idé på plattformen til %{organizationName}. Nå må du skaffe støtte for ideen din'
-      see_you: 'Vi ses snart på plattformen!'
-      send_email: e-post
-      subject: 'Din første idé på plattformen til %{organizationName}'
     welcome:
       cta_join_platform: 'Oppdag plattformen'
       subject: 'Velkommen til %{organizationName} sin medvirkning plattform'
@@ -537,21 +520,21 @@
       preheader: 'Slik kan du bruke plattformen til %{organizationName}'
     idea_published:
       action_add_image: '%{addImageLink} for å øke synligheten'
-      action_published_idea: 'Publisert idé'
+      action_published_input: 'Publisert innspill'
       action_send_email: 'Send dine kontakter en %{sendEmailLink}'
       action_share_fb: 'Del med dine venner %{fbLink}'
       action_share_link: 'Kopier lenken og del i den kanalen du måtte ønske %{link}'
       action_share_twitter: 'Del med dine følgere på %{twitterLink}'
       add_image: 'Legg til et bilde'
-      cta_view_idea: 'Gå til din idé'
-      event_description: '%{firstName},ideen din har blitt publisert på plattformen til %{organizationName}. Du vil bli varslet når folk samhandler med ideen din. Finn ut hva som er neste steg nedenfor'
+      cta_view_input: 'Gå til innspillet ditt'
+      event_description1: '%{firstName}, innspillet ditt har blitt publisert på deltakelsesplattformen til %{organizationName}. Du vil bli varslet når folk samhandler med innspillene dine. Finn ut hvilke neste trinn du kan ta nedenfor.'
       link: lenke
-      main_header: 'Du la ut en ide! La oss sørge for at den blir lest.'
-      message_get_votes: 'Nå ut til flere med ideen din:'
-      preheader: 'Gratulerer %{firstName}, du har delt ideen din ut på plattformen til %{organizationName}. Nå samle støtte.'
+      main_header1: 'Du har lagt inn et innspill! La oss sørge for at den blir lest.'
+      message_get_votes1: 'Nå ut til flere med dine innspill:'
+      preheader1: '%{firstName}, gratulerer med å legge ut ditt innspill på plattformen til %{organizationName}. Samle nå støtte.'
       see_you: 'Vi ses snart på plattformen!'
       send_email: e-post
-      subject: 'Din idé på plattformen til %{organizationName}'
+      subject1: 'Dine innspill på plattformen til %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
       subject: 'Weekly update of your initiative'
@@ -566,35 +549,35 @@
     admin_labels:
       recipient_role:
         admins: 'Til administratorer'
-        admins_and_moderators: 'Til administratorer og moderatorer'
+        admins_and_managers: 'Til administratorer og ledere'
         managers: 'Til ledere'
-        project_participants: 'Til prosjektdeltakere'
         registered_users: 'Til registrerte brukere'
       recipient_segment:
         admins: 'Administratorer'
         admins_and_managers: 'Administratorer og ledere'
+        admins_and_managers_managing_the_project: 'Administratorer og ledere som administrerer prosjektet'
         all_users: 'Alle brukere'
         all_users_who_uploaded_proposals: 'Alle brukere som lastet opp forslag'
         managers: 'Ledere'
-        managers_assigned_to_a_proposal: 'Ledere tildelt et forslag'
-        user_assigned_to_the_idea: 'Bruker tildelt ideen'
+        admins_assigned_to_a_proposal: 'Administratorer tildelt et forslag'
+        admins_and_managers_assigned_to_the_input: 'Administratorer og ledere tilordnet input'
         user_receiving_admin_rights: 'Bruker som mottar administratorrettigheter'
         user_receiving_folder_moderator_rights: 'Bruker som mottar mappemoderatorrettigheter'
         user_receiving_project_moderator_rights: 'Bruker som mottar prosjektmoderatorrettigheter'
         user_who_commented: 'Bruker som kommenterte'
         user_who_is_mentioned: 'Bruker som er nevnt'
-        user_who_published_proposal: 'Bruker som publiserte forslag'
-        user_who_published_the_idea: 'Bruker som publiserte ideen'
+        user_who_published_the_proposal: 'Bruker som publiserte forslaget'
+        user_who_published_the_input: 'Bruker som publiserte innspillet'
         user_who_registers: 'Bruker som registrerer seg'
         user_who_was_invited: 'Bruker som ble invitert'
-        users_engaged_with_the_idea: 'Brukere engasjerte seg i ideen'
+        users_engaged_with_the_input: 'Brukere engasjerte seg i innspillet'
         users_engaged_with_the_project: 'Brukere engasjert i prosjektet'
         users_engaged_with_the_proposal: 'Brukere engasjerte seg i forslaget'
       content_type:
         comments: 'Kommentarer'
         content_moderation: 'Moderering av innhold'
         general: 'Generell'
-        ideas: 'Ideer'
+        inputs: 'Innganger'
         permissions: 'Tillatelser'
         projects: 'Prosjekter'
         proposals: 'Forslag'
@@ -603,27 +586,28 @@
         comment_is_deleted: 'Kommentaren er slettet'
         comment_is_flagged_as_spam: 'Kommentar er merket som spam'
         content_gets_flagged_as_innapropiate: 'Innhold blir flagget som upassende'
-        idea_is_assigned: 'Ideen er tildelt'
-        idea_is_flagged_as_spam: 'Ideen er merket som spam'
-        idea_is_updated: 'Ideen er oppdatert'
-        idea_status_is_changed: 'Idéstatus endres'
-        new_idea_is_published: 'Ny idé er publisert'
-        new_proposal_is_posted: 'Nytt forslag er lagt ut'
+        input_is_assigned: 'Inngang er tildelt'
+        input_is_flagged_as_spam: 'Inndata er flagget som spam'
+        input_is_updated: 'Inndata er oppdatert'
+        input_status_is_changed: 'Inndatastatus endres'
+        new_input_is_published: 'Nye innspill er publisert'
+        new_proposal_is_published: 'Nytt forslag er publisert'
         project_changes_phase: 'Prosjekt endrer fase'
         proposal_gets_reported_as_spam: 'Forslaget blir rapportert som spam'
-        proposal_is_assigned_to_user: 'Forslag tildeles bruker'
+        proposal_is_assigned_to_admin: 'Forslaget tildeles admin'
         proposal_is_updated: 'Forslaget er oppdatert'
         proposal_is_upvoted_above_threshold: 'Forslaget blir stemt over terskel'
         proposal_status_is_changed: 'Forslagsstatus endres'
         user_comments: 'Brukerkommentarer'
-        user_comments_on_idea: 'Brukerkommentarer på ideen'
+        user_comments_on_input: 'Brukerkommentarer på innspill'
         user_comments_on_proposal: 'Brukerkommentarer til forslaget'
         user_is_given_admin_rights: 'Bruker gis administratorrettigheter'
         user_is_given_folder_moderator_rights: 'Brukeren gis mappemoderatorrettigheter'
         user_is_given_project_moderator_rights: 'Bruker gis prosjektmoderatorrettigheter'
         user_is_mentioned: 'Bruker er nevnt'
-        user_publishes_an_idea: 'Bruker publiserer en idé'
-        user_publishes_proposal: 'Bruker publiserer forslag'
+        user_publishes_an_input: 'Bruker publiserer et innspill'
+        user_publishes_a_proposal: 'Bruker publiserer et forslag'
         user_registers_for_the_first_time: 'Bruker registrerer seg for første gang'
         user_replies_to_comment: 'Brukeren svarer på kommentaren'
         7_days_after_invite_is_sent: '7 dager etter at invitasjonen er sendt'
+        7_days_before_the_project_changes_phase: '7 dager før prosjektet endrer fase'
