@@ -1,9 +1,11 @@
 lv:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": Nepiemērots saturs atzīmēts ar karodziņu
+      1:
+        "inappropriate_content_flagged": Neatbilstoša satura atzīmēšana
     admin_campaign_type_description:
-      "inappropriate_content_flagged": Nepiemērots saturs atzīmēts ar karodziņu - administratori
+      1:
+        "inappropriate_content_flagged": Neatbilstošs saturs atzīmēts - admins
     inappropriate_content_flagged:
       subject: 'Ieraksts jūsu platformā ir atzīmēts pārskatīšanai'
       header_title: 'Ieraksts jūsu platformā ir atzīmēts pārskatīšanai'
