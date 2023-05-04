@@ -560,7 +560,7 @@ en:
         all_users_who_uploaded_proposals: 'All users who uploaded proposals'
         managers: 'Managers'
         admins_assigned_to_a_proposal: 'Admins assigned to a proposal'
-        admins_and_managers_assigned_to_a_proposal: 'Admins & managers managing the project'
+        admins_and_managers_assigned_to_the_input: 'Admins & managers assigned to the input'
         user_receiving_admin_rights: 'User receiving admin rights'
         user_receiving_folder_moderator_rights: 'User receiving folder moderator rights'
         user_receiving_project_moderator_rights: 'User receiving project moderator rights'
