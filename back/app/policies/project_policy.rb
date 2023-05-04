@@ -134,6 +134,7 @@ class ProjectPolicy < ApplicationPolicy
       :upvoting_limited_max,
       :survey_embed_url,
       :survey_service,
+      # :document_annotation_embed_url,
       :min_budget,
       :max_budget,
       :presentation_mode,
