@@ -1,13 +1,15 @@
 de:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Zuweisung einer Idee an mich
+      1:
+        "idea_assigned_to_you": Zuweisung einer Eingabe an mich
     admin_campaign_type_description:
-      "idea_assigned_to_you": Zuweisung einer Idee - Admins und Projektmanager*innen
+      1:
+        "idea_assigned_to_you": Zuweisung einer Eingabe - Admins und Projektmanager
     idea_assigned_to_you:
       by_author: 'von %{authorName}'
       cta_reply_to: 'Geben Sie %{authorName} Feedback'
-      event_description_idea: 'Ihnen wurde eine Idee zugewiesen. Geben Sie Feedback, indem Sie ein offizielles Update schreiben oder den Status ändern.'
+      event_description_input: 'Dir wurde eine Eingabe zugewiesen. Gib Feedback, indem du ein offizielles Update schreibst oder seinen Status änderst.'
       main_header: '%{firstName}, du hast eine neue Zuordnung'
       subject: 'Du hast einen Auftrag auf der Plattform von %{organizationName}'
-      preheader_idea: 'Ihnen wurde die Idee von %{authorName} zugewiesen'
+      preheader_input: 'Die Eingabe von %{authorName} wurde dir zugewiesen'
