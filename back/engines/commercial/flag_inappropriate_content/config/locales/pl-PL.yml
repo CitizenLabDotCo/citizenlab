@@ -1,9 +1,11 @@
 pl:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": Nieodpowiednie treści są oznaczane
+      1:
+        "inappropriate_content_flagged": Nieodpowiednia zawartość oznaczona
     admin_campaign_type_description:
-      "inappropriate_content_flagged": Nieodpowiednie treści zostały oznaczone - administratorzy
+      1:
+        "inappropriate_content_flagged": Nieodpowiednia zawartość oznaczona - administratorzy
     inappropriate_content_flagged:
       subject: 'Post na Twojej platformie został oznaczony do przeglądu'
       header_title: 'Post na Twojej platformie został oznaczony do przeglądu'
