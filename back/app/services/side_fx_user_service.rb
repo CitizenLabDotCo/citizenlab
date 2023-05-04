@@ -14,7 +14,7 @@ class SideFxUserService
       LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, user.created_at.to_i)
     end
     user.create_email_campaigns_unsubscription_token
-    SendConfirmationCode.call(user: user) if user.confirmation_required?
+    SendConfirmationCode.call(user: user) if user.should_send_confirmation_email?
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
   end
 
@@ -31,6 +31,7 @@ class SideFxUserService
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
 
     UpdateMemberCountJob.perform_later
+    SendConfirmationCode.call(user: user) if user.should_send_confirmation_email?
   end
 
   def after_destroy(frozen_user, current_user)

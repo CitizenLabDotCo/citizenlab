@@ -68,5 +68,21 @@ module EmailCampaigns
     def url_service
       @url_service ||= Frontend::UrlService.new
     end
+
+    def self.recipient_role_multiloc_key
+      'email_campaigns.admin_labels.recipient_role.admins_and_moderators'
+    end
+
+    def self.recipient_segment_multiloc_key
+      'email_campaigns.admin_labels.recipient_segment.user_receiving_folder_moderator_rights'
+    end
+
+    def self.content_type_multiloc_key
+      'email_campaigns.admin_labels.content_type.permissions'
+    end
+
+    def self.trigger_multiloc_key
+      'email_campaigns.admin_labels.trigger.user_is_given_folder_moderator_rights'
+    end
   end
 end

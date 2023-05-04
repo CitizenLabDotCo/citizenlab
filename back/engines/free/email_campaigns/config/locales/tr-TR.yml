@@ -97,6 +97,15 @@ tr:
       "assignee_digest": Atanmış fikirlere haftalık genel bakış - yöneticiler ve proje yöneticileri
       "user_digest": Haftalık genel bakış - tüm kullanıcılar
       "your_proposed_initiatives_digest": Kendi önerilerinize haftalık genel bakış - tüm kullanıcılar
+    schedules:
+      weekly:
+        "0": "Haftalık, Pazar günleri %{hourOfDay}adresinde"
+        "1": "Haftalık Pazartesi günleri %{atHour}"
+        "2": "Haftalık Salı günleri %{atHour}"
+        "3": "Haftalık Çarşamba günleri %{atHour}"
+        "4": "Haftalık Perşembe günleri %{atHour}"
+        "5": "Haftalık Cuma günleri %{atHour}"
+        "6": "Haftalık Cumartesi günleri %{atHour}"
     footer:
       "link_privacy_policy": "Gi̇zli̇li̇k Poli̇ti̇kası"
       "link_terms_conditions": "Hüküm ve Koşullar"
@@ -554,3 +563,67 @@ tr:
       new_votes: 'Yeni oy sayısı'
       remaining_votes: 'Kalan oy sayısı'
       remaining_days: 'Kalan gün sayısı'
+    admin_labels:
+      recipient_role:
+        admins: 'Yöneticilere'
+        admins_and_moderators: 'Yöneticilere ve moderatörlere'
+        managers: 'Yöneticilere'
+        project_participants: 'Proje katılımcılarına'
+        registered_users: 'Kayıtlı kullanıcılara'
+      recipient_segment:
+        admins: 'Yöneticiler'
+        admins_and_managers: 'Yöneticiler ve müdürler'
+        all_users: 'Tüm kullanıcılar'
+        all_users_who_uploaded_proposals: 'Teklif yükleyen tüm kullanıcılar'
+        managers: 'Yöneticiler'
+        managers_assigned_to_a_proposal: 'Bir teklife atanan yöneticiler'
+        user_assigned_to_the_idea: 'Fikre atanan kullanıcı'
+        user_receiving_admin_rights: 'Yönetici hakları alan kullanıcı'
+        user_receiving_folder_moderator_rights: 'Klasör moderatör haklarını alan kullanıcı'
+        user_receiving_project_moderator_rights: 'Proje moderatörü haklarını alan kullanıcı'
+        user_who_commented: 'Yorum yapan kullanıcı'
+        user_who_is_mentioned: 'Bahsi geçen kullanıcı'
+        user_who_published_proposal: 'Teklifi yayınlayan kullanıcı'
+        user_who_published_the_idea: 'Fikri yayınlayan kullanıcı'
+        user_who_registers: 'Kayıt olan kullanıcı'
+        user_who_was_invited: 'Davet edilen kullanıcı'
+        users_engaged_with_the_idea: 'Kullanıcılar fikirle etkileşime geçti'
+        users_engaged_with_the_project: 'Kullanıcıların projeye katılımı'
+        users_engaged_with_the_proposal: 'Kullanıcılar teklifle etkileşime geçti'
+      content_type:
+        comments: 'Yorumlar'
+        content_moderation: 'İçerik moderasyonu'
+        general: 'Genel'
+        ideas: 'Fikirler'
+        permissions: 'İzinler'
+        projects: 'Projeler'
+        proposals: 'Teklifler'
+        votes: 'Oylar'
+      trigger:
+        comment_is_deleted: 'Yorum silindi'
+        comment_is_flagged_as_spam: 'Yorum spam olarak işaretlendi'
+        content_gets_flagged_as_innapropiate: 'İçerik uygunsuz olarak işaretlenir'
+        idea_is_assigned: 'Fikir atanır'
+        idea_is_flagged_as_spam: 'Fikir spam olarak işaretlendi'
+        idea_is_updated: 'Fikir güncellendi'
+        idea_status_is_changed: 'Fikir durumu değiştirildi'
+        new_idea_is_published: 'Yeni fikir yayınlandı'
+        new_proposal_is_posted: 'Yeni teklif yayınlandı'
+        project_changes_phase: 'Proje değişiklikleri aşaması'
+        proposal_gets_reported_as_spam: 'Teklif spam olarak bildiriliyor'
+        proposal_is_assigned_to_user: 'Teklif kullanıcıya atanır'
+        proposal_is_updated: 'Teklif güncellendi'
+        proposal_is_upvoted_above_threshold: 'Teklif eşik değerin üzerinde oylandı'
+        proposal_status_is_changed: 'Teklif durumu değiştirildi'
+        user_comments: 'Kullanıcı yorumları'
+        user_comments_on_idea: 'Fikir hakkında kullanıcı yorumları'
+        user_comments_on_proposal: 'Teklifle ilgili kullanıcı yorumları'
+        user_is_given_admin_rights: 'Kullanıcıya yönetici hakları verilir'
+        user_is_given_folder_moderator_rights: 'Kullanıcıya klasör moderatörü hakları verilir'
+        user_is_given_project_moderator_rights: 'Kullanıcıya proje moderatörü hakları verilir'
+        user_is_mentioned: 'Kullanıcıdan bahsedilir'
+        user_publishes_an_idea: 'Kullanıcı bir fikir yayınlar'
+        user_publishes_proposal: 'Kullanıcı teklifi yayınlar'
+        user_registers_for_the_first_time: 'Kullanıcı ilk kez kaydolur'
+        user_replies_to_comment: 'Kullanıcı yoruma yanıt veriyor'
+        7_days_after_invite_is_sent: 'Davetiye gönderildikten 7 gün sonra'

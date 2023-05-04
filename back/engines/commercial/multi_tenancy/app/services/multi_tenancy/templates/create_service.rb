@@ -17,7 +17,7 @@ module MultiTenancy
     #       ⋮   └── uploads > model > id > file
     #       └── template_name_N
     class CreateService
-      attr_reader :template_bucket, :tenant_bucket, :s3_client
+      attr_reader :template_bucket, :tenant_bucket
 
       # @param [String, nil] tenant_bucket Name of the bucket where the tenant uploads
       #   are stored. Defaults to 'cl2-tenants-production-benelux'.
@@ -27,11 +27,13 @@ module MultiTenancy
       def initialize(
         tenant_bucket: 'cl2-tenants-production-benelux',
         template_bucket: ENV.fetch('TEMPLATE_BUCKET'),
-        s3_client: Aws::S3::Client.new(region: 'eu-central-1')
+        tenant_s3_client: Aws::S3::Client.new(region: ENV.fetch('AWS_REGION')),
+        templates_s3_client: Aws::S3::Client.new(region: 'eu-central-1')
       )
         @template_bucket = template_bucket
         @tenant_bucket = tenant_bucket
-        @s3_client = s3_client
+        @tenant_s3_client = tenant_s3_client
+        @templates_s3_client = templates_s3_client
       end
 
       # @param [Object] tenant The tenant to create a template from.
@@ -53,8 +55,8 @@ module MultiTenancy
 
       def delete_s3_objects(bucket_name, template_prefix)
         # 1000 is the maximum number of objects that can be deleted in a single request.
-        s3_utils.objects(bucket: bucket_name, prefix: template_prefix).each_slice(1000) do |objects|
-          s3_client.delete_objects(
+        s3_utils.objects(@templates_s3_client, bucket: bucket_name, prefix: template_prefix).each_slice(1000) do |objects|
+          @templates_s3_client.delete_objects(
             bucket: bucket_name,
             delete: {
               objects: objects.map { |object| { key: object.key } },
@@ -81,7 +83,12 @@ module MultiTenancy
         dest_prefix = "#{template_prefix}/uploads"
 
         s3_utils.copy_objects(
-          tenant_bucket, template_bucket, source_prefix, num_threads: num_threads
+          tenant_bucket,
+          @tenant_s3_client,
+          template_bucket,
+          dest_s3_client: @templates_s3_client,
+          prefix: source_prefix,
+          num_threads: num_threads
         ) { |key| transform_key(key, dest_prefix, models: models) }
       end
 
@@ -113,11 +120,11 @@ module MultiTenancy
       end
 
       def s3_utils
-        @s3_utils ||= Aws::S3::Utils.new(s3_client)
+        @s3_utils ||= Aws::S3::Utils.new
       end
 
       def template_utils
-        @template_utils ||= MultiTenancy::Templates::Utils.new
+        @template_utils ||= MultiTenancy::Templates::Utils.new(s3_client: @templates_s3_client)
       end
 
       def template_name(tenant)
@@ -126,7 +133,7 @@ module MultiTenancy
 
       # Stores the content in the S3 template bucket.
       def copy_to_s3(content, key)
-        s3_client.put_object(bucket: template_bucket, key: key, body: content)
+        @templates_s3_client.put_object(bucket: template_bucket, key: key, body: content)
       end
     end
   end

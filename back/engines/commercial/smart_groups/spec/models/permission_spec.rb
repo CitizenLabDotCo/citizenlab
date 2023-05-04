@@ -43,44 +43,4 @@ RSpec.describe Permission do
       ]
     end
   end
-
-  describe '#for_user' do
-    # +let!(permissions)+ must be run after +before(:each)+ which deletes all permission records
-    let!(:permissions) do
-      [
-        create(:global_permission, :by_everyone, action: 'posting_initiative'),
-        create(:global_permission, :by_users, action: 'voting_initiative'),
-        create(:global_permission, :by_admins_moderators, action: 'commenting_initiative'),
-        create(:permission, permitted_by: 'groups', groups: [manual_grp], action: 'posting_idea'),
-        create(:permission, permitted_by: 'groups', groups: [cl_veteran_grp], action: 'voting_idea')
-      ]
-    end
-    let(:manual_grp) { create(:group) }
-    let(:cl_veteran_grp) do
-      rule1 = { ruleType: 'email', predicate: 'ends_on', value: 'citizenlab.co' }
-
-      birthyear_field = create(
-        :custom_field_number,
-        title_multiloc: { 'en' => 'Birthyear?' },
-        key: 'birthyear',
-        code: 'birthyear'
-      )
-      rule2 = {
-        ruleType: 'custom_field_number',
-        customFieldId: birthyear_field.id,
-        predicate: 'is_smaller_than_or_equal',
-        value: 1988
-      }
-
-      create(:smart_group, rules: [rule1, rule2])
-    end
-
-    context 'when user belongs to the authorized smart group' do
-      let(:user) { create(:user, email: 'info@citizenlab.co', birthyear: 1980) }
-
-      it {
-        expect(described_class.for_user(user)).to match_array [permissions[0], permissions[1], permissions[4]]
-      }
-    end
-  end
 end

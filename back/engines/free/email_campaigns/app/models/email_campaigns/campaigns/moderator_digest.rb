@@ -40,7 +40,7 @@ module EmailCampaigns
 
     before_send :content_worth_sending?
 
-    N_TOP_IDEAS = ENV.fetch('N_MODERATOR_DIGEST_IDEAS', 12).to_i
+    N_TOP_IDEAS = 12
 
     def mailer_class
       ModeratorDigestMailer
@@ -60,6 +60,22 @@ module EmailCampaigns
 
     def self.category
       'admin'
+    end
+
+    def self.recipient_role_multiloc_key
+      'email_campaigns.admin_labels.recipient_role.managers'
+    end
+
+    def self.recipient_segment_multiloc_key
+      'email_campaigns.admin_labels.recipient_segment.managers'
+    end
+
+    def self.content_type_multiloc_key
+      'email_campaigns.admin_labels.content_type.general'
+    end
+
+    def self.trigger_multiloc_key
+      'scheduled'
     end
 
     def generate_commands(recipient:, time: nil)

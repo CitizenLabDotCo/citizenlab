@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :permission do
     action { 'posting_idea' }
     permitted_by { 'groups' }
+    global_custom_fields { false }
     permission_scope { create(:continuous_project, participation_method: 'ideation') }
     groups { [] }
 
@@ -17,6 +18,10 @@ FactoryBot.define do
 
     trait :by_users do
       permitted_by { 'users' }
+    end
+
+    trait :by_everyone_confirmed_email do
+      permitted_by { 'everyone_confirmed_email' }
     end
 
     factory :global_permission do

@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.modules.id_id_card_lookup.invalidCardIdError',
     defaultMessage: 'This id is not valid.',
   },
-  verifyYourIdentity: {
-    id: 'app.modules.id_id_card_lookup.verifyYourIdentity',
-    defaultMessage: 'Verify your identity',
-  },
   showHelp: {
     id: 'app.modules.id_id_card_lookup.showHelp',
     defaultMessage: 'Where can I find my ID Serial Number?',

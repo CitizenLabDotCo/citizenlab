@@ -52,7 +52,7 @@ describe('Landing page - not signed in', () => {
 
     // shows the signed-out header CTA button, and shows the sign up/in modal when clicked
     cy.get('.e2e-signed-out-header-cta-button').click();
-    cy.get('#e2e-sign-up-in-modal');
+    cy.get('#e2e-authentication-modal');
   });
 });
 

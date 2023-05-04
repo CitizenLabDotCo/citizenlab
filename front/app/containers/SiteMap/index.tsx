@@ -312,39 +312,29 @@ const SiteMap = ({ projects, authUser }: Props) => {
                     );
                   })}
                 </ul>
-
-                <H2 ref={userSpaceSection} tabIndex={-1}>
-                  <FormattedMessage {...messages.userSpaceSection} />
-                </H2>
-                <ul>
-                  {isNilOrError(authUser) ? (
+                <>
+                  {!isNilOrError(authUser) && (
                     <>
-                      <li>
-                        <Link to="/sign-in">
-                          <FormattedMessage {...messages.signInPage} />
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="/sign-up">
-                          <FormattedMessage {...messages.signUpPage} />
-                        </Link>
-                      </li>
-                    </>
-                  ) : (
-                    <>
-                      <li>
-                        <Link to={`/profile/${authUser.attributes.slug}`}>
-                          <FormattedMessage {...messages.profilePage} />
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="/profile/edit">
-                          <FormattedMessage {...messages.profileSettings} />
-                        </Link>
-                      </li>
+                      <H2 ref={userSpaceSection} tabIndex={-1}>
+                        <FormattedMessage {...messages.userSpaceSection} />
+                      </H2>
+                      <ul>
+                        <>
+                          <li>
+                            <Link to={`/profile/${authUser.attributes.slug}`}>
+                              <FormattedMessage {...messages.profilePage} />
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/profile/edit">
+                              <FormattedMessage {...messages.profileSettings} />
+                            </Link>
+                          </li>
+                        </>
+                      </ul>
                     </>
                   )}
-                </ul>
+                </>
 
                 <ProjectsAndFoldersSection
                   projectsSectionRef={projectsSection}

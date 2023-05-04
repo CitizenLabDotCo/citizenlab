@@ -45,7 +45,7 @@ class StaticPage < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
 
   has_many :static_pages_topics, dependent: :destroy
-  has_many :topics, through: :static_pages_topics
+  has_many :topics, -> { order(:ordering) }, through: :static_pages_topics
 
   has_many :areas_static_pages, dependent: :destroy
   has_many :areas, through: :areas_static_pages

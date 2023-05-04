@@ -97,6 +97,15 @@ pt:
       "assignee_digest": Síntese semanal das ideias atribuídas - administradores e gestores de projecto
       "user_digest": Visão geral semanal - todos os utilizadores
       "your_proposed_initiatives_digest": Síntese semanal das suas próprias propostas - todos os utilizadores
+    schedules:
+      weekly:
+        "0": "Semanalmente, aos domingos, em %{hourOfDay}"
+        "1": "Semanalmente, às segundas-feiras %{atHour}"
+        "2": "Semanalmente, às terças-feiras %{atHour}"
+        "3": "Semanalmente, às quartas-feiras %{atHour}"
+        "4": "Semanalmente, às quintas-feiras %{atHour}"
+        "5": "Semanalmente, às sextas-feiras %{atHour}"
+        "6": "Semanalmente, aos sábados %{atHour}"
     footer:
       "link_privacy_policy": "Política de Privacidade"
       "link_terms_conditions": "Termos e Condições"
@@ -554,3 +563,67 @@ pt:
       new_votes: 'Novos votos'
       remaining_votes: 'Votos restantes'
       remaining_days: 'Dias restantes'
+    admin_labels:
+      recipient_role:
+        admins: 'Para os administradores'
+        admins_and_moderators: 'Aos administradores e moderadores'
+        managers: 'Aos gestores'
+        project_participants: 'Aos participantes no projecto'
+        registered_users: 'Para utilizadores registados'
+      recipient_segment:
+        admins: 'Administradores'
+        admins_and_managers: 'Administradores e gestores'
+        all_users: 'Todos os utilizadores'
+        all_users_who_uploaded_proposals: 'Todos os utilizadores que carregaram propostas'
+        managers: 'Gestores'
+        managers_assigned_to_a_proposal: 'Gestores afectados a uma proposta'
+        user_assigned_to_the_idea: 'Utilizador atribuído à ideia'
+        user_receiving_admin_rights: 'Utilizador que recebe direitos de administrador'
+        user_receiving_folder_moderator_rights: 'Utilizador que recebe direitos de moderador de pastas'
+        user_receiving_project_moderator_rights: 'Utilizador que recebe direitos de moderador de projecto'
+        user_who_commented: 'Utilizador que comentou'
+        user_who_is_mentioned: 'Utilizador que é mencionado'
+        user_who_published_proposal: 'Utilizador que publicou a proposta'
+        user_who_published_the_idea: 'Utilizador que publicou a ideia'
+        user_who_registers: 'Utilizador que se regista'
+        user_who_was_invited: 'Utilizador que foi convidado'
+        users_engaged_with_the_idea: 'Utilizadores envolvidos com a ideia'
+        users_engaged_with_the_project: 'Utilizadores envolvidos no projecto'
+        users_engaged_with_the_proposal: 'Utilizadores envolvidos na proposta'
+      content_type:
+        comments: 'Comentários'
+        content_moderation: 'Moderação de conteúdos'
+        general: 'Geral'
+        ideas: 'Ideias'
+        permissions: 'Permissões'
+        projects: 'Projectos'
+        proposals: 'Propostas'
+        votes: 'Votos'
+      trigger:
+        comment_is_deleted: 'O comentário é eliminado'
+        comment_is_flagged_as_spam: 'O comentário é assinalado como spam'
+        content_gets_flagged_as_innapropiate: 'O conteúdo é assinalado como innapropiate'
+        idea_is_assigned: 'A ideia é atribuída'
+        idea_is_flagged_as_spam: 'A ideia é assinalada como spam'
+        idea_is_updated: 'A ideia está actualizada'
+        idea_status_is_changed: 'O estado da ideia é alterado'
+        new_idea_is_published: 'Publicação de uma nova ideia'
+        new_proposal_is_posted: 'Nova proposta é publicada'
+        project_changes_phase: 'Fase de alterações do projecto'
+        proposal_gets_reported_as_spam: 'A proposta é denunciada como spam'
+        proposal_is_assigned_to_user: 'A proposta é atribuída ao utilizador'
+        proposal_is_updated: 'A proposta é actualizada'
+        proposal_is_upvoted_above_threshold: 'A proposta é votada positivamente acima do limiar'
+        proposal_status_is_changed: 'O estado da proposta é alterado'
+        user_comments: 'Comentários dos utilizadores'
+        user_comments_on_idea: 'Comentários dos utilizadores sobre a ideia'
+        user_comments_on_proposal: 'Comentários dos utilizadores sobre a proposta'
+        user_is_given_admin_rights: 'O utilizador tem direitos de administrador'
+        user_is_given_folder_moderator_rights: 'O utilizador recebe direitos de moderador de pastas'
+        user_is_given_project_moderator_rights: 'O utilizador recebe direitos de moderador de projecto'
+        user_is_mentioned: 'O utilizador é mencionado'
+        user_publishes_an_idea: 'O utilizador publica uma ideia'
+        user_publishes_proposal: 'O utilizador publica a proposta'
+        user_registers_for_the_first_time: 'O utilizador regista-se pela primeira vez'
+        user_replies_to_comment: 'O utilizador responde ao comentário'
+        7_days_after_invite_is_sent: '7 dias após o envio do convite'

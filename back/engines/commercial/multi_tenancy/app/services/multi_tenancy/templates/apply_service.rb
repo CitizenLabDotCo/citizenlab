@@ -9,15 +9,14 @@ module MultiTenancy
         internal_template_dir: Rails.root.join('config/tenant_templates'),
         tenant_bucket: ENV.fetch('AWS_S3_BUCKET', nil),
         template_bucket: ENV.fetch('TEMPLATE_BUCKET', nil),
-        s3_client: nil
+        tenant_s3_client: Aws::S3::Client.new(region: ENV.fetch('AWS_REGION')),
+        template_s3_client: Aws::S3::Client.new(region: 'eu-central-1')
       )
         @internal_template_dir = internal_template_dir
         @tenant_bucket = tenant_bucket
         @template_bucket = template_bucket
-
-        @s3_client ||= Aws::S3::Client.new(
-          region: ENV.fetch('AWS_REGION', 'eu-central-1')
-        )
+        @tenant_s3_client = tenant_s3_client
+        @template_s3_client = template_s3_client
       end
 
       def apply(template_name, external_template_group: nil)
@@ -56,13 +55,14 @@ module MultiTenancy
       private
 
       def s3_utils
-        @s3_utils ||= Aws::S3::Utils.new(@s3_client)
+        @s3_utils ||= Aws::S3::Utils.new
       end
 
       def template_utils
         @template_utils ||= MultiTenancy::Templates::Utils.new(
           internal_template_dir: internal_template_dir,
-          template_bucket: @template_bucket
+          template_bucket: @template_bucket,
+          s3_client: @template_s3_client
         )
       end
 
@@ -70,7 +70,11 @@ module MultiTenancy
         uploads_prefix = "#{template_prefix}/uploads/"
 
         s3_utils.copy_objects(
-          template_bucket, tenant_bucket, uploads_prefix,
+          template_bucket,
+          @template_s3_client,
+          tenant_bucket,
+          dest_s3_client: @tenant_s3_client,
+          prefix: uploads_prefix,
           copy_args: { acl: 'public-read' },
           num_threads: num_threads
         ) do |key|

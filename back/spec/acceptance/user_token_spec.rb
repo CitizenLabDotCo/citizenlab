@@ -152,7 +152,7 @@ resource 'User Token' do
       context 'when the user has no password set' do
         context 'when confirmation is still required' do
           before do
-            create(:user_with_confirmation, email: email, password: nil)
+            create(:user_no_password, email: email)
             allow(Time).to receive(:now).and_return(Time.now)
           end
 
@@ -166,7 +166,8 @@ resource 'User Token' do
 
         context 'when email has already been confirmed' do
           before do
-            create(:user, email: email, password: nil)
+            user = create(:user_no_password, email: email)
+            user.confirm!
           end
 
           example_request 'no JWT token is returned' do
@@ -177,7 +178,7 @@ resource 'User Token' do
 
       context 'when the user has a password set and confirmation is required' do
         before do
-          create(:user, email: email, password: 'monkeynuts123')
+          create(:user_with_confirmation, email: email, password: 'monkeynuts123')
         end
 
         example_request 'no JWT token is returned' do

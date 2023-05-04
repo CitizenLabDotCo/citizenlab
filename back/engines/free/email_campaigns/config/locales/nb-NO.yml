@@ -97,6 +97,15 @@
       "assignee_digest": Ukentlig oversikt over tildelte ideer – administratorer og prosjektledere
       "user_digest": Ukentlig oversikt – alle brukere
       "your_proposed_initiatives_digest": Ukentlig oversikt over dine egne forslag – alle brukere
+    schedules:
+      weekly:
+        "0": "Ukentlig, på søndager kl %{hourOfDay}"
+        "1": "Ukentlig på mandager %{atHour}"
+        "2": "Ukentlig på tirsdager %{atHour}"
+        "3": "Ukentlig på onsdager %{atHour}"
+        "4": "Ukentlig på torsdager %{atHour}"
+        "5": "Ukentlig på fredager %{atHour}"
+        "6": "Ukentlig på lørdager %{atHour}"
     footer:
       "link_privacy_policy": "Personvernerklæring"
       "link_terms_conditions": "Vilkår og betingelser"
@@ -554,3 +563,67 @@
       new_votes: 'Nye stemmer'
       remaining_votes: 'Antall stemmer som mangler'
       remaining_days: 'Dager igjen'
+    admin_labels:
+      recipient_role:
+        admins: 'Til administratorer'
+        admins_and_moderators: 'Til administratorer og moderatorer'
+        managers: 'Til ledere'
+        project_participants: 'Til prosjektdeltakere'
+        registered_users: 'Til registrerte brukere'
+      recipient_segment:
+        admins: 'Administratorer'
+        admins_and_managers: 'Administratorer og ledere'
+        all_users: 'Alle brukere'
+        all_users_who_uploaded_proposals: 'Alle brukere som lastet opp forslag'
+        managers: 'Ledere'
+        managers_assigned_to_a_proposal: 'Ledere tildelt et forslag'
+        user_assigned_to_the_idea: 'Bruker tildelt ideen'
+        user_receiving_admin_rights: 'Bruker som mottar administratorrettigheter'
+        user_receiving_folder_moderator_rights: 'Bruker som mottar mappemoderatorrettigheter'
+        user_receiving_project_moderator_rights: 'Bruker som mottar prosjektmoderatorrettigheter'
+        user_who_commented: 'Bruker som kommenterte'
+        user_who_is_mentioned: 'Bruker som er nevnt'
+        user_who_published_proposal: 'Bruker som publiserte forslag'
+        user_who_published_the_idea: 'Bruker som publiserte ideen'
+        user_who_registers: 'Bruker som registrerer seg'
+        user_who_was_invited: 'Bruker som ble invitert'
+        users_engaged_with_the_idea: 'Brukere engasjerte seg i ideen'
+        users_engaged_with_the_project: 'Brukere engasjert i prosjektet'
+        users_engaged_with_the_proposal: 'Brukere engasjerte seg i forslaget'
+      content_type:
+        comments: 'Kommentarer'
+        content_moderation: 'Moderering av innhold'
+        general: 'Generell'
+        ideas: 'Ideer'
+        permissions: 'Tillatelser'
+        projects: 'Prosjekter'
+        proposals: 'Forslag'
+        votes: 'Stemmer'
+      trigger:
+        comment_is_deleted: 'Kommentaren er slettet'
+        comment_is_flagged_as_spam: 'Kommentar er merket som spam'
+        content_gets_flagged_as_innapropiate: 'Innhold blir flagget som upassende'
+        idea_is_assigned: 'Ideen er tildelt'
+        idea_is_flagged_as_spam: 'Ideen er merket som spam'
+        idea_is_updated: 'Ideen er oppdatert'
+        idea_status_is_changed: 'Idéstatus endres'
+        new_idea_is_published: 'Ny idé er publisert'
+        new_proposal_is_posted: 'Nytt forslag er lagt ut'
+        project_changes_phase: 'Prosjekt endrer fase'
+        proposal_gets_reported_as_spam: 'Forslaget blir rapportert som spam'
+        proposal_is_assigned_to_user: 'Forslag tildeles bruker'
+        proposal_is_updated: 'Forslaget er oppdatert'
+        proposal_is_upvoted_above_threshold: 'Forslaget blir stemt over terskel'
+        proposal_status_is_changed: 'Forslagsstatus endres'
+        user_comments: 'Brukerkommentarer'
+        user_comments_on_idea: 'Brukerkommentarer på ideen'
+        user_comments_on_proposal: 'Brukerkommentarer til forslaget'
+        user_is_given_admin_rights: 'Bruker gis administratorrettigheter'
+        user_is_given_folder_moderator_rights: 'Brukeren gis mappemoderatorrettigheter'
+        user_is_given_project_moderator_rights: 'Bruker gis prosjektmoderatorrettigheter'
+        user_is_mentioned: 'Bruker er nevnt'
+        user_publishes_an_idea: 'Bruker publiserer en idé'
+        user_publishes_proposal: 'Bruker publiserer forslag'
+        user_registers_for_the_first_time: 'Bruker registrerer seg for første gang'
+        user_replies_to_comment: 'Brukeren svarer på kommentaren'
+        7_days_after_invite_is_sent: '7 dager etter at invitasjonen er sendt'

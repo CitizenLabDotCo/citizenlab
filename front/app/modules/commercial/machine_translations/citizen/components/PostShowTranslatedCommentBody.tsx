@@ -1,7 +1,7 @@
 import GetMachineTranslation from 'modules/commercial/machine_translations/resources/GetMachineTranslation';
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { CommentText } from 'components/PostShowComponents/Comments/CommentBody';
+import { CommentText } from 'components/PostShowComponents/Comments/Comment/CommentBody';
 import { Locale } from 'typings';
 
 interface Props {

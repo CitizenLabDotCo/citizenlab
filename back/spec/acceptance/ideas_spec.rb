@@ -66,7 +66,7 @@ resource 'Ideas' do
       parameter :topics, 'Filter by topics (OR)', required: false
       parameter :projects, 'Filter by projects (OR)', required: false
       parameter :phase, 'Filter by project phase', required: false
-      parameter :basket, 'Filter by basket', required: false
+      parameter :basket_id, 'Filter by basket', required: false
       parameter :author, 'Filter by author (user id)', required: false
       parameter :idea_status, 'Filter by status (idea status id)', required: false
       parameter :search, 'Filter by searching in title and body', required: false
@@ -189,7 +189,7 @@ resource 'Ideas' do
           basket = create(:basket)
           [@ideas[1], @ideas[2], @ideas[5]].each { _1.baskets << basket }
 
-          do_request(basket: basket.id)
+          do_request(basket_id: basket.id)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 2
           expect(json_response[:data].pluck(:id)).to match_array [@ideas[1].id, @ideas[5].id]
@@ -391,6 +391,59 @@ resource 'Ideas' do
             expect(status).to eq 200
             worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
             expect(worksheet.count).to eq(@selected_ideas.size + 1)
+          end
+        end
+
+        context 'when the user moderates the project' do
+          before do
+            @project = create(:project)
+            @user = create(:project_moderator, projects: [@project])
+            header_token_for(@user)
+          end
+
+          let(:project) { @project.id }
+
+          example 'XLSX export', document: false do
+            do_request
+            expect(status).to eq 200
+          end
+        end
+
+        context 'when the user moderates another project' do
+          before do
+            @project = create(:project)
+            @user = create(:project_moderator, projects: [create(:project)])
+            header_token_for(@user)
+          end
+
+          let(:project) { @project.id }
+
+          example '[error] XLSX export', document: false do
+            do_request
+            expect(status).to eq 401
+          end
+        end
+
+        context 'when a moderator exports all comments' do
+          before do
+            @project = create(:project)
+
+            @ideas = create_list(:idea, 3, project: @project)
+            @unmoderated_idea = create(:idea)
+
+            @user = create(:project_moderator, projects: [@project])
+            header_token_for(@user)
+          end
+
+          example 'XLSX export', document: false do
+            do_request
+            expect(status).to eq 200
+
+            worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+            ideas_ids = worksheet.drop(1).collect { |row| row[0].value }
+
+            expect(ideas_ids).to match_array @ideas.pluck(:id)
+            expect(ideas_ids).not_to include(@unmoderated_idea.id)
           end
         end
 

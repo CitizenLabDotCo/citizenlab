@@ -4,7 +4,7 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { ICommentVote, INewVoteProperties } from './types';
 
-const addCommentVote = async ({
+export const addCommentVote = async ({
   commentId,
   userId,
   ...requestBody
