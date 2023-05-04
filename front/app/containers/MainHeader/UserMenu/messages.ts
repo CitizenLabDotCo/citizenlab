@@ -18,6 +18,14 @@ export default defineMessages({
     id: 'app.containers.app.navbar.signOut',
     defaultMessage: 'Sign out',
   },
+  confirmEmail: {
+    id: 'app.containers.Navbar.confirmEmail',
+    defaultMessage: 'Confirm email address',
+  },
+  completeProfile: {
+    id: 'app.containers.Navbar.completeProfile',
+    defaultMessage: 'Complete profile',
+  },
   admin: {
     id: 'app.containers.app.navbar.admin',
     defaultMessage: 'Admin',

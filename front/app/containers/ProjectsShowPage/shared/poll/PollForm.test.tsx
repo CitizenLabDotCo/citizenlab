@@ -3,7 +3,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { PollForm } from './PollForm';
+import PollForm from './PollForm';
 
 import { mockQuestion } from 'services/__mocks__/pollQuestions';
 

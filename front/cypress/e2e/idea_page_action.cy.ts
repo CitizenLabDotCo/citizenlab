@@ -10,8 +10,7 @@ describe('Idea show page actions', () => {
 
     it('asks unauthorised users to log in or sign up before they vote', () => {
       cy.get('.e2e-vote-controls .e2e-ideacard-upvote-button').click();
-      cy.get('#e2e-sign-up-in-modal');
-      cy.get('#e2e-sign-up-container');
+      cy.get('#e2e-authentication-modal');
     });
   });
 

@@ -97,6 +97,15 @@ it:
       "assignee_digest": Panoramica settimanale delle idee assegnate - amministratori e project manager
       "user_digest": Panoramica settimanale - amministratori
       "your_proposed_initiatives_digest": Panoramica settimanale delle proprie proposte - tutti gli utenti
+    schedules:
+      weekly:
+        "0": "Settimanalmente, la domenica su %{hourOfDay}"
+        "1": "Settimanalmente, il lunedì %{hourOfDay}"
+        "2": "Settimanalmente, il martedì %{hourOfDay}"
+        "3": "Settimanalmente, il mercoledì %{hourOfDay}"
+        "4": "Settimanalmente, il giovedì %{hourOfDay}"
+        "5": "Settimanalmente, il venerdì %{hourOfDay}"
+        "6": "Settimanalmente, il sabato %{hourOfDay}"
     footer:
       "link_privacy_policy": "Politica sulla privacy"
       "link_terms_conditions": "Termini e condizioni"

@@ -21,9 +21,9 @@ import { ManagerType } from 'components/admin/PostManager';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { AuthProvider } from 'components/AuthProviders';
+import { AuthProvider } from 'containers/Authentication/steps/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
-import { TVerificationStep } from 'events/verificationModal';
+import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar/navItems';
 import { LatLngTuple } from 'leaflet';
@@ -36,7 +36,7 @@ import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { TNotificationData } from 'services/notifications';
 import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
-import { TSignUpInFlow } from 'events/openSignUpInModal';
+import { SignUpInFlow } from 'containers/Authentication/typings';
 import {
   CellConfiguration,
   InsertConfigurationOptions,
@@ -182,8 +182,6 @@ export interface OutletsPropertyMap {
     method: TVerificationMethod | null;
     onCancel: () => void;
     onVerified: () => void;
-    showHeader?: boolean;
-    inModal: boolean;
     activeStep: TVerificationStep;
   };
   'app.components.PostShowComponents.ActionBar.right': {
@@ -256,7 +254,7 @@ export interface OutletsPropertyMap {
   };
   'app.containers.HomePage.EventsWidget': Record<string, any>;
   'app.components.SignUpIn.AuthProviders.ContainerStart': {
-    flow: TSignUpInFlow;
+    flow: SignUpInFlow;
     onContinue: (authProvider: AuthProvider) => void;
   };
   'app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy': Record<

@@ -11,12 +11,13 @@ import { isNumber } from 'lodash-es';
 // hooks
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-import useAuthUser from 'hooks/useAuthUser';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 import { getInputTerm } from 'services/participationContexts';
-import { getSurveyTakingRules } from 'services/actionTakingRules';
 
 // components
 import Button from 'components/UI/Button';
@@ -38,8 +39,8 @@ import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 // router
 import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
-
-import { openSignUpInModal } from 'events/openSignUpInModal';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 const Container = styled.div``;
 
@@ -55,7 +56,6 @@ interface Props {
 const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
-  const authUser = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const { pathname, hash: divId } = useLocation();
 
@@ -71,24 +71,21 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   }, [divId]);
 
   const scrollTo = useCallback(
-    (id: string, shouldSelectCurrentPhase = true) =>
-      (event: FormEvent) => {
-        event.preventDefault();
+    (id: string) => {
+      if (!isNilOrError(project)) {
+        const isOnProjectPage = pathname.endsWith(
+          `/projects/${project.attributes.slug}`
+        );
 
-        if (!isNilOrError(project)) {
-          const isOnProjectPage = pathname.endsWith(
-            `/projects/${project.attributes.slug}`
-          );
+        currentPhase && selectPhase(currentPhase);
 
-          currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
-
-          if (isOnProjectPage) {
-            scrollToElement({ id, shouldFocus: true });
-          } else {
-            clHistory.push(`/projects/${project.attributes.slug}#${id}`);
-          }
+        if (isOnProjectPage) {
+          scrollToElement({ id, shouldFocus: true });
+        } else {
+          clHistory.push(`/projects/${project.attributes.slug}#${id}`);
         }
-      },
+      }
+    },
     [currentPhase, project, pathname]
   );
 
@@ -96,35 +93,36 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     return null;
   }
 
-  const { enabled, disabledReason } = getSurveyTakingRules({
-    project,
-    phaseContext: currentPhase,
-    signedIn: !isNilOrError(authUser),
-  });
-  const registrationNotCompleted =
-    !isNilOrError(authUser) && !authUser.attributes.registration_completed_at;
-  const shouldVerify = !!(
-    disabledReason === 'maybeNotVerified' || disabledReason === 'notVerified'
-  );
-
-  // Using the same rules used to show the sign wrapper in survey display
-  const showSignIn =
-    shouldVerify ||
-    disabledReason === 'maybeNotPermitted' ||
-    registrationNotCompleted;
-
   const handleTakeSurveyClick = (event: FormEvent) => {
-    if (showSignIn) {
-      openSignUpInModal({
-        flow: 'signup',
-        verification: shouldVerify,
-        verificationContext: undefined,
-        action: () => scrollTo('project-survey')(event),
-      });
-    }
+    event.preventDefault();
+
+    const { enabled, disabled_reason } =
+      project.attributes.action_descriptor.taking_survey;
 
     if (enabled === true) {
-      scrollTo('project-survey')(event);
+      scrollTo('project-survey');
+      return;
+    }
+
+    if (isFixableByAuthentication(disabled_reason)) {
+      const successAction: SuccessAction = {
+        name: 'scrollToSurvey',
+        params: {
+          pathname,
+          projectSlug: project.attributes.slug,
+          currentPhase,
+        },
+      };
+
+      triggerAuthenticationFlow({
+        flow: 'signup',
+        context: {
+          type: currentPhase ? 'phase' : 'project',
+          id: currentPhase?.id ?? project.id,
+          action: 'taking_survey',
+        },
+        successAction,
+      });
     }
   };
 
@@ -191,7 +189,10 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         <SeeIdeasButton
           id="e2e-project-see-ideas-button"
           buttonStyle="secondary"
-          onClick={scrollTo('project-ideas')}
+          onClick={(e) => {
+            e.preventDefault();
+            scrollTo('project-ideas');
+          }}
           fontWeight="500"
         >
           <FormattedMessage
@@ -238,7 +239,10 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       {showPoll && (
         <Button
           buttonStyle="primary"
-          onClick={scrollTo('project-poll')}
+          onClick={(e) => {
+            e.preventDefault();
+            scrollTo('project-poll');
+          }}
           fontWeight="500"
         >
           <FormattedMessage {...messages.takeThePoll} />

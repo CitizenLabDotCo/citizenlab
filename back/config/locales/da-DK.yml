@@ -239,3 +239,10 @@ da:
       paragraph_1_with_reason: "Din konto på borgerinddragelsesplatformen %{organizationName} er blevet midlertidigt deaktiveret af følgende grund:"
       for_more_information: "Du kan finde flere oplysninger om dette på %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Du kan logge ind igen fra %{date}"
+  user:
+    anon_first_name: "Bruger"
+  time:
+    am: am
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm

@@ -1140,7 +1140,7 @@ models:
       nl-BE: Test idea custom fields. Laten we het park op de grens van de stad vernieuwen en er een aangename
         plek van maken, voor jong en oud.
     presentation_mode: card
-    participation_method: ideation
+    participation_method: native_survey
     process_type: continuous
     admin_publication_attributes:
       publication_status: published
@@ -8031,7 +8031,7 @@ models:
       permission_scope_ref: *charliesIdeation
     - &1113
       action: commenting_idea
-      permitted_by: groups
+      permitted_by: everyone_confirmed_email
       permission_scope_ref: *charliesIdeation
     - &1114
       action: budgeting

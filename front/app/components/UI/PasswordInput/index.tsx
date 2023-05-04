@@ -24,7 +24,7 @@ export interface Props {
   errors?: PasswordErrors;
 }
 
-const DEFAULT_MINIMUM_PASSWORD_LENGTH = 8;
+export const DEFAULT_MINIMUM_PASSWORD_LENGTH = 8;
 
 export function hasPasswordMinimumLength(
   password: string,

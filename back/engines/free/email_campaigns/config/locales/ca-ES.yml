@@ -97,6 +97,15 @@ ca:
       "assignee_digest": 'Visió general setmanal de les idees assignades: administradors i gestors de projectes'
       "user_digest": 'Visió general setmanal: tots els usuaris'
       "your_proposed_initiatives_digest": 'Visió general setmanal de les vostres pròpies propostes: tots els usuaris'
+    schedules:
+      weekly:
+        "0": "Setmanalment, els diumenges a les %{hourOfDay}"
+        "1": "Setmanalment, els dilluns a les %{hourOfDay}"
+        "2": "Setmanalment, els dimarts a les %{hourOfDay}"
+        "3": "Setmanalment, els dimecres a les %{hourOfDay}"
+        "4": "Setmanalment, els dijous a les %{hourOfDay}"
+        "5": "Setmanalment, els divendres a les %{hourOfDay}"
+        "6": "Setmanalment, els dissabtes a les %{hourOfDay}"
     footer:
       "link_privacy_policy": "Política de privacitat"
       "link_terms_conditions": "Termes i Condicions"

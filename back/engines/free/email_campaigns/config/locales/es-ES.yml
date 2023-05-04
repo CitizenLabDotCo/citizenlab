@@ -97,6 +97,15 @@ es:
       "assignee_digest": Resumen semanal de ideas asignadas - administradores y administradores de proyecto
       "user_digest": 'Resumen semanal: todos los usuarios'
       "your_proposed_initiatives_digest": 'Resumen semanal de tus propias propuestas: todos los usuarios'
+    schedules:
+      weekly:
+        "0": "Semanalmente, los domingos a las %{hourOfDay}"
+        "1": "Semanalmente los lunes a las %{hourOfDay}"
+        "2": "Semanalmente los martes a las %{hourOfDay}"
+        "3": "Semanalmente los miércoles a las %{hourOfDay}"
+        "4": "Semanalmente los jueves a las %{hourOfDay}"
+        "5": "Semanalmente los viernes a las %{hourOfDay}"
+        "6": "Semanalmente los sábados a las %{hourOfDay}"
     footer:
       "link_privacy_policy": "Política de privacidad"
       "link_terms_conditions": "Términos & Condiciones"
@@ -558,11 +567,11 @@ es:
       recipient_role:
         admins: 'A los administradores'
         admins_and_moderators: 'A los administradores y moderadores'
-        managers: 'A los directivos'
+        managers: 'A los gestores'
         project_participants: 'A los participantes en el proyecto'
         registered_users: 'A los usuarios registrados'
       recipient_segment:
-        admins: 'Admins'
+        admins: 'Administradores'
         admins_and_managers: 'Administradores y gestores'
         all_users: 'Todos los usuarios'
         all_users_who_uploaded_proposals: 'Todos los usuarios que subieron propuestas'
@@ -594,25 +603,25 @@ es:
         comment_is_deleted: 'Se borra el comentario'
         comment_is_flagged_as_spam: 'Comentario marcado como spam'
         content_gets_flagged_as_innapropiate: 'El contenido se marca como inapropiado'
-        idea_is_assigned: 'Se asigna la idea'
+        idea_is_assigned: 'La idea ha sido asignada'
         idea_is_flagged_as_spam: 'La idea está marcada como spam'
-        idea_is_updated: 'Se actualiza la idea'
-        idea_status_is_changed: 'Se cambia el estado de la idea'
-        new_idea_is_published: 'Se publica una nueva idea'
-        new_proposal_is_posted: 'Se publica una nueva propuesta'
+        idea_is_updated: 'Idea actualizada'
+        idea_status_is_changed: 'El estado de la idea ha sido actualizado'
+        new_idea_is_published: 'Una nueva idea ha sido publicada'
+        new_proposal_is_posted: 'Una nueva propuesta ha sido publicada'
         project_changes_phase: 'Fase de cambios del proyecto'
         proposal_gets_reported_as_spam: 'La propuesta es denunciada como spam'
         proposal_is_assigned_to_user: 'La propuesta se asigna al usuario'
-        proposal_is_updated: 'Se actualiza la propuesta'
-        proposal_is_upvoted_above_threshold: 'La propuesta es votada por encima del umbral'
-        proposal_status_is_changed: 'Se cambia el estado de la propuesta'
+        proposal_is_updated: 'La propuesta ha sido actualizada'
+        proposal_is_upvoted_above_threshold: 'La propuesta ha recibido votos por encima del umbral'
+        proposal_status_is_changed: ' El estado de la propuesta ha cambiado'
         user_comments: 'Comentarios de los usuarios'
         user_comments_on_idea: 'Comentarios de los usuarios sobre la idea'
         user_comments_on_proposal: 'Comentarios de los usuarios sobre la propuesta'
         user_is_given_admin_rights: 'El usuario tiene derechos de administrador'
         user_is_given_folder_moderator_rights: 'El usuario tiene derechos de moderador de carpeta'
         user_is_given_project_moderator_rights: 'El usuario tiene derechos de moderador del proyecto'
-        user_is_mentioned: 'Se menciona al usuario'
+        user_is_mentioned: 'El usuario ha sido mencionado'
         user_publishes_an_idea: 'El usuario publica una idea'
         user_publishes_proposal: 'El usuario publica la propuesta'
         user_registers_for_the_first_time: 'El usuario se registra por primera vez'
