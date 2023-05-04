@@ -1,102 +1,103 @@
 pt:
   email_campaigns:
     campaign_type_description:
-      "manual": Mensagens oficiais
-      "admin_rights_received": Direitos de administração recebidos
-      "comment_deleted_by_admin": Supressão do meu comentário
-      "comment_marked_as_spam": Comentar relatório de spam
-      "comment_on_your_comment": Uma resposta ao meu comentário
-      "comment_on_your_idea": Um comentário sobre a minha ideia
-      "comment_on_your_initiative": Um comentário sobre a minha proposta
-      "first_idea_published": Publicação da minha primeira ideia
-      "idea_marked_as_spam": Relatório de spam de ideias
-      "idea_published": Publicação da minha ideia
-      "initiative_assigned_to_you": Atribuição de uma proposta a mim
-      "initiative_marked_as_spam": Proposta relatório de spam
-      "initiative_published": Publicação da minha proposta
-      "invite_received": Convite
-      "invite_reminder": Lembrete de convite
-      "mention_in_official_feedback": Menção numa actualização
-      "new_comment_for_admin": Novo comentário num projecto I moderado
-      "new_comment_on_commented_idea": Novo comentário sobre uma ideia que comentei
-      "new_comment_on_commented_initiative": Novo comentário sobre uma proposta que comentei
-      "new_comment_on_voted_idea": Novo comentário sobre uma ideia que votei favoravelmente
-      "new_comment_on_voted_initiative": Novo comentário sobre uma proposta que votei favoravelmente
-      "new_idea_for_admin": Nova ideia num projecto I moderado
-      "new_initiative_for_admin": Nova proposta
-      "official_feedback_on_commented_idea": Actualização sobre uma ideia que comentei
-      "official_feedback_on_commented_initiative": Actualização sobre uma proposta que comentei
-      "official_feedback_on_voted_idea": Actualização sobre uma ideia que eu votei
-      "official_feedback_on_voted_initiative": Actualização sobre uma proposta que eu votei
-      "official_feedback_on_your_idea": Actualização sobre a minha ideia
-      "official_feedback_on_your_initiative": Actualização sobre a minha proposta
-      "password_reset": Reinicialização de senha
-      "project_moderation_rights_received": Direitos de moderação de projecto recebidos
-      "project_folder_moderation_rights_received": Direitos de gestor de pasta recebidos
-      "project_phase_started": Nova fase do projecto
-      "project_phase_upcoming": Próxima nova fase do projecto
-      "status_change_of_commented_idea": Mudança de estado de uma ideia que comentei
-      "status_change_of_commented_initiative": Alteração do status de uma proposta que comentei
-      "status_change_of_voted_idea": Mudança de estatuto de uma ideia que votei favoravelmente
-      "status_change_of_voted_initiative": Alteração do status de uma proposta que votei favoravelmente
-      "status_change_of_your_idea": Mudança de estado da minha ideia
-      "status_change_of_your_initiative": Alteração do status da minha proposta
-      "threshold_reached_for_admin": A proposta atingiu o limiar de votação
-      "welcome": Após o registo
-      "admin_digest": Síntese semanal para os admins
-      "moderator_digest": Síntese semanal para gestores de projecto
-      "assignee_digest": Síntese semanal das ideias atribuídas
-      "user_digest": Síntese semanal
-      "your_proposed_initiatives_digest": Síntese semanal das suas propostas
+      1:
+        "manual": Mensagens oficiais
+        "admin_rights_received": Direitos de administrador recebidos
+        "comment_deleted_by_admin": Supressão do meu comentário
+        "comment_marked_as_spam": Relatório de spam de comentários
+        "comment_on_your_comment": Uma resposta ao meu comentário
+        "comment_on_your_idea": Um comentário sobre o meu contributo
+        "comment_on_your_initiative": Um comentário à minha proposta
+        "idea_marked_as_spam": Relatório de spam de ideias
+        "idea_published": Publicação do meu contributo
+        "initiative_assigned_to_you": Atribuição de uma proposta a mim
+        "initiative_marked_as_spam": Relatório de proposta de spam
+        "initiative_published": Publicação da minha proposta
+        "invite_received": Convite
+        "invite_reminder": Lembrete de convite
+        "mention_in_official_feedback": Menção numa actualização
+        "new_comment_for_admin": Novo comentário num projecto que eu modero
+        "new_comment_on_commented_idea": Novo comentário sobre uma entrada que comentei
+        "new_comment_on_commented_initiative": Novo comentário sobre uma proposta que comentei
+        "new_comment_on_voted_idea": Novo comentário sobre uma entrada em que votei
+        "new_comment_on_voted_initiative": Novo comentário sobre uma proposta que votei favoravelmente
+        "new_idea_for_admin": Nova ideia num projecto que eu moderei
+        "new_initiative_for_admin": Nova proposta
+        "official_feedback_on_commented_idea": Actualização de uma entrada que comentei
+        "official_feedback_on_commented_initiative": Actualização de uma proposta que comentei
+        "official_feedback_on_voted_idea": Actualização de um contributo que votei
+        "official_feedback_on_voted_initiative": Actualização de uma proposta que votei
+        "official_feedback_on_your_idea": Actualização da minha contribuição
+        "official_feedback_on_your_initiative": Actualização da minha proposta
+        "password_reset": Redefinição da palavra-passe
+        "project_moderation_rights_received": Direitos de moderação de projectos recebidos
+        "project_folder_moderation_rights_received": Direitos de gestor de pastas recebidos
+        "project_phase_started": Nova fase do projecto
+        "project_phase_upcoming": Próxima fase do novo projecto
+        "status_change_of_commented_idea": Alteração de estado de uma entrada que comentei
+        "status_change_of_commented_initiative": Alteração do estatuto de uma proposta que comentei
+        "status_change_of_voted_idea": Alteração de estado de uma entrada em que votei
+        "status_change_of_voted_initiative": Alteração do estatuto de uma proposta que votei favoravelmente
+        "status_change_of_your_idea": Alteração do estado da minha entrada
+        "status_change_of_your_initiative": Alteração do estado da minha proposta
+        "threshold_reached_for_admin": A proposta atingiu o limiar de votação
+        "welcome": Após o registo
+        "admin_digest": Resumo semanal para administradores
+        "moderator_digest": Síntese semanal para gestores de projectos
+        "assignee_digest": Síntese semanal das entradas atribuídas
+        "user_digest": Resumo semanal
+        "your_proposed_initiatives_digest": Síntese semanal das suas propostas
     admin_campaign_type_description:
-      "manual": Mensagem oficial - todos os utilizadores
-      "admin_rights_received": Direitos de administração recebidos - admins
-      "comment_deleted_by_admin": Eliminação do seu comentário - todos os utilizadores
-      "comment_marked_as_spam": Comentar relatório de spam - administradores e gestores de projecto
-      "comment_on_your_comment": Responda ao seu comentário - todos os utilizadores
-      "comment_on_your_idea": Comente a sua ideia - todos os utilizadores
-      "comment_on_your_initiative": Comente a sua proposta - todos os utilizadores
-      "first_idea_published": Publicação da sua primeira ideia - todos os utilizadores
-      "idea_marked_as_spam": Relatório de spam de ideias - administradores e gestores de projecto
-      "idea_published": Publicação da sua ideia - todos os utilizadores
-      "initiative_assigned_to_you": Atribuição de uma proposta - admins
-      "initiative_marked_as_spam": Relatório de proposta spam - admins
-      "initiative_published": Publicação da sua proposta - todos os utilizadores
-      "invite_received": Convite - todos os utilizadores
-      "invite_reminder": Lembrete de convite - todos os utilizadores
-      "mention_in_comment": Menção num comentário - todos os utilizadores
-      "mention_in_official_feedback": Menção numa actualização - todos os utilizadores
-      "new_comment_for_admin": Novo comentário - admins e gestores de projecto
-      "new_comment_on_commented_idea": Novo comentário sobre uma ideia comentada por si - todos os utilizadores
-      "new_comment_on_commented_initiative": Novo comentário sobre uma proposta comentada por si - todos os utilizadores
-      "new_comment_on_voted_idea": Novo comentário sobre uma ideia em que votou - todos os utilizadores
-      "new_comment_on_voted_initiative": Novo comentário sobre uma proposta em que votou - todos os utilizadores
-      "new_idea_for_admin": Nova ideia - administradores e gestores de projecto
-      "new_initiative_for_admin": Nova proposta - admins
-      "official_feedback_on_commented_idea": Actualização sobre uma ideia comentada por si - todos os utilizadores
-      "official_feedback_on_commented_initiative": Actualização sobre uma proposta comentada por si - todos os utilizadores
-      "official_feedback_on_voted_idea": Actualização sobre uma ideia que votou - todos os utilizadores
-      "official_feedback_on_voted_initiative": Actualização sobre uma proposta que votou - todos os utilizadores
-      "official_feedback_on_your_idea": Actualização da sua ideia - todos os utilizadores
-      "official_feedback_on_your_initiative": Actualização da sua proposta - todos os utilizadores
-      "password_reset": Reinicialização da palavra-passe - todos os utilizadores
-      "project_moderation_rights_received": Direitos de moderação de projecto recebidos - gestores de projecto
-      "project_folder_moderation_rights_received": Direitos de gestor de pasta recebidos
-      "project_phase_started": Nova fase do projecto - participantes no projecto
-      "project_phase_upcoming": Próxima nova fase do projecto - administradores e gestores de projecto
-      "status_change_of_commented_idea": Alteração de estado de uma ideia que comentou - todos os utilizadores
-      "status_change_of_commented_initiative": Alteração do estado de uma proposta comentada por si - todos os utilizadores
-      "status_change_of_voted_idea": Mudança de estado de uma ideia que votou - todos os utilizadores
-      "status_change_of_voted_initiative": Mudança de estado de uma proposta que votou - todos os utilizadores
-      "status_change_of_your_idea": Mudança de estado da sua ideia - todos os utilizadores
-      "status_change_of_your_initiative": Alteração do estado da sua proposta - todos os utilizadores
-      "threshold_reached_for_admin": Proposta atingiu o limiar da votação - admins
-      "welcome": E-mail de boas-vindas a novos utilizadores - todos os utilizadores
-      "admin_digest": Síntese semanal - admins
-      "moderator_digest": Síntese semanal - gestores de projecto
-      "assignee_digest": Síntese semanal das ideias atribuídas - administradores e gestores de projecto
-      "user_digest": Visão geral semanal - todos os utilizadores
-      "your_proposed_initiatives_digest": Síntese semanal das suas próprias propostas - todos os utilizadores
+      1:
+        "manual": Mensagem oficial - todos os utilizadores
+        "admin_rights_received": Direitos de administrador recebidos - admins
+        "comment_deleted_by_admin": Apagar o seu comentário - todos os utilizadores
+        "comment_marked_as_spam": Relatório de spam de comentários - administradores e gestores de projectos
+        "comment_on_your_comment": Responder ao seu comentário - todos os utilizadores
+        "comment_on_your_idea": Comentar a sua ideia - todos os utilizadores
+        "comment_on_your_initiative": Comentário sobre a sua proposta - todos os utilizadores
+        "first_idea_published": Publicação da sua primeira ideia - todos os utilizadores
+        "idea_marked_as_spam": Relatório de spam de ideias - administradores e gestores de projectos
+        "idea_published": Publicação da sua ideia - todos os utilizadores
+        "initiative_assigned_to_you": Atribuição de uma proposta - administradores
+        "initiative_marked_as_spam": Relatório de propostas de spam - administradores
+        "initiative_published": Publicação da sua proposta - todos os utilizadores
+        "invite_received": Convite - todos os utilizadores
+        "invite_reminder": Lembrete de convite - todos os utilizadores
+        "mention_in_comment": Mencionar num comentário - todos os utilizadores
+        "mention_in_official_feedback": Menção numa actualização - todos os utilizadores
+        "new_comment_for_admin": Novo comentário - administradores e gestores de projectos
+        "new_comment_on_commented_idea": Novo comentário a uma ideia que comentou - todos os utilizadores
+        "new_comment_on_commented_initiative": Novo comentário sobre uma proposta que comentou - todos os utilizadores
+        "new_comment_on_voted_idea": Novo comentário sobre uma ideia em que votou - todos os utilizadores
+        "new_comment_on_voted_initiative": Novo comentário sobre uma proposta que votou favoravelmente - todos os utilizadores
+        "new_idea_for_admin": Nova ideia - administradores e gestores de projectos
+        "new_initiative_for_admin": Nova proposta - administradores
+        "official_feedback_on_commented_idea": Actualização de uma ideia que comentou - todos os utilizadores
+        "official_feedback_on_commented_initiative": Actualização de uma proposta que comentou - todos os utilizadores
+        "official_feedback_on_voted_idea": Actualização de uma ideia em que votou - todos os utilizadores
+        "official_feedback_on_voted_initiative": Actualização sobre uma proposta que votou - todos os utilizadores
+        "official_feedback_on_your_idea": Actualização da sua ideia - todos os utilizadores
+        "official_feedback_on_your_initiative": Actualização da sua proposta - todos os utilizadores
+        "password_reset": Redefinição da palavra-passe - todos os utilizadores
+        "project_moderation_rights_received": Direitos de moderação de projectos recebidos - gestores de projectos
+        "project_folder_moderation_rights_received": Direitos de gestor de pastas recebidos
+        "project_phase_started": Nova fase do projecto - participantes no projecto
+        "project_phase_upcoming": Próxima fase do novo projecto - administradores e gestores de projecto
+        "status_change_of_commented_idea": Alteração do estado de uma ideia que comentou - todos os utilizadores
+        "status_change_of_commented_initiative": Alteração do estado de uma proposta que comentou - todos os utilizadores
+        "status_change_of_voted_idea": Alteração do estado de uma ideia em que votou - todos os utilizadores
+        "status_change_of_voted_initiative": Alteração do estado de uma proposta em que votou - todos os utilizadores
+        "status_change_of_your_idea": Alteração do estado da sua ideia - todos os utilizadores
+        "status_change_of_your_initiative": Alteração do estado da sua proposta - todos os utilizadores
+        "threshold_reached_for_admin": A proposta atingiu o limiar de votação - admins
+        "welcome": Correio electrónico de boas-vindas a novos utilizadores - todos os utilizadores
+        "admin_digest": Resumo semanal - administradores
+        "moderator_digest": Síntese semanal - gestores de projectos
+        "assignee_digest": Visão geral semanal das ideias atribuídas - administradores e gestores de projectos
+        "user_digest": Síntese semanal - todos os utilizadores
+        "your_proposed_initiatives_digest": Síntese semanal das suas próprias propostas - todos os utilizadores
     schedules:
       weekly:
         "0": "Semanalmente, aos domingos, em %{hourOfDay}"
@@ -115,8 +116,8 @@ pt:
       "unsubscribe_text": "cancelar a inscrição"
     comment_deleted_by_admin:
       reason: 'A razão pela qual o seu comentário foi eliminado:'
-      cta_view: 'Ver esta ideia'
-      event_description: '%{organizationName} eliminou o comentário que escreveu sobre uma ideia.'
+      cta_view1: 'Ver esta entrada'
+      event_description1: '%{organizationName} apagou o comentário que escreveu sobre uma entrada.'
       main_header: '%{organizationName} eliminou o seu comentário'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'O seu comentário foi considerado inapropriado'
@@ -131,7 +132,7 @@ pt:
       text_introduction: 'Curámos para si o input que gerou mais actividade durante a última semana. Descubra o que está a acontecer na sua plataforma!'
       cta_visit_the_platform: 'Visite a sua plataforma'
       new_users: 'Novos utilizadores'
-      new_ideas: 'Novas ideias'
+      new_inputs: 'Novas entradas'
       new_comments: 'Novos comentários'
       title_activity_past_week: 'Actividade da semana passada'
       title_no_activity_past_week: 'Não houve actividade na última semana'
@@ -145,8 +146,8 @@ pt:
       message_you_became_administrator: 'Foram-lhe concedidos direitos de administrador para a plataforma de participação de %{organizationName}.'
       preheader: 'Foram-lhe concedidos direitos de administrador para a plataforma de participação de %{organizationName}'
       subject: 'Tornou-se um administrador na plataforma de %{organizationName}'
-      text_create_participatory_process: 'Como administrador, pode criar e configurar novos projectos de participação. Pode adicionar novas fases utilizando a linha temporal. Cada uma destas fases pode ter o seu próprio comportamento no que diz respeito à publicação de ideias, comentários e votação.'
-      text_moderate_analyse_input: 'Uma vez lançados os projectos, as primeiras ideias chegarão. Receberá relatórios semanais com todas as actividades chave para que se mantenha em cima das coisas. A síntese de ideias ajudá-lo-á a moderar o input e a colaborar no seu processamento.'
+      text_create_participatory_process1: 'Como administrador, pode criar e configurar novos projectos de participação. Pode adicionar novas fases utilizando a linha de tempo. Cada uma destas fases pode ter o seu próprio comportamento no que respeita ao envio de contributos, comentários e votações.'
+      text_moderate_analyse_input1: 'Assim que os projectos são lançados, chegam os primeiros contributos. Receberá relatórios semanais com todas as actividades principais para se manter a par de tudo. A visão geral das entradas ajudá-lo-á a moderar as entradas e a colaborar no seu processamento.'
       text_platform_setup: 'Como administrador, pode criar a sua plataforma de participação. Escolha um logotipo, imagens e cores, escreva uma mensagem pessoal na sua página inicial, envie convites, defina o que quer saber dos seus utilizadores, ...'
       title_create_participatory_process: 'Conceber o processo participativo'
       title_moderate_analyse_input: 'Moderar e analisar o input'
@@ -180,8 +181,8 @@ pt:
       title_your_weekly_report: '%{firstName}, os cidadãos aguardam o seu feedback'
       cta_manage_your_input: 'Gerir a sua contribuição'
       assigned_ideas: 'As ideias precisam do seu feedback'
-      title_assignment_past_week: 'Últimas ideias que lhe foram atribuídas'
-      title_no_assignment_past_week: 'Nenhuma ideia nova atribuída a si na semana passada'
+      title_assignment_past_week1: 'Últimas entradas atribuídas a si'
+      title_no_assignment_past_week1: 'Não lhe foram atribuídas novas entradas na semana passada'
       yesterday_by_author: 'Ontem por %{author}'
       today_by_author: 'Hoje por %{author}'
       x_days_ago_by_author: '%{x} dias atrás por %{author}'
@@ -191,9 +192,9 @@ pt:
       title_successful_initiatives_past_week: 'Propostas que lhe foram atribuídas e que atingiram o limiar'
     idea_marked_as_spam:
       by_author: 'por %{authorName}'
-      cta_review_idea: 'Ideia de revisão'
+      cta_review_input: 'Entrada de revisão'
       report_inappropriate_offensive_content: 'Considero este conteúdo inapropriado ou ofensivo.'
-      report_not_an_idea: 'Este conteúdo não é uma ideia e não pertence aqui.'
+      report_not_an_input: 'Este conteúdo não é uma entrada e não pertence aqui.'
       subject: 'Tem um relatório de spam na plataforma de %{organizationName}'
       preheader: 'Agir com base neste relatório de spam'
       reported_this_because: '%{reporterFirstName} relatou isto porque:'
@@ -245,17 +246,17 @@ pt:
       by_author: 'por %{authorName}'
       commented: '%{organizationName} escreveu:'
       cta_reply_to: 'Responder a %{organizationName}'
-      event_description: '%{organizationName} mencionaram-no no seu feedback sobre a ideia ''%{post}''. Clique no link abaixo para entrar na conversa com %{organizationName}'
+      event_description1: '%{organizationName} mencionou-o nos seus comentários sobre a entrada ''%{post}''. Clique na ligação abaixo para entrar na conversa com %{organizationName}'
       main_header: 'Foi mencionado'
       subject: '%{organizationName} mencionaram-no no seu feedback'
       preheader: '%{commentAuthor} mencionou-o no feedback'
     new_comment_on_commented_idea:
       commented: '%{commentAuthor} escreveu:'
       cta_reply_to: 'Responder a %{commentAuthor}'
-      event_description: '%{commentAuthorFull} também escreveu um comentário sobre a ideia ''%{ideaTitle}'' na plataforma de participação de %{organizationName}. Clique no botão abaixo para iniciar a conversa com %{commentAuthor}.'
-      main_header: '%{commentAuthor} escreveu um comentário sobre a mesma ideia'
-      subject: 'Há outro comentário sobre a ideia que comentou'
-      preheader: '%{commentAuthor} também deixou um comentário sobre uma ideia para %{organizationName}'
+      event_description1: '%{commentAuthorFull} também escreveu um comentário sobre a entrada ''%{ideaTitle}'' na plataforma de participação de %{organizationName}. Clique no botão abaixo para iniciar a conversa com %{commentAuthor}.'
+      main_header1: '%{commentAuthor} escreveu um comentário sobre a mesma entrada'
+      subject1: 'Há outro comentário sobre a entrada que comentou'
+      preheader1: '%{commentAuthor} também deixou um comentário sobre uma entrada para %{organizationName}'
     mention_in_comment:
       by_author: 'por %{authorName}'
       commented: '%{commentAuthor} escreveu:'
@@ -271,7 +272,7 @@ pt:
       text_introduction: 'Curámos para si o input que gerou mais actividade durante a última semana. Descubra o que está a acontecer com o seu projecto!'
       cta_manage: 'Gerir o seu projecto'
       new_users: 'Novos utilizadores'
-      new_ideas: 'Novas ideias'
+      new_inputs: 'Novas entradas'
       new_comments: 'Novos comentários'
       title_inputs_past_week: 'Novas entradas na última semana'
       title_no_inputs_past_week: 'Sem novas entradas na semana passada'
@@ -300,10 +301,10 @@ pt:
       by_author: 'por %{authorName}'
       commented: '%{authorFirstName} escreveu:'
       cta_reply_to: 'Responder a %{commentAuthor}'
-      event_description: '%{authorNameFull} colocou uma reacção à sua ideia ''%{ideaTitle}''. Clique no botão abaixo para continuar a conversa com %{authorName}.'
-      main_header: '%{authorName} comentou a sua ideia'
+      event_description1: '%{authorNameFull} colocou uma reacção na sua entrada ''%{ideaTitle}''. Clique no botão abaixo para continuar a conversa com %{authorName}.'
+      main_header1: '%{authorName} comentou o seu contributo'
       subject: 'Recebeu um comentário sobre %{organizationName}''s platform'
-      preheader: '%{authorName} deixou um comentário sobre a sua ideia para %{organizationName}'
+      preheader1: '%{authorName} deixou um comentário sobre o seu contributo para %{organizationName}'
     new_comment_on_voted_initiative:
       commented: '%{commentAuthor} escreveu:'
       cta_reply_to: 'Ver esta proposta'
@@ -315,10 +316,10 @@ pt:
       commented: '%{commentAuthor} comentou:'
       cta_reply_to: 'Responder a %{commentAuthor}'
       days_ago: '%{numberOfDays} dias atrás'
-      event_description: '%{commentAuthor} comentou sobre a ideia ''%{ideaTitle}'' em que votou. Junte-se à discussão sobre a plataforma de %{organizationName}!'
-      main_header: '%{firstName}há um novo comentário sobre a ideia que votou'
-      subject: 'Há um novo comentário sobre a ideia que votou'
-      preheader: '%{commentAuthor} deixou um comentário sobre a ideia que votou na plataforma de %{organizationName}'
+      event_description1: '%{commentAuthor} comentou a entrada ''%{ideaTitle}'' na qual votou. Participe no debate na plataforma de %{organizationName}!'
+      main_header1: '%{firstName}Há um novo comentário sobre a entrada em que votou'
+      subject1: 'Há um novo comentário sobre a entrada em que votou'
+      preheader1: '%{commentAuthor} deixou um comentário sobre o contributo que votou na plataforma de %{organizationName}'
       today: Hoje
       yesterday: Ontem
     new_initiative_for_admin:
@@ -334,10 +335,10 @@ pt:
       commented: '%{authorFirstName} comentou:'
       cta_reply_to: 'Dar feedback a %{authorName}'
       days_ago: '%{numberOfDays} dias atrás'
-      event_description: '%{authorName} publicou uma nova ideia na sua plataforma. Descubra-a agora, dê algum feedback ou mude o seu estado!'
-      main_header: '%{firstName}uma nova ideia foi publicada na sua plataforma'
+      event_description1: '%{authorName} publicou uma nova entrada na sua plataforma. Descubra-a agora, dê o seu feedback ou altere o seu estado!'
+      main_header1: '%{firstName}Foi publicada uma nova entrada na sua plataforma'
       subject: 'Foi publicado um novo post em %{organizationName}''s platform'
-      preheader: '%{authorName} publicou uma nova ideia na sua plataforma'
+      preheader1: '%{authorName} publicou uma nova entrada na sua plataforma'
       today: Hoje
       yesterday: Ontem
     comment_on_your_comment:
@@ -358,27 +359,27 @@ pt:
     official_feedback_on_voted_idea:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escreveu:'
-      cta_view: 'Vá a esta ideia'
-      event_description: '%{officialName} deu uma actualização sobre a ideia ''%{ideaTitle}''. Clique no botão abaixo para entrar na conversa com %{officialName}.'
-      subject: 'Uma ideia que votou recebeu uma actualização na plataforma de %{organizationName}'
-      preheader: '%{officialName} deixou uma actualização sobre uma ideia que votou'
+      cta_view1: 'Ir para esta entrada'
+      event_description1: '%{officialName} fez uma actualização sobre a entrada ''%{ideaTitle}''. Clique no botão abaixo para entrar na conversa com %{officialName}.'
+      subject1: 'Uma entrada que votou recebeu uma actualização na plataforma de %{organizationName}'
+      preheader1: '%{officialName} deixou uma actualização sobre uma entrada em que votou'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escreveu:'
-      cta_view: 'Vá a esta ideia'
-      event_description: '%{officialName} deu uma actualização sobre a ideia ''%{ideaTitle}''. Clique no botão abaixo para entrar na conversa com %{officialName}.'
-      main_header: 'Há uma actualização sobre uma ideia que comentou'
-      subject: 'Uma ideia que comentou recebeu uma actualização oficial sobre a plataforma de %{organizationName}'
-      preheader: '%{officialName} deixou uma actualização oficial sobre uma ideia comentada por si'
+      cta_view1: 'Ir para esta entrada'
+      event_description1: '%{officialName} fez uma actualização sobre a entrada ''%{ideaTitle}''. Clique no botão abaixo para entrar na conversa com %{officialName}.'
+      main_header1: 'Há uma actualização de uma entrada que comentou'
+      subject1: 'Uma entrada que comentou recebeu uma actualização oficial na plataforma de %{organizationName}'
+      preheader1: '%{officialName} deixou uma actualização oficial sobre uma entrada que comentou'
     official_feedback_on_your_idea:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escreveu:'
-      cta_view: 'Vá à sua ideia'
-      event_description: '%{officialName} deu uma actualização sobre a sua ideia ''%{ideaTitle}''. Clique no botão abaixo para entrar na conversa com %{officialName}.'
+      cta_view1: 'Ir para a sua entrada'
+      event_description1: '%{officialName} fez uma actualização da sua entrada ''%{ideaTitle}''. Clique no botão abaixo para entrar na conversa com %{officialName}.'
       main_header: 'Recebeu uma actualização de %{organizationName}'
       subject: 'Recebeu uma actualização de %{organizationName}'
-      preheader: '%{officialName} deixou uma actualização oficial sobre a sua ideia'
+      preheader1: '%{officialName} deixou uma actualização oficial sobre a sua contribuição'
     official_feedback_on_voted_initiative:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escreveu:'
@@ -397,18 +398,18 @@ pt:
     project_moderation_rights_received:
       cta_manage_project: 'Gerir este projecto'
       message_you_became_moderator: 'Um administrador da plataforma de participação de %{organizationName} acabou de o nomear gestor de projecto do seguinte projecto:'
-      no_ideas: 'Ainda sem ideias'
+      no_inputs: 'Ainda não há entradas'
       preheader: 'Um administrador da plataforma de participação de %{organizationName} acaba de fazer de si um gestor de projecto do seguinte projecto'
       subject: 'Tornou-se gestor de projecto na plataforma de %{organizationName}'
-      text_design_participatory_process: 'Como gestor de projecto, pode configurar a forma como os utilizadores interagem dentro do seu projecto. Pode adicionar novas fases utilizando a linha temporal. Cada uma destas fases pode ter o seu próprio comportamento no que diz respeito à publicação de ideias, comentários e votação.'
-      text_moderate_analyse_input: 'Uma vez lançado o projecto, as primeiras ideias chegarão. Receberá relatórios semanais com todas as actividades chave para que se mantenha em cima das coisas. A visão geral das ideias na sua visão do gestor do projecto ajudá-lo-á a compreender quais as ideias que obtiveram o maior número de votos favoráveis e desfavoráveis.'
-      text_share_project_information: 'A fim de aumentar a qualidade das ideias que está a receber, é fundamental partilhar informação suficiente: adicionar uma descrição do projecto, anexar imagens (incluindo esboços e planos), e comunicar todos os eventos relacionados em curso. Lembre-se: uma boa informação precede uma boa participação!'
+      text_design_participatory_process1: 'Como gestor de projecto, pode configurar a forma como os utilizadores interagem no seu projecto. Pode adicionar novas fases utilizando a linha de tempo. Cada uma destas fases pode ter o seu próprio comportamento no que diz respeito ao envio de contributos, comentários e votações.'
+      text_moderate_analyse_input1: 'Assim que o projecto for lançado, chegarão os primeiros contributos. Receberá relatórios semanais com todas as actividades principais para que se mantenha a par de tudo. A visão geral das entradas na sua vista de gestor de projecto ajudá-lo-á a compreender quais as entradas que obtiveram mais votos positivos e negativos.'
+      text_share_project_information1: 'Para aumentar a qualidade dos contributos que recebe, é fundamental partilhar informações suficientes: adicione uma descrição do projecto, anexe imagens (incluindo esboços e planos) e comunique todos os eventos relacionados que estejam a decorrer. Lembre-se: uma boa informação precede uma boa participação!'
       title_design_participatory_process: 'Conceber o processo participativo'
       title_moderate_analyse_input: 'Moderar e analisar o input'
       title_share_project_information: 'Fornecer informação sobre o projecto'
       title_what_can_you_do_moderator: 'O que se pode fazer como gestor de projectos?'
       title_you_became_moderator: 'Tornou-se um gestor de projecto'
-      x_ideas: '%{numberOfIdeas} ideias'
+      x_inputs: '%{numberOfIdeas} entradas'
     project_folder_moderation_rights_received:
       cta_view_folder_button: 'Ver esta pasta'
       message_added_as_folderadmin: 'Foram-lhe dados direitos de gestor de pastas em %{organizationName}''s plataforma de participação para a seguinte pasta:'
@@ -434,33 +435,33 @@ pt:
       preheader: 'Foi iniciada uma nova fase para %{projectName}'
     project_phase_upcoming:
       cta_view_phase: 'Configurar esta nova fase'
-      event_description: 'O projecto ''%{projectName}'' entrará em breve numa nova fase. Assegurem-se de que tudo está preparado para esta fase: Existe uma descrição adequada? As ideias seleccionadas são transferidas para esta fase? Deseja informar os seus cidadãos sobre as especificidades desta fase através de uma campanha de correio electrónico personalizada?'
+      event_description1: 'O projecto ''%{projectName}'' entrará em breve numa nova fase. Certifique-se de que tudo está preparado para esta fase: Existe uma descrição adequada? Os contributos seleccionados são transferidos para esta fase? Pretende informar os seus cidadãos sobre as especificidades desta fase através de uma campanha de correio electrónico personalizada?'
       main_header: '%{firstName}um projecto entrará em breve numa nova fase'
       subtitle: 'Sobre ''%{projectName}'''
       new_phase: 'O projecto entrará na fase ''%{phaseTitle}'''
       subject: 'Prepare tudo para a nova fase de %{projectName}'
       preheader: 'Uma nova fase será iniciada em breve para %{projectName}'
     status_change_of_commented_idea:
-      status_change: 'O novo estatuto desta ideia é ''%{ideaStatus}''.'
-      cta_view_idea: 'Vá a esta ideia'
-      event_description: '%{organizationName} actualizaram o estado da ideia ''%{ideaTitle}'' na sua plataforma de participação digital.'
-      main_header: 'Uma ideia que comentou tem um novo estatuto'
-      subject: 'O estatuto de uma ideia que comentou foi alterado'
-      preheader: '%{organizationName} alterou o estatuto de uma ideia que comentou'
+      status_change1: 'O novo estado desta entrada é ''%{ideaStatus}'''
+      cta_view_input: 'Ir para esta entrada'
+      event_description1: '%{organizationName} actualizou o estado da entrada ''%{ideaTitle}'' na sua plataforma de participação digital.'
+      main_header1: 'Uma entrada que comentou tem um novo estado'
+      subject1: 'O estado de uma entrada que comentou foi alterado'
+      preheader1: '%{organizationName} alterou o estado de uma entrada que comentou'
     status_change_of_your_idea:
-      status_change: 'O novo estatuto da sua ideia é ''%{ideaStatus}'''
-      cta_view_idea: 'Vá à sua ideia'
-      event_description: '%{organizationName} actualizou o estado da sua ideia ''%{ideaTitle}'' na sua plataforma de participação digital.'
-      main_header: 'A sua ideia tem um novo estatuto'
-      subject: 'O estado da sua ideia foi alterado'
-      preheader: '%{organizationName} alterou o estado da sua ideia'
+      status_change1: 'O novo estado da sua entrada é ''%{ideaStatus}'''
+      cta_view_input: 'Ir para a sua entrada'
+      event_description1: '%{organizationName} actualizou o estado da sua contribuição ''%{ideaTitle}'' na sua plataforma de participação digital.'
+      main_header1: 'A sua entrada tem um novo estatuto'
+      subject1: 'O estado da sua entrada foi alterado'
+      preheader1: '%{organizationName} alterou o estado da sua entrada'
     status_change_of_voted_idea:
-      status_change: 'O novo estatuto desta ideia é ''%{ideaStatus}''.'
-      cta_view_idea: 'Vá a esta ideia'
-      event_description: '%{organizationName} actualizaram o estado da ideia ''%{ideaTitle}'' na sua plataforma de participação digital.'
-      main_header: 'Uma ideia sobre a qual votou tem um novo estatuto'
-      subject: 'O estatuto de uma ideia sobre a qual votou foi alterado'
-      preheader: '%{organizationName} alterou o estatuto de uma ideia que votou'
+      status_change1: 'O novo estado desta entrada é ''%{ideaStatus}'''
+      cta_view_input: 'Ir para esta entrada'
+      event_description1: '%{organizationName} actualizou o estado da entrada ''%{ideaTitle}'' na sua plataforma de participação digital.'
+      main_header1: 'Uma entrada em que votou tem um novo estado'
+      subject1: 'O estado de uma entrada em que votou foi alterado'
+      preheader1: '%{organizationName} alterou o estado de uma entrada em que votou'
     status_change_of_voted_initiative:
       status_change: 'O novo estatuto desta proposta é ''%{initiativeStatus}''.'
       cta_view_initiative: 'Ir para esta proposta'
@@ -491,14 +492,14 @@ pt:
       cta_go_to_the_platform: "Ir para a plataforma"
       title_no_activity_past_week: "Nenhuma actividade na última semana"
       title_proposals: "Propostas iniciadas"
-      proposals_started_text: "As propostas são ideias que precisam de ganhar tracção e apoio de outros (pessoas como você!) a fim de avançar. Abaixo está uma lista de propostas que foram apresentadas na última semana. Clique em qualquer uma delas para dar uma vista de olhos e oferecer o seu apoio e feedback!"
+      proposals_started_text1: "As propostas são contributos que precisam de ganhar força e apoio de outros (pessoas como você!) para poderem avançar. Segue-se uma lista de propostas que foram apresentadas na última semana. Clique em qualquer uma delas para dar uma vista de olhos e oferecer o seu apoio e feedback!"
       title_successful_proposals: "Propostas que atingiram o limiar"
       successful_proposals_text: "Estas propostas obtiveram apoio suficiente para passarem à fase seguinte! Clique na proposta para saber mais sobre o que acontece a seguir."
       today_by_author: "Hoje por %{author}"
       yesterday_by_author: "Ontem por %{author}"
       x_days_ago_by_author: "%{x} dias atrás por %{author}"
-      trending_ideas: "Ideias de tendências"
-      trending_ideas_text: "Interessado no que tem estado a acontecer na plataforma? Aqui estão as três ideias com mais tendências e o que as pessoas dizem sobre elas."
+      trending_inputs: "Entradas de tendências"
+      trending_inputs_text: "Interessado em saber o que está a acontecer na plataforma? Aqui estão as três entradas mais populares e o que as pessoas estão a dizer sobre elas."
       no_notifications: "Sem notificações"
       one_notification: "1 notificação"
       multiple_notifications: "%{notifCount} notificações"
@@ -511,24 +512,6 @@ pt:
       main_header: 'Uma iniciativa atingiu o limiar da votação!'
       subject: 'Uma iniciativa atingiu o limiar de votação na sua plataforma'
       preheader: 'Assegure-se de dar os próximos passos'
-    first_idea_published:
-      action_add_image: '%{addImageLink} para aumentar a visibilidade'
-      action_comment: '%{textComment} sobre ideias existentes'
-      action_published_idea: 'Ideia publicada'
-      action_send_email: 'Envie os seus contactos para %{sendEmailLink}'
-      action_share_fb: 'Informe os seus amigos em %{fbLink}'
-      action_share_link: 'Partilhe-o através de qualquer canal, copiando o %{link}'
-      action_share_twitter: 'Informe os seus seguidores em %{twitterLink}'
-      add_image: 'Acrescentar uma imagem'
-      cta_view_idea: 'Vá à sua ideia'
-      event_description: '%{firstName}, felicitações com a sua primeira ideia sobre a plataforma de participação de %{organizationName}. Será notificado quando as pessoas interagirem com a sua ideia. Saiba quais os próximos passos que pode dar a seguir.'
-      link: ligação
-      main_header: '%{firstName}, afixou a sua primeira ideia!'
-      message_get_votes: 'Atinja mais pessoas com a sua ideia:'
-      preheader: '%{firstName}, parabéns pela publicação da sua primeira ideia na plataforma de %{organizationName}. Reúna agora apoio para a sua ideia'
-      see_you: 'Vejo-o em breve na plataforma!'
-      send_email: e-mail
-      subject: 'A sua primeira ideia sobre a plataforma de %{organizationName}'
     welcome:
       cta_join_platform: 'Descubra a plataforma'
       subject: 'Bem-vindo à plataforma de %{organizationName}'
@@ -537,21 +520,21 @@ pt:
       preheader: 'Aqui está o que pode fazer na plataforma de %{organizationName}'
     idea_published:
       action_add_image: '%{addImageLink} para aumentar a visibilidade'
-      action_published_idea: 'Ideia publicada'
+      action_published_input: 'Entrada publicada'
       action_send_email: 'Envie os seus contactos para %{sendEmailLink}'
       action_share_fb: 'Informe os seus amigos em %{fbLink}'
       action_share_link: 'Partilhe-o através de qualquer canal, copiando o %{link}'
       action_share_twitter: 'Informe os seus seguidores em %{twitterLink}'
       add_image: 'Acrescentar uma imagem'
-      cta_view_idea: 'Vá à sua ideia'
-      event_description: '%{firstName}A sua ideia foi publicada com sucesso na plataforma de participação de %{organizationName}. Será notificado quando as pessoas interagirem com a sua ideia. Saiba quais os próximos passos que pode dar a seguir.'
+      cta_view_input: 'Ir para a sua entrada'
+      event_description1: '%{firstName}, o seu contributo foi publicado com sucesso na plataforma de participação de %{organizationName}. Será notificado quando as pessoas interagirem com o seu contributo. Descubra os próximos passos que pode dar abaixo.'
       link: ligação
-      main_header: 'Você afixou uma ideia! Vamos certificar-nos de que é lida.'
-      message_get_votes: 'Atinja mais pessoas com a sua ideia:'
-      preheader: '%{firstName}, parabéns pela publicação da sua ideia na plataforma de %{organizationName}. Agora reúna apoio.'
+      main_header1: 'Colocaste uma mensagem! Vamos certificar-nos de que é lida.'
+      message_get_votes1: 'Chegue a mais pessoas com o seu contributo:'
+      preheader1: '%{firstName}Parabéns por ter publicado o seu contributo na plataforma %{organizationName}. Agora, reúna apoios.'
       see_you: 'Vejo-o em breve na plataforma!'
       send_email: e-mail
-      subject: 'A sua ideia sobre a plataforma de %{organizationName}'
+      subject1: 'A sua opinião sobre a plataforma de %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
       subject: 'Actualização semanal das suas propostas'
@@ -566,35 +549,35 @@ pt:
     admin_labels:
       recipient_role:
         admins: 'Para os administradores'
-        admins_and_moderators: 'Aos administradores e moderadores'
+        admins_and_managers: 'Para administradores e gestores'
         managers: 'Aos gestores'
-        project_participants: 'Aos participantes no projecto'
         registered_users: 'Para utilizadores registados'
       recipient_segment:
         admins: 'Administradores'
         admins_and_managers: 'Administradores e gestores'
+        admins_and_managers_managing_the_project: 'Administradores e gestores que gerem o projecto'
         all_users: 'Todos os utilizadores'
         all_users_who_uploaded_proposals: 'Todos os utilizadores que carregaram propostas'
         managers: 'Gestores'
-        managers_assigned_to_a_proposal: 'Gestores afectados a uma proposta'
-        user_assigned_to_the_idea: 'Utilizador atribuído à ideia'
+        admins_assigned_to_a_proposal: 'Administradores atribuídos a uma proposta'
+        admins_and_managers_assigned_to_the_input: 'Administradores e gestores afectos à entrada'
         user_receiving_admin_rights: 'Utilizador que recebe direitos de administrador'
         user_receiving_folder_moderator_rights: 'Utilizador que recebe direitos de moderador de pastas'
         user_receiving_project_moderator_rights: 'Utilizador que recebe direitos de moderador de projecto'
         user_who_commented: 'Utilizador que comentou'
         user_who_is_mentioned: 'Utilizador que é mencionado'
-        user_who_published_proposal: 'Utilizador que publicou a proposta'
-        user_who_published_the_idea: 'Utilizador que publicou a ideia'
+        user_who_published_the_proposal: 'Utilizador que publicou a proposta'
+        user_who_published_the_input: 'Utilizador que publicou a entrada'
         user_who_registers: 'Utilizador que se regista'
         user_who_was_invited: 'Utilizador que foi convidado'
-        users_engaged_with_the_idea: 'Utilizadores envolvidos com a ideia'
+        users_engaged_with_the_input: 'Utilizadores envolvidos com a entrada'
         users_engaged_with_the_project: 'Utilizadores envolvidos no projecto'
         users_engaged_with_the_proposal: 'Utilizadores envolvidos na proposta'
       content_type:
         comments: 'Comentários'
         content_moderation: 'Moderação de conteúdos'
         general: 'Geral'
-        ideas: 'Ideias'
+        inputs: 'Entradas'
         permissions: 'Permissões'
         projects: 'Projectos'
         proposals: 'Propostas'
@@ -603,27 +586,28 @@ pt:
         comment_is_deleted: 'O comentário é eliminado'
         comment_is_flagged_as_spam: 'O comentário é assinalado como spam'
         content_gets_flagged_as_innapropiate: 'O conteúdo é assinalado como innapropiate'
-        idea_is_assigned: 'A ideia é atribuída'
-        idea_is_flagged_as_spam: 'A ideia é assinalada como spam'
-        idea_is_updated: 'A ideia está actualizada'
-        idea_status_is_changed: 'O estado da ideia é alterado'
-        new_idea_is_published: 'Publicação de uma nova ideia'
-        new_proposal_is_posted: 'Nova proposta é publicada'
+        input_is_assigned: 'A entrada é atribuída'
+        input_is_flagged_as_spam: 'A entrada é assinalada como spam'
+        input_is_updated: 'A entrada é actualizada'
+        input_status_is_changed: 'O estado da entrada é alterado'
+        new_input_is_published: 'É publicada uma nova entrada'
+        new_proposal_is_published: 'Publicação de uma nova proposta'
         project_changes_phase: 'Fase de alterações do projecto'
         proposal_gets_reported_as_spam: 'A proposta é denunciada como spam'
-        proposal_is_assigned_to_user: 'A proposta é atribuída ao utilizador'
+        proposal_is_assigned_to_admin: 'A proposta é atribuída ao administrador'
         proposal_is_updated: 'A proposta é actualizada'
         proposal_is_upvoted_above_threshold: 'A proposta é votada positivamente acima do limiar'
         proposal_status_is_changed: 'O estado da proposta é alterado'
         user_comments: 'Comentários dos utilizadores'
-        user_comments_on_idea: 'Comentários dos utilizadores sobre a ideia'
+        user_comments_on_input: 'Comentários dos utilizadores sobre a entrada'
         user_comments_on_proposal: 'Comentários dos utilizadores sobre a proposta'
         user_is_given_admin_rights: 'O utilizador tem direitos de administrador'
         user_is_given_folder_moderator_rights: 'O utilizador recebe direitos de moderador de pastas'
         user_is_given_project_moderator_rights: 'O utilizador recebe direitos de moderador de projecto'
         user_is_mentioned: 'O utilizador é mencionado'
-        user_publishes_an_idea: 'O utilizador publica uma ideia'
-        user_publishes_proposal: 'O utilizador publica a proposta'
+        user_publishes_an_input: 'O utilizador publica uma entrada'
+        user_publishes_a_proposal: 'O utilizador publica uma proposta'
         user_registers_for_the_first_time: 'O utilizador regista-se pela primeira vez'
         user_replies_to_comment: 'O utilizador responde ao comentário'
         7_days_after_invite_is_sent: '7 dias após o envio do convite'
+        7_days_before_the_project_changes_phase: '7 dias antes da fase de mudança do projecto'
