@@ -1,9 +1,11 @@
 ar:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": تم وضع علامة على محتوى غير لائق
+      1:
+        "inappropriate_content_flagged": تم الإبلاغ عن محتوى غير لائق
     admin_campaign_type_description:
-      "inappropriate_content_flagged": تم وضع علامة على محتوى غير لائق - المسؤولون
+      1:
+        "inappropriate_content_flagged": تم الإبلاغ عن محتوى غير لائق - المشرفون
     inappropriate_content_flagged:
       subject: 'تم وضع علامة على منشور في منصتك تمهيدًا لمراجعته'
       header_title: 'تم وضع علامة على منشور في منصتك تمهيدًا لمراجعته'
