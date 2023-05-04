@@ -1,13 +1,15 @@
 lv:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Idejas piešķiršana man
+      1:
+        "idea_assigned_to_you": Ieejas datu piešķiršana man
     admin_campaign_type_description:
-      "idea_assigned_to_you": Idejas piešķiršana - administratori un projektu vadītāji
+      1:
+        "idea_assigned_to_you": Ieejas datu piešķiršana - administratori un projektu vadītāji
     idea_assigned_to_you:
       by_author: 'autors: %{authorName}'
       cta_reply_to: 'Sniedziet atsauksmi %{authorName}'
-      event_description_idea: 'Jums ir piešķirta ideja. Sniedziet atsauksmes, rakstot oficiālu atjauninātu informāciju vai mainot tās statusu.'
+      event_description_input: 'Jums ir piešķirts ievades vārds. Sniedziet atsauksmes, rakstot oficiālu atjauninājumu vai mainot tā statusu.'
       main_header: '%{firstName}, jums ir jauns uzdevums'
       subject: 'Jums ir uzdevums %{organizationName} platformā'
-      preheader_idea: 'Jums ir piešķirta %{authorName} ideja'
+      preheader_input: 'Jums ir piešķirts %{authorName} ievade.'
