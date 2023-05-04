@@ -35,6 +35,7 @@ import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ProjectCardImageTooltip from './components/ProjectCardImageTooltip';
 import ProjectHeaderImageTooltip from './components/ProjectHeaderImageTooltip';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -44,7 +45,7 @@ import useProjectImages from 'hooks/useProjectImages';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// services
+// api
 import {
   IUpdatedProjectProperties,
   addProject,
@@ -59,6 +60,8 @@ import {
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
 } from 'services/projectImages';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import projectPermissionKeys from 'api/project_permissions/keys';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -70,7 +73,6 @@ import validateTitle from './utils/validateTitle';
 import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
-import { Box } from '@citizenlab/cl2-component-library';
 
 export const TIMEOUT = 350;
 
@@ -359,6 +361,9 @@ const AdminProjectsProjectGeneral = () => {
             projectId: latestProjectId,
           });
         }
+        queryClient.invalidateQueries({
+          queryKey: projectPermissionKeys.list({ projectId: latestProjectId }),
+        });
       } catch (errors) {
         const apiErrors = get(
           errors,

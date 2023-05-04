@@ -1,5 +1,9 @@
 import { ILinks, Multiloc, IRelationship } from 'typings';
 import {
+  PermissionsDisabledReason,
+  ActionDescriptorFutureEnabled,
+} from 'utils/actionDescriptors';
+import {
   CommentingDisabledReason,
   PublicationStatus as ProjectPublicationStatus,
 } from 'services/projects';
@@ -11,25 +15,17 @@ export type IdeasKeys = Keys<typeof ideasKeys>;
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
 // keys in ideas.attributes.action_descriptor
-export type IIdeaAction =
-  | 'voting_idea'
-  | 'commenting_idea'
-  | 'comment_voting_idea'
-  | 'budgeting';
-
-// export type IIdeaAction = keyof IIdeaData['attributes']['action_descriptor'];
+export type IIdeaAction = 'voting_idea' | 'commenting_idea' | 'budgeting';
 
 export type IdeaVotingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
   | 'voting_disabled'
   | 'downvoting_disabled'
-  | 'not_signed_in'
   | 'upvoting_limited_max_reached'
   | 'downvoting_limited_max_reached'
   | 'idea_not_in_current_phase'
-  | 'not_permitted'
-  | 'not_verified';
+  | PermissionsDisabledReason;
 
 export type IdeaCommentingDisabledReason =
   | 'idea_not_in_current_phase'
@@ -37,13 +33,9 @@ export type IdeaCommentingDisabledReason =
 
 export type IdeaBudgetingDisabledReason =
   | 'project_inactive'
-  | 'idea_not_in_current_phase'
-  | 'not_permitted'
-  | 'not_verified'
-  | 'not_signed_in'
   | 'not_budgeting'
-  | null
-  | undefined;
+  | 'idea_not_in_current_phase'
+  | PermissionsDisabledReason;
 
 export type Sort =
   | 'random'
@@ -74,6 +66,14 @@ export type SortAttribute =
   | 'baskets_count'
   | 'status';
 
+type VotingIdeaActionDescriptor =
+  | { enabled: true; disabled_reason: null; cancelling_enabled: boolean }
+  | {
+      enabled: false;
+      disabled_reason: IdeaVotingDisabledReason;
+      cancelling_enabled: boolean;
+    };
+
 export interface IIdeaData {
   id: string;
   type: string;
@@ -96,36 +96,21 @@ export interface IIdeaData {
     updated_at: string;
     published_at: string;
     action_descriptor: {
-      voting_idea: {
-        enabled: boolean;
-        disabled_reason: IdeaVotingDisabledReason | null;
-        cancelling_enabled: boolean;
-        up: {
-          enabled: boolean;
-          disabled_reason: IdeaVotingDisabledReason | null;
-          future_enabled: string | null;
-        };
-        down: {
-          enabled: boolean;
-          disabled_reason: IdeaVotingDisabledReason | null;
-          future_enabled: string | null;
-        };
+      voting_idea: VotingIdeaActionDescriptor & {
+        up: ActionDescriptorFutureEnabled<IdeaVotingDisabledReason>;
+        down: ActionDescriptorFutureEnabled<IdeaVotingDisabledReason>;
       };
-      commenting_idea: {
-        enabled: boolean;
-        future_enabled: string | null;
-        disabled_reason: IdeaCommentingDisabledReason | null;
-      };
-      comment_voting_idea: {
-        enabled: boolean;
-        disabled_reason: IdeaCommentingDisabledReason | null;
-        future_enabled: null;
-      };
-      budgeting?: {
-        enabled: boolean;
-        future_enabled: string | null;
-        disabled_reason: IdeaBudgetingDisabledReason;
-      };
+      commenting_idea: ActionDescriptorFutureEnabled<IdeaCommentingDisabledReason>;
+      // Confusingly, 'comment_voting_idea' is an action descriptor, but
+      // not an action, and it doesn't have its own granular permissions.
+      // In other words, you can't specifically say that you don't want
+      // people to be able to vote on comments. This is instead derived from 'commenting_idea'.
+      // Why is it an action descriptor then, and why don't we just use 'commenting_idea'?
+      // Because of legacy reasons. Should be fixed in the future.
+      // For now, just know that 'comment_voting_idea' is just an action descriptor,
+      // but not an action (so e.g. it can't be used in the authentication_requirements API).
+      comment_voting_idea: ActionDescriptorFutureEnabled<IdeaCommentingDisabledReason>;
+      budgeting?: ActionDescriptorFutureEnabled<IdeaBudgetingDisabledReason>;
     };
   };
   relationships: {

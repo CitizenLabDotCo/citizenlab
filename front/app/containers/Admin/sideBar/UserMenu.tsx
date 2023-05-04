@@ -22,7 +22,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Avatar from 'components/Avatar';
 
 // services
-import { signOut } from 'services/auth';
+import signOut from 'api/authentication/sign_in_out/signOut';
 
 export const UserMenu = () => {
   const { formatMessage } = useIntl();

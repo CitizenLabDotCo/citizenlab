@@ -9,7 +9,7 @@ import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { combineLatest } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import smoothscroll from 'smoothscroll-polyfill';
-import { endsWith, isNilOrError, isNil, isPage } from 'utils/helperUtils';
+import { endsWith, isNilOrError, isPage } from 'utils/helperUtils';
 
 // constants
 import { appLocalesMomentPairs, locales } from 'containers/App/constants';
@@ -38,15 +38,15 @@ import HasPermission from 'components/HasPermission';
 
 // services
 import { IAppConfigurationStyle } from 'api/app_configuration/types';
-import {
-  authUserStream,
-  signOut,
-  signOutAndDeleteAccount,
-} from 'services/auth';
+import signOut from 'api/authentication/sign_in_out/signOut';
+import signOutAndDeleteAccount from 'api/authentication/sign_in_out/signOutAndDeleteAccount';
+import { authUserStream } from 'services/auth';
 import { localeStream } from 'services/locale';
-import { TAuthUser } from 'hooks/useAuthUser';
 
-// resources
+// hooks
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import { useLocation } from 'react-router-dom';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -60,9 +60,6 @@ import { Locale } from 'typings';
 
 // utils
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { useLocation } from 'react-router-dom';
 
 const Container = styled.div<{
   disableScroll?: boolean;
@@ -93,13 +90,15 @@ interface Props {
   children: React.ReactNode;
 }
 
+const authUser$ = authUserStream().observable;
+const locale$ = localeStream().observable;
+
 const App = ({ children }: Props) => {
   const location = useLocation();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
   const [previousPathname, setPreviousPathname] = useState<string | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
 
-  const [authUser, setAuthUser] = useState<TAuthUser>(undefined);
   const [modalId, setModalId] = useState<string | null>(null);
   const [modalSlug, setModalSlug] = useState<string | null>(null);
   const [modalType, setModalType] = useState<'idea' | 'initiative' | null>(
@@ -216,9 +215,6 @@ const App = ({ children }: Props) => {
       }
     };
 
-    const authUser$ = authUserStream().observable;
-    const locale$ = localeStream().observable;
-
     const newPreviousPathname = location.pathname;
     const pathsToIgnore = [
       'sign-up',
@@ -252,10 +248,9 @@ const App = ({ children }: Props) => {
           })
         ),
         locale$,
-      ]).subscribe(([authUser, locale]) => {
+      ]).subscribe(([_, locale]) => {
         const momentLoc = appLocalesMomentPairs[locale] || 'en';
         moment.locale(momentLoc);
-        setAuthUser(!isNil(authUser) ? authUser.data : null);
         setLocale(locale);
       }),
 
@@ -319,10 +314,6 @@ const App = ({ children }: Props) => {
     setUserDeletedSuccessfullyModalOpened(false);
   };
 
-  const handleSignUpInModalOpened = (isOpened: boolean) => {
-    setSignUpInModalOpened(isOpened);
-  };
-
   const isAdminPage = isPage('admin', location.pathname);
   const isPagesAndMenuPage = isPage('pages_menu', location.pathname);
   const isInitiativeFormPage = isPage('initiative_form', location.pathname);
@@ -330,8 +321,6 @@ const App = ({ children }: Props) => {
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
   const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const fullScreenModalEnabledAndOpen =
-    fullscreenModalEnabled && signUpInModalOpened;
 
   const theme = getTheme(appConfiguration);
   const showFooter =
@@ -388,10 +377,7 @@ const App = ({ children }: Props) => {
                 </Suspense>
               </ErrorBoundary>
               <ErrorBoundary>
-                <Authentication
-                  authUser={authUser}
-                  onModalOpenedStateChange={handleSignUpInModalOpened}
-                />
+                <Authentication setModalOpen={setSignUpInModalOpened} />
               </ErrorBoundary>
               <ErrorBoundary>
                 <div id="modal-portal" />
@@ -443,9 +429,7 @@ const App = ({ children }: Props) => {
                   <PlatformFooter />
                 </Suspense>
               )}
-              {showMobileNav && !fullScreenModalEnabledAndOpen && (
-                <MobileNavbar setRef={setMobileNavbarRef} />
-              )}
+              {showMobileNav && <MobileNavbar setRef={setMobileNavbarRef} />}
               <ErrorBoundary>
                 <div id="mobile-nav-portal" />
               </ErrorBoundary>

@@ -1,18 +1,16 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
-import { authApiEndpoint } from './auth';
 import { TRole } from 'services/permissions/roles';
-import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
+import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 
 const apiEndpoint = `${API_PATH}/users`;
 
 export interface IUserAttributes {
-  first_name: string;
-  // CL1 legacy: last names used to not be required
-  // or when signing up with Google, it can be null too
-  last_name: string | null;
+  first_name?: string | null;
+  last_name?: string | null;
   slug: string;
   locale: Locale;
   highest_role:
@@ -41,6 +39,8 @@ export interface IUserAttributes {
   domicile?: string;
   education?: string;
   verified?: boolean;
+  no_name?: boolean;
+  no_password?: boolean;
 }
 
 export interface IUserData {
@@ -70,21 +70,18 @@ export interface IUserUpdate {
   first_name?: string;
   last_name?: string;
   email?: string;
+  new_email?: string;
   password?: string;
   locale?: string;
   avatar?: string | null;
   roles?: TRole[];
-  birthyear?: number;
-  gender?: string;
-  domicile?: string;
-  education?: string;
   bio_multiloc?: Multiloc;
   custom_field_values?: Record<string, any>;
 }
 
 interface IChangePassword {
   current_password: string;
-  new_password: string;
+  password: string;
 }
 
 export function usersStream(streamParams: IStreamParams | null = null) {
@@ -122,12 +119,17 @@ export async function updateUser(userId: string, object: IUserUpdate) {
     invalidateSeatsCache();
   }
 
+  queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
+
   return response;
 }
 
 export async function changePassword(object: IChangePassword) {
   const response = await streams.add<IUser>(`${apiEndpoint}/update_password`, {
-    user: object,
+    user: {
+      current_password: object.current_password,
+      new_password: object.password,
+    },
   });
   return response;
 }
@@ -145,20 +147,4 @@ export async function deleteUser(userId: string) {
   invalidateSeatsCache();
 
   return response;
-}
-
-export async function completeRegistration(
-  customFieldValues?: Record<string, any>
-) {
-  const authUser = await streams.add<IUser>(
-    `${apiEndpoint}/complete_registration`,
-    { user: { custom_field_values: customFieldValues || {} } }
-  );
-  await streams.reset();
-  await resetQueryCache();
-  await streams.fetchAllWith({
-    apiEndpoint: [authApiEndpoint],
-  });
-
-  return authUser;
 }

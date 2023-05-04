@@ -5,9 +5,9 @@ class ConfirmUser < ApplicationInteractor
 
   def call
     validate_user
-    validate_code_expiration
     validate_retry_count
     validate_code_value
+    validate_code_expiration
     confirm_user
   end
 

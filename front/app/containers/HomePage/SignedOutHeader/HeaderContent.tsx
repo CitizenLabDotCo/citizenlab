@@ -7,7 +7,7 @@ import {
   TAlign,
 } from 'components/LandingPages/citizen/HeaderContent';
 import { WrappedComponentProps } from 'react-intl';
-import { openSignUpInModal } from 'events/openSignUpInModal';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
@@ -58,7 +58,7 @@ const HeaderContent = ({
     trackEventByName(tracks.clickCreateAccountCTA, {
       extra: { location: 'signed-out header' },
     });
-    openSignUpInModal();
+    triggerAuthenticationFlow();
   };
   const buttonStyle = getButtonStyle(fontColors);
 
