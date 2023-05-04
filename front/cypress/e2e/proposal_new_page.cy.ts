@@ -102,9 +102,9 @@ describe('Initiative new page', () => {
     // save the form
     cy.get('.e2e-initiative-publish-button .e2e-submit-form').click();
 
-    // TODO: There is a bug in the proposal form that causes the page not to redirect when adding a new initiative.
+    // TODO: There is a bug in the proposal form that causes the page not to redirect when the add new initiative is called.
     // The proposal code is quite confusing with both the saving and publishing actions
-    // and I think it should be refactored. I don't have time to tackle it right now though, but this is a temporary fix
+    // and I think it should be refactored. I don't think it's a very simple fix though. This is a temporary fix
     // to get the test passing again.
     cy.wait(5000);
     cy.get('.e2e-initiative-publish-button .e2e-submit-form').click();
