@@ -1,13 +1,15 @@
 pt:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Atribuição de uma ideia a mim
+      1:
+        "idea_assigned_to_you": Atribuição de uma entrada a mim
     admin_campaign_type_description:
-      "idea_assigned_to_you": Atribuição de uma ideia - administradores e gestores de projecto
+      1:
+        "idea_assigned_to_you": Atribuição de uma entrada - administradores e gestores de projectos
     idea_assigned_to_you:
       by_author: 'por %{authorName}'
       cta_reply_to: 'Dar feedback a %{authorName}'
-      event_description_idea: 'Foi-lhe atribuída uma ideia. Dê feedback, escrevendo uma actualização oficial ou alterando o seu estado.'
+      event_description_input: 'Foi-lhe atribuída uma entrada. Dê a sua opinião escrevendo uma actualização oficial ou alterando o seu estado.'
       main_header: '%{firstName}tem uma nova missão'
       subject: 'Tem uma missão na plataforma de %{organizationName}'
-      preheader_idea: 'A ideia de %{authorName} foi-lhe atribuída'
+      preheader_input: 'A entrada de %{authorName} foi-lhe atribuída'
