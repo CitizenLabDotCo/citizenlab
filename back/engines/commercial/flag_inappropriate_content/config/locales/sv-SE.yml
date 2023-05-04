@@ -1,9 +1,11 @@
 sv:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": Olämpligt innehåll flaggat
+      1:
+        "inappropriate_content_flagged": Olämpligt innehåll markeras
     admin_campaign_type_description:
-      "inappropriate_content_flagged": Olämpligt innehåll flaggat – administratörer
+      1:
+        "inappropriate_content_flagged": Olämpligt innehåll markeras - administratörer
     inappropriate_content_flagged:
       subject: 'Ett inlägg på din plattform har flaggats för granskning'
       header_title: 'Ett inlägg på din plattform har flaggats för granskning'
