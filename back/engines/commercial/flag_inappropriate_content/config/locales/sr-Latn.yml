@@ -1,9 +1,11 @@
 sr-Latn:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": Označen je neprikladan sadržaj
+      1:
+        "inappropriate_content_flagged": Неприкладан садржај је означен
     admin_campaign_type_description:
-      "inappropriate_content_flagged": Označen je neprikladan sadržaj - administratori
+      1:
+        "inappropriate_content_flagged": Неприкладан садржај је означен - администратори
     inappropriate_content_flagged:
       subject: 'Objava na vašoj platformi je prijavljena da bi bila pregledana'
       header_title: 'Objava na vašoj platformi je prijavljena da bi bila pregledana'
