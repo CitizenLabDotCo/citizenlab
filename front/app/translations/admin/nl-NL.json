@@ -1837,7 +1837,7 @@
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "Naast geregistreerde gebruikers kunnen ook niet-geregistreerde gebruikers die een e-mail opgeven en bevestigen de actie uitvoeren. Selecteer deze optie om de drempel voor deelname te verlagen.",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Admins",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Iedereen",
-  "app.containers.admin.project.permissions.permissionsEveryoneEmailLabel": "Iedereen met een bevestigd e-mailadres",
+  "app.containers.admin.project.permissions.permissionsEveryoneEmailLabel": "Iedereen met een geverifieerd e-mailadres",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Bepaalde groepen gebruikers",
   "app.containers.admin.project.permissions.permissionsUsersLabel": "Geregistreerde gebruikers",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Wie kan dit project zien?",
