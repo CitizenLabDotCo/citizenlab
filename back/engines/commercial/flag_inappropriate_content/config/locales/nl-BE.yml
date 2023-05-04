@@ -1,9 +1,11 @@
 nl-BE:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": Ongepaste inhoud gemarkeerd
+      1:
+        "inappropriate_content_flagged": Ongepaste inhoud gemarkeerd
     admin_campaign_type_description:
-      "inappropriate_content_flagged": Ongepaste inhoud gemarkeerd - beheerders
+      1:
+        "inappropriate_content_flagged": Ongepaste inhoud gemarkeerd - admins
     inappropriate_content_flagged:
       subject: 'Een post op je platform werd gemarkeerd om na te kijken'
       header_title: 'Een bericht op je platform is gemarkeerd om na te kijken'
