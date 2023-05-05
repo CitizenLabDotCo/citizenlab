@@ -4,13 +4,18 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import campaignConsentKeys from './keys';
 import { ICampaignConsent, IUpdateCampaignConsentObject } from './types';
 
-const updateCampaignConsents = async (
-  consentUpdates: IUpdateCampaignConsentObject[]
-) =>
+const updateCampaignConsents = async ({
+  consentChanges,
+  unsubscriptionToken,
+}: IUpdateCampaignConsentObject) =>
   Promise.all(
-    consentUpdates.map(({ campaignConsentId, consented }) =>
+    consentChanges.map(({ campaignConsentId, consented }) =>
       fetcher<ICampaignConsent>({
-        path: `/consents/${campaignConsentId}`,
+        path: `/consents/${campaignConsentId}${
+          typeof unsubscriptionToken === 'string'
+            ? '?unsubscription_token=' + unsubscriptionToken
+            : ''
+        }`,
         action: 'patch',
         body: { consent: { consented } },
       })
@@ -22,7 +27,7 @@ const useUpdateCampaignConsents = () => {
   return useMutation<
     ICampaignConsent[],
     CLErrors,
-    IUpdateCampaignConsentObject[]
+    IUpdateCampaignConsentObject
   >({
     mutationFn: updateCampaignConsents,
     onSuccess: () => {

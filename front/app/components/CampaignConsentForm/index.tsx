@@ -35,7 +35,7 @@ import {
 } from './typings';
 import {
   ICampaignConsentData,
-  IUpdateCampaignConsentObject,
+  IConsentChanges,
 } from 'api/campaign_consents/types';
 
 // analytics
@@ -130,14 +130,14 @@ const CampaignConsentForm = ({
   };
 
   const onFormSubmit = async () => {
-    const consentUpdates = originalCampaignConsents.data
+    const consentChanges = originalCampaignConsents.data
       .filter(
         (consent: ICampaignConsentData): boolean =>
           consent.attributes.consented !==
           campaignConsents[consent.id].consented
       )
       .map(
-        (consent: ICampaignConsentData): IUpdateCampaignConsentObject => ({
+        (consent: ICampaignConsentData): IConsentChanges => ({
           campaignConsentId: consent.id,
           consented: campaignConsents[consent.id].consented,
         })
@@ -148,8 +148,8 @@ const CampaignConsentForm = ({
       trackEventByName(trackEventName, {
         extra: {
           consentChanges: Object.fromEntries(
-            Object.values(consentUpdates).map(
-              (consent: IUpdateCampaignConsentObject): [string, boolean] => [
+            Object.values(consentChanges).map(
+              (consent: IConsentChanges): [string, boolean] => [
                 consent.campaignConsentId,
                 consent.consented,
               ]
@@ -160,7 +160,7 @@ const CampaignConsentForm = ({
 
       setShowFeedback(false);
       setLoading(true);
-      await updateCampaignConsents(consentUpdates);
+      await updateCampaignConsents({ consentChanges });
 
       setShowFeedback('success');
     } catch (error) {

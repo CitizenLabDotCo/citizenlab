@@ -25,6 +25,11 @@ export interface ICampaignConsent {
 }
 
 export interface IUpdateCampaignConsentObject {
+  consentChanges: IConsentChanges[];
+  unsubscriptionToken?: string;
+}
+
+export interface IConsentChanges {
   campaignConsentId: string;
   consented: boolean;
 }

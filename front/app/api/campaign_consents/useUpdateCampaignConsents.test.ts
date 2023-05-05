@@ -36,12 +36,14 @@ describe('useUpdateCampaignConsents', () => {
     });
 
     act(() => {
-      result.current.mutate([
-        {
-          campaignConsentId: 'id',
-          consented: true,
-        },
-      ]);
+      result.current.mutate({
+        consentChanges: [
+          {
+            campaignConsentId: 'id',
+            consented: true,
+          },
+        ],
+      });
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -60,12 +62,14 @@ describe('useUpdateCampaignConsents', () => {
       wrapper: createQueryClientWrapper(),
     });
     act(() => {
-      result.current.mutate([
-        {
-          campaignConsentId: 'id',
-          consented: true,
-        },
-      ]);
+      result.current.mutate({
+        consentChanges: [
+          {
+            campaignConsentId: 'id',
+            consented: true,
+          },
+        ],
+      });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error).toBeDefined();

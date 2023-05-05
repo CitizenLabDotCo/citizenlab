@@ -4,13 +4,17 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import campaignConsentKeys from './keys';
 import { CampaignConsentKeys, ICampaignConsents } from './types';
 
-const fetchCampaignConsents = () =>
+const fetchCampaignConsents = (unsubscriptionToken) =>
   fetcher<ICampaignConsents>({
-    path: '/consents',
+    path: `/consents${
+      typeof unsubscriptionToken === 'string'
+        ? '?unsubscription_token=' + unsubscriptionToken
+        : ''
+    }`,
     action: 'get',
   });
 
-const useCampaignConsents = () => {
+const useCampaignConsents = (unsubscriptionToken?: string | null) => {
   return useQuery<
     ICampaignConsents,
     CLErrors,
@@ -18,7 +22,7 @@ const useCampaignConsents = () => {
     CampaignConsentKeys
   >({
     queryKey: campaignConsentKeys.items(),
-    queryFn: async () => await fetchCampaignConsents(),
+    queryFn: async () => await fetchCampaignConsents(unsubscriptionToken),
   });
 };
 
