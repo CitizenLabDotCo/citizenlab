@@ -30,14 +30,12 @@ const Feedback = ({
   );
 
   useEffect(() => {
-    console.log('feedbackIsVisible', feedbackIsVisible);
     if (feedbackIsVisible) {
       scrollToElement({ id: 'feedback' });
     }
   }, [feedbackIsVisible]);
 
   useEffect(() => {
-    console.log('feedbackIsVisible', feedbackIsVisible);
     setFeedbackIsVisible(showSuccess || showError);
   }, [showSuccess, showError]);
 
@@ -46,13 +44,6 @@ const Feedback = ({
     setFeedbackIsVisible(false);
   };
 
-  console.log(
-    successMessage,
-    showSuccess,
-    showError,
-    errorMessage,
-    feedbackIsVisible
-  );
   return (
     <>
       {feedbackIsVisible && (
