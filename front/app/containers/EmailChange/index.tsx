@@ -29,7 +29,7 @@ import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { Status, ErrorCode } from 'containers/Authentication/typings';
+import { ErrorCode } from 'containers/Authentication/typings';
 import { ERROR_CODE_MESSAGES } from 'containers/Authentication/Modal';
 
 export type FormValues = {
@@ -40,7 +40,7 @@ const EmailChange = () => {
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [confirmationStatus, setConfirmationStatus] = useState<Status>('ok');
+  const [loading, setLoading] = useState(false);
   const [confirmationError, setConfirmationError] = useState<ErrorCode | null>(
     null
   );
@@ -71,7 +71,7 @@ const EmailChange = () => {
   }, [authUser, methods]);
 
   const onEmailConfirmation = async (code: string) => {
-    setConfirmationStatus('pending');
+    setLoading(true);
 
     try {
       await confirmEmail({ code });
@@ -85,7 +85,7 @@ const EmailChange = () => {
         setConfirmationError('unknown');
       }
     } finally {
-      setConfirmationStatus('ok');
+      setLoading(false);
     }
   };
 
@@ -148,7 +148,7 @@ const EmailChange = () => {
               token: null,
               prefilledBuiltInFields: null,
             }}
-            status={confirmationStatus}
+            loading={loading}
             setError={setConfirmationError}
             onConfirm={onEmailConfirmation}
           />
