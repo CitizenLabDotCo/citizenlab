@@ -251,9 +251,7 @@ const App = ({ children }: Props) => {
       combineLatest([
         authUser$.pipe(
           tap((authUser) => {
-            if (isNilOrError(authUser)) {
-              signOut();
-            } else {
+            if (!isNilOrError(authUser)) {
               configureScope((scope) => {
                 scope.setUser({
                   id: authUser.data.id,
