@@ -114,6 +114,17 @@ module.exports = {
         ],
       },
     ],
+    'import/no-restricted-paths': [
+      'error',
+      {
+        zones: [
+          {
+            target: './app/containers',
+            from: './app/modules',
+          },
+        ],
+      },
+    ],
     'no-trailing-spaces': 'off',
     'no-underscore-dangle': 'off',
     'no-var': 'error',
