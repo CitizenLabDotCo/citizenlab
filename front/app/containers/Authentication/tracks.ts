@@ -8,6 +8,9 @@ export default {
   signInWithSSOClicked: 'Sign in - Switch to SSO sign-in clicked',
   signInFlowEntered: 'Sign in flow entered',
   signInAuthProviderSelected: 'Sign in - auth provider selected: ',
+  signInWithEmailPasswordClicked:
+    'Sign in - Switch to sign in with email & password clicked',
+  signInWithSSOClosed: 'Sign in - Closed at SSO sign-in',
 
   // sign up
   signUpFlowEntered: 'Sign up flow entered',
@@ -20,6 +23,8 @@ export default {
     'Sign - up email & password sign-up step completed',
   signUpEmailPasswordStepFailed:
     'Sign up - email & password sign-up step failed',
+  signUpWithEmailPasswordClicked:
+    'Sign up - Switch to sign up with email & password clicked',
 
   signUpEmailConfirmationStepEntered:
     'Sign up - email confirmation step entered',
@@ -42,8 +47,14 @@ export default {
   signUpChangeEmailResendCode: 'Sign up - change email resend code',
   signUpFlowCompleted: 'Sign up flow completed',
   signUpWithSSOClicked: 'Sign up - Switch to SSO sign-up clicked',
+  signUpWithSSOClosed: 'Sign up - Closed at SSO sign-in',
 
   signUpInviteTokenError: 'Sign up - invite token error',
+
+  // resent email confirmation code
+  resendEmailConfirmationCodeSuccess:
+    'Resend email confirmation code - success',
+  resendEmailConfirmationCodeFailed: 'Resend email confirmation code - failed',
 
   // sign out
   signOutClicked: 'Sign out clicked',

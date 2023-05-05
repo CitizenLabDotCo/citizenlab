@@ -75,6 +75,7 @@ const AuthProviders = memo<Props>(
     const handleGoToOtherFlow = useCallback(
       (event: React.FormEvent) => {
         event.preventDefault();
+
         onSwitchFlow();
       },
       [onSwitchFlow]

@@ -111,9 +111,11 @@ const EmailConfirmation = ({
       .then(() => {
         setResendingCode(false);
         setCodeResent(true);
+        trackEventByName(tracks.resendEmailConfirmationCodeSuccess);
       })
       .catch((_errors) => {
         setResendingCode(false);
+        trackEventByName(tracks.resendEmailConfirmationCodeFailed);
       });
   };
 

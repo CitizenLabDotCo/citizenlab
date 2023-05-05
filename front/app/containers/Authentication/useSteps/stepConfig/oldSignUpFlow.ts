@@ -34,8 +34,12 @@ export const oldSignUpFlow = (
   return {
     // old sign up flow
     'sign-up:auth-providers': {
-      CLOSE: () => setCurrentStep('closed'),
+      CLOSE: () => {
+        trackEventByName(tracks.signUpWithSSOClosed);
+        setCurrentStep('closed');
+      },
       SWITCH_FLOW: () => {
+        trackEventByName(tracks.signInWithSSOClicked);
         setCurrentStep('sign-in:auth-providers');
       },
       SELECT_AUTH_PROVIDER: async (authProvider: AuthProvider) => {
@@ -63,7 +67,7 @@ export const oldSignUpFlow = (
         trackEventByName(tracks.signUpEmailPasswordStepExited);
       },
       SWITCH_FLOW: () => {
-        trackEventByName(tracks.signUpWithSSOClicked);
+        trackEventByName(tracks.signInWithEmailPasswordClicked);
         trackEventByName(tracks.signUpEmailPasswordStepExited);
         setCurrentStep('sign-in:email-password');
       },
