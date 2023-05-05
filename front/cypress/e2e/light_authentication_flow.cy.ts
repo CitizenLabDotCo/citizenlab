@@ -71,6 +71,7 @@ describe('Light authentication flow', () => {
       'eq',
       `/en/projects/${projectTitle}/ideas/new`
     );
+    cy.logout();
   });
 
   after(() => {
