@@ -14,7 +14,7 @@ module ParticipationContext
   include Polls::PollParticipationContext
   include Volunteering::VolunteeringParticipationContext
 
-  PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering native_survey].freeze
+  PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering native_survey document_annotation].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   POSTING_METHODS       = %w[unlimited limited].freeze
   VOTING_METHODS        = %w[unlimited limited].freeze
