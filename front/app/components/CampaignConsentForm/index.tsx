@@ -9,17 +9,16 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
-// import { SectionField } from 'components/admin/Section';
 import Feedback from './feedback';
 
 // i18n
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 import { useIntl } from 'utils/cl-intl';
-import T from 'components/T';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { groupConsentCampaigns } from './utils';
 
 // hooks
 import useCampaignConsents from 'api/campaign_consents/useCampaignConsents';
@@ -28,78 +27,68 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
 // typings
-import { Multiloc } from 'typings';
-
-interface Consent {
-  id: string;
-  campaign_type_description_multiloc: Multiloc;
-  content_type_multiloc: Multiloc;
-  consented: boolean;
-}
-
-const groupConsentCampaigns = (campaignConsents, t) => {
-  return Object.entries(campaignConsents).reduce(
-    (
-      groups,
-      [
-        id,
-        {
-          consented,
-          content_type_multiloc,
-          campaign_type_description_multiloc,
-        },
-      ]: [string, Consent]
-    ) => {
-      const contentType = t(content_type_multiloc);
-      const consent = {
-        id,
-        consented,
-        campaign_type_description_multiloc,
-        content_type_multiloc,
-      };
-
-      groups[contentType] = groups[contentType] ?? {
-        children: [],
-        group_consented: consented,
-      };
-      groups[contentType].group_consented =
-        groups[contentType].group_consented === consented ? consented : 'mixed';
-      groups[contentType].children.push(consent);
-
-      return groups;
-    },
-    {}
-  );
-};
+import {
+  CampaignConsent,
+  CampaignConsentChildren,
+  GroupedCampaignConsent,
+} from './typings';
+import {
+  ICampaignConsentData,
+  IUpdateCampaignConsentObject,
+} from 'api/campaign_consents/types';
 
 const CampaignConsentForm = () => {
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
-  const t = (multiloc) => getLocalized(multiloc, locale, tenantLocales);
   const { formatMessage } = useIntl();
+
   const { data: originalCampaignConsents } = useCampaignConsents();
   const { mutateAsync: updateCampaignConsents } = useUpdateCampaignConsents();
-  const [campaignConsents, setCampaignConsents] = useState({});
-  const [groupedCampaignConsents, setGroupedCampaignConsents] = useState({});
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [showError, setShowError] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+  const [campaignConsents, setCampaignConsents] = useState<
+    Record<string, CampaignConsent>
+  >({});
+  const [groupedCampaignConsents, setGroupedCampaignConsents] = useState<
+    Record<string, GroupedCampaignConsent>
+  >({});
+
+  const [showFeedback, setShowFeedback] = useState<false | 'success' | 'error'>(
+    false
+  );
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (!isNilOrError(originalCampaignConsents)) {
-      setCampaignConsents(
-        Object.fromEntries(
-          originalCampaignConsents.data.map((consent) => [
-            consent.id,
-            consent.attributes,
-          ])
-        )
-      );
+      const campaignConsentsEntries = originalCampaignConsents.data
+        .sort((a, b): number => a.id.localeCompare(b.id))
+        .map((consent): [string, CampaignConsent] => [
+          consent.id,
+          {
+            consented: consent.attributes.consented,
+            content_type: getLocalized(
+              consent.attributes.content_type_multiloc,
+              locale,
+              tenantLocales
+            ),
+            campaign_type_description: getLocalized(
+              consent.attributes.campaign_type_description_multiloc,
+              locale,
+              tenantLocales
+            ),
+          },
+        ]);
+      setCampaignConsents(Object.fromEntries(campaignConsentsEntries));
     }
   }, [originalCampaignConsents]);
 
   useEffect(() => {
-    setGroupedCampaignConsents(groupConsentCampaigns(campaignConsents, t));
+    if (loading && !!showFeedback) {
+      setLoading(false);
+    }
+  }, [showFeedback]);
+
+  useEffect(() => {
+    setGroupedCampaignConsents(groupConsentCampaigns(campaignConsents));
   }, [campaignConsents]);
 
   if (isNilOrError(originalCampaignConsents)) return null;
@@ -116,55 +105,44 @@ const CampaignConsentForm = () => {
 
   const toggleGroup = (contentType: string) => (e) => {
     e.stopPropagation();
-    const newGroupValue =
-      groupedCampaignConsents[contentType].group_consented == false
-        ? true
-        : false;
-    const newConsentsValues = Object.fromEntries(
-      groupedCampaignConsents[contentType].children.map((consent) => [
+    const group = groupedCampaignConsents[contentType];
+    const newGroupValue = group.group_consented == false ? true : false;
+    const newConsentValueEntries = group.children.map(
+      (consent: CampaignConsentChildren): [string, CampaignConsentChildren] => [
         consent.id,
         { ...consent, consented: newGroupValue },
-      ])
+      ]
     );
 
-    setCampaignConsents({ ...campaignConsents, ...newConsentsValues });
+    setCampaignConsents({
+      ...campaignConsents,
+      ...Object.fromEntries(newConsentValueEntries),
+    });
   };
 
   const onFormSubmit = async () => {
-    const updates = originalCampaignConsents.data.reduce(
-      (acc: any[], originalConsent) => {
-        if (
-          originalConsent.attributes.consented !==
-          campaignConsents[originalConsent.id].consented
-        ) {
-          acc.push({
-            campaignConsentId: originalConsent.id,
-            consented: campaignConsents[originalConsent.id].consented,
-          });
-        }
-        return acc;
-      },
-      []
-    );
+    const consentUpdates = originalCampaignConsents.data
+      .filter(
+        (consent: ICampaignConsentData): boolean =>
+          consent.attributes.consented !==
+          campaignConsents[consent.id].consented
+      )
+      .map(
+        (consent: ICampaignConsentData): IUpdateCampaignConsentObject => ({
+          campaignConsentId: consent.id,
+          consented: campaignConsents[consent.id].consented,
+        })
+      );
 
     try {
-      setShowSuccess(false);
-      setShowError(false);
+      setShowFeedback(false);
       setLoading(true);
-      await updateCampaignConsents(updates);
-      setShowSuccess(true);
-      setShowError(false);
-      setLoading(false);
-    } catch (error) {
-      setShowSuccess(false);
-      setShowError(true);
-      setLoading(false);
-    }
-  };
+      await updateCampaignConsents(consentUpdates);
 
-  const closeFeedback = () => {
-    setShowSuccess(false);
-    setShowError(false);
+      setShowFeedback('success');
+    } catch (error) {
+      setShowFeedback('error');
+    }
   };
 
   return (
@@ -176,15 +154,14 @@ const CampaignConsentForm = () => {
       <Feedback
         successMessage={formatMessage(messages.messageSuccess)}
         errorMessage={formatMessage(messages.messageError)}
-        showSuccess={showSuccess}
-        showError={showError}
-        closeFeedback={closeFeedback}
+        showFeedback={showFeedback}
+        closeFeedback={() => setShowFeedback(false)}
       />
       {Object.entries(groupedCampaignConsents).map(
         (
           [contentType, { children, group_consented }]: [
             string,
-            { children: Consent[]; group_consented: boolean | 'mixed' }
+            GroupedCampaignConsent
           ],
           i
         ) => (
@@ -195,24 +172,24 @@ const CampaignConsentForm = () => {
                 id={contentType}
                 checked={group_consented}
                 onChange={toggleGroup(contentType)}
-                label={
-                  <Box m="14px 0">{`${contentType} (${children.length})`}</Box>
-                }
+                label={<Box m="14px 0">{contentType}</Box>}
               />
             }
           >
             <Box ml="34px">
               {children.map(
-                ({ id, consented, campaign_type_description_multiloc }) => (
+                ({
+                  id,
+                  consented,
+                  campaign_type_description,
+                }: CampaignConsentChildren) => (
                   <Checkbox
                     key={id}
                     size="20px"
                     mb="12px"
                     checked={consented}
                     onChange={onChange(id)}
-                    label={
-                      <T as="span" value={campaign_type_description_multiloc} />
-                    }
+                    label={campaign_type_description}
                   />
                 )
               )}

@@ -12,22 +12,18 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 
 type FeedbackProps = {
   successMessage: string;
-  showSuccess: boolean;
-  showError: boolean;
+  showFeedback: false | 'success' | 'error';
   errorMessage: string;
   closeFeedback: () => void;
 };
 
 const Feedback = ({
   successMessage,
-  showSuccess,
-  showError,
   errorMessage,
+  showFeedback,
   closeFeedback,
 }: FeedbackProps) => {
-  const [feedbackIsVisible, setFeedbackIsVisible] = useState(
-    showSuccess || showError
-  );
+  const [feedbackIsVisible, setFeedbackIsVisible] = useState(false);
 
   useEffect(() => {
     if (feedbackIsVisible) {
@@ -36,8 +32,8 @@ const Feedback = ({
   }, [feedbackIsVisible]);
 
   useEffect(() => {
-    setFeedbackIsVisible(showSuccess || showError);
-  }, [showSuccess, showError]);
+    setFeedbackIsVisible(!!showFeedback);
+  }, [showFeedback]);
 
   const closeSuccessMessage = () => {
     closeFeedback();
@@ -48,7 +44,7 @@ const Feedback = ({
     <>
       {feedbackIsVisible && (
         <Box id="feedback" data-testid="feedback">
-          {showSuccess && (
+          {showFeedback === 'success' && (
             <Box
               bgColor={colors.successLight}
               borderRadius="3px"
@@ -75,7 +71,7 @@ const Feedback = ({
               <CloseIconButton onClick={closeSuccessMessage} />
             </Box>
           )}
-          {showError && (
+          {showFeedback === 'error' && (
             <Error
               marginBottom="12px"
               text={

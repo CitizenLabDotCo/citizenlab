@@ -4,7 +4,7 @@ import campaignConsentKeys from './keys';
 
 export type CampaignConsentKeys = Keys<typeof campaignConsentKeys>;
 
-export interface IConsentData {
+export interface ICampaignConsentData {
   id: string;
   type: string;
   attributes: {
@@ -16,12 +16,12 @@ export interface IConsentData {
 }
 
 export interface ICampaignConsents {
-  data: IConsentData[];
+  data: ICampaignConsentData[];
   links: ILinks;
 }
 
 export interface ICampaignConsent {
-  data: IConsentData;
+  data: ICampaignConsentData;
 }
 
 export interface IUpdateCampaignConsentObject {
