@@ -23,6 +23,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useCampaignConsents from 'api/campaign_consents/useCampaignConsents';
+import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignConsents';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
@@ -77,10 +78,12 @@ const CampaignConsentForm = () => {
   const t = (multiloc) => getLocalized(multiloc, locale, tenantLocales);
   const { formatMessage } = useIntl();
   const { data: originalCampaignConsents } = useCampaignConsents();
+  const { mutateAsync: updateCampaignConsents } = useUpdateCampaignConsents();
   const [campaignConsents, setCampaignConsents] = useState({});
   const [groupedCampaignConsents, setGroupedCampaignConsents] = useState({});
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!isNilOrError(originalCampaignConsents)) {
@@ -127,25 +130,35 @@ const CampaignConsentForm = () => {
     setCampaignConsents({ ...campaignConsents, ...newConsentsValues });
   };
 
-  const onFormSubmit = () => {
-    const changedConsents: { id: string; consented: boolean }[] = [];
-    originalCampaignConsents.data.forEach((originalConsent) => {
-      if (
-        originalConsent.attributes.consented !==
-        campaignConsents[originalConsent.id].consented
-      ) {
-        changedConsents.push({
-          id: originalConsent.id,
-          consented: campaignConsents[originalConsent.id].consented,
-        });
-      }
-    });
+  const onFormSubmit = async () => {
+    const updates = originalCampaignConsents.data.reduce(
+      (acc: any[], originalConsent) => {
+        if (
+          originalConsent.attributes.consented !==
+          campaignConsents[originalConsent.id].consented
+        ) {
+          acc.push({
+            campaignConsentId: originalConsent.id,
+            consented: campaignConsents[originalConsent.id].consented,
+          });
+        }
+        return acc;
+      },
+      []
+    );
 
     try {
-      console.log(changedConsents);
+      setShowSuccess(false);
+      setShowError(false);
+      setLoading(true);
+      await updateCampaignConsents(updates);
       setShowSuccess(true);
+      setShowError(false);
+      setLoading(false);
     } catch (error) {
+      setShowSuccess(false);
       setShowError(true);
+      setLoading(false);
     }
   };
 
@@ -208,7 +221,7 @@ const CampaignConsentForm = () => {
         )
       )}
       <Box mt="20px" display="flex">
-        <Button type="submit" processing={false} onClick={onFormSubmit}>
+        <Button type="submit" processing={loading} onClick={onFormSubmit}>
           {formatMessage(messages.submit)}
         </Button>
       </Box>

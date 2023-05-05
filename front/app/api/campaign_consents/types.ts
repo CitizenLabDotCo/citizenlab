@@ -23,3 +23,8 @@ export interface ICampaignConsents {
 export interface ICampaignConsent {
   data: IConsentData;
 }
+
+export interface IUpdateCampaignConsentObject {
+  campaignConsentId: string;
+  consented: boolean;
+}

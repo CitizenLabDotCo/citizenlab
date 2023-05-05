@@ -2,26 +2,28 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import campaignConsentKeys from './keys';
-import { ICampaignConsent } from './types';
+import { ICampaignConsent, IUpdateCampaignConsentObject } from './types';
 
-type IUpdateCampaignConsentObject = {
-  campaignConsentId: string;
-  consented: boolean;
-};
-
-const updateCampaignConsents = ({
-  campaignConsentId,
-  consented,
-}: IUpdateCampaignConsentObject) =>
-  fetcher<ICampaignConsent>({
-    path: `/consents/${campaignConsentId}`,
-    action: 'patch',
-    body: { consent: { consented } },
-  });
+const updateCampaignConsents = (
+  consentUpdates: IUpdateCampaignConsentObject[]
+) =>
+  Promise.all(
+    consentUpdates.map(({ campaignConsentId, consented }) =>
+      fetcher<ICampaignConsent>({
+        path: `/consents/${campaignConsentId}`,
+        action: 'patch',
+        body: { consent: { consented } },
+      })
+    )
+  );
 
 const useUpdateCampaignConsents = () => {
   const queryClient = useQueryClient();
-  return useMutation<ICampaignConsent, CLErrors, ICampaignConsent>({
+  return useMutation<
+    ICampaignConsent[],
+    CLErrors,
+    IUpdateCampaignConsentObject[]
+  >({
     mutationFn: updateCampaignConsents,
     onSuccess: () => {
       queryClient.invalidateQueries({
