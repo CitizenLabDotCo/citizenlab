@@ -400,4 +400,13 @@ export default defineMessages({
     defaultMessage:
       'What do you think of this project? Join the discussion at {projectUrl} to make your voice heard!',
   },
+  participantsTooltip: {
+    id: 'app.containers.Projects.participantsTooltip',
+    defaultMessage:
+      'There may be more participants who submitted the survey while not registered. They will not be counted here.',
+  },
+  surveySubmissions: {
+    id: 'app.containers.Projects.surveySubmissions',
+    defaultMessage: 'survey submissions',
+  },
 });

@@ -11,9 +11,10 @@ import moment from 'moment';
 
 // hooks
 import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
+import usePhases, { TPhases } from 'hooks/usePhases';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
+import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -21,9 +22,10 @@ import clHistory from 'utils/cl-router/history';
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
+import { IProjectData } from 'services/projects';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import ProjectSharingModal from './ProjectSharingModal';
 import ProjectActionButtons from './ProjectActionButtons';
 
@@ -32,7 +34,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { scrollToElement } from 'utils/scroll';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 import { getInputTermMessage } from 'utils/i18n';
 import FormattedBudget from 'utils/currency/FormattedBudget';
@@ -126,6 +128,24 @@ interface Props {
   className?: string;
 }
 
+const hasSurveyWithAnyonePermissions = (
+  project: IProjectData,
+  phases: TPhases | null
+) => {
+  let hasSurveyPhase = false;
+  if (!isNilOrError(phases)) {
+    phases.map((phase) => {
+      if (phase.attributes.participation_method === 'native_survey') {
+        hasSurveyPhase = true; // TODO Return true if there is a survey with anyone permissions
+      }
+    });
+  }
+  if (project.attributes.participation_method === 'native_survey') {
+    hasSurveyPhase = true;
+  }
+  return hasSurveyPhase; // TODO Return true if there is a survey with anyone permissions
+};
+
 const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
@@ -134,9 +154,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     sort: '-start_at',
   });
   const authUser = useAuthUser();
-
+  const { formatMessage } = useIntl();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const [shareModalOpened, setShareModalOpened] = useState(false);
+  const surveySubmissionCount = useFormSubmissionCount({ projectId });
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
@@ -231,6 +252,15 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     {...messages.xParticipants}
                     values={{ participantsCount: projectParticipantsCount }}
                   />
+                  {hasSurveyWithAnyonePermissions(project, phases) && (
+                    <Box mb="4px" ml="4px">
+                      <IconTooltip
+                        placement="top"
+                        iconColor={colors.coolGrey300}
+                        content={formatMessage(messages.participantsTooltip)}
+                      />
+                    </Box>
+                  )}
                 </ListItem>
               )}
             {projectType === 'timeline' &&
@@ -329,6 +359,20 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   )}
                 </ListItem>
               )}
+            {(projectType === 'continuous' &&
+              projectParticipationMethod === 'native_survey') ||
+              (currentPhaseParticipationMethod === 'native_survey' && (
+                <Box>
+                  <ListItem>
+                    <ListItemIcon ariaHidden name="survey" />
+                    {!isNilOrError(surveySubmissionCount) &&
+                      surveySubmissionCount.totalSubmissions}
+                    <Box ml="4px">
+                      <FormattedMessage {...messages.surveySubmissions} />
+                    </Box>
+                  </ListItem>
+                </Box>
+              ))}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'budgeting') ||
               currentPhase?.attributes.participation_method === 'budgeting') &&
