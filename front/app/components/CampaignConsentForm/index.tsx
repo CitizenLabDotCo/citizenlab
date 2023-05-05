@@ -10,11 +10,12 @@ import {
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
 import Feedback from './feedback';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -37,7 +38,15 @@ import {
   IUpdateCampaignConsentObject,
 } from 'api/campaign_consents/types';
 
-const CampaignConsentForm = () => {
+// analytics
+import { trackEventByName } from 'utils/analytics';
+
+type Props = {
+  trackEventName?: string;
+};
+const CampaignConsentForm = ({
+  trackEventName = 'Default email notification settings changed',
+}: Props) => {
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
   const { formatMessage } = useIntl();
@@ -135,6 +144,20 @@ const CampaignConsentForm = () => {
       );
 
     try {
+      // analytics
+      trackEventByName(trackEventName, {
+        extra: {
+          consentChanges: Object.fromEntries(
+            Object.values(consentUpdates).map(
+              (consent: IUpdateCampaignConsentObject): [string, boolean] => [
+                consent.campaignConsentId,
+                consent.consented,
+              ]
+            )
+          ),
+        },
+      });
+
       setShowFeedback(false);
       setLoading(true);
       await updateCampaignConsents(consentUpdates);
@@ -177,6 +200,11 @@ const CampaignConsentForm = () => {
             }
           >
             <Box ml="34px">
+              <ScreenReaderOnly>
+                <legend>
+                  <FormattedMessage {...messages.ally_categoryLabel} />
+                </legend>
+              </ScreenReaderOnly>
               {children.map(
                 ({
                   id,

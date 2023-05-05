@@ -11,8 +11,7 @@ import messages from './messages';
 
 // Components
 import ProfileForm from './ProfileForm';
-import CampaignsConsentForm from './CampaignsConsentForm';
-import NewCampaignsConsentForm from 'components/CampaignConsentForm';
+import CampaignsConsentForm from 'components/CampaignConsentForm';
 
 import ProfileDeletion from './ProfileDeletion';
 import UsersEditPageMeta from './UsersEditPageMeta';
@@ -71,7 +70,6 @@ export default () => {
           <PasswordChange />
           <ProfileDeletion />
           <CampaignsConsentForm />
-          <NewCampaignsConsentForm />
         </Wrapper>
       </Container>
     );
