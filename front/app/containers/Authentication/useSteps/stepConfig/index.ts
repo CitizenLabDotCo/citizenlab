@@ -1,9 +1,9 @@
 // flows
-import { sharedSteps } from './sharedSteps';
-import { oldSignInFlow } from './oldSignInFlow';
-import { oldSignUpFlow } from './oldSignUpFlow';
-import { newLightFlow } from './newLightFlow';
+import { lightFlow } from './lightFlow';
 import { missingDataFlow } from './missingDataFlow';
+import { sharedSteps } from './sharedSteps';
+import { signInFlow } from './signInFlow';
+import { signUpFlow } from './signUpFlow';
 
 // typings
 import {
@@ -23,6 +23,15 @@ export const getStepConfig = (
   anySSOEnabled: boolean
 ) => {
   return {
+    ...lightFlow(
+      getAuthenticationData,
+      getRequirements,
+      setCurrentStep,
+      updateState
+    ),
+
+    ...missingDataFlow(getRequirements, setCurrentStep),
+
     ...sharedSteps(
       getAuthenticationData,
       getRequirements,
@@ -32,29 +41,20 @@ export const getStepConfig = (
       anySSOEnabled
     ),
 
-    ...oldSignInFlow(
+    ...signInFlow(
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
       anySSOEnabled
     ),
 
-    ...oldSignUpFlow(
+    ...signUpFlow(
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
       updateState,
       anySSOEnabled
     ),
-
-    ...newLightFlow(
-      getAuthenticationData,
-      getRequirements,
-      setCurrentStep,
-      updateState
-    ),
-
-    ...missingDataFlow(getRequirements, setCurrentStep),
 
     'verification-only': {
       CLOSE: () => setCurrentStep('closed'),
