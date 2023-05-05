@@ -28,7 +28,7 @@ import { Step } from './typings';
 import { Locale } from 'typings';
 import { askCustomFields, requiredCustomFields } from './utils';
 
-export const newLightFlow = (
+export const lightFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,

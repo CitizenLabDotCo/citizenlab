@@ -16,9 +16,6 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, boolean } from 'yup';
 
-// typings
-import { Status } from '../../typings';
-
 const DEFAULT_VALUES = {
   termsAndConditionsAccepted: false,
   privacyPolicyAccepted: false,
@@ -27,11 +24,11 @@ const DEFAULT_VALUES = {
 const isTruthy = (value?: boolean) => !!value;
 
 interface Props {
-  status: Status;
+  loading: boolean;
   onSubmit: () => void;
 }
 
-const PoliciesForm = ({ status, onSubmit }: Props) => {
+const PoliciesForm = ({ loading, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
 
   const schema = object({
@@ -52,8 +49,6 @@ const PoliciesForm = ({ status, onSubmit }: Props) => {
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
   });
-
-  const loading = status === 'pending';
 
   return (
     <FormProvider {...methods}>

@@ -28,13 +28,12 @@ import { hasRequiredFields } from 'api/custom_fields_json_form_schema/utils';
 import {
   AuthenticationData,
   SetError,
-  Status,
 } from 'containers/Authentication/typings';
 import useLocale from 'hooks/useLocale';
 
 interface Props {
   authenticationData: AuthenticationData;
-  status: Status;
+  loading: boolean;
   setError: SetError;
   onSubmit: (id: string, formData: Record<string, any>) => void;
   onSkip: () => void;
@@ -42,7 +41,7 @@ interface Props {
 
 const CustomFields = ({
   authenticationData,
-  status,
+  loading,
   setError,
   onSubmit,
   onSkip,
@@ -62,8 +61,6 @@ const CustomFields = ({
   if (isNilOrError(authUser) || isNilOrError(userCustomFieldsSchema)) {
     return null;
   }
-
-  const loading = status === 'pending';
 
   const handleSubmit = async ({
     formData,
