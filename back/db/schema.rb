@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_05_162820) do
+ActiveRecord::Schema.define(version: 2023_05_03_171220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1078,6 +1078,7 @@ ActiveRecord::Schema.define(version: 2023_04_05_162820) do
     t.boolean "include_all_areas", default: false, null: false
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
+    t.string "qr_code"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -1305,12 +1306,14 @@ ActiveRecord::Schema.define(version: 2023_04_05_162820) do
     t.boolean "confirmation_required", default: true, null: false
     t.datetime "block_start_at"
     t.string "block_reason"
-    t.string "new_email"
     t.datetime "block_end_at"
+    t.string "new_email"
+    t.string "unique_code"
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["registration_completed_at"], name: "index_users_on_registration_completed_at"
     t.index ["slug"], name: "index_users_on_slug", unique: true
+    t.index ["unique_code"], name: "index_users_on_unique_code", unique: true
   end
 
   create_table "verification_verifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

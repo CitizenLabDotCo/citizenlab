@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy survey_results submission_count index_xlsx delete_inputs]
+  before_action :set_project, only: %i[show update reorder destroy survey_results submission_count index_xlsx delete_inputs qr_code]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -154,6 +154,18 @@ class WebApi::V1::ProjectsController < ApplicationController
     end
     sidefx.after_delete_inputs @project, current_user
     head :ok
+  end
+
+  def qr_code
+    if @project.generate_qr_code!
+      render json: WebApi::V1::ProjectSerializer.new(
+        @project,
+        params: fastjson_params,
+        include: %i[admin_publication project_images current_phase]
+      ).serialized_json
+    else
+      render json: { errors: @project.errors.details }, status: :unprocessable_entity
+    end
   end
 
   private

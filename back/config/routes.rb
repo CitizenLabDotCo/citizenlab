@@ -160,6 +160,7 @@ Rails.application.routes.draw do
         get 'submission_count', on: :member
         get :as_xlsx, on: :member, action: 'index_xlsx'
         delete 'inputs', on: :member, action: 'delete_inputs'
+        patch 'qr_code', on: :member
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do

@@ -38,6 +38,7 @@
 #  include_all_areas            :boolean          default(FALSE), not null
 #  posting_method               :string           default("unlimited"), not null
 #  posting_limited_max          :integer          default(1)
+#  qr_code                      :string
 #
 # Indexes
 #
@@ -225,6 +226,11 @@ class Project < ApplicationRecord
 
   def clear_folder_changes
     self.folder_changed = false
+  end
+
+  def generate_qr_code!
+    self.qr_code = Array.new(32) { (Array('a'..'z')+Array('0'..'9')).sample }.join
+    save!
   end
 
   private

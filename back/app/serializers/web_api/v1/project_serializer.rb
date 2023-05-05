@@ -144,6 +144,12 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     end
   end
 
+  attribute :qr_code, if: proc { |object, params|
+    can_moderate? object, params
+  } do |object|
+    object.qr_code
+  end
+
   def self.can_moderate?(object, params)
     current_user(params) && UserRoleService.new.can_moderate_project?(object, current_user(params))
   end

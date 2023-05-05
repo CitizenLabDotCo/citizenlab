@@ -3,6 +3,7 @@ import moduleConfiguration from 'modules';
 import PageLoading from 'components/UI/PageLoading';
 import IdeaFormBuilder from './project/inputForm/IdeaFormBuilder';
 import SurveyFormBuilder from './project/nativeSurvey/SurveyFormBuilder';
+import ProjectQRCode from './project/qrCode';
 
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
@@ -228,6 +229,14 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'allowed-input-topics',
             element: <AdminAllowedTopicsComponent />,
+          },
+          {
+            path: 'qrcode',
+            element: (
+              <PageLoading>
+                <ProjectQRCode />
+              </PageLoading>
+            ),
           },
           ...moduleConfiguration.routes['admin.projects.project'],
         ],

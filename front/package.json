@@ -123,6 +123,7 @@
     "react-mentions": "2.x",
     "react-password-strength-bar": "0.4.1",
     "react-places-autocomplete": "7.x",
+    "react-qr-code": "^2.0.11",
     "react-range": "1.8.14",
     "react-resize-detector": "8.0.3",
     "react-router-dom": "^6.3.0",

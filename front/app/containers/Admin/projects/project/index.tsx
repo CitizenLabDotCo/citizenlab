@@ -171,6 +171,11 @@ export class AdminProjectsProjectIndex extends PureComponent<
           feature: 'private_projects',
           name: 'permissions',
         },
+        {
+          label: 'QR code', // TODO: Translations
+          url: 'qrcode',
+          name: 'qrcode',
+        },
       ],
       tabHideConditions: {
         general: function isGeneralTabHidden() {
