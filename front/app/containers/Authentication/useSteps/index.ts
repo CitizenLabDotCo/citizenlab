@@ -105,10 +105,17 @@ export default function useSteps() {
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
+      setError,
       updateState,
       anySSOEnabled
     );
-  }, [getAuthenticationData, getRequirements, updateState, anySSOEnabled]);
+  }, [
+    getAuthenticationData,
+    getRequirements,
+    setError,
+    updateState,
+    anySSOEnabled,
+  ]);
 
   /** given the current step and a transition supported by that step, performs the transition */
   const transition = useCallback(
@@ -185,13 +192,7 @@ export default function useSteps() {
           context: GLOBAL_CONTEXT,
         };
 
-        transition(
-          currentStep,
-          'START_INVITE_FLOW'
-        )(search).catch(() => {
-          setCurrentStep('sign-up:invite');
-          setError('invitation_error');
-        });
+        transition(currentStep, 'START_INVITE_FLOW')(search);
       }
 
       // Remove all parameters from URL as they've already been captured
@@ -226,13 +227,7 @@ export default function useSteps() {
       };
 
       if (pathname.endsWith('authentication-error')) {
-        if (error_code === 'franceconnect_merging_failed') {
-          setCurrentStep('sign-up:auth-providers');
-          setError('franceconnect_merging_failed');
-        } else {
-          setCurrentStep('sign-up:auth-providers');
-          setError('unknown');
-        }
+        transition(currentStep, 'TRIGGER_AUTH_ERROR')(error_code);
 
         // Remove all parameters from URL as they've already been captured
         window.history.replaceState(null, '', '/');

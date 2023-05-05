@@ -10,6 +10,7 @@ import {
   GetRequirements,
   UpdateState,
   AuthenticationData,
+  SetError,
 } from '../../typings';
 import { Step } from './typings';
 
@@ -17,6 +18,7 @@ export const getStepConfig = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
+  setError: SetError,
   updateState: UpdateState,
   anySSOEnabled: boolean
 ) => {
@@ -25,6 +27,7 @@ export const getStepConfig = (
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
+      setError,
       updateState,
       anySSOEnabled
     ),
