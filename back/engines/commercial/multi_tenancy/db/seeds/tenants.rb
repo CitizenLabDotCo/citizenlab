@@ -258,7 +258,8 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            konveio_surveys: {
+            document_annotation: {
+              # values to check
               enabled: true,
               allowed: true
             },

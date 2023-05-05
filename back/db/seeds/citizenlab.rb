@@ -113,7 +113,7 @@ AppConfiguration.create!(
       enabled: true,
       allowed: true
     },
-    konveio_surveys: {
+    document_annotation: {
       enabled: true,
       allowed: true
     },
