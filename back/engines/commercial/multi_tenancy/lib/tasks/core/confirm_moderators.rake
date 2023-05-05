@@ -9,7 +9,7 @@ namespace :fix_existing_tenants do
       puts "Processing tenant #{tenant.host}..."
       tenant.switch do
         User.not_normal_user.each do |user|
-          next if !UserRoleService.new.moderates_something?(user)
+          next if !UserRoleService.new.moderates_something?(user) || !user.confirmation_required?
 
           if dry_run
             puts "Confirming #{user.email} - #{user.roles}"
