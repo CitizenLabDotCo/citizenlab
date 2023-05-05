@@ -63,8 +63,9 @@ export const oldSignUpFlow = (
         trackEventByName(tracks.signUpEmailPasswordStepExited);
       },
       SWITCH_FLOW: () => {
-        setCurrentStep('sign-in:email-password');
+        trackEventByName(tracks.signUpWithSSOClicked);
         trackEventByName(tracks.signUpEmailPasswordStepExited);
+        setCurrentStep('sign-in:email-password');
       },
       GO_BACK: () => {
         if (anySSOProviderEnabled) {
