@@ -71,7 +71,7 @@ class Initiative < ApplicationRecord
   with_options unless: :draft? do
     # Problem is that this validation happens too soon, as the first idea status change is created after create.
     # initiative.validates :initiative_status, presence: true
-    validates :initiative_status_changes, presence: true, unless: proc { Current.loading_tenant_template }
+    validates :initiative_status_changes, presence: true, if: proc { |initiative| !initiative.draft? && !Current.loading_tenant_template }
     validate :assignee_can_moderate_initiatives
 
     before_validation :initialize_initiative_status_changes
