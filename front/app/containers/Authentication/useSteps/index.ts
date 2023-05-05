@@ -28,7 +28,6 @@ import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/c
 // typings
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 import {
-  Status,
   ErrorCode,
   State,
   StepConfig,
@@ -66,7 +65,7 @@ export default function useSteps() {
     token: null,
     prefilledBuiltInFields: null,
   });
-  const [status, setStatus] = useState<Status>('ok');
+  const [loading, setLoading] = useState(false);
   const [error, _setError] = useState<ErrorCode | null>(null);
 
   const setError = useCallback((newError: ErrorCode | null) => {
@@ -126,13 +125,13 @@ export default function useSteps() {
           queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
         }
 
-        setStatus('pending');
+        setLoading(true);
         try {
           // @ts-ignore
           await action(...args);
-          setStatus('ok');
+          setLoading(false);
         } catch (e) {
-          setStatus('ok');
+          setLoading(false);
           throw e;
         }
       }) as StepConfig[S][T];
@@ -254,7 +253,7 @@ export default function useSteps() {
   return {
     currentStep,
     state,
-    status,
+    loading,
     error,
     authenticationData,
     transition,

@@ -23,11 +23,11 @@ import Input from 'components/HookForm/Input';
 import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
 
 // typings
-import { State, Status, SetError } from '../../typings';
+import { State, SetError } from '../../typings';
 
 interface Props {
   state: State;
-  status: Status;
+  loading: boolean;
   setError: SetError;
   onConfirm: (code: string) => void;
   onChangeEmail?: () => void;
@@ -47,7 +47,7 @@ const isWrongConfirmationCodeError = (e: any) => {
 
 const EmailConfirmation = ({
   state,
-  status,
+  loading,
   setError,
   onConfirm,
   onChangeEmail,
@@ -56,7 +56,7 @@ const EmailConfirmation = ({
   const [resendingCode, setResendingCode] = useState(false);
 
   const { formatMessage } = useIntl();
-  const loading = status === 'pending' || resendingCode;
+  const busy = loading || resendingCode;
 
   const schema = useMemo(
     () =>
@@ -132,8 +132,8 @@ const EmailConfirmation = ({
             id="e2e-verify-email-button"
             type="submit"
             width="auto"
-            disabled={loading}
-            processing={loading}
+            disabled={busy}
+            processing={busy}
           >
             {formatMessage(messages.verifyAndContinue)}
           </Button>

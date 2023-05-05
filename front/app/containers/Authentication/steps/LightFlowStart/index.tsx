@@ -29,10 +29,10 @@ import { isValidEmail } from 'utils/validate';
 import { SSOProvider } from 'services/singleSignOn';
 import { Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
-import { SetError, Status } from 'containers/Authentication/typings';
+import { SetError } from 'containers/Authentication/typings';
 
 interface Props {
-  status: Status;
+  loading: boolean;
   setError: SetError;
   onSubmit: (email: string, locale: Locale) => void;
   onSwitchToSSO: (ssoProvider: SSOProvider) => void;
@@ -47,7 +47,7 @@ const DEFAULT_VALUES: Partial<FormValues> = {
 };
 
 const LightFlowStart = ({
-  status,
+  loading,
   setError,
   onSubmit,
   onSwitchToSSO,
@@ -79,8 +79,6 @@ const LightFlowStart = ({
   });
 
   if (isNilOrError(locale)) return null;
-
-  const loading = status === 'pending';
 
   const handleSubmit = async ({ email }: FormValues) => {
     try {
