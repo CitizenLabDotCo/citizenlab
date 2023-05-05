@@ -39,11 +39,11 @@ import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 
 // typings
 import { Parameters as CreateAccountParameters } from 'api/authentication/sign_up/createAccountWithPassword';
-import { SetError, State, Status } from 'containers/Authentication/typings';
+import { SetError, State } from 'containers/Authentication/typings';
 
 interface Props {
   state: State;
-  status: Status;
+  loading: boolean;
   setError: SetError;
   onSwitchFlow: () => void;
   onGoBack: () => void;
@@ -52,7 +52,7 @@ interface Props {
 
 const EmailAndPasswordSignUp = ({
   state,
-  status,
+  loading,
   setError,
   onSwitchFlow,
   onGoBack,
@@ -63,7 +63,6 @@ const EmailAndPasswordSignUp = ({
   const locale = useLocale();
   const { formatMessage } = useIntl();
 
-  const loading = status === 'pending';
   const appConfigSettings = appConfiguration?.data.attributes.settings;
   const phoneLoginEnabled = !!appConfigSettings?.password_login?.phone;
   const minimumPasswordLength =

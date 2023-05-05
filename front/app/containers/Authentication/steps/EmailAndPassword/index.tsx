@@ -34,10 +34,10 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 
 // typings
-import { SetError, Status } from 'containers/Authentication/typings';
+import { SetError } from 'containers/Authentication/typings';
 
 interface Props {
-  status: Status;
+  loading: boolean;
   setError: SetError;
   onSubmit: (
     email: string,
@@ -62,7 +62,7 @@ const DEFAULT_VALUES: Partial<FormValues> = {
 };
 
 const EmailAndPassword = ({
-  status,
+  loading,
   setError,
   onSubmit,
   onGoBack,
@@ -71,8 +71,6 @@ const EmailAndPassword = ({
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const anySSOEnabled = useAnySSOEnabled();
   const { data: appConfiguration } = useAppConfiguration();
-
-  const loading = status === 'pending';
 
   const appConfigSettings = appConfiguration?.data.attributes.settings;
   const tokenLifetime =
