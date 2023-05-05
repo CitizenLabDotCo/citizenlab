@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import campaignConsentKeys from './keys';
 import { ICampaignConsent, IUpdateCampaignConsentObject } from './types';
 
-const updateCampaignConsents = (
+const updateCampaignConsents = async (
   consentUpdates: IUpdateCampaignConsentObject[]
 ) =>
   Promise.all(

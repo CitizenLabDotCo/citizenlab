@@ -6,7 +6,7 @@ export type CampaignConsentKeys = Keys<typeof campaignConsentKeys>;
 
 export interface ICampaignConsentData {
   id: string;
-  type: string;
+  type: 'consent';
   attributes: {
     campaign_name: string;
     campaign_type_description_multiloc: Multiloc;
