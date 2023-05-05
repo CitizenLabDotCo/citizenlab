@@ -1219,7 +1219,7 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Wat wil je doen?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Bepaal hoe gebruikers kunnen deelnemen.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "Je kunt aangeven wie elke actie mag uitvoeren, en deelnemers aanvullende vragen stellen om meer informatie te verzamelen.",
-  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Vereisten & vragen voor deelnemer",
+  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Vereisten & vragen voor deelname",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Toegangsrechten",
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "Sommige deelnamemethoden zijn niet beschikbaar voor bestaande fasen. In deze gevallen zal een nieuwe fase moeten worden gecreëerd.",
   "app.containers.AdminPage.ProjectEdit.phasePermissions": "Acties",
