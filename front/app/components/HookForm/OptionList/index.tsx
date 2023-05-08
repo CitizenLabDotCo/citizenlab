@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { DndProvider } from 'react-dnd-cjs';
-import HTML5Backend from 'react-dnd-html5-backend-cjs';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { cloneDeep, get } from 'lodash-es';
 
 // react hook form

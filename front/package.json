@@ -107,7 +107,6 @@
     "react-dnd": "^16.0.1",
     "react-dnd-cjs": "^9.5.1",
     "react-dnd-html5-backend": "^16.0.1",
-    "react-dnd-html5-backend-cjs": "^9.5.1",
     "react-dom": "^16.8.0",
     "react-dropzone": "^14.2.3",
     "react-easy-crop": "^4.6.3",
