@@ -35,7 +35,7 @@ const useDeleteIdea = () => {
       queryClient.invalidateQueries({
         queryKey: ideaImagesKeys.item({ ideaId }),
       });
-      queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
+      queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
       streams.fetchAllWith({
         apiEndpoint: [`${API_PATH}/analytics`],
       });

@@ -36,7 +36,7 @@ import messages from '../messages';
 import helpImage from './COWHelpImage.png';
 
 // api
-import { queryClient } from 'utils/cl-react-query/queryClient';
+import { useQueryClient } from '@tanstack/react-query';
 import projectsKeys from 'api/projects/keys';
 
 interface Props {
@@ -48,6 +48,7 @@ interface Props {
 const VerificationFormCOW = memo<Props & WrappedComponentProps>(
   ({ onCancel, onVerified, className, intl }) => {
     const authUser = useAuthUser();
+    const queryClient = useQueryClient();
 
     const [run, setRun] = useState('');
     const [idSerial, setIdSerial] = useState('');
@@ -95,7 +96,7 @@ const VerificationFormCOW = memo<Props & WrappedComponentProps>(
 
             await verifyCOW(run, idSerial);
 
-            queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
+            queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
 
             const endpointsToRefetch = [`${API_PATH}/users/me`];
             const partialEndpointsToRefetch = [
