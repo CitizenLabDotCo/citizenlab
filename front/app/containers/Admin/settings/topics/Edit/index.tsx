@@ -10,29 +10,39 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // hooks
-import useTopic from 'hooks/useTopic';
+import useTopic from 'api/topics/useTopic';
 
 // services
-import { updateTopic, ITopicUpdate } from 'services/topics';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
 import TopicForm from '../TopicForm';
 
+import useUpdateTopic from 'api/topics/useUpdateTopic';
+import { ITopicUpdate } from 'api/topics/types';
+
 // typings
 
 const Edit = () => {
   const { topicId } = useParams() as { topicId: string };
-  const topic = useTopic(topicId);
+  const { data: topic } = useTopic(topicId);
+  const { mutate: updateTopic } = useUpdateTopic();
 
-  const handleSubmit = async (values: ITopicUpdate) => {
-    if (isNilOrError(topic)) return;
+  const handleSubmit = (values: Omit<ITopicUpdate, 'id'>) => {
+    if (!topic) return;
 
-    await updateTopic(topic.id, {
-      ...values,
-    });
-    clHistory.push('/admin/settings/topics');
+    updateTopic(
+      {
+        id: topic.data.id,
+        ...values,
+      },
+      {
+        onSuccess: () => {
+          clHistory.push('/admin/settings/topics');
+        },
+      }
+    );
   };
 
   const goBack = () => {
@@ -48,7 +58,7 @@ const Edit = () => {
       {!isNilOrError(topic) && (
         <TopicForm
           defaultValues={{
-            title_multiloc: topic.attributes.title_multiloc,
+            title_multiloc: topic.data.attributes.title_multiloc,
           }}
           onSubmit={handleSubmit}
         />
