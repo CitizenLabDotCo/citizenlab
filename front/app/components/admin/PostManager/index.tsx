@@ -6,9 +6,10 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { isNilOrError } from 'utils/helperUtils';
 
-// services
+// api
+import { IProjectData } from 'api/projects/types';
 
-import { IProjectData } from 'services/projects';
+// services
 import { getTopicIds } from 'services/projectAllowedInputTopics';
 
 // resources

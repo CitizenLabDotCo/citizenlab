@@ -24,11 +24,13 @@ import GetProjects from 'resources/GetProjects';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
-import { IProjectData } from 'services/projects';
 
 // Styling
 import styled from 'styled-components';
 import useLocalize from 'hooks/useLocalize';
+
+// typings
+import { IProjectData } from 'api/projects/types';
 
 const StyledCollapse = styled(Collapse)`
   flex: 1;

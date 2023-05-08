@@ -236,28 +236,6 @@ export interface IProject {
   data: IProjectData;
 }
 
-export interface IProjects {
-  data: IProjectData[];
-}
-
-type IQueryParametersWithPS =
-  | {
-      publication_statuses: PublicationStatus[];
-      [key: string]: any;
-    }
-  | {
-      filter_ids: string[];
-      [key: string]: any;
-    };
-
-interface StreamParamsForProjects extends IStreamParams {
-  queryParameters: IQueryParametersWithPS;
-}
-
-export function projectsStream(streamParams: StreamParamsForProjects) {
-  return streams.get<IProjects>({ apiEndpoint, ...streamParams });
-}
-
 export function projectBySlugStream(
   projectSlug: string,
   streamParams: IStreamParams | null = null

@@ -1,7 +1,7 @@
 import React from 'react';
 import { isEmpty } from 'lodash-es';
 import { IPhaseData } from 'services/phases';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { Segment, Menu, Popup } from 'semantic-ui-react';
