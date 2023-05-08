@@ -580,7 +580,6 @@
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Verwijder groep",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Bewerk groep",
   "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Admins & beheerders",
-  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle": "Bekijk wie geselecteerd zijn als admins, mapbeheerder en projectbeheerder.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Geregistreerde gebruikers",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Groepen",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Beheer alle gebruikers op je platform. Maak manuele of slimme groepen aan om hen te segmenteren.",

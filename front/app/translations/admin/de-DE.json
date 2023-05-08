@@ -580,7 +580,6 @@
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Gruppe löschen",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Gruppe bearbeiten",
   "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Plattformverwaltung",
-  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle": "Übersicht aller Personen, die Admin-, Ordner-Manager*innen- und Projektmanager*innen-Zugänge auf Ihrer Plattform.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Registrierte Nutzer*innen",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Gruppen",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Verschaffen Sie sich einen Überblick über alle Personen und Organisationen, die sich auf der Plattform registriert haben. Fügen Sie eine Auswahl von Nutzer*innen zu manuellen oder intelligenten Gruppen hinzu.",

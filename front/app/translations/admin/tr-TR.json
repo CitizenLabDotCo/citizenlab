@@ -580,7 +580,6 @@
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Grubu sil",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Grubu düzenle",
   "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Yöneticiler ve müdürler",
-  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle": "Kimlerin yönetici, klasör yöneticisi ve proje yöneticisi olarak seçildiğini görüntüleyin.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Kayıtlı kullanıcılar",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Gruplar",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Platforma kaydolan tüm kişi ve kuruluşları genel hatlarıyla görün. Seçilen kullanıcıları Manuel gruplara veya Akıllı gruplara ekleyin.",

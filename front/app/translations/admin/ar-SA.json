@@ -580,7 +580,6 @@
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "حذف المجموعة",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "تعديل المجموعة",
   "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "المسؤولون والمديرون",
-  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle": "عرض من تم تحديدهم ليكونوا مسؤولين أو مسؤولي مجلدات أو مديري مشاريع.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "المستخدمون",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "المجموعات",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "أنشئ مجموعات وأضِف المستخدمين إليها.",
