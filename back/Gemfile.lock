@@ -1,12 +1,4 @@
 GIT
-  remote: https://github.com/CitizenLabDotCo/actionpack-cloudfront.git
-  revision: 210a03d2e6bee69a2bc922bf367453fd5b17fb0d
-  specs:
-    actionpack-cloudfront (1.2.0)
-      actionpack (>= 4.2)
-      railties (>= 4.2)
-
-GIT
   remote: https://github.com/CitizenLabDotCo/ice_cube.git
   revision: 4671442d581d185a40933fa06a9c773f22f6070f
   specs:
@@ -297,7 +289,6 @@ PATH
   remote: engines/commercial/multi_tenancy
   specs:
     multi_tenancy (0.1.0)
-      actionpack-cloudfront (~> 1.2.0)
       nlp
       rails (~> 6.1)
       ros-apartment (>= 2.9.0)
@@ -1162,7 +1153,6 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  actionpack-cloudfront!
   active_model_serializers (~> 0.10.12)
   activerecord-import (~> 1.4)
   activerecord-postgis-adapter (~> 7.1.1)
