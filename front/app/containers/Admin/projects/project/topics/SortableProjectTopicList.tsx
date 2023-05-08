@@ -23,9 +23,6 @@ import VerticalCenterer from 'components/VerticalCenterer';
 import { Spinner, Box } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 
-// services
-import { IProjectAllowedInputTopic } from 'services/projectAllowedInputTopics';
-
 // hooks
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 import useTopics from 'api/topics/useTopics';
@@ -35,6 +32,7 @@ import useDeleteAllowedProjectInputTopic from 'api/project_allowed_input_topics/
 import { fontSizes } from 'utils/styleUtils';
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 import useReorderProjectAllowedInputTopics from 'api/project_allowed_input_topics/useReorderProjectAllowedInputTopics';
+import { IProjectAllowedInputTopicData } from 'api/project_allowed_input_topics/types';
 
 export const RowTitle = styled(T)`
   font-size: ${fontSizes.base}px;
@@ -119,7 +117,7 @@ const SortableProjectTopicList = memo(
     ) {
       const isLastSelectedTopic = allowedInputTopics.data.length === 1;
 
-      const getTitle = ({ relationships }: IProjectAllowedInputTopic) => {
+      const getTitle = ({ relationships }: IProjectAllowedInputTopicData) => {
         return topicsById[relationships.topic.data.id].attributes
           .title_multiloc;
       };
@@ -151,7 +149,7 @@ const SortableProjectTopicList = memo(
               <>
                 {itemsList.map(
                   (
-                    projectAllowedInputTopic: IProjectAllowedInputTopic,
+                    projectAllowedInputTopic: IProjectAllowedInputTopicData,
                     index: number
                   ) => (
                     <SortableRow
