@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd-cjs';
 import { Row } from 'components/admin/ResourceList';
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 const DragHandle = styled.div`
   cursor: move;
@@ -20,60 +20,38 @@ export interface Props {
   id: string;
   className?: string;
   isLastItem?: boolean;
-  iconMargin?: string;
-  iconFill?: string;
-  noStyling?: boolean;
   moveRow: (fromIndex: number, toIndex: number) => void;
   dropRow: (itemId: string, toIndex: number) => void;
   children?: React.ReactNode;
 }
 
-interface State {}
+const SortableRow = ({
+  connectDropTarget,
+  connectDragSource,
+  isDragging,
+  isLastItem,
+  className,
+  children,
+}: Props) => {
+  const opacity = isDragging ? 0 : 1;
 
-class SortableRow extends React.Component<Props, State> {
-  render() {
-    const {
-      connectDropTarget,
-      connectDragSource,
-      isDragging,
-      isLastItem,
-      iconMargin,
-      iconFill,
-      className,
-      noStyling,
-      children,
-    } = this.props;
-    const opacity = isDragging ? 0 : 1;
-
-    if (!children) {
-      return null;
-    }
-
-    return connectDropTarget(
-      connectDragSource(
-        <div style={{ opacity }} className={className}>
-          {noStyling && (
-            <Box display="flex" alignItems="center">
-              <DragHandle className="sortablerow-draghandle">
-                <Icon m={iconMargin} fill={iconFill} width="12px" name="sort" />
-              </DragHandle>
-              {children}
-            </Box>
-          )}
-
-          {!noStyling && (
-            <Row isLastItem={isLastItem}>
-              <DragHandle className="sortablerow-draghandle">
-                <Icon m={iconMargin} fill={iconFill} width="12px" name="sort" />
-              </DragHandle>
-              {children}
-            </Row>
-          )}
-        </div>
-      )
-    );
+  if (!children) {
+    return null;
   }
-}
+
+  return connectDropTarget(
+    connectDragSource(
+      <div style={{ opacity }} className={className}>
+        <Row isLastItem={isLastItem}>
+          <DragHandle className="sortablerow-draghandle">
+            <Icon width="12px" name="sort" />
+          </DragHandle>
+          {children}
+        </Row>
+      </div>
+    )
+  );
+};
 
 const dragSource = {
   beginDrag(props) {
