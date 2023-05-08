@@ -60,7 +60,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sign-up:custom-fields': messages.completeYourProfile,
   'sign-up:invite': messages.signUp,
   // change this if you want a custom header message
-  'sign-up:clave-unica': messages.signUp,
+  'sign-up:enter-email': messages.signUp,
 
   // light flow
   'light-flow:email': messages.beforeYouParticipate,
@@ -135,7 +135,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
   const closable =
     currentStep !== 'closed' &&
     currentStep !== 'success' &&
-    currentStep !== 'sign-up:clave-unica';
+    currentStep !== 'sign-up:enter-email';
   // want modal to be closable? delete line above and uncomment line below
   // const closable = currentStep !== 'closed' && currentStep !== 'success';
 
@@ -314,7 +314,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
           />
         )}
 
-        {currentStep === 'sign-up:clave-unica' && (
+        {currentStep === 'sign-up:enter-email' && (
           // Add more props here
           <ClaveUnicaEmail
             loading={loading}

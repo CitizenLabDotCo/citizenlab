@@ -15,7 +15,7 @@ export type Step =
   | 'sign-up:verification'
   | 'sign-up:custom-fields'
   | 'sign-up:invite'
-  | 'sign-up:clave-unica'
+  | 'sign-up:enter-email'
 
   // light flow
   | 'light-flow:email'
