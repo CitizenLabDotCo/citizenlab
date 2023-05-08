@@ -7,9 +7,7 @@ resource 'AppConfigurations' do
   explanation 'AppConfigurations store the global settings of the application.'
 
   before do
-    @current_user = create(:user, roles: [{ type: 'admin' }])
-    token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    admin_header_token
     header 'Content-Type', 'application/json'
   end
 

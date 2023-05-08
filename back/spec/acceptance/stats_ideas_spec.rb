@@ -41,8 +41,7 @@ resource 'Stats - Ideas' do
   let(:bearer) { "Bearer #{@token}" }
 
   before_all do
-    @current_user = create(:admin)
-    @token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
+    admin_header_token
 
     AppConfiguration.instance.update!(created_at: now - 3.years)
     @timezone = AppConfiguration.instance.settings('core', 'timezone')

@@ -35,8 +35,7 @@ resource 'Stats - Initiatives' do
   let_it_be(:now) { Time.now.in_time_zone(@timezone) }
 
   before_all do
-    @current_user = create(:admin)
-    @token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
+    admin_header_token
 
     AppConfiguration.instance.update!(created_at: now - 3.years)
     @timezone = AppConfiguration.instance.settings('core', 'timezone')
