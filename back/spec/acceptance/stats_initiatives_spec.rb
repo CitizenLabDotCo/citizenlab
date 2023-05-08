@@ -28,13 +28,10 @@ end
 resource 'Stats - Initiatives' do
   explanation 'The various stats endpoints can be used to show certain properties of initiatives.'
 
-  header 'Content-Type', 'application/json'
-  header 'Authorization', :bearer
-
-  let(:bearer) { "Bearer #{@token}" }
   let_it_be(:now) { Time.now.in_time_zone(@timezone) }
 
-  before_all do
+  before do
+    header 'Content-Type', 'application/json'
     admin_header_token
 
     AppConfiguration.instance.update!(created_at: now - 3.years)

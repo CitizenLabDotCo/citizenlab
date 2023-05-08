@@ -10,8 +10,9 @@ RSpec.describe ContentBuilder::WebApi::V1::ContentBuilderLayoutsController do
   let(:user) { create(:admin) }
 
   before do
-    header_token_for user
-    header 'Content-Type', 'application/json'
+    token = AuthToken.new(payload: user.to_token_payload).token
+    request.headers['Authorization'] = "Bearer #{token}"
+    request.headers['Content-Type'] = 'application/json'
   end
 
   describe 'upsert for create' do
