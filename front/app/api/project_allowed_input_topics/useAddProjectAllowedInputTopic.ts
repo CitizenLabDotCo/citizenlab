@@ -12,12 +12,12 @@ const addTopic = async ({
   topic_id,
 }: IProjectAllowedInputTopicAdd) =>
   fetcher<IProjectAllowedInputTopic>({
-    path: '/topics',
+    path: '/projects_allowed_input_topics',
     action: 'post',
     body: { project_id, topic_id },
   });
 
-const useAddTopic = () => {
+const useAddProjectAllowedInputTopic = () => {
   const queryClient = useQueryClient();
   return useMutation<
     IProjectAllowedInputTopic,
@@ -33,4 +33,4 @@ const useAddTopic = () => {
   });
 };
 
-export default useAddTopic;
+export default useAddProjectAllowedInputTopic;
