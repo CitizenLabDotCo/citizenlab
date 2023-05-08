@@ -72,6 +72,7 @@
     "compression": "1.7.4",
     "cross-env": "7.0.3",
     "d3-force": "^3.0.0",
+    "dnd-core": "^16.0.1",
     "dotenv": "^16.0.3",
     "file-saver": "^2.0.5",
     "focus-visible": "5.2.0",
