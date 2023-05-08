@@ -10,7 +10,7 @@ module ApiAuthenticationHelper
   end
 
   def header_token_for(user)
-    token = Knock::AuthToken.new(payload: user.to_token_payload).token
+    token = AuthToken.new(payload: user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
   end
 end

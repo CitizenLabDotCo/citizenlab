@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::UserTokenController < Knock::AuthTokenController
+class WebApi::V1::UserTokenController # < Knock::AuthTokenController # TODO
   private
 
   def auth_token
@@ -10,7 +10,7 @@ class WebApi::V1::UserTokenController < Knock::AuthTokenController
       payload[:exp] = 1.day.from_now.to_i
     end
 
-    Knock::AuthToken.new payload: payload
+    AuthToken.new payload: payload
   end
 
   def auth_params

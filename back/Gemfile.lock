@@ -57,17 +57,6 @@ GIT
       activesupport (>= 4.2)
 
 GIT
-  remote: https://github.com/nsarno/knock
-  revision: 9214cd027422df8dc31eb67c60032fbbf8fc100b
-  ref: 9214cd027422df8dc31eb67c60032fbbf8fc100b
-  branch: master
-  specs:
-    knock (2.2.0)
-      bcrypt (~> 3.1)
-      jwt (~> 2.2.1)
-      rails (>= 5)
-
-GIT
   remote: https://github.com/que-rb/que
   revision: 77c6b92952b821898c393239ce0e4047b17d7dae
   ref: 77c6b92952b821898c393239ce0e4047b17d7dae
@@ -323,7 +312,6 @@ PATH
     public_api (0.1.0)
       active_model_serializers (~> 0.10.7)
       kaminari (~> 1.2)
-      knock
       pundit (~> 2.0)
       rails (~> 6.1)
       ros-apartment (>= 2.9.0)
@@ -1219,8 +1207,8 @@ DEPENDENCIES
   interactor
   interactor-rails
   intercom (~> 4.2)
+  jwt (~> 2.2.2)
   kaminari (~> 1.2)
-  knock!
   license_finder
   liquid (~> 4.0)
   listen (>= 3.0.5, < 4.0)
