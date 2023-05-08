@@ -169,15 +169,13 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
     locale: GetLocaleChildProps,
     tenantLocales: GetAppConfigurationLocalesChildProps
   ) => {
-    const { projectsList } = projects;
-
     if (
       !isNilOrError(locale) &&
       !isNilOrError(tenantLocales) &&
-      !isNilOrError(projectsList) &&
-      projectsList.length > 0
+      !isNilOrError(projects) &&
+      projects.length > 0
     ) {
-      return projectsList.map((project) => ({
+      return projects.map((project) => ({
         value: project.id,
         label: getLocalized(
           project.attributes.title_multiloc,
