@@ -22,7 +22,7 @@
     "start:images": "cross-env NODE_ENV=production node server/images",
     "prestats": "cross-env NODE_ENV=production webpack --config internals/webpack/webpack.config.js --profile --json > build/stats.json",
     "stats": "cross-env webpack-bundle-analyzer build/stats.json",
-    "lint": "npm run lint:eslint",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx app --color --max-warnings=0 --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -33,7 +33,6 @@
     "majestic": "majestic --port 4231",
     "find-unused-messages": "node internals/scripts/find-unused-messages.js",
     "prettier": "prettier --write .",
-    "lint:eslint": "eslint --ext .js,.jsx,.ts,.tsx app --color --max-warnings=0 --fix",
     "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|services/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')"
   },
   "jest-junit": {
