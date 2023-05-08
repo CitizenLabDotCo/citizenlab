@@ -3,9 +3,6 @@ import React, { memo, useState } from 'react';
 // components
 import FilterSelector from 'components/FilterSelector';
 
-// services
-import { getTopicIds } from 'services/projectAllowedInputTopics';
-
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -17,6 +14,7 @@ import useTopics from 'api/topics/useTopics';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 
 interface Props {
   alignment: 'left' | 'right';

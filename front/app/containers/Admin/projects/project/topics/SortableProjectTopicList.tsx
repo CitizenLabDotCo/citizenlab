@@ -27,7 +27,6 @@ import T from 'components/T';
 import {
   deleteProjectAllowedInputTopic,
   reorderProjectAllowedInputTopic,
-  getTopicIds,
   IProjectAllowedInputTopic,
 } from 'services/projectAllowedInputTopics';
 
@@ -37,6 +36,7 @@ import useTopics from 'api/topics/useTopics';
 
 // styles
 import { fontSizes } from 'utils/styleUtils';
+import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 
 export const RowTitle = styled(T)`
   font-size: ${fontSizes.base}px;

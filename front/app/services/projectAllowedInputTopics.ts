@@ -61,12 +61,6 @@ export async function addProjectAllowedInputTopic(
   return response;
 }
 
-export function listProjectAllowedInputTopics(projectId: string) {
-  return streams.get<IProjectAllowedInputTopics>({
-    apiEndpoint: getListEndpoint(projectId),
-  });
-}
-
 export async function reorderProjectAllowedInputTopic(
   allowedInputTopicId: string,
   newOrder: number,

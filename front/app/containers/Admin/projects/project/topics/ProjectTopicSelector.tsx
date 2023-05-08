@@ -23,10 +23,8 @@ import styled from 'styled-components';
 import { IOption } from 'typings';
 
 // Services
-import {
-  addProjectAllowedInputTopic,
-  getTopicIds,
-} from 'services/projectAllowedInputTopics';
+import { addProjectAllowedInputTopic } from 'services/projectAllowedInputTopics';
+import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 
 const Container = styled.div`
   width: 100%;
