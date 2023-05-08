@@ -619,7 +619,7 @@
   "app.containers.Admin.Insights.tabReports": "Berichte",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Ende der Umfrage",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Erstellen einer intelligenten Gruppe",
-  "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Benutzer*innen, die alle der folgenden Bedingungen erfüllen, werden automatisch zur Gruppe hinzugefügt:",
+  "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Nutzer*innen, die alle der folgenden Bedingungen erfüllen, werden automatisch zur Gruppe hinzugefügt:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Mindestens eine Regel eingeben",
   "app.containers.AdminPage.Users.UsersGroup.learnMorePlans": "Erfahren Sie mehr über unsere Pläne",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Einige Bedingungen sind unvollständig",
