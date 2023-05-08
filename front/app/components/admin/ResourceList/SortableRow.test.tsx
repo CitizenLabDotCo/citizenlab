@@ -4,7 +4,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import SortableRow from './SortableRow';
 import SortableList from './SortableList';
-import { dragAndDrop } from 'utils/testUtils/dragAndDrop';
+import dragAndDrop from 'utils/testUtils/dragAndDrop';
 
 const items = [
   { id: '_1', attributes: { ordering: 0 } },

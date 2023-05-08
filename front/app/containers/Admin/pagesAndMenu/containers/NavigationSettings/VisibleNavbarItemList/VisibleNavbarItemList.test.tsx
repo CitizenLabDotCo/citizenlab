@@ -6,7 +6,7 @@ import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import VisibleNavbarItemList from '.';
 import { removeNavbarItem, reorderNavbarItem } from 'services/navbar';
 import { deleteCustomPage } from 'services/customPages';
-import { dragAndDrop } from 'utils/testUtils/dragAndDrop';
+import dragAndDrop from 'utils/testUtils/dragAndDrop';
 
 jest.mock('hooks/useNavbarItems');
 jest.mock('hooks/useCustomPageSlugById');
