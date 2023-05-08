@@ -23,7 +23,6 @@ module.exports = {
     'jsx-a11y',
     '@typescript-eslint',
     'unused-imports',
-    'import',
   ],
   rules: {
     '@typescript-eslint/member-delimiter-style': ['warn'],
@@ -110,17 +109,6 @@ module.exports = {
             name: '@testing-library/react',
             message:
               "Import React testing library exports from 'utils/testUtils/rtl' instead",
-          },
-        ],
-      },
-    ],
-    'import/no-restricted-paths': [
-      'error',
-      {
-        zones: [
-          {
-            target: './app/containers',
-            from: './app/modules',
           },
         ],
       },

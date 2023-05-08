@@ -208,7 +208,6 @@
     "enzyme-adapter-react-16": "1.15.6",
     "enzyme-to-json": "3.6.2",
     "eslint": "^8.35.0",
-    "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.32.2",
