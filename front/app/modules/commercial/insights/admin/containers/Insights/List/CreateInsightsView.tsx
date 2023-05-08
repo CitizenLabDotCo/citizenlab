@@ -390,10 +390,7 @@ const publicationStatuses: PublicationStatus[] = [
 
 const Data = adopt<DataProps>({
   projects: (
-    <GetProjects
-      publicationStatuses={publicationStatuses}
-      filterCanModerate={true}
-    />
+    <GetProjects publicationStatuses={publicationStatuses} canModerate={true} />
   ),
 });
 

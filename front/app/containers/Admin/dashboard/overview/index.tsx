@@ -284,10 +284,7 @@ const publicationStatuses: PublicationStatus[] = [
 ];
 
 export default () => (
-  <GetProjects
-    publicationStatuses={publicationStatuses}
-    filterCanModerate={true}
-  >
+  <GetProjects publicationStatuses={publicationStatuses} canModerate={true}>
     {(projects) => <OverviewDashboard projects={projects} />}
   </GetProjects>
 );

@@ -49,7 +49,7 @@ const Data = adopt<Props>({
       pageSize={250}
       sort="new"
       publicationStatuses={publicationStatuses}
-      filterCanModerate={true}
+      canModerate={true}
     />
   ),
 });

@@ -57,7 +57,7 @@ const Data = adopt<DataProps, InputProps>({
   projects: (
     <GetProjects
       publicationStatuses={['published', 'archived', 'draft']}
-      filterCanModerate={true}
+      canModerate={true}
     />
   ),
 });

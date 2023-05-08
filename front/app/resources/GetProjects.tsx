@@ -1,5 +1,5 @@
-import useProjects from 'hooks/useProjects';
-import { IProjectData, PublicationStatus } from 'services/projects';
+import useProjects, { Props as InputProps } from 'hooks/useProjects';
+import { IProjectData } from 'services/projects';
 import { isError } from 'utils/helperUtils';
 
 export type Sort =
@@ -12,16 +12,6 @@ export type Sort =
 
 export type SelectedPublicationStatus = 'all' | 'published' | 'archived';
 
-export interface InputProps {
-  pageNumber?: number;
-  pageSize?: number;
-  sort?: Sort;
-  areas?: string[];
-  publicationStatuses: PublicationStatus[];
-  filterCanModerate?: boolean;
-  filteredProjectIds?: string[];
-}
-
 export type GetProjectsChildProps = IProjectData[] | null | undefined;
 
 type children = (renderProps: GetProjectsChildProps) => JSX.Element | null;
@@ -30,26 +20,8 @@ interface Props extends InputProps {
   children?: children;
 }
 
-const GetProjects = ({
-  pageNumber,
-  pageSize,
-  sort,
-  areas,
-  publicationStatuses,
-  filterCanModerate,
-  filteredProjectIds,
-  children,
-}: Props) => {
-  const projects = useProjects({
-    pageNumber,
-    pageSize,
-    sort,
-    areas,
-    publicationStatuses,
-    canModerate: filterCanModerate,
-    projectIds: filteredProjectIds,
-  });
-
+const GetProjects = ({ children, ...props }: Props) => {
+  const projects = useProjects(props);
   return (children as any)(isError(projects) ? null : projects);
 };
 
