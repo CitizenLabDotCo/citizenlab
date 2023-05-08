@@ -77,6 +77,7 @@ describe('<SortableRow />: integration with <SortableList />', () => {
     fireEvent.dragStart(lastItem);
     fireEvent.dragEnter(middleItem);
     fireEvent.dragOver(middleItem);
+
     fireEvent.drop(middleItem);
 
     expect(onReorder).toHaveBeenCalledWith('_3', 1);
@@ -109,8 +110,10 @@ describe('<SortableRow />: integration with <SortableList />', () => {
     fireEvent.dragStart(lastItem);
     fireEvent.dragEnter(middleItem);
     fireEvent.dragOver(middleItem);
+
     fireEvent.dragEnter(lastItem);
     fireEvent.dragOver(lastItem);
+
     fireEvent.drop(lastItem);
 
     expect(onReorder).not.toHaveBeenCalled();
