@@ -21,8 +21,8 @@ interface Props extends InputProps, DataProps {}
 const ProjectValuesSelector = memo(({ value, onChange, projects }: Props) => {
   const localize = useLocalize();
   const generateOptions = (): IOption[] => {
-    if (!isNilOrError(projects) && projects.projectsList) {
-      return projects.projectsList.map((project) => ({
+    if (!isNilOrError(projects)) {
+      return projects.map((project) => ({
         value: project.id,
         label: localize(project.attributes.title_multiloc),
       }));

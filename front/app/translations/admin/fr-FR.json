@@ -580,7 +580,7 @@
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Supprimer le groupe",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Modifier le groupe",
   "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Administrateurs et gestionnaires",
-  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle": "Afficher les personnes sélectionnées en tant qu'administrateurs, administrateurs de dossier et gestionnaires de projet.",
+  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle1": "Afficher la liste des administrateurs, gestionnaires de dossiers et de projets.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Tous les utilisateurs",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Groupes",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Gérez tous les utilisateurs qui se sont inscrits sur votre plateforme. Créez des groupes manuellement ou de manière automatique pour les segmenter.",

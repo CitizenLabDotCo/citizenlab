@@ -580,7 +580,7 @@
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Obriši grupu",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Izmeni grupu",
   "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Administratori i menadžeri",
-  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle": "Pogledajte ko su izabrani administratori, administratori fascikle i menadžeri projekta.",
+  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle1": "Погледајте ко су изабрани као администратори, директори фасцикли и пројекти.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Registrovani korisnici",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grupe",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Dobijte pregled svih ljudi i organizacija koji su se registrovali na platformi. Dodajte odabrane korisnike u Manualne ili Smart grupe.",
