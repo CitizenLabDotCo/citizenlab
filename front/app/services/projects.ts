@@ -31,14 +31,6 @@ export type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 export type PublicationStatus = 'draft' | 'published' | 'archived';
 
-// keys in project.attributes.action_descriptor
-export type IProjectAction =
-  | 'commenting_idea'
-  | 'voting_idea'
-  | 'posting_idea'
-  | 'taking_survey'
-  | 'taking_poll';
-
 export type CommentingDisabledReason =
   | 'project_inactive'
   | 'not_supported'
