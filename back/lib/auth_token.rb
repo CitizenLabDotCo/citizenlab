@@ -14,7 +14,7 @@ class AuthToken # TODO: add specs
       @payload, = JWT.decode token.to_s, TOKEN_PUBLIC_KEY, true, decode_token_options
       @token = token
     else
-      @payload = { exp: TOKEN_LIFETIME }
+      @payload = { exp: TOKEN_LIFETIME }.merge(payload)
       @token = JWT.encode @payload, secret_key, TOKEN_SIGNATURE_ALGORITHM
     end
   end

@@ -42,7 +42,6 @@ class ApplicationController < ActionController::API
 
   # @param [Pundit::NotAuthorized] exception
   def user_not_authorized(exception)
-    byebug
     if current_user&.blocked?
       render json: { errors: { base: [{ error: 'blocked', details: { block_end_at: current_user.block_end_at } }] } },
         status: :unauthorized
