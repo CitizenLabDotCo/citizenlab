@@ -253,7 +253,7 @@ da:
     new_comment_on_commented_idea:
       commented: '%{commentAuthor} skrev:'
       cta_reply_to: 'Svar %{commentAuthor}'
-      event_description1: '%{commentAuthorFull} skrev også en kommentar til indlægget ''%{ideaTitle}'' på deltagelsesplatformen på %{organizationName}. Klik på knappen nedenfor for at starte samtalen med %{commentAuthor}.'
+      event_description1: '%{commentAuthorFull} skrev også en kommentar til indlægget ''%{ideaTitle}'' på borgerinddragelsesplatformen fra %{organizationName}. Klik på knappen nedenfor for at starte samtalen med %{commentAuthor}.'
       main_header1: '%{commentAuthor} skrev en kommentar til det samme input'
       subject1: 'Der er en anden kommentar til det input, du kommenterede på'
       preheader1: '%{commentAuthor} har også efterladt en kommentar til et input til %{organizationName}'
@@ -272,7 +272,7 @@ da:
       text_introduction: 'Vi har samlet en liste over de idéer, der har genereret mest aktivitet i den seneste uge. Find ud af hvad der sker i dit projekt!'
       cta_manage: 'Administrer dit projekt'
       new_users: 'Nye brugere'
-      new_inputs: 'Nye indgange'
+      new_inputs: 'Nye input'
       new_comments: 'Nye kommentarer'
       title_inputs_past_week: 'Nye input i den seneste uge'
       title_no_inputs_past_week: 'Ingen nye input i den seneste uge'
@@ -316,10 +316,10 @@ da:
       commented: '%{commentAuthor} kommenterede:'
       cta_reply_to: 'Svar %{commentAuthor}'
       days_ago: '%{numberOfDays} dage siden'
-      event_description1: '%{commentAuthor} har kommenteret det input ''%{ideaTitle}'', som du har stemt om. Deltag i diskussionen på platformen %{organizationName}!'
+      event_description1: '%{commentAuthor} har kommenteret på det input ''%{ideaTitle}'', som du har stemt på. Deltag i diskussionen på platformen %{organizationName}!'
       main_header1: '%{firstName}, der er en ny kommentar til det input, du har stemt på'
       subject1: 'Der er en ny kommentar til det input, du har stemt på'
-      preheader1: '%{commentAuthor} efterlod en kommentar til det input, du har stemt om på platformen på %{organizationName}'
+      preheader1: '%{commentAuthor} efterlod en kommentar til det input, du har stemt på på platformen på %{organizationName}'
       today: I dag
       yesterday: I går
     new_initiative_for_admin:
@@ -335,10 +335,10 @@ da:
       commented: '%{authorFirstName} kommenterede:'
       cta_reply_to: 'Giv feedback til %{authorName}'
       days_ago: '%{numberOfDays} dage siden'
-      event_description1: '%{authorName} har offentliggjort et nyt input på din platform. Opdag det nu, giv feedback eller ændr dets status!'
+      event_description1: '%{authorName} har offentliggjort et nyt input på din platform. Se det nu, giv feedback eller ændr dets status!'
       main_header1: '%{firstName}, der er blevet offentliggjort et nyt input på din platform'
       subject: 'Nogen offentliggjorde en ny idé på %{organizationName}s platform'
-      preheader1: '%{authorName} offentliggjort et nyt input på din platform'
+      preheader1: '%{authorName} har offentliggjort et nyt input på din platform'
       today: I dag
       yesterday: I går
     comment_on_your_comment:
@@ -359,18 +359,18 @@ da:
     official_feedback_on_voted_idea:
       by_author: 'af %{authorName}'
       updated: '%{officialName} skrev:'
-      cta_view1: 'Gå til denne indgang'
-      event_description1: '%{officialName} gav en opdatering om input ''%{ideaTitle}''. Klik på knappen nedenfor for at deltage i samtalen med %{officialName}.'
+      cta_view1: 'Gå til dette input'
+      event_description1: '%{officialName} gav en opdatering på inputtet ''%{ideaTitle}''. Klik på knappen nedenfor for at deltage i samtalen med %{officialName}.'
       subject1: 'Et input, som du stemte om, har fået en opdatering på platformen %{organizationName}'
-      preheader1: '%{officialName} efterlod en opdatering om et input, du stemte om'
+      preheader1: '%{officialName} efterlod en opdatering om et input, du stemte på'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'af %{authorName}'
       updated: '%{officialName} skrev:'
-      cta_view1: 'Gå til denne indgang'
-      event_description1: '%{officialName} gav en opdatering om input ''%{ideaTitle}''. Klik på knappen nedenfor for at deltage i samtalen med %{officialName}.'
+      cta_view1: 'Gå til dette input'
+      event_description1: '%{officialName} gav en opdatering til inputtet ''%{ideaTitle}''. Klik på knappen nedenfor for at deltage i samtalen med %{officialName}.'
       main_header1: 'Der er en opdatering af et input, som du kommenterede på'
-      subject1: 'Et input, som du kommenterede, har fået en officiel opdatering på platformen %{organizationName}'
+      subject1: 'Et input, som du kommenterede på, har fået en officiel opdatering på platformen %{organizationName}'
       preheader1: '%{officialName} efterlod en officiel opdatering af et input, som du kommenterede på'
     official_feedback_on_your_idea:
       by_author: 'af %{authorName}'
@@ -379,7 +379,7 @@ da:
       event_description1: '%{officialName} gav en opdatering af dit input ''%{ideaTitle}''. Klik på knappen nedenfor for at deltage i samtalen med %{officialName}.'
       main_header: 'Du har modtaget en opdatering fra %{organizationName}'
       subject: 'Du har modtaget en opdatering fra %{organizationName}'
-      preheader1: '%{officialName} efterlod en officiel opdatering om dine input'
+      preheader1: '%{officialName} efterlod en officiel opdatering på dine input'
     official_feedback_on_voted_initiative:
       by_author: 'af %{authorName}'
       updated: '%{officialName} skrev:'
@@ -401,15 +401,15 @@ da:
       no_inputs: 'Ingen input endnu'
       preheader: 'En administrator af %{organizationName}s deltagelsesplatform har lige gjort dig til projektleder for følgende projekt'
       subject: 'Du blev projektleder på platformen for %{organizationName}'
-      text_design_participatory_process1: 'Som projektleder kan du konfigurere, hvordan brugerne interagerer i dit projekt. Du kan tilføje nye faser ved hjælp af tidslinjen. Hver af disse faser kan have sin egen adfærd med hensyn til input, kommentarer og afstemninger.'
+      text_design_participatory_process1: 'Som projektleder kan du konfigurere, hvordan brugerne interagerer i dit projekt. Du kan tilføje nye faser ved hjælp af tidslinjen. Hver af disse faser kan have sin egen proces med hensyn til input, kommentarer og afstemninger.'
       text_moderate_analyse_input1: 'Når projektet er lanceret, vil de første input komme ind. Du vil modtage ugentlige rapporter med alle nøgleaktiviteter, så du kan holde dig orienteret. Oversigten over input i din projektledervisning vil hjælpe dig med at forstå, hvilke input der fik flest upvotes og downvotes.'
-      text_share_project_information1: 'For at øge kvaliteten af de input, du får, er det vigtigt at dele tilstrækkelige oplysninger: tilføj en projektbeskrivelse, vedhæft billeder (inkl. skitser og planer), og meddel alle relaterede begivenheder, der finder sted. Husk: god information går forud for god deltagelse!'
+      text_share_project_information1: 'For at øge kvaliteten af de input, du får, er det vigtigt at dele tilstrækkelige oplysninger: tilføj en projektbeskrivelse, vedhæft billeder (inkl. skitser og planer), og beskriv alle relaterede begivenheder, der finder sted. Husk: god information går forud for god deltagelse!'
       title_design_participatory_process: 'Design deltagelsesprocessen'
       title_moderate_analyse_input: 'Moderér og analyser input'
       title_share_project_information: 'Angiv projektinformation'
       title_what_can_you_do_moderator: 'Hvad kan du gøre som projektmoderator'
       title_you_became_moderator: 'Du er blevet projektleder'
-      x_inputs: '%{numberOfIdeas} indgange'
+      x_inputs: '%{numberOfIdeas} input'
     project_folder_moderation_rights_received:
       cta_view_folder_button: 'Se på denne mappe'
       message_added_as_folderadmin: 'Du er blevet tilføjet som administrator og modtaget rettigheder på %{organizationName}s deltagelsesplatform for følgende mappe:'
@@ -435,18 +435,18 @@ da:
       preheader: 'Der er startet en ny fase for %{projectName}'
     project_phase_upcoming:
       cta_view_phase: 'Opsæt denne nye fase'
-      event_description1: 'Projektet ''%{projectName}'' går snart ind i en ny fase. Sørg for, at alt er forberedt til denne fase: Er der en passende beskrivelse? Er udvalgte input overført til denne fase? Ønsker du at informere dine borgere om de særlige forhold i denne fase gennem en tilpasset e-mail-kampagne?'
+      event_description1: 'Projektet ''%{projectName}'' går snart ind i en ny fase. Sørg for, at alt er forberedt til denne fase: Er der en passende beskrivelse? Er udvalgte input overført til denne fase? Ønsker du at informere dine borgere om evt. særlige forhold i denne fase gennem en tilpasset e-mail-kampagne?'
       main_header: '%{firstName}, et projekt træder snart ind i en ny fase'
       subtitle: 'Om ''%{projectName}'''
       new_phase: 'Projektet træder ind i fasen ''%{phaseTitle}'''
       subject: 'Få alt gjort klar til den nye fase i %{projectName}'
       preheader: 'Der starter snart en ny fase for %{projectName}'
     status_change_of_commented_idea:
-      status_change1: 'Den nye status for denne indgang er ''%{ideaStatus}'''
-      cta_view_input: 'Gå til denne indgang'
-      event_description1: '%{organizationName} opdaterede status for input ''%{ideaTitle}'' på deres digitale platform for deltagelse.'
-      main_header1: 'Et input, du har kommenteret, har fået en ny status'
-      subject1: 'Status for et input, du kommenterede, er blevet ændret'
+      status_change1: 'Den nye status for dette input er ''%{ideaStatus}'''
+      cta_view_input: 'Gå til dette input'
+      event_description1: '%{organizationName} opdaterede status for input ''%{ideaTitle}'' på deres digitale platform.'
+      main_header1: 'Et input, du har kommenteret på, har fået en ny status'
+      subject1: 'Status for et input, du kommenterede på, er blevet ændret'
       preheader1: '%{organizationName} ændret status for et input, du kommenterede på'
     status_change_of_your_idea:
       status_change1: 'Den nye status for dit input er ''%{ideaStatus}'''
