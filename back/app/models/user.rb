@@ -148,7 +148,7 @@ class User < ApplicationRecord
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
   with_options if: -> { user_confirmation_enabled? } do
-    before_validation :set_confirmation_required, if: :email_changed?, on: :create
+    before_validation :set_confirmation_required, on: :create
     before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
   end
   before_validation :complete_registration
@@ -438,7 +438,6 @@ class User < ApplicationRecord
     manual_groups.merge(groups).exists?
   end
 
-  # Used to check upon update or create, if a user should have to confirm their account
   def should_require_confirmation?
     !(registered_with_phone? || highest_role != :user || sso? || invited? || active?)
   end

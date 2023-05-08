@@ -1,29 +1,40 @@
 import React from 'react';
 import { DEFAULT_VALUES, getSchema, FormValues } from './form';
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Input from 'components/HookForm/Input';
 import Button from 'components/UI/Button';
 import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
+import { SetError } from 'containers/Authentication/typings';
+import { yupResolver } from '@hookform/resolvers/yup';
+import sharedMessages from '../messages';
+import useAuthUser from 'hooks/useAuthUser';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   loading: boolean;
   setError: SetError;
-  onSubmit: (email: string, locale: Locale) => void;
-  onSwitchToSSO: (ssoProvider: SSOProvider) => void;
+  onSubmit: (userId: string, email: string) => void;
 }
 
 const ClaveUnicaEmail = ({ loading, setError, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
+  const authUser = useAuthUser();
 
   const schema = getSchema(formatMessage);
 
+  const methods = useForm({
+    mode: 'onSubmit',
+    defaultValues: DEFAULT_VALUES,
+    resolver: yupResolver(schema),
+  });
+
+  if (isNilOrError(authUser)) return null;
+
   const handleSubmit = async ({ email }: FormValues) => {
     try {
-      await onSubmit({
-        email,
-      });
+      await onSubmit(authUser.id, email);
     } catch (e) {
       if (isCLErrorsIsh(e)) {
         handleCLErrorsIsh(e, methods.setError);
@@ -36,7 +47,6 @@ const ClaveUnicaEmail = ({ loading, setError, onSubmit }: Props) => {
   return (
     <>
       <FormProvider {...methods}>
-        <>{'Clave unica email field'}</>
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
           <Text mt="0px" mb="32px" color="tenantText">
             {formatMessage(sharedMessages.enterYourEmailAddress)}
