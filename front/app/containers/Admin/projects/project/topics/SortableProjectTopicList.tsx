@@ -24,10 +24,7 @@ import { Spinner, Box } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 
 // services
-import {
-  reorderProjectAllowedInputTopic,
-  IProjectAllowedInputTopic,
-} from 'services/projectAllowedInputTopics';
+import { IProjectAllowedInputTopic } from 'services/projectAllowedInputTopics';
 
 // hooks
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
@@ -37,6 +34,7 @@ import useDeleteAllowedProjectInputTopic from 'api/project_allowed_input_topics/
 // styles
 import { fontSizes } from 'utils/styleUtils';
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
+import useReorderProjectAllowedInputTopics from 'api/project_allowed_input_topics/useReorderProjectAllowedInputTopics';
 
 export const RowTitle = styled(T)`
   font-size: ${fontSizes.base}px;
@@ -62,6 +60,9 @@ const SortableProjectTopicList = memo(
     });
     const { mutate: deleteProjectAllowedInputTopic, isLoading } =
       useDeleteAllowedProjectInputTopic({ projectId });
+
+    const { mutate: reorderProjectAllowedInputTopic } =
+      useReorderProjectAllowedInputTopics({ projectId });
 
     const topicIds = useMemo(
       () => getTopicIds(allowedInputTopics?.data),
@@ -99,11 +100,10 @@ const SortableProjectTopicList = memo(
       projectAllowedInputTopicId: string,
       newOrder: number
     ) => {
-      reorderProjectAllowedInputTopic(
-        projectAllowedInputTopicId,
-        newOrder,
-        projectId
-      );
+      reorderProjectAllowedInputTopic({
+        id: projectAllowedInputTopicId,
+        ordering: newOrder,
+      });
     };
 
     const closeSendConfirmationModal = () => {

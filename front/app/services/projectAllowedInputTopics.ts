@@ -28,22 +28,6 @@ export interface IProjectAllowedInputTopics {
   data: IProjectAllowedInputTopic[];
 }
 
-export async function addProjectAllowedInputTopic(
-  projectId: string,
-  topicId: string
-) {
-  const response = await streams.add(apiEndpoint, {
-    project_id: projectId,
-    topic_id: topicId,
-  });
-
-  await streams.fetchAllWith({
-    apiEndpoint: [getListEndpoint(projectId)],
-  });
-
-  return response;
-}
-
 export async function reorderProjectAllowedInputTopic(
   allowedInputTopicId: string,
   newOrder: number,
