@@ -78,6 +78,7 @@ export const sharedSteps = (
         const { requirements } = await getRequirements();
 
         if (flow === 'signup') {
+          // when user is logged in on google it goes here
           if (requirements.special.verification === 'require') {
             setCurrentStep('sign-up:verification');
             return;

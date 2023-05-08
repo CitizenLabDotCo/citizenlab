@@ -12,6 +12,7 @@ export interface SSOProviderMap {
   facebook: 'facebook';
   franceconnect: 'franceconnect';
   google: 'google';
+  clave_unica: 'clave_unica';
 }
 
 export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];

@@ -148,6 +148,17 @@ const AuthProviders = memo<Props>(
           </StyledAuthProviderButton>
         )}
 
+        {true && (
+          <StyledAuthProviderButton
+            flow={flow}
+            icon="menu"
+            authProvider="clave_unica"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage {...messages.continueWithClaveUnica} />
+          </StyledAuthProviderButton>
+        )}
+
         {facebookLoginEnabled && (
           <StyledAuthProviderButton
             icon="facebook"
