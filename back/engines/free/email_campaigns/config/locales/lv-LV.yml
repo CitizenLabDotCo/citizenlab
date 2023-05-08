@@ -97,6 +97,15 @@ lv:
       "assignee_digest": Nedēļas pārskats par piešķirtajām idejām - administratori un projektu vadītāji
       "user_digest": Nedēļas pārskats - visi lietotāji
       "your_proposed_initiatives_digest": Nedēļas pārskats par jūsu priekšlikumiem - visi lietotāji
+    schedules:
+      weekly:
+        "0": "Ik nedēļu, svētdienās, %{hourOfDay}"
+        "1": "Ik nedēļu, pirmdienās %{hourOfDay}"
+        "2": "Ik nedēļu, otrdienās %{hourOfDay}"
+        "3": "Ik nedēļu, trešdienās %{hourOfDay}"
+        "4": "Ik nedēļu, ceturtdienās %{hourOfDay}"
+        "5": "Ik nedēļu, piektdienās %{hourOfDay}"
+        "6": "Ik nedēļu sestdienās %{atHour}"
     footer:
       "link_privacy_policy": "Privātuma politika"
       "link_terms_conditions": "Noteikumi un nosacījumi"
@@ -554,3 +563,67 @@ lv:
       new_votes: 'Jaunas balsis'
       remaining_votes: 'Atlikušās balsis'
       remaining_days: 'Atlikušās dienas'
+    admin_labels:
+      recipient_role:
+        admins: 'Administratoriem'
+        admins_and_moderators: 'Administratoriem & moderatoriem'
+        managers: 'Vadītājiem'
+        project_participants: 'Projekta dalībniekiem'
+        registered_users: 'Reģistrētiem lietotājiem'
+      recipient_segment:
+        admins: 'Administratori'
+        admins_and_managers: 'Administratori un vadītāji'
+        all_users: 'Visi lietotāji'
+        all_users_who_uploaded_proposals: 'Visi lietotāji, kas augšupielādējuši priekšlikumus'
+        managers: 'Vadītāji'
+        managers_assigned_to_a_proposal: 'Priekšlikumam piešķirtie vadītāji'
+        user_assigned_to_the_idea: 'Lietotājs, kam piešķirta ideja'
+        user_receiving_admin_rights: 'Lietotājs saņem administratora tiesības'
+        user_receiving_folder_moderator_rights: 'Lietotājs saņem mapes moderatora tiesības'
+        user_receiving_project_moderator_rights: 'Lietotājs saņem projekta moderatora tiesības'
+        user_who_commented: 'Lietotājs, kas komentēja'
+        user_who_is_mentioned: 'Lietotājs, kurš ir minēts'
+        user_who_published_proposal: 'Lietotājs, kurš publicēja priekšlikumu'
+        user_who_published_the_idea: 'Lietotājs, kurš publicēja ideju'
+        user_who_registers: 'Lietotājs, kas reģistrējas'
+        user_who_was_invited: 'Lietotājs, kurš tika uzaicināts'
+        users_engaged_with_the_idea: 'Lietotāji iesaistījās ar ideju'
+        users_engaged_with_the_project: 'Projektā iesaistītie lietotāji'
+        users_engaged_with_the_proposal: 'Lietotāji, kas iesaistījušies priekšlikuma īstenošanā'
+      content_type:
+        comments: 'Komentāri'
+        content_moderation: 'Satura moderēšana'
+        general: 'Vispārīgi'
+        ideas: 'Idejas'
+        permissions: 'Atļaujas'
+        projects: 'Projekti'
+        proposals: 'Priekšlikumi'
+        votes: 'Balsis'
+      trigger:
+        comment_is_deleted: 'Komentārs ir dzēsts'
+        comment_is_flagged_as_spam: 'Komentārs ir atzīmēts kā surogātpasts'
+        content_gets_flagged_as_innapropiate: 'Saturs tiek atzīmēts kā nepiedienīgs'
+        idea_is_assigned: 'Tiek piešķirta ideja'
+        idea_is_flagged_as_spam: 'Ideja ir atzīmēta kā surogātpasts'
+        idea_is_updated: 'Ideja ir atjaunināta'
+        idea_status_is_changed: 'Idejas statuss ir mainīts'
+        new_idea_is_published: 'Tiek publicēta jauna ideja'
+        new_proposal_is_posted: 'Ir publicēts jauns priekšlikums'
+        project_changes_phase: 'Projekta izmaiņu fāze'
+        proposal_gets_reported_as_spam: 'Par priekšlikumu tiek ziņots kā par surogātpastu'
+        proposal_is_assigned_to_user: 'Priekšlikums ir piešķirts lietotājam'
+        proposal_is_updated: 'Priekšlikums ir atjaunināts'
+        proposal_is_upvoted_above_threshold: 'Priekšlikums ir atbalstīts virs sliekšņa'
+        proposal_status_is_changed: 'Priekšlikuma statuss ir mainīts'
+        user_comments: 'Lietotāju komentāri'
+        user_comments_on_idea: 'Lietotāju komentāri par ideju'
+        user_comments_on_proposal: 'Lietotāju komentāri par priekšlikumu'
+        user_is_given_admin_rights: 'Lietotājam tiek piešķirtas administratora tiesības'
+        user_is_given_folder_moderator_rights: 'Lietotājam tiek piešķirtas mapes moderatora tiesības'
+        user_is_given_project_moderator_rights: 'Lietotājam tiek piešķirtas projekta moderatora tiesības'
+        user_is_mentioned: 'Lietotājs ir minēts'
+        user_publishes_an_idea: 'Lietotājs publicē ideju'
+        user_publishes_proposal: 'Lietotājs publicē priekšlikumu'
+        user_registers_for_the_first_time: 'Lietotājs reģistrējas pirmo reizi'
+        user_replies_to_comment: 'Lietotājs atbild uz komentāru'
+        7_days_after_invite_is_sent: '7 dienas pēc uzaicinājuma nosūtīšanas'

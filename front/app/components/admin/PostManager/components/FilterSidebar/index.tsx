@@ -13,7 +13,7 @@ import messages from '../../messages';
 import { Icon } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 import { useIntl } from 'utils/cl-intl';
 
 const InfoIcon = styled(Icon)`

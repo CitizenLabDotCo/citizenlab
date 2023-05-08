@@ -26,7 +26,7 @@ describe('', () => {
     ).click();
     cy.get('#e2e-verification-bogus-submit-button').click();
     cy.get('#e2e-verification-success');
-    cy.get('.e2e-modal-close-button').click();
+    cy.get('#e2e-verification-success-close-button').click();
     cy.reload();
     cy.get('.e2e-reverify-user-button').click();
     cy.get('#e2e-verification-wizard-root');

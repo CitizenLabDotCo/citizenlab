@@ -999,8 +999,9 @@ resource 'Phases' do
         end
 
         example 'Download phase inputs without private user data', document: false do
+          custom_field = create(:custom_field, enabled: false)
           do_request
-          expect(status).to eq 200
+          assert_status 200
           expect(xlsx_contents(response_body)).to match([
             {
               sheet_name: ideation_phase.title_multiloc['en'],
@@ -1015,7 +1016,6 @@ resource 'Phases' do
                 'Location',
                 'Proposed Budget',
                 extra_idea_field.title_multiloc['en'],
-                'Author name',
                 'Submitted at',
                 'Published at',
                 'Comments',
@@ -1026,7 +1026,7 @@ resource 'Phases' do
                 'URL',
                 'Project',
                 'Status',
-                'Assignee'
+                custom_field.title_multiloc['en']
               ],
               rows: [
                 [
@@ -1040,7 +1040,6 @@ resource 'Phases' do
                   ideation_response.location_description,
                   ideation_response.proposed_budget,
                   'Answer',
-                  ideation_response.author_name,
                   an_instance_of(DateTime), # created_at
                   an_instance_of(DateTime), # published_at
                   0,
@@ -1051,7 +1050,7 @@ resource 'Phases' do
                   "http://example.org/ideas/#{ideation_response.slug}",
                   project.title_multiloc['en'],
                   ideation_response.idea_status.title_multiloc['en'],
-                  "#{assignee.first_name} #{assignee.last_name}"
+                  ''
                 ]
               ]
             }
@@ -1097,7 +1096,6 @@ resource 'Phases' do
               column_headers: [
                 'ID',
                 multiselect_field.title_multiloc['en'],
-                'Author name',
                 'Submitted at',
                 'Project'
               ],
@@ -1105,7 +1103,6 @@ resource 'Phases' do
                 [
                   survey_response.id,
                   'Cat, Dog',
-                  survey_response.author_name,
                   an_instance_of(DateTime), # created_at
                   project.title_multiloc['en']
                 ]

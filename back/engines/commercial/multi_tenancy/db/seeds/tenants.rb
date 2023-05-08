@@ -112,6 +112,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            permissions_custom_fields: {
+              enabled: true,
+              allowed: true
+            },
             representativeness: {
               enabled: true,
               allowed: true

@@ -229,7 +229,7 @@ const WidgetForm = () => {
                   projects && isNilOrError(projects) ? null : (
                     <Select
                       name="relativeLink"
-                      options={relativeLinkOptions(projects.projectsList)}
+                      options={relativeLinkOptions(projects)}
                       disabled={
                         !methods.getValues('showHeader') &&
                         !methods.getValues('showFooter')
@@ -309,7 +309,7 @@ const WidgetForm = () => {
                 projects && isNilOrError(projects) ? null : (
                   <MultipleSelect
                     name="projects"
-                    options={resourcesToOptionList(projects.projectsList)}
+                    options={resourcesToOptionList(projects)}
                   />
                 )
               }

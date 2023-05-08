@@ -5,11 +5,7 @@ import styled from 'styled-components';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { isNilOrError } from 'utils/helperUtils';
-
-// services
-
 import { IProjectData } from 'services/projects';
-import { getTopicIds } from 'services/projectAllowedInputTopics';
 
 // resources
 import GetIdeaStatuses, {
@@ -25,6 +21,7 @@ import GetInitiatives, {
 import { TPhases } from 'hooks/usePhases';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
+import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 
 // components
 import ActionBar from './components/ActionBar';

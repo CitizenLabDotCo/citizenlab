@@ -239,3 +239,10 @@ nl:
       paragraph_1_with_reason: "Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld om de volgende reden:"
       for_more_information: "Voor meer informatie hierover kan je deze pagina raadplegen: %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Je kan opnieuw inloggen vanaf %{date}"
+  user:
+    anon_first_name: "Gebruiker"
+  time:
+    am: '--'
+    formats:
+      hour_of_day: "%H:%M"
+    pm: '--'

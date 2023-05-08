@@ -224,6 +224,25 @@ export default defineMessages({
       "You can't edit this field because it contains verified information",
   },
   /*
+   * Login Credentials
+   */
+  loginCredentialsTitle: {
+    id: 'app.containers.UsersEditPage.loginCredentialsTitle',
+    defaultMessage: 'Login credentials',
+  },
+  loginCredentialsSubtitle: {
+    id: 'app.containers.UsersEditPage.loginCredentialsSubtitle',
+    defaultMessage: 'You can change your email or password here.',
+  },
+  changeEmail: {
+    id: 'app.containers.UsersEditPage.changeEmail',
+    defaultMessage: 'Change email',
+  },
+  changePassword2: {
+    id: 'app.containers.UsersEditPage.changePassword2',
+    defaultMessage: 'Change password',
+  },
+  /*
    * Password change
    */
   passwordChangeSection: {
@@ -234,9 +253,18 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.passwordChangeSubtitle',
     defaultMessage: 'Confirm your current password and change to new password.',
   },
-  changePassword: {
-    id: 'app.containers.UsersEditPage.changePassword',
-    defaultMessage: 'Change my password',
+  passwordAddSection: {
+    id: 'app.containers.UsersEditPage.passwordAddSection',
+    defaultMessage: 'Add a password',
+  },
+  passwordAddSubtitle2: {
+    id: 'app.containers.UsersEditPage.passwordAddSubtitle2',
+    defaultMessage:
+      'Set a password and easily login to the platform, without having to confirm your email every time.',
+  },
+  addPassword: {
+    id: 'app.containers.UsersEditPage.addPassword',
+    defaultMessage: 'Add password',
   },
   /*
    * Meta

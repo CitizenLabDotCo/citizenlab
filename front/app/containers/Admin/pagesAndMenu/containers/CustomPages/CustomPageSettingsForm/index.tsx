@@ -26,7 +26,7 @@ import {
 import Tippy from '@tippyjs/react';
 
 // hooks
-import useTopics from 'hooks/useTopics';
+import useTopics from 'api/topics/useTopics';
 import useAreas from 'api/areas/useAreas';
 import useLocalize from 'hooks/useLocalize';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -43,8 +43,8 @@ import { useIntl } from 'utils/cl-intl';
 
 // types
 import { Multiloc } from 'typings';
+import { ITopicData } from 'api/topics/types';
 import { IAreaData } from 'api/areas/types';
-import { ITopicData } from 'services/topics';
 import { ProjectsFilterTypes } from 'services/customPages';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -106,7 +106,7 @@ const CustomPageSettingsForm = ({
   const { data: appConfig } = useAppConfiguration();
   const locale = useLocale();
   const configuredLocales = useAppConfigurationLocales();
-  const topics = useTopics();
+  const { data: topics } = useTopics();
   const { formatMessage } = useIntl();
 
   const hasMultipleConfiguredLocales = !isNilOrError(configuredLocales)
@@ -302,7 +302,7 @@ const CustomPageSettingsForm = ({
                         <SelectContainer mb="30px">
                           <MultipleSelect
                             name="topic_ids"
-                            options={mapFilterEntityToOptions(topics)}
+                            options={mapFilterEntityToOptions(topics.data)}
                             label={formatMessage(messages.selectedTagsLabel)}
                           />
                         </SelectContainer>

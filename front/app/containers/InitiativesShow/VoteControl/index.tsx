@@ -1,18 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
-import { isNilOrError } from 'utils/helperUtils';
-import { media, defaultCardStyle } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage } from 'utils/cl-intl';
 import moment from 'moment';
-import messages from './messages';
-import {
-  InitiativeStatusCode,
-  IInitiativeStatusData,
-} from 'api/initiative_statuses/types';
 
-import { IAppConfigurationSettings } from 'api/app_configuration/types';
-
+// components
 import ProposedNotVoted from './ProposedNotVoted';
 import ProposedVoted from './ProposedVoted';
 import Expired from './Expired';
@@ -20,18 +9,41 @@ import ThresholdReached from './ThresholdReached';
 import Answered from './Answered';
 import Ineligible from './Ineligible';
 import Custom from './Custom';
-import { openSignUpInModal } from 'events/openSignUpInModal';
-import useInitiativesPermissions, {
-  IInitiativeDisabledReason,
-} from 'hooks/useInitiativesPermissions';
-import { trackEventByName } from 'utils/analytics';
-import { openVerificationModal } from 'events/verificationModal';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+// hooks
 import useAddInitiativeVote from 'api/initiative_votes/useAddInitiativeVote';
 import useDeleteInitiativeVote from 'api/initiative_votes/useDeleteInitiativeVote';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
-import { IInitiativeData } from 'api/initiatives/types';
-import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
+import useInitiativesPermissions, {
+  IInitiativeDisabledReason,
+} from 'hooks/useInitiativesPermissions';
+
+// styling
+import styled from 'styled-components';
+import { media, defaultCardStyle } from 'utils/styleUtils';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { trackEventByName } from 'utils/analytics';
+
+// typings
+import { IInitiativeData } from 'api/initiatives/types';
+import {
+  InitiativeStatusCode,
+  IInitiativeStatusData,
+} from 'api/initiative_statuses/types';
+import { IAppConfigurationSettings } from 'api/app_configuration/types';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 const Container = styled.div`
   ${media.desktop`
@@ -100,6 +112,11 @@ interface Props {
   id?: string;
 }
 
+const context = {
+  type: 'initiative',
+  action: 'voting_initiative',
+} as const;
+
 const VoteControl = ({
   className,
   onScrollToOfficialFeedback,
@@ -110,57 +127,42 @@ const VoteControl = ({
   const { data: initiative } = useInitiativeById(initiativeId);
   const { mutate: addVote } = useAddInitiativeVote();
   const { mutate: deleteVote } = useDeleteInitiativeVote();
+
+  const vote = () => {
+    if (initiative) {
+      addVote({ initiativeId: initiative.data.id, mode: 'up' });
+    }
+  };
+
   const { data: initiativeStatus } = useInitiativeStatus(
     initiative?.data.relationships.initiative_status?.data?.id
   );
   const votingPermission = useInitiativesPermissions('voting_initiative');
-  const handleOnvote = () => {
-    const requiredAction = votingPermission?.action;
-    switch (requiredAction) {
-      case 'sign_in_up':
-        trackEventByName(
-          'Sign up/in modal opened in response to clicking vote initiative'
-        );
-        openSignUpInModal({
-          flow: 'signup',
-          verification: false,
-          verificationContext: undefined,
-          action: () => vote(),
-        });
-        break;
-      case 'sign_in_up_and_verify':
-        trackEventByName(
-          'Sign up/in modal opened in response to clicking vote initiative'
-        );
-        openSignUpInModal({
-          flow: 'signup',
-          verification: true,
-          verificationContext: {
-            type: 'initiative',
-            action: 'voting_initiative',
-          },
-          action: () => vote(),
-        });
-        break;
-      case 'verify':
-        trackEventByName(
-          'Verification modal opened in response to clicking vote initiative'
-        );
-        openVerificationModal({
-          context: {
-            action: 'voting_initiative',
-            type: 'initiative',
-          },
-        });
-        break;
-      default:
-        vote();
-    }
-  };
 
-  const vote = () => {
-    if (!isNilOrError(initiative)) {
-      addVote({ initiativeId: initiative.data.id, mode: 'up' });
+  if (!initiative) return null;
+
+  const handleOnvote = () => {
+    const authenticationRequirements =
+      votingPermission?.authenticationRequirements;
+
+    if (authenticationRequirements) {
+      trackEventByName(
+        'Sign up/in modal opened in response to clicking vote initiative'
+      );
+      const successAction: SuccessAction = {
+        name: 'voteOnInitiative',
+        params: {
+          initiativeId: initiative.data.id,
+        },
+      };
+
+      triggerAuthenticationFlow({
+        flow: 'signup',
+        context,
+        successAction,
+      });
+    } else {
+      vote();
     }
   };
 
@@ -177,7 +179,6 @@ const VoteControl = ({
   };
 
   if (
-    isNilOrError(initiative) ||
     isNilOrError(initiativeStatus) ||
     isNilOrError(appConfiguration) ||
     !appConfiguration.data.attributes.settings.initiatives
