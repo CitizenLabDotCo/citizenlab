@@ -6,6 +6,7 @@ import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import VisibleNavbarItemList from '.';
 import { removeNavbarItem, reorderNavbarItem } from 'services/navbar';
 import { deleteCustomPage } from 'services/customPages';
+import { dragAndDrop } from 'utils/testUtils/dragAndDrop';
 
 jest.mock('hooks/useNavbarItems');
 jest.mock('hooks/useCustomPageSlugById');
@@ -44,13 +45,10 @@ describe('<VisibleNavbarItemList />', () => {
 
     const rows = screen.getAllByTestId('navbar-item-row');
 
-    const thirdItem = rows[2];
-    const fifthItem = rows[4];
+    const thirdRow = rows[2];
+    const fifthRow = rows[4];
 
-    fireEvent.dragStart(thirdItem);
-    fireEvent.dragEnter(fifthItem);
-    fireEvent.dragOver(fifthItem);
-    fireEvent.drop(fifthItem);
+    dragAndDrop(fifthRow, thirdRow);
 
     expect(reorderNavbarItem).toHaveBeenCalledTimes(1);
     expect(reorderNavbarItem).toHaveBeenCalledWith(

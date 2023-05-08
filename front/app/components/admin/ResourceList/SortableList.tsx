@@ -114,8 +114,8 @@ const SortableList = ({
       {children({
         lockedItemsList,
         itemsList,
-        handleDragRow: handleDragRow,
-        handleDropRow: handleDropRow,
+        handleDragRow,
+        handleDropRow,
       })}
     </List>
   );
