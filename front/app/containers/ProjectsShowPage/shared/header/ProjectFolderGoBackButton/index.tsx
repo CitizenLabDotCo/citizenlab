@@ -22,7 +22,7 @@ const GoBackButton = memo(({ projectFolderId, className }: Props) => {
     }
   };
 
-  if (!isNilOrError(projectFolder)) {
+  if (!isNilOrError(projectFolder) && projectFolder.data) {
     return (
       <Button
         className={className}
