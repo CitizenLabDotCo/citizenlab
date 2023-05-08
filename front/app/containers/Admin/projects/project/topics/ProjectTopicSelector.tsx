@@ -1,11 +1,10 @@
 // Libraries
 import React, { memo, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Hooks
 import useTopics from 'api/topics/useTopics';
-import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
+import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -65,7 +64,9 @@ const ProjectTopicSelector = memo(
       params: { projectId },
     } = props;
     const { data: topics } = useTopics();
-    const projectAllowedInputTopics = useProjectAllowedInputTopics(projectId);
+    const { data: projectAllowedInputTopics } = useProjectAllowedInputTopics({
+      projectId,
+    });
 
     const [selectedTopicOptions, setSelectedTopicOptions] = useState<IOption[]>(
       []
@@ -97,9 +98,9 @@ const ProjectTopicSelector = memo(
     };
 
     const getOptions = () => {
-      if (topics && !isNilOrError(projectAllowedInputTopics)) {
+      if (topics && projectAllowedInputTopics) {
         const selectedInProjectTopicIds = getTopicIds(
-          projectAllowedInputTopics
+          projectAllowedInputTopics.data
         );
         const selectedInProjectTopicIdsSet = new Set(selectedInProjectTopicIds);
 

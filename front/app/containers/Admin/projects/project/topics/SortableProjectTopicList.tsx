@@ -32,7 +32,7 @@ import {
 } from 'services/projectAllowedInputTopics';
 
 // hooks
-import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
+import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 import useTopics from 'api/topics/useTopics';
 
 // styles
@@ -57,10 +57,12 @@ const SortableProjectTopicList = memo(
       projectAllowedInputTopicIdToDelete,
       setProjectAllowedInputTopicIdToDelete,
     ] = useState<string | null>(null);
-    const allowedInputTopics = useProjectAllowedInputTopics(projectId);
+    const { data: allowedInputTopics } = useProjectAllowedInputTopics({
+      projectId,
+    });
 
     const topicIds = useMemo(
-      () => getTopicIds(allowedInputTopics),
+      () => getTopicIds(allowedInputTopics?.data),
       [allowedInputTopics]
     );
 
@@ -111,12 +113,12 @@ const SortableProjectTopicList = memo(
     };
 
     if (
-      !isNilOrError(allowedInputTopics) &&
+      allowedInputTopics &&
       !isNilOrError(topicsById) &&
-      allowedInputTopics.length > 0 &&
-      allowedInputTopics.length === Object.keys(topicsById).length
+      allowedInputTopics.data.length > 0 &&
+      allowedInputTopics.data.length === Object.keys(topicsById).length
     ) {
-      const isLastSelectedTopic = allowedInputTopics.length === 1;
+      const isLastSelectedTopic = allowedInputTopics.data.length === 1;
 
       const getTitle = ({ relationships }: IProjectAllowedInputTopic) => {
         return topicsById[relationships.topic.data.id].attributes
@@ -140,11 +142,11 @@ const SortableProjectTopicList = memo(
             </StyledWarning>
           )}
           <SortableList
-            items={allowedInputTopics}
+            items={allowedInputTopics.data}
             onReorder={handleReorderTopicProject}
             className="projects-list e2e-admin-projects-list"
             id="e2e-admin-published-projects-list"
-            key={allowedInputTopics.length}
+            key={allowedInputTopics.data.length}
           >
             {({ itemsList, handleDragRow, handleDropRow }) => (
               <>
@@ -159,7 +161,7 @@ const SortableProjectTopicList = memo(
                       index={index}
                       moveRow={handleDragRow}
                       dropRow={handleDropRow}
-                      isLastItem={index === allowedInputTopics.length - 1}
+                      isLastItem={index === allowedInputTopics.data.length - 1}
                     >
                       <Box
                         className="expand primary"

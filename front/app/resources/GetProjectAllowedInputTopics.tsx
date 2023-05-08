@@ -1,7 +1,6 @@
 // hooks
-import useProjectAllowedInputTopics, {
-  IProjectAllowedInputTopicsState,
-} from 'hooks/useProjectAllowedInputTopics';
+import { IProjectAllowedInputTopic } from 'api/project_allowed_input_topics/types';
+import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 
 interface Props {
   projectId: string;
@@ -9,12 +8,14 @@ interface Props {
 }
 
 type Children = (
-  renderProps: IProjectAllowedInputTopicsState
+  renderProps: IProjectAllowedInputTopic[] | undefined
 ) => JSX.Element | null;
 
 const GetProjectAllowedInputTopics = ({ children, projectId }: Props) => {
-  const projectAllowedInputTopics = useProjectAllowedInputTopics(projectId);
-  return (children as Children)(projectAllowedInputTopics);
+  const { data: projectAllowedInputTopics } = useProjectAllowedInputTopics({
+    projectId,
+  });
+  return (children as Children)(projectAllowedInputTopics?.data);
 };
 
 export default GetProjectAllowedInputTopics;

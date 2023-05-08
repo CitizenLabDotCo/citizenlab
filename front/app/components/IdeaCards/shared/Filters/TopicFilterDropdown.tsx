@@ -12,7 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // hooks
-import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
+import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 import useTopics from 'api/topics/useTopics';
 
 // utils
@@ -27,9 +27,11 @@ interface Props {
 const TopicFilterDropdown = memo(
   ({ alignment, projectId, onChange, localize }: Props & InjectedLocalized) => {
     const [selectedValues, setSelectedValues] = useState<string[]>([]);
-    const allowedInputTopics = useProjectAllowedInputTopics(projectId);
+    const { data: allowedInputTopics } = useProjectAllowedInputTopics({
+      projectId,
+    });
 
-    const topicIds = getTopicIds(allowedInputTopics);
+    const topicIds = getTopicIds(allowedInputTopics?.data);
     const { data: topics } = useTopics();
     const filteredTopics = topics?.data.filter((topic) =>
       topicIds.includes(topic.id)
@@ -51,7 +53,7 @@ const TopicFilterDropdown = memo(
 
     const options = getOptions() || [];
 
-    if (isNilOrError(allowedInputTopics) || allowedInputTopics.length === 0) {
+    if (!allowedInputTopics || allowedInputTopics.data.length === 0) {
       return null;
     }
 
