@@ -569,6 +569,8 @@ GEM
     case_transform (0.2)
       activesupport
     chronic (0.10.2)
+    cloudfront-rails (0.4.0)
+      railties (> 4.0)
     coderay (1.1.3)
     concurrent-ruby (1.2.2)
     counter_culture (3.3.0)
@@ -1174,6 +1176,7 @@ DEPENDENCIES
   byebug
   carrierwave!
   carrierwave-base64 (~> 2.10)
+  cloudfront-rails (~> 0.4)
   content_builder!
   counter_culture (~> 3.3)
   custom_idea_statuses!

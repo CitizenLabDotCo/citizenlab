@@ -171,6 +171,7 @@ gem 'rack-attack', '~> 6'
 # in the main app.
 gem 'intercom', '~> 4.2'
 gem 'mjml-rails', '~> 4.8'
+gem 'cloudfront-rails', '~> 0.4'
 
 # Included here because of CVE-2022-32209.
 # See https://groups.google.com/g/rubyonrails-security/c/ce9PhUANQ6s
