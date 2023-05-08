@@ -109,8 +109,8 @@ const SortableRow = ({
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-    end: (item, _monitor) => {
-      const { id, index } = item;
+    end: (_item, monitor) => {
+      const { id, index } = monitor.getItem();
       dropRow(id, index);
     },
   });
