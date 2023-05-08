@@ -37,4 +37,17 @@ RSpec.describe UserBlockedMailer do
       end
     end
   end
+
+  describe 'when sent to users with a different locale set for each' do
+    let_it_be(:recipient1) { create(:user, block_end_at: 5.days.from_now, locale: 'en') }
+    let_it_be(:recipient2) { create(:user, block_end_at: 5.days.from_now, locale: 'nl-NL') }
+
+    let_it_be(:mail1) { described_class.with(user: recipient1).send_user_blocked_email.deliver_now }
+    let_it_be(:mail2) { described_class.with(user: recipient2).send_user_blocked_email.deliver_now }
+
+    it 'renders the mails in the correct language' do
+      expect(mail1.body.encoded).to include('Your account has been temporarily disabled')
+      expect(mail2.body.encoded).to include('Je account is tijdelijk geblokkeerd')
+    end
+  end
 end

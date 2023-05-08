@@ -21,6 +21,15 @@ module UserCustomFields
         ) do |record, _params|
           record.current_ref_distribution
         end
+
+        has_many :projects, serializer: ::WebApi::V1::ProjectSerializer do |object|
+          project_ids = object.permissions.filter_map { |p| p.permission_scope_id if p.permission_scope_type == 'Project' }
+          phase_ids = object.permissions.filter_map { |p| p.permission_scope_id if p.permission_scope_type == 'Phase' }
+          if phase_ids.present?
+            project_ids += Phase.find(phase_ids).pluck(:project_id)
+          end
+          Project.find(project_ids) if project_ids.present?
+        end
       end
     end
   end

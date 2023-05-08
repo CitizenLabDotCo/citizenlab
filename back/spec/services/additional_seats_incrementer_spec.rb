@@ -89,6 +89,37 @@ describe AdditionalSeatsIncrementer do
       expect(LogActivityJob).to have_been_enqueued
     end
 
+    # it can happen if both moderator and admin checkboxes are checked on the bulk invite page
+    context 'when multiple roles are added to user' do
+      it 'increments only admin seats when admin role goes first' do
+        create(:admin) # to reach limit
+        create(:project_moderator) # to reach limit
+        admin_role = { 'type' => 'admin' }
+        moder_role = { 'type' => 'project_moderator', 'project_id' => create(:project).id }
+        updated_user.update!(roles: [admin_role, moder_role])
+        expect do
+          described_class.increment_if_necessary(updated_user, nil)
+        end.to change { AppConfiguration.instance.settings['core']['additional_admins_number'] }.from(0).to(1)
+          .and(not_change { AppConfiguration.instance.settings['core']['additional_moderators_number'] })
+
+        expect(LogActivityJob).to have_been_enqueued
+      end
+
+      it 'increments only admin seats when admin role goes second' do
+        create(:admin) # to reach limit
+        create(:project_moderator) # to reach limit
+        admin_role = { 'type' => 'admin' }
+        moder_role = { 'type' => 'project_moderator', 'project_id' => create(:project).id }
+        updated_user.update!(roles: [moder_role, admin_role])
+        expect do
+          described_class.increment_if_necessary(updated_user, nil)
+        end.to change { AppConfiguration.instance.settings['core']['additional_admins_number'] }.from(0).to(1)
+          .and(not_change { AppConfiguration.instance.settings['core']['additional_moderators_number'] })
+
+        expect(LogActivityJob).to have_been_enqueued
+      end
+    end
+
     it 'increments additional seats beyond 1' do
       create(:admin) # to reach limit
       new_role = { 'type' => 'admin' }

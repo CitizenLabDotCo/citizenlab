@@ -12,7 +12,9 @@ const schema = object({
 jest.mock('api/app_configuration/useAppConfiguration', () => () => ({
   data: {
     data: {
-      attributes: { settings: { password_login: { minimum_length: 8 } } },
+      attributes: {
+        settings: { password_login: { minimum_length: 8 }, core: {} },
+      },
     },
   },
 }));

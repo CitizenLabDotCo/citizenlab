@@ -8,7 +8,7 @@ module Verification
         super - locked_attributes
       end
 
-      def enabled_custom_fields
+      def allowed_custom_fields
         super.where.not(key: locked_custom_fields)
       end
 

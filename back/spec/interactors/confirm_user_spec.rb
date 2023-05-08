@@ -65,7 +65,7 @@ RSpec.describe ConfirmUser do
     end
 
     it 'returns a code invalid error' do
-      expect(result.errors.details).to eq(code: [{ error: :expired }])
+      expect(result.errors.details).to eq(code: [{ error: :invalid }])
     end
   end
 end

@@ -27,7 +27,7 @@ import Tippy from '@tippyjs/react';
 
 // hooks
 import useTopics from 'api/topics/useTopics';
-import useAreas from 'hooks/useAreas';
+import useAreas from 'api/areas/useAreas';
 import useLocalize from 'hooks/useLocalize';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -43,8 +43,8 @@ import { useIntl } from 'utils/cl-intl';
 
 // types
 import { Multiloc } from 'typings';
-import { IAreaData } from 'services/areas';
 import { ITopicData } from 'api/topics/types';
+import { IAreaData } from 'api/areas/types';
 import { ProjectsFilterTypes } from 'services/customPages';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -102,7 +102,7 @@ const CustomPageSettingsForm = ({
   });
   const showPlanUpgradeTease = !isFeatureAllowed;
   const showAdvancedCustomPages = showPlanUpgradeTease || isFeatureEnabled;
-  const areas = useAreas();
+  const { data: areas } = useAreas({});
   const { data: appConfig } = useAppConfiguration();
   const locale = useLocale();
   const configuredLocales = useAppConfigurationLocales();
@@ -311,7 +311,7 @@ const CustomPageSettingsForm = ({
                         <SelectContainer mb="20px">
                           <Select
                             name="area_id"
-                            options={mapFilterEntityToOptions(areas)}
+                            options={mapFilterEntityToOptions(areas?.data)}
                             label={formatMessage(messages.selectedAreasLabel)}
                           />
                         </SelectContainer>

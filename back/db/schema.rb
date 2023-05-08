@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_14_110825) do
+ActiveRecord::Schema.define(version: 2023_04_05_162820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -887,8 +887,20 @@ ActiveRecord::Schema.define(version: 2023_03_14_110825) do
     t.string "permission_scope_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "global_custom_fields", default: false, null: false
     t.index ["action"], name: "index_permissions_on_action"
     t.index ["permission_scope_id"], name: "index_permissions_on_permission_scope_id"
+  end
+
+  create_table "permissions_custom_fields", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "permission_id", null: false
+    t.uuid "custom_field_id", null: false
+    t.boolean "required", default: true, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["custom_field_id"], name: "index_permissions_custom_fields_on_custom_field_id"
+    t.index ["permission_id", "custom_field_id"], name: "index_permission_field", unique: true
+    t.index ["permission_id"], name: "index_permissions_custom_fields_on_permission_id"
   end
 
   create_table "phase_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1293,6 +1305,7 @@ ActiveRecord::Schema.define(version: 2023_03_14_110825) do
     t.boolean "confirmation_required", default: true, null: false
     t.datetime "block_start_at"
     t.string "block_reason"
+    t.string "new_email"
     t.datetime "block_end_at"
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
@@ -1421,6 +1434,8 @@ ActiveRecord::Schema.define(version: 2023_03_14_110825) do
   add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"
   add_foreign_key "official_feedbacks", "users"
+  add_foreign_key "permissions_custom_fields", "custom_fields"
+  add_foreign_key "permissions_custom_fields", "permissions"
   add_foreign_key "phase_files", "phases"
   add_foreign_key "phases", "projects"
   add_foreign_key "pins", "admin_publications"

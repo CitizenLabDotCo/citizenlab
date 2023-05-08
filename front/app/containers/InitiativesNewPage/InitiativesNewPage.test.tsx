@@ -33,7 +33,7 @@ describe('InitiativesNewPage', () => {
       />
     );
 
-    expect(clHistory.replace).toHaveBeenNthCalledWith(1, '/sign-up');
+    expect(clHistory.replace).toHaveBeenNthCalledWith(1, '/');
   });
 
   it('renders the initiatives formwrapper', () => {

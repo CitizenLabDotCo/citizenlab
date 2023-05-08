@@ -2,11 +2,11 @@
 
 module EmailCampaigns
   class NewCommentOnCommentedIdeaMailerPreview < ActionMailer::Preview
-    def campaign_mail
-      recipient = User.first
+    include EmailCampaigns::MailerPreviewRecipient
 
+    def campaign_mail
       command = {
-        recipient: recipient,
+        recipient: recipient_user,
         event_payload: {
           initiating_user_first_name: 'Ronny',
           initiating_user_last_name: 'Vanden Bempt',

@@ -1,13 +1,17 @@
 import React from 'react';
+
+// hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useLocalize from 'hooks/useLocalize';
 import useHomepageSettings from 'hooks/useHomepageSettings';
+
+// events
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // utils
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import { isNilOrError } from 'utils/helperUtils';
-import { openSignUpInModal } from 'events/openSignUpInModal';
 
 // style
 import styled from 'styled-components';
@@ -63,7 +67,7 @@ const Footer = () => {
     trackEventByName(tracks.clickCreateAccountCTA, {
       extra: { location: 'footer' },
     });
-    openSignUpInModal();
+    triggerAuthenticationFlow();
   };
 
   if (!isNilOrError(homepageSettings)) {

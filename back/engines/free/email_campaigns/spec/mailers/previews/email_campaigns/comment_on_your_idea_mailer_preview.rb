@@ -2,11 +2,11 @@
 
 module EmailCampaigns
   class CommentOnYourIdeaMailerPreview < ActionMailer::Preview
-    def campaign_mail
-      invitee = User.first
+    include EmailCampaigns::MailerPreviewRecipient
 
+    def campaign_mail
       command = {
-        recipient: invitee,
+        recipient: recipient_user,
         event_payload: {
           initiating_user_first_name: 'Fred',
           initiating_user_last_name: 'Kroket',

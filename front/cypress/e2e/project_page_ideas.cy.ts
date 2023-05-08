@@ -46,12 +46,13 @@ describe('Existing continuous ideation project', () => {
   });
 
   it('asks unauthorised users to log in or sign up before they vote', () => {
+    cy.clearCookies();
     cy.get('#e2e-ideas-container')
       .find('.e2e-idea-card')
       .first()
       .find('.e2e-ideacard-upvote-button')
       .click();
-    cy.get('#e2e-sign-up-in-modal');
+    cy.get('#e2e-authentication-modal').should('exist');
     cy.get('.e2e-modal-close-button').click();
   });
 
@@ -156,6 +157,7 @@ describe('New timeline project with active ideation phase', () => {
       .then((idea) => {
         ideaId = idea.body.data.id;
         cy.visit(`/projects/${projectTitle}`);
+        cy.clearCookies();
       });
   });
 
@@ -173,8 +175,7 @@ describe('New timeline project with active ideation phase', () => {
   it('shows the post-your-idea button and authentication modal when you click on it', () => {
     cy.get('#project-ideabutton').should('be.visible');
     cy.get('#project-ideabutton').click();
-    cy.get('#e2e-sign-up-in-modal');
-    cy.get('#e2e-sign-up-container');
+    cy.get('#e2e-authentication-modal');
     cy.get('.e2e-modal-close-button').click();
   });
 

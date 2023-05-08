@@ -2,10 +2,10 @@
 
 class ProjectCopyService < TemplateService
   def import(template, folder: nil, local_copy: false)
-    same_template = tenant_template_service.translate_and_fix_locales template
+    same_template = MultiTenancy::Templates::Utils.translate_and_fix_locales(template)
 
     created_objects_ids = ActiveRecord::Base.transaction do
-      tenant_template_service.resolve_and_apply_template same_template, validate: false, local_copy: local_copy
+      tenant_deserializer.deserialize(same_template, validate: false, local_copy: local_copy)
     end
 
     project = Project.find(created_objects_ids['Project'].first)
@@ -76,11 +76,13 @@ class ProjectCopyService < TemplateService
 
   private
 
-  def tenant_template_service
+  def tenant_deserializer
     # `save_temp_remote_urls: false` because if we store images on another domain (URLs point to another domain),
     # it's not possible to fetch these images by JS.
     # Currently, we fetch them by JS on Back Office to preview images.
-    @tenant_template_service ||= MultiTenancy::TenantTemplateService.new(save_temp_remote_urls: false)
+    @tenant_deserializer ||= MultiTenancy::Templates::TenantDeserializer.new(
+      save_temp_remote_urls: false
+    )
   end
 
   def yml_content_builder_layouts(shift_timestamps: 0)
@@ -519,6 +521,7 @@ class ProjectCopyService < TemplateService
         'action' => p.action,
         'permitted_by' => p.permitted_by,
         'permission_scope_ref' => lookup_ref(p.permission_scope_id, %i[project phase]),
+        'global_custom_fields' => p.global_custom_fields,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601
       }

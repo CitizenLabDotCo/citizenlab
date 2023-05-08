@@ -42,7 +42,7 @@ module EmailCampaigns
 
     before_send :content_worth_sending?
 
-    N_TOP_IDEAS = ENV.fetch('N_ADMIN_WEEKLY_REPORT_IDEAS', 12).to_i
+    N_TOP_IDEAS = 12
 
     def self.default_schedule
       config_timezone = Time.find_zone(AppConfiguration.instance.settings('core', 'timezone'))
@@ -63,6 +63,22 @@ module EmailCampaigns
 
     def self.category
       'admin'
+    end
+
+    def self.recipient_role_multiloc_key
+      'email_campaigns.admin_labels.recipient_role.admins'
+    end
+
+    def self.recipient_segment_multiloc_key
+      'email_campaigns.admin_labels.recipient_segment.admins'
+    end
+
+    def self.content_type_multiloc_key
+      'email_campaigns.admin_labels.content_type.general'
+    end
+
+    def self.trigger_multiloc_key
+      'scheduled'
     end
 
     def generate_commands(recipient:, time: Time.now)

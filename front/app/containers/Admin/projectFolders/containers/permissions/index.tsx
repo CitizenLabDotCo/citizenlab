@@ -25,10 +25,10 @@ import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 const AddModeratorsModal = lazy(
-  () => import('components/admin/AddModeratorsModal')
+  () => import('components/admin/SeatBasedBilling/AddModeratorsModal')
 );
 import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
-import SeatInfo from 'components/SeatInfo';
+import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 
 // Hooks
 import useExceedsSeats from 'hooks/useExceedsSeats';

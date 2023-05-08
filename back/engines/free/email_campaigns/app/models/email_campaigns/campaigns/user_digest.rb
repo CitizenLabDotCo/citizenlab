@@ -39,9 +39,9 @@ module EmailCampaigns
 
     before_send :content_worth_sending?
 
-    N_TOP_IDEAS = ENV.fetch('N_USER_PLATFORM_DIGEST_IDEAS', 3).to_i
-    N_TOP_COMMENTS = ENV.fetch('N_TOP_COMMENTS', 2).to_i
-    N_DISCOVER_PROJECTS = ENV.fetch('N_DISCOVER_PROJECTS', 3).to_i
+    N_TOP_IDEAS = 3
+    N_TOP_COMMENTS = 2
+    N_DISCOVER_PROJECTS = 3
 
     def self.default_schedule
       day, hour = [[:thursday, 13], [:saturday, 8]].sample
@@ -52,6 +52,22 @@ module EmailCampaigns
     end
 
     def self.category
+      'scheduled'
+    end
+
+    def self.recipient_role_multiloc_key
+      'email_campaigns.admin_labels.recipient_role.registered_users'
+    end
+
+    def self.recipient_segment_multiloc_key
+      'email_campaigns.admin_labels.recipient_segment.all_users'
+    end
+
+    def self.content_type_multiloc_key
+      'email_campaigns.admin_labels.content_type.general'
+    end
+
+    def self.trigger_multiloc_key
       'scheduled'
     end
 

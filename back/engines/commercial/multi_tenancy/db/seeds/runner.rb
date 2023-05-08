@@ -89,7 +89,7 @@ module MultiTenancy
       def seed_empty_localhost_tenant
         return unless Apartment::Tenant.current == 'empty_localhost'
 
-        MultiTenancy::TenantTemplateService.new.resolve_and_apply_template('base', external_subfolder: false)
+        MultiTenancy::Templates::ApplyService.new.apply_internal_template('base')
         MultiTenancy::Seeds::Users.new(runner: self).run
       end
 
@@ -97,7 +97,7 @@ module MultiTenancy
       def seed_localhost_tenant
         return unless Apartment::Tenant.current == 'localhost'
 
-        MultiTenancy::TenantTemplateService.new.resolve_and_apply_template('base', external_subfolder: false)
+        MultiTenancy::Templates::ApplyService.new.apply_internal_template('base')
 
         MultiTenancy::Seeds::HomePages.new(runner: self).run
         MultiTenancy::Seeds::Users.new(runner: self).run

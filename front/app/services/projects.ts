@@ -1,13 +1,17 @@
 import { API_PATH } from 'containers/App/constants';
+import streams, { IStreamParams } from 'utils/streams';
 
 // typings
+import {
+  PermissionsDisabledReason,
+  ActionDescriptor,
+  ActionDescriptorFutureEnabled,
+} from 'utils/actionDescriptors';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Locale } from '@citizenlab/cl2-component-library';
 import { IRelationship, Multiloc, UploadFile, CLError } from 'typings';
-import { IAreaData } from './areas';
+import { IAreaData } from 'api/areas/types';
 import { IAppConfiguration } from 'api/app_configuration/types';
-
-import streams, { IStreamParams } from 'utils/streams';
 import {
   TSurveyService,
   ParticipationMethod,
@@ -31,53 +35,42 @@ export type PublicationStatus = 'draft' | 'published' | 'archived';
 export type IProjectAction =
   | 'commenting_idea'
   | 'voting_idea'
-  | 'comment_voting_idea'
   | 'posting_idea'
   | 'taking_survey'
   | 'taking_poll';
 
-export type PostingDisabledReason =
-  | 'project_inactive'
-  | 'not_ideation'
-  | 'posting_disabled'
-  | 'posting_limited_max_reached'
-  | 'not_permitted'
-  | 'not_verified'
-  | 'not_signed_in';
-
 export type CommentingDisabledReason =
-  | 'not_verified'
   | 'project_inactive'
   | 'not_supported'
   | 'commenting_disabled'
-  | 'not_permitted'
-  | 'not_signed_in';
+  | PermissionsDisabledReason;
 
 export type ProjectVotingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
   | 'voting_disabled'
   | 'downvoting_disabled'
-  | 'not_signed_in'
   | 'upvoting_limited_max_reached'
   | 'downvoting_limited_max_reached'
-  | 'not_permitted'
-  | 'not_verified';
+  | PermissionsDisabledReason;
+
+export type PostingDisabledReason =
+  | 'project_inactive'
+  | 'not_ideation'
+  | 'posting_disabled'
+  | 'posting_limited_max_reached'
+  | PermissionsDisabledReason;
 
 export type SurveyDisabledReason =
   | 'project_inactive'
   | 'not_survey'
-  | 'not_permitted'
-  | 'not_verified'
-  | 'not_signed_in';
+  | PermissionsDisabledReason;
 
 export type PollDisabledReason =
   | 'project_inactive'
   | 'not_poll'
-  | 'not_permitted'
   | 'already_responded'
-  | 'not_verified'
-  | 'not_signed_in';
+  | PermissionsDisabledReason;
 
 interface ProjectHeaderBgImageSizes {
   large: string | null;
@@ -128,36 +121,14 @@ export interface IProjectAttributes {
   include_all_areas: boolean;
   folder_id?: string;
   action_descriptor: {
-    posting_idea: {
-      enabled: boolean;
-      future_enabled: string | null;
-      disabled_reason: PostingDisabledReason | null;
+    posting_idea: ActionDescriptorFutureEnabled<PostingDisabledReason>;
+    commenting_idea: ActionDescriptor<CommentingDisabledReason>;
+    voting_idea: ActionDescriptor<ProjectVotingDisabledReason> & {
+      up: ActionDescriptor<ProjectVotingDisabledReason>;
+      down: ActionDescriptor<ProjectVotingDisabledReason>;
     };
-    commenting_idea: {
-      enabled: boolean;
-      disabled_reason: CommentingDisabledReason | null;
-    };
-    voting_idea: {
-      // the two values below are implemented but can be deleted if not needed
-      enabled: boolean;
-      disabled_reason: ProjectVotingDisabledReason | null;
-      up: {
-        enabled: boolean;
-        disabled_reason: ProjectVotingDisabledReason | null;
-      };
-      down: {
-        enabled: boolean;
-        disabled_reason: ProjectVotingDisabledReason | null;
-      };
-    };
-    taking_survey: {
-      enabled: boolean;
-      disabled_reason: SurveyDisabledReason | null;
-    };
-    taking_poll: {
-      enabled: boolean;
-      disabled_reason: PollDisabledReason | null;
-    };
+    taking_survey: ActionDescriptor<SurveyDisabledReason>;
+    taking_poll: ActionDescriptor<PollDisabledReason>;
   };
 }
 
