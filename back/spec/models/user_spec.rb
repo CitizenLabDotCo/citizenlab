@@ -1205,6 +1205,11 @@ RSpec.describe User do
             expect { user.update!(email: email) }.to raise_error(ActiveRecord::RecordInvalid)
           end
 
+          it 'can update the email column if it was blank' do
+            user.update_columns(email: nil)
+            expect { user.update!(email: email) }.not_to raise_error(ActiveRecord::RecordInvalid)
+          end
+
           it 'can change the email if the user is passwordless' do
             user.update!(password: nil)
             expect { user.reset_email!(email) }.to change(user, :saved_change_to_new_email)
