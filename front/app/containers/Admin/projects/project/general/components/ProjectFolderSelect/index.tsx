@@ -95,22 +95,23 @@ const ProjectFolderSelect = ({
     return null;
   }
 
-  const folderOptions: IOption[] = !isNilOrError(projectFolders)
-    ? [
-        {
-          value: '',
-          label: '',
-        },
-        ...projectFolders.data
-          .filter((folder) => userModeratesFolder(authUser, folder.id))
-          .map((folder) => {
-            return {
-              value: folder.id,
-              label: localize(folder.attributes.title_multiloc),
-            };
-          }),
-      ]
-    : [];
+  const folderOptions: IOption[] =
+    !isNilOrError(projectFolders) && !isNilOrError(projectFolders?.data)
+      ? [
+          {
+            value: '',
+            label: '',
+          },
+          ...projectFolders.data
+            .filter((folder) => userModeratesFolder(authUser, folder.id))
+            .map((folder) => {
+              return {
+                value: folder.id,
+                label: localize(folder.attributes.title_multiloc),
+              };
+            }),
+        ]
+      : [];
 
   const handleSelectFolderChange = ({ value: folderId }) => {
     if (typeof folderId === 'string') {
