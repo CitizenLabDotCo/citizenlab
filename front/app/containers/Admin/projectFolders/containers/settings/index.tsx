@@ -52,8 +52,9 @@ const FolderSettings = ({ params }: WithRouterProps) => {
   if (
     (mode === 'edit' && isNilOrError(projectFolder)) ||
     (projectFolder && isNilOrError(projectFolder.data))
-  )
+  ) {
     return null;
+  }
 
   return (
     <>
