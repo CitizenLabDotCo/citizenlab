@@ -2,10 +2,10 @@ de:
   email_campaigns:
     campaign_type_description:
       1:
-        "inappropriate_content_flagged": Unangemessene Inhalte markiert
+        "inappropriate_content_flagged": Unangemessener Inhalt gemeldet
     admin_campaign_type_description:
       1:
-        "inappropriate_content_flagged": Unangemessene Inhalte markiert - Admins
+        "inappropriate_content_flagged": Unangemessene Inhalte gemeldet - Admins
     inappropriate_content_flagged:
       subject: 'Ein Beitrag auf Ihrer Plattform wurde zur Überprüfung markiert'
       header_title: 'Ein Beitrag auf Ihrer Plattform wurde zur Überprüfung markiert'
