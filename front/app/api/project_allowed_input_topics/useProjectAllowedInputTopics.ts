@@ -16,17 +16,15 @@ const fetchProjectAllowedInputTopics = ({
     action: 'get',
   });
 
-const useProjectAllowedInputTopics = (
-  queryParameters: IProjectAllowedTopicsParams
-) => {
+const useProjectAllowedInputTopics = (params: IProjectAllowedTopicsParams) => {
   return useQuery<
     IProjectAllowedInputTopics,
     CLErrors,
     IProjectAllowedInputTopics,
     ProjectAllowedInputTopicsKeys
   >({
-    queryKey: projectAllowedInputKeys.list(queryParameters),
-    queryFn: () => fetchProjectAllowedInputTopics(queryParameters),
+    queryKey: projectAllowedInputKeys.list(params),
+    queryFn: () => fetchProjectAllowedInputTopics(params),
   });
 };
 
