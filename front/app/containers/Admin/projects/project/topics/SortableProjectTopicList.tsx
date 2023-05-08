@@ -33,7 +33,7 @@ import {
 
 // hooks
 import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
-import useTopics from 'hooks/useTopics';
+import useTopics from 'api/topics/useTopics';
 
 // styles
 import { fontSizes } from 'utils/styleUtils';
@@ -64,10 +64,13 @@ const SortableProjectTopicList = memo(
       [allowedInputTopics]
     );
 
-    const topics = useTopics({ topicIds });
+    const { data: topics } = useTopics();
+
     const topicsById = useMemo(() => {
-      return isNilOrError(topics) ? null : byId(topics);
-    }, [topics]);
+      const filteredTopics =
+        topics?.data.filter((topic) => topicIds.includes(topic.id)) || [];
+      return !topics ? null : byId(filteredTopics);
+    }, [topics, topicIds]);
 
     const handleProjectTopicDelete =
       (projectAllowedInputTopicId: string) => (event: FormEvent) => {

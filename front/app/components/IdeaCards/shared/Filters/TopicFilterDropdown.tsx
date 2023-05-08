@@ -13,7 +13,7 @@ import messages from '../../messages';
 
 // hooks
 import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
-import useTopics from 'hooks/useTopics';
+import useTopics from 'api/topics/useTopics';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -30,7 +30,10 @@ const TopicFilterDropdown = memo(
     const allowedInputTopics = useProjectAllowedInputTopics(projectId);
 
     const topicIds = getTopicIds(allowedInputTopics);
-    const topics = useTopics({ topicIds });
+    const { data: topics } = useTopics();
+    const filteredTopics = topics?.data.filter((topic) =>
+      topicIds.includes(topic.id)
+    );
 
     const handleOnChange = (newSelectedValues: string[]) => {
       setSelectedValues(newSelectedValues);
@@ -40,13 +43,13 @@ const TopicFilterDropdown = memo(
     const getOptions = () => {
       if (isNilOrError(topics)) return [];
 
-      return topics.map((topic) => ({
+      return filteredTopics?.map((topic) => ({
         text: localize(topic.attributes.title_multiloc),
         value: topic.id,
       }));
     };
 
-    const options = getOptions();
+    const options = getOptions() || [];
 
     if (isNilOrError(allowedInputTopics) || allowedInputTopics.length === 0) {
       return null;

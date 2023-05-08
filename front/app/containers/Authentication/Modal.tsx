@@ -111,7 +111,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
   const {
     currentStep,
     state,
-    status,
+    loading,
     error,
     authenticationData,
     transition,
@@ -216,7 +216,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
 
         {currentStep === 'success' && (
           <Success
-            status={status}
+            loading={loading}
             onContinue={transition(currentStep, 'CONTINUE')}
           />
         )}
@@ -236,7 +236,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
 
         {currentStep === 'sign-in:email-password' && (
           <EmailAndPassword
-            status={status}
+            loading={loading}
             setError={setError}
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onGoBack={transition(currentStep, 'GO_BACK')}
@@ -260,7 +260,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'sign-up:email-password' && (
           <EmailAndPasswordSignUp
             state={state}
-            status={status}
+            loading={loading}
             setError={setError}
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onGoBack={transition(currentStep, 'GO_BACK')}
@@ -271,7 +271,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'sign-up:email-confirmation' && (
           <EmailConfirmation
             state={state}
-            status={status}
+            loading={loading}
             setError={setError}
             onConfirm={transition(currentStep, 'SUBMIT_CODE')}
             onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
@@ -280,7 +280,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
 
         {currentStep === 'sign-up:change-email' && (
           <ChangeEmail
-            status={status}
+            loading={loading}
             setError={setError}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onChangeEmail={transition(currentStep, 'RESEND_CODE')}
@@ -298,7 +298,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'sign-up:custom-fields' && (
           <CustomFields
             authenticationData={authenticationData}
-            status={status}
+            loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT')}
             onSkip={transition(currentStep, 'SKIP')}
@@ -307,7 +307,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
 
         {currentStep === 'sign-up:invite' && (
           <Invitation
-            status={status}
+            loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
@@ -321,7 +321,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {/* light flow */}
         {currentStep === 'light-flow:email' && (
           <LightFlowStart
-            status={status}
+            loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
             onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
@@ -331,7 +331,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'light-flow:email-policies' && (
           <EmailPolicies
             state={state}
-            status={status}
+            loading={loading}
             setError={setError}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
@@ -339,21 +339,21 @@ const AuthModal = ({ setModalOpen }: Props) => {
 
         {currentStep === 'light-flow:google-policies' && (
           <GooglePolicies
-            status={status}
+            loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
 
         {currentStep === 'light-flow:facebook-policies' && (
           <FacebookPolicies
-            status={status}
+            loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
 
         {currentStep === 'light-flow:azure-ad-policies' && (
           <AzureAdPolicies
-            status={status}
+            loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
@@ -365,7 +365,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'light-flow:email-confirmation' && (
           <EmailConfirmation
             state={state}
-            status={status}
+            loading={loading}
             setError={setError}
             onConfirm={transition(currentStep, 'SUBMIT_CODE')}
             onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
@@ -375,7 +375,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'light-flow:password' && (
           <Password
             state={state}
-            status={status}
+            loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT_PASSWORD')}
           />
@@ -384,7 +384,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {/* missing data flow */}
         {currentStep === 'missing-data:built-in' && (
           <BuiltInFields
-            status={status}
+            loading={loading}
             authenticationData={authenticationData}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT')}
@@ -394,7 +394,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'missing-data:email-confirmation' && (
           <EmailConfirmation
             state={state}
-            status={status}
+            loading={loading}
             setError={setError}
             onConfirm={transition(currentStep, 'SUBMIT_CODE')}
             onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
@@ -403,7 +403,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
 
         {currentStep === 'missing-data:change-email' && (
           <ChangeEmail
-            status={status}
+            loading={loading}
             setError={setError}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onChangeEmail={transition(currentStep, 'RESEND_CODE')}
@@ -421,7 +421,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'missing-data:custom-fields' && (
           <CustomFields
             authenticationData={authenticationData}
-            status={status}
+            loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT')}
             onSkip={transition(currentStep, 'SKIP')}

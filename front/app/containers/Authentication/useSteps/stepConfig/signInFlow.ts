@@ -20,7 +20,7 @@ import {
 } from '../../typings';
 import { Step } from './typings';
 
-export const oldSignInFlow = (
+export const signInFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,

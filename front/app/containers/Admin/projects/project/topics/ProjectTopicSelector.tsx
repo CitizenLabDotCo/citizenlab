@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Hooks
-import useTopics from 'hooks/useTopics';
+import useTopics from 'api/topics/useTopics';
 import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
 
 // i18n
@@ -64,7 +64,7 @@ const ProjectTopicSelector = memo(
       localize,
       params: { projectId },
     } = props;
-    const topics = useTopics({});
+    const { data: topics } = useTopics();
     const projectAllowedInputTopics = useProjectAllowedInputTopics(projectId);
 
     const [selectedTopicOptions, setSelectedTopicOptions] = useState<IOption[]>(
@@ -97,13 +97,13 @@ const ProjectTopicSelector = memo(
     };
 
     const getOptions = () => {
-      if (!isNilOrError(topics) && !isNilOrError(projectAllowedInputTopics)) {
+      if (topics && !isNilOrError(projectAllowedInputTopics)) {
         const selectedInProjectTopicIds = getTopicIds(
           projectAllowedInputTopics
         );
         const selectedInProjectTopicIdsSet = new Set(selectedInProjectTopicIds);
 
-        const selectableTopics = topics.filter(
+        const selectableTopics = topics.data.filter(
           (topic) => !selectedInProjectTopicIdsSet.has(topic.id)
         );
 

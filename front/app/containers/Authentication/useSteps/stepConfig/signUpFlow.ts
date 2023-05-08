@@ -24,7 +24,7 @@ import {
 } from '../../typings';
 import { Step } from './typings';
 
-export const oldSignUpFlow = (
+export const signUpFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,

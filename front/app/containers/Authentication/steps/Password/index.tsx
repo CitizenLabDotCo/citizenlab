@@ -28,12 +28,12 @@ import Checkbox from 'components/HookForm/Checkbox';
 import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
 
 // typings
-import { SetError, State, Status } from '../../typings';
+import { SetError, State } from '../../typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   state: State;
-  status: Status;
+  loading: boolean;
   setError: SetError;
   onSubmit: (
     email: string,
@@ -53,11 +53,9 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   rememberMe: false,
 };
 
-const Password = ({ state, status, setError, onSubmit }: Props) => {
+const Password = ({ state, loading, setError, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
-
-  const loading = status === 'pending';
 
   const schema = useMemo(
     () =>
