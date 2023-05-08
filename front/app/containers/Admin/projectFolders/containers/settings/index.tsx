@@ -6,12 +6,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-import GetProjectFolder, {
-  GetProjectFolderChildProps,
-} from 'resources/GetProjectFolder';
-import { adopt } from 'react-adopt';
 import GoBackButton from 'components/UI/GoBackButton';
 import ProjectFolderForm from './ProjectFolderForm';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 const Container = styled.div<{ mode: 'edit' | 'new' }>`
   display: flex;
@@ -46,19 +43,17 @@ const goBack = () => {
   clHistory.push('/admin/projects');
 };
 
-interface DataProps {
-  projectFolder: GetProjectFolderChildProps;
-}
-
-const FolderSettings = ({
-  params,
-  projectFolder,
-}: WithRouterProps & DataProps) => {
+const FolderSettings = ({ params }: WithRouterProps) => {
   const { projectFolderId } = params;
+  const { data: projectFolder } = useProjectFolderById(projectFolderId);
   const mode = projectFolderId ? 'edit' : 'new';
 
   // ---- Rendering
-  if (mode === 'edit' && isNilOrError(projectFolder)) return null;
+  if (
+    (mode === 'edit' && isNilOrError(projectFolder)) ||
+    (projectFolder && isNilOrError(projectFolder.data))
+  )
+    return null;
 
   return (
     <>
@@ -89,16 +84,4 @@ const FolderSettings = ({
   );
 };
 
-const Data = adopt<DataProps, WithRouterProps>({
-  projectFolder: ({ params, render }) => (
-    <GetProjectFolder projectFolderId={params.projectFolderId}>
-      {render}
-    </GetProjectFolder>
-  ),
-});
-
-export default withRouter((inputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <FolderSettings {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default withRouter((inputProps) => <FolderSettings {...inputProps} />);

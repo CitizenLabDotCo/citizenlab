@@ -29,7 +29,7 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { PublicationStatus } from 'services/projects';
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useProjectFolders from 'hooks/useProjectFolders';
+import useProjectFolders from 'api/project_folders/useProjectFolders';
 
 // services
 import useCreateView from 'modules/commercial/insights/api/views/useCreateView';
@@ -134,7 +134,7 @@ export const CreateInsightsView = ({
 }: DataProps & InputProps) => {
   const { mutate, reset, error, isLoading } = useCreateView();
   const localize = useLocalize();
-  const { projectFolders } = useProjectFolders({});
+  const { data: projectFolders } = useProjectFolders({});
 
   const [name, setName] = useState<string | null>();
 
@@ -192,8 +192,8 @@ export const CreateInsightsView = ({
   // Transform folders data to include projects
   const foldersIncludingProjects = useMemo(
     () =>
-      !isNilOrError(projectFolders)
-        ? projectFolders
+      projectFolders && !isNilOrError(projectFolders.data)
+        ? projectFolders.data
             .map((folder) => ({
               id: folder.id,
               folderName: localize(folder.attributes.title_multiloc),
@@ -209,7 +209,7 @@ export const CreateInsightsView = ({
   );
 
   const toggleSelectAllProjectsInFolder = (
-    folder: typeof foldersIncludingProjects[number]
+    folder: (typeof foldersIncludingProjects)[number]
   ) => {
     const projectIds = folder?.folderProjects.map((project) => project.id);
 
@@ -228,7 +228,7 @@ export const CreateInsightsView = ({
   };
 
   const isFolderSelected = (
-    folder: typeof foldersIncludingProjects[number]
+    folder: (typeof foldersIncludingProjects)[number]
   ) => {
     if (
       folder.folderProjects?.every((project) =>

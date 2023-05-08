@@ -8,7 +8,7 @@ import {
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'services/projectFolderImages';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
-import useProjectFolder from 'hooks/useProjectFolder';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import {
   addProjectFolderFile,
@@ -71,12 +71,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     Resource hooks
     ==============
   */
-  const projectFolder = useProjectFolder({ projectFolderId });
+  const { data: projectFolder } = useProjectFolderById(projectFolderId);
   const projectFolderFilesRemote = useProjectFolderFiles(projectFolderId);
   const projectFolderImagesRemote = useProjectFolderImages(projectFolderId);
   const adminPublication = useAdminPublication(
     !isNilOrError(projectFolder)
-      ? projectFolder.relationships.admin_publication.data?.id || null
+      ? projectFolder.data.relationships.admin_publication.data?.id || null
       : null
   );
   const tenantLocales = useAppConfigurationLocales();
@@ -126,11 +126,13 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   */ useEffect(() => {
     (async () => {
       if (mode === 'edit' && !isNilOrError(projectFolder)) {
-        setTitleMultiloc(projectFolder.attributes.title_multiloc);
-        setSlug(projectFolder.attributes.slug);
-        setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
+        setTitleMultiloc(projectFolder.data.attributes.title_multiloc);
+        setSlug(projectFolder.data.attributes.slug);
+        setDescriptionMultiloc(
+          projectFolder.data.attributes.description_multiloc
+        );
         setShortDescriptionMultiloc(
-          projectFolder.attributes.description_preview_multiloc
+          projectFolder.data.attributes.description_preview_multiloc
         );
       }
     })();
@@ -338,7 +340,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             !isNilOrError(projectFolder)
           ) {
             const cardToAddPromise = croppedFolderCardBase64
-              ? addProjectFolderImage(projectFolder.id, croppedFolderCardBase64)
+              ? addProjectFolderImage(
+                  projectFolder.data.id,
+                  croppedFolderCardBase64
+                )
               : null;
             const cardToRemovePromises =
               folderCardImageToRemove?.id &&
@@ -365,17 +370,20 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
             const changedTitleMultiloc = !isEqual(
               titleMultiloc,
-              projectFolder.attributes.title_multiloc
+              projectFolder.data.attributes.title_multiloc
             );
             const changedDescriptionMultiloc = !isEqual(
               descriptionMultiloc,
-              projectFolder.attributes.description_multiloc
+              projectFolder.data.attributes.description_multiloc
             );
             const changedShortDescriptionMultiloc = !isEqual(
               shortDescriptionMultiloc,
-              projectFolder.attributes.description_preview_multiloc
+              projectFolder.data.attributes.description_preview_multiloc
             );
-            const changedSlug = !isEqual(slug, projectFolder.attributes.slug);
+            const changedSlug = !isEqual(
+              slug,
+              projectFolder.data.attributes.slug
+            );
             const changedPublicationStatus =
               isNilOrError(adminPublication) ||
               !isEqual(
@@ -505,7 +513,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 apiErrors={errors}
                 showSlugErrorMessage={showSlugErrorMessage}
                 onSlugChange={handleSlugOnChange}
-                showSlugChangedWarning={slug !== projectFolder.attributes.slug}
+                showSlugChangedWarning={
+                  slug !== projectFolder.data.attributes.slug
+                }
               />
             </>
           </SectionField>
@@ -547,7 +557,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             <FolderHeaderImageTooltip />
           </SubSectionTitle>
           <HeaderBgUploader
-            imageUrl={projectFolder?.attributes.header_bg?.large}
+            imageUrl={projectFolder?.data.attributes.header_bg?.large}
             onImageChange={handleHeaderBgChange}
           />
         </SectionField>

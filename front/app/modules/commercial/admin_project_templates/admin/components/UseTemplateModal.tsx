@@ -18,7 +18,7 @@ import { client } from '../../utils/apolloUtils';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useAuthUser from 'hooks/useAuthUser';
-import useProjectFolders from 'hooks/useProjectFolders';
+import useProjectFolders from 'api/project_folders/useProjectFolders';
 import {
   userModeratesFolder,
   isProjectFolderModerator,
@@ -141,7 +141,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
 
     const tenantLocales = useAppConfigurationLocales();
     const graphqlTenantLocales = useGraphqlTenantLocales();
-    const { projectFolders } = useProjectFolders({});
+    const { data: projectFolders } = useProjectFolders({});
     const authUser = useAuthUser();
     const localize = useLocalize();
     const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
@@ -302,7 +302,9 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
       setResponseError(null);
 
       const folders: IOption[] =
-        !isNilOrError(projectFolders) && !isNilOrError(authUser)
+        projectFolders &&
+        !isNilOrError(projectFolders.data) &&
+        !isNilOrError(authUser)
           ? [
               ...(isAdmin({ data: authUser })
                 ? [
@@ -312,7 +314,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
                     },
                   ]
                 : []),
-              ...projectFolders
+              ...projectFolders.data
                 .filter((folder) => userModeratesFolder(authUser, folder.id))
                 .map((folder) => {
                   return {

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 
 // hooks
-import useProjectFolders from 'hooks/useProjectFolders';
+import useProjectFolders from 'api/project_folders/useProjectFolders';
 import useLocalize from 'hooks/useLocalize';
 import { usePermission } from 'services/permissions';
 
@@ -46,7 +46,7 @@ const ProjectFolderSelect = ({
   onProjectAttributesDiffChange,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const { projectFolders } = useProjectFolders({});
+  const { data: projectFolders } = useProjectFolders({});
   const authUser = useAuthUser();
 
   const userCanCreateProjectInFolderOnly = usePermission({
@@ -101,7 +101,7 @@ const ProjectFolderSelect = ({
           value: '',
           label: '',
         },
-        ...projectFolders
+        ...projectFolders.data
           .filter((folder) => userModeratesFolder(authUser, folder.id))
           .map((folder) => {
             return {
