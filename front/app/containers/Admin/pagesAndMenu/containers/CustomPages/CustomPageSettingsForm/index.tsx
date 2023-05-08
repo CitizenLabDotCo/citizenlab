@@ -106,7 +106,7 @@ const CustomPageSettingsForm = ({
   const { data: appConfig } = useAppConfiguration();
   const locale = useLocale();
   const configuredLocales = useAppConfigurationLocales();
-  const { data: topics } = useTopics({});
+  const { data: topics } = useTopics();
   const { formatMessage } = useIntl();
 
   const hasMultipleConfiguredLocales = !isNilOrError(configuredLocales)

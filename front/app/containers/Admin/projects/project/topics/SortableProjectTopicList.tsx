@@ -64,7 +64,7 @@ const SortableProjectTopicList = memo(
       [allowedInputTopics]
     );
 
-    const { data: topics } = useTopics({});
+    const { data: topics } = useTopics();
 
     const topicsById = useMemo(() => {
       const filteredTopics =

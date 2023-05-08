@@ -11,7 +11,7 @@ export interface Props {
 }
 
 const TopicValueSelector = memo(({ value, onChange }: Props) => {
-  const { data: topics } = useTopics({});
+  const { data: topics } = useTopics();
   const localize = useLocalize();
 
   const generateOptions = (): IOption[] => {

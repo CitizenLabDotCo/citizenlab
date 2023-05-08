@@ -64,7 +64,7 @@ const ProjectTopicSelector = memo(
       localize,
       params: { projectId },
     } = props;
-    const { data: topics } = useTopics({});
+    const { data: topics } = useTopics();
     const projectAllowedInputTopics = useProjectAllowedInputTopics(projectId);
 
     const [selectedTopicOptions, setSelectedTopicOptions] = useState<IOption[]>(

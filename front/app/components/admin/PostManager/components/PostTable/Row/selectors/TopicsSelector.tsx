@@ -16,7 +16,7 @@ interface Props {
 }
 
 const TopicsSelector = memo<Props>(({ selectedTopics, onUpdateTopics }) => {
-  const { data: topics } = useTopics({});
+  const { data: topics } = useTopics();
   const filteredTopics = topics?.data.filter((topic) =>
     selectedTopics.includes(topic.id)
   );

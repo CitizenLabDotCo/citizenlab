@@ -30,7 +30,7 @@ const TopicFilterDropdown = memo(
     const allowedInputTopics = useProjectAllowedInputTopics(projectId);
 
     const topicIds = getTopicIds(allowedInputTopics);
-    const { data: topics } = useTopics({});
+    const { data: topics } = useTopics();
     const filteredTopics = topics?.data.filter((topic) =>
       topicIds.includes(topic.id)
     );

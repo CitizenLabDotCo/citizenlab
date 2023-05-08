@@ -96,7 +96,7 @@ const TopicsPicker = memo(
     className,
     setRef,
   }: Props & InjectedLocalized) => {
-    const { data: topics } = useTopics({});
+    const { data: topics } = useTopics();
 
     const filteredTopics = topics?.data.filter((topic) =>
       selectedTopicIds.includes(topic.id)
