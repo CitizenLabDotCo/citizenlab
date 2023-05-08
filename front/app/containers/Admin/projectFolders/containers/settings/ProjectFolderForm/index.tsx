@@ -1,21 +1,46 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import clHistory from 'utils/cl-router/history';
-import { isEmpty, isEqual } from 'lodash-es';
-import { CLErrors, Multiloc, UploadFile } from 'typings';
-import { isNilOrError, isError } from 'utils/helperUtils';
-import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
+
+// api
 import {
   addProjectFolderImage,
   deleteProjectFolderImage,
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'services/projectFolderImages';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import useProjectFolder from 'hooks/useProjectFolder';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import {
+  addProjectFolderFile,
+  deleteProjectFolderFile,
+} from 'services/projectFolderFiles';
+import useAddProjectFolder from 'api/project_folders/useAddProjectFolder';
+import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
+import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
+import useAdminPublication from 'hooks/useAdminPublication';
+
+// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
+
+// typing
+import { CLErrors, Multiloc, UploadFile } from 'typings';
+
+// utils
+import { validateSlug } from 'utils/textUtils';
+import { isNilOrError, isError } from 'utils/helperUtils';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isEmpty, isEqual } from 'lodash-es';
+import clHistory from 'utils/cl-router/history';
+
+// components
+import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
+import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
+import FolderCardImageTooltip from './FolderCardImageTooltip';
+import FolderHeaderImageTooltip from './FolderHeaderImageTooltip';
+import SlugInput from 'components/admin/SlugInput';
+import FileUploader from 'components/UI/FileUploader';
 import {
   SectionField,
   Section,
@@ -26,20 +51,6 @@ import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWi
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import { IconTooltip, Radio, Box } from '@citizenlab/cl2-component-library';
-import FileUploader from 'components/UI/FileUploader';
-import {
-  addProjectFolderFile,
-  deleteProjectFolderFile,
-} from 'services/projectFolderFiles';
-import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
-import useAdminPublication from 'hooks/useAdminPublication';
-import SlugInput from 'components/admin/SlugInput';
-import { validateSlug } from 'utils/textUtils';
-import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
-import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
-import FolderCardImageTooltip from './FolderCardImageTooltip';
-import FolderHeaderImageTooltip from './FolderHeaderImageTooltip';
 
 type IProjectFolderSubmitState =
   | 'disabled'
@@ -69,6 +80,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       : null
   );
   const tenantLocales = useAppConfigurationLocales();
+  const { mutate: addProjectFolder, isLoading: isAddProjectFolderLoading } =
+    useAddProjectFolder();
+  const { mutate: updateProjectFolder } = useUpdateProjectFolder();
 
   /*
     ==============
@@ -266,35 +280,50 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             descriptionMultiloc &&
             shortDescriptionMultiloc
           ) {
-            const projectFolder = await addProjectFolder({
-              title_multiloc: titleMultiloc,
-              slug,
-              description_multiloc: descriptionMultiloc,
-              description_preview_multiloc: shortDescriptionMultiloc,
-              header_bg: headerBgBase64,
-              admin_publication_attributes: {
-                publication_status: publicationStatus,
+            addProjectFolder(
+              {
+                title_multiloc: titleMultiloc,
+                slug,
+                description_multiloc: descriptionMultiloc,
+                description_preview_multiloc: shortDescriptionMultiloc,
+                header_bg: headerBgBase64,
+                admin_publication_attributes: {
+                  publication_status: publicationStatus,
+                },
               },
-            });
-            if (!isNilOrError(projectFolder)) {
-              const cardImageToAddPromise = croppedFolderCardBase64
-                ? addProjectFolderImage(
-                    projectFolder.id,
-                    croppedFolderCardBase64
-                  )
-                : null;
+              {
+                onSuccess: async (projectFolder) => {
+                  if (
+                    !isAddProjectFolderLoading &&
+                    !isNilOrError(projectFolder)
+                  ) {
+                    const cardImageToAddPromise = croppedFolderCardBase64
+                      ? addProjectFolderImage(
+                          projectFolder.data.id,
+                          croppedFolderCardBase64
+                        )
+                      : null;
 
-              const filesToAddPromises = projectFolderFiles.map((file) =>
-                addProjectFolderFile(projectFolder.id, file.base64, file.name)
-              );
+                    const filesToAddPromises = projectFolderFiles.map((file) =>
+                      addProjectFolderFile(
+                        projectFolder.data.id,
+                        file.base64,
+                        file.name
+                      )
+                    );
 
-              (cardImageToAddPromise || filesToAddPromises) &&
-                (await Promise.all<any>([
-                  cardImageToAddPromise,
-                  ...filesToAddPromises,
-                ]));
-              clHistory.push(`/admin/projects/folders/${projectFolder.id}`);
-            }
+                    (cardImageToAddPromise || filesToAddPromises) &&
+                      (await Promise.all<any>([
+                        cardImageToAddPromise,
+                        ...filesToAddPromises,
+                      ]));
+                    clHistory.push(
+                      `/admin/projects/folders/${projectFolder.data.id}`
+                    );
+                  }
+                },
+              }
+            );
           }
         } catch (errors) {
           setErrors(errors.json.errors);
@@ -362,9 +391,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               changedHeaderBg ||
               changedPublicationStatus
             ) {
-              const res = await updateProjectFolder(
-                projectFolderId,
+              updateProjectFolder(
                 {
+                  projectFolderId,
                   title_multiloc: changedTitleMultiloc
                     ? titleMultiloc
                     : undefined,
@@ -380,14 +409,14 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                     publication_status: publicationStatus,
                   },
                 },
-                !isNilOrError(projectFolder)
-                  ? projectFolder.relationships.admin_publication.data?.id
-                  : undefined
+                {
+                  onError: async (result) => {
+                    if (isNilOrError(result)) {
+                      setSubmitState('apiError');
+                    }
+                  },
+                }
               );
-
-              if (isNilOrError(res)) {
-                setSubmitState('apiError');
-              }
             }
             setProjectFolderFilesToRemove([]);
             setSubmitState('success');

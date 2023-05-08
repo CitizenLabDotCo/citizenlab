@@ -1,6 +1,5 @@
 import { Multiloc, ImageSizes, IRelationship } from 'typings';
 import streams, { IStreamParams } from 'utils/streams';
-import { isNilOrError } from 'utils/helperUtils';
 import { API_PATH } from 'containers/App/constants';
 import { PublicationStatus } from 'services/projects';
 
@@ -59,37 +58,37 @@ export function projectFolderBySlugStream(projectFolderSlug: string) {
   });
 }
 
-export async function addProjectFolder(object: Partial<IProjectFolderDiff>) {
-  const response = await streams.add<{ data: IProjectFolderData }>(
-    apiEndpoint,
-    { project_folder: object }
-  );
-  await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/admin_publications`],
-  });
-  return !isNilOrError(response) ? response.data : (response as Error);
-}
+// export async function addProjectFolder(object: Partial<IProjectFolderDiff>) {
+//   const response = await streams.add<{ data: IProjectFolderData }>(
+//     apiEndpoint,
+//     { project_folder: object }
+//   );
+//   await streams.fetchAllWith({
+//     apiEndpoint: [`${API_PATH}/admin_publications`],
+//   });
+//   return !isNilOrError(response) ? response.data : (response as Error);
+// }
 
-export async function updateProjectFolder(
-  projectFolderId: string,
-  object: Partial<IProjectFolderDiff>,
-  adminPublicationId?: string
-) {
-  const response = await streams.update<{ data: IProjectFolderData }>(
-    `${apiEndpoint}/${projectFolderId}`,
-    projectFolderId,
-    { project_folder: object }
-  );
-  await streams.fetchAllWith({
-    dataId: adminPublicationId ? [adminPublicationId] : [],
-    apiEndpoint: [
-      `${API_PATH}/admin_publications`,
-      `${API_PATH}/admin_publications/status_counts`,
-    ],
-  });
+// export async function updateProjectFolder(
+//   projectFolderId: string,
+//   object: Partial<IProjectFolderDiff>,
+//   adminPublicationId?: string
+// ) {
+//   const response = await streams.update<{ data: IProjectFolderData }>(
+//     `${apiEndpoint}/${projectFolderId}`,
+//     projectFolderId,
+//     { project_folder: object }
+//   );
+//   await streams.fetchAllWith({
+//     dataId: adminPublicationId ? [adminPublicationId] : [],
+//     apiEndpoint: [
+//       `${API_PATH}/admin_publications`,
+//       `${API_PATH}/admin_publications/status_counts`,
+//     ],
+//   });
 
-  return !isNilOrError(response) ? response.data : response;
-}
+//   return !isNilOrError(response) ? response.data : response;
+// }
 
 export async function deleteProjectFolder(projectFolderId: string) {
   const response = await streams.delete(
