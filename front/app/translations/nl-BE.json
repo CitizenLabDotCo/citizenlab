@@ -1038,7 +1038,7 @@
   "app.containers.NewAuthModal.steps.Password.logInToYourAccount": "Log in op uw account: {account}",
   "app.containers.NewAuthModal.steps.Password.noPasswordError": "Voer uw wachtwoord in",
   "app.containers.NewAuthModal.steps.Password.password": "Wachtwoord",
-  "app.containers.NewAuthModal.steps.Password.rememberMe": "Denk aan mij.",
+  "app.containers.NewAuthModal.steps.Password.rememberMe": "Ingelogd blijven",
   "app.containers.NewAuthModal.steps.Password.rememberMeTooltip": "Niet selecteren als u een openbare computer gebruikt",
   "app.containers.NewAuthModal.steps.Success.allDone": "Helemaal klaar.",
   "app.containers.NewAuthModal.steps.Success.nowContinueYourParticipation": "Ga nu verder met je deelname.",
