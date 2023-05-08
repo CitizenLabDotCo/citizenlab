@@ -20,7 +20,7 @@ module Verification
         omniauth_params = request.env['omniauth.params'].except('token')
 
         begin
-          @user = Knock::AuthToken.new(token: request.env['omniauth.params']['token']).entity_for(::User)
+          @user = AuthToken.new(token: request.env['omniauth.params']['token']).entity_for(::User)
           if @user&.invite_not_pending?
             begin
               handle_verification(auth, @user)

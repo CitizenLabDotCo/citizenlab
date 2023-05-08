@@ -7,7 +7,7 @@ resource 'Ideas' do
   before do
     @ideas = create_list(:idea, 5)
     api_token = PublicApi::ApiClient.create
-    token = Knock::AuthToken.new(payload: api_token.to_token_payload).token
+    token = AuthToken.new(payload: api_token.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
   end
 

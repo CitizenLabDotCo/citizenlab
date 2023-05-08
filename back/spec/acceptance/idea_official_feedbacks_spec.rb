@@ -54,8 +54,7 @@ resource 'OfficialFeedback' do
   context 'when resident' do
     before do
       @user = create(:user)
-      token = header_token_for @user
-      header 'Authorization', "Bearer #{token}"
+      header_token_for @user
     end
 
     post 'web_api/v1/ideas/:idea_id/official_feedback' do

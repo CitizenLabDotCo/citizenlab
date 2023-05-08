@@ -90,8 +90,7 @@ resource 'Analytics', use_transactional_fixtures: false do
       before do
         @project = create(:project)
         @moderator = create(:project_moderator, projects: [@project])
-        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        header_token_for @moderator
       end
 
       example 'handles single query' do
