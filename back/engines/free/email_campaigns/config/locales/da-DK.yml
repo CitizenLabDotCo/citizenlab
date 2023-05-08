@@ -5,33 +5,33 @@ da:
         "manual": Officielle meddelelser
         "admin_rights_received": Modtagne administratorrettigheder
         "comment_deleted_by_admin": Sletning af min kommentar
-        "comment_marked_as_spam": Kommentar spam rapport
+        "comment_marked_as_spam": Kommenter spam rapport
         "comment_on_your_comment": Et svar på min kommentar
         "comment_on_your_idea": En kommentar til mit bidrag
         "comment_on_your_initiative": En kommentar til mit forslag
-        "idea_marked_as_spam": Idea spam-rapport
+        "idea_marked_as_spam": Idé spam-rapport
         "idea_published": Offentliggørelse af mit bidrag
         "initiative_assigned_to_you": Overdragelse af et forslag til mig
         "initiative_marked_as_spam": Forslag til spam-rapport
         "initiative_published": Offentliggørelse af mit forslag
         "invite_received": Invitation
-        "invite_reminder": Indbydelse påmindelse
+        "invite_reminder": Invitations påmindelse
         "mention_in_official_feedback": Omtale i en opdatering
         "new_comment_for_admin": Ny kommentar i et projekt, som jeg modererer
         "new_comment_on_commented_idea": Ny kommentar til et input, som jeg kommenterede på
         "new_comment_on_commented_initiative": Ny kommentar til et forslag, som jeg har kommenteret
-        "new_comment_on_voted_idea": Ny kommentar til et bidrag, jeg stemte for
+        "new_comment_on_voted_idea": Ny kommentar til et input, jeg stemte for
         "new_comment_on_voted_initiative": Ny kommentar til et forslag, som jeg stemte for
         "new_idea_for_admin": Ny idé i et projekt, som jeg modererer
         "new_initiative_for_admin": Nyt forslag
         "official_feedback_on_commented_idea": Opdatering af et input, jeg kommenterede på
-        "official_feedback_on_commented_initiative": Opdatering af et forslag, som jeg kommenterede
+        "official_feedback_on_commented_initiative": Opdatering af et forslag, som jeg kommenterede på
         "official_feedback_on_voted_idea": Opdatering af et bidrag, jeg stemte om
         "official_feedback_on_voted_initiative": Opdatering af et forslag, jeg har stemt om
         "official_feedback_on_your_idea": Opdatering af mit bidrag
         "official_feedback_on_your_initiative": Opdatering af mit forslag
         "password_reset": Nulstilling af kodeord
-        "project_moderation_rights_received": Modtager rettigheder til projektmoderation
+        "project_moderation_rights_received": Rettigheder til projektmoderation er modtaget
         "project_folder_moderation_rights_received": Rettigheder til mappeadministrator modtaget
         "project_phase_started": Ny projektfase
         "project_phase_upcoming": Kommende ny projektfase
