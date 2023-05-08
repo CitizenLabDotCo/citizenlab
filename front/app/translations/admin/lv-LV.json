@@ -580,6 +580,7 @@
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Dzēst grupu",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Rediģēt grupu",
   "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Administratori un vadītāji",
+  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle1": "Skatiet, kas ir atlasīti kā administratori, mapju un projektu vadītāji.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Reģistrētie lietotāji",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grupas",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Gūt pārskatu par visām platformā reģistrētajām personām un organizācijām. Pievienot atlasītus lietotājus Manuālajām grupām vai Viedajām grupām.",
