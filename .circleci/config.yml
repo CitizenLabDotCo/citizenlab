@@ -901,6 +901,13 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
+      - front-dependency-cruiser:
+          context: citizenlab-ee-environment
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
       - front-license-check:
           context: citizenlab-ee-environment
           filters:
