@@ -153,6 +153,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
     ? appConfiguration?.data.attributes.settings.core[helperTextKey]
     : undefined;
 
+  console.log({ currentStep });
   return (
     <Modal
       fullScreen={fullscreenModalEnabled}
@@ -315,7 +316,11 @@ const AuthModal = ({ setModalOpen }: Props) => {
 
         {currentStep === 'sign-up:clave-unica' && (
           // Add more props here
-          <ClaveUnicaEmail />
+          <ClaveUnicaEmail
+            loading={loading}
+            setError={setError}
+            onSubmit={transition(currentStep, 'SUBMIT')}
+          />
         )}
 
         {/* light flow */}

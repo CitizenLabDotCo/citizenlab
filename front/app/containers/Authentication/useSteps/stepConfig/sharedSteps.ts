@@ -68,8 +68,8 @@ export const sharedSteps = (
       },
 
       // When the user returns from SSO
-      RESUME_FLOW_AFTER_SSO: async (isClaveUnica: boolean) => {
-        if (isClaveUnica) {
+      RESUME_FLOW_AFTER_SSO: async (enterEmail: boolean) => {
+        if (enterEmail) {
           setCurrentStep('sign-up:clave-unica');
           return;
         }

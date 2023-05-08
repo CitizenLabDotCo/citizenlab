@@ -35,7 +35,7 @@ import {
   AuthenticationData,
 } from '../typings';
 import { SSOParams } from 'services/singleSignOn';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNil, isNilOrError } from 'utils/helperUtils';
 
 let initialized = false;
 
@@ -215,8 +215,8 @@ export default function useSteps() {
         sso_verification_id,
         sso_verification_type,
         error_code,
-        sso_clave_unica,
-      } = urlSearchParams as SSOParams as any;
+        // sso_clave_unica,
+      } = urlSearchParams as SSOParams;
 
       authenticationDataRef.current = {
         flow: sso_flow,
@@ -242,9 +242,11 @@ export default function useSteps() {
         window.history.replaceState(null, '', '/');
       }
 
-      const isClaveUnica = sso_clave_unica === 'true';
+      // const isClaveUnica = sso_clave_unica === 'true';
+      const enterEmail =
+        !isNilOrError(authUser) && isNil(authUser.attributes.email);
 
-      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(isClaveUnica);
+      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(enterEmail);
     }
   }, [pathname, search, currentStep, transition, authUser, setError]);
 

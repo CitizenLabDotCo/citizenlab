@@ -7,7 +7,10 @@ module IdClaveUnica
     def profile_to_user_attrs(auth)
       Rails.logger.info("GREPME Clave unica auth response: #{auth.inspect}")
 
-      info = {}
+      info = {
+        locale: AppConfiguration.instance.closest_locale_to('es-CL'),
+      }
+
       if (fn = auth.dig('extra', 'raw_info', 'name', 'nombres'))
         info[:first_name] = fn.join(' ')
       end
