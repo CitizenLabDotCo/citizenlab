@@ -549,9 +549,12 @@ class User < ApplicationRecord
     if no_password? && confirmation_required?
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
-    elsif user_confirmation_enabled? && active? && email_changed? && !email_changed?(to: new_email_was)
+    elsif user_confirmation_enabled? && active? && email_changed?
+      new_email_is_used_and_email_updated_not_from_it = new_email_was.present? && !email_changed?(to: new_email_was)
       # When new_email is used, email can only be updated from the value in that column
-      errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - email not matching new email'
+      if new_email_is_used_and_email_updated_not_from_it
+        errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - email not matching new email'
+      end
     end
   end
 

@@ -1202,6 +1202,7 @@ RSpec.describe User do
           end
 
           it 'cannot update the email column directly' do
+            user.update!(new_email: Faker::Internet.email)
             expect { user.update!(email: email) }.to raise_error(ActiveRecord::RecordInvalid)
           end
 
