@@ -3,6 +3,9 @@ import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
+import useInsightsCategories from 'modules/commercial/insights/api/categories/useCategories';
+console.log(useInsightsCategories);
+
 // services
 import { getInputTerm } from 'services/participationContexts';
 
