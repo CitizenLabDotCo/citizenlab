@@ -215,7 +215,6 @@ export default function useSteps() {
         sso_verification_id,
         sso_verification_type,
         error_code,
-        // sso_clave_unica,
       } = urlSearchParams as SSOParams;
 
       authenticationDataRef.current = {

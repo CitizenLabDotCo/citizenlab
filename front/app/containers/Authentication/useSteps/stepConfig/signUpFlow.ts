@@ -193,9 +193,9 @@ export const signUpFlow = (
     'sign-up:enter-email': {
       // do you want the modal to be closable? if so, uncomment line below
       // CLOSE: () => setCurrentStep('closed'),
-      SUBMIT: (email: string) => {
-        // await addEmailClaveUnica(email);
-        // setCurrentStep('success');
+      SUBMIT: async (userId: string, email: string) => {
+        await updateUser(userId, { email: email });
+        setCurrentStep('success');
       },
     },
   };
