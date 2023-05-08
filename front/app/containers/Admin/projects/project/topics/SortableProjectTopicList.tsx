@@ -25,7 +25,6 @@ import T from 'components/T';
 
 // services
 import {
-  deleteProjectAllowedInputTopic,
   reorderProjectAllowedInputTopic,
   IProjectAllowedInputTopic,
 } from 'services/projectAllowedInputTopics';
@@ -33,6 +32,7 @@ import {
 // hooks
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 import useTopics from 'api/topics/useTopics';
+import useDeleteAllowedProjectInputTopic from 'api/project_allowed_input_topics/useDeleteProjectAllowedInputTopic';
 
 // styles
 import { fontSizes } from 'utils/styleUtils';
@@ -52,7 +52,7 @@ const StyledWarning = styled(Warning)`
 const SortableProjectTopicList = memo(
   ({ params: { projectId } }: WithRouterProps) => {
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-    const [processingDeletion, setProcessingDeletion] = useState(false);
+
     const [
       projectAllowedInputTopicIdToDelete,
       setProjectAllowedInputTopicIdToDelete,
@@ -60,6 +60,8 @@ const SortableProjectTopicList = memo(
     const { data: allowedInputTopics } = useProjectAllowedInputTopics({
       projectId,
     });
+    const { mutate: deleteProjectAllowedInputTopic, isLoading } =
+      useDeleteAllowedProjectInputTopic({ projectId });
 
     const topicIds = useMemo(
       () => getTopicIds(allowedInputTopics?.data),
@@ -84,14 +86,11 @@ const SortableProjectTopicList = memo(
 
     const handleProjectTopicDeletionConfirm = () => {
       if (projectAllowedInputTopicIdToDelete) {
-        setProcessingDeletion(true);
-        deleteProjectAllowedInputTopic(
-          projectId,
-          projectAllowedInputTopicIdToDelete
-        ).then(() => {
-          setProcessingDeletion(false);
-          setShowConfirmationModal(false);
-          setProjectAllowedInputTopicIdToDelete(null);
+        deleteProjectAllowedInputTopic(projectAllowedInputTopicIdToDelete, {
+          onSuccess: () => {
+            setShowConfirmationModal(false);
+            setProjectAllowedInputTopicIdToDelete(null);
+          },
         });
       }
     };
@@ -208,7 +207,7 @@ const SortableProjectTopicList = memo(
                 <Button
                   buttonStyle="delete"
                   onClick={handleProjectTopicDeletionConfirm}
-                  processing={processingDeletion}
+                  processing={isLoading}
                   id="e2e-project-topic-delete-confirm-button"
                 >
                   <FormattedMessage {...messages.delete} />

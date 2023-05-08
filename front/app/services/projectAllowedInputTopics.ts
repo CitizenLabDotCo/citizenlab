@@ -2,7 +2,6 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { IRelationship } from 'typings';
 import { apiEndpoint as projectsApiEndpoint } from './projects';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 const apiEndpoint = `${API_PATH}/projects_allowed_input_topics`;
 
@@ -27,22 +26,6 @@ export interface IProjectAllowedInputTopic {
 
 export interface IProjectAllowedInputTopics {
   data: IProjectAllowedInputTopic[];
-}
-
-export async function deleteProjectAllowedInputTopic(
-  projectId: string,
-  allowedInputTopicId: string
-) {
-  const response = await streams.delete(
-    `${apiEndpoint}/${allowedInputTopicId}`,
-    allowedInputTopicId
-  );
-
-  await streams.fetchAllWith({
-    apiEndpoint: [getListEndpoint(projectId)],
-  });
-
-  return response;
 }
 
 export async function addProjectAllowedInputTopic(
@@ -81,14 +64,4 @@ export async function reorderProjectAllowedInputTopic(
   });
 
   return response;
-}
-
-export function getTopicIds(
-  projectAllowedInputTopics: IProjectAllowedInputTopic[] | NilOrError
-) {
-  return isNilOrError(projectAllowedInputTopics)
-    ? []
-    : projectAllowedInputTopics.map((projectAllowedInputTopic) => {
-        return projectAllowedInputTopic.relationships.topic.data.id;
-      });
 }
