@@ -34,6 +34,10 @@ import messages from '../messages';
 // images
 import { TVerificationMethod } from 'services/verificationMethods';
 
+// api
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import projectsKeys from 'api/projects/keys';
+
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
@@ -78,11 +82,12 @@ const VerificationFormGentRrn = memo<Props & WrappedComponentProps>(
 
             await verifyGentRrn(rrn);
 
+            queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
+
             const endpointsToRefetch = [
               `${API_PATH}/users/me`,
               `${API_PATH}/users/me/locked_attributes`,
               `${API_PATH}/users/custom_fields/schema`,
-              `${API_PATH}/projects`,
             ];
             const partialEndpointsToRefetch = [
               `${API_PATH}/projects/`,

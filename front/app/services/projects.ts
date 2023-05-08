@@ -1,6 +1,10 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
+// api
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import projectsKeys from 'api/projects/keys';
+
 // typings
 import {
   PermissionsDisabledReason,
@@ -253,16 +257,18 @@ export async function addProject(projectData: IUpdatedProjectProperties) {
     project: projectData,
   });
   const projectId = response.data.id;
+
   await streams.fetchAllWith({
     dataId: [projectId],
     apiEndpoint: [
-      `${API_PATH}/projects`,
       `${API_PATH}/admin_publications`,
       `${API_PATH}/users/me`,
       `${API_PATH}/topics`,
       `${API_PATH}/areas`,
     ],
   });
+  queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
+
   return response;
 }
 
@@ -276,10 +282,10 @@ export async function updateProject(
     { project: projectData }
   );
 
+  queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
   await streams.fetchAllWith({
     dataId: [projectId],
     apiEndpoint: [
-      `${API_PATH}/projects`,
       `${API_PATH}/admin_publications`,
       `${API_PATH}/admin_publications/status_counts`,
       `${API_PATH}/users/me`,
@@ -296,22 +302,23 @@ export async function deleteProject(projectId: string) {
     `${apiEndpoint}/${projectId}`,
     projectId
   );
+
+  queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/admin_publications`],
+    apiEndpoint: [`${API_PATH}/admin_publications`],
   });
+
   return response;
 }
 
 export async function copyProject(projectId: string) {
   const response = await streams.add(`${apiEndpoint}/${projectId}/copy`, {});
 
+  queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
   await streams.fetchAllWith({
-    apiEndpoint: [
-      `${API_PATH}/projects`,
-      `${API_PATH}/admin_publications`,
-      `${API_PATH}/users/me`,
-    ],
+    apiEndpoint: [`${API_PATH}/admin_publications`, `${API_PATH}/users/me`],
   });
+
   return response;
 }
 
@@ -334,11 +341,12 @@ export async function updateProjectFolderMembership(
     { project: { folder_id: newProjectFolderId } }
   );
 
+  queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
   await streams.fetchAllWith({
     dataId: [newProjectFolderId, oldProjectFolderId].filter(
       (item) => item
     ) as string[],
-    apiEndpoint: [`${API_PATH}/admin_publications`, `${API_PATH}/projects`],
+    apiEndpoint: [`${API_PATH}/admin_publications`],
   });
 
   return response;

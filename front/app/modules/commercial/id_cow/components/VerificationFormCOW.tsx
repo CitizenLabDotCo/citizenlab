@@ -35,6 +35,10 @@ import messages from '../messages';
 // images
 import helpImage from './COWHelpImage.png';
 
+// api
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import projectsKeys from 'api/projects/keys';
+
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
@@ -91,10 +95,9 @@ const VerificationFormCOW = memo<Props & WrappedComponentProps>(
 
             await verifyCOW(run, idSerial);
 
-            const endpointsToRefetch = [
-              `${API_PATH}/users/me`,
-              `${API_PATH}/projects`,
-            ];
+            queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
+
+            const endpointsToRefetch = [`${API_PATH}/users/me`];
             const partialEndpointsToRefetch = [
               `${API_PATH}/projects/`,
               `${API_PATH}/ideas/`,

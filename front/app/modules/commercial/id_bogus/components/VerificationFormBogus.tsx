@@ -24,6 +24,10 @@ import useAuthUser from 'hooks/useAuthUser';
 // services
 import { verifyBogus } from '../services/verify';
 
+// api
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import projectsKeys from 'api/projects/keys';
+
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
@@ -56,10 +60,9 @@ const VerificationFormBogus = memo<Props>(
         try {
           await verifyBogus(desiredError);
 
-          const endpointsToRefetch = [
-            `${API_PATH}/users/me`,
-            `${API_PATH}/projects`,
-          ];
+          queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
+
+          const endpointsToRefetch = [`${API_PATH}/users/me`];
           const partialEndpointsToRefetch = [
             `${API_PATH}/projects/`,
             `${API_PATH}/ideas/`,

@@ -36,6 +36,10 @@ import T from 'components/T';
 // typings
 import { IDLookupMethod } from 'services/verificationMethods';
 
+// api
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import projectsKeys from 'api/projects/keys';
+
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
@@ -77,10 +81,9 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
           try {
             await verifyIDLookup(cardId);
 
-            const endpointsToRefetch = [
-              `${API_PATH}/users/me`,
-              `${API_PATH}/projects`,
-            ];
+            queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
+
+            const endpointsToRefetch = [`${API_PATH}/users/me`];
             const partialEndpointsToRefetch = [
               `${API_PATH}/projects/`,
               `${API_PATH}/ideas/`,

@@ -8,6 +8,7 @@ import { API_PATH } from 'containers/App/constants';
 import fetcher from 'utils/cl-react-query/fetcher';
 import streams from 'utils/streams';
 import ideasKeys from './keys';
+import projectsKeys from 'api/projects/keys';
 
 const deleteIdea = (id: string) =>
   fetcher({
@@ -34,8 +35,9 @@ const useDeleteIdea = () => {
       queryClient.invalidateQueries({
         queryKey: ideaImagesKeys.item({ ideaId }),
       });
+      queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
       streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/analytics`],
+        apiEndpoint: [`${API_PATH}/analytics`],
       });
     },
   });
