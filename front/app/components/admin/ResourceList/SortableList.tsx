@@ -17,7 +17,7 @@ export interface Item {
   [key: string]: any;
 }
 
-export interface InputProps {
+interface InputProps {
   items: Item[];
   onReorder: (fieldId: string, newOrder: number) => void;
   children: (renderProps: RenderProps) => JSX.Element | JSX.Element[] | null;
@@ -31,11 +31,6 @@ export interface RenderProps {
   itemsList: Item[];
   handleDragRow: (fromIndex: number, toIndex: number) => void;
   handleDropRow: (itemId: string, toIndex: number) => void;
-}
-
-export interface SortableListState {
-  itemsWhileDragging: Item[] | null;
-  updating: boolean;
 }
 
 const SortableList = ({
@@ -57,7 +52,7 @@ const SortableList = ({
       setItemsWhileDragging(null);
       setUpdating(false);
     }
-  }, [updating]);
+  }, [updating, prevItems, items]);
 
   const getLocalIndex = (externalIndex: number) => {
     return externalIndex - lockFirstNItems;
