@@ -142,10 +142,7 @@ export const CreateInsightsView = ({
   const [expandedFoldersIds, setExpandedFoldersIds] = useState<string[]>([]);
 
   const ideationProjects = useMemo(
-    () =>
-      projects.projectsList?.filter(
-        (project) => project.attributes.ideas_count > 0
-      ),
+    () => projects?.filter((project) => project.attributes.ideas_count > 0),
     [projects]
   );
 
@@ -209,7 +206,7 @@ export const CreateInsightsView = ({
   );
 
   const toggleSelectAllProjectsInFolder = (
-    folder: typeof foldersIncludingProjects[number]
+    folder: (typeof foldersIncludingProjects)[number]
   ) => {
     const projectIds = folder?.folderProjects.map((project) => project.id);
 
@@ -228,7 +225,7 @@ export const CreateInsightsView = ({
   };
 
   const isFolderSelected = (
-    folder: typeof foldersIncludingProjects[number]
+    folder: (typeof foldersIncludingProjects)[number]
   ) => {
     if (
       folder.folderProjects?.every((project) =>

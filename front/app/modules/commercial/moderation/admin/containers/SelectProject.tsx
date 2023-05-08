@@ -29,13 +29,8 @@ const SelectProject = memo(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (
-      !isNilOrError(projects) &&
-      projects.projectsList &&
-      projects.projectsList.length > 0
-    ) {
-      const projectList = projects.projectsList;
-      const values = projectList.map((project) => {
+    if (!isNilOrError(projects) && projects.length > 0) {
+      const values = projects.map((project) => {
         return {
           text: localize(project.attributes.title_multiloc),
           value: project.id,

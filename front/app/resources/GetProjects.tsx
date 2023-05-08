@@ -22,9 +22,7 @@ export interface InputProps {
   filteredProjectIds?: string[];
 }
 
-export type GetProjectsChildProps = {
-  projectsList: IProjectData[] | null | undefined;
-};
+export type GetProjectsChildProps = IProjectData[] | null | undefined;
 
 type children = (renderProps: GetProjectsChildProps) => JSX.Element | null;
 
@@ -42,7 +40,7 @@ const GetProjects = ({
   filteredProjectIds,
   children,
 }: Props) => {
-  const projectsList = useProjects({
+  const projects = useProjects({
     pageNumber,
     pageSize,
     sort,
@@ -52,9 +50,7 @@ const GetProjects = ({
     projectIds: filteredProjectIds,
   });
 
-  return (children as any)({
-    projectsList: isError(projectsList) ? null : projectsList,
-  });
+  return (children as any)(isError(projects) ? null : projects);
 };
 
 export default GetProjects;

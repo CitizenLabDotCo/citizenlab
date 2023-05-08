@@ -23,13 +23,13 @@ const IdeasTab = memo(({ projects }: Props) => {
     'statuses',
   ];
 
-  if (!isNilOrError(projects) && projects.projectsList !== undefined) {
+  if (!isNilOrError(projects)) {
     return (
       <PostManager
         type="AllIdeas"
         defaultFilterMenu={defaultFilterMenu}
         visibleFilterMenus={visibleFilterMenus}
-        projects={projects.projectsList}
+        projects={projects}
       />
     );
   }
