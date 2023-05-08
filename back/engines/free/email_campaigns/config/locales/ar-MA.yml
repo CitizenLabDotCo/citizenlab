@@ -97,6 +97,15 @@ ar-MA:
       "assignee_digest": نظرة عامة أسبوعية على الأفكار المعيّنة - المسؤولين ومديري المشاريع
       "user_digest": نظرة عامة أسبوعية - جميع المستخدمين
       "your_proposed_initiatives_digest": نظرة عامة أسبوعية على مقترحاتك الخاصة - جميع المستخدمين
+    schedules:
+      weekly:
+        "0": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
+        "1": "أسبوعيًا يوم الاثنين %{atHour}"
+        "2": "أسبوعيًا كل يوم ثلاثاء %{atHour}"
+        "3": "أسبوعيًا في أيام الأربعاء %{atHour}"
+        "4": "أسبوعيًا يوم الخميس %{atHour}"
+        "5": "أسبوعيًا أيام الجمعة %{atHour}"
+        "6": "أسبوعيًا أيام السبت %{atHour}"
     footer:
       "link_privacy_policy": "سياسة الخصوصية"
       "link_terms_conditions": "الشروط والأحكام"
@@ -132,7 +141,7 @@ ar-MA:
       today_by_author: 'اليوم بواسطة %{author}'
       x_days_ago_by_author: 'قبل %{x} يوم بواسطة %{author}'
     admin_rights_received:
-      cta_moderate_platform: 'أشرِف على منصتك'
+      cta_manage_platform: 'إدارة النظام الأساسي الخاص بك'
       message_you_became_administrator: 'لقد مُنحت حقوق المسؤول عن منصة المشاركة الخاصة بـ %{organizationName}.'
       preheader: 'تم منحك حقوق المسؤول عن منصة المشاركة الخاصة بـ %{organizationName}'
       subject: 'لقد أصبحت المسؤول عن المنصة الخاصة بـ%{organizationName}'
@@ -260,12 +269,12 @@ ar-MA:
       preheader: 'ملخص مدير المشروع لـ %{organizationName}'
       title_your_weekly_report: '%{firstName}، تقريرك الأسبوعي'
       text_introduction: "قمنا بتحضير قائمة تضم جميع الأفكار التي ولّدت أكبر تفاعل ونشاط على مدار الأسبوع الماضي.اكتشف ما يحدث في مشروعك!\n     "
-      cta_moderate: 'أشرِف على مشروعك'
+      cta_manage: 'إدارة مشروعك'
       new_users: 'المستخدمون الجُدد'
       new_ideas: 'الأفكار الجديدة'
       new_comments: 'التعليقات الجديدة'
-      title_activity_past_week: 'النشاط على مدار الأسبوع الماضي'
-      title_no_activity_past_week: 'لا يوجد نشاط في الأسبوع الماضي'
+      title_inputs_past_week: 'مدخلات جديدة في الأسبوع الماضي'
+      title_no_inputs_past_week: 'لا مدخلات جديدة في الأسبوع الماضي'
       yesterday_by_author: 'الأمس بواسطة %{author}'
       today_by_author: 'اليوم بواسطة %{author}'
       x_days_ago_by_author: 'قبل %{x} يوم بواسطة %{author}'
@@ -386,7 +395,7 @@ ar-MA:
       subject: 'لقد استلمت تحديثًا رسميًا على المنصة الخاصة بـ %{organizationName}'
       preheader: 'ترك %{officialName} تحديثًا رسميًا على مُقترحك'
     project_moderation_rights_received:
-      cta_moderate_project: 'أشرِف على هذا المشروع'
+      cta_manage_project: 'إدارة هذا المشروع'
       message_you_became_moderator: 'لقد جعلك مسؤول منصة المشاركة الخاصة بـ %{organizationName} للتوّ "مدير مشروع" للمشروع التالي:'
       no_ideas: 'لا توجد أفكار بعد'
       preheader: 'لقد جعلك مسؤول منصة المشاركة الخاصة بـ %{organizationName} للتوّ "مدير مشروع" للمشروع التالي'
