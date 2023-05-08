@@ -22,9 +22,8 @@ import styled from 'styled-components';
 // Typings
 import { IOption } from 'typings';
 
-// Services
-import { addProjectAllowedInputTopic } from 'services/projectAllowedInputTopics';
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
+import useAddProjectAllowedInputTopic from 'api/project_allowed_input_topics/useAddProjectAllowedInputTopic';
 
 const Container = styled.div`
   width: 100%;
@@ -65,6 +64,8 @@ const ProjectTopicSelector = memo(
     const { data: projectAllowedInputTopics } = useProjectAllowedInputTopics({
       projectId,
     });
+    const { mutateAsync: addProjectAllowedInputTopic } =
+      useAddProjectAllowedInputTopic();
 
     const [selectedTopicOptions, setSelectedTopicOptions] = useState<IOption[]>(
       []
@@ -83,7 +84,10 @@ const ProjectTopicSelector = memo(
       setProcessing(true);
 
       const promises = topicIdsToAdd.map((topicId) =>
-        addProjectAllowedInputTopic(projectId, topicId)
+        addProjectAllowedInputTopic({
+          project_id: projectId,
+          topic_id: topicId,
+        })
       );
 
       try {

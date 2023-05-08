@@ -1,7 +1,7 @@
-import { IProjectAllowedInputTopic } from '../types';
+import { IProjectAllowedInputTopicData } from '../types';
 
 export function getTopicIds(
-  projectAllowedInputTopics: IProjectAllowedInputTopic[] | undefined
+  projectAllowedInputTopics: IProjectAllowedInputTopicData[] | undefined
 ) {
   return !projectAllowedInputTopics
     ? []
