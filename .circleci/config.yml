@@ -386,6 +386,23 @@ jobs:
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm run detect-deadcode
 
+  front-dependency-cruiser:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    working_directory: ~/citizenlab/front
+    steps:
+      - shallow-clone
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v2-npm-cache-{{ checksum "package-lock.json" }}
+      - run: npm ci
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v2-npm-cache-{{ checksum "package-lock.json" }}
+      - run: npm run dependency-cruiser
+
   front-lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
