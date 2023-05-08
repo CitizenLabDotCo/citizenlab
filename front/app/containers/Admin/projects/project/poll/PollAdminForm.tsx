@@ -1,6 +1,6 @@
 // Libraries
 import React, { PureComponent, Fragment } from 'react';
-import { DndProvider } from 'react-dnd-cjs';
+import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { isEqual, clone } from 'lodash-es';
 import styled from 'styled-components';

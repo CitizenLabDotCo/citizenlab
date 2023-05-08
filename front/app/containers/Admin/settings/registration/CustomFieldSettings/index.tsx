@@ -2,7 +2,7 @@
 import React, { Component, MouseEvent } from 'react';
 import Link from 'utils/cl-router/Link';
 import styled from 'styled-components';
-import { DndProvider } from 'react-dnd-cjs';
+import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { isEqual, clone } from 'lodash-es';
 

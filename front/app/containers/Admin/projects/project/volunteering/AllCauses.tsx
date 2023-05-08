@@ -1,7 +1,7 @@
 import React, { useCallback, useState, MouseEvent, useMemo } from 'react';
 import styled from 'styled-components';
 import { clone } from 'lodash-es';
-import { DndProvider } from 'react-dnd-cjs';
+import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { isNilOrError } from 'utils/helperUtils';
 
