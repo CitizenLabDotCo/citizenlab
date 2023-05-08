@@ -6,7 +6,7 @@ import {
   ActionDescriptor,
   ActionDescriptorFutureEnabled,
 } from 'utils/actionDescriptors';
-import { IRelationship, Multiloc } from 'typings';
+import { ILinks, IRelationship, Multiloc } from 'typings';
 import {
   TSurveyService,
   ParticipationMethod,
@@ -45,6 +45,7 @@ export interface QueryParameters {
 // Responses
 export interface IProjects {
   data: IProjectData[];
+  links: ILinks;
 }
 
 export interface IProjectAttributes {
@@ -81,16 +82,17 @@ export interface IProjectAttributes {
   presentation_mode: PresentationMode;
   internal_role: 'open_idea_box' | null;
   publication_status: PublicationStatus;
-  min_budget?: number;
-  max_budget?: number;
-  survey_service?: TSurveyService;
-  survey_embed_url?: string;
-  ordering: number;
+  min_budget?: number | null;
+  max_budget?: number | null;
+  survey_service?: TSurveyService | null;
+  survey_embed_url?: string | null;
+  // MISMATCH: ordering doesn't seem to exist on real response
+  // ordering: number;
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
   input_term: InputTerm;
   include_all_areas: boolean;
-  folder_id?: string;
+  folder_id?: string | null;
   action_descriptor: {
     posting_idea: ActionDescriptorFutureEnabled<PostingDisabledReason>;
     commenting_idea: ActionDescriptor<CommentingDisabledReason>;

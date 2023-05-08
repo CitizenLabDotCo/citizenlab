@@ -95,8 +95,8 @@ export interface InsertConfigurationOptions<T extends { name: string }> {
 export interface ILinks {
   self: string;
   first: string;
-  prev: string;
-  next: string;
+  prev: string | null;
+  next: string | null;
   last: string;
 }
 
