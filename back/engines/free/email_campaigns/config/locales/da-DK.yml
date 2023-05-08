@@ -51,50 +51,50 @@ da:
     admin_campaign_type_description:
       1:
         "manual": Officiel meddelelse - alle brugere
-        "admin_rights_received": Modtagne administratorrettigheder - admins
+        "admin_rights_received": Administratorrettigheder modtaget - administratorer
         "comment_deleted_by_admin": Sletning af din kommentar - alle brugere
         "comment_marked_as_spam": Rapport om kommentarspam - administratorer og projektledere
         "comment_on_your_comment": Svar på din kommentar - alle brugere
         "comment_on_your_idea": Kommentarer til din idé - alle brugere
         "comment_on_your_initiative": Kommentarer til dit forslag - alle brugere
         "first_idea_published": Offentliggørelse af din første idé - alle brugere
-        "idea_marked_as_spam": Rapport om idéspam - administratorer og projektledere
+        "idea_marked_as_spam": Idé spam rapport - administratorer og projektledere
         "idea_published": Offentliggørelse af din idé - alle brugere
-        "initiative_assigned_to_you": Tildeling af et forslag - admins
-        "initiative_marked_as_spam": Forslag til spam-rapport - admins
+        "initiative_assigned_to_you": Tildeling af et forslag - administratorer
+        "initiative_marked_as_spam": Forslag til spam-rapport - administratorer
         "initiative_published": Offentliggørelse af dit forslag - alle brugere
         "invite_received": Invitation - alle brugere
-        "invite_reminder": Påmindelse om indbydelse - alle brugere
+        "invite_reminder": Påmindelse om invitation - alle brugere
         "mention_in_comment": Omtale i en kommentar - alle brugere
         "mention_in_official_feedback": Omtale i en opdatering - alle brugere
         "new_comment_for_admin": Ny kommentar - administratorer og projektledere
-        "new_comment_on_commented_idea": Ny kommentar til en idé, som du har kommenteret - alle brugere
-        "new_comment_on_commented_initiative": Ny kommentar til et forslag, som du har kommenteret - alle brugere
+        "new_comment_on_commented_idea": Ny kommentar til en idé, som du har kommenteret på - alle brugere
+        "new_comment_on_commented_initiative": Ny kommentar til et forslag, som du har kommenteret på - alle brugere
         "new_comment_on_voted_idea": Ny kommentar til en idé, du har stemt på - alle brugere
         "new_comment_on_voted_initiative": Ny kommentar til et forslag, du har stemt for - alle brugere
         "new_idea_for_admin": Ny idé - administratorer og projektledere
-        "new_initiative_for_admin": Nyt forslag - admins
-        "official_feedback_on_commented_idea": Opdatering af en idé, som du har kommenteret - alle brugere
-        "official_feedback_on_commented_initiative": Opdatering af et forslag, du har kommenteret - alle brugere
+        "new_initiative_for_admin": Nyt forslag - administratorer
+        "official_feedback_on_commented_idea": Opdatering af en idé, som du har kommenteret på - alle brugere
+        "official_feedback_on_commented_initiative": Opdatering af et forslag, du har kommenteret på - alle brugere
         "official_feedback_on_voted_idea": Opdatering af en idé, du har stemt om - alle brugere
         "official_feedback_on_voted_initiative": Opdatering af et forslag, du har stemt om - alle brugere
         "official_feedback_on_your_idea": Opdatering af din idé - alle brugere
         "official_feedback_on_your_initiative": Opdatering af dit forslag - alle brugere
         "password_reset": Nulstilling af adgangskode - alle brugere
-        "project_moderation_rights_received": Modtagelsesrettigheder til projektmoderation modtaget - projektledere
-        "project_folder_moderation_rights_received": Rettigheder til mappeadministrator modtaget
+        "project_moderation_rights_received": Rettigheder til projektvedligeholdelse - projektledere
+        "project_folder_moderation_rights_received": Rettigheder for mappeadministrator
         "project_phase_started": Ny projektfase - projektdeltagere
         "project_phase_upcoming": Kommende ny projektfase - administratorer og projektledere
         "status_change_of_commented_idea": Statusændring af en idé, som du har kommenteret - alle brugere
-        "status_change_of_commented_initiative": Statusændring af et forslag, du har kommenteret - alle brugere
+        "status_change_of_commented_initiative": Statusændring af et forslag, du har kommenteret på - alle brugere
         "status_change_of_voted_idea": Statusændring af en idé, du har stemt på - alle brugere
         "status_change_of_voted_initiative": Statusændring af et forslag, du har stemt om - alle brugere
         "status_change_of_your_idea": Statusændring af din idé - alle brugere
         "status_change_of_your_initiative": Statusændring af dit forslag - alle brugere
-        "threshold_reached_for_admin": Forslaget har nået afstemningstærsklen - admins
+        "threshold_reached_for_admin": Forslaget har nået afstemningstærsklen - administratorer
         "welcome": Velkomstmail til nye brugere - alle brugere
         "admin_digest": Ugentlig oversigt - administratorer
-        "moderator_digest": Ugeoversigt - projektledere
+        "moderator_digest": Ugentlig oversigt - projektledere
         "assignee_digest": Ugentlig oversigt over tildelte idéer - administratorer og projektledere
         "user_digest": Ugentlig oversigt - alle brugere
         "your_proposed_initiatives_digest": Ugentligt overblik over dine egne forslag - alle brugere
@@ -117,7 +117,7 @@ da:
     comment_deleted_by_admin:
       reason: 'Grunden til at din kommentar blev slettet er:'
       cta_view1: 'Se dette input'
-      event_description1: '%{organizationName} slettede den kommentar, du skrev om et input.'
+      event_description1: '%{organizationName} slettede den kommentar, du skrev til et input.'
       main_header: '%{organizationName} slettede din kommentar'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Din kommentar blev betragtet som værende upassende'
@@ -132,7 +132,7 @@ da:
       text_introduction: 'Vi har lavet en liste til dig med de ideér, der har genereret mest aktivitet indenfor den seneste uge. Find ud af hvad der sker på din platform!'
       cta_visit_the_platform: 'Besøg din platform'
       new_users: 'Nye brugere'
-      new_inputs: 'Nye indgange'
+      new_inputs: 'Nye input'
       new_comments: 'Nye kommentarer'
       title_activity_past_week: 'Seneste uges aktivitet'
       title_no_activity_past_week: 'Der var ingen aktivitet i sidste uge'
@@ -146,7 +146,7 @@ da:
       message_you_became_administrator: 'Du har fået administratorrettigheder til deltagelsesplatformen for %{organizationName}.'
       preheader: 'Du har fået administratorrettigheder til deltagelsesplatformen for %{organizationName}'
       subject: 'Du er blevet administrator af %{organizationName}s platform'
-      text_create_participatory_process1: 'Som administrator kan du oprette og konfigurere nye deltagelsesprojekter. Du kan tilføje nye faser ved hjælp af tidslinjen. Hver af disse faser kan have sin egen adfærd med hensyn til indsendelse af input, kommentarer og afstemninger.'
+      text_create_participatory_process1: 'Som administrator kan du oprette og konfigurere nye borgerinddragelsesprojekter. Du kan tilføje nye faser ved hjælp af tidslinjen. Hver af disse faser kan have sin egen proces med hensyn til indsendelse af input, kommentarer og afstemninger.'
       text_moderate_analyse_input1: 'Når projekterne er iværksat, vil de første input komme ind. Du vil modtage ugentlige rapporter med alle nøgleaktiviteter, så du kan holde dig orienteret. Oversigten over input vil hjælpe dig med at moderere input og samarbejde om behandlingen af det.'
       text_platform_setup: 'Som administrator kan du oprette din deltagelsesplatform. Vælg logo, billeder og farver, skriv en personlig besked på din hjemmeside, send invitationer og definer, hvad du vil vide om dine brugere, ...'
       title_create_participatory_process: 'Design deltagelsesprocessen'
@@ -182,7 +182,7 @@ da:
       cta_manage_your_input: 'Administrer dine input'
       assigned_ideas: 'Idéer mangler din feedback'
       title_assignment_past_week1: 'Seneste input, der er tildelt dig'
-      title_no_assignment_past_week1: 'Ingen nye input, der blev tildelt dig i sidste uge'
+      title_no_assignment_past_week1: 'Ingen nye input blev tildelt dig i sidste uge'
       yesterday_by_author: 'I går af %{author}'
       today_by_author: 'I dag af %{author}'
       x_days_ago_by_author: '%{x} dage siden af %{author}'
@@ -451,17 +451,17 @@ da:
     status_change_of_your_idea:
       status_change1: 'Den nye status for dit input er ''%{ideaStatus}'''
       cta_view_input: 'Gå til dit input'
-      event_description1: '%{organizationName} opdateret status for dit bidrag ''%{ideaTitle}'' på deres digitale platform for deltagelse.'
+      event_description1: '%{organizationName} har opdateret status for dit bidrag ''%{ideaTitle}'' på deres digitale platform.'
       main_header1: 'Dit input har fået en ny status'
       subject1: 'Status for dit input er blevet ændret'
-      preheader1: '%{organizationName} ændret status for dit input'
+      preheader1: '%{organizationName} ændrede status for dit input'
     status_change_of_voted_idea:
       status_change1: 'Den nye status for denne indgang er ''%{ideaStatus}'''
-      cta_view_input: 'Gå til denne indgang'
-      event_description1: '%{organizationName} opdaterede status for input ''%{ideaTitle}'' på deres digitale platform for deltagelse.'
-      main_header1: 'Et input, du har stemt om, har fået en ny status'
-      subject1: 'Status for et input, du har stemt om, er blevet ændret'
-      preheader1: '%{organizationName} ændret status for et input, du har stemt om'
+      cta_view_input: 'Gå til dette input'
+      event_description1: '%{organizationName} opdaterede status for input ''%{ideaTitle}'' på deres digitale platform.'
+      main_header1: 'Et input du har stemt på, har fået en ny status'
+      subject1: 'Status for et input du har stemt på er blevet ændret'
+      preheader1: '%{organizationName} ændrede status for et input, du har stemt på'
     status_change_of_voted_initiative:
       status_change: 'Den nye status for dette borgerforslag er ''%{initiativeStatus}'''
       cta_view_initiative: 'Gå til dette borgerforslag'
@@ -498,7 +498,7 @@ da:
       today_by_author: "I dag af %{author}"
       yesterday_by_author: "I går af %{author}"
       x_days_ago_by_author: "%{x} dage siden af %{author}"
-      trending_inputs: "Trendende input"
+      trending_inputs: "Populære input"
       trending_inputs_text: "Er du interesseret i, hvad der er sket på platformen? Her er de tre mest populære input, og hvad folk siger om dem."
       no_notifications: "Ingen notifikationer"
       one_notification: "1 notifikation"
@@ -527,7 +527,7 @@ da:
       action_share_twitter: 'Fortæl dine følgere på %{twitterLink}'
       add_image: 'Tilføj et billede'
       cta_view_input: 'Gå til dit input'
-      event_description1: '%{firstName}, dit bidrag er blevet offentliggjort på deltagelsesplatformen på %{organizationName}. Du vil få besked, når folk interagerer med dit bidrag. Find ud af, hvilke næste skridt du kan tage nedenfor.'
+      event_description1: '%{firstName}, dit bidrag er blevet offentliggjort på borgerinddragelsesplatformen for %{organizationName}. Du vil få besked, når folk interagerer med dit bidrag. Find ud af, hvilke næste skridt du kan tage nedenfor.'
       link: link
       main_header1: 'Du har sendt et input! Lad os sørge for, at det bliver læst.'
       message_get_votes1: 'Nå ud til flere mennesker med dit input:'
@@ -549,25 +549,25 @@ da:
     admin_labels:
       recipient_role:
         admins: 'Til administratorer'
-        admins_and_managers: 'Til administratorer og ledere'
+        admins_and_managers: 'Til administratorer og projektledere'
         managers: 'Til projektledere'
         registered_users: 'Til registrerede brugere'
       recipient_segment:
         admins: 'Administratorer'
-        admins_and_managers: 'Admins og ledere'
-        admins_and_managers_managing_the_project: 'Administratorer og ledere, der forvalter projektet'
+        admins_and_managers: 'Administratorer og projektledere'
+        admins_and_managers_managing_the_project: 'Administratorer og projektledere som vedligeholder projektet'
         all_users: 'Alle brugere'
         all_users_who_uploaded_proposals: 'Alle brugere der har uploadet borgerforslag'
         managers: 'Projektledere'
-        admins_assigned_to_a_proposal: 'Admins, der er tildelt et forslag'
-        admins_and_managers_assigned_to_the_input: 'Admins og ledere, der er tildelt input'
+        admins_assigned_to_a_proposal: 'Administratorer der er tildelt et forslag'
+        admins_and_managers_assigned_to_the_input: 'Administratorer og projektledere der er tildelt input'
         user_receiving_admin_rights: 'Bruger, der får administratorrettigheder'
         user_receiving_folder_moderator_rights: 'Bruger der får rettigheder som mappemoderator'
         user_receiving_project_moderator_rights: 'Bruger der får rettigheder som projektmoderator'
         user_who_commented: 'Bruger der kommenterede'
         user_who_is_mentioned: 'Bruger der er nævnt'
-        user_who_published_the_proposal: 'Bruger, der har offentliggjort forslaget'
-        user_who_published_the_input: 'Bruger, der har offentliggjort input'
+        user_who_published_the_proposal: 'Bruger der har offentliggjort forslaget'
+        user_who_published_the_input: 'Bruger der har offentliggjort input'
         user_who_registers: 'Bruger der registrerer sig'
         user_who_was_invited: 'Bruger der blev inviteret'
         users_engaged_with_the_input: 'Brugere engagerede sig i input'
@@ -577,7 +577,7 @@ da:
         comments: 'Kommentarer'
         content_moderation: 'Moderation af indhold'
         general: 'Generelt'
-        inputs: 'Indgange'
+        inputs: 'Input'
         permissions: 'Tilladelser'
         projects: 'Projekter'
         proposals: 'Borgerforslag'
@@ -589,17 +589,17 @@ da:
         input_is_assigned: 'Input er tildelt'
         input_is_flagged_as_spam: 'Input er markeret som spam'
         input_is_updated: 'Input opdateres'
-        input_status_is_changed: 'Indgangsstatus er ændret'
+        input_status_is_changed: 'Inputstatus er ændret'
         new_input_is_published: 'Nye input offentliggøres'
         new_proposal_is_published: 'Et nyt forslag offentliggøres'
         project_changes_phase: 'Fase for projektændringer'
         proposal_gets_reported_as_spam: 'Forslaget bliver rapporteret som spam'
-        proposal_is_assigned_to_admin: 'Forslaget er tildelt admin'
+        proposal_is_assigned_to_admin: 'Forslaget er tildelt administrator'
         proposal_is_updated: 'Forslaget er opdateret'
         proposal_is_upvoted_above_threshold: 'Borgerforslaget er opstemt over tærsklen'
         proposal_status_is_changed: 'Borgerforslagets status er ændret'
         user_comments: 'Brugerkommentarer'
-        user_comments_on_input: 'Brugerkommentarer om input'
+        user_comments_on_input: 'Brugerkommentarer til input'
         user_comments_on_proposal: 'Brugernes kommentarer til borgerforslaget'
         user_is_given_admin_rights: 'Brugeren får administratorrettigheder'
         user_is_given_folder_moderator_rights: 'Brugeren får rettigheder som mappemoderator'
