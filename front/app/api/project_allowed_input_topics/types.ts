@@ -10,7 +10,7 @@ export type IProjectAllowedTopicsParams = {
   projectId: string;
 };
 
-export interface IProjectAllowedInputTopic {
+export interface IProjectAllowedInputTopicData {
   id: string;
   type: 'projects_allowed_input_topic';
   attributes: {
@@ -27,5 +27,14 @@ export interface IProjectAllowedInputTopic {
 }
 
 export interface IProjectAllowedInputTopics {
-  data: IProjectAllowedInputTopic[];
+  data: IProjectAllowedInputTopicData[];
+}
+
+export type IProjectAllowedInputTopic = {
+  data: IProjectAllowedInputTopicData;
+};
+
+export interface IProjectAllowedInputTopicAdd {
+  project_id: string;
+  topic_id: string;
 }
