@@ -222,8 +222,25 @@ ar-MA:
       subject: "قم بتأكيد عنوان البريد الإلكتروني لمنصة المشاركة الخاصة بمؤسسة %{organizationName}"
       header: "رمز التأكيد الخاص بك"
       header_message: "مرحبًا %{firstName}!"
+      confirm_email_address: "أكد عنوان بريدك الألكتروني"
       thanks_for_signing_up: "نشكرك على تسجيل الاشتراك في منصة المشاركة الخاصة بمؤسسة %{organizationName}."
-      please_confirm_your_email_address: "لإتمام عملية التسجيل، يرجى إثبات ملكيتك لعنوان بريدك الإلكتروني."
+      best_regards: "أطيب التحيات،"
+      ignore_email: "إذا لم تطلب رمزًا ، فيمكنك تجاهل هذا البريد الإلكتروني بأمان."
+      expire_code: "ستنتهي صلاحية هذا الرمز في "
+      24_hours: "24 ساعة."
       copy_paste_the_link_below: "انسخ الرمز أدناه والصقه في نموذج التسجيل في المنصة."
       the_link_is_valid_for: "تستمر صلاحية هذا الرابط لمدة 24 ساعة. إذا انتهت صلاحية الرابط، فبإمكانك <a href=\"%{link}\">طلب رمز جديد</a>."
       did_you_receive_this_email_in_error: "هل تلقيت هذه الرسالة الإلكترونية عن طريق الخطأ؟ <a href=\"%{link}\">أخبرنا</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'تم تعطيل حسابك مؤقتا'
+      title_user_blocked: 'تم تعطيل حسابك مؤقتا'
+      paragraph_1_without_reason: "تم تعطيل حسابك على منصة المشاركة %{organizationName} مؤقتًا لانتهاك إرشادات المجتمع."
+      paragraph_1_with_reason: "تم تعطيل حسابك على منصة المشاركة %{organizationName} مؤقتًا للأسباب التالية:"
+      for_more_information: "لمزيد من المعلومات حول هذا الموضوع ، يمكنك الرجوع إلى %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "يمكنك تسجيل الدخول مرة أخرى من %{date}"
+  time:
+    am: أكون
+    formats:
+      hour_of_day: "%H:%M"
+    pm: مساءً
