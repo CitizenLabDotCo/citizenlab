@@ -1,6 +1,18 @@
 /** @type {import('dependency-cruiser').IConfiguration} */
 module.exports = {
   forbidden: [
+    /* custom rules: */
+    {
+      name: 'no-modules-import-to-core',
+      severity: 'error',
+      comment:
+        'This dependency is part of a module. It is not allowed to use is directly in the core',
+      from: { pathNot: 'app/modules/' },
+      to: {
+        path: 'app/modules/',
+        pathNot: 'app/modules/index.ts',
+      },
+    },
     /* rules from the 'recommended' preset: */
     {
       name: 'no-circular',
@@ -133,24 +145,6 @@ module.exports = {
           '\\.(spec|test)\\.(js|mjs|cjs|ts|tsx|ls|coffee|litcoffee|coffee\\.md)$',
       },
     },
-    // {
-    //   name: 'not-to-dev-dep',
-    //   severity: 'error',
-    //   comment:
-    //     "This module depends on an npm package from the 'devDependencies' section of your " +
-    //     'package.json. It looks like something that ships to production, though. To prevent problems ' +
-    //     "with npm packages that aren't there on production declare it (only!) in the 'dependencies'" +
-    //     'section of your package.json. If this module is development only - add it to the ' +
-    //     'from.pathNot re of the not-to-dev-dep rule in the dependency-cruiser configuration',
-    //   from: {
-    //     path: '^(app)',
-    //     pathNot:
-    //       '\\.(spec|test)\\.(js|mjs|cjs|ts|tsx|ls|coffee|litcoffee|coffee\\.md)$',
-    //   },
-    //   to: {
-    //     dependencyTypes: ['npm-dev'],
-    //   },
-    // },
     {
       name: 'optional-deps-used',
       severity: 'info',
