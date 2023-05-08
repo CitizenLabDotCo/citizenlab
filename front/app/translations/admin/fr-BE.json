@@ -1588,7 +1588,7 @@
   "app.containers.AdminPage.SideBar.moderation": "Activité",
   "app.containers.AdminPage.SideBar.notifications": "Notifications",
   "app.containers.AdminPage.SideBar.processing": "Traitement",
-  "app.containers.AdminPage.SideBar.projectManager": "Chef de projet",
+  "app.containers.AdminPage.SideBar.projectManager": "Gestionnaire de projets",
   "app.containers.AdminPage.SideBar.projects": "{tenantName, select, frw {Communes} other {Projets}}",
   "app.containers.AdminPage.SideBar.settings": "Paramètres",
   "app.containers.AdminPage.SideBar.signOut": "Se déconnecter",
