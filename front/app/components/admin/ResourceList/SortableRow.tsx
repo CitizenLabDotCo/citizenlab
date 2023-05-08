@@ -29,6 +29,7 @@ interface DragItem {
 
 const itemType = 'ROW';
 
+// Used as reference: https://react-dnd.github.io/react-dnd/examples/sortable/simple
 const SortableRow = ({
   isLastItem,
   className,
