@@ -5,7 +5,7 @@ const baseKey = {
   type: 'project',
 };
 
-const ideasKeys = {
+const projectsKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
   list: (parameters: QueryParameters) => [
@@ -21,4 +21,4 @@ const ideasKeys = {
   ],
 } satisfies QueryKeys;
 
-export default ideasKeys;
+export default projectsKeys;

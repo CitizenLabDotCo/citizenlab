@@ -248,7 +248,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
               folderId: folderId !== noFolderOption ? folderId : null,
             },
           });
-          queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
+          queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
           await streams.fetchAllWith({
             apiEndpoint: [
               `${API_PATH}/admin_publications`,

@@ -35,7 +35,7 @@ import messages from '../messages';
 import { TVerificationMethod } from 'services/verificationMethods';
 
 // api
-import { queryClient } from 'utils/cl-react-query/queryClient';
+import { useQueryClient } from '@tanstack/react-query';
 import projectsKeys from 'api/projects/keys';
 
 interface Props {
@@ -48,6 +48,7 @@ interface Props {
 const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
   ({ onCancel, onVerified, className, intl }) => {
     const authUser = useAuthUser();
+    const queryClient = useQueryClient();
 
     const [rrn, setRrn] = useState('');
     const [rrnError, setRrnError] = useState<string | null>(null);
@@ -82,7 +83,7 @@ const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
 
             await verifyOostendeRrn(rrn);
 
-            queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
+            queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
 
             const endpointsToRefetch = [
               `${API_PATH}/users/me`,

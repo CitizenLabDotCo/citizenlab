@@ -267,7 +267,7 @@ export async function addProject(projectData: IUpdatedProjectProperties) {
       `${API_PATH}/areas`,
     ],
   });
-  queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
+  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
 
   return response;
 }
@@ -282,7 +282,7 @@ export async function updateProject(
     { project: projectData }
   );
 
-  queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
+  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
   await streams.fetchAllWith({
     dataId: [projectId],
     apiEndpoint: [
@@ -303,7 +303,7 @@ export async function deleteProject(projectId: string) {
     projectId
   );
 
-  queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
+  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
   await streams.fetchAllWith({
     apiEndpoint: [`${API_PATH}/admin_publications`],
   });
@@ -314,7 +314,7 @@ export async function deleteProject(projectId: string) {
 export async function copyProject(projectId: string) {
   const response = await streams.add(`${apiEndpoint}/${projectId}/copy`, {});
 
-  queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
+  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
   await streams.fetchAllWith({
     apiEndpoint: [`${API_PATH}/admin_publications`, `${API_PATH}/users/me`],
   });
@@ -341,7 +341,7 @@ export async function updateProjectFolderMembership(
     { project: { folder_id: newProjectFolderId } }
   );
 
-  queryClient.invalidateQueries({ queryKey: projectsKeys.all() });
+  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
   await streams.fetchAllWith({
     dataId: [newProjectFolderId, oldProjectFolderId].filter(
       (item) => item
