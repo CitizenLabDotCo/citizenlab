@@ -11,8 +11,7 @@ import {
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
-// typings
-import { Sort } from 'resources/GetProjects';
+type Sort = 'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular';
 
 export interface Props {
   pageNumber?: number;
