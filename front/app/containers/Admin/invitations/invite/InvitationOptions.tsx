@@ -23,8 +23,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { appLocalePairs } from 'containers/App/constants';
 import useLocalize from 'hooks/useLocalize';
 import { IOption, Locale } from 'typings';
-import useProjects from 'hooks/useProjects';
-import { IProjectData } from 'services/projects';
+import useProjects from 'api/projects/useProjects';
+import { IProjectData } from 'api/projects/types';
 import { adopt } from 'react-adopt';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import { TInviteTabName } from '.';
@@ -84,7 +84,7 @@ const InvitationOptions = ({
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
   });
-  const projects = useProjects({
+  const { data: projects } = useProjects({
     publicationStatuses: ['draft', 'published', 'archived'],
   });
   const localize = useLocalize();
@@ -112,7 +112,7 @@ const InvitationOptions = ({
   };
 
   const projectOptions = !isNilOrError(projects)
-    ? getProjectOptions(projects)
+    ? getProjectOptions(projects.data)
     : null;
   const groupOptions = getGroupOptions(groups);
 
