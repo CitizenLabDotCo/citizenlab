@@ -24,6 +24,9 @@ const useUpdateProjectFolder = () => {
       queryClient.invalidateQueries({
         queryKey: projectFoldersKeys.item({ id: _data.data.id }),
       });
+      queryClient.invalidateQueries({
+        queryKey: projectFolderKeys.lists(),
+      });
       await streams.fetchAllWith({
         partialApiEndpoint: [`${API_PATH}/admin_publications`],
       });
