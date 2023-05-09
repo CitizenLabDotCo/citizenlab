@@ -5,6 +5,7 @@ import projectFoldersKeys from 'api/project_folders/keys';
 import { IProjectFolder, IUpdatedProjectFolder } from './types';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
+import projectsKeys from 'api/projects/keys';
 
 export const updateProjectFolder = async ({
   projectFolderId,
@@ -25,7 +26,7 @@ const useUpdateProjectFolder = () => {
         queryKey: projectFoldersKeys.item({ id: _data.data.id }),
       });
       queryClient.invalidateQueries({
-        queryKey: projectFolderKeys.lists(),
+        queryKey: projectsKeys.lists(),
       });
       await streams.fetchAllWith({
         partialApiEndpoint: [`${API_PATH}/admin_publications`],
