@@ -154,6 +154,10 @@ export async function updateProject(
   );
 
   queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
+  queryClient.invalidateQueries({
+    queryKey: projectsKeys.item({ id: projectId }),
+  });
+
   await streams.fetchAllWith({
     dataId: [projectId],
     apiEndpoint: [
