@@ -1,5 +1,5 @@
 // services
-import { projectBySlugStream, IProject } from 'services/projects';
+import { projectBySlugStream } from 'services/projects';
 
 // utils
 import { slugRegEx } from 'utils/textUtils';
@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import ideasKeys from 'api/ideas/keys';
 import { fetchIdea } from 'api/ideas/useIdeaBySlug';
+import { IProject } from 'api/projects/types';
 
 export const getProjectId = async (path: string) => {
   if (isProjectPage(path)) {

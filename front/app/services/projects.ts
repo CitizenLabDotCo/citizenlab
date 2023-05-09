@@ -6,14 +6,9 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import projectsKeys from 'api/projects/keys';
 
 // typings
-import {
-  PermissionsDisabledReason,
-  ActionDescriptor,
-  ActionDescriptorFutureEnabled,
-} from 'utils/actionDescriptors';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Locale } from '@citizenlab/cl2-component-library';
-import { IRelationship, Multiloc, UploadFile, CLError } from 'typings';
+import { Multiloc, UploadFile, CLError } from 'typings';
 import { IAreaData } from 'api/areas/types';
 import { IAppConfiguration } from 'api/app_configuration/types';
 import {
@@ -22,6 +17,7 @@ import {
   IdeaDefaultSortMethod,
   InputTerm,
 } from './participationContexts';
+import { IProject, IProjectData } from 'api/projects/types';
 
 export const apiEndpoint = `${API_PATH}/projects`;
 export const PROJECTABLE_HEADER_BG_ASPECT_RATIO_WIDTH = 4;
@@ -35,129 +31,8 @@ export type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 export type PublicationStatus = 'draft' | 'published' | 'archived';
 
-export type CommentingDisabledReason =
-  | 'project_inactive'
-  | 'not_supported'
-  | 'commenting_disabled'
-  | PermissionsDisabledReason;
-
-export type ProjectVotingDisabledReason =
-  | 'project_inactive'
-  | 'not_ideation'
-  | 'voting_disabled'
-  | 'downvoting_disabled'
-  | 'upvoting_limited_max_reached'
-  | 'downvoting_limited_max_reached'
-  | PermissionsDisabledReason;
-
-export type PostingDisabledReason =
-  | 'project_inactive'
-  | 'not_ideation'
-  | 'posting_disabled'
-  | 'posting_limited_max_reached'
-  | PermissionsDisabledReason;
-
-export type SurveyDisabledReason =
-  | 'project_inactive'
-  | 'not_survey'
-  | PermissionsDisabledReason;
-
-export type PollDisabledReason =
-  | 'project_inactive'
-  | 'not_poll'
-  | 'already_responded'
-  | PermissionsDisabledReason;
-
 interface ProjectHeaderBgImageSizes {
   large: string | null;
-}
-
-export interface IProjectAttributes {
-  title_multiloc: Multiloc;
-  description_multiloc: Multiloc;
-  description_preview_multiloc: Multiloc;
-  slug: string;
-  header_bg: ProjectHeaderBgImageSizes;
-  ideas_count: number;
-  comments_count: number;
-  avatars_count: number;
-  created_at: string;
-  updated_at: string;
-  visible_to: Visibility;
-  process_type: ProcessType;
-  timeline_active?: 'past' | 'present' | 'future' | null;
-  participants_count: number;
-  participation_method: ParticipationMethod;
-  posting_enabled: boolean;
-  commenting_enabled: boolean;
-  // voting_enabled should be used to update the project setting
-  // and as a read value if we don't know if the user is doing an up/down vote
-  // (although the action_descriptor might be better for that too, to be checked).
-  //
-  // voting_enabled doesn't take downvoting_enabled into account
-  // or upvoting_limited_max/downvoting_limited_max.
-  // For more specific values, see the voting_idea action_descriptor
-  voting_enabled: boolean;
-  upvoting_method: 'limited' | 'unlimited';
-  upvoting_limited_max: number;
-  downvoting_enabled: boolean;
-  downvoting_method: 'limited' | 'unlimited';
-  downvoting_limited_max: number;
-  presentation_mode: PresentationMode;
-  internal_role: 'open_idea_box' | null;
-  publication_status: PublicationStatus;
-  min_budget?: number;
-  max_budget?: number;
-  survey_service?: TSurveyService;
-  survey_embed_url?: string;
-  ordering: number;
-  poll_anonymous?: boolean;
-  ideas_order?: IdeaDefaultSortMethod;
-  input_term: InputTerm;
-  include_all_areas: boolean;
-  folder_id?: string;
-  action_descriptor: {
-    posting_idea: ActionDescriptorFutureEnabled<PostingDisabledReason>;
-    commenting_idea: ActionDescriptor<CommentingDisabledReason>;
-    voting_idea: ActionDescriptor<ProjectVotingDisabledReason> & {
-      up: ActionDescriptor<ProjectVotingDisabledReason>;
-      down: ActionDescriptor<ProjectVotingDisabledReason>;
-    };
-    taking_survey: ActionDescriptor<SurveyDisabledReason>;
-    taking_poll: ActionDescriptor<PollDisabledReason>;
-  };
-}
-
-export interface IProjectData {
-  id: string;
-  type: 'project';
-  attributes: IProjectAttributes;
-  relationships: {
-    project_images: {
-      data: IRelationship[];
-    };
-    areas: {
-      data: IRelationship[];
-    };
-    avatars?: {
-      data?: IRelationship[];
-    };
-    topics: {
-      data: IRelationship[];
-    };
-    current_phase?: {
-      data: IRelationship | null;
-    };
-    user_basket?: {
-      data: IRelationship | null;
-    };
-    default_assignee?: {
-      data: IRelationship | null;
-    };
-    admin_publication: {
-      data: IRelationship | null;
-    };
-  };
 }
 
 export interface IUpdatedProjectProperties {
@@ -226,10 +101,6 @@ export interface IProjectFormState {
   slug: string | null;
   showSlugErrorMessage: boolean;
   folder_id?: string | null;
-}
-
-export interface IProject {
-  data: IProjectData;
 }
 
 export function projectBySlugStream(

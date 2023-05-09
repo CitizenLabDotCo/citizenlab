@@ -1,6 +1,5 @@
-import { PostingDisabledReason } from './projects';
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import { IProjectData } from 'api/projects/types';
+import { IProjectData, PostingDisabledReason } from 'api/projects/types';
 import { GetPhaseChildProps } from 'resources/GetPhase';
 import { isNilOrError } from 'utils/helperUtils';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
