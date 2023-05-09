@@ -5,7 +5,9 @@ import styled from 'styled-components';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { isNilOrError } from 'utils/helperUtils';
-import { IProjectData } from 'services/projects';
+
+// api
+import { IProjectData } from 'api/projects/types';
 
 // resources
 import GetIdeaStatuses, {

@@ -11,7 +11,8 @@ interface Props extends InputProps {
 
 const GetProject = ({ children, ...props }: Props) => {
   const project = useProject(props);
-  return (children as any)(project);
+  if (!children) return null;
+  return children(project);
 };
 
 export default GetProject;

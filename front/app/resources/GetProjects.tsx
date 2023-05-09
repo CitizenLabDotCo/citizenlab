@@ -1,6 +1,6 @@
-import useProjects, { Props as InputProps } from 'hooks/useProjects';
-import { IProjectData } from 'services/projects';
-import { isError } from 'utils/helperUtils';
+import useProjects from 'api/projects/useProjects';
+import { Props as InputProps, IProjectData } from 'api/projects/types';
+import { isNil } from 'utils/helperUtils';
 
 export type GetProjectsChildProps = IProjectData[] | null | undefined;
 
@@ -11,8 +11,9 @@ interface Props extends InputProps {
 }
 
 const GetProjects = ({ children, ...props }: Props) => {
-  const projects = useProjects(props);
-  return (children as any)(isError(projects) ? null : projects);
+  const { data: projects } = useProjects(props);
+  if (!children) return null;
+  return children(isNil(projects) ? null : projects.data);
 };
 
 export default GetProjects;
