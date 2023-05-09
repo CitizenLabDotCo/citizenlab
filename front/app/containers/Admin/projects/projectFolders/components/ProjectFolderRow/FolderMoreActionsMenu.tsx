@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -27,24 +27,14 @@ const FolderMoreActionsMenu = ({
   setError,
   setIsRunningAction,
 }: Props) => {
-  const { mutate: deleteProjectFolder } = useDeleteProjectFolder();
+  const {
+    mutate: deleteProjectFolder,
+    isLoading: isDeleteProjectFolderLoading,
+  } = useDeleteProjectFolder();
   const { formatMessage } = useIntl();
-  const [isDeleting, setIsDeleting] = useState(false);
   const authUser = useAuthUser();
   if (isNilOrError(authUser)) return null;
   const userCanDeleteProject = isAdmin({ data: authUser });
-
-  const handleCallbackError = async (
-    callback: () => Promise<any>,
-    error: string
-  ) => {
-    try {
-      await callback();
-      setError(null);
-    } catch {
-      setError(error);
-    }
-  };
 
   const createActions = () => {
     const actions: IAction[] = [];
@@ -55,19 +45,23 @@ const FolderMoreActionsMenu = ({
           if (
             window.confirm(formatMessage(messages.deleteFolderConfirmation))
           ) {
-            setIsDeleting(true);
             setIsRunningAction && setIsRunningAction(true);
-            await handleCallbackError(
-              async () => deleteProjectFolder({ projectFolderId: folderId }),
-              formatMessage(messages.deleteFolderError)
+            deleteProjectFolder(
+              { projectFolderId: folderId },
+              {
+                onError: () => {
+                  setError(formatMessage(messages.deleteFolderError));
+                },
+              }
             );
-            setIsDeleting(false);
-            setIsRunningAction && setIsRunningAction(false);
+            if (!isDeleteProjectFolderLoading) {
+              setIsRunningAction && setIsRunningAction(false);
+            }
           }
         },
         label: formatMessage(messages.deleteFolderButton),
         icon: 'delete' as const,
-        isLoading: isDeleting,
+        isLoading: isDeleteProjectFolderLoading,
       });
     }
 
