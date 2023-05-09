@@ -580,6 +580,7 @@
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Ta bort grupp",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Redigera grupp",
   "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Administratörer och projektledare",
+  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle1": "Visa vilka som är valda som administratörer, mapp- och projektledare.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Registrerade användare",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grupper",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Få en översikt över alla personer och organisationer som registrerat sig på plattformen. Lägg till ett urval av användare i Manuella grupper eller Smarta grupper.",

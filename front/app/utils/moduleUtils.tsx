@@ -45,8 +45,14 @@ import {
   Multiloc,
 } from 'typings';
 import { IntlFormatters } from 'react-intl';
-import { StatCardProps } from '../modules/commercial/analytics/admin/components/StatCard/useStatCard/typings';
 import { IInitiativeData } from 'api/initiatives/types';
+import {
+  Dates,
+  ProjectId,
+  Resolution,
+} from 'components/admin/GraphCards/typings';
+
+export type StatCardProps = ProjectId & Dates & Resolution;
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];

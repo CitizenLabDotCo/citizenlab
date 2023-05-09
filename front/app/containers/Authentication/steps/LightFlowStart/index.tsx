@@ -110,6 +110,7 @@ const LightFlowStart = ({
             </Box>
             <Box w="100%" display="flex" mt="32px">
               <Button
+                id="e2e-light-flow-email-submit"
                 type="submit"
                 width="100%"
                 disabled={loading}
