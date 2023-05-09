@@ -253,7 +253,7 @@ export default function useSteps() {
   useEffect(() => {
     if (isNilOrError(authUser)) return;
     if (currentStep !== 'closed') return;
-    if (authUser.attributes.email === undefined) {
+    if (isNil(authUser.attributes.email)) {
       transition(currentStep, 'REOPEN_CLAVE_UNICA')();
     }
   }, [authUser, currentStep, transition]);

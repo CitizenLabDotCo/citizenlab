@@ -153,7 +153,6 @@ const AuthModal = ({ setModalOpen }: Props) => {
     ? appConfiguration?.data.attributes.settings.core[helperTextKey]
     : undefined;
 
-  console.log({ currentStep });
   return (
     <Modal
       fullScreen={fullscreenModalEnabled}
