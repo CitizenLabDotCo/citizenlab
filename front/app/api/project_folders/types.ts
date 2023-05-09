@@ -54,7 +54,6 @@ export interface IProjectFolderData {
 
 export interface IUpdatedProjectFolder {
   projectFolderId: string;
-  adminPublicationId?: string;
   title_multiloc?: Multiloc;
   slug?: string | null;
   description_multiloc?: Multiloc;

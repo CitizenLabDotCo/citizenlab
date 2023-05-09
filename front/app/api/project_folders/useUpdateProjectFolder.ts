@@ -3,7 +3,6 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import projectFoldersKeys from 'api/project_folders/keys';
 import { IProjectFolder, IUpdatedProjectFolder } from './types';
-import { omit } from 'lodash-es';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 
@@ -14,7 +13,7 @@ export const updateProjectFolder = async ({
   fetcher<IProjectFolder>({
     path: `/project_folders/${projectFolderId}`,
     action: 'patch',
-    body: { project_folder: { ...omit(requestBody, 'adminPublicationId') } },
+    body: { project_folder: { ...requestBody } },
   });
 
 const useUpdateProjectFolder = () => {
@@ -24,9 +23,6 @@ const useUpdateProjectFolder = () => {
     onSuccess: async (_data) => {
       queryClient.invalidateQueries({
         queryKey: projectFoldersKeys.item({ id: _data.data.id }),
-      });
-      queryClient.invalidateQueries({
-        queryKey: projectFoldersKeys.lists(),
       });
       await streams.fetchAllWith({
         partialApiEndpoint: [`${API_PATH}/admin_publications`],
