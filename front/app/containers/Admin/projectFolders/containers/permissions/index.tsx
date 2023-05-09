@@ -4,10 +4,9 @@ import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import useProjectFolderModerators from 'hooks/useProjectFolderModerators';
+import useProjectFolderModerators from 'api/project_folder_moderators/useProjectFolderModerators';
 import {
   addFolderModerator,
   deleteFolderModerator,
@@ -50,7 +49,9 @@ const FolderPermissions = () => {
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
   });
-  const folderModerators = useProjectFolderModerators(projectFolderId);
+  const { data: folderModerators } = useProjectFolderModerators({
+    projectFolderId,
+  });
   const [processing, setProcessing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [moderatorToAdd, setModeratorToAdd] =
@@ -164,13 +165,13 @@ const FolderPermissions = () => {
 
         <List>
           <>
-            {!isNilOrError(folderModerators) &&
-              folderModerators.map((folderModerator, index) => (
+            {folderModerators &&
+              folderModerators.data.map((folderModerator, index) => (
                 // This row is a near copy of ModeratorListRow. They could be
                 // extracted in 1 component.
                 <Row
                   key={folderModerator.id}
-                  isLastItem={index === folderModerators.length - 1}
+                  isLastItem={index === folderModerators.data.length - 1}
                 >
                   <Box display="flex" alignItems="center">
                     <Box mr="12px">

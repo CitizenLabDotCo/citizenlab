@@ -1,6 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
-import { IUsers } from 'services/users';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 
 const indexPath = (projectFolderId: string) =>
@@ -8,13 +7,6 @@ const indexPath = (projectFolderId: string) =>
 
 const showPath = (projectFolderId: string, moderatorId: string) =>
   `${indexPath(projectFolderId)}/${moderatorId}`;
-
-export function folderModeratorsStream(projectFolderId: string) {
-  return streams.get<IUsers>({
-    apiEndpoint: indexPath(projectFolderId),
-    queryParameters: { project_folder_id: projectFolderId },
-  });
-}
 
 export async function deleteFolderModerator(
   projectFolderId: string,
