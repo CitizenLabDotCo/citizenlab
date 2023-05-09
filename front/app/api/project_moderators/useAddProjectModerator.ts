@@ -13,7 +13,7 @@ const addModerator = async ({ moderatorId, projectId }: ProjectModeratorAdd) =>
     path: `/projects/${projectId}/moderators`,
     action: 'post',
     body: {
-      project_moderator: {
+      moderator: {
         user_id: moderatorId,
       },
     },
