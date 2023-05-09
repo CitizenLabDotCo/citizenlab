@@ -3,6 +3,8 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import projectFoldersKeys from 'api/project_folders/keys';
 import { INewProjectFolderDiff, IProjectFolder } from './types';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 export const addProjectFolder = async ({
   ...requestBody
@@ -17,9 +19,12 @@ const useAddProjectFolder = () => {
   const queryClient = useQueryClient();
   return useMutation<IProjectFolder, CLErrors, INewProjectFolderDiff>({
     mutationFn: addProjectFolder,
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({
         queryKey: projectFoldersKeys.lists(),
+      });
+      await streams.fetchAllWith({
+        partialApiEndpoint: [`${API_PATH}/admin_publications`],
       });
     },
   });

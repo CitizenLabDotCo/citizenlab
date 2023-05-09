@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 import projectFolderKeys from './keys';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 const deleteProjectFolder = ({
   projectFolderId,
@@ -17,11 +19,13 @@ const useDeleteProjectFolder = () => {
 
   return useMutation({
     mutationFn: deleteProjectFolder,
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({
         queryKey: projectFolderKeys.lists(),
       });
-      // TODO also invalidate project list once Luuc is finished converting
+      await streams.fetchAllWith({
+        partialApiEndpoint: [`${API_PATH}/admin_publications`],
+      });
     },
   });
 };
