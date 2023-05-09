@@ -2,7 +2,7 @@
 
 # After https://github.com/nsarno/knock/blob/master/app/model/knock/auth_token.rb.
 module AuthToken
-  class AuthToken # TODO: add specs
+  class AuthToken
     TOKEN_SIGNATURE_ALGORITHM = 'RS256'
     TOKEN_LIFETIME = 30.days
     TOKEN_PUBLIC_KEY = OpenSSL::PKey::RSA.new(ENV.fetch('JWT_RS256_PUBLIC_KEY').gsub('\n', "\n"))
