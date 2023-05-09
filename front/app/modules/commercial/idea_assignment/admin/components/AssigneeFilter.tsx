@@ -1,6 +1,5 @@
-import React, { PureComponent } from 'react';
+import React, { SyntheticEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { memoize } from 'lodash-es';
 
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -10,8 +9,7 @@ import { Dropdown } from 'semantic-ui-react';
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import postManagerMessages from 'components/admin/PostManager/messages';
 
@@ -25,7 +23,7 @@ interface DataProps {
 }
 
 interface InputProps {
-  handleAssigneeFilterChange: (value: string) => void;
+  handleAssigneeFilterChange: (value: string | undefined) => void;
   projectId?: string | null;
   assignee?: string | null;
   type: ManagerType;
@@ -34,22 +32,23 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+type TAssigneeOption = {
+  value: string;
+  text: string;
+  id?: string;
+  className?: string;
+};
 
-export class AssigneeFilter extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  getAssigneeOptions = memoize((prospectAssignees, authUser) => {
-    const {
-      intl: { formatMessage },
-    } = this.props;
-    let assigneeOptions = [] as {
-      value: string;
-      text: string;
-      id?: string;
-      className?: string;
-    }[];
+const AssigneeFilter = ({
+  assignee,
+  prospectAssignees,
+  authUser,
+  className,
+  handleAssigneeFilterChange,
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const getAssigneeOptions = (prospectAssignees: GetUsersChildProps) => {
+    let assigneeOptions: TAssigneeOption[] = [];
 
     if (!isNilOrError(prospectAssignees.usersList) && !isNilOrError(authUser)) {
       const dynamicOptions = prospectAssignees.usersList
@@ -84,34 +83,33 @@ export class AssigneeFilter extends PureComponent<
       ];
     }
     return assigneeOptions;
-  });
+  };
 
-  onAssigneeChange = (_event, assigneeOption) => {
+  const onAssigneeChange = (
+    _event: SyntheticEvent,
+    assigneeOption: TAssigneeOption
+  ) => {
     const realFiterParam =
       assigneeOption.value === 'all' ? undefined : assigneeOption.value;
     trackEventByName(tracks.assigneeFilterUsed, {
       assignee: realFiterParam,
-      adminAtWork: this.props.authUser && this.props.authUser.id,
+      adminAtWork: authUser && authUser.id,
     });
-    this.props.handleAssigneeFilterChange(realFiterParam);
+    handleAssigneeFilterChange(realFiterParam);
   };
 
-  render() {
-    const { assignee, prospectAssignees, authUser, className } = this.props;
-
-    return (
-      <Dropdown
-        className={`${className} intercom-admin-asignee-filter`}
-        id="e2e-select-assignee-filter"
-        options={this.getAssigneeOptions(prospectAssignees, authUser)}
-        onChange={this.onAssigneeChange}
-        value={assignee || 'all'}
-        search
-        selection
-      />
-    );
-  }
-}
+  return (
+    <Dropdown
+      className={`${className} intercom-admin-asignee-filter`}
+      id="e2e-select-assignee-filter"
+      options={getAssigneeOptions(prospectAssignees)}
+      onChange={onAssigneeChange}
+      value={assignee || 'all'}
+      search
+      selection
+    />
+  );
+};
 
 const Data = adopt<DataProps, InputProps>({
   prospectAssignees: ({ type, projectId, render }) =>
@@ -131,10 +129,8 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-const AssigneeFilterWithHocs = injectIntl(AssigneeFilter);
-
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <AssigneeFilterWithHocs {...inputProps} {...dataProps} />}
+    {(dataProps) => <AssigneeFilter {...inputProps} {...dataProps} />}
   </Data>
 );
