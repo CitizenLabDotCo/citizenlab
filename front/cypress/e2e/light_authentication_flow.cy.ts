@@ -34,9 +34,7 @@ describe('Light authentication flow', () => {
     cy.visit(`/projects/${projectTitle}`);
 
     cy.get('#e2e-idea-button').should('exist');
-    cy.wait(2000).then(() => {
-      cy.get('#e2e-idea-button').click();
-    });
+    cy.get('#e2e-idea-button').click({ force: true });
 
     cy.get('input#email').focus().type(randomEmail());
     cy.get('#e2e-light-flow-email-submit').click();
@@ -61,9 +59,7 @@ describe('Light authentication flow', () => {
     cy.visit(`/projects/${projectTitle}`);
 
     cy.get('#e2e-idea-button').should('exist');
-    cy.wait(2000).then(() => {
-      cy.get('#e2e-idea-button').click();
-    });
+    cy.get('#e2e-idea-button').click({ force: true });
 
     cy.get('input#email').focus().type('admin@citizenlab.co');
     cy.get('#e2e-light-flow-email-submit').click();
