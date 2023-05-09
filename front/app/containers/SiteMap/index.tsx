@@ -28,8 +28,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 // services
 import { DEFAULT_PAGE_SLUGS } from 'services/navbar';
 import { TPageCode } from 'services/customPages';
-import useProjects from 'hooks/useProjects';
 import useAuthUser from 'hooks/useAuthUser';
+import useProjects from 'api/projects/useProjects';
 
 const Container = styled.div`
   min-height: calc(
