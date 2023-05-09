@@ -6,7 +6,7 @@ module PublicApi
     before_action :set_phase, only: [:show]
 
     def index
-      @phases = PublicApi::PhasePolicy::Scope.new(current_publicapi_apiclient, Phase).resolve
+      @phases = PublicApi::PhasePolicy::Scope.new(current_public_api_api_client, Phase).resolve
       @phases = @phases
         .order(start_at: :asc)
         .page(params[:page_number])

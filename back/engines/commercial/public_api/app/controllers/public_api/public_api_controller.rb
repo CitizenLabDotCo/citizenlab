@@ -21,7 +21,7 @@ module PublicApi
     end
 
     def pundit_user
-      current_publicapi_apiclient
+      current_public_api_api_client
     end
 
     def authenticate_api_client
@@ -29,7 +29,7 @@ module PublicApi
     end
 
     def check_api_token
-      return if current_publicapi_apiclient
+      return if current_public_api_api_client
 
       head :unauthorized
     end
