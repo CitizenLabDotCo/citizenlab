@@ -46,7 +46,7 @@ class ApplicationController < ActionController::API
       render json: { errors: { base: [{ error: 'blocked', details: { block_end_at: current_user.block_end_at } }] } },
         status: :unauthorized
     else
-      reason = exception.reason || 'Unauthorized!'
+      reason = exception.try(:reason) || 'Unauthorized!'
       render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
     end
   end
