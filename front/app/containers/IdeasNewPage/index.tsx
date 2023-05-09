@@ -12,8 +12,8 @@ import IdeasNewForm from './IdeasNewForm';
 // style
 import { colors } from 'utils/styleUtils';
 
-// tracks
-import useProject from 'hooks/useProject';
+// hooks
+import useProjectBySlug from 'api/projects/useProjectBySlug';
 import usePhases from 'hooks/usePhases';
 import { getParticipationMethod } from 'utils/participationMethodUtils';
 
@@ -28,8 +28,9 @@ const NewIdeaPage = (inputProps: InputProps) => {
   const { slug } = useParams();
 
   const isSmallerThanPhone = useBreakpoint('phone');
-  const project = useProject({ projectSlug: slug });
-  const phases = usePhases(project?.id);
+  // const project = useProject({ projectSlug: slug });
+  const { data: project } = useProjectBySlug(slug);
+  const phases = usePhases(project?.data.id);
   const { phase_id } = parse(location.search, {
     ignoreQueryPrefix: true,
   }) as { [key: string]: string };
@@ -42,7 +43,11 @@ const NewIdeaPage = (inputProps: InputProps) => {
     return <PageNotFound />;
   }
 
-  const participationMethod = getParticipationMethod(project, phases, phase_id);
+  const participationMethod = getParticipationMethod(
+    project?.data as any,
+    phases,
+    phase_id
+  );
   const portalElement = document?.getElementById('modal-portal');
   const isSurvey = participationMethod === 'native_survey';
 
