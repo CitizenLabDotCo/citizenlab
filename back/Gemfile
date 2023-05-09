@@ -169,6 +169,7 @@ gem 'rack-attack', '~> 6'
 # in the main app.
 gem 'intercom', '~> 4.2'
 gem 'mjml-rails', '~> 4.8'
+gem 'cloudfront-rails', '~> 0.4'
 
 # Included here because of CVE-2022-32209.
 # See https://groups.google.com/g/rubyonrails-security/c/ce9PhUANQ6s
@@ -185,11 +186,6 @@ Dir.children('engines/free').each do |engine_name|
 end
 
 gem 'ros-apartment', require: 'apartment'
-
-# Upstream actionpack-cloudfront depends on ActionController::Helpers, which
-# is not enabled for a rails api project, so we run on a fork.
-# PR to merge to upstream: https://github.com/customink/actionpack-cloudfront/pull/18
-gem 'actionpack-cloudfront', github: 'CitizenLabDotCo/actionpack-cloudfront'
 
 commercial_engines = [
   'multi_tenancy',
