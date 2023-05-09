@@ -19,7 +19,7 @@ import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useInputSchema from 'hooks/useInputSchema';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
@@ -31,7 +31,7 @@ import messages from '../messages';
 // utils
 import { getLocationGeojson } from 'containers/IdeasEditPage/utils';
 import { omit } from 'lodash-es';
-import { isError, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { PreviousPathnameContext } from 'context';
@@ -54,16 +54,14 @@ const AdminIdeaEdit = ({
   });
 
   const { mutate: updateIdea } = useUpdateIdea();
-  const project = useProject({
-    projectId: isNilOrError(idea)
-      ? null
-      : idea.data.relationships.project.data.id,
-  });
+  const { data: project, status: projectStatus } = useProjectById(
+    idea?.data.relationships.project.data.id
+  );
   const { data: remoteImages } = useIdeaImages(ideaId);
   const { data: remoteFiles } = useIdeaFiles(ideaId);
 
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
-    projectId: project?.id,
+    projectId: project?.data.id,
     inputId: ideaId,
   });
 
@@ -139,7 +137,7 @@ const AdminIdeaEdit = ({
       ...ideaWithoutImages,
       idea_images_attributes,
       location_point_geojson,
-      project_id: project?.id,
+      project_id: project?.data.id,
       publication_status: 'published',
     };
 
@@ -210,7 +208,7 @@ const AdminIdeaEdit = ({
       </Top>
 
       <Content className="idea-form">
-        {!isNilOrError(project) && !isNilOrError(idea) && schema && uiSchema ? (
+        {project && idea && schema && uiSchema ? (
           <Form
             schema={schema}
             uiSchema={uiSchema}
@@ -222,7 +220,7 @@ const AdminIdeaEdit = ({
             config={'input'}
             layout={'inline'}
           />
-        ) : isError(project) || inputSchemaError ? null : (
+        ) : projectStatus === 'error' || inputSchemaError ? null : (
           <Spinner />
         )}
       </Content>

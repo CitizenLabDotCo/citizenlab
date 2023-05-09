@@ -1,6 +1,6 @@
 import { PostingDisabledReason } from './projects';
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import { GetProjectChildProps } from 'resources/GetProject';
+import { IProjectData } from 'api/projects/types';
 import { GetPhaseChildProps } from 'resources/GetPhase';
 import { isNilOrError } from 'utils/helperUtils';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -131,7 +131,7 @@ export const getIdeaPostingRules = ({
   phase,
   authUser,
 }: {
-  project: GetProjectChildProps;
+  project: IProjectData | null | undefined;
   phase: GetPhaseChildProps | TPhase;
   authUser: GetAuthUserChildProps | TAuthUser;
 }): ActionPermission<IIdeaPostingDisabledReason> => {
