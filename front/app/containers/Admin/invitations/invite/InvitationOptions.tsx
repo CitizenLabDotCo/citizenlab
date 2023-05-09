@@ -26,8 +26,7 @@ import { IOption, Locale } from 'typings';
 import useProjects from 'hooks/useProjects';
 import { IProjectData } from 'services/projects';
 import { adopt } from 'react-adopt';
-import GetGroups from 'resources/GetGroups';
-import { GetGroupsChildProps } from 'resources/GetGroups';
+import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import { TInviteTabName } from '.';
 
 const StyledWarning = styled(Warning)`
