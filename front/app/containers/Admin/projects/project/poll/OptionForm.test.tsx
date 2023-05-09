@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { OptionForm } from './OptionForm';
-import { IPollOption } from 'services/pollOptions';
+import { IPollOptionData } from 'services/pollOptions';
 import { mockQuestion } from 'services/__mocks__/pollQuestions';
 import { mockOption } from 'services/__mocks__/pollOptions';
 
@@ -23,8 +23,8 @@ const question = mockQuestion(
   'What is your favourite ice cream flavour ?'
 );
 const pollOptions = ['Vanilla', 'Pistachio', 'Raspberry'].map((item, index) =>
-  mockOption(index, item)
-) as IPollOption[];
+  mockOption(index.toString(), item)
+) as IPollOptionData[];
 
 describe('<OptionForm/>', () => {
   it('clicking done calls the collapse handler', () => {
@@ -85,7 +85,9 @@ describe('<OptionForm/>', () => {
         <OptionForm
           question={question}
           collapse={jest.fn()}
-          pollOptions={[mockOption('vanillaId', 'Vanilla')] as IPollOption[]}
+          pollOptions={
+            [mockOption('vanillaId', 'Vanilla')] as IPollOptionData[]
+          }
         />
       );
       expect(
@@ -164,7 +166,9 @@ describe('<OptionForm/>', () => {
           <OptionForm
             question={question}
             collapse={jest.fn()}
-            pollOptions={[mockOption('vanillaId', 'Vanilla')] as IPollOption[]}
+            pollOptions={
+              [mockOption('vanillaId', 'Vanilla')] as IPollOptionData[]
+            }
           />
         );
         wrapper.find('OptionRow').prop('editOption' as any)();

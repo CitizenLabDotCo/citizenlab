@@ -1,4 +1,4 @@
-export const mockOption = (id, titleEn) => ({
+export const mockOption = (id: string, titleEn: string) => ({
   id,
   attributes: {
     title_multiloc: {
