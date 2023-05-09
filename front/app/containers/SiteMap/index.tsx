@@ -1,6 +1,4 @@
-import React, { useRef } from 'react';
-import { adopt } from 'react-adopt';
-import scrollToComponent from 'react-scroll-to-component';
+import React, { KeyboardEvent, MouseEvent, RefObject, useRef } from 'react';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // hooks
@@ -26,11 +24,12 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // resources
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+
 // services
 import { DEFAULT_PAGE_SLUGS } from 'services/navbar';
 import { TPageCode } from 'services/customPages';
+import useProjects from 'hooks/useProjects';
+import useAuthUser from 'hooks/useAuthUser';
 
 const Container = styled.div`
   min-height: calc(
@@ -40,10 +39,8 @@ const Container = styled.div`
   flex-direction: column;
   background: ${colors.background};
 
-  ${media.tablet`
-    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
+  ${(props) => media.tablet`
+    min-height: calc(100vh - ${props.theme.mobileMenuHeight}px - ${props.theme.mobileTopBarHeight}px);
   `}
 `;
 
@@ -117,41 +114,39 @@ const NavItem = styled.button`
   }
 `;
 
-interface DataProps {
-  projects: GetProjectsChildProps;
-  authUser: GetAuthUserChildProps;
-}
-
-interface Props extends DataProps {}
-
-const SiteMap = ({ projects, authUser }: Props) => {
+const SiteMap = () => {
   const proposalsEnabled = useFeatureFlag({ name: 'initiatives' });
+  const projects = useProjects({
+    publicationStatuses: ['draft', 'published', 'archived'],
+  });
   const loaded = projects !== undefined;
   const navBarItems = useNavbarItems();
   const localize = useLocalize();
   const pages = useCustomPages();
+  const authUser = useAuthUser();
 
-  const scrollTo = (component) => (event: any) => {
-    // if the event is synthetic, it's a key event and we move focus
-    // https://github.com/facebook/react/issues/3907
-    if (event.detail === 0) {
-      component.current.focus();
-    }
-    scrollToComponent(component.current, {
-      align: 'top',
-      offset: -90,
-      duration: 300,
-    });
-  };
+  const scrollTo =
+    (component: RefObject<HTMLHeadingElement | null>) =>
+    (event: MouseEvent | KeyboardEvent) => {
+      if (component.current) {
+        // if the event is synthetic, it's a key event and we move focus
+        // https://github.com/facebook/react/issues/3907
+        if (event.detail === 0) {
+          component.current.focus();
+        }
 
-  const homeSection = useRef(null);
-  const projectsSection = useRef(null);
-  const archivedSection = useRef(null);
-  const currentSection = useRef(null);
-  const draftSection = useRef(null);
-  const initiativesSection = useRef(null);
-  const userSpaceSection = useRef(null);
-  const customPagesSection = useRef(null);
+        component.current.scrollIntoView();
+      }
+    };
+
+  const homeSection = useRef<HTMLHeadingElement | null>(null);
+  const projectsSection = useRef<HTMLHeadingElement | null>(null);
+  const archivedSection = useRef<HTMLHeadingElement | null>(null);
+  const currentSection = useRef<HTMLHeadingElement | null>(null);
+  const draftSection = useRef<HTMLHeadingElement | null>(null);
+  const initiativesSection = useRef<HTMLHeadingElement | null>(null);
+  const userSpaceSection = useRef<HTMLHeadingElement | null>(null);
+  const customPagesSection = useRef<HTMLHeadingElement | null>(null);
   const hasProjectSubsection =
     archivedSection.current || draftSection.current || currentSection.current;
 
@@ -390,13 +385,4 @@ const SiteMap = ({ projects, authUser }: Props) => {
   return null;
 };
 
-const Data = adopt<DataProps>({
-  projects: (
-    <GetProjects publicationStatuses={['draft', 'published', 'archived']} />
-  ),
-  authUser: <GetAuthUser />,
-});
-
-export default () => (
-  <Data>{(dataProps: DataProps) => <SiteMap {...dataProps} />}</Data>
-);
+export default SiteMap;
