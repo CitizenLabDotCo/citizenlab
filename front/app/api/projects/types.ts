@@ -43,12 +43,6 @@ export interface QueryParameters {
   filter_ids?: string[];
 }
 
-// useProject
-export interface ProjectProps {
-  projectId?: string | null;
-  projectSlug?: string | null;
-}
-
 // Responses
 export interface IProjects {
   data: IProjectData[];
