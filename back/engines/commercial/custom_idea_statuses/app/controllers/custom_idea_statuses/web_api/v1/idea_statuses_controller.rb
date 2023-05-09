@@ -10,7 +10,7 @@ module CustomIdeaStatuses
           @idea_status = IdeaStatus.new(idea_status_params)
           authorize @idea_status, policy_class: IdeaStatusPolicy
           if @idea_status.save
-            render json: ::WebApi::V1::IdeaStatusSerializer.new(@idea_status).serialized_json, status: :ok
+            render json: ::WebApi::V1::IdeaStatusSerializer.new(@idea_status).serializable_hash.to_json, status: :ok
           else
             render json: { errors: @idea_status.errors.details }, status: :unprocessable_entity
           end
@@ -19,7 +19,7 @@ module CustomIdeaStatuses
         def update
           @idea_status.insert_at(params.dig(:idea_status, :ordering)) if params.dig(:idea_status, :ordering)
           if @idea_status.update(idea_status_params)
-            render json: ::WebApi::V1::IdeaStatusSerializer.new(@idea_status).serialized_json, status: :ok
+            render json: ::WebApi::V1::IdeaStatusSerializer.new(@idea_status).serializable_hash.to_json, status: :ok
           else
             render json: { errors: @idea_status.errors.details }, status: :unprocessable_entity
           end

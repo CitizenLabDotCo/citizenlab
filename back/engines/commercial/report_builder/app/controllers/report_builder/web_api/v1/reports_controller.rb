@@ -49,7 +49,7 @@ module ReportBuilder
           render json: ContentBuilder::WebApi::V1::LayoutSerializer.new(
             report.layout,
             params: fastjson_params
-          ).serialized_json
+          ).serializable_hash.to_json
         end
 
         private
@@ -96,7 +96,7 @@ module ReportBuilder
 
         def serialize_report(report)
           options = { params: fastjson_params, include: [:layout] }
-          ReportSerializer.new(report, options).serialized_json
+          ReportSerializer.new(report, options).serializable_hash.to_json
         end
 
         def side_fx_service

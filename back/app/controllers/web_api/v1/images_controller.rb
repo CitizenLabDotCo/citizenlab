@@ -40,11 +40,11 @@ class WebApi::V1::ImagesController < ApplicationController
   def index
     @images = @container.send(secure_constantize(:image_relationship)).order(:ordering)
     @images = secure_constantize(:policy_scope_class).new(current_user, @images).resolve
-    render json: WebApi::V1::ImageSerializer.new(@images, params: fastjson_params).serialized_json
+    render json: WebApi::V1::ImageSerializer.new(@images, params: fastjson_params).serializable_hash.to_json
   end
 
   def show
-    render json: WebApi::V1::ImageSerializer.new(@image, params: fastjson_params).serialized_json
+    render json: WebApi::V1::ImageSerializer.new(@image, params: fastjson_params).serializable_hash.to_json
   end
 
   def create
@@ -54,7 +54,7 @@ class WebApi::V1::ImagesController < ApplicationController
       render json: WebApi::V1::ImageSerializer.new(
         @image,
         params: fastjson_params
-      ).serialized_json, status: :created
+      ).serializable_hash.to_json, status: :created
     else
       if @image.errors.details[:image].include?({ error: 'processing_error' })
         ErrorReporter.report_msg(@image.errors.details.to_s)
@@ -68,7 +68,7 @@ class WebApi::V1::ImagesController < ApplicationController
       render json: WebApi::V1::ImageSerializer.new(
         @image,
         params: fastjson_params
-      ).serialized_json, status: :ok
+      ).serializable_hash.to_json, status: :ok
     else
       render json: { errors: transform_errors_details!(@image.errors.details) }, status: :unprocessable_entity
     end

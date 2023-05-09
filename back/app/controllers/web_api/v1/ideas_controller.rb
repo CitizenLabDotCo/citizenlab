@@ -168,7 +168,7 @@ class WebApi::V1::IdeasController < ApplicationController
           input.reload,
           params: fastjson_params,
           include: %i[author topics phases user_vote idea_images]
-        ).serialized_json, status: :created
+        ).serializable_hash.to_json, status: :created
       else
         render json: { errors: input.errors.details }, status: :unprocessable_entity
       end
@@ -217,7 +217,7 @@ class WebApi::V1::IdeasController < ApplicationController
           input.reload,
           params: fastjson_params,
           include: %i[author topics user_vote idea_images]
-        ).serialized_json, status: :ok
+        ).serializable_hash.to_json, status: :ok
       else
         render json: { errors: input.errors.details }, status: :unprocessable_entity
       end
@@ -245,7 +245,7 @@ class WebApi::V1::IdeasController < ApplicationController
       input,
       params: fastjson_params,
       include: %i[author topics user_vote idea_images]
-    ).serialized_json
+    ).serializable_hash.to_json
   end
 
   def extract_custom_field_values_from_params!(custom_form)

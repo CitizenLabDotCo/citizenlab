@@ -52,7 +52,7 @@ class WebApi::V1::PermissionsController < ApplicationController
       permission,
       params: fastjson_params,
       include: %i[permissions_custom_fields custom_fields]
-    ).serialized_json
+    ).serializable_hash.to_json
   end
 
   def permissions_service

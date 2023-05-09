@@ -28,7 +28,7 @@ class WebApi::V1::AreasController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::AreaSerializer.new(@area, params: fastjson_params).serialized_json
+    render json: WebApi::V1::AreaSerializer.new(@area, params: fastjson_params).serializable_hash.to_json
   end
 
   def create
@@ -41,7 +41,7 @@ class WebApi::V1::AreasController < ApplicationController
       render json: WebApi::V1::AreaSerializer.new(
         @area,
         params: fastjson_params
-      ).serialized_json, status: :created
+      ).serializable_hash.to_json, status: :created
     else
       render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end
@@ -56,7 +56,7 @@ class WebApi::V1::AreasController < ApplicationController
       render json: WebApi::V1::AreaSerializer.new(
         @area,
         params: fastjson_params
-      ).serialized_json, status: :ok
+      ).serializable_hash.to_json, status: :ok
     else
       render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end
@@ -76,7 +76,7 @@ class WebApi::V1::AreasController < ApplicationController
     @side_fx_service.before_update(@area, current_user)
     if @area.insert_at(permitted_attributes(@area)[:ordering])
       @side_fx_service.after_update(@area, current_user)
-      render json: WebApi::V1::AreaSerializer.new(@area.reload, params: fastjson_params).serialized_json, status: :ok
+      render json: WebApi::V1::AreaSerializer.new(@area.reload, params: fastjson_params).serializable_hash.to_json, status: :ok
     else
       render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end

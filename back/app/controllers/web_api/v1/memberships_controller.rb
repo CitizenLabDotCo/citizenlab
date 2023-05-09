@@ -24,7 +24,7 @@ class WebApi::V1::MembershipsController < ApplicationController
       @membership,
       params: fastjson_params,
       include: [:user]
-    ).serialized_json
+    ).serializable_hash.to_json
   end
 
   def show_by_user_id
@@ -41,7 +41,7 @@ class WebApi::V1::MembershipsController < ApplicationController
         @membership.reload,
         params: fastjson_params,
         include: [:user]
-      ).serialized_json, status: :created
+      ).serializable_hash.to_json, status: :created
     else
       render json: { errors: @membership.errors.details }, status: :unprocessable_entity
     end

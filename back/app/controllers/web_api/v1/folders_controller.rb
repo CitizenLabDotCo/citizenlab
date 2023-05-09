@@ -31,7 +31,7 @@ class WebApi::V1::FoldersController < ApplicationController
       @project_folder,
       params: fastjson_params,
       include: %i[admin_publication images]
-    ).serialized_json
+    ).serializable_hash.to_json
   end
 
   def by_slug
@@ -52,7 +52,7 @@ class WebApi::V1::FoldersController < ApplicationController
         @project_folder,
         params: fastjson_params,
         include: [:admin_publication]
-      ).serialized_json, status: :created
+      ).serializable_hash.to_json, status: :created
     else
       render json: { errors: @project_folder.errors.details }, status: :unprocessable_entity
     end
@@ -70,7 +70,7 @@ class WebApi::V1::FoldersController < ApplicationController
         @project_folder,
         params: fastjson_params,
         include: [:admin_publication]
-      ).serialized_json, status: :ok
+      ).serializable_hash.to_json, status: :ok
     else
       render json: { errors: @project_folder.errors.details }, status: :unprocessable_entity
     end

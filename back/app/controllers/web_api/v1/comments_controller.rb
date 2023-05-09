@@ -133,7 +133,7 @@ class WebApi::V1::CommentsController < ApplicationController
       @comment,
       params: fastjson_params,
       include: [:author]
-    ).serialized_json
+    ).serializable_hash.to_json
   end
 
   def create
@@ -150,7 +150,7 @@ class WebApi::V1::CommentsController < ApplicationController
         @comment,
         params: fastjson_params,
         include: [:author]
-      ).serialized_json, status: :created
+      ).serializable_hash.to_json, status: :created
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
     end
@@ -169,7 +169,7 @@ class WebApi::V1::CommentsController < ApplicationController
         @comment,
         params: fastjson_params,
         include: [:author]
-      ).serialized_json, status: :ok
+      ).serializable_hash.to_json, status: :ok
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
     end

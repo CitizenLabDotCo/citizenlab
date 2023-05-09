@@ -29,7 +29,7 @@ module Volunteering
           render json: WebApi::V1::CauseSerializer.new(
             @cause,
             params: fastjson_params
-          ).serialized_json
+          ).serializable_hash.to_json
         end
 
         def create
@@ -42,7 +42,7 @@ module Volunteering
             render json: WebApi::V1::CauseSerializer.new(
               @cause,
               params: fastjson_params
-            ).serialized_json, status: :created
+            ).serializable_hash.to_json, status: :created
           else
             render json: { errors: @cause.errors.details }, status: :unprocessable_entity
           end
@@ -59,7 +59,7 @@ module Volunteering
             render json: WebApi::V1::CauseSerializer.new(
               @cause,
               params: fastjson_params
-            ).serialized_json, status: :ok
+            ).serializable_hash.to_json, status: :ok
           else
             render json: { errors: @cause.errors.details }, status: :unprocessable_entity
           end
@@ -72,7 +72,7 @@ module Volunteering
             render json: WebApi::V1::CauseSerializer.new(
               @cause,
               params: fastjson_params
-            ).serialized_json, status: :ok
+            ).serializable_hash.to_json, status: :ok
           else
             render json: { errors: @cause.errors.details }, status: :unprocessable_entity
           end

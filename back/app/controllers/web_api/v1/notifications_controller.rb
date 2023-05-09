@@ -36,7 +36,7 @@ class WebApi::V1::NotificationsController < ApplicationController
         Notification.find(ids),
         params: fastjson_params,
         serializers: NotificationService.new.serializers
-      ).serialized_json
+      ).serializable_hash.to_json
     else
       head :internal_server_error
     end
@@ -47,7 +47,7 @@ class WebApi::V1::NotificationsController < ApplicationController
       @notification,
       params: fastjson_params,
       serializers: NotificationService.new.serializers
-    ).serialized_json
+    ).serializable_hash.to_json
   end
 
   def mark_read
@@ -56,7 +56,7 @@ class WebApi::V1::NotificationsController < ApplicationController
         @notification,
         params: fastjson_params,
         serializers: NotificationService.new.serializers
-      ).serialized_json, status: :ok
+      ).serializable_hash.to_json, status: :ok
     else
       head :internal_server_error
     end

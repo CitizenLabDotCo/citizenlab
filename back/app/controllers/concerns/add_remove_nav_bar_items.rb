@@ -20,7 +20,7 @@ module AddRemoveNavBarItems
       render json: ::WebApi::V1::NavBarItemSerializer.new(
         @item,
         params: fastjson_params
-      ).serialized_json, status: :created
+      ).serializable_hash.to_json, status: :created
     else
       render json: { errors: @item.errors.details }, status: :unprocessable_entity
     end

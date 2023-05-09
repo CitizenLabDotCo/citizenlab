@@ -122,7 +122,7 @@ module UserCustomFields
     end
 
     def serialize_custom_fields(...)
-      UserCustomFields::WebApi::V1::UserCustomFieldSerializer.new(...).serialized_json
+      UserCustomFields::WebApi::V1::UserCustomFieldSerializer.new(...).serializable_hash.to_json
     end
   end
 end

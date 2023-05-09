@@ -14,7 +14,7 @@ class WebApi::V1::ProjectsAllowedInputTopicsController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::ProjectsAllowedInputTopicSerializer.new(@projects_allowed_input_topic, params: fastjson_params).serialized_json
+    render json: WebApi::V1::ProjectsAllowedInputTopicSerializer.new(@projects_allowed_input_topic, params: fastjson_params).serializable_hash.to_json
   end
 
   def create
@@ -35,7 +35,7 @@ class WebApi::V1::ProjectsAllowedInputTopicsController < ApplicationController
     ordering = permitted_attributes(@projects_allowed_input_topic)[:ordering]
     if ordering && @projects_allowed_input_topic.insert_at(ordering)
       SideFxProjectsAllowedInputTopicService.new.after_update(@projects_allowed_input_topic, current_user)
-      render json: WebApi::V1::ProjectsAllowedInputTopicSerializer.new(@projects_allowed_input_topic.reload, params: fastjson_params).serialized_json, status: :ok
+      render json: WebApi::V1::ProjectsAllowedInputTopicSerializer.new(@projects_allowed_input_topic.reload, params: fastjson_params).serializable_hash.to_json, status: :ok
     else
       render json: { errors: @projects_allowed_input_topic.errors.details }, status: :unprocessable_entity
     end

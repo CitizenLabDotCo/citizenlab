@@ -50,7 +50,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       @project,
       params: fastjson_params,
       include: %i[admin_publication project_images current_phase]
-    ).serialized_json
+    ).serializable_hash.to_json
   end
 
   def by_slug
@@ -70,7 +70,7 @@ class WebApi::V1::ProjectsController < ApplicationController
         @project,
         params: fastjson_params,
         include: [:admin_publication]
-      ).serialized_json, status: :created
+      ).serializable_hash.to_json, status: :created
     else
       render json: { errors: @project.errors.details }, status: :unprocessable_entity
     end
@@ -93,7 +93,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       @project,
       params: fastjson_params,
       include: [:admin_publication]
-    ).serialized_json, status: :created
+    ).serializable_hash.to_json, status: :created
   end
 
   def update
@@ -113,7 +113,7 @@ class WebApi::V1::ProjectsController < ApplicationController
         @project,
         params: fastjson_params,
         include: [:admin_publication]
-      ).serialized_json, status: :ok
+      ).serializable_hash.to_json, status: :ok
     else
       render json: { errors: @project.errors.details }, status: :unprocessable_entity, include: ['project_images']
     end

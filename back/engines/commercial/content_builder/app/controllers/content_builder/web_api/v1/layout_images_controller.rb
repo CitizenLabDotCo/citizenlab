@@ -12,7 +12,7 @@ module ContentBuilder
         render json: WebApi::V1::LayoutImageSerializer.new(
           @image,
           params: fastjson_params
-        ).serialized_json, status: :created
+        ).serializable_hash.to_json, status: :created
       else
         if @image.errors.details[:image].include?({ error: 'processing_error' })
           ErrorReporter.report_msg @image.errors.details.to_s

@@ -35,7 +35,7 @@ module IdeaCustomFields
         fields,
         params: serializer_params(@custom_form),
         include: [:options]
-      ).serialized_json
+      ).serializable_hash.to_json
     end
 
     def show
@@ -43,7 +43,7 @@ module IdeaCustomFields
         @custom_field,
         params: fastjson_params,
         include: [:options]
-      ).serialized_json
+      ).serializable_hash.to_json
     end
 
     def update_all
@@ -61,7 +61,7 @@ module IdeaCustomFields
         IdeaCustomFieldsService.new(@custom_form).all_fields,
         params: serializer_params(@custom_form),
         include: [:options]
-      ).serialized_json
+      ).serializable_hash.to_json
     rescue UpdateAllFailedError => e
       render json: { errors: e.errors }, status: :unprocessable_entity
     end

@@ -16,7 +16,7 @@ class WebApi::V1::VotesController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::VoteSerializer.new(@vote, params: fastjson_params).serialized_json
+    render json: WebApi::V1::VoteSerializer.new(@vote, params: fastjson_params).serializable_hash.to_json
   end
 
   def create
@@ -41,7 +41,7 @@ class WebApi::V1::VotesController < ApplicationController
       render json: WebApi::V1::VoteSerializer.new(
         @vote,
         params: fastjson_params
-      ).serialized_json, status: :created
+      ).serializable_hash.to_json, status: :created
     else
       render json: { errors: @vote.errors.details }, status: :unprocessable_entity
     end
@@ -100,7 +100,7 @@ class WebApi::V1::VotesController < ApplicationController
           render json: WebApi::V1::VoteSerializer.new(
             @vote,
             params: fastjson_params
-          ).serialized_json, status: :created
+          ).serializable_hash.to_json, status: :created
         else
           render json: { errors: @new_vote.errors.details }, status: :unprocessable_entity
         end

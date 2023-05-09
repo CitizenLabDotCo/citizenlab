@@ -86,14 +86,14 @@ class WebApi::V1::UsersController < ApplicationController
 
     if @user
       params = fastjson_params unread_notifications: @user.notifications.unread.size
-      render json: WebApi::V1::UserSerializer.new(@user, params: params).serialized_json
+      render json: WebApi::V1::UserSerializer.new(@user, params: params).serializable_hash.to_json
     else
       head :not_found
     end
   end
 
   def show
-    render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
+    render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serializable_hash.to_json
   end
 
   def by_slug
@@ -139,13 +139,13 @@ class WebApi::V1::UsersController < ApplicationController
       render json: WebApi::V1::UserSerializer.new(
         @user,
         params: fastjson_params
-      ).serialized_json, status: :created
+      ).serializable_hash.to_json, status: :created
     elsif reset_confirm_on_existing_no_password_user?
       SideFxUserService.new.after_update(@user, current_user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
         params: fastjson_params
-      ).serialized_json, status: :ok
+      ).serializable_hash.to_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
@@ -168,7 +168,7 @@ class WebApi::V1::UsersController < ApplicationController
       render json: WebApi::V1::UserSerializer.new(
         @user,
         params: fastjson_params
-      ).serialized_json, status: :ok
+      ).serializable_hash.to_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
@@ -190,7 +190,7 @@ class WebApi::V1::UsersController < ApplicationController
     )
       SideFxUserService.new.after_block(@user, current_user)
 
-      render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
+      render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serializable_hash.to_json
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
@@ -201,7 +201,7 @@ class WebApi::V1::UsersController < ApplicationController
     if @user.update(block_start_at: nil, block_end_at: nil, block_reason: nil)
       SideFxUserService.new.after_unblock(@user, current_user)
 
-      render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
+      render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serializable_hash.to_json
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
@@ -247,7 +247,7 @@ class WebApi::V1::UsersController < ApplicationController
         render json: WebApi::V1::UserSerializer.new(
           @user,
           params: fastjson_params
-        ).serialized_json
+        ).serializable_hash.to_json
       else
         render json: { errors: @user.errors.details }, status: :unprocessable_entity
       end

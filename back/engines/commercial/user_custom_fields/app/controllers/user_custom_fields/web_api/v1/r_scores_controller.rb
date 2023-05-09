@@ -10,7 +10,7 @@ module UserCustomFields
           return render status: :method_not_allowed if ref_distribution.blank?
 
           r_score = ref_distribution.compute_rscore(find_users)
-          render json: RScoreSerializer.new(r_score, include: [:reference_distribution]).serialized_json
+          render json: RScoreSerializer.new(r_score, include: [:reference_distribution]).serializable_hash.to_json
         end
 
         private

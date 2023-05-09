@@ -62,11 +62,11 @@ class WebApi::V1::FilesController < ApplicationController
   def index
     @files = @container.send(secure_constantize(:file_relationship)).order(:ordering)
     @files = secure_constantize(:policy_scope_class).new(current_user, @files).resolve
-    render json: WebApi::V1::FileSerializer.new(@files, params: fastjson_params).serialized_json
+    render json: WebApi::V1::FileSerializer.new(@files, params: fastjson_params).serializable_hash.to_json
   end
 
   def show
-    render json: WebApi::V1::FileSerializer.new(@file, params: fastjson_params).serialized_json
+    render json: WebApi::V1::FileSerializer.new(@file, params: fastjson_params).serializable_hash.to_json
   end
 
   def create
@@ -76,7 +76,7 @@ class WebApi::V1::FilesController < ApplicationController
       render json: WebApi::V1::FileSerializer.new(
         @file,
         params: fastjson_params
-      ).serialized_json, status: :created
+      ).serializable_hash.to_json, status: :created
     else
       render json: { errors: transform_errors_details!(@file.errors.details) }, status: :unprocessable_entity
     end
