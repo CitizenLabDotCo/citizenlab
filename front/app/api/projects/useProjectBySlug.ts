@@ -12,6 +12,7 @@ const useProjectBySlug = (slug?: string | null) => {
     queryKey: projectsKeys.item({ slug }),
     queryFn: () => fetchProjectBySlug({ slug }),
     enabled: !!slug,
+    retry: 1,
   });
 };
 

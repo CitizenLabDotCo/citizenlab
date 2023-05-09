@@ -3,9 +3,10 @@ import { createPortal } from 'react-dom';
 import { parse } from 'qs';
 
 // components
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint, Spinner } from '@citizenlab/cl2-component-library';
 import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
+import VerticalCenterer from 'components/VerticalCenterer';
 
 import IdeasNewForm from './IdeasNewForm';
 
@@ -18,8 +19,7 @@ import usePhases from 'hooks/usePhases';
 import { getParticipationMethod } from 'utils/participationMethodUtils';
 
 // utils
-import { isError } from 'lodash-es';
-import { isUnauthorizedError } from 'utils/helperUtils';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { useParams } from 'react-router-dom';
 
 interface InputProps {}
@@ -28,22 +28,30 @@ const NewIdeaPage = (inputProps: InputProps) => {
   const { slug } = useParams();
 
   const isSmallerThanPhone = useBreakpoint('phone');
-  const { data: project } = useProjectBySlug(slug);
+  const { data: project, status, error } = useProjectBySlug(slug);
   const phases = usePhases(project?.data.id);
   const { phase_id } = parse(location.search, {
     ignoreQueryPrefix: true,
   }) as { [key: string]: string };
 
-  if (isUnauthorizedError(project)) {
-    return <Unauthorized />;
+  if (status === 'loading') {
+    return (
+      <VerticalCenterer>
+        <Spinner />
+      </VerticalCenterer>
+    );
   }
 
-  if (isError(project)) {
+  if (status === 'error') {
+    if (isUnauthorizedRQ(error)) {
+      return <Unauthorized />;
+    }
+
     return <PageNotFound />;
   }
 
   const participationMethod = getParticipationMethod(
-    project?.data as any,
+    project?.data,
     phases,
     phase_id
   );
