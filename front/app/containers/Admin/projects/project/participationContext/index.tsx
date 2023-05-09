@@ -11,7 +11,8 @@ import SurveyInputs from './components/SurveyInputs';
 import { Container, StyledSection } from './components/styling';
 
 // services
-import { projectByIdStream, IProject, IProjectData } from 'services/projects';
+import { projectByIdStream } from 'services/projects';
+import { IProject, IProjectData } from 'api/projects/types';
 import { phaseStream, IPhase } from 'services/phases';
 import {
   ParticipationMethod,

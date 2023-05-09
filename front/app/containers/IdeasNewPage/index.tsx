@@ -28,7 +28,6 @@ const NewIdeaPage = (inputProps: InputProps) => {
   const { slug } = useParams();
 
   const isSmallerThanPhone = useBreakpoint('phone');
-  // const project = useProject({ projectSlug: slug });
   const { data: project } = useProjectBySlug(slug);
   const phases = usePhases(project?.data.id);
   const { phase_id } = parse(location.search, {

@@ -3,7 +3,7 @@ import { isUnauthorizedError } from 'utils/helperUtils';
 import { isError } from 'lodash-es';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 // components
 import Unauthorized from 'components/Unauthorized';
@@ -21,7 +21,7 @@ interface Props {
 }
 
 const IdeasEditPage = withRouter((props: Props & WithRouterProps) => {
-  const project = useProject({ projectSlug: props.params.slug });
+  const project = useProjectBySlug(props.params.slug);
 
   if (isUnauthorizedError(project)) {
     return <Unauthorized />;

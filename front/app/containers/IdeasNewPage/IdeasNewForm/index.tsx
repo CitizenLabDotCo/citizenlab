@@ -12,7 +12,7 @@ import { canModerateProject } from 'services/permissions/rules/projectPermission
 
 import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
 import usePhases from 'hooks/usePhases';
 import usePhase from 'hooks/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
@@ -41,13 +41,13 @@ const IdeasNewPageWithJSONForm = () => {
   const params = useParams<{ slug: string }>();
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
-  const project = useProject({ projectSlug: params.slug });
+  const { data: project } = useProjectBySlug(params.slug);
   const [queryParams] = useSearchParams();
   const phaseId = queryParams.get('phase_id');
 
-  const phases = usePhases(project?.id);
+  const phases = usePhases(project?.data.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
-    projectId: project?.id,
+    projectId: project?.data.id,
     phaseId,
   });
 
@@ -60,8 +60,8 @@ const IdeasNewPageWithJSONForm = () => {
 
     if (
       !isPrivilegedUser &&
-      !isNilOrError(project) &&
-      !project.attributes.action_descriptor.posting_idea.enabled
+      project &&
+      !project.data.attributes.action_descriptor.posting_idea.enabled
     ) {
       clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
     }
@@ -112,7 +112,7 @@ const IdeasNewPageWithJSONForm = () => {
       {
         ...data,
         location_point_geojson,
-        project_id: project?.id,
+        project_id: project?.data.id,
         publication_status: 'published',
         phase_ids:
           phaseId &&
@@ -127,7 +127,7 @@ const IdeasNewPageWithJSONForm = () => {
 
           // Check ParticipationMethodConfig for form submission action
           if (
-            project?.attributes.process_type === 'timeline' &&
+            project?.data.attributes.process_type === 'timeline' &&
             !isNilOrError(phases)
           ) {
             // Check if URL contains specific phase_id
@@ -138,7 +138,7 @@ const IdeasNewPageWithJSONForm = () => {
               getMethodConfig(
                 phaseUsed?.attributes?.participation_method
               ).onFormSubmission({
-                project,
+                project: project.data,
                 ideaId,
                 idea,
                 phaseId: phaseUsed.id,
@@ -146,8 +146,8 @@ const IdeasNewPageWithJSONForm = () => {
             }
           } else if (!isNilOrError(project)) {
             getMethodConfig(
-              project?.attributes.participation_method
-            ).onFormSubmission({ project, ideaId, idea });
+              project?.data.attributes.participation_method
+            ).onFormSubmission({ project: project.data, ideaId, idea });
           }
         },
       }
@@ -194,14 +194,14 @@ const IdeasNewPageWithJSONForm = () => {
   if (!isNilOrError(phaseFromUrl)) {
     config = getMethodConfig(phaseFromUrl.attributes.participation_method);
   } else {
-    if (phases && project?.attributes.process_type === 'timeline') {
+    if (phases && project?.data.attributes.process_type === 'timeline') {
       const participationMethod =
         getCurrentPhase(phases)?.attributes.participation_method;
       if (!isNilOrError(participationMethod)) {
         config = getMethodConfig(participationMethod);
       }
     } else if (!isNilOrError(project)) {
-      config = getMethodConfig(project.attributes.participation_method);
+      config = getMethodConfig(project.data.attributes.participation_method);
     }
   }
 
@@ -211,7 +211,7 @@ const IdeasNewPageWithJSONForm = () => {
 
   const canUserEditProject =
     !isNilOrError(authUser) &&
-    canModerateProject(project.id, { data: authUser });
+    canModerateProject(project.data.id, { data: authUser });
   const isSurvey = config.postType === 'nativeSurvey';
 
   return (
@@ -233,7 +233,7 @@ const IdeasNewPageWithJSONForm = () => {
             inputId={undefined}
             title={
               <Heading
-                project={project}
+                project={project.data}
                 titleText={config.getFormTitle({
                   project,
                   phases,

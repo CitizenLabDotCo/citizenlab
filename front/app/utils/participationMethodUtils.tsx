@@ -10,7 +10,7 @@ import {
   getInputTerm,
 } from 'services/participationContexts';
 import { getCurrentPhase, IPhaseData } from 'services/phases';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 
 // components
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
