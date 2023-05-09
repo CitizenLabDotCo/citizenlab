@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { clone, find } from 'lodash-es';
 
-import { DndProvider } from 'react-dnd-cjs';
-import HTML5Backend from 'react-dnd-html5-backend-cjs';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { List } from 'components/admin/ResourceList';
 // import { itemOrderWasUpdated, orderingIsValid } from './utils';
 import { itemOrderWasUpdated } from './utils';
+import usePrevious from 'hooks/usePrevious';
 
 export interface Item {
   id: string;
@@ -16,7 +17,7 @@ export interface Item {
   [key: string]: any;
 }
 
-export interface InputProps {
+interface InputProps {
   items: Item[];
   onReorder: (fieldId: string, newOrder: number) => void;
   children: (renderProps: RenderProps) => JSX.Element | JSX.Element[] | null;
@@ -32,82 +33,65 @@ export interface RenderProps {
   handleDropRow: (itemId: string, toIndex: number) => void;
 }
 
-export interface SortableListState {
-  itemsWhileDragging: Item[] | null;
-  updating: boolean;
-}
+const SortableList = ({
+  lockFirstNItems = 0,
+  items,
+  onReorder,
+  children,
+  id,
+  className,
+}: InputProps) => {
+  const [itemsWhileDragging, setItemsWhileDragging] = useState<Item[] | null>(
+    null
+  );
+  const [updating, setUpdating] = useState(false);
+  const prevItems = usePrevious(items);
 
-export class SortableList extends Component<InputProps, SortableListState> {
-  constructor(props: InputProps) {
-    super(props);
-    this.state = {
-      itemsWhileDragging: null,
-      updating: false,
-    };
-  }
-
-  // This ensures that this.state.itemsWhileDragging are used to render the
-  // children until the request to the server to update the order has been
-  // completed, and the updated order has come back in through the props.
-  componentDidUpdate = (prevProps: InputProps) => {
-    if (
-      this.state.updating &&
-      itemOrderWasUpdated(prevProps.items, this.props.items) // &&
-      // orderingIsValid(this.props.items)
-      // Skipping this for now because of more issues with the ordering
-      // TODO: fix
-    ) {
-      this.setState({ itemsWhileDragging: null, updating: false });
+  useEffect(() => {
+    if (updating && itemOrderWasUpdated(prevItems, items)) {
+      setItemsWhileDragging(null);
+      setUpdating(false);
     }
+  }, [updating, prevItems, items]);
+
+  const getLocalIndex = (externalIndex: number) => {
+    return externalIndex - lockFirstNItems;
   };
 
-  getLocalIndex(externalIndex: number) {
-    const lockFirstNItems = this.props.lockFirstNItems || 0;
-    return externalIndex - lockFirstNItems;
-  }
-
-  getExternalIndex(localIndex: number) {
-    const lockFirstNItems = this.props.lockFirstNItems || 0;
+  const getExternalIndex = (localIndex: number) => {
     return localIndex + lockFirstNItems;
-  }
+  };
 
-  handleDragRow = (fromIndex: number, toIndex: number) => {
-    const listItems = this.listItems();
+  const handleDragRow = (fromIndex: number, toIndex: number) => {
+    const listItems = getListItems();
     if (!listItems) return;
 
     const itemsWhileDragging = clone(listItems);
     itemsWhileDragging.splice(fromIndex, 1);
     itemsWhileDragging.splice(toIndex, 0, listItems[fromIndex]);
-    this.setState({ itemsWhileDragging });
+    setItemsWhileDragging(itemsWhileDragging);
   };
 
-  handleDropRow = (itemId: string, toIndex: number) => {
-    const listItems = this.listItems();
+  const handleDropRow = (itemId: string, toIndex: number) => {
+    const listItems = getListItems();
 
     if (!listItems) return;
 
     const item = find(listItems, { id: itemId });
 
-    if (item && this.getLocalIndex(item.attributes.ordering) !== toIndex) {
-      this.props.onReorder(itemId, this.getExternalIndex(toIndex));
-      this.setState({ updating: true });
+    if (item && getLocalIndex(item.attributes.ordering) !== toIndex) {
+      onReorder(itemId, getExternalIndex(toIndex));
     } else {
-      this.setState({ itemsWhileDragging: null });
+      setItemsWhileDragging(null);
     }
   };
 
-  lockedItems = () => {
-    const lockFirstNItems = this.props.lockFirstNItems;
-
+  const lockedItems = () => {
     if (!lockFirstNItems || lockFirstNItems <= 0) return;
-    return [...this.props.items].splice(0, lockFirstNItems);
+    return [...items].splice(0, lockFirstNItems);
   };
 
-  listItems = () => {
-    const lockFirstNItems = this.props.lockFirstNItems;
-    const { items } = this.props;
-    const { itemsWhileDragging } = this.state;
-
+  const getListItems = () => {
     if (!lockFirstNItems || lockFirstNItems <= 0) {
       return itemsWhileDragging || items;
     }
@@ -117,23 +101,20 @@ export class SortableList extends Component<InputProps, SortableListState> {
     );
   };
 
-  render() {
-    const lockedItemsList = this.lockedItems();
-    const itemsList = this.listItems() || [];
-    const { children, id, className } = this.props;
+  const lockedItemsList = lockedItems();
+  const itemsList = getListItems() || [];
 
-    return (
-      <List id={id} className={className}>
-        {children({
-          lockedItemsList,
-          itemsList,
-          handleDragRow: this.handleDragRow,
-          handleDropRow: this.handleDropRow,
-        })}
-      </List>
-    );
-  }
-}
+  return (
+    <List id={id} className={className}>
+      {children({
+        lockedItemsList,
+        itemsList,
+        handleDragRow,
+        handleDropRow,
+      })}
+    </List>
+  );
+};
 
 export default (props: InputProps) => (
   <DndProvider backend={HTML5Backend}>

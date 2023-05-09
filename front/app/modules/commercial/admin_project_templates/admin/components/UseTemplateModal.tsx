@@ -49,6 +49,10 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
+// api
+import projectsKeys from 'api/projects/keys';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+
 // typings
 import { Locale, Multiloc, IOption } from 'typings';
 
@@ -244,10 +248,10 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
               folderId: folderId !== noFolderOption ? folderId : null,
             },
           });
+          queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
           await streams.fetchAllWith({
             apiEndpoint: [
               `${API_PATH}/admin_publications`,
-              `${API_PATH}/projects`,
               `${API_PATH}/users/me`,
             ],
           });

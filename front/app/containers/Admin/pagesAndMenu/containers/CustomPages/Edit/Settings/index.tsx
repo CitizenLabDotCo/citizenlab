@@ -58,6 +58,7 @@ const EditCustomPageSettings = () => {
         }}
         showNavBarItemTitle={hasNavbarItem}
         onSubmit={handleOnSubmit}
+        hideSlug={customPage.attributes.code === 'proposals'}
       />
     );
   }
