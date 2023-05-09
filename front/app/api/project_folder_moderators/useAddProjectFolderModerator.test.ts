@@ -7,7 +7,7 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = 'project_folders/:projectFolderId/moderators';
+const apiPath = '*project_folders/:projectFolderId/moderators';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
