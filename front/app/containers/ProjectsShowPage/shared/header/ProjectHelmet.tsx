@@ -22,7 +22,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 
 // typings
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 
 interface Props {
   project: IProjectData;

@@ -21,7 +21,7 @@ import Centerer from 'components/UI/Centerer';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useProject from 'hooks/useProject';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
@@ -35,7 +35,7 @@ import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 
 // typings
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 
 // utils
 import { isValidPhase } from './phaseParam';
@@ -196,11 +196,11 @@ const ProjectsShowPageWrapper = () => {
 
   const { pathname } = useLocation();
   const { slug, phaseNumber } = useParams();
-  const project = useProject({ projectSlug: slug });
-  const phases = usePhases(project?.id);
+  const { data: project } = useProjectBySlug(slug);
+  const phases = usePhases(project?.data.id);
   const user = useAuthUser();
 
-  const processType = project?.attributes?.process_type;
+  const processType = project?.data.attributes?.process_type;
   const urlSegments = pathname
     .replace(/^\/|\/$/g, '')
     .split('/')
@@ -257,7 +257,7 @@ const ProjectsShowPageWrapper = () => {
     return <Navigate to={projectRoot} replace />;
   }
 
-  return <ProjectsShowPage project={project} />;
+  return <ProjectsShowPage project={project.data} />;
 };
 
 export default ProjectsShowPageWrapper;
