@@ -135,6 +135,7 @@ const Password = ({ state, loading, setError, onSubmit }: Props) => {
         </Box>
         <Box w="100%" display="flex" mt="32px">
           <Button
+            id="e2e-light-flow-password-submit"
             type="submit"
             width="auto"
             disabled={loading}

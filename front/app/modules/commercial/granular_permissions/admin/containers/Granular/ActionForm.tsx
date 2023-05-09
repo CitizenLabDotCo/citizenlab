@@ -127,6 +127,7 @@ const ActionForm = ({
             )}
             {emailConfirmPermissionEnabled && (
               <PermissionCardButton
+                id="e2e-permission-email-confirmed-users"
                 iconName="email"
                 title={permissionsMessages.permissionsEmailConfirmLabel}
                 subtitle={
