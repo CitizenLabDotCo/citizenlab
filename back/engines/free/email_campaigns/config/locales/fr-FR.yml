@@ -31,8 +31,8 @@ fr:
         "official_feedback_on_your_idea": Mise à jour de ma contribution
         "official_feedback_on_your_initiative": Mise à jour de ma proposition
         "password_reset": Réinitialisation du mot de passe
-        "project_moderation_rights_received": Droits de modération de projet reçus
-        "project_folder_moderation_rights_received": Droits du gestionnaire de dossiers reçus
+        "project_moderation_rights_received": Droits de gestionnaire de projet reçus
+        "project_folder_moderation_rights_received": Droits du gestionnaire de dossier reçus
         "project_phase_started": Nouvelle phase du projet
         "project_phase_upcoming": Nouvelle phase de projet à venir
         "status_change_of_commented_idea": Changement de statut d'une entrée que j'ai commentée
@@ -51,7 +51,7 @@ fr:
     admin_campaign_type_description:
       1:
         "manual": Message officiel - tous les utilisateurs
-        "admin_rights_received": Droits d'administrateur reçus - admins
+        "admin_rights_received": Droits d'administrateur reçus − administrateurs
         "comment_deleted_by_admin": Suppression de ton commentaire - tous les utilisateurs
         "comment_marked_as_spam": Rapport sur les spams dans les commentaires - administrateurs et chefs de projet
         "comment_on_your_comment": Répondre à ton commentaire - tous les utilisateurs
@@ -63,8 +63,8 @@ fr:
         "initiative_assigned_to_you": Attribution d'une proposition - admins
         "initiative_marked_as_spam": Proposition de rapport de spam - admins
         "initiative_published": Publication de ta proposition - tous les utilisateurs
-        "invite_received": Invitation - tous les utilisateurs
-        "invite_reminder": Rappel d'invitation - tous les utilisateurs
+        "invite_received": Invitation − tous les utilisateurs
+        "invite_reminder": Rappel d'invitation − tous les utilisateurs
         "mention_in_comment": Mention dans un commentaire - tous les utilisateurs
         "mention_in_official_feedback": Mention dans une mise à jour - tous les utilisateurs
         "new_comment_for_admin": Nouveau commentaire - administrateurs et chefs de projet
@@ -81,8 +81,8 @@ fr:
         "official_feedback_on_your_idea": Mise à jour de ton idée - tous les utilisateurs
         "official_feedback_on_your_initiative": Mise à jour de ta proposition - tous les utilisateurs
         "password_reset": Réinitialisation du mot de passe - tous les utilisateurs
-        "project_moderation_rights_received": Droits de modération de projet reçus - chefs de projet
-        "project_folder_moderation_rights_received": Droits du gestionnaire de dossiers reçus
+        "project_moderation_rights_received": Droits de gestionnaire de projet reçus − gestionnaire de projet(s)
+        "project_folder_moderation_rights_received": Droits du gestionnaire de dossier reçus
         "project_phase_started": Nouvelle phase du projet - participants au projet
         "project_phase_upcoming": Nouvelle phase de projet à venir - admins et chefs de projet
         "status_change_of_commented_idea": Changement de statut d'une idée que tu as commentée - tous les utilisateurs
@@ -132,7 +132,7 @@ fr:
       text_introduction: 'Voici une sélection des idées les plus actives la semaine dernière. Découvrez ce qui se passe sur votre plateforme !'
       cta_visit_the_platform: 'Visitez votre plateforme'
       new_users: 'Nouveaux utilisateurs'
-      new_inputs: 'Nouvelles entrées'
+      new_inputs: 'Nouvelles contributions'
       new_comments: 'Nouveaux commentaires'
       title_activity_past_week: 'Activité de la semaine passée'
       title_no_activity_past_week: 'Il n''y a eu aucune activité la semaine passée'
