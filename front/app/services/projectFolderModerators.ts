@@ -5,27 +5,6 @@ import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 const indexPath = (projectFolderId: string) =>
   `${API_PATH}/project_folders/${projectFolderId}/moderators`;
 
-const showPath = (projectFolderId: string, moderatorId: string) =>
-  `${indexPath(projectFolderId)}/${moderatorId}`;
-
-export async function deleteFolderModerator(
-  projectFolderId: string,
-  moderatorId: string
-) {
-  const response = await streams.delete(
-    showPath(projectFolderId, moderatorId),
-    moderatorId,
-    true
-  );
-
-  invalidateSeatsCache();
-
-  await streams.fetchAllWith({
-    apiEndpoint: [indexPath(projectFolderId), `${API_PATH}/users`],
-  });
-  return response;
-}
-
 export async function addFolderModerator(
   projectFolderId: string,
   moderatorId: string
