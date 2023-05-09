@@ -7,12 +7,6 @@ GIT
       railties (>= 4.2)
 
 GIT
-  remote: https://github.com/CitizenLabDotCo/ice_cube.git
-  revision: 4671442d581d185a40933fa06a9c773f22f6070f
-  specs:
-    ice_cube (0.16.3)
-
-GIT
   remote: https://github.com/CitizenLabDotCo/omniauth-azure-activedirectory.git
   revision: ecdbac5d6ca7b4123c10b0f1d4569bfb7ba0fa8a
   specs:
@@ -707,6 +701,7 @@ GEM
       socksify
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
+    ice_cube (0.16.3)
     image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
@@ -1201,7 +1196,7 @@ DEPENDENCIES
   google_tag_manager!
   granular_permissions!
   groupdate (~> 4.1)
-  ice_cube!
+  ice_cube (~> 0.16)
   id_auth0!
   id_bogus!
   id_bosa_fas!
