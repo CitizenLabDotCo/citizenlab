@@ -16,6 +16,7 @@ import SuccessModal from './SucessModal';
 import { ProjectCTABar } from './ProjectCTABar';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
 import Centerer from 'components/UI/Centerer';
+import ErrorBoundary from 'components/ErrorBoundary';
 
 // hooks
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
@@ -26,6 +27,9 @@ import usePhases from 'hooks/usePhases';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
+
+// events
+import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import messages from 'utils/messages';
@@ -39,11 +43,8 @@ import { IProjectData } from 'api/projects/types';
 
 // utils
 import { isValidPhase } from './phaseParam';
-import {
-  anyIsUndefined,
-  isNilOrError,
-  isUnauthorizedError,
-} from 'utils/helperUtils';
+import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { scrollToElement } from 'utils/scroll';
 import { isError } from 'lodash-es';
 
@@ -196,7 +197,7 @@ const ProjectsShowPageWrapper = () => {
 
   const { pathname } = useLocation();
   const { slug, phaseNumber } = useParams();
-  const { data: project } = useProjectBySlug(slug);
+  const { data: project, status, error, refetch } = useProjectBySlug(slug);
   const phases = usePhases(project?.data.id);
   const user = useAuthUser();
 
@@ -206,16 +207,22 @@ const ProjectsShowPageWrapper = () => {
     .split('/')
     .filter((segment) => segment !== '');
 
-  const projectPending = project === undefined;
+  const projectPending = status === 'loading';
   const userPending = user === undefined;
   const pending = projectPending || userPending;
 
   useEffect(() => {
-    if (userPending) return;
+    if (pending) return;
     if (isError(user)) return;
 
     if (user !== null) setUserWasLoggedIn(true);
-  }, [userPending, user]);
+  }, [pending, user]);
+
+  useEffect(() => {
+    eventEmitter.observeEvent('resetQueryCache').subscribe(() => {
+      refetch();
+    });
+  }, [refetch]);
 
   if (pending) {
     return (
@@ -226,7 +233,7 @@ const ProjectsShowPageWrapper = () => {
   }
 
   const userJustLoggedOut = userWasLoggedIn && user === null;
-  const unauthorized = isUnauthorizedError(project);
+  const unauthorized = status === 'error' && isUnauthorizedRQ(error);
 
   if (userJustLoggedOut && unauthorized) {
     return <Navigate to="/" replace />;
@@ -236,7 +243,7 @@ const ProjectsShowPageWrapper = () => {
     return <Unauthorized />;
   }
 
-  if (isError(project)) {
+  if (status === 'error') {
     return <PageNotFound />;
   }
 
@@ -257,7 +264,13 @@ const ProjectsShowPageWrapper = () => {
     return <Navigate to={projectRoot} replace />;
   }
 
+  if (!project) return null;
+
   return <ProjectsShowPage project={project.data} />;
 };
 
-export default ProjectsShowPageWrapper;
+export default () => (
+  <ErrorBoundary>
+    <ProjectsShowPageWrapper />
+  </ErrorBoundary>
+);
