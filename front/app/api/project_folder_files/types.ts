@@ -19,6 +19,13 @@ export interface IProjectFolderFileData {
   };
 }
 
+export interface AddProjectFolderObject {
+  projectFolderId: string;
+  file: string;
+  name: string;
+  ordering?: number | null;
+}
+
 export interface IQueryParameters {
   projectFolderId: string;
   streamParams?: IStreamParams | null;

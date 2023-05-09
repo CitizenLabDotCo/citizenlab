@@ -10,10 +10,8 @@ import {
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import {
-  addProjectFolderFile,
-  deleteProjectFolderFile,
-} from 'services/projectFolderFiles';
+import useDeleteProjectFolderFile from 'api/project_folder_files/useDeleteProjectFolderFile';
+import useAddProjectFolderFile from 'api/project_folder_files/useAddProjectFolderFile';
 import useAddProjectFolder from 'api/project_folders/useAddProjectFolder';
 import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
@@ -71,6 +69,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     Resource hooks
     ==============
   */
+  const { mutate: deleteProjectFolderFile } = useDeleteProjectFolderFile();
+  const { mutate: addProjectFolderFile } = useAddProjectFolderFile();
   const { data: projectFolder } = useProjectFolderById(projectFolderId);
   const { data: projectFolderFilesRemote } = useProjectFolderFiles({
     projectFolderId,
@@ -315,11 +315,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                       : null;
 
                     const filesToAddPromises = projectFolderFiles.map((file) =>
-                      addProjectFolderFile(
-                        projectFolder.data.id,
-                        file.base64,
-                        file.name
-                      )
+                      addProjectFolderFile({
+                        projectFolderId: projectFolder.data.id,
+                        file: file.base64,
+                        name: file.name,
+                      })
                     );
 
                     (cardImageToAddPromise || filesToAddPromises) &&
@@ -363,10 +363,14 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             const filesToAddPromises = projectFolderFiles
               .filter((file) => !file.remote)
               .map((file) =>
-                addProjectFolderFile(projectFolderId, file.base64, file.name)
+                addProjectFolderFile({
+                  projectFolderId,
+                  file: file.base64,
+                  name: file.name,
+                })
               );
             const filesToRemovePromises = projectFolderFilesToRemove.map((id) =>
-              deleteProjectFolderFile(projectFolderId, id)
+              deleteProjectFolderFile({ projectFolderId, fileId: id })
             );
 
             await Promise.all<any>([
