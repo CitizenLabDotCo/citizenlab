@@ -70,7 +70,10 @@ export default memo(({ surveyXactUrl, className }: Props) => {
         src={surveyXactUrl}
         width={hackyWidthThingy}
         height={isSmallerThanTablet ? surveyHeightMobile : surveyHeightDesktop}
-        style={{ overflow: 'hidden' }}
+        style={{
+          overflow: 'hidden',
+          display: isIframeLoaded ? 'block' : 'none',
+        }}
         onLoad={handleIframeOnLoad}
         id="survey-xact-frame"
       />
