@@ -10,7 +10,7 @@ import { isNumber } from 'lodash-es';
 import moment from 'moment';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
@@ -127,7 +127,7 @@ interface Props {
 }
 
 const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const phases = usePhases(projectId);
   const { data: events } = useEvents({
     projectIds: [projectId],
@@ -165,17 +165,17 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     setShareModalOpened(false);
   }, []);
 
-  if (!isNilOrError(project)) {
+  if (project) {
     const isProjectArchived =
-      project.attributes.publication_status === 'archived';
+      project.data.attributes.publication_status === 'archived';
     const postingIsEnabled =
-      project.attributes.posting_enabled ||
+      project.data.attributes.posting_enabled ||
       currentPhase?.attributes.posting_enabled;
-    const projectType = project.attributes.process_type;
-    const projectParticipantsCount = project.attributes.participants_count;
+    const projectType = project.data.attributes.process_type;
+    const projectParticipantsCount = project.data.attributes.participants_count;
     const maxBudget =
       currentPhase?.attributes?.max_budget ||
-      project?.attributes?.max_budget ||
+      project.data.attributes?.max_budget ||
       null;
     const hasProjectEnded = currentPhase
       ? pastPresentOrFuture([
@@ -186,14 +186,14 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
 
     const ideasCount =
       projectType === 'continuous'
-        ? project.attributes.ideas_count
+        ? project.data.attributes.ideas_count
         : currentPhase?.attributes.ideas_count;
     const projectParticipationMethod =
-      project?.attributes?.participation_method;
+      project.data.attributes.participation_method;
     const currentPhaseParticipationMethod =
       currentPhase?.attributes?.participation_method;
     const { disabledReason } = getIdeaPostingRules({
-      project,
+      project: project.data,
       phase: !isNilOrError(currentPhase) ? currentPhase : null,
       authUser,
     });
@@ -264,7 +264,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               ideasCount > 0 && (
                 <ListItem>
                   <ListItemIcon ariaHidden name="idea" />
-                  {project.attributes.ideas_count > 0 ? (
+                  {project.data.attributes.ideas_count > 0 ? (
                     <ListItemButton
                       id="e2e-project-sidebar-ideas-count"
                       onClick={scrollTo('project-ideas')}
@@ -272,7 +272,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                       {projectType === 'continuous' && (
                         <FormattedMessage
                           {...getInputTermMessage(
-                            project.attributes.input_term,
+                            project.data.attributes.input_term,
                             {
                               idea: messages.xIdeas,
                               option: messages.xOptions,
@@ -385,7 +385,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                       id="e2e-project-sidebar-surveys-count"
                       onClick={() => {
                         clHistory.push(
-                          `/projects/${project.attributes.slug}/ideas/new`
+                          `/projects/${project.data.attributes.slug}/ideas/new`
                         );
                       }}
                     >
@@ -447,7 +447,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
         </About>
         <StyledProjectActionButtons projectId={projectId} />
         <ProjectSharingModal
-          projectId={project.id}
+          projectId={project.data.id}
           opened={shareModalOpened}
           close={closeShareModal}
         />

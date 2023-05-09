@@ -20,11 +20,8 @@ import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 
 const DropdownWrapper = styled.div``;
 
@@ -48,15 +45,18 @@ interface ProjectTitleProps {
 }
 
 const ProjectTitle = ({ projectId }: ProjectTitleProps) => {
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const localize = useLocalize();
 
-  if (isNilOrError(project)) return null;
+  if (!project) return null;
 
   return (
     <StyledDropdownListItem>
-      <StyledLink to={`/projects/${project.attributes.slug}`} target="_blank">
-        {localize(project.attributes.title_multiloc)}
+      <StyledLink
+        to={`/projects/${project.data.attributes.slug}`}
+        target="_blank"
+      >
+        {localize(project.data.attributes.title_multiloc)}
       </StyledLink>
     </StyledDropdownListItem>
   );
