@@ -26,7 +26,7 @@ import { MessageDescriptor, injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 import { FormSubmitFooter } from './SubmitFooter';
 
 const Form = styled.form`

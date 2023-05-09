@@ -10,8 +10,6 @@ import GroupsListPanel from './GroupsListPanel';
 import GroupCreationStep1 from './GroupCreationStep1';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
 
-// Global state
-
 // Styling
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';

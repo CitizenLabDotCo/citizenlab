@@ -31,7 +31,9 @@ class LocalProjectCopyService < ProjectCopyService
   private
 
   def tenant_template_service
-    @tenant_template_service ||= MultiTenancy::TenantTemplateService.new(save_temp_remote_urls: true)
+    @tenant_template_service ||= MultiTenancy::Templates::TenantDeserializer.new(
+      save_temp_remote_urls: true
+    )
   end
 
   def add_suffix_to_title(multiloc)

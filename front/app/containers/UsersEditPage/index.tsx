@@ -15,7 +15,7 @@ import CampaignsConsentForm from './CampaignsConsentForm';
 import ProfileDeletion from './ProfileDeletion';
 import UsersEditPageMeta from './UsersEditPageMeta';
 import FragmentForm from './FragmentForm';
-import PasswordChange from './PasswordChange';
+import Unauthorized from 'components/Unauthorized';
 
 // Styles
 import styled from 'styled-components';
@@ -26,6 +26,8 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
 import VerificationStatus from './VerificationStatus';
+import LoginCredentials from './LoginCredentials';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.main`
   width: 100%;
@@ -45,14 +47,21 @@ const Wrapper = styled.div``;
 
 export default () => {
   const { data: appConfig } = useAppConfiguration();
+  const passwordLoginActive = useFeatureFlag({ name: 'password_login' });
   const authUser = useAuthUser();
   const loaded = appConfig !== undefined && authUser !== undefined;
+  const showEditPage =
+    loaded && !isNilOrError(appConfig) && !isNilOrError(authUser);
 
   if (loaded && !authUser) {
     clHistory.push('/');
   }
 
-  if (loaded && !isNilOrError(appConfig) && !isNilOrError(authUser)) {
+  if (showEditPage && !authUser.attributes.registration_completed_at) {
+    return <Unauthorized />;
+  }
+
+  if (showEditPage) {
     return (
       <Container id="e2e-user-edit-profile-page">
         <UsersEditPageMeta user={authUser} />
@@ -66,7 +75,7 @@ export default () => {
           <VerificationStatus />
           <ProfileForm />
           <FragmentForm />
-          <PasswordChange />
+          {passwordLoginActive && <LoginCredentials user={authUser} />}
           <ProfileDeletion />
           <CampaignsConsentForm />
         </Wrapper>

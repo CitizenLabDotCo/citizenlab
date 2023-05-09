@@ -51,6 +51,29 @@ resource 'Campaign consents' do
         json_response = json_parse(response_body)
         expect(json_response[:data]).to all(satisfy { |consent| categories.include?(consent[:attributes][:category]) })
       end
+
+      example 'List all campaigns consents with expected management labels' do
+        do_request
+
+        json_response = json_parse(response_body)
+        multiloc_service ||= MultilocService.new
+
+        campaigns_mgmt_attrs = @campaigns.map do |campaign|
+          [
+            [:recipient_role_multiloc, multiloc_service.i18n_to_multiloc(campaign.class.recipient_role_multiloc_key).transform_keys(&:to_sym)],
+            [:content_type_multiloc, multiloc_service.i18n_to_multiloc(campaign.class.content_type_multiloc_key).transform_keys(&:to_sym)]
+          ].to_h
+        end
+
+        response_mgmt_attrs = json_response[:data].map do |consent|
+          [
+            [:recipient_role_multiloc, consent[:attributes][:recipient_role_multiloc]],
+            [:content_type_multiloc, consent[:attributes][:content_type_multiloc]]
+          ].to_h
+        end
+
+        expect(response_mgmt_attrs).to eq campaigns_mgmt_attrs
+      end
     end
 
     context 'when using an unsubscription token' do

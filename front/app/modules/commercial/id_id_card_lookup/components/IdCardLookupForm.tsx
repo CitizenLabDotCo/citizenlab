@@ -11,7 +11,6 @@ import Error from 'components/UI/Error';
 import Collapse from 'components/UI/Collapse';
 import {
   FormContainer,
-  Title,
   Form,
   FormField,
   StyledLabel,
@@ -20,7 +19,7 @@ import {
   SubmitButton,
   CancelButton,
   HelpImage,
-} from 'components/AuthProviders/styles';
+} from 'containers/Authentication/steps/AuthProviders/styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -37,18 +36,21 @@ import T from 'components/T';
 // typings
 import { IDLookupMethod } from 'services/verificationMethods';
 
+// api
+import { useQueryClient } from '@tanstack/react-query';
+import projectsKeys from 'api/projects/keys';
+
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
-  showHeader?: boolean;
-  inModal: boolean;
   className?: string;
   method: IDLookupMethod;
 }
 
 const VerificationFormLookup = memo<Props & WrappedComponentProps>(
-  ({ onCancel, onVerified, showHeader, inModal, className, method, intl }) => {
+  ({ onCancel, onVerified, className, method, intl }) => {
     const authUser = useAuthUser();
+    const queryClient = useQueryClient();
 
     const [cardId, setCardId] = useState<string>('');
     const [cardIdError, setCardIdError] = useState<string | null>(null);
@@ -80,10 +82,9 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
           try {
             await verifyIDLookup(cardId);
 
-            const endpointsToRefetch = [
-              `${API_PATH}/users/me`,
-              `${API_PATH}/projects`,
-            ];
+            queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
+
+            const endpointsToRefetch = [`${API_PATH}/users/me`];
             const partialEndpointsToRefetch = [
               `${API_PATH}/projects/`,
               `${API_PATH}/ideas/`,
@@ -129,16 +130,8 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
     }, []);
 
     return (
-      <FormContainer className={className} inModal={inModal}>
-        {showHeader && (
-          <Title>
-            <strong>
-              <FormattedMessage {...messages.verifyYourIdentity} />
-            </strong>
-          </Title>
-        )}
-
-        <Form inModal={inModal}>
+      <FormContainer className={className} inModal={true}>
+        <Form inModal={true}>
           <FormField>
             <StyledLabel htmlFor="cardId">
               <LabelTextContainer>

@@ -35,13 +35,13 @@ module ProjectFolders
     validates :description_multiloc, multiloc: { presence: false, html: true }
     validates :description_preview_multiloc, multiloc: { presence: false, html: true }
     validates :slug, uniqueness: true, presence: true
-    validate :admin_publication_must_exist
+    validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template }
 
     before_validation :generate_slug, on: :create
     before_validation :sanitize_description_multiloc, if: :description_multiloc
     before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
     before_validation :strip_title
-    before_validation :set_admin_publication
+    before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
 
     before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
     has_many :notifications, foreign_key: :project_folder_id, inverse_of: :project_folder, dependent: :nullify

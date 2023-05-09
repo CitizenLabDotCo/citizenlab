@@ -49,7 +49,7 @@ const NoUsers = memo(({ groupType, noSuchSearchResult }: Props) => {
   if (noSuchSearchResult) {
     return (
       <NoUsersPage>
-        <Icon name="search" />
+        <Icon name="search" width="45px" height="45px" />
         <FormattedMessage {...messages.noUserMatchesYourSearch} />
       </NoUsersPage>
     );

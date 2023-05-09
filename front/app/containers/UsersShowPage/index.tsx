@@ -25,6 +25,7 @@ import UserHeader from './UserHeader';
 import UserNavbar from './UserNavbar';
 import UserComments from './UserComments';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import Unauthorized from 'components/Unauthorized';
 
 // utils
 import { isNil, isError } from 'utils/helperUtils';
@@ -166,6 +167,10 @@ const UsersShowPageOuter = ({ className }: Props) => {
         />
       </NotFoundContainer>
     );
+  }
+
+  if (!user.attributes.registration_completed_at) {
+    return <Unauthorized />;
   }
 
   return <UsersShowPage className={className} user={user} />;

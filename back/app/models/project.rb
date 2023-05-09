@@ -59,7 +59,7 @@ class Project < ApplicationRecord
   has_many :votes, through: :ideas
 
   has_many :projects_topics, dependent: :destroy
-  has_many :topics, through: :projects_topics
+  has_many :topics, -> { order(:ordering) }, through: :projects_topics
   has_many :projects_allowed_input_topics, dependent: :destroy
   has_many :allowed_input_topics, through: :projects_allowed_input_topics, source: :topic
   has_many :areas_projects, dependent: :destroy
@@ -78,7 +78,7 @@ class Project < ApplicationRecord
 
   before_validation :generate_slug, on: :create
   before_validation :sanitize_description_multiloc, if: :description_multiloc
-  before_validation :set_admin_publication
+  before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
   before_validation :set_process_type, on: :create
   before_validation :set_visible_to, on: :create
   before_validation :strip_title
@@ -105,7 +105,7 @@ class Project < ApplicationRecord
   validates :process_type, presence: true, inclusion: { in: PROCESS_TYPES }
   validates :visible_to, presence: true, inclusion: { in: VISIBLE_TOS }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
-  validate :admin_publication_must_exist
+  validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template }
 
   pg_search_scope :search_by_all,
     against: %i[title_multiloc description_multiloc description_preview_multiloc slug],

@@ -52,4 +52,16 @@ FactoryBot.define do
       end
     end
   end
+
+  factory :user_no_password, class: 'User' do
+    sequence(:email) do |n|
+      name, domain = Faker::Internet.email.split('@')
+      "#{name}#{n}@#{domain}"
+    end
+    locale { 'en' }
+
+    before(:create) do |user, _evaluator|
+      user.reset_confirmation_code
+    end
+  end
 end

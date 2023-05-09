@@ -184,12 +184,12 @@
           },
           "maximum_admins_number": {
             "title": "Maximum number of admin seats in the contract",
-            "description": "Maximum allowed number of admin seats specified in the contract.",
+            "description": "Maximum allowed number of admin seats specified in the contract (leave blank for unlimited).",
             "type": ["integer", "null"]
           },
           "maximum_moderators_number": {
             "title": "Maximum number of managers in the contract",
-            "description": "Maximum allowed number of project and folder managers specified in the contract.",
+            "description": "Maximum allowed number of project and folder managers specified in the contract (leave blank for unlimited).",
             "type": ["integer", "null"]
           },
           "additional_admins_number": {
@@ -199,7 +199,7 @@
           },
           "additional_moderators_number": {
             "title": "Additional number of manager seats",
-            "description": "Number of moderator seats bought additionally over the contract limit.",
+            "description": "Number of project and folder manager seats bought additionally over the contract limit.",
             "type": ["integer", "null"]
           }
         }
@@ -1141,6 +1141,18 @@
         "type": "object",
         "title": "Registration via email confirmation",
         "description": "Enables a light registration flow where users enter just an email address and a confirmation code.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "permissions_custom_fields": {
+        "type": "object",
+        "title": "Permission custom fields on project actions",
+        "description": "Enables the option for admins to add custom questions to project action permissions.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

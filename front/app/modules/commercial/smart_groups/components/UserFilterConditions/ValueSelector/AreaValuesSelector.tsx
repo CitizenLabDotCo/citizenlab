@@ -1,34 +1,20 @@
 import React from 'react';
-import { TRule } from '../rules';
 import { IOption } from 'typings';
-import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import localize, { InjectedLocalized } from 'utils/localize';
-import { isNilOrError } from 'utils/helperUtils';
+import useAreas from 'api/areas/useAreas';
+import useLocalize from 'hooks/useLocalize';
 
-interface InputProps {
-  rule: TRule;
+interface Props {
   value: string;
   onChange: (areaIds: string[]) => void;
 }
 
-interface DataProps {
-  areas: GetAreasChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-interface State {}
-
-class AreaValuesSelector extends React.PureComponent<
-  Props & InjectedLocalized,
-  State
-> {
-  generateOptions = (): IOption[] => {
-    const { areas, localize } = this.props;
-
-    if (!isNilOrError(areas)) {
-      return areas.map((area) => ({
+const AreaValuesSelector = ({ value, onChange }: Props) => {
+  const { data: areas } = useAreas({});
+  const localize = useLocalize();
+  const generateOptions = (): IOption[] => {
+    if (areas) {
+      return areas.data.map((area) => ({
         value: area.id,
         label: localize(area.attributes.title_multiloc),
       }));
@@ -37,28 +23,18 @@ class AreaValuesSelector extends React.PureComponent<
     }
   };
 
-  handleOnChange = (options: IOption[]) => {
+  const handleOnChange = (options: IOption[]) => {
     const optionIds = options.map((o) => o.value);
-    this.props.onChange(optionIds);
+    onChange(optionIds);
   };
 
-  render() {
-    const { value } = this.props;
+  return (
+    <MultipleSelect
+      value={value}
+      options={generateOptions()}
+      onChange={handleOnChange}
+    />
+  );
+};
 
-    return (
-      <MultipleSelect
-        value={value}
-        options={this.generateOptions()}
-        onChange={this.handleOnChange}
-      />
-    );
-  }
-}
-
-const AreaValuesSelectorWithHOC = localize(AreaValuesSelector);
-
-export default (inputProps: InputProps) => (
-  <GetAreas>
-    {(areas) => <AreaValuesSelectorWithHOC {...inputProps} areas={areas} />}
-  </GetAreas>
-);
+export default AreaValuesSelector;

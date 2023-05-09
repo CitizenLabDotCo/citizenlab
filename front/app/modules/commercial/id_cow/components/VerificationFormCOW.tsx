@@ -11,7 +11,6 @@ import Error from 'components/UI/Error';
 import Collapse from 'components/UI/Collapse';
 import {
   FormContainer,
-  Title,
   Form,
   FormField,
   StyledLabel,
@@ -20,7 +19,7 @@ import {
   SubmitButton,
   CancelButton,
   HelpImage,
-} from 'components/AuthProviders/styles';
+} from 'containers/Authentication/steps/AuthProviders/styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -36,17 +35,20 @@ import messages from '../messages';
 // images
 import helpImage from './COWHelpImage.png';
 
+// api
+import { useQueryClient } from '@tanstack/react-query';
+import projectsKeys from 'api/projects/keys';
+
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
-  showHeader?: boolean;
-  inModal: boolean;
   className?: string;
 }
 
 const VerificationFormCOW = memo<Props & WrappedComponentProps>(
-  ({ onCancel, onVerified, showHeader, inModal, className, intl }) => {
+  ({ onCancel, onVerified, className, intl }) => {
     const authUser = useAuthUser();
+    const queryClient = useQueryClient();
 
     const [run, setRun] = useState('');
     const [idSerial, setIdSerial] = useState('');
@@ -94,10 +96,9 @@ const VerificationFormCOW = memo<Props & WrappedComponentProps>(
 
             await verifyCOW(run, idSerial);
 
-            const endpointsToRefetch = [
-              `${API_PATH}/users/me`,
-              `${API_PATH}/projects`,
-            ];
+            queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
+
+            const endpointsToRefetch = [`${API_PATH}/users/me`];
             const partialEndpointsToRefetch = [
               `${API_PATH}/projects/`,
               `${API_PATH}/ideas/`,
@@ -152,16 +153,8 @@ const VerificationFormCOW = memo<Props & WrappedComponentProps>(
     }, []);
 
     return (
-      <FormContainer className={className} inModal={inModal}>
-        {showHeader && (
-          <Title>
-            <strong>
-              <FormattedMessage {...messages.verifyYourIdentity} />
-            </strong>
-          </Title>
-        )}
-
-        <Form inModal={inModal}>
+      <FormContainer className={className} inModal={true}>
+        <Form inModal={true}>
           <FormField>
             <StyledLabel htmlFor="run">
               <LabelTextContainer>

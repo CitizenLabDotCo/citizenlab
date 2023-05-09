@@ -26,8 +26,8 @@ import {
 import Tippy from '@tippyjs/react';
 
 // hooks
-import useTopics from 'hooks/useTopics';
-import useAreas from 'hooks/useAreas';
+import useTopics from 'api/topics/useTopics';
+import useAreas from 'api/areas/useAreas';
 import useLocalize from 'hooks/useLocalize';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -43,8 +43,8 @@ import { useIntl } from 'utils/cl-intl';
 
 // types
 import { Multiloc } from 'typings';
-import { IAreaData } from 'services/areas';
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
+import { IAreaData } from 'api/areas/types';
 import { ProjectsFilterTypes } from 'services/customPages';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -77,6 +77,7 @@ interface Props {
   defaultValues?: Partial<FormValues>;
   showNavBarItemTitle?: boolean;
   mode: TMode;
+  hideSlug?: boolean;
   onSubmit: (formValues: FormValues) => void | Promise<void>;
 }
 
@@ -91,6 +92,7 @@ const fieldMarginBottom = '40px';
 const CustomPageSettingsForm = ({
   showNavBarItemTitle,
   mode,
+  hideSlug,
   onSubmit,
   defaultValues,
 }: Props) => {
@@ -102,11 +104,11 @@ const CustomPageSettingsForm = ({
   });
   const showPlanUpgradeTease = !isFeatureAllowed;
   const showAdvancedCustomPages = showPlanUpgradeTease || isFeatureEnabled;
-  const areas = useAreas();
+  const { data: areas } = useAreas({});
   const { data: appConfig } = useAppConfiguration();
   const locale = useLocale();
   const configuredLocales = useAppConfigurationLocales();
-  const topics = useTopics();
+  const { data: topics } = useTopics();
   const { formatMessage } = useIntl();
 
   const hasMultipleConfiguredLocales = !isNilOrError(configuredLocales)
@@ -249,7 +251,7 @@ const CustomPageSettingsForm = ({
                 />
               </Box>
             )}
-            {slug && previewUrl && (
+            {slug && previewUrl && !hideSlug && (
               <Box mb={fieldMarginBottom}>
                 <SlugInput
                   slug={slug}
@@ -302,7 +304,7 @@ const CustomPageSettingsForm = ({
                         <SelectContainer mb="30px">
                           <MultipleSelect
                             name="topic_ids"
-                            options={mapFilterEntityToOptions(topics)}
+                            options={mapFilterEntityToOptions(topics.data)}
                             label={formatMessage(messages.selectedTagsLabel)}
                           />
                         </SelectContainer>
@@ -311,7 +313,7 @@ const CustomPageSettingsForm = ({
                         <SelectContainer mb="20px">
                           <Select
                             name="area_id"
-                            options={mapFilterEntityToOptions(areas)}
+                            options={mapFilterEntityToOptions(areas?.data)}
                             label={formatMessage(messages.selectedAreasLabel)}
                           />
                         </SelectContainer>

@@ -67,21 +67,16 @@ describe XlsxService do
       expect(field_idx).to be_present
     end
 
-    it 'excludes disabled custom fields' do
-      create(:custom_field, enabled: false, title_multiloc: { 'en' => 'Disabled field' })
-      headers = worksheet[0].cells.map(&:value)
-      field_idx = headers.find_index 'Disabled field'
-      expect(field_idx).to be_nil
-    end
-
     describe do
       let(:xlsx) { service.generate_users_xlsx(users, view_private_attributes: false) }
 
       it 'hides private attributes' do
-        custom_field = create(:custom_field)
+        custom_field = create(:custom_field, enabled: false)
+        expect(worksheet[0].cells.map(&:value)).not_to include 'id'
         expect(worksheet[0].cells.map(&:value)).not_to include 'email'
-        expect(worksheet[0].cells.map(&:value)).not_to include 'birthyear'
-        expect(worksheet[0].cells.map(&:value)).not_to include custom_field.title_multiloc['en']
+        expect(worksheet[0].cells.map(&:value)).not_to include 'first_name'
+        expect(worksheet[0].cells.map(&:value)).not_to include 'last_name'
+        expect(worksheet[0].cells.map(&:value)).to include custom_field.title_multiloc['en']
       end
     end
   end
@@ -109,7 +104,12 @@ describe XlsxService do
       let(:xlsx) { service.generate_ideas_xlsx(ideas, view_private_attributes: false) }
 
       it 'hides private attributes' do
+        custom_field = create(:custom_field, enabled: false)
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_email'
+        expect(worksheet[0].cells.map(&:value)).not_to include 'author_name'
+        expect(worksheet[0].cells.map(&:value)).not_to include 'assignee'
+        expect(worksheet[0].cells.map(&:value)).not_to include 'assignee_email'
+        expect(worksheet[0].cells.map(&:value)).to include custom_field.title_multiloc['en']
       end
     end
   end
@@ -132,7 +132,11 @@ describe XlsxService do
       let(:xlsx) { service.generate_initiatives_xlsx(initiatives, view_private_attributes: false) }
 
       it 'hides private attributes' do
+        custom_field = create(:custom_field, enabled: false)
+        expect(worksheet[0].cells.map(&:value)).not_to include 'author_id'
+        expect(worksheet[0].cells.map(&:value)).not_to include 'author_email'
         expect(worksheet[0].cells.map(&:value)).not_to include 'assignee_email'
+        expect(worksheet[0].cells.map(&:value)).to include custom_field.title_multiloc['en']
       end
     end
   end
@@ -156,7 +160,11 @@ describe XlsxService do
       let(:xlsx) { service.generate_idea_comments_xlsx(comments, view_private_attributes: false) }
 
       it 'hides private attributes' do
+        custom_field = create(:custom_field, enabled: false)
+        expect(worksheet[0].cells.map(&:value)).not_to include 'author_id'
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_email'
+        expect(worksheet[0].cells.map(&:value)).not_to include 'author_name'
+        expect(worksheet[0].cells.map(&:value)).to include custom_field.title_multiloc['en']
       end
     end
   end
@@ -177,7 +185,11 @@ describe XlsxService do
       let(:xlsx) { service.generate_initiative_comments_xlsx(comments, view_private_attributes: false) }
 
       it 'hides private attributes' do
+        custom_field = create(:custom_field, enabled: false)
+        expect(worksheet[0].cells.map(&:value)).not_to include 'author_id'
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_email'
+        expect(worksheet[0].cells.map(&:value)).not_to include 'author_name'
+        expect(worksheet[0].cells.map(&:value)).to include custom_field.title_multiloc['en']
       end
     end
   end

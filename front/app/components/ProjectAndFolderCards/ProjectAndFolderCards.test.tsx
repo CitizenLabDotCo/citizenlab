@@ -104,7 +104,9 @@ const DEFAULT_AREA_DATA = [
 
 let mockAreaData = DEFAULT_AREA_DATA;
 
-jest.mock('hooks/useAreas', () => jest.fn(() => mockAreaData));
+jest.mock('api/areas/useAreas', () =>
+  jest.fn(() => ({ data: { data: mockAreaData } }))
+);
 
 const DEFAULT_TOPIC_DATA = [
   { id: '1', attributes: { title_multiloc: { en: 'Topic 1' } } },
@@ -113,7 +115,11 @@ const DEFAULT_TOPIC_DATA = [
 
 let mockTopicData = DEFAULT_TOPIC_DATA;
 
-jest.mock('hooks/useTopics', () => jest.fn(() => mockTopicData));
+jest.mock('api/topics/useTopics', () =>
+  jest.fn(() => {
+    return { data: { data: mockTopicData } };
+  })
+);
 
 // Mock components
 jest.mock('components/ProjectCard', () => ({

@@ -348,7 +348,7 @@ jobs:
         type: string
         default: .env-production-benelux
     steps:
-      - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake templates:generate[true]"
+      - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake templates:generate"
 
   check-for-inconsistent-data:
     resource_class: small
@@ -385,6 +385,23 @@ jobs:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm run detect-deadcode
+
+  front-dependency-cruiser:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    working_directory: ~/citizenlab/front
+    steps:
+      - shallow-clone
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v2-npm-cache-{{ checksum "package-lock.json" }}
+      - run: npm ci
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v2-npm-cache-{{ checksum "package-lock.json" }}
+      - run: npm run dependency-cruiser
 
   front-lint:
     docker:
@@ -878,6 +895,13 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
       - front-detect-deadcode:
+          context: citizenlab-ee-environment
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+      - front-dependency-cruiser:
           context: citizenlab-ee-environment
           filters:
             branches:

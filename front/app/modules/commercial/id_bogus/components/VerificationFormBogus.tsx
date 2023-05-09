@@ -9,7 +9,6 @@ import { Input } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import {
   FormContainer,
-  Title,
   Form,
   FormField,
   StyledLabel,
@@ -17,7 +16,7 @@ import {
   Footer,
   SubmitButton,
   CancelButton,
-} from 'components/AuthProviders/styles';
+} from 'containers/Authentication/steps/AuthProviders/styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -25,17 +24,20 @@ import useAuthUser from 'hooks/useAuthUser';
 // services
 import { verifyBogus } from '../services/verify';
 
+// api
+import { useQueryClient } from '@tanstack/react-query';
+import projectsKeys from 'api/projects/keys';
+
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
-  showHeader?: boolean;
-  inModal: boolean;
   className?: string;
 }
 
 const VerificationFormBogus = memo<Props>(
-  ({ onCancel, onVerified, showHeader, inModal, className }) => {
+  ({ onCancel, onVerified, className }) => {
     const authUser = useAuthUser();
+    const queryClient = useQueryClient();
 
     const [desiredError, setDesiredError] = useState<string>('');
     const [desiredErrorError, setDesiredErrorError] = useState<string | null>(
@@ -59,10 +61,9 @@ const VerificationFormBogus = memo<Props>(
         try {
           await verifyBogus(desiredError);
 
-          const endpointsToRefetch = [
-            `${API_PATH}/users/me`,
-            `${API_PATH}/projects`,
-          ];
+          queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
+
+          const endpointsToRefetch = [`${API_PATH}/users/me`];
           const partialEndpointsToRefetch = [
             `${API_PATH}/projects/`,
             `${API_PATH}/ideas/`,
@@ -94,7 +95,7 @@ const VerificationFormBogus = memo<Props>(
           }
         }
       },
-      [desiredError, authUser, onVerified]
+      [desiredError, authUser, onVerified, queryClient]
     );
 
     const onCancelButtonClicked = useCallback(() => {
@@ -105,15 +106,9 @@ const VerificationFormBogus = memo<Props>(
       <FormContainer
         id="e2e-verification-bogus-form"
         className={className}
-        inModal={inModal}
+        inModal={true}
       >
-        {showHeader && (
-          <Title>
-            <strong>Verify your identity (fake)</strong>
-          </Title>
-        )}
-
-        <Form inModal={inModal}>
+        <Form inModal={true}>
           <FormField>
             <StyledLabel>
               <LabelTextContainer>

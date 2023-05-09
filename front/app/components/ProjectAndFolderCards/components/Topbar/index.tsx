@@ -6,8 +6,8 @@ import { coreSettings } from 'api/app_configuration/utils';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useTopics from 'hooks/useTopics';
-import useAreas from 'hooks/useAreas';
+import useTopics from 'api/topics/useTopics';
+import useAreas from 'api/areas/useAreas';
 import useLocalize from 'hooks/useLocalize';
 
 // components
@@ -156,8 +156,8 @@ const Header = ({
   const { data: appConfiguration } = useAppConfiguration();
   const isSmallerThanPhone = useBreakpoint('phone');
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const topics = useTopics({ forHomepageFilter: true });
-  const areas = useAreas({ forHomepageFilter: true });
+  const { data: topics } = useTopics({ forHomepageFilter: true });
+  const { data: areas } = useAreas({ forHomepageFilter: true });
   const localize = useLocalize();
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
@@ -203,8 +203,8 @@ const Header = ({
       selectedAreas,
     });
   const showFiltersLabel = getShowFiltersLabel(
-    topics,
-    areas,
+    topics?.data,
+    areas?.data,
     isSmallerThanTablet
   );
 

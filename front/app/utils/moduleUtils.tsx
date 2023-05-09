@@ -21,9 +21,9 @@ import { ManagerType } from 'components/admin/PostManager';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { AuthProvider } from 'components/AuthProviders';
+import { AuthProvider } from 'containers/Authentication/steps/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
-import { TVerificationStep } from 'events/verificationModal';
+import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar';
 import { LatLngTuple } from 'leaflet';
@@ -36,7 +36,7 @@ import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
 import { TNotificationData } from 'services/notifications';
 import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
-import { TSignUpInFlow } from 'events/openSignUpInModal';
+import { SignUpInFlow } from 'containers/Authentication/typings';
 import {
   CellConfiguration,
   InsertConfigurationOptions,
@@ -45,8 +45,14 @@ import {
   Multiloc,
 } from 'typings';
 import { IntlFormatters } from 'react-intl';
-import { StatCardProps } from '../modules/commercial/analytics/admin/components/StatCard/useStatCard/typings';
 import { IInitiativeData } from 'api/initiatives/types';
+import {
+  Dates,
+  ProjectId,
+  Resolution,
+} from 'components/admin/GraphCards/typings';
+
+export type StatCardProps = ProjectId & Dates & Resolution;
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];
@@ -182,8 +188,6 @@ export interface OutletsPropertyMap {
     method: TVerificationMethod | null;
     onCancel: () => void;
     onVerified: () => void;
-    showHeader?: boolean;
-    inModal: boolean;
     activeStep: TVerificationStep;
   };
   'app.components.PostShowComponents.ActionBar.right': {
@@ -256,7 +260,7 @@ export interface OutletsPropertyMap {
   };
   'app.containers.HomePage.EventsWidget': Record<string, any>;
   'app.components.SignUpIn.AuthProviders.ContainerStart': {
-    flow: TSignUpInFlow;
+    flow: SignUpInFlow;
     onContinue: (authProvider: AuthProvider) => void;
   };
   'app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy': Record<
