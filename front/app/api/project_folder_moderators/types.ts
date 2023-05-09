@@ -8,3 +8,8 @@ export type ProjectFolderModeratorsKeys = Keys<
 export type ProjectForderParams = {
   projectFolderId: string;
 };
+
+export type ProjectFolderModeratorAdd = {
+  moderatorId: string;
+  projectFolderId: string;
+};

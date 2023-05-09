@@ -7,7 +7,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // services
 import useProjectFolderModerators from 'api/project_folder_moderators/useProjectFolderModerators';
-import { addFolderModerator } from 'services/projectFolderModerators';
 import { isRegularUser } from 'services/permissions/roles';
 
 // i18n
@@ -29,6 +28,7 @@ import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 // Hooks
 import useExceedsSeats from 'hooks/useExceedsSeats';
 import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
+import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
 
 const StyledA = styled.a`
   &:hover {
@@ -44,6 +44,8 @@ const UserSelectSection = styled.section`
 const FolderPermissions = () => {
   const { projectFolderId } = useParams() as { projectFolderId: string };
   const { mutate: deleteFolderModerator } = useDeleteProjectFolderModerator();
+  const { mutate: addFolderModerator, isLoading } =
+    useAddProjectFolderModerator();
   const { formatMessage } = useIntl();
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
@@ -51,7 +53,6 @@ const FolderPermissions = () => {
   const { data: folderModerators } = useProjectFolderModerators({
     projectFolderId,
   });
-  const [processing, setProcessing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [moderatorToAdd, setModeratorToAdd] =
     useState<UserOptionTypeBase | null>(null);
@@ -70,10 +71,17 @@ const FolderPermissions = () => {
 
   const handleOnAddFolderModeratorsClick = async () => {
     if (moderatorToAdd) {
-      setProcessing(true);
-      await addFolderModerator(projectFolderId, moderatorToAdd.id);
-      setProcessing(false);
-      setModeratorToAdd(null);
+      addFolderModerator(
+        {
+          projectFolderId,
+          moderatorId: moderatorToAdd.id,
+        },
+        {
+          onSuccess: () => {
+            setModeratorToAdd(null);
+          },
+        }
+      );
     }
   };
 
@@ -146,7 +154,7 @@ const FolderPermissions = () => {
               padding="10px 16px"
               onClick={handleAddClick}
               disabled={!moderatorToAdd}
-              processing={processing}
+              processing={isLoading}
               ml="12px"
               data-cy="e2e-add-folder-moderator-button"
             />
