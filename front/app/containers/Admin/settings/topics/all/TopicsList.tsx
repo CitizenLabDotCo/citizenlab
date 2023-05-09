@@ -6,7 +6,7 @@ import DefaultTopicRow from './DefaultTopicRow';
 import CustomTopicRow from './CustomTopicRow';
 
 // typings
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 
 interface Props {
   topics: ITopicData[];

@@ -31,10 +31,6 @@ export default defineMessages({
     id: 'app.modules.id_oostende_rrn.invalidRrnError',
     defaultMessage: 'Invalid social security number',
   },
-  verifyYourIdentity: {
-    id: 'app.modules.id_oostende_rrn.verifyYourIdentity',
-    defaultMessage: 'Verify your identity',
-  },
   takenFormError: {
     id: 'app.modules.id_oostende_rrn.takenFormError',
     defaultMessage:

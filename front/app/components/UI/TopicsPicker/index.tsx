@@ -7,7 +7,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, lighten } from 'polished';
 
 // types
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 
 // intl
 import T from 'components/T';
@@ -16,7 +16,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // hooks
-import useTopics from 'hooks/useTopics';
+import useTopics from 'api/topics/useTopics';
 
 const TopicsContainer = styled.div`
   display: flex;
@@ -96,8 +96,11 @@ const TopicsPicker = memo(
     className,
     setRef,
   }: Props & InjectedLocalized) => {
-    const selectedTopics = useTopics({ topicIds: selectedTopicIds });
+    const { data: topics } = useTopics();
 
+    const filteredTopics = topics?.data.filter((topic) =>
+      selectedTopicIds.includes(topic.id)
+    );
     const handleOnChange = (topicId: string) => (event) => {
       event.stopPropagation();
       event.preventDefault();
@@ -121,8 +124,8 @@ const TopicsPicker = memo(
 
     if (!isNilOrError(availableTopics)) {
       const numberOfSelectedTopics = selectedTopicIds.length;
-      const selectedTopicNames = !isNilOrError(selectedTopics)
-        ? selectedTopics
+      const selectedTopicNames = filteredTopics
+        ? filteredTopics
             .map((topic: ITopicData) =>
               localize(topic.attributes.title_multiloc)
             )

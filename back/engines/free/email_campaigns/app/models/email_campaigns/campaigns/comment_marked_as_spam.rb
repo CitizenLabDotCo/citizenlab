@@ -58,6 +58,22 @@ module EmailCampaigns
       'admin'
     end
 
+    def self.recipient_role_multiloc_key
+      'email_campaigns.admin_labels.recipient_role.admins_and_moderators'
+    end
+
+    def self.recipient_segment_multiloc_key
+      'email_campaigns.admin_labels.recipient_segment.admins'
+    end
+
+    def self.content_type_multiloc_key
+      'email_campaigns.admin_labels.content_type.comments'
+    end
+
+    def self.trigger_multiloc_key
+      'email_campaigns.admin_labels.trigger.comment_is_flagged_as_spam'
+    end
+
     def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
       [{

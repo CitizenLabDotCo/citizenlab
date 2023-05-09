@@ -36,10 +36,15 @@ import GetAppConfiguration, {
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import useAuthUser from 'hooks/useAuthUser';
+import GoBackButton from 'components/UI/GoBackButton';
+import clHistory from 'utils/cl-router/history';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 type FormValues = {
   current_password: string;
-  new_password: string;
+  password: string;
 };
 
 type Props = {
@@ -47,19 +52,25 @@ type Props = {
 };
 
 const ChangePassword = ({ tenant }: Props) => {
+  const authUser = useAuthUser();
   const { formatMessage } = useIntl();
   const [success, setSuccess] = useState(false);
+  const userHasPreviousPassword =
+    !isNilOrError(authUser) && !authUser.attributes?.no_password;
+  const pageTitle = userHasPreviousPassword
+    ? messages.titleChangePassword
+    : messages.titleAddPassword;
 
   const minimumPasswordLength =
     (!isNilOrError(tenant) &&
       tenant.attributes.settings.password_login?.minimum_length) ||
     0;
 
-  const schema = object({
+  const schemaPreviousPasswordExists = object({
     current_password: string().required(
       formatMessage(messages.currentPasswordRequired)
     ),
-    new_password: string()
+    password: string()
       .required(formatMessage(messages.newPasswordRequired))
       .min(
         minimumPasswordLength,
@@ -69,11 +80,26 @@ const ChangePassword = ({ tenant }: Props) => {
       ),
   });
 
+  const schemaNoPreviousPassword = object({
+    password: string()
+      .required(formatMessage(messages.newPasswordRequired))
+      .min(
+        minimumPasswordLength,
+        formatMessage(messages.minimumPasswordLengthError, {
+          minimumPasswordLength,
+        })
+      ),
+  });
+
+  const schema = userHasPreviousPassword
+    ? schemaPreviousPasswordExists
+    : schemaNoPreviousPassword;
+
   const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues: {
       current_password: '',
-      new_password: '',
+      password: '',
     },
     resolver: yupResolver(schema),
   });
@@ -82,10 +108,17 @@ const ChangePassword = ({ tenant }: Props) => {
     try {
       await changePassword(formValues);
       setSuccess(true);
+      await streams.fetchAllWith({
+        apiEndpoint: [`${API_PATH}/users/me`],
+      });
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
+
+  if (isNilOrError(authUser)) {
+    return null;
+  }
 
   if (success) return <ChangePasswordSuccess />;
   return (
@@ -107,34 +140,44 @@ const ChangePassword = ({ tenant }: Props) => {
         />
         <main>
           <StyledContentContainer>
-            <Title>{formatMessage(messages.title)}</Title>
-
-            <Form>
-              <LabelContainer>
-                <FormLabel
-                  width="max-content"
-                  margin-right="5px"
-                  labelMessage={messages.currentPasswordLabel}
-                  htmlFor="current_password"
-                />
-              </LabelContainer>
-              <PasswordInput
-                name="current_password"
-                autocomplete="current-password"
-                isLoginPasswordInput={true}
+            <Box mt="30px">
+              <GoBackButton
+                onClick={() => {
+                  clHistory.goBack();
+                }}
               />
+            </Box>
+            <Title>{formatMessage(pageTitle)}</Title>
+            <Form>
+              {userHasPreviousPassword && (
+                <>
+                  <LabelContainer>
+                    <FormLabel
+                      width="max-content"
+                      margin-right="5px"
+                      labelMessage={messages.currentPasswordLabel}
+                      htmlFor="current_password"
+                    />
+                  </LabelContainer>
+                  <PasswordInput
+                    name="current_password"
+                    autocomplete="current-password"
+                    isLoginPasswordInput={true}
+                  />
+                </>
+              )}
               <LabelContainer className="margin-top">
                 <FormLabel
                   width="max-content"
                   margin-right="5px"
                   labelMessage={messages.newPasswordLabel}
-                  htmlFor="new_password"
+                  htmlFor="password"
                 />
                 <StyledPasswordIconTooltip />
               </LabelContainer>
-              <PasswordInput name="new_password" autocomplete="new-password" />
-
+              <PasswordInput name="password" autocomplete="new-password" />
               <StyledButton
+                id="password-submit-button"
                 type="submit"
                 size="m"
                 processing={methods.formState.isSubmitting}

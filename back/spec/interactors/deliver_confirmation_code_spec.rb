@@ -27,16 +27,8 @@ RSpec.describe DeliverConfirmationCode do
       context[:user] = create(:user_with_confirmation, email: 'some_email@email.com')
     end
 
-    it 'enqueues email delivery job' do
-      result
-      last_email = ActionMailer::Base.deliveries.last
-      expect(last_email.to).to include context[:user].reload.email
-    end
-
-    it 'enqueues email with the confirmation' do
-      result
-      last_email = ActionMailer::Base.deliveries.last
-      expect(last_email.body.encoded).to include context[:user].reload.email_confirmation_code
+    it 'enqueues the confirmation email' do
+      expect { result }.to have_enqueued_mail(ConfirmationsMailer, :send_confirmation_code).with(params: { user: context[:user] }, args: [])
     end
   end
 end

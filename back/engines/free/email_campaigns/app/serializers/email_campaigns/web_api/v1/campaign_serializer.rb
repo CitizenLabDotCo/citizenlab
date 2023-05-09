@@ -12,6 +12,34 @@ module EmailCampaigns
       object.class.admin_campaign_description_multiloc
     end
 
+    attribute :recipient_role_multiloc do |object|
+      if object.class.recipient_role_multiloc_key.present?
+        @multiloc_service ||= MultilocService.new
+        @multiloc_service.i18n_to_multiloc(object.class.recipient_role_multiloc_key)
+      end
+    end
+
+    attribute :recipient_segment_multiloc do |object|
+      if object.class.recipient_segment_multiloc_key.present?
+        @multiloc_service ||= MultilocService.new
+        @multiloc_service.i18n_to_multiloc(object.class.recipient_segment_multiloc_key)
+      end
+    end
+
+    attribute :content_type_multiloc do |object|
+      if object.class.content_type_multiloc_key.present?
+        @multiloc_service ||= MultilocService.new
+        @multiloc_service.i18n_to_multiloc(object.class.content_type_multiloc_key)
+      end
+    end
+
+    attribute :trigger_multiloc do |object|
+      if object.class.trigger_multiloc_key.present? && object.class.trigger_multiloc_key != 'scheduled'
+        @multiloc_service ||= MultilocService.new
+        @multiloc_service.i18n_to_multiloc(object.class.trigger_multiloc_key)
+      end
+    end
+
     attribute :enabled, if: proc { |object|
       disableable? object
     }
@@ -22,16 +50,11 @@ module EmailCampaigns
     attribute :schedule_multiloc, if: proc { |object|
       schedulable? object
     } do |object|
-      # Temporary fix until CL2-3052 is solved
       AppConfiguration.instance.settings('core', 'locales').each_with_object({}) do |locale, result|
-        I18n.with_locale('en') do
-          result[locale] = object.ic_schedule.to_s
+        I18n.with_locale(locale) do
+          result[locale] = object.schedule_multiloc_value
         end
       end
-
-      # MultilocService.new.block_to_multiloc do |locale|
-      #   object.ic_schedule.to_s
-      # end
     end
 
     attribute :sender, if: proc { |object|

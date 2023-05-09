@@ -16,7 +16,7 @@ RSpec.describe ResetUserConfirmationCode do
       context[:user] = create(:user_with_confirmation)
 
       5.times do
-        context[:user].reset_confirmation_code!
+        context[:user].increment_confirmation_code_reset_count!
       end
     end
 

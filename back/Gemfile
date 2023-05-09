@@ -147,10 +147,8 @@ gem 'order_as_specified'
 # https://github.com/nov/openid_connect/pull/48
 gem 'openid_connect', github: 'CitizenLabDotCo/openid_connect'
 gem 'scenic'
+gem 'ice_cube', '~> 0.16'
 
-# This fork was made to support the latest verions of Ruby
-# and Rails.
-gem 'ice_cube', github: 'CitizenLabDotCo/ice_cube'
 # Also required here to be able to initialize Mailgun in
 # e.g. production.rb, which would otherwise result in an
 # "undefined method 'mailgun_settings=' for ActionMailer::Base:Class"

@@ -10,6 +10,7 @@ import { colors } from 'utils/styleUtils';
 import messages from './messages';
 import styled from 'styled-components';
 import { SubSectionTitle } from 'components/admin/Section';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const StyledToggle = styled(Toggle)`
   flex-direction: row-reverse;
@@ -35,9 +36,18 @@ type Props = {
 };
 
 const ToggleUserConfirmation = ({ isEnabled, onChange }: Props) => {
+  const emailConfirmPermissionEnabled = useFeatureFlag({
+    name: 'permission_option_email_confirmation',
+  });
+  const showEmailConfirmationToggle = !emailConfirmPermissionEnabled;
+
   const handleChange = () => {
     onChange(!isEnabled);
   };
+
+  if (!showEmailConfirmationToggle) {
+    return null;
+  }
 
   return (
     <Box mb="35px">

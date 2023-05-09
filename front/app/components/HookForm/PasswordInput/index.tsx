@@ -1,12 +1,15 @@
 import React from 'react';
 
+// components
 import Error, { TFieldName } from 'components/UI/Error';
-import { Controller, useFormContext } from 'react-hook-form';
-import { CLError, RHFErrors } from 'typings';
-
+import { Label } from '@citizenlab/cl2-component-library';
 import PasswordInputComponent, {
   Props as PasswordInputComponentProps,
 } from 'components/UI/PasswordInput';
+import { Controller, useFormContext } from 'react-hook-form';
+
+// typings
+import { CLError, RHFErrors } from 'typings';
 
 interface Props
   extends Omit<
@@ -14,9 +17,11 @@ interface Props
     'id' | 'password' | 'onChange' | 'errors'
   > {
   name: string;
+  id?: string;
+  label?: string;
 }
 
-const PasswordInput = ({ name, ...rest }: Props) => {
+const PasswordInput = ({ name, label, ...rest }: Props) => {
   const {
     getValues,
     formState: { errors: formContextErrors },
@@ -33,6 +38,12 @@ const PasswordInput = ({ name, ...rest }: Props) => {
 
   return (
     <>
+      {label && (
+        <Label htmlFor={name}>
+          <span>{label}</span>
+        </Label>
+      )}
+
       <Controller
         name={name}
         control={control}

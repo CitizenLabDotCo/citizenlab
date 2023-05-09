@@ -6,6 +6,7 @@ class ResetUserConfirmationCode < ApplicationInteractor
   def call
     validate_code
     validate_confirmation_reset_count
+    user.save!
   end
 
   def validate_code
