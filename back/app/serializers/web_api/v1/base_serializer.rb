@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class WebApi::V1::BaseSerializer
-  include FastJsonapi::ObjectSerializer
+  # include FastJsonapi::ObjectSerializer
+  include JSONAPI::Serializer
 
   def self.current_user(params)
     throw 'current_user missing in serializer parameters' unless params.include?(:current_user)
