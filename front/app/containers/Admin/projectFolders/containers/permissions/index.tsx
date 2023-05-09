@@ -7,10 +7,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // services
 import useProjectFolderModerators from 'api/project_folder_moderators/useProjectFolderModerators';
-import {
-  addFolderModerator,
-  deleteFolderModerator,
-} from 'services/projectFolderModerators';
+import { addFolderModerator } from 'services/projectFolderModerators';
 import { isRegularUser } from 'services/permissions/roles';
 
 // i18n
@@ -31,6 +28,7 @@ import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 
 // Hooks
 import useExceedsSeats from 'hooks/useExceedsSeats';
+import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
 
 const StyledA = styled.a`
   &:hover {
@@ -45,6 +43,7 @@ const UserSelectSection = styled.section`
 
 const FolderPermissions = () => {
   const { projectFolderId } = useParams() as { projectFolderId: string };
+  const { mutate: deleteFolderModerator } = useDeleteProjectFolderModerator();
   const { formatMessage } = useIntl();
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
@@ -79,7 +78,7 @@ const FolderPermissions = () => {
   };
 
   const handleDeleteFolderModeratorClick = (moderatorId: string) => () => {
-    deleteFolderModerator(projectFolderId, moderatorId);
+    deleteFolderModerator({ projectFolderId, id: moderatorId });
   };
 
   const handleAddClick = () => {
