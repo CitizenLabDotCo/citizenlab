@@ -36,8 +36,6 @@ module AuthToken
 
     def decode_token_options
       {
-        aud: nil, # TODO: can remove?
-        verify_aud: nil, # TODO: can remove?
         verify_expiration: true,
         algorithm: TOKEN_SIGNATURE_ALGORITHM
       }
