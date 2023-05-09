@@ -9,9 +9,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // api
 import { IProjectData } from 'api/projects/types';
 
-// services
-import { getTopicIds } from 'services/projectAllowedInputTopics';
-
 // resources
 import GetIdeaStatuses, {
   GetIdeaStatusesChildProps,
@@ -26,6 +23,7 @@ import GetInitiatives, {
 import { TPhases } from 'hooks/usePhases';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
+import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 
 // components
 import ActionBar from './components/ActionBar';
