@@ -43,8 +43,9 @@ const UserSelectSection = styled.section`
 
 const FolderPermissions = () => {
   const { projectFolderId } = useParams() as { projectFolderId: string };
-  const { mutate: deleteFolderModerator } = useDeleteProjectFolderModerator();
-  const { mutate: addFolderModerator, isLoading } =
+  const { mutate: deleteFolderModerator, isLoading: deleteIsLoading } =
+    useDeleteProjectFolderModerator();
+  const { mutate: addFolderModerator, isLoading: addIsLoading } =
     useAddProjectFolderModerator();
   const { formatMessage } = useIntl();
   const hasSeatBasedBillingEnabled = useFeatureFlag({
@@ -154,7 +155,7 @@ const FolderPermissions = () => {
               padding="10px 16px"
               onClick={handleAddClick}
               disabled={!moderatorToAdd}
-              processing={isLoading}
+              processing={addIsLoading}
               ml="12px"
               data-cy="e2e-add-folder-moderator-button"
             />
@@ -197,6 +198,7 @@ const FolderPermissions = () => {
                     )}
                     buttonStyle="text"
                     icon="delete"
+                    processing={deleteIsLoading}
                   >
                     <FormattedMessage {...messages.deleteFolderManagerLabel} />
                   </Button>
