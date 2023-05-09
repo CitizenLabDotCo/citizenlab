@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::UserTokenController < AuthTokenController
+class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   TOKEN_LIFETIME = 1.day
 
   private
@@ -12,7 +12,7 @@ class WebApi::V1::UserTokenController < AuthTokenController
       payload[:exp] = TOKEN_LIFETIME.from_now.to_i
     end
 
-    AuthToken.new payload: payload
+    AuthToken::AuthToken.new payload: payload
   end
 
   def extra_params

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
-  include Authenticable
+  include AuthToken::Authenticable
   include Pundit
 
   before_action :authenticate_user

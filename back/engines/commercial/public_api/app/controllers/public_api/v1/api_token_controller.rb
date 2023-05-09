@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PublicApi::V1::ApiTokenController < AuthTokenController
+class PublicApi::V1::ApiTokenController < AuthToken::AuthTokenController
   def entity_name
     'PublicApi::ApiClient'
   end
