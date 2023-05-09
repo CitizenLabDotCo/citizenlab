@@ -48,7 +48,7 @@ describe('Comment voting permissions for active users', () => {
     it("doesn't let unverified users vote", () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       cy.visit('ideas/verified-idea');
-      cy.get('.e2e-comment-vote').click();
+      cy.get('.e2e-comment-vote').click({ force: true });
       cy.get('#e2e-verification-wizard-root').should('exist');
     });
   });
@@ -82,7 +82,7 @@ describe('Comment voting permissions for non-active users', () => {
   it("doesn't let non-active users vote", () => {
     cy.setLoginCookie(email, password);
     cy.visit('ideas/verified-idea');
-    cy.get('.e2e-comment-vote').click();
+    cy.get('.e2e-comment-vote').click({ force: true });
     cy.get('#e2e-authentication-modal').should('exist');
   });
 
