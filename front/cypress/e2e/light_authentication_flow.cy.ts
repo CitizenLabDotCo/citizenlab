@@ -32,6 +32,8 @@ describe('Light authentication flow', () => {
 
   it('works when signing up with new email', () => {
     cy.visit(`/projects/${projectTitle}`);
+
+    cy.get('#e2e-idea-button').should('exist');
     cy.wait(2000).then(() => {
       cy.get('#e2e-idea-button').click();
     });
@@ -57,6 +59,8 @@ describe('Light authentication flow', () => {
 
   it('works when signing up with existing normal user', () => {
     cy.visit(`/projects/${projectTitle}`);
+
+    cy.get('#e2e-idea-button').should('exist');
     cy.wait(2000).then(() => {
       cy.get('#e2e-idea-button').click();
     });
