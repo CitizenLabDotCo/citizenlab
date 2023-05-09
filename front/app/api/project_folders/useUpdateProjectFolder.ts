@@ -4,6 +4,8 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import projectFoldersKeys from 'api/project_folders/keys';
 import { IProjectFolder, IUpdatedProjectFolder } from './types';
 import { omit } from 'lodash-es';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 export const updateProjectFolder = async ({
   projectFolderId,
@@ -19,14 +21,16 @@ const useUpdateProjectFolder = () => {
   const queryClient = useQueryClient();
   return useMutation<IProjectFolder, CLErrors, IUpdatedProjectFolder>({
     mutationFn: updateProjectFolder,
-    onSuccess: (_data) => {
+    onSuccess: async (_data) => {
       queryClient.invalidateQueries({
         queryKey: projectFoldersKeys.item({ id: _data.data.id }),
       });
       queryClient.invalidateQueries({
         queryKey: projectFoldersKeys.lists(),
       });
-      // TODO: Invalidate projects list also once Luuc is finished converting
+      await streams.fetchAllWith({
+        partialApiEndpoint: [`${API_PATH}/admin_publications`],
+      });
     },
   });
 };
