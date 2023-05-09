@@ -14,7 +14,7 @@ class AuthToken # TODO: add specs
       @payload, = JWT.decode token.to_s, TOKEN_PUBLIC_KEY, true, decode_token_options
       @token = token
     else
-      @payload = { exp: TOKEN_LIFETIME }.merge(payload)
+      @payload = { exp: TOKEN_LIFETIME.from_now.to_i }.merge(payload)
       @token = JWT.encode @payload, secret_key, TOKEN_SIGNATURE_ALGORITHM
     end
   end
@@ -25,6 +25,10 @@ class AuthToken # TODO: add specs
     else
       entity_class.find @payload['sub']
     end
+  end
+
+  def to_json(_options = {})
+    { jwt: @token }.to_json
   end
 
   private
