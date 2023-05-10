@@ -237,7 +237,7 @@ de:
       title_user_blocked: 'Ihr Konto wurde vorübergehend deaktiviert'
       paragraph_1_without_reason: "Ihr Konto auf der Beteiligungsplattform von %{organizationName} wurde wegen eines Verstoßes gegen die Community-Richtlinien vorübergehend deaktiviert."
       paragraph_1_with_reason: "Ihr Konto auf der Beteiligungsplattform von %{organizationName} wurde aus folgendem Grund vorübergehend deaktiviert:"
-      for_more_information: "Weitere Informationen hierzu finden Sie auf der Webseite %{termsAndConditionsPage}"
+      for_more_information: "Weitere Informationen hierzu finden Sie auf der Webseite in den %{termsAndConditionsPage}."
       you_can_sign_in_again_from: "Sie können sich ab dem %{date} erneut anmelden"
   user:
     anon_first_name: "Nutzer*in"
