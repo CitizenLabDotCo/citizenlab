@@ -5,12 +5,35 @@ class PublicApi::V1::ProjectSerializer < ActiveModel::Serializer
 
   attributes :id,
     :title,
-    :description_html,
+    :description_html, # 'description' in spec
     :description_preview,
+    :process_type,
+    :participation_method,
+    :status, # Should we change this to publication_status to avoid confusion
+    :slug,
+    :folder_id,
+    :href, # Not in spec
+    :visible_to,
+    :images, # Not in spec
+    :created_at,
+    :updated_at,
     :ideas_count,
-    :href,
-    :images,
-    :map_center_geojson
+    :comments_count,
+    :map_center_geojson, # Not in spec
+    :posting_enabled,
+    :commenting_enabled,
+    :voting_enabled,
+    :upvoting_method,
+    :upvoting_limited_max,
+    :downvoting_enabled,
+    :downvoting_method,
+    :downvoting_limited_max,
+    :min_budget,
+    :max_budget
+
+  def status
+    object.admin_publication.publication_status
+  end
 
   def title
     @@multiloc_service.t(object.title_multiloc)

@@ -5,17 +5,32 @@ class PublicApi::V1::IdeaSerializer < ActiveModel::Serializer
 
   attributes :id,
     :title,
-    :body_html,
-    :author_name,
+    :body_html, # body in spec
+    :author_id,
+    :author_name, # Not in spec
     :upvotes_count,
     :downvotes_count,
     :comments_count,
     :published_at,
-    :images,
-    :href,
+    :publication_status,
     :project_id,
     :project_title,
-    :status
+    :created_at,
+    :updated_at,
+    :location_point, # Should we format this to just lat,long?
+    :location_description,
+    :slug,
+    :budget,
+    :baskets_count,
+    :official_feedbacks_count,
+    :assignee_id,
+    :assigned_at,
+    :proposed_budget,
+    :creation_phase_id,
+    :images, # Not in spec
+    :href, # Not in spec
+    :status, # idea_status in spec
+    :custom_field_values # Not nested in spec
 
   def title
     @@multiloc_service.t(object.title_multiloc)
