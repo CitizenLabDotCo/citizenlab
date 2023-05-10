@@ -19,7 +19,7 @@ describe('<WrongMaxChoiceIndicator/>', () => {
     expect(screen.getByTestId('wrongMaxChoiceIndicator')).toBeInTheDocument();
   });
 
-  it('does not show when there are more poll answer options than maximum number of answers participant can give', () => {
+  it('does not show when there are enough (equal number or more) poll answer options than maximum number of answers participant can give', () => {
     render(<WrongMaxChoiceIndicator questionId="questionId" maxAnswers={3} />);
 
     expect(
