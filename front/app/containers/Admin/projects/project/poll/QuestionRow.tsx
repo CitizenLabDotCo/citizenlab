@@ -22,6 +22,17 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import WrongOptionsIndicator from './WrongOptionsIndicator';
 
+interface Props {
+  question: IPollQuestion;
+  isLastItem: boolean;
+  index: number;
+  onDelete: () => void;
+  onEdit: () => void;
+  onEditOptions: () => void;
+  handleDragRow: (fromIndex: number, toIndex: number) => void;
+  handleDropRow: (fieldId: string, toIndex: number) => void;
+}
+
 const QuestionRow = ({
   question,
   isLastItem,
@@ -31,16 +42,7 @@ const QuestionRow = ({
   onEditOptions,
   handleDropRow,
   handleDragRow,
-}: {
-  question: IPollQuestion;
-  isLastItem: boolean;
-  index: number;
-  onDelete: () => void;
-  onEdit: () => void;
-  onEditOptions: () => void;
-  handleDragRow;
-  handleDropRow;
-}) => (
+}: Props) => (
   <SortableRow
     key={question.id}
     id={question.id}
