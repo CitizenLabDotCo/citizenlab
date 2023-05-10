@@ -13,9 +13,17 @@ const mockPollOptions: IPollOptionData[] = [
 jest.mock('hooks/usePollOptions', () => () => mockPollOptions);
 
 describe('<WrongMaxChoiceIndicator/>', () => {
-  it('renders correctly when there is less options than maxAnswers', () => {
+  it('indicates when there are fewer poll answer options than maximum number of answers participant can give', () => {
     render(<WrongMaxChoiceIndicator questionId="questionId" maxAnswers={10} />);
 
     expect(screen.getByTestId('wrongMaxChoiceIndicator')).toBeInTheDocument();
+  });
+
+  it('does not show when there are more poll answer options than maximum number of answers participant can give', () => {
+    render(<WrongMaxChoiceIndicator questionId="questionId" maxAnswers={3} />);
+
+    expect(
+      screen.queryByTestId('wrongMaxChoiceIndicator')
+    ).not.toBeInTheDocument();
   });
 });
