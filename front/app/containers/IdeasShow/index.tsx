@@ -389,7 +389,7 @@ export const IdeasShow = ({
     );
   }
 
-  if (!isNilOrError(project) && !isNilOrError(phases)) {
+  if (!isNilOrError(project) && phases) {
     const inputTerm = getInputTerm(
       project.attributes.process_type,
       project,
