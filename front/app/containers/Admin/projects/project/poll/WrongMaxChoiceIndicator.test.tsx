@@ -23,9 +23,5 @@ describe('<WrongMaxChoiceIndicator/>', () => {
     render(<WrongMaxChoiceIndicator questionId="questionId" maxAnswers={10} />);
 
     expect(screen.getByTestId('wrongMaxChoiceIndicator')).toBeInTheDocument();
-    // expect(
-    //   render(Wrapper.find('StyledIconTooltip').prop('content')).prop('id')
-    // ).toContain('maxOverTheMaxTooltip');
-    // expect(Wrapper.find('FormattedMessage').prop('id')).toContain('wrongMax');
   });
 });
