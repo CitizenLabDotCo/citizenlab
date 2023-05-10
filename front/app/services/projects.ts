@@ -17,7 +17,7 @@ import {
   IdeaDefaultSortMethod,
   InputTerm,
 } from './participationContexts';
-import { IProject, IProjectData } from 'api/projects/types';
+import { IProject } from 'api/projects/types';
 
 export const apiEndpoint = `${API_PATH}/projects`;
 export const PROJECTABLE_HEADER_BG_ASPECT_RATIO_WIDTH = 4;
@@ -175,14 +175,6 @@ export async function copyProject(projectId: string) {
   });
 
   return response;
-}
-
-export function getProjectUrl(project: IProjectData) {
-  return `/projects/${project.attributes.slug}`;
-}
-
-export function getProjectInputTerm(project: IProjectData) {
-  return project.attributes.input_term;
 }
 
 export async function updateProjectFolderMembership(
