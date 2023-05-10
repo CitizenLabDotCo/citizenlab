@@ -28,9 +28,6 @@ import useEvents from 'api/events/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
 
-// events
-import eventEmitter from 'utils/eventEmitter';
-
 // i18n
 import messages from 'utils/messages';
 
@@ -197,7 +194,7 @@ const ProjectsShowPageWrapper = () => {
 
   const { pathname } = useLocation();
   const { slug, phaseNumber } = useParams();
-  const { data: project, status, error, refetch } = useProjectBySlug(slug);
+  const { data: project, status, error } = useProjectBySlug(slug);
   const phases = usePhases(project?.data.id);
   const user = useAuthUser();
 
@@ -217,12 +214,6 @@ const ProjectsShowPageWrapper = () => {
 
     if (user !== null) setUserWasLoggedIn(true);
   }, [pending, user]);
-
-  useEffect(() => {
-    eventEmitter.observeEvent('resetQueryCache').subscribe(() => {
-      refetch();
-    });
-  }, [refetch]);
 
   if (pending) {
     return (

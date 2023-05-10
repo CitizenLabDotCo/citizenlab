@@ -13,6 +13,7 @@ const useProjectBySlug = (slug?: string | null) => {
     queryFn: () => fetchProjectBySlug({ slug }),
     enabled: !!slug,
     retry: 0,
+    refetchOnWindowFocus: false,
   });
 };
 
