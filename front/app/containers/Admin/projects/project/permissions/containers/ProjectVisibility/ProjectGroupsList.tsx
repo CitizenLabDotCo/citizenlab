@@ -29,7 +29,7 @@ import { IOption, Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useProjectGroups from 'hooks/useProjectGroups';
+import useProjectGroups from 'api/project_groups/useProjectGroups';
 import useGroups from 'api/groups/useGroups';
 
 const Container = styled.div`
@@ -71,15 +71,15 @@ const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
   const locale = useLocale();
   const currentTenantLocales = useAppConfigurationLocales();
 
-  const groupsProjects = useProjectGroups({ projectId });
+  const { data: groupsProjects } = useProjectGroups({ projectId });
 
   const [selectedGroups, setSelectedGroups] = useState<IOption[] | null>(null);
   const { data: groups } = useGroups({});
 
   const projectGroups =
-    !isNilOrError(groupsProjects) &&
+    groupsProjects &&
     groups &&
-    groupsProjects.map((groupProject) => {
+    groupsProjects.data.map((groupProject) => {
       const group = find(
         groups.data,
         (group) => group.id === groupProject.relationships.group.data.id
@@ -155,7 +155,7 @@ const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
 
   const groupsOptions = getOptions(
     groups || null,
-    groupsProjects,
+    groupsProjects.data,
     locale,
     currentTenantLocales
   );

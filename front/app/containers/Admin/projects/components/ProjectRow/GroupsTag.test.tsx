@@ -5,7 +5,9 @@ import GroupsTag from './GroupsTag';
 const projectGroups = {
   projectGroups: [{ id: 'projectGroup1' }, { id: 'projectGroup2' }],
 };
-jest.mock('hooks/useProjectGroups', () => jest.fn(() => projectGroups));
+jest.mock('api/project_groups/useProjectGroups', () =>
+  jest.fn(() => ({ data: projectGroups }))
+);
 const projectId = '1';
 
 describe('GroupsTag', () => {
