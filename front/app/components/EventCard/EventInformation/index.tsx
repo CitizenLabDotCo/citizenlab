@@ -288,7 +288,7 @@ const EventInformation = ({
             <StyledT
               value={event.attributes.description_multiloc}
               supportHtml={true}
-              ref={TElement}
+              innerRef={TElement}
               wrapInDiv={true}
               hideTextOverflow={hideTextOverflow && textOverflow}
             />
