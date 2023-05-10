@@ -25,11 +25,13 @@ resource 'Ideas' do
   # topic
 
   get '/api/v1/:locale/ideas/' do
+    route_summary 'Get a page of ideas.'
+    route_description 'Endpoint to retrieve citizen ideas. The most trending ideas are returned first. The endpoint supports pagination'
+
     let(:locale) { 'en' }
     let(:page_size) { 2 }
 
-    example_request 'Get a page of ideas' do
-      explanation 'Endpoint to retrieve citizen ideas. The most trending ideas are returned first. The endpoint supports pagination.'
+    example_request 'Successful response' do
       assert_status 200
       expect(json_response_body[:ideas].size).to eq 2
       expect(json_response_body[:meta]).to eq({ total_pages: 3, current_page: 1 })

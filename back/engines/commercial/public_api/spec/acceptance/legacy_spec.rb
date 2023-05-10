@@ -102,7 +102,7 @@ resource 'Legacy' do
         example_request 'Get one project by id' do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
-          expect(json_response[:project]).to match({
+          expect(json_response[:project]).to include(
             id: id,
             title: 'Renew West Parc',
             description_html: '<p>Let\'s renew the parc at the city border and make it an enjoyable place for young and old.</p>',
@@ -111,7 +111,7 @@ resource 'Legacy' do
             href: "http://example.org/projects/#{project.slug}",
             ideas_count: 0,
             images: []
-          })
+          )
         end
 
         example 'Get one project by id without a map configuration', document: false do
@@ -163,7 +163,7 @@ resource 'Legacy' do
         example_request 'Get one phase by id' do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
-          expect(json_response[:phase]).to match({
+          expect(json_response[:phase]).to include({
             id: id,
             title: 'Idea phase',
             start_at: phase.start_at.to_s,

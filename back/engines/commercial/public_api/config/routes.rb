@@ -10,6 +10,7 @@ PublicApi::Engine.routes.draw do
     end
 
     # New API
+    get '/:locale/users', to: 'users#index'
     get '/:locale/ideas', to: 'ideas#index'
     get '/:locale/projects', to: 'projects#index'
     get '/:locale/projects/:project_id/phases', to: 'phases#index'

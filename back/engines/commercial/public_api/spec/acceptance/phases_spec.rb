@@ -11,6 +11,8 @@ resource 'Phases' do
     header 'Authorization', "Bearer #{token}"
   end
 
+  let(:project) { create(:project_with_phases) }
+
   explanation 'Phases represent the steps in a timeline project. Only timeline projects have phases, continuous projects do not.'
 
   include_context 'common_parameters'
@@ -19,13 +21,14 @@ resource 'Phases' do
   # TODO: /api/v1/:locale/phases/:id
 
   get '/api/v1/:locale/projects/:project_id/phases', 'Phases: Listing the phases of a project' do
-    let!(:project) { create(:project_with_phases) }
-    let(:project_id) { project.id }
+    route_summary 'Phases: Listing the phases of a project'
+    route_description 'Endpoint to retrieve project phases. The phases are returned in chronological order. The endpoint supports pagination.'
+
     let(:locale) { 'en' }
+    let(:project_id) { project.id }
     let(:page_size) { 2 }
 
-    example_request 'Get the first page of phases for the given project' do
-      explanation 'Endpoint to retrieve project phases. The phases are returned in chronological order. The endpoint supports pagination.'
+    example_request 'Successful response' do
       expect(status).to eq(200)
       expect(json_response_body[:phases].size).to eq 2
       expect(json_response_body[:meta]).to eq({ total_pages: 3, current_page: 1 })
