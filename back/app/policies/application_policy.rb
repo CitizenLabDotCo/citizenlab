@@ -33,7 +33,7 @@ class ApplicationPolicy
   end
 
   def raise_not_authorized(reason)
-    raise Pundit::NotAuthorizedError, reason: reason
+    raise Pundit::NotAuthorizedErrorWithReason, reason: reason
   end
 
   class Scope

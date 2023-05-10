@@ -61,15 +61,6 @@ GIT
   specs:
     que (1.0.0.beta4)
 
-GIT
-  remote: https://github.com/varvet/pundit
-  revision: 973b63b396c2a98099caf5eefd1c6841416eddfa
-  ref: 973b63b396c2a98099caf5eefd1c6841416eddfa
-  branch: master
-  specs:
-    pundit (2.1.0)
-      activesupport (>= 3.0.0)
-
 PATH
   remote: engines/commercial/admin_api
   specs:
@@ -863,6 +854,8 @@ GEM
     public_suffix (4.0.7)
     puma (6.2.2)
       nio4r (~> 2.0)
+    pundit (2.3.0)
+      activesupport (>= 3.0.0)
     qonfig (0.28.0)
     que-web (0.9.3)
       que (~> 1.0.0.beta3)
@@ -1243,7 +1236,7 @@ DEPENDENCIES
   pry-rescue
   public_api!
   puma (~> 6.2.2)
-  pundit!
+  pundit (~> 2.3.0)
   que!
   que-web
   rack-attack (~> 6)
