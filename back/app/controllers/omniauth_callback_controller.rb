@@ -48,8 +48,8 @@ class OmniauthCallbackController < ApplicationController
 
     @user = @identity.user
 
-    if @user.nil?
-      @user = User.find_by_cimail(user_attrs[:email])
+    if @user.nil? && user_attrs.key?(:email) # some providers (ClaveUnica) don't return email
+      @user = User.find_by_cimail(user_attrs.fetch(:email))
       # https://github.com/CitizenLabDotCo/citizenlab/pull/3055#discussion_r1019061643
       if @user && !authver_method.can_merge?(@user, user_attrs, params[:sso_verification])
         # `sso_flow: 'signin'` - even if user signs up, we propose to sign in due to the content of the error message
