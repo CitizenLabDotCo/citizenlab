@@ -27,8 +27,6 @@ resource 'Phases' do
     example_request 'Get the first page of phases for the given project' do
       explanation 'Endpoint to retrieve project phases. The phases are returned in chronological order. The endpoint supports pagination.'
       expect(status).to eq(200)
-
-      pp json_response_body
       expect(json_response_body[:phases].size).to eq 2
       expect(json_response_body[:meta]).to eq({ total_pages: 3, current_page: 1 })
     end
