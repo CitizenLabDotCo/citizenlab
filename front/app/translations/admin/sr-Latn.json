@@ -1065,7 +1065,6 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.editPollAnswersButtonLabel": "Opcije odgovora",
   "app.containers.AdminPage.ProjectEdit.PollTab.exportPollResults": "Izvezite rezultate ankete",
   "app.containers.AdminPage.ProjectEdit.PollTab.maxOverTheMaxTooltip": "Maksimalan broj izbora je veći od broja opcija",
-  "app.containers.AdminPage.ProjectEdit.PollTab.maxUnderTheMinTooltip": "Pitanja sa više odgovora bi trebala da omoguće barem dva odgovora.",
   "app.containers.AdminPage.ProjectEdit.PollTab.multipleOption": "Višestruki izbor",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptions": "Bez opcija odgovora",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptionsTooltip": "U ovom obliku anketa se neće moći popunjavati. Sva pitanja moraju imati dostupne odgovore. ",

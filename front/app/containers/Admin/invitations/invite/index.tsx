@@ -16,6 +16,7 @@ import Tabs from 'components/UI/Tabs';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import HelmetIntl from 'components/HelmetIntl';
+
 const InviteUsersWithSeatsModal = lazy(
   () => import('components/admin/SeatBasedBilling/InviteUsersWithSeatsModal')
 );
@@ -58,6 +59,7 @@ export type TInviteTabName = 'template' | 'manual';
 
 const Invitations = () => {
   const { formatMessage } = useIntl();
+
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
   });
