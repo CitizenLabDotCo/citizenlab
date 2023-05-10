@@ -62,7 +62,9 @@ const QuestionRow = ({
           buttonStyle="text"
           icon="edit"
           ariaLabel="edit"
-        />
+        >
+          <FormattedMessage {...messages.editPollQuestion} />
+        </EditTitleButton>
       </Box>
     </TextCell>
 
@@ -80,6 +82,7 @@ const QuestionRow = ({
       className="e2e-edit-options"
       onClick={onEditOptions}
       buttonStyle="secondary"
+      icon="edit"
     >
       <FormattedMessage {...messages.editPollAnswersButtonLabel} />
     </Button>
