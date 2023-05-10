@@ -106,6 +106,7 @@ const AssigneeFilter = ({
     <Dropdown
       className={`${className} intercom-admin-asignee-filter`}
       id="e2e-select-assignee-filter"
+      data-testid="assignee-filter-dropdown"
       options={getAssigneeOptions(prospectAssignees)}
       onChange={onAssigneeChange}
       value={assignee || 'all'}
