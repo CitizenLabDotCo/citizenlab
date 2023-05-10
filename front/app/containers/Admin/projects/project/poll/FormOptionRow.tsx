@@ -1,6 +1,5 @@
 // Libraries
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Components
@@ -9,10 +8,6 @@ import { TextCell, Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 
 // Resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
 
 // Typings
 import { Multiloc, Locale } from 'typings';
@@ -23,12 +18,15 @@ import { addPollOption, updatePollOption } from 'services/pollOptions';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import useLocale from 'hooks/useLocale';
+import usePrevious from 'hooks/usePrevious';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 /*
  * edit mode : titleMultiloc and optionId defined, question Id not used
  * new mode : question Id defined, titleMultiloc and optionId not used
  */
-interface InputProps {
+interface Props {
   titleMultiloc?: Multiloc;
   mode: 'new' | 'edit';
   questionId?: string;
@@ -36,133 +34,104 @@ interface InputProps {
   optionId?: string;
 }
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenantLocales: GetAppConfigurationLocalesChildProps;
-}
+const FormOptionRow = ({
+  optionId,
+  titleMultiloc,
+  mode,
+  questionId,
+  closeRow,
+}: Props) => {
+  const locale = useLocale();
+  const tenantLocales = useAppConfigurationLocales();
+  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [newTitleMultiloc, setNewTitleMultiloc] = useState<Multiloc>(
+    titleMultiloc || {}
+  );
+  const prevOptionId = usePrevious(optionId);
 
-export interface Props extends DataProps, InputProps {}
-
-export interface State {
-  selectedLocale: Locale | null;
-  titleMultiloc: Multiloc;
-}
-
-export class FormOptionRow extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      selectedLocale: props.locale || null,
-      titleMultiloc: props.titleMultiloc || {},
-    };
-  }
-
-  static getDerivedStateFromProps(props: Props, state: State) {
-    if (!isNilOrError(props.locale) && !state.selectedLocale) {
-      return {
-        selectedLocale: props.locale,
-      };
+  useEffect(() => {
+    if (!isNilOrError(locale)) {
+      setSelectedLocale(locale);
     }
+  }, [locale]);
 
-    return null;
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.optionId !== this.props.optionId) {
-      this.setState({ titleMultiloc: this.props.titleMultiloc || {} });
+  useEffect(() => {
+    if (prevOptionId !== optionId) {
+      setNewTitleMultiloc(titleMultiloc || {});
     }
-  }
+  }, [titleMultiloc, optionId, prevOptionId]);
 
-  onSelectedLocaleChange = (selectedLocale: Locale) => {
-    this.setState({ selectedLocale });
+  const onSelectedLocaleChange = (selectedLocale: Locale) => {
+    setSelectedLocale(selectedLocale);
   };
 
-  onChangeTitle = (value: string, locale: Locale | undefined) => {
+  const onChangeTitle = (value: string, locale: string | undefined) => {
     if (locale) {
-      this.setState((state) => ({
-        titleMultiloc: {
-          ...state.titleMultiloc,
+      setNewTitleMultiloc((currentNewtitleMultiloc) => {
+        return {
+          ...currentNewtitleMultiloc,
           [locale]: value,
-        },
-      }));
+        };
+      });
     }
   };
 
-  onSave = () => {
-    const { mode, questionId, closeRow, optionId } = this.props;
-    const { titleMultiloc } = this.state;
-
+  const onSave = () => {
     if (mode === 'new' && questionId) {
-      addPollOption(questionId, titleMultiloc).then(() => {
+      addPollOption(questionId, newTitleMultiloc).then(() => {
         closeRow();
       });
     }
 
     if (mode === 'edit' && optionId) {
-      updatePollOption(optionId, titleMultiloc).then(() => {
+      updatePollOption(optionId, newTitleMultiloc).then(() => {
         closeRow();
       });
     }
   };
 
-  render() {
-    const { selectedLocale, titleMultiloc } = this.state;
-    const { closeRow, tenantLocales } = this.props;
+  return (
+    <Row className="e2e-form-option-row">
+      <TextCell>
+        {selectedLocale && (
+          <LocaleSwitcher
+            onSelectedLocaleChange={onSelectedLocaleChange}
+            locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
+            selectedLocale={selectedLocale}
+            values={{ titleMultiloc: newTitleMultiloc }}
+          />
+        )}
+      </TextCell>
 
-    return (
-      <Row className="e2e-form-option-row">
-        <TextCell>
-          {selectedLocale && (
-            <LocaleSwitcher
-              onSelectedLocaleChange={this.onSelectedLocaleChange}
-              locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
-              selectedLocale={selectedLocale}
-              values={{ titleMultiloc }}
-            />
-          )}
-        </TextCell>
+      <TextCell className="expand">
+        {selectedLocale && (
+          <Input
+            autoFocus
+            value={newTitleMultiloc[selectedLocale]}
+            locale={selectedLocale}
+            type="text"
+            onChange={onChangeTitle}
+          />
+        )}
+      </TextCell>
 
-        <TextCell className="expand">
-          {selectedLocale && (
-            <Input
-              autoFocus
-              value={titleMultiloc?.[selectedLocale]}
-              locale={selectedLocale}
-              type="text"
-              onChange={this.onChangeTitle}
-            />
-          )}
-        </TextCell>
+      <Button
+        className="e2e-form-option-save"
+        buttonStyle="secondary"
+        onClick={onSave}
+      >
+        <FormattedMessage {...messages.saveOption} />
+      </Button>
 
-        <Button
-          className="e2e-form-option-save"
-          buttonStyle="secondary"
-          onClick={this.onSave}
-        >
-          <FormattedMessage {...messages.saveOption} />
-        </Button>
+      <Button
+        className="e2e-form-option-cancel"
+        buttonStyle="secondary"
+        onClick={closeRow}
+      >
+        <FormattedMessage {...messages.cancelOption} />
+      </Button>
+    </Row>
+  );
+};
 
-        <Button
-          className="e2e-form-option-cancel"
-          buttonStyle="secondary"
-          onClick={closeRow}
-        >
-          <FormattedMessage {...messages.cancelOption} />
-        </Button>
-      </Row>
-    );
-  }
-}
-
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  tenantLocales: <GetAppConfigurationLocales />,
-});
-
-const FormOptionRowWithData = (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <FormOptionRow {...dataProps} {...inputProps} />}
-  </Data>
-);
-
-export default FormOptionRowWithData;
+export default FormOptionRow;
