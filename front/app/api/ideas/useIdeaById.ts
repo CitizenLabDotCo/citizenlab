@@ -12,6 +12,8 @@ const useIdeaById = (id?: string) => {
     queryKey: ideasKeys.item({ id }),
     queryFn: () => fetchIdea({ id }),
     enabled: !!id,
+    retry: 1,
+    refetchOnWindowFocus: false,
   });
 };
 

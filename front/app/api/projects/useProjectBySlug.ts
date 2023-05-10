@@ -12,7 +12,7 @@ const useProjectBySlug = (slug?: string | null) => {
     queryKey: projectsKeys.item({ slug }),
     queryFn: () => fetchProjectBySlug({ slug }),
     enabled: !!slug,
-    retry: 0,
+    retry: 1,
     refetchOnWindowFocus: false,
   });
 };
