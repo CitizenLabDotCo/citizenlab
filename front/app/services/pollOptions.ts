@@ -8,7 +8,7 @@ export interface IPollOptions {
 
 export interface IPollOptionData {
   id: string;
-  type: string;
+  type: 'option';
   attributes: {
     title_multiloc: Multiloc;
     ordering: number;

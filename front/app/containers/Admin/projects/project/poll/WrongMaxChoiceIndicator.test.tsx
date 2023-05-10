@@ -1,21 +1,15 @@
-// @ts-nocheck
 import React from 'react';
 import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 import { mockOption } from 'services/__mocks__/pollOptions';
 import { render, screen } from 'utils/testUtils/rtl';
 import { IPollOptionData } from 'services/pollOptions';
 
-jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
-jest.mock('services/pollOptions');
-jest.mock('./WrongOptionsIndicator', () => ({
-  StyledIconTooltip: 'StyledIconTooltip',
-  Indicator: 'Indicator',
-}));
 const mockPollOptions: IPollOptionData[] = [
   'Vanilla',
   'Pistachio',
   'Raspberry',
-].map((item, index) => mockOption(index, item));
+].map((item, index) => mockOption(index.toString(), item, index));
+
 jest.mock('hooks/usePollOptions', () => () => mockPollOptions);
 
 describe('<WrongMaxChoiceIndicator/>', () => {

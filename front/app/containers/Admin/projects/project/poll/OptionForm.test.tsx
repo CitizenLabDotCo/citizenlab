@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { OptionForm } from './OptionForm';
-import { IPollOptionData } from 'services/pollOptions';
 import { mockQuestion } from 'services/__mocks__/pollQuestions';
 import { mockOption } from 'services/__mocks__/pollOptions';
 
@@ -23,8 +22,8 @@ const question = mockQuestion(
   'What is your favourite ice cream flavour ?'
 );
 const pollOptions = ['Vanilla', 'Pistachio', 'Raspberry'].map((item, index) =>
-  mockOption(index.toString(), item)
-) as IPollOptionData[];
+  mockOption(index.toString(), item, index)
+);
 
 describe('<OptionForm/>', () => {
   it('clicking done calls the collapse handler', () => {
@@ -85,9 +84,7 @@ describe('<OptionForm/>', () => {
         <OptionForm
           question={question}
           collapse={jest.fn()}
-          pollOptions={
-            [mockOption('vanillaId', 'Vanilla')] as IPollOptionData[]
-          }
+          pollOptions={[mockOption('vanillaId', 'Vanilla', 1)]}
         />
       );
       expect(
@@ -105,7 +102,10 @@ describe('<OptionForm/>', () => {
         />
       );
       wrapper.setProps({
-        pollOptions: [...pollOptions, mockOption('chocolateId', 'Chocolate')],
+        pollOptions: [
+          ...pollOptions,
+          mockOption('chocolateId', 'Chocolate', pollOptions.length + 1),
+        ],
       });
       expect(wrapper.find('OptionRow').length).toBe(4);
     });
@@ -166,9 +166,7 @@ describe('<OptionForm/>', () => {
           <OptionForm
             question={question}
             collapse={jest.fn()}
-            pollOptions={
-              [mockOption('vanillaId', 'Vanilla')] as IPollOptionData[]
-            }
+            pollOptions={[mockOption('vanillaId', 'Vanilla', 1)]}
           />
         );
         wrapper.find('OptionRow').prop('editOption' as any)();

@@ -5,7 +5,7 @@ import { mockOption } from 'services/__mocks__/pollOptions';
 jest.mock('services/pollOptions', () => ({
   addPollOption: jest.fn((_id, _type, title) => {
     return new Promise((resolve) =>
-      resolve({ data: mockOption('newOption', title) })
+      resolve({ data: mockOption('newOption', title, 1) })
     );
   }),
   updatePollOption: jest.fn(() => {
