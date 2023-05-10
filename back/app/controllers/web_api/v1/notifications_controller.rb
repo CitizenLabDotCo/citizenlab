@@ -17,17 +17,17 @@ class WebApi::V1::NotificationsController < ApplicationController
     end
 
     # This rubbish actually works! Really not arguing we should do this, and almost certainly not in this controller
-    # action, but it at least shows we can serialize the notifications without using the heteregenous serializer.
+    # action, but it at least shows we can serialize the notifications without using the heterogenous serializer.
     collection = []
 
     @notifications.each do |notification|
-      serializer_str = "WebApi::V1::#{notification.type}Serializer"
+      serializer_class = "WebApi::V1::#{notification.type}Serializer".constantize
 
-      collection << JSON.parse(serializer_str.constantize.new(notification, params: fastjson_params).serializable_hash.to_json)['data']
+      collection << JSON.parse(serializer_class.new(notification, params: fastjson_params).serializable_hash.to_json)['data']
     end
 
     # I'm just faking the pagination links here, but it's enough to get the frontend to work.
-    # Would need to work out how to get these links values programtically.
+    # Would need to work out how to get these links values programatically.
     links = {
       self: 'http://localhost:3000/web_api/v1/notifications?page%5Bnumber%5D=1&page%5Bsize%5D=8',
       first: 'http://localhost:3000/web_api/v1/notifications?page%5Bnumber%5D=1&page%5Bsize%5D=8',
