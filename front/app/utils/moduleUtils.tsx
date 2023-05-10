@@ -32,7 +32,7 @@ import { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import { ICommentData } from 'api/comments/types';
-import { IGroupDataAttributes, MembershipType } from 'services/groups';
+import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
 import { TNotificationData } from 'services/notifications';
 import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
@@ -152,7 +152,7 @@ export interface OutletsPropertyMap {
   'app.components.admin.PostManager.topActionBar': {
     assignee?: string | null;
     projectId?: string | null;
-    handleAssigneeFilterChange: (value: string) => void;
+    handleAssigneeFilterChange: (value: string | undefined) => void;
     type: ManagerType;
   };
   'app.components.admin.PostManager.components.PostTable.IdeaRow.cells': {

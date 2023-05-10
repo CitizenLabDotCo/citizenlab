@@ -82,9 +82,7 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 # gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-# Latest version (2.4.1) of Pundit on RubyGems is quite outdated (2019-08-14).
-# This newer version from Git adds reason to Pundit::NotAuthorized.
-gem 'pundit', git: 'https://github.com/varvet/pundit', branch: 'master', ref: '973b63b396c2a98099caf5eefd1c6841416eddfa'
+gem 'pundit', '~> 2.3.0'
 gem 'active_model_serializers', '~> 0.10.12'
 
 # See https://github.com/nsarno/knock/issues/250
@@ -169,6 +167,7 @@ gem 'rack-attack', '~> 6'
 # in the main app.
 gem 'intercom', '~> 4.2'
 gem 'mjml-rails', '~> 4.8'
+gem 'cloudfront-rails', '~> 0.4'
 
 # Included here because of CVE-2022-32209.
 # See https://groups.google.com/g/rubyonrails-security/c/ce9PhUANQ6s
@@ -185,11 +184,6 @@ Dir.children('engines/free').each do |engine_name|
 end
 
 gem 'ros-apartment', require: 'apartment'
-
-# Upstream actionpack-cloudfront depends on ActionController::Helpers, which
-# is not enabled for a rails api project, so we run on a fork.
-# PR to merge to upstream: https://github.com/customink/actionpack-cloudfront/pull/18
-gem 'actionpack-cloudfront', github: 'CitizenLabDotCo/actionpack-cloudfront'
 
 commercial_engines = [
   'multi_tenancy',

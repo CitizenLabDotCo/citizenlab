@@ -1065,7 +1065,6 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.editPollAnswersButtonLabel": "Svarsval",
   "app.containers.AdminPage.ProjectEdit.PollTab.exportPollResults": "Exportera omröstningsresultaten",
   "app.containers.AdminPage.ProjectEdit.PollTab.maxOverTheMaxTooltip": "Det maximala antalet val är större än antalet alternativ",
-  "app.containers.AdminPage.ProjectEdit.PollTab.maxUnderTheMinTooltip": "För en fråga med flera svar bör du tillåta minst två svar.",
   "app.containers.AdminPage.ProjectEdit.PollTab.multipleOption": "Flerval",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptions": "Inga alternativ",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptionsTooltip": "Alla frågor måste ha svarsval",

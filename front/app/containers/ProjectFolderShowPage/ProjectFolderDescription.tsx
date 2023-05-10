@@ -23,7 +23,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { media, fontSizes, isRtl, colors } from 'utils/styleUtils';
 
 // typings
-import { IProjectFolderData } from 'services/projectFolders';
+import { IProjectFolderData } from 'api/project_folders/types';
 
 const desktopCollapsedDescriptionMaxHeight = 99999;
 const mobileCollapsedDescriptionMaxHeight = 180;

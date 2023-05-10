@@ -27,6 +27,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
 import VerificationStatus from './VerificationStatus';
 import LoginCredentials from './LoginCredentials';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.main`
   width: 100%;
@@ -46,6 +47,7 @@ const Wrapper = styled.div``;
 
 export default () => {
   const { data: appConfig } = useAppConfiguration();
+  const passwordLoginActive = useFeatureFlag({ name: 'password_login' });
   const authUser = useAuthUser();
   const loaded = appConfig !== undefined && authUser !== undefined;
   const showEditPage =
@@ -73,7 +75,7 @@ export default () => {
           <VerificationStatus />
           <ProfileForm />
           <FragmentForm />
-          <LoginCredentials user={authUser} />
+          {passwordLoginActive && <LoginCredentials user={authUser} />}
           <ProfileDeletion />
           <CampaignsConsentForm />
         </Wrapper>

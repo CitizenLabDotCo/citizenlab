@@ -25,9 +25,9 @@ import useLocalize from 'hooks/useLocalize';
 import { IOption, Locale } from 'typings';
 import useProjects from 'api/projects/useProjects';
 import { IProjectData } from 'api/projects/types';
-import { adopt } from 'react-adopt';
-import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import { TInviteTabName } from '.';
+import useGroups from 'api/groups/useGroups';
+import { IGroups } from 'api/groups/types';
 
 const StyledWarning = styled(Warning)`
   margin-top: 5px;
@@ -37,11 +37,7 @@ const StyledToggle = styled(Toggle)`
   margin-bottom: 10px;
 `;
 
-interface DataProps {
-  groups: GetGroupsChildProps;
-}
-
-interface InputProps {
+interface Props {
   invitationOptionsOpened: boolean;
   onToggleOptions: () => void;
   selectedView: TInviteTabName;
@@ -59,8 +55,6 @@ interface InputProps {
   selectedInviteText: string | null;
 }
 
-interface Props extends InputProps, DataProps {}
-
 const InvitationOptions = ({
   invitationOptionsOpened,
   onToggleOptions,
@@ -77,7 +71,6 @@ const InvitationOptions = ({
   selectedProjects,
   selectedGroups,
   selectedInviteText,
-  groups,
 }: Props) => {
   const { formatMessage } = useIntl();
   const appConfigurationLocales = useAppConfigurationLocales();
@@ -87,6 +80,7 @@ const InvitationOptions = ({
   const { data: projects } = useProjects({
     publicationStatuses: ['draft', 'published', 'archived'],
   });
+  const { data: groups } = useGroups({ membershipType: 'manual' });
   const localize = useLocalize();
 
   const getProjectOptions = (projects: IProjectData[]) => {
@@ -100,9 +94,9 @@ const InvitationOptions = ({
     return null;
   };
 
-  const getGroupOptions = (groups: GetGroupsChildProps) => {
-    if (!isNilOrError(groups.groupsList) && groups.groupsList.length > 0) {
-      return groups.groupsList.map((group) => ({
+  const getGroupOptions = (groups?: IGroups) => {
+    if (groups?.data && groups.data.length > 0) {
+      return groups.data.map((group) => ({
         value: group.id,
         label: localize(group.attributes.title_multiloc),
       }));
@@ -276,14 +270,4 @@ const InvitationOptions = ({
   );
 };
 
-const Data = adopt<DataProps>({
-  groups: <GetGroups membershipType="manual" />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps: DataProps) => (
-      <InvitationOptions {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+export default InvitationOptions;

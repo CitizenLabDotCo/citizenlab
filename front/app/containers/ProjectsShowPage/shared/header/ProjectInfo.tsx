@@ -11,14 +11,14 @@ import ReadMoreWrapper from 'containers/ProjectsShowPage/shared/header/ReadMoreW
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import useProjectFiles from 'hooks/useProjectFiles';
-import { useWindowSize, Title, Box } from '@citizenlab/cl2-component-library';
+import { Title, Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';
 
 // style
 import styled from 'styled-components';
-import { media, viewportWidths, isRtl } from 'utils/styleUtils';
+import { media, isRtl } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -73,9 +73,7 @@ interface Props {
 const ProjectInfo = ({ projectId, className }: Props) => {
   const { data: project } = useProjectById(projectId);
   const projectFiles = useProjectFiles(projectId);
-  const { windowWidth } = useWindowSize();
-
-  const smallerThanLargeTablet = windowWidth <= viewportWidths.tablet;
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
   if (project) {
     return (
@@ -86,7 +84,7 @@ const ProjectInfo = ({ projectId, className }: Props) => {
               <T value={project.data.attributes.title_multiloc} />
             </Title>
 
-            {smallerThanLargeTablet && (
+            {isSmallerThanTablet && (
               <StyledProjectArchivedIndicator projectId={projectId} />
             )}
 
