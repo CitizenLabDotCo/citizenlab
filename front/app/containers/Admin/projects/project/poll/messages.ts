@@ -16,7 +16,7 @@ export default defineMessages({
   },
   editPollAnswersButtonLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.editPollAnswersButtonLabel1',
-    defaultMessage: 'Edit answer choices',
+    defaultMessage: 'Edit answer options',
   },
   editPollQuestion: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.editPollQuestion',
@@ -57,28 +57,32 @@ export default defineMessages({
     defaultMessage: 'Cancel',
   },
   saveQuestion: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollTab.saveQuestion',
-    defaultMessage: 'Save',
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.saveQuestion1',
+    defaultMessage: 'Save question',
   },
   optionsFormHeader: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollTab.optionsFormHeader',
-    defaultMessage: 'Manage options for: {questionTitle}',
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.optionsFormHeader1',
+    defaultMessage: 'Manage answer options for: {questionTitle}',
   },
   editOptionSave: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollTab.editOptionSave',
-    defaultMessage: 'Save',
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.editOptionSave1',
+    defaultMessage: 'Save answer options',
+  },
+  cancelEditAnswerOptions: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.cancelEditAnswerOptions',
+    defaultMessage: 'Cancel',
   },
   deleteOption: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.deleteOption',
     defaultMessage: 'Delete',
   },
   editOption: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollTab.editOption',
-    defaultMessage: 'Edit',
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.editOption1',
+    defaultMessage: 'Edit answer option',
   },
-  addAnswerChoice: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollTab.addAnswerChoice',
-    defaultMessage: 'Add an answer choice',
+  addAnswerOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.addAnswerOption',
+    defaultMessage: 'Add an answer option',
   },
   saveOption: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.saveOption',

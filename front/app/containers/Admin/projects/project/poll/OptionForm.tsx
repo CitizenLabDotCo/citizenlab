@@ -26,6 +26,7 @@ import messages from './messages';
 // Style
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import { Text } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div``;
 
@@ -95,19 +96,25 @@ export class OptionForm extends PureComponent<Props, State> {
             <Icon name="sort" />
           </DisabledDragHandle>
           <TextCell className="expand">
-            <FormattedMessage
-              {...messages.optionsFormHeader}
-              values={{
-                questionTitle: <T value={question.attributes.title_multiloc} />,
-              }}
-            />
+            <b>
+              <FormattedMessage
+                {...messages.optionsFormHeader}
+                values={{
+                  questionTitle: (
+                    <Text display="inline" fontWeight="normal">
+                      <T value={question.attributes.title_multiloc} />
+                    </Text>
+                  ),
+                }}
+              />
+            </b>
           </TextCell>
           <Button
             className="e2e-collapse-option-form"
             onClick={collapse}
             buttonStyle="secondary"
           >
-            <FormattedMessage {...messages.editOptionSave} />
+            <FormattedMessage {...messages.cancelEditAnswerOptions} />
           </Button>
         </Row>
         <OptionsContainer>
@@ -158,7 +165,7 @@ export class OptionForm extends PureComponent<Props, State> {
                 onClick={this.addOption}
                 autoFocus
               >
-                <FormattedMessage {...messages.addAnswerChoice} />
+                <FormattedMessage {...messages.addAnswerOption} />
               </StyledButton>
             )}
           </List>

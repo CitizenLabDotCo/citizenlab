@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Row, TextCell } from 'components/admin/ResourceList';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -30,13 +31,17 @@ const OptionRow = ({
 }) => (
   <Row key={pollOptionId}>
     <TextCell className="expand">
-      <T value={pollOptionTitle} />
-      <StyledButton
-        className="e2e-edit-option"
-        onClick={editOption}
-        buttonStyle="text"
-        icon="edit"
-      />
+      <Box display='flex' alignItems='center'>
+        <T value={pollOptionTitle} />
+        <StyledButton
+          className="e2e-edit-option"
+          onClick={editOption}
+          buttonStyle="text"
+          icon="edit"
+        >
+          <FormattedMessage {...messages.editOption} />
+        </StyledButton>
+      </Box>
     </TextCell>
     <Button
       className="e2e-delete-option"
