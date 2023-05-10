@@ -12,7 +12,7 @@ jest.mock('components/admin/ResourceList', () => ({
 jest.mock('components/UI/Button', () => 'Button');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 
-import { FormQuestionRow, Props, State } from './FormQuestionRow';
+import { QuestionFormRow, Props, State } from './QuestionFormRow';
 import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 
 let onChange = jest.fn();
@@ -30,7 +30,7 @@ describe('<FormQuestionRow />', () => {
   describe('handles language switch for multilingual content', () => {
     it('shows the passed in locale by default', () => {
       const wrapper = shallow<Component<Props, State>>(
-        <FormQuestionRow
+        <QuestionFormRow
           titleMultiloc={getTitleMultiloc(
             'What is your favourite ice cream flavour ?'
           )}
@@ -47,7 +47,7 @@ describe('<FormQuestionRow />', () => {
 
     it('handles changing field locale', () => {
       const wrapper = shallow<Component<Props, State>>(
-        <FormQuestionRow
+        <QuestionFormRow
           titleMultiloc={getTitleMultiloc(
             'What is your favourite ice cream flavour ?'
           )}
@@ -66,7 +66,7 @@ describe('<FormQuestionRow />', () => {
   describe('handles controlled input of title multiloc', () => {
     it('passes down initial value', () => {
       const wrapper = shallow<Component<Props, State>>(
-        <FormQuestionRow
+        <QuestionFormRow
           titleMultiloc={getTitleMultiloc(
             'What is your favourite ice cream flavour ?'
           )}
@@ -84,7 +84,7 @@ describe('<FormQuestionRow />', () => {
 
     it('reacts to user input', () => {
       const wrapper = shallow<Component<Props, State>>(
-        <FormQuestionRow
+        <QuestionFormRow
           titleMultiloc={getTitleMultiloc('What is your favourite ice cream ')}
           onChange={onChange}
           onSave={onSave}
@@ -105,7 +105,7 @@ describe('<FormQuestionRow />', () => {
 
     it('reacts to content changes', () => {
       const wrapper = shallow<Component<Props, State>>(
-        <FormQuestionRow
+        <QuestionFormRow
           titleMultiloc={getTitleMultiloc('What is your favourite ice cream ')}
           onChange={onChange}
           onSave={onSave}
@@ -128,7 +128,7 @@ describe('<FormQuestionRow />', () => {
   describe('handles saving', () => {
     it('calls onSave when clicking save button', () => {
       const wrapper = shallow<Component<Props, State>>(
-        <FormQuestionRow
+        <QuestionFormRow
           titleMultiloc={getTitleMultiloc('What is your favourite ice cream ')}
           onChange={onChange}
           onSave={onSave}
@@ -146,7 +146,7 @@ describe('<FormQuestionRow />', () => {
   describe('handles cancelling', () => {
     it('calls onCancel when clicking cancel button', () => {
       const wrapper = shallow<Component<Props, State>>(
-        <FormQuestionRow
+        <QuestionFormRow
           titleMultiloc={getTitleMultiloc('What is your favourite ice cream ')}
           onChange={onChange}
           onSave={onSave}

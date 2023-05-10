@@ -19,7 +19,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import QuestionRow from './QuestionRow';
-import FormQuestionRow from './FormQuestionRow';
+import QuestionFormRow from './QuestionFormRow';
 import OptionForm from './OptionForm';
 
 // i18n
@@ -128,6 +128,7 @@ const PollAdminForm = ({
     setEditingQuestionTitle(currentTitle);
     setEditingOptionsId(null);
   };
+  w;
 
   const changeEditingQuestion = (value: Multiloc) => {
     setEditingQuestionTitle(value);
@@ -176,7 +177,7 @@ const PollAdminForm = ({
           listItems.map((question, index) => (
             <Fragment key={question.id}>
               {editingQuestionId === question.id && editingQuestionTitle ? (
-                <FormQuestionRow
+                <QuestionFormRow
                   titleMultiloc={editingQuestionTitle}
                   onChange={changeEditingQuestion}
                   onSave={saveEditingQuestion}
@@ -207,7 +208,7 @@ const PollAdminForm = ({
             </Fragment>
           ))}
         {newQuestionTitle && (
-          <FormQuestionRow
+          <QuestionFormRow
             key="new"
             titleMultiloc={newQuestionTitle}
             onChange={changeNewQuestion}

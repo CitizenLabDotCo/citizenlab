@@ -24,7 +24,7 @@ interface Props {
   onCancel: () => void;
 }
 
-const FormQuestionRow = ({
+const QuestionFormRow = ({
   onChange,
   titleMultiloc,
   onSave,
@@ -82,7 +82,7 @@ const FormQuestionRow = ({
 
       <Button
         className="e2e-form-question-save"
-        buttonStyle="secondary"
+        buttonStyle="primary"
         onClick={onSave}
       >
         <FormattedMessage {...messages.saveQuestion} />
@@ -98,4 +98,4 @@ const FormQuestionRow = ({
   );
 };
 
-export default FormQuestionRow;
+export default QuestionFormRow;
