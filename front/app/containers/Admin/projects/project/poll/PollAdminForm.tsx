@@ -1,8 +1,8 @@
 // Libraries
-import React, { PureComponent, Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { isEqual, clone } from 'lodash-es';
+import { clone } from 'lodash-es';
 import styled from 'styled-components';
 
 // Services / Data loading
@@ -39,95 +39,70 @@ interface Props {
   pollQuestions: IPollQuestion[] | null | undefined;
 }
 
-interface State {
-  newQuestionTitle: Multiloc | null;
-  editingQuestionTitle: Multiloc;
-  editingQuestionId: string | null;
-  editingOptionsId: string | null;
-  itemsWhileDragging: IPollQuestion[] | null;
-  isProcessing: boolean;
-}
+const PollAdminForm = ({
+  participationContextId,
+  participationContextType,
+  pollQuestions,
+}: Props) => {
+  const [newQuestionTitle, setNewQuestionTitle] = useState<Multiloc | null>(
+    null
+  );
+  const [editingQuestionId, setEditingQuestionId] = useState<string | null>(
+    null
+  );
+  const [editingQuestionTitle, setEditingQuestionTitle] =
+    useState<Multiloc | null>(null);
+  const [editingOptionsId, setEditingOptionsId] = useState<string | null>(null);
+  const [itemsWhileDragging, setItemsWhileDragging] = useState<
+    IPollQuestion[] | null
+  >(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-export class PollAdminForm extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      newQuestionTitle: null,
-      editingQuestionId: null,
-      editingQuestionTitle: {},
-      editingOptionsId: null,
-      itemsWhileDragging: null,
-      isProcessing: false,
-    };
-  }
+  // TO DO: componentDidUpdate
 
-  // Drag and drop handling
-  componentDidUpdate(prevProps: Props) {
-    const { itemsWhileDragging } = this.state;
-    const prevCustomFieldsIds =
-      prevProps.pollQuestions &&
-      prevProps.pollQuestions.map((customField) => customField.id);
-    const nextCustomFieldsIds =
-      this.props.pollQuestions &&
-      this.props.pollQuestions.map((customField) => customField.id);
-
-    if (
-      itemsWhileDragging &&
-      !isEqual(prevCustomFieldsIds, nextCustomFieldsIds)
-    ) {
-      this.setState({ itemsWhileDragging: null });
-    }
-  }
-
-  handleDragRow = (fromIndex: number, toIndex: number) => {
-    if (!this.state.isProcessing) {
-      const listItems = this.listItems();
+  const handleDragRow = (fromIndex: number, toIndex: number) => {
+    if (!isProcessing) {
+      const listItems = getListItems();
 
       if (!listItems) return;
 
       const itemsWhileDragging = clone(listItems);
       itemsWhileDragging.splice(fromIndex, 1);
       itemsWhileDragging.splice(toIndex, 0, listItems[fromIndex]);
-      this.setState({ itemsWhileDragging });
+      setItemsWhileDragging(itemsWhileDragging);
     }
   };
 
-  handleDropRow = (fieldId: string, toIndex: number) => {
-    const listItems = this.listItems();
+  const handleDropRow = (fieldId: string, toIndex: number) => {
+    const listItems = getListItems();
 
     if (!listItems) return;
 
     const field = listItems.find((listItem) => listItem.id === fieldId);
 
     if (field && field.attributes.ordering !== toIndex) {
-      this.setState({ isProcessing: true });
-      reorderPollQuestion(fieldId, toIndex).then(() =>
-        this.setState({ isProcessing: false })
-      );
+      setIsProcessing(true);
+      reorderPollQuestion(fieldId, toIndex).then(() => setIsProcessing(false));
     } else {
-      this.setState({ itemsWhileDragging: null });
+      setItemsWhileDragging(null);
     }
   };
 
-  listItems = () => {
-    const { itemsWhileDragging } = this.state;
-    const { pollQuestions } = this.props;
+  const getListItems = () => {
     return itemsWhileDragging || pollQuestions;
   };
 
   // New question
-  startNewQuestion = () => {
-    this.setState({ newQuestionTitle: {}, editingOptionsId: null });
+  const startNewQuestion = () => {
+    setNewQuestionTitle(null);
+    setEditingOptionsId(null);
   };
 
-  changeNewQuestion = (value: Multiloc) => {
-    this.setState({ newQuestionTitle: value });
+  const changeNewQuestion = (value: Multiloc) => {
+    setNewQuestionTitle(value);
   };
 
-  saveNewQuestion = () => {
-    const { participationContextId, participationContextType } = this.props;
-    const { newQuestionTitle } = this.state;
-
+  const saveNewQuestion = () => {
     if (
       participationContextType &&
       participationContextId &&
@@ -138,46 +113,44 @@ export class PollAdminForm extends PureComponent<Props, State> {
         participationContextType,
         newQuestionTitle
       ).then((res) => {
-        this.setState({
-          newQuestionTitle: null,
-          editingOptionsId: res.data.id,
-        });
+        setNewQuestionTitle(null);
+        setEditingOptionsId(res.data.id);
       });
     }
   };
-  cancelNewQuestion = () => {
-    this.setState({ newQuestionTitle: null });
+  const cancelNewQuestion = () => {
+    setNewQuestionTitle(null);
   };
 
   // Edit question
-  editQuestion = (questionId: string, currentTitle: Multiloc) => () => {
-    this.setState({
-      editingQuestionId: questionId,
-      editingQuestionTitle: currentTitle,
-      editingOptionsId: null,
-    });
+  const editQuestion = (questionId: string, currentTitle: Multiloc) => () => {
+    setEditingQuestionId(questionId);
+    setEditingQuestionTitle(currentTitle);
+    setEditingOptionsId(null);
   };
 
-  changeEditingQuestion = (value: Multiloc) => {
-    this.setState({ editingQuestionTitle: value });
+  const changeEditingQuestion = (value: Multiloc) => {
+    setEditingQuestionTitle(value);
   };
 
-  saveEditingQuestion = () => {
-    const { editingQuestionTitle, editingQuestionId } = this.state;
-    editingQuestionId &&
+  const saveEditingQuestion = () => {
+    if (editingQuestionId && editingQuestionTitle) {
       updatePollQuestion(editingQuestionId, {
         title_multiloc: editingQuestionTitle,
       }).then(() => {
-        this.setState({ editingQuestionId: null, editingQuestionTitle: {} });
+        setEditingQuestionId(null);
+        setEditingQuestionTitle(null);
       });
+    }
   };
-  cancelEditQuestion = () => {
-    this.setState({ editingQuestionId: null, editingQuestionTitle: {} });
+
+  const cancelEditQuestion = () => {
+    setEditingQuestionId(null);
+    setEditingQuestionTitle(null);
   };
 
   // Delete question
-  deleteQuestion = (questionId: string) => () => {
-    const { participationContextId, participationContextType } = this.props;
+  const deleteQuestion = (questionId: string) => () => {
     deletePollQuestion(
       questionId,
       participationContextId,
@@ -186,85 +159,76 @@ export class PollAdminForm extends PureComponent<Props, State> {
   };
 
   // Option edition
-  editOptions = (questionId: string) => () => {
-    this.setState({ editingOptionsId: questionId });
+  const editOptions = (questionId: string) => () => {
+    setEditingOptionsId(questionId);
   };
 
-  closeEditingOptions = () => {
-    this.setState({ editingOptionsId: null });
+  const closeEditingOptions = () => {
+    setEditingOptionsId(null);
   };
 
-  render() {
-    const listItems = this.listItems() || [];
-    const {
-      newQuestionTitle,
-      editingQuestionId,
-      editingQuestionTitle,
-      editingOptionsId,
-    } = this.state;
-    return (
-      <>
-        <StyledList key={listItems.length + (newQuestionTitle ? 1 : 0)}>
-          {!isNilOrError(listItems) &&
-            listItems.map((question, index) => (
-              <Fragment key={question.id}>
-                {editingQuestionId === question.id ? (
-                  <FormQuestionRow
-                    titleMultiloc={editingQuestionTitle}
-                    onChange={this.changeEditingQuestion}
-                    onSave={this.saveEditingQuestion}
-                    onCancel={this.cancelEditQuestion}
-                  />
-                ) : editingOptionsId === question.id ? (
-                  <OptionForm
-                    question={question}
-                    collapse={this.closeEditingOptions}
-                  />
-                ) : (
-                  <QuestionRow
-                    question={question}
-                    isLastItem={
-                      index === listItems.length - 1 && !newQuestionTitle
-                    }
-                    index={index}
-                    onDelete={this.deleteQuestion(question.id)}
-                    onEdit={this.editQuestion(
-                      question.id,
-                      question.attributes.title_multiloc
-                    )}
-                    onEditOptions={this.editOptions(question.id)}
-                    handleDragRow={this.handleDragRow}
-                    handleDropRow={this.handleDropRow}
-                  />
-                )}
-              </Fragment>
-            ))}
-          {newQuestionTitle && (
-            <FormQuestionRow
-              key="new"
-              titleMultiloc={newQuestionTitle}
-              onChange={this.changeNewQuestion}
-              onSave={this.saveNewQuestion}
-              onCancel={this.cancelNewQuestion}
-            />
-          )}
-        </StyledList>
-        {!newQuestionTitle && !editingOptionsId && (
-          <Button
-            className="e2e-add-question-btn"
-            buttonStyle="cl-blue"
-            icon="plus-circle"
-            onClick={this.startNewQuestion}
-          >
-            <FormattedMessage {...messages.addPollQuestion} />
-          </Button>
+  const listItems = getListItems() || [];
+  return (
+    <>
+      <StyledList key={listItems.length + (newQuestionTitle ? 1 : 0)}>
+        {!isNilOrError(listItems) &&
+          listItems.map((question, index) => (
+            <Fragment key={question.id}>
+              {editingQuestionId === question.id && editingQuestionTitle ? (
+                <FormQuestionRow
+                  titleMultiloc={editingQuestionTitle}
+                  onChange={changeEditingQuestion}
+                  onSave={saveEditingQuestion}
+                  onCancel={cancelEditQuestion}
+                />
+              ) : editingOptionsId === question.id ? (
+                <OptionForm
+                  question={question}
+                  collapse={closeEditingOptions}
+                />
+              ) : (
+                <QuestionRow
+                  question={question}
+                  isLastItem={
+                    index === listItems.length - 1 && !newQuestionTitle
+                  }
+                  index={index}
+                  onDelete={deleteQuestion(question.id)}
+                  onEdit={editQuestion(
+                    question.id,
+                    question.attributes.title_multiloc
+                  )}
+                  onEditOptions={editOptions(question.id)}
+                  handleDragRow={handleDragRow}
+                  handleDropRow={handleDropRow}
+                />
+              )}
+            </Fragment>
+          ))}
+        {newQuestionTitle && (
+          <FormQuestionRow
+            key="new"
+            titleMultiloc={newQuestionTitle}
+            onChange={changeNewQuestion}
+            onSave={saveNewQuestion}
+            onCancel={cancelNewQuestion}
+          />
         )}
-      </>
-    );
-  }
-}
+      </StyledList>
+      {!newQuestionTitle && !editingOptionsId && (
+        <Button
+          className="e2e-add-question-btn"
+          buttonStyle="cl-blue"
+          icon="plus-circle"
+          onClick={startNewQuestion}
+        >
+          <FormattedMessage {...messages.addPollQuestion} />
+        </Button>
+      )}
+    </>
+  );
+};
 
-// export default DragDropContext(HTML5Backend)(PollAdminForm);
 export default (props: Props) => (
   <DndProvider backend={HTML5Backend}>
     <PollAdminForm {...props} />
