@@ -6,6 +6,7 @@ import { isEmpty, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
+import clHistory from 'utils/cl-router/history';
 
 // Components
 import UsersGroupHeader from './UsersGroupHeader';
@@ -81,7 +82,11 @@ const UsersGroup = () => {
     const deleteMessage = formatMessage(messages.groupDeletionConfirmation);
 
     if (window.confirm(deleteMessage)) {
-      deleteGroup(groupId);
+      deleteGroup(groupId, {
+        onSuccess: () => {
+          clHistory.push('/admin/users');
+        },
+      });
     }
   };
 
