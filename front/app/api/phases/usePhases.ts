@@ -4,8 +4,6 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import phasesKeys from './keys';
 import { IPhases, PhaseKeys } from './types';
 
-export const defaultPageSize = 24;
-
 const fetchPhases = ({ projectId }: { projectId: string }) =>
   fetcher<IPhases>({
     path: `/projects/${projectId}/phases`,

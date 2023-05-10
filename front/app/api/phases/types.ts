@@ -58,10 +58,6 @@ export interface IPhaseAttributes {
   ideas_order?: IdeaDefaultSortMethod;
 }
 
-export interface IPhase {
-  data: IPhaseData;
-}
-
 export interface IPhases {
   data: IPhaseData[];
 }
