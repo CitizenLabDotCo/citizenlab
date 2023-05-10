@@ -97,6 +97,15 @@ ar-MA:
       "assignee_digest": نظرة عامة أسبوعية على الأفكار المعيّنة - المسؤولين ومديري المشاريع
       "user_digest": نظرة عامة أسبوعية - جميع المستخدمين
       "your_proposed_initiatives_digest": نظرة عامة أسبوعية على مقترحاتك الخاصة - جميع المستخدمين
+    schedules:
+      weekly:
+        "0": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
+        "1": "أسبوعيًا يوم الاثنين %{atHour}"
+        "2": "أسبوعيًا كل يوم ثلاثاء %{atHour}"
+        "3": "أسبوعيًا في أيام الأربعاء %{atHour}"
+        "4": "أسبوعيًا يوم الخميس %{atHour}"
+        "5": "أسبوعيًا أيام الجمعة %{atHour}"
+        "6": "أسبوعيًا أيام السبت %{atHour}"
     footer:
       "link_privacy_policy": "سياسة الخصوصية"
       "link_terms_conditions": "الشروط والأحكام"
@@ -132,7 +141,7 @@ ar-MA:
       today_by_author: 'اليوم بواسطة %{author}'
       x_days_ago_by_author: 'قبل %{x} يوم بواسطة %{author}'
     admin_rights_received:
-      cta_moderate_platform: 'أشرِف على منصتك'
+      cta_manage_platform: 'إدارة النظام الأساسي الخاص بك'
       message_you_became_administrator: 'لقد مُنحت حقوق المسؤول عن منصة المشاركة الخاصة بـ %{organizationName}.'
       preheader: 'تم منحك حقوق المسؤول عن منصة المشاركة الخاصة بـ %{organizationName}'
       subject: 'لقد أصبحت المسؤول عن المنصة الخاصة بـ%{organizationName}'
@@ -260,12 +269,12 @@ ar-MA:
       preheader: 'ملخص مدير المشروع لـ %{organizationName}'
       title_your_weekly_report: '%{firstName}، تقريرك الأسبوعي'
       text_introduction: "قمنا بتحضير قائمة تضم جميع الأفكار التي ولّدت أكبر تفاعل ونشاط على مدار الأسبوع الماضي.اكتشف ما يحدث في مشروعك!\n     "
-      cta_moderate: 'أشرِف على مشروعك'
+      cta_manage: 'إدارة مشروعك'
       new_users: 'المستخدمون الجُدد'
       new_ideas: 'الأفكار الجديدة'
       new_comments: 'التعليقات الجديدة'
-      title_activity_past_week: 'النشاط على مدار الأسبوع الماضي'
-      title_no_activity_past_week: 'لا يوجد نشاط في الأسبوع الماضي'
+      title_inputs_past_week: 'مدخلات جديدة في الأسبوع الماضي'
+      title_no_inputs_past_week: 'لا مدخلات جديدة في الأسبوع الماضي'
       yesterday_by_author: 'الأمس بواسطة %{author}'
       today_by_author: 'اليوم بواسطة %{author}'
       x_days_ago_by_author: 'قبل %{x} يوم بواسطة %{author}'
@@ -386,7 +395,7 @@ ar-MA:
       subject: 'لقد استلمت تحديثًا رسميًا على المنصة الخاصة بـ %{organizationName}'
       preheader: 'ترك %{officialName} تحديثًا رسميًا على مُقترحك'
     project_moderation_rights_received:
-      cta_moderate_project: 'أشرِف على هذا المشروع'
+      cta_manage_project: 'إدارة هذا المشروع'
       message_you_became_moderator: 'لقد جعلك مسؤول منصة المشاركة الخاصة بـ %{organizationName} للتوّ "مدير مشروع" للمشروع التالي:'
       no_ideas: 'لا توجد أفكار بعد'
       preheader: 'لقد جعلك مسؤول منصة المشاركة الخاصة بـ %{organizationName} للتوّ "مدير مشروع" للمشروع التالي'
@@ -554,3 +563,67 @@ ar-MA:
       new_votes: 'الأصوات الجديدة'
       remaining_votes: 'الأصوات المتبقية'
       remaining_days: 'الأيام المتبقية'
+    admin_labels:
+      recipient_role:
+        admins: 'للمسؤولين'
+        admins_and_moderators: 'للمشرفين والمشرفين'
+        managers: 'للمديرين'
+        project_participants: 'لتوقع المشاركين'
+        registered_users: 'للمستخدمين المسجلين'
+      recipient_segment:
+        admins: 'المشرفون'
+        admins_and_managers: 'المسؤولون والمديرون'
+        all_users: 'جميع المستخدمين'
+        all_users_who_uploaded_proposals: 'جميع المستخدمين الذين قاموا بتحميل المقترحات'
+        managers: 'المديرين'
+        managers_assigned_to_a_proposal: 'المديرين المعينين لاقتراح'
+        user_assigned_to_the_idea: 'تم تعيين المستخدم للفكرة'
+        user_receiving_admin_rights: 'يتلقى المستخدم حقوق المسؤول'
+        user_receiving_folder_moderator_rights: 'يتلقى المستخدم حقوق وسيط المجلد'
+        user_receiving_project_moderator_rights: 'يتلقى المستخدم حقوق مشرف المشروع'
+        user_who_commented: 'المستخدم الذي علق'
+        user_who_is_mentioned: 'المستخدم الذي تم ذكره'
+        user_who_published_proposal: 'المستخدم الذي نشر الاقتراح'
+        user_who_published_the_idea: 'المستخدم الذي نشر الفكرة'
+        user_who_registers: 'المستخدم الذي يقوم بالتسجيل'
+        user_who_was_invited: 'المستخدم الذي تمت دعوته'
+        users_engaged_with_the_idea: 'تفاعل المستخدمون مع الفكرة'
+        users_engaged_with_the_project: 'تفاعل المستخدمون مع المشروع'
+        users_engaged_with_the_proposal: 'تفاعل المستخدمون مع الاقتراح'
+      content_type:
+        comments: 'تعليقات'
+        content_moderation: 'تعديل المحتوى'
+        general: 'عام'
+        ideas: 'الأفكار'
+        permissions: 'أذونات'
+        projects: 'المشاريع'
+        proposals: 'اقتراحات'
+        votes: 'الأصوات'
+      trigger:
+        comment_is_deleted: 'تم حذف التعليق'
+        comment_is_flagged_as_spam: 'تم وضع علامة على التعليق على أنه بريد عشوائي'
+        content_gets_flagged_as_innapropiate: 'يتم وضع علامة على المحتوى على أنه غير مناسب'
+        idea_is_assigned: 'تم تعيين الفكرة'
+        idea_is_flagged_as_spam: 'تم وضع علامة على الفكرة كبريد عشوائي'
+        idea_is_updated: 'تم تحديث الفكرة'
+        idea_status_is_changed: 'تم تغيير حالة الفكرة'
+        new_idea_is_published: 'تم نشر فكرة جديدة'
+        new_proposal_is_posted: 'تم نشر اقتراح جديد'
+        project_changes_phase: 'مرحلة تغييرات المشروع'
+        proposal_gets_reported_as_spam: 'تم الإبلاغ عن الاقتراح باعتباره بريدًا عشوائيًا'
+        proposal_is_assigned_to_user: 'يتم تعيين الاقتراح للمستخدم'
+        proposal_is_updated: 'تم تحديث الاقتراح'
+        proposal_is_upvoted_above_threshold: 'تم التصويت لصالح الاقتراح فوق الحد الأدنى'
+        proposal_status_is_changed: 'تم تغيير حالة الاقتراح'
+        user_comments: 'تعليقات المستخدم'
+        user_comments_on_idea: 'تعليقات المستخدم على الفكرة'
+        user_comments_on_proposal: 'تعليقات المستخدم على الاقتراح'
+        user_is_given_admin_rights: 'يتم منح المستخدم حقوق المسؤول'
+        user_is_given_folder_moderator_rights: 'يتم منح المستخدم حقوق وسيط المجلد'
+        user_is_given_project_moderator_rights: 'يتم منح المستخدم حقوق مشرف المشروع'
+        user_is_mentioned: 'المستخدم مذكور'
+        user_publishes_an_idea: 'ينشر المستخدم فكرة'
+        user_publishes_proposal: 'ينشر المستخدم الاقتراح'
+        user_registers_for_the_first_time: 'يسجل المستخدم لأول مرة'
+        user_replies_to_comment: 'يرد المستخدم على التعليق'
+        7_days_after_invite_is_sent: '7 أيام بعد إرسال الدعوة'

@@ -13,13 +13,15 @@ beforeEach(() => {
 });
 
 const projectFolders = {
-  projectFolders: [
+  data: [
     { id: 'folder1', attributes: { title_multiloc: { en: 'Folder 1' } } },
     { id: 'folder2', attributes: { title_multiloc: { en: 'Folder 2' } } },
   ],
 };
 
-jest.mock('hooks/useProjectFolders', () => jest.fn(() => projectFolders));
+jest.mock('api/project_folders/useProjectFolders', () => () => {
+  return { data: projectFolders };
+});
 
 const mockUser = {
   data: {
