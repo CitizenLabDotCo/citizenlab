@@ -26,19 +26,9 @@ class WebApi::V1::NotificationsController < ApplicationController
       collection << JSON.parse(serializer_class.new(notification, params: fastjson_params).serializable_hash.to_json)['data']
     end
 
-    # I'm just faking the pagination links here, but it's enough to get the frontend to work.
-    # Would need to work out how to get these links values programatically.
-    links = {
-      self: 'http://localhost:3000/web_api/v1/notifications?page%5Bnumber%5D=1&page%5Bsize%5D=8',
-      first: 'http://localhost:3000/web_api/v1/notifications?page%5Bnumber%5D=1&page%5Bsize%5D=8',
-      last: 'http://localhost:3000/web_api/v1/notifications?page%5Bnumber%5D=1&page%5Bsize%5D=8',
-      prev: nil,
-      next: nil
-    }
-
     @notifications = paginate @notifications
 
-    render json: { data: collection, links: links }
+    render json: { data: collection, links: page_links(@notifications) }
   end
 
   def mark_all_read
