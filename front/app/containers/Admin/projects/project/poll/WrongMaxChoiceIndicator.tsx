@@ -25,25 +25,18 @@ interface Props {
 const WrongMaxChoiceIndicator = ({ maxAnswers, questionId }: Props) => {
   const options = usePollOptions(questionId);
 
-  if (typeof maxAnswers === 'number') {
-    return maxAnswers < 2 ? (
-      <Indicator>
-        <StyledIconTooltip
-          content={<FormattedMessage {...messages.maxUnderTheMinTooltip} />}
-        />
-        <FormattedMessage {...messages.wrongMax} />
-      </Indicator>
-    ) : !isNilOrError(options) && options.length < maxAnswers ? (
-      <Indicator isWarning>
-        <StyledIconTooltip
-          content={<FormattedMessage {...messages.maxOverTheMaxTooltip} />}
-        />
-        <FormattedMessage {...messages.wrongMax} />
-      </Indicator>
-    ) : null;
+  if (isNilOrError(options) || typeof maxAnswers !== 'number') {
+    return null;
   }
 
-  return null;
+  return options.length < maxAnswers ? (
+    <Indicator isWarning>
+      <StyledIconTooltip
+        content={<FormattedMessage {...messages.maxOverTheMaxTooltip} />}
+      />
+      <FormattedMessage {...messages.wrongMax} />
+    </Indicator>
+  ) : null;
 };
 
 export default WrongMaxChoiceIndicator;

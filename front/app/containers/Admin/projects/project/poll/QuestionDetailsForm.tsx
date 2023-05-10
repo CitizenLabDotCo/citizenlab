@@ -142,6 +142,7 @@ export class QuestionDetailsForm extends PureComponent<
               type="number"
               onChange={this.changeMaxAnswers}
               value={String(maxAnswers)}
+              // A multiple answer question should have at least two answer options
               min="2"
             />
           )}
