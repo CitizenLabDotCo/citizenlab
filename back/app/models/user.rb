@@ -148,7 +148,7 @@ class User < ApplicationRecord
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
   with_options if: -> { user_confirmation_enabled? } do
-    before_validation :set_confirmation_required, on: :create
+    before_validation :set_confirmation_required, if: :email_changed?, on: :create
     before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
   end
   before_validation :complete_registration
@@ -545,7 +545,10 @@ class User < ApplicationRecord
   def validate_can_update_email
     return unless persisted? && (new_email_changed? || email_changed?)
 
-    if no_password? && confirmation_required?
+    # no_password? - here it's only for light registration
+    # confirmation_required? - it's always false for SSO providers that return email (all except ClaveUnica)
+    # !sso? - exclude ClaveUnica registrations (no email)
+    if no_password? && confirmation_required? && !sso?
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
     elsif user_confirmation_enabled? && active? && email_changed? && !email_changed?(to: new_email_was) && email_was.present?
