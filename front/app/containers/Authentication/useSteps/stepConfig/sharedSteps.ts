@@ -68,9 +68,9 @@ export const sharedSteps = (
       },
 
       // When the user returns from SSO
-      RESUME_FLOW_AFTER_SSO: async (enterEmail: boolean) => {
-        if (enterEmail) {
-          setCurrentStep('sign-up:enter-email');
+      RESUME_FLOW_AFTER_SSO: async (enterClaveUnicaEmail: boolean) => {
+        if (enterClaveUnicaEmail) {
+          setCurrentStep('clave-unica:email');
           return;
         }
 
@@ -177,7 +177,7 @@ export const sharedSteps = (
       },
 
       REOPEN_CLAVE_UNICA: () => {
-        setCurrentStep('sign-up:enter-email');
+        setCurrentStep('clave-unica:email');
       },
 
       TRIGGER_AUTH_ERROR: (error_code?: SignUpInError) => {

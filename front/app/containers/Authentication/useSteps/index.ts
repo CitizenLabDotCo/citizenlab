@@ -241,15 +241,14 @@ export default function useSteps() {
         window.history.replaceState(null, '', '/');
       }
 
-      // const isClaveUnica = sso_clave_unica === 'true';
-      const enterEmail =
+      const enterClaveUnicaEmail =
         !isNilOrError(authUser) && isNil(authUser.attributes.email);
 
-      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(enterEmail);
+      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(enterClaveUnicaEmail);
     }
   }, [pathname, search, currentStep, transition, authUser, setError]);
 
-  // example to keep bothering user with modal
+  // alway show ClaveUnica modal to user
   useEffect(() => {
     if (isNilOrError(authUser)) return;
     if (currentStep !== 'closed') return;

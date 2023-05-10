@@ -4,6 +4,7 @@ import { missingDataFlow } from './missingDataFlow';
 import { sharedSteps } from './sharedSteps';
 import { signInFlow } from './signInFlow';
 import { signUpFlow } from './signUpFlow';
+import { claveUnicaFlow } from './claveUnicaFlow';
 
 // typings
 import {
@@ -55,6 +56,8 @@ export const getStepConfig = (
       updateState,
       anySSOEnabled
     ),
+
+    ...claveUnicaFlow(getRequirements, setCurrentStep),
 
     'verification-only': {
       CLOSE: () => setCurrentStep('closed'),

@@ -15,7 +15,7 @@ import { isNilOrError } from 'utils/helperUtils';
 interface Props {
   loading: boolean;
   setError: SetError;
-  onSubmit: (userId: string, email: string) => void;
+  onSubmit: (email: string) => void;
 }
 
 const ClaveUnicaEmail = ({ loading, setError, onSubmit }: Props) => {
@@ -34,7 +34,7 @@ const ClaveUnicaEmail = ({ loading, setError, onSubmit }: Props) => {
 
   const handleSubmit = async ({ email }: FormValues) => {
     try {
-      await onSubmit(authUser.id, email);
+      await onSubmit(email);
     } catch (e) {
       if (isCLErrorsIsh(e)) {
         handleCLErrorsIsh(e, methods.setError);
