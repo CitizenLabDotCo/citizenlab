@@ -15,7 +15,7 @@ end
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :facebook, setup: FACEBOOK_SETUP_PROC
   provider :google_oauth2, setup: GOOGLE_SETUP_PROC, name: 'google'
-  provider :azure_activedirectory, setup: AZURE_AD_SETUP_PROC
+  # provider :azure_activedirectory, setup: AZURE_AD_SETUP_PROC
 end
 
 OmniAuth.config.full_host = lambda { |_env|
