@@ -13,6 +13,14 @@ GIT
     ice_cube (0.16.3)
 
 GIT
+  remote: https://github.com/CitizenLabDotCo/omniauth-azure-activedirectory.git
+  revision: ecdbac5d6ca7b4123c10b0f1d4569bfb7ba0fa8a
+  specs:
+    omniauth-azure-activedirectory (1.1.0)
+      jwt (~> 2.2.2)
+      omniauth (~> 1.1)
+
+GIT
   remote: https://github.com/CitizenLabDotCo/openid_connect.git
   revision: 7e5136cb3712ff3a0bd0c476e4f527b25c08ee89
   specs:
@@ -1215,6 +1223,7 @@ DEPENDENCIES
   nokogiri (~> 1.14.3)
   okcomputer
   omniauth (~> 1.9.1)
+  omniauth-azure-activedirectory!
   omniauth-facebook
   omniauth-google-oauth2
   omniauth-rails_csrf_protection
