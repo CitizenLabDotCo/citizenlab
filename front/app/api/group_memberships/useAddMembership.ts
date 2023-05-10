@@ -26,7 +26,7 @@ const useAddMembership = () => {
       queryClient.invalidateQueries({ queryKey: groupsKeys.lists() });
 
       await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/users/me`],
+        apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/users/me`],
       });
     },
   });
