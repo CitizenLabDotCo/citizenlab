@@ -30,7 +30,7 @@ const WrongMaxChoiceIndicator = ({ maxAnswers, questionId }: Props) => {
   }
 
   return options.length < maxAnswers ? (
-    <Indicator isWarning>
+    <Indicator isWarning data-testid="wrongMaxChoiceIndicator">
       <StyledIconTooltip
         content={<FormattedMessage {...messages.maxOverTheMaxTooltip} />}
       />
