@@ -20,7 +20,6 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 import usePhases from 'hooks/usePhases';
-import { useParams } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -45,9 +44,12 @@ const Left = styled.div`
   margin-right: 80px;
 `;
 
-const AdminTimelineProjectPoll = () => {
+interface Props {
+  projectId: string;
+}
+
+const AdminTimelineProjectPoll = ({ projectId }: Props) => {
   const localize = useLocalize();
-  const { projectId } = useParams() as { projectId: string };
   const phases = usePhases(projectId);
   const pollPhases = !isNilOrError(phases)
     ? phases.filter((phase) => phase.attributes.participation_method === 'poll')

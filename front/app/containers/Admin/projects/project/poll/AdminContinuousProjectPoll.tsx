@@ -1,6 +1,5 @@
 // Libraries
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { isError } from 'lodash-es';
 
@@ -18,9 +17,7 @@ import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
-import useProject from 'hooks/useProject';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { useParams } from 'react-router-dom';
+import { IProjectData } from 'services/projects';
 
 const Container = styled.div`
   display: flex;
@@ -40,12 +37,12 @@ const Left = styled.div`
   margin-right: 80px;
 `;
 
-const AdminContinuousProjectPoll = () => {
-  const localize = useLocalize();
-  const { projectId } = useParams() as { projectId: string };
-  const project = useProject({ projectId });
+interface Props {
+  project: IProjectData;
+}
 
-  if (isNilOrError(project)) return null;
+const AdminContinuousProjectPoll = ({ project }: Props) => {
+  const localize = useLocalize();
 
   return (
     <Container>

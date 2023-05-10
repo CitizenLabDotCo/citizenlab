@@ -17,11 +17,11 @@ const AdminProjectPoll = () => {
     project.attributes.process_type === 'continuous' &&
     project.attributes.participation_method === 'poll'
   ) {
-    return <AdminContinuousProjectPoll />;
+    return <AdminContinuousProjectPoll project={project} />;
   }
 
   if (project.attributes.process_type === 'timeline') {
-    return <AdminTimelineProjectPoll />;
+    return <AdminTimelineProjectPoll projectId={projectId} />;
   }
   return null;
 };
