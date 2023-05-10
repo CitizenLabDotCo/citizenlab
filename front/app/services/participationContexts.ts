@@ -55,7 +55,7 @@ export type PresentationMode = 'card' | 'map';
 export function getInputTerm(
   processType: ProcessType,
   project: IProjectData | undefined | null | Error,
-  phases: IPhaseData[] | undefined | null | Error,
+  phases: IPhaseData[] | undefined,
   phase?: IPhaseData | undefined | null | Error
 ) {
   if (processType === 'continuous') {
@@ -69,7 +69,7 @@ export function getInputTerm(
     // we have the fallback to idea here in that case.
     if (!isNilOrError(phase)) {
       return getPhaseInputTerm([phase]);
-    } else if (!isNilOrError(phases) && phases.length > 0) {
+    } else if (phases && phases.length > 0) {
       return getPhaseInputTerm(phases);
     }
   }

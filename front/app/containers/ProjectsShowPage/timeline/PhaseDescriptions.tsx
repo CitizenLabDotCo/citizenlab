@@ -1,6 +1,5 @@
 import React from 'react';
 import usePhases from 'api/phases/usePhases';
-import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import PhaseDescription from './PhaseDescription';
 
@@ -18,7 +17,7 @@ const StyledPhaseDescription = styled(PhaseDescription)<{
 const PhaseDescriptions = ({ projectId, selectedPhaseId }: Props) => {
   const { data: phases } = usePhases(projectId);
 
-  if (!isNilOrError(phases)) {
+  if (phases) {
     return (
       <>
         {phases.data.map((phase, phaseIndex) => {

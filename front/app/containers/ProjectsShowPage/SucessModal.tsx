@@ -13,7 +13,6 @@ import { Box, Title, Image } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
 import { getCurrentPhase } from 'services/phases';
 import { isReady } from './utils';
@@ -73,7 +72,7 @@ const SuccessModal = ({ projectId }: Props) => {
 
   let phaseParticipationMethod: ParticipationMethod | undefined;
 
-  if (!isNilOrError(phases)) {
+  if (phases) {
     const phaseInUrl = phaseIdUrl ? getPhase(phaseIdUrl, phases.data) : null;
     if (phaseInUrl) {
       phaseParticipationMethod = phaseInUrl.attributes.participation_method;

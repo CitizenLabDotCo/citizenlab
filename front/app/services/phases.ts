@@ -65,10 +65,6 @@ export interface IPhase {
   data: IPhaseData;
 }
 
-export interface IPhases {
-  data: IPhaseData[];
-}
-
 export interface IUpdatedPhaseProperties {
   project_id?: string;
   title_multiloc?: Multiloc;
@@ -92,16 +88,6 @@ export interface IUpdatedPhaseProperties {
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
-}
-
-export function phasesStream(
-  projectId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IPhases>({
-    apiEndpoint: `${API_PATH}/projects/${projectId}/phases`,
-    ...streamParams,
-  });
 }
 
 export function phaseStream(

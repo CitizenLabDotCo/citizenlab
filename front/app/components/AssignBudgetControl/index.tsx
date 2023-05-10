@@ -108,7 +108,7 @@ const AssignBudgetControl = memo(
       ? idea.data.relationships?.phases?.data?.map((item) => item.id)
       : null;
 
-    const ideaPhases = !isNilOrError(phases)
+    const ideaPhases = phases
       ? phases.data.filter(
           (phase) =>
             Array.isArray(ideaPhaseIds) && ideaPhaseIds.includes(phase.id)

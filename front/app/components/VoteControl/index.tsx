@@ -150,7 +150,7 @@ const VoteControl = ({
     (item) => item.id
   );
   const ideaPhases =
-    !isNilOrError(phases) &&
+    phases &&
     phases?.data
       .filter((phase) => includes(ideaPhaseIds, phase.id))
       .map((phase) => phase);

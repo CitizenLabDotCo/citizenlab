@@ -6,7 +6,7 @@ interface InputProps {
   resetOnChange?: boolean;
 }
 
-export type GetPhasesChildProps = IPhaseData[] | undefined | null;
+export type GetPhasesChildProps = IPhaseData[] | undefined;
 
 type children = (renderProps: GetPhasesChildProps) => JSX.Element | null;
 
@@ -16,7 +16,7 @@ interface Props extends InputProps {
 
 const GetPhases = ({ children, projectId }: Props) => {
   const { data: phases } = usePhases(projectId);
-  return (children as any)(phases);
+  return (children as any)(phases?.data);
 };
 
 export default GetPhases;

@@ -1,5 +1,4 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { findIndex } from 'lodash-es';
 import Tippy from '@tippyjs/react';
 
@@ -83,7 +82,7 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
     const goToNextPhase = useCallback(() => {
       trackEventByName(tracks.clickNextPhaseButton);
 
-      if (!isNilOrError(phases)) {
+      if (phases) {
         const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
         const selectedPhaseIndex = findIndex(
           phases.data,
@@ -101,7 +100,7 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
     const goToPreviousPhase = useCallback(() => {
       trackEventByName(tracks.clickPreviousPhaseButton);
 
-      if (!isNilOrError(phases)) {
+      if (phases) {
         const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
         const selectedPhaseIndex = findIndex(
           phases.data,
@@ -117,14 +116,14 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
     }, [phases, selectedPhase]);
 
     const goToCurrentPhase = useCallback(() => {
-      if (!isNilOrError(phases)) {
+      if (phases) {
         trackEventByName(tracks.clickCurrentPhaseButton);
         const currentPhase = getCurrentPhase(phases.data);
         selectPhase(currentPhase);
       }
     }, [phases]);
 
-    if (!isNilOrError(phases) && phases.data.length > 1) {
+    if (phases && phases.data.length > 1) {
       const navButtonSize = '34px';
       const navButtonStyle = buttonStyle || 'secondary';
       const selectedPhaseId = selectedPhase ? selectedPhase.id : null;

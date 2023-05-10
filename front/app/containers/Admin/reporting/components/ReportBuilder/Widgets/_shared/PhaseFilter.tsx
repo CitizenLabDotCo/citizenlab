@@ -9,9 +9,6 @@ import { Box, Text, Select } from '@citizenlab/cl2-component-library';
 // i18n
 import useLocalize from 'hooks/useLocalize';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // typings
 import { IOption } from 'typings';
 import { IPhaseData } from 'services/phases';
@@ -41,9 +38,9 @@ const PhaseFilter = ({
   const localize = useLocalize();
 
   const correctPhases = useMemo(() => {
-    return isNilOrError(phases)
-      ? null
-      : phases.data.filter(isCorrectPhase(participationMethod));
+    return phases
+      ? phases.data.filter(isCorrectPhase(participationMethod))
+      : null;
   }, [phases, participationMethod]);
 
   const phaseOptions = useMemo(() => {

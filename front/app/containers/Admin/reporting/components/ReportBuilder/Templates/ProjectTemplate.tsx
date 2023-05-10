@@ -28,7 +28,6 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
 import { getTemplateData } from './getTemplateData';
 
@@ -42,7 +41,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
-  if (!project || isNilOrError(phases)) return null;
+  if (!project || !phases) return null;
 
   const { participationMethod, phaseId } = getTemplateData(
     project.data,

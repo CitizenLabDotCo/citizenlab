@@ -235,26 +235,20 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   />
                 </ListItem>
               )}
-            {projectType === 'timeline' &&
-              !isNilOrError(phases) &&
-              phases.data.length > 1 && (
-                <ListItem>
-                  <ListItemIcon
-                    ariaHidden
-                    name="timeline"
-                    className="timeline"
+            {projectType === 'timeline' && phases && phases.data.length > 1 && (
+              <ListItem>
+                <ListItemIcon ariaHidden name="timeline" className="timeline" />
+                <ListItemButton
+                  id="e2e-project-sidebar-phases-count"
+                  onClick={scrollTo('project-timeline', false)}
+                >
+                  <FormattedMessage
+                    {...messages.xPhases}
+                    values={{ phasesCount: phases.data.length }}
                   />
-                  <ListItemButton
-                    id="e2e-project-sidebar-phases-count"
-                    onClick={scrollTo('project-timeline', false)}
-                  >
-                    <FormattedMessage
-                      {...messages.xPhases}
-                      values={{ phasesCount: phases.data.length }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              )}
+                </ListItemButton>
+              </ListItem>
+            )}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'ideation') ||
               currentPhaseParticipationMethod === 'ideation' ||

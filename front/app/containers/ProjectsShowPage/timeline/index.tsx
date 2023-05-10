@@ -108,7 +108,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
     useEffect(() => {
       if (
         selectedPhase !== null &&
-        !isNilOrError(phases) &&
+        phases &&
         project &&
         !isNilOrError(locale)
       ) {
@@ -123,7 +123,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
     }, [selectedPhase, phases, project, locale, currentPhase]);
 
     useEffect(() => {
-      if (!isNilOrError(phases) && phases.data.length > 0) {
+      if (phases && phases.data.length > 0) {
         const latestRelevantPhase = getLatestRelevantPhase(phases.data);
 
         // if a phase parameter was provided, and it is valid, we set that as phase.

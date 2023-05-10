@@ -240,7 +240,7 @@ const ProjectsShowPageWrapper = () => {
 
   const isTimelineProjectAndHasValidPhaseParam =
     processType === 'timeline' &&
-    !isNilOrError(phases) &&
+    phases &&
     urlSegments.length === 4 &&
     isValidPhase(phaseNumber, phases.data);
 

@@ -133,10 +133,7 @@ const IdeasNewPageWithJSONForm = () => {
           const ideaId = idea.data.id;
 
           // Check ParticipationMethodConfig for form submission action
-          if (
-            project?.data.attributes.process_type === 'timeline' &&
-            !isNilOrError(phases)
-          ) {
+          if (project?.data.attributes.process_type === 'timeline' && phases) {
             // Check if URL contains specific phase_id
             const phaseUsed =
               phases.data.find((phase) => phase.id === phaseId) ||

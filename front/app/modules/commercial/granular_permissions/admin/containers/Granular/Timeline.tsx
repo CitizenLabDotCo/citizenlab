@@ -54,7 +54,7 @@ const Timeline = ({ projectId }: InputProps) => {
     }
   };
 
-  if (isNilOrError(phases)) {
+  if (!phases) {
     return null;
   }
 

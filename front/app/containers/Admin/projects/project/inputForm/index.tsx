@@ -14,7 +14,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 // hooks
 import { useParams } from 'react-router-dom';
 import usePhases from 'api/phases/usePhases';
-import { isNilOrError } from 'utils/helperUtils';
 import { getCurrentPhase, IPhaseData } from 'services/phases';
 
 export const IdeaForm = () => {
@@ -24,7 +23,7 @@ export const IdeaForm = () => {
 
   const { data: phases } = usePhases(projectId);
   let phaseToUse;
-  if (!isNilOrError(phases)) {
+  if (phases) {
     phaseToUse = getCurrentOrLastIdeationPhase(phases.data);
   }
 

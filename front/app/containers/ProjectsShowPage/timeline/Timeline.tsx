@@ -1,5 +1,5 @@
 import React, { useCallback, FormEvent, KeyboardEvent, useRef } from 'react';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 import moment from 'moment';
 
 // tracking
@@ -253,7 +253,7 @@ const Timeline = ({
     const arrowLeftPressed = e.key === 'ArrowLeft';
     const arrowRightPressed = e.key === 'ArrowRight';
 
-    if ((arrowLeftPressed || arrowRightPressed) && !isNilOrError(phases)) {
+    if ((arrowLeftPressed || arrowRightPressed) && phases) {
       const currentPhaseIndex = phases.data.indexOf(selectedPhase);
 
       if (arrowRightPressed) {
@@ -280,7 +280,7 @@ const Timeline = ({
     }
   };
 
-  if (!isNilOrError(phases) && phases.data.length > 0) {
+  if (phases && phases.data.length > 0) {
     const currentPhase = getCurrentPhase(phases.data);
     const currentPhaseId = currentPhase ? currentPhase.id : null;
     const selectedPhaseId = selectedPhase.id;
