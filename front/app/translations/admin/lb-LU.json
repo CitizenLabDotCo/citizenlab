@@ -1071,7 +1071,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.editPollAnswersButtonLabel": "Answer choices",
   "app.containers.AdminPage.ProjectEdit.PollTab.exportPollResults": "Export the poll results",
   "app.containers.AdminPage.ProjectEdit.PollTab.maxOverTheMaxTooltip": "The maximum number of choices is greater than the number of options",
-  "app.containers.AdminPage.ProjectEdit.PollTab.maxUnderTheMinTooltip": "A multiple answer question should allow at least two answers.",
+  "app.containers.AdminPage.ProjectEdit.PollTab.maxUnderTheMinTooltip": "Eng Multiple Äntwert Fro soll op d'mannst zwou Äntwerten erlaben.",
   "app.containers.AdminPage.ProjectEdit.PollTab.multipleOption": "Multiple choice",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptions": "No options",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptionsTooltip": "All questions must have answer choices",
