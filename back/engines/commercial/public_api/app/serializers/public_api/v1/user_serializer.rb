@@ -12,7 +12,7 @@ class PublicApi::V1::UserSerializer < ActiveModel::Serializer
     :first_name,
     :last_name,
     :locale,
-    # :bio,
+    :bio,
     :registration_completed_at,
     :verified,
     :email_confirmed_at,
@@ -27,5 +27,9 @@ class PublicApi::V1::UserSerializer < ActiveModel::Serializer
 
   def status
     object.active? ? 'active' : 'incomplete'
+  end
+
+  def bio
+    @@multiloc_service.t(object.bio_multiloc)
   end
 end

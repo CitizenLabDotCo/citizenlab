@@ -212,4 +212,5 @@ RspecApiDocumentation.configure do |config|
   config.api_name = ENV['API_NAME'] || 'API documentation'
   config.request_body_formatter = :json
   config.html_embedded_css_file = 'doc/style.css'
+  config.configurations_dir = Rails.root.join('engines/commercial/public_api/config/open_api') # for public api
 end

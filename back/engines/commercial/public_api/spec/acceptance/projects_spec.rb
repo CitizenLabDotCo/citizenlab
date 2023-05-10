@@ -5,20 +5,17 @@ require 'rspec_api_documentation/dsl'
 require './engines/commercial/public_api/spec/acceptance/support/shared'
 
 resource 'Projects' do
-  before do
-    create_list(:project, 5)
-    api_token = PublicApi::ApiClient.create
-    token = Knock::AuthToken.new(payload: api_token.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
-  end
-
   explanation 'Projects are participation scopes defined by the city. They define a context and set time and input expectations towards the citizens, stimulating them to engage in a the scoped debate. Citizens can post ideas in projects.'
 
-  include_context 'common_parameters'
+  include_context 'common_auth'
+
+  let!(:projects) { create_list(:project, 5) }
 
   get '/api/v1/:locale/projects/' do
     route_summary 'Get a page of projects'
     route_description 'Endpoint to retrieve city projects. The newest projects are returned first. The endpoint supports pagination.'
+
+    include_context 'common_list_params'
 
     let(:locale) { 'en' }
     let(:page_size) { 2 }
@@ -27,6 +24,21 @@ resource 'Projects' do
       assert_status 200
       expect(json_response_body[:projects].size).to eq 2
       expect(json_response_body[:meta]).to eq({ total_pages: 3, current_page: 1 })
+    end
+  end
+
+  get '/api/v1/:locale/projects/:id' do
+    route_summary 'Get a single project by id.'
+    route_description 'Get one project by id.'
+
+    include_context 'common_item_params'
+
+    let(:locale) { 'en' }
+    let(:id) { projects[0].id }
+
+    example_request 'Successful response' do
+      assert_status 200
+      expect(json_response_body[:project]).to include({ id: id })
     end
   end
 end
