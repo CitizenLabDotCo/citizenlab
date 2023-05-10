@@ -11,12 +11,12 @@ import { TextCell } from 'components/admin/ResourceList';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { colors } from 'utils/styleUtils';
 
-export const Indicator = styled(TextCell)<{ isWarning?: boolean }>`
+const Indicator = styled(TextCell)`
   display: flex;
-  color: ${({ isWarning }) => (isWarning ? colors.orange : colors.error)};
+  color: ${colors.error};
 `;
 
-export const StyledIconTooltip = styled<any>(IconTooltip)`
+const StyledIconTooltip = styled(IconTooltip)`
   margin-right: 5px;
 `;
 

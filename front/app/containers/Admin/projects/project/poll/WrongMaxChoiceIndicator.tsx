@@ -2,11 +2,18 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { StyledIconTooltip, Indicator } from './WrongOptionsIndicator';
+import { TextCell } from 'components/admin/ResourceList';
 import styled from 'styled-components';
 import usePollOptions from 'hooks/usePollOptions';
+import { colors, IconTooltip } from '@citizenlab/cl2-component-library';
 
-const StyledIndicator = styled(Indicator)`
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-right: 5px;
+`;
+
+const Indicator = styled(TextCell)<{ isWarning?: boolean }>`
+  display: flex;
+  color: ${({ isWarning }) => (isWarning ? colors.orange : colors.error)};
   margin-right: 15px;
 `;
 
@@ -20,19 +27,19 @@ const WrongMaxChoiceIndicator = ({ maxAnswers, questionId }: Props) => {
 
   if (typeof maxAnswers === 'number') {
     return maxAnswers < 2 ? (
-      <StyledIndicator>
+      <Indicator>
         <StyledIconTooltip
           content={<FormattedMessage {...messages.maxUnderTheMinTooltip} />}
         />
         <FormattedMessage {...messages.wrongMax} />
-      </StyledIndicator>
+      </Indicator>
     ) : !isNilOrError(options) && options.length < maxAnswers ? (
-      <StyledIndicator isWarning>
+      <Indicator isWarning>
         <StyledIconTooltip
           content={<FormattedMessage {...messages.maxOverTheMaxTooltip} />}
         />
         <FormattedMessage {...messages.wrongMax} />
-      </StyledIndicator>
+      </Indicator>
     ) : null;
   }
 
