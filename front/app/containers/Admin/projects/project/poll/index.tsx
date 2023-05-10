@@ -1,7 +1,6 @@
 // Libraries
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import styled from 'styled-components';
 import { isError } from 'lodash-es';
 
@@ -23,6 +22,7 @@ import useLocalize from 'hooks/useLocalize';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { useParams } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -47,12 +47,11 @@ const Left = styled.div`
   margin-right: 80px;
 `;
 
-interface Props {}
-
-const AdminProjectPoll = ({ params }: Props & WithRouterProps) => {
+const AdminProjectPoll = () => {
   const localize = useLocalize();
-  const project = useProject({ projectId: params.projectId });
-  const phases = usePhases(params.projectId);
+  const { projectId } = useParams() as { projectId: string };
+  const project = useProject({ projectId });
+  const phases = usePhases(projectId);
   const isEnabled = useFeatureFlag({ name: 'polls' });
 
   if (isNilOrError(project) || !isEnabled) return null;
@@ -146,4 +145,4 @@ const AdminProjectPoll = ({ params }: Props & WithRouterProps) => {
   return null;
 };
 
-export default withRouter(AdminProjectPoll);
+export default AdminProjectPoll;
