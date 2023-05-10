@@ -128,7 +128,6 @@ const PollAdminForm = ({
     setEditingQuestionTitle(currentTitle);
     setEditingOptionsId(null);
   };
-  w;
 
   const changeEditingQuestion = (value: Multiloc) => {
     setEditingQuestionTitle(value);
