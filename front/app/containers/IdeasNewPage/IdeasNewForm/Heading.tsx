@@ -24,7 +24,7 @@ import { useSearchParams } from 'react-router-dom';
 
 type Props = {
   project: IProjectData;
-  titleText: string;
+  titleText: string | React.ReactNode;
   isSurvey: boolean;
   canUserEditProject: boolean;
 };

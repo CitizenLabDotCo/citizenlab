@@ -74,7 +74,9 @@ const NewIdeaPage = (inputProps: InputProps) => {
       </Box>,
       portalElement
     );
-  } else return <IdeasNewForm {...inputProps} />;
+  }
+
+  return <IdeasNewForm {...inputProps} />;
 };
 
 export default NewIdeaPage;

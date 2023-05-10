@@ -13,8 +13,8 @@ import { canModerateProject } from 'services/permissions/rules/projectPermission
 import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
-import usePhases from 'hooks/usePhases';
-import usePhase from 'hooks/usePhase';
+import usePhases, { TPhases } from 'hooks/usePhases';
+import usePhase, { TPhase } from 'hooks/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
 import { useParams, useSearchParams } from 'react-router-dom';
 
@@ -33,8 +33,36 @@ import { geocode, reverseGeocode } from 'utils/locationTools';
 import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { getCurrentPhase } from 'services/phases';
-import { getMethodConfig } from 'utils/participationMethodUtils';
+import {
+  ParticipationMethodConfig,
+  getMethodConfig,
+} from 'utils/participationMethodUtils';
 import { getLocationGeojson } from '../utils';
+import { IProject } from 'api/projects/types';
+
+const getConfig = (
+  phaseFromUrl: TPhase,
+  phases: TPhases,
+  project: IProject | undefined
+) => {
+  let config: ParticipationMethodConfig | null = null;
+
+  if (!isNilOrError(phaseFromUrl)) {
+    config = getMethodConfig(phaseFromUrl.attributes.participation_method);
+  } else {
+    if (phases && project?.data.attributes.process_type === 'timeline') {
+      const participationMethod =
+        getCurrentPhase(phases)?.attributes.participation_method;
+      if (!isNilOrError(participationMethod)) {
+        config = getMethodConfig(participationMethod);
+      }
+    } else if (!isNilOrError(project)) {
+      config = getMethodConfig(project.data.attributes.participation_method);
+    }
+  }
+
+  return config;
+};
 
 const IdeasNewPageWithJSONForm = () => {
   const { mutate: addIdea } = useAddIdea();
@@ -188,24 +216,9 @@ const IdeasNewPageWithJSONForm = () => {
 
   // get participation method config
   const phaseFromUrl = usePhase(phaseId);
-  // TODO: Improve typings and remove any
-  let config;
+  const config = getConfig(phaseFromUrl, phases, project);
 
-  if (!isNilOrError(phaseFromUrl)) {
-    config = getMethodConfig(phaseFromUrl.attributes.participation_method);
-  } else {
-    if (phases && project?.data.attributes.process_type === 'timeline') {
-      const participationMethod =
-        getCurrentPhase(phases)?.attributes.participation_method;
-      if (!isNilOrError(participationMethod)) {
-        config = getMethodConfig(participationMethod);
-      }
-    } else if (!isNilOrError(project)) {
-      config = getMethodConfig(project.data.attributes.participation_method);
-    }
-  }
-
-  if (isNilOrError(project) || isNilOrError(config)) {
+  if (isNilOrError(project) || config === null) {
     return null;
   }
 
@@ -216,11 +229,7 @@ const IdeasNewPageWithJSONForm = () => {
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
-      {!isNilOrError(project) &&
-      !processingLocation &&
-      schema &&
-      uiSchema &&
-      config ? (
+      {project && !processingLocation && schema && uiSchema && config ? (
         <>
           <IdeasNewMeta />
           <Form
@@ -234,11 +243,17 @@ const IdeasNewPageWithJSONForm = () => {
             title={
               <Heading
                 project={project.data}
-                titleText={config.getFormTitle({
-                  project,
-                  phases,
-                  phaseFromUrl,
-                })}
+                titleText={
+                  config.getFormTitle ? (
+                    config.getFormTitle({
+                      project: project.data,
+                      phases,
+                      phaseFromUrl,
+                    })
+                  ) : (
+                    <></>
+                  )
+                }
                 isSurvey={isSurvey}
                 canUserEditProject={canUserEditProject}
               />
