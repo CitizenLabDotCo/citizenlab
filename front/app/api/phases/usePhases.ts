@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import phasesKeys from './keys';
-import { IPhases, PhaseKeys } from './types';
+import { IPhases, PhasesKeys } from './types';
 
 const fetchPhases = ({ projectId }: { projectId: string }) =>
   fetcher<IPhases>({
@@ -11,7 +11,7 @@ const fetchPhases = ({ projectId }: { projectId: string }) =>
   });
 
 const usePhases = (projectId) => {
-  return useQuery<IPhases, CLErrors, IPhases, PhaseKeys>({
+  return useQuery<IPhases, CLErrors, IPhases, PhasesKeys>({
     queryKey: phasesKeys.list({ projectId }),
     queryFn: () => fetchPhases({ projectId }),
   });

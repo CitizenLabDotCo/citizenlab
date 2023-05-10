@@ -8,9 +8,9 @@ import {
   PresentationMode,
 } from 'services/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
-import phaseKeys from './keys';
+import phasesKeys from './keys';
 
-export type PhaseKeys = Keys<typeof phaseKeys>;
+export type PhasesKeys = Keys<typeof phasesKeys>;
 
 export type TPhases = IPhaseData[] | undefined | null | Error;
 
@@ -60,4 +60,8 @@ export interface IPhaseAttributes {
 
 export interface IPhases {
   data: IPhaseData[];
+}
+
+export interface IPhase {
+  data: IPhaseData;
 }
