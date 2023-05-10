@@ -11,6 +11,16 @@ module FlagInappropriateContent
       end
     end
 
-    belongs_to :flaggable, polymorphic: true
+    # We specify the serializer(s) for the flaggable object(s), because if we just use polymorphic: true
+    # jsonapi-serializer will look for the serializer(s) in the same namespace as this serializer, which will fail.
+    belongs_to :flaggable, serializer: proc { |object|
+      if object.instance_of? Comment
+        ::WebApi::V1::CommentSerializer
+      elsif object.instance_of? Idea
+        ::WebApi::V1::IdeaSerializer
+      else
+        ::WebApi::V1::InitiativeSerializer
+      end
+    }
   end
 end

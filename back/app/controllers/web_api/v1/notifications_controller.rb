@@ -16,18 +16,17 @@ class WebApi::V1::NotificationsController < ApplicationController
       @notifications = @notifications.where(read_at: nil)
     end
 
-    # This actually works! Really not arguing we should do this, and almost certainly not in this controller
-    # action, but it at least shows we can serialize the notifications without using the heterogenous serializer.
-    collection = []
+    # This actually works! Really not arguing we should do this, and almost certainly not in this controller action,
+    # but it at least shows we can serialize the notifications without using the heterogenous serializer.
+    data = []
 
     @notifications.each do |notification|
       serializer_class = "WebApi::V1::#{notification.type}Serializer".constantize
-      collection << serializer_class.new(notification, params: fastjson_params).serializable_hash[:data]
+      data << serializer_class.new(notification, params: fastjson_params).serializable_hash[:data]
     end
 
     @notifications = paginate @notifications
-
-    render json: { data: collection, links: page_links(@notifications) }
+    render json: { data: data, links: page_links(@notifications) }
   end
 
   def mark_all_read
