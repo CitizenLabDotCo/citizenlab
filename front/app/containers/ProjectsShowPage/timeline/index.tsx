@@ -29,7 +29,7 @@ import { selectedPhase$, selectPhase } from './events';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 import useLocale from 'hooks/useLocale';
 
@@ -87,12 +87,12 @@ interface Props {
 const ProjectTimelineContainer = memo<Props & WithRouterProps>(
   ({ projectId, className, params: { phaseNumber } }) => {
     const { data: project } = useProjectById(projectId);
-    const phases = usePhases(projectId);
+    const { data: phases } = usePhases(projectId);
     const locale = useLocale();
     const windowSize = useWindowSize();
 
     const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
-    const currentPhase = getCurrentPhase(phases);
+    const currentPhase = getCurrentPhase(phases?.data);
 
     useEffect(() => {
       const subscription = selectedPhase$.subscribe((selectedPhase) => {
@@ -115,7 +115,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
         setPhaseURL(
           selectedPhase.id,
           currentPhase?.id,
-          phases,
+          phases.data,
           project.data,
           locale
         );
@@ -123,14 +123,14 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
     }, [selectedPhase, phases, project, locale, currentPhase]);
 
     useEffect(() => {
-      if (!isNilOrError(phases) && phases.length > 0) {
-        const latestRelevantPhase = getLatestRelevantPhase(phases);
+      if (!isNilOrError(phases) && phases.data.length > 0) {
+        const latestRelevantPhase = getLatestRelevantPhase(phases.data);
 
         // if a phase parameter was provided, and it is valid, we set that as phase.
         // otherwise, use the most logical phase
-        if (isValidPhase(phaseNumber, phases)) {
+        if (isValidPhase(phaseNumber, phases.data)) {
           const phaseIndex = Number(phaseNumber) - 1;
-          selectPhase(phases[phaseIndex]);
+          selectPhase(phases.data[phaseIndex]);
         } else if (latestRelevantPhase) {
           selectPhase(latestRelevantPhase);
         } else {
@@ -146,7 +146,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
     if (
       !isNilOrError(project) &&
       !isNilOrError(phases) &&
-      phases.length > 0 &&
+      phases.data.length > 0 &&
       selectedPhase
     ) {
       const selectedPhaseId = selectedPhase.id;

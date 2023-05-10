@@ -12,6 +12,8 @@ import phaseKeys from './keys';
 
 export type PhaseKeys = Keys<typeof phaseKeys>;
 
+export type TPhases = IPhaseData[] | undefined | null | Error;
+
 export interface IPhaseData {
   id: string;
   type: string;

@@ -19,17 +19,21 @@ import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 
 export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
   const theme = useTheme();
   const authUser = useAuthUser();
-  const phases = usePhases(project.id);
+  const { data: phases } = usePhases(project.id);
   const isSmallerThanPhone = useBreakpoint('phone');
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
 
   useEffect(() => {
-    setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
+    if (!isNilOrError(phases)) {
+      setCurrentPhase(
+        getCurrentPhase(phases.data) || getLastPhase(phases.data)
+      );
+    }
   }, [phases, project]);
 
   const isPhaseNativeSurvey =

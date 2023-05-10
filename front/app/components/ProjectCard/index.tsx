@@ -22,7 +22,7 @@ import { getIdeaPostingRules } from 'services/actionTakingRules';
 // resources
 import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'hooks/usePhase';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 import useAuthUser from 'hooks/useAuthUser';
 import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO,
@@ -469,7 +469,7 @@ const ProjectCard = memo<Props>(
     const currentPhaseId =
       project?.data?.relationships?.current_phase?.data?.id ?? null;
     const phase = usePhase(currentPhaseId);
-    const phases = usePhases(projectId);
+    const { data: phases } = usePhases(projectId);
     const theme = useTheme();
 
     const [visible, setVisible] = useState(false);
@@ -545,7 +545,7 @@ const ProjectCard = memo<Props>(
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
       const processType = project.data.attributes.process_type;
-      const inputTerm = getInputTerm(processType, project.data, phases);
+      const inputTerm = getInputTerm(processType, project.data, phases?.data);
 
       if (isArchived) {
         countdown = (

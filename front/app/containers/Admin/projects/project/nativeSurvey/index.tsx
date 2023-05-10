@@ -14,7 +14,7 @@ import messages from './messages';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 import useLocale from 'hooks/useLocale';
 
 // Utils
@@ -31,7 +31,7 @@ const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as { projectId: string };
   const [isDownloading, setIsDownloading] = useState(false);
   const { data: project } = useProjectById(projectId);
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
   const locale = useLocale();
   const { pathname } = useLocation();
 
@@ -43,7 +43,7 @@ const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
     `/admin/projects/${project.data.id}/native-survey/results`
   );
 
-  const formActionsConfigs = getFormActionsConfig(project.data, phases);
+  const formActionsConfigs = getFormActionsConfig(project.data, phases?.data);
 
   const handleDownloadResults = async () => {
     try {

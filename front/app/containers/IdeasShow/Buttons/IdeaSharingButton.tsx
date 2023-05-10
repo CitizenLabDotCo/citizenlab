@@ -12,7 +12,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useLocalize from 'hooks/useLocalize';
 import useAuthUser from 'hooks/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 import SharingButtons from 'components/Sharing/SharingButtons';
 
 interface Props {
@@ -28,18 +28,18 @@ const Component = ({ ideaId }: Props) => {
     ? idea.data.relationships.project.data.id
     : null;
   const { data: project } = useProjectById(projectId);
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
   const authUser = useAuthUser();
   const localize = useLocalize();
 
-  if (!isNilOrError(idea) && !isNilOrError(project)) {
+  if (!isNilOrError(idea) && !isNilOrError(project) && !isNilOrError(phases)) {
     const postUrl = `${location.origin}/ideas/${idea.data.attributes.slug}`;
     const titleMultiloc = idea.data.attributes.title_multiloc;
     const postTitle = localize(titleMultiloc);
     const inputTerm = getInputTerm(
       project.data.attributes.process_type,
       project.data,
-      phases
+      phases.data
     );
 
     const utmParams = !isNilOrError(authUser)

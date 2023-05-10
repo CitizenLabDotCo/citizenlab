@@ -10,7 +10,7 @@ import { isNumber } from 'lodash-es';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -55,12 +55,14 @@ interface Props {
 
 const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const { data: project } = useProjectById(projectId);
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const { pathname, hash: divId } = useLocation();
 
   useEffect(() => {
-    setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
+    setCurrentPhase(
+      getCurrentPhase(phases?.data) || getLastPhase(phases?.data)
+    );
   }, [phases]);
 
   useEffect(() => {
@@ -89,7 +91,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     [currentPhase, project, pathname]
   );
 
-  if (isNilOrError(project)) {
+  if (isNilOrError(project) || isNilOrError(phases)) {
     return null;
   }
 
@@ -146,7 +148,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const inputTerm = getInputTerm(
     project.data.attributes.process_type,
     project.data,
-    phases
+    phases.data
   );
 
   const isParticipationMethodIdeation = participation_method === 'ideation';
@@ -168,7 +170,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     isParticipationMethodNativeSurvey && publication_status !== 'archived';
 
   const showSurvey =
-    (!isProjectArchived && phases && participation_method === 'survey') ||
+    (!isProjectArchived && phases.data && participation_method === 'survey') ||
     (currentPhase?.attributes.participation_method === 'survey' &&
       !hasProjectEnded);
 

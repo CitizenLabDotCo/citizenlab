@@ -11,7 +11,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import PhaseDescriptions from './PhaseDescriptions';
 
 // hooks
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 import useLocalize from 'hooks/useLocalize';
 
 // services
@@ -236,7 +236,7 @@ const Timeline = ({
   selectedPhase,
   setSelectedPhase,
 }: Props) => {
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
   const localize = useLocalize();
   const tabsRef = useRef<HTMLButtonElement[]>([]);
 
@@ -254,14 +254,16 @@ const Timeline = ({
     const arrowRightPressed = e.key === 'ArrowRight';
 
     if ((arrowLeftPressed || arrowRightPressed) && !isNilOrError(phases)) {
-      const currentPhaseIndex = phases.indexOf(selectedPhase);
+      const currentPhaseIndex = phases.data.indexOf(selectedPhase);
 
       if (arrowRightPressed) {
         // if we're at the end of the timeline, go to start (index 0),
         // otherwise on to the right (index + 1)
         const selectedPhaseIndex =
-          currentPhaseIndex === phases.length - 1 ? 0 : currentPhaseIndex + 1;
-        setSelectedPhase(phases[selectedPhaseIndex]);
+          currentPhaseIndex === phases.data.length - 1
+            ? 0
+            : currentPhaseIndex + 1;
+        setSelectedPhase(phases.data[selectedPhaseIndex]);
         tabsRef.current[selectedPhaseIndex].focus();
 
         // Move left
@@ -269,31 +271,33 @@ const Timeline = ({
         // if we're at the beginning of the timeline, go to end (array length - 1),
         // otherwise on to the left (index - 1)
         const selectedPhaseIndex =
-          currentPhaseIndex === 0 ? phases.length - 1 : currentPhaseIndex - 1;
-        setSelectedPhase(phases[selectedPhaseIndex]);
+          currentPhaseIndex === 0
+            ? phases.data.length - 1
+            : currentPhaseIndex - 1;
+        setSelectedPhase(phases.data[selectedPhaseIndex]);
         tabsRef.current[selectedPhaseIndex].focus();
       }
     }
   };
 
-  if (!isNilOrError(phases) && phases.length > 0) {
-    const currentPhase = getCurrentPhase(phases);
+  if (!isNilOrError(phases) && phases.data.length > 0) {
+    const currentPhase = getCurrentPhase(phases.data);
     const currentPhaseId = currentPhase ? currentPhase.id : null;
     const selectedPhaseId = selectedPhase.id;
 
-    const totalNumberOfDays = phases
+    const totalNumberOfDays = phases.data
       .map(getNumberOfDays)
       .reduce((accumulator, numberOfDays) => {
         return accumulator + numberOfDays;
       });
 
-    const phasesBreakpoint = phases.length * MIN_PHASE_WIDTH_PX;
+    const phasesBreakpoint = phases.data.length * MIN_PHASE_WIDTH_PX;
 
     return (
       <Container
         id="project-timeline"
         className={className || ''}
-        isHidden={phases.length === 0}
+        isHidden={phases.data.length === 0}
       >
         <ContainerInner>
           <ScreenReaderOnly>
@@ -301,11 +305,11 @@ const Timeline = ({
           </ScreenReaderOnly>
           <Phases className="e2e-phases" role="tablist">
             <RtlBox display="flex" mb="20px">
-              {phases.map((phase, phaseIndex) => {
+              {phases.data.map((phase, phaseIndex) => {
                 const phaseNumber = phaseIndex + 1;
                 const phaseTitle = localize(phase.attributes.title_multiloc);
                 const isFirst = phaseIndex === 0;
-                const isLast = phaseIndex === phases.length - 1;
+                const isLast = phaseIndex === phases.data.length - 1;
                 const isCurrentPhase = phase.id === currentPhaseId;
                 const isSelectedPhase = phase.id === selectedPhaseId;
 

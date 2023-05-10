@@ -64,7 +64,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import { useSearchParams } from 'react-router-dom';
@@ -197,7 +197,7 @@ export const IdeasShow = ({
     }
   }, [ideaIdParameter]);
 
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
   const locale = useLocale();
 
@@ -389,11 +389,11 @@ export const IdeasShow = ({
     );
   }
 
-  if (!isNilOrError(project)) {
+  if (!isNilOrError(project) && !isNilOrError(phases)) {
     const inputTerm = getInputTerm(
       project.attributes.process_type,
       project,
-      phases
+      phases.data
     );
 
     return (

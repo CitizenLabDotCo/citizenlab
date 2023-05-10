@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect } from 'react';
 
 // hooks
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 
 // components
 import { Box, Text, Select } from '@citizenlab/cl2-component-library';
@@ -37,13 +37,13 @@ const PhaseFilter = ({
   participationMethod,
   onPhaseFilter,
 }: Props) => {
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
   const localize = useLocalize();
 
   const correctPhases = useMemo(() => {
     return isNilOrError(phases)
       ? null
-      : phases.filter(isCorrectPhase(participationMethod));
+      : phases.data.filter(isCorrectPhase(participationMethod));
   }, [phases, participationMethod]);
 
   const phaseOptions = useMemo(() => {

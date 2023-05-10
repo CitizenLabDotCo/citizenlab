@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 import { useSearchParams } from 'react-router-dom';
 
 // styling
@@ -27,7 +27,7 @@ interface Props {
 
 const SuccessModal = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
 
   const [queryParams] = useSearchParams();
   const showModalParam = queryParams.get('show_modal');
@@ -74,12 +74,12 @@ const SuccessModal = ({ projectId }: Props) => {
   let phaseParticipationMethod: ParticipationMethod | undefined;
 
   if (!isNilOrError(phases)) {
-    const phaseInUrl = phaseIdUrl ? getPhase(phaseIdUrl, phases) : null;
+    const phaseInUrl = phaseIdUrl ? getPhase(phaseIdUrl, phases.data) : null;
     if (phaseInUrl) {
       phaseParticipationMethod = phaseInUrl.attributes.participation_method;
     } else {
-      phaseParticipationMethod =
-        getCurrentPhase(phases)?.attributes.participation_method;
+      phaseParticipationMethod = getCurrentPhase(phases.data)?.attributes
+        .participation_method;
     }
   }
 

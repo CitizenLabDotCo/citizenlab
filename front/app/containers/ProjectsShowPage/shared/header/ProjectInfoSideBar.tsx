@@ -11,7 +11,7 @@ import moment from 'moment';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
 
@@ -128,7 +128,7 @@ interface Props {
 
 const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const { data: project } = useProjectById(projectId);
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
   const { data: events } = useEvents({
     projectIds: [projectId],
     sort: '-start_at',
@@ -139,7 +139,9 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const [shareModalOpened, setShareModalOpened] = useState(false);
 
   useEffect(() => {
-    setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
+    setCurrentPhase(
+      getCurrentPhase(phases?.data) || getLastPhase(phases?.data)
+    );
   }, [phases]);
 
   const scrollTo = useCallback(
@@ -235,7 +237,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               )}
             {projectType === 'timeline' &&
               !isNilOrError(phases) &&
-              phases.length > 1 && (
+              phases.data.length > 1 && (
                 <ListItem>
                   <ListItemIcon
                     ariaHidden
@@ -248,7 +250,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   >
                     <FormattedMessage
                       {...messages.xPhases}
-                      values={{ phasesCount: phases.length }}
+                      values={{ phasesCount: phases.data.length }}
                     />
                   </ListItemButton>
                 </ListItem>

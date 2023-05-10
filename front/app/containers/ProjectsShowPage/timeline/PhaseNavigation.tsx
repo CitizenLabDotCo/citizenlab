@@ -17,7 +17,7 @@ import { IPhaseData, getCurrentPhase } from 'services/phases';
 import { selectedPhase$, selectPhase } from './events';
 
 // hooks
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
@@ -68,7 +68,7 @@ interface Props {
 
 const PhaseNavigation = memo<Props & WrappedComponentProps>(
   ({ projectId, buttonStyle, className, intl: { formatMessage } }) => {
-    const phases = usePhases(projectId);
+    const { data: phases } = usePhases(projectId);
 
     const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
 
@@ -86,11 +86,13 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
       if (!isNilOrError(phases)) {
         const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
         const selectedPhaseIndex = findIndex(
-          phases,
+          phases.data,
           (phase) => phase.id === selectedPhaseId
         );
         const nextPhaseIndex =
-          phases.length >= selectedPhaseIndex + 2 ? selectedPhaseIndex + 1 : 0;
+          phases.data.length >= selectedPhaseIndex + 2
+            ? selectedPhaseIndex + 1
+            : 0;
         const nextPhase = phases[nextPhaseIndex];
         selectPhase(nextPhase);
       }
@@ -102,12 +104,14 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
       if (!isNilOrError(phases)) {
         const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
         const selectedPhaseIndex = findIndex(
-          phases,
+          phases.data,
           (phase) => phase.id === selectedPhaseId
         );
         const prevPhaseIndex =
-          selectedPhaseIndex > 0 ? selectedPhaseIndex - 1 : phases.length - 1;
-        const prevPhase = phases[prevPhaseIndex];
+          selectedPhaseIndex > 0
+            ? selectedPhaseIndex - 1
+            : phases.data.length - 1;
+        const prevPhase = phases.data[prevPhaseIndex];
         selectPhase(prevPhase);
       }
     }, [phases, selectedPhase]);
@@ -115,16 +119,16 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
     const goToCurrentPhase = useCallback(() => {
       if (!isNilOrError(phases)) {
         trackEventByName(tracks.clickCurrentPhaseButton);
-        const currentPhase = getCurrentPhase(phases);
+        const currentPhase = getCurrentPhase(phases.data);
         selectPhase(currentPhase);
       }
     }, [phases]);
 
-    if (!isNilOrError(phases) && phases.length > 1) {
+    if (!isNilOrError(phases) && phases.data.length > 1) {
       const navButtonSize = '34px';
       const navButtonStyle = buttonStyle || 'secondary';
       const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
-      const currentPhase = getCurrentPhase(phases);
+      const currentPhase = getCurrentPhase(phases.data);
       const currentPhaseId = currentPhase ? currentPhase.id : null;
 
       return (
@@ -132,7 +136,7 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
           className={`e2e-timeline-phase-navigation ${className || ''}`}
         >
           <Tippy
-            disabled={selectedPhaseId === phases[0].id}
+            disabled={selectedPhaseId === phases.data[0].id}
             interactive={false}
             placement="bottom"
             content={formatMessage(messages.previousPhase)}
@@ -149,7 +153,7 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
                 width={navButtonSize}
                 height={navButtonSize}
                 padding="0px"
-                disabled={selectedPhaseId === phases[0].id}
+                disabled={selectedPhaseId === phases.data[0].id}
                 ariaLabel={formatMessage(messages.previousPhase)}
                 className="e2e-previous-phase"
               />
@@ -183,7 +187,9 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
             </Tippy>
           )}
           <Tippy
-            disabled={selectedPhaseId === phases[phases.length - 1].id}
+            disabled={
+              selectedPhaseId === phases.data[phases.data.length - 1].id
+            }
             interactive={false}
             placement="bottom"
             content={formatMessage(messages.nextPhase)}
@@ -200,7 +206,9 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
                 width={navButtonSize}
                 height={navButtonSize}
                 padding="0px"
-                disabled={selectedPhaseId === phases[phases.length - 1].id}
+                disabled={
+                  selectedPhaseId === phases.data[phases.data.length - 1].id
+                }
                 ariaLabel={formatMessage(messages.nextPhase)}
                 className="e2e-next-phase"
               />
