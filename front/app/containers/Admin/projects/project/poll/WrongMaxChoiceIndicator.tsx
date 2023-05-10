@@ -1,54 +1,42 @@
 import React from 'react';
-import GetPollOptions, {
-  GetPollOptionsChildProps,
-} from 'resources/GetPollOptions';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { StyledIconTooltip, Indicator } from './WrongOptionsIndicator';
+import { TextCell } from 'components/admin/ResourceList';
 import styled from 'styled-components';
+import usePollOptions from 'hooks/usePollOptions';
+import { colors, IconTooltip } from '@citizenlab/cl2-component-library';
 
-const StyledIndicator = styled(Indicator)`
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-right: 5px;
+`;
+
+const Indicator = styled(TextCell)<{ isWarning?: boolean }>`
+  display: flex;
+  color: ${({ isWarning }) => (isWarning ? colors.orange : colors.error)};
   margin-right: 15px;
 `;
 
-interface InputProps {
+interface Props {
   questionId: string;
   maxAnswers: number | null;
 }
 
-interface DataProps {
-  options: GetPollOptionsChildProps;
-}
+const WrongMaxChoiceIndicator = ({ maxAnswers, questionId }: Props) => {
+  const options = usePollOptions(questionId);
 
-interface Props extends InputProps, DataProps {}
+  if (isNilOrError(options) || typeof maxAnswers !== 'number') {
+    return null;
+  }
 
-export const WrongMaxChoiceIndicator = ({ options, maxAnswers }: Props) =>
-  typeof maxAnswers === 'number' && maxAnswers < 2 ? (
-    <StyledIndicator>
-      <StyledIconTooltip
-        content={<FormattedMessage {...messages.maxUnderTheMinTooltip} />}
-      />
-      <FormattedMessage {...messages.wrongMax} />
-    </StyledIndicator>
-  ) : !isNilOrError(options) && maxAnswers && options.length < maxAnswers ? (
-    <StyledIndicator isWarning>
+  return options.length < maxAnswers ? (
+    <Indicator isWarning data-testid="wrongMaxChoiceIndicator">
       <StyledIconTooltip
         content={<FormattedMessage {...messages.maxOverTheMaxTooltip} />}
       />
       <FormattedMessage {...messages.wrongMax} />
-    </StyledIndicator>
+    </Indicator>
   ) : null;
+};
 
-const Data = adopt<DataProps, InputProps>({
-  options: ({ questionId, render }) => (
-    <GetPollOptions questionId={questionId}>{render}</GetPollOptions>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataprops) => <WrongMaxChoiceIndicator {...inputProps} {...dataprops} />}
-  </Data>
-);
+export default WrongMaxChoiceIndicator;

@@ -152,7 +152,7 @@ export interface OutletsPropertyMap {
   'app.components.admin.PostManager.topActionBar': {
     assignee?: string | null;
     projectId?: string | null;
-    handleAssigneeFilterChange: (value: string) => void;
+    handleAssigneeFilterChange: (value: string | undefined) => void;
     type: ManagerType;
   };
   'app.components.admin.PostManager.components.PostTable.IdeaRow.cells': {

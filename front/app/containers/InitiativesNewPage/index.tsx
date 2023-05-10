@@ -63,7 +63,7 @@ export class InitiativesNewPage extends React.PureComponent<
       decoder: (str, _defaultEncoder, _charset, type) => {
         return type === 'value' ? parseFloat(str) : str;
       },
-    }) as { [key: string]: string | number };
+    });
 
     this.redirectIfNotPermittedOnPage();
 
