@@ -553,8 +553,7 @@ const AdminProjectsProjectGeneral = () => {
 
         {!isNilOrError(project) && projectType === 'continuous' && (
           <ParticipationContext
-            project={project.data}
-            projectId={project.data.id}
+            project={project}
             onSubmit={handleParticipationContextOnSubmit}
             onChange={handleParticipationContextOnChange}
             apiErrors={apiErrors}
