@@ -5,37 +5,37 @@ nl:
         "manual": Officiële berichten
         "admin_rights_received": Beheerdersrechten ontvangen
         "comment_deleted_by_admin": Verwijdering van mijn commentaar
-        "comment_marked_as_spam": Commentaar spam melden
-        "comment_on_your_comment": Een antwoord op mijn commentaar
-        "comment_on_your_idea": Een opmerking over mijn inbreng
-        "comment_on_your_initiative": Een commentaar op mijn voorstel
-        "idea_marked_as_spam": Ideeën spam melden
-        "idea_published": Publicatie van mijn inbreng
+        "comment_marked_as_spam": Commentaar spam-rapport
+        "comment_on_your_comment": Een antwoord op mijn reactie
+        "comment_on_your_idea": Een opmerking op mijn input
+        "comment_on_your_initiative": Een reactie op mijn voorstel
+        "idea_marked_as_spam": Ideeën spam rapport
+        "idea_published": Publicatie van mijn input
         "initiative_assigned_to_you": Toewijzing van een voorstel aan mij
         "initiative_marked_as_spam": Voorstel spamrapport
         "initiative_published": Publicatie van mijn voorstel
         "invite_received": Uitnodiging
         "invite_reminder": Uitnodiging herinnering
         "mention_in_official_feedback": Vermelding in een update
-        "new_comment_for_admin": Nieuw commentaar in een project dat ik modereer
-        "new_comment_on_commented_idea": Nieuw commentaar op een ingang waarop ik commentaar gaf
-        "new_comment_on_commented_initiative": Nieuw commentaar op een voorstel waar ik commentaar op gaf
-        "new_comment_on_voted_idea": Nieuw commentaar op een ingang waar ik op gestemd heb
+        "new_comment_for_admin": Nieuwe reactie in een project dat ik beheer
+        "new_comment_on_commented_idea": Nieuwe reactie op een input waarop ik reageerde
+        "new_comment_on_commented_initiative": Nieuwe reactie op een initiatief waar ik op reageerde
+        "new_comment_on_voted_idea": Nieuwe reactie op een input waar ik op gestemd heb
         "new_comment_on_voted_initiative": Nieuw commentaar op een voorstel waar ik voor heb gestemd
-        "new_idea_for_admin": Nieuw idee in een project dat ik modereer
+        "new_idea_for_admin": Nieuw idee in een project dat ik beheer
         "new_initiative_for_admin": Nieuw voorstel
-        "official_feedback_on_commented_idea": Update van een ingang waar ik commentaar op had
-        "official_feedback_on_commented_initiative": Update van een voorstel waar ik commentaar op had
-        "official_feedback_on_voted_idea": Update over een inbreng waarop ik heb gestemd
+        "official_feedback_on_commented_idea": Update van een input waarop ik reageerde
+        "official_feedback_on_commented_initiative": Update van een voorstel waar ik op reageerde
+        "official_feedback_on_voted_idea": Update over een input waarop ik heb gestemd
         "official_feedback_on_voted_initiative": Update van een voorstel waarover ik heb gestemd
-        "official_feedback_on_your_idea": Update van mijn inbreng
+        "official_feedback_on_your_idea": Update over mijn input
         "official_feedback_on_your_initiative": Update van mijn voorstel
         "password_reset": Wachtwoord opnieuw instellen
-        "project_moderation_rights_received": Ontvangen project moderatierechten
-        "project_folder_moderation_rights_received": Ontvangen mapbeheerdersrechten
+        "project_moderation_rights_received": Ontvangen projectbeheerders-rechten
+        "project_folder_moderation_rights_received": Mapbeheerder rechten ontvangen
         "project_phase_started": Nieuwe projectfase
         "project_phase_upcoming": Komende nieuwe projectfase
-        "status_change_of_commented_idea": Statusverandering van een ingang waarop ik commentaar gaf
+        "status_change_of_commented_idea": Statusverandering van een input waarop ik commentaar gaf
         "status_change_of_commented_initiative": Statuswijziging van een voorstel waar ik commentaar op had
         "status_change_of_voted_idea": Statuswijziging van een ingang waarvoor ik heb gestemd
         "status_change_of_voted_initiative": Statuswijziging van een voorstel waar ik voor heb gestemd
