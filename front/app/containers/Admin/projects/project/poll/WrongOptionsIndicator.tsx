@@ -1,8 +1,4 @@
 import React from 'react';
-import GetPollOptions, {
-  GetPollOptionsChildProps,
-} from 'resources/GetPollOptions';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -10,6 +6,7 @@ import styled from 'styled-components';
 import { TextCell } from 'components/admin/ResourceList';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { colors } from 'utils/styleUtils';
+import usePollOptions from 'hooks/usePollOptions';
 
 const Indicator = styled(TextCell)`
   display: flex;
@@ -20,18 +17,14 @@ const StyledIconTooltip = styled(IconTooltip)`
   margin-right: 5px;
 `;
 
-interface InputProps {
+interface Props {
   questionId: string;
 }
 
-interface DataProps {
-  options: GetPollOptionsChildProps;
-}
+const WrongOptionsIndicator = ({ questionId }: Props) => {
+  const options = usePollOptions(questionId);
 
-interface Props extends InputProps, DataProps {}
-
-const WrongOptionsIndicator = ({ options }: Props) =>
-  !isNilOrError(options) ? (
+  return !isNilOrError(options) ? (
     options.length === 0 ? (
       <Indicator>
         <StyledIconTooltip
@@ -48,15 +41,6 @@ const WrongOptionsIndicator = ({ options }: Props) =>
       </Indicator>
     ) : null
   ) : null;
+};
 
-const Data = adopt<DataProps, InputProps>({
-  options: ({ questionId, render }) => (
-    <GetPollOptions questionId={questionId}>{render}</GetPollOptions>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataprops) => <WrongOptionsIndicator {...inputProps} {...dataprops} />}
-  </Data>
-);
+export default WrongOptionsIndicator;
