@@ -94,7 +94,7 @@ const PollAdminForm = ({
 
   // New question
   const startNewQuestion = () => {
-    setNewQuestionTitle(null);
+    setNewQuestionTitle({});
     setEditingOptionsId(null);
   };
 
@@ -168,6 +168,7 @@ const PollAdminForm = ({
   };
 
   const listItems = getListItems() || [];
+
   return (
     <>
       <StyledList key={listItems.length + (newQuestionTitle ? 1 : 0)}>
