@@ -32,14 +32,14 @@ const Component = ({ ideaId }: Props) => {
   const authUser = useAuthUser();
   const localize = useLocalize();
 
-  if (!isNilOrError(idea) && !isNilOrError(project) && !isNilOrError(phases)) {
+  if (!isNilOrError(idea) && !isNilOrError(project)) {
     const postUrl = `${location.origin}/ideas/${idea.data.attributes.slug}`;
     const titleMultiloc = idea.data.attributes.title_multiloc;
     const postTitle = localize(titleMultiloc);
     const inputTerm = getInputTerm(
       project.data.attributes.process_type,
       project.data,
-      phases.data
+      phases?.data
     );
 
     const utmParams = !isNilOrError(authUser)
