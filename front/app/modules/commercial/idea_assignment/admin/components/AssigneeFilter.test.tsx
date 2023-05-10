@@ -3,7 +3,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { makeUser } from 'services/__mocks__/users';
-import { intl } from 'utils/cl-intl';
 
 // mocking dependencies
 jest.mock('resources/GetUsers', () => 'GetUsers');
@@ -30,12 +29,9 @@ describe('<AssigneeFilter />', () => {
 
     const wrapper = shallow(
       <AssigneeFilter
-        intl={intl}
-        authUser={authUser}
         handleAssigneeFilterChange={handleAssigneeFilterChange}
         prospectAssignees={{ usersList: prospectAssignees }}
         assignee="me"
-        projectId={undefined}
       />
     );
     expect(wrapper.find('Dropdown').prop('options')).toMatchSnapshot();
@@ -54,12 +50,9 @@ describe('<AssigneeFilter />', () => {
 
     const wrapper = shallow(
       <AssigneeFilter
-        intl={intl}
-        authUser={authUser}
         handleAssigneeFilterChange={handleAssigneeFilterChange}
         prospectAssignees={{ usersList: prospectAssignees }}
         assignee="me"
-        projectId={undefined}
       />
     );
     const options = wrapper.find('Dropdown').prop('options');
@@ -82,12 +75,9 @@ describe('<AssigneeFilter />', () => {
 
     const wrapper = shallow(
       <AssigneeFilter
-        intl={intl}
-        authUser={authUser}
         handleAssigneeFilterChange={handleAssigneeFilterChange}
         prospectAssignees={{ usersList: prospectAssignees }}
         assignee="me"
-        projectId={undefined}
       />
     );
     const options = wrapper.find('Dropdown').prop('options');

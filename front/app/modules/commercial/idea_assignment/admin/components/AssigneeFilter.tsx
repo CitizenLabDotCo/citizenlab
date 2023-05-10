@@ -7,7 +7,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Dropdown } from 'semantic-ui-react';
 
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -16,10 +15,10 @@ import postManagerMessages from 'components/admin/PostManager/messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import { ManagerType } from 'components/admin/PostManager';
+import useAuthUser from 'hooks/useAuthUser';
 
 interface DataProps {
   prospectAssignees: GetUsersChildProps;
-  authUser: GetAuthUserChildProps;
 }
 
 interface InputProps {
@@ -42,15 +41,20 @@ type TAssigneeOption = {
 const AssigneeFilter = ({
   assignee,
   prospectAssignees,
-  authUser,
   className,
   handleAssigneeFilterChange,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const authUser = useAuthUser();
+
+  if (isNilOrError(authUser)) {
+    return null;
+  }
+
   const getAssigneeOptions = (prospectAssignees: GetUsersChildProps) => {
     let assigneeOptions: TAssigneeOption[] = [];
 
-    if (!isNilOrError(prospectAssignees.usersList) && !isNilOrError(authUser)) {
+    if (!isNilOrError(prospectAssignees.usersList)) {
       const dynamicOptions = prospectAssignees.usersList
         .filter((assignee) => assignee.id !== authUser.id)
         .map((assignee) => ({
@@ -82,6 +86,7 @@ const AssigneeFilter = ({
         ...dynamicOptions,
       ];
     }
+
     return assigneeOptions;
   };
 
@@ -91,10 +96,12 @@ const AssigneeFilter = ({
   ) => {
     const realFiterParam =
       assigneeOption.value === 'all' ? undefined : assigneeOption.value;
+
     trackEventByName(tracks.assigneeFilterUsed, {
       assignee: realFiterParam,
-      adminAtWork: authUser && authUser.id,
+      adminAtWork: authUser.id,
     });
+
     handleAssigneeFilterChange(realFiterParam);
   };
 
@@ -126,7 +133,6 @@ const Data = adopt<DataProps, InputProps>({
         {render}
       </GetUsers>
     ),
-  authUser: <GetAuthUser />,
 });
 
 export default (inputProps: InputProps) => (
