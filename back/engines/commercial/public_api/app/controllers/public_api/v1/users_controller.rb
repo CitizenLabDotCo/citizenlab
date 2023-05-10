@@ -5,7 +5,7 @@ module PublicApi
     before_action :set_user, only: [:show]
 
     def index
-      # TODO:
+      # TODO: User policy and permission stuff
       # @users = PublicApi::UserPolicy::Scope.new(current_publicapi_apiclient, User).resolve
       @users = User.all
       @users = @users.order(created_at: :desc)

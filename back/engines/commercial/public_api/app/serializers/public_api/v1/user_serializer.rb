@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class PublicApi::V1::UserSerializer < ActiveModel::Serializer
+  # TODO: Why does this fail rubocop in this file but not in project or idea serializer
   @@multiloc_service = MultilocService.new
 
   attributes :id,
