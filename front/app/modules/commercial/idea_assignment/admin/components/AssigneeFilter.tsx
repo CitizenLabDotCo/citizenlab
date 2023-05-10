@@ -52,42 +52,39 @@ const AssigneeFilter = ({
   }
 
   const getAssigneeOptions = (prospectAssignees: GetUsersChildProps) => {
-    let assigneeOptions: TAssigneeOption[] = [];
+    // Order of assignee filter options:
+    // All ideas > Assigned to me > Unassigned > Assigned to X (other admins/mods)
+    const assigneeOptions: TAssigneeOption[] = [
+      {
+        value: 'all',
+        text: formatMessage(messages.anyAssignment),
+        id: 'e2e-assignee-filter-all-posts',
+      },
+      {
+        value: authUser.id,
+        text: formatMessage(postManagerMessages.assignedToMe),
+        id: 'e2e-assignee-filter-assigned-to-user',
+      },
+      {
+        value: 'unassigned',
+        text: formatMessage(postManagerMessages.noOne),
+        id: 'e2e-assignee-filter-unassigned',
+      },
+    ];
 
-    if (!isNilOrError(prospectAssignees.usersList)) {
-      const dynamicOptions = prospectAssignees.usersList
-        .filter((assignee) => assignee.id !== authUser.id)
-        .map((assignee) => ({
-          value: assignee.id,
-          text: formatMessage(postManagerMessages.assignedTo, {
-            assigneeName: `${assignee.attributes.first_name} ${assignee.attributes.last_name}`,
-          }),
-          className: 'e2e-assignee-filter-other-user',
-        }));
+    const dynamicOptions = !isNilOrError(prospectAssignees.usersList)
+      ? prospectAssignees.usersList
+          .filter((assignee) => assignee.id !== authUser.id)
+          .map((assignee) => ({
+            value: assignee.id,
+            text: formatMessage(postManagerMessages.assignedTo, {
+              assigneeName: `${assignee.attributes.first_name} ${assignee.attributes.last_name}`,
+            }),
+            className: 'e2e-assignee-filter-other-user',
+          }))
+      : [];
 
-      // Order of assignee filter options:
-      // All ideas > Assigned to me > Unassigned > Assigned to X (other admins/mods)
-      assigneeOptions = [
-        {
-          value: 'all',
-          text: formatMessage(messages.anyAssignment),
-          id: 'e2e-assignee-filter-all-posts',
-        },
-        {
-          value: authUser.id,
-          text: formatMessage(postManagerMessages.assignedToMe),
-          id: 'e2e-assignee-filter-assigned-to-user',
-        },
-        {
-          value: 'unassigned',
-          text: formatMessage(postManagerMessages.noOne),
-          id: 'e2e-assignee-filter-unassigned',
-        },
-        ...dynamicOptions,
-      ];
-    }
-
-    return assigneeOptions;
+    return [...assigneeOptions, ...dynamicOptions];
   };
 
   const onAssigneeChange = (
