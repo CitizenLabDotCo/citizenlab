@@ -58,12 +58,12 @@ const QuestionRow = ({
         <T value={question.attributes.title_multiloc} />
         <EditTitleButton
           className="e2e-edit-question"
-          onClick={onEdit}
+          onClick={onEditOptions}
           buttonStyle="text"
           icon="edit"
           ariaLabel="edit"
         >
-          <FormattedMessage {...messages.editPollQuestion} />
+          <FormattedMessage {...messages.editPollAnswersButtonLabel} />
         </EditTitleButton>
       </Box>
     </TextCell>
@@ -80,11 +80,11 @@ const QuestionRow = ({
     </Button>
     <Button
       className="e2e-edit-options"
-      onClick={onEditOptions}
+      onClick={onEdit}
       buttonStyle="secondary"
       icon="edit"
     >
-      <FormattedMessage {...messages.editPollAnswersButtonLabel} />
+      <FormattedMessage {...messages.editPollQuestion} />
     </Button>
   </SortableRow>
 );

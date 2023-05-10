@@ -31,16 +31,8 @@ const OptionRow = ({
 }) => (
   <Row key={pollOptionId}>
     <TextCell className="expand">
-      <Box display='flex' alignItems='center'>
+      <Box display="flex" alignItems="center">
         <T value={pollOptionTitle} />
-        <StyledButton
-          className="e2e-edit-option"
-          onClick={editOption}
-          buttonStyle="text"
-          icon="edit"
-        >
-          <FormattedMessage {...messages.editOption} />
-        </StyledButton>
       </Box>
     </TextCell>
     <Button
@@ -51,6 +43,14 @@ const OptionRow = ({
     >
       <FormattedMessage {...messages.deleteOption} />
     </Button>
+    <StyledButton
+      className="e2e-edit-option"
+      onClick={editOption}
+      buttonStyle="text"
+      icon="edit"
+    >
+      <FormattedMessage {...messages.editOption} />
+    </StyledButton>
   </Row>
 );
 
