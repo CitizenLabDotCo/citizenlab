@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 
 // api
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -101,16 +101,6 @@ export interface IProjectFormState {
   slug: string | null;
   showSlugErrorMessage: boolean;
   folder_id?: string | null;
-}
-
-export function projectByIdStream(
-  projectId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IProject>({
-    apiEndpoint: `${apiEndpoint}/${projectId}`,
-    ...streamParams,
-  });
 }
 
 export async function addProject(projectData: IUpdatedProjectProperties) {
