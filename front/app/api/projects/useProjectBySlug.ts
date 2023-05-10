@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import projectsKeys from './keys';
 import { IProject, ProjectsKeys } from 'api/projects/types';
 
-const fetchProjectBySlug = ({ slug }: { slug?: string | null }) =>
+export const fetchProjectBySlug = ({ slug }: { slug?: string | null }) =>
   fetcher<IProject>({ path: `/projects/by_slug/${slug}`, action: 'get' });
 
 const useProjectBySlug = (slug?: string | null) => {

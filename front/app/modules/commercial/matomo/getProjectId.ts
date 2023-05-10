@@ -1,16 +1,13 @@
-// services
-import { projectBySlugStream } from 'services/projects';
+// api
+import getProjectbySlug from 'api/projects/getProjectBySlug';
 
 // utils
 import { slugRegEx } from 'utils/textUtils';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
-import { Subscription } from 'rxjs';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import ideasKeys from 'api/ideas/keys';
 import { fetchIdea } from 'api/ideas/useIdeaBySlug';
-import { IProject } from 'api/projects/types';
 
 export const getProjectId = async (path: string) => {
   if (isProjectPage(path)) {
@@ -22,11 +19,6 @@ export const getProjectId = async (path: string) => {
       if (!slug) return null;
 
       const projectId = await getProjectIdFromProjectSlug(slug);
-      if (projectSubscriptions[slug]) {
-        projectSubscriptions[slug].unsubscribe();
-      }
-      delete projectSubscriptions[slug];
-
       return projectId;
     }
   }
@@ -63,22 +55,13 @@ const extractProjectIdOrSlug = (path: string) => {
   return matches && matches[1];
 };
 
-const projectSubscriptions: Record<string, Subscription> = {};
-
-const getProjectIdFromProjectSlug = (slug: string): Promise<string | null> => {
-  return new Promise((resolve) => {
-    const observable = projectBySlugStream(slug).observable;
-
-    projectSubscriptions[slug] = observable.subscribe(
-      (project: IProject | NilOrError) => {
-        if (isNilOrError(project)) {
-          resolve(null);
-        } else {
-          resolve(project.data.id);
-        }
-      }
-    );
-  });
+const getProjectIdFromProjectSlug = async (slug: string) => {
+  try {
+    const project = await getProjectbySlug(slug);
+    return project.data.id;
+  } catch {
+    return null;
+  }
 };
 
 const ideaPageDetectRegex = RegExp(`/ideas/(${slugRegExSource})$`);

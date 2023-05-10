@@ -103,16 +103,6 @@ export interface IProjectFormState {
   folder_id?: string | null;
 }
 
-export function projectBySlugStream(
-  projectSlug: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IProject>({
-    apiEndpoint: `${apiEndpoint}/by_slug/${projectSlug}`,
-    ...streamParams,
-  });
-}
-
 export function projectByIdStream(
   projectId: string,
   streamParams: IStreamParams | null = null
