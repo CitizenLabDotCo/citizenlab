@@ -10,7 +10,18 @@ class OmniauthCallbackController < ApplicationController
     auth_method = AuthenticationService.new.method_by_provider(auth_provider)
     verification_method = get_verification_method(auth_provider)
 
-    if auth_method
+    if auth_method && verification_method
+      # If token is present, the user is already logged in, which means they try to verify not authenticate.
+      if request.env['omniauth.params']['token'] && auth_method.verification_prioritized?
+        verification_callback(verification_method)
+        # We need it only for ClaveUnica. For FC, we never verify, only authenticate.
+        auth = request.env['omniauth.auth']
+        @identity = Identity.find_or_build_with_omniauth(auth, auth_method)
+        @identity.update(user: @user) unless @identity.user
+      else
+        auth_callback(verify: verification_method, authver_method: auth_method)
+      end
+    elsif auth_method
       auth_callback(verify: verification_method, authver_method: auth_method)
     elsif verification_method
       verification_callback(verification_method)

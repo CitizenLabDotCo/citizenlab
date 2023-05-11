@@ -37,5 +37,9 @@ module OmniauthMethods
     def email_always_present?
       true
     end
+
+    def verification_prioritized?
+      raise NotImplementedError
+    end
   end
 end

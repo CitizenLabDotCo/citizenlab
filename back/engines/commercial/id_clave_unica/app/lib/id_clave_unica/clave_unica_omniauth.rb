@@ -67,5 +67,9 @@ module IdClaveUnica
     def email_always_present?
       false
     end
+
+    def verification_prioritized?
+      true
+    end
   end
 end

@@ -111,6 +111,10 @@ module IdFranceconnect
       'franceconnect_merging_failed'
     end
 
+    def verification_prioritized?
+      false
+    end
+
     private
 
     # @param [AppConfiguration] configuration
