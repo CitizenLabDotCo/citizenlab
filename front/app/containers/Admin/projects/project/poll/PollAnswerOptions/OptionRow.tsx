@@ -46,7 +46,7 @@ const OptionRow = ({
     <StyledButton
       className="e2e-edit-option"
       onClick={editOption}
-      buttonStyle="text"
+      buttonStyle="secondary"
       icon="edit"
     >
       <FormattedMessage {...messages.editOption} />
