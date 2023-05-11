@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable RSpec/ImplicitBlockExpectation, RSpec/VerifiedDoubleReference
+
 # After https://github.com/AzureAD/omniauth-azure-activedirectory/blob/master/spec/omniauth/strategies/azure_activedirectory_spec.rb.
 #-------------------------------------------------------------------------------
 # Copyright (c) 2015 Micorosft Corporation
@@ -63,7 +65,7 @@ describe OmniAuth::Strategies::AzureActiveDirectory do
   end
 
   describe '#callback_phase' do
-    subject { -> { strategy.callback_phase } }
+    subject(:callback_phase) { -> { strategy.callback_phase } }
 
     let(:request) { instance_double('Request', params: hybrid_flow_params, path_info: 'path') }
     let(:strategy) do
@@ -91,35 +93,35 @@ describe OmniAuth::Strategies::AzureActiveDirectory do
       let(:id_token) { Rails.root.join('spec/fixtures/azure_active_directory/id_token.txt').read }
 
       # If it passes this test, then the id was successfully validated.
-      it { is_expected.to_not raise_error }
+      it { is_expected.not_to raise_error }
 
       describe 'the auth hash' do
-        before(:each) { strategy.callback_phase }
+        subject(:auth) { env['omniauth.auth'] }
 
-        subject { env['omniauth.auth'] }
+        before { strategy.callback_phase }
 
         it 'should contain the name' do
-          expect(subject.info['name']).to eq name
+          expect(auth.info['name']).to eq name
         end
 
         it 'should contain the first name' do
-          expect(subject.info['first_name']).to eq given_name
+          expect(auth.info['first_name']).to eq given_name
         end
 
         it 'should contain the last name' do
-          expect(subject.info['last_name']).to eq family_name
+          expect(auth.info['last_name']).to eq family_name
         end
 
         it 'should contain the email' do
-          expect(subject.info['email']).to eq email
+          expect(auth.info['email']).to eq email
         end
 
         it 'should contain the auth code' do
-          expect(subject.credentials['code']).to eq code
+          expect(auth.credentials['code']).to eq code
         end
 
         it 'should contain the session state' do
-          expect(subject.extra['session_state']).to eq session_state
+          expect(auth.extra['session_state']).to eq session_state
         end
       end
     end
@@ -129,6 +131,7 @@ describe OmniAuth::Strategies::AzureActiveDirectory do
       #   { 'iss' => 'https://sts.imposter.net/bunch-of-random-chars', ... }
       #
       let(:id_token) { Rails.root.join('spec/fixtures/azure_active_directory/id_token_bad_issuer.txt').read }
+
       it { is_expected.to raise_error JWT::VerificationError }
     end
 
@@ -137,6 +140,7 @@ describe OmniAuth::Strategies::AzureActiveDirectory do
       #   { 'aud' => 'not the client id', ... }
       #
       let(:id_token) { Rails.root.join('spec/fixtures/azure_active_directory/id_token_bad_audience.txt').read }
+
       it { is_expected.to raise_error JWT::VerificationError }
     end
 
@@ -145,22 +149,26 @@ describe OmniAuth::Strategies::AzureActiveDirectory do
       #   { 'nonce' => 'not my nonce', ... }
       #
       let(:id_token) { Rails.root.join('spec/fixtures/azure_active_directory/id_token_bad_nonce.txt').read }
+
       it { is_expected.to raise_error JWT::DecodeError }
     end
 
     context 'with the wrong x5c' do
       let(:x5c) { Rails.root.join('spec/fixtures/azure_active_directory/x5c_different.txt').read }
       let(:id_token) { Rails.root.join('spec/fixtures/azure_active_directory/id_token.txt').read }
+
       it { is_expected.to raise_error JWT::VerificationError }
     end
 
     context 'with a non-matching c_hash' do
       let(:id_token) { Rails.root.join('spec/fixtures/azure_active_directory/id_token_bad_chash.txt').read }
+
       it { is_expected.to raise_error JWT::VerificationError }
     end
 
     context 'with a non-matching kid' do
       let(:id_token) { Rails.root.join('spec/fixtures/azure_active_directory/id_token_bad_kid.txt').read }
+
       it { is_expected.to raise_error JWT::VerificationError }
     end
 
@@ -168,57 +176,65 @@ describe OmniAuth::Strategies::AzureActiveDirectory do
       let(:id_token) { Rails.root.join('spec/fixtures/azure_active_directory/id_token_no_alg.txt').read }
 
       it 'should correctly parse using default RS256' do
-        expect(subject).to_not raise_error
+        expect(callback_phase).not_to raise_error
       end
 
       describe 'the auth hash' do
-        subject { env['omniauth.auth'] }
-        before(:each) { strategy.callback_phase }
+        subject(:auth) { env['omniauth.auth'] }
+
+        before { strategy.callback_phase }
 
         it 'should default to RS256' do
-          expect(subject.info['name']).to eq name
+          expect(auth.info['name']).to eq name
         end
       end
     end
   end
 
   describe '#request_phase' do
+    subject(:request_phase) { strategy.request_phase }
+
     let(:strategy) { described_class.new(app, client_id, tenant) }
-    subject { strategy.request_phase }
-    before(:each) { strategy.call!(env) }
+
+    before { strategy.call!(env) }
 
     it 'should make a redirect' do
-      expect(subject.first).to eq 302
+      expect(request_phase.first).to eq 302
     end
 
     it 'should redirect to the correct endpoint' do
-      expect(URI(subject[1]['Location']).host).to eq auth_endpoint_host
+      expect(URI(request_phase[1]['Location']).host).to eq auth_endpoint_host
     end
   end
 
   describe '#read_nonce' do
+    subject(:read_nonce) { strategy.send(:read_nonce) }
+
     let(:strategy) { described_class.new(app, client_id, tenant) }
     let(:env) { { 'rack.session' => {} } }
-    before(:each) { strategy.call!(env) }
-    subject { strategy.send(:read_nonce) }
+
+    before { strategy.call!(env) }
 
     context 'before a nonce is set' do
-      it { is_expected.to be nil }
+      it { is_expected.to be_nil }
     end
 
     context 'after a nonce is set' do
-      before(:each) { @nonce = strategy.send(:new_nonce) }
+      before { @nonce = strategy.send(:new_nonce) }
+
       it 'should match' do
-        expect(subject).to eq @nonce
+        expect(read_nonce).to eq @nonce
       end
     end
 
     context 'twice in a row' do
-      before(:each) do
+      before do
         strategy.send(:new_nonce)
         strategy.send(:read_nonce)
       end
-      it { is_expected.to be nil }
+
+      it { is_expected.to be_nil }
     end
   end
 end
+# rubocop:enable RSpec/ImplicitBlockExpectation, RSpec/VerifiedDoubleReference
