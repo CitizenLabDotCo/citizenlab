@@ -74,7 +74,7 @@ jest.mock('modules/commercial/insights/api/views/useDeleteView', () =>
 );
 
 jest.mock('api/projects/useProjectById', () => {
-  return jest.fn(({ projectId }) => ({
+  return jest.fn((projectId) => ({
     data: {
       data: projectId === '2' ? mockProjectData2 : mockProjectData3,
     },
