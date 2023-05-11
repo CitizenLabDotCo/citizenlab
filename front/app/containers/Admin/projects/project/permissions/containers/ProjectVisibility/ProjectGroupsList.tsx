@@ -13,14 +13,6 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import GroupAvatar from './GroupAvatar';
 import { List, Row } from 'components/admin/ResourceList';
 
-// Services
-import { IGroups, IGroupData } from 'api/groups/types';
-import {
-  addProjectGroup,
-  deleteProjectGroup,
-  IProjectGroupData,
-} from 'services/projectGroups';
-
 // Style
 import styled from 'styled-components';
 
@@ -29,8 +21,14 @@ import { IOption, Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+// Api
 import useProjectGroups from 'api/project_groups/useProjectGroups';
 import useGroups from 'api/groups/useGroups';
+import useAddProjectGroup from 'api/project_groups/useAddProjectGroup';
+import { IProjectGroupData } from 'api/project_groups/types';
+import { IGroups, IGroupData } from 'api/groups/types';
+import useDeleteProjectGroup from 'api/project_groups/useDeleteProjectGroup';
 
 const Container = styled.div`
   width: 100%;
@@ -67,6 +65,8 @@ interface Props {
 }
 
 const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
+  const { mutateAsync: addProjectGroup } = useAddProjectGroup();
+  const { mutate: deleteProjectGroup } = useDeleteProjectGroup({ projectId });
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const currentTenantLocales = useAppConfigurationLocales();
@@ -103,7 +103,7 @@ const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
   const handleOnAddGroupClick = async () => {
     if (selectedGroups && selectedGroups.length > 0) {
       const promises = selectedGroups.map((selectedGroup) =>
-        addProjectGroup(projectId, selectedGroup.value)
+        addProjectGroup({ projectId, groupId: selectedGroup.value })
       );
 
       try {

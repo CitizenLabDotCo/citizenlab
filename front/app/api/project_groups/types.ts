@@ -7,6 +7,11 @@ export type IProjectGroupsParams = {
   projectId: string;
 };
 
+export type IProjectGroupsAdd = {
+  groupId: string;
+  projectId: string;
+};
+
 export interface IProjectGroupData {
   id: string;
   type: 'groups_project';
@@ -23,4 +28,8 @@ export interface IProjectGroupData {
 
 export interface IProjectGroups {
   data: IProjectGroupData[];
+}
+
+export interface IProjectGroup {
+  data: IProjectGroupData;
 }
