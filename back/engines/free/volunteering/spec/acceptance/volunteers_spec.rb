@@ -9,8 +9,7 @@ resource 'Volunteering Volunteers' do
   before do
     header 'Content-Type', 'application/json'
     @user = create(:user)
-    token = Knock::AuthToken.new(payload: { sub: @user.id }).token
-    header 'Authorization', "Bearer #{token}"
+    header_token_for @user
   end
 
   context 'when normal user' do
@@ -50,11 +49,7 @@ resource 'Volunteering Volunteers' do
   end
 
   context 'when admin' do
-    before do
-      @admin = create(:admin)
-      token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
-      header 'Authorization', "Bearer #{token}"
-    end
+    before { admin_header_token }
 
     get 'web_api/v1/causes/:cause_id/volunteers' do
       with_options scope: :page do
@@ -107,14 +102,10 @@ resource 'Volunteering Volunteers' do
         expect(worksheets[0][1][3].value.to_i).to eq @volunteers1[0].created_at.to_i
       end
 
-      describe do
-        before do
-          @user = create(:user)
-          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-          header 'Authorization', "Bearer #{token}"
-        end
+      describe 'when resident' do
+        before { resident_header_token }
 
-        example '[error] XLSX export by a normal user', document: false do
+        example '[error] XLSX export', document: false do
           do_request
           assert_status 401
         end

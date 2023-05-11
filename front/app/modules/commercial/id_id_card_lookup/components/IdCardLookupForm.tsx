@@ -36,10 +36,6 @@ import T from 'components/T';
 // typings
 import { IDLookupMethod } from 'services/verificationMethods';
 
-// api
-import { useQueryClient } from '@tanstack/react-query';
-import projectsKeys from 'api/projects/keys';
-
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
@@ -50,7 +46,6 @@ interface Props {
 const VerificationFormLookup = memo<Props & WrappedComponentProps>(
   ({ onCancel, onVerified, className, method, intl }) => {
     const authUser = useAuthUser();
-    const queryClient = useQueryClient();
 
     const [cardId, setCardId] = useState<string>('');
     const [cardIdError, setCardIdError] = useState<string | null>(null);
@@ -82,13 +77,7 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
           try {
             await verifyIDLookup(cardId);
 
-            queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
-
             const endpointsToRefetch = [`${API_PATH}/users/me`];
-            const partialEndpointsToRefetch = [
-              `${API_PATH}/projects/`,
-              `${API_PATH}/ideas/`,
-            ];
 
             if (!isNilOrError(authUser)) {
               endpointsToRefetch.push(`${API_PATH}/users/${authUser.id}`);
@@ -96,7 +85,6 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
 
             await streams.fetchAllWith({
               apiEndpoint: endpointsToRefetch,
-              partialApiEndpoint: partialEndpointsToRefetch,
             });
 
             onVerified();

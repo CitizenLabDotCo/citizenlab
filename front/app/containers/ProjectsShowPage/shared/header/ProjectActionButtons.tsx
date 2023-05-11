@@ -9,7 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isNumber } from 'lodash-es';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'hooks/usePhases';
 
 // events
@@ -54,7 +54,7 @@ interface Props {
 }
 
 const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const phases = usePhases(projectId);
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const { pathname, hash: divId } = useLocation();
@@ -72,9 +72,9 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
 
   const scrollTo = useCallback(
     (id: string) => {
-      if (!isNilOrError(project)) {
+      if (project) {
         const isOnProjectPage = pathname.endsWith(
-          `/projects/${project.attributes.slug}`
+          `/projects/${project.data.attributes.slug}`
         );
 
         currentPhase && selectPhase(currentPhase);
@@ -82,7 +82,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         if (isOnProjectPage) {
           scrollToElement({ id, shouldFocus: true });
         } else {
-          clHistory.push(`/projects/${project.attributes.slug}#${id}`);
+          clHistory.push(`/projects/${project.data.attributes.slug}#${id}`);
         }
       }
     },
@@ -97,7 +97,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     event.preventDefault();
 
     const { enabled, disabled_reason } =
-      project.attributes.action_descriptor.taking_survey;
+      project.data.attributes.action_descriptor.taking_survey;
 
     if (enabled === true) {
       scrollTo('project-survey');
@@ -109,7 +109,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         name: 'scrollToSurvey',
         params: {
           pathname,
-          projectSlug: project.attributes.slug,
+          projectSlug: project.data.attributes.slug,
           currentPhase,
         },
       };
@@ -118,7 +118,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         flow: 'signup',
         context: {
           type: currentPhase ? 'phase' : 'project',
-          id: currentPhase?.id ?? project.id,
+          id: currentPhase?.id ?? project.data.id,
           action: 'taking_survey',
         },
         successAction,
@@ -126,16 +126,16 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     }
   };
 
-  const { process_type, publication_status } = project.attributes;
+  const { process_type, publication_status } = project.data.attributes;
 
   const isProjectArchived =
-    project.attributes.publication_status === 'archived';
+    project.data.attributes.publication_status === 'archived';
   const isProcessTypeContinuous = process_type === 'continuous';
   const participation_method = isProcessTypeContinuous
-    ? project.attributes.participation_method
+    ? project.data.attributes.participation_method
     : currentPhase?.attributes.participation_method;
   const ideas_count = isProcessTypeContinuous
-    ? project.attributes.ideas_count
+    ? project.data.attributes.ideas_count
     : currentPhase?.attributes.ideas_count;
   const hasProjectEnded = currentPhase
     ? pastPresentOrFuture([
@@ -144,8 +144,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       ]) === 'past'
     : false;
   const inputTerm = getInputTerm(
-    project.attributes.process_type,
-    project,
+    project.data.attributes.process_type,
+    project.data,
     phases
   );
 
@@ -210,7 +210,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       {showIdeasButton && !hasProjectEnded && (
         <IdeaButton
           id="project-ideabutton"
-          projectId={project.id}
+          projectId={project.data.id}
           participationContextType={isPhaseIdeation ? 'phase' : 'project'}
           fontWeight="500"
           phase={currentPhase}
@@ -220,7 +220,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         <IdeaButton
           id="project-survey-button"
           data-testid="e2e-project-survey-button"
-          projectId={project.id}
+          projectId={project.data.id}
           participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
           fontWeight="500"
           phase={currentPhase}

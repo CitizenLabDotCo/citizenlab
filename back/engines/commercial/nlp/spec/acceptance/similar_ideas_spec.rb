@@ -8,9 +8,7 @@ resource 'SimilarIdeas' do
 
   before do
     header 'Content-Type', 'application/json'
-    @user = create(:admin)
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    admin_header_token
   end
 
   get '/web_api/v1/ideas/:idea_id/similar' do

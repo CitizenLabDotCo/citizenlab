@@ -16,7 +16,7 @@ import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -64,7 +64,7 @@ const Survey = ({
   surveyService,
   className,
 }: Props) => {
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const authUser = useAuthUser();
   const phase = usePhase(phaseId ?? null);
 
@@ -94,9 +94,9 @@ const Survey = ({
     signUpIn('signup');
   };
 
-  if (!isNilOrError(project)) {
+  if (project) {
     const { enabled, disabled_reason } =
-      project.attributes.action_descriptor.taking_survey;
+      project.data.attributes.action_descriptor.taking_survey;
 
     if (enabled) {
       const email = !isNilOrError(authUser) ? authUser.attributes.email : null;
@@ -170,7 +170,7 @@ const Survey = ({
     }
 
     const notCurrentPhase =
-      project.attributes.process_type === 'timeline' &&
+      project.data.attributes.process_type === 'timeline' &&
       !isNilOrError(phase) &&
       pastPresentOrFuture([
         phase.attributes.start_at,

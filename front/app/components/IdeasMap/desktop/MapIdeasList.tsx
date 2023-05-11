@@ -11,7 +11,7 @@ import Centerer from 'components/UI/Centerer';
 // hooks
 import useLocale from 'hooks/useLocale';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 
 // events
@@ -127,13 +127,13 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
     projectId,
     phaseId,
   });
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
 
   // ideaMarkers
   const [search, setSearch] = useState<string | null>(null);
   const [topics, setTopics] = useState<string[]>([]);
   const [sort, setSort] = useState<Sort>(
-    project?.attributes.ideas_order || ideaDefaultSortMethodFallback
+    project?.data.attributes.ideas_order || ideaDefaultSortMethodFallback
   );
   const { data: ideaMarkers } = useIdeaMarkers({
     projectIds: [projectId],
@@ -191,7 +191,8 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
             onChange={handleSortOnChange}
             alignment="left"
             defaultSortingMethod={
-              project?.attributes.ideas_order || ideaDefaultSortMethodFallback
+              project?.data.attributes.ideas_order ||
+              ideaDefaultSortMethodFallback
             }
           />
           {topicsEnabled && (

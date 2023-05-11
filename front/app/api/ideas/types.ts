@@ -6,7 +6,7 @@ import {
 import {
   CommentingDisabledReason,
   PublicationStatus as ProjectPublicationStatus,
-} from 'services/projects';
+} from 'api/projects/types';
 import { Keys } from 'utils/cl-react-query/types';
 import ideasKeys from './keys';
 

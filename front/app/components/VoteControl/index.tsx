@@ -22,7 +22,7 @@ import { isRtl } from 'utils/styleUtils';
 // typings
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useIdeaVote from 'api/idea_votes/useIdeaVote';
 import usePhases from 'hooks/usePhases';
 import useAddIdeaVote from 'api/idea_votes/useAddIdeaVote';
@@ -74,9 +74,9 @@ const VoteControl = ({
   const { mutate: deleteVote, isLoading: deleteVoteIsLoading } =
     useDeleteIdeaVote();
   const authUser = useAuthUser();
-  const project = useProject({
-    projectId: idea?.data.relationships.project.data.id,
-  });
+  const { data: project } = useProjectById(
+    idea?.data.relationships.project.data.id
+  );
   const phases = usePhases(idea?.data.relationships.project.data.id);
   const { data: voteData } = useIdeaVote(
     idea?.data.relationships.user_vote?.data?.id
@@ -154,16 +154,17 @@ const VoteControl = ({
     phases
       ?.filter((phase) => includes(ideaPhaseIds, phase.id))
       .map((phase) => phase);
-  const isContinuousProject = project?.attributes.process_type === 'continuous';
+  const isContinuousProject =
+    project?.data.attributes.process_type === 'continuous';
   const latestRelevantIdeaPhase = ideaPhases
     ? getLatestRelevantPhase(ideaPhases)
     : null;
   const participationContextType = isContinuousProject ? 'project' : 'phase';
   const participationContextId = isContinuousProject
-    ? project?.id || null
+    ? project?.data.id || null
     : latestRelevantIdeaPhase?.id || null;
   const participationContext = isContinuousProject
-    ? project || null
+    ? project.data || null
     : latestRelevantIdeaPhase;
   const isPBContext =
     participationContext?.attributes.participation_method === 'budgeting';

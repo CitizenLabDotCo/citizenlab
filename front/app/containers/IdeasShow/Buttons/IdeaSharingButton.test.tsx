@@ -12,6 +12,7 @@ const mockProjectData = {
     process_type: 'continuous',
     title_multiloc: { en: 'Test Project' },
     slug: 'test',
+    input_term: 'idea',
   },
 };
 
@@ -20,7 +21,9 @@ const ideaId = '5';
 jest.mock('services/projects');
 jest.mock('services/auth');
 
-jest.mock('hooks/useProject', () => jest.fn(() => mockProjectData));
+jest.mock('api/projects/useProjectById', () =>
+  jest.fn(() => ({ data: { data: mockProjectData } }))
+);
 
 jest.mock('api/ideas/useIdeaById', () => {
   return jest.fn(() => ({ data: { data: mockIdeaData[0] } }));

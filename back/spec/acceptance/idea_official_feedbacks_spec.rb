@@ -51,11 +51,10 @@ resource 'OfficialFeedback' do
     end
   end
 
-  context 'when authenticated as normal user' do
+  context 'when resident' do
     before do
       @user = create(:user)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for @user
     end
 
     post 'web_api/v1/ideas/:idea_id/official_feedback' do

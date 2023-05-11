@@ -456,7 +456,6 @@ class AdminProjectTimelineEdit extends PureComponent<
               <SectionField>
                 <ParticipationContext
                   phase={phase}
-                  phaseId={phase ? phase.data.id : null}
                   onSubmit={this.handleParticipationContextOnSubmit}
                   onChange={this.handleParticipationContextOnChange}
                   apiErrors={errors}

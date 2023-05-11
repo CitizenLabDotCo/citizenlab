@@ -110,6 +110,7 @@ async function fetcher({ path, action, body, queryParams }) {
     if (!error.errors) {
       reportError(data);
     }
+
     throw error;
   } else {
     if (data) {
