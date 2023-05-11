@@ -487,6 +487,11 @@ Style/ClassVars:
     - 'engines/commercial/public_api/app/serializers/public_api/v1/idea_serializer.rb'
     - 'engines/commercial/public_api/app/serializers/public_api/v1/project_serializer.rb'
     - 'engines/free/volunteering/app/services/volunteering/xlsx_service.rb'
+    - 'engines/commercial/public_api/app/serializers/public_api/v2/idea_serializer.rb'
+    - 'engines/commercial/public_api/app/serializers/public_api/v2/phase_serializer.rb'
+    - 'engines/commercial/public_api/app/serializers/public_api/v2/project_serializer.rb'
+    - 'engines/commercial/public_api/app/serializers/public_api/v2/topic_serializer.rb'
+    - 'engines/commercial/public_api/app/serializers/public_api/v2/user_serializer.rb'
 
 # Offense count: 9
 # This cop supports safe autocorrection (--autocorrect).

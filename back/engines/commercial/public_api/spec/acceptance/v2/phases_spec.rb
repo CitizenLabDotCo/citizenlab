@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
-require './engines/commercial/public_api/spec/acceptance/support/shared'
+require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
 resource 'Phases' do
   explanation 'Phases represent the steps in a timeline project. Only timeline projects have phases, continuous projects do not.'
@@ -11,7 +11,7 @@ resource 'Phases' do
 
   let(:project) { create(:project_with_phases) }
 
-  get '/api/v1/:locale/projects/:project_id/phases', 'Phases: Listing the phases of a project' do
+  get '/api/v2/projects/:project_id/phases', 'Phases: Listing the phases of a project' do
     route_summary 'Phases: Listing the phases of a project'
     route_description 'Endpoint to retrieve project phases. The phases are returned in chronological order. The endpoint supports pagination.'
 
@@ -28,7 +28,7 @@ resource 'Phases' do
     end
   end
 
-  get '/api/v1/:locale/phases/:id' do
+  get '/api/v2/phases/:id' do
     route_summary 'Get a single phase by id.'
     route_description 'Get one phase by id.'
 

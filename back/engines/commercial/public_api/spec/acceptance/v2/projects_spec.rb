@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
-require './engines/commercial/public_api/spec/acceptance/support/shared'
+require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
 resource 'Projects' do
   explanation 'Projects are participation scopes defined by the city. They define a context and set time and input expectations towards the citizens, stimulating them to engage in a the scoped debate. Citizens can post ideas in projects.'
@@ -11,7 +11,7 @@ resource 'Projects' do
 
   let!(:projects) { create_list(:project, 5) }
 
-  get '/api/v1/:locale/projects/' do
+  get '/api/v2/projects/' do
     route_summary 'Get a page of projects'
     route_description 'Endpoint to retrieve city projects. The newest projects are returned first. The endpoint supports pagination.'
 
@@ -27,7 +27,7 @@ resource 'Projects' do
     end
   end
 
-  get '/api/v1/:locale/projects/:id' do
+  get '/api/v2/projects/:id' do
     route_summary 'Get a single project by id.'
     route_description 'Get one project by id.'
 

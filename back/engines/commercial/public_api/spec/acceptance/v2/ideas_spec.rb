@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
-require './engines/commercial/public_api/spec/acceptance/support/shared'
+require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
 resource 'Ideas' do
   explanation "Ideas are written inputs created by citizens. The endpoint returns ideas in the a descending 'trending' order, which means that the most relevant ideas at the moment of request will come out on top."
@@ -16,7 +16,7 @@ resource 'Ideas' do
     end
   end
 
-  get '/api/v1/:locale/ideas/' do
+  get '/api/v2/ideas/' do
     route_summary 'Get a page of ideas.'
     route_description 'Endpoint to retrieve citizen ideas. The most trending ideas are returned first. The endpoint supports pagination'
 
@@ -37,7 +37,7 @@ resource 'Ideas' do
     end
   end
 
-  get '/api/v1/:locale/ideas/:id' do
+  get '/api/v2/ideas/:id' do
     route_summary 'Get a single idea by id.'
     route_description 'Endpoint to retrieve a single idea.'
 

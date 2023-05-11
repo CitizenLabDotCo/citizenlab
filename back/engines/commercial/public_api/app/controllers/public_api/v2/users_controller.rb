@@ -1,26 +1,24 @@
 # frozen_string_literal: true
 
 module PublicApi
-  class V1::UsersController < PublicApiController
+  class V2::UsersController < PublicApiController
     before_action :set_user, only: [:show]
 
     def index
-      # TODO: User policy and permission stuff
-      # @users = PublicApi::UserPolicy::Scope.new(current_publicapi_apiclient, User).resolve
       @users = User.all
         .order(created_at: :desc)
         .page(params[:page_number])
         .per([params[:page_size]&.to_i || 12, 24].min)
 
       render json: @users,
-        each_serializer: V1::UserSerializer,
+        each_serializer: V2::UserSerializer,
         adapter: :json,
         meta: meta_properties(@users)
     end
 
     def show
       render json: @user,
-        serializer: V1::UserSerializer,
+        serializer: V2::UserSerializer,
         adapter: :json
     end
 
@@ -28,7 +26,7 @@ module PublicApi
 
     def set_user
       @user = User.find(params[:id])
-      authorize PolicyWrappedUser.new(@user)
+      # authorize PolicyWrappedUser.new(@user)
     end
 
     def meta_properties(relation)

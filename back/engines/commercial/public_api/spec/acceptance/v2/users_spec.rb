@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
-require './engines/commercial/public_api/spec/acceptance/support/shared'
+require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
 resource 'Users' do
   explanation 'All registrations on the citizenlab platform.'
@@ -11,7 +11,7 @@ resource 'Users' do
 
   let!(:users) { create_list(:user_with_demographics, 5) }
 
-  get '/api/v1/:locale/users/' do
+  get '/api/v2/users/' do
     route_summary 'Get a page of users.'
     route_description 'Endpoint to retrieve users of the platform. The most recent users are returned first. The endpoint supports pagination.'
 
@@ -27,7 +27,7 @@ resource 'Users' do
     end
   end
 
-  get '/api/v1/:locale/users/:id' do
+  get '/api/v2/users/:id' do
     route_summary 'Get a single user by id.'
     route_description 'Endpoint to retrieve a single user of the platform.'
 
@@ -38,7 +38,6 @@ resource 'Users' do
 
     example_request 'Successful response' do
       assert_status 200
-      pp json_response_body
       expect(json_response_body[:user]).to include({ id: id })
     end
   end

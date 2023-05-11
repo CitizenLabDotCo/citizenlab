@@ -8,8 +8,8 @@ RSpec::Core::RakeTask.new('public_api:docs:generate' => :environment) do |t, _ta
   ENV['DOC_FORMAT'] = 'open_api'
   ENV['DOCS_DIR'] = Rails.root.join('doc/public_api').to_s
   ENV['API_NAME'] = 'CitizenLab Public API'
+  ENV['CONFIGURATIONS_DIR'] = Rails.root.join('engines/commercial/public_api/config/open_api').to_s
 
-  t.pattern = 'engines/commercial/public_api/spec/acceptance/**/*_spec.rb'
-  # t.pattern = 'engines/commercial/public_api/spec/acceptance/ideas_spec.rb'
+  t.pattern = 'engines/commercial/public_api/spec/acceptance/v2/**/*_spec.rb'
   t.rspec_opts = ['--format RspecApiDocumentation::ApiFormatter']
 end

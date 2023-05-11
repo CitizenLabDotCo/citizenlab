@@ -11,7 +11,7 @@ RSpec.shared_context 'common_auth' do
 end
 
 RSpec.shared_context 'common_list_params' do
-  parameter :locale, 'Which locale to return text for any multi-locale fields. For example: "en" or "fr-BE"', in: :path, type: 'string', required: true
+  parameter :locale, 'Which locale to return text for any multi-locale fields. For example: "en" or "fr-BE". If not provided, it will be set to the default language of the platform.', in: :query, type: 'string', required: false
   parameter :page_size, 'The number of items that should be returned in one response. Defaults to 12, max 24', in: :query, required: false, type: 'integer'
   parameter :page_number, 'The page to return. Defaults to page 1', in: :query, required: false, type: 'integer'
   parameter :created_at, 'Date the item was created - can filter between dates', in: :query, required: false, type: 'string'

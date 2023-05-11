@@ -5,7 +5,7 @@ info:
   contact:
     name: API Support
     email: support@citizenlab.co
-  version: 1
+  version: 2
 host: 'localhost:4000'
 schemes:
   - https
