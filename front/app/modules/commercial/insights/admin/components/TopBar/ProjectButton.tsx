@@ -7,22 +7,17 @@ import { fontSizes } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 import T from 'components/T';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 
 interface ProjectButtonProps {
   projectId: string;
 }
 
 const ProjectButton = ({ projectId }: ProjectButtonProps) => {
-  const project = useProject({
-    projectId,
-  });
+  const { data: project } = useProjectById(projectId);
 
-  if (isNilOrError(project)) {
+  if (!project) {
     return null;
   }
 
@@ -31,14 +26,14 @@ const ProjectButton = ({ projectId }: ProjectButtonProps) => {
       buttonStyle="secondary-outlined"
       fontSize={`${fontSizes.s}px`}
       padding="4px 6px"
-      linkTo={`/projects/${project.attributes.slug}`}
+      linkTo={`/projects/${project.data.attributes.slug}`}
       data-testid="insightsProjectButton"
       icon="link"
       iconPos="right"
       openLinkInNewTab
       mr="12px"
     >
-      <T value={project.attributes.title_multiloc} />
+      <T value={project.data.attributes.title_multiloc} />
     </Button>
   );
 };

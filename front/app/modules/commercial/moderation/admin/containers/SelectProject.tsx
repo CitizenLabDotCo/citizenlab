@@ -1,5 +1,9 @@
 import React, { memo, useCallback } from 'react';
-import { adopt } from 'react-adopt';
+
+// api
+import useProjects from 'api/projects/useProjects';
+
+// components
 import FilterSelector from 'components/FilterSelector';
 import useLocalize from 'hooks/useLocalize';
 
@@ -7,65 +11,56 @@ import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-interface InputProps {
+// typings
+import { PublicationStatus } from 'api/projects/types';
+
+interface Props {
   onChange: (projectIds: string[]) => void;
   selectedProjectIds: string[];
 }
-interface DataProps {
-  projects: GetProjectsChildProps;
-}
 
-interface Props extends DataProps, InputProps {}
+const PUBLICATION_STATUSES: PublicationStatus[] = [
+  'published',
+  'archived',
+  'draft',
+];
 
-const SelectProject = memo(
-  ({ onChange, projects, selectedProjectIds }: Props) => {
-    const localize = useLocalize();
-    const handleOnChange = useCallback((newProjectIds: string[]) => {
-      onChange(newProjectIds);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+const SelectProject = memo(({ onChange, selectedProjectIds }: Props) => {
+  const localize = useLocalize();
+  const { data: projects } = useProjects({
+    publicationStatuses: PUBLICATION_STATUSES,
+    canModerate: true,
+  });
 
-    if (!isNilOrError(projects) && projects.length > 0) {
-      const values = projects.map((project) => {
-        return {
-          text: localize(project.attributes.title_multiloc),
-          value: project.id,
-        };
-      });
+  const handleOnChange = useCallback((newProjectIds: string[]) => {
+    onChange(newProjectIds);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-      return (
-        <FilterSelector
-          title={<FormattedMessage {...messages.project} />}
-          name="building"
-          selected={selectedProjectIds}
-          values={values}
-          onChange={handleOnChange}
-          multipleSelectionAllowed={true}
-        />
-      );
-    }
+  if (!isNilOrError(projects) && projects.data.length > 0) {
+    const values = projects.data.map((project) => {
+      return {
+        text: localize(project.attributes.title_multiloc),
+        value: project.id,
+      };
+    });
 
-    return null;
+    return (
+      <FilterSelector
+        title={<FormattedMessage {...messages.project} />}
+        name="building"
+        selected={selectedProjectIds}
+        values={values}
+        onChange={handleOnChange}
+        multipleSelectionAllowed={true}
+      />
+    );
   }
-);
 
-const Data = adopt<DataProps, InputProps>({
-  projects: (
-    <GetProjects
-      publicationStatuses={['published', 'archived', 'draft']}
-      canModerate={true}
-    />
-  ),
+  return null;
 });
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <SelectProject {...inputProps} {...dataProps} />}
-  </Data>
-);
-
-// TODO: useProjects hook
+export default SelectProject;

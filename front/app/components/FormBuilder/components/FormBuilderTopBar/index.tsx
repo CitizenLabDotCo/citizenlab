@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 import usePhase from 'hooks/usePhase';
 
@@ -21,7 +21,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import {
   FormBuilderConfig,
   getIsPostingEnabled,
@@ -56,17 +55,18 @@ const FormBuilderTopBar = ({
     projectId: string;
     phaseId?: string;
   };
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
+
   const phase = usePhase(phaseId || null);
 
-  if (isNilOrError(project)) {
+  if (!project) {
     return null;
   }
 
-  const isPostingEnabled = getIsPostingEnabled(project, phase);
+  const isPostingEnabled = getIsPostingEnabled(project.data, phase);
   let viewFormLink = phaseId
-    ? `/projects/${project?.attributes.slug}/ideas/new?phase_id=${phaseId}`
-    : `/projects/${project?.attributes.slug}/ideas/new`;
+    ? `/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`
+    : `/projects/${project.data.attributes.slug}/ideas/new`;
 
   if (builderConfig.viewFormLink) {
     viewFormLink = builderConfig.viewFormLink;
@@ -101,7 +101,7 @@ const FormBuilderTopBar = ({
       <Box display="flex" p="16px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
           <Text mb="0px" color="textSecondary">
-            {localize(project.attributes.title_multiloc)}
+            {localize(project.data.attributes.title_multiloc)}
           </Text>
           <Box display="flex" alignContent="center" mt="4px">
             <Title marginRight="8px" marginTop="0" variant="h4" as="h1">

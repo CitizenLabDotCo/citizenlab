@@ -31,7 +31,7 @@ import tracks from './tracks';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useComments from 'api/comments/useComments';
 
@@ -112,7 +112,7 @@ const CommentsSection = memo<Props>(({ postId, postType, className }) => {
 
   const post = initiative || idea;
   const projectId = idea?.data.relationships?.project.data.id;
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
 
   const [posting, setPosting] = useState(false);
 
@@ -136,9 +136,7 @@ const CommentsSection = memo<Props>(({ postId, postType, className }) => {
   }, []);
 
   if (!isNilOrError(post) && !isNilOrError(commentsList)) {
-    const phaseId = isNilOrError(project)
-      ? undefined
-      : project.relationships?.current_phase?.data?.id;
+    const phaseId = project?.data.relationships?.current_phase?.data?.id;
     const commentCount = post.data.attributes.comments_count;
 
     return (

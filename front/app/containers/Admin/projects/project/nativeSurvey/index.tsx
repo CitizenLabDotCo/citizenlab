@@ -13,7 +13,7 @@ import Button from 'components/UI/Button';
 import messages from './messages';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'hooks/usePhases';
 import useLocale from 'hooks/useLocale';
 
@@ -30,25 +30,25 @@ import { downloadSurveyResults } from 'services/formCustomFields';
 const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as { projectId: string };
   const [isDownloading, setIsDownloading] = useState(false);
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const phases = usePhases(projectId);
   const locale = useLocale();
   const { pathname } = useLocation();
 
-  if (isNilOrError(project) || isNilOrError(locale)) {
+  if (!project || isNilOrError(locale)) {
     return null;
   }
 
   const showResults = pathname.includes(
-    `/admin/projects/${project.id}/native-survey/results`
+    `/admin/projects/${project.data.id}/native-survey/results`
   );
 
-  const formActionsConfigs = getFormActionsConfig(project, phases);
+  const formActionsConfigs = getFormActionsConfig(project.data, phases);
 
   const handleDownloadResults = async () => {
     try {
       setIsDownloading(true);
-      await downloadSurveyResults(project, locale);
+      await downloadSurveyResults(project.data, locale);
     } catch (error) {
       // Not handling errors for now
     } finally {
@@ -72,7 +72,7 @@ const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
             <Title>{formatMessage(messages.survey2)}</Title>
             <Text>{formatMessage(messages.surveyDescription2)}</Text>
           </Box>
-          {project.attributes.process_type === 'timeline' && (
+          {project.data.attributes.process_type === 'timeline' && (
             <Box>
               <Button
                 icon="download"

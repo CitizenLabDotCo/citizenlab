@@ -16,13 +16,17 @@ jest.mock('utils/cl-router/withRouter', () => {
 
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
-jest.mock('hooks/useProject', () => {
+jest.mock('api/projects/useProjectBySlug', () => {
   return jest.fn(() => ({
-    id: '2',
-    type: 'project',
-    attributes: {
-      title_multiloc: { en: 'Test Project' },
-      slug: 'test',
+    data: {
+      data: {
+        id: '2',
+        type: 'project',
+        attributes: {
+          title_multiloc: { en: 'Test Project' },
+          slug: 'test',
+        },
+      },
     },
   }));
 });

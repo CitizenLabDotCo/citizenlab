@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import {
@@ -22,7 +21,7 @@ import permissionsMessages from 'containers/Admin/projects/project/permissions/m
 import { updateProject } from 'services/projects';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 
 const ViewingRightsSection = styled(Section)`
   margin-bottom: 30px;
@@ -57,15 +56,15 @@ const ProjectVisibility = ({
   projectId,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
 
   const [projectVisibility, setProjectVisibility] = useState<
     'public' | 'admins' | 'groups'
-  >(!isNilOrError(project) ? project.attributes.visible_to : 'public');
+  >(project ? project.data.attributes.visible_to : 'public');
 
   useEffect(() => {
-    if (!isNilOrError(project)) {
-      setProjectVisibility(project.attributes.visible_to);
+    if (project) {
+      setProjectVisibility(project.data.attributes.visible_to);
     }
   }, [project]);
 

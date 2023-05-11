@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from 'react';
 
 // hooks
-import useProjects from 'hooks/useProjects';
+import useProjects from 'api/projects/useProjects';
 
 // styling
 import styled from 'styled-components';
@@ -19,7 +19,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IOption, FormatMessage } from 'typings';
-import { IProjectData, PublicationStatus } from 'services/projects';
+import { IProjectData, PublicationStatus } from 'api/projects/types';
 
 interface Option {
   value: string | undefined;
@@ -75,7 +75,7 @@ const ProjectFilter = ({
 }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const projects = useProjects({
+  const { data: projects } = useProjects({
     publicationStatuses: PUBLICATION_STATUSES,
     canModerate: true,
   });
@@ -84,7 +84,7 @@ const ProjectFilter = ({
     if (isNilOrError(projects)) return null;
 
     return generateProjectOptions(
-      projects.filter(filter),
+      projects.data.filter(filter),
       localize,
       formatMessage,
       emptyValueMessage

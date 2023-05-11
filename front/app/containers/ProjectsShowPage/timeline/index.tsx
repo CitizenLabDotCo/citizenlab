@@ -28,7 +28,7 @@ import {
 import { selectedPhase$, selectPhase } from './events';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'hooks/usePhases';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 import useLocale from 'hooks/useLocale';
@@ -86,7 +86,7 @@ interface Props {
 
 const ProjectTimelineContainer = memo<Props & WithRouterProps>(
   ({ projectId, className, params: { phaseNumber } }) => {
-    const project = useProject({ projectId });
+    const { data: project } = useProjectById(projectId);
     const phases = usePhases(projectId);
     const locale = useLocale();
     const windowSize = useWindowSize();
@@ -116,7 +116,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
           selectedPhase.id,
           currentPhase?.id,
           phases,
-          project,
+          project.data,
           locale
         );
       }
@@ -166,10 +166,13 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
                   <StyledProjectPageSectionTitle>
                     <FormattedMessage {...messages.phases} />
                   </StyledProjectPageSectionTitle>
-                  <PhaseNavigation projectId={project.id} buttonStyle="white" />
+                  <PhaseNavigation
+                    projectId={project.data.id}
+                    buttonStyle="white"
+                  />
                 </Header>
                 <StyledTimeline
-                  projectId={project.id}
+                  projectId={project.data.id}
                   selectedPhase={selectedPhase}
                   setSelectedPhase={handleSetSelectedPhase}
                 />
@@ -180,14 +183,20 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
                     viewMode={smallerThanSmallTablet ? 'column' : 'row'}
                   />
                 )}
-                <PhaseSurvey projectId={project.id} phaseId={selectedPhaseId} />
+                <PhaseSurvey
+                  projectId={project.data.id}
+                  phaseId={selectedPhaseId}
+                />
               </ContentContainer>
             </div>
             <div>
               <ContentContainer maxWidth={maxPageWidth}>
-                <PhasePoll projectId={project.id} phaseId={selectedPhaseId} />
+                <PhasePoll
+                  projectId={project.data.id}
+                  phaseId={selectedPhaseId}
+                />
                 <PhaseVolunteering
-                  projectId={project.id}
+                  projectId={project.data.id}
                   phaseId={selectedPhaseId}
                 />
               </ContentContainer>
@@ -199,7 +208,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
                 <div>
                   <ContentContainer maxWidth={maxPageWidth}>
                     <PhaseIdeas
-                      projectId={project.id}
+                      projectId={project.data.id}
                       phaseId={selectedPhaseId}
                     />
                   </ContentContainer>

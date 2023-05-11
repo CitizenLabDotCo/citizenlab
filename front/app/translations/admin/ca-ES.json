@@ -1018,7 +1018,6 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.editPollAnswersButtonLabel": "Opcions de resposta",
   "app.containers.AdminPage.ProjectEdit.PollTab.exportPollResults": "Exporteu els resultats de l'enquesta",
   "app.containers.AdminPage.ProjectEdit.PollTab.maxOverTheMaxTooltip": "El nombre màxim d'opcions és més gran que el nombre d'opcions",
-  "app.containers.AdminPage.ProjectEdit.PollTab.maxUnderTheMinTooltip": "Una pregunta de resposta múltiple ha de permetre almenys dues respostes.",
   "app.containers.AdminPage.ProjectEdit.PollTab.multipleOption": "Múltiples opcions",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptions": "No options",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptionsTooltip": "Totes les preguntes han de tenir opcions de resposta",
