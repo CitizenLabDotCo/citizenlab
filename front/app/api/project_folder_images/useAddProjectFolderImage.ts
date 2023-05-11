@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import projectFolderFilesKeys from './keys';
+import projectFolderImagesKeys from './keys';
 import { IProjectFolderImage, addProjectFolderImageObject } from './types';
 
 const addProjectFolderImage = async ({
@@ -24,7 +24,7 @@ const useAddProjectFolderImage = () => {
     mutationFn: addProjectFolderImage,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: projectFolderFilesKeys.list({
+        queryKey: projectFolderImagesKeys.list({
           folderId: variables.folderId,
         }),
       });
