@@ -149,13 +149,11 @@ class AppConfiguration < ApplicationRecord
   end
 
   def base_frontend_uri
-    # base_uri('http://localhost:3000')
-    'https://claveunica-h2dkc.loca.lt'
+    base_uri('http://localhost:3000')
   end
 
   def base_backend_uri
-    # base_uri('http://localhost:4000')
-    'https://claveunica-h2dkc.loca.lt'
+    base_uri('http://localhost:4000')
   end
 
   def base_asset_host_uri
