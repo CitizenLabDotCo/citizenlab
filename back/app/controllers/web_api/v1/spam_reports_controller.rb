@@ -18,7 +18,7 @@ class WebApi::V1::SpamReportsController < ApplicationController
       @spam_report,
       params: jsonapi_serializer_params,
       include: [:user]
-    ).serializable_hash.to_json
+    ).serializable_hash
   end
 
   def create
@@ -33,7 +33,7 @@ class WebApi::V1::SpamReportsController < ApplicationController
       render json: WebApi::V1::SpamReportSerializer.new(
         @spam_report,
         params: jsonapi_serializer_params
-      ).serializable_hash.to_json, status: :created
+      ).serializable_hash, status: :created
     else
       render json: { errors: @spam_report.errors.details }, status: :unprocessable_entity
     end
@@ -50,7 +50,7 @@ class WebApi::V1::SpamReportsController < ApplicationController
           @spam_report.reload,
           params: jsonapi_serializer_params,
           include: [:user]
-        ).serializable_hash.to_json, status: :ok
+        ).serializable_hash, status: :ok
       else
         render json: { errors: @spam_report.errors.details }, status: :unprocessable_entity
       end

@@ -24,7 +24,7 @@ class WebApi::V1::MembershipsController < ApplicationController
       @membership,
       params: jsonapi_serializer_params,
       include: [:user]
-    ).serializable_hash.to_json
+    ).serializable_hash
   end
 
   def show_by_user_id
@@ -41,7 +41,7 @@ class WebApi::V1::MembershipsController < ApplicationController
         @membership.reload,
         params: jsonapi_serializer_params,
         include: [:user]
-      ).serializable_hash.to_json, status: :created
+      ).serializable_hash, status: :created
     else
       render json: { errors: @membership.errors.details }, status: :unprocessable_entity
     end

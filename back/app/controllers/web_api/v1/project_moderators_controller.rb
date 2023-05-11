@@ -23,7 +23,7 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
   end
 
   def show
-    render json: ::WebApi::V1::UserSerializer.new(@moderator, params: jsonapi_serializer_params).serializable_hash.to_json
+    render json: ::WebApi::V1::UserSerializer.new(@moderator, params: jsonapi_serializer_params).serializable_hash
   end
 
   # insert
@@ -35,7 +35,7 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
       render json: ::WebApi::V1::UserSerializer.new(
         @user,
         params: jsonapi_serializer_params
-      ).serializable_hash.to_json, status: :created
+      ).serializable_hash, status: :created
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end

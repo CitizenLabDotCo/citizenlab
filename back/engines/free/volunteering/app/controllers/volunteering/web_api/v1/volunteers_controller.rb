@@ -46,7 +46,7 @@ module Volunteering
             render json: WebApi::V1::VolunteerSerializer.new(
               @volunteer,
               params: jsonapi_serializer_params
-            ).serializable_hash.to_json, status: :created
+            ).serializable_hash, status: :created
           else
             render json: { errors: @volunteer.errors.details }, status: :unprocessable_entity
           end

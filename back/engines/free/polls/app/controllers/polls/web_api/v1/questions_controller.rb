@@ -27,7 +27,7 @@ module Polls
           render json: WebApi::V1::QuestionSerializer.new(
             @question,
             params: jsonapi_serializer_params
-          ).serializable_hash.to_json
+          ).serializable_hash
         end
 
         def create
@@ -41,7 +41,7 @@ module Polls
               @question,
               params: jsonapi_serializer_params,
               include: [:options]
-            ).serializable_hash.to_json, status: :created
+            ).serializable_hash, status: :created
           else
             render json: { errors: @question.errors.details }, status: :unprocessable_entity
           end
@@ -57,7 +57,7 @@ module Polls
               @question,
               params: jsonapi_serializer_params,
               include: [:options]
-            ).serializable_hash.to_json, status: :ok
+            ).serializable_hash, status: :ok
           else
             render json: { errors: @question.errors.details }, status: :unprocessable_entity
           end
@@ -71,7 +71,7 @@ module Polls
               @question,
               params: jsonapi_serializer_params,
               include: [:options]
-            ).serializable_hash.to_json, status: :ok
+            ).serializable_hash, status: :ok
           else
             render json: { errors: @question.errors.details }, status: :unprocessable_entity
           end

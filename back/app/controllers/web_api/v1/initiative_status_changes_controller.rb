@@ -18,7 +18,7 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
     render json: WebApi::V1::InitiativeStatusChangeSerializer.new(
       @change,
       params: jsonapi_serializer_params
-    ).serializable_hash.to_json
+    ).serializable_hash
   end
 
   def create
@@ -49,7 +49,7 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
         render json: WebApi::V1::InitiativeStatusChangeSerializer.new(
           @change,
           params: jsonapi_serializer_params
-        ).serializable_hash.to_json, status: :created
+        ).serializable_hash, status: :created
       else
         render json: { errors: @change.errors.details }, status: :unprocessable_entity
       end

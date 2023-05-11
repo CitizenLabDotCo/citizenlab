@@ -148,7 +148,7 @@ class WebApi::V1::InvitesController < ApplicationController
           @invite.reload,
           params: jsonapi_serializer_params,
           include: [:invitee]
-        ).serializable_hash.to_json, status: :ok
+        ).serializable_hash, status: :ok
       end
     rescue ClErrors::TransactionError => e
       case e.error_key

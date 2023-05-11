@@ -12,7 +12,7 @@ module ContentBuilder
           render json: WebApi::V1::LayoutSerializer.new(
             @layout,
             params: jsonapi_serializer_params
-          ).serializable_hash.to_json
+          ).serializable_hash
         end
 
         def upsert
@@ -63,7 +63,7 @@ module ContentBuilder
             render json: WebApi::V1::LayoutSerializer.new(
               @layout,
               params: jsonapi_serializer_params
-            ).serializable_hash.to_json, status: :ok
+            ).serializable_hash, status: :ok
           else
             render json: { errors: @layout.errors.details }, status: :unprocessable_entity
           end
@@ -78,7 +78,7 @@ module ContentBuilder
             render json: WebApi::V1::LayoutSerializer.new(
               @layout,
               params: jsonapi_serializer_params
-            ).serializable_hash.to_json, status: :created
+            ).serializable_hash, status: :created
           else
             render json: { errors: @layout.errors.details }, status: :unprocessable_entity
           end

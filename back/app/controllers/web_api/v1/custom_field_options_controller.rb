@@ -7,11 +7,11 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
 
   def index
     @options = policy_scope(CustomFieldOption).where(custom_field: @custom_field).order(:ordering)
-    render json: WebApi::V1::CustomFieldOptionSerializer.new(@options, params: jsonapi_serializer_params).serializable_hash.to_json
+    render json: WebApi::V1::CustomFieldOptionSerializer.new(@options, params: jsonapi_serializer_params).serializable_hash
   end
 
   def show
-    render json: WebApi::V1::CustomFieldOptionSerializer.new(@option, params: jsonapi_serializer_params).serializable_hash.to_json
+    render json: WebApi::V1::CustomFieldOptionSerializer.new(@option, params: jsonapi_serializer_params).serializable_hash
   end
 
   def create
@@ -26,7 +26,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
       render json: WebApi::V1::CustomFieldOptionSerializer.new(
         @option,
         params: jsonapi_serializer_params
-      ).serializable_hash.to_json, status: :created
+      ).serializable_hash, status: :created
     else
       render json: { errors: @option.errors.details }, status: :unprocessable_entity
     end
@@ -40,7 +40,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
       render json: WebApi::V1::CustomFieldOptionSerializer.new(
         @option.reload,
         params: jsonapi_serializer_params
-      ).serializable_hash.to_json, status: :ok
+      ).serializable_hash, status: :ok
     else
       render json: { errors: @option.errors.details }, status: :unprocessable_entity
     end
@@ -52,7 +52,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
       render json: WebApi::V1::CustomFieldOptionSerializer.new(
         @option.reload,
         params: jsonapi_serializer_params
-      ).serializable_hash.to_json, status: :ok
+      ).serializable_hash, status: :ok
     else
       render json: { errors: @option.errors.details }, status: :unprocessable_entity
     end

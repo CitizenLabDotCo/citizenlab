@@ -28,7 +28,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       render json: WebApi::V1::AdminPublicationSerializer.new(
         @publication,
         params: jsonapi_serializer_params
-      ).serializable_hash.to_json, status: :ok
+      ).serializable_hash, status: :ok
     else
       render json: { errors: @publication.errors.details }, status: :unprocessable_entity
     end
@@ -50,7 +50,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     render json: WebApi::V1::AdminPublicationSerializer.new(
       @publication,
       params: jsonapi_serializer_params
-    ).serializable_hash.to_json, status: :ok
+    ).serializable_hash, status: :ok
   end
 
   private

@@ -42,7 +42,7 @@ module Moderation
       render json: WebApi::V1::ModerationSerializer.new(
         @moderation.reload,
         params: jsonapi_serializer_params
-      ).serializable_hash.to_json, status: :ok
+      ).serializable_hash, status: :ok
     end
 
     def moderations_count

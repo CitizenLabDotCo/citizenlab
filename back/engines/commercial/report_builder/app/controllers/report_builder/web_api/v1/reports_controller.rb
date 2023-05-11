@@ -49,7 +49,7 @@ module ReportBuilder
           render json: ContentBuilder::WebApi::V1::LayoutSerializer.new(
             report.layout,
             params: jsonapi_serializer_params
-          ).serializable_hash.to_json
+          ).serializable_hash
         end
 
         private

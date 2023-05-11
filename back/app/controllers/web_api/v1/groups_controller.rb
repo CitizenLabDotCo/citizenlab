@@ -12,7 +12,7 @@ class WebApi::V1::GroupsController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::GroupSerializer.new(@group, params: jsonapi_serializer_params).serializable_hash.to_json
+    render json: WebApi::V1::GroupSerializer.new(@group, params: jsonapi_serializer_params).serializable_hash
   end
 
   def by_slug
@@ -32,7 +32,7 @@ class WebApi::V1::GroupsController < ApplicationController
       render json: WebApi::V1::GroupSerializer.new(
         @group.reload,
         params: jsonapi_serializer_params
-      ).serializable_hash.to_json, status: :created
+      ).serializable_hash, status: :created
     else
       render json: { errors: @group.errors.details }, status: :unprocessable_entity
     end
@@ -48,7 +48,7 @@ class WebApi::V1::GroupsController < ApplicationController
       render json: WebApi::V1::GroupSerializer.new(
         @group.reload,
         params: jsonapi_serializer_params
-      ).serializable_hash.to_json, status: :ok
+      ).serializable_hash, status: :ok
     else
       render json: { errors: @group.errors.details }, status: :unprocessable_entity
     end

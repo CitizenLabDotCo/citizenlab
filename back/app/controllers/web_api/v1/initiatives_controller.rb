@@ -82,7 +82,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       @initiative,
       params: jsonapi_serializer_params,
       include: %i[author topics areas user_vote initiative_images]
-    ).serializable_hash.to_json
+    ).serializable_hash
   end
 
   def by_slug
@@ -111,7 +111,7 @@ class WebApi::V1::InitiativesController < ApplicationController
           @initiative.reload,
           params: jsonapi_serializer_params,
           include: %i[author topics areas user_vote initiative_images]
-        ).serializable_hash.to_json, status: :created
+        ).serializable_hash, status: :created
       else
         render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
       end
@@ -150,7 +150,7 @@ class WebApi::V1::InitiativesController < ApplicationController
         @initiative.reload,
         params: jsonapi_serializer_params,
         include: %i[author topics areas user_vote initiative_images]
-      ).serializable_hash.to_json, status: :ok
+      ).serializable_hash, status: :ok
     else
       render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
     end

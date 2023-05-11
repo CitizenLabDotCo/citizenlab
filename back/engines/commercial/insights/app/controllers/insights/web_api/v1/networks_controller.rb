@@ -6,7 +6,7 @@ module Insights
       def show
         if view.text_networks.present?
           fe_network = Insights::FrontEndFormatTextNetwork.new(view, **style_params)
-          render json: Insights::WebApi::V1::NetworkSerializer.new(fe_network).serializable_hash.to_json, status: :ok
+          render json: Insights::WebApi::V1::NetworkSerializer.new(fe_network).serializable_hash, status: :ok
         else
           send_not_found
         end

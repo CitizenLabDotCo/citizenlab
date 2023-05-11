@@ -26,7 +26,7 @@ module EmailCampaigns
     end
 
     def show
-      render json: WebApi::V1::CampaignSerializer.new(@campaign, params: jsonapi_serializer_params).serializable_hash.to_json
+      render json: WebApi::V1::CampaignSerializer.new(@campaign, params: jsonapi_serializer_params).serializable_hash
     end
 
     def create
@@ -42,7 +42,7 @@ module EmailCampaigns
         render json: WebApi::V1::CampaignSerializer.new(
           @campaign,
           params: jsonapi_serializer_params
-        ).serializable_hash.to_json, status: :created
+        ).serializable_hash, status: :created
       else
         render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
       end
@@ -66,7 +66,7 @@ module EmailCampaigns
         render json: WebApi::V1::CampaignSerializer.new(
           @campaign,
           params: jsonapi_serializer_params
-        ).serializable_hash.to_json, status: :ok
+        ).serializable_hash, status: :ok
       else
         render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
       end
@@ -91,7 +91,7 @@ module EmailCampaigns
         render json: WebApi::V1::CampaignSerializer.new(
           @campaign.reload,
           params: jsonapi_serializer_params
-        ).serializable_hash.to_json
+        ).serializable_hash
       else
         render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
       end

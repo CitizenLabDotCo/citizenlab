@@ -38,7 +38,7 @@ class WebApi::V1::TopicsController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::TopicSerializer.new(@topic, params: jsonapi_serializer_params).serializable_hash.to_json
+    render json: WebApi::V1::TopicSerializer.new(@topic, params: jsonapi_serializer_params).serializable_hash
   end
 
   def create
@@ -51,7 +51,7 @@ class WebApi::V1::TopicsController < ApplicationController
       render json: ::WebApi::V1::TopicSerializer.new(
         @topic,
         params: jsonapi_serializer_params
-      ).serializable_hash.to_json, status: :created
+      ).serializable_hash, status: :created
     else
       render json: { errors: @topic.errors.details }, status: :unprocessable_entity
     end
@@ -66,7 +66,7 @@ class WebApi::V1::TopicsController < ApplicationController
       render json: ::WebApi::V1::TopicSerializer.new(
         @topic,
         params: jsonapi_serializer_params
-      ).serializable_hash.to_json, status: :ok
+      ).serializable_hash, status: :ok
     else
       render json: { errors: @topic.errors.details }, status: :unprocessable_entity
     end
@@ -77,7 +77,7 @@ class WebApi::V1::TopicsController < ApplicationController
     ordering = permitted_attributes(@topic)[:ordering]
     if ordering && @topic.insert_at(ordering)
       SideFxTopicService.new.after_update(@topic, current_user)
-      render json: ::WebApi::V1::TopicSerializer.new(@topic.reload, params: jsonapi_serializer_params).serializable_hash.to_json, status: :ok
+      render json: ::WebApi::V1::TopicSerializer.new(@topic.reload, params: jsonapi_serializer_params).serializable_hash, status: :ok
     else
       render json: { errors: @topic.errors.details }, status: :unprocessable_entity
     end

@@ -6,11 +6,11 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
 
   def index
     @idea_statuses = policy_scope(IdeaStatus)
-    render json: WebApi::V1::IdeaStatusSerializer.new(@idea_statuses).serializable_hash.to_json, status: :ok
+    render json: WebApi::V1::IdeaStatusSerializer.new(@idea_statuses).serializable_hash, status: :ok
   end
 
   def show
-    render json: WebApi::V1::IdeaStatusSerializer.new(@idea_status).serializable_hash.to_json, status: :ok
+    render json: WebApi::V1::IdeaStatusSerializer.new(@idea_status).serializable_hash, status: :ok
   end
 
   private

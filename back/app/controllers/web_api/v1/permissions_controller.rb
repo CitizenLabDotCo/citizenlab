@@ -52,7 +52,7 @@ class WebApi::V1::PermissionsController < ApplicationController
       permission,
       params: jsonapi_serializer_params,
       include: %i[permissions_custom_fields custom_fields]
-    ).serializable_hash.to_json
+    ).serializable_hash
   end
 
   def permissions_service

@@ -10,7 +10,7 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params).serializable_hash.to_json
+    render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params).serializable_hash
   end
 
   def create
@@ -23,7 +23,7 @@ class WebApi::V1::EventsController < ApplicationController
 
     if @event.save
       SideFxEventService.new.after_create(@event, current_user)
-      render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params).serializable_hash.to_json, status: :created
+      render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params).serializable_hash, status: :created
     else
       render json: { errors: @event.errors.details }, status: :unprocessable_entity
     end
@@ -35,7 +35,7 @@ class WebApi::V1::EventsController < ApplicationController
     SideFxEventService.new.before_update(@event, current_user)
     if @event.save
       SideFxEventService.new.after_update(@event, current_user)
-      render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params).serializable_hash.to_json, status: :ok
+      render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params).serializable_hash, status: :ok
     else
       render json: { errors: @event.errors.details }, status: :unprocessable_entity
     end

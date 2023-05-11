@@ -9,7 +9,7 @@ class WebApi::V1::BasketsController < ApplicationController
       @basket,
       params: jsonapi_serializer_params,
       include: [:ideas]
-    ).serializable_hash.to_json
+    ).serializable_hash
   end
 
   def create
@@ -23,7 +23,7 @@ class WebApi::V1::BasketsController < ApplicationController
       render json: WebApi::V1::BasketSerializer.new(
         @basket,
         params: jsonapi_serializer_params
-      ).serializable_hash.to_json, status: :created
+      ).serializable_hash, status: :created
     else
       render json: { errors: @basket.errors.details }, status: :unprocessable_entity
     end
@@ -54,7 +54,7 @@ class WebApi::V1::BasketsController < ApplicationController
       render json: WebApi::V1::BasketSerializer.new(
         @basket,
         params: jsonapi_serializer_params
-      ).serializable_hash.to_json, status: :ok
+      ).serializable_hash, status: :ok
     rescue ClErrors::TransactionError => e
       case e.error_key
       when :unprocessable_basket

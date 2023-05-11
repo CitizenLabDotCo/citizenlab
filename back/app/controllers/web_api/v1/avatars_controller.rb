@@ -40,7 +40,7 @@ class WebApi::V1::AvatarsController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::AvatarSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash.to_json
+    render json: WebApi::V1::AvatarSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
   end
 
   private

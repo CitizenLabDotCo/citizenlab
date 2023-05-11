@@ -21,7 +21,7 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
   end
 
   def show
-    render json: ::WebApi::V1::UserSerializer.new(@moderator, params: jsonapi_serializer_params).serializable_hash.to_json
+    render json: ::WebApi::V1::UserSerializer.new(@moderator, params: jsonapi_serializer_params).serializable_hash
   end
 
   # insert
@@ -31,7 +31,7 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
     SideFxFolderModeratorService.new.before_create(@user, @folder, current_user)
     @user.add_role 'project_folder_moderator', project_folder_id: params[:project_folder_id]
     if @user.save
-      serialized_data = ::WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash.to_json
+      serialized_data = ::WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
       SideFxFolderModeratorService.new.after_create(@user, @folder, current_user)
       render json: serialized_data, status: :created
     else

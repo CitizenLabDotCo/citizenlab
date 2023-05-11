@@ -33,7 +33,7 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
       @groups_project,
       params: jsonapi_serializer_params,
       include: [:group]
-    ).serializable_hash.to_json
+    ).serializable_hash
   end
 
   # insert
@@ -46,7 +46,7 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
         @groups_project.reload,
         params: jsonapi_serializer_params,
         include: [:group]
-      ).serializable_hash.to_json, status: :created
+      ).serializable_hash, status: :created
     else
       render json: { errors: @groups_project.errors.details }, status: :unprocessable_entity
     end

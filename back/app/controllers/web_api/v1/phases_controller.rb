@@ -14,7 +14,7 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash.to_json
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash
   end
 
   def create
@@ -24,7 +24,7 @@ class WebApi::V1::PhasesController < ApplicationController
     authorize @phase
     if @phase.save
       sidefx.after_create(@phase, current_user)
-      render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash.to_json, status: :created
+      render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :created
     else
       render json: { errors: @phase.errors.details }, status: :unprocessable_entity
     end
@@ -36,7 +36,7 @@ class WebApi::V1::PhasesController < ApplicationController
     sidefx.before_update(@phase, current_user)
     if @phase.save
       sidefx.after_update(@phase, current_user)
-      render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash.to_json, status: :ok
+      render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :ok
     else
       render json: { errors: @phase.errors.details }, status: :unprocessable_entity
     end

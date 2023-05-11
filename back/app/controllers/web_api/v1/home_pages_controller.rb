@@ -5,7 +5,7 @@ class WebApi::V1::HomePagesController < ApplicationController
   skip_before_action :authenticate_user, only: %i[show]
 
   def show
-    render json: WebApi::V1::HomePageSerializer.new(@homepage, params: jsonapi_serializer_params).serializable_hash.to_json
+    render json: WebApi::V1::HomePageSerializer.new(@homepage, params: jsonapi_serializer_params).serializable_hash
   end
 
   def update
@@ -16,7 +16,7 @@ class WebApi::V1::HomePagesController < ApplicationController
       render json: WebApi::V1::HomePageSerializer.new(
         @homepage,
         params: jsonapi_serializer_params
-      ).serializable_hash.to_json, status: :ok
+      ).serializable_hash, status: :ok
     else
       render json: { errors: @homepage.errors.details }, status: :unprocessable_entity
     end
