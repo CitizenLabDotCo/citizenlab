@@ -17,13 +17,38 @@ resource 'Topics' do
 
     include_context 'common_list_params'
 
-    let(:locale) { 'en' }
-    let(:page_size) { 2 }
+    context 'Unfiltered paged request' do
+      let(:page_size) { 2 }
 
-    example_request 'Successful response' do
-      assert_status 200
-      expect(json_response_body[:topics].size).to eq 2
-      expect(json_response_body[:meta]).to eq({ total_pages: 3, current_page: 1 })
+      example_request 'Successful response' do
+        assert_status 200
+        expect(json_response_body[:topics].size).to eq 2
+        expect(json_response_body[:meta]).to eq({ total_pages: 3, current_page: 1 })
+      end
+    end
+
+    context 'Filtered by created_at' do
+      let(:created_at) { '2022-05-01,2022-05-03' }
+
+      before { topics[0].update(created_at: '2022-05-02') }
+
+      example_request 'Successful response', document: false do
+        assert_status 200
+        expect(json_response_body[:topics].size).to eq 1
+        expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
+      end
+    end
+
+    context 'Filtered by updated_at' do
+      let(:updated_at) { ',2023-01-31' }
+
+      before { topics[0].update(updated_at: '2023-01-01') }
+
+      example_request 'Successful response', document: false do
+        assert_status 200
+        expect(json_response_body[:topics].size).to eq 1
+        expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
+      end
     end
   end
 
@@ -33,12 +58,23 @@ resource 'Topics' do
 
     include_context 'common_item_params'
 
-    let(:locale) { 'en' }
     let(:id) { topics[0].id }
 
-    example_request 'Successful response' do
-      assert_status 200
-      expect(json_response_body[:topic]).to include({ id: id })
+    context 'Default locale' do
+      example_request 'Successful response' do
+        assert_status 200
+        # TODO: Add test to be sure of default locale
+        expect(json_response_body[:topic]).to include({ id: id })
+      end
+    end
+
+    context 'Retrieving a different locale' do
+      let(:locale) { 'nl-BE' }
+
+      example_request 'Successful response', document: false do
+        assert_status 200
+        expect(json_response_body[:topic][:title]).to eq topics[0].title_multiloc['nl-BE']
+      end
     end
   end
 end

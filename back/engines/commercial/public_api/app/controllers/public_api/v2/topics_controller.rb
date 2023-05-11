@@ -8,7 +8,8 @@ module PublicApi
       @topics = Topic.all
         .order(created_at: :desc)
         .page(params[:page_number])
-        .per([params[:page_size]&.to_i || 12, 24].min)
+        .per(num_per_page)
+      @topics = common_date_filters @topics
 
       render json: @topics,
         each_serializer: V2::TopicSerializer,
@@ -26,13 +27,6 @@ module PublicApi
 
     def set_topic
       @topic = Topic.find(params[:id])
-    end
-
-    def meta_properties(relation)
-      {
-        current_page: relation.current_page,
-        total_pages: relation.total_pages
-      }
     end
   end
 end

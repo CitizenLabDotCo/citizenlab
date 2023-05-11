@@ -25,5 +25,7 @@ resource 'Authentication' do
       assert_status 201
       expect(json_response_body[:jwt]).to be_present
     end
+
+    # TODO: Do 404 response
   end
 end

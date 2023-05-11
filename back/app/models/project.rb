@@ -138,6 +138,11 @@ class Project < ApplicationRecord
     where(visible_to: 'public')
   }
 
+  # Put in common traits??
+  # scope :filter_by_date, (proc do |column, start_date, end_date|
+  #   where("${column} BETWEEN 'start_date' AND 'end_date'")
+  # end)
+
   scope :user_groups_visible, lambda { |user|
     user_groups = Group.joins(:projects).where(projects: self).with_user(user)
     project_ids = GroupsProject.where(projects: self).where(groups: user_groups).select(:project_id).distinct

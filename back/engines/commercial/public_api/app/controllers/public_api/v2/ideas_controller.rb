@@ -6,11 +6,14 @@ module PublicApi
 
     def index
       ideas = Idea.all
-        .page(params[:page_number])
-        .per([params[:page_size]&.to_i || 12, 24].min) # default is 12, maximum is 24
         .includes(:idea_images, :project, :idea_status)
-      # TODO: Set the defaults elsewhere in public API controller
-      # TODO: Is this still the case? No longer a complex query
+        .page(params[:page_number])
+        .per(num_per_page)
+      ideas = common_date_filters ideas
+
+      # TODO: Set the paging defaults elsewhere in public API controller
+      #
+      # TODO: Is the following still the case? No longer a complex query
       # kaminari fails to get the correct total pages when
       # executing complex queries (other values than ideas.*
       # are calculated, and kaminari wraps a count around it,

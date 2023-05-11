@@ -8,7 +8,8 @@ module PublicApi
       @users = User.all
         .order(created_at: :desc)
         .page(params[:page_number])
-        .per([params[:page_size]&.to_i || 12, 24].min)
+        .per(num_per_page)
+      @users = common_date_filters @users
 
       render json: @users,
         each_serializer: V2::UserSerializer,
@@ -26,14 +27,6 @@ module PublicApi
 
     def set_user
       @user = User.find(params[:id])
-      # authorize PolicyWrappedUser.new(@user)
-    end
-
-    def meta_properties(relation)
-      {
-        current_page: relation.current_page,
-        total_pages: relation.total_pages
-      }
     end
   end
 end

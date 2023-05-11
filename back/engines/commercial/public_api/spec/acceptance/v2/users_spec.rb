@@ -17,13 +17,40 @@ resource 'Users' do
 
     include_context 'common_list_params'
 
-    let(:locale) { 'en' }
-    let(:page_size) { 2 }
+    # TODO: Filters - first_participated_at, status
 
-    example_request 'Successful response' do
-      assert_status 200
-      expect(json_response_body[:users].size).to eq 2
-      expect(json_response_body[:meta]).to eq({ total_pages: 3, current_page: 1 })
+    context 'Unfiltered paged request' do
+      let(:page_size) { 2 }
+
+      example_request 'Successful response' do
+        assert_status 200
+        expect(json_response_body[:users].size).to eq 2
+        expect(json_response_body[:meta]).to eq({ total_pages: 3, current_page: 1 })
+      end
+    end
+
+    context 'Filtered by created_at' do
+      let(:created_at) { '2022-05-01,2022-05-03' }
+
+      before { users[0].update(created_at: '2022-05-02') }
+
+      example_request 'Successful response', document: false do
+        assert_status 200
+        expect(json_response_body[:users].size).to eq 1
+        expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
+      end
+    end
+
+    context 'Filtered by updated_at' do
+      let(:updated_at) { ',2023-01-31' }
+
+      before { users[0].update(updated_at: '2023-01-01') }
+
+      example_request 'Successful response', document: false do
+        assert_status 200
+        expect(json_response_body[:users].size).to eq 1
+        expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
+      end
     end
   end
 
@@ -33,12 +60,24 @@ resource 'Users' do
 
     include_context 'common_item_params'
 
-    let(:locale) { 'en' }
     let(:id) { users[0].id }
 
-    example_request 'Successful response' do
-      assert_status 200
-      expect(json_response_body[:user]).to include({ id: id })
+    before { users[0].update(bio_multiloc: { en: 'Yes.', 'fr-BE': 'Oui.', 'nl-BE': 'Ja.' }) }
+
+    context 'Default locale' do
+      example_request 'Successful response' do
+        assert_status 200
+        expect(json_response_body[:user]).to include({ id: id })
+      end
+    end
+
+    context 'Retrieving a different locale' do
+      let(:locale) { 'nl-BE' }
+
+      example_request 'Successful response', document: false do
+        assert_status 200
+        expect(json_response_body[:user][:bio]).to eq users[0].bio_multiloc['nl-BE']
+      end
     end
   end
 end

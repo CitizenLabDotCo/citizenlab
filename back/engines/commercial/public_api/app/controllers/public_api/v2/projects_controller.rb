@@ -10,7 +10,8 @@ module PublicApi
         .includes(:map_config)
         .order(created_at: :desc)
         .page(params[:page_number])
-        .per([params[:page_size]&.to_i || 12, 24].min)
+        .per(num_per_page)
+      @projects = common_date_filters @projects
 
       render json: @projects,
         each_serializer: V2::ProjectSerializer,
@@ -28,13 +29,6 @@ module PublicApi
 
     def set_project
       @project = Project.find(params[:id])
-    end
-
-    def meta_properties(relation)
-      {
-        current_page: relation.current_page,
-        total_pages: relation.total_pages
-      }
     end
   end
 end
