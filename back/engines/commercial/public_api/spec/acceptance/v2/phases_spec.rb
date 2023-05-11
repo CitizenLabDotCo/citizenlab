@@ -30,7 +30,7 @@ resource 'Phases' do
 
   get '/api/v2/phases/' do
     route_summary 'List all phases'
-    route_description 'Endpoint to retrieve all phases across all projects. The phases are returned in reverse date order. The endpoint supports pagination.'
+    route_description 'Endpoint to retrieve all phases across all projects. The phases are returned in reverse order of date created. The endpoint supports pagination.'
 
     include_context 'common_list_params'
 

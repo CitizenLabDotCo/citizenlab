@@ -6,7 +6,7 @@ module PublicApi
 
     def index
       @phases = Phase.all
-        .order(start_at: :asc)
+        .order(created_at: :desc)
         .page(params[:page_number])
         .per([params[:page_size]&.to_i || 12, 24].min)
 
