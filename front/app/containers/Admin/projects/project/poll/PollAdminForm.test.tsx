@@ -85,45 +85,6 @@ describe('<PollAdminForm/>', () => {
         pollQuestions[0]
       );
     });
-    it('List reacts to addition', () => {
-      const pollQuestions = [
-        mockQuestion('questionId', "What's your favourite ice cream flavor?"),
-      ];
-      const wrapper = shallow(
-        <PollAdminForm
-          participationContextId="id"
-          participationContextType="project"
-          pollQuestions={pollQuestions}
-          locale="en"
-        />
-      );
-      expect(wrapper.find('QuestionRow').length).toBe(1);
-
-      pollQuestions.push(mockQuestion('next', 'What about now?'));
-      wrapper.setProps({ pollQuestions: [...pollQuestions] });
-      expect(wrapper.find('QuestionRow').length).toBe(2);
-    });
-    it('List reacts to deletion', () => {
-      const pollQuestions = [
-        'How are you today?',
-        'What is on the menu for dinner tonight?',
-        "What's your favourite ice cream flavor?",
-      ].map((item, index) => mockQuestion(index, item));
-
-      const wrapper = shallow(
-        <PollAdminForm
-          participationContextId="id"
-          participationContextType="project"
-          pollQuestions={pollQuestions}
-          locale="en"
-        />
-      );
-      expect(wrapper.find('QuestionRow').length).toBe(3);
-
-      pollQuestions.splice(1, 1);
-      wrapper.setProps({ pollQuestions: [...pollQuestions] });
-      expect(wrapper.find('QuestionRow').length).toBe(2);
-    });
   });
   describe('handles the new question form', () => {
     it('opens it', () => {

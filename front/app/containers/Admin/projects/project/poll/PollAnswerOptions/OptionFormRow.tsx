@@ -17,7 +17,7 @@ import { addPollOption, updatePollOption } from 'services/pollOptions';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import useLocale from 'hooks/useLocale';
 import usePrevious from 'hooks/usePrevious';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';

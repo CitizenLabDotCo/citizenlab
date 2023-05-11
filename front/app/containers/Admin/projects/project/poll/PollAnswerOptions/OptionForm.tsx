@@ -15,13 +15,13 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Icon } from 'semantic-ui-react';
 import { Row, TextCell, List } from 'components/admin/ResourceList';
-import FormOptionRow from './FormOptionRow';
+import OptionFormRow from './OptionFormRow';
 import OptionRow from './OptionRow';
-import QuestionDetailsForm from './QuestionDetailsForm';
+import QuestionDetailsForm from '../PollQuestions/QuestionDetailsForm';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // Style
 import styled from 'styled-components';
@@ -130,7 +130,7 @@ export class OptionForm extends PureComponent<Props, State> {
                 <QuestionDetailsForm question={question} />
                 {pollOptions.map((pollOption: IPollOptionData) =>
                   editingId === pollOption.id ? (
-                    <FormOptionRow
+                    <OptionFormRow
                       key={pollOption.id}
                       mode="edit"
                       closeRow={this.closeRow}
@@ -150,7 +150,7 @@ export class OptionForm extends PureComponent<Props, State> {
               </>
             )}
             {editingId === 'new' ? (
-              <FormOptionRow
+              <OptionFormRow
                 key="new"
                 mode="new"
                 questionId={question.id}

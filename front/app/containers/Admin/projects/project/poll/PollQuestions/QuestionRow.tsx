@@ -19,7 +19,7 @@ const EditTitleButton = styled(Button)`
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import WrongOptionsIndicator from './WrongOptionsIndicator';
 import { Box } from '@citizenlab/cl2-component-library';
 
