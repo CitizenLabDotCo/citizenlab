@@ -7,7 +7,7 @@ class JsonValidator < ActiveModel::EachValidator
 
   def validate_each(record, attr, value)
     errors = ::JSON::Validator.fully_validate(
-      schema,
+      schema(options[:schema], record),
       value,
       DEFAULT_OPTIONS.merge(options[:options] || {})
     )
@@ -25,11 +25,11 @@ class JsonValidator < ActiveModel::EachValidator
 
   private
 
-  def schema
-    if options[:schema].is_a?(Proc)
-      options[:schema].call
+  def schema(s, record)
+    if s.is_a?(Proc)
+      record.instance_exec(&s)
     else
-      options[:schema]
+      s
     end
   end
 end
