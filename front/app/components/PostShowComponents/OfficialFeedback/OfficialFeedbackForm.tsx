@@ -32,6 +32,8 @@ import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_off
 import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
 import useUpdateIdeaOfficialFeedback from 'api/idea_official_feedback/useUpdateIdeaOfficialFeedback';
 import useUpdateInitiativeOfficialFeedback from 'api/initiative_official_feedback/useUpdateInitiativeOfficialFeedback';
+import useLocale from 'hooks/useLocale';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 const Container = styled.div``;
 
@@ -92,8 +94,6 @@ export interface OfficialFeedbackFormValues {
 }
 
 interface Props {
-  locale: Locale;
-  tenantLocales: Locale[];
   postId?: string;
   postType: 'idea' | 'initiative';
   formType: 'new' | 'edit';
@@ -103,16 +103,16 @@ interface Props {
 }
 
 const OfficialFeedbackForm = ({
-  locale,
   formType,
   feedback,
-  tenantLocales,
   postId,
   postType,
   onClose,
   className,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const locale = useLocale();
+  const tenantLocales = useAppConfigurationLocales();
   const { mutate: addOfficialFeedbackToIdea } = useAddIdeaOfficialFeedback();
   const { mutate: addOfficialFeedbackToInitiative } =
     useAddInitiativeOfficialFeedback();
@@ -136,10 +136,12 @@ const OfficialFeedbackForm = ({
       authorMultiloc: {},
     };
 
-    tenantLocales.forEach((locale) => {
-      formValues.bodyMultiloc[locale] = '';
-      formValues.authorMultiloc[locale] = '';
-    });
+    if (!isNilOrError(tenantLocales)) {
+      tenantLocales.forEach((locale) => {
+        formValues.bodyMultiloc[locale] = '';
+        formValues.authorMultiloc[locale] = '';
+      });
+    }
 
     return formValues;
   }, [tenantLocales]);
@@ -162,8 +164,9 @@ const OfficialFeedbackForm = ({
 
       return formValues;
     };
-
-    setSelectedLocale(locale);
+    if (!isNilOrError(locale)) {
+      setSelectedLocale(locale);
+    }
     setFormValues(
       formType === 'new' ? getEmptyFormValues() : getPreviouslySavedFormValues()
     );
@@ -204,25 +207,27 @@ const OfficialFeedbackForm = ({
   const validate = () => {
     let validated = false;
 
-    tenantLocales.forEach((locale) => {
-      if (
-        !isEmpty(formValues.authorMultiloc[locale]) &&
-        !isEmpty(formValues.bodyMultiloc[locale])
-      ) {
-        validated = true;
-      }
-    });
+    if (!isNilOrError(tenantLocales)) {
+      tenantLocales.forEach((locale) => {
+        if (
+          !isEmpty(formValues.authorMultiloc[locale]) &&
+          !isEmpty(formValues.bodyMultiloc[locale])
+        ) {
+          validated = true;
+        }
+      });
 
-    tenantLocales.forEach((locale) => {
-      if (
-        (!isEmpty(formValues.authorMultiloc[locale]) &&
-          isEmpty(formValues.bodyMultiloc[locale])) ||
-        (isEmpty(formValues.authorMultiloc[locale]) &&
-          !isEmpty(formValues.bodyMultiloc[locale]))
-      ) {
-        validated = false;
-      }
-    });
+      tenantLocales.forEach((locale) => {
+        if (
+          (!isEmpty(formValues.authorMultiloc[locale]) &&
+            isEmpty(formValues.bodyMultiloc[locale])) ||
+          (isEmpty(formValues.authorMultiloc[locale]) &&
+            !isEmpty(formValues.bodyMultiloc[locale]))
+        ) {
+          validated = false;
+        }
+      });
+    }
 
     return validated;
   };
@@ -337,7 +342,7 @@ const OfficialFeedbackForm = ({
     ? formatMessage(messages.updateMessageSuccess)
     : null;
 
-  if (selectedLocale) {
+  if (selectedLocale && !isNilOrError(tenantLocales)) {
     return (
       <Container
         className={className || ''}
