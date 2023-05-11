@@ -34,10 +34,6 @@ import messages from '../messages';
 // images
 import { TVerificationMethod } from 'services/verificationMethods';
 
-// api
-import { useQueryClient } from '@tanstack/react-query';
-import projectsKeys from 'api/projects/keys';
-
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
@@ -48,7 +44,6 @@ interface Props {
 const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
   ({ onCancel, onVerified, className, intl }) => {
     const authUser = useAuthUser();
-    const queryClient = useQueryClient();
 
     const [rrn, setRrn] = useState('');
     const [rrnError, setRrnError] = useState<string | null>(null);
@@ -83,16 +78,10 @@ const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
 
             await verifyOostendeRrn(rrn);
 
-            queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
-
             const endpointsToRefetch = [
               `${API_PATH}/users/me`,
               `${API_PATH}/users/me/locked_attributes`,
               `${API_PATH}/users/custom_fields/schema`,
-            ];
-            const partialEndpointsToRefetch = [
-              `${API_PATH}/projects/`,
-              `${API_PATH}/ideas/`,
             ];
 
             if (!isNilOrError(authUser)) {
@@ -101,7 +90,6 @@ const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
 
             await streams.fetchAllWith({
               apiEndpoint: endpointsToRefetch,
-              partialApiEndpoint: partialEndpointsToRefetch,
             });
 
             setProcessing(false);

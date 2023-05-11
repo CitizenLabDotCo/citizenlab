@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'hooks/usePhases';
 import { isNilOrError } from 'utils/helperUtils';
 import { getInputTerm } from 'services/participationContexts';
@@ -27,13 +27,13 @@ const OfficialFeedbackOnYourIdeaNotification = memo<Props>((props) => {
   const projectId = !isNilOrError(idea)
     ? idea.data.relationships.project.data.id
     : null;
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const phases = usePhases(projectId);
 
-  if (!isNilOrError(project)) {
+  if (project) {
     const inputTerm = getInputTerm(
-      project.attributes.process_type,
-      project,
+      project.data.attributes.process_type,
+      project.data,
       phases
     );
 

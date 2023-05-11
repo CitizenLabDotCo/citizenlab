@@ -1,20 +1,13 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react';
-import { PreviousPathnameContext } from 'context';
+import React, { useEffect, useState, useCallback } from 'react';
 
-import clHistory from 'utils/cl-router/history';
-
-import {
-  isAdmin,
-  isRegularUser,
-  isSuperAdmin,
-} from 'services/permissions/roles';
+import { isRegularUser } from 'services/permissions/roles';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
-import usePhase from 'hooks/usePhase';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
+import usePhases, { TPhases } from 'hooks/usePhases';
+import usePhase, { TPhase } from 'hooks/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
 import { useParams, useSearchParams } from 'react-router-dom';
 
@@ -33,39 +26,51 @@ import { geocode, reverseGeocode } from 'utils/locationTools';
 import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { getCurrentPhase } from 'services/phases';
-import { getMethodConfig } from 'utils/participationMethodUtils';
+import {
+  ParticipationMethodConfig,
+  getMethodConfig,
+} from 'utils/participationMethodUtils';
 import { getLocationGeojson } from '../utils';
+import { IProject } from 'api/projects/types';
+
+const getConfig = (
+  phaseFromUrl: TPhase,
+  phases: TPhases,
+  project: IProject | undefined
+) => {
+  let config: ParticipationMethodConfig | null | undefined = null;
+
+  if (!isNilOrError(phaseFromUrl)) {
+    config = getMethodConfig(phaseFromUrl.attributes.participation_method);
+  } else {
+    if (phases && project?.data.attributes.process_type === 'timeline') {
+      const participationMethod =
+        getCurrentPhase(phases)?.attributes.participation_method;
+      if (!isNilOrError(participationMethod)) {
+        config = getMethodConfig(participationMethod);
+      }
+    } else if (!isNilOrError(project)) {
+      config = getMethodConfig(project.data.attributes.participation_method);
+    }
+  }
+
+  return config;
+};
 
 const IdeasNewPageWithJSONForm = () => {
   const { mutate: addIdea } = useAddIdea();
   const params = useParams<{ slug: string }>();
-  const previousPathName = useContext(PreviousPathnameContext);
+  // const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
-  const project = useProject({ projectSlug: params.slug });
+  const { data: project } = useProjectBySlug(params.slug);
   const [queryParams] = useSearchParams();
   const phaseId = queryParams.get('phase_id');
 
-  const phases = usePhases(project?.id);
+  const phases = usePhases(project?.data.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
-    projectId: project?.id,
+    projectId: project?.data.id,
     phaseId,
   });
-
-  useEffect(() => {
-    const isPrivilegedUser =
-      !isNilOrError(authUser) &&
-      (isAdmin({ data: authUser }) ||
-        !isRegularUser({ data: authUser }) ||
-        isSuperAdmin({ data: authUser }));
-
-    if (
-      !isPrivilegedUser &&
-      !isNilOrError(project) &&
-      !project.attributes.action_descriptor.posting_idea.enabled
-    ) {
-      clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
-    }
-  }, [authUser, project, previousPathName]);
 
   const search = location.search;
 
@@ -112,7 +117,7 @@ const IdeasNewPageWithJSONForm = () => {
       {
         ...data,
         location_point_geojson,
-        project_id: project?.id,
+        project_id: project?.data.id,
         publication_status: 'published',
         phase_ids:
           phaseId &&
@@ -127,7 +132,7 @@ const IdeasNewPageWithJSONForm = () => {
 
           // Check ParticipationMethodConfig for form submission action
           if (
-            project?.attributes.process_type === 'timeline' &&
+            project?.data.attributes.process_type === 'timeline' &&
             !isNilOrError(phases)
           ) {
             // Check if URL contains specific phase_id
@@ -138,7 +143,7 @@ const IdeasNewPageWithJSONForm = () => {
               getMethodConfig(
                 phaseUsed?.attributes?.participation_method
               ).onFormSubmission({
-                project,
+                project: project.data,
                 ideaId,
                 idea,
                 phaseId: phaseUsed.id,
@@ -146,8 +151,8 @@ const IdeasNewPageWithJSONForm = () => {
             }
           } else if (!isNilOrError(project)) {
             getMethodConfig(
-              project?.attributes.participation_method
-            ).onFormSubmission({ project, ideaId, idea });
+              project?.data.attributes.participation_method
+            ).onFormSubmission({ project: project.data, ideaId, idea });
           }
         },
       }
@@ -188,39 +193,20 @@ const IdeasNewPageWithJSONForm = () => {
 
   // get participation method config
   const phaseFromUrl = usePhase(phaseId);
-  // TODO: Improve typings and remove any
-  let config;
+  const config = getConfig(phaseFromUrl, phases, project);
 
-  if (!isNilOrError(phaseFromUrl)) {
-    config = getMethodConfig(phaseFromUrl.attributes.participation_method);
-  } else {
-    if (phases && project?.attributes.process_type === 'timeline') {
-      const participationMethod =
-        getCurrentPhase(phases)?.attributes.participation_method;
-      if (!isNilOrError(participationMethod)) {
-        config = getMethodConfig(participationMethod);
-      }
-    } else if (!isNilOrError(project)) {
-      config = getMethodConfig(project.attributes.participation_method);
-    }
-  }
-
-  if (isNilOrError(project) || isNilOrError(config)) {
+  if (isNilOrError(project) || !config) {
     return null;
   }
 
   const canUserEditProject =
     !isNilOrError(authUser) &&
-    canModerateProject(project.id, { data: authUser });
+    canModerateProject(project.data.id, { data: authUser });
   const isSurvey = config.postType === 'nativeSurvey';
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
-      {!isNilOrError(project) &&
-      !processingLocation &&
-      schema &&
-      uiSchema &&
-      config ? (
+      {project && !processingLocation && schema && uiSchema && config ? (
         <>
           <IdeasNewMeta />
           <Form
@@ -233,12 +219,18 @@ const IdeasNewPageWithJSONForm = () => {
             inputId={undefined}
             title={
               <Heading
-                project={project}
-                titleText={config.getFormTitle({
-                  project,
-                  phases,
-                  phaseFromUrl,
-                })}
+                project={project.data}
+                titleText={
+                  config.getFormTitle ? (
+                    config.getFormTitle({
+                      project: project.data,
+                      phases,
+                      phaseFromUrl,
+                    })
+                  ) : (
+                    <></>
+                  )
+                }
                 isSurvey={isSurvey}
                 canUserEditProject={canUserEditProject}
               />

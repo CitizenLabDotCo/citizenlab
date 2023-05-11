@@ -9,16 +9,16 @@ import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ReadMoreWrapper from 'containers/ProjectsShowPage/shared/header/ReadMoreWrapper';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useProjectFiles from 'hooks/useProjectFiles';
-import { useWindowSize, Title, Box } from '@citizenlab/cl2-component-library';
+import { Title, Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';
 
 // style
 import styled from 'styled-components';
-import { media, viewportWidths, isRtl } from 'utils/styleUtils';
+import { media, isRtl } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -71,22 +71,20 @@ interface Props {
 }
 
 const ProjectInfo = ({ projectId, className }: Props) => {
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const projectFiles = useProjectFiles(projectId);
-  const { windowWidth } = useWindowSize();
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
-  const smallerThanLargeTablet = windowWidth <= viewportWidths.tablet;
-
-  if (!isNilOrError(project)) {
+  if (project) {
     return (
       <Container className={`${className || ''} e2e-project-info`}>
-        <Fragment name={`projects/${project.id}/info`}>
+        <Fragment name={`projects/${project.data.id}/info`}>
           <Left>
             <Title variant="h1" color="tenantText">
-              <T value={project.attributes.title_multiloc} />
+              <T value={project.data.attributes.title_multiloc} />
             </Title>
 
-            {smallerThanLargeTablet && (
+            {isSmallerThanTablet && (
               <StyledProjectArchivedIndicator projectId={projectId} />
             )}
 
@@ -94,7 +92,7 @@ const ProjectInfo = ({ projectId, className }: Props) => {
               <ReadMoreWrapper
                 fontSize="m"
                 contentId="description"
-                value={project.attributes.description_multiloc}
+                value={project.data.attributes.description_multiloc}
               />
             </Box>
 
@@ -107,7 +105,7 @@ const ProjectInfo = ({ projectId, className }: Props) => {
               )}
           </Left>
           <Right>
-            <ProjectInfoSideBar projectId={project.id} />
+            <ProjectInfoSideBar projectId={project.data.id} />
           </Right>
         </Fragment>
       </Container>

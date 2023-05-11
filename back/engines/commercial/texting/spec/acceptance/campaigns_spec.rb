@@ -6,9 +6,7 @@ require 'rspec_api_documentation/dsl'
 resource 'Texting campaigns' do
   before do
     header 'Content-Type', 'application/json'
-    user = create(:admin)
-    token = Knock::AuthToken.new(payload: user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    admin_header_token
 
     config = AppConfiguration.instance
     config.settings['texting'] = {

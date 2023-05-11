@@ -1065,7 +1065,6 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.editPollAnswersButtonLabel": "Antwoordmogelijkheden",
   "app.containers.AdminPage.ProjectEdit.PollTab.exportPollResults": "Exporteer de peilingresultaten",
   "app.containers.AdminPage.ProjectEdit.PollTab.maxOverTheMaxTooltip": "Het maximum aantal keuzes is groter dan het aantal opties",
-  "app.containers.AdminPage.ProjectEdit.PollTab.maxUnderTheMinTooltip": "Een vraag met meerdere antwoorden moet minstens twee antwoorden toestaan.",
   "app.containers.AdminPage.ProjectEdit.PollTab.multipleOption": "Meerdere keuzes",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptions": "Geen opties",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptionsTooltip": "Nog niet alle vragen hebben opties, waardoor de peiling niet kan beantwoord worden",

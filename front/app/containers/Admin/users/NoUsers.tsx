@@ -7,7 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { Icon } from '@citizenlab/cl2-component-library';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
-import { MembershipType } from 'services/groups';
+import { MembershipType } from 'api/groups/types';
 
 const NoUsersPage = styled.div`
   display: flex;

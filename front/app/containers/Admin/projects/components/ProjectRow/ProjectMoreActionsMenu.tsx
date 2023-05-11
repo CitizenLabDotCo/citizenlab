@@ -7,7 +7,7 @@ import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'services/permissions/roles';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 export type ActionType = 'deleting' | 'copying';
@@ -24,8 +24,8 @@ const ProjectMoreActionsMenu = ({
   setIsRunningAction,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const project = useProject({ projectId });
-  const folderId = project?.attributes.folder_id;
+  const { data: project } = useProjectById(projectId);
+  const folderId = project?.data.attributes.folder_id;
   const authUser = useAuthUser();
   const [isCopying, setIsCopying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);

@@ -11,7 +11,7 @@ import { addBasket, updateBasket } from 'services/baskets';
 import useAuthUser from 'hooks/useAuthUser';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'hooks/useBasket';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'hooks/usePhases';
 
 // tracking
@@ -98,11 +98,11 @@ const AssignBudgetControl = memo(
   ({ view, ideaId, className, projectId }: Props) => {
     const authUser = useAuthUser();
     const { data: idea } = useIdeaById(ideaId);
-    const project = useProject({ projectId });
+    const { data: project } = useProjectById(projectId);
     const phases = usePhases(projectId);
 
     const isContinuousProject =
-      project?.attributes.process_type === 'continuous';
+      project?.data.attributes.process_type === 'continuous';
 
     const ideaPhaseIds = !isNilOrError(idea)
       ? idea.data.relationships?.phases?.data?.map((item) => item.id)
@@ -120,7 +120,7 @@ const AssignBudgetControl = memo(
       : null;
 
     const participationContext = isContinuousProject
-      ? project
+      ? project.data
       : latestRelevantIdeaPhase;
 
     const participationContextType = isContinuousProject ? 'project' : 'phase';

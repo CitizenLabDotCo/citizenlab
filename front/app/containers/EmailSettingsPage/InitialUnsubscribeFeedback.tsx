@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -13,7 +13,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { Multiloc } from 'typings';
 import T from 'components/T';
 
-const Message = styled.div<{ status: 'error' | 'success' | 'loading' }>`
+const Message = styled.div`
   color: ${colors.teal700};
   font-size: ${fontSizes.l}px;
 `;
@@ -24,27 +24,29 @@ interface Props {
   className?: string;
 }
 
-const InitialUnsubscribeFeedback = memo<Props>(
-  ({ status, unsubscribedCampaignMultiloc, className }) => {
-    return (
-      <FormSection className={className || ''}>
-        <Message status={status} aria-live="polite">
-          {status === 'success' && unsubscribedCampaignMultiloc ? (
-            <FormattedMessage
-              {...messages.initialUnsubscribeSuccess}
-              values={{
-                campaignTitle: <T value={unsubscribedCampaignMultiloc} />,
-              }}
-            />
-          ) : status === 'error' ? (
-            <FormattedMessage {...messages.initialUnsubscribeError} />
-          ) : status === 'loading' ? (
-            <FormattedMessage {...messages.initialUnsubscribeLoading} />
-          ) : null}
-        </Message>
-      </FormSection>
-    );
-  }
-);
+const InitialUnsubscribeFeedback = ({
+  status,
+  unsubscribedCampaignMultiloc,
+  className,
+}: Props) => {
+  return (
+    <FormSection className={className || ''}>
+      <Message aria-live="polite">
+        {status === 'success' && unsubscribedCampaignMultiloc ? (
+          <FormattedMessage
+            {...messages.initialUnsubscribeSuccess}
+            values={{
+              campaignTitle: <T value={unsubscribedCampaignMultiloc} />,
+            }}
+          />
+        ) : status === 'error' ? (
+          <FormattedMessage {...messages.initialUnsubscribeError} />
+        ) : status === 'loading' ? (
+          <FormattedMessage {...messages.initialUnsubscribeLoading} />
+        ) : null}
+      </Message>
+    </FormSection>
+  );
+};
 
 export default InitialUnsubscribeFeedback;

@@ -16,7 +16,7 @@ import {
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'hooks/usePhase';
 
 // i18n
@@ -144,16 +144,16 @@ const IdeaMapCard = memo<Props>(
   ({ ideaMarker, onClose, className, projectId, phaseId }) => {
     const { data: appConfig } = useAppConfiguration();
     const phase = usePhase(phaseId || null);
-    const project = useProject({ projectId });
+    const { data: project } = useProjectById(projectId);
     const { windowWidth } = useWindowSize();
     const tablet = windowWidth <= viewportWidths.tablet;
 
     const [hovered, setHovered] = useState(false);
 
     const isParticipatoryBudgetProject =
-      !isNilOrError(project) &&
-      project.attributes.process_type === 'continuous' &&
-      project.attributes.participation_method === 'budgeting';
+      project?.data.attributes.process_type === 'continuous' &&
+      project?.data.attributes.participation_method === 'budgeting';
+
     const isParticipatoryBudgetPhase =
       !isNilOrError(phase) &&
       phase.attributes.participation_method === 'budgeting';
@@ -209,23 +209,20 @@ const IdeaMapCard = memo<Props>(
       onClose?.();
     };
 
-    if (
-      !isNilOrError(appConfig) &&
-      !isNilOrError(ideaMarker) &&
-      !isNilOrError(project)
-    ) {
+    if (!isNilOrError(appConfig) && !isNilOrError(ideaMarker) && project) {
       const tenantCurrency = appConfig.data.attributes.settings.core.currency;
       const ideaBudget = ideaMarker.attributes?.budget;
       const votingActionDescriptor =
-        project.attributes.action_descriptor.voting_idea;
+        project.data.attributes.action_descriptor.voting_idea;
       const showDownvote =
         votingActionDescriptor.down.enabled === true ||
         (votingActionDescriptor.down.enabled === false &&
           votingActionDescriptor.down.disabled_reason !==
             'downvoting_disabled');
       const commentingEnabled =
-        project.attributes.action_descriptor.commenting_idea.enabled;
-      const projectHasComments = project.attributes.comments_count > 0;
+        project.data.attributes.action_descriptor.commenting_idea.enabled;
+
+      const projectHasComments = project.data.attributes.comments_count > 0;
       const showCommentCount = commentingEnabled || projectHasComments;
 
       return (

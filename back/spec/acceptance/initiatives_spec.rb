@@ -11,8 +11,7 @@ resource 'Initiatives' do
     @first_admin = create(:admin)
     @initiatives = %w[published published draft published spam published published].map { |ps| create(:initiative, publication_status: ps) }
     @user = create(:user)
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    header_token_for @user
   end
 
   get 'web_api/v1/initiatives' do
@@ -195,11 +194,7 @@ resource 'Initiatives' do
   end
 
   get 'web_api/v1/initiatives/as_xlsx' do
-    before do
-      @admin = create(:admin)
-      token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+    before { admin_header_token }
 
     parameter :initiatives, 'Filter by a given list of initiative ids', required: false
 
@@ -221,16 +216,12 @@ resource 'Initiatives' do
       end
     end
 
-    describe do
-      before do
-        @user = create(:user)
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+    describe 'when resident' do
+      before { resident_header_token }
 
-      example '[error] XLSX export by a normal user', document: false do
+      example '[error] XLSX export', document: false do
         do_request
-        expect(status).to eq 401
+        assert_status 401
       end
     end
   end
@@ -552,9 +543,7 @@ resource 'Initiatives' do
 
   get 'web_api/v1/initiatives/:id/allowed_transitions' do
     before do
-      @user = create(:admin)
-      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
-      header 'Authorization', "Bearer #{token}"
+      admin_header_token
 
       @initiative = create(:initiative)
       threshold_reached = create(:initiative_status_threshold_reached)

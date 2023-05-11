@@ -8,9 +8,7 @@ resource 'MachineTranslations' do
 
   before do
     header 'Content-Type', 'application/json'
-    @user = create(:user)
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    resident_header_token
 
     stub_easy_translate!
   end

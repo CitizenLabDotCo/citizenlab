@@ -28,10 +28,7 @@ resource 'Campaign consents' do
     parameter :unsubscription_token, 'A token passed through by e-mail unsubscribe links, giving unauthenticated access', required: false
 
     context 'when authenticated' do
-      before do
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+      before { header_token_for @user }
 
       example_request 'List all campaign consents' do
         expect(status).to eq 200
@@ -109,10 +106,7 @@ resource 'Campaign consents' do
     let(:consented) { false }
 
     context 'when authenticated' do
-      before do
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+      before { header_token_for @user }
 
       example_request 'Update a campaign consent' do
         expect(response_status).to eq 200
@@ -145,10 +139,7 @@ resource 'Campaign consents' do
     let(:consented) { false }
 
     context 'when authenticated' do
-      before do
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+      before { header_token_for @user }
 
       example_request 'Update a campaign consent by campaign id' do
         expect(response_status).to eq 200

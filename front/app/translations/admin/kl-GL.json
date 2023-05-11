@@ -1018,7 +1018,6 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.editPollAnswersButtonLabel": "Akissuteqarnissamut periarfissat",
   "app.containers.AdminPage.ProjectEdit.PollTab.exportPollResults": "Isumasiuinermi inernerit nuutikkit",
   "app.containers.AdminPage.ProjectEdit.PollTab.maxOverTheMaxTooltip": "Toqqakkat amerlassusaat toqqagassat amerlassusaanniit amerlanerupput",
-  "app.containers.AdminPage.ProjectEdit.PollTab.maxUnderTheMinTooltip": "Apeqqut arlalinnik akissutissalik minnerpaamik marlunnik akissutissaqartariaqarpoq.",
   "app.containers.AdminPage.ProjectEdit.PollTab.multipleOption": "Arlalinnik toqqagassalik",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptions": "No options",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptionsTooltip": "Apeqqutit tamarmik akissutitut toqqagassartaqassapput",

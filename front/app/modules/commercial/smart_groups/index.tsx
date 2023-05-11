@@ -1,6 +1,6 @@
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import React, { ReactNode } from 'react';
-import { MembershipType } from 'services/groups';
+import { MembershipType } from 'api/groups/types';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 const HeaderIcon = React.lazy(() => import('./components/HeaderIcon'));
 

@@ -11,8 +11,7 @@ resource 'Notifications' do
     @user = create(:user)
     create_list(:comment_on_your_idea, 3, recipient: @user)
     create_list(:comment_on_your_comment, 2, read_at: Time.now, recipient: @user)
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    header_token_for @user
   end
 
   get 'web_api/v1/notifications' do
