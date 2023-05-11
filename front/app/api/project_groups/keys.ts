@@ -1,7 +1,7 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 import { IProjectGroupsParams } from './types';
 
-const baseKey = { type: 'projects_allowed_input_topic' };
+const baseKey = { type: 'groups_project' };
 
 const projectGroupsKeys = {
   all: () => [baseKey],
