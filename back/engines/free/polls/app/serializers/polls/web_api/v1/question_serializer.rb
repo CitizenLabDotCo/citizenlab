@@ -7,10 +7,13 @@ module Polls
     # We specify the serializer(s) for the object(s), because if we just use polymorphic: true
     # jsonapi-serializer will look for the serializer(s) in the same namespace as this serializer, which will fail.
     belongs_to :participation_context, serializer: proc { |object|
-      if object.instance_of? Phase
+      case object
+      when Phase
         ::WebApi::V1::PhaseSerializer
-      else
+      when Project
         ::WebApi::V1::ProjectSerializer
+      else
+        raise ArgumentError, "Unknown participation_context type: #{object.class.name}"
       end
     }
     has_many :options
