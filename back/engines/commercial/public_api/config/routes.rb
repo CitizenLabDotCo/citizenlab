@@ -3,7 +3,6 @@
 PublicApi::Engine.routes.draw do
   # Legacy API endpoints
   namespace :v1 do
-    # Authentication for all endpoints
     post 'authenticate' => 'api_token#create'
     resources :ideas, only: %i[index show]
     resources :projects, only: %i[index show] do
