@@ -21,7 +21,7 @@ class WebApi::V1::FoldersController < ApplicationController
     render json: linked_json(
       @project_folders,
       WebApi::V1::FolderSerializer,
-      params: fastjson_params(visible_children_count_by_parent_id: visible_children_count_by_parent_id),
+      params: jsonapi_serializer_params(visible_children_count_by_parent_id: visible_children_count_by_parent_id),
       include: %i[admin_publication images]
     )
   end
@@ -29,7 +29,7 @@ class WebApi::V1::FoldersController < ApplicationController
   def show
     render json: WebApi::V1::FolderSerializer.new(
       @project_folder,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: %i[admin_publication images]
     ).serializable_hash.to_json
   end
@@ -50,7 +50,7 @@ class WebApi::V1::FoldersController < ApplicationController
 
       render json: WebApi::V1::FolderSerializer.new(
         @project_folder,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: [:admin_publication]
       ).serializable_hash.to_json, status: :created
     else
@@ -68,7 +68,7 @@ class WebApi::V1::FoldersController < ApplicationController
       ProjectFolders::SideFxService.new.after_update(@project_folder, current_user)
       render json: WebApi::V1::FolderSerializer.new(
         @project_folder,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: [:admin_publication]
       ).serializable_hash.to_json, status: :ok
     else

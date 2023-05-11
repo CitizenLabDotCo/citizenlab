@@ -10,13 +10,13 @@ class WebApi::V1::SpamReportsController < ApplicationController
       .includes(:user)
     @spam_reports = paginate @spam_reports
 
-    render json: linked_json(@spam_reports, WebApi::V1::SpamReportSerializer, params: fastjson_params, include: [:user])
+    render json: linked_json(@spam_reports, WebApi::V1::SpamReportSerializer, params: jsonapi_serializer_params, include: [:user])
   end
 
   def show
     render json: WebApi::V1::SpamReportSerializer.new(
       @spam_report,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: [:user]
     ).serializable_hash.to_json
   end
@@ -32,7 +32,7 @@ class WebApi::V1::SpamReportsController < ApplicationController
       SideFxSpamReportService.new.after_create(@spam_report, current_user)
       render json: WebApi::V1::SpamReportSerializer.new(
         @spam_report,
-        params: fastjson_params
+        params: jsonapi_serializer_params
       ).serializable_hash.to_json, status: :created
     else
       render json: { errors: @spam_report.errors.details }, status: :unprocessable_entity
@@ -48,7 +48,7 @@ class WebApi::V1::SpamReportsController < ApplicationController
         SideFxSpamReportService.new.after_update(@spam_report, current_user)
         render json: WebApi::V1::SpamReportSerializer.new(
           @spam_report.reload,
-          params: fastjson_params,
+          params: jsonapi_serializer_params,
           include: [:user]
         ).serializable_hash.to_json, status: :ok
       else

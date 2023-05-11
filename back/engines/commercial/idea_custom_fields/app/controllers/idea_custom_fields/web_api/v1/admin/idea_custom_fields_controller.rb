@@ -41,7 +41,7 @@ module IdeaCustomFields
     def show
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         @custom_field,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: [:options]
       ).serializable_hash.to_json
     end
@@ -271,7 +271,7 @@ module IdeaCustomFields
 
     def serializer_params(custom_form)
       participation_method = Factory.instance.participation_method_for custom_form.participation_context
-      fastjson_params({ constraints: participation_method.constraints, supports_answer_visible_to: participation_method.supports_answer_visible_to? })
+      jsonapi_serializer_params({ constraints: participation_method.constraints, supports_answer_visible_to: participation_method.supports_answer_visible_to? })
     end
   end
 end

@@ -15,7 +15,7 @@ module Volunteering
           render json: linked_json(
             @volunteers,
             Volunteering::WebApi::V1::VolunteerSerializer,
-            params: fastjson_params,
+            params: jsonapi_serializer_params,
             include: [:user]
           )
         end
@@ -45,7 +45,7 @@ module Volunteering
             SideFxVolunteerService.new.after_create(@volunteer, current_user)
             render json: WebApi::V1::VolunteerSerializer.new(
               @volunteer,
-              params: fastjson_params
+              params: jsonapi_serializer_params
             ).serializable_hash.to_json, status: :created
           else
             render json: { errors: @volunteer.errors.details }, status: :unprocessable_entity

@@ -52,7 +52,7 @@ class WebApi::V1::InvitesController < ApplicationController
     end
 
     @invites = paginate @invites
-    render json: linked_json(@invites, WebApi::V1::InviteSerializer, params: fastjson_params, include: [:invitee])
+    render json: linked_json(@invites, WebApi::V1::InviteSerializer, params: jsonapi_serializer_params, include: [:invitee])
   end
 
   def index_xlsx
@@ -146,7 +146,7 @@ class WebApi::V1::InvitesController < ApplicationController
         SideFxInviteService.new.after_accept @invite
         render json: WebApi::V1::InviteSerializer.new(
           @invite.reload,
-          params: fastjson_params,
+          params: jsonapi_serializer_params,
           include: [:invitee]
         ).serializable_hash.to_json, status: :ok
       end

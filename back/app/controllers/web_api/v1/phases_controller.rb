@@ -10,11 +10,11 @@ class WebApi::V1::PhasesController < ApplicationController
       .order(:start_at)
     @phases = paginate @phases
 
-    render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: fastjson_params)
+    render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: jsonapi_serializer_params)
   end
 
   def show
-    render json: WebApi::V1::PhaseSerializer.new(@phase, params: fastjson_params).serializable_hash.to_json
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash.to_json
   end
 
   def create
@@ -24,7 +24,7 @@ class WebApi::V1::PhasesController < ApplicationController
     authorize @phase
     if @phase.save
       sidefx.after_create(@phase, current_user)
-      render json: WebApi::V1::PhaseSerializer.new(@phase, params: fastjson_params).serializable_hash.to_json, status: :created
+      render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash.to_json, status: :created
     else
       render json: { errors: @phase.errors.details }, status: :unprocessable_entity
     end
@@ -36,7 +36,7 @@ class WebApi::V1::PhasesController < ApplicationController
     sidefx.before_update(@phase, current_user)
     if @phase.save
       sidefx.after_update(@phase, current_user)
-      render json: WebApi::V1::PhaseSerializer.new(@phase, params: fastjson_params).serializable_hash.to_json, status: :ok
+      render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash.to_json, status: :ok
     else
       render json: { errors: @phase.errors.details }, status: :unprocessable_entity
     end

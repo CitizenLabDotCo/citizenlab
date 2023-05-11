@@ -11,7 +11,7 @@ module ContentBuilder
         sidefx.after_create @image, current_user
         render json: WebApi::V1::LayoutImageSerializer.new(
           @image,
-          params: fastjson_params
+          params: jsonapi_serializer_params
         ).serializable_hash.to_json, status: :created
       else
         if @image.errors.details[:image].include?({ error: 'processing_error' })

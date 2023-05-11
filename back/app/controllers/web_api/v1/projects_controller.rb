@@ -40,7 +40,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: linked_json(
       @projects,
       WebApi::V1::ProjectSerializer,
-      params: fastjson_params(instance_options),
+      params: jsonapi_serializer_params(instance_options),
       include: %i[admin_publication project_images current_phase]
     )
   end
@@ -48,7 +48,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: %i[admin_publication project_images current_phase]
     ).serializable_hash.to_json
   end
@@ -68,7 +68,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       sidefx.after_create(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: [:admin_publication]
       ).serializable_hash.to_json, status: :created
     else
@@ -91,7 +91,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: [:admin_publication]
     ).serializable_hash.to_json, status: :created
   end
@@ -111,7 +111,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       sidefx.after_update(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: [:admin_publication]
       ).serializable_hash.to_json, status: :ok
     else

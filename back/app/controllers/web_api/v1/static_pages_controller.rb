@@ -7,11 +7,11 @@ class WebApi::V1::StaticPagesController < ApplicationController
   def index
     @pages = paginate policy_scope(StaticPage)
 
-    render json: linked_json(@pages, WebApi::V1::StaticPageSerializer, params: fastjson_params)
+    render json: linked_json(@pages, WebApi::V1::StaticPageSerializer, params: jsonapi_serializer_params)
   end
 
   def show
-    render json: WebApi::V1::StaticPageSerializer.new(@page, params: fastjson_params).serializable_hash.to_json
+    render json: WebApi::V1::StaticPageSerializer.new(@page, params: jsonapi_serializer_params).serializable_hash.to_json
   end
 
   def by_slug
@@ -29,7 +29,7 @@ class WebApi::V1::StaticPagesController < ApplicationController
     if @page.save
       SideFxStaticPageService.new.after_create @page, current_user
       render(
-        json: WebApi::V1::StaticPageSerializer.new(@page, params: fastjson_params).serializable_hash.to_json,
+        json: WebApi::V1::StaticPageSerializer.new(@page, params: jsonapi_serializer_params).serializable_hash.to_json,
         status: :created
       )
     else
@@ -44,7 +44,7 @@ class WebApi::V1::StaticPagesController < ApplicationController
     SideFxStaticPageService.new.before_update @page, current_user
     if @page.save
       SideFxStaticPageService.new.after_update @page, current_user
-      render json: WebApi::V1::StaticPageSerializer.new(@page, params: fastjson_params).serializable_hash.to_json, status: :ok
+      render json: WebApi::V1::StaticPageSerializer.new(@page, params: jsonapi_serializer_params).serializable_hash.to_json, status: :ok
     else
       render json: { errors: @page.errors.details }, status: :unprocessable_entity
     end

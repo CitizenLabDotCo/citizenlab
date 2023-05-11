@@ -12,7 +12,7 @@ class WebApi::V1::PermissionsController < ApplicationController
       .order_by_action(permission_scope)
     @permissions = paginate @permissions
 
-    render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: fastjson_params, include: %i[permissions_custom_fields custom_fields])
+    render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: jsonapi_serializer_params, include: %i[permissions_custom_fields custom_fields])
   end
 
   def show
@@ -50,7 +50,7 @@ class WebApi::V1::PermissionsController < ApplicationController
   def serialize(permission)
     WebApi::V1::PermissionSerializer.new(
       permission,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: %i[permissions_custom_fields custom_fields]
     ).serializable_hash.to_json
   end

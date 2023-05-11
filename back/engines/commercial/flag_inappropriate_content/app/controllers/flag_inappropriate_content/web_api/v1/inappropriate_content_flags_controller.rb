@@ -7,7 +7,7 @@ module FlagInappropriateContent
         before_action :set_flag
 
         def show
-          render json: FlagInappropriateContent::WebApi::V1::InappropriateContentFlagSerializer.new(@flag, params: fastjson_params).serializable_hash.to_json
+          render json: FlagInappropriateContent::WebApi::V1::InappropriateContentFlagSerializer.new(@flag, params: jsonapi_serializer_params).serializable_hash.to_json
         end
 
         def mark_as_deleted

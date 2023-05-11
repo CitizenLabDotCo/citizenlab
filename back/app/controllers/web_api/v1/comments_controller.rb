@@ -60,11 +60,11 @@ class WebApi::V1::CommentsController < ApplicationController
       votes = Vote.where(user: current_user, votable: @comments)
       votes_by_comment_id = votes.index_by(&:votable_id)
       {
-        params: fastjson_params(vbci: votes_by_comment_id),
+        params: jsonapi_serializer_params(vbci: votes_by_comment_id),
         include: %i[author user_vote]
       }
     else
-      { params: fastjson_params, include: [:author] }
+      { params: jsonapi_serializer_params, include: [:author] }
     end
 
     render json: {
@@ -118,11 +118,11 @@ class WebApi::V1::CommentsController < ApplicationController
       votes = Vote.where(user: current_user, votable: @comments.all)
       votes_by_comment_id = votes.index_by(&:votable_id)
       {
-        params: fastjson_params(vbci: votes_by_comment_id),
+        params: jsonapi_serializer_params(vbci: votes_by_comment_id),
         include: %i[author user_vote]
       }
     else
-      { params: fastjson_params, include: [:author] }
+      { params: jsonapi_serializer_params, include: [:author] }
     end
 
     render json: linked_json(@comments, WebApi::V1::CommentSerializer, serialization_options)
@@ -131,7 +131,7 @@ class WebApi::V1::CommentsController < ApplicationController
   def show
     render json: WebApi::V1::CommentSerializer.new(
       @comment,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: [:author]
     ).serializable_hash.to_json
   end
@@ -148,7 +148,7 @@ class WebApi::V1::CommentsController < ApplicationController
       SideFxCommentService.new.after_create @comment, current_user
       render json: WebApi::V1::CommentSerializer.new(
         @comment,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: [:author]
       ).serializable_hash.to_json, status: :created
     else
@@ -167,7 +167,7 @@ class WebApi::V1::CommentsController < ApplicationController
       SideFxCommentService.new.after_update @comment, current_user
       render json: WebApi::V1::CommentSerializer.new(
         @comment,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: [:author]
       ).serializable_hash.to_json, status: :ok
     else

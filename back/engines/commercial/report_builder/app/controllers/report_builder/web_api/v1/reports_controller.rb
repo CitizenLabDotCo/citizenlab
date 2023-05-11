@@ -10,7 +10,7 @@ module ReportBuilder
           reports = policy_scope(ReportBuilder::Report)
           reports = paginate(reports)
 
-          render json: linked_json(reports, ReportSerializer, params: fastjson_params)
+          render json: linked_json(reports, ReportSerializer, params: jsonapi_serializer_params)
         end
 
         def show
@@ -48,7 +48,7 @@ module ReportBuilder
         def layout
           render json: ContentBuilder::WebApi::V1::LayoutSerializer.new(
             report.layout,
-            params: fastjson_params
+            params: jsonapi_serializer_params
           ).serializable_hash.to_json
         end
 
@@ -95,7 +95,7 @@ module ReportBuilder
         end
 
         def serialize_report(report)
-          options = { params: fastjson_params, include: [:layout] }
+          options = { params: jsonapi_serializer_params, include: [:layout] }
           ReportSerializer.new(report, options).serializable_hash.to_json
         end
 

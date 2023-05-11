@@ -18,7 +18,7 @@ module Polls
           render json: linked_json(
             @questions,
             Polls::WebApi::V1::QuestionSerializer,
-            params: fastjson_params,
+            params: jsonapi_serializer_params,
             include: [:options]
           )
         end
@@ -26,7 +26,7 @@ module Polls
         def show
           render json: WebApi::V1::QuestionSerializer.new(
             @question,
-            params: fastjson_params
+            params: jsonapi_serializer_params
           ).serializable_hash.to_json
         end
 
@@ -39,7 +39,7 @@ module Polls
             SideFxQuestionService.new.after_create(@question, current_user)
             render json: WebApi::V1::QuestionSerializer.new(
               @question,
-              params: fastjson_params,
+              params: jsonapi_serializer_params,
               include: [:options]
             ).serializable_hash.to_json, status: :created
           else
@@ -55,7 +55,7 @@ module Polls
             SideFxQuestionService.new.after_update(@question, current_user)
             render json: WebApi::V1::QuestionSerializer.new(
               @question,
-              params: fastjson_params,
+              params: jsonapi_serializer_params,
               include: [:options]
             ).serializable_hash.to_json, status: :ok
           else
@@ -69,7 +69,7 @@ module Polls
             SideFxQuestionService.new.after_update(@question, current_user)
             render json: WebApi::V1::QuestionSerializer.new(
               @question,
-              params: fastjson_params,
+              params: jsonapi_serializer_params,
               include: [:options]
             ).serializable_hash.to_json, status: :ok
           else

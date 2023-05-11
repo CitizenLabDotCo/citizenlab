@@ -7,11 +7,11 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
 
   def index
     @options = policy_scope(CustomFieldOption).where(custom_field: @custom_field).order(:ordering)
-    render json: WebApi::V1::CustomFieldOptionSerializer.new(@options, params: fastjson_params).serializable_hash.to_json
+    render json: WebApi::V1::CustomFieldOptionSerializer.new(@options, params: jsonapi_serializer_params).serializable_hash.to_json
   end
 
   def show
-    render json: WebApi::V1::CustomFieldOptionSerializer.new(@option, params: fastjson_params).serializable_hash.to_json
+    render json: WebApi::V1::CustomFieldOptionSerializer.new(@option, params: jsonapi_serializer_params).serializable_hash.to_json
   end
 
   def create
@@ -25,7 +25,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
       SideFxCustomFieldOptionService.new.after_create(@option, current_user)
       render json: WebApi::V1::CustomFieldOptionSerializer.new(
         @option,
-        params: fastjson_params
+        params: jsonapi_serializer_params
       ).serializable_hash.to_json, status: :created
     else
       render json: { errors: @option.errors.details }, status: :unprocessable_entity
@@ -39,7 +39,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
       SideFxCustomFieldOptionService.new.after_update(@option, current_user)
       render json: WebApi::V1::CustomFieldOptionSerializer.new(
         @option.reload,
-        params: fastjson_params
+        params: jsonapi_serializer_params
       ).serializable_hash.to_json, status: :ok
     else
       render json: { errors: @option.errors.details }, status: :unprocessable_entity
@@ -51,7 +51,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
       SideFxCustomFieldOptionService.new.after_update(@option, current_user)
       render json: WebApi::V1::CustomFieldOptionSerializer.new(
         @option.reload,
-        params: fastjson_params
+        params: jsonapi_serializer_params
       ).serializable_hash.to_json, status: :ok
     else
       render json: { errors: @option.errors.details }, status: :unprocessable_entity

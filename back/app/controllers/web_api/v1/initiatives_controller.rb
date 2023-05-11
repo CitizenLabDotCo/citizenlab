@@ -25,7 +25,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       current_user: current_user,
       scope: policy_scope(Initiative)
     ).find_records
-    render json: linked_json(initiatives, WebApi::V1::PostMarkerSerializer, params: fastjson_params)
+    render json: linked_json(initiatives, WebApi::V1::PostMarkerSerializer, params: jsonapi_serializer_params)
   end
 
   def index_xlsx
@@ -80,7 +80,7 @@ class WebApi::V1::InitiativesController < ApplicationController
   def show
     render json: WebApi::V1::InitiativeSerializer.new(
       @initiative,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: %i[author topics areas user_vote initiative_images]
     ).serializable_hash.to_json
   end
@@ -109,7 +109,7 @@ class WebApi::V1::InitiativesController < ApplicationController
         service.after_create(@initiative, current_user)
         render json: WebApi::V1::InitiativeSerializer.new(
           @initiative.reload,
-          params: fastjson_params,
+          params: jsonapi_serializer_params,
           include: %i[author topics areas user_vote initiative_images]
         ).serializable_hash.to_json, status: :created
       else
@@ -148,7 +148,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     if saved
       render json: WebApi::V1::InitiativeSerializer.new(
         @initiative.reload,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: %i[author topics areas user_vote initiative_images]
       ).serializable_hash.to_json, status: :ok
     else
@@ -182,7 +182,7 @@ class WebApi::V1::InitiativesController < ApplicationController
   end
 
   def serialization_options_for(initiatives)
-    default_params = fastjson_params(pcs: ParticipationContextService.new)
+    default_params = jsonapi_serializer_params(pcs: ParticipationContextService.new)
 
     if current_user
       votes = current_user.votes.where(

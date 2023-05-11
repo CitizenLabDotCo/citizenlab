@@ -12,11 +12,11 @@ module Texting
     def index
       campaigns = policy_scope(Campaign).order(created_at: :desc)
       campaigns = paginate(campaigns)
-      render json: linked_json(campaigns, WebApi::V1::CampaignSerializer, params: fastjson_params)
+      render json: linked_json(campaigns, WebApi::V1::CampaignSerializer, params: jsonapi_serializer_params)
     end
 
     def show
-      render json: WebApi::V1::CampaignSerializer.new(@campaign, params: fastjson_params).serializable_hash.to_json
+      render json: WebApi::V1::CampaignSerializer.new(@campaign, params: jsonapi_serializer_params).serializable_hash.to_json
     end
 
     def create
@@ -27,7 +27,7 @@ module Texting
         SideFxCampaignService.new.after_create(campaign, current_user)
         render json: WebApi::V1::CampaignSerializer.new(
           campaign,
-          params: fastjson_params
+          params: jsonapi_serializer_params
         ).serializable_hash.to_json, status: :created
       else
         render json: { errors: campaign.errors.details }, status: :unprocessable_entity
@@ -42,7 +42,7 @@ module Texting
         SideFxCampaignService.new.after_update(@campaign, current_user)
         render json: WebApi::V1::CampaignSerializer.new(
           @campaign,
-          params: fastjson_params
+          params: jsonapi_serializer_params
         ).serializable_hash.to_json, status: :ok
       else
         render json: { errors: @campaign.errors.details }, status: :unprocessable_entity

@@ -23,7 +23,7 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
     render json: linked_json(
       @groups_projects,
       WebApi::V1::GroupsProjectSerializer,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: [:group]
     )
   end
@@ -31,7 +31,7 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
   def show
     render json: WebApi::V1::GroupsProjectSerializer.new(
       @groups_project,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: [:group]
     ).serializable_hash.to_json
   end
@@ -44,7 +44,7 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
     if @groups_project.save
       render json: WebApi::V1::GroupsProjectSerializer.new(
         @groups_project.reload,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: [:group]
       ).serializable_hash.to_json, status: :created
     else

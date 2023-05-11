@@ -14,7 +14,7 @@ class WebApi::V1::MembershipsController < ApplicationController
     render json: linked_json(
       @memberships,
       WebApi::V1::MembershipSerializer,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: [:user]
     )
   end
@@ -22,7 +22,7 @@ class WebApi::V1::MembershipsController < ApplicationController
   def show
     render json: WebApi::V1::MembershipSerializer.new(
       @membership,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: [:user]
     ).serializable_hash.to_json
   end
@@ -39,7 +39,7 @@ class WebApi::V1::MembershipsController < ApplicationController
     if @membership.save
       render json: WebApi::V1::MembershipSerializer.new(
         @membership.reload,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: [:user]
       ).serializable_hash.to_json, status: :created
     else
@@ -69,7 +69,7 @@ class WebApi::V1::MembershipsController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    render json: linked_json(@users, WebApi::V1::MemberSerializer, params: fastjson_params(group_id: params[:group_id]))
+    render json: linked_json(@users, WebApi::V1::MemberSerializer, params: jsonapi_serializer_params(group_id: params[:group_id]))
   end
 
   def set_membership

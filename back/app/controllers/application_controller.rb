@@ -61,7 +61,7 @@ class ApplicationController < ActionController::API
     payload[:'X-Amzn-Trace-Id'] = request.headers['X-Amzn-Trace-Id']
   end
 
-  def fastjson_params(extra_params = {})
+  def jsonapi_serializer_params(extra_params = {})
     { current_user: current_user, **extra_params.symbolize_keys }
   end
 
@@ -90,7 +90,7 @@ class ApplicationController < ActionController::API
   # is named <Module::Class>Serializer, and the object has type: '<Module::Class>' in its attributes.
   def serialize_by_type(object)
     serializer_class = "WebApi::V1::#{object.type}Serializer".constantize
-    serializer_class.new(object, params: fastjson_params).serializable_hash[:data]
+    serializer_class.new(object, params: jsonapi_serializer_params).serializable_hash[:data]
   end
 
   def page_links(collection)

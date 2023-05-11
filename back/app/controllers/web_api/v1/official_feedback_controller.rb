@@ -11,13 +11,13 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
       .order(created_at: :desc)
     @feedbacks = paginate @feedbacks
 
-    render json: linked_json(@feedbacks, WebApi::V1::OfficialFeedbackSerializer, params: fastjson_params)
+    render json: linked_json(@feedbacks, WebApi::V1::OfficialFeedbackSerializer, params: jsonapi_serializer_params)
   end
 
   def show
     render json: WebApi::V1::OfficialFeedbackSerializer.new(
       @feedback,
-      params: fastjson_params
+      params: jsonapi_serializer_params
     ).serializable_hash.to_json
   end
 
@@ -32,7 +32,7 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
       SideFxOfficialFeedbackService.new.after_create @feedback, current_user
       render json: WebApi::V1::OfficialFeedbackSerializer.new(
         @feedback,
-        params: fastjson_params
+        params: jsonapi_serializer_params
       ).serializable_hash.to_json, status: :created
     else
       render json: { errors: @feedback.errors.details }, status: :unprocessable_entity
@@ -48,7 +48,7 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
       SideFxOfficialFeedbackService.new.after_update @feedback, current_user
       render json: WebApi::V1::OfficialFeedbackSerializer.new(
         @feedback,
-        params: fastjson_params
+        params: jsonapi_serializer_params
       ).serializable_hash.to_json, status: :ok
     else
       render json: { errors: @feedback.errors.details }, status: :unprocessable_entity

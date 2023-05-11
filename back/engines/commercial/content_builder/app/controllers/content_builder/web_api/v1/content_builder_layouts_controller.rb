@@ -11,7 +11,7 @@ module ContentBuilder
         def show
           render json: WebApi::V1::LayoutSerializer.new(
             @layout,
-            params: fastjson_params
+            params: jsonapi_serializer_params
           ).serializable_hash.to_json
         end
 
@@ -62,7 +62,7 @@ module ContentBuilder
             side_fx_service.after_update @layout, current_user
             render json: WebApi::V1::LayoutSerializer.new(
               @layout,
-              params: fastjson_params
+              params: jsonapi_serializer_params
             ).serializable_hash.to_json, status: :ok
           else
             render json: { errors: @layout.errors.details }, status: :unprocessable_entity
@@ -77,7 +77,7 @@ module ContentBuilder
             side_fx_service.after_create @layout, current_user
             render json: WebApi::V1::LayoutSerializer.new(
               @layout,
-              params: fastjson_params
+              params: jsonapi_serializer_params
             ).serializable_hash.to_json, status: :created
           else
             render json: { errors: @layout.errors.details }, status: :unprocessable_entity

@@ -12,7 +12,7 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
     render json: linked_json(
       permissions_custom_fields,
       WebApi::V1::PermissionsCustomFieldSerializer,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: %i[custom_field]
     )
   end
@@ -20,7 +20,7 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
   def show
     render json: WebApi::V1::PermissionsCustomFieldSerializer.new(
       @permissions_custom_field,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: %i[custom_field]
     ).serializable_hash.to_json
   end
@@ -33,7 +33,7 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
       SideFxPermissionsCustomFieldService.new.after_create permissions_custom_field, current_user
       render json: WebApi::V1::PermissionsCustomFieldSerializer.new(
         permissions_custom_field,
-        params: fastjson_params
+        params: jsonapi_serializer_params
       ).serializable_hash.to_json, status: :created
     else
       render json: { errors: permissions_custom_field.errors.details }, status: :unprocessable_entity
@@ -48,7 +48,7 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
       SideFxPermissionsCustomFieldService.new.before_update @permissions_custom_field, current_user
       render json: WebApi::V1::PermissionsCustomFieldSerializer.new(
         @permissions_custom_field,
-        params: fastjson_params
+        params: jsonapi_serializer_params
       ).serializable_hash.to_json, status: :ok
     else
       render json: { errors: @permissions_custom_field.errors.details }, status: :unprocessable_entity

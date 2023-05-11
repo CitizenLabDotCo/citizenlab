@@ -12,14 +12,14 @@ module EmailCampaigns
       @consents = policy_scope(Consent).where(user: current_user_by_unsubscription_token)
       @consents = paginate @consents
 
-      render json: linked_json(@consents, WebApi::V1::ConsentSerializer, params: fastjson_params)
+      render json: linked_json(@consents, WebApi::V1::ConsentSerializer, params: jsonapi_serializer_params)
     end
 
     def update
       @consent.assign_attributes consent_params
       authorize @consent
       if @consent.save
-        render json: WebApi::V1::ConsentSerializer.new(@consent, params: fastjson_params).serializable_hash.to_json, status: :ok
+        render json: WebApi::V1::ConsentSerializer.new(@consent, params: jsonapi_serializer_params).serializable_hash.to_json, status: :ok
       else
         render json: { errors: @consent.errors.details }, status: :unprocessable_entity
       end

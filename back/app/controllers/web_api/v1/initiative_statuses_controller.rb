@@ -6,11 +6,11 @@ class WebApi::V1::InitiativeStatusesController < ApplicationController
 
   def index
     @initiative_statuses = policy_scope(InitiativeStatus).order(:ordering)
-    render json: WebApi::V1::InitiativeStatusSerializer.new(@initiative_statuses, params: fastjson_params).serializable_hash.to_json
+    render json: WebApi::V1::InitiativeStatusSerializer.new(@initiative_statuses, params: jsonapi_serializer_params).serializable_hash.to_json
   end
 
   def show
-    render json: WebApi::V1::InitiativeStatusSerializer.new(@initiative_status, params: fastjson_params).serializable_hash.to_json
+    render json: WebApi::V1::InitiativeStatusSerializer.new(@initiative_status, params: jsonapi_serializer_params).serializable_hash.to_json
   end
 
   private

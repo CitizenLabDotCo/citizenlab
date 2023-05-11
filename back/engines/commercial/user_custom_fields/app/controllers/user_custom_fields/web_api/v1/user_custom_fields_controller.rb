@@ -13,7 +13,7 @@ module UserCustomFields
         .order(:ordering)
       @custom_fields = @custom_fields.where(input_type: params[:input_types]) if params[:input_types]
 
-      render json: serialize_custom_fields(@custom_fields, params: fastjson_params, include: %i[projects])
+      render json: serialize_custom_fields(@custom_fields, params: jsonapi_serializer_params, include: %i[projects])
     end
 
     def schema
@@ -33,7 +33,7 @@ module UserCustomFields
     end
 
     def show
-      render json: serialize_custom_fields(@custom_field, params: fastjson_params, include: %i[projects])
+      render json: serialize_custom_fields(@custom_field, params: jsonapi_serializer_params, include: %i[projects])
     end
 
     def create
@@ -45,7 +45,7 @@ module UserCustomFields
 
       if @custom_field.save
         SideFxCustomFieldService.new.after_create(@custom_field, current_user)
-        render json: serialize_custom_fields(@custom_field, params: fastjson_params), status: :created
+        render json: serialize_custom_fields(@custom_field, params: jsonapi_serializer_params), status: :created
       else
         render json: { errors: @custom_field.errors.details }, status: :unprocessable_entity
       end
@@ -57,7 +57,7 @@ module UserCustomFields
       SideFxCustomFieldService.new.before_update @custom_field, current_user
       if @custom_field.save
         SideFxCustomFieldService.new.after_update(@custom_field, current_user)
-        render json: serialize_custom_fields(@custom_field.reload, params: fastjson_params), status: :ok
+        render json: serialize_custom_fields(@custom_field.reload, params: jsonapi_serializer_params), status: :ok
       else
         render json: { errors: @custom_field.errors.details }, status: :unprocessable_entity
       end
@@ -66,7 +66,7 @@ module UserCustomFields
     def reorder
       if @custom_field.insert_at(custom_field_params(@custom_field)[:ordering])
         SideFxCustomFieldService.new.after_update(@custom_field, current_user)
-        render json: serialize_custom_fields(@custom_field.reload, params: fastjson_params), status: :ok
+        render json: serialize_custom_fields(@custom_field.reload, params: jsonapi_serializer_params), status: :ok
       else
         render json: { errors: @custom_field.errors.details }, status: :unprocessable_entity
       end

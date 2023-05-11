@@ -43,7 +43,7 @@ class WebApi::V1::IdeasController < ApplicationController
       includes: %i[idea_trending_info]
     ).find_records
 
-    render json: linked_json(ideas, WebApi::V1::IdeaMiniSerializer, params: fastjson_params(pcs: ParticipationContextService.new))
+    render json: linked_json(ideas, WebApi::V1::IdeaMiniSerializer, params: jsonapi_serializer_params(pcs: ParticipationContextService.new))
   end
 
   def index_idea_markers
@@ -54,7 +54,7 @@ class WebApi::V1::IdeasController < ApplicationController
       includes: %i[author topics project idea_status idea_files]
     ).find_records
 
-    render json: linked_json(ideas, WebApi::V1::PostMarkerSerializer, params: fastjson_params)
+    render json: linked_json(ideas, WebApi::V1::PostMarkerSerializer, params: jsonapi_serializer_params)
   end
 
   def index_xlsx
@@ -166,7 +166,7 @@ class WebApi::V1::IdeasController < ApplicationController
         service.after_create(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
-          params: fastjson_params,
+          params: jsonapi_serializer_params,
           include: %i[author topics phases user_vote idea_images]
         ).serializable_hash.to_json, status: :created
       else
@@ -215,7 +215,7 @@ class WebApi::V1::IdeasController < ApplicationController
         service.after_update(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
-          params: fastjson_params,
+          params: jsonapi_serializer_params,
           include: %i[author topics user_vote idea_images]
         ).serializable_hash.to_json, status: :ok
       else
@@ -243,7 +243,7 @@ class WebApi::V1::IdeasController < ApplicationController
     authorize input
     render json: WebApi::V1::IdeaSerializer.new(
       input,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: %i[author topics user_vote idea_images]
     ).serializable_hash.to_json
   end
@@ -330,12 +330,12 @@ class WebApi::V1::IdeasController < ApplicationController
       # breaks if you don't fetch the ids in this way.
       votes = Vote.where(user: current_user, votable_id: ideas.map(&:id), votable_type: 'Idea')
       {
-        params: fastjson_params(vbii: votes.index_by(&:votable_id), pcs: ParticipationContextService.new),
+        params: jsonapi_serializer_params(vbii: votes.index_by(&:votable_id), pcs: ParticipationContextService.new),
         include: %i[author user_vote idea_images]
       }
     else
       {
-        params: fastjson_params(pcs: ParticipationContextService.new),
+        params: jsonapi_serializer_params(pcs: ParticipationContextService.new),
         include: %i[author idea_images]
       }
     end

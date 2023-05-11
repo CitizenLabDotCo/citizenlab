@@ -12,11 +12,11 @@ class WebApi::V1::VotesController < ApplicationController
       .where(votable_type: @votable_type, votable_id: @votable_id)
     @votes = paginate @votes
 
-    render json: linked_json(@votes, WebApi::V1::VoteSerializer, params: fastjson_params)
+    render json: linked_json(@votes, WebApi::V1::VoteSerializer, params: jsonapi_serializer_params)
   end
 
   def show
-    render json: WebApi::V1::VoteSerializer.new(@vote, params: fastjson_params).serializable_hash.to_json
+    render json: WebApi::V1::VoteSerializer.new(@vote, params: jsonapi_serializer_params).serializable_hash.to_json
   end
 
   def create
@@ -40,7 +40,7 @@ class WebApi::V1::VotesController < ApplicationController
       SideFxVoteService.new.after_create(@vote, current_user)
       render json: WebApi::V1::VoteSerializer.new(
         @vote,
-        params: fastjson_params
+        params: jsonapi_serializer_params
       ).serializable_hash.to_json, status: :created
     else
       render json: { errors: @vote.errors.details }, status: :unprocessable_entity
@@ -99,7 +99,7 @@ class WebApi::V1::VotesController < ApplicationController
           SideFxVoteService.new.after_create(@new_vote, current_user)
           render json: WebApi::V1::VoteSerializer.new(
             @vote,
-            params: fastjson_params
+            params: jsonapi_serializer_params
           ).serializable_hash.to_json, status: :created
         else
           render json: { errors: @new_vote.errors.details }, status: :unprocessable_entity
