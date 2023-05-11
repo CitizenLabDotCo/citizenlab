@@ -3,22 +3,27 @@ import streams from 'utils/streams';
 import { Multiloc, IParticipationContextType } from 'typings';
 import { capitalizeParticipationContextType } from 'utils/helperUtils';
 
-type IPollQuestionAttributes = {
-  question_type: 'multiple_options' | 'single_option';
-  max_options: number | null;
-  title_multiloc: Multiloc;
-  ordering: number;
-};
-
 export interface IPollQuestion {
   id: string;
-  type: string;
-  attributes: IPollQuestionAttributes;
+  type: 'question';
+  attributes: {
+    question_type: 'multiple_options' | 'single_option';
+    max_options: number | null;
+    title_multiloc: Multiloc;
+    ordering: number;
+  };
   relationships: {
     options: {
       data: {
         id: string;
+        type: 'option';
       }[];
+    };
+    participation_context: {
+      data: {
+        id: string;
+        type: IParticipationContextType;
+      };
     };
   };
 }
