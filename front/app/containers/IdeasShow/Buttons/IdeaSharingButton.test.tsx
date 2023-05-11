@@ -12,6 +12,7 @@ const mockProjectData = {
     process_type: 'continuous',
     title_multiloc: { en: 'Test Project' },
     slug: 'test',
+    input_term: 'idea',
   },
 };
 
