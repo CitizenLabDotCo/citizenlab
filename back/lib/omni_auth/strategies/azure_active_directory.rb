@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 # After https://github.com/AzureAD/omniauth-azure-activedirectory/blob/master/lib/omniauth/strategies/azure_activedirectory.rb.
+
+# We decided to absorb omniauth-azure-activedirectory as it wasn't maintained
+# since 2016. We could get rid of this if a better alternative pops up in the
+# list of strategies: https://github.com/omniauth/omniauth/wiki/List-of-Strategies.
+
 #-------------------------------------------------------------------------------
 # Copyright (c) 2015 Micorosft Corporation
 #
