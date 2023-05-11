@@ -1018,7 +1018,6 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.editPollAnswersButtonLabel": "Επιλογές απάντησης",
   "app.containers.AdminPage.ProjectEdit.PollTab.exportPollResults": "Εξαγωγή των αποτελεσμάτων της δημοσκόπησης",
   "app.containers.AdminPage.ProjectEdit.PollTab.maxOverTheMaxTooltip": "Ο μέγιστος αριθμός επιλογών είναι μεγαλύτερος από τον αριθμό των επιλογών",
-  "app.containers.AdminPage.ProjectEdit.PollTab.maxUnderTheMinTooltip": "Μια ερώτηση πολλαπλών απαντήσεων πρέπει να επιτρέπει τουλάχιστον δύο απαντήσεις.",
   "app.containers.AdminPage.ProjectEdit.PollTab.multipleOption": "Πολλαπλές επιλογές",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptions": "No options",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptionsTooltip": "Όλες οι ερωτήσεις πρέπει να έχουν επιλογές απαντήσεων",

@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'hooks/usePhases';
 
 // craft
@@ -39,15 +39,18 @@ interface Props {
 
 const ProjectTemplate = ({ reportId, projectId }: Props) => {
   const { formatMessage } = useIntl();
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const phases = usePhases(projectId);
 
-  if (isNilOrError(project) || isNilOrError(phases)) return null;
+  if (!project || isNilOrError(phases)) return null;
 
-  const { participationMethod, phaseId } = getTemplateData(project, phases);
+  const { participationMethod, phaseId } = getTemplateData(
+    project.data,
+    phases
+  );
 
   const hasPhases =
-    project.attributes.process_type === 'continuous' && phases.length > 0;
+    project.data.attributes.process_type === 'continuous' && phases.length > 0;
 
   const projectPeriod = hasPhases
     ? getProjectPeriod(phases)

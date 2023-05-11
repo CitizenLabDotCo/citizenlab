@@ -1,4 +1,4 @@
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'services/phases';
 
 interface TemplateData {

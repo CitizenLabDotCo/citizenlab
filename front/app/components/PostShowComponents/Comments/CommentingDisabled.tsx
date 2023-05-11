@@ -8,7 +8,7 @@ import T from 'components/T';
 
 // hooks
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 
 // services
 import { IdeaCommentingDisabledReason } from 'api/ideas/types';
@@ -64,7 +64,7 @@ const CommentingDisabled = ({
   commentingDisabledReason,
 }: Props) => {
   const authUser = useAuthUser();
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
 
   const signUpIn = (flow: 'signin' | 'signup') => {
     const pcType = phaseId ? 'phase' : projectId ? 'project' : null;
@@ -97,9 +97,7 @@ const CommentingDisabled = ({
     authUser
   );
 
-  const projectTitle = !isNilOrError(project)
-    ? project.attributes.title_multiloc
-    : null;
+  const projectTitle = project?.data.attributes.title_multiloc;
 
   if (!messageDescriptor) return null;
 

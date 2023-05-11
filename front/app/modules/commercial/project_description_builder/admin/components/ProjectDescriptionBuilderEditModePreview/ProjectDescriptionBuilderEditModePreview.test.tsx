@@ -3,13 +3,17 @@ import { render } from 'utils/testUtils/rtl';
 
 import ProjectDescriptionBuilderEditModePreview from '.';
 
-jest.mock('hooks/useProject', () => {
+jest.mock('api/projects/useProjectById', () => {
   return jest.fn(() => ({
-    id: 'id',
-    type: 'project',
-    attributes: {
-      title_multiloc: { en: 'Test Project' },
-      slug: 'test',
+    data: {
+      data: {
+        id: 'id',
+        type: 'project',
+        attributes: {
+          title_multiloc: { en: 'Test Project' },
+          slug: 'test',
+        },
+      },
     },
   }));
 });

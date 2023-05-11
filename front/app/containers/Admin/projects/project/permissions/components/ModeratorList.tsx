@@ -1,11 +1,9 @@
 import React, { memo } from 'react';
-import { isError } from 'lodash-es';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { List } from 'components/admin/ResourceList';
-import { isNilOrError } from 'utils/helperUtils';
 import ModeratorListRow from './ModeratorListRow';
-import useProjectModerators from 'hooks/useProjectModerators';
+import useProjectModerators from 'api/project_moderators/useProjectModerators';
 import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
@@ -13,22 +11,22 @@ interface Props {
 }
 
 const ModeratorList = memo(({ projectId }: Props) => {
-  const moderators = useProjectModerators(projectId);
+  const { data: moderators, isError } = useProjectModerators({ projectId });
 
-  if (isError(moderators)) {
+  if (isError) {
     return <FormattedMessage {...messages.moderatorsNotFound} />;
   }
 
-  if (!isNilOrError(moderators)) {
+  if (moderators) {
     return (
       <Box mb="20px">
         <List>
           <>
-            {moderators.map((moderator, index) => {
+            {moderators.data.map((moderator, index) => {
               return (
                 <ModeratorListRow
                   key={moderator.id}
-                  isLastItem={index === moderators.length - 1}
+                  isLastItem={index === moderators.data.length - 1}
                   moderator={moderator}
                   projectId={projectId}
                 />

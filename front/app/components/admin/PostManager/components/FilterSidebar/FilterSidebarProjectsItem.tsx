@@ -1,5 +1,5 @@
 import React from 'react';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 import T from 'components/T';
 import { Menu } from 'semantic-ui-react';
 import { useDrop } from 'react-dnd';

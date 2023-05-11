@@ -2,6 +2,8 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { Multiloc, IParticipationContextType } from 'typings';
 import { capitalizeParticipationContextType } from 'utils/helperUtils';
+import projectsKeys from 'api/projects/keys';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 type IPollQuestionAttributes = {
   question_type: 'multiple_options' | 'single_option';
@@ -47,11 +49,19 @@ export async function addPollQuestion(
       title_multiloc: titleMultiloc,
     }
   );
-  streams.fetchAllWith({
-    apiEndpoint: [
-      `${API_PATH}/${participationContextType}s/${participationContextId}/poll_questions`,
-    ],
-  });
+
+  if (participationContextType === 'project') {
+    queryClient.invalidateQueries({
+      queryKey: projectsKeys.item({ id: participationContextId }),
+    });
+  } else {
+    streams.fetchAllWith({
+      apiEndpoint: [
+        `${API_PATH}/phases/${participationContextId}/poll_questions`,
+      ],
+    });
+  }
+
   return response;
 }
 
@@ -70,11 +80,19 @@ export async function deletePollQuestion(
     `${API_PATH}/poll_questions/${questionId}`,
     questionId
   );
-  streams.fetchAllWith({
-    apiEndpoint: [
-      `${API_PATH}/${participationContextType}s/${participationContextId}/poll_questions`,
-    ],
-  });
+
+  if (participationContextType === 'project') {
+    queryClient.invalidateQueries({
+      queryKey: projectsKeys.item({ id: participationContextId }),
+    });
+  } else {
+    streams.fetchAllWith({
+      apiEndpoint: [
+        `${API_PATH}/phases/${participationContextId}/poll_questions`,
+      ],
+    });
+  }
+
   return response;
 }
 

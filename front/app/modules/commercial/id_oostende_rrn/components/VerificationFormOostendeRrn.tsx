@@ -82,11 +82,6 @@ const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
               `${API_PATH}/users/me`,
               `${API_PATH}/users/me/locked_attributes`,
               `${API_PATH}/users/custom_fields/schema`,
-              `${API_PATH}/projects`,
-            ];
-            const partialEndpointsToRefetch = [
-              `${API_PATH}/projects/`,
-              `${API_PATH}/ideas/`,
             ];
 
             if (!isNilOrError(authUser)) {
@@ -95,7 +90,6 @@ const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
 
             await streams.fetchAllWith({
               apiEndpoint: endpointsToRefetch,
-              partialApiEndpoint: partialEndpointsToRefetch,
             });
 
             setProcessing(false);

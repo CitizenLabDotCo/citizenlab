@@ -62,13 +62,17 @@ jest.mock('react-router-dom', () => ({
   useParams: () => mockParams,
 }));
 
-jest.mock('hooks/useProject', () => {
+jest.mock('api/projects/useProjectById', () => {
   return jest.fn(() => ({
-    id: '2',
-    type: 'project',
-    attributes: {
-      title_multiloc: { en: 'Test Project' },
-      slug: 'test',
+    data: {
+      data: {
+        id: '2',
+        type: 'project',
+        attributes: {
+          title_multiloc: { en: 'Test Project' },
+          slug: 'test',
+        },
+      },
     },
   }));
 });

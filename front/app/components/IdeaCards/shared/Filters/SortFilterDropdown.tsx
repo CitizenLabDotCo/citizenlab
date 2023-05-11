@@ -10,7 +10,7 @@ import {
   IdeaDefaultSortMethod,
   ideaDefaultSortMethodFallback,
 } from 'services/participationContexts';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 import { TPhase } from 'hooks/usePhase';
 import { getMethodConfig } from 'utils/participationMethodUtils';
 import { isNilOrError } from 'utils/helperUtils';

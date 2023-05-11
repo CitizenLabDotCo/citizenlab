@@ -43,8 +43,8 @@ resource 'AppConfigurations' do
 
       # Settings parameters
       parameter :settings, <<~DESC, extra: ''
-        The changes to the settings object. This will be merged with the 
-        existing settings. Arrays will not be merged, but override their 
+        The changes to the settings object. This will be merged with the
+        existing settings. Arrays will not be merged, but override their
         values.
       DESC
 

@@ -1,12 +1,11 @@
 import React, { memo, useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // events
 import { ideaMapCardSelected$, setIdeaMapCardSelected } from '../events';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // components
@@ -97,7 +96,7 @@ interface Props {
 }
 
 const IdeaMapOverlay = memo<Props>(({ projectId, phaseId, className }) => {
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const { windowWidth } = useWindowSize();
   const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
 
@@ -130,7 +129,7 @@ const IdeaMapOverlay = memo<Props>(({ projectId, phaseId, className }) => {
     setScrollContainerElement(element);
   };
 
-  if (!isNilOrError(project)) {
+  if (project) {
     return (
       <Container className={className || ''}>
         <StyledIdeasList projectId={projectId} phaseId={phaseId} />

@@ -77,14 +77,7 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
           try {
             await verifyIDLookup(cardId);
 
-            const endpointsToRefetch = [
-              `${API_PATH}/users/me`,
-              `${API_PATH}/projects`,
-            ];
-            const partialEndpointsToRefetch = [
-              `${API_PATH}/projects/`,
-              `${API_PATH}/ideas/`,
-            ];
+            const endpointsToRefetch = [`${API_PATH}/users/me`];
 
             if (!isNilOrError(authUser)) {
               endpointsToRefetch.push(`${API_PATH}/users/${authUser.id}`);
@@ -92,7 +85,6 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
 
             await streams.fetchAllWith({
               apiEndpoint: endpointsToRefetch,
-              partialApiEndpoint: partialEndpointsToRefetch,
             });
 
             onVerified();

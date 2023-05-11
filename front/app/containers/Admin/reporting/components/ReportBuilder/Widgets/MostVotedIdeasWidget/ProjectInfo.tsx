@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'hooks/usePhase';
 
 // components
@@ -23,29 +23,32 @@ interface Props {
 const ProjectInfo = ({ projectId, phaseId }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const phase = usePhase(phaseId ?? null);
 
-  if (isNilOrError(project)) return null;
+  if (!project) return null;
 
   if (
-    project.attributes.process_type === 'continuous' &&
-    project.attributes.participation_method !== 'ideation'
+    project.data.attributes.process_type === 'continuous' &&
+    project.data.attributes.participation_method !== 'ideation'
   ) {
     return null;
   }
 
-  if (project.attributes.process_type === 'timeline' && isNilOrError(phase)) {
+  if (
+    project.data.attributes.process_type === 'timeline' &&
+    isNilOrError(phase)
+  ) {
     return null;
   }
 
-  const projectTitle = localize(project.attributes.title_multiloc);
+  const projectTitle = localize(project.data.attributes.title_multiloc);
 
   const hasPhase =
-    project.attributes.process_type === 'timeline' && !isNilOrError(phase);
+    project.data.attributes.process_type === 'timeline' && !isNilOrError(phase);
   const ideasCount = hasPhase
     ? phase.attributes.ideas_count
-    : project.attributes.ideas_count;
+    : project.data.attributes.ideas_count;
 
   return (
     <Box ml="16px">
