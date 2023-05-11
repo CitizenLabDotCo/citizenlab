@@ -2,7 +2,8 @@ import { QueryKeys } from 'utils/cl-react-query/types';
 import { IQueryParameters } from './types';
 
 const baseKey = {
-  type: 'project_folder_file',
+  type: 'file',
+  variant: 'folder',
 };
 
 const projectFolderFilesKeys = {
