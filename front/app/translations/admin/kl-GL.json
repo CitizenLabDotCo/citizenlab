@@ -1007,7 +1007,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Nunap assingani qanillisaatip qanissusaa",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Nunap assingani qanillisaatip qanissusaa nalinginnaasumik atuuttoq. Kisitsisit 1-ip 17-illu akornanniissaaq, 1-imi ungasilleqqissaaqqassaaq (nunarsuaq tamarmi nuisalluni) 17-imilu qanilleqqissaaqqalluni (blokkit illullu nuisallutik)",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Isumasiuinermut apeqqummik ilanngussigit",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Atuutsileruk",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Cancel",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Cancel",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Delete",

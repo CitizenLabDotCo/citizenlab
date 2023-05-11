@@ -1054,7 +1054,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Kortets zoomniveau",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Standardzoomniveauet for kortet. Accepterer en værdi mellem 1 og 17, hvor 1 er fuldt udzoomet (hele verden er synlig) og 17 er fuldt indzoomet (blokke og bygninger er synlige)",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Tilføj et afstemningsspørgsmål",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Anvend",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Annuller",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Annuller",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Slet",

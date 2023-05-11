@@ -1054,7 +1054,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Zoomstufe der Karte",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Die Standard-Zoomstufe der Karte. Akzeptiert einen Wert zwischen 1 und 17, wobei 1 vollständig herausgezoomt ist (die gesamte Welt ist sichtbar) und 17 vollständig hineingezoomt ist (Häuserblöcke und Gebäude sind sichtbar)",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Eine Abstimmungsfrage hinzufügen",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Anwenden",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Abbrechen",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Abbrechen",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Löschen",

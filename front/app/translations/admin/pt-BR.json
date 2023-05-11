@@ -1054,7 +1054,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Nível de zoom predefinido",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Defina o padrão para o zoom do mapa. Escolha um valor entre 0 e 20, em que 0 é totalmente ampliado (o mundo inteiro é visível) e 20 é totalmente focado (blocos e edifícios são visíveis)",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Adicionar uma pergunta de pesquisa",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Aplicar mudanças",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Cancelado",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Cancelado",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Deletar",

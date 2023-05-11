@@ -1054,7 +1054,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Kartes tālummaiņas līmenis",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Kartes noklusējuma tālummaiņas līmenis. Pieņem vērtību no 1 līdz 17, kur 1 ir pilnībā attālināta (redzama visa pasaule) un 17 ir pilnībā pietuvināta (redzami bloki un ēkas).",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Pievienot aptaujas jautājumu",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Piemērot",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Atcelt",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Atcelt",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Dzēst",

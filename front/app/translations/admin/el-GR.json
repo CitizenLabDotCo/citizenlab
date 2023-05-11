@@ -1007,7 +1007,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Επίπεδο ζουμ χάρτη",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Το προεπιλεγμένο επίπεδο ζουμ του χάρτη. Δέχεται μια τιμή μεταξύ 1 και 17, όπου το 1 είναι πλήρως ζουμαρισμένο (όλος ο κόσμος είναι ορατός) και το 17 είναι πλήρως ζουμαρισμένο (τα τετράγωνα και τα κτίρια είναι ορατά)",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Προσθήκη ερώτησης δημοσκόπησης",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Εφαρμογή",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Cancel",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Cancel",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Delete",
