@@ -100,12 +100,12 @@ lb:
     schedules:
       weekly:
         "0": "Wochemaart, Sonndes um %{hourOfDay}"
-        "1": "Wochemaart, op Méindes %{hourOfDay}"
-        "2": "Wochemaart, op Dënschdes %{hourOfDay}"
-        "3": "Wochemaart, Mëttwochs %{hourOfDay}"
-        "4": "Wochemaart, op Donneschden %{hourOfDay}"
-        "5": "Wochemaart, Freideg %{hourOfDay}"
-        "6": "Wochemaart, Samschdes %{hourOfDay}"
+        "1": "Wochemaart op Méindes %{atHour}"
+        "2": "Wochemaart op Dënschdes %{atHour}"
+        "3": "Wochemaart Mëttwochs %{atHour}"
+        "4": "Wochemaart op Donneschden %{atHour}"
+        "5": "Wochemaart Freideg %{atHour}"
+        "6": "Wochemaart Samschdes %{atHour}"
     footer:
       "link_privacy_policy": "Dateschutzrichtlinn"
       "link_terms_conditions": "Geschäftsbedéngungen"
