@@ -9,7 +9,7 @@ jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 jest.mock('hooks/useAppConfigurationLocales', () => jest.fn(() => ['en']));
 
 describe('<OfficialFeedback />', () => {
-  it('renders correctly for none-admins', () => {
+  it('renders correctly for non-admins', () => {
     render(
       <OfficialFeedback
         postId="ideaId"
@@ -19,7 +19,7 @@ describe('<OfficialFeedback />', () => {
     );
 
     const officialFeedbackForm = screen.queryByTestId('official-feedback-form');
-    const officialFeedbackFeed = screen.queryByTestId('official-feedback-feed');
+    const officialFeedbackFeed = screen.getByTestId('official-feedback-feed');
 
     expect(officialFeedbackForm).not.toBeInTheDocument();
     expect(officialFeedbackFeed).toBeInTheDocument();
@@ -30,12 +30,12 @@ describe('<OfficialFeedback />', () => {
       <OfficialFeedback
         postId="ideaId"
         postType="idea"
-        permissionToPost={false}
+        permissionToPost={true}
       />
     );
 
-    const officialFeedbackForm = screen.queryByTestId('official-feedback-form');
-    const officialFeedbackFeed = screen.queryByTestId('official-feedback-feed');
+    const officialFeedbackForm = screen.getByTestId('official-feedback-form');
+    const officialFeedbackFeed = screen.getByTestId('official-feedback-feed');
 
     expect(officialFeedbackForm).toBeInTheDocument();
     expect(officialFeedbackFeed).toBeInTheDocument();
