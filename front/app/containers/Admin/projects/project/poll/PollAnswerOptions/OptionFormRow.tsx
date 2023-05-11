@@ -117,7 +117,7 @@ const OptionFormRow = ({
 
       <Button
         className="e2e-form-option-save"
-        buttonStyle="secondary"
+        buttonStyle="admin-dark"
         onClick={onSave}
       >
         <FormattedMessage {...messages.saveOption} />
