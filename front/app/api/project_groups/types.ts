@@ -21,7 +21,6 @@ export interface IProjectGroupData {
         id: string;
         type: 'group';
       };
-      type: 'groups_project';
     };
   };
 }
