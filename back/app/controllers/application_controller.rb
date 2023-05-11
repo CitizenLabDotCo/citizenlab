@@ -82,15 +82,13 @@ class ApplicationController < ActionController::API
     }
   end
 
-  def serialize_heterogeneous_collection(collection)
-    collection.map { |object| serialize_by_type(object) }
-  end
+  def serialize_heterogeneous_collection(collection, serializers, options = {})
+    serializers = serializers.to_proc
 
-  # This will only work if the serializer for the object is in the WebApi::V1 namespace,
-  # is named <Module::Class>Serializer, and the object has type: '<Module::Class>' in its attributes.
-  def serialize_by_type(object)
-    serializer_class = "WebApi::V1::#{object.type}Serializer".constantize
-    serializer_class.new(object, params: jsonapi_serializer_params).serializable_hash[:data]
+    collection.map do |record|
+      serializer_class = serializers.call(record.class)
+      serializer_class.new(record, **options, params: jsonapi_serializer_params).serializable_hash[:data]
+    end
   end
 
   def page_links(collection)
