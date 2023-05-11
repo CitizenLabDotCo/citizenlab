@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
-import projectFolderKeys from '../project_folders/keys';
+import projectFolderFilesKeys from '../project_folder_files/keys';
 
 const deleteProjectFolderFile = ({
   projectFolderId,
@@ -21,8 +21,8 @@ const useDeleteProjectFolderFile = () => {
     mutationFn: deleteProjectFolderFile,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: projectFolderKeys.item({
-          id: variables.projectFolderId,
+        queryKey: projectFolderFilesKeys.list({
+          projectFolderId: variables.projectFolderId,
         }),
       });
     },
