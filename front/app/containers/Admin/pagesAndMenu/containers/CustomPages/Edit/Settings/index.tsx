@@ -3,11 +3,13 @@ import CustomPageSettingsForm from '../../CustomPageSettingsForm';
 import useCustomPage from 'hooks/useCustomPage';
 import { useParams } from 'react-router-dom';
 import { isNilOrError } from 'utils/helperUtils';
-import { updateCustomPage } from 'services/customPages';
+import { TPageCode, updateCustomPage } from 'services/customPages';
 import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
 import streams from 'utils/streams';
 import { apiEndpoint as navbarItemsEndpoint } from 'services/navbar';
 import { omit } from 'lodash-es';
+
+const customPagesAllowedToEditSlug: TPageCode[] = ['about', 'custom'];
 
 const EditCustomPageSettings = () => {
   const { customPageId } = useParams() as { customPageId: string };
@@ -58,7 +60,9 @@ const EditCustomPageSettings = () => {
         }}
         showNavBarItemTitle={hasNavbarItem}
         onSubmit={handleOnSubmit}
-        hideSlug={customPage.attributes.code === 'proposals'}
+        hideSlug={
+          !customPagesAllowedToEditSlug.includes(customPage.attributes.code)
+        }
       />
     );
   }

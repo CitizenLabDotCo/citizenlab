@@ -134,7 +134,7 @@ export function listCustomPages(streamParams: IStreamParams | null = null) {
 // The 'standard page' distinction is only relevant for non-commercial
 // customers: they can edit the content of these pages, but nothing else.
 // For commercial customers, these behave as 'custom' pages.
-type TStandardPage = 'about' | 'faq';
+type TStandardPage = 'about';
 
 // Policy pages of which only the content can be edited
 // in 'policy' tab in settings (both for non-commercial and
@@ -177,7 +177,7 @@ export const FOOTER_PAGES: TFooterPage[] = [
 // but do not have a corresponding navbar item.
 // Their slugs and titles cannot be changed. Their
 // codes are the same as their slugs.
-type TFixedPage = TPolicyPage | 'proposals';
+type TFixedPage = TPolicyPage | 'faq' | 'proposals';
 
 export const FIXED_PAGES: TFixedPage[] = [
   'terms-and-conditions',
@@ -185,6 +185,9 @@ export const FIXED_PAGES: TFixedPage[] = [
   'proposals',
 ];
 
-// Everything about 'custom' pages can be changed: their
-// title, navbar name, content and slug.
-export type TPageCode = TStandardPage | TFixedPage | 'custom';
+export type TPageCode =
+  | TStandardPage
+  | TFixedPage
+  // Everything about 'custom' pages can be changed: their
+  // title, navbar name, content and slug.
+  | 'custom';
