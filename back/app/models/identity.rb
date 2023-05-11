@@ -42,4 +42,8 @@ class Identity < ApplicationRecord
 
     find_with_omniauth(auth) || build_with_omniauth(auth_to_persist)
   end
+
+  def email_always_present?
+    AuthenticationService.all_methods.fetch(provider).email_always_present?
+  end
 end

@@ -166,7 +166,8 @@ class User < ApplicationRecord
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
-  # validates :email, :locale, presence: true, unless: :invite_pending?
+  validates :email, presence: true, unless: -> { invite_pending? || (sso? && identities.none?(&:email_always_present?)) }
+  validates :locale, presence: true, unless: :invite_pending?
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
   validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
