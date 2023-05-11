@@ -109,13 +109,6 @@ export class OptionForm extends PureComponent<Props, State> {
               />
             </b>
           </TextCell>
-          <Button
-            className="e2e-collapse-option-form"
-            onClick={collapse}
-            buttonStyle="secondary"
-          >
-            <FormattedMessage {...messages.cancelEditAnswerOptions} />
-          </Button>
         </Row>
         <OptionsContainer>
           <List
@@ -127,7 +120,10 @@ export class OptionForm extends PureComponent<Props, State> {
           >
             {!isNilOrError(pollOptions) && (
               <>
-                <QuestionDetailsForm question={question} />
+                <QuestionDetailsForm
+                  question={question}
+                  onCancelOptionEditing={collapse}
+                />
                 {pollOptions.map((pollOption: IPollOptionData) =>
                   editingId === pollOption.id ? (
                     <OptionFormRow
@@ -159,9 +155,8 @@ export class OptionForm extends PureComponent<Props, State> {
             ) : (
               <StyledButton
                 className="e2e-add-option"
-                buttonStyle="secondary"
+                buttonStyle="admin-dark"
                 icon="plus-circle"
-                iconColor={colors.primary}
                 onClick={this.addOption}
                 autoFocus
               >

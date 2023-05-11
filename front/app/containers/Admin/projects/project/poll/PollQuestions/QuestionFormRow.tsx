@@ -82,7 +82,7 @@ const QuestionFormRow = ({
 
       <Button
         className="e2e-form-question-save"
-        buttonStyle="primary"
+        buttonStyle="admin-dark"
         onClick={onSave}
       >
         <FormattedMessage {...messages.saveQuestion} />

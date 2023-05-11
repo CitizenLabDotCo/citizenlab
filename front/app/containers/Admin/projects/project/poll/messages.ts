@@ -57,8 +57,8 @@ export default defineMessages({
     defaultMessage: 'Cancel',
   },
   saveQuestion: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollTab.saveQuestion1',
-    defaultMessage: 'Save question',
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.saveQuestion',
+    defaultMessage: 'Save',
   },
   optionsFormHeader: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.optionsFormHeader1',
@@ -108,8 +108,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.multipleOption',
     defaultMessage: 'Multiple choice',
   },
-  applyQuestionSettings: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings',
-    defaultMessage: 'Apply',
+  saveQuestionSettings: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.saveQuestionSettings',
+    defaultMessage: 'Save',
   },
 });

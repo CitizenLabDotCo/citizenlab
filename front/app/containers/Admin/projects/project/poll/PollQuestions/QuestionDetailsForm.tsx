@@ -38,6 +38,7 @@ const StyledInput = styled(Input)`
 
 interface InputProps {
   question: IPollQuestion;
+  onCancelOptionEditing: () => void;
 }
 
 interface DataProps {}
@@ -124,7 +125,7 @@ export class QuestionDetailsForm extends PureComponent<
   };
 
   render() {
-    const { question } = this.props;
+    const { question, onCancelOptionEditing } = this.props;
     const { maxAnswers, questionType, typeOptions } = this.state;
     const { isValid } = this.validate();
     return (
@@ -154,11 +155,19 @@ export class QuestionDetailsForm extends PureComponent<
           />
           <Button
             className="e2e-form-question-settings-save"
-            buttonStyle="secondary"
+            buttonStyle="admin-dark"
             onClick={this.onSave}
             disabled={!isValid}
+            mr="8px"
           >
-            <FormattedMessage {...messages.applyQuestionSettings} />
+            <FormattedMessage {...messages.saveQuestionSettings} />
+          </Button>
+          <Button
+            className="e2e-collapse-option-form"
+            onClick={onCancelOptionEditing}
+            buttonStyle="secondary"
+          >
+            <FormattedMessage {...messages.cancelEditAnswerOptions} />
           </Button>
         </FormContainer>
       </Row>
