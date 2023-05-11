@@ -79,9 +79,7 @@ const FolderSettings = ({ params }: WithRouterProps) => {
             </SectionDescription>
           </Header>
         )}
-        {projectFolderId && (
-          <ProjectFolderForm mode={mode} projectFolderId={projectFolderId} />
-        )}
+        <ProjectFolderForm mode={mode} projectFolderId={projectFolderId} />
       </Container>
     </>
   );
