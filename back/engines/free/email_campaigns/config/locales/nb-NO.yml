@@ -100,12 +100,12 @@
     schedules:
       weekly:
         "0": "Ukentlig, på søndager kl %{hourOfDay}"
-        "1": "Ukentlig, på mandager %{hourOfDay}"
-        "2": "Ukentlig, på tirsdager %{hourOfDay}"
-        "3": "Ukentlig, på onsdager %{hourOfDay}"
-        "4": "Ukentlig, på torsdager %{hourOfDay}"
-        "5": "Ukentlig, på fredager %{hourOfDay}"
-        "6": "Ukentlig, på lørdager %{hourOfDay}"
+        "1": "Ukentlig på mandager %{atHour}"
+        "2": "Ukentlig på tirsdager %{atHour}"
+        "3": "Ukentlig på onsdager %{atHour}"
+        "4": "Ukentlig på torsdager %{atHour}"
+        "5": "Ukentlig på fredager %{atHour}"
+        "6": "Ukentlig på lørdager %{atHour}"
     footer:
       "link_privacy_policy": "Personvernerklæring"
       "link_terms_conditions": "Vilkår og betingelser"
