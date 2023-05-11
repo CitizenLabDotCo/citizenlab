@@ -25,7 +25,7 @@ import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
 import usePhases from 'hooks/usePhases';
 import useAuthUser from 'hooks/useAuthUser';
-import useProjectImages from 'hooks/useProjectImages';
+import useProjectImages from 'api/project_images/useProjectImages';
 
 // i18n
 import T from 'components/T';
@@ -464,7 +464,7 @@ const ProjectCard = memo<Props>(
   }) => {
     const project = useProject({ projectId });
     const authUser = useAuthUser();
-    const projectImages = useProjectImages({ projectId });
+    const { data: projectImages } = useProjectImages(projectId);
     const currentPhaseId =
       !isNilOrError(project) && project.relationships.current_phase?.data?.id
         ? project.relationships.current_phase.data.id
@@ -511,9 +511,9 @@ const ProjectCard = memo<Props>(
       const canComment =
         project.attributes.action_descriptor.commenting_idea.enabled;
 
-      const imageUrl = isNilOrError(projectImages)
+      const imageUrl = !projectImages
         ? null
-        : projectImages[0]?.attributes.versions?.large;
+        : projectImages.data[0]?.attributes.versions?.large;
 
       const projectUrl = getProjectUrl(project);
       const isFinished = project.attributes.timeline_active === 'past';
