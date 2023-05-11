@@ -99,13 +99,13 @@ nl:
       "your_proposed_initiatives_digest": Weekoverzicht van je eigen initiatieven - alle gebruikers
     schedules:
       weekly:
-        "0": "Wekelijks, op zondag om %{hourOfDay}"
-        "1": "Wekelijks, op maandag om %{hourOfDay}"
-        "2": "Wekelijks, op dinsdag om %{hourOfDay}"
-        "3": "Wekelijks, op woensdag om %{hourOfDay}"
-        "4": "Wekelijks, op donderdag om %{hourOfDay}"
-        "5": "Wekelijks, op vrijdag om %{hourOfDay}"
-        "6": "Wekelijks, op zaterdag om %{hourOfDay}"
+        "0": "Wekelijks op zondag om %{hourOfDay}"
+        "1": "Wekelijks op maandag om %{hourOfDay}"
+        "2": "Wekelijks op dinsdag om %{hourOfDay}"
+        "3": "Wekelijks op woensdag om %{hourOfDay}"
+        "4": "Wekelijks op donderdag om %{hourOfDay}"
+        "5": "Wekelijks op vrijdag om %{hourOfDay}"
+        "6": "Wekelijks op zaterdag om %{hourOfDay}"
     footer:
       "link_privacy_policy": "Privacybeleid"
       "link_terms_conditions": "Gebruiksvoorwaarden"
