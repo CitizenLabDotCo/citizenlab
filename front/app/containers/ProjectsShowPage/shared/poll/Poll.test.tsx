@@ -4,7 +4,7 @@ import React from 'react';
 // services & hooks
 import { getProject } from 'services/__mocks__/projects';
 import { mockQuestion } from 'services/__mocks__/pollQuestions';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'hooks/usePhase';
 import { mockPhasePollData } from 'services/__mocks__/phases';
 
@@ -23,7 +23,9 @@ const mockPollQuestions = [
 ].map((item, index) => mockQuestion(index, item));
 
 jest.mock('hooks/useResourceFiles', () => jest.fn(() => []));
-jest.mock('hooks/useProject', () => jest.fn(() => mockProject));
+jest.mock('api/projects/useProjectById', () =>
+  jest.fn(() => ({ data: { data: mockProject } }))
+);
 jest.mock('hooks/usePhase', () => jest.fn(() => mockPhasePollData));
 jest.mock('components/UI/Warning', () => 'Warning');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
@@ -31,32 +33,8 @@ jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 const warningIdPrefix = 'app.containers.Projects.PollForm.';
 
 describe('<Poll/>', () => {
-  it('renders null when project is null', () => {
-    useProject.mockReturnValue(null);
-    render(
-      <Poll
-        type="project"
-        projectId="projectId"
-        pollQuestions={mockPollQuestions}
-      />
-    );
-    expect(screen.queryByTestId('poll-container')).not.toBeInTheDocument();
-  });
-
   it('renders null when project is undefined', () => {
-    useProject.mockReturnValue(undefined);
-    render(
-      <Poll
-        type="project"
-        projectId="projectId"
-        pollQuestions={mockPollQuestions}
-      />
-    );
-    expect(screen.queryByTestId('poll-container')).not.toBeInTheDocument();
-  });
-
-  it('renders null when project is error', () => {
-    useProject.mockReturnValue(new Error());
+    useProjectById.mockReturnValue({ data: undefined });
     render(
       <Poll
         type="project"
@@ -68,13 +46,13 @@ describe('<Poll/>', () => {
   });
 
   it('renders null when pollQuestions is null', () => {
-    useProject.mockReturnValue(mockProject);
+    useProjectById.mockReturnValue(mockProject);
     render(<Poll type="project" projectId="projectId" pollQuestions={null} />);
     expect(screen.queryByTestId('poll-container')).not.toBeInTheDocument();
   });
 
   it('renders null when pollQuestions is undefined', () => {
-    useProject.mockReturnValue(mockProject);
+    useProjectById.mockReturnValue({ data: mockProject });
     render(
       <Poll type="project" projectId="projectId" pollQuestions={undefined} />
     );

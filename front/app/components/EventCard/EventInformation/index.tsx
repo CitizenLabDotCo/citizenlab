@@ -9,7 +9,6 @@ import { Icon, Text, Box } from '@citizenlab/cl2-component-library';
 import FileAttachments from 'components/UI/FileAttachments';
 
 // hooks
-// import useProject from 'hooks/useProject';
 import useEventFiles from 'api/event_files/useEventFiles';
 import useProjectById from 'api/projects/useProjectById';
 
