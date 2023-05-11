@@ -13,6 +13,8 @@ import {
 import { isNilOrError } from 'utils/helperUtils';
 import { first, last, sortBy } from 'lodash-es';
 import projectsKeys from 'api/projects/keys';
+import phasesKeys from 'api/phases/keys';
+
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
 const apiEndpoint = `${API_PATH}/phases`;
@@ -144,6 +146,9 @@ export async function deletePhase(projectId: string, phaseId: string) {
   const response = await streams.delete(`${apiEndpoint}/${phaseId}`, phaseId);
   queryClient.invalidateQueries({
     queryKey: projectsKeys.item({ id: projectId }),
+  });
+  queryClient.invalidateQueries({
+    queryKey: phasesKeys.list({ projectId }),
   });
   return response;
 }
