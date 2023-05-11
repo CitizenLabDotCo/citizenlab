@@ -16,17 +16,8 @@ class WebApi::V1::NotificationsController < ApplicationController
       @notifications = @notifications.where(read_at: nil)
     end
 
-    # This actually works! Really not arguing we should do this, and almost certainly not in this controller action,
-    # but it at least shows we can serialize the notifications without using the heterogenous serializer.
-    data = []
-
-    @notifications.each do |notification|
-      serializer_class = "WebApi::V1::#{notification.type}Serializer".constantize
-      data << serializer_class.new(notification, params: fastjson_params).serializable_hash[:data]
-    end
-
     @notifications = paginate @notifications
-    render json: { data: data, links: page_links(@notifications) }
+    render json: { data: serialize_heterogeneous_collection(@notifications), links: page_links(@notifications) }
   end
 
   def mark_all_read
@@ -36,31 +27,19 @@ class WebApi::V1::NotificationsController < ApplicationController
     ids = @notifications.map(&:id)
 
     if @notifications.update_all(read_at: Time.now)
-      render json: WebApi::V1::Notifications::NotificationSerializer.new(
-        Notification.find(ids),
-        params: fastjson_params,
-        serializers: NotificationService.new.serializers
-      ).serializable_hash.to_json
+      render json: { data: serialize_heterogeneous_collection(Notification.find(ids)) }
     else
       head :internal_server_error
     end
   end
 
   def show
-    render json: WebApi::V1::Notifications::NotificationSerializer.new(
-      @notification,
-      params: fastjson_params,
-      serializers: NotificationService.new.serializers
-    ).serializable_hash.to_json
+    render json: { data: serialize_by_type(@notification) }
   end
 
   def mark_read
     if @notification.update(read_at: Time.now)
-      render json: WebApi::V1::Notifications::NotificationSerializer.new(
-        @notification,
-        params: fastjson_params,
-        serializers: NotificationService.new.serializers
-      ).serializable_hash.to_json, status: :ok
+      render json: { data: serialize_by_type(@notification) }, status: :ok
     else
       head :internal_server_error
     end

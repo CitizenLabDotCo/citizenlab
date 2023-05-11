@@ -82,6 +82,17 @@ class ApplicationController < ActionController::API
     }
   end
 
+  def serialize_heterogeneous_collection(collection)
+    collection.map { |object| serialize_by_type(object) }
+  end
+
+  # This will only work if the serializer for the object is in the WebApi::V1 namespace,
+  # is named <RecordType>Serializer, and has a type field with value <RecordType> in its attributes.
+  def serialize_by_type(object)
+    serializer_class = "WebApi::V1::#{object.type}Serializer".constantize
+    serializer_class.new(object, params: fastjson_params).serializable_hash[:data]
+  end
+
   def page_links(collection)
     # Inspired by https://github.com/davidcelis/api-pagination/blob/master/lib/grape/pagination.rb
     pages = ApiPagination.send :pages_from, collection
