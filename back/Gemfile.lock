@@ -27,14 +27,6 @@ GIT
       ssrf_filter (~> 1.0)
 
 GIT
-  remote: https://github.com/dvandersluis/fast_jsonapi.git
-  revision: a7b3fc132eb1c8f6d5d135168f520a5f372501a9
-  branch: heterogeneous-collection
-  specs:
-    fast_jsonapi (1.5)
-      activesupport (>= 4.2)
-
-GIT
   remote: https://github.com/que-rb/que
   revision: 77c6b92952b821898c393239ce0e4047b17d7dae
   ref: 77c6b92952b821898c393239ce0e4047b17d7dae
