@@ -8,7 +8,7 @@ module PublicApi
       # TODO: User policy and permission stuff
       # @users = PublicApi::UserPolicy::Scope.new(current_publicapi_apiclient, User).resolve
       @users = User.all
-      @users = @users.order(created_at: :desc)
+        .order(created_at: :desc)
         .page(params[:page_number])
         .per([params[:page_size]&.to_i || 12, 24].min)
 
