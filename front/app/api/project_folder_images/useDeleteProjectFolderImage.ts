@@ -10,7 +10,7 @@ const deleteProjectFolderImage = ({
   imageId: string;
 }) =>
   fetcher({
-    path: `/project_folders/${folderId}/files/${imageId}`,
+    path: `/project_folders/${folderId}/images/${imageId}`,
     action: 'delete',
   });
 
