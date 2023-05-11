@@ -79,8 +79,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const { data: projectFolderImagesRemote } = useProjectFolderImages({
     folderId: projectFolderId,
   });
-  const { mutate: addProjectFolderImage } = useAddProjectFolderImage();
-  const { mutate: deleteProjectFolderImage } = useDeleteProjectFolderImage();
+  const { mutateAsync: addProjectFolderImage } = useAddProjectFolderImage();
+  const { mutateAsync: deleteProjectFolderImage } =
+    useDeleteProjectFolderImage();
 
   const adminPublication = useAdminPublication(
     !isNilOrError(projectFolder)
@@ -154,11 +155,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   useEffect(() => {
     (async () => {
-      if (
-        mode === 'edit' &&
-        !isNilOrError(projectFolderImagesRemote) &&
-        projectFolderImagesRemote.data
-      ) {
+      if (mode === 'edit' && projectFolderImagesRemote) {
         const imagePromises = projectFolderImagesRemote.data.map((img) => {
           const url = img.attributes.versions.large;
 
