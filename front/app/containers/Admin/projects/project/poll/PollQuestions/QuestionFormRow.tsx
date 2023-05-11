@@ -56,7 +56,7 @@ const QuestionFormRow = ({
   };
 
   return (
-    <Row className="e2e-form-question-row">
+    <Row className="e2e-form-question-row" data-testid="question-form-row">
       <TextCell>
         {selectedLocale && (
           <LocaleSwitcher

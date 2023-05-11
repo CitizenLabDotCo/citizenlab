@@ -48,6 +48,7 @@ const QuestionRow = ({
     key={question.id}
     id={question.id}
     className="e2e-question-row"
+    dataTestid="question-row"
     index={index}
     isLastItem={isLastItem}
     moveRow={handleDragRow}
@@ -61,7 +62,6 @@ const QuestionRow = ({
           onClick={onEditOptions}
           buttonStyle="text"
           icon="edit"
-          ariaLabel="edit"
         >
           <FormattedMessage {...messages.editPollAnswersButtonLabel} />
         </EditTitleButton>
