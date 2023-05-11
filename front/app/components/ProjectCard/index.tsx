@@ -16,7 +16,6 @@ import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
 import { getProjectUrl } from 'api/projects/utils';
-import { CARD_IMAGE_ASPECT_RATIO } from 'services/projectImages';
 import { getInputTerm } from 'services/participationContexts';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
@@ -25,7 +24,9 @@ import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'hooks/usePhase';
 import usePhases from 'hooks/usePhases';
 import useAuthUser from 'hooks/useAuthUser';
-import useProjectImages from 'hooks/useProjectImages';
+import useProjectImages, {
+  CARD_IMAGE_ASPECT_RATIO,
+} from 'api/project_images/useProjectImages';
 
 // i18n
 import T from 'components/T';
@@ -464,7 +465,7 @@ const ProjectCard = memo<Props>(
   }) => {
     const { data: project } = useProjectById(projectId);
     const authUser = useAuthUser();
-    const projectImages = useProjectImages({ projectId });
+    const { data: projectImages } = useProjectImages(projectId);
     const currentPhaseId =
       project?.data?.relationships?.current_phase?.data?.id ?? null;
     const phase = usePhase(currentPhaseId);
@@ -510,9 +511,9 @@ const ProjectCard = memo<Props>(
       const canComment =
         project.data.attributes.action_descriptor.commenting_idea.enabled;
 
-      const imageUrl = isNilOrError(projectImages)
+      const imageUrl = !projectImages
         ? null
-        : projectImages[0]?.attributes.versions?.large;
+        : projectImages.data[0]?.attributes.versions?.large;
 
       const projectUrl = getProjectUrl(project.data);
       const isFinished = project.data.attributes.timeline_active === 'past';
