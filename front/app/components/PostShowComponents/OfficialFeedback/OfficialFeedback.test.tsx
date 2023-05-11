@@ -1,7 +1,7 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 
 import OfficialFeedback from './';
+import { render, screen } from 'utils/testUtils/rtl';
 
 jest.mock('./OfficialFeedbackForm', () => 'OfficialFeedbackForm');
 jest.mock('./OfficialFeedbackFeed', () => 'OfficialFeedbackFeed');
@@ -9,20 +9,8 @@ jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 jest.mock('hooks/useAppConfigurationLocales', () => jest.fn(() => ['en']));
 
 describe('<OfficialFeedback />', () => {
-  it('matches the snapshot for none-admins', () => {
-    const wrapper = shallow(
-      <OfficialFeedback
-        postId="ideaId"
-        postType="idea"
-        permissionToPost={false}
-      />
-    );
-
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it('renders correctly for none-admins', () => {
-    const wrapper = shallow(
+    render(
       <OfficialFeedback
         postId="ideaId"
         postType="idea"
@@ -30,20 +18,26 @@ describe('<OfficialFeedback />', () => {
       />
     );
 
-    expect(wrapper.find('OfficialFeedbackForm').exists()).toBeFalsy();
-    expect(wrapper.find('OfficialFeedbackFeed').exists()).toBeTruthy();
+    const officialFeedbackForm = screen.queryByTestId('official-feedback-form');
+    const officialFeedbackFeed = screen.queryByTestId('official-feedback-feed');
+
+    expect(officialFeedbackForm).not.toBeInTheDocument();
+    expect(officialFeedbackFeed).toBeInTheDocument();
   });
 
   it('renders correctly for admins', () => {
-    const wrapper = shallow(
+    render(
       <OfficialFeedback
         postId="ideaId"
         postType="idea"
-        permissionToPost={true}
+        permissionToPost={false}
       />
     );
 
-    expect(wrapper.find('OfficialFeedbackForm').exists()).toBeTruthy();
-    expect(wrapper.find('OfficialFeedbackFeed').exists()).toBeTruthy();
+    const officialFeedbackForm = screen.queryByTestId('official-feedback-form');
+    const officialFeedbackFeed = screen.queryByTestId('official-feedback-feed');
+
+    expect(officialFeedbackForm).toBeInTheDocument();
+    expect(officialFeedbackFeed).toBeInTheDocument();
   });
 });

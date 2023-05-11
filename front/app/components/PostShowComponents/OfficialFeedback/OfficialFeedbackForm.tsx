@@ -339,7 +339,10 @@ const OfficialFeedbackForm = ({
 
   if (selectedLocale) {
     return (
-      <Container className={className || ''}>
+      <Container
+        className={className || ''}
+        data-testid="official-feedback-form"
+      >
         <Section id="official-feedback-form">
           <FormLabel>
             <Box
