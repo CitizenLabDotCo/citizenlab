@@ -1,13 +1,6 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react';
-import { PreviousPathnameContext } from 'context';
+import React, { useEffect, useState, useCallback } from 'react';
 
-import clHistory from 'utils/cl-router/history';
-
-import {
-  isAdmin,
-  isRegularUser,
-  isSuperAdmin,
-} from 'services/permissions/roles';
+import { isRegularUser } from 'services/permissions/roles';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 import { isError, isNilOrError } from 'utils/helperUtils';
@@ -45,7 +38,7 @@ const getConfig = (
   phases: TPhases,
   project: IProject | undefined
 ) => {
-  let config: ParticipationMethodConfig | null = null;
+  let config: ParticipationMethodConfig | null | undefined = null;
 
   if (!isNilOrError(phaseFromUrl)) {
     config = getMethodConfig(phaseFromUrl.attributes.participation_method);
@@ -67,7 +60,7 @@ const getConfig = (
 const IdeasNewPageWithJSONForm = () => {
   const { mutate: addIdea } = useAddIdea();
   const params = useParams<{ slug: string }>();
-  const previousPathName = useContext(PreviousPathnameContext);
+  // const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const { data: project } = useProjectBySlug(params.slug);
   const [queryParams] = useSearchParams();
@@ -78,22 +71,6 @@ const IdeasNewPageWithJSONForm = () => {
     projectId: project?.data.id,
     phaseId,
   });
-
-  useEffect(() => {
-    const isPrivilegedUser =
-      !isNilOrError(authUser) &&
-      (isAdmin({ data: authUser }) ||
-        !isRegularUser({ data: authUser }) ||
-        isSuperAdmin({ data: authUser }));
-
-    if (
-      !isPrivilegedUser &&
-      project &&
-      !project.data.attributes.action_descriptor.posting_idea.enabled
-    ) {
-      clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
-    }
-  }, [authUser, project, previousPathName]);
 
   const search = location.search;
 
@@ -218,7 +195,7 @@ const IdeasNewPageWithJSONForm = () => {
   const phaseFromUrl = usePhase(phaseId);
   const config = getConfig(phaseFromUrl, phases, project);
 
-  if (isNilOrError(project) || config === null) {
+  if (isNilOrError(project) || !config) {
     return null;
   }
 
