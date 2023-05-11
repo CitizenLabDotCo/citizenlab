@@ -18,9 +18,9 @@ import { isNilOrError } from 'utils/helperUtils';
 // Components
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-import QuestionRow from './QuestionRow';
-import QuestionFormRow from './QuestionFormRow';
-import OptionForm from './OptionForm';
+import QuestionRow from './PollQuestions/QuestionRow';
+import QuestionFormRow from './PollQuestions/QuestionFormRow';
+import OptionForm from './PollAnswerOptions/OptionForm';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
