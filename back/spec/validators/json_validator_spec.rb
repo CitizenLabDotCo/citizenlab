@@ -3,24 +3,19 @@
 require 'rails_helper'
 class StringValidatable
   include ActiveModel::Validations
-  validates :json_field, json: { schema: { type: 'string' }, options: { errors_as_objects: true } }
+  validates :json_field, json: { schema: { type: 'string' } }
   attr_accessor :json_field
 end
 
 class ObjectValidatable
   include ActiveModel::Validations
   validates :json_field, json: { schema: {
-    '$id': 'test-schema',
     type: 'object',
     properties: {
       age: { type: 'number' },
       name: { type: 'string' }
     }
-  }, message: lambda { |errors|
-    errors.map do |e|
-      { fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message] }
-    end
-  }, options: { errors_as_objects: true } }
+  } }
   attr_accessor :json_field
 end
 
@@ -41,7 +36,16 @@ describe JsonValidator do
     it 'sets correct AR errors on its instance when invalid' do
       model.json_field = nil
       model.validate
-      expect(model.errors.details).to eq({ json_field: [{ error: :invalid_json, value: nil }] })
+      expect(model.errors.details.to_h).to match(
+        { json_field: [
+          { error: {
+              fragment: '#/',
+              error: 'TypeV4',
+              human_message: kind_of(String)
+            },
+            value: nil }
+        ] }
+      )
     end
   end
 
@@ -56,13 +60,17 @@ describe JsonValidator do
       model.validate
       expect(model.errors.details.to_h).to match({
         json_field: [
-          { error: { fragment: '#/age',
-                     error: 'TypeV4',
-                     human_message: kind_of(String) },
+          { error: {
+              fragment: '#/age',
+              error: 'TypeV4',
+              human_message: kind_of(String)
+            },
             value: { age: 'four', name: 456 } },
-          { error: { fragment: '#/name',
-                     error: 'TypeV4',
-                     human_message: kind_of(String) },
+          { error: {
+              fragment: '#/name',
+              error: 'TypeV4',
+              human_message: kind_of(String)
+            },
             value: { age: 'four', name: 456 } }
         ]
       })
