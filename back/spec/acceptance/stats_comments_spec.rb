@@ -83,8 +83,7 @@ resource 'Stats - Comments' do
 
     context 'as a moderator' do
       before do
-        token = Knock::AuthToken.new(payload: create(:project_moderator).to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        header_token_for create(:project_moderator)
         initiative = create(:initiative)
         create(:comment, post: initiative)
         create(:comment, post: create(:idea, project: create(:private_admins_project)))

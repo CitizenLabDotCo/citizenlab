@@ -24,7 +24,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useFormResults from 'hooks/useFormResults';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'hooks/usePhase';
 
 // Services
@@ -39,18 +39,14 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const locale = useLocale();
   const [urlParams] = useSearchParams();
   const phaseId = urlParams.get('phase_id');
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const phase = usePhase(phaseId);
   const formResults = useFormResults({
     projectId,
     phaseId,
   });
 
-  if (
-    isNilOrError(formResults) ||
-    isNilOrError(locale) ||
-    isNilOrError(project)
-  ) {
+  if (isNilOrError(formResults) || isNilOrError(locale) || !project) {
     return null;
   }
 
@@ -59,7 +55,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const handleDownloadResults = async () => {
     try {
       setIsDownloading(true);
-      await downloadSurveyResults(project, locale, phase);
+      await downloadSurveyResults(project.data, locale, phase);
     } catch (error) {
       // Not handling errors for now
     } finally {

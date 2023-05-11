@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -9,7 +8,7 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -33,14 +32,14 @@ interface Props {
 
 const SurveyContainer = memo<Props & WrappedComponentProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
-    const project = useProject({ projectId });
+    const { data: project } = useProjectById(projectId);
 
     if (
-      !isNilOrError(project) &&
-      project.attributes.process_type === 'continuous' &&
-      project.attributes.participation_method === 'survey' &&
-      project.attributes.survey_embed_url &&
-      project.attributes.survey_service
+      project &&
+      project.data.attributes.process_type === 'continuous' &&
+      project.data.attributes.participation_method === 'survey' &&
+      project.data.attributes.survey_embed_url &&
+      project.data.attributes.survey_service
     ) {
       return (
         <Container
@@ -54,9 +53,9 @@ const SurveyContainer = memo<Props & WrappedComponentProps>(
                 <h2>{formatMessage(messages.invisibleTitleSurvey)}</h2>
               </ScreenReaderOnly>
               <Survey
-                projectId={project.id}
-                surveyService={project.attributes.survey_service}
-                surveyEmbedUrl={project.attributes.survey_embed_url}
+                projectId={project.data.id}
+                surveyService={project.data.attributes.survey_service}
+                surveyEmbedUrl={project.data.attributes.survey_embed_url}
               />
             </SectionContainer>
           </StyledContentContainer>

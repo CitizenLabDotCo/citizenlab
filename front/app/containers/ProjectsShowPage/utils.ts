@@ -1,5 +1,5 @@
 import { TPhases } from 'hooks/usePhases';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 export const isReady = (

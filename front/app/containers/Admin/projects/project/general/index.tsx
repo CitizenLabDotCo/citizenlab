@@ -38,7 +38,7 @@ import ProjectHeaderImageTooltip from './components/ProjectHeaderImageTooltip';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProjectFiles from 'hooks/useProjectFiles';
 import { useParams } from 'react-router-dom';
@@ -49,8 +49,8 @@ import {
   addProject,
   updateProject,
   IProjectFormState,
-  IProjectData,
 } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
@@ -84,7 +84,7 @@ export type TOnProjectAttributesDiffChangeFunction = (
 const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams();
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const appConfigLocales = useAppConfigurationLocales();
   const remoteProjectFiles = useProjectFiles(projectId);
@@ -130,10 +130,10 @@ const AdminProjectsProjectGeneral = () => {
 
   useEffect(() => {
     (async () => {
-      if (!isNilOrError(project)) {
-        setPublicationStatus(project.attributes.publication_status);
-        setProjectType(project.attributes.process_type);
-        setSlug(project.attributes.slug);
+      if (project) {
+        setPublicationStatus(project.data.attributes.publication_status);
+        setProjectType(project.data.attributes.process_type);
+        setSlug(project.data.attributes.slug);
       }
     })();
   }, [project]);
@@ -297,7 +297,8 @@ const AdminProjectsProjectGeneral = () => {
     if (isFormValid && !processing) {
       const nextProjectAttributesDiff: IUpdatedProjectProperties = {
         admin_publication_attributes: {
-          publication_status: project?.attributes.publication_status || 'draft',
+          publication_status:
+            project?.data.attributes.publication_status || 'draft',
         },
         ...projectAttributesDiff,
         ...participationContextConfig,
@@ -461,13 +462,13 @@ const AdminProjectsProjectGeneral = () => {
     };
 
   const projectAttrs = {
-    ...(!isNilOrError(project) ? project.attributes : {}),
+    ...(!isNilOrError(project) ? project.data.attributes : {}),
     ...projectAttributesDiff,
   };
 
   const selectedTopicIds = getSelectedTopicIds(
     projectAttributesDiff,
-    !isNilOrError(project) ? project : null
+    project?.data ?? null
   );
 
   const projectCardImageShouldBeSaved = projectCardImage
@@ -512,7 +513,7 @@ const AdminProjectsProjectGeneral = () => {
               apiErrors={apiErrors}
               showSlugErrorMessage={showSlugErrorMessage}
               onSlugChange={handleSlugOnChange}
-              showSlugChangedWarning={slug !== project.attributes.slug}
+              showSlugChangedWarning={slug !== project.data.attributes.slug}
             />
           </StyledSectionField>
         )}
@@ -559,7 +560,6 @@ const AdminProjectsProjectGeneral = () => {
         {!isNilOrError(project) && projectType === 'continuous' && (
           <ParticipationContext
             project={project}
-            projectId={project.id}
             onSubmit={handleParticipationContextOnSubmit}
             onChange={handleParticipationContextOnChange}
             apiErrors={apiErrors}
@@ -589,7 +589,7 @@ const AdminProjectsProjectGeneral = () => {
             <ProjectHeaderImageTooltip />
           </SubSectionTitle>
           <HeaderBgUploader
-            imageUrl={project?.attributes.header_bg.large}
+            imageUrl={project?.data.attributes.header_bg.large}
             onImageChange={handleHeaderBgChange}
           />
         </SectionField>

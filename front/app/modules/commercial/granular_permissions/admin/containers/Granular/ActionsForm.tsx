@@ -15,7 +15,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 
 // utils
 import {
@@ -69,7 +69,7 @@ const ActionsForm = memo(
     initiativeContext,
     phaseId,
   }: Props) => {
-    const project = useProject({ projectId });
+    const { data: project } = useProjectById(projectId);
     const [
       previousUsersGlobalCustomFields,
       setPreviousUsersGlobalCustomFields,
@@ -130,7 +130,7 @@ const ActionsForm = memo(
                   <FormattedMessage
                     {...getPermissionActionSectionSubtitle({
                       permissionAction,
-                      project,
+                      project: project?.data,
                       postType,
                     })}
                   />

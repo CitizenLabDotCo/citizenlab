@@ -2,21 +2,18 @@ import React, { useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import Viewer from './Viewer';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 
 type ContentViewerProps = {
   onMount: () => void;
 } & WithRouterProps;
 
 const ContentViewer = ({ onMount, params: { slug } }: ContentViewerProps) => {
-  const project = useProject({ projectSlug: slug });
+  const { data: project } = useProjectBySlug(slug);
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
@@ -26,14 +23,14 @@ const ContentViewer = ({ onMount, params: { slug } }: ContentViewerProps) => {
     onMount();
   }, [onMount, featureEnabled]);
 
-  if (!featureEnabled || isNilOrError(project)) {
+  if (!featureEnabled || !project) {
     return null;
   }
 
   return (
     <Viewer
-      projectId={project.id}
-      projectTitle={project.attributes.title_multiloc}
+      projectId={project.data.id}
+      projectTitle={project.data.attributes.title_multiloc}
     />
   );
 };

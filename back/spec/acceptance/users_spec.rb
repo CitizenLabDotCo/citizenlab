@@ -358,8 +358,7 @@ resource 'Users' do
   context 'when authenticated' do
     before do
       @user = create(:user, last_name: 'Smith')
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for @user
     end
 
     context 'when admin' do

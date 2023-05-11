@@ -11,7 +11,7 @@ import MainHeader from 'containers/MainHeader';
 
 // hooks
 import usePhases from 'hooks/usePhases';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 
 // styles
 import { viewportWidths } from 'utils/styleUtils';
@@ -64,9 +64,9 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     };
   }, [projectId, smallerThanLargeTablet]);
 
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const participationMethod = project
-    ? getParticipationMethod(project, phases)
+    ? getParticipationMethod(project.data, phases)
     : undefined;
 
   if (isNilOrError(project) || !participationMethod) {
@@ -74,7 +74,7 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   }
 
   const BarContents = getMethodConfig(participationMethod).renderCTABar({
-    project,
+    project: project.data,
     phases,
   });
 

@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 
 // Services
 import { updateProject } from 'services/projects';
@@ -67,14 +67,14 @@ const ProjectDescription = memo<
   });
 
   const setModuleToActive = () => setModuleActive(true);
-  const project = useProject({ projectId: props.params.projectId });
+  const { data: project } = useProjectById(props.params.projectId);
 
   useEffect(() => {
-    if (!isNilOrError(project)) {
+    if (project) {
       setFormValues({
         description_preview_multiloc:
-          project.attributes.description_preview_multiloc,
-        description_multiloc: project.attributes.description_multiloc,
+          project.data.attributes.description_preview_multiloc,
+        description_multiloc: project.data.attributes.description_multiloc,
       });
     }
   }, [project]);
@@ -108,7 +108,7 @@ const ProjectDescription = memo<
 
     if (
       !processing &&
-      !isNilOrError(project) &&
+      project &&
       description_preview_multiloc &&
       description_multiloc
     ) {
@@ -117,7 +117,7 @@ const ProjectDescription = memo<
       setSuccess(false);
 
       try {
-        await updateProject(project.id, {
+        await updateProject(project.data.id, {
           description_multiloc,
           description_preview_multiloc,
         });
