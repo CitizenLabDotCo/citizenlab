@@ -58,8 +58,6 @@ const PollAdminForm = ({
   >(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // TO DO: componentDidUpdate
-
   const handleDragRow = (fromIndex: number, toIndex: number) => {
     if (!isProcessing) {
       const listItems = getListItems();
