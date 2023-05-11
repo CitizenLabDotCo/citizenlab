@@ -93,11 +93,11 @@ module OmniAuth
       # the authentication process. It is called after the user enters
       # credentials at the authorization endpoint.
       def callback_phase
-        if error = request.params['error_reason'] || request.params['error']
+        if (error = request.params['error_reason'] || request.params['error'])
 
-          if error == 'access_denied' and
-            desc = request.params['error_description'] and
-            desc =~ /^AADB2C90118:/
+          if error == 'access_denied' &&
+             (desc = request.params['error_description']) &&
+             desc =~ /^AADB2C90118:/
 
             return redirect reset_password_endpoint_url
 
@@ -117,7 +117,6 @@ module OmniAuth
 
       private
 
-
       ##
       # Constructs a one-time-use authorize_endpoint. This method will use
       # a new nonce on each invocation.
@@ -127,7 +126,7 @@ module OmniAuth
         uri = URI(openid_config['authorization_endpoint'])
         params = {
           client_id: client_id,
-          scope: "openid",
+          scope: 'openid',
           redirect_uri: redirect_uri,
           response_mode: response_mode,
           response_type: response_type,
@@ -143,10 +142,10 @@ module OmniAuth
       # URL of the Azure password reset page
       #
       def reset_password_endpoint_url
-        if query_string = options["reset_password_param"]
+        if (query_string = options['reset_password_param'])
           uri = URI(authorize_endpoint_url)
-          reset_password_param = Hash[URI.decode_www_form(query_string)]
-          params = Hash[URI.decode_www_form(String(uri.query))]
+          reset_password_param = URI.decode_www_form(query_string).to_h
+          params = URI.decode_www_form(String(uri.query)).to_h
           params.update reset_password_param
           uri.query = URI.encode_www_form params.to_a
           uri.to_s
@@ -170,7 +169,8 @@ module OmniAuth
       # @return String
       def client_id
         return options.client_id if options.client_id
-        fail StandardError, 'No client_id specified in AzureAD configuration.'
+
+        raise StandardError, 'No client_id specified in AzureAD configuration.'
       end
 
       ##
@@ -296,7 +296,8 @@ module OmniAuth
       # @return String
       def signing_keys_url
         return openid_config['jwks_uri'] if openid_config.include? 'jwks_uri'
-        fail StandardError, 'No jwks_uri in OpenId config response.'
+
+        raise StandardError, 'No jwks_uri in OpenId config response.'
       end
 
       ##
@@ -306,7 +307,8 @@ module OmniAuth
       # @return String
       def tenant
         return options.tenant if options.tenant
-        fail StandardError, 'No tenant specified in AzureAD configuration.'
+
+        raise StandardError, 'No tenant specified in AzureAD configuration.'
       end
 
       ##
@@ -327,18 +329,16 @@ module OmniAuth
           JWT.decode(id_token, nil, true, verify_options) do |header|
             # There should always be one key from the discovery endpoint that
             # matches the id in the JWT header.
-            unless key = signing_keys.find{|k|
-              k['kid'] == header['kid']
-            }
-              fail JWT::VerificationError, 'No keys from key endpoint match the id token'
+            unless (key = signing_keys.find { |k| k['kid'] == header['kid'] })
+              raise JWT::VerificationError, 'No keys from key endpoint match the id token'
             end
 
             # The key also contains other fields, such as n and e, that are
             # redundant. x5c is sufficient to verify the id token.
-            if x5c = key['x5c'] and !x5c.empty?
-              OpenSSL::X509::Certificate.new(JWT::Base64::url_decode(x5c.first)).public_key
+            if (x5c = key['x5c']) && !x5c.empty?
+              OpenSSL::X509::Certificate.new(JWT::Base64.url_decode(x5c.first)).public_key
             # no x5c, so we resort to e and n
-            elsif exp = key['e'] and mod = key['n']
+            elsif (exp = key['e']) && (mod = key['n'])
               key = OpenSSL::PKey::RSA.new
               mod = openssl_bn_for mod
               exp = openssl_bn_for exp
@@ -352,11 +352,12 @@ module OmniAuth
               end
               key.public_key
             else
-              fail JWT::VerificationError, 'Key has no info for verification'
+              raise JWT::VerificationError, 'Key has no info for verification'
             end
           end
         return jwt_claims, jwt_header if jwt_claims['nonce'] == read_nonce
-        fail JWT::DecodeError, 'Returned nonce did not match.'
+
+        raise JWT::DecodeError, 'Returned nonce did not match.'
       end
 
       def openssl_bn_for(s)
@@ -364,8 +365,8 @@ module OmniAuth
         # Pad the string so its length is divisible by 4
         # this is necessary only with Ruby < 2.3, from then on
         # Base64.urlsafe_decode64 is clever enough to add the padding itself
-        if !s.end_with?("=") && s.length % 4 != 0
-          s = s.ljust((s.length + 3) & ~3, "=")
+        if !s.end_with?('=') && s.length % 4 != 0
+          s = s.ljust((s.length + 3) & ~3, '=')
         end
         bytes = Base64.urlsafe_decode64 s
         OpenSSL::BN.new bytes, 2
@@ -382,10 +383,10 @@ module OmniAuth
         # This maps RS256 -> sha256, ES384 -> sha384, etc.
         algorithm = (header['alg'] || 'RS256').sub(/RS|ES|HS/, 'sha')
         full_hash = OpenSSL::Digest.new(algorithm).digest code
-        c_hash = JWT::Base64::url_encode full_hash[0..full_hash.length / 2 - 1]
+        c_hash = JWT::Base64.url_encode full_hash[0..((full_hash.length / 2) - 1)]
         return if c_hash == claims['c_hash']
-        fail JWT::VerificationError,
-             'c_hash in id token does not match auth code.'
+
+        raise JWT::VerificationError, 'c_hash in id token does not match auth code.'
       end
 
       ##
@@ -397,7 +398,7 @@ module OmniAuth
       # @return Hash
       def verify_options
         { verify_expiration: true,
-          algorithms: %w(RS256),
+          algorithms: ['RS256'],
           verify_not_before: true,
           verify_iat: true,
           verify_iss: true,
