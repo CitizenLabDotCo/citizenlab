@@ -46,7 +46,7 @@ export const ParticipationMethodPicker = ({
   handleParticipationMethodOnChange,
 }: Props) => {
   const chooseParticipationMethod = () => {
-    if (!isNilOrError(phase)) {
+    if (!isNilOrError(phase) && phase.data) {
       return phase.data.attributes.participation_method;
     }
     if (!isNilOrError(project)) {

@@ -138,10 +138,6 @@ const AdminProjectTimelineEdit = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (isNilOrError(phase)) {
-    return null;
-  }
-
   const handleTitleMultilocOnChange = (title_multiloc: Multiloc) => {
     setSubmitState('enabled');
     setAttributeDiff({
@@ -289,7 +285,7 @@ const AdminProjectTimelineEdit = () => {
   );
 
   const getStartDate = () => {
-    const phaseAttrs = phase
+    const phaseAttrs = !isNilOrError(phase)
       ? { ...phase.attributes, ...attributeDiff }
       : { ...attributeDiff };
     let startDate: Moment | null = null;
@@ -323,7 +319,7 @@ const AdminProjectTimelineEdit = () => {
     return startDate;
   };
 
-  const phaseAttrs = phase
+  const phaseAttrs = !isNilOrError(phase)
     ? { ...phase.attributes, ...attributeDiff }
     : { ...attributeDiff };
   const startDate = getStartDate();
