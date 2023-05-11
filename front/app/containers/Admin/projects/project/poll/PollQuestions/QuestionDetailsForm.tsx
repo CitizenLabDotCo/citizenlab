@@ -15,7 +15,7 @@ import { IOption } from 'typings';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // Style
 import styled from 'styled-components';

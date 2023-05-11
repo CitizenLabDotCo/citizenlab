@@ -34,7 +34,7 @@ interface Props {
   optionId?: string;
 }
 
-const FormOptionRow = ({
+const OptionFormRow = ({
   optionId,
   titleMultiloc,
   mode,
@@ -134,4 +134,4 @@ const FormOptionRow = ({
   );
 };
 
-export default FormOptionRow;
+export default OptionFormRow;

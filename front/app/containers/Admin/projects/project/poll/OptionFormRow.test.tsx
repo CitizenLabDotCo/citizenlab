@@ -34,7 +34,7 @@ jest.mock(
 jest.mock('components/UI/Button', () => 'Button');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 
-import { FormOptionRow, Props, State } from './FormOptionRow';
+import FormOptionRow, { Props, State } from './OptionFormRow';
 
 let closeRow = jest.fn();
 const getTitleMultiloc = (title: string) => ({ en: title });
