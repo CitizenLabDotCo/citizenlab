@@ -100,12 +100,12 @@ ca:
     schedules:
       weekly:
         "0": "Setmanalment, els diumenges a les %{hourOfDay}"
-        "1": "Setmanalment, els dilluns a les %{hourOfDay}"
-        "2": "Setmanalment, els dimarts a les %{hourOfDay}"
-        "3": "Setmanalment, els dimecres a les %{hourOfDay}"
-        "4": "Setmanalment, els dijous a les %{hourOfDay}"
-        "5": "Setmanalment, els divendres a les %{hourOfDay}"
-        "6": "Setmanalment, els dissabtes a les %{hourOfDay}"
+        "1": "Setmanal els dilluns %{atHour}"
+        "2": "Setmanalment els dimarts %{atHour}"
+        "3": "Setmanalment els dimecres %{atHour}"
+        "4": "Setmanalment els dijous %{atHour}"
+        "5": "Divendres setmanals %{atHour}"
+        "6": "Dissabtes setmanals %{atHour}"
     footer:
       "link_privacy_policy": "Política de privacitat"
       "link_terms_conditions": "Termes i Condicions"
