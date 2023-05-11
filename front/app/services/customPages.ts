@@ -174,7 +174,7 @@ export const FOOTER_PAGES: TFooterPage[] = [
 ];
 
 // Pages that exist in the static_pages database,
-// but do not have a corresponding navbar item.
+// but do not have a corresponding navbar item (with the exception of 'faq').
 // Their slugs and titles cannot be changed. Their
 // codes are the same as their slugs.
 type TFixedPage = TPolicyPage | 'faq' | 'proposals';
