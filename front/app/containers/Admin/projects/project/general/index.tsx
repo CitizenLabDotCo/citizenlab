@@ -54,14 +54,13 @@ import {
   IProjectData,
 } from 'services/projects';
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
-import {
-  addProjectImage,
-  deleteProjectImage,
-  CARD_IMAGE_ASPECT_RATIO_WIDTH,
-  CARD_IMAGE_ASPECT_RATIO_HEIGHT,
-} from 'services/projectImages';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import projectPermissionKeys from 'api/project_permissions/keys';
+import useAddProjectImage, {
+  CARD_IMAGE_ASPECT_RATIO_HEIGHT,
+  CARD_IMAGE_ASPECT_RATIO_WIDTH,
+} from 'api/project_images/useAddProjectImage';
+import useDeleteProjectImage from 'api/project_images/useDeleteProjectImage';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -89,6 +88,8 @@ const AdminProjectsProjectGeneral = () => {
   const appConfigLocales = useAppConfigurationLocales();
   const remoteProjectFiles = useProjectFiles(projectId);
   const { data: remoteProjectImages } = useProjectImages(projectId || null);
+  const { mutateAsync: addProjectImage } = useAddProjectImage();
+  const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
   const [processing, setProcessing] =
     useState<IProjectFormState['processing']>(false);
@@ -315,12 +316,18 @@ const AdminProjectsProjectGeneral = () => {
 
         const cardImageToAddPromise =
           croppedProjectCardBase64 && latestProjectId
-            ? addProjectImage(latestProjectId, croppedProjectCardBase64)
+            ? addProjectImage({
+                projectId: latestProjectId,
+                image: croppedProjectCardBase64,
+              })
             : null;
 
         const cardImageToRemovePromise =
           projectCardImageToRemove?.id && latestProjectId
-            ? deleteProjectImage(latestProjectId, projectCardImageToRemove.id)
+            ? deleteProjectImage({
+                projectId: latestProjectId,
+                imageId: projectCardImageToRemove.id,
+              })
             : null;
 
         const filesToAddPromises = projectFiles
