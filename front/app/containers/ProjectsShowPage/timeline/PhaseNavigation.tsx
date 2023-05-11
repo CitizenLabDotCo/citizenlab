@@ -92,7 +92,7 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
           phases.data.length >= selectedPhaseIndex + 2
             ? selectedPhaseIndex + 1
             : 0;
-        const nextPhase = phases[nextPhaseIndex];
+        const nextPhase = phases.data[nextPhaseIndex];
         selectPhase(nextPhase);
       }
     }, [phases, selectedPhase]);
