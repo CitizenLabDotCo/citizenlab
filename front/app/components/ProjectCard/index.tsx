@@ -16,7 +16,6 @@ import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
 import { getProjectUrl } from 'services/projects';
-import { CARD_IMAGE_ASPECT_RATIO } from 'services/projectImages';
 import { getInputTerm } from 'services/participationContexts';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
@@ -25,7 +24,9 @@ import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
 import usePhases from 'hooks/usePhases';
 import useAuthUser from 'hooks/useAuthUser';
-import useProjectImages from 'api/project_images/useProjectImages';
+import useProjectImages, {
+  CARD_IMAGE_ASPECT_RATIO,
+} from 'api/project_images/useProjectImages';
 
 // i18n
 import T from 'components/T';

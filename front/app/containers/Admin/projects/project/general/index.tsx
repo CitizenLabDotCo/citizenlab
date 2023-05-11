@@ -41,11 +41,9 @@ import { Box } from '@citizenlab/cl2-component-library';
 import useProject from 'hooks/useProject';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProjectFiles from 'hooks/useProjectFiles';
-import useProjectImages from 'api/project_images/useProjectImages';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// api
 import {
   IUpdatedProjectProperties,
   addProject,
@@ -55,11 +53,14 @@ import {
 } from 'services/projects';
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import projectPermissionKeys from 'api/project_permissions/keys';
-import useAddProjectImage, {
+
+// api
+import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
-} from 'api/project_images/useAddProjectImage';
+} from 'api/project_images/useProjectImages';
+import projectPermissionKeys from 'api/project_permissions/keys';
+import useAddProjectImage from 'api/project_images/useAddProjectImage';
 import useDeleteProjectImage from 'api/project_images/useDeleteProjectImage';
 
 // i18n
