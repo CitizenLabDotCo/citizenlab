@@ -11,7 +11,7 @@ import { getInputTermMessage } from 'utils/i18n';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useLocalize from 'hooks/useLocalize';
 import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'hooks/usePhases';
 import SharingButtons from 'components/Sharing/SharingButtons';
 
@@ -27,7 +27,7 @@ const Component = ({ ideaId }: Props) => {
   const projectId = !isNilOrError(idea)
     ? idea.data.relationships.project.data.id
     : null;
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const phases = usePhases(projectId);
   const authUser = useAuthUser();
   const localize = useLocalize();
@@ -37,8 +37,8 @@ const Component = ({ ideaId }: Props) => {
     const titleMultiloc = idea.data.attributes.title_multiloc;
     const postTitle = localize(titleMultiloc);
     const inputTerm = getInputTerm(
-      project.attributes.process_type,
-      project,
+      project.data.attributes.process_type,
+      project.data,
       phases
     );
 

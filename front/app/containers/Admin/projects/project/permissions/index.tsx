@@ -13,7 +13,7 @@ import ProjectVisibility from './containers/ProjectVisibility';
 import { Title, Text, StatusLabel } from '@citizenlab/cl2-component-library';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // style
@@ -36,7 +36,7 @@ export const StyledSectionTitle = styled(SectionTitle)`
 
 const ProjectPermissions = () => {
   const { projectId } = useParams() as { projectId: string };
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const { formatMessage } = useIntl();
 
   const isProjectVisibilityEnabled = useFeatureFlag({
@@ -64,7 +64,7 @@ const ProjectPermissions = () => {
         <Outlet
           id="app.containers.Admin.project.edit.permissions.participationRights"
           projectId={projectId}
-          project={project}
+          project={project.data}
         >
           {(outletComponents) =>
             outletComponents.length > 0 || isProjectVisibilityEnabled ? (

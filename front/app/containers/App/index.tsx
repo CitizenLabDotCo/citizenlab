@@ -351,12 +351,13 @@ const App = ({ children }: Props) => {
 
   return (
     <>
-      {appConfiguration && (
-        <PreviousPathnameContext.Provider value={previousPathname}>
-          <ThemeProvider
-            theme={{ ...theme, isRtl: !!locale?.startsWith('ar') }}
-          >
-            <GlobalStyle />
+      <PreviousPathnameContext.Provider value={previousPathname}>
+        <ThemeProvider theme={{ ...theme, isRtl: !!locale?.startsWith('ar') }}>
+          <GlobalStyle />
+          <ErrorBoundary>
+            <Authentication setModalOpen={setSignUpInModalOpened} />
+          </ErrorBoundary>
+          {appConfiguration && (
             <Container
               // when the fullscreen modal is enabled on a platform and
               // is currently open, we want to disable scrolling on the
@@ -385,9 +386,6 @@ const App = ({ children }: Props) => {
                     userSuccessfullyDeleted={userSuccessfullyDeleted}
                   />
                 </Suspense>
-              </ErrorBoundary>
-              <ErrorBoundary>
-                <Authentication setModalOpen={setSignUpInModalOpened} />
               </ErrorBoundary>
               <ErrorBoundary>
                 <div id="modal-portal" />
@@ -427,9 +425,9 @@ const App = ({ children }: Props) => {
                 <div id="mobile-nav-portal" />
               </ErrorBoundary>
             </Container>
-          </ThemeProvider>
-        </PreviousPathnameContext.Provider>
-      )}
+          )}
+        </ThemeProvider>
+      </PreviousPathnameContext.Provider>
     </>
   );
 };

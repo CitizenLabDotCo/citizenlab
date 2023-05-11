@@ -18,10 +18,11 @@ import { Keys } from 'utils/cl-react-query/types';
 // Keys
 export type ProjectsKeys = Keys<typeof projectsKeys>;
 
-// Query params
+// Misc
 type Sort = 'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular';
 export type PublicationStatus = 'draft' | 'published' | 'archived';
 
+// useProjects
 export interface Props {
   pageNumber?: number;
   pageSize?: number;
@@ -46,6 +47,10 @@ export interface QueryParameters {
 export interface IProjects {
   data: IProjectData[];
   links: ILinks;
+}
+
+export interface IProject {
+  data: IProjectData;
 }
 
 export interface IProjectAttributes {

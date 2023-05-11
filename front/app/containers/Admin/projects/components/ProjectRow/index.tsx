@@ -26,7 +26,7 @@ import ManageButton from './ManageButton';
 // resources
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 // types
@@ -73,9 +73,9 @@ const ProjectRow = ({
   const [isBeingCopyied, setIsBeingCopyied] = useState(false);
   const authUser = useAuthUser();
   const projectId = publication.publicationId;
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const publicationStatus = publication.attributes.publication_status;
-  const folderId = project?.attributes.folder_id;
+  const folderId = project?.data.attributes.folder_id;
 
   if (isNilOrError(authUser)) {
     return null;
