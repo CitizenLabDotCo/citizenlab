@@ -60,6 +60,9 @@ const AuthProviders = memo<Props>(
     const viennaCitizenLoginEnabled = useFeatureFlag({
       name: 'vienna_citizen_login',
     });
+    const claveUnicaLoginEnabled = useFeatureFlag({
+      name: 'clave_unica_login',
+    });
 
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
@@ -148,7 +151,7 @@ const AuthProviders = memo<Props>(
           </StyledAuthProviderButton>
         )}
 
-        {true && (
+        {claveUnicaLoginEnabled && (
           <StyledAuthProviderButton
             flow={flow}
             icon="menu"

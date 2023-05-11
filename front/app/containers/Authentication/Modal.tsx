@@ -59,7 +59,6 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sign-up:verification': messages.verifyYourIdentity,
   'sign-up:custom-fields': messages.completeYourProfile,
   'sign-up:invite': messages.signUp,
-  // change this if you want a custom header message
   'clave-unica:email': messages.signUp,
   'clave-unica:email-confirmation': messages.confirmYourEmail,
 

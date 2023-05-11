@@ -21,7 +21,6 @@ export default defineMessages({
     id: 'app.components.AuthProviders.continueWithGoogle',
     defaultMessage: 'Continue with Google',
   },
-  // ToDO: change according to ClaveUnica guidelines
   continueWithClaveUnica: {
     id: 'app.components.AuthProviders.continueWithClaveUnica',
     defaultMessage: 'Continue with ClaveUnica',

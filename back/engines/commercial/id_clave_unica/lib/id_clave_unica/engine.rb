@@ -5,6 +5,8 @@ module IdClaveUnica
     isolate_namespace IdClaveUnica
 
     config.to_prepare do
+      AppConfiguration::Settings.add_feature(IdClaveUnica::FeatureSpecification)
+
       cu = ClaveUnicaOmniauth.new
       AuthenticationService.add_method('clave_unica', cu)
       Verification::VerificationService.add_method(cu)

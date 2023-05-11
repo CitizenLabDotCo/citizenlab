@@ -248,7 +248,7 @@ export default function useSteps() {
     }
   }, [pathname, search, currentStep, transition, authUser, setError]);
 
-  // alway show ClaveUnica modal to user
+  // always show ClaveUnica modal to user
   useEffect(() => {
     if (isNilOrError(authUser)) return;
     if (currentStep !== 'closed') return;

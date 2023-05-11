@@ -5,8 +5,6 @@ module IdClaveUnica
     include ClaveUnicaVerification
 
     def profile_to_user_attrs(auth)
-      Rails.logger.info("GREPME Clave unica auth response: #{auth.inspect}")
-
       info = {
         locale: AppConfiguration.instance.closest_locale_to('es-CL'),
       }
@@ -22,7 +20,7 @@ module IdClaveUnica
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless Verification::VerificationService.new.active?(configuration, name)
+      return unless Verification::VerificationService.new.active?(configuration, name) || configuration.feature_activated?('clave_unica_login')
 
       options = env['omniauth.strategy'].options
       options[:scope] = %i[openid run name]

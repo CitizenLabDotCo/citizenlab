@@ -107,9 +107,10 @@ export interface IAppConfigurationSettings {
   franceconnect_login?: {
     allowed: boolean;
     enabled: boolean;
-    environment: string;
-    identifier: string;
-    secret: string;
+  };
+  clave_unica_login?: {
+    allowed: boolean;
+    enabled: boolean;
   };
   custom_accessibility_statement_link: {
     allowed: boolean;
