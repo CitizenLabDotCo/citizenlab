@@ -1,32 +1,32 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import projectFolderImagesKeys from '../project_folder_images/keys';
+import {
+  IProjectFolderImages,
+  IGetImagesQueryParameters,
+  ProjectFolderImagesKeys,
+} from './types';
+import projectFolderImagesKeys from './keys';
 
-const deleteProjectFolderImage = ({
-  projectFolderId,
-  imageId,
-}: {
-  projectFolderId: string;
-  imageId: string;
-}) =>
-  fetcher({
-    path: `/project_folders/${projectFolderId}/files/${imageId}`,
-    action: 'delete',
+const fetchProjectFolderImages = (queryParameters: IGetImagesQueryParameters) =>
+  fetcher<IProjectFolderImages>({
+    path: `/project_folders/${queryParameters.folderId}/images`,
+    action: 'get',
+    queryParams: {
+      ...queryParameters.streamParams,
+    },
   });
 
-const useDeleteProjectFolderImage = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: deleteProjectFolderImage,
-    onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: projectFolderImagesKeys.list({
-          projectFolderId: variables.projectFolderId,
-        }),
-      });
-    },
+const useProjectFolderImages = (queryParams: IGetImagesQueryParameters) => {
+  return useQuery<
+    IProjectFolderImages,
+    CLErrors,
+    IProjectFolderImages,
+    ProjectFolderImagesKeys
+  >({
+    queryKey: projectFolderImagesKeys.list(queryParams),
+    queryFn: () => fetchProjectFolderImages(queryParams),
   });
 };
 
-export default useDeleteProjectFolderImage;
+export default useProjectFolderImages;

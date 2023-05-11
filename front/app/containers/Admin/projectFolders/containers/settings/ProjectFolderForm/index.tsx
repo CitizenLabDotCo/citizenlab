@@ -2,12 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 // api
 import {
-  addProjectFolderImage,
-  deleteProjectFolderImage,
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
-} from 'services/projectFolderImages';
-import useProjectFolderImages from 'hooks/useProjectFolderImages';
+} from 'api/project_folder_images/types';
+import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useDeleteProjectFolderFile from 'api/project_folder_files/useDeleteProjectFolderFile';
@@ -16,6 +14,8 @@ import useAddProjectFolder from 'api/project_folders/useAddProjectFolder';
 import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
+import useDeleteProjectFolderImage from 'api/project_folder_images/useDeleteProjectFolderImage';
+import useAddProjectFolderImage from 'api/project_folder_images/useAddProjectFolderImage';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -75,7 +75,13 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const { data: projectFolderFilesRemote } = useProjectFolderFiles({
     projectFolderId,
   });
-  const projectFolderImagesRemote = useProjectFolderImages(projectFolderId);
+
+  const { data: projectFolderImagesRemote } = useProjectFolderImages({
+    folderId: projectFolderId,
+  });
+  const { mutate: addProjectFolderImage } = useAddProjectFolderImage();
+  const { mutate: deleteProjectFolderImage } = useDeleteProjectFolderImage();
+
   const adminPublication = useAdminPublication(
     !isNilOrError(projectFolder)
       ? projectFolder.data.relationships.admin_publication.data?.id || null
@@ -148,7 +154,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   useEffect(() => {
     (async () => {
-      if (mode === 'edit' && !isNilOrError(projectFolderImagesRemote)) {
+      if (
+        mode === 'edit' &&
+        !isNilOrError(projectFolderImagesRemote) &&
+        projectFolderImagesRemote.data
+      ) {
         const imagePromises = projectFolderImagesRemote.data.map((img) => {
           const url = img.attributes.versions.large;
 
@@ -308,10 +318,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                     !isNilOrError(projectFolder)
                   ) {
                     const cardImageToAddPromise = croppedFolderCardBase64
-                      ? addProjectFolderImage(
-                          projectFolder.data.id,
-                          croppedFolderCardBase64
-                        )
+                      ? addProjectFolderImage({
+                          folderId: projectFolder.data.id,
+                          base64: croppedFolderCardBase64,
+                        })
                       : null;
 
                     const filesToAddPromises = projectFolderFiles.map((file) =>
@@ -348,17 +358,17 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             !isNilOrError(projectFolder)
           ) {
             const cardToAddPromise = croppedFolderCardBase64
-              ? addProjectFolderImage(
-                  projectFolder.data.id,
-                  croppedFolderCardBase64
-                )
+              ? addProjectFolderImage({
+                  folderId: projectFolder.data.id,
+                  base64: croppedFolderCardBase64,
+                })
               : null;
             const cardToRemovePromises =
               folderCardImageToRemove?.id &&
-              deleteProjectFolderImage(
-                projectFolderId,
-                folderCardImageToRemove.id
-              );
+              deleteProjectFolderImage({
+                folderId: projectFolderId,
+                imageId: folderCardImageToRemove.id,
+              });
 
             const filesToAddPromises = projectFolderFiles
               .filter((file) => !file.remote)
