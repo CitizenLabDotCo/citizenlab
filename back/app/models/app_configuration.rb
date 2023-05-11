@@ -24,13 +24,7 @@ class AppConfiguration < ApplicationRecord
   accepts_nested_attributes_for :text_images
 
   validates :settings, presence: true, json: {
-    schema: -> { AppConfiguration::Settings.json_schema_str },
-    message: lambda { |errors|
-               errors.map do |e|
-                 { fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message] }
-               end
-             },
-    options: { errors_as_objects: true }
+    schema: -> { AppConfiguration::Settings.json_schema_str }
   }
 
   validates :host, presence: true

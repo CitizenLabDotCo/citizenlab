@@ -27,7 +27,7 @@ module UserCustomFields
       belongs_to :custom_field
 
       validates :type, presence: true
-      validates :distribution, presence: true, json: { schema: -> { self.class.distribution_schema }, message: ->(errors) { errors } }
+      validates :distribution, presence: true, json: { schema: -> { self.class.distribution_schema } }
       validates :custom_field_id, uniqueness: true
       validate :validate_distribution_counts
       validate :validate_custom_field_type_with_guard
