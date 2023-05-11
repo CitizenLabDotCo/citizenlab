@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe AppConfiguration do
+  subject(:app_config) { described_class.instance }
+
   context 'when updated' do
     it 'name is synced with tenant' do
       Tenant.current.update(name: 'Karhide')
@@ -24,7 +26,6 @@ RSpec.describe AppConfiguration do
     end
 
     it 'persists & synchronizes only the dirty attributes' do
-      app_config = described_class.instance
       another_config_ref = described_class.find(app_config.id)
 
       # The +created_at+ attribute is modified through the other reference.
@@ -99,11 +100,27 @@ RSpec.describe AppConfiguration do
     end
   end
 
-  describe 'style' do
+  describe '#style' do
     it 'can never be nil' do
-      app_config = described_class.instance
       app_config.update(style: nil)
       expect(app_config.style).to eq({})
+    end
+  end
+
+  describe '#public_settings' do
+    it 'does not include private fields' do
+      app_config.settings['franceconnect_login'] = {
+        allowed: true, enabled: true, environment: 'production', identifier: 'id', secret: 'secret'
+      }
+      app_config.settings['verification'] = {
+        allowed: true, enabled: true, verification_methods: [
+          { name: 'clave_unica', client_id: '123', client_secret: '321' }
+        ]
+      }
+      app_config.save!
+
+      expect(app_config.public_settings['franceconnect_login']).to eq({ 'allowed' => true, 'enabled' => true })
+      expect(app_config.public_settings['verification']).to eq({ 'allowed' => true, 'enabled' => true })
     end
   end
 end
