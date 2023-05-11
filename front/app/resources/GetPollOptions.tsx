@@ -4,7 +4,7 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 
-import { IPollOption, pollOptionsStream } from 'services/pollOptions';
+import { IPollOptionData, pollOptionsStream } from 'services/pollOptions';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -18,10 +18,14 @@ interface Props extends InputProps {
 }
 
 interface State {
-  pollOptions: IPollOption[] | undefined | null | Error;
+  pollOptions: IPollOptionData[] | undefined | null | Error;
 }
 
-export type GetPollOptionsChildProps = IPollOption[] | undefined | null | Error;
+export type GetPollOptionsChildProps =
+  | IPollOptionData[]
+  | undefined
+  | null
+  | Error;
 
 export default class GetPollOptions extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;

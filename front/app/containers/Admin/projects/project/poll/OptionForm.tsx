@@ -8,7 +8,7 @@ import GetPollOptions, {
   GetPollOptionsChildProps,
 } from 'resources/GetPollOptions';
 import { IPollQuestion } from 'services/pollQuestions';
-import { IPollOption, deletePollOption } from 'services/pollOptions';
+import { IPollOptionData, deletePollOption } from 'services/pollOptions';
 
 // Components
 import T from 'components/T';
@@ -121,7 +121,7 @@ export class OptionForm extends PureComponent<Props, State> {
             {!isNilOrError(pollOptions) && (
               <>
                 <QuestionDetailsForm question={question} />
-                {pollOptions.map((pollOption: IPollOption) =>
+                {pollOptions.map((pollOption: IPollOptionData) =>
                   editingId === pollOption.id ? (
                     <FormOptionRow
                       key={pollOption.id}

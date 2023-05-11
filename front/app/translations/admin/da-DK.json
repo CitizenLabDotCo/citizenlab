@@ -1065,7 +1065,6 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.editPollAnswersButtonLabel": "Svarvalg",
   "app.containers.AdminPage.ProjectEdit.PollTab.exportPollResults": "Eksporter afstemningsresultaterne",
   "app.containers.AdminPage.ProjectEdit.PollTab.maxOverTheMaxTooltip": "Det maksimale antal valgmuligheder er større end antallet af valgmuligheder",
-  "app.containers.AdminPage.ProjectEdit.PollTab.maxUnderTheMinTooltip": "Et spørgsmål med flere svar skal tillade mindst to svar.",
   "app.containers.AdminPage.ProjectEdit.PollTab.multipleOption": "Flere valg",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptions": "Ingen muligheder",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptionsTooltip": "Alle spørgsmål skal have svarmuligheder",

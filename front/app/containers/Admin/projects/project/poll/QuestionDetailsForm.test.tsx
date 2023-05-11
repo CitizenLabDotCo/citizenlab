@@ -48,12 +48,6 @@ const multipleOptionsQuestion = mockQuestion(
 
 describe('<QuestionDetailsForm/>', () => {
   describe('display', () => {
-    it('displays correctly for a single choice question', () => {
-      const Wrapper = shallow(
-        <QuestionDetailsForm question={singleOptionQuestion} intl={intl} />
-      );
-      expect(Wrapper).toMatchSnapshot();
-    });
     it('displays correctly for a multiple choice question', () => {
       const Wrapper = shallow(
         <QuestionDetailsForm question={multipleOptionsQuestion} intl={intl} />

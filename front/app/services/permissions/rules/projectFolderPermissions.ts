@@ -1,6 +1,6 @@
 import { IUserData, IUser } from 'services/users';
 import { isAdmin, TRole } from 'services/permissions/roles';
-import { IProjectFolderData } from '../../projectFolders';
+import { IProjectFolderData } from 'api/project_folders/types';
 import {
   definePermissionRule,
   IRouteItem,
