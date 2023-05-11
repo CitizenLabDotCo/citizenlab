@@ -56,20 +56,21 @@ const QuestionRow = ({
   >
     <TextCell className="expand">
       <Box display="flex" alignItems="center">
-        <T value={question.attributes.title_multiloc} />
-        <EditTitleButton
-          className="e2e-edit-question"
-          onClick={onEditOptions}
-          buttonStyle="text"
-          icon="edit"
-        >
-          <FormattedMessage {...messages.editPollAnswersButtonLabel} />
-        </EditTitleButton>
+        <Box mr="12px" display="flex">
+          <T value={question.attributes.title_multiloc} />
+        </Box>
+        <WrongOptionsIndicator questionId={question.id} />
       </Box>
     </TextCell>
 
-    <WrongOptionsIndicator questionId={question.id} />
-
+    <EditTitleButton
+      className="e2e-edit-question"
+      onClick={onEditOptions}
+      buttonStyle="text"
+      icon="edit"
+    >
+      <FormattedMessage {...messages.editPollAnswersButtonLabel} />
+    </EditTitleButton>
     <Button
       className="e2e-delete-question"
       onClick={onDelete}
