@@ -87,7 +87,7 @@ class ApplicationController < ActionController::API
   end
 
   # This will only work if the serializer for the object is in the WebApi::V1 namespace,
-  # is named <RecordType>Serializer, and has a type field with value <RecordType> in its attributes.
+  # is named <Module::Class>Serializer, and the object has type: '<Module::Class>' in its attributes.
   def serialize_by_type(object)
     serializer_class = "WebApi::V1::#{object.type}Serializer".constantize
     serializer_class.new(object, params: fastjson_params).serializable_hash[:data]
