@@ -9,11 +9,11 @@ resource 'Phases' do
 
   include_context 'common_auth'
 
-  let(:project) { create(:project_with_phases) }
+  let!(:project) { create(:project_with_phases) }
 
   get '/api/v2/projects/:project_id/phases', 'Phases: Listing the phases of a project' do
-    route_summary 'Phases: Listing the phases of a project'
-    route_description 'Endpoint to retrieve project phases. The phases are returned in chronological order. The endpoint supports pagination.'
+    route_summary 'List all the phases of a project'
+    route_description 'Endpoint to retrieve phases of a single project. The phases are returned in chronological order. The endpoint supports pagination.'
 
     include_context 'common_list_params'
 
@@ -23,6 +23,22 @@ resource 'Phases' do
 
     example_request 'Successful response' do
       expect(status).to eq(200)
+      expect(json_response_body[:phases].size).to eq 2
+      expect(json_response_body[:meta]).to eq({ total_pages: 3, current_page: 1 })
+    end
+  end
+
+  get '/api/v2/phases/' do
+    route_summary 'List all phases'
+    route_description 'Endpoint to retrieve all phases across all projects. The phases are returned in reverse date order. The endpoint supports pagination.'
+
+    include_context 'common_list_params'
+
+    let(:locale) { 'en' }
+    let(:page_size) { 2 }
+
+    example_request 'Successful response' do
+      assert_status 200
       expect(json_response_body[:phases].size).to eq 2
       expect(json_response_body[:meta]).to eq({ total_pages: 3, current_page: 1 })
     end

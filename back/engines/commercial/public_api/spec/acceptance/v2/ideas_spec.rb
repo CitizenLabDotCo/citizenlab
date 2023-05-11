@@ -16,6 +16,8 @@ resource 'Ideas' do
     end
   end
 
+  response_field :created_at, 'Date the resource was created at'
+
   get '/api/v2/ideas/' do
     route_summary 'Get a page of ideas.'
     route_description 'Endpoint to retrieve citizen ideas. The most trending ideas are returned first. The endpoint supports pagination'

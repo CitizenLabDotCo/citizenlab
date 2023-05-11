@@ -2,13 +2,22 @@
 
 module PublicApi
   class V2::PhasesController < PublicApiController
-    before_action :set_project, only: [:index]
     before_action :set_phase, only: [:show]
 
     def index
-      # TODO: Remove policy here
-      @phases = PublicApi::PhasePolicy::Scope.new(current_publicapi_apiclient, Phase).resolve
-      @phases = @phases
+      @phases = Phase.all
+        .order(start_at: :asc)
+        .page(params[:page_number])
+        .per([params[:page_size]&.to_i || 12, 24].min)
+
+      render json: @phases,
+        each_serializer: V2::PhaseSerializer,
+        adapter: :json,
+        meta: meta_properties(@phases)
+    end
+
+    def by_project
+      @phases = Phase.where(project_id: params[:project_id])
         .order(start_at: :asc)
         .page(params[:page_number])
         .per([params[:page_size]&.to_i || 12, 24].min)
@@ -27,13 +36,8 @@ module PublicApi
 
     private
 
-    def set_project
-      @project = Project.find(params[:project_id])
-    end
-
     def set_phase
       @phase = Phase.find(params[:id])
-      authorize PolicyWrappedPhase.new(@phase)
     end
 
     def meta_properties(relation)

@@ -23,9 +23,9 @@ PublicApi::Engine.routes.draw do
     get '/projects', to: 'projects#index'
     get '/projects/:id', to: 'projects#show'
 
-    get '/phases', to: 'phases#index' # TODO: Needs implementing
+    get '/phases', to: 'phases#index'
     get '/phases/:id', to: 'phases#show'
-    get '/projects/:project_id/phases', to: 'phases#index'
+    get '/projects/:project_id/phases', to: 'phases#by_project'
 
     get '/topics', to: 'topics#index'
     get '/topics/:id', to: 'topics#show'

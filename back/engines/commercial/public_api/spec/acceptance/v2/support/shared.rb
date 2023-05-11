@@ -19,5 +19,5 @@ RSpec.shared_context 'common_list_params' do
 end
 
 RSpec.shared_context 'common_item_params' do
-  parameter :id, 'Unique uuid for the item', in: :query, required: false, type: 'integer'
+  parameter :id, 'Unique uuid for the item', in: :path, required: false, type: 'integer'
 end
