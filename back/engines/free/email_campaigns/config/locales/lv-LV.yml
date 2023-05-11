@@ -100,11 +100,11 @@ lv:
     schedules:
       weekly:
         "0": "Ik nedēļu, svētdienās, %{hourOfDay}"
-        "1": "Ik nedēļu, pirmdienās %{hourOfDay}"
-        "2": "Ik nedēļu, otrdienās %{hourOfDay}"
-        "3": "Ik nedēļu, trešdienās %{hourOfDay}"
-        "4": "Ik nedēļu, ceturtdienās %{hourOfDay}"
-        "5": "Ik nedēļu, piektdienās %{hourOfDay}"
+        "1": "Ik nedēļu pirmdienās %{atHour}"
+        "2": "Ik nedēļu otrdienās %{atHour}"
+        "3": "Ik nedēļu trešdienās %{atHour}"
+        "4": "Ik nedēļu ceturtdienās %{atHour}"
+        "5": "Ik nedēļu piektdienās %{atHour}"
         "6": "Ik nedēļu sestdienās %{atHour}"
     footer:
       "link_privacy_policy": "Privātuma politika"
