@@ -5,6 +5,10 @@ export const queryClient = new QueryClient({
     queries: {
       staleTime: Infinity,
       keepPreviousData: true,
+      retry: (_, error) => {
+        if (typeof error !== 'string') return true;
+        return !error.includes("Couldn't find");
+      },
     },
   },
 });

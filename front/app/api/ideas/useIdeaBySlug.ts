@@ -11,7 +11,6 @@ const useIdeaBySlug = (slug: string | null) => {
   return useQuery<IIdea, CLErrors, IIdea, IdeasKeys>({
     queryKey: slug ? ideasKeys.item({ slug }) : undefined,
     queryFn: slug ? () => fetchIdea({ slug }) : undefined,
-    retry: 1,
     refetchOnWindowFocus: false,
   });
 };
