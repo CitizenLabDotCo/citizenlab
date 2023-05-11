@@ -109,8 +109,12 @@ export async function addProject(projectData: IUpdatedProjectProperties) {
   });
   const projectId = response.data.id;
 
+  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
+  queryClient.invalidateQueries({
+    queryKey: projectsKeys.item({ id: projectId }),
+  });
+
   await streams.fetchAllWith({
-    dataId: [projectId],
     apiEndpoint: [
       `${API_PATH}/admin_publications`,
       `${API_PATH}/users/me`,
@@ -118,7 +122,6 @@ export async function addProject(projectData: IUpdatedProjectProperties) {
       `${API_PATH}/areas`,
     ],
   });
-  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
 
   return response;
 }
@@ -139,7 +142,6 @@ export async function updateProject(
   });
 
   await streams.fetchAllWith({
-    dataId: [projectId],
     apiEndpoint: [
       `${API_PATH}/admin_publications`,
       `${API_PATH}/admin_publications/status_counts`,
