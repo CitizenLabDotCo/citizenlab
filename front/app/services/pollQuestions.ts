@@ -62,12 +62,6 @@ export async function addPollQuestion(
   return response;
 }
 
-export function pollQuestionStream(questionId: string) {
-  return streams.get<IPollQuestion>({
-    apiEndpoint: `${API_PATH}/poll_questions/${questionId}`,
-  });
-}
-
 export async function deletePollQuestion(
   questionId: string,
   participationContextId?: string,
