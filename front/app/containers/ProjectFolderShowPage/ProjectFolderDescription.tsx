@@ -217,7 +217,7 @@ const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
                 </CollapseButtonWrapper>
               )}
           </Description>
-          {!isNilOrError(projectFolderFiles) &&
+          {projectFolderFiles &&
             projectFolderFiles.data &&
             projectFolderFiles.data.length > 0 && (
               <Box mb="25px">

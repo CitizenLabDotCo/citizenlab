@@ -6,7 +6,7 @@ export type ProjectFolderFilesKeys = Keys<typeof projectFolderFilesKeys>;
 
 export interface IProjectFolderFileData {
   id: string;
-  type: string;
+  type: 'file';
   attributes: {
     file: {
       url: string;

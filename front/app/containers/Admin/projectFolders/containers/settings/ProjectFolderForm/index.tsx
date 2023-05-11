@@ -69,8 +69,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     Resource hooks
     ==============
   */
-  const { mutate: deleteProjectFolderFile } = useDeleteProjectFolderFile();
-  const { mutate: addProjectFolderFile } = useAddProjectFolderFile();
+  const { mutateAsync: deleteProjectFolderFile } = useDeleteProjectFolderFile();
+  const { mutateAsync: addProjectFolderFile } = useAddProjectFolderFile();
   const { data: projectFolder } = useProjectFolderById(projectFolderId);
   const { data: projectFolderFilesRemote } = useProjectFolderFiles({
     projectFolderId,
@@ -164,11 +164,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   useEffect(() => {
     (async () => {
-      if (
-        mode === 'edit' &&
-        projectFolderFilesRemote &&
-        !isNilOrError(projectFolderFilesRemote?.data)
-      ) {
+      if (mode === 'edit' && projectFolderFilesRemote) {
         const filePromises = projectFolderFilesRemote.data.map((file) =>
           convertUrlToUploadFile(
             file.attributes.file.url,
