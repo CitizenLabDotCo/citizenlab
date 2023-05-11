@@ -142,10 +142,7 @@ export const CreateInsightsView = ({
   const [expandedFoldersIds, setExpandedFoldersIds] = useState<string[]>([]);
 
   const ideationProjects = useMemo(
-    () =>
-      projects.projectsList?.filter(
-        (project) => project.attributes.ideas_count > 0
-      ),
+    () => projects?.filter((project) => project.attributes.ideas_count > 0),
     [projects]
   );
 
@@ -393,10 +390,7 @@ const publicationStatuses: PublicationStatus[] = [
 
 const Data = adopt<DataProps>({
   projects: (
-    <GetProjects
-      publicationStatuses={publicationStatuses}
-      filterCanModerate={true}
-    />
+    <GetProjects publicationStatuses={publicationStatuses} canModerate={true} />
   ),
 });
 

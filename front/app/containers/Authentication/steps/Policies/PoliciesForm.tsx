@@ -58,6 +58,7 @@ const PoliciesForm = ({ loading, onSubmit }: Props) => {
         </Text>
         <PoliciesMarkup />
         <Button
+          id="e2e-policies-continue"
           mt="32px"
           type="submit"
           width="100%"

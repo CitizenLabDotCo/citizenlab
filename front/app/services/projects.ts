@@ -1,6 +1,10 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
+// api
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import projectsKeys from 'api/projects/keys';
+
 // typings
 import {
   PermissionsDisabledReason,
@@ -30,14 +34,6 @@ type Visibility = 'public' | 'groups' | 'admins';
 export type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 export type PublicationStatus = 'draft' | 'published' | 'archived';
-
-// keys in project.attributes.action_descriptor
-export type IProjectAction =
-  | 'commenting_idea'
-  | 'voting_idea'
-  | 'posting_idea'
-  | 'taking_survey'
-  | 'taking_poll';
 
 export type CommentingDisabledReason =
   | 'project_inactive'
@@ -236,28 +232,6 @@ export interface IProject {
   data: IProjectData;
 }
 
-export interface IProjects {
-  data: IProjectData[];
-}
-
-type IQueryParametersWithPS =
-  | {
-      publication_statuses: PublicationStatus[];
-      [key: string]: any;
-    }
-  | {
-      filter_ids: string[];
-      [key: string]: any;
-    };
-
-interface StreamParamsForProjects extends IStreamParams {
-  queryParameters: IQueryParametersWithPS;
-}
-
-export function projectsStream(streamParams: StreamParamsForProjects) {
-  return streams.get<IProjects>({ apiEndpoint, ...streamParams });
-}
-
 export function projectBySlugStream(
   projectSlug: string,
   streamParams: IStreamParams | null = null
@@ -283,16 +257,18 @@ export async function addProject(projectData: IUpdatedProjectProperties) {
     project: projectData,
   });
   const projectId = response.data.id;
+
   await streams.fetchAllWith({
     dataId: [projectId],
     apiEndpoint: [
-      `${API_PATH}/projects`,
       `${API_PATH}/admin_publications`,
       `${API_PATH}/users/me`,
       `${API_PATH}/topics`,
       `${API_PATH}/areas`,
     ],
   });
+  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
+
   return response;
 }
 
@@ -306,10 +282,10 @@ export async function updateProject(
     { project: projectData }
   );
 
+  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
   await streams.fetchAllWith({
     dataId: [projectId],
     apiEndpoint: [
-      `${API_PATH}/projects`,
       `${API_PATH}/admin_publications`,
       `${API_PATH}/admin_publications/status_counts`,
       `${API_PATH}/users/me`,
@@ -326,22 +302,23 @@ export async function deleteProject(projectId: string) {
     `${apiEndpoint}/${projectId}`,
     projectId
   );
+
+  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/admin_publications`],
+    apiEndpoint: [`${API_PATH}/admin_publications`],
   });
+
   return response;
 }
 
 export async function copyProject(projectId: string) {
   const response = await streams.add(`${apiEndpoint}/${projectId}/copy`, {});
 
+  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
   await streams.fetchAllWith({
-    apiEndpoint: [
-      `${API_PATH}/projects`,
-      `${API_PATH}/admin_publications`,
-      `${API_PATH}/users/me`,
-    ],
+    apiEndpoint: [`${API_PATH}/admin_publications`, `${API_PATH}/users/me`],
   });
+
   return response;
 }
 
@@ -364,11 +341,12 @@ export async function updateProjectFolderMembership(
     { project: { folder_id: newProjectFolderId } }
   );
 
+  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
   await streams.fetchAllWith({
     dataId: [newProjectFolderId, oldProjectFolderId].filter(
       (item) => item
     ) as string[],
-    apiEndpoint: [`${API_PATH}/admin_publications`, `${API_PATH}/projects`],
+    apiEndpoint: [`${API_PATH}/admin_publications`],
   });
 
   return response;

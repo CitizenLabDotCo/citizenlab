@@ -8,7 +8,7 @@ import {
   IProjectData,
 } from 'services/projects';
 
-interface Props {
+export interface Props {
   projectId?: string | null;
   projectSlug?: string | null;
 }

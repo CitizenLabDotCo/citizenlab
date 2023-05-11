@@ -36,11 +36,6 @@ export default defineMessages({
     defaultMessage:
       'The maximum number of choices is greater than the number of options',
   },
-  maxUnderTheMinTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollTab.maxUnderTheMinTooltip',
-    defaultMessage:
-      'A multiple answer question should allow at least two answers.',
-  },
   oneOption: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.oneOption',
     defaultMessage: 'Only one option',

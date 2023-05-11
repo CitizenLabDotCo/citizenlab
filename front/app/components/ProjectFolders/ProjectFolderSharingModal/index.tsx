@@ -13,7 +13,6 @@ import { useIntl } from 'utils/cl-intl';
 // i18n
 import T from 'components/T';
 import messages from './messages';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // style
 import { Box } from '@citizenlab/cl2-component-library';
@@ -25,7 +24,7 @@ interface Props {
   close: () => void;
 }
 
-const ProjectFolderSharingModal = memo<Props & InjectedLocalized>(
+const ProjectFolderSharingModal = memo<Props>(
   ({ projectFolderId, className, opened, close }) => {
     const authUser = useAuthUser();
     const { data: projectFolder } = useProjectFolderbById(projectFolderId);
@@ -116,4 +115,4 @@ const ProjectFolderSharingModal = memo<Props & InjectedLocalized>(
   }
 );
 
-export default injectLocalize(ProjectFolderSharingModal);
+export default ProjectFolderSharingModal;

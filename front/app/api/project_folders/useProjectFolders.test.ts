@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 
 import useProjectFolders from './useProjectFolders';
-import { projectFolderData } from './__mocks__/useAddProjectFolder';
+import { projectFolderData } from './__mocks__/useProjectFolder';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';

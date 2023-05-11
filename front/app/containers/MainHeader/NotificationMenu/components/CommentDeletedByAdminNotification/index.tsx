@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { ICommentDeletedByAdminNotificationData } from 'services/notifications';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -20,9 +20,7 @@ const mapPostTypeToLink = (
   }
 };
 
-export const CommentDeletedByAdminNotification = memo<Props>((props) => {
-  const { notification } = props;
-
+const CommentDeletedByAdminNotification = ({ notification }: Props) => {
   return (
     <NotificationWrapper
       linkTo={mapPostTypeToLink(notification)}
@@ -40,6 +38,6 @@ export const CommentDeletedByAdminNotification = memo<Props>((props) => {
       />
     </NotificationWrapper>
   );
-});
+};
 
 export default CommentDeletedByAdminNotification;
