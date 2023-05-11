@@ -51,7 +51,7 @@ type ModalContentMethodProps = {
 
 type FormTitleMethodProps = {
   project: IProjectData;
-  phases: IPhaseData[] | NilOrError;
+  phases: IPhaseData[] | undefined;
   phaseFromUrl?: IPhaseData | NilOrError;
 };
 
