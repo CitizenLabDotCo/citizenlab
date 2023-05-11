@@ -17,11 +17,7 @@ resource 'Permissions' do
   let(:phase_id) { @phase.id }
 
   context 'when admin' do
-    before do
-      @admin = create(:admin)
-      token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+    before { admin_header_token }
 
     get 'web_api/v1/projects/:project_id/permissions' do
       with_options scope: :page do

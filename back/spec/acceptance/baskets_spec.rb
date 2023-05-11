@@ -18,10 +18,7 @@ resource 'Baskets' do
     let(:basket_id) { @basket.id }
 
     context 'when authenticated' do
-      before do
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+      before { header_token_for @user }
 
       example_request 'Get one basket by id' do
         expect(status).to eq 200
@@ -58,10 +55,7 @@ resource 'Baskets' do
     ValidationErrorHelper.new.error_fields(self, Basket)
 
     context 'when authenticated' do
-      before do
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+      before { header_token_for @user }
 
       let(:basket) { build(:basket, user: @user, participation_context: create(:continuous_budgeting_project)) }
       let(:user_id) { basket.user_id }
@@ -101,10 +95,7 @@ resource 'Baskets' do
     ValidationErrorHelper.new.error_fields(self, Basket)
 
     context 'when authenticated' do
-      before do
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+      before { header_token_for @user }
 
       let(:basket_id) { @basket.id }
 
@@ -179,10 +170,7 @@ resource 'Baskets' do
 
   delete 'web_api/v1/baskets/:basket_id' do
     context 'when authenticated' do
-      before do
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+      before { header_token_for @user }
 
       let(:basket_id) { @basket.id }
 
