@@ -26,7 +26,7 @@ const updatePollQuestionSpy = jest.spyOn(
   'updatePollQuestion'
 );
 
-import { QuestionDetailsForm } from './QuestionDetailsForm';
+import QuestionDetailsFormRow from './QuestionDetailsFormRow';
 
 const getSelect = (Wrapper) => Wrapper.find('Select');
 const getInput = (Wrapper) => Wrapper.find('QuestionDetailsForm__StyledInput');
@@ -50,7 +50,10 @@ describe('<QuestionDetailsForm/>', () => {
   describe('display', () => {
     it('displays correctly for a multiple choice question', () => {
       const Wrapper = shallow(
-        <QuestionDetailsForm question={multipleOptionsQuestion} intl={intl} />
+        <QuestionDetailsFormRow
+          question={multipleOptionsQuestion}
+          intl={intl}
+        />
       );
       const Select = getSelect(Wrapper);
       expect(Select.prop('value')).toBe('multiple_options');
@@ -68,7 +71,7 @@ describe('<QuestionDetailsForm/>', () => {
   describe('change and save', () => {
     it('a multiple choice question has two maximum answers by default', () => {
       const Wrapper = shallow(
-        <QuestionDetailsForm question={singleOptionQuestion} intl={intl} />
+        <QuestionDetailsFormRow question={singleOptionQuestion} intl={intl} />
       );
       getSelect(Wrapper).prop('onChange')({
         value: 'multiple_options',
@@ -79,7 +82,7 @@ describe('<QuestionDetailsForm/>', () => {
     });
     it('can change and save a single choice question to a multiple choice', () => {
       const Wrapper = shallow(
-        <QuestionDetailsForm question={singleOptionQuestion} intl={intl} />
+        <QuestionDetailsFormRow question={singleOptionQuestion} intl={intl} />
       );
       getSelect(Wrapper).prop('onChange')({
         value: 'multiple_options',
@@ -98,7 +101,10 @@ describe('<QuestionDetailsForm/>', () => {
     });
     it('can change and save a multiple choice question to a single choice', () => {
       const Wrapper = shallow(
-        <QuestionDetailsForm question={multipleOptionsQuestion} intl={intl} />
+        <QuestionDetailsFormRow
+          question={multipleOptionsQuestion}
+          intl={intl}
+        />
       );
       getSelect(Wrapper).prop('onChange')({
         value: 'single_option',
@@ -117,7 +123,10 @@ describe('<QuestionDetailsForm/>', () => {
     });
     it('can change and save the maximum number of choices', () => {
       const Wrapper = shallow(
-        <QuestionDetailsForm question={multipleOptionsQuestion} intl={intl} />
+        <QuestionDetailsFormRow
+          question={multipleOptionsQuestion}
+          intl={intl}
+        />
       );
       getInput(Wrapper).prop('onChange')('10');
       expect(getInput(Wrapper).prop('value')).toBe('10');
@@ -133,7 +142,10 @@ describe('<QuestionDetailsForm/>', () => {
     describe('validations', () => {
       it('cannot save multiple choice question with less than two options', () => {
         const Wrapper = shallow(
-          <QuestionDetailsForm question={multipleOptionsQuestion} intl={intl} />
+          <QuestionDetailsFormRow
+            question={multipleOptionsQuestion}
+            intl={intl}
+          />
         );
         getInput(Wrapper).prop('onChange')('0');
         expect(getInput(Wrapper).prop('value')).toBe('0');

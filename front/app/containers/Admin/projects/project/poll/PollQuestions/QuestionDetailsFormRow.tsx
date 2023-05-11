@@ -51,7 +51,7 @@ interface State {
   typeOptions: IOption[];
 }
 
-export class QuestionDetailsForm extends PureComponent<
+class QuestionDetailsFormRow extends PureComponent<
   Props & WrappedComponentProps,
   State
 > {
@@ -175,4 +175,4 @@ export class QuestionDetailsForm extends PureComponent<
   }
 }
 
-export default injectIntl(QuestionDetailsForm);
+export default injectIntl(QuestionDetailsFormRow);

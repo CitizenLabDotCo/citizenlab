@@ -17,7 +17,7 @@ import { Icon } from 'semantic-ui-react';
 import { Row, TextCell, List } from 'components/admin/ResourceList';
 import OptionFormRow from './OptionFormRow';
 import OptionRow from './OptionRow';
-import QuestionDetailsForm from '../PollQuestions/QuestionDetailsForm';
+import QuestionDetailsFormRow from '../PollQuestions/QuestionDetailsFormRow';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -120,7 +120,7 @@ export class OptionForm extends PureComponent<Props, State> {
           >
             {!isNilOrError(pollOptions) && (
               <>
-                <QuestionDetailsForm
+                <QuestionDetailsFormRow
                   question={question}
                   onCancelOptionEditing={collapse}
                 />
