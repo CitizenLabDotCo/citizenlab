@@ -1054,7 +1054,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Harita yakınlaştırma düzeyi",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Haritanın varsayılan yakınlaştırma düzeyidir. 1 ile 17 arasında bir değer kabul edilir; burada 1 tamamen uzaklaştırılmış (tüm dünya görünür) ve 17 tamamen yakınlaştırılmış (sokaklar ve binalar görünür) olur",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Bir oylama sorusu ekleyin",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Uygula",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "İptal",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "İptal",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Sil",

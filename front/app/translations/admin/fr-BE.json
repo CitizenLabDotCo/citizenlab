@@ -1054,7 +1054,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Niveau de zoom par défaut",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Définissez le niveau de zoom de la carte par défaut. Choisissez une valeur entre 0 et 20, où 0 est entièrement dézoomé (le monde entier est visible) et 20 est entièrement zoomé (les blocs d'habitations et les bâtiments sont visibles)",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Ajouter une question de sondage",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Valider les modifications",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Annuler",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Annuler",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Supprimer",

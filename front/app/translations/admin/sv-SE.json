@@ -1054,7 +1054,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Kartans zoomnivå",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Kartans standardzoomnivå. Ett värde mellan 1 och 17 godkänns, där 1 är helt utzoomat (hela världen visas) och 17 är helt inzoomat (kvarter och byggnader visas)",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Lägg till en omröstningsfråga",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Tillämpa",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Avbryt",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Avbryt",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Radera",

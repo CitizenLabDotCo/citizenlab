@@ -1054,7 +1054,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Razina uvećanja mape",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Zadana razina uvećanja karte. Prihvaća vrijednost između 1 i 17, pri čemu je 1 potpuno umanjena (vidljiv je cijeli svijet), a 17 je potpuno uvećana (vidljivi su blokovi i zgrade)",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Dodajte anketno pitanje",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Primijeni",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Odustani",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Odustani",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Izbriši",

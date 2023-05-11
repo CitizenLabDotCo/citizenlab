@@ -1007,7 +1007,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Map zoom level",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "The default zoom level of the map. Accepts a value between 1 and 17, where 1 is fully zoomed out (the entire world is visible) and 17 is fully zoomed in (blocks and buildings are visible)",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Add a poll question",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Apply",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Cancel",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Cancel",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Delete",

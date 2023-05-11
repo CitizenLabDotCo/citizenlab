@@ -1054,7 +1054,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Standaard zoom-niveau",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Stel in hoe de kaart standaard is ingezoomd. Kies een waarde tussen 0 en 20, waarbij 0 volledig uitgezoomd is (de hele wereld is zichtbaar) en 20 volledig ingezoomd is (blokken en gebouwen zijn zichtbaar)",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Voeg een peilingvraag toe",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Pas deze wijzigingen toe",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Annuleren",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Annuleren",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Verwijder",

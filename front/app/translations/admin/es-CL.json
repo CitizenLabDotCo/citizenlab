@@ -1054,7 +1054,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Nivel de zoom por defecto",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Establece el grado de ampliación del mapa por defecto. Elige un valor entre 0 y 20, donde 0 es un alejamiento total (todo el mundo es visible) y 20 es un acercamiento total (los bloques y edificios son visibles)",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Añadir una pregunta de la encuesta",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Postula",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Cancelar",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Cancelar",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Eliminar",

@@ -1007,7 +1007,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Nivell de zoom del mapa",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "El nivell de zoom predeterminat del mapa. Accepta un valor entre 1 i 17, on 1 s'allunya completament (tot el món és visible) i 17 s'apropa completament (els blocs i els edificis són visibles)",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Afegir una pregunta d'enquesta",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Aplicar",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Cancel",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Cancel",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Delete",

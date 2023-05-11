@@ -1054,7 +1054,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Nivo zumiranja mape",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Podrazumevani nivo zumiranja karte. Prihvata vrednost između 1 i 17, pri čemu je 1 potpuno zumirana na gore (čitav svet je vidljiv), a 17 je potpuno zumirana ka tlu (vidljivi su blokovi i zgrade)",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Dodajte pitanje",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Primeni",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Prekid",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Prekid",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Izbriši",

@@ -1054,7 +1054,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Domyślny poziom powiększenia",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Ustaw, jak bardzo mapa jest domyślnie powiększona. Wybierz wartość pomiędzy 0 a 20, gdzie 0 oznacza całkowite pomniejszenie (cały świat jest widoczny), a 20 oznacza całkowite przybliżenie (bloki i budynki są widoczne)",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Dodaj pytanie",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Zastosuj",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Anuluj",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Anuluj",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Usuń",

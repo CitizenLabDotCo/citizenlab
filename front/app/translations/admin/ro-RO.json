@@ -964,7 +964,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Nivel de zoom implicit",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Setați cât de mărită este harta în mod implicit. Alegeți o valoare între 0 și 20, unde 0 este complet micșorat (întreagul glob este vizibil) și 20 este complet mărită (blocurile și clădirile sunt vizibile)",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Add a poll question",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Apply",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Anulare",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Anulare",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Șterge",

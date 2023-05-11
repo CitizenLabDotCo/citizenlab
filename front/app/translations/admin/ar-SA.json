@@ -1054,7 +1054,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "مستوى تكبير/تصغير الخريطة",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "مستوى التكبير/التصغير الافتراضي للخريطة. يمكن قبول قيمة بين 1 و17، حيث تشير 1 إلى التصغير الكامل (إمكانية رؤية العالم بكامله) و17 إلى التكبير الكامل (إمكانية رؤية المربعات السكنية والمباني)",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "إضافة سؤال استطلاع",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "تطبيق",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "إلغاء",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "إلغاء",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "حذف",
