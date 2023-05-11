@@ -2,7 +2,8 @@ import React from 'react';
 
 // services
 import { IPhaseData, updatePhase } from 'services/phases';
-import { IProjectData, updateProject } from 'services/projects';
+import { updateProject } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 
 // typing
 import { Multiloc } from 'typings';

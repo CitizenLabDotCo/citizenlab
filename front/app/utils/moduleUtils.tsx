@@ -15,7 +15,7 @@ import {
   omitBy,
   cloneDeep,
 } from 'lodash-es';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';

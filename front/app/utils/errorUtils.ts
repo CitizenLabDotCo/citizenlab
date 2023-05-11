@@ -243,3 +243,19 @@ export const handleBlockedUserError = (status: number, data: CLErrors) => {
     );
   }
 };
+
+export const isUnauthorizedRQ = (obj: unknown): obj is CLErrors => {
+  if (
+    isObject(obj) &&
+    'errors' in obj &&
+    'base' in obj.errors &&
+    isArray(obj.errors.base) &&
+    obj.errors.base.length >= 0 &&
+    'error' in obj.errors.base[0] &&
+    obj.errors.base[0].error === 'Unauthorized!'
+  ) {
+    return true;
+  }
+
+  return false;
+};

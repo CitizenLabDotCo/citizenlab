@@ -24,10 +24,6 @@ import useAuthUser from 'hooks/useAuthUser';
 // services
 import { verifyBogus } from '../services/verify';
 
-// api
-import { useQueryClient } from '@tanstack/react-query';
-import projectsKeys from 'api/projects/keys';
-
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
@@ -37,7 +33,6 @@ interface Props {
 const VerificationFormBogus = memo<Props>(
   ({ onCancel, onVerified, className }) => {
     const authUser = useAuthUser();
-    const queryClient = useQueryClient();
 
     const [desiredError, setDesiredError] = useState<string>('');
     const [desiredErrorError, setDesiredErrorError] = useState<string | null>(
@@ -61,21 +56,13 @@ const VerificationFormBogus = memo<Props>(
         try {
           await verifyBogus(desiredError);
 
-          queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
-
           const endpointsToRefetch = [`${API_PATH}/users/me`];
-          const partialEndpointsToRefetch = [
-            `${API_PATH}/projects/`,
-            `${API_PATH}/ideas/`,
-          ];
-
           if (!isNilOrError(authUser)) {
             endpointsToRefetch.push(`${API_PATH}/users/${authUser.id}`);
           }
 
           await streams.fetchAllWith({
             apiEndpoint: endpointsToRefetch,
-            partialApiEndpoint: partialEndpointsToRefetch,
           });
 
           onVerified();
@@ -95,7 +82,7 @@ const VerificationFormBogus = memo<Props>(
           }
         }
       },
-      [desiredError, authUser, onVerified, queryClient]
+      [desiredError, authUser, onVerified]
     );
 
     const onCancelButtonClicked = useCallback(() => {

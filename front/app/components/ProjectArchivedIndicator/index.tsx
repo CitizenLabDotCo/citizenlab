@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 
 // components
 import Warning from 'components/UI/Warning';
@@ -24,12 +23,9 @@ interface Props {
 }
 
 const ProjectArchivedIndicator = memo<Props>(({ projectId, className }) => {
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
 
-  if (
-    !isNilOrError(project) &&
-    project.attributes.publication_status === 'archived'
-  ) {
+  if (project?.data.attributes.publication_status === 'archived') {
     return (
       <Container className={className || ''}>
         <Warning text={<FormattedMessage {...messages.archivedProject} />} />

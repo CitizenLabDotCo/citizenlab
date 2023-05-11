@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IParticipationContextType } from 'typings';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'hooks/usePhase';
 
 // resources
@@ -68,19 +68,19 @@ const disabledMessages = {
 } as const;
 
 export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const phase = usePhase(phaseId);
 
   if (
     isNilOrError(pollQuestions) ||
-    isNilOrError(project) ||
+    !project ||
     !(type === 'phase' ? !isNilOrError(phase) : true)
   ) {
     return null;
   }
 
   const { enabled, disabled_reason } =
-    project.attributes.action_descriptor.taking_poll;
+    project.data.attributes.action_descriptor.taking_poll;
 
   const signUpIn = (flow: 'signin' | 'signup') => {
     const pcType = phaseId ? 'phase' : 'project';
