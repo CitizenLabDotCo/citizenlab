@@ -100,12 +100,12 @@ pt:
     schedules:
       weekly:
         "0": "Semanalmente, aos domingos, em %{hourOfDay}"
-        "1": "Semanalmente, às segundas-feiras %{hourOfDay}"
-        "2": "Semanalmente, às terças-feiras %{hourOfDay}"
-        "3": "Semanalmente, às quartas-feiras %{hourOfDay}"
-        "4": "Semanalmente, às quintas-feiras %{hourOfDay}"
-        "5": "Semanalmente, às sextas-feiras %{hourOfDay}"
-        "6": "Semanalmente, aos sábados %{hourOfDay}"
+        "1": "Semanalmente, às segundas-feiras %{atHour}"
+        "2": "Semanalmente, às terças-feiras %{atHour}"
+        "3": "Semanalmente, às quartas-feiras %{atHour}"
+        "4": "Semanalmente, às quintas-feiras %{atHour}"
+        "5": "Semanalmente, às sextas-feiras %{atHour}"
+        "6": "Semanalmente, aos sábados %{atHour}"
     footer:
       "link_privacy_policy": "Política de Privacidade"
       "link_terms_conditions": "Termos e Condições"
