@@ -37,6 +37,7 @@ import HasPermission from 'components/HasPermission';
 
 // services
 import { IAppConfigurationStyle } from 'api/app_configuration/types';
+import signOut from 'api/authentication/sign_in_out/signOut';
 import signOutAndDeleteAccount from 'api/authentication/sign_in_out/signOutAndDeleteAccount';
 import { authUserStream } from 'services/auth';
 import { localeStream } from 'services/locale';
@@ -250,7 +251,9 @@ const App = ({ children }: Props) => {
       combineLatest([
         authUser$.pipe(
           tap((authUser) => {
-            if (!isNilOrError(authUser)) {
+            if (isNilOrError(authUser)) {
+              signOut();
+            } else {
               configureScope((scope) => {
                 scope.setUser({
                   id: authUser.data.id,
@@ -351,13 +354,12 @@ const App = ({ children }: Props) => {
 
   return (
     <>
-      <PreviousPathnameContext.Provider value={previousPathname}>
-        <ThemeProvider theme={{ ...theme, isRtl: !!locale?.startsWith('ar') }}>
-          <GlobalStyle />
-          <ErrorBoundary>
-            <Authentication setModalOpen={setSignUpInModalOpened} />
-          </ErrorBoundary>
-          {appConfiguration && (
+      {appConfiguration && (
+        <PreviousPathnameContext.Provider value={previousPathname}>
+          <ThemeProvider
+            theme={{ ...theme, isRtl: !!locale?.startsWith('ar') }}
+          >
+            <GlobalStyle />
             <Container
               // when the fullscreen modal is enabled on a platform and
               // is currently open, we want to disable scrolling on the
@@ -386,6 +388,9 @@ const App = ({ children }: Props) => {
                     userSuccessfullyDeleted={userSuccessfullyDeleted}
                   />
                 </Suspense>
+              </ErrorBoundary>
+              <ErrorBoundary>
+                <Authentication setModalOpen={setSignUpInModalOpened} />
               </ErrorBoundary>
               <ErrorBoundary>
                 <div id="modal-portal" />
@@ -425,9 +430,9 @@ const App = ({ children }: Props) => {
                 <div id="mobile-nav-portal" />
               </ErrorBoundary>
             </Container>
-          )}
-        </ThemeProvider>
-      </PreviousPathnameContext.Provider>
+          </ThemeProvider>
+        </PreviousPathnameContext.Provider>
+      )}
     </>
   );
 };

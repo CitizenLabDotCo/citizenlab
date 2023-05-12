@@ -5,22 +5,29 @@ import { capitalizeParticipationContextType } from 'utils/helperUtils';
 import projectsKeys from 'api/projects/keys';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
-type IPollQuestionAttributes = {
+interface IPollQuestionAttributes {
   question_type: 'multiple_options' | 'single_option';
   max_options: number | null;
   title_multiloc: Multiloc;
   ordering: number;
-};
+}
 
 export interface IPollQuestion {
   id: string;
-  type: string;
+  type: 'question';
   attributes: IPollQuestionAttributes;
   relationships: {
     options: {
       data: {
         id: string;
+        type: 'option';
       }[];
+    };
+    participation_context: {
+      data: {
+        id: string;
+        type: IParticipationContextType;
+      };
     };
   };
 }
@@ -63,12 +70,6 @@ export async function addPollQuestion(
   }
 
   return response;
-}
-
-export function pollQuestionStream(questionId: string) {
-  return streams.get<IPollQuestion>({
-    apiEndpoint: `${API_PATH}/poll_questions/${questionId}`,
-  });
 }
 
 export async function deletePollQuestion(
