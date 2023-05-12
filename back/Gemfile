@@ -170,9 +170,6 @@ gem 'cloudfront-rails', '~> 0.4'
 # Specifying this gem explicitly can probably be removed when the Rails upgrade is available.
 gem 'rails-html-sanitizer', '>= 1.4.3'
 
-# Used to define CRON tasks. See back/config/schedule.rb.
-gem 'whenever', '~> 1.0'
-
 Dir.children('engines/free').each do |engine_name|
   path = "engines/free/#{engine_name}"
   gem engine_name, path: path if File.directory?(path)
