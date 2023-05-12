@@ -10,13 +10,11 @@ import {
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import {
-  addProjectFolderFile,
-  deleteProjectFolderFile,
-} from 'services/projectFolderFiles';
+import useDeleteProjectFolderFile from 'api/project_folder_files/useDeleteProjectFolderFile';
+import useAddProjectFolderFile from 'api/project_folder_files/useAddProjectFolderFile';
 import useAddProjectFolder from 'api/project_folders/useAddProjectFolder';
 import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
-import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
+import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
 
 // intl
@@ -71,8 +69,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     Resource hooks
     ==============
   */
+  const { mutateAsync: deleteProjectFolderFile } = useDeleteProjectFolderFile();
+  const { mutateAsync: addProjectFolderFile } = useAddProjectFolderFile();
   const { data: projectFolder } = useProjectFolderById(projectFolderId);
-  const projectFolderFilesRemote = useProjectFolderFiles(projectFolderId);
+  const { data: projectFolderFilesRemote } = useProjectFolderFiles({
+    projectFolderId,
+  });
   const projectFolderImagesRemote = useProjectFolderImages(projectFolderId);
   const adminPublication = useAdminPublication(
     !isNilOrError(projectFolder)
@@ -162,7 +164,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   useEffect(() => {
     (async () => {
-      if (mode === 'edit' && !isNilOrError(projectFolderFilesRemote)) {
+      if (mode === 'edit' && projectFolderFilesRemote) {
         const filePromises = projectFolderFilesRemote.data.map((file) =>
           convertUrlToUploadFile(
             file.attributes.file.url,
@@ -170,9 +172,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             file.attributes.name
           )
         );
-        const files = await Promise.all(filePromises);
-        files.filter((file) => file);
-        setProjectFolderFiles(files as UploadFile[]);
+        if (!isNilOrError(filePromises)) {
+          const files = await Promise.all(filePromises);
+          files.filter((file) => file);
+          setProjectFolderFiles(files as UploadFile[]);
+        }
       }
     })();
   }, [mode, projectFolderFilesRemote]);
@@ -307,11 +311,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                       : null;
 
                     const filesToAddPromises = projectFolderFiles.map((file) =>
-                      addProjectFolderFile(
-                        projectFolder.data.id,
-                        file.base64,
-                        file.name
-                      )
+                      addProjectFolderFile({
+                        projectFolderId: projectFolder.data.id,
+                        file: file.base64,
+                        name: file.name,
+                      })
                     );
 
                     (cardImageToAddPromise || filesToAddPromises) &&
@@ -355,10 +359,14 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             const filesToAddPromises = projectFolderFiles
               .filter((file) => !file.remote)
               .map((file) =>
-                addProjectFolderFile(projectFolderId, file.base64, file.name)
+                addProjectFolderFile({
+                  projectFolderId,
+                  file: file.base64,
+                  name: file.name,
+                })
               );
             const filesToRemovePromises = projectFolderFilesToRemove.map((id) =>
-              deleteProjectFolderFile(projectFolderId, id)
+              deleteProjectFolderFile({ projectFolderId, fileId: id })
             );
 
             await Promise.all<any>([
