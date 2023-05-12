@@ -46,7 +46,7 @@ const ButtonWrapper = styled.a`
   cursor: pointer;
 `;
 
-const ButtonIcon = styled.span`
+export const ClaveUnicaButtonIcon = styled.span`
   background: url(${icon});
   display: inline-block;
   width: 24px;
@@ -56,7 +56,7 @@ const ButtonIcon = styled.span`
   box-sizing: border-box;
 `;
 
-const ButtonLabel = styled.span`
+export const ClaveUnicaButtonLabel = styled.span`
   padding-left: 3px;theme.
   text-decoration: underline;
   box-sizing: border-box;
@@ -72,7 +72,7 @@ interface Props {
   onClick: (method: TVerificationMethod) => void;
 }
 
-const BosaFasButton = ({ method, last, onClick }: Props) => {
+const ClaveUnicaButton = ({ method, last, onClick }: Props) => {
   const handleOnClick = () => {
     onClick(method);
     const jwt = getJwt();
@@ -84,8 +84,8 @@ const BosaFasButton = ({ method, last, onClick }: Props) => {
   return (
     <Container last={last}>
       <ButtonWrapper onClick={handleOnClick} id="e2e-clave_unica-button">
-        <ButtonIcon />
-        <ButtonLabel>Iniciar sesión</ButtonLabel>
+        <ClaveUnicaButtonIcon />
+        <ClaveUnicaButtonLabel>Iniciar sesión</ClaveUnicaButtonLabel>
       </ButtonWrapper>
       <HelperText>
         <FormattedMessage {...messages.verifyClaveUnica} />
@@ -94,4 +94,4 @@ const BosaFasButton = ({ method, last, onClick }: Props) => {
   );
 };
 
-export default BosaFasButton;
+export default ClaveUnicaButton;

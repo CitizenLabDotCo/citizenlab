@@ -7,6 +7,7 @@ import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Outlet from 'components/Outlet';
 import { Text } from '@citizenlab/cl2-component-library';
 import TextButton from '../_components/TextButton';
+import ClaveUnicaButton from 'modules/commercial/id_clave_unica/components/ClaveUnicaButton';
 
 // resources
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -22,6 +23,16 @@ import styled from 'styled-components';
 // typings
 import { SSOProvider } from 'services/singleSignOn';
 import { ErrorCode } from 'containers/Authentication/typings';
+import {
+  TVerificationMethod,
+  TVerificationMethodName,
+} from 'services/verificationMethods';
+
+// hooks
+import useVerificationMethods from 'hooks/useVerificationMethods';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   display: flex;
@@ -63,6 +74,7 @@ const AuthProviders = memo<Props>(
     const claveUnicaLoginEnabled = useFeatureFlag({
       name: 'clave_unica_login',
     });
+    const verificationMethods = useVerificationMethods();
 
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
@@ -75,12 +87,25 @@ const AuthProviders = memo<Props>(
       [onSelectAuthProvider]
     );
 
+    const handleOnClaveUnicaSelected = useCallback(
+      (_method: TVerificationMethod) => {
+        onSelectAuthProvider('clave_unica');
+      },
+      [onSelectAuthProvider]
+    );
+
     const handleGoToOtherFlow = useCallback(
       (event: React.FormEvent) => {
         event.preventDefault();
         onSwitchFlow();
       },
       [onSwitchFlow]
+    );
+
+    if (isNilOrError(verificationMethods)) return null;
+    const verificationMethodName: TVerificationMethodName = 'clave_unica';
+    const claveUnicaMethod = verificationMethods.find(
+      (vm) => vm.attributes.name === verificationMethodName
     );
 
     const phone = tenantSettings?.password_login?.phone;
@@ -104,11 +129,34 @@ const AuthProviders = memo<Props>(
           />
         )}
 
+        {claveUnicaLoginEnabled && claveUnicaMethod && (
+          <>
+            {franceconnectLoginEnabled && <Or />}
+            {/* <StyledAuthProviderButton
+              flow={flow}
+              authProvider="clave_unica"
+              onContinue={onSelectAuthProvider}
+            >
+              <ButtonWrapper>
+                <ClaveUnicaButtonIcon />
+                <ClaveUnicaButtonLabel>Iniciar sesión</ClaveUnicaButtonLabel>
+              </ButtonWrapper>
+              <FormattedMessage {...messages.continueWithClaveUnica} />
+            </StyledAuthProviderButton> */}
+            <ClaveUnicaButton
+              last={false}
+              method={claveUnicaMethod}
+              onClick={handleOnClaveUnicaSelected}
+            />
+          </>
+        )}
+
         {(isPasswordSigninOrSignupAllowed ||
           facebookLoginEnabled ||
           azureAdLoginEnabled ||
-          viennaCitizenLoginEnabled) &&
-          franceconnectLoginEnabled && <Or />}
+          viennaCitizenLoginEnabled ||
+          claveUnicaLoginEnabled) &&
+          (franceconnectLoginEnabled || claveUnicaLoginEnabled) && <Or />}
 
         <Outlet
           id="app.components.SignUpIn.AuthProviders.ContainerStart"
@@ -148,17 +196,6 @@ const AuthProviders = memo<Props>(
             onContinue={onSelectAuthProvider}
           >
             <FormattedMessage {...messages.continueWithGoogle} />
-          </StyledAuthProviderButton>
-        )}
-
-        {claveUnicaLoginEnabled && (
-          <StyledAuthProviderButton
-            flow={flow}
-            icon="menu"
-            authProvider="clave_unica"
-            onContinue={onSelectAuthProvider}
-          >
-            <FormattedMessage {...messages.continueWithClaveUnica} />
           </StyledAuthProviderButton>
         )}
 
