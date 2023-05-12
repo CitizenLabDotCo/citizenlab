@@ -23,7 +23,7 @@ const updateProjectFolderMembership = async ({
     body: { project: { folder_id: newProjectFolderId } },
   });
 
-const useUpdateProjectFolderMemberShip = () => {
+const useUpdateProjectFolderMembership = () => {
   const queryClient = useQueryClient();
   return useMutation<IProject, CLErrors, Params>({
     mutationFn: updateProjectFolderMembership,
@@ -49,4 +49,4 @@ const useUpdateProjectFolderMemberShip = () => {
   });
 };
 
-export default useUpdateProjectFolderMemberShip;
+export default useUpdateProjectFolderMembership;
