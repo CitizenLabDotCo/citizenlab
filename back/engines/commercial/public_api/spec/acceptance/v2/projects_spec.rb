@@ -76,5 +76,5 @@ resource 'Projects' do
       end
     end
   end
-#  TODO: Error responses
+  #  TODO: Error responses
 end
