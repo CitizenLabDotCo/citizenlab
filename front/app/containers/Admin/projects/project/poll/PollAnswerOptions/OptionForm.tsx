@@ -15,17 +15,18 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Icon } from 'semantic-ui-react';
 import { Row, TextCell, List } from 'components/admin/ResourceList';
-import FormOptionRow from './FormOptionRow';
+import OptionFormRow from './OptionFormRow';
 import OptionRow from './OptionRow';
-import QuestionDetailsForm from './QuestionDetailsForm';
+import QuestionDetailsFormRow from '../PollQuestions/QuestionDetailsFormRow';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // Style
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import { Text } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div``;
 
@@ -95,20 +96,19 @@ export class OptionForm extends PureComponent<Props, State> {
             <Icon name="sort" />
           </DisabledDragHandle>
           <TextCell className="expand">
-            <FormattedMessage
-              {...messages.optionsFormHeader}
-              values={{
-                questionTitle: <T value={question.attributes.title_multiloc} />,
-              }}
-            />
+            <b>
+              <FormattedMessage
+                {...messages.optionsFormHeader}
+                values={{
+                  questionTitle: (
+                    <Text display="inline" fontWeight="normal">
+                      <T value={question.attributes.title_multiloc} />
+                    </Text>
+                  ),
+                }}
+              />
+            </b>
           </TextCell>
-          <Button
-            className="e2e-collapse-option-form"
-            onClick={collapse}
-            buttonStyle="secondary"
-          >
-            <FormattedMessage {...messages.editOptionSave} />
-          </Button>
         </Row>
         <OptionsContainer>
           <List
@@ -120,10 +120,13 @@ export class OptionForm extends PureComponent<Props, State> {
           >
             {!isNilOrError(pollOptions) && (
               <>
-                <QuestionDetailsForm question={question} />
+                <QuestionDetailsFormRow
+                  question={question}
+                  onCancelOptionEditing={collapse}
+                />
                 {pollOptions.map((pollOption: IPollOptionData) =>
                   editingId === pollOption.id ? (
-                    <FormOptionRow
+                    <OptionFormRow
                       key={pollOption.id}
                       mode="edit"
                       closeRow={this.closeRow}
@@ -143,7 +146,7 @@ export class OptionForm extends PureComponent<Props, State> {
               </>
             )}
             {editingId === 'new' ? (
-              <FormOptionRow
+              <OptionFormRow
                 key="new"
                 mode="new"
                 questionId={question.id}
@@ -152,13 +155,12 @@ export class OptionForm extends PureComponent<Props, State> {
             ) : (
               <StyledButton
                 className="e2e-add-option"
-                buttonStyle="secondary"
+                buttonStyle="admin-dark"
                 icon="plus-circle"
-                iconColor={colors.primary}
                 onClick={this.addOption}
                 autoFocus
               >
-                <FormattedMessage {...messages.addAnswerChoice} />
+                <FormattedMessage {...messages.addAnswerOption} />
               </StyledButton>
             )}
           </List>
