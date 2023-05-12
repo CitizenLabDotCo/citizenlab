@@ -61,5 +61,17 @@ describe('EditCustomPageSettings', () => {
         expect(screen.getByTestId('feedbackErrorMessage')).toBeInTheDocument();
       });
     });
+
+    it('does not show the slug input field for FAQ page (and other "fixed" custom pages)', () => {
+      // We link to this page internally (search front for /pages/faq), so editing this slug can
+      // break links. The same goes for other "fixed" custom pages, such as 'proposals'.
+      // See TFixedPage in customPages.ts for a definition of fixed custom pages.
+      mockCustomPage.attributes.code = 'faq';
+
+      render(<EditCustomPageSettings />);
+      const slugInput = screen.queryByRole('textbox', { name: 'Slug' });
+
+      expect(slugInput).not.toBeInTheDocument();
+    });
   });
 });
