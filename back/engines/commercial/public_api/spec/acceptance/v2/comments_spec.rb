@@ -63,6 +63,13 @@ resource 'Comments' do
 
     let(:id) { comments[0].id }
 
+    before do
+      # NOTE: Temp fix until locales of factories and tenants are consistent
+      body = comments[0][:body_multiloc]
+      body['nl-NL'] = body.delete 'nl-BE'
+      comments[0].update(body_multiloc: body)
+    end
+
     context 'Default locale' do
       example_request 'Successful response' do
         assert_status 200
@@ -71,11 +78,11 @@ resource 'Comments' do
     end
 
     context 'Retrieving a different locale' do
-      let(:locale) { 'nl-BE' }
+      let(:locale) { 'nl-NL' }
 
       example_request 'Successful response', document: false do
         assert_status 200
-        expect(json_response_body[:comment][:body]).to eq comments[0].body_multiloc['nl-BE']
+        expect(json_response_body[:comment][:body]).to eq comments[0].body_multiloc['nl-NL']
       end
     end
   end

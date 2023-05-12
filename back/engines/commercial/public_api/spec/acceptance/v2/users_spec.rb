@@ -62,7 +62,7 @@ resource 'Users' do
 
     let(:id) { users[0].id }
 
-    before { users[0].update(bio_multiloc: { en: 'Yes.', 'fr-BE': 'Oui.', 'nl-BE': 'Ja.' }) }
+    before { users[0].update(bio_multiloc: { en: 'Yes.', 'fr-FR': 'Oui.', 'nl-NL': 'Ja.' }) }
 
     context 'Default locale' do
       example_request 'Successful response' do
@@ -72,11 +72,11 @@ resource 'Users' do
     end
 
     context 'Retrieving a different locale' do
-      let(:locale) { 'nl-BE' }
+      let(:locale) { 'nl-NL' }
 
       example_request 'Successful response', document: false do
         assert_status 200
-        expect(json_response_body[:user][:bio]).to eq users[0].bio_multiloc['nl-BE']
+        expect(json_response_body[:user][:bio]).to eq users[0].bio_multiloc['nl-NL']
       end
     end
   end

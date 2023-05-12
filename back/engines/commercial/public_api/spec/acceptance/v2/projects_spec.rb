@@ -60,6 +60,13 @@ resource 'Projects' do
 
     let(:id) { projects[0].id }
 
+    before do
+      # NOTE: Temp fix until locales of factories and tenants are consistent
+      title = projects[0][:title_multiloc]
+      title['nl-NL'] = title.delete 'nl-BE'
+      projects[0].update(title_multiloc: title)
+    end
+
     context 'Default locale' do
       example_request 'Successful response' do
         assert_status 200
@@ -68,11 +75,11 @@ resource 'Projects' do
     end
 
     context 'Retrieving a different locale' do
-      let(:locale) { 'nl-BE' }
+      let(:locale) { 'nl-NL' }
 
       example_request 'Successful response', document: false do
         assert_status 200
-        expect(json_response_body[:project][:title]).to eq projects[0].title_multiloc['nl-BE']
+        expect(json_response_body[:project][:title]).to eq projects[0].title_multiloc['nl-NL']
       end
     end
   end

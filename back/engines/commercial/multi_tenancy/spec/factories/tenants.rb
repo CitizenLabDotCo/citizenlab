@@ -36,14 +36,14 @@ FactoryBot.define do
     style { {} }
     settings do
       SettingsService.new.minimal_required_settings(
-        locales: %w[en fr-BE nl-BE],
+        locales: %w[en fr-FR nl-NL],
         lifecycle_stage: 'active'
       ).deep_merge({
         core: {
           organization_name: {
             'en' => 'Liege',
-            'nl-BE' => 'Luik',
-            'fr-BE' => 'Liege'
+            'nl-NL' => 'Luik',
+            'fr-FR' => 'Liege'
           },
           organization_type: 'medium_city'
         },
