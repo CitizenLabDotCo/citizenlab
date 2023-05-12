@@ -18,12 +18,12 @@ resource 'Project level Custom Fields' do
           additionalProperties: false,
           properties: {}
         },
-        'fr-FR': {
+        'fr-BE': {
           type: 'object',
           additionalProperties: false,
           properties: {}
         },
-        'nl-NL': {
+        'nl-BE': {
           type: 'object',
           additionalProperties: false,
           properties: {}
@@ -31,8 +31,8 @@ resource 'Project level Custom Fields' do
       },
       ui_schema_multiloc: {
         en: { 'ui:order': [] },
-        'fr-FR': { 'ui:order': [] },
-        'nl-NL': { 'ui:order': [] }
+        'fr-BE': { 'ui:order': [] },
+        'nl-BE': { 'ui:order': [] }
       }
     }
   end
@@ -51,8 +51,8 @@ resource 'Project level Custom Fields' do
         json_response = json_parse response_body
         expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
         json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
-        %i[en fr-FR nl-NL].each do |locale|
+        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-BE nl-BE]
+        %i[en fr-BE nl-BE].each do |locale|
           expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to match_array(
             %i[title_multiloc body_multiloc topic_ids location_description idea_images_attributes idea_files_attributes]
           )
@@ -62,7 +62,7 @@ resource 'Project level Custom Fields' do
         expect(ui_schema[:type]).to eq 'Categorization'
         expect(ui_schema[:options]).to eq({ formId: 'idea-form', inputTerm: 'question' })
         expect(ui_schema[:elements].size).to eq 3
-        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
+        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-BE nl-BE]
       end
     end
   end
@@ -94,11 +94,11 @@ resource 'Project level Custom Fields' do
         json_response = json_parse response_body
         expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
         json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
-        %i[en fr-FR nl-NL].each do |locale|
+        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-BE nl-BE]
+        %i[en fr-BE nl-BE].each do |locale|
           expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to match_array expected_json_forms_field_keys
         end
-        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
+        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-BE nl-BE]
       end
     end
   end
@@ -130,11 +130,11 @@ resource 'Project level Custom Fields' do
         json_response = json_parse response_body
         expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
         json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
-        %i[en fr-FR nl-NL].each do |locale|
+        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-BE nl-BE]
+        %i[en fr-BE nl-BE].each do |locale|
           expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to match_array expected_json_forms_field_keys
         end
-        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
+        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-BE nl-BE]
       end
     end
   end
@@ -151,11 +151,11 @@ resource 'Project level Custom Fields' do
         json_response = json_parse response_body
         expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
         json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
-        %i[en fr-FR nl-NL].each do |locale|
+        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-BE nl-BE]
+        %i[en fr-BE nl-BE].each do |locale|
           expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to match_array([custom_field.key.to_sym])
         end
-        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
+        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-BE nl-BE]
       end
     end
   end

@@ -139,43 +139,43 @@ describe SmartGroups::Rules::Email do
     it 'successfully translates different combinations of rules' do
       expect(email_is_rule.description_multiloc).to eq({
         'en' => 'e-mail is sebi@citizenlab.co',
-        'fr-FR' => 'adresse e-mail est sebi@citizenlab.co',
-        'nl-NL' => 'e-mail is sebi@citizenlab.co'
+        'fr-BE' => 'adresse e-mail est sebi@citizenlab.co',
+        'nl-BE' => 'e-mail is sebi@citizenlab.co'
       })
       expect(email_not_is_rule.description_multiloc).to eq({
         'en' => 'e-mail is not sebi@citizenlab.co',
-        'fr-FR' => 'adresse e-mail n\'est pas sebi@citizenlab.co',
-        'nl-NL' => 'e-mail is niet sebi@citizenlab.co'
+        'fr-BE' => 'adresse e-mail n\'est pas sebi@citizenlab.co',
+        'nl-BE' => 'e-mail is niet sebi@citizenlab.co'
       })
       expect(email_contains_rule.description_multiloc).to eq({
         'en' => 'e-mail contains @citizenlab',
-        'fr-FR' => 'adresse e-mail contient @citizenlab',
-        'nl-NL' => 'e-mail bevat @citizenlab'
+        'fr-BE' => 'adresse e-mail contient @citizenlab',
+        'nl-BE' => 'e-mail bevat @citizenlab'
       })
       expect(email_not_contains_rule.description_multiloc).to eq({
         'en' => 'e-mail doesn\'t contain @citizenlab',
-        'fr-FR' => 'adresse e-mail ne contient pas @citizenlab',
-        'nl-NL' => 'e-mail bevat niet @citizenlab'
+        'fr-BE' => 'adresse e-mail ne contient pas @citizenlab',
+        'nl-BE' => 'e-mail bevat niet @citizenlab'
       })
       expect(email_begins_with_rule.description_multiloc).to eq({
         'en' => 'e-mail begins with sebi',
-        'fr-FR' => 'adresse e-mail commence par sebi',
-        'nl-NL' => 'e-mail begint op sebi'
+        'fr-BE' => 'adresse e-mail commence par sebi',
+        'nl-BE' => 'e-mail begint op sebi'
       })
       expect(email_not_begins_with_rule.description_multiloc).to eq({
         'en' => 'e-mail doesn\'t begin with sebi',
-        'fr-FR' => 'adresse e-mail ne commence pas par sebi',
-        'nl-NL' => 'e-mail begint niet op sebi'
+        'fr-BE' => 'adresse e-mail ne commence pas par sebi',
+        'nl-BE' => 'e-mail begint niet op sebi'
       })
       expect(email_ends_on_rule.description_multiloc).to eq({
         'en' => 'e-mail ends on citizenlab.co',
-        'fr-FR' => 'adresse e-mail se termine sur citizenlab.co',
-        'nl-NL' => 'e-mail eindigt op citizenlab.co'
+        'fr-BE' => 'adresse e-mail se termine sur citizenlab.co',
+        'nl-BE' => 'e-mail eindigt op citizenlab.co'
       })
       expect(email_not_ends_on_rule.description_multiloc).to eq({
         'en' => 'e-mail doesn\'t end on citizenlab.co',
-        'fr-FR' => 'adresse e-mail ne se termine pas sur citizenlab.co',
-        'nl-NL' => 'e-mail eindigt niet op citizenlab.co'
+        'fr-BE' => 'adresse e-mail ne se termine pas sur citizenlab.co',
+        'nl-BE' => 'e-mail eindigt niet op citizenlab.co'
       })
     end
   end

@@ -50,7 +50,7 @@ RSpec.describe UserUiSchemaGeneratorService do
             }
           ]
         },
-        'fr-FR' => {
+        'fr-BE' => {
           type: 'VerticalLayout',
           options: {
             formId: 'user-form'
@@ -70,7 +70,7 @@ RSpec.describe UserUiSchemaGeneratorService do
             }
           ]
         },
-        'nl-NL' => {
+        'nl-BE' => {
           type: 'VerticalLayout',
           options: {
             formId: 'user-form'

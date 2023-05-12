@@ -146,10 +146,10 @@ describe XlsxExport::ValueVisitor do
       end
 
       context 'when there is a value' do
-        let(:value) { { 'en' => 'Text in EN', 'nl-NL' => 'Tekst in NL' } }
+        let(:value) { { 'en' => 'Text in EN', 'nl-BE' => 'Tekst in NL' } }
 
         it 'returns the value for the report' do
-          I18n.with_locale('nl-NL') do
+          I18n.with_locale('nl-BE') do
             expect(visitor.visit_text_multiloc(field)).to eq 'Tekst in NL'
           end
         end
@@ -168,7 +168,7 @@ describe XlsxExport::ValueVisitor do
       end
 
       context 'when there is a value' do
-        let(:value) { { 'en' => 'Line 1\nLine 2', 'nl-NL' => 'Lijn 1\nLijn2' } }
+        let(:value) { { 'en' => 'Line 1\nLine 2', 'nl-BE' => 'Lijn 1\nLijn2' } }
 
         it 'returns the empty string, because the field is not supported yet' do
           expect(visitor.visit_multiline_text_multiloc(field)).to eq ''
@@ -188,10 +188,10 @@ describe XlsxExport::ValueVisitor do
       end
 
       context 'when there is a value' do
-        let(:value) { { 'en' => +"<p>Line 1</p>\n<p>Line 2</p>", 'nl-NL' => +"<p>Lijn 1</p>\n<p>Lijn 2</p>" } }
+        let(:value) { { 'en' => +"<p>Line 1</p>\n<p>Line 2</p>", 'nl-BE' => +"<p>Lijn 1</p>\n<p>Lijn 2</p>" } }
 
         it 'returns the value for the report' do
-          I18n.with_locale('nl-NL') do
+          I18n.with_locale('nl-BE') do
             expect(visitor.visit_html_multiloc(field)).to eq 'Lijn 1  Lijn 2'
           end
         end
@@ -211,14 +211,14 @@ describe XlsxExport::ValueVisitor do
           let(:value) { nil }
 
           it 'returns the empty string' do
-            I18n.with_locale('nl-NL') do
+            I18n.with_locale('nl-BE') do
               expect(visitor.visit_select(field)).to eq ''
             end
           end
         end
 
         context 'when there is a value' do
-          let!(:area) { create(:area, title_multiloc: { 'en' => 'Paris', 'nl-NL' => 'Parijs' }) }
+          let!(:area) { create(:area, title_multiloc: { 'en' => 'Paris', 'nl-BE' => 'Parijs' }) }
           let(:value) { area.id }
           let(:option_index) do
             {
@@ -227,7 +227,7 @@ describe XlsxExport::ValueVisitor do
           end
 
           it 'returns the value for the report' do
-            I18n.with_locale('nl-NL') do
+            I18n.with_locale('nl-BE') do
               expect(visitor.visit_select(field)).to eq 'Parijs'
             end
           end
@@ -240,7 +240,7 @@ describe XlsxExport::ValueVisitor do
             :custom_field_option,
             custom_field: field,
             key: 'cat',
-            title_multiloc: { 'en' => 'Cat', 'nl-NL' => 'Kat' }
+            title_multiloc: { 'en' => 'Cat', 'nl-BE' => 'Kat' }
           )
         end
         let!(:field_option2) do
@@ -248,7 +248,7 @@ describe XlsxExport::ValueVisitor do
             :custom_field_option,
             custom_field: field,
             key: 'dog',
-            title_multiloc: { 'en' => 'Dog', 'nl-NL' => 'Hond' }
+            title_multiloc: { 'en' => 'Dog', 'nl-BE' => 'Hond' }
           )
         end
         let(:option_index) do
@@ -262,7 +262,7 @@ describe XlsxExport::ValueVisitor do
           let(:value) { nil }
 
           it 'returns the empty string' do
-            I18n.with_locale('nl-NL') do
+            I18n.with_locale('nl-BE') do
               expect(visitor.visit_select(field)).to eq ''
             end
           end
@@ -272,7 +272,7 @@ describe XlsxExport::ValueVisitor do
           let(:value) { 'cat' }
 
           it 'returns the value for the report' do
-            I18n.with_locale('nl-NL') do
+            I18n.with_locale('nl-BE') do
               expect(visitor.visit_select(field)).to eq 'Kat'
             end
           end
@@ -287,7 +287,7 @@ describe XlsxExport::ValueVisitor do
           :custom_field_option,
           custom_field: field,
           key: 'cat',
-          title_multiloc: { 'en' => 'Cat', 'nl-NL' => 'Kat' }
+          title_multiloc: { 'en' => 'Cat', 'nl-BE' => 'Kat' }
         )
       end
       let!(:field_option2) do
@@ -295,7 +295,7 @@ describe XlsxExport::ValueVisitor do
           :custom_field_option,
           custom_field: field,
           key: 'dog',
-          title_multiloc: { 'en' => 'Dog', 'nl-NL' => 'Hond' }
+          title_multiloc: { 'en' => 'Dog', 'nl-BE' => 'Hond' }
         )
       end
       let(:option_index) do
@@ -309,7 +309,7 @@ describe XlsxExport::ValueVisitor do
         let(:value) { [] }
 
         it 'returns the empty string' do
-          I18n.with_locale('nl-NL') do
+          I18n.with_locale('nl-BE') do
             expect(visitor.visit_multiselect(field)).to eq ''
           end
         end
@@ -319,7 +319,7 @@ describe XlsxExport::ValueVisitor do
         let(:value) { ['dog'] }
 
         it 'returns the value for the report' do
-          I18n.with_locale('nl-NL') do
+          I18n.with_locale('nl-BE') do
             expect(visitor.visit_multiselect(field)).to eq 'Hond'
           end
         end
@@ -329,7 +329,7 @@ describe XlsxExport::ValueVisitor do
         let(:value) { %w[cat dog] }
 
         it 'returns the value for the report' do
-          I18n.with_locale('nl-NL') do
+          I18n.with_locale('nl-BE') do
             expect(visitor.visit_multiselect(field)).to eq 'Kat, Hond'
           end
         end
@@ -364,7 +364,7 @@ describe XlsxExport::ValueVisitor do
 
         context 'when there is no value' do
           it 'returns the empty string' do
-            I18n.with_locale('nl-NL') do
+            I18n.with_locale('nl-BE') do
               expect(visitor.visit_files(field)).to eq ''
             end
           end
@@ -447,7 +447,7 @@ describe XlsxExport::ValueVisitor do
         let(:value) { nil }
 
         it 'returns the empty string' do
-          I18n.with_locale('nl-NL') do
+          I18n.with_locale('nl-BE') do
             expect(visitor.visit_file_upload(field)).to eq ''
           end
         end
@@ -478,7 +478,7 @@ describe XlsxExport::ValueVisitor do
         let(:value) { nil }
 
         it 'returns the empty string' do
-          I18n.with_locale('nl-NL') do
+          I18n.with_locale('nl-BE') do
             expect(visitor.visit_topic_ids(field)).to eq ''
           end
         end
@@ -487,13 +487,13 @@ describe XlsxExport::ValueVisitor do
       context 'when there is one topic selected' do
         let(:topics) do
           [
-            create(:topic, code: 'nature', title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' })
+            create(:topic, code: 'nature', title_multiloc: { 'en' => 'Topic 1', 'nl-BE' => 'Onderwerp 1' })
           ]
         end
         let(:value) { ['nature'] }
 
         it 'returns the value for the report' do
-          I18n.with_locale('nl-NL') do
+          I18n.with_locale('nl-BE') do
             expect(visitor.visit_topic_ids(field)).to eq 'Onderwerp 1'
           end
         end
@@ -502,14 +502,14 @@ describe XlsxExport::ValueVisitor do
       context 'when there are multiple topics selected' do
         let(:topics) do
           [
-            create(:topic, code: 'nature', title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' }),
-            create(:topic, code: 'waste', title_multiloc: { 'en' => 'Topic 2', 'nl-NL' => 'Onderwerp 2' })
+            create(:topic, code: 'nature', title_multiloc: { 'en' => 'Topic 1', 'nl-BE' => 'Onderwerp 1' }),
+            create(:topic, code: 'waste', title_multiloc: { 'en' => 'Topic 2', 'nl-BE' => 'Onderwerp 2' })
           ]
         end
         let(:value) { %w[nature waste] }
 
         it 'returns the value for the report' do
-          I18n.with_locale('nl-NL') do
+          I18n.with_locale('nl-BE') do
             expect(visitor.visit_topic_ids(field)).to eq 'Onderwerp 1, Onderwerp 2'
           end
         end

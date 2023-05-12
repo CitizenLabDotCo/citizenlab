@@ -115,33 +115,33 @@ describe SmartGroups::Rules::Role do
 
       expect(role_is_admin_rule.description_multiloc).to eq({
         'en' => 'Role is admin',
-        'fr-FR' => 'Statut est administrateur',
-        'nl-NL' => 'Rol is beheerder'
+        'fr-BE' => 'Statut est administrateur',
+        'nl-BE' => 'Rol is beheerder'
       })
       expect(role_not_is_admin_rule.description_multiloc).to eq({
         'en' => 'Role is not admin',
-        'fr-FR' => 'Statut n\'est pas administrateur',
-        'nl-NL' => 'Rol is niet beheerder'
+        'fr-BE' => 'Statut n\'est pas administrateur',
+        'nl-BE' => 'Rol is niet beheerder'
       })
       expect(role_is_project_moderator_rule.description_multiloc).to eq({
         'en' => 'Role is project moderator',
-        'fr-FR' => 'Statut est modérateur de projet',
-        'nl-NL' => 'Rol is project moderator'
+        'fr-BE' => 'Statut est modérateur de projet',
+        'nl-BE' => 'Rol is project moderator'
       })
       expect(role_not_is_project_moderator_rule.description_multiloc).to eq({
         'en' => 'Role is not project moderator',
-        'fr-FR' => 'Statut n\'est pas modérateur de projet',
-        'nl-NL' => 'Rol is niet project moderator'
+        'fr-BE' => 'Statut n\'est pas modérateur de projet',
+        'nl-BE' => 'Rol is niet project moderator'
       })
       expect(role_is_normal_user_rule.description_multiloc).to eq({
         'en' => 'Role is normal user',
-        'fr-FR' => 'Statut est utilisateur normal',
-        'nl-NL' => 'Rol is gewone gebruiker'
+        'fr-BE' => 'Statut est utilisateur normal',
+        'nl-BE' => 'Rol is gewone gebruiker'
       })
       expect(role_not_is_normal_user_rule.description_multiloc).to eq({
         'en' => 'Role is not normal user',
-        'fr-FR' => 'Statut n\'est pas utilisateur normal',
-        'nl-NL' => 'Rol is niet gewone gebruiker'
+        'fr-BE' => 'Statut n\'est pas utilisateur normal',
+        'nl-BE' => 'Rol is niet gewone gebruiker'
       })
     end
   end

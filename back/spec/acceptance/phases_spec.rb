@@ -177,8 +177,8 @@ resource 'Phases' do
           expect(field2.input_type).to eq 'select'
           expect(field2.title_multiloc).to match({
             'en' => an_instance_of(String),
-            'fr-FR' => an_instance_of(String),
-            'nl-NL' => an_instance_of(String)
+            'fr-BE' => an_instance_of(String),
+            'nl-BE' => an_instance_of(String)
           })
           options = field2.options
           expect(options.size).to eq 2
@@ -186,13 +186,13 @@ resource 'Phases' do
           expect(options[1].key).to eq 'option2'
           expect(options[0].title_multiloc).to match({
             'en' => an_instance_of(String),
-            'fr-FR' => an_instance_of(String),
-            'nl-NL' => an_instance_of(String)
+            'fr-BE' => an_instance_of(String),
+            'nl-BE' => an_instance_of(String)
           })
           expect(options[1].title_multiloc).to match({
             'en' => an_instance_of(String),
-            'fr-FR' => an_instance_of(String),
-            'nl-NL' => an_instance_of(String)
+            'fr-BE' => an_instance_of(String),
+            'nl-BE' => an_instance_of(String)
           })
 
           expect(phase_in_db.participation_method).to eq 'native_survey'

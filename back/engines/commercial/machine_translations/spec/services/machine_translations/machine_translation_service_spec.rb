@@ -21,7 +21,7 @@ describe MachineTranslations::MachineTranslationService do
     end
 
     it 'propagates empty translations' do
-      text = translator.translate '', 'en', 'nl-NL'
+      text = translator.translate '', 'en', 'nl-BE'
       expect(text).to eq ''
     end
 

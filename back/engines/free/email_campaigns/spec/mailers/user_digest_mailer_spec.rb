@@ -58,7 +58,7 @@ RSpec.describe EmailCampaigns::UserDigestMailer do
       let_it_be(:recipient1) { create(:user, locale: 'en') }
       let_it_be(:command1) { { recipient: recipient1, event_payload: event_payload } }
 
-      let_it_be(:recipient2) { create(:user, locale: 'nl-NL') }
+      let_it_be(:recipient2) { create(:user, locale: 'nl-BE') }
       let_it_be(:command2) { { recipient: recipient2, event_payload: event_payload } }
 
       let_it_be(:mail1) { described_class.with(command: command1, campaign: campaign).campaign_mail.deliver_now }

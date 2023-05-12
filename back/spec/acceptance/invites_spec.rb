@@ -184,7 +184,7 @@ resource 'Invites' do
         let(:emails) { Array.new(5) { Faker::Internet.email }.push(nil) }
         let(:group_ids) { [create(:group).id] }
         let(:project) { create(:project) }
-        let(:locale) { 'nl-NL' }
+        let(:locale) { 'nl-BE' }
         let(:invite_text) { 'Welcome, my friend!' }
 
         let(:roles) do
@@ -257,7 +257,7 @@ resource 'Invites' do
               email: user.email,
               first_name: rand(3) == 0 ? user.first_name : nil,
               last_name: rand(3) == 0 ? user.last_name : nil,
-              language: i == 0 ? 'nl-NL' : nil,
+              language: i == 0 ? 'nl-BE' : nil,
               admin: i == 0 ? true : nil,
               groups: i == 0 ? create(:group).title_multiloc.values.first : nil
             }
@@ -274,7 +274,7 @@ resource 'Invites' do
           expect(Invite.all.map { |i| i.invitee.email }).to match_array hash_array.pluck(:email)
           expect(Invite.all.map { |i| i.invitee.groups.map(&:id) }.flatten.uniq).to match_array Group.all.map(&:id)
           expect(Invite.all.map { |i| i.invitee.admin? }.uniq).to eq [true]
-          expect(Invite.all.map { |i| i.invitee.locale }.uniq).to match_array ['nl-NL', locale]
+          expect(Invite.all.map { |i| i.invitee.locale }.uniq).to match_array ['nl-BE', locale]
         end
       end
 
@@ -336,7 +336,7 @@ resource 'Invites' do
       let(:first_name) { 'Bart' }
       let(:last_name) { 'Boulettos' }
       let(:password) { 'I<3BouletteSpecial' }
-      let(:locale) { 'nl-NL' }
+      let(:locale) { 'nl-BE' }
 
       example_request 'Accept an invite' do
         assert_status(200)

@@ -23,7 +23,7 @@ RSpec.describe InputUiSchemaGeneratorService do
         let!(:custom_form) do
           create(:custom_form, :with_default_fields, participation_context: project).tap do |form|
             form.custom_fields.find_by(code: 'title_multiloc').update!(
-              description_multiloc: { 'en' => 'My title description', 'nl-NL' => 'Mijn titel beschrijving' }
+              description_multiloc: { 'en' => 'My title description', 'nl-BE' => 'Mijn titel beschrijving' }
             )
           end
         end
@@ -34,13 +34,13 @@ RSpec.describe InputUiSchemaGeneratorService do
             resource: custom_form,
             title_multiloc: {
               'en' => 'Extra fields',
-              # No 'nl-NL' to describe that it will default to 'en'.
-              'fr-FR' => 'Extra choses'
+              # No 'nl-BE' to describe that it will default to 'en'.
+              'fr-BE' => 'Extra choses'
             },
             description_multiloc: {
               'en' => 'Custom stuff',
-              # No 'nl-NL' to describe that it will default to 'en'.
-              'fr-FR' => 'Des choses en plus'
+              # No 'nl-BE' to describe that it will default to 'en'.
+              'fr-BE' => 'Des choses en plus'
             }
           )
         end
@@ -53,19 +53,19 @@ RSpec.describe InputUiSchemaGeneratorService do
             key: 'extra_field',
             title_multiloc: {
               'en' => 'Extra field title',
-              'nl-NL' => 'Extra veldtitel'
-              # No 'fr-FR' to describe that it will default to 'en'.
+              'nl-BE' => 'Extra veldtitel'
+              # No 'fr-BE' to describe that it will default to 'en'.
             },
             description_multiloc: {
               'en' => 'Extra field description',
-              'nl-NL' => 'Extra veldbeschrijving'
-              # No 'fr-FR' to describe that it will default to 'en'.
+              'nl-BE' => 'Extra veldbeschrijving'
+              # No 'fr-BE' to describe that it will default to 'en'.
             }
           )
         end
 
         it 'returns the schema for the given fields' do
-          expect(ui_schema.keys).to match_array %w[en fr-FR nl-NL]
+          expect(ui_schema.keys).to match_array %w[en fr-BE nl-BE]
           # en
           expect(ui_schema['en']).to eq(
             type: 'Categorization',
@@ -101,27 +101,27 @@ RSpec.describe InputUiSchemaGeneratorService do
                       },
                       {
                         type: 'Control',
-                        scope: '#/properties/title_multiloc/properties/fr-FR',
+                        scope: '#/properties/title_multiloc/properties/fr-BE',
                         label: 'Title',
                         options: {
                           answer_visible_to: 'public',
                           description: 'My title description',
                           isAdminField: false,
                           hasRule: false,
-                          locale: 'fr-FR',
+                          locale: 'fr-BE',
                           trim_on_blur: true
                         }
                       },
                       {
                         type: 'Control',
-                        scope: '#/properties/title_multiloc/properties/nl-NL',
+                        scope: '#/properties/title_multiloc/properties/nl-BE',
                         label: 'Title',
                         options: {
                           answer_visible_to: 'public',
                           description: 'My title description',
                           isAdminField: false,
                           hasRule: false,
-                          locale: 'nl-NL',
+                          locale: 'nl-BE',
                           trim_on_blur: true
                         }
                       }
@@ -146,7 +146,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                       },
                       {
                         type: 'Control',
-                        scope: '#/properties/body_multiloc/properties/fr-FR',
+                        scope: '#/properties/body_multiloc/properties/fr-BE',
                         label: 'Description',
                         options: {
                           answer_visible_to: 'public',
@@ -154,12 +154,12 @@ RSpec.describe InputUiSchemaGeneratorService do
                           isAdminField: false,
                           hasRule: false,
                           render: 'WYSIWYG',
-                          locale: 'fr-FR'
+                          locale: 'fr-BE'
                         }
                       },
                       {
                         type: 'Control',
-                        scope: '#/properties/body_multiloc/properties/nl-NL',
+                        scope: '#/properties/body_multiloc/properties/nl-BE',
                         label: 'Description',
                         options: {
                           answer_visible_to: 'public',
@@ -167,7 +167,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                           isAdminField: false,
                           hasRule: false,
                           render: 'WYSIWYG',
-                          locale: 'nl-NL'
+                          locale: 'nl-BE'
                         }
                       }
                     ]
@@ -268,28 +268,28 @@ RSpec.describe InputUiSchemaGeneratorService do
                       },
                       {
                         type: 'Control',
-                        scope: '#/properties/extra_field/properties/fr-FR',
+                        scope: '#/properties/extra_field/properties/fr-BE',
                         label: 'Extra field title',
                         options: {
                           answer_visible_to: 'admins',
                           description: 'Extra field description',
                           isAdminField: false,
                           hasRule: false,
-                          locale: 'fr-FR',
+                          locale: 'fr-BE',
                           render: 'WYSIWYG',
                           trim_on_blur: true
                         }
                       },
                       {
                         type: 'Control',
-                        scope: '#/properties/extra_field/properties/nl-NL',
+                        scope: '#/properties/extra_field/properties/nl-BE',
                         label: 'Extra field title',
                         options: {
                           answer_visible_to: 'admins',
                           description: 'Extra field description',
                           isAdminField: false,
                           hasRule: false,
-                          locale: 'nl-NL',
+                          locale: 'nl-BE',
                           render: 'WYSIWYG',
                           trim_on_blur: true
                         }
@@ -300,8 +300,8 @@ RSpec.describe InputUiSchemaGeneratorService do
               }
             ]
           )
-          # fr-FR
-          expect(ui_schema['fr-FR']).to match(
+          # fr-BE
+          expect(ui_schema['fr-BE']).to match(
             type: 'Categorization',
             options: {
               formId: 'idea-form',
@@ -322,14 +322,14 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: hash_including(locale: 'en')
                       ),
                       hash_including(
-                        scope: '#/properties/title_multiloc/properties/fr-FR',
+                        scope: '#/properties/title_multiloc/properties/fr-BE',
                         label: 'Titre',
-                        options: hash_including(locale: 'fr-FR')
+                        options: hash_including(locale: 'fr-BE')
                       ),
                       hash_including(
-                        scope: '#/properties/title_multiloc/properties/nl-NL',
+                        scope: '#/properties/title_multiloc/properties/nl-BE',
                         label: 'Titre',
-                        options: hash_including(locale: 'nl-NL')
+                        options: hash_including(locale: 'nl-BE')
                       )
                     ]
                   ),
@@ -343,14 +343,14 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: hash_including(locale: 'en', render: 'WYSIWYG')
                       ),
                       hash_including(
-                        scope: '#/properties/body_multiloc/properties/fr-FR',
+                        scope: '#/properties/body_multiloc/properties/fr-BE',
                         label: 'Description',
-                        options: hash_including(locale: 'fr-FR', render: 'WYSIWYG')
+                        options: hash_including(locale: 'fr-BE', render: 'WYSIWYG')
                       ),
                       hash_including(
-                        scope: '#/properties/body_multiloc/properties/nl-NL',
+                        scope: '#/properties/body_multiloc/properties/nl-BE',
                         label: 'Description',
-                        options: hash_including(locale: 'nl-NL', render: 'WYSIWYG')
+                        options: hash_including(locale: 'nl-BE', render: 'WYSIWYG')
                       )
                     ]
                   )
@@ -409,15 +409,15 @@ RSpec.describe InputUiSchemaGeneratorService do
                       ),
                       hash_including(
                         type: 'Control',
-                        scope: '#/properties/extra_field/properties/fr-FR',
+                        scope: '#/properties/extra_field/properties/fr-BE',
                         label: 'Extra field title',
-                        options: hash_including(description: 'Extra field description', locale: 'fr-FR', render: 'WYSIWYG')
+                        options: hash_including(description: 'Extra field description', locale: 'fr-BE', render: 'WYSIWYG')
                       ),
                       hash_including(
                         type: 'Control',
-                        scope: '#/properties/extra_field/properties/nl-NL',
+                        scope: '#/properties/extra_field/properties/nl-BE',
                         label: 'Extra field title',
-                        options: hash_including(description: 'Extra field description', locale: 'nl-NL', render: 'WYSIWYG')
+                        options: hash_including(description: 'Extra field description', locale: 'nl-BE', render: 'WYSIWYG')
                       )
                     ]
                   )
@@ -425,8 +425,8 @@ RSpec.describe InputUiSchemaGeneratorService do
               )
             ]
           )
-          # nl-NL
-          expect(ui_schema['nl-NL']).to match(
+          # nl-BE
+          expect(ui_schema['nl-BE']).to match(
             type: 'Categorization',
             options: {
               formId: 'idea-form',
@@ -447,14 +447,14 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: hash_including(locale: 'en', description: 'Mijn titel beschrijving')
                       ),
                       hash_including(
-                        scope: '#/properties/title_multiloc/properties/fr-FR',
+                        scope: '#/properties/title_multiloc/properties/fr-BE',
                         label: 'Titel',
-                        options: hash_including(locale: 'fr-FR', description: 'Mijn titel beschrijving')
+                        options: hash_including(locale: 'fr-BE', description: 'Mijn titel beschrijving')
                       ),
                       hash_including(
-                        scope: '#/properties/title_multiloc/properties/nl-NL',
+                        scope: '#/properties/title_multiloc/properties/nl-BE',
                         label: 'Titel',
-                        options: hash_including(locale: 'nl-NL', description: 'Mijn titel beschrijving')
+                        options: hash_including(locale: 'nl-BE', description: 'Mijn titel beschrijving')
                       )
                     ]
                   ),
@@ -468,14 +468,14 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: hash_including(locale: 'en', render: 'WYSIWYG')
                       ),
                       hash_including(
-                        scope: '#/properties/body_multiloc/properties/fr-FR',
+                        scope: '#/properties/body_multiloc/properties/fr-BE',
                         label: 'Beschrijving',
-                        options: hash_including(locale: 'fr-FR', render: 'WYSIWYG')
+                        options: hash_including(locale: 'fr-BE', render: 'WYSIWYG')
                       ),
                       hash_including(
-                        scope: '#/properties/body_multiloc/properties/nl-NL',
+                        scope: '#/properties/body_multiloc/properties/nl-BE',
                         label: 'Beschrijving',
-                        options: hash_including(locale: 'nl-NL', render: 'WYSIWYG')
+                        options: hash_including(locale: 'nl-BE', render: 'WYSIWYG')
                       )
                     ]
                   )
@@ -534,15 +534,15 @@ RSpec.describe InputUiSchemaGeneratorService do
                       ),
                       hash_including(
                         type: 'Control',
-                        scope: '#/properties/extra_field/properties/fr-FR',
+                        scope: '#/properties/extra_field/properties/fr-BE',
                         label: 'Extra veldtitel',
-                        options: hash_including(description: 'Extra veldbeschrijving', locale: 'fr-FR', render: 'WYSIWYG')
+                        options: hash_including(description: 'Extra veldbeschrijving', locale: 'fr-BE', render: 'WYSIWYG')
                       ),
                       hash_including(
                         type: 'Control',
-                        scope: '#/properties/extra_field/properties/nl-NL',
+                        scope: '#/properties/extra_field/properties/nl-BE',
                         label: 'Extra veldtitel',
-                        options: hash_including(description: 'Extra veldbeschrijving', locale: 'nl-NL', render: 'WYSIWYG')
+                        options: hash_including(description: 'Extra veldbeschrijving', locale: 'nl-BE', render: 'WYSIWYG')
                       )
                     ]
                   )
@@ -566,7 +566,7 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
 
         it 'returns the schema for the given fields' do
-          expect(ui_schema.keys).to match_array %w[en fr-FR nl-NL]
+          expect(ui_schema.keys).to match_array %w[en fr-BE nl-BE]
           expect(ui_schema['en']).to match(
             type: 'Categorization',
             options: {
@@ -589,7 +589,7 @@ RSpec.describe InputUiSchemaGeneratorService do
         let(:custom_form) { create(:custom_form, participation_context: project) }
 
         it 'returns the schema for the default fields' do
-          expect(ui_schema.keys).to match_array %w[en fr-FR nl-NL]
+          expect(ui_schema.keys).to match_array %w[en fr-BE nl-BE]
           expect(ui_schema['en']).to match(
             type: 'Categorization',
             options: {
@@ -611,14 +611,14 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: hash_including(locale: 'en')
                       ),
                       hash_including(
-                        scope: '#/properties/title_multiloc/properties/fr-FR',
+                        scope: '#/properties/title_multiloc/properties/fr-BE',
                         label: 'Title',
-                        options: hash_including(locale: 'fr-FR')
+                        options: hash_including(locale: 'fr-BE')
                       ),
                       hash_including(
-                        scope: '#/properties/title_multiloc/properties/nl-NL',
+                        scope: '#/properties/title_multiloc/properties/nl-BE',
                         label: 'Title',
-                        options: hash_including(locale: 'nl-NL')
+                        options: hash_including(locale: 'nl-BE')
                       )
                     ]
                   ),
@@ -632,14 +632,14 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: hash_including(locale: 'en', render: 'WYSIWYG')
                       ),
                       hash_including(
-                        scope: '#/properties/body_multiloc/properties/fr-FR',
+                        scope: '#/properties/body_multiloc/properties/fr-BE',
                         label: 'Description',
-                        options: hash_including(locale: 'fr-FR', render: 'WYSIWYG')
+                        options: hash_including(locale: 'fr-BE', render: 'WYSIWYG')
                       ),
                       hash_including(
-                        scope: '#/properties/body_multiloc/properties/nl-NL',
+                        scope: '#/properties/body_multiloc/properties/nl-BE',
                         label: 'Description',
-                        options: hash_including(locale: 'nl-NL', render: 'WYSIWYG')
+                        options: hash_including(locale: 'nl-BE', render: 'WYSIWYG')
                       )
                     ]
                   )
@@ -1179,13 +1179,13 @@ RSpec.describe InputUiSchemaGeneratorService do
           key: field_key,
           title_multiloc: {
             'en' => 'Body multiloc field title',
-            'nl-NL' => 'Body multiloc veldtitel'
-            # No 'fr-FR' to describe that it will default to 'en'.
+            'nl-BE' => 'Body multiloc veldtitel'
+            # No 'fr-BE' to describe that it will default to 'en'.
           },
           description_multiloc: {
             'en' => 'Body multiloc field description',
-            'nl-NL' => 'Body multiloc veldbeschrijving'
-            # No 'fr-FR' to describe that it will default to 'en'.
+            'nl-BE' => 'Body multiloc veldbeschrijving'
+            # No 'fr-BE' to describe that it will default to 'en'.
           }
         )
       end
@@ -1210,32 +1210,32 @@ RSpec.describe InputUiSchemaGeneratorService do
               },
               {
                 type: 'Control',
-                scope: "#/properties/#{field_key}/properties/fr-FR",
+                scope: "#/properties/#{field_key}/properties/fr-BE",
                 label: 'Body multiloc field title',
                 options: {
                   description: 'Body multiloc field description',
                   isAdminField: false,
                   hasRule: false,
                   render: 'WYSIWYG',
-                  locale: 'fr-FR'
+                  locale: 'fr-BE'
                 }
               },
               {
                 type: 'Control',
-                scope: "#/properties/#{field_key}/properties/nl-NL",
+                scope: "#/properties/#{field_key}/properties/nl-BE",
                 label: 'Body multiloc field title',
                 options: {
                   description: 'Body multiloc field description',
                   isAdminField: false,
                   hasRule: false,
                   render: 'WYSIWYG',
-                  locale: 'nl-NL'
+                  locale: 'nl-BE'
                 }
               }
             ]
           })
         end
-        I18n.with_locale('fr-FR') do
+        I18n.with_locale('fr-BE') do
           expect(generator.visit_html_multiloc(field)).to eq({
             type: 'VerticalLayout',
             options: { input_type: field.input_type, render: 'multiloc' },
@@ -1254,32 +1254,32 @@ RSpec.describe InputUiSchemaGeneratorService do
               },
               {
                 type: 'Control',
-                scope: "#/properties/#{field_key}/properties/fr-FR",
+                scope: "#/properties/#{field_key}/properties/fr-BE",
                 label: 'Body multiloc field title',
                 options: {
                   description: 'Body multiloc field description',
                   isAdminField: false,
                   hasRule: false,
                   render: 'WYSIWYG',
-                  locale: 'fr-FR'
+                  locale: 'fr-BE'
                 }
               },
               {
                 type: 'Control',
-                scope: "#/properties/#{field_key}/properties/nl-NL",
+                scope: "#/properties/#{field_key}/properties/nl-BE",
                 label: 'Body multiloc field title',
                 options: {
                   description: 'Body multiloc field description',
                   isAdminField: false,
                   hasRule: false,
                   render: 'WYSIWYG',
-                  locale: 'nl-NL'
+                  locale: 'nl-BE'
                 }
               }
             ]
           })
         end
-        I18n.with_locale('nl-NL') do
+        I18n.with_locale('nl-BE') do
           expect(generator.visit_html_multiloc(field)).to eq({
             type: 'VerticalLayout',
             options: { input_type: field.input_type, render: 'multiloc' },
@@ -1298,26 +1298,26 @@ RSpec.describe InputUiSchemaGeneratorService do
               },
               {
                 type: 'Control',
-                scope: "#/properties/#{field_key}/properties/fr-FR",
+                scope: "#/properties/#{field_key}/properties/fr-BE",
                 label: 'Body multiloc veldtitel',
                 options: {
                   description: 'Body multiloc veldbeschrijving',
                   isAdminField: false,
                   hasRule: false,
                   render: 'WYSIWYG',
-                  locale: 'fr-FR'
+                  locale: 'fr-BE'
                 }
               },
               {
                 type: 'Control',
-                scope: "#/properties/#{field_key}/properties/nl-NL",
+                scope: "#/properties/#{field_key}/properties/nl-BE",
                 label: 'Body multiloc veldtitel',
                 options: {
                   description: 'Body multiloc veldbeschrijving',
                   isAdminField: false,
                   hasRule: false,
                   render: 'WYSIWYG',
-                  locale: 'nl-NL'
+                  locale: 'nl-BE'
                 }
               }
             ]
@@ -1357,7 +1357,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             },
             {
               type: 'Control',
-              scope: "#/properties/#{field_key}/properties/fr-FR",
+              scope: "#/properties/#{field_key}/properties/fr-BE",
               label: 'HTML multiloc field title',
               options: {
                 description: 'HTML multiloc field description',
@@ -1365,12 +1365,12 @@ RSpec.describe InputUiSchemaGeneratorService do
                 hasRule: false,
                 render: 'WYSIWYG',
                 trim_on_blur: true,
-                locale: 'fr-FR'
+                locale: 'fr-BE'
               }
             },
             {
               type: 'Control',
-              scope: "#/properties/#{field_key}/properties/nl-NL",
+              scope: "#/properties/#{field_key}/properties/nl-BE",
               label: 'HTML multiloc field title',
               options: {
                 description: 'HTML multiloc field description',
@@ -1378,7 +1378,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 hasRule: false,
                 render: 'WYSIWYG',
                 trim_on_blur: true,
-                locale: 'nl-NL'
+                locale: 'nl-BE'
               }
             }
           ]

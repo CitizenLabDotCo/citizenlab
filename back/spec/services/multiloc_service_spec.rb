@@ -7,7 +7,7 @@ describe MultilocService do
 
   before do
     settings = AppConfiguration.instance.settings
-    settings['core']['locales'] = %w[fr-FR en nl-BE]
+    settings['core']['locales'] = %w[fr-BE en nl-BE]
     AppConfiguration.instance.update(settings: settings)
   end
 
@@ -16,7 +16,7 @@ describe MultilocService do
     let(:translations) do
       {
         'nl-BE' => 'woord',
-        'fr-FR' => 'mot',
+        'fr-BE' => 'mot',
         'en' => 'word'
       }
     end
@@ -72,7 +72,7 @@ describe MultilocService do
           hello: 'hallo!'
         }
       })
-      I18n.backend.store_translations(:'fr-FR', {
+      I18n.backend.store_translations(:'fr-BE', {
         foo: {
           hello: 'bonjour!'
         }
@@ -83,7 +83,7 @@ describe MultilocService do
       expect(service.i18n_to_multiloc('foo.hello')).to eq({
         'en' => 'hello!',
         'nl-BE' => 'hallo!',
-        'fr-FR' => 'bonjour!'
+        'fr-BE' => 'bonjour!'
       })
     end
 
@@ -92,9 +92,9 @@ describe MultilocService do
     end
 
     it 'supports setting the returned locales explicitly' do
-      expect(service.i18n_to_multiloc('foo.hello', locales: %w[en fr-FR])).to eq({
+      expect(service.i18n_to_multiloc('foo.hello', locales: %w[en fr-BE])).to eq({
         'en' => 'hello!',
-        'fr-FR' => 'bonjour!'
+        'fr-BE' => 'bonjour!'
       })
     end
   end
@@ -102,7 +102,7 @@ describe MultilocService do
   describe 'block_to_multiloc' do
     it 'assembles a multiloc object with a given block' do
       expect(service.block_to_multiloc { |locale| locale }).to eq({
-        'fr-FR' => 'fr-FR',
+        'fr-BE' => 'fr-BE',
         'en' => 'en',
         'nl-BE' => 'nl-BE'
       })
@@ -110,7 +110,7 @@ describe MultilocService do
 
     it 'switches the i18n.locale in the given block' do
       expect(service.block_to_multiloc { |_locale| I18n.locale.to_s }).to eq({
-        'fr-FR' => 'fr-FR',
+        'fr-BE' => 'fr-BE',
         'en' => 'en',
         'nl-BE' => 'nl-BE'
       })
@@ -127,7 +127,7 @@ describe MultilocService do
     end
 
     it 'returns false on a multiloc with values' do
-      expect(service.empty?({ en: 'yes', 'nl-NL' => '' })).to be false
+      expect(service.empty?({ en: 'yes', 'nl-BE' => '' })).to be false
     end
   end
 end

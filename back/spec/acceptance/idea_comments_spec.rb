@@ -327,7 +327,7 @@ resource 'Comments' do
       end
 
       describe do
-        let(:body_multiloc) { { 'fr-FR' => '' } }
+        let(:body_multiloc) { { 'fr-BE' => '' } }
 
         example_request '[error] Create an invalid comment' do
           assert_status 422

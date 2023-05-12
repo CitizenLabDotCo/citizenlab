@@ -52,8 +52,8 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       field = participation_context_in_db.custom_form.custom_fields[1]
       expect(field.title_multiloc).to match({
         'en' => 'Default question',
-        'fr-FR' => 'Question par défaut',
-        'nl-NL' => 'Standaardvraag'
+        'fr-BE' => 'Question par défaut',
+        'nl-BE' => 'Standaardvraag'
       })
       expect(field.description_multiloc).to eq({})
       options = field.options
@@ -62,13 +62,13 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       expect(options[1].key).to eq 'option2'
       expect(options[0].title_multiloc).to match({
         'en' => 'First option',
-        'fr-FR' => 'Première option',
-        'nl-NL' => 'Eerste optie'
+        'fr-BE' => 'Première option',
+        'nl-BE' => 'Eerste optie'
       })
       expect(options[1].title_multiloc).to match({
         'en' => 'Second option',
-        'fr-FR' => 'Deuxième option',
-        'nl-NL' => 'Tweede optie'
+        'fr-BE' => 'Deuxième option',
+        'nl-BE' => 'Tweede optie'
       })
     end
   end

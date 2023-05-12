@@ -6,12 +6,12 @@ describe LocalProjectCopyService do
   let(:service) { described_class.new }
 
   describe 'project copy' do
-    # Some factories use en & nl-NL multilocs, others use en & nl-BE, but the apply_template method, invoked by the
+    # Some factories use en & nl-BE multilocs, others use en & nl-BE, but the apply_template method, invoked by the
     # LocalProjectCopyService, will only apply multiloc k-v pairs with keys that match the target tenant locale(s).
     # Thus, we specify all 3 locales to enable easier testing with factory generated multilocs.
     before_all do
       config = AppConfiguration.instance
-      config.settings['core']['locales'] = %w[en nl-BE nl-NL]
+      config.settings['core']['locales'] = %w[en nl-BE nl-BE]
       config.save!
     end
 

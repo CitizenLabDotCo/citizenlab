@@ -6,7 +6,7 @@ FactoryBot.define do
   factory :app_configuration do
     transient do
       lifecycle { 'active' }
-      locales { %w[en nl-BE fr-FR] }
+      locales { %w[en nl-BE fr-BE] }
     end
 
     host { 'localhost' }
@@ -21,7 +21,7 @@ FactoryBot.define do
           'organization_name' => {
             'en' => Faker::Address.city,
             'nl-BE' => Faker::Address.city,
-            'fr-FR' => Faker::Address.city
+            'fr-BE' => Faker::Address.city
           },
           'lifecycle_stage' => lifecycle,
           'timezone' => 'Europe/Brussels',
@@ -39,10 +39,10 @@ FactoryBot.define do
           'days_limit' => 90,
           'threshold_reached_message' =>
             MultilocService.new.i18n_to_multiloc('initiatives.default_threshold_reached_message',
-              locales: %i[en nl-BE fr-FR]),
+              locales: %i[en nl-BE fr-BE]),
           'eligibility_criteria' =>
             MultilocService.new.i18n_to_multiloc('initiatives.default_eligibility_criteria',
-              locales: %i[en nl-BE fr-FR])
+              locales: %i[en nl-BE fr-BE])
         }
       }
     end
@@ -60,11 +60,11 @@ FactoryBot.define do
           'organization_type' => 'medium_city',
           'organization_name' => {
             'en' => 'Liege',
-            'nl-NL' => 'Luik',
-            'fr-FR' => 'Liege'
+            'nl-BE' => 'Luik',
+            'fr-BE' => 'Liege'
           },
           'lifecycle_stage' => 'active',
-          'locales' => %w[en fr-FR nl-NL],
+          'locales' => %w[en fr-BE nl-BE],
           'timezone' => 'Europe/Brussels',
           'currency' => 'EUR',
           'color_main' => '#335533',
@@ -81,10 +81,10 @@ FactoryBot.define do
           'days_limit' => 90,
           'threshold_reached_message' =>
             MultilocService.new.i18n_to_multiloc('initiatives.default_threshold_reached_message',
-              locales: %i[en nl-BE fr-FR]),
+              locales: %i[en nl-BE fr-BE]),
           'eligibility_criteria' =>
             MultilocService.new.i18n_to_multiloc('initiatives.default_eligibility_criteria',
-              locales: %i[en nl-BE fr-FR])
+              locales: %i[en nl-BE fr-BE])
         }
       }
     end

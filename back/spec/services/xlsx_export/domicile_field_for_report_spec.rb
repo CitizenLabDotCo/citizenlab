@@ -15,7 +15,7 @@ describe XlsxExport::DomicileFieldForReport do
       input_type: 'select',
       title_multiloc: {
         'en' => 'Residence',
-        'nl-NL' => 'Verblijfplaats'
+        'nl-BE' => 'Verblijfplaats'
       }
     )
   end
@@ -41,13 +41,13 @@ describe XlsxExport::DomicileFieldForReport do
       let(:area) do
         create(
           :area,
-          title_multiloc: { 'en' => 'Paris', 'nl-NL' => 'Parijs' }
+          title_multiloc: { 'en' => 'Paris', 'nl-BE' => 'Parijs' }
         )
       end
       let(:model) { create(:user, custom_field_values: { 'domicile' => area.id }) }
 
       it 'returns the area for the field' do
-        I18n.with_locale('nl-NL') do
+        I18n.with_locale('nl-BE') do
           expect(report_field.value_from(model)).to eq 'Parijs'
         end
       end

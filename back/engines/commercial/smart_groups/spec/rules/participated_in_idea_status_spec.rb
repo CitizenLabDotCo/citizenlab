@@ -127,15 +127,15 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     let(:garbage_status) do
       create(:idea_status, title_multiloc: {
         'en' => 'in the garbage can',
-        'fr-FR' => 'dans la poubelle',
-        'nl-NL' => 'in de prullenmand'
+        'fr-BE' => 'dans la poubelle',
+        'nl-BE' => 'in de prullenmand'
       })
     end
     let(:delayed_status) do
       create(:idea_status, title_multiloc: {
         'en' => 'delayed',
-        'fr-FR' => 'retardé',
-        'nl-NL' => 'uitgesteld'
+        'fr-BE' => 'retardé',
+        'nl-BE' => 'uitgesteld'
       })
     end
 
@@ -213,53 +213,53 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     it 'successfully translates different combinations of rules' do
       expect(participated_in_idea_status_in_rule.description_multiloc).to eq({
         'en' => 'Participation in an idea with one of the following statuses in the garbage can, delayed',
-        'fr-FR' => 'Participation dans une idée avec statut est un de dans la poubelle, retardé',
-        'nl-NL' => 'Participatie in een idee met één van de volgende statussen in de prullenmand, uitgesteld'
+        'fr-BE' => 'Participation dans une idée avec statut est un de dans la poubelle, retardé',
+        'nl-BE' => 'Participatie in een idee met één van de volgende statussen in de prullenmand, uitgesteld'
       })
       expect(participated_not_in_idea_status_in_rule.description_multiloc).to eq({
         'en' => 'No participation in an idea with status in the garbage can',
-        'fr-FR' => 'Pas de participation dans une idée avec statut dans la poubelle',
-        'nl-NL' => 'Geen participatie in een idea met status in de prullenmand'
+        'fr-BE' => 'Pas de participation dans une idée avec statut dans la poubelle',
+        'nl-BE' => 'Geen participatie in een idea met status in de prullenmand'
       })
       expect(participated_posted_in_idea_status_in_rule.description_multiloc).to eq({
         'en' => 'Posted an idea with one of the following statuses in the garbage can',
-        'fr-FR' => 'Posté une idée avec statut est un de dans la poubelle',
-        'nl-NL' => 'Plaatste een idee met één van de volgende statussen in de prullenmand'
+        'fr-BE' => 'Posté une idée avec statut est un de dans la poubelle',
+        'nl-BE' => 'Plaatste een idee met één van de volgende statussen in de prullenmand'
       })
       expect(participated_not_posted_in_idea_status_in_rule.description_multiloc).to eq({
         'en' => 'Did not post an idea with status in the garbage can',
-        'fr-FR' => 'N\'as pas posté une idée avec statut dans la poubelle',
-        'nl-NL' => 'Plaatste geen idee met status in de prullenmand'
+        'fr-BE' => 'N\'as pas posté une idée avec statut dans la poubelle',
+        'nl-BE' => 'Plaatste geen idee met status in de prullenmand'
       })
       expect(participated_commented_in_idea_status_in_rule.description_multiloc).to eq({
         'en' => 'Commented on an idea with one of the following statuses in the garbage can, delayed',
-        'fr-FR' => 'Commenté sur une idée avec statut est un de dans la poubelle, retardé',
-        'nl-NL' => 'Reageerde op een idee met één van de volgende statussen in de prullenmand, uitgesteld'
+        'fr-BE' => 'Commenté sur une idée avec statut est un de dans la poubelle, retardé',
+        'nl-BE' => 'Reageerde op een idee met één van de volgende statussen in de prullenmand, uitgesteld'
       })
       expect(participated_not_commented_in_idea_status_in_rule.description_multiloc).to eq({
         'en' => 'Did not comment on an idea with status in the garbage can',
-        'fr-FR' => 'N\'as pas commenté sur une idée avec statut dans la poubelle',
-        'nl-NL' => 'Reageerde niet op een idee met status in de prullenmand'
+        'fr-BE' => 'N\'as pas commenté sur une idée avec statut dans la poubelle',
+        'nl-BE' => 'Reageerde niet op een idee met status in de prullenmand'
       })
       expect(participated_voted_idea_in_idea_status_in_rule.description_multiloc).to eq({
         'en' => 'Voted on an idea with one of the following statuses in the garbage can',
-        'fr-FR' => 'Voté pour une idée avec statut est un de dans la poubelle',
-        'nl-NL' => 'Stemde op een idee met één van de volgende statussen in de prullenmand'
+        'fr-BE' => 'Voté pour une idée avec statut est un de dans la poubelle',
+        'nl-BE' => 'Stemde op een idee met één van de volgende statussen in de prullenmand'
       })
       expect(participated_not_voted_idea_in_idea_status_in_rule.description_multiloc).to eq({
         'en' => 'Did not vote on an idea with status in the garbage can',
-        'fr-FR' => 'N\'as pas voté pour une idée avec statut dans la poubelle',
-        'nl-NL' => 'Stemde niet op een idee met status in de prullenmand'
+        'fr-BE' => 'N\'as pas voté pour une idée avec statut dans la poubelle',
+        'nl-BE' => 'Stemde niet op een idee met status in de prullenmand'
       })
       expect(participated_voted_comment_in_idea_status_in_rule.description_multiloc).to eq({
         'en' => 'Voted on a comment on an idea with one of the following statuses in the garbage can, delayed',
-        'fr-FR' => 'Voté pour un commentaire sur une idée avec statut est un de dans la poubelle, retardé',
-        'nl-NL' => 'Stemde op een reactie op een idee met één van de volgende statussen in de prullenmand, uitgesteld'
+        'fr-BE' => 'Voté pour un commentaire sur une idée avec statut est un de dans la poubelle, retardé',
+        'nl-BE' => 'Stemde op een reactie op een idee met één van de volgende statussen in de prullenmand, uitgesteld'
       })
       expect(participated_not_voted_comment_in_idea_status_in_rule.description_multiloc).to eq({
         'en' => 'Did not vote on a comment on an idea with status in the garbage can',
-        'fr-FR' => 'N\'as pas voté pour un commentaire sur une idée avec statut dans la poubelle',
-        'nl-NL' => 'Stemde niet op een reactie op een idee met status in de prullenmand'
+        'fr-BE' => 'N\'as pas voté pour un commentaire sur une idée avec statut dans la poubelle',
+        'nl-BE' => 'Stemde niet op een reactie op een idee met status in de prullenmand'
       })
     end
   end

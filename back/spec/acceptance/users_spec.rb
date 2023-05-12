@@ -1077,7 +1077,7 @@ resource 'Users' do
           let(:first_name) { 'Raymond' }
           let(:last_name) { 'Betancourt' }
           let(:email) { 'ray.mond@rocks.com' }
-          let(:locale) { 'fr-FR' }
+          let(:locale) { 'fr-BE' }
           let(:birthyear) { 1969 }
 
           example "Can't change some attributes of a user verified with FranceConnect", document: false do

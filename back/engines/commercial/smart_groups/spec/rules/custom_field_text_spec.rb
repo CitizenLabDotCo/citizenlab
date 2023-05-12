@@ -98,8 +98,8 @@ describe SmartGroups::Rules::CustomFieldText do
     let(:text_field) do
       create(:custom_field, title_multiloc: {
         'en' => 'What\'s your favourite Star Wars quote?',
-        'fr-FR' => 'Quelle est votre citation Star Wars préférée?',
-        'nl-NL' => 'Wat is uw favoriete Star Wars citaat?'
+        'fr-BE' => 'Quelle est votre citation Star Wars préférée?',
+        'nl-BE' => 'Wat is uw favoriete Star Wars citaat?'
       })
     end
 
@@ -185,53 +185,53 @@ describe SmartGroups::Rules::CustomFieldText do
     it 'successfully translates different combinations of rules' do
       expect(custom_field_text_is_rule.description_multiloc).to eq({
         'en' => 'What\'s your favourite Star Wars quote? is Never tell me the odds!',
-        'fr-FR' => 'Quelle est votre citation Star Wars préférée? est Never tell me the odds!',
-        'nl-NL' => 'Wat is uw favoriete Star Wars citaat? is Never tell me the odds!'
+        'fr-BE' => 'Quelle est votre citation Star Wars préférée? est Never tell me the odds!',
+        'nl-BE' => 'Wat is uw favoriete Star Wars citaat? is Never tell me the odds!'
       })
       expect(custom_field_text_not_is_rule.description_multiloc).to eq({
         'en' => 'What\'s your favourite Star Wars quote? is not Never tell me the odds!',
-        'fr-FR' => 'Quelle est votre citation Star Wars préférée? n\'est pas Never tell me the odds!',
-        'nl-NL' => 'Wat is uw favoriete Star Wars citaat? is niet Never tell me the odds!'
+        'fr-BE' => 'Quelle est votre citation Star Wars préférée? n\'est pas Never tell me the odds!',
+        'nl-BE' => 'Wat is uw favoriete Star Wars citaat? is niet Never tell me the odds!'
       })
       expect(custom_field_text_contains_rule.description_multiloc).to eq({
         'en' => 'What\'s your favourite Star Wars quote? contains Never tell me the odds!',
-        'fr-FR' => 'Quelle est votre citation Star Wars préférée? contient Never tell me the odds!',
-        'nl-NL' => 'Wat is uw favoriete Star Wars citaat? bevat Never tell me the odds!'
+        'fr-BE' => 'Quelle est votre citation Star Wars préférée? contient Never tell me the odds!',
+        'nl-BE' => 'Wat is uw favoriete Star Wars citaat? bevat Never tell me the odds!'
       })
       expect(custom_field_text_not_contains_rule.description_multiloc).to eq({
         'en' => 'What\'s your favourite Star Wars quote? doesn\'t contain Never tell me the odds!',
-        'fr-FR' => 'Quelle est votre citation Star Wars préférée? ne contient pas Never tell me the odds!',
-        'nl-NL' => 'Wat is uw favoriete Star Wars citaat? bevat niet Never tell me the odds!'
+        'fr-BE' => 'Quelle est votre citation Star Wars préférée? ne contient pas Never tell me the odds!',
+        'nl-BE' => 'Wat is uw favoriete Star Wars citaat? bevat niet Never tell me the odds!'
       })
       expect(custom_field_text_begins_with_rule.description_multiloc).to eq({
         'en' => 'What\'s your favourite Star Wars quote? begins with Never tell me the odds!',
-        'fr-FR' => 'Quelle est votre citation Star Wars préférée? commence par Never tell me the odds!',
-        'nl-NL' => 'Wat is uw favoriete Star Wars citaat? begint op Never tell me the odds!'
+        'fr-BE' => 'Quelle est votre citation Star Wars préférée? commence par Never tell me the odds!',
+        'nl-BE' => 'Wat is uw favoriete Star Wars citaat? begint op Never tell me the odds!'
       })
       expect(custom_field_text_not_begins_with_rule.description_multiloc).to eq({
         'en' => 'What\'s your favourite Star Wars quote? doesn\'t begin with Never tell me the odds!',
-        'fr-FR' => 'Quelle est votre citation Star Wars préférée? ne commence pas par Never tell me the odds!',
-        'nl-NL' => 'Wat is uw favoriete Star Wars citaat? begint niet op Never tell me the odds!'
+        'fr-BE' => 'Quelle est votre citation Star Wars préférée? ne commence pas par Never tell me the odds!',
+        'nl-BE' => 'Wat is uw favoriete Star Wars citaat? begint niet op Never tell me the odds!'
       })
       expect(custom_field_text_ends_on_rule.description_multiloc).to eq({
         'en' => 'What\'s your favourite Star Wars quote? ends on Never tell me the odds!',
-        'fr-FR' => 'Quelle est votre citation Star Wars préférée? se termine sur Never tell me the odds!',
-        'nl-NL' => 'Wat is uw favoriete Star Wars citaat? eindigt op Never tell me the odds!'
+        'fr-BE' => 'Quelle est votre citation Star Wars préférée? se termine sur Never tell me the odds!',
+        'nl-BE' => 'Wat is uw favoriete Star Wars citaat? eindigt op Never tell me the odds!'
       })
       expect(custom_field_text_not_ends_on_rule.description_multiloc).to eq({
         'en' => 'What\'s your favourite Star Wars quote? doesn\'t end on Never tell me the odds!',
-        'fr-FR' => 'Quelle est votre citation Star Wars préférée? ne se termine pas sur Never tell me the odds!',
-        'nl-NL' => 'Wat is uw favoriete Star Wars citaat? eindigt niet op Never tell me the odds!'
+        'fr-BE' => 'Quelle est votre citation Star Wars préférée? ne se termine pas sur Never tell me the odds!',
+        'nl-BE' => 'Wat is uw favoriete Star Wars citaat? eindigt niet op Never tell me the odds!'
       })
       expect(custom_field_text_is_empty_rule.description_multiloc).to eq({
         'en' => 'What\'s your favourite Star Wars quote? has no value',
-        'fr-FR' => 'Quelle est votre citation Star Wars préférée? n\'as pas de value',
-        'nl-NL' => 'Wat is uw favoriete Star Wars citaat? heeft geen waarde'
+        'fr-BE' => 'Quelle est votre citation Star Wars préférée? n\'as pas de value',
+        'nl-BE' => 'Wat is uw favoriete Star Wars citaat? heeft geen waarde'
       })
       expect(custom_field_text_not_is_empty_rule.description_multiloc).to eq({
         'en' => 'What\'s your favourite Star Wars quote? has any value',
-        'fr-FR' => 'Quelle est votre citation Star Wars préférée? peut avoir n\'importe quel value',
-        'nl-NL' => 'Wat is uw favoriete Star Wars citaat? heeft om het even welke waarde'
+        'fr-BE' => 'Quelle est votre citation Star Wars préférée? peut avoir n\'importe quel value',
+        'nl-BE' => 'Wat is uw favoriete Star Wars citaat? heeft om het even welke waarde'
       })
     end
   end

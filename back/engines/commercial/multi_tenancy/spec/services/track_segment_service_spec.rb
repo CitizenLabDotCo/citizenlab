@@ -37,7 +37,7 @@ describe TrackSegmentService do
           website: 'https://example.org',
           avatar: nil,
           createdAt: Tenant.current.created_at,
-          tenantLocales: %w[en fr-FR nl-NL],
+          tenantLocales: %w[en fr-BE nl-BE],
           **expected_tenant_props
         },
         integrations: {

@@ -18,12 +18,12 @@ resource 'Phase level Custom Fields' do
           additionalProperties: false,
           properties: {}
         },
-        'fr-FR': {
+        'fr-BE': {
           type: 'object',
           additionalProperties: false,
           properties: {}
         },
-        'nl-NL': {
+        'nl-BE': {
           type: 'object',
           additionalProperties: false,
           properties: {}
@@ -31,8 +31,8 @@ resource 'Phase level Custom Fields' do
       },
       ui_schema_multiloc: {
         en: { 'ui:order': [] },
-        'fr-FR': { 'ui:order': [] },
-        'nl-NL': { 'ui:order': [] }
+        'fr-BE': { 'ui:order': [] },
+        'nl-BE': { 'ui:order': [] }
       }
     }
   end
@@ -54,8 +54,8 @@ resource 'Phase level Custom Fields' do
         json_response = json_parse response_body
         expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
         json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
-        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
+        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-BE nl-BE]
+        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-BE nl-BE]
         visible_built_in_field_keys = %i[
           title_multiloc
           body_multiloc
@@ -64,7 +64,7 @@ resource 'Phase level Custom Fields' do
           idea_images_attributes
           idea_files_attributes
         ]
-        %i[en fr-FR nl-NL].each do |locale|
+        %i[en fr-BE nl-BE].each do |locale|
           expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to match_array(visible_built_in_field_keys + [custom_field.key.to_sym])
         end
         ui_schema = json_attributes[:ui_schema_multiloc][:en]
@@ -88,11 +88,11 @@ resource 'Phase level Custom Fields' do
         json_response = json_parse response_body
         expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
         json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
-        %i[en fr-FR nl-NL].each do |locale|
+        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-BE nl-BE]
+        %i[en fr-BE nl-BE].each do |locale|
           expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to match_array([custom_field.key.to_sym])
         end
-        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
+        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-BE nl-BE]
       end
     end
   end

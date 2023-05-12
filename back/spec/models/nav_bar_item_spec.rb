@@ -13,20 +13,20 @@ RSpec.describe NavBarItem do
     context 'with default items' do
       it "falls back to the translations when there's no title_multiloc" do
         item = create(:nav_bar_item, code: 'home', title_multiloc: nil)
-        expect(item.title_multiloc_with_fallback).to match({ 'en' => 'Home', 'fr-FR' => 'Accueil', 'nl-NL' => 'Home' })
+        expect(item.title_multiloc_with_fallback).to match({ 'en' => 'Home', 'fr-BE' => 'Accueil', 'nl-BE' => 'Home' })
       end
 
       it 'returns the custom copy for locales with custom copy and falls back to the translations for other locales' do
-        item = create(:nav_bar_item, code: 'home', title_multiloc: { 'nl-NL' => 'Thuis' })
-        expect(item.title_multiloc_with_fallback).to match({ 'en' => 'Home', 'fr-FR' => 'Accueil', 'nl-NL' => 'Thuis' })
+        item = create(:nav_bar_item, code: 'home', title_multiloc: { 'nl-BE' => 'Thuis' })
+        expect(item.title_multiloc_with_fallback).to match({ 'en' => 'Home', 'fr-BE' => 'Accueil', 'nl-BE' => 'Thuis' })
       end
     end
 
     context 'with custom items' do
       it 'returns the custom copy for locales with custom copy and falls back to the page title for other locales' do
-        page = create(:static_page, title_multiloc: { 'en' => 'How to take part', 'fr-FR' => 'Comment participer' })
+        page = create(:static_page, title_multiloc: { 'en' => 'How to take part', 'fr-BE' => 'Comment participer' })
         item = create(:nav_bar_item, static_page: page, title_multiloc: { 'en' => 'How to participate' })
-        expected_title = { 'en' => 'How to participate', 'fr-FR' => 'Comment participer' }
+        expected_title = { 'en' => 'How to participate', 'fr-BE' => 'Comment participer' }
         expect(item.title_multiloc_with_fallback).to match expected_title
       end
     end

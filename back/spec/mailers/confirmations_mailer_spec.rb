@@ -39,7 +39,7 @@ RSpec.describe ConfirmationsMailer do
 
   describe 'when sent to users with a different locale set for each' do
     let_it_be(:recipient1) { create(:user, locale: 'en') }
-    let_it_be(:recipient2) { create(:user, locale: 'nl-NL') }
+    let_it_be(:recipient2) { create(:user, locale: 'nl-BE') }
 
     let_it_be(:mail1) { described_class.with(user: recipient1).send_confirmation_code.deliver_now }
     let_it_be(:mail2) { described_class.with(user: recipient2).send_confirmation_code.deliver_now }

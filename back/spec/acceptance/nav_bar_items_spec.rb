@@ -95,7 +95,7 @@ resource 'NavBarItems' do
           expect(json_response.dig(:data, :attributes, :ordering)).to eq 0
           expect(
             json_response.dig(:data, :attributes, :title_multiloc).stringify_keys
-          ).to match({ 'en' => 'Home', 'fr-FR' => 'Accueil', 'nl-NL' => 'Home' })
+          ).to match({ 'en' => 'Home', 'fr-BE' => 'Accueil', 'nl-BE' => 'Home' })
         end
       end
 
@@ -138,7 +138,7 @@ resource 'NavBarItems' do
       end
       ValidationErrorHelper.new.error_fields self, NavBarItem
 
-      let(:page) { create(:static_page, title_multiloc: { 'nl-NL' => 'Hoe deelnemen' }) }
+      let(:page) { create(:static_page, title_multiloc: { 'nl-BE' => 'Hoe deelnemen' }) }
       let(:item) { create(:nav_bar_item, static_page: page) }
       let(:id) { item.id }
       let(:title_multiloc) { { 'en' => 'How to participate' } }
@@ -147,7 +147,7 @@ resource 'NavBarItems' do
         expect(response_status).to eq 200
         json_response = json_parse response_body
 
-        expected_title = { 'en' => 'How to participate', 'nl-NL' => 'Hoe deelnemen' }
+        expected_title = { 'en' => 'How to participate', 'nl-BE' => 'Hoe deelnemen' }
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match expected_title
       end
     end

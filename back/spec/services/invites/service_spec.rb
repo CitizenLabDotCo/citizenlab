@@ -243,8 +243,8 @@ describe Invites::Service do
           :custom_field,
           key: 'text_field',
           input_type: 'text',
-          title_multiloc: { 'en' => 'size', 'nl-NL' => 'grootte' },
-          description_multiloc: { 'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?' }
+          title_multiloc: { 'en' => 'size', 'nl-BE' => 'grootte' },
+          description_multiloc: { 'en' => 'How big is it?', 'nl-BE' => 'Hoe groot is het?' }
         )
         create(
           :custom_field,

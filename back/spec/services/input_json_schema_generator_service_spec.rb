@@ -25,8 +25,8 @@ RSpec.describe InputJsonSchemaGeneratorService do
               minProperties: 1,
               properties: {
                 'en' => { type: 'string', minLength: 10, maxLength: 80 },
-                'fr-FR' => { type: 'string', minLength: 10, maxLength: 80 },
-                'nl-NL' => { type: 'string', minLength: 10, maxLength: 80 }
+                'fr-BE' => { type: 'string', minLength: 10, maxLength: 80 },
+                'nl-BE' => { type: 'string', minLength: 10, maxLength: 80 }
               }
             },
             'body_multiloc' => {
@@ -34,8 +34,8 @@ RSpec.describe InputJsonSchemaGeneratorService do
               minProperties: 1,
               properties: {
                 'en' => { type: 'string', minLength: 40 },
-                'fr-FR' => { type: 'string', minLength: 40 },
-                'nl-NL' => { type: 'string', minLength: 40 }
+                'fr-BE' => { type: 'string', minLength: 40 },
+                'nl-BE' => { type: 'string', minLength: 40 }
               }
             },
             'topic_ids' => {
@@ -86,8 +86,8 @@ RSpec.describe InputJsonSchemaGeneratorService do
               minProperties: 1,
               properties: {
                 'en' => { type: 'string', minLength: 10, maxLength: 80 },
-                'fr-FR' => { type: 'string', minLength: 10, maxLength: 80 },
-                'nl-NL' => { type: 'string', minLength: 10, maxLength: 80 }
+                'fr-BE' => { type: 'string', minLength: 10, maxLength: 80 },
+                'nl-BE' => { type: 'string', minLength: 10, maxLength: 80 }
               }
             },
             'body_multiloc' => {
@@ -95,8 +95,8 @@ RSpec.describe InputJsonSchemaGeneratorService do
               minProperties: 1,
               properties: {
                 'en' => { type: 'string', minLength: 40 },
-                'fr-FR' => { type: 'string', minLength: 40 },
-                'nl-NL' => { type: 'string', minLength: 40 }
+                'fr-BE' => { type: 'string', minLength: 40 },
+                'nl-BE' => { type: 'string', minLength: 40 }
               }
             },
             'topic_ids' => {
@@ -148,12 +148,12 @@ RSpec.describe InputJsonSchemaGeneratorService do
               minLength: 10,
               maxLength: 80
             },
-            'fr-FR' => {
+            'fr-BE' => {
               type: 'string',
               minLength: 10,
               maxLength: 80
             },
-            'nl-NL' => {
+            'nl-BE' => {
               type: 'string',
               minLength: 10,
               maxLength: 80
@@ -172,8 +172,8 @@ RSpec.describe InputJsonSchemaGeneratorService do
           minProperties: 1,
           properties: {
             'en' => { type: 'string' },
-            'fr-FR' => { type: 'string' },
-            'nl-NL' => { type: 'string' }
+            'fr-BE' => { type: 'string' },
+            'nl-BE' => { type: 'string' }
           }
         })
       end
@@ -193,11 +193,11 @@ RSpec.describe InputJsonSchemaGeneratorService do
               type: 'string',
               minLength: 40
             },
-            'fr-FR' => {
+            'fr-BE' => {
               type: 'string',
               minLength: 40
             },
-            'nl-NL' => {
+            'nl-BE' => {
               type: 'string',
               minLength: 40
             }
@@ -215,8 +215,8 @@ RSpec.describe InputJsonSchemaGeneratorService do
           minProperties: 1,
           properties: {
             'en' => { type: 'string' },
-            'fr-FR' => { type: 'string' },
-            'nl-NL' => { type: 'string' }
+            'fr-BE' => { type: 'string' },
+            'nl-BE' => { type: 'string' }
           }
         })
       end

@@ -103,7 +103,7 @@ resource 'Idea Custom Fields' do
                 code: 'ideation_section1',
                 key: nil,
                 input_type: 'section',
-                title_multiloc: { en: 'What is your idea?', 'fr-FR': 'Quelle est votre idée ?', 'nl-NL': 'Wat is je idee?' },
+                title_multiloc: { en: 'What is your idea?', 'fr-BE': 'Quelle est votre idée ?', 'nl-BE': 'Wat is je idee?' },
                 description_multiloc: {},
                 ordering: 0,
                 required: false,

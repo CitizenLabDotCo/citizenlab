@@ -18,8 +18,8 @@ describe CustomFieldService do
   end
 
   describe 'fields_to_json_schema_multiloc' do
-    let(:title_multiloc) { { 'en' => 'size', 'nl-NL' => 'grootte' } }
-    let(:description_multiloc) { { 'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?' } }
+    let(:title_multiloc) { { 'en' => 'size', 'nl-BE' => 'grootte' } }
+    let(:description_multiloc) { { 'en' => 'How big is it?', 'nl-BE' => 'Hoe groot is het?' } }
     let(:fields) do
       [
         create(:custom_field,
@@ -33,9 +33,9 @@ describe CustomFieldService do
     it 'creates localized schemas with titles and descriptions for all languages' do
       schema = service.fields_to_json_schema_multiloc(AppConfiguration.instance, fields)
       expect(schema['en'][:properties]['field1'][:title]).to eq title_multiloc['en']
-      expect(schema['nl-NL'][:properties]['field1'][:title]).to eq title_multiloc['nl-NL']
+      expect(schema['nl-BE'][:properties]['field1'][:title]).to eq title_multiloc['nl-BE']
       expect(schema['en'][:properties]['field1'][:description]).to eq description_multiloc['en']
-      expect(schema['nl-NL'][:properties]['field1'][:description]).to eq description_multiloc['nl-NL']
+      expect(schema['nl-BE'][:properties]['field1'][:description]).to eq description_multiloc['nl-BE']
     end
   end
 

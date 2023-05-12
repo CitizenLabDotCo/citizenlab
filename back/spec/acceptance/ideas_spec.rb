@@ -609,8 +609,8 @@ resource 'Ideas' do
         json_response = json_parse response_body
         expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
         json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
-        expect(json_attributes[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+        expect(json_attributes[:json_schema_multiloc].keys).to eq %i[en fr-BE nl-BE]
+        expect(json_attributes[:ui_schema_multiloc].keys).to eq %i[en fr-BE nl-BE]
         visible_built_in_field_keys = %i[
           title_multiloc
           body_multiloc
@@ -619,7 +619,7 @@ resource 'Ideas' do
           topic_ids
           location_description
         ]
-        %i[en fr-FR nl-NL].each do |locale|
+        %i[en fr-BE nl-BE].each do |locale|
           expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym])
         end
       end
@@ -847,7 +847,7 @@ resource 'Ideas' do
           before { SettingsService.new.activate_feature! 'blocking_profanity' }
 
           let(:title_multiloc) { { 'nl-BE' => 'Fuck' } }
-          let(:body_multiloc) { { 'fr-FR' => 'cocksucker' } }
+          let(:body_multiloc) { { 'fr-BE' => 'cocksucker' } }
 
           example_request '[error] Create an idea with blocked words' do
             assert_status 422

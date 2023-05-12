@@ -22,7 +22,7 @@ RSpec.describe UiSchemaGeneratorService do
       create(
         :custom_field,
         input_type: 'text',
-        title_multiloc: { 'en' => 'Field1 title', 'fr-FR' => 'Field1 titre', 'nl-NL' => 'Field1 titel' },
+        title_multiloc: { 'en' => 'Field1 title', 'fr-BE' => 'Field1 titre', 'nl-BE' => 'Field1 titel' },
         description_multiloc: { 'en' => 'Field1 description' }
       )
     end
@@ -31,7 +31,7 @@ RSpec.describe UiSchemaGeneratorService do
         :custom_field_select,
         :with_options,
         input_type: 'select',
-        title_multiloc: { 'en' => 'Field2 title', 'fr-FR' => 'Field2 titre', 'nl-NL' => 'Field2 titel' },
+        title_multiloc: { 'en' => 'Field2 title', 'fr-BE' => 'Field2 titre', 'nl-BE' => 'Field2 titel' },
         description_multiloc: { 'en' => 'Field2 description' }
       )
     end
@@ -54,7 +54,7 @@ RSpec.describe UiSchemaGeneratorService do
             }
           ]
         },
-        'fr-FR' => {
+        'fr-BE' => {
           elements: [
             {
               type: 'Control',
@@ -70,7 +70,7 @@ RSpec.describe UiSchemaGeneratorService do
             }
           ]
         },
-        'nl-NL' => {
+        'nl-BE' => {
           elements: [
             {
               type: 'Control',
@@ -201,7 +201,7 @@ RSpec.describe UiSchemaGeneratorService do
         :custom_field,
         input_type: 'text_multiloc',
         key: field_key,
-        title_multiloc: { 'en' => 'Text multiloc field title', 'fr-FR' => 'Titre du champ de texte multiloc' },
+        title_multiloc: { 'en' => 'Text multiloc field title', 'fr-BE' => 'Titre du champ de texte multiloc' },
         description_multiloc: { 'en' => 'Text multiloc field description' }
       )
     end
@@ -219,15 +219,15 @@ RSpec.describe UiSchemaGeneratorService do
           },
           {
             type: 'Control',
-            scope: "#/properties/#{field_key}/properties/fr-FR",
+            scope: "#/properties/#{field_key}/properties/fr-BE",
             label: 'Text multiloc field title',
-            options: { description: 'Text multiloc field description', trim_on_blur: true, locale: 'fr-FR' }
+            options: { description: 'Text multiloc field description', trim_on_blur: true, locale: 'fr-BE' }
           },
           {
             type: 'Control',
-            scope: "#/properties/#{field_key}/properties/nl-NL",
+            scope: "#/properties/#{field_key}/properties/nl-BE",
             label: 'Text multiloc field title',
-            options: { description: 'Text multiloc field description', trim_on_blur: true, locale: 'nl-NL' }
+            options: { description: 'Text multiloc field description', trim_on_blur: true, locale: 'nl-BE' }
           }
         ]
       })
@@ -258,15 +258,15 @@ RSpec.describe UiSchemaGeneratorService do
           },
           {
             type: 'Control',
-            scope: "#/properties/#{field_key}/properties/fr-FR",
+            scope: "#/properties/#{field_key}/properties/fr-BE",
             label: 'Multiline multiloc field title',
-            options: { description: 'Multiline multiloc field description', trim_on_blur: true, textarea: true, locale: 'fr-FR' }
+            options: { description: 'Multiline multiloc field description', trim_on_blur: true, textarea: true, locale: 'fr-BE' }
           },
           {
             type: 'Control',
-            scope: "#/properties/#{field_key}/properties/nl-NL",
+            scope: "#/properties/#{field_key}/properties/nl-BE",
             label: 'Multiline multiloc field title',
-            options: { description: 'Multiline multiloc field description', trim_on_blur: true, textarea: true, locale: 'nl-NL' }
+            options: { description: 'Multiline multiloc field description', trim_on_blur: true, textarea: true, locale: 'nl-BE' }
           }
         ]
       })
@@ -297,15 +297,15 @@ RSpec.describe UiSchemaGeneratorService do
           },
           {
             type: 'Control',
-            scope: "#/properties/#{field_key}/properties/fr-FR",
+            scope: "#/properties/#{field_key}/properties/fr-BE",
             label: 'HTML multiloc field title',
-            options: { description: 'HTML multiloc field description', render: 'WYSIWYG', trim_on_blur: true, locale: 'fr-FR' }
+            options: { description: 'HTML multiloc field description', render: 'WYSIWYG', trim_on_blur: true, locale: 'fr-BE' }
           },
           {
             type: 'Control',
-            scope: "#/properties/#{field_key}/properties/nl-NL",
+            scope: "#/properties/#{field_key}/properties/nl-BE",
             label: 'HTML multiloc field title',
-            options: { description: 'HTML multiloc field description', render: 'WYSIWYG', trim_on_blur: true, locale: 'nl-NL' }
+            options: { description: 'HTML multiloc field description', render: 'WYSIWYG', trim_on_blur: true, locale: 'nl-BE' }
           }
         ]
       })

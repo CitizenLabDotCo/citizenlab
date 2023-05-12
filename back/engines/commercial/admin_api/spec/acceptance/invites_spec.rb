@@ -28,7 +28,7 @@ resource 'Invite', admin_api: true do
     let(:email) { 'Jakky@voordevrienden.be' }
     let(:first_name) { 'Jaak' }
     let(:last_name) { 'Brijl' }
-    let(:locale) { 'nl-NL' }
+    let(:locale) { 'nl-BE' }
     let(:invite_text) { 'Welcome to the new world' }
     let(:roles) { [{ type: 'admin' }] }
     let(:group) { create(:group) }

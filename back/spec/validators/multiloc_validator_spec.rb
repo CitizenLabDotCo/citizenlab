@@ -39,10 +39,10 @@ describe MultilocValidator do
 
   context 'with nil values for some locales' do
     it 'is invalid' do
-      nonpresence_subject.multiloc_field = { 'en' => 'somevalue', 'fr-FR' => nil }
+      nonpresence_subject.multiloc_field = { 'en' => 'somevalue', 'fr-BE' => nil }
       expect(nonpresence_subject).to be_invalid
 
-      nonpresence_subject.multiloc_field = { 'en' => 'somevalue', 'fr-FR' => false, 'nl-BE' => '' }
+      nonpresence_subject.multiloc_field = { 'en' => 'somevalue', 'fr-BE' => false, 'nl-BE' => '' }
       expect(nonpresence_subject).to be_invalid
     end
   end

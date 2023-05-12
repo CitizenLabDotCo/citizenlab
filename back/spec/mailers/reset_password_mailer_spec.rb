@@ -27,7 +27,7 @@ RSpec.describe ResetPasswordMailer do
 
   describe 'when sent to users with a different locale set for each' do
     let_it_be(:recipient1) { create(:user, locale: 'en') }
-    let_it_be(:recipient2) { create(:user, locale: 'nl-NL') }
+    let_it_be(:recipient2) { create(:user, locale: 'nl-BE') }
     let_it_be(:url) { 'https://example.com' }
 
     let_it_be(:mail1) { described_class.with(user: recipient1, password_reset_url: url).send_reset_password.deliver_now }

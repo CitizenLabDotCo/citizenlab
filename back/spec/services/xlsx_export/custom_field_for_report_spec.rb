@@ -16,7 +16,7 @@ describe XlsxExport::CustomFieldForReport do
         key: 'name',
         title_multiloc: {
           'en' => 'Full name',
-          'nl-NL' => 'Naam'
+          'nl-BE' => 'Naam'
         }
       )
     end
@@ -49,7 +49,7 @@ describe XlsxExport::CustomFieldForReport do
             :custom_field_option,
             custom_field: custom_field,
             key: 'cat',
-            title_multiloc: { 'en' => 'Cat', 'nl-NL' => 'Kat' }
+            title_multiloc: { 'en' => 'Cat', 'nl-BE' => 'Kat' }
           )
         end
         let!(:field_option2) do
@@ -57,12 +57,12 @@ describe XlsxExport::CustomFieldForReport do
             :custom_field_option,
             custom_field: custom_field,
             key: 'dog',
-            title_multiloc: { 'en' => 'Dog', 'nl-NL' => 'Hond' }
+            title_multiloc: { 'en' => 'Dog', 'nl-BE' => 'Hond' }
           )
         end
 
         it 'returns the value for the field' do
-          I18n.with_locale('nl-NL') do
+          I18n.with_locale('nl-BE') do
             expect(report_field.value_from(model)).to eq 'Kat'
             model.custom_field_values['name'] = 'dog'
             expect(report_field.value_from(model)).to eq 'Hond'
@@ -101,7 +101,7 @@ describe XlsxExport::CustomFieldForReport do
     describe '#column_header' do
       it 'returns the translated field title' do
         expect(report_field.column_header).to eq 'Full name'
-        I18n.with_locale('nl-NL') do
+        I18n.with_locale('nl-BE') do
           expect(report_field.column_header).to eq 'Naam'
         end
       end
@@ -121,7 +121,7 @@ describe XlsxExport::CustomFieldForReport do
         resource_type: 'User',
         key: 'birthyear',
         input_type: input_type,
-        title_multiloc: { 'en' => 'Year of birth', 'nl-NL' => 'Geboortejaar' }
+        title_multiloc: { 'en' => 'Year of birth', 'nl-BE' => 'Geboortejaar' }
       )
     end
     let(:model) { instance_double Idea, author: user }
@@ -151,7 +151,7 @@ describe XlsxExport::CustomFieldForReport do
             :custom_field_option,
             custom_field: custom_field,
             key: '1990',
-            title_multiloc: { 'en' => '1990-EN', 'nl-NL' => '1990-NL' }
+            title_multiloc: { 'en' => '1990-EN', 'nl-BE' => '1990-NL' }
           )
         end
         let!(:field_option2) do
@@ -159,12 +159,12 @@ describe XlsxExport::CustomFieldForReport do
             :custom_field_option,
             custom_field: custom_field,
             key: '1991',
-            title_multiloc: { 'en' => '1991-EN', 'nl-NL' => '1991-NL' }
+            title_multiloc: { 'en' => '1991-EN', 'nl-BE' => '1991-NL' }
           )
         end
 
         it 'returns the value for the field' do
-          I18n.with_locale('nl-NL') do
+          I18n.with_locale('nl-BE') do
             expect(report_field.value_from(model)).to eq '1990-NL'
             user.custom_field_values['birthyear'] = '1991'
             expect(report_field.value_from(model)).to eq '1991-NL'
@@ -203,7 +203,7 @@ describe XlsxExport::CustomFieldForReport do
     describe '#column_header' do
       it 'returns the translated field title' do
         expect(report_field.column_header).to eq 'Year of birth'
-        I18n.with_locale('nl-NL') do
+        I18n.with_locale('nl-BE') do
           expect(report_field.column_header).to eq 'Geboortejaar'
         end
       end

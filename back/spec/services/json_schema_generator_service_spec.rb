@@ -35,7 +35,7 @@ RSpec.describe JsonSchemaGeneratorService do
             }
           }
         },
-        'fr-FR' => {
+        'fr-BE' => {
           type: 'object',
           additionalProperties: false,
           properties: {
@@ -55,7 +55,7 @@ RSpec.describe JsonSchemaGeneratorService do
             }
           }
         },
-        'nl-NL' => {
+        'nl-BE' => {
           type: 'object',
           additionalProperties: false,
           properties: {
@@ -128,8 +128,8 @@ RSpec.describe JsonSchemaGeneratorService do
         minProperties: 1,
         properties: {
           'en' => { type: 'string' },
-          'fr-FR' => { type: 'string' },
-          'nl-NL' => { type: 'string' }
+          'fr-BE' => { type: 'string' },
+          'nl-BE' => { type: 'string' }
         }
       })
     end
@@ -144,8 +144,8 @@ RSpec.describe JsonSchemaGeneratorService do
         minProperties: 1,
         properties: {
           'en' => { type: 'string' },
-          'fr-FR' => { type: 'string' },
-          'nl-NL' => { type: 'string' }
+          'fr-BE' => { type: 'string' },
+          'nl-BE' => { type: 'string' }
         }
       })
     end
@@ -160,8 +160,8 @@ RSpec.describe JsonSchemaGeneratorService do
         minProperties: 1,
         properties: {
           'en' => { type: 'string' },
-          'fr-FR' => { type: 'string' },
-          'nl-NL' => { type: 'string' }
+          'fr-BE' => { type: 'string' },
+          'nl-BE' => { type: 'string' }
         }
       })
     end

@@ -7,8 +7,8 @@ FactoryBot.define do
     title_multiloc do
       {
         'en' => 'youth council',
-        'fr-FR' => 'conseil des jeunes',
-        'nl-NL' => 'jeugdraad'
+        'fr-BE' => 'conseil des jeunes',
+        'nl-BE' => 'jeugdraad'
       }
     end
   end

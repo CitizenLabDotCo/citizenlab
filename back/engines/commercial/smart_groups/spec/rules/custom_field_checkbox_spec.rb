@@ -51,8 +51,8 @@ describe SmartGroups::Rules::CustomFieldCheckbox do
     let(:checkbox) do
       create(:custom_field_checkbox, title_multiloc: {
         'en' => 'I agree to share my cookies',
-        'fr-FR' => 'J\'accepte de partager mes biscuits',
-        'nl-NL' => 'Ik ga akkoord om mijn koekjes te delen'
+        'fr-BE' => 'J\'accepte de partager mes biscuits',
+        'nl-BE' => 'Ik ga akkoord om mijn koekjes te delen'
       })
     end
 
@@ -74,13 +74,13 @@ describe SmartGroups::Rules::CustomFieldCheckbox do
     it 'successfully translates different combinations of rules' do
       expect(custom_field_checkbox_is_checked_rule.description_multiloc).to eq({
         'en' => 'Checked I agree to share my cookies',
-        'fr-FR' => 'A coché J\'accepte de partager mes biscuits',
-        'nl-NL' => 'Heeft Ik ga akkoord om mijn koekjes te delen aangevinkt'
+        'fr-BE' => 'A coché J\'accepte de partager mes biscuits',
+        'nl-BE' => 'Heeft Ik ga akkoord om mijn koekjes te delen aangevinkt'
       })
       expect(custom_field_checkbox_not_is_checked_rule.description_multiloc).to eq({
         'en' => 'Didn\'t check I agree to share my cookies',
-        'fr-FR' => 'N\'as pas coché J\'accepte de partager mes biscuits',
-        'nl-NL' => 'Heeft Ik ga akkoord om mijn koekjes te delen niet aangevinkt'
+        'fr-BE' => 'N\'as pas coché J\'accepte de partager mes biscuits',
+        'nl-BE' => 'Heeft Ik ga akkoord om mijn koekjes te delen niet aangevinkt'
       })
     end
   end

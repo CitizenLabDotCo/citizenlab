@@ -6,7 +6,7 @@ FactoryBot.define do
   factory :tenant do
     transient do
       lifecycle { 'active' }
-      locales { %w[en nl-BE fr-FR] }
+      locales { %w[en nl-BE fr-BE] }
     end
 
     name { Faker::Address.city }

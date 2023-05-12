@@ -432,8 +432,8 @@ resource 'Projects' do
           field2 = project_in_db.custom_form.custom_fields[1]
           expect(field2.title_multiloc).to match({
             'en' => an_instance_of(String),
-            'fr-FR' => an_instance_of(String),
-            'nl-NL' => an_instance_of(String)
+            'fr-BE' => an_instance_of(String),
+            'nl-BE' => an_instance_of(String)
           })
           options = field2.options
           expect(options.size).to eq 2
@@ -441,13 +441,13 @@ resource 'Projects' do
           expect(options[1].key).to eq 'option2'
           expect(options[0].title_multiloc).to match({
             'en' => an_instance_of(String),
-            'fr-FR' => an_instance_of(String),
-            'nl-NL' => an_instance_of(String)
+            'fr-BE' => an_instance_of(String),
+            'nl-BE' => an_instance_of(String)
           })
           expect(options[1].title_multiloc).to match({
             'en' => an_instance_of(String),
-            'fr-FR' => an_instance_of(String),
-            'nl-NL' => an_instance_of(String)
+            'fr-BE' => an_instance_of(String),
+            'nl-BE' => an_instance_of(String)
           })
 
           expect(project_in_db.process_type).to eq 'continuous'

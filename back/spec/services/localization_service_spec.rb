@@ -18,7 +18,7 @@ describe LocalizationService do
     end
 
     it 'returns the correct format for French speaking locales' do
-      locales = %w[fr-FR fr-BE]
+      locales = %w[fr-BE fr-BE]
 
       locales.each do |locale|
         I18n.with_locale(locale) do

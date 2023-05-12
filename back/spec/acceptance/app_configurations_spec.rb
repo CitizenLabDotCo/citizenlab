@@ -78,7 +78,7 @@ resource 'AppConfigurations' do
       {
         'en' => 'TestTown',
         'nl-BE' => 'TestTown',
-        'fr-FR' => 'TestTown'
+        'fr-BE' => 'TestTown'
       }
     end
 
