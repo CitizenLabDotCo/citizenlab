@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
-  s.add_dependency 'rails', '~> 6.1'
+  s.add_dependency 'rails', '~> 7.0'
   s.add_dependency 'httparty'
   s.add_dependency 'bunny'
 
