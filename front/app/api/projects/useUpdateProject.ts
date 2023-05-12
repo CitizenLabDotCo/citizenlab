@@ -5,6 +5,8 @@ import { IProject, IUpdatedProjectProperties } from './types';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 import projectsKeys from './keys';
+import topicsKeys from 'api/topics/keys';
+import areasKeys from 'api/areas/keys';
 
 export const updateProject = async ({
   projectId,
@@ -22,8 +24,15 @@ const useUpdateProject = () => {
     mutationFn: updateProject,
     onSuccess: async (_data) => {
       queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: topicsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: areasKeys.lists() });
+
       await streams.fetchAllWith({
-        partialApiEndpoint: [`${API_PATH}/admin_publications`],
+        apiEndpoint: [
+          `${API_PATH}/admin_publications`,
+          `${API_PATH}/admin_publications/status_counts`,
+          `${API_PATH}/users/me`,
+        ],
       });
     },
   });

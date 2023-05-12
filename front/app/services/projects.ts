@@ -1,9 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 
 // api
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import projectsKeys from 'api/projects/keys';
 
 // typings
 import { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -101,32 +98,4 @@ export interface IProjectFormState {
   slug: string | null;
   showSlugErrorMessage: boolean;
   folder_id?: string | null;
-}
-
-export async function updateProject(
-  projectId: string,
-  projectData: IUpdatedProjectProperties
-) {
-  const response = await streams.update<IProject>(
-    `${apiEndpoint}/${projectId}`,
-    projectId,
-    { project: projectData }
-  );
-
-  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
-  queryClient.invalidateQueries({
-    queryKey: projectsKeys.item({ id: projectId }),
-  });
-
-  await streams.fetchAllWith({
-    apiEndpoint: [
-      `${API_PATH}/admin_publications`,
-      `${API_PATH}/admin_publications/status_counts`,
-      `${API_PATH}/users/me`,
-      `${API_PATH}/topics`,
-      `${API_PATH}/areas`,
-    ],
-  });
-
-  return response;
 }

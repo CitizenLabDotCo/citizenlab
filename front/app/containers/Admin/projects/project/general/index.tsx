@@ -73,6 +73,7 @@ import validateTitle from './utils/validateTitle';
 import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
+import useUpdateProject from 'api/projects/useUpdateProject';
 
 export const TIMEOUT = 350;
 
@@ -85,6 +86,7 @@ const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams();
   const { data: project } = useProjectById(projectId);
+  const { mutateAsync: updateProject } = useUpdateProject();
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const appConfigLocales = useAppConfigurationLocales();
   const remoteProjectFiles = useProjectFiles(projectId);
@@ -92,7 +94,7 @@ const AdminProjectsProjectGeneral = () => {
   const { mutateAsync: addProjectImage } = useAddProjectImage();
   const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
 
-  const { mutate: addProject } = useAddProject();
+  const { mutateAsync: addProject } = useAddProject();
 
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
   const [processing, setProcessing] =
@@ -311,7 +313,10 @@ const AdminProjectsProjectGeneral = () => {
         setProcessing(true);
         if (!isEmpty(nextProjectAttributesDiff)) {
           if (latestProjectId) {
-            await updateProject(latestProjectId, nextProjectAttributesDiff);
+            await updateProject({
+              projectId: latestProjectId,
+              ...nextProjectAttributesDiff,
+            });
           } else {
             addProject(nextProjectAttributesDiff, {
               onSuccess: (data) => {
