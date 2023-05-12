@@ -1042,12 +1042,12 @@ GEM
     sorted_set (1.0.3)
       rbtree
       set (~> 1.0)
-    spring (2.1.1)
+    spring (4.1.1)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
-    spring-watcher-listen (2.0.1)
+    spring-watcher-listen (2.1.0)
       listen (>= 2.7, < 4.0)
-      spring (>= 1.2, < 3.0)
+      spring (>= 4)
     ssrf_filter (1.1.1)
     stackprof (0.2.25)
     swd (2.0.2)
@@ -1250,7 +1250,7 @@ DEPENDENCIES
   smart_groups!
   spring
   spring-commands-rspec
-  spring-watcher-listen (~> 2.0.0)
+  spring-watcher-listen (~> 2.1)
   stackprof (~> 0.2.25)
   surveys!
   test-prof (~> 1.2)

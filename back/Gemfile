@@ -69,7 +69,7 @@ group :development do
   gem 'redcarpet'
   gem 'spring'
   gem 'spring-commands-rspec'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-watcher-listen', '~> 2.1'
   gem 'annotate'
 end
 
