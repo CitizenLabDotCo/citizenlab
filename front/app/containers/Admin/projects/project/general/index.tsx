@@ -40,7 +40,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useProjectFiles from 'hooks/useProjectFiles';
+import useProjectFiles from 'api/project_files/useProjectFiles';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -87,7 +87,7 @@ const AdminProjectsProjectGeneral = () => {
   const { data: project } = useProjectById(projectId);
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const appConfigLocales = useAppConfigurationLocales();
-  const remoteProjectFiles = useProjectFiles(projectId);
+  const { data: remoteProjectFiles } = useProjectFiles(projectId || null);
   const { data: remoteProjectImages } = useProjectImages(projectId || null);
   const { mutateAsync: addProjectImage } = useAddProjectImage();
   const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
@@ -140,7 +140,7 @@ const AdminProjectsProjectGeneral = () => {
 
   useEffect(() => {
     (async () => {
-      if (!isNilOrError(remoteProjectFiles)) {
+      if (remoteProjectFiles) {
         const nextProjectFilesPromises = remoteProjectFiles.data.map(
           (projectFile) => {
             const url = projectFile.attributes.file.url;
