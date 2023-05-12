@@ -2,7 +2,7 @@ import React from 'react';
 
 // services
 import { IPhaseData, updatePhase } from 'services/phases';
-import { updateProject } from 'api/projects/types';
+import { updateProject } from 'services/projects';
 import { IProjectData } from 'api/projects/types';
 
 // typing
