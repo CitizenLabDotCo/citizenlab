@@ -35,21 +35,3 @@ export function phaseFilesStream(
     ...streamParams,
   });
 }
-
-export async function addPhaseFile(
-  phaseId: string,
-  base64: string,
-  name: string,
-  ordering: number | null = null
-) {
-  return await streams.add<IPhaseFile>(`${apiEndpoint}/${phaseId}/files`, {
-    file: { name, ordering, file: base64 },
-  });
-}
-
-export async function deletePhaseFile(phaseId: string, fileId: string) {
-  return await streams.delete(
-    `${apiEndpoint}/${phaseId}/files/${fileId}`,
-    fileId
-  );
-}

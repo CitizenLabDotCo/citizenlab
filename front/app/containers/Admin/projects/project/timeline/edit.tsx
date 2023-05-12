@@ -7,11 +7,7 @@ import { get, isEmpty } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
 // Services
-import {
-  phaseFilesStream,
-  addPhaseFile,
-  deletePhaseFile,
-} from 'services/phaseFiles';
+import { phaseFilesStream } from 'services/phaseFiles';
 import {
   updatePhase,
   addPhase,
@@ -52,6 +48,9 @@ import { useParams } from 'react-router-dom';
 import usePhases from 'hooks/usePhases';
 import { isNilOrError } from 'utils/helperUtils';
 import usePhase, { TPhase } from 'hooks/usePhase';
+import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
+import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
+import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 
 const PhaseForm = styled.form``;
 
@@ -63,10 +62,13 @@ interface IParams {
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
 const AdminProjectTimelineEdit = () => {
+  const { mutateAsync: addPhaseFile } = useAddPhaseFile();
+  const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { projectId, id: phaseId } = useParams() as {
     projectId: string;
-    id?: string;
+    id: string;
   };
+  const { data: phaseFiles } = usePhaseFiles(phaseId);
   const phase = usePhase(phaseId || null);
   const phases = usePhases(projectId);
   const [errors, setErrors] = useState<{
@@ -80,6 +82,8 @@ const AdminProjectTimelineEdit = () => {
   const [attributeDiff, setAttributeDiff] = useState<IUpdatedPhaseProperties>(
     {}
   );
+
+  console.log({ phaseFiles });
 
   const params$ = new BehaviorSubject<IParams | null>(null);
 
@@ -253,10 +257,14 @@ const AdminProjectTimelineEdit = () => {
           const phaseId = phaseResponse.id;
           const filesToAddPromises = inStatePhaseFiles
             .filter((file): file is UploadFile => !file.remote)
-            .map((file) => addPhaseFile(phaseId, file.base64, file.name));
+            .map((file) =>
+              addPhaseFile({ phaseId, base64: file.base64, name: file.name })
+            );
           const filesToRemovePromises = phaseFilesToRemove
             .filter((file) => file.remote)
-            .map((file) => deletePhaseFile(phaseId, file.id as string));
+            .map((file) =>
+              deletePhaseFile({ phaseId, fileId: file.id as string })
+            );
 
           await Promise.all([
             ...filesToAddPromises,
@@ -346,12 +354,14 @@ const AdminProjectTimelineEdit = () => {
           </SectionField>
 
           <SectionField>
-            <ParticipationContext
-              phase={{ data: phase } as IPhase} // TODO: Replace ParticipationContect with TPhase type
-              onSubmit={handleParticipationContextOnSubmit}
-              onChange={handleParticipationContextOnChange}
-              apiErrors={errors}
-            />
+            {!isNilOrError(phase) && (
+              <ParticipationContext
+                phase={{ data: phase }}
+                onSubmit={handleParticipationContextOnSubmit}
+                onChange={handleParticipationContextOnChange}
+                apiErrors={errors}
+              />
+            )}
           </SectionField>
 
           <SectionField>
