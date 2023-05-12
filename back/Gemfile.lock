@@ -1205,7 +1205,6 @@ DEPENDENCIES
   rack-cors
   rack-mini-profiler
   rails (~> 6.1.7.3)
-  rails-html-sanitizer (>= 1.4.3)
   rails-i18n (~> 7.0.6)
   rails_semantic_logger
   redcarpet
