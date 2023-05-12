@@ -1,5 +1,7 @@
 import '@testing-library/jest-dom';
 
+import 'whatwg-fetch';
+
 global.ResizeObserver = require('resize-observer-polyfill');
 
 jest.mock('polished');

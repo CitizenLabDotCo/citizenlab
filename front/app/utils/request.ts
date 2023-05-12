@@ -1,3 +1,4 @@
+import 'whatwg-fetch';
 import { stringify } from 'qs';
 import { getJwt } from 'utils/auth/jwt';
 import { isString } from 'lodash-es';

@@ -134,6 +134,7 @@
     "tippy.js": "6.3.7",
     "util": "^0.12.5",
     "webfontloader": "1.6.28",
+    "whatwg-fetch": "3.6.2",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.10/xlsx-0.18.10.tgz",
     "yup": "^0.32.11"
   },
