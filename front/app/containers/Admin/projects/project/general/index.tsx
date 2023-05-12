@@ -50,7 +50,6 @@ import {
   IProjectFormState,
   IProjectData,
 } from 'api/projects/types';
-import { updateProject } from 'services/projects';
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
