@@ -24,7 +24,6 @@ module.exports = {
   transformIgnorePatterns: [
     '<rootDir>/node_modules/(?!(lodash-es|d3-format|@hookform/resolvers|dnd-core|react-dnd|dnd-core|@react-dnd)).+\\.js$',
   ],
-  snapshotSerializers: ['enzyme-to-json/serializer'],
   reporters: ['default', 'jest-junit'],
   coverageReporters: ['json', 'lcov', 'text-summary', 'clover'],
   moduleNameMapper: {

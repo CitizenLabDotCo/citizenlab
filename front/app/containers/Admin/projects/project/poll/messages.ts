@@ -15,8 +15,12 @@ export default defineMessages({
     defaultMessage: 'Delete',
   },
   editPollAnswersButtonLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollTab.editPollAnswersButtonLabel',
-    defaultMessage: 'Answer choices',
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.editPollAnswersButtonLabel1',
+    defaultMessage: 'Edit answer options',
+  },
+  editPollQuestion: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.editPollQuestion',
+    defaultMessage: 'Edit question',
   },
   noOptions: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.noOptions',
@@ -57,24 +61,28 @@ export default defineMessages({
     defaultMessage: 'Save',
   },
   optionsFormHeader: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollTab.optionsFormHeader',
-    defaultMessage: 'Manage options for: {questionTitle}',
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.optionsFormHeader1',
+    defaultMessage: 'Manage answer options for: {questionTitle}',
   },
   editOptionSave: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollTab.editOptionSave',
-    defaultMessage: 'Save',
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.editOptionSave1',
+    defaultMessage: 'Save answer options',
+  },
+  cancelEditAnswerOptions: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.cancelEditAnswerOptions',
+    defaultMessage: 'Cancel',
   },
   deleteOption: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.deleteOption',
     defaultMessage: 'Delete',
   },
   editOption: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollTab.editOption',
-    defaultMessage: 'Edit',
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.editOption1',
+    defaultMessage: 'Edit answer option',
   },
-  addAnswerChoice: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollTab.addAnswerChoice',
-    defaultMessage: 'Add an answer choice',
+  addAnswerOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.addAnswerOption',
+    defaultMessage: 'Add an answer option',
   },
   saveOption: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.saveOption',
@@ -100,8 +108,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.multipleOption',
     defaultMessage: 'Multiple choice',
   },
-  applyQuestionSettings: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings',
-    defaultMessage: 'Apply',
+  saveQuestionSettings: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.saveQuestionSettings',
+    defaultMessage: 'Save',
   },
 });

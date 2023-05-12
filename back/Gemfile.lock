@@ -533,7 +533,6 @@ GEM
       mime-types (~> 3.0)
     case_transform (0.2)
       activesupport
-    chronic (0.10.2)
     cloudfront-rails (0.4.0)
       railties (> 4.0)
     coderay (1.1.3)
@@ -1092,8 +1091,6 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    whenever (1.0.0)
-      chronic (>= 0.6.3)
     with_env (1.1.0)
     xml-simple (1.1.9)
       rexml
@@ -1251,7 +1248,6 @@ DEPENDENCIES
   verification!
   volunteering!
   webmock (~> 3.18)
-  whenever (~> 1.0)
 
 BUNDLED WITH
    2.3.20
