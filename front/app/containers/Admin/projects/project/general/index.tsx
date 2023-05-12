@@ -44,11 +44,11 @@ import useProjectFiles from 'hooks/useProjectFiles';
 import useProjectImages from 'hooks/useProjectImages';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAddProject from 'api/projects/useAddProject';
 
 // api
 import {
   IUpdatedProjectProperties,
-  addProject,
   updateProject,
   IProjectFormState,
 } from 'services/projects';
@@ -91,6 +91,9 @@ const AdminProjectsProjectGeneral = () => {
   const remoteProjectImages = useProjectImages({
     projectId: projectId || null,
   });
+
+  const { mutate: addProject } = useAddProject();
+
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
   const [processing, setProcessing] =
     useState<IProjectFormState['processing']>(false);
@@ -310,9 +313,12 @@ const AdminProjectsProjectGeneral = () => {
           if (latestProjectId) {
             await updateProject(latestProjectId, nextProjectAttributesDiff);
           } else {
-            const project = await addProject(nextProjectAttributesDiff);
-            latestProjectId = project.data.id;
-            isNewProject = true;
+            addProject(nextProjectAttributesDiff, {
+              onSuccess: (data) => {
+                latestProjectId = data.data.id;
+                isNewProject = true;
+              },
+            });
           }
         }
 

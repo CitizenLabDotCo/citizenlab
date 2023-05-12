@@ -190,3 +190,48 @@ export type PollDisabledReason =
 interface ProjectHeaderBgImageSizes {
   large: string | null;
 }
+
+// mutations
+export interface IUpdatedProjectProperties {
+  // header_bg is only a string or null when it's
+  // in IUpdatedProjectProperties. The ProjectHeaderBgImageSizes needed
+  // to be added because we go from string here to ProjectHeaderBgImageSizes
+  // in IProjectAttributes (also in this file) when we save an image
+  // selected for upload. ProjectHeaderBgImageSizes needs to be here, because
+  // Otherwise TS will complain about this mismatch in
+  // front/app/containers/Admin/projects/general/index.tsx
+  // This oddity needs to be dealt with
+  header_bg?: string | ProjectHeaderBgImageSizes | null;
+  title_multiloc?: Multiloc;
+  description_multiloc?: Multiloc;
+  description_preview_multiloc?: Multiloc;
+  area_ids?: string[];
+  visible_to?: Visibility;
+  process_type?: ProcessType;
+  participation_method?: ParticipationMethod | null;
+  posting_enabled?: boolean | null;
+  commenting_enabled?: boolean | null;
+  voting_enabled?: boolean | null;
+  upvoting_method?: 'limited' | 'unlimited' | null;
+  downvoting_method?: 'limited' | 'unlimited' | null;
+  upvoting_limited_max?: number | null;
+  downvoting_enabled?: boolean | null;
+  downvoting_limited_max?: number | null;
+  presentation_mode?: PresentationMode | null;
+  admin_publication_attributes?: {
+    publication_status?: PublicationStatus;
+  };
+  publication_status?: PublicationStatus;
+  min_budget?: number | null;
+  max_budget?: number | null;
+  survey_service?: TSurveyService | null;
+  survey_embed_url?: string | null;
+  default_assignee_id?: string | null;
+  poll_anonymous?: boolean;
+  ideas_order?: IdeaDefaultSortMethod;
+  input_term?: InputTerm;
+  slug?: string;
+  topic_ids?: string[];
+  include_all_areas?: boolean;
+  folder_id?: string | null;
+}

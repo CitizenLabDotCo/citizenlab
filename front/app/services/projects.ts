@@ -103,29 +103,6 @@ export interface IProjectFormState {
   folder_id?: string | null;
 }
 
-export async function addProject(projectData: IUpdatedProjectProperties) {
-  const response = await streams.add<IProject>(apiEndpoint, {
-    project: projectData,
-  });
-  const projectId = response.data.id;
-
-  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
-  queryClient.invalidateQueries({
-    queryKey: projectsKeys.item({ id: projectId }),
-  });
-
-  await streams.fetchAllWith({
-    apiEndpoint: [
-      `${API_PATH}/admin_publications`,
-      `${API_PATH}/users/me`,
-      `${API_PATH}/topics`,
-      `${API_PATH}/areas`,
-    ],
-  });
-
-  return response;
-}
-
 export async function updateProject(
   projectId: string,
   projectData: IUpdatedProjectProperties
