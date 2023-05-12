@@ -1,26 +1,26 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import useProject from 'hooks/useProject';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useParams } from 'react-router-dom';
 import AdminContinuousProjectPoll from './AdminContinuousProjectPoll';
 import AdminTimelineProjectPoll from './AdminTimelineProjectPoll';
+import useProjectById from 'api/projects/useProjectById';
 
 const AdminProjectPoll = () => {
   const { projectId } = useParams() as { projectId: string };
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const isEnabled = useFeatureFlag({ name: 'polls' });
 
   if (isNilOrError(project) || !isEnabled) return null;
 
   if (
-    project.attributes.process_type === 'continuous' &&
-    project.attributes.participation_method === 'poll'
+    project.data.attributes.process_type === 'continuous' &&
+    project.data.attributes.participation_method === 'poll'
   ) {
     return <AdminContinuousProjectPoll project={project} />;
   }
 
-  if (project.attributes.process_type === 'timeline') {
+  if (project.data.attributes.process_type === 'timeline') {
     return <AdminTimelineProjectPoll projectId={projectId} />;
   }
   return null;
