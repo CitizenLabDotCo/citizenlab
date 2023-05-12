@@ -319,18 +319,14 @@ const AdminProjectTimelineEdit = () => {
             />
             <Error apiErrors={errors && errors.title_multiloc} />
           </SectionField>
-
           <SectionField>
-            {!isNilOrError(phase) && (
-              <ParticipationContext
-                phase={{ data: phase }}
-                onSubmit={handleParticipationContextOnSubmit}
-                onChange={handleParticipationContextOnChange}
-                apiErrors={errors}
-              />
-            )}
+            <ParticipationContext
+              phase={!isNilOrError(phase) ? { data: phase } : undefined}
+              onSubmit={handleParticipationContextOnSubmit}
+              onChange={handleParticipationContextOnChange}
+              apiErrors={errors}
+            />
           </SectionField>
-
           <SectionField>
             <Label>
               <FormattedMessage {...messages.datesLabel} />
