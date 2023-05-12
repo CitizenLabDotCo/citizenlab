@@ -201,6 +201,7 @@ export interface IUpdatedProjectProperties {
   // Otherwise TS will complain about this mismatch in
   // front/app/containers/Admin/projects/general/index.tsx
   // This oddity needs to be dealt with
+  projectId?: string;
   header_bg?: string | ProjectHeaderBgImageSizes | null;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
