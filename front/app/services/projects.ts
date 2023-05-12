@@ -131,17 +131,6 @@ export async function updateProject(
   return response;
 }
 
-export async function copyProject(projectId: string) {
-  const response = await streams.add(`${apiEndpoint}/${projectId}/copy`, {});
-
-  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
-  await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/admin_publications`, `${API_PATH}/users/me`],
-  });
-
-  return response;
-}
-
 export async function updateProjectFolderMembership(
   projectId: string,
   newProjectFolderId: string | null,
