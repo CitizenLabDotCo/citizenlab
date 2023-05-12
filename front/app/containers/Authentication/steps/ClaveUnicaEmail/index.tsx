@@ -11,6 +11,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import sharedMessages from '../messages';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
+import signOut from 'api/authentication/sign_in_out/signOut';
+import TextButton from '../_components/TextButton';
+import useMenuMessages from 'containers/MainHeader/UserMenu/messages';
 
 interface Props {
   loading: boolean;
@@ -70,6 +73,12 @@ const ClaveUnicaEmail = ({ loading, setError, onSubmit }: Props) => {
           </Box>
         </form>
       </FormProvider>
+
+      <Text>
+        <TextButton onClick={signOut} className="link">
+          {formatMessage(useMenuMessages.signOut)}
+        </TextButton>
+      </Text>
     </>
   );
 };
