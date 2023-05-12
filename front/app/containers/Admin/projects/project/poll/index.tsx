@@ -17,7 +17,7 @@ const AdminProjectPoll = () => {
     project.data.attributes.process_type === 'continuous' &&
     project.data.attributes.participation_method === 'poll'
   ) {
-    return <AdminContinuousProjectPoll project={project} />;
+    return <AdminContinuousProjectPoll project={project.data} />;
   }
 
   if (project.data.attributes.process_type === 'timeline') {
