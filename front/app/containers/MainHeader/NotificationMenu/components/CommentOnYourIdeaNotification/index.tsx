@@ -35,11 +35,11 @@ const CommentOnYourIdeaNotification = memo<Props>((props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
-  if (!isNilOrError(project) && phases) {
+  if (!isNilOrError(project)) {
     const inputTerm = getInputTerm(
       project.data.attributes.process_type,
       project.data,
-      phases.data
+      phases?.data
     );
     const deletedUser =
       isNilOrError(notification.attributes.initiating_user_first_name) ||

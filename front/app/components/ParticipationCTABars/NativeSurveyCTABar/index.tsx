@@ -29,11 +29,9 @@ export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
 
   useEffect(() => {
-    if (phases) {
-      setCurrentPhase(
-        getCurrentPhase(phases.data) || getLastPhase(phases.data)
-      );
-    }
+    setCurrentPhase(
+      getCurrentPhase(phases?.data) || getLastPhase(phases?.data)
+    );
   }, [phases, project]);
 
   const isPhaseNativeSurvey =

@@ -91,7 +91,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     [currentPhase, project, pathname]
   );
 
-  if (isNilOrError(project) || !phases) {
+  if (isNilOrError(project)) {
     return null;
   }
 

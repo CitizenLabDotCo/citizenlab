@@ -389,11 +389,11 @@ export const IdeasShow = ({
     );
   }
 
-  if (!isNilOrError(project) && phases) {
+  if (!isNilOrError(project)) {
     const inputTerm = getInputTerm(
       project.attributes.process_type,
       project,
-      phases.data
+      phases?.data
     );
 
     return (
