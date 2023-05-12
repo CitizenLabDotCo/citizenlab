@@ -8,7 +8,6 @@ import 'moment-timezone';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { combineLatest } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import smoothscroll from 'smoothscroll-polyfill';
 import { endsWith, isNilOrError, isPage } from 'utils/helperUtils';
 
 // constants
@@ -139,7 +138,6 @@ const App = ({ children }: Props) => {
 
   useEffect(() => {
     if (appConfiguration && !isAppInitialized) {
-      smoothscroll.polyfill();
       moment.tz.setDefault(
         appConfiguration.data.attributes.settings.core.timezone
       );
