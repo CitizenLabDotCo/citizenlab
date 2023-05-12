@@ -1,183 +1,29 @@
-// Libraries
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { adopt } from 'react-adopt';
-import styled from 'styled-components';
-import { isError } from 'lodash-es';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import { useParams } from 'react-router-dom';
+import AdminContinuousProjectPoll from './AdminContinuousProjectPoll';
+import AdminTimelineProjectPoll from './AdminTimelineProjectPoll';
+import useProjectById from 'api/projects/useProjectById';
 
-// Services / Data loading
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetPollQuestions, {
-  GetPollQuestionsChildProps,
-} from 'resources/GetPollQuestions';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+const AdminProjectPoll = () => {
+  const { projectId } = useParams() as { projectId: string };
+  const { data: project } = useProjectById(projectId);
+  const isEnabled = useFeatureFlag({ name: 'polls' });
 
-// Components
-import FeatureFlag from 'components/FeatureFlag';
-import ExportPollButton from './ExportPollButton';
-import PollAdminForm from './PollAdminForm';
-import T from 'components/T';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
+  if (isNilOrError(project) || !isEnabled) return null;
 
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const PhaseContainer = styled.div`
-  &:not(:last-child) {
-    margin-bottom: 50px;
+  if (
+    project.data.attributes.process_type === 'continuous' &&
+    project.data.attributes.participation_method === 'poll'
+  ) {
+    return <AdminContinuousProjectPoll project={project.data} />;
   }
-`;
 
-const HeaderContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 30px;
-`;
-
-const Left = styled.div`
-  margin-right: 80px;
-`;
-
-interface InputProps {}
-
-interface DataProps {
-  project: GetProjectChildProps;
-  phases: GetPhasesChildProps;
-  locale: GetLocaleChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-export class AdminProjectPoll extends React.PureComponent<
-  Props & InjectedLocalized
-> {
-  render() {
-    const { project, phases, locale, localize } = this.props;
-    if (isNilOrError(project) || isNilOrError(locale)) return null;
-
-    if (
-      project.attributes.process_type === 'continuous' &&
-      project.attributes.participation_method === 'poll'
-    ) {
-      return (
-        <FeatureFlag name="polls">
-          <Container>
-            <HeaderContainer>
-              <Left>
-                <SectionTitle>
-                  <FormattedMessage {...messages.titlePollTab} />
-                </SectionTitle>
-                <SectionDescription>
-                  <FormattedMessage {...messages.pollTabSubtitle} />
-                </SectionDescription>
-              </Left>
-              <ExportPollButton
-                participationContextType="project"
-                participationContextId={project.id}
-                participationContextName={localize(
-                  project.attributes.title_multiloc
-                )}
-              />
-            </HeaderContainer>
-            <GetPollQuestions
-              participationContextId={project.id}
-              participationContextType="project"
-            >
-              {(pollQuestions: GetPollQuestionsChildProps) => (
-                <PollAdminForm
-                  participationContextType="project"
-                  participationContextId={project.id}
-                  pollQuestions={isError(pollQuestions) ? null : pollQuestions}
-                />
-              )}
-            </GetPollQuestions>
-          </Container>
-        </FeatureFlag>
-      );
-    }
-
-    if (
-      project.attributes.process_type === 'timeline' &&
-      !isNilOrError(phases)
-    ) {
-      const pollPhases = phases.filter(
-        (phase) => phase.attributes.participation_method === 'poll'
-      );
-      if (pollPhases.length === 0) return null;
-      return (
-        <FeatureFlag name="polls">
-          <Container>
-            <SectionTitle>
-              <FormattedMessage {...messages.titlePollTab} />
-            </SectionTitle>
-            <SectionDescription>
-              <FormattedMessage {...messages.pollTabSubtitle} />
-            </SectionDescription>
-            {pollPhases.map((phase) => (
-              <PhaseContainer key={phase.id}>
-                <HeaderContainer>
-                  <Left>
-                    <h3>
-                      <T value={phase.attributes.title_multiloc} />
-                    </h3>
-                  </Left>
-                  <ExportPollButton
-                    participationContextId={phase.id}
-                    participationContextType="phase"
-                    participationContextName={localize(
-                      phase.attributes.title_multiloc
-                    )}
-                  />
-                </HeaderContainer>
-                <GetPollQuestions
-                  participationContextId={phase.id}
-                  participationContextType="phase"
-                >
-                  {(pollQuestions: GetPollQuestionsChildProps) => (
-                    <PollAdminForm
-                      participationContextType="phase"
-                      participationContextId={phase.id}
-                      pollQuestions={
-                        isError(pollQuestions) ? null : pollQuestions
-                      }
-                    />
-                  )}
-                </GetPollQuestions>
-              </PhaseContainer>
-            ))}
-          </Container>
-        </FeatureFlag>
-      );
-    }
-    return null;
+  if (project.data.attributes.process_type === 'timeline') {
+    return <AdminTimelineProjectPoll projectId={projectId} />;
   }
-}
+  return null;
+};
 
-const AdminProjectPollWithHoc = injectLocalize(AdminProjectPoll);
-
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  phases: ({ params, render }) => (
-    <GetPhases projectId={params.projectId}>{render}</GetPhases>
-  ),
-  project: ({ params, render }) => (
-    <GetProject projectId={params.projectId}>{render}</GetProject>
-  ),
-  locale: <GetLocale />,
-});
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <AdminProjectPollWithHoc {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default AdminProjectPoll;
