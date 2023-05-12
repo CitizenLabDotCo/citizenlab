@@ -3,7 +3,6 @@ import { IPhaseData } from 'api/phases/types';
 
 interface InputProps {
   projectId?: string | null | undefined;
-  resetOnChange?: boolean;
 }
 
 export type GetPhasesChildProps = IPhaseData[] | undefined;
