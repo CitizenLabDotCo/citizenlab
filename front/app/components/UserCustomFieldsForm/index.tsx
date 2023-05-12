@@ -19,6 +19,9 @@ import { IUserData } from 'services/users';
 import { isNilOrError } from 'utils/helperUtils';
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 
+// TODO test
+// import { data } from './data';
+
 // Todo :
 /*
 - InputControl : implement long input, implement numeric
@@ -43,6 +46,12 @@ export default ({
   const { data: userCustomFieldsSchema } = useCustomFieldsSchema(
     authenticationContext
   );
+
+  // const { data: userCustomFieldsSchema2 } = useCustomFieldsSchema(
+  //   authenticationContext
+  // );
+  // const userCustomFieldsSchema = { data } ?? userCustomFieldsSchema2;
+
   const locale = useLocale();
 
   const handleOnSubmit = (formData) => {
