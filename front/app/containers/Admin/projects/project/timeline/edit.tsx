@@ -1,7 +1,7 @@
 // Libraries
 import React, { FormEvent, useEffect, useState } from 'react';
-import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
-import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { Subscription, combineLatest, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import moment, { Moment } from 'moment';
 import { get, isEmpty } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
@@ -12,12 +12,8 @@ import {
   updatePhase,
   addPhase,
   IUpdatedPhaseProperties,
-  IPhase,
 } from 'services/phases';
 import eventEmitter from 'utils/eventEmitter';
-
-// Utils
-import shallowCompare from 'utils/shallowCompare';
 
 // Components
 import { Label } from '@citizenlab/cl2-component-library';
@@ -53,12 +49,6 @@ import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 
 const PhaseForm = styled.form``;
-
-interface IParams {
-  projectId: string | null;
-  id: string | null;
-}
-
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
 const AdminProjectTimelineEdit = () => {
@@ -78,69 +68,52 @@ const AdminProjectTimelineEdit = () => {
   const [inStatePhaseFiles, setInStatePhaseFiles] = useState<FileType[]>([]);
   const [phaseFilesToRemove, setPhaseFilesToRemove] = useState<FileType[]>([]);
   const [submitState, setSubmitState] = useState<SubmitStateType>('disabled');
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [attributeDiff, setAttributeDiff] = useState<IUpdatedPhaseProperties>(
     {}
   );
 
-  console.log({ phaseFiles });
-
-  const params$ = new BehaviorSubject<IParams | null>(null);
-
   useEffect(() => {
-    params$.next({ projectId, id: phaseId ? phaseId : null });
+    if (phaseId) {
+      const subscriptions: Subscription[] = [
+        phaseFilesStream(phaseId)
+          .observable.pipe(
+            switchMap((phaseFiles) => {
+              if (phaseFiles && phaseFiles.data && phaseFiles.data.length > 0) {
+                return combineLatest(
+                  phaseFiles.data.map((phaseFile) => {
+                    const {
+                      id,
+                      attributes: {
+                        name,
+                        size,
+                        file: { url },
+                      },
+                    } = phaseFile;
 
-    setSubscriptions([
-      params$
-        .pipe(
-          distinctUntilChanged(shallowCompare),
-          switchMap((params: IParams) => {
-            return params.id
-              ? phaseFilesStream(params.id).observable.pipe(
-                  switchMap((phaseFiles) => {
-                    if (
-                      phaseFiles &&
-                      phaseFiles.data &&
-                      phaseFiles.data.length > 0
-                    ) {
-                      return combineLatest(
-                        phaseFiles.data.map((phaseFile) => {
-                          const {
-                            id,
-                            attributes: {
-                              name,
-                              size,
-                              file: { url },
-                            },
-                          } = phaseFile;
-
-                          return of({
-                            id,
-                            url,
-                            name,
-                            size,
-                            remote: true,
-                          });
-                        })
-                      );
-                    }
-
-                    return of([]);
+                    return of({
+                      id,
+                      url,
+                      name,
+                      size,
+                      remote: true,
+                    });
                   })
-                )
-              : of([]);
-          })
-        )
-        .subscribe((phaseFiles) => {
-          setInStatePhaseFiles(phaseFiles as FileType[]);
-        }),
-    ]);
+                );
+              }
+              return of([]);
+            })
+          )
+          .subscribe((phaseFiles) => {
+            setInStatePhaseFiles(phaseFiles as FileType[]);
+          }),
+      ];
 
-    return () => {
-      subscriptions.forEach((subscription) => subscription.unsubscribe());
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      return () => {
+        subscriptions.forEach((subscription) => subscription.unsubscribe());
+      };
+    }
+    return;
+  }, [phaseId, projectId]);
 
   const handleTitleMultilocOnChange = (title_multiloc: Multiloc) => {
     setSubmitState('enabled');
@@ -352,18 +325,14 @@ const AdminProjectTimelineEdit = () => {
             />
             <Error apiErrors={errors && errors.title_multiloc} />
           </SectionField>
-
           <SectionField>
-            {!isNilOrError(phase) && (
-              <ParticipationContext
-                phase={{ data: phase }}
-                onSubmit={handleParticipationContextOnSubmit}
-                onChange={handleParticipationContextOnChange}
-                apiErrors={errors}
-              />
-            )}
+            <ParticipationContext
+              phase={!isNilOrError(phase) ? { data: phase } : undefined}
+              onSubmit={handleParticipationContextOnSubmit}
+              onChange={handleParticipationContextOnChange}
+              apiErrors={errors}
+            />
           </SectionField>
-
           <SectionField>
             <Label>
               <FormattedMessage {...messages.datesLabel} />
