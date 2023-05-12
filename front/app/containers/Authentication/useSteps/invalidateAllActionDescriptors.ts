@@ -2,7 +2,7 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import initiativeActionDescriptorsKeys from 'api/initiative_action_descriptors/keys';
 import ideasKeys from 'api/ideas/keys';
 import projectsKeys from 'api/projects/keys';
-import { apiEndpoint as projectApiEndpoint } from 'services/projects';
+import { apiEndpoint as projectApiEndpoint } from 'api/projects/types';
 import streams from 'utils/streams';
 
 export const invalidateAllActionDescriptors = () => {

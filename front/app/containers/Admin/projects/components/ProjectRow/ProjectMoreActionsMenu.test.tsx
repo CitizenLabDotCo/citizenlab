@@ -45,7 +45,7 @@ jest.mock('api/projects/useProjectById', () => {
   return jest.fn(() => ({ data: { data: mockProject } }));
 });
 
-jest.mock('services/projects', () =>
+jest.mock('api/projects/types', () =>
   jest.fn(() => {
     return {
       copyProject: jest.fn().mockImplementation(() => Promise.reject()),

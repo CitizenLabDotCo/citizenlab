@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import useUpdateProjectFolderMembership from 'api/projects/useUpdateProjectFolderMembership';
 
 // services
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';

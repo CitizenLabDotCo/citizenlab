@@ -49,7 +49,7 @@ import {
   IUpdatedProjectProperties,
   updateProject,
   IProjectFormState,
-} from 'services/projects';
+} from 'api/projects/types';
 import { IProjectData } from 'api/projects/types';
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { queryClient } from 'utils/cl-react-query/queryClient';
