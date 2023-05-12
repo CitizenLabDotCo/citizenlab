@@ -19,6 +19,7 @@ interface Props {
   moveRow: (fromIndex: number, toIndex: number) => void;
   dropRow: (itemId: string, toIndex: number) => void;
   children?: React.ReactNode;
+  dataTestid?: string;
 }
 
 interface DragItem {
@@ -38,6 +39,7 @@ const SortableRow = ({
   index,
   dropRow,
   moveRow,
+  dataTestid,
 }: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [{ handlerId }, drop] = useDrop<
@@ -126,6 +128,7 @@ const SortableRow = ({
       className={className}
       ref={ref}
       data-handler-id={handlerId}
+      data-testid={dataTestid}
     >
       <Row isLastItem={isLastItem}>
         <DragHandle className="sortablerow-draghandle">
