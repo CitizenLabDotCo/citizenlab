@@ -11,7 +11,7 @@ const baseKey = {
 const PhaseFilesKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: ({ phaseId }: { phaseId: string }) => [
+  list: ({ phaseId }: { phaseId: string | null }) => [
     { ...baseKey, operation: 'list', parameters: { phaseId } },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],

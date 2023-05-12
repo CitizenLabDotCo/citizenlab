@@ -1,13 +1,11 @@
 // Libraries
 import React, { FormEvent, useEffect, useState } from 'react';
-import { Subscription, combineLatest, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import moment, { Moment } from 'moment';
 import { get, isEmpty } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
 // Services
-import { phaseFilesStream } from 'services/phaseFiles';
+import { IPhaseFiles } from 'api/phase_files/types';
 import {
   updatePhase,
   addPhase,
@@ -51,6 +49,23 @@ import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 const PhaseForm = styled.form``;
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
+const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
+  if (phaseFiles) {
+    const convertedFiles: FileType[] = [];
+    phaseFiles.data.map((phaseFile) => {
+      convertedFiles.push({
+        id: phaseFile.id,
+        url: phaseFile.attributes.file.url,
+        name: phaseFile.attributes.name,
+        size: phaseFile.attributes.size,
+        remote: true,
+      });
+    });
+    return convertedFiles;
+  }
+  return [];
+};
+
 const AdminProjectTimelineEdit = () => {
   const { mutateAsync: addPhaseFile } = useAddPhaseFile();
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
@@ -65,7 +80,9 @@ const AdminProjectTimelineEdit = () => {
     [fieldName: string]: CLError[];
   } | null>(null);
   const [processing, setProcessing] = useState<boolean>(false);
-  const [inStatePhaseFiles, setInStatePhaseFiles] = useState<FileType[]>([]);
+  const [inStatePhaseFiles, setInStatePhaseFiles] = useState<FileType[]>(
+    convertToFileType(phaseFiles)
+  );
   const [phaseFilesToRemove, setPhaseFilesToRemove] = useState<FileType[]>([]);
   const [submitState, setSubmitState] = useState<SubmitStateType>('disabled');
   const [attributeDiff, setAttributeDiff] = useState<IUpdatedPhaseProperties>(
@@ -73,47 +90,10 @@ const AdminProjectTimelineEdit = () => {
   );
 
   useEffect(() => {
-    if (phaseId) {
-      const subscriptions: Subscription[] = [
-        phaseFilesStream(phaseId)
-          .observable.pipe(
-            switchMap((phaseFiles) => {
-              if (phaseFiles && phaseFiles.data && phaseFiles.data.length > 0) {
-                return combineLatest(
-                  phaseFiles.data.map((phaseFile) => {
-                    const {
-                      id,
-                      attributes: {
-                        name,
-                        size,
-                        file: { url },
-                      },
-                    } = phaseFile;
-
-                    return of({
-                      id,
-                      url,
-                      name,
-                      size,
-                      remote: true,
-                    });
-                  })
-                );
-              }
-              return of([]);
-            })
-          )
-          .subscribe((phaseFiles) => {
-            setInStatePhaseFiles(phaseFiles as FileType[]);
-          }),
-      ];
-
-      return () => {
-        subscriptions.forEach((subscription) => subscription.unsubscribe());
-      };
+    if (phaseFiles) {
+      setInStatePhaseFiles(convertToFileType(phaseFiles));
     }
-    return;
-  }, [phaseId, projectId]);
+  }, [phaseFiles]);
 
   const handleTitleMultilocOnChange = (title_multiloc: Multiloc) => {
     setSubmitState('enabled');

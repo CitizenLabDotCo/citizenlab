@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 import phaseFilesKeys from './keys';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 const deletePhaseFile = ({
   phaseId,
@@ -24,6 +26,9 @@ const useDeletePhaseFile = () => {
         queryKey: phaseFilesKeys.list({
           phaseId: variables.phaseId,
         }),
+      });
+      streams.fetchAllWith({
+        apiEndpoint: [`${API_PATH}/phases/${variables.phaseId}`],
       });
     },
   });

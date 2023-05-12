@@ -3,6 +3,8 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import phaseFilesKeys from './keys';
 import { IPhaseFile, AddPhaseFileObject } from './types';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 const addPhaseFile = async ({ phaseId, ...requestBody }: AddPhaseFileObject) =>
   fetcher<IPhaseFile>({
@@ -26,6 +28,9 @@ const useAddPhaseFile = () => {
         queryKey: phaseFilesKeys.list({
           phaseId: variables.phaseId,
         }),
+      });
+      streams.fetchAllWith({
+        apiEndpoint: [`${API_PATH}/phases/${variables.phaseId}`],
       });
     },
   });
