@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CLErrors } from 'typings';
+import { CLErrorsJSON } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { IProject, IUpdatedProjectProperties } from './types';
 import streams from 'utils/streams';
@@ -18,7 +18,7 @@ export const updateProject = async ({
 
 const useUpdateProject = () => {
   const queryClient = useQueryClient();
-  return useMutation<IProject, CLErrors, IUpdatedProjectProperties>({
+  return useMutation<IProject, CLErrorsJSON, IUpdatedProjectProperties>({
     mutationFn: updateProject,
     onSuccess: async (_data) => {
       queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
