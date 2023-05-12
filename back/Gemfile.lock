@@ -1,19 +1,4 @@
 GIT
-  remote: https://github.com/CitizenLabDotCo/openid_connect.git
-  revision: 7e5136cb3712ff3a0bd0c476e4f527b25c08ee89
-  specs:
-    openid_connect (1.1.8)
-      activemodel
-      attr_required (>= 1.0.0)
-      json-jwt (>= 1.5.0)
-      rack-oauth2 (>= 1.6.1)
-      swd (>= 1.0.0)
-      tzinfo
-      validate_email
-      validate_url
-      webfinger (>= 1.0.1)
-
-GIT
   remote: https://github.com/carrierwaveuploader/carrierwave.git
   revision: a3ffc5381e70a4014b61b27b35540aa3b945910d
   ref: a3ffc5381e70a4014b61b27b35540aa3b945910d
@@ -779,6 +764,16 @@ GEM
     omniauth_openid_connect (0.6.1)
       omniauth (>= 1.9, < 3)
       openid_connect (~> 1.1)
+    openid_connect (1.1.8)
+      activemodel
+      attr_required (>= 1.0.0)
+      json-jwt (>= 1.5.0)
+      rack-oauth2 (>= 1.6.1)
+      swd (>= 1.0.0)
+      tzinfo
+      validate_email
+      validate_url
+      webfinger (>= 1.0.1)
     order_as_specified (1.7)
       activerecord (>= 5.0.0)
     os (1.1.4)
@@ -1185,7 +1180,7 @@ DEPENDENCIES
   omniauth-saml (~> 1.10.3)
   omniauth_openid_connect
   onboarding!
-  openid_connect!
+  openid_connect
   order_as_specified
   pg
   pg_search (~> 2.3.5)
