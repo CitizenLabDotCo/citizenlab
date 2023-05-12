@@ -241,7 +241,7 @@ const Timeline = ({
   const tabsRef = useRef<HTMLButtonElement[]>([]);
 
   const handleOnPhaseSelection = useCallback(
-    (phase: IPhaseData | null) => (event: FormEvent) => {
+    (phase: IPhaseData | undefined) => (event: FormEvent) => {
       trackEventByName(tracks.clickOnPhase);
       event.preventDefault();
       selectPhase(phase);

@@ -6,7 +6,7 @@ import { IPhaseData } from 'services/phases';
 export interface ScrollToSurveyParams {
   pathname: string;
   projectSlug: string;
-  currentPhase: IPhaseData | null;
+  currentPhase: IPhaseData | undefined;
 }
 
 export const scrollToSurvey =

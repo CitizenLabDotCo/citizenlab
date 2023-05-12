@@ -135,7 +135,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   });
   const authUser = useAuthUser();
 
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
+  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const [shareModalOpened, setShareModalOpened] = useState(false);
 
   useEffect(() => {
@@ -196,7 +196,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       currentPhase?.attributes?.participation_method;
     const { disabledReason } = getIdeaPostingRules({
       project: project.data,
-      phase: !isNilOrError(currentPhase) ? currentPhase : null,
+      phase: currentPhase,
       authUser,
     });
     const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
@@ -281,7 +281,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                           values={{ ideasCount }}
                         />
                       )}
-                      {!isNilOrError(currentPhase) &&
+                      {currentPhase &&
                         currentPhaseParticipationMethod === 'ideation' &&
                         !hasProjectEnded && (
                           <FormattedMessage
@@ -300,7 +300,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                             values={{ ideasCount }}
                           />
                         )}
-                      {!isNilOrError(currentPhase) &&
+                      {currentPhase &&
                         currentPhaseParticipationMethod === 'ideation' &&
                         hasProjectEnded && (
                           <FormattedMessage

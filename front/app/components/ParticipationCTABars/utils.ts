@@ -9,7 +9,7 @@ export type CTABarProps = {
 
 export const hasProjectEndedOrIsArchived = (
   project: IProjectData,
-  currentPhase: IPhaseData | null
+  currentPhase: IPhaseData | undefined
 ) => {
   const { publication_status } = project.attributes;
   const hasProjectEnded = currentPhase

@@ -69,7 +69,9 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
   ({ projectId, buttonStyle, className, intl: { formatMessage } }) => {
     const { data: phases } = usePhases(projectId);
 
-    const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
+    const [selectedPhase, setSelectedPhase] = useState<
+      IPhaseData | undefined
+    >();
 
     useEffect(() => {
       const subscription = selectedPhase$.subscribe((selectedPhase) => {

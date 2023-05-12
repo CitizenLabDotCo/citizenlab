@@ -25,7 +25,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
+  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   let basketId: string | null = null;
   if (currentPhase) {
     basketId = currentPhase.relationships.user_basket?.data?.id || null;

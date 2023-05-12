@@ -14,7 +14,6 @@ import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
@@ -26,7 +25,7 @@ export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
   const authUser = useAuthUser();
   const { data: phases } = usePhases(project.id);
   const isSmallerThanPhone = useBreakpoint('phone');
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
+  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
 
   useEffect(() => {
     setCurrentPhase(
@@ -38,7 +37,7 @@ export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
     currentPhase?.attributes.participation_method === 'native_survey';
   const { disabledReason } = getIdeaPostingRules({
     project,
-    phase: !isNilOrError(currentPhase) ? currentPhase : null,
+    phase: currentPhase,
     authUser,
   });
   const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';

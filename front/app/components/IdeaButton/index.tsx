@@ -111,7 +111,7 @@ interface InputProps extends Omit<ButtonProps, 'onClick'> {
   className?: string;
   participationContextType: IParticipationContextType;
   buttonText?: MessageDescriptor;
-  phase: IPhaseData | undefined | null;
+  phase: IPhaseData | undefined;
 }
 
 interface Props extends InputProps, DataProps {}

@@ -14,7 +14,6 @@ import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { scrollToElement } from 'utils/scroll';
 import {
   CTABarProps,
@@ -28,7 +27,7 @@ import messages from '../messages';
 export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const authUser = useAuthUser();
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
+  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const isSmallerThanPhone = useBreakpoint('phone');
 
   useEffect(() => {
@@ -44,7 +43,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
 
   const { enabled, disabledReason } = getIdeaPostingRules({
     project,
-    phase: !isNilOrError(currentPhase) ? currentPhase : null,
+    phase: currentPhase,
     authUser,
   });
   const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';

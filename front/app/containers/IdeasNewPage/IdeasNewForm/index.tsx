@@ -7,7 +7,7 @@ import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 import usePhases from 'api/phases/usePhases';
-import usePhase, { TPhase } from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
 import { useParams, useSearchParams } from 'react-router-dom';
 
@@ -32,11 +32,10 @@ import {
 } from 'utils/participationMethodUtils';
 import { getLocationGeojson } from '../utils';
 import { IProject } from 'api/projects/types';
-import { IPhases } from 'api/phases/types';
-
+import { IPhases, IPhaseData } from 'api/phases/types';
 
 const getConfig = (
-  phaseFromUrl: TPhase,
+  phaseFromUrl: IPhaseData | undefined,
   phases: IPhases | undefined,
   project: IProject | undefined
 ) => {
@@ -46,8 +45,8 @@ const getConfig = (
     config = getMethodConfig(phaseFromUrl.attributes.participation_method);
   } else {
     if (phases && project?.data.attributes.process_type === 'timeline') {
-      const participationMethod =
-        getCurrentPhase(phases?.data)?.attributes.participation_method;
+      const participationMethod = getCurrentPhase(phases?.data)?.attributes
+        .participation_method;
       if (!isNilOrError(participationMethod)) {
         config = getMethodConfig(participationMethod);
       }
@@ -191,8 +190,8 @@ const IdeasNewPageWithJSONForm = () => {
   );
 
   // get participation method config
-  const phaseFromUrl = usePhase(phaseId);
-  const config = getConfig(phaseFromUrl, phases, project);
+  const { data: phaseFromUrl } = usePhase(phaseId);
+  const config = getConfig(phaseFromUrl?.data, phases, project);
 
   if (isNilOrError(project) || !config) {
     return null;
@@ -224,7 +223,7 @@ const IdeasNewPageWithJSONForm = () => {
                     config.getFormTitle({
                       project: project.data,
                       phases: phases?.data,
-                      phaseFromUrl,
+                      phaseFromUrl: phaseFromUrl?.data,
                     })
                   ) : (
                     <></>

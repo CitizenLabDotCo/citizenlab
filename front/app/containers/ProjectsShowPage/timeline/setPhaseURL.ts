@@ -3,7 +3,7 @@ import { IProjectData } from 'api/projects/types';
 import { Locale } from 'typings';
 
 export default function setPhaseUrl(
-  selectedPhaseId: string,
+  selectedPhaseId: string | undefined,
   currentPhaseId: string | undefined,
   phases: IPhaseData[],
   project: IProjectData,

@@ -116,6 +116,9 @@ export async function updatePhase(
   queryClient.invalidateQueries({
     queryKey: projectsKeys.item({ id: projectId }),
   });
+  queryClient.invalidateQueries({
+    queryKey: phasesKeys.list({ projectId }),
+  });
 
   streams.fetchAllWith({
     dataId: [phaseId],
@@ -135,6 +138,9 @@ export async function addPhase(
   );
   queryClient.invalidateQueries({
     queryKey: projectsKeys.item({ id: projectId }),
+  });
+  queryClient.invalidateQueries({
+    queryKey: phasesKeys.list({ projectId }),
   });
 
   const phaseId = response.data.id;
@@ -170,10 +176,10 @@ export function getCurrentPhase(
         ]) === 'present'
     );
 
-    return currentPhase || null;
+    return currentPhase;
   }
 
-  return null;
+  return;
 }
 
 export function getFirstPhase(phases: IPhaseData[] | null | undefined | Error) {
@@ -194,10 +200,10 @@ export function getLastPhase(phases: IPhaseData[] | null | undefined | Error) {
       sortBy(phases, [(phase) => phase.attributes.end_at])
     );
 
-    return lastPhase || null;
+    return lastPhase;
   }
 
-  return null;
+  return;
 }
 
 export function getLastPastPhase(

@@ -23,7 +23,7 @@ import messages from '../messages';
 
 export const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
+  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));

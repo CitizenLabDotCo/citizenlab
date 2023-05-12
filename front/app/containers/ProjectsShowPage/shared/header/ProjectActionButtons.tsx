@@ -56,7 +56,7 @@ interface Props {
 const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
+  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const { pathname, hash: divId } = useLocation();
 
   useEffect(() => {

@@ -91,7 +91,9 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
     const locale = useLocale();
     const windowSize = useWindowSize();
 
-    const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
+    const [selectedPhase, setSelectedPhase] = useState<
+      IPhaseData | undefined
+    >();
     const currentPhase = getCurrentPhase(phases?.data);
 
     useEffect(() => {
@@ -101,7 +103,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
 
       return () => {
         subscription.unsubscribe();
-        selectPhase(null);
+        selectPhase(undefined);
       };
     }, []);
 
@@ -113,7 +115,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
         !isNilOrError(locale)
       ) {
         setPhaseURL(
-          selectedPhase.id,
+          selectedPhase?.id,
           currentPhase?.id,
           phases.data,
           project.data,
@@ -134,7 +136,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
         } else if (latestRelevantPhase) {
           selectPhase(latestRelevantPhase);
         } else {
-          selectPhase(null);
+          selectPhase(undefined);
         }
       }
     }, [phaseNumber, phases]);
@@ -145,7 +147,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
 
     if (
       !isNilOrError(project) &&
-      !isNilOrError(phases) &&
+      phases &&
       phases.data.length > 0 &&
       selectedPhase
     ) {

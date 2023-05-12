@@ -47,7 +47,7 @@ type Props = {
   timeLeft?: string;
   hasUserParticipated?: boolean;
   CTAButton?: React.ReactNode;
-  currentPhase: IPhaseData | null;
+  currentPhase: IPhaseData | undefined;
 };
 
 export const ParticipationCTAContent = ({

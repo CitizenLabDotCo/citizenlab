@@ -372,7 +372,7 @@ export const getParticipationMethod = (
 export function getPhase(
   phaseId: string,
   phases: IPhaseData[]
-): IPhaseData | null {
+): IPhaseData | undefined {
   return phases.filter((phase) => phase.id === phaseId)[0];
 }
 

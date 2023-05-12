@@ -1,8 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 
 // components
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
@@ -108,11 +107,15 @@ interface Props {
 }
 
 const IdeasContainerOuter = ({ phaseId, projectId, className }: Props) => {
-  const phase = usePhase(phaseId);
-  if (isNilOrError(phase)) return null;
+  const { data: phase } = usePhase(phaseId);
+  if (!phase) return null;
 
   return (
-    <IdeasContainer projectId={projectId} phase={phase} className={className} />
+    <IdeasContainer
+      projectId={projectId}
+      phase={phase.data}
+      className={className}
+    />
   );
 };
 

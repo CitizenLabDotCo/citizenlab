@@ -33,7 +33,7 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 
 export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
+  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const { pathname, hash: divId } = useLocation();
 
   useEffect(() => {
