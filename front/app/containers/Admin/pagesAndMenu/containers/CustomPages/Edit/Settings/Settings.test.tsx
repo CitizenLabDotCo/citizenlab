@@ -43,23 +43,31 @@ const mockCustomPage: ICustomPageData = {
 jest.mock('hooks/useCustomPage', () => jest.fn(() => mockCustomPage));
 
 describe('EditCustomPageSettings', () => {
-  describe('Edit custom page', () => {
-    it('renders error in case of invalid slug', async () => {
-      const user = userEvent.setup();
+  it('renders error in case of invalid slug', async () => {
+    const user = userEvent.setup();
 
+    render(<EditCustomPageSettings />);
+
+    const slugInput = screen.getByLabelText('Slug');
+    const submitButton = screen.getByRole('button', {
+      name: 'Save custom page',
+    });
+
+    user.type(slugInput, '-');
+    user.click(submitButton);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('feedbackErrorMessage')).toBeInTheDocument();
+    });
+  });
+
+  describe('Slug input', () => {
+    it('does show the slug input field for "regular" custom pages', () => {
+      // mockCustomPage.attributes.code is 'custom' by default in this test file
       render(<EditCustomPageSettings />);
+      const slugInput = screen.queryByRole('textbox', { name: 'Slug' });
 
-      const slugInput = screen.getByLabelText('Slug');
-      const submitButton = screen.getByRole('button', {
-        name: 'Save custom page',
-      });
-
-      user.type(slugInput, '-');
-      user.click(submitButton);
-
-      await waitFor(() => {
-        expect(screen.getByTestId('feedbackErrorMessage')).toBeInTheDocument();
-      });
+      expect(slugInput).toBeInTheDocument();
     });
 
     it('does not show the slug input field for FAQ page (and other "fixed" custom pages)', () => {
