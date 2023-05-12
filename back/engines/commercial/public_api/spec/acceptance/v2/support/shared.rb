@@ -3,7 +3,7 @@
 RSpec.shared_context 'common_auth' do
   before do
     api_token = PublicApi::ApiClient.create
-    token = Knock::AuthToken.new(payload: api_token.to_token_payload).token
+    token = AuthToken::AuthToken.new(payload: api_token.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
   end
 

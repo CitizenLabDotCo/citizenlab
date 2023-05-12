@@ -492,7 +492,8 @@ Style/ClassVars:
     - 'engines/commercial/public_api/app/serializers/public_api/v2/project_serializer.rb'
     - 'engines/commercial/public_api/app/serializers/public_api/v2/topic_serializer.rb'
     - 'engines/commercial/public_api/app/serializers/public_api/v2/user_serializer.rb'
-
+    - 'engines/commercial/public_api/app/serializers/public_api/v2/comment_serializer.rb'
+    -
 # Offense count: 9
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AllowedVars.
