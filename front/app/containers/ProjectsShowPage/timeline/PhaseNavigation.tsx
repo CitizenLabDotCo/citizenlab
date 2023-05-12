@@ -10,7 +10,8 @@ import { trackEventByName } from 'utils/analytics';
 import { Button } from '@citizenlab/cl2-component-library';
 
 // services
-import { IPhaseData, getCurrentPhase } from 'services/phases';
+import { getCurrentPhase } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
 
 // events
 import { selectedPhase$, selectPhase } from './events';

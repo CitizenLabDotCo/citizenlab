@@ -19,7 +19,8 @@ import useAuthUser from 'hooks/useAuthUser';
 import clHistory from 'utils/cl-router/history';
 
 // services
-import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // components

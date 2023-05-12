@@ -18,11 +18,10 @@ import {
 import SectionContainer from 'components/SectionContainer';
 
 // services
-import {
-  IPhaseData,
-  getLatestRelevantPhase,
-  getCurrentPhase,
-} from 'services/phases';
+import { getLatestRelevantPhase, getCurrentPhase } from 'api/phases/utils';
+
+// typings
+import { IPhaseData } from 'api/phases/types';
 
 // events
 import { selectedPhase$, selectPhase } from './events';

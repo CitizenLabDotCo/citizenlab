@@ -26,6 +26,7 @@ import { colors } from 'utils/styleUtils';
 
 // Services
 import { downloadSurveyResults } from 'services/formCustomFields';
+import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as { projectId: string };
@@ -34,6 +35,7 @@ const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { data: phases } = usePhases(projectId);
   const locale = useLocale();
   const { pathname } = useLocation();
+  const { mutate: updatePhase } = useUpdatePhase();
 
   if (!project || isNilOrError(locale)) {
     return null;
@@ -43,7 +45,11 @@ const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
     `/admin/projects/${project.data.id}/native-survey/results`
   );
 
-  const formActionsConfigs = getFormActionsConfig(project.data, phases?.data);
+  const formActionsConfigs = getFormActionsConfig(
+    project.data,
+    updatePhase,
+    phases?.data
+  );
 
   const handleDownloadResults = async () => {
     try {

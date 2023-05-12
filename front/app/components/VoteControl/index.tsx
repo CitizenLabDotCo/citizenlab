@@ -6,7 +6,7 @@ import VoteButton from './VoteButton';
 
 // services
 import { IdeaVotingDisabledReason } from 'api/ideas/types';
-import { getLatestRelevantPhase } from 'services/phases';
+import { getLatestRelevantPhase } from 'api/phases/utils';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';

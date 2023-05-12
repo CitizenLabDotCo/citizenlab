@@ -8,7 +8,8 @@ import { ParticipationCTAContent } from 'components/ParticipationCTABars/Partici
 import { useTheme } from 'styled-components';
 
 // services
-import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,

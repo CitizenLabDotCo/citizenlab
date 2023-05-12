@@ -5,7 +5,7 @@ import {
   refCount,
 } from 'rxjs/operators';
 import eventEmitter from 'utils/eventEmitter';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 
 enum events {
   selectedPhaseChange = 'selectedPhaseChange',

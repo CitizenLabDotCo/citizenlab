@@ -14,7 +14,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 // hooks
 import { useParams } from 'react-router-dom';
 import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase, IPhaseData } from 'services/phases';
+import { getCurrentPhase } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
 
 export const IdeaForm = () => {
   const { projectId } = useParams() as {

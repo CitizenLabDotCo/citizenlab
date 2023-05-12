@@ -22,7 +22,7 @@ import {
   viewportWidths,
   isRtl,
 } from 'utils/styleUtils';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 
 const Container = styled.div<{ descriptionHasContent: boolean }>`
   display: flex;

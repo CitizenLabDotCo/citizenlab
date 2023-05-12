@@ -14,7 +14,7 @@ import Modal from 'components/UI/Modal';
 
 // utils
 import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
-import { getCurrentPhase } from 'services/phases';
+import { getCurrentPhase } from 'api/phases/utils';
 import { isReady } from './utils';
 
 // typings

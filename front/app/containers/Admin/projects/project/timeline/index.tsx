@@ -12,7 +12,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // Services
-// import { deletePhase } from 'services/phases';
 import useDeletePhase from 'api/phases/useDeletePhase';
 
 // Resources

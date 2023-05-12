@@ -15,7 +15,8 @@ import usePhases from 'api/phases/usePhases';
 import useLocalize from 'hooks/useLocalize';
 
 // services
-import { IPhaseData, getCurrentPhase } from 'services/phases';
+import { getCurrentPhase } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
 
 // events
 import { selectPhase } from './events';

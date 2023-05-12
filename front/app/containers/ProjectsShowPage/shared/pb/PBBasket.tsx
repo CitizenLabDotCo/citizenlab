@@ -38,7 +38,7 @@ import {
 
 // typings
 import { IParticipationContextType } from 'typings';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 
 const Container = styled.div`
   padding: 10px;

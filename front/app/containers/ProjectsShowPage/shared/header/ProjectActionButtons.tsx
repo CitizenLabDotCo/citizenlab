@@ -16,7 +16,8 @@ import usePhases from 'api/phases/usePhases';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // services
-import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
 import { getInputTerm } from 'services/participationContexts';
 
 // components

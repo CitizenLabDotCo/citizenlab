@@ -44,7 +44,7 @@ import { darken } from 'polished';
 // typings
 import { LatLng } from 'leaflet';
 import { getButtonMessage } from './utils';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 const Container = styled.div``;

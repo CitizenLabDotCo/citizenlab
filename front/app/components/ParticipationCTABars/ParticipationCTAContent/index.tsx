@@ -10,7 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 // services
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 
 // utils
 import { getPeriodRemainingUntil } from 'utils/dateUtils';

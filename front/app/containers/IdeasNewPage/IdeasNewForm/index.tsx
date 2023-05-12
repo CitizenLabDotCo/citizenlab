@@ -25,7 +25,7 @@ import { geocode, reverseGeocode } from 'utils/locationTools';
 // for getting inital state from previous page
 import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { getCurrentPhase } from 'services/phases';
+import { getCurrentPhase } from 'api/phases/utils';
 import {
   ParticipationMethodConfig,
   getMethodConfig,

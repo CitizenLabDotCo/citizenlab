@@ -4,7 +4,7 @@ import React, { memo, FormEvent, useState } from 'react';
 import Button from 'components/UI/Button';
 
 // services
-import { getLatestRelevantPhase } from 'services/phases';
+import { getLatestRelevantPhase } from 'api/phases/utils';
 import { addBasket, updateBasket } from 'services/baskets';
 
 // hooks

@@ -10,7 +10,8 @@ import { useTheme } from 'styled-components';
 import useAuthUser from 'hooks/useAuthUser';
 
 // services
-import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // utils

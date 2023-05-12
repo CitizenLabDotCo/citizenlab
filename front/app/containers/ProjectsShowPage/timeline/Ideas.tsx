@@ -20,7 +20,7 @@ import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // typings
 import { IQueryParameters } from 'api/ideas/types';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 
 const Container = styled.div``;
 

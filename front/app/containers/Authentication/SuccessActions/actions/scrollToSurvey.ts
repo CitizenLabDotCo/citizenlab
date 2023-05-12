@@ -1,7 +1,7 @@
 import { scrollToElement } from 'utils/scroll';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 import clHistory from 'utils/cl-router/history';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 
 export interface ScrollToSurveyParams {
   pathname: string;

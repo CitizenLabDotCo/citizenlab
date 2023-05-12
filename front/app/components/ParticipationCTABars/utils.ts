@@ -1,4 +1,4 @@
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
