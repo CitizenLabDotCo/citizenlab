@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import messages from '../messages';
-import { copyProject, deleteProject } from 'services/projects';
+import { copyProject } from 'services/projects';
+import useDeleteProject from 'api/projects/useDeleteProject';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'services/permissions/roles';
@@ -27,6 +28,9 @@ const ProjectMoreActionsMenu = ({
   const { data: project } = useProjectById(projectId);
   const folderId = project?.data.attributes.folder_id;
   const authUser = useAuthUser();
+
+  const { mutate: deleteProject } = useDeleteProject();
+
   const [isCopying, setIsCopying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -91,11 +95,17 @@ const ProjectMoreActionsMenu = ({
             window.confirm(formatMessage(messages.deleteProjectConfirmation))
           ) {
             setLoadingState('deleting', true);
-            await handleCallbackError(
-              () => deleteProject(projectId),
-              formatMessage(messages.deleteProjectError)
-            );
-            setLoadingState('deleting', false);
+
+            deleteProject(projectId, {
+              onSuccess: () => {
+                setError(null);
+                setLoadingState('deleting', false);
+              },
+              onError: () => {
+                setError(formatMessage(messages.deleteProjectError));
+                setLoadingState('deleting', false);
+              },
+            });
           }
         },
         label: formatMessage(messages.deleteProjectButtonFull),

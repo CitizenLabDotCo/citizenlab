@@ -131,20 +131,6 @@ export async function updateProject(
   return response;
 }
 
-export async function deleteProject(projectId: string) {
-  const response = await streams.delete(
-    `${apiEndpoint}/${projectId}`,
-    projectId
-  );
-
-  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
-  await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/admin_publications`],
-  });
-
-  return response;
-}
-
 export async function copyProject(projectId: string) {
   const response = await streams.add(`${apiEndpoint}/${projectId}/copy`, {});
 
