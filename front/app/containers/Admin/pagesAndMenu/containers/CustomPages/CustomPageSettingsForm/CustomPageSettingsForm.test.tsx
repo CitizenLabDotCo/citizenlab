@@ -1,5 +1,11 @@
 import React from 'react';
-import { screen, render, fireEvent, waitFor } from 'utils/testUtils/rtl';
+import {
+  screen,
+  render,
+  fireEvent,
+  waitFor,
+  userEvent,
+} from 'utils/testUtils/rtl';
 import CustomPageSettingsForm from './';
 import { ProjectsFilterTypes } from 'services/customPages';
 
@@ -38,7 +44,7 @@ describe('CustomPageSettingsForm', () => {
         <CustomPageSettingsForm mode={mode} {...defaultProps} />
       );
 
-      fireEvent.change(screen.getByRole('textbox'), {
+      fireEvent.change(screen.getByRole('textbox', { name: 'Title' }), {
         target: {
           value: titleEN,
         },
@@ -46,7 +52,7 @@ describe('CustomPageSettingsForm', () => {
 
       fireEvent.click(screen.getByText(/nl-NL/i));
 
-      fireEvent.change(screen.getByRole('textbox'), {
+      fireEvent.change(screen.getByRole('textbox', { name: 'Title' }), {
         target: {
           value: titleNL,
         },
@@ -173,6 +179,15 @@ describe('CustomPageSettingsForm', () => {
         expect(screen.getByTestId('feedbackErrorMessage')).toBeInTheDocument();
         expect(defaultProps.onSubmit).not.toHaveBeenCalled();
       });
+    });
+
+    it('keeps showing the slug input when field is erased', () => {
+      const user = userEvent.setup();
+      render(<CustomPageSettingsForm mode={mode} {...defaultProps} />);
+
+      const slugInput = screen.getByRole('textbox', { name: 'Slug' });
+      user.clear(slugInput);
+      expect(slugInput).toBeInTheDocument();
     });
   });
 });

@@ -12,8 +12,8 @@ import Input from 'components/HookForm/Input';
 
 interface Props {
   showWarningMessage: boolean;
-  previewUrl: string;
-  slug: string;
+  previewUrl: string | null;
+  slug?: string;
 }
 
 const SlugInput = ({ previewUrl, showWarningMessage, slug }: Props) => {
@@ -33,12 +33,14 @@ const SlugInput = ({ previewUrl, showWarningMessage, slug }: Props) => {
         </Box>
       </Box>
       <Input id="slug-input" type="text" name="slug" value={slug} />
-      <Text mb={showWarningMessage ? '16px' : '0'}>
-        <i>
-          <FormattedMessage {...messages.resultingURL} />
-        </i>
-        : {previewUrl}
-      </Text>
+      {previewUrl && (
+        <Text mb={showWarningMessage ? '16px' : '0'}>
+          <i>
+            <FormattedMessage {...messages.resultingURL} />
+          </i>
+          : {previewUrl}
+        </Text>
+      )}
       {showWarningMessage && (
         <Warning>
           <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
