@@ -148,7 +148,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const inputTerm = getInputTerm(
     project.data.attributes.process_type,
     project.data,
-    phases.data
+    phases?.data
   );
 
   const isParticipationMethodIdeation = participation_method === 'ideation';
