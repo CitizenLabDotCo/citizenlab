@@ -1,9 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 
 // api
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import projectsKeys from 'api/projects/keys';
 
 // typings
 import { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -101,26 +98,4 @@ export interface IProjectFormState {
   slug: string | null;
   showSlugErrorMessage: boolean;
   folder_id?: string | null;
-}
-
-export async function updateProjectFolderMembership(
-  projectId: string,
-  newProjectFolderId: string | null,
-  oldProjectFolderId?: string
-) {
-  const response = await streams.update<IProject>(
-    `${apiEndpoint}/${projectId}`,
-    projectId,
-    { project: { folder_id: newProjectFolderId } }
-  );
-
-  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
-  await streams.fetchAllWith({
-    dataId: [newProjectFolderId, oldProjectFolderId].filter(
-      (item) => item
-    ) as string[],
-    apiEndpoint: [`${API_PATH}/admin_publications`],
-  });
-
-  return response;
 }
