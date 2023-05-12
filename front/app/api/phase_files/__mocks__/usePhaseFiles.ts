@@ -4,10 +4,10 @@ export const phaseFilesData = [
     type: 'file',
     attributes: {
       file: {
-        url: 'http://localhost:4000/uploads/test.xlsx',
+        url: 'url/test.xlsx',
       },
       ordering: null,
-      name: 'test_likert_survey_results_download_2022-10-25.xlsx',
+      name: 'test.xlsx',
       size: 4369,
       created_at: '2023-03-01T03:34:20.022Z',
       updated_at: '2023-03-01T03:34:20.022Z',
@@ -18,10 +18,10 @@ export const phaseFilesData = [
     type: 'file',
     attributes: {
       file: {
-        url: 'http://localhost:4000/uploads/test2.xlsx',
+        url: 'url/test2.xlsx',
       },
       ordering: null,
-      name: 'test_likert_survey_results_download_2022-10-25.xlsx',
+      name: 'test2.xlsx',
       size: 4369,
       created_at: '2023-03-01T03:34:20.022Z',
       updated_at: '2023-03-01T03:34:20.022Z',
