@@ -17,7 +17,7 @@ import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 
 const Container = styled.div`
   display: flex;
