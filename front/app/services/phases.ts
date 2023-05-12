@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import {
@@ -90,16 +90,6 @@ export interface IUpdatedPhaseProperties {
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
-}
-
-export function phaseStream(
-  phaseID: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IPhase>({
-    apiEndpoint: `${apiEndpoint}/${phaseID}`,
-    ...streamParams,
-  });
 }
 
 export async function updatePhase(

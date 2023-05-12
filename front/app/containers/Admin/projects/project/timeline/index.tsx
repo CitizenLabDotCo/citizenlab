@@ -12,7 +12,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // Services
-import { deletePhase } from 'services/phases';
+// import { deletePhase } from 'services/phases';
+import useDeletePhase from 'api/phases/useDeletePhase';
 
 // Resources
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
@@ -89,6 +90,8 @@ const AdminProjectTimelineIndex = ({
     projectId: string;
   };
 
+  const { mutate: deletePhase } = useDeletePhase();
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedPhaseId, setSelectedPhaseId] = useState('');
 
@@ -100,9 +103,15 @@ const AdminProjectTimelineIndex = ({
     setShowDeleteModal(true);
     setSelectedPhaseId(phaseId);
   };
-  const handleDeletePhase = async () => {
-    await deletePhase(projectId, selectedPhaseId);
-    closeModal();
+  const handleDeletePhase = () => {
+    deletePhase(
+      { phaseId: selectedPhaseId, projectId },
+      {
+        onSuccess: () => {
+          closeModal();
+        },
+      }
+    );
   };
 
   return (

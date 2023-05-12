@@ -65,3 +65,35 @@ export interface IPhases {
 export interface IPhase {
   data: IPhaseData;
 }
+
+export interface IUpdatedPhaseProperties {
+  project_id?: string;
+  title_multiloc?: Multiloc;
+  description_multiloc?: Multiloc;
+  input_term?: InputTerm;
+  start_at?: string;
+  end_at?: string;
+  participation_method?: ParticipationMethod;
+  posting_enabled?: boolean | null;
+  commenting_enabled?: boolean | null;
+  voting_enabled?: boolean | null;
+  upvoting_method?: 'limited' | 'unlimited' | null;
+  downvoting_method?: 'limited' | 'unlimited' | null;
+  upvoting_limited_max?: number | null;
+  downvoting_enabled?: boolean | null;
+  downvoting_limited_max?: number | null;
+  presentation_mode?: 'card' | 'map' | null;
+  min_budget?: number | null;
+  max_budget?: number | null;
+  survey_service?: TSurveyService | null;
+  survey_embed_url?: string | null;
+  poll_anonymous?: boolean;
+  ideas_order?: IdeaDefaultSortMethod;
+}
+export interface AddPhaseObject extends IUpdatedPhaseProperties {
+  projectId: string;
+}
+
+export interface UpdatePhaseObject extends IUpdatedPhaseProperties {
+  phaseId: string;
+}

@@ -12,11 +12,6 @@ import {
   addPhaseFile,
   deletePhaseFile,
 } from 'services/phaseFiles';
-import {
-  updatePhase,
-  addPhase,
-  IUpdatedPhaseProperties,
-} from 'services/phases';
 import eventEmitter from 'utils/eventEmitter';
 
 // Components
@@ -40,14 +35,16 @@ import messages from './messages';
 import styled from 'styled-components';
 
 // Typings
-import { CLError, UploadFile, Multiloc } from 'typings';
+import { CLErrors, UploadFile, Multiloc } from 'typings';
 
 // Resources
 import { FileType } from 'components/UI/FileUploader/FileDisplay';
 import { useParams } from 'react-router-dom';
 import usePhases from 'api/phases/usePhases';
 import usePhase from 'api/phases/usePhase';
-import { IPhaseData } from 'api/phases/types';
+import useAddPhase from 'api/phases/useAddPhase';
+import useUpdatePhase from 'api/phases/useUpdatePhase';
+import { IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
 
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -61,9 +58,9 @@ const AdminProjectTimelineEdit = () => {
   };
   const { data: phase } = usePhase(phaseId || null);
   const { data: phases } = usePhases(projectId);
-  const [errors, setErrors] = useState<{
-    [fieldName: string]: CLError[];
-  } | null>(null);
+  const { mutate: addPhase } = useAddPhase();
+  const { mutate: updatePhase } = useUpdatePhase();
+  const [errors, setErrors] = useState<CLErrors | null>(null);
   const [processing, setProcessing] = useState<boolean>(false);
   const [inStatePhaseFiles, setInStatePhaseFiles] = useState<FileType[]>([]);
   const [phaseFilesToRemove, setPhaseFilesToRemove] = useState<FileType[]>([]);
@@ -71,6 +68,7 @@ const AdminProjectTimelineEdit = () => {
   const [attributeDiff, setAttributeDiff] = useState<IUpdatedPhaseProperties>(
     {}
   );
+  const [redirectAfterSave, setRedirectAfterSave] = useState<boolean>(false);
 
   useEffect(() => {
     if (phaseId) {
@@ -205,54 +203,65 @@ const AdminProjectTimelineEdit = () => {
     save(projectId, phase?.data, attributeDiff);
   };
 
+  const handleError = (error: CLErrors) => {
+    setErrors(get(error.data, 'json.errors', null));
+    setProcessing(false);
+    setSubmitState('error');
+  };
+
+  const handleSaveResponse = (response) => {
+    const phaseResponse = response.data;
+    const phaseId = phaseResponse.id;
+    const filesToAddPromises = inStatePhaseFiles
+      .filter((file): file is UploadFile => !file.remote)
+      .map((file) => addPhaseFile(phaseId, file.base64, file.name));
+    const filesToRemovePromises = phaseFilesToRemove
+      .filter((file) => file.remote)
+      .map((file) => deletePhaseFile(phaseId, file.id as string));
+
+    Promise.all([
+      ...filesToAddPromises,
+      ...filesToRemovePromises,
+    ] as Promise<any>[]).then(() => {
+      setPhaseFilesToRemove([]);
+      setProcessing(false);
+      setErrors(null);
+      setSubmitState('success');
+
+      if (redirectAfterSave) {
+        clHistory.push(`/admin/projects/${projectId}/timeline/`);
+      }
+    });
+  };
+
   const save = async (
     projectId: string | null,
     phase: IPhaseData | undefined,
     attributeDiff: IUpdatedPhaseProperties
   ) => {
     if (!isEmpty(attributeDiff) && !processing) {
-      try {
-        let phaseResponse: IPhaseData | undefined;
-        phaseResponse = phase;
-        let redirect = false;
-        setProcessing(true);
-        if (!isEmpty(attributeDiff)) {
-          if (phase) {
-            phaseResponse = (await updatePhase(phase.id, attributeDiff)).data;
-            setAttributeDiff({});
-          } else if (projectId) {
-            phaseResponse = (await addPhase(projectId, attributeDiff)).data;
-            redirect = true;
-          }
+      setProcessing(true);
+      if (!isEmpty(attributeDiff)) {
+        if (phase) {
+          setRedirectAfterSave(false);
+          updatePhase(
+            { phaseId: phase.id, ...attributeDiff },
+            {
+              onSuccess: handleSaveResponse,
+              onError: handleError,
+            }
+          );
+          setAttributeDiff({});
+        } else if (projectId) {
+          setRedirectAfterSave(true);
+          addPhase(
+            { projectId, ...attributeDiff },
+            {
+              onSuccess: handleSaveResponse,
+              onError: handleError,
+            }
+          );
         }
-
-        if (!isNilOrError(phaseResponse)) {
-          const phaseId = phaseResponse.id;
-          const filesToAddPromises = inStatePhaseFiles
-            .filter((file): file is UploadFile => !file.remote)
-            .map((file) => addPhaseFile(phaseId, file.base64, file.name));
-          const filesToRemovePromises = phaseFilesToRemove
-            .filter((file) => file.remote)
-            .map((file) => deletePhaseFile(phaseId, file.id as string));
-
-          await Promise.all([
-            ...filesToAddPromises,
-            ...filesToRemovePromises,
-          ] as Promise<any>[]);
-        }
-
-        setPhaseFilesToRemove([]);
-        setProcessing(false);
-        setErrors(null);
-        setSubmitState('success');
-
-        if (redirect) {
-          clHistory.push(`/admin/projects/${projectId}/timeline/`);
-        }
-      } catch (errors) {
-        setErrors(get(errors, 'json.errors', null));
-        setProcessing(false);
-        setSubmitState('error');
       }
     }
   };

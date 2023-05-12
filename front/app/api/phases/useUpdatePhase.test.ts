@@ -1,52 +1,61 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, act } from '@testing-library/react-hooks';
 
-import usePhase from './usePhase';
+import useUpdatePhase from './useUpdatePhase';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { phasesData } from './__mocks__/phasesData';
+import { phasesMutationData } from './__mocks__/phaseMutationData';
 
 const apiPath = '*phases/:phaseId';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
+  rest.patch(apiPath, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: phasesData[0] }));
   })
 );
 
-describe('usePhase', () => {
+describe('useUpdatePhase', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
-  it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => usePhase('phaseId'), {
+  it('mutates data correctly', async () => {
+    const { result, waitFor } = renderHook(() => useUpdatePhase(), {
       wrapper: createQueryClientWrapper(),
     });
 
-    expect(result.current.isLoading).toBe(true);
+    act(() => {
+      result.current.mutate({
+        phaseId: 'phaseId',
+        ...phasesMutationData,
+      });
+    });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-    expect(result.current.isLoading).toBe(false);
     expect(result.current.data?.data).toEqual(phasesData[0]);
   });
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
+      rest.patch(apiPath, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );
 
-    const { result, waitFor } = renderHook(() => usePhase('phaseId'), {
+    const { result, waitFor } = renderHook(() => useUpdatePhase(), {
       wrapper: createQueryClientWrapper(),
     });
 
-    expect(result.current.isLoading).toBe(true);
+    act(() => {
+      result.current.mutate({
+        phaseId: 'phaseId',
+        ...phasesMutationData,
+      });
+    });
+
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error).toBeDefined();
-    expect(result.current.isLoading).toBe(false);
   });
 });
