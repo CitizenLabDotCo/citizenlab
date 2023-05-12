@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Observable, of } from 'rxjs';
 
-import { IProjectFileData, IProjectFiles } from 'services/projectFiles';
 import {
   phaseFilesStream,
   IPhaseFileData,
@@ -17,12 +16,9 @@ import { isNilOrError } from 'utils/helperUtils';
 
 export type ResourceType = 'phase' | 'page';
 
-export type TResourceFileData =
-  | IProjectFileData
-  | IPhaseFileData
-  | ICustomPageFileData;
+export type TResourceFileData = IPhaseFileData | ICustomPageFileData;
 
-export type TResourceFiles = IProjectFiles | IPhaseFiles | ICustomPageFiles;
+export type TResourceFiles = IPhaseFiles | ICustomPageFiles;
 
 interface Props {
   resourceId: string | null;

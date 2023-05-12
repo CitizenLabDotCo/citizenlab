@@ -51,8 +51,9 @@ import {
   IProjectFormState,
 } from 'services/projects';
 import { IProjectData } from 'api/projects/types';
-import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import useAddProjectFile from 'api/project_files/useAddProjectFile';
+import useDeleteProjectFile from 'api/project_files/useDeleteProjectFile';
 
 // api
 import useProjectImages, {
@@ -91,6 +92,8 @@ const AdminProjectsProjectGeneral = () => {
   const { data: remoteProjectImages } = useProjectImages(projectId || null);
   const { mutateAsync: addProjectImage } = useAddProjectImage();
   const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
+  const { mutateAsync: addProjectFile } = useAddProjectFile();
+  const { mutateAsync: deleteProjectFile } = useDeleteProjectFile();
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
   const [processing, setProcessing] =
     useState<IProjectFormState['processing']>(false);
@@ -336,7 +339,10 @@ const AdminProjectsProjectGeneral = () => {
           .filter((file) => !file.remote)
           .map((file) => {
             if (latestProjectId) {
-              return addProjectFile(latestProjectId, file.base64, file.name);
+              return addProjectFile({
+                projectId: latestProjectId,
+                file: { file: file.base64, name: file.name },
+              });
             }
 
             return;
@@ -345,7 +351,10 @@ const AdminProjectsProjectGeneral = () => {
           .filter((file) => file.remote === true && isString(file.id))
           .map((file) => {
             if (latestProjectId && file.id) {
-              return deleteProjectFile(latestProjectId, file.id);
+              return deleteProjectFile({
+                projectId: latestProjectId,
+                fileId: file.id,
+              });
             }
 
             return;
