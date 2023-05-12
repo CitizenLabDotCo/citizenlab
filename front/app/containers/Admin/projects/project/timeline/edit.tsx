@@ -45,9 +45,11 @@ import { CLError, UploadFile, Multiloc } from 'typings';
 // Resources
 import { FileType } from 'components/UI/FileUploader/FileDisplay';
 import { useParams } from 'react-router-dom';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
+import usePhase from 'api/phases/usePhase';
+import { IPhaseData } from 'api/phases/types';
+
 import { isNilOrError } from 'utils/helperUtils';
-import usePhase, { TPhase } from 'hooks/usePhase';
 
 const PhaseForm = styled.form``;
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
@@ -57,8 +59,8 @@ const AdminProjectTimelineEdit = () => {
     projectId: string;
     id?: string;
   };
-  const phase = usePhase(phaseId || null);
-  const phases = usePhases(projectId);
+  const { data: phase } = usePhase(phaseId || null);
+  const { data: phases } = usePhases(projectId);
   const [errors, setErrors] = useState<{
     [fieldName: string]: CLError[];
   } | null>(null);
@@ -200,22 +202,22 @@ const AdminProjectTimelineEdit = () => {
     participationContextConfig: IParticipationContextConfig
   ) => {
     const attributeDiff = getAttributeDiff(participationContextConfig);
-    save(projectId, phase, attributeDiff);
+    save(projectId, phase?.data, attributeDiff);
   };
 
   const save = async (
     projectId: string | null,
-    phase: TPhase | null,
+    phase: IPhaseData | undefined,
     attributeDiff: IUpdatedPhaseProperties
   ) => {
     if (!isEmpty(attributeDiff) && !processing) {
       try {
-        let phaseResponse: TPhase;
+        let phaseResponse: IPhaseData | undefined;
         phaseResponse = phase;
         let redirect = false;
         setProcessing(true);
         if (!isEmpty(attributeDiff)) {
-          if (!isNilOrError(phase)) {
+          if (phase) {
             phaseResponse = (await updatePhase(phase.id, attributeDiff)).data;
             setAttributeDiff({});
           } else if (projectId) {
@@ -260,14 +262,15 @@ const AdminProjectTimelineEdit = () => {
   );
 
   const getStartDate = () => {
-    const phaseAttrs = !isNilOrError(phase)
-      ? { ...phase.attributes, ...attributeDiff }
+    const phaseAttrs = phase
+      ? { ...phase.data.attributes, ...attributeDiff }
       : { ...attributeDiff };
     let startDate: Moment | null = null;
 
     // If this is a new phase
     if (!phase) {
-      const previousPhase = !isNilOrError(phases) && phases[phases.length - 1];
+      const previousPhase =
+        !isNilOrError(phases) && phases[phases.data.length - 1];
       const previousPhaseEndDate = previousPhase
         ? moment(previousPhase.attributes.end_at)
         : null;
@@ -294,8 +297,8 @@ const AdminProjectTimelineEdit = () => {
     return startDate;
   };
 
-  const phaseAttrs = !isNilOrError(phase)
-    ? { ...phase.attributes, ...attributeDiff }
+  const phaseAttrs = phase
+    ? { ...phase.data.attributes, ...attributeDiff }
     : { ...attributeDiff };
   const startDate = getStartDate();
   const endDate = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
@@ -321,7 +324,7 @@ const AdminProjectTimelineEdit = () => {
           </SectionField>
           <SectionField>
             <ParticipationContext
-              phase={!isNilOrError(phase) ? { data: phase } : undefined}
+              phase={phase}
               onSubmit={handleParticipationContextOnSubmit}
               onChange={handleParticipationContextOnChange}
               apiErrors={errors}
