@@ -19,7 +19,7 @@ const EditTitleButton = styled(Button)`
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import WrongOptionsIndicator from './WrongOptionsIndicator';
 import { Box } from '@citizenlab/cl2-component-library';
 
@@ -48,6 +48,7 @@ const QuestionRow = ({
     key={question.id}
     id={question.id}
     className="e2e-question-row"
+    dataTestid="question-row"
     index={index}
     isLastItem={isLastItem}
     moveRow={handleDragRow}
@@ -55,19 +56,21 @@ const QuestionRow = ({
   >
     <TextCell className="expand">
       <Box display="flex" alignItems="center">
-        <T value={question.attributes.title_multiloc} />
-        <EditTitleButton
-          className="e2e-edit-question"
-          onClick={onEdit}
-          buttonStyle="text"
-          icon="edit"
-          ariaLabel="edit"
-        />
+        <Box mr="12px" display="flex">
+          <T value={question.attributes.title_multiloc} />
+        </Box>
+        <WrongOptionsIndicator questionId={question.id} />
       </Box>
     </TextCell>
 
-    <WrongOptionsIndicator questionId={question.id} />
-
+    <EditTitleButton
+      className="e2e-edit-question"
+      onClick={onEditOptions}
+      buttonStyle="text"
+      icon="edit"
+    >
+      <FormattedMessage {...messages.editPollAnswersButtonLabel} />
+    </EditTitleButton>
     <Button
       className="e2e-delete-question"
       onClick={onDelete}
@@ -78,10 +81,11 @@ const QuestionRow = ({
     </Button>
     <Button
       className="e2e-edit-options"
-      onClick={onEditOptions}
+      onClick={onEdit}
       buttonStyle="secondary"
+      icon="edit"
     >
-      <FormattedMessage {...messages.editPollAnswersButtonLabel} />
+      <FormattedMessage {...messages.editPollQuestion} />
     </Button>
   </SortableRow>
 );
