@@ -5,9 +5,8 @@ class PublicApi::V2::IdeaSerializer < ActiveModel::Serializer
 
   attributes :id,
     :title,
-    :body_html, # body in spec
+    :body,
     :author_id,
-    :author_name, # Not in spec
     :upvotes_count,
     :downvotes_count,
     :comments_count,
@@ -36,7 +35,7 @@ class PublicApi::V2::IdeaSerializer < ActiveModel::Serializer
     @@multiloc_service.t(object.title_multiloc)
   end
 
-  def body_html
+  def body
     @@multiloc_service.t(object.body_multiloc)
   end
 

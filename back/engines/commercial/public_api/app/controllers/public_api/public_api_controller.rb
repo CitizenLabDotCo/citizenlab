@@ -3,11 +3,30 @@
 module PublicApi
   class PublicApiController < ActionController::API
     include ::AuthToken::Authenticable
-    include Pundit
+    include ::Pundit::Authorization
 
     before_action :authenticate_api_client
     before_action :check_api_token
     before_action :set_locale
+
+    def list_items(base_query, serializer)
+      @items = base_query
+        .order(created_at: :desc)
+        .page(params[:page_number])
+        .per(num_per_page)
+      @items = common_date_filters @items
+
+      render json: @items,
+        each_serializer: serializer,
+        adapter: :json,
+        meta: meta_properties(@items)
+    end
+
+    def show_item(query, serializer)
+      render json: query,
+        serializer: serializer,
+        adapter: :json
+    end
 
     def meta_properties(relation)
       {
@@ -17,11 +36,11 @@ module PublicApi
     end
 
     # TODO: Raise errors for incorrectly formatted parameters
-    # Could have added these queries as a shared concern on the model, but only needed for this API
-    def common_date_filters(object_list)
-      object_list = object_list.where(date_filter_where_clause('created_at', params[:created_at])) if params[:created_at]
-      object_list = object_list.where(date_filter_where_clause('updated_at', params[:updated_at])) if params[:updated_at]
-      object_list
+    # TODO: Check if these are added as OR or AND and document accordingly
+    def common_date_filters(base_query)
+      base_query = base_query.where(date_filter_where_clause('created_at', params[:created_at])) if params[:created_at]
+      base_query = base_query.where(date_filter_where_clause('updated_at', params[:updated_at])) if params[:updated_at]
+      base_query
     end
 
     def date_filter_where_clause(date_field, date_values)

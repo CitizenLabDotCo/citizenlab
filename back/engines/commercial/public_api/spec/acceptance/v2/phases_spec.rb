@@ -17,6 +17,9 @@ resource 'Phases' do
 
     include_context 'common_list_params'
 
+    parameter :start_at, 'Date phase started - in format "YYYY-DD-MM" - to filter between two dates separate with comma', in: :query, required: false, type: 'string'
+    parameter :end_at, 'Date phase ended - in format "YYYY-DD-MM" - to filter between two dates separate with comma', in: :query, required: false, type: 'string'
+
     context 'Unfiltered paged request' do
       let(:page_size) { 2 }
 
@@ -50,11 +53,23 @@ resource 'Phases' do
         expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
       end
     end
+
+    context 'Filtered by start_at' do
+      let(:start_at) { '2020-01-01,2020-01-31' }
+
+      before { project.phases[0].update(start_at: '2020-01-20') }
+
+      example_request 'Successful response', document: false do
+        assert_status 200
+        expect(json_response_body[:phases].size).to eq 1
+        expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
+      end
+    end
   end
 
   get '/api/v2/projects/:project_id/phases' do
     route_summary 'List all the phases of a project'
-    route_description 'Endpoint to retrieve phases of a single project. The phases are returned in chronological order. The endpoint supports pagination.'
+    route_description 'Endpoint to retrieve phases of a single project. The phases are returned in reverse order of date created. The endpoint supports pagination.'
 
     include_context 'common_list_params'
 

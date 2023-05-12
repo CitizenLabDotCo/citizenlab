@@ -11,6 +11,8 @@ module PublicApi
         .per(num_per_page)
       @users = common_date_filters @users
 
+      # TODO: Filter by first_partcipated, status
+
       render json: @users,
         each_serializer: V2::UserSerializer,
         adapter: :json,

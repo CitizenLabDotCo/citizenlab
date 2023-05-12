@@ -17,7 +17,8 @@ PublicApi::Engine.routes.draw do
     get '/users', to: 'users#index'
     get '/users/:id', to: 'users#show'
 
-    # get '/ideas/comments/votes', to: 'votes#for_comments'
+    get '/ideas/votes', to: 'votes#for_ideas'
+    get '/ideas/comments/votes', to: 'votes#for_idea_comments'
     # get '/initiatives/comments/votes', to: 'votes#for_comments'
 
     get '/comments', to: 'comments#index'
@@ -37,9 +38,6 @@ PublicApi::Engine.routes.draw do
 
     get '/topics', to: 'topics#index'
     get '/topics/:id', to: 'topics#show'
-
-    #
-    # get '/ideas/comments/votes', to: 'comments#for_initiatives'
   end
 end
 

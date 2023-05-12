@@ -26,6 +26,7 @@ class PublicApi::V2::UserSerializer < ActiveModel::Serializer
     :status
 
   def status
+    # TODO: Include invited
     object.active? ? 'active' : 'incomplete'
   end
 
