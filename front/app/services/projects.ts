@@ -130,25 +130,3 @@ export async function updateProject(
 
   return response;
 }
-
-export async function updateProjectFolderMembership(
-  projectId: string,
-  newProjectFolderId: string | null,
-  oldProjectFolderId?: string
-) {
-  const response = await streams.update<IProject>(
-    `${apiEndpoint}/${projectId}`,
-    projectId,
-    { project: { folder_id: newProjectFolderId } }
-  );
-
-  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
-  await streams.fetchAllWith({
-    dataId: [newProjectFolderId, oldProjectFolderId].filter(
-      (item) => item
-    ) as string[],
-    apiEndpoint: [`${API_PATH}/admin_publications`],
-  });
-
-  return response;
-}

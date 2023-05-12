@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
+// api
+import useUpdateProjectFolderMembership from 'api/projects/useUpdateProjectFolderMembership';
+
 // services
-import {
-  PublicationStatus,
-  updateProjectFolderMembership,
-} from 'services/projects';
+import { PublicationStatus } from 'services/projects';
 
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';
@@ -34,6 +34,8 @@ const ItemsNotInFolder = ({ projectFolderId }: Props) => {
   const { list: adminPublications } = useAdminPublications({
     publicationStatusFilter: publicationStatuses,
   });
+  const { mutate: updateProjectFolderMembership } =
+    useUpdateProjectFolderMembership();
   const [processing, setProcessing] = useState<string[]>([]);
 
   if (isNilOrError(authUser)) {
@@ -43,8 +45,18 @@ const ItemsNotInFolder = ({ projectFolderId }: Props) => {
   const addProjectToFolder =
     (projectFolderId: string) => (projectId: string) => async () => {
       setProcessing([...processing, projectId]);
-      await updateProjectFolderMembership(projectId, projectFolderId);
-      setProcessing(processing.filter((item) => projectId !== item));
+
+      updateProjectFolderMembership(
+        {
+          projectId,
+          newProjectFolderId: projectFolderId,
+        },
+        {
+          onSuccess: () => {
+            setProcessing(processing.filter((item) => projectId !== item));
+          },
+        }
+      );
     };
 
   const adminPublicationsThatCanBeAdded = !isNilOrError(adminPublications)
