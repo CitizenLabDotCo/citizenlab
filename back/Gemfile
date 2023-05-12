@@ -85,7 +85,7 @@ end
 gem 'pundit', '~> 2.3.0'
 gem 'active_model_serializers', '~> 0.10.12'
 
-gem 'jwt', '~> 2.2.2'
+gem 'jwt', '~> 2.7.0'
 gem 'que', git: 'https://github.com/que-rb/que', branch: 'master', ref: '77c6b92952b821898c393239ce0e4047b17d7dae'
 gem 'sinatra', '~> 3.0.6' # Fixes CVE-2022-45442. Sinatra is a dependency of que-web, but que-web depends on sinatra >= 0.
 gem 'que-web'
@@ -130,9 +130,6 @@ gem 'omniauth-google-oauth2'
 gem 'sentry-ruby'
 gem 'sentry-rails'
 gem 'simple_segment', '~>1.5'
-# This fork was made to update the version of jws which is
-# required for the google omniauth gem.
-gem 'omniauth-azure-activedirectory', github: 'CitizenLabDotCo/omniauth-azure-activedirectory'
 gem 'omniauth_openid_connect'
 gem 'acts_as_list', '~> 1.1'
 gem 'bunny', '>= 2.7.2'
@@ -172,9 +169,6 @@ gem 'cloudfront-rails', '~> 0.4'
 # The gem is a dependency of Rails, but we use Rails 6.1.6 and no Rails upgrade is available yet.
 # Specifying this gem explicitly can probably be removed when the Rails upgrade is available.
 gem 'rails-html-sanitizer', '>= 1.4.3'
-
-# Used to define CRON tasks. See back/config/schedule.rb.
-gem 'whenever', '~> 1.0'
 
 Dir.children('engines/free').each do |engine_name|
   path = "engines/free/#{engine_name}"

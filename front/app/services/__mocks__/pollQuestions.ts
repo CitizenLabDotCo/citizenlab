@@ -1,34 +1,34 @@
 import { IPollQuestion } from 'services/pollQuestions';
+
 export const mockQuestion = (
-  id,
-  titleEn,
+  id: string,
+  titleEn: string,
   question_type: 'single_option' | 'multiple_options' = 'single_option',
-  max_options: number | null = null,
-  ordering = 0,
-  options?,
-  pcId?,
-  pcType?
-) =>
-  ({
+  max_options: number | null = null
+) => {
+  const question: IPollQuestion = {
     id,
-    type: 'poll_question',
+    type: 'question' as const,
     attributes: {
       question_type,
       max_options,
-      ordering,
+      ordering: Math.floor(Math.random() * 1000),
       title_multiloc: {
         en: titleEn,
       },
     },
     relationships: {
       options: {
-        data: options,
+        data: [{ type: 'option' as const, id: 'optionId' }],
       },
       participation_context: {
         data: {
-          id: pcId,
-          type: pcType,
+          id: 'pcId',
+          type: 'project',
         },
       },
     },
-  } as IPollQuestion);
+  };
+
+  return question;
+};

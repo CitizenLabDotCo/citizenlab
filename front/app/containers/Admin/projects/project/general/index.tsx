@@ -41,12 +41,10 @@ import { Box } from '@citizenlab/cl2-component-library';
 import useProjectById from 'api/projects/useProjectById';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProjectFiles from 'hooks/useProjectFiles';
-import useProjectImages from 'hooks/useProjectImages';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAddProject from 'api/projects/useAddProject';
 
-// api
 import {
   IUpdatedProjectProperties,
   updateProject,
@@ -54,14 +52,16 @@ import {
 } from 'services/projects';
 import { IProjectData } from 'api/projects/types';
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
-import {
-  addProjectImage,
-  deleteProjectImage,
-  CARD_IMAGE_ASPECT_RATIO_WIDTH,
-  CARD_IMAGE_ASPECT_RATIO_HEIGHT,
-} from 'services/projectImages';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+
+// api
+import useProjectImages, {
+  CARD_IMAGE_ASPECT_RATIO_HEIGHT,
+  CARD_IMAGE_ASPECT_RATIO_WIDTH,
+} from 'api/project_images/useProjectImages';
 import projectPermissionKeys from 'api/project_permissions/keys';
+import useAddProjectImage from 'api/project_images/useAddProjectImage';
+import useDeleteProjectImage from 'api/project_images/useDeleteProjectImage';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -88,9 +88,9 @@ const AdminProjectsProjectGeneral = () => {
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const appConfigLocales = useAppConfigurationLocales();
   const remoteProjectFiles = useProjectFiles(projectId);
-  const remoteProjectImages = useProjectImages({
-    projectId: projectId || null,
-  });
+  const { data: remoteProjectImages } = useProjectImages(projectId || null);
+  const { mutateAsync: addProjectImage } = useAddProjectImage();
+  const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
 
   const { mutate: addProject } = useAddProject();
 
@@ -170,7 +170,7 @@ const AdminProjectsProjectGeneral = () => {
   useEffect(() => {
     (async () => {
       if (!isNilOrError(remoteProjectImages)) {
-        const nextProjectImagesPromises = remoteProjectImages.map(
+        const nextProjectImagesPromises = remoteProjectImages.data.map(
           (projectImage) => {
             const url = projectImage.attributes.versions.large;
 
@@ -324,12 +324,18 @@ const AdminProjectsProjectGeneral = () => {
 
         const cardImageToAddPromise =
           croppedProjectCardBase64 && latestProjectId
-            ? addProjectImage(latestProjectId, croppedProjectCardBase64)
+            ? addProjectImage({
+                projectId: latestProjectId,
+                image: croppedProjectCardBase64,
+              })
             : null;
 
         const cardImageToRemovePromise =
           projectCardImageToRemove?.id && latestProjectId
-            ? deleteProjectImage(latestProjectId, projectCardImageToRemove.id)
+            ? deleteProjectImage({
+                projectId: latestProjectId,
+                imageId: projectCardImageToRemove.id,
+              })
             : null;
 
         const filesToAddPromises = projectFiles
