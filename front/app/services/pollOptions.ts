@@ -30,12 +30,6 @@ export function addPollOption(questionId: string, titleMultiloc: Multiloc) {
   );
 }
 
-export function pollOptionStream(optionId: string) {
-  return streams.get<{ data: IPollOptionData }>({
-    apiEndpoint: `${API_PATH}/poll_options/${optionId}`,
-  });
-}
-
 export function deletePollOption(optionId: string) {
   return streams.delete(`${API_PATH}/poll_options/${optionId}`, optionId);
 }
