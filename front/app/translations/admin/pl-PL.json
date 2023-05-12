@@ -1065,7 +1065,6 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.editPollAnswersButtonLabel": "Opcje odpowiedzi",
   "app.containers.AdminPage.ProjectEdit.PollTab.exportPollResults": "Eksport wyników badania",
   "app.containers.AdminPage.ProjectEdit.PollTab.maxOverTheMaxTooltip": "Maksymalna liczba wyborów jest większa niż liczba dostępnych opcji",
-  "app.containers.AdminPage.ProjectEdit.PollTab.maxUnderTheMinTooltip": "Pytanie z wieloma odpowiedziami powinno umożliwiać uzyskanie co najmniej dwóch odpowiedzi.",
   "app.containers.AdminPage.ProjectEdit.PollTab.multipleOption": "Wybór wielokrotny",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptions": "Brak opcji",
   "app.containers.AdminPage.ProjectEdit.PollTab.noOptionsTooltip": "Wszystkie pytania muszą mieć możliwość wyboru odpowiedzi",

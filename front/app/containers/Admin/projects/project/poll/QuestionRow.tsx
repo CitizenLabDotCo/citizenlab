@@ -21,6 +21,18 @@ const EditTitleButton = styled(Button)`
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import WrongOptionsIndicator from './WrongOptionsIndicator';
+import { Box } from '@citizenlab/cl2-component-library';
+
+interface Props {
+  question: IPollQuestion;
+  isLastItem: boolean;
+  index: number;
+  onDelete: () => void;
+  onEdit: () => void;
+  onEditOptions: () => void;
+  handleDragRow: (fromIndex: number, toIndex: number) => void;
+  handleDropRow: (fieldId: string, toIndex: number) => void;
+}
 
 const QuestionRow = ({
   question,
@@ -31,16 +43,7 @@ const QuestionRow = ({
   onEditOptions,
   handleDropRow,
   handleDragRow,
-}: {
-  question: IPollQuestion;
-  isLastItem: boolean;
-  index: number;
-  onDelete: () => void;
-  onEdit: () => void;
-  onEditOptions: () => void;
-  handleDragRow;
-  handleDropRow;
-}) => (
+}: Props) => (
   <SortableRow
     key={question.id}
     id={question.id}
@@ -51,14 +54,16 @@ const QuestionRow = ({
     dropRow={handleDropRow}
   >
     <TextCell className="expand">
-      <T value={question.attributes.title_multiloc} />
-      <EditTitleButton
-        className="e2e-edit-question"
-        onClick={onEdit}
-        buttonStyle="text"
-        icon="edit"
-        ariaLabel="edit"
-      />
+      <Box display="flex" alignItems="center">
+        <T value={question.attributes.title_multiloc} />
+        <EditTitleButton
+          className="e2e-edit-question"
+          onClick={onEdit}
+          buttonStyle="text"
+          icon="edit"
+          ariaLabel="edit"
+        />
+      </Box>
     </TextCell>
 
     <WrongOptionsIndicator questionId={question.id} />

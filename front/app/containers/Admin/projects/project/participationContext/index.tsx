@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Subscription, Observable, of } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { isEqual } from 'lodash-es';
 
@@ -11,8 +11,8 @@ import SurveyInputs from './components/SurveyInputs';
 import { Container, StyledSection } from './components/styling';
 
 // services
-import { projectByIdStream, IProject, IProjectData } from 'services/projects';
-import { phaseStream, IPhase } from 'services/phases';
+import { IProject } from 'api/projects/types';
+import { IPhase } from 'services/phases';
 import {
   ParticipationMethod,
   TSurveyService,
@@ -84,10 +84,8 @@ export type ApiErrors = CLErrors | null | undefined;
 interface InputProps {
   onChange: (arg: IParticipationContextConfig) => void;
   onSubmit: (arg: IParticipationContextConfig) => void;
-  projectId?: string | undefined | null;
-  phaseId?: string | undefined | null;
   phase?: IPhase | undefined | null;
-  project?: IProjectData | undefined | null;
+  project?: IProject | undefined | null;
   apiErrors: ApiErrors;
 }
 
@@ -137,46 +135,39 @@ class ParticipationContext extends PureComponent<
   }
 
   componentDidMount() {
-    const { projectId, phaseId } = this.props;
-    let data$: Observable<IProject | IPhase | null> = of(null);
+    const { project, phase } = this.props;
+    const participationContext = project ?? phase;
 
-    if (projectId) {
-      data$ = projectByIdStream(projectId).observable;
-    } else if (phaseId) {
-      data$ = phaseStream(phaseId).observable;
+    if (participationContext) {
+      const newData = participationContext.data.attributes;
+      this.setState((prevState) => {
+        return {
+          ...prevState,
+          participation_method: newData.participation_method,
+          posting_enabled: newData.posting_enabled,
+          commenting_enabled: newData.commenting_enabled,
+          voting_enabled: newData.voting_enabled,
+          upvoting_method: newData.upvoting_method,
+          downvoting_method: newData.downvoting_method,
+          upvoting_limited_max: newData.upvoting_limited_max,
+          downvoting_limited_max: newData.downvoting_limited_max,
+          downvoting_enabled: newData.downvoting_enabled,
+          presentation_mode: newData.presentation_mode,
+          min_budget: newData.min_budget,
+          max_budget: newData.max_budget,
+          survey_embed_url: newData.survey_embed_url,
+          survey_service: newData.survey_service,
+          poll_anonymous: newData.poll_anonymous,
+          ideas_order: newData.ideas_order,
+          input_term: newData.input_term,
+          loaded: true,
+        };
+      });
+    } else {
+      this.setState({ loaded: true });
     }
-    this.subscriptions = [
-      data$.subscribe((data) => {
-        if (data) {
-          const newData = data.data.attributes;
-          this.setState((prevState) => {
-            return {
-              ...prevState,
-              participation_method: newData.participation_method,
-              posting_enabled: newData.posting_enabled,
-              commenting_enabled: newData.commenting_enabled,
-              voting_enabled: newData.voting_enabled,
-              upvoting_method: newData.upvoting_method,
-              downvoting_method: newData.downvoting_method,
-              upvoting_limited_max: newData.upvoting_limited_max,
-              downvoting_limited_max: newData.downvoting_limited_max,
-              downvoting_enabled: newData.downvoting_enabled,
-              presentation_mode: newData.presentation_mode,
-              min_budget: newData.min_budget,
-              max_budget: newData.max_budget,
-              survey_embed_url: newData.survey_embed_url,
-              survey_service: newData.survey_service,
-              poll_anonymous: newData.poll_anonymous,
-              ideas_order: newData.ideas_order,
-              input_term: newData.input_term,
-              loaded: true,
-            };
-          });
-        } else {
-          this.setState({ loaded: true });
-        }
-      }),
 
+    this.subscriptions = [
       eventEmitter
         .observeEvent('getParticipationContext')
         .pipe(filter(() => this.validate()))
@@ -440,7 +431,7 @@ class ParticipationContext extends PureComponent<
           <StyledSection>
             <ParticipationMethodPicker
               phase={this.props.phase}
-              project={this.props.project}
+              project={this.props.project?.data}
               participation_method={participation_method}
               showSurveys={showSurveys}
               apiErrors={apiErrors}

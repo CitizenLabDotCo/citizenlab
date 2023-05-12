@@ -17,9 +17,7 @@ resource 'Moderators' do
     context 'when moderator' do
       before do
         @project = create(:project)
-        @moderator = create(:project_moderator, projects: [@project])
-        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        header_token_for create(:project_moderator, projects: [@project])
       end
 
       let(:project_id) { @project.id }
@@ -42,9 +40,7 @@ resource 'Moderators' do
     context 'when admin' do
       before do
         @project = create(:project)
-        @admin = create(:admin)
-        token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        admin_header_token
       end
 
       let(:project_id) { @project.id }
@@ -65,9 +61,7 @@ resource 'Moderators' do
     context 'when moderator' do
       before do
         @project = create(:project)
-        @moderator = create(:project_moderator, projects: [@project])
-        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        header_token_for create(:project_moderator, projects: [@project])
       end
 
       let(:other_moderators) { create_list(:project_moderator, 2, projects: [@project]) }
@@ -91,9 +85,7 @@ resource 'Moderators' do
     context 'when moderator' do
       before do
         @project = create(:project)
-        @moderator = create(:project_moderator, projects: [@project])
-        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        header_token_for create(:project_moderator, projects: [@project])
       end
 
       let(:project_id) { @project.id }
@@ -137,9 +129,7 @@ resource 'Moderators' do
     context 'when moderator' do
       before do
         @project = create(:project)
-        @moderator = create(:project_moderator, projects: [@project])
-        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        header_token_for create(:project_moderator, projects: [@project])
       end
 
       let(:other_moderators) { create_list(:project_moderator, 2, projects: [@project]) }
@@ -159,9 +149,7 @@ resource 'Moderators' do
     context 'when moderator' do
       before do
         @project = create(:project)
-        @moderator = create(:project_moderator, projects: [@project])
-        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        header_token_for create(:project_moderator, projects: [@project])
       end
 
       with_options scope: :page do

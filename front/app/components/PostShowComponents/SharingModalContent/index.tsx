@@ -38,7 +38,7 @@ import rocket from 'assets/img/rocket.png';
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'hooks/usePhases';
 
 interface InputProps {
@@ -72,9 +72,9 @@ const SharingModalContent = ({
   const ideaId = postType === 'idea' && postId ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
-  const project = useProject({
-    projectId: idea?.data.relationships.project.data.id,
-  });
+  const { data: project } = useProjectById(
+    idea?.data.relationships.project.data.id
+  );
   const phases = usePhases(idea?.data.relationships.project.data.id);
 
   useEffect(() => {
@@ -106,10 +106,10 @@ const SharingModalContent = ({
     let emailSharingBody: MessageDescriptor | null = null;
     let whatsAppMessage: MessageDescriptor | null = null;
 
-    if (!isNilOrError(project)) {
+    if (project) {
       const inputTerm = getInputTerm(
-        project.attributes.process_type,
-        project,
+        project.data.attributes.process_type,
+        project.data,
         phases
       );
 

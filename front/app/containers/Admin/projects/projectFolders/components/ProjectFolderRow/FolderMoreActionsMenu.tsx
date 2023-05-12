@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
+
+// components
 import { Box } from '@citizenlab/cl2-component-library';
-import messages from './messages';
-import { deleteProjectFolder } from 'services/projectFolders';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+
+// intl
 import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
+// api
+import useDeleteProjectFolder from 'api/project_folders/useDeleteProjectFolder';
 import { isAdmin } from 'services/permissions/roles';
 import useAuthUser from 'hooks/useAuthUser';
-import { isNilOrError } from 'utils/helperUtils';
 
 export interface Props {
   folderId: string;
@@ -19,23 +27,14 @@ const FolderMoreActionsMenu = ({
   setError,
   setIsRunningAction,
 }: Props) => {
+  const {
+    mutate: deleteProjectFolder,
+    isLoading: isDeleteProjectFolderLoading,
+  } = useDeleteProjectFolder();
   const { formatMessage } = useIntl();
-  const [isDeleting, setIsDeleting] = useState(false);
   const authUser = useAuthUser();
   if (isNilOrError(authUser)) return null;
   const userCanDeleteProject = isAdmin({ data: authUser });
-
-  const handleCallbackError = async (
-    callback: () => Promise<any>,
-    error: string
-  ) => {
-    try {
-      await callback();
-      setError(null);
-    } catch {
-      setError(error);
-    }
-  };
 
   const createActions = () => {
     const actions: IAction[] = [];
@@ -46,19 +45,23 @@ const FolderMoreActionsMenu = ({
           if (
             window.confirm(formatMessage(messages.deleteFolderConfirmation))
           ) {
-            setIsDeleting(true);
             setIsRunningAction && setIsRunningAction(true);
-            await handleCallbackError(
-              () => deleteProjectFolder(folderId),
-              formatMessage(messages.deleteFolderError)
+            deleteProjectFolder(
+              { projectFolderId: folderId },
+              {
+                onError: () => {
+                  setError(formatMessage(messages.deleteFolderError));
+                },
+              }
             );
-            setIsDeleting(false);
-            setIsRunningAction && setIsRunningAction(false);
+            if (!isDeleteProjectFolderLoading) {
+              setIsRunningAction && setIsRunningAction(false);
+            }
           }
         },
         label: formatMessage(messages.deleteFolderButton),
         icon: 'delete' as const,
-        isLoading: isDeleting,
+        isLoading: isDeleteProjectFolderLoading,
       });
     }
 

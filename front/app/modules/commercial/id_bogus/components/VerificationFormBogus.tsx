@@ -56,22 +56,13 @@ const VerificationFormBogus = memo<Props>(
         try {
           await verifyBogus(desiredError);
 
-          const endpointsToRefetch = [
-            `${API_PATH}/users/me`,
-            `${API_PATH}/projects`,
-          ];
-          const partialEndpointsToRefetch = [
-            `${API_PATH}/projects/`,
-            `${API_PATH}/ideas/`,
-          ];
-
+          const endpointsToRefetch = [`${API_PATH}/users/me`];
           if (!isNilOrError(authUser)) {
             endpointsToRefetch.push(`${API_PATH}/users/${authUser.id}`);
           }
 
           await streams.fetchAllWith({
             apiEndpoint: endpointsToRefetch,
-            partialApiEndpoint: partialEndpointsToRefetch,
           });
 
           onVerified();

@@ -52,6 +52,14 @@ module MultiTenancy
               client_id: ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_ID'),
               client_secret: ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_SECRET')
             },
+            azure_ad_login: {
+              allowed: true,
+              enabled: true,
+              tenant: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_TENANT_ID'),
+              client_id: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_CLIENT_ID'),
+              logo_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1599721853/Product/microsoft-azure-logo.png',
+              login_mechanism_name: 'Azure Active Directory'
+            },
             franceconnect_login: {
               allowed: true,
               enabled: false,

@@ -23,7 +23,7 @@ import { ApiErrors } from '..';
 import { getMethodConfig } from 'utils/participationMethodUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { IPhase } from 'services/phases';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 import Warning from 'components/UI/Warning';
 
 interface Props {

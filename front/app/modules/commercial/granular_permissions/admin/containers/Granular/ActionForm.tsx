@@ -1,9 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { isNilOrError } from 'utils/helperUtils';
-
-import localize, { InjectedLocalized } from 'utils/localize';
-import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 import {
@@ -20,13 +16,15 @@ import permissionsMessages from 'containers/Admin/projects/project/permissions/m
 import { IPermissionData } from 'services/actionPermissions';
 import Warning from 'components/UI/Warning';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useGroups from 'api/groups/useGroups';
+import useLocalize from 'hooks/useLocalize';
 import { PermissionCardButton } from 'components/admin/GranularPermissions/PermissionCardButton';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   width: 300px;
 `;
 
-interface InputProps {
+interface Props {
   permissionData: IPermissionData;
   groupIds?: string[];
   projectType?: 'defaultInput' | 'initiative' | 'nativeSurvey';
@@ -38,30 +36,24 @@ interface InputProps {
   ) => void;
 }
 
-interface DataProps {
-  groups: GetGroupsChildProps;
-}
-
-export interface Props extends InputProps, DataProps, InjectedLocalized {}
-
 const ActionForm = ({
-  groups: { groupsList },
   permissionData,
   groupIds,
   projectType,
   onChange,
-  localize,
 }: Props) => {
+  const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const { data: groups } = useGroups({});
   const emailConfirmPermissionEnabled = useFeatureFlag({
     name: 'permission_option_email_confirmation',
   });
 
   const groupsOptions = () => {
-    if (isNilOrError(groupsList)) {
+    if (!groups) {
       return [];
     } else {
-      return groupsList.map((group) => ({
+      return groups.data.map((group) => ({
         label: localize(group.attributes.title_multiloc),
         value: group.id,
       }));
@@ -192,14 +184,4 @@ const ActionForm = ({
   );
 };
 
-const ActionPermissionFormWithHOCs = localize<InputProps & DataProps>(
-  ActionForm
-);
-
-export default (inputProps: InputProps) => (
-  <GetGroups>
-    {(groups) => (
-      <ActionPermissionFormWithHOCs {...inputProps} groups={groups} />
-    )}
-  </GetGroups>
-);
+export default ActionForm;

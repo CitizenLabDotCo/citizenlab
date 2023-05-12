@@ -1,9 +1,6 @@
 import { isNilOrError } from 'utils/helperUtils';
-import {
-  getProjectInputTerm,
-  IProjectData,
-  ProcessType,
-} from 'services/projects';
+import { getProjectInputTerm } from 'api/projects/utils';
+import { IProjectData, ProcessType } from 'api/projects/types';
 import { getPhaseInputTerm, IPhaseData } from 'services/phases';
 
 export type TSurveyService =

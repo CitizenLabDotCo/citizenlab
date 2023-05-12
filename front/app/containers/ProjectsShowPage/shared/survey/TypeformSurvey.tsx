@@ -4,7 +4,6 @@ import { omitBy, isNil } from 'lodash-es';
 
 // components
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
-import Iframe from 'react-iframe';
 
 // styling
 import styled from 'styled-components';
@@ -37,8 +36,8 @@ const TypeformSurvey = memo<Props>(
 
     return (
       <Container className={className || ''}>
-        <Iframe
-          url={surveyUrl}
+        <iframe
+          src={surveyUrl}
           width="100%"
           height={
             isSmallerThanTablet ? surveyHeightMobile : surveyHeightDesktop

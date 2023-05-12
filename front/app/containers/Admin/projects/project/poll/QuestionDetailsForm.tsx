@@ -7,7 +7,7 @@ import { IPollQuestion, updatePollQuestion } from 'services/pollQuestions';
 // Components
 import Button from 'components/UI/Button';
 import { Row } from 'components/admin/ResourceList';
-import { Select, Input } from '@citizenlab/cl2-component-library';
+import { Select, Input, Box } from '@citizenlab/cl2-component-library';
 import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 
 // Typings
@@ -130,16 +130,19 @@ export class QuestionDetailsForm extends PureComponent<
     return (
       <Row>
         <FormContainer>
-          <Select
-            options={typeOptions}
-            value={questionType}
-            onChange={this.changeQuestionType}
-          />
+          <Box minWidth="200px">
+            <Select
+              options={typeOptions}
+              value={questionType}
+              onChange={this.changeQuestionType}
+            />
+          </Box>
           {questionType === 'multiple_options' && (
             <StyledInput
               type="number"
               onChange={this.changeMaxAnswers}
               value={String(maxAnswers)}
+              // A multiple answer question should have at least two answer options
               min="2"
             />
           )}

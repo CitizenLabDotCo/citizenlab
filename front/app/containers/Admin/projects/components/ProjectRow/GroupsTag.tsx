@@ -1,10 +1,9 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 import { StyledStatusLabel } from '.';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import useProjectGroups from 'hooks/useProjectGroups';
+import useProjectGroups from 'api/project_groups/useProjectGroups';
 import Link from 'utils/cl-router/Link';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
@@ -31,15 +30,15 @@ const StatusLabel = ({ groupCount }: { groupCount: number }) => (
 );
 
 const GroupsTag = ({ projectId, userCanModerateProject }: Props) => {
-  const projectGroups = useProjectGroups({
+  const { data: projectGroups } = useProjectGroups({
     projectId,
   });
 
-  if (isNilOrError(projectGroups)) {
+  if (!projectGroups) {
     return null;
   }
 
-  const groupCount = projectGroups.length;
+  const groupCount = projectGroups.data.length;
 
   if (userCanModerateProject) {
     return (

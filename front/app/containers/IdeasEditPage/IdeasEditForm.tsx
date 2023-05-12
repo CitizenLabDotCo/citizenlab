@@ -17,7 +17,7 @@ import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useInputSchema from 'hooks/useInputSchema';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
@@ -47,16 +47,14 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
   });
 
   const { mutate: updateIdea } = useUpdateIdea();
-  const project = useProject({
-    projectId: isNilOrError(idea)
-      ? null
-      : idea.data.relationships.project.data.id,
-  });
+  const { data: project } = useProjectById(
+    isNilOrError(idea) ? null : idea.data.relationships.project.data.id
+  );
   const { data: remoteImages } = useIdeaImages(ideaId);
   const { data: remoteFiles } = useIdeaFiles(ideaId);
 
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
-    projectId: project?.id,
+    projectId: project?.data.id,
     inputId: ideaId,
   });
 
@@ -132,7 +130,7 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
       ...ideaWithoutImages,
       idea_images_attributes,
       location_point_geojson,
-      project_id: project?.id,
+      project_id: project?.data.id,
       publication_status: 'published',
     };
 
@@ -222,9 +220,9 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
 
   return (
     <PageContainer overflow="hidden" id="e2e-idea-edit-page">
-      {!isNilOrError(project) && !isNilOrError(idea) && schema && uiSchema ? (
+      {project && !isNilOrError(idea) && schema && uiSchema ? (
         <>
-          <IdeasEditMeta ideaId={ideaId} projectId={project.id} />
+          <IdeasEditMeta ideaId={ideaId} projectId={project.data.id} />
           <Form
             schema={schema}
             uiSchema={uiSchema}

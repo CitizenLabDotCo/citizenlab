@@ -82,14 +82,10 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 # gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-# Latest version (2.4.1) of Pundit on RubyGems is quite outdated (2019-08-14).
-# This newer version from Git adds reason to Pundit::NotAuthorized.
-gem 'pundit', git: 'https://github.com/varvet/pundit', branch: 'master', ref: '973b63b396c2a98099caf5eefd1c6841416eddfa'
+gem 'pundit', '~> 2.3.0'
 gem 'active_model_serializers', '~> 0.10.12'
 
-# See https://github.com/nsarno/knock/issues/250
-# Installs v2.2 which is not available on rubygems.org
-gem 'knock', git: 'https://github.com/nsarno/knock', branch: 'master', ref: '9214cd027422df8dc31eb67c60032fbbf8fc100b'
+gem 'jwt', '~> 2.7.0'
 gem 'que', git: 'https://github.com/que-rb/que', branch: 'master', ref: '77c6b92952b821898c393239ce0e4047b17d7dae'
 gem 'sinatra', '~> 3.0.6' # Fixes CVE-2022-45442. Sinatra is a dependency of que-web, but que-web depends on sinatra >= 0.
 gem 'que-web'
@@ -134,9 +130,6 @@ gem 'omniauth-google-oauth2'
 gem 'sentry-ruby'
 gem 'sentry-rails'
 gem 'simple_segment', '~>1.5'
-# This fork was made to update the version of jws which is
-# required for the google omniauth gem.
-gem 'omniauth-azure-activedirectory', github: 'CitizenLabDotCo/omniauth-azure-activedirectory'
 gem 'omniauth_openid_connect'
 gem 'acts_as_list', '~> 1.1'
 gem 'bunny', '>= 2.7.2'
@@ -169,6 +162,7 @@ gem 'rack-attack', '~> 6'
 # in the main app.
 gem 'intercom', '~> 4.2'
 gem 'mjml-rails', '~> 4.8'
+gem 'cloudfront-rails', '~> 0.4'
 
 # Included here because of CVE-2022-32209.
 # See https://groups.google.com/g/rubyonrails-security/c/ce9PhUANQ6s
@@ -185,11 +179,6 @@ Dir.children('engines/free').each do |engine_name|
 end
 
 gem 'ros-apartment', require: 'apartment'
-
-# Upstream actionpack-cloudfront depends on ActionController::Helpers, which
-# is not enabled for a rails api project, so we run on a fork.
-# PR to merge to upstream: https://github.com/customink/actionpack-cloudfront/pull/18
-gem 'actionpack-cloudfront', github: 'CitizenLabDotCo/actionpack-cloudfront'
 
 commercial_engines = [
   'multi_tenancy',

@@ -10,8 +10,7 @@ resource 'Campaigns' do
     header 'Content-Type', 'application/json'
     @user = create(:admin)
     EmailCampaigns::UnsubscriptionToken.create!(user_id: @user.id)
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    header_token_for @user
   end
 
   get '/web_api/v1/campaigns' do
