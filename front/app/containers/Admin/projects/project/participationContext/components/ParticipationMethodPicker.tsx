@@ -58,7 +58,8 @@ export const ParticipationMethodPicker = ({
   };
 
   const isExistingProjectOrPhase =
-    !isNilOrError(project) || !isNilOrError(phase);
+    !isNilOrError(project) || !isNilOrError(phase?.data);
+
   const config = getMethodConfig(chooseParticipationMethod());
 
   return (
