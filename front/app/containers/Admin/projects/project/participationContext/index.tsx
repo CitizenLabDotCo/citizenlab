@@ -137,8 +137,7 @@ class ParticipationContext extends PureComponent<
   componentDidMount() {
     const { project, phase } = this.props;
     const participationContext = project ?? phase;
-
-    if (participationContext) {
+    if (participationContext && participationContext.data) {
       const newData = participationContext.data.attributes;
       this.setState((prevState) => {
         return {

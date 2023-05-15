@@ -6,7 +6,7 @@ class PublicApi::V1::ApiTokenController < AuthToken::AuthTokenController
   end
 
   def id_param
-    :cient_id
+    :client_id
   end
 
   def secret_param
