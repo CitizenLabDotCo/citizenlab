@@ -148,9 +148,7 @@ gem 'dalli', '~> 3.2.4'
 gem 'mailgun-ruby', '~>1.2.8'
 gem 'rails_semantic_logger'
 gem 'rinku', '~> 2'
-# For serialization of heterogeneous collections (i.e. notifications), see
-# https://github.com/Netflix/fast_jsonapi/pull/410.
-gem 'fast_jsonapi', github: 'dvandersluis/fast_jsonapi', branch: 'heterogeneous-collection'
+gem 'jsonapi-serializer'
 gem 'rack-attack', '~> 6'
 
 # mjml-rails cannot find the MJML parser when installed

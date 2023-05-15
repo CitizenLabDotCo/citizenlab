@@ -8,11 +8,11 @@ class WebApi::V1::GroupsController < ApplicationController
     @groups = @groups.where(membership_type: params[:membership_type]) if params[:membership_type]
     @groups = @groups.order_new
     @groups = paginate @groups
-    render json: linked_json(@groups, WebApi::V1::GroupSerializer, params: fastjson_params)
+    render json: linked_json(@groups, WebApi::V1::GroupSerializer, params: jsonapi_serializer_params)
   end
 
   def show
-    render json: WebApi::V1::GroupSerializer.new(@group, params: fastjson_params).serialized_json
+    render json: WebApi::V1::GroupSerializer.new(@group, params: jsonapi_serializer_params).serializable_hash
   end
 
   def by_slug
@@ -31,8 +31,8 @@ class WebApi::V1::GroupsController < ApplicationController
       SideFxGroupService.new.after_create(@group, current_user)
       render json: WebApi::V1::GroupSerializer.new(
         @group.reload,
-        params: fastjson_params
-      ).serialized_json, status: :created
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :created
     else
       render json: { errors: @group.errors.details }, status: :unprocessable_entity
     end
@@ -47,8 +47,8 @@ class WebApi::V1::GroupsController < ApplicationController
       SideFxGroupService.new.after_update(@group, current_user)
       render json: WebApi::V1::GroupSerializer.new(
         @group.reload,
-        params: fastjson_params
-      ).serialized_json, status: :ok
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :ok
     else
       render json: { errors: @group.errors.details }, status: :unprocessable_entity
     end
