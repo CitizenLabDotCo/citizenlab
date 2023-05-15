@@ -1378,6 +1378,7 @@
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Potwierdź swoje obecne hasło i zmień je na nowe.",
   "app.containers.UsersEditPage.privacyReasons": "Jeśli martwisz się o swoją prywatność, możesz przeczytać {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Wysyłanie...",
+  "app.containers.UsersEditPage.provideFirstNameIfLastName": "Imię jest wymagane przy podawaniu nazwiska",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "Zanim opuścisz...",
   "app.containers.UsersEditPage.submit": "Zapisz zmiany",
   "app.containers.UsersEditPage.tooManyEmails": "Otrzymujesz za dużo e-maili? Możesz zarządzać swoimi preferencjami dotyczącymi wiadomości e-mail w ustawieniach swojego profilu.",
