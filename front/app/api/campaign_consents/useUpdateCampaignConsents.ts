@@ -13,7 +13,7 @@ const updateCampaignConsents = async ({
       if (!campaignConsentId && !campaignId) return Promise.reject();
       const idPart = campaignConsentId
         ? campaignConsentId
-        : `/by_campaign_id/${campaignId}`;
+        : `by_campaign_id/${campaignId}`;
       const tokenPart =
         typeof unsubscriptionToken === 'string'
           ? `?unsubscription_token=${unsubscriptionToken}`
