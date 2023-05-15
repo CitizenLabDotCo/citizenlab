@@ -229,6 +229,8 @@ export const handleHookFormSubmissionError = (
 export const handleBlockedUserError = (status: number, data: CLErrors) => {
   if (
     status === 401 &&
+    isObject(data) &&
+    isObject(data.errors) &&
     'base' in data.errors &&
     isArray(data.errors.base) &&
     data.errors.base.length >= 0 &&
@@ -240,4 +242,20 @@ export const handleBlockedUserError = (status: number, data: CLErrors) => {
       `/disabled-account?date=${data.errors.base[0].details.block_end_at}`
     );
   }
+};
+
+export const isUnauthorizedRQ = (obj: unknown): obj is CLErrors => {
+  if (
+    isObject(obj) &&
+    'errors' in obj &&
+    'base' in obj.errors &&
+    isArray(obj.errors.base) &&
+    obj.errors.base.length >= 0 &&
+    'error' in obj.errors.base[0] &&
+    obj.errors.base[0].error === 'Unauthorized!'
+  ) {
+    return true;
+  }
+
+  return false;
 };

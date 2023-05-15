@@ -4,7 +4,7 @@ import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarTopicsItem from './FilterSidebarTopicsItem';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 
 interface Props {
   selectableTopics: ITopicData[];

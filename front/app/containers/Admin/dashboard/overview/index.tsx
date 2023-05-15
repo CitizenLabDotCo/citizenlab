@@ -123,9 +123,6 @@ const OverviewDashboard = ({ projects }: DataProps) => {
   if (isNilOrError(projects)) return null;
   if (isNilOrError(user)) return null;
 
-  const { projectsList } = projects;
-  if (!projectsList) return null;
-
   const startAt = startAtMoment && startAtMoment.toISOString();
   const endAt = endAtMoment && endAtMoment.toISOString();
 
@@ -287,10 +284,7 @@ const publicationStatuses: PublicationStatus[] = [
 ];
 
 export default () => (
-  <GetProjects
-    publicationStatuses={publicationStatuses}
-    filterCanModerate={true}
-  >
+  <GetProjects publicationStatuses={publicationStatuses} canModerate={true}>
     {(projects) => <OverviewDashboard projects={projects} />}
   </GetProjects>
 );

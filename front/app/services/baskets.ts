@@ -1,6 +1,8 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
+import projectsKeys from 'api/projects/keys';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 const apiEndpoint = `${API_PATH}/baskets`;
 
@@ -49,7 +51,14 @@ export function basketByIdStream(
 
 export async function addBasket(object: INewBasket) {
   const basket = await streams.add<IBasket>(apiEndpoint, { basket: object });
-  await streams.fetchAllWith({ dataId: [object.participation_context_id] });
+
+  if (object.participation_context_type === 'Project') {
+    queryClient.invalidateQueries({
+      queryKey: projectsKeys.item({ id: object.participation_context_id }),
+    });
+  } else {
+    await streams.fetchAllWith({ dataId: [object.participation_context_id] });
+  }
   return basket;
 }
 

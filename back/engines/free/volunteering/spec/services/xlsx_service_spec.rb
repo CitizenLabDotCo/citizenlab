@@ -49,5 +49,13 @@ describe XlsxService do
         expect { workbook }.not_to raise_error
       end
     end
+
+    describe 'when there are multiple causes with the same title' do
+      let!(:duplicate_cause) { create(:cause, title_multiloc: cause.title_multiloc, participation_context: cause.participation_context) }
+
+      it 'exports a valid excel file' do
+        expect { workbook }.not_to raise_error
+      end
+    end
   end
 end

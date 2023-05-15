@@ -4,7 +4,7 @@ import React, { FormEvent } from 'react';
 import { IBasketData, updateBasket } from 'services/baskets';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'hooks/usePhase';
 import useBasket from 'hooks/useBasket';
 import useAuthUser from 'hooks/useAuthUser';
@@ -285,10 +285,9 @@ const Wrapper = ({
   participationContextId,
   className,
 }: InputProps) => {
-  const project = useProject({
-    projectId:
-      participationContextType === 'project' ? participationContextId : null,
-  });
+  const { data: project } = useProjectById(
+    participationContextType === 'project' ? participationContextId : null
+  );
 
   const phase = usePhase(
     participationContextType === 'phase' ? participationContextId : null
@@ -296,8 +295,8 @@ const Wrapper = ({
 
   let basketId: string | undefined;
 
-  if (!isNilOrError(project)) {
-    basketId = project.relationships.user_basket?.data?.id;
+  if (project) {
+    basketId = project.data.relationships.user_basket?.data?.id;
   }
 
   if (!isNilOrError(phase)) {

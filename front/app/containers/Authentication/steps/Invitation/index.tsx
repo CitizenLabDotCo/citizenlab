@@ -19,7 +19,7 @@ import Input from 'components/HookForm/Input';
 import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
 
 // typings
-import { SetError, Status } from 'containers/Authentication/typings';
+import { SetError } from 'containers/Authentication/typings';
 
 interface FormValues {
   token: string;
@@ -30,12 +30,12 @@ const DEFAULT_VALUES: Partial<FormValues> = {
 };
 
 interface Props {
-  status: Status;
+  loading: boolean;
   setError: SetError;
   onSubmit: (token: string) => void;
 }
 
-const Invitation = ({ status, setError, onSubmit }: Props) => {
+const Invitation = ({ loading, setError, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
 
   const schema = object({
@@ -64,8 +64,6 @@ const Invitation = ({ status, setError, onSubmit }: Props) => {
       setError('invitation_error');
     }
   };
-
-  const loading = status === 'pending';
 
   return (
     <FormProvider {...methods}>

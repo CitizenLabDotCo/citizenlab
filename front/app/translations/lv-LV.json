@@ -1378,6 +1378,7 @@
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Apstipriniet pašreizējo paroli un nomainiet to uz jaunu paroli.",
   "app.containers.UsersEditPage.privacyReasons": "Ja uztraucaties par savu konfidencialitāti, varat izlasīt {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Nosūta...",
+  "app.containers.UsersEditPage.provideFirstNameIfLastName": "Vārds ir obligāts, ja tiek norādīts uzvārds",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "Pirms dodaties...",
   "app.containers.UsersEditPage.submit": "Saglabāt izmaiņas",
   "app.containers.UsersEditPage.tooManyEmails": "Saņemat pārāk daudz e-pasta vēstuļu? Savas e-pasta preferences varat pārvaldīt profila iestatījumos.",

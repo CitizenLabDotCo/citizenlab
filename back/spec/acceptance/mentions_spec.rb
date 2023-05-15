@@ -7,9 +7,7 @@ resource 'Mentions' do
   explanation 'Part of a text that explicitly references a user.'
 
   before do
-    @current_user = create(:user)
-    token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    resident_header_token
     header 'Content-Type', 'application/json'
   end
 

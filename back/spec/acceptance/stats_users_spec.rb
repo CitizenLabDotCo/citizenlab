@@ -28,9 +28,7 @@ resource 'Stats - Users' do
   let!(:now) { Time.now.in_time_zone(@timezone) }
 
   before do
-    @current_user = create(:admin)
-    token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    admin_header_token
     header 'Content-Type', 'application/json'
     AppConfiguration.instance.update!(created_at: now - 2.years)
     @timezone = AppConfiguration.instance.settings('core', 'timezone')

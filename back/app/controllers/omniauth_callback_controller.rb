@@ -154,7 +154,7 @@ class OmniauthCallbackController < ApplicationController
       { sub: entity.id }
     end
 
-    Knock::AuthToken.new payload: payload.merge({
+    AuthToken::AuthToken.new payload: payload.merge({
       provider: provider,
       logout_supported: AuthenticationService.new.supports_logout?(provider)
     })

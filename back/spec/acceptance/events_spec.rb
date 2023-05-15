@@ -58,9 +58,7 @@ resource 'Events' do
 
     context 'when admin' do
       before do
-        @user = create(:admin)
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        admin_header_token
         @project3 = create(:project, { admin_publication_attributes: { publication_status: 'draft' } })
         @more_events = create_list(:event, 2, project: @project3)
       end
@@ -93,12 +91,8 @@ resource 'Events' do
     end
   end
 
-  context 'when authenticated' do
-    before do
-      @user = create(:admin)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+  context 'when admin' do
+    before { admin_header_token }
 
     post 'web_api/v1/projects/:project_id/events' do
       with_options scope: :event do

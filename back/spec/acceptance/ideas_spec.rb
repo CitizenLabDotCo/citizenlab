@@ -54,8 +54,7 @@ resource 'Ideas' do
     before do
       @user = user
       create(:idea_status_proposed)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for user
     end
 
     get 'web_api/v1/ideas' do
@@ -350,8 +349,7 @@ resource 'Ideas' do
       describe do
         before do
           @user = create(:admin)
-          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-          header 'Authorization', "Bearer #{token}"
+          header_token_for @user
 
           @ideas = %w[published published draft published spam published published].map do |ps|
             create(:idea, publication_status: ps)
@@ -437,7 +435,7 @@ resource 'Ideas' do
 
           example 'XLSX export', document: false do
             do_request
-            expect(status).to eq 200
+            assert_status 200
 
             worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
             ideas_ids = worksheet.drop(1).collect { |row| row[0].value }
@@ -447,16 +445,12 @@ resource 'Ideas' do
           end
         end
 
-        describe do
-          before do
-            @user = create(:user)
-            token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-            header 'Authorization', "Bearer #{token}"
-          end
+        describe 'when resident' do
+          before { resident_header_token }
 
-          example '[error] XLSX export by a normal user', document: false do
+          example '[error] XLSX export', document: false do
             do_request
-            expect(status).to eq 401
+            assert_status 401
           end
         end
       end
@@ -867,8 +861,7 @@ resource 'Ideas' do
         context 'when admin' do
           before do
             @user = create(:admin)
-            token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-            header 'Authorization', "Bearer #{token}"
+            header_token_for @user
           end
 
           describe do
@@ -1064,8 +1057,7 @@ resource 'Ideas' do
         context 'when admin' do
           before do
             @user = create(:admin)
-            token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-            header 'Authorization', "Bearer #{token}"
+            header_token_for @user
           end
 
           describe do
@@ -1175,17 +1167,13 @@ resource 'Ideas' do
         end
 
         context 'when moderator' do
-          before do
-            @moderator = create(:project_moderator, projects: [@project])
-            token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
-            header 'Authorization', "Bearer #{token}"
-          end
+          before { header_token_for create(:project_moderator, projects: [@project]) }
 
           describe do
             let(:idea_status_id) { create(:idea_status).id }
 
             example_request 'Change the idea status (as a moderator)' do
-              expect(status).to be 200
+              assert_status 200
               json_response = json_parse response_body
               expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq idea_status_id
             end
@@ -1193,17 +1181,13 @@ resource 'Ideas' do
         end
 
         context 'when unauthorized' do
-          before do
-            @user = create(:user)
-            token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-            header 'Authorization', "Bearer #{token}"
-          end
+          before { resident_header_token }
 
           describe do
             let(:idea_status_id) { create(:idea_status).id }
 
             example_request 'Change the idea status (unauthorized)' do
-              expect(status).to eq 401
+              assert_status 401
             end
           end
         end

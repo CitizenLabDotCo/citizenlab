@@ -22,9 +22,6 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Resources
-import GetProjectFolder, {
-  GetProjectFolderChildProps,
-} from 'resources/GetProjectFolder';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // style
@@ -32,6 +29,7 @@ import styled from 'styled-components';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -46,7 +44,6 @@ const TopContainer = styled.div`
 export interface InputProps {}
 
 interface DataProps {
-  projectFolder: GetProjectFolderChildProps;
   authUser: GetAuthUserChildProps;
 }
 
@@ -54,81 +51,70 @@ export interface Props extends InputProps, DataProps {}
 
 const AdminProjectFolderEdition = memo<
   Props & WrappedComponentProps & WithRouterProps
->(
-  ({
-    authUser,
-    params: { projectFolderId },
-    intl: { formatMessage },
-    projectFolder,
-  }) => {
-    const localize = useLocalize();
-    const goBack = () => {
-      clHistory.push('/admin/projects');
-    };
+>(({ authUser, params: { projectFolderId }, intl: { formatMessage } }) => {
+  const { data: projectFolder } = useProjectFolderById(projectFolderId);
+  const localize = useLocalize();
+  const goBack = () => {
+    clHistory.push('/admin/projects');
+  };
 
-    let tabbedProps = {
-      resource: {
-        title: !isNilOrError(projectFolder)
-          ? localize(projectFolder.attributes.title_multiloc)
-          : '',
+  let tabbedProps = {
+    resource: {
+      title: !isNilOrError(projectFolder)
+        ? localize(projectFolder.data.attributes.title_multiloc)
+        : '',
+    },
+    tabs: [
+      {
+        label: formatMessage(messages.projectFolderProjectsTab),
+        url: `/admin/projects/folders/${projectFolderId}/projects`,
+        name: 'projects',
       },
-      tabs: [
-        {
-          label: formatMessage(messages.projectFolderProjectsTab),
-          url: `/admin/projects/folders/${projectFolderId}/projects`,
-          name: 'projects',
-        },
-        {
-          label: formatMessage(messages.projectFolderSettingsTab),
-          url: `/admin/projects/folders/${projectFolderId}/settings`,
-          name: 'settings',
-        },
-      ],
+      {
+        label: formatMessage(messages.projectFolderSettingsTab),
+        url: `/admin/projects/folders/${projectFolderId}/settings`,
+        name: 'settings',
+      },
+    ],
+  };
+
+  if (authUser && isAdmin({ data: authUser })) {
+    tabbedProps = {
+      ...tabbedProps,
+      tabs: tabbedProps.tabs.concat({
+        label: formatMessage(messages.projectFolderPermissionsTab),
+        url: `/admin/projects/folders/${projectFolderId}/permissions`,
+        name: 'permissions',
+      }),
     };
-
-    if (authUser && isAdmin({ data: authUser })) {
-      tabbedProps = {
-        ...tabbedProps,
-        tabs: tabbedProps.tabs.concat({
-          label: formatMessage(messages.projectFolderPermissionsTab),
-          url: `/admin/projects/folders/${projectFolderId}/permissions`,
-          name: 'permissions',
-        }),
-      };
-    }
-
-    return (
-      <>
-        <TopContainer>
-          <GoBackButton onClick={goBack} />
-          {!isNilOrError(projectFolder) && (
-            <Button
-              buttonStyle="cl-blue"
-              icon="eye"
-              id="to-projectFolder"
-              linkTo={`/folders/${projectFolder.attributes.slug}`}
-            >
-              <FormattedMessage {...messages.viewPublicProjectFolder} />
-            </Button>
-          )}
-        </TopContainer>
-        <TabbedResource {...tabbedProps}>
-          <RouterOutlet />
-        </TabbedResource>
-      </>
-    );
   }
-);
+
+  return (
+    <>
+      <TopContainer>
+        <GoBackButton onClick={goBack} />
+        {!isNilOrError(projectFolder) && (
+          <Button
+            buttonStyle="cl-blue"
+            icon="eye"
+            id="to-projectFolder"
+            linkTo={`/folders/${projectFolder.data.attributes.slug}`}
+          >
+            <FormattedMessage {...messages.viewPublicProjectFolder} />
+          </Button>
+        )}
+      </TopContainer>
+      <TabbedResource {...tabbedProps}>
+        <RouterOutlet />
+      </TabbedResource>
+    </>
+  );
+});
 
 const AdminProjectFolderEditionWithHoCs = injectIntl(AdminProjectFolderEdition);
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   authUser: <GetAuthUser />,
-  projectFolder: ({ params, render }) => (
-    <GetProjectFolder projectFolderId={params.projectFolderId}>
-      {render}
-    </GetProjectFolder>
-  ),
 });
 
 export default withRouter((props: WithRouterProps) => (

@@ -1,18 +1,20 @@
 import React from 'react';
-import { isUnauthorizedError } from 'utils/helperUtils';
-import { isError } from 'lodash-es';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 // components
 import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
-
+import VerticalCenterer from 'components/VerticalCenterer';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import IdeasEditForm from './IdeasEditForm';
 
-// tracks
+// router
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+
+// utils
+import { isUnauthorizedRQ } from 'utils/errorUtils';
 
 interface Props {
   params: {
@@ -21,13 +23,21 @@ interface Props {
 }
 
 const IdeasEditPage = withRouter((props: Props & WithRouterProps) => {
-  const project = useProject({ projectSlug: props.params.slug });
+  const { status, error } = useIdeaById(props.params.ideaId);
 
-  if (isUnauthorizedError(project)) {
-    return <Unauthorized />;
+  if (status === 'loading') {
+    return (
+      <VerticalCenterer>
+        <Spinner />
+      </VerticalCenterer>
+    );
   }
 
-  if (isError(project)) {
+  if (status === 'error') {
+    if (isUnauthorizedRQ(error)) {
+      return <Unauthorized />;
+    }
+
     return <PageNotFound />;
   }
 

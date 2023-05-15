@@ -113,7 +113,9 @@ export const List = ({
   children: ReactNode;
 }) => (
   <StyledList id={id} className={`e2e-admin-list ${className || ''}`}>
-    <TransitionGroup>{children}</TransitionGroup>
+    <TransitionGroup>
+      <>{children}</>
+    </TransitionGroup>
   </StyledList>
 );
 

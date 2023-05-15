@@ -1,5 +1,5 @@
 import React from 'react';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 import Link from 'utils/cl-router/Link';
 
 // i18n
