@@ -1378,6 +1378,7 @@
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Bekræft din nuværende adgangskode og ændr den til en ny adgangskode.",
   "app.containers.UsersEditPage.privacyReasons": "Hvis du er bekymret for dit privatliv kan du læse {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Sender...",
+  "app.containers.UsersEditPage.provideFirstNameIfLastName": "Fornavn er påkrævet, når du angiver efternavn",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "Før du går...",
   "app.containers.UsersEditPage.submit": "Gem ændringer",
   "app.containers.UsersEditPage.tooManyEmails": "Får du for mange e-mails? Du kan administrere din e-mailpræferencer i dine profilindstillinger. ",
