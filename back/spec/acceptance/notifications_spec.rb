@@ -41,12 +41,16 @@ resource 'Notifications' do
 
     describe do
       example 'List all different types of notification', document: false do
-        NotificationService.new.notification_classes.each do |notification_class|
-          create(notification_class.model_name.element.to_sym)
+        notification_classes = NotificationService.new.notification_classes
+
+        notification_classes.each do |notification_class|
+          create(notification_class.model_name.element.to_sym, recipient: @user)
         end
+
         do_request
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to be > 0
+
+        expect(response_data.pluck(:type).uniq)
+          .to match_array(notification_classes.map { |klass| klass.name.demodulize.underscore })
       end
     end
   end
