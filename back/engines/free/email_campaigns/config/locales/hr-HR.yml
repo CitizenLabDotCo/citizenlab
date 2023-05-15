@@ -100,12 +100,12 @@ hr:
     schedules:
       weekly:
         "0": "Tjedno, nedjeljom u %{hourOfDay}"
-        "1": "Tjedno ponedjeljkom %{atHour}"
-        "2": "Tjedno utorkom %{atHour}"
-        "3": "Tjedno srijedom %{atHour}"
-        "4": "Tjedno četvrtkom %{atHour}"
-        "5": "Tjedno petkom %{atHour}"
-        "6": "Tjedno subotom %{atHour}"
+        "1": "Tjedno, ponedjeljkom u %{hourOfDay}"
+        "2": "Tjedno utorkom %{hourOfDay}"
+        "3": "Tjedno, srijedom u %{hourOfDay}"
+        "4": "Tjedno, četvrtkom u %{hourOfDay}"
+        "5": "Tjedno, petkom u %{hourOfDay}"
+        "6": "Tjedno, subotom u %{hourOfDay}"
     footer:
       "link_privacy_policy": "Pravila o privatnosti"
       "link_terms_conditions": "Uvjeti korištenja"
