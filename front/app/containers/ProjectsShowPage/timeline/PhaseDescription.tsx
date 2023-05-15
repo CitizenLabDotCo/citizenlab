@@ -10,11 +10,11 @@ import ReadMoreWrapper from 'containers/ProjectsShowPage/shared/header/ReadMoreW
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import usePhase from 'api/phases/usePhase';
-import useResourceFiles from 'hooks/useResourceFiles';
 
 // style
 import styled from 'styled-components';
 import { defaultCardStyle, media } from 'utils/styleUtils';
+import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 
 const Container = styled.div`
   padding: 30px;
@@ -47,10 +47,7 @@ const PhaseDescription = ({
 }: Props) => {
   const localize = useLocalize();
   const { data: phase } = usePhase(phaseId);
-  const phaseFiles = useResourceFiles({
-    resourceId: phaseId,
-    resourceType: 'phase',
-  });
+  const { data: phaseFiles } = usePhaseFiles(phaseId);
 
   const content = phase
     ? localize(phase.data.attributes.description_multiloc)
@@ -82,7 +79,7 @@ const PhaseDescription = ({
           />
 
           {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (
-            <StyledFileAttachments files={phaseFiles} />
+            <StyledFileAttachments files={phaseFiles.data} />
           )}
         </>
       )}
