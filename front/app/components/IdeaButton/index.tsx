@@ -103,7 +103,6 @@ interface Props extends Omit<ButtonProps, 'onClick'> {
   inMap?: boolean;
   className?: string;
   participationContextType: IParticipationContextType;
-  buttonText?: MessageDescriptor;
   phase: IPhaseData | undefined | null;
 }
 
@@ -115,7 +114,6 @@ const IdeaButton = memo<Props>(
     inMap,
     className,
     latLng,
-    buttonText,
     phase,
     ...buttonContainerProps
   }) => {
@@ -294,7 +292,6 @@ const IdeaButton = memo<Props>(
         const buttonMessage = getButtonMessage(
           phase?.attributes.participation_method ||
             project.attributes.participation_method,
-          buttonText,
           inputTerm
         );
 

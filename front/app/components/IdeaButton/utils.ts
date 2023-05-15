@@ -1,4 +1,3 @@
-import { MessageDescriptor } from 'react-intl';
 import { InputTerm, ParticipationMethod } from 'services/participationContexts';
 
 import { getInputTermMessage } from 'utils/i18n';
@@ -6,13 +5,8 @@ import messages from './messages';
 
 export const getButtonMessage = (
   participationMethod: ParticipationMethod,
-  buttonText: MessageDescriptor | undefined,
   inputTerm: InputTerm
 ) => {
-  if (buttonText) {
-    return buttonText;
-  }
-
   if (participationMethod === 'native_survey') {
     return messages.takeTheSurvey;
   }
