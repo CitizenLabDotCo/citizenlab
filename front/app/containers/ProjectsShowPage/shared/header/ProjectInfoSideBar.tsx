@@ -11,7 +11,7 @@ import moment from 'moment';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import usePhases, { TPhases } from 'hooks/usePhases';
+import usePhases from 'hooks/usePhases';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
@@ -31,6 +31,7 @@ import ProjectActionButtons from './ProjectActionButtons';
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { scrollToElement } from 'utils/scroll';
+import { hasEmbeddedSurvey, hasSurveyWithAnyonePermissions } from './utils';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -42,7 +43,6 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 import styled from 'styled-components';
 import { fontSizes, colors, isRtl, media } from 'utils/styleUtils';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
-import { IProjectData } from 'api/projects/types';
 
 const Container = styled.div``;
 
@@ -127,24 +127,6 @@ interface Props {
   projectId: string;
   className?: string;
 }
-
-const hasSurveyWithAnyonePermissions = (
-  project: IProjectData,
-  phases: TPhases | null
-) => {
-  let hasSurveyPhase = false;
-  if (!isNilOrError(phases)) {
-    phases.map((phase) => {
-      if (phase.attributes.participation_method === 'native_survey') {
-        hasSurveyPhase = true; // TODO Return true if there is a survey with anyone permissions
-      }
-    });
-  }
-  if (project.attributes.participation_method === 'native_survey') {
-    hasSurveyPhase = true;
-  }
-  return hasSurveyPhase; // TODO Return true if there is a survey with anyone permissions
-};
 
 const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const { data: project } = useProjectById(projectId);
@@ -370,6 +352,17 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     <Box ml="4px">
                       <FormattedMessage {...messages.surveySubmissions} />
                     </Box>
+                    {hasEmbeddedSurvey(project.data, phases) && (
+                      <Box mb="4px" ml="4px">
+                        <IconTooltip
+                          placement="top"
+                          iconColor={colors.coolGrey300}
+                          content={formatMessage(
+                            messages.surveySubmissionsTooltip
+                          )}
+                        />
+                      </Box>
+                    )}
                   </ListItem>
                 </Box>
               ))}
