@@ -18,7 +18,7 @@ const mockProjectData = {
 
 const ideaId = '5';
 
-jest.mock('services/projects');
+jest.mock('api/projects/types');
 jest.mock('services/auth');
 
 jest.mock('api/projects/useProjectById', () =>

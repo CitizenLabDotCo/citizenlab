@@ -225,6 +225,10 @@ const CreateProject = memo<Props & WrappedComponentProps>(
 
     return (
       <Container className={className}>
+        <Outlet
+          id="app.containers.Admin.projects.all.createProject.tabs"
+          onData={handleData}
+        />
         <CreateProjectButton
           className={`e2e-create-project-expand-collapse-button ${
             expanded ? 'expanded' : 'collapsed'
@@ -257,10 +261,6 @@ const CreateProject = memo<Props & WrappedComponentProps>(
             className={`${expanded ? 'expanded' : 'collapsed'}`}
           >
             <CreateProjectContentInner>
-              <Outlet
-                id="app.containers.Admin.projects.all.createProject.tabs"
-                onData={handleData}
-              />
               {tabs.length > 1 && (
                 <StyledTabs
                   className="e2e-create-project-tabs"

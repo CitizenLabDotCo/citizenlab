@@ -1,4 +1,4 @@
-import { ProcessType, IProjectData } from 'api/projects/types';
+import { ProcessType, IProjectData } from '../types';
 import {
   ParticipationMethod,
   TSurveyService,
@@ -103,7 +103,3 @@ export function getProject(
     },
   } as unknown as IProjectData;
 }
-
-export const getProjectInputTerm = () => {
-  return 'idea';
-};
