@@ -1,17 +1,11 @@
 import { TProjectFolderCardSize } from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
 import projectFolderImagesKeys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
-import { IStreamParams } from 'utils/streams';
 
 export type ProjectFolderImagesKeys = Keys<typeof projectFolderImagesKeys>;
 
 export type IQueryParameters = {
   folderId: string;
-};
-
-export type IGetImagesQueryParameters = {
-  folderId: string;
-  streamParams?: IStreamParams | null;
 };
 
 export interface addProjectFolderImageObject {
