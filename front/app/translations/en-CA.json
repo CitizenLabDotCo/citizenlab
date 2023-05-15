@@ -1378,6 +1378,7 @@
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Confirm your current password and change to new password.",
   "app.containers.UsersEditPage.privacyReasons": "If you are worried about your privacy, you can read {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Sending...",
+  "app.containers.UsersEditPage.provideFirstNameIfLastName": "First name is required when providing last name",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "Before you go...",
   "app.containers.UsersEditPage.submit": "Save changes",
   "app.containers.UsersEditPage.tooManyEmails": "Receiving too many emails? You can manage your email preferences in your profile settings.",

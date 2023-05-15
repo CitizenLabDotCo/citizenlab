@@ -1378,6 +1378,7 @@
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Потврдите своју тренутну лозинку и промените је на нову.",
   "app.containers.UsersEditPage.privacyReasons": "Ако сте забринути за своју приватност, можете прочитати {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Слање...",
+  "app.containers.UsersEditPage.provideFirstNameIfLastName": "First name is required when providing last name",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "Пре него што одеш...",
   "app.containers.UsersEditPage.submit": "Сачувај измене",
   "app.containers.UsersEditPage.tooManyEmails": "Примате превише е-порука? Можете да управљате подешавањима е-поште у подешавањима профила.",
