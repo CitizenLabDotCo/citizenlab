@@ -148,7 +148,8 @@ class PermissionsService
       special: {
         password: 'dont_ask',
         confirmation: 'dont_ask',
-        verification: 'dont_ask'
+        verification: 'dont_ask',
+        group_membership: 'dont_ask'
       }
     }
 
@@ -164,17 +165,23 @@ class PermissionsService
       requirements[:special][:password] = 'require'
     end
 
+    groups = users.deep_dup.tap do |requirements|
+      requirements[:special][:group_membership] = 'require'
+    end
+
     case permission.permitted_by
     when 'everyone'
       everyone
     when 'everyone_confirmed_email'
       AppConfiguration.instance.feature_activated?('user_confirmation') ? everyone_confirmed_email : users
-    else # users | groups | admins_moderators'
+    when 'groups'
+      groups
+    else # users | admins_moderators'
       users
     end
   end
 
-  def mark_satisfied_requirements!(requirements, _permission, user)
+  def mark_satisfied_requirements!(requirements, permission, user)
     return requirements if !user
 
     requirements[:built_in]&.each_key do |attribute|
@@ -189,6 +196,8 @@ class PermissionsService
         !user.no_password?
       when :confirmation
         !user.confirmation_required?
+      when :group_membership
+        user.in_any_groups?(permission.groups)
       end
       requirements[:special][special_key] = 'satisfied' if is_satisfied
     end
