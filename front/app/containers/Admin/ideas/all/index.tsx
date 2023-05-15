@@ -7,7 +7,7 @@ import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 
 interface DataProps {
   projects: GetProjectsChildProps;
@@ -23,13 +23,13 @@ const IdeasTab = memo(({ projects }: Props) => {
     'statuses',
   ];
 
-  if (!isNilOrError(projects) && projects.projectsList !== undefined) {
+  if (!isNilOrError(projects)) {
     return (
       <PostManager
         type="AllIdeas"
         defaultFilterMenu={defaultFilterMenu}
         visibleFilterMenus={visibleFilterMenus}
-        projects={projects.projectsList}
+        projects={projects}
       />
     );
   }
@@ -49,7 +49,7 @@ const Data = adopt<Props>({
       pageSize={250}
       sort="new"
       publicationStatuses={publicationStatuses}
-      filterCanModerate={true}
+      canModerate={true}
     />
   ),
 });

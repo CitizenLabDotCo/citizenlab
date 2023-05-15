@@ -55,7 +55,7 @@ class AppConfiguration < ApplicationRecord
         settings_schema['dependencies'][spec.feature_name] = spec.dependencies if spec.dependencies.present?
       end
 
-      settings_schema
+      settings_schema.with_indifferent_access
     end
 
     def self.core_settings_json_schema

@@ -9,7 +9,6 @@ import { Input } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import {
   FormContainer,
-  Title,
   Form,
   FormField,
   StyledLabel,
@@ -17,7 +16,7 @@ import {
   Footer,
   SubmitButton,
   CancelButton,
-} from 'components/AuthProviders/styles';
+} from 'containers/Authentication/steps/AuthProviders/styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -28,13 +27,11 @@ import { verifyBogus } from '../services/verify';
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
-  showHeader?: boolean;
-  inModal: boolean;
   className?: string;
 }
 
 const VerificationFormBogus = memo<Props>(
-  ({ onCancel, onVerified, showHeader, inModal, className }) => {
+  ({ onCancel, onVerified, className }) => {
     const authUser = useAuthUser();
 
     const [desiredError, setDesiredError] = useState<string>('');
@@ -59,22 +56,13 @@ const VerificationFormBogus = memo<Props>(
         try {
           await verifyBogus(desiredError);
 
-          const endpointsToRefetch = [
-            `${API_PATH}/users/me`,
-            `${API_PATH}/projects`,
-          ];
-          const partialEndpointsToRefetch = [
-            `${API_PATH}/projects/`,
-            `${API_PATH}/ideas/`,
-          ];
-
+          const endpointsToRefetch = [`${API_PATH}/users/me`];
           if (!isNilOrError(authUser)) {
             endpointsToRefetch.push(`${API_PATH}/users/${authUser.id}`);
           }
 
           await streams.fetchAllWith({
             apiEndpoint: endpointsToRefetch,
-            partialApiEndpoint: partialEndpointsToRefetch,
           });
 
           onVerified();
@@ -105,15 +93,9 @@ const VerificationFormBogus = memo<Props>(
       <FormContainer
         id="e2e-verification-bogus-form"
         className={className}
-        inModal={inModal}
+        inModal={true}
       >
-        {showHeader && (
-          <Title>
-            <strong>Verify your identity (fake)</strong>
-          </Title>
-        )}
-
-        <Form inModal={inModal}>
+        <Form inModal={true}>
           <FormField>
             <StyledLabel>
               <LabelTextContainer>

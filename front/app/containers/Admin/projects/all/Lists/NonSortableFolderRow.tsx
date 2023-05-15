@@ -6,7 +6,7 @@ import useAdminPublications, {
   IAdminPublicationContent,
 } from 'hooks/useAdminPublications';
 import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 import { Row } from 'components/admin/ResourceList';
 import useAuthUser from 'hooks/useAuthUser';
 import FolderChildProjects from './FolderChildProjects';

@@ -38,6 +38,9 @@ import localize, { InjectedLocalized } from 'utils/localize';
 // styling
 import styled from 'styled-components';
 
+// constants
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
+
 // typings
 import { IOption, UploadFile, Multiloc } from 'typings';
 
@@ -71,7 +74,6 @@ type Props = InputProps & DataProps & WrappedComponentProps & InjectedLocalized;
 type FormValues = {
   first_name?: string;
   last_name?: string;
-  email?: string;
   bio_multiloc?: Multiloc;
   locale?: string;
   avatar?: UploadFile[] | null;
@@ -94,11 +96,12 @@ const ProfileForm = ({
   }>({});
 
   const schema = object({
-    first_name: string().required(formatMessage(messages.firstNamesEmptyError)),
-    last_name: string().required(formatMessage(messages.lastNameEmptyError)),
-    email: string()
-      .email(formatMessage(messages.emailInvalidError))
-      .required(formatMessage(messages.emailEmptyError)),
+    first_name: string().when('last_name', ([last_name], schema) => {
+      return last_name
+        ? schema.required(formatMessage(messages.provideFirstNameIfLastName))
+        : schema;
+    }),
+    last_name: string(),
     ...(!disableBio && {
       bio_multiloc: object(),
     }),
@@ -109,9 +112,12 @@ const ProfileForm = ({
   const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues: {
-      first_name: authUser?.attributes.first_name,
-      last_name: authUser?.attributes.last_name || undefined,
-      email: authUser?.attributes.email,
+      first_name: authUser?.attributes.no_name
+        ? undefined
+        : authUser?.attributes.first_name ?? undefined,
+      last_name: authUser?.attributes.no_name
+        ? undefined
+        : authUser?.attributes.last_name || undefined,
       bio_multiloc: authUser?.attributes.bio_multiloc,
       locale: authUser?.attributes.locale,
     },
@@ -243,25 +249,6 @@ const ProfileForm = ({
               )}
             </InputContainer>
           </SectionField>
-
-          <SectionField>
-            <InputContainer>
-              <Input
-                type="email"
-                name="email"
-                label={formatMessage(messages.email)}
-                autocomplete="email"
-                disabled={lockedFieldsNames.includes('email')}
-              />
-              {lockedFieldsNames.includes('email') && (
-                <StyledIconTooltip
-                  content={<FormattedMessage {...messages.blockedVerified} />}
-                  icon="lock"
-                />
-              )}
-            </InputContainer>
-          </SectionField>
-
           {!disableBio && (
             <SectionField>
               <QuillMultilocWithLocaleSwitcher
@@ -284,6 +271,7 @@ const ProfileForm = ({
         </form>
         <UserCustomFieldsForm
           authUser={authUser}
+          authenticationContext={GLOBAL_CONTEXT}
           onChange={handleCustomFieldsChange}
         />
         <Box display="flex">

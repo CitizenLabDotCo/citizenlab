@@ -39,7 +39,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
 // typings
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -122,9 +122,6 @@ const OverviewDashboard = ({ projects }: DataProps) => {
 
   if (isNilOrError(projects)) return null;
   if (isNilOrError(user)) return null;
-
-  const { projectsList } = projects;
-  if (!projectsList) return null;
 
   const startAt = startAtMoment && startAtMoment.toISOString();
   const endAt = endAtMoment && endAtMoment.toISOString();
@@ -287,10 +284,7 @@ const publicationStatuses: PublicationStatus[] = [
 ];
 
 export default () => (
-  <GetProjects
-    publicationStatuses={publicationStatuses}
-    filterCanModerate={true}
-  >
+  <GetProjects publicationStatuses={publicationStatuses} canModerate={true}>
     {(projects) => <OverviewDashboard projects={projects} />}
   </GetProjects>
 );

@@ -12,14 +12,14 @@ import SpamReportForm from 'containers/SpamReport';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { ProcessType } from 'services/projects';
+import { ProcessType } from 'api/projects/types';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
 // styling
@@ -46,7 +46,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   const { formatMessage } = useIntl();
   const [isSpamModalVisible, setIsSpamModalVisible] = useState<boolean>(false);
   const authUser = useAuthUser();
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const { mutate: deleteIdea } = useDeleteIdea();
 
   const openSpamModal = () => {
@@ -84,7 +84,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
     !isNilOrError(project)
   ) {
     const ideaId = idea.id;
-    const processType = project.attributes.process_type;
+    const processType = project.data.attributes.process_type;
 
     return (
       <Container className={className}>

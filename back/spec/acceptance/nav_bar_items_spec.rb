@@ -20,7 +20,7 @@ resource 'NavBarItems' do
     end
 
     example_request 'List all NavBarItems' do
-      expect(status).to eq 200
+      assert_status 200
       expect(json_response_body[:data].size).to eq 4
       expect(json_response_body[:data].map { |d| d.dig(:attributes, :ordering) }).to eq [0, 1, 2, 3]
       expect(json_response_body[:data].map { |d| d.dig(:attributes, :code) }).to eq %w[home custom proposals events]
@@ -38,11 +38,7 @@ resource 'NavBarItems' do
   end
 
   context 'when admin' do
-    before do
-      @admin = create(:admin)
-      token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+    before { admin_header_token }
 
     get 'web_api/v1/nav_bar_items/removed_default_items' do
       before do
@@ -52,7 +48,7 @@ resource 'NavBarItems' do
       let(:codes) { json_response_body[:data].map { |d| d.dig(:attributes, :code) } }
 
       example_request 'List removed default NavBarItems' do
-        expect(status).to eq 200
+        assert_status 200
         expect(json_response_body[:data].size).to be > 0
         expect(codes).to include 'home'
         expect(codes).to include 'proposals'
@@ -186,12 +182,8 @@ resource 'NavBarItems' do
     end
   end
 
-  context 'when normal user' do
-    before do
-      @user = create(:user)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+  context 'when resident' do
+    before { resident_header_token }
 
     post 'web_api/v1/nav_bar_items' do
       parameter :code, scope: :nav_bar_item

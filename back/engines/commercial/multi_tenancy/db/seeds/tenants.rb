@@ -52,6 +52,14 @@ module MultiTenancy
               client_id: ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_ID'),
               client_secret: ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_SECRET')
             },
+            azure_ad_login: {
+              allowed: true,
+              enabled: true,
+              tenant: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_TENANT_ID'),
+              client_id: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_CLIENT_ID'),
+              logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
+              login_mechanism_name: 'Azure Active Directory'
+            },
             franceconnect_login: {
               allowed: true,
               enabled: false,
@@ -109,6 +117,10 @@ module MultiTenancy
               allowed: true
             },
             permission_option_email_confirmation: {
+              enabled: true,
+              allowed: true
+            },
+            permissions_custom_fields: {
               enabled: true,
               allowed: true
             },

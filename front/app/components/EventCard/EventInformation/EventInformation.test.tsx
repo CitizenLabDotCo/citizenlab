@@ -23,7 +23,9 @@ const mockProjectData = {
 };
 
 jest.mock('hooks/useResourceFiles', () => jest.fn(() => []));
-jest.mock('hooks/useProject', () => jest.fn(() => mockProjectData));
+jest.mock('api/projects/useProjectById', () =>
+  jest.fn(() => ({ data: { data: mockProjectData } }))
+);
 
 jest.mock('utils/cl-router/withRouter');
 

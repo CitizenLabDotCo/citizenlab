@@ -13,10 +13,10 @@ import messages from 'containers/SiteMap/messages';
 
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';
-import useProjectFolder from 'hooks/useProjectFolder';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 // typings
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 
 interface Props {
   hightestTitle: 'h3' | 'h4';
@@ -32,21 +32,21 @@ const publicationStatuses: PublicationStatus[] = [
 const ProjectFolderSitemap = ({ projectFolderId, hightestTitle }: Props) => {
   const TitleComponent = hightestTitle === 'h3' ? H3 : H4;
 
-  const folder = useProjectFolder({ projectFolderId });
+  const { data: folder } = useProjectFolderById(projectFolderId);
   const { list: childAdminPublications } = useAdminPublications({
     childrenOfId: projectFolderId,
     publicationStatusFilter: publicationStatuses,
   });
 
-  if (!isNilOrError(folder)) {
+  if (folder && !isNilOrError(folder.data)) {
     return (
       <>
         <TitleComponent>
-          <T value={folder.attributes.title_multiloc} />
+          <T value={folder.data.attributes.title_multiloc} />
         </TitleComponent>
         <ul>
           <li>
-            <Link to={`/folders/${folder.attributes.slug}`}>
+            <Link to={`/folders/${folder.data.attributes.slug}`}>
               <FormattedMessage {...messages.folderInfo} />
             </Link>
           </li>

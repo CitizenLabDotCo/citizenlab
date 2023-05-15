@@ -121,9 +121,7 @@ resource 'Survey Responses' do
   end
 
   before do
-    @user = create(:admin)
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    admin_header_token
     header 'Content-Type', 'application/json'
 
     stub_request(:get, 'https://api.typeform.com/forms/HKGaPV')
@@ -146,14 +144,10 @@ resource 'Survey Responses' do
       expect(worksheet.count).to eq 3
     end
 
-    describe do
-      before do
-        @user = create(:user)
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+    describe 'when resident' do
+      before { resident_header_token }
 
-      example '[error] XLSX export by a normal user', document: false do
+      example '[error] XLSX export', document: false do
         do_request
         expect(status).to eq 401
       end

@@ -30,7 +30,7 @@ const QuestionReport = memo(
         isNilOrError(pollResponses) || isNilOrError(pollOptions)
           ? undefined
           : question.relationships.options.data.map((relOption) => {
-              const option = pollOptions.data.find(
+              const option = pollOptions.find(
                 (fullOption) => fullOption && relOption.id === fullOption.id
               )?.attributes.title_multiloc;
               return {

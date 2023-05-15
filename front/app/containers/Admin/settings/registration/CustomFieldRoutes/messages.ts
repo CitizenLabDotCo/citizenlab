@@ -118,9 +118,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.required',
     defaultMessage: 'Required',
   },
-  customFieldOptionDeletionConfirmation: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation',
-    defaultMessage: 'Are you sure you want to delete this custom field option?',
+  registrationQuestionAnswerOptionDeletionConfirmation: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionAnswerOptionDeletionConfirmation',
+    defaultMessage:
+      'Are you sure you want to delete this registration question answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.',
   },
   editCustomFieldAnswerOptionFormTitle: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.editCustomFieldAnswerOptionFormTitle',

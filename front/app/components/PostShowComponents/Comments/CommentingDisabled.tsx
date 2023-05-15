@@ -1,14 +1,14 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import T from 'components/T';
 
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+// hooks
+import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
 
 // services
 import { IdeaCommentingDisabledReason } from 'api/ideas/types';
@@ -18,152 +18,125 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // events
-import { openVerificationModal } from 'events/verificationModal';
-import { openSignUpInModal } from 'events/openSignUpInModal';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-// styling
-import styled from 'styled-components';
-
-const Container = styled.div`
-  margin-top: 15px;
-  margin-bottom: 30px;
-`;
-
-interface InputProps {
+interface Props {
   projectId: string | null;
   phaseId: string | undefined;
-  postId: string;
-  postType: 'idea' | 'initiative';
   commentingEnabled: boolean | null;
   commentingDisabledReason: IdeaCommentingDisabledReason | null;
 }
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  project: GetProjectChildProps;
-}
+const calculateMessageDescriptor = (
+  commentingEnabled: boolean | null,
+  commentingDisabledReason: IdeaCommentingDisabledReason | null,
+  authUser: TAuthUser
+) => {
+  const isLoggedIn = !isNilOrError(authUser);
 
-interface Props extends InputProps, DataProps {}
+  if (commentingEnabled) {
+    return null;
+  } else if (commentingDisabledReason === 'project_inactive') {
+    return messages.commentingDisabledInactiveProject;
+  } else if (commentingDisabledReason === 'commenting_disabled') {
+    return messages.commentingDisabledProject;
+  } else if (commentingDisabledReason === 'idea_not_in_current_phase') {
+    return messages.commentingDisabledInCurrentPhase;
+  } else if (isLoggedIn && commentingDisabledReason === 'not_verified') {
+    return messages.commentingDisabledUnverified;
+  } else if (isLoggedIn && commentingDisabledReason === 'not_permitted') {
+    return messages.commentingDisabledProject;
+  } else if (
+    (isLoggedIn && commentingDisabledReason === 'not_active') ||
+    commentingDisabledReason === 'missing_data'
+  ) {
+    return messages.completeProfileToComment;
+  } else if (!isLoggedIn) {
+    return messages.commentingMaybeNotPermitted;
+  }
+  return messages.signInToComment;
+};
 
-class CommentingDisabled extends PureComponent<Props> {
-  calculateMessageDescriptor = () => {
-    const { authUser, commentingEnabled, commentingDisabledReason } =
-      this.props;
-    const isLoggedIn = !isNilOrError(authUser);
-    if (commentingEnabled) {
-      return null;
-    } else if (commentingDisabledReason === 'project_inactive') {
-      return messages.commentingDisabledInactiveProject;
-    } else if (commentingDisabledReason === 'commenting_disabled') {
-      return messages.commentingDisabledProject;
-    } else if (commentingDisabledReason === 'idea_not_in_current_phase') {
-      return messages.commentingDisabledInCurrentPhase;
-    } else if (isLoggedIn && commentingDisabledReason === 'not_verified') {
-      return messages.commentingDisabledUnverified;
-    } else if (isLoggedIn && commentingDisabledReason === 'not_permitted') {
-      return messages.commentingDisabledProject;
-    } else if (!isLoggedIn) {
-      return messages.commentingMaybeNotPermitted;
-    }
+const CommentingDisabled = ({
+  projectId,
+  phaseId,
+  commentingEnabled,
+  commentingDisabledReason,
+}: Props) => {
+  const authUser = useAuthUser();
+  const { data: project } = useProjectById(projectId);
 
-    return messages.signInToComment;
-  };
-
-  onVerify = () => {
-    const { projectId, phaseId, commentingDisabledReason } = this.props;
+  const signUpIn = (flow: 'signin' | 'signup') => {
     const pcType = phaseId ? 'phase' : projectId ? 'project' : null;
     const pcId =
       pcType === 'phase' ? phaseId : pcType === 'project' ? projectId : null;
 
-    if (pcId && pcType && commentingDisabledReason === 'not_verified') {
-      openVerificationModal({
-        context: {
-          action: 'commenting_idea',
-          id: pcId,
-          type: pcType,
-        },
-      });
-    }
-  };
+    if (!pcId || !pcType) return;
 
-  signUpIn = (flow: 'signin' | 'signup') => {
-    const { projectId, phaseId, commentingDisabledReason } = this.props;
-    const pcType = phaseId ? 'phase' : projectId ? 'project' : null;
-    const pcId =
-      pcType === 'phase' ? phaseId : pcType === 'project' ? projectId : null;
-
-    openSignUpInModal({
+    triggerAuthenticationFlow({
       flow,
-      verification: commentingDisabledReason === 'not_verified',
-      verificationContext:
-        commentingDisabledReason === 'not_verified' && pcId && pcType
-          ? {
-              action: 'commenting_idea',
-              id: pcId,
-              type: pcType,
-            }
-          : undefined,
+      context: {
+        action: 'commenting_idea',
+        id: pcId,
+        type: pcType,
+      },
     });
   };
 
-  signIn = () => {
-    this.signUpIn('signin');
+  const signIn = () => {
+    signUpIn('signin');
   };
 
-  signUp = () => {
-    this.signUpIn('signup');
+  const signUp = () => {
+    signUpIn('signup');
   };
 
-  render() {
-    const { project } = this.props;
-    const messageDescriptor = this.calculateMessageDescriptor();
-    const projectTitle = !isNilOrError(project)
-      ? project.attributes.title_multiloc
-      : null;
+  const messageDescriptor = calculateMessageDescriptor(
+    commentingEnabled,
+    commentingDisabledReason,
+    authUser
+  );
 
-    if (messageDescriptor) {
-      return (
-        <Container className="e2e-commenting-disabled">
-          <Warning>
-            <FormattedMessage
-              {...messageDescriptor}
-              values={{
-                signUpLink: (
-                  <button onClick={this.signUp}>
-                    <FormattedMessage {...messages.signUpLinkText} />
-                  </button>
-                ),
-                signInLink: (
-                  <button onClick={this.signIn}>
-                    <FormattedMessage {...messages.signInLinkText} />
-                  </button>
-                ),
-                verifyIdentityLink: (
-                  <button onClick={this.onVerify}>
-                    <FormattedMessage {...messages.verifyIdentityLinkText} />
-                  </button>
-                ),
-                projectName: projectTitle && <T value={projectTitle} />,
-              }}
-            />
-          </Warning>
-        </Container>
-      );
-    }
+  const projectTitle = project?.data.attributes.title_multiloc;
 
-    return null;
-  }
-}
+  if (!messageDescriptor) return null;
 
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  project: ({ projectId, render }) => (
-    <GetProject projectId={projectId}>{render}</GetProject>
-  ),
-});
+  return (
+    <Box mt="15px" mb="30px" className="e2e-commenting-disabled">
+      <Warning>
+        <FormattedMessage
+          {...messageDescriptor}
+          values={{
+            signUpLink: (
+              <button onClick={signUp}>
+                <FormattedMessage {...messages.signUpLinkText} />
+              </button>
+            ),
+            signInLink: (
+              <button onClick={signIn}>
+                <FormattedMessage {...messages.signInLinkText} />
+              </button>
+            ),
+            completeRegistrationLink: (
+              <button
+                onClick={() => {
+                  triggerAuthenticationFlow();
+                }}
+              >
+                <FormattedMessage {...messages.completeProfileLinkText} />
+              </button>
+            ),
+            verifyIdentityLink: (
+              <button onClick={signUp}>
+                <FormattedMessage {...messages.verifyIdentityLinkText} />
+              </button>
+            ),
+            projectName: projectTitle && <T value={projectTitle} />,
+          }}
+        />
+      </Warning>
+    </Box>
+  );
+};
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <CommentingDisabled {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default CommentingDisabled;

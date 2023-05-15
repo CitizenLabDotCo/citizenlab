@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import {
@@ -18,11 +17,9 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 
-// services
-import { updateProject } from 'services/projects';
-
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
+import useUpdateProject from 'api/projects/useUpdateProject';
 
 const ViewingRightsSection = styled(Section)`
   margin-bottom: 30px;
@@ -57,22 +54,22 @@ const ProjectVisibility = ({
   projectId,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const project = useProject({ projectId });
-
+  const { data: project } = useProjectById(projectId);
+  const { mutate: updateProject } = useUpdateProject();
   const [projectVisibility, setProjectVisibility] = useState<
     'public' | 'admins' | 'groups'
-  >(!isNilOrError(project) ? project.attributes.visible_to : 'public');
+  >(project ? project.data.attributes.visible_to : 'public');
 
   useEffect(() => {
-    if (!isNilOrError(project)) {
-      setProjectVisibility(project.attributes.visible_to);
+    if (project) {
+      setProjectVisibility(project.data.attributes.visible_to);
     }
   }, [project]);
 
   const handlePermissionTypeChange = (
     projectVisibility: 'public' | 'groups' | 'admins'
   ) => {
-    updateProject(projectId, { visible_to: projectVisibility });
+    updateProject({ projectId, visible_to: projectVisibility });
   };
 
   const noOp = () => {

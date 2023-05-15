@@ -37,5 +37,14 @@ module EmailCampaigns
       ics.start_time = ics.start_time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone'))
       self.ic_schedule = ics
     end
+
+    def schedule_multiloc_value
+      # We currently only support weekly schedules here.
+      weekly_day_key = "email_campaigns.schedules.weekly.#{schedule['rrules'][0]['validations']['day'][0].to_i % 7}"
+      hour = schedule['rrules'][0]['validations']['hour_of_day'][0].to_i
+      time_obj = Time.new(-2000, 1, 1, hour, 0, 0)
+
+      I18n.t(weekly_day_key, hourOfDay: (LocalizationService.new.hour_of_day time_obj))
+    end
   end
 end

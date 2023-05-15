@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'hooks/usePhases';
 import { useSearchParams } from 'react-router-dom';
 
@@ -26,7 +26,7 @@ interface Props {
 }
 
 const SuccessModal = ({ projectId }: Props) => {
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const phases = usePhases(projectId);
 
   const [queryParams] = useSearchParams();
@@ -36,7 +36,7 @@ const SuccessModal = ({ projectId }: Props) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [phaseIdUrl, setPhaseIdUrl] = useState<string | null>(null);
 
-  const ready = isReady(project, phases);
+  const ready = isReady(project?.data, phases);
 
   useEffect(() => {
     if (!ready) return;
@@ -64,7 +64,7 @@ const SuccessModal = ({ projectId }: Props) => {
 
     // Clear URL parameters for continuous projects
     // (handled elsewhere for timeline projects)
-    if (project.attributes.process_type === 'continuous') {
+    if (project?.data.attributes.process_type === 'continuous') {
       window.history.replaceState(null, '', window.location.pathname);
     }
   }, [ready, project, phaseIdParam]);
@@ -85,7 +85,7 @@ const SuccessModal = ({ projectId }: Props) => {
 
   const participationMethod =
     phaseParticipationMethod ??
-    (project.attributes.participation_method as
+    (project?.data.attributes.participation_method as
       | ParticipationMethod
       | undefined);
   if (!participationMethod) return null;

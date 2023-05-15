@@ -2,9 +2,13 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { Multiloc } from 'typings';
 
-export interface IPollOption {
+export interface IPollOptions {
+  data: IPollOptionData[];
+}
+
+export interface IPollOptionData {
   id: string;
-  type: string;
+  type: 'option';
   attributes: {
     title_multiloc: Multiloc;
     ordering: number;
@@ -12,24 +16,18 @@ export interface IPollOption {
 }
 
 export function pollOptionsStream(questionId: string) {
-  return streams.get<{ data: IPollOption[] }>({
+  return streams.get<IPollOptions>({
     apiEndpoint: `${API_PATH}/poll_questions/${questionId}/poll_options`,
   });
 }
 
 export function addPollOption(questionId: string, titleMultiloc: Multiloc) {
-  return streams.add<{ data: IPollOption }>(
+  return streams.add<IPollOptions>(
     `${API_PATH}/poll_questions/${questionId}/poll_options`,
     {
       title_multiloc: titleMultiloc,
     }
   );
-}
-
-export function pollOptionStream(optionId: string) {
-  return streams.get<{ data: IPollOption }>({
-    apiEndpoint: `${API_PATH}/poll_options/${optionId}`,
-  });
 }
 
 export function deletePollOption(optionId: string) {
