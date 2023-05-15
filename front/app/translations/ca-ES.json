@@ -1378,6 +1378,7 @@
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Confirmeu la vostra contrasenya actual i canvieu-la a una nova.",
   "app.containers.UsersEditPage.privacyReasons": "Si us preocupa la vostra privadesa, podeu llegir {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "S'està enviant...",
+  "app.containers.UsersEditPage.provideFirstNameIfLastName": "El nom és obligatori quan s'indica el cognom",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "Abans que marxeu...",
   "app.containers.UsersEditPage.submit": "Guardar canvis",
   "app.containers.UsersEditPage.tooManyEmails": "Rebreu massa correus electrònics? Podeu gestionar les vostres preferències de correu electrònic a la configuració del vostre perfil.",

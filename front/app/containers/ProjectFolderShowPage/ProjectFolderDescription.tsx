@@ -217,13 +217,11 @@ const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
                 </CollapseButtonWrapper>
               )}
           </Description>
-          {projectFolderFiles &&
-            projectFolderFiles.data &&
-            projectFolderFiles.data.length > 0 && (
-              <Box mb="25px">
-                <FileAttachments files={projectFolderFiles.data} />
-              </Box>
-            )}
+          {projectFolderFiles && projectFolderFiles.data.length > 0 && (
+            <Box mb="25px">
+              <FileAttachments files={projectFolderFiles.data} />
+            </Box>
+          )}
         </Container>
       );
     }

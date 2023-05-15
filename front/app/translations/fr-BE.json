@@ -1378,6 +1378,7 @@
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Confirmez votre mot de passe actuel et changez de mot de passe.",
   "app.containers.UsersEditPage.privacyReasons": "Si vous vous inquiétez pour votre vie privée, vous pouvez lire {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Envoi...",
+  "app.containers.UsersEditPage.provideFirstNameIfLastName": "Le prénom est obligatoire lorsque le nom de famille est fourni",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "Avant de partir...",
   "app.containers.UsersEditPage.submit": "Enregistrer les modifications",
   "app.containers.UsersEditPage.tooManyEmails": "Vous recevez trop d'emails? Vous pouvez changer votre préférences dans les paramètres de votre profil.",
