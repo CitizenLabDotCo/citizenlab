@@ -408,7 +408,12 @@ FactoryBot.define do
       survey_embed_url { 'https://citizenlabco.typeform.com/to/HKGaPV?source=xxxxx' }
     end
 
-    # ?
+    factory :document_annotation_project do
+      process_type { 'continuous' }
+      participation_method { 'document_annotation' }
+      # survey_service { 'konveio' } # Not sure if we need this, or maybe we change this to use a new field: document_annotation_service ?
+      document_annotation_embed_url { 'https://citizenlab.konveio.com/document-title' } # value?
+    end
 
     factory :continuous_google_survey_project do
       process_type { 'continuous' }
