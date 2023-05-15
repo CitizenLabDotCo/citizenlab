@@ -4,7 +4,7 @@ import { filter } from 'rxjs/operators';
 import { isEqual } from 'lodash-es';
 
 // components
-import { ParticipationMethodPicker } from './components/ParticipationMethodPicker';
+import ParticipationMethodPicker from './components/ParticipationMethodPicker';
 import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInputs';
 import PollInputs from './components/PollInputs';
 import SurveyInputs from './components/SurveyInputs';

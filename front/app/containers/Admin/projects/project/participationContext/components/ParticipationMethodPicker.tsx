@@ -1,6 +1,4 @@
 import React from 'react';
-
-// components
 import {
   IconTooltip,
   Radio,
@@ -13,11 +11,7 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import { LabelHeaderDescription } from './labels';
 import { ParticipationMethodRadio } from './styling';
-
-// i18n
 import messages from '../../messages';
-
-// typings
 import { ParticipationMethod } from 'services/participationContexts';
 import { ApiErrors } from '..';
 import { getMethodConfig } from 'utils/participationMethodUtils';
@@ -25,6 +19,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IPhase } from 'services/phases';
 import { IProjectData } from 'api/projects/types';
 import Warning from 'components/UI/Warning';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 interface Props {
   participation_method: ParticipationMethod;
@@ -37,7 +32,7 @@ interface Props {
   ) => void;
 }
 
-export const ParticipationMethodPicker = ({
+const ParticipationMethodPicker = ({
   participation_method,
   showSurveys,
   apiErrors,
@@ -45,6 +40,10 @@ export const ParticipationMethodPicker = ({
   project,
   handleParticipationMethodOnChange,
 }: Props) => {
+  const documentAnnotationEnabled = useFeatureFlag({
+    name: 'document_annotation',
+  });
+
   const chooseParticipationMethod = () => {
     if (!isNilOrError(phase) && phase.data) {
       return phase.data.attributes.participation_method;
@@ -182,26 +181,27 @@ export const ParticipationMethodPicker = ({
               }
             />
           )}
-          {/* Add feature flag? */}
-          <ParticipationMethodRadio
-            onChange={handleParticipationMethodOnChange}
-            currentValue={participation_method}
-            value="document_annotation"
-            name="participationmethod"
-            id={'participationmethod-document_annotation'}
-            label={
-              <LabelHeaderDescription
-                header={
-                  <FormattedMessage {...messages.documentAnnotationMethod} />
-                }
-                description={
-                  <FormattedMessage
-                    {...messages.documentAnnotationMethodDescription}
-                  />
-                }
-              />
-            }
-          />
+          {documentAnnotationEnabled && (
+            <ParticipationMethodRadio
+              onChange={handleParticipationMethodOnChange}
+              currentValue={participation_method}
+              value="document_annotation"
+              name="participationmethod"
+              id={'participationmethod-document_annotation'}
+              label={
+                <LabelHeaderDescription
+                  header={
+                    <FormattedMessage {...messages.documentAnnotationMethod} />
+                  }
+                  description={
+                    <FormattedMessage
+                      {...messages.documentAnnotationMethodDescription}
+                    />
+                  }
+                />
+              }
+            />
+          )}
           <FeatureFlag name="volunteering">
             <ParticipationMethodRadio
               onChange={handleParticipationMethodOnChange}
@@ -246,3 +246,5 @@ export const ParticipationMethodPicker = ({
     </SectionField>
   );
 };
+
+export default ParticipationMethodPicker;
