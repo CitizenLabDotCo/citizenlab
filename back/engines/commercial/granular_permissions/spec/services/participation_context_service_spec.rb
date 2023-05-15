@@ -29,7 +29,7 @@ describe ParticipationContextService do
 
     it 'returns `not_permitted` when posting is not permitted' do
       permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
-      expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
+      expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'not_in_group'
     end
 
     it 'returns nil when everyone can post and the user is not signed in' do
@@ -58,10 +58,10 @@ describe ParticipationContextService do
 
       it 'returns `not_permitted` commenting is not permitted for the user' do
         permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
-        expect(service.commenting_idea_disabled_reason_for_project(project, user)).to eq 'not_permitted'
+        expect(service.commenting_idea_disabled_reason_for_project(project, user)).to eq 'not_in_group'
 
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'not_permitted'
+        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'not_in_group'
       end
     end
 
@@ -73,9 +73,9 @@ describe ParticipationContextService do
           permitted_by: 'groups',
           group_ids: create_list(:group, 2).map(&:id)
         )
-        expect(service.commenting_idea_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
+        expect(service.commenting_idea_disabled_reason_for_project(project, create(:user))).to eq 'not_in_group'
         idea = create(:idea, project: project)
-        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'not_permitted'
+        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'not_in_group'
       end
     end
   end
@@ -102,10 +102,10 @@ describe ParticipationContextService do
 
       it "returns 'not_permitted' if it's in the current phase and voting is not permitted" do
         permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_permitted'
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_permitted'
-        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_permitted'
-        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_permitted'
+        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_in_group'
+        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_in_group'
+        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_in_group'
+        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_in_group'
       end
     end
 
@@ -121,10 +121,10 @@ describe ParticipationContextService do
             permitted_by: 'groups',
             group_ids: create_list(:group, 2).map(&:id)
           )
-          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_permitted'
-          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_permitted'
-          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_permitted'
-          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_permitted'
+          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_in_group'
+          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_in_group'
+          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_in_group'
+          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_in_group'
         end
       end
 
@@ -178,7 +178,7 @@ describe ParticipationContextService do
           permitted_by: 'groups',
           group_ids: create_list(:group, 2).map(&:id)
         )
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq 'not_permitted'
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq 'not_in_group'
       end
     end
   end
@@ -210,7 +210,7 @@ describe ParticipationContextService do
         permitted_by: 'groups',
         group_ids: create_list(:group, 2).map(&:id)
       )
-      expect(service.taking_survey_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
+      expect(service.taking_survey_disabled_reason_for_project(project, create(:user))).to eq 'not_in_group'
     end
   end
 
@@ -265,7 +265,7 @@ describe ParticipationContextService do
           permitted_by: 'groups',
           group_ids: create_list(:group, 2).map(&:id)
         )
-        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_permitted'
+        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_in_group'
       end
 
       it "returns 'project_inactive' when the timeline is over" do
@@ -284,7 +284,7 @@ describe ParticipationContextService do
           group_ids: create_list(:group, 2).map(&:id)
         )
         idea = create(:idea, project: project)
-        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_permitted'
+        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_in_group'
       end
 
       it "returns 'project_inactive' when the project is archived" do
