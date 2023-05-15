@@ -12,6 +12,8 @@ import {
 } from './participationContexts';
 import { isNilOrError } from 'utils/helperUtils';
 import { first, last, sortBy } from 'lodash-es';
+import projectsKeys from 'api/projects/keys';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 const apiEndpoint = `${API_PATH}/phases`;
 
@@ -122,10 +124,14 @@ export async function updatePhase(
     phaseId,
     { phase: object }
   );
+
   const projectId = response.data.relationships.project.data.id;
+  queryClient.invalidateQueries({
+    queryKey: projectsKeys.item({ id: projectId }),
+  });
 
   streams.fetchAllWith({
-    dataId: [phaseId, projectId],
+    dataId: [phaseId],
     partialApiEndpoint: [`${API_PATH}/baskets`],
   });
 
@@ -140,14 +146,20 @@ export async function addPhase(
     `${API_PATH}/projects/${projectId}/phases`,
     { phase: object }
   );
+  queryClient.invalidateQueries({
+    queryKey: projectsKeys.item({ id: projectId }),
+  });
+
   const phaseId = response.data.id;
-  streams.fetchAllWith({ dataId: [phaseId, projectId] });
+  streams.fetchAllWith({ dataId: [phaseId] });
   return response;
 }
 
 export async function deletePhase(projectId: string, phaseId: string) {
   const response = await streams.delete(`${apiEndpoint}/${phaseId}`, phaseId);
-  streams.fetchAllWith({ dataId: [projectId] });
+  queryClient.invalidateQueries({
+    queryKey: projectsKeys.item({ id: projectId }),
+  });
   return response;
 }
 

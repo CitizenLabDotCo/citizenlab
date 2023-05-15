@@ -15,7 +15,7 @@ class IdeaCommentPolicy < ApplicationPolicy
   end
 
   def index_xlsx?
-    user&.admin?
+    user&.admin? || user&.project_moderator?
   end
 
   def create?

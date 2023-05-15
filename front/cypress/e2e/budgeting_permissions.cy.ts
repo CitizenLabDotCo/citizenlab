@@ -1,6 +1,41 @@
 import { randomString, randomEmail } from '../support/commands';
 
-describe('Idea budgeting permissions test 1', () => {
+describe('Idea budgeting permissions test with non active users', () => {
+  const firstName = randomString();
+  const lastName = randomString();
+  const email = randomEmail();
+  const password = randomString();
+  const randomFieldName = randomString();
+  let userId: string;
+  let customFieldId: string;
+
+  before(() => {
+    cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
+      customFieldId = response.body.data.id;
+      cy.apiSignup(firstName, lastName, email, password).then((response) => {
+        userId = response.body.data.id;
+      });
+      cy.setLoginCookie(email, password);
+    });
+  });
+
+  it('sends non-active users to the registration flow', () => {
+    cy.visit('projects/verified-participatory-budgeting');
+    cy.get('#e2e-ideas-container');
+    cy.acceptCookies();
+    cy.wait(1000);
+    cy.get('.e2e-idea-card').first().as('ideaCard');
+    cy.get('@ideaCard').find('.e2e-assign-budget-button').click();
+    cy.get('#e2e-authentication-modal').should('exist');
+  });
+
+  after(() => {
+    cy.apiRemoveUser(userId);
+    cy.apiRemoveCustomField(customFieldId);
+  });
+});
+
+describe('Idea budgeting permissions test with non verified users', () => {
   const unverifiedFirstName = randomString();
   const unverifiedLastName = randomString();
   const unverifiedEmail = randomEmail();
@@ -36,7 +71,7 @@ describe('Idea budgeting permissions test 1', () => {
   });
 });
 
-describe('Idea budgeting permissions test 2', () => {
+describe('Idea budgeting permissions test with verified users', () => {
   const verifiedFirstName = randomString();
   const verifiedLastName = randomString();
   const verifiedEmail = randomEmail();

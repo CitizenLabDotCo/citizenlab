@@ -7,6 +7,7 @@ const HomePage = lazy(() => import('containers/HomePage'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
 const PasswordChange = lazy(() => import('containers/PasswordChange'));
+const EmailChange = lazy(() => import('containers/EmailChange'));
 const UsersShowPage = lazy(() => import('containers/UsersShowPage'));
 const IdeasEditPage = lazy(() => import('containers/IdeasEditPage'));
 const IdeasIndexPage = lazy(() => import('containers/IdeasIndexPage'));
@@ -107,6 +108,14 @@ export default function createRoutes() {
           element: (
             <PageLoading>
               <PasswordChange />
+            </PageLoading>
+          ),
+        },
+        {
+          path: 'profile/change-email',
+          element: (
+            <PageLoading>
+              <EmailChange />
             </PageLoading>
           ),
         },

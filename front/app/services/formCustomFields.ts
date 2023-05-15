@@ -4,7 +4,7 @@ import { IRelationship, Multiloc } from 'typings';
 import { saveAs } from 'file-saver';
 import moment from 'moment';
 import { requestBlob } from 'utils/request';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 import { isNilOrError } from 'utils/helperUtils';
 import { TPhase } from 'hooks/usePhase';
 import { snakeCase } from 'lodash-es';

@@ -22,7 +22,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // types
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 
 const Buttons = styled.div`
   display: flex;

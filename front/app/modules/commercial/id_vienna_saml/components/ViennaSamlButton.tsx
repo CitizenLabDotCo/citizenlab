@@ -1,4 +1,3 @@
-import { AUTH_PATH } from 'containers/App/constants';
 import React from 'react';
 
 // i18n
@@ -6,12 +5,12 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import { TOnContinueFunction } from 'components/AuthProviders/AuthProviderButton';
-import { StyledAuthProviderButton } from 'components/AuthProviders';
+import { TOnContinueFunction } from 'containers/Authentication/steps/AuthProviders/AuthProviderButton';
+import { StyledAuthProviderButton } from 'containers/Authentication/steps/AuthProviders';
 import ViennaIcon from './ViennaIcon';
 
 // typings
-import { TSignUpInFlow } from 'events/openSignUpInModal';
+import { SignUpInFlow } from 'containers/Authentication/typings';
 
 // styling
 import styled from 'styled-components';
@@ -34,20 +33,17 @@ const SignUpSubHeader = styled(Text)`
 `;
 
 interface Props {
-  flow: TSignUpInFlow;
+  flow: SignUpInFlow;
   onContinue: TOnContinueFunction;
 }
 
 const ViennaSamlButton = ({ onContinue, flow }: Props) => {
-  const setHref = () => {
-    window.location.href = `${AUTH_PATH}/vienna_citizen`;
-  };
   const handleOnContinue = () => {
     if (flow === 'signup') {
       window.location.href =
         'https://mein.wien.gv.at/Registrieren?branding=citizenlab';
     } else {
-      onContinue('id_vienna_saml', setHref);
+      onContinue('id_vienna_saml');
     }
   };
   return (

@@ -9,8 +9,7 @@ resource 'Verifications' do
 
   before do
     @user = create(:user)
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    header_token_for @user
     header 'Content-Type', 'application/json'
 
     @custom_field = create(:custom_field_select)

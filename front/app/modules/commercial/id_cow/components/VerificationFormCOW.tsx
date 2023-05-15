@@ -11,7 +11,6 @@ import Error from 'components/UI/Error';
 import Collapse from 'components/UI/Collapse';
 import {
   FormContainer,
-  Title,
   Form,
   FormField,
   StyledLabel,
@@ -20,7 +19,7 @@ import {
   SubmitButton,
   CancelButton,
   HelpImage,
-} from 'components/AuthProviders/styles';
+} from 'containers/Authentication/steps/AuthProviders/styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -39,13 +38,11 @@ import helpImage from './COWHelpImage.png';
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
-  showHeader?: boolean;
-  inModal: boolean;
   className?: string;
 }
 
 const VerificationFormCOW = memo<Props & WrappedComponentProps>(
-  ({ onCancel, onVerified, showHeader, inModal, className, intl }) => {
+  ({ onCancel, onVerified, className, intl }) => {
     const authUser = useAuthUser();
 
     const [run, setRun] = useState('');
@@ -91,25 +88,15 @@ const VerificationFormCOW = memo<Props & WrappedComponentProps>(
         if (!hasEmptyFields && !processing) {
           try {
             setProcessing(true);
-
             await verifyCOW(run, idSerial);
 
-            const endpointsToRefetch = [
-              `${API_PATH}/users/me`,
-              `${API_PATH}/projects`,
-            ];
-            const partialEndpointsToRefetch = [
-              `${API_PATH}/projects/`,
-              `${API_PATH}/ideas/`,
-            ];
-
+            const endpointsToRefetch = [`${API_PATH}/users/me`];
             if (!isNilOrError(authUser)) {
               endpointsToRefetch.push(`${API_PATH}/users/${authUser.id}`);
             }
 
             await streams.fetchAllWith({
               apiEndpoint: endpointsToRefetch,
-              partialApiEndpoint: partialEndpointsToRefetch,
             });
 
             setProcessing(false);
@@ -152,16 +139,8 @@ const VerificationFormCOW = memo<Props & WrappedComponentProps>(
     }, []);
 
     return (
-      <FormContainer className={className} inModal={inModal}>
-        {showHeader && (
-          <Title>
-            <strong>
-              <FormattedMessage {...messages.verifyYourIdentity} />
-            </strong>
-          </Title>
-        )}
-
-        <Form inModal={inModal}>
+      <FormContainer className={className} inModal={true}>
+        <Form inModal={true}>
           <FormField>
             <StyledLabel htmlFor="run">
               <LabelTextContainer>

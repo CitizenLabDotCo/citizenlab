@@ -13,12 +13,8 @@ resource 'GroupsProjects' do
     @groups_projects = @groups.map { |g| create(:groups_project, project: @project, group: g) }
   end
 
-  context 'when authenticated' do
-    before do
-      @admin = create(:admin)
-      token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+  context 'when admin' do
+    before { admin_header_token }
 
     get 'web_api/v1/projects/:project_id/groups_projects' do
       with_options scope: :page do

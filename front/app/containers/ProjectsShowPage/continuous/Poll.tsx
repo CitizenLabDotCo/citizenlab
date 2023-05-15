@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -12,7 +11,7 @@ import {
 import SectionContainer from 'components/SectionContainer';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -36,12 +35,12 @@ interface Props {
 
 const PollContainer = memo<Props & WrappedComponentProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
-    const project = useProject({ projectId });
+    const { data: project } = useProjectById(projectId);
 
     if (
-      !isNilOrError(project) &&
-      project.attributes.process_type === 'continuous' &&
-      project.attributes.participation_method === 'poll'
+      project &&
+      project.data.attributes.process_type === 'continuous' &&
+      project.data.attributes.participation_method === 'poll'
     ) {
       return (
         <Container
@@ -55,7 +54,7 @@ const PollContainer = memo<Props & WrappedComponentProps>(
               <ScreenReaderOnly>
                 <h2>{formatMessage(messages.invisibleTitlePoll)}</h2>
               </ScreenReaderOnly>
-              <Poll type="project" projectId={project.id} phaseId={null} />
+              <Poll type="project" projectId={project.data.id} phaseId={null} />
             </SectionContainer>
           </StyledContentContainer>
         </Container>

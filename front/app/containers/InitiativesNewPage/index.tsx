@@ -63,7 +63,7 @@ export class InitiativesNewPage extends React.PureComponent<
       decoder: (str, _defaultEncoder, _charset, type) => {
         return type === 'value' ? parseFloat(str) : str;
       },
-    }) as { [key: string]: string | number };
+    });
 
     this.redirectIfNotPermittedOnPage();
 
@@ -91,31 +91,14 @@ export class InitiativesNewPage extends React.PureComponent<
     if (prevProps.authUser !== this.props.authUser) {
       this.redirectIfNotPermittedOnPage();
     }
-
-    if (
-      prevProps.postingPermission !== this.props.postingPermission &&
-      !isNilOrError(this.props.postingPermission)
-    ) {
-      this.redirectIfPostingNotEnabled();
-    }
   }
 
   redirectIfNotPermittedOnPage = () => {
     const { authUser } = this.props;
-
     if (authUser === null) {
-      clHistory.replace('/sign-up');
+      clHistory.replace('/');
     }
   };
-
-  redirectIfPostingNotEnabled() {
-    if (
-      this.props.postingPermission?.enabled !== true &&
-      !isNilOrError(this.props.authUser)
-    ) {
-      clHistory.replace('/initiatives');
-    }
-  }
 
   render() {
     const { authUser, locale, topics } = this.props;

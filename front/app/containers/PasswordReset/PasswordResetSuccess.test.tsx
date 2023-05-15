@@ -21,6 +21,6 @@ describe('PasswordResetSuccess', () => {
     const loginButton = screen.getByRole('button');
     await user.click(loginButton);
 
-    expect(clHistory.push).toHaveBeenCalledWith(`/sign-in`);
+    expect(clHistory.push).toHaveBeenCalledWith('/');
   });
 });

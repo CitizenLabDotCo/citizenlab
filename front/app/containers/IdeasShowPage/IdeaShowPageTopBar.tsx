@@ -2,15 +2,15 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useAuthUser from 'hooks/useAuthUser';
 
 // components
 import VoteControl from 'components/VoteControl';
 import GoBackButton from 'containers/IdeasShow/GoBackButton';
 
-// utils
-import { openVerificationModal } from 'events/verificationModal';
+// events
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // styling
 import styled from 'styled-components';
@@ -66,20 +66,23 @@ const IdeaShowPageTopBar = ({
   deselectIdeaOnMap,
 }: Props) => {
   const authUser = useAuthUser();
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
 
   const onDisabledVoteClick = (disabled_reason: IdeaVotingDisabledReason) => {
     if (
       !isNilOrError(authUser) &&
-      !isNilOrError(project) &&
+      project &&
       disabled_reason === 'not_verified'
     ) {
       const pcType =
-        project.attributes.process_type === 'continuous' ? 'project' : 'phase';
-      const pcId = project.relationships?.current_phase?.data?.id || project.id;
+        project.data.attributes.process_type === 'continuous'
+          ? 'project'
+          : 'phase';
+      const pcId =
+        project.data.relationships?.current_phase?.data?.id || project.data.id;
 
       if (pcId && pcType) {
-        openVerificationModal({
+        triggerAuthenticationFlow({
           context: {
             action: 'voting_idea',
             id: pcId,

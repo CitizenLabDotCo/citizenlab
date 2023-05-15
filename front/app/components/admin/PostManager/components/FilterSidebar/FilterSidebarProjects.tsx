@@ -1,5 +1,5 @@
 import React from 'react';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarProjectsItem from './FilterSidebarProjectsItem';
 import { FormattedMessage } from 'utils/cl-intl';

@@ -2,7 +2,7 @@
 
 class WebApi::V1::UsersController < ApplicationController
   before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count block unblock]
-  skip_before_action :authenticate_user, only: %i[create show by_slug by_invite ideas_count initiatives_count comments_count]
+  skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count initiatives_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -108,6 +108,25 @@ class WebApi::V1::UsersController < ApplicationController
     show
   end
 
+  # To validate an email without creating a user and return which action to go to next
+  def check
+    skip_authorization
+    if User::EMAIL_REGEX.match?(params[:email])
+      @user = User.find_by email: params[:email]
+      if @user&.invite_pending?
+        render json: { errors: { email: [{ error: 'taken_by_invite', value: params[:email], inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
+      elsif @user && !@user&.no_password?
+        render json: raw_json({ action: 'password' })
+      elsif @user&.registration_completed_at.present?
+        render json: raw_json({ action: 'confirm' })
+      else
+        render json: raw_json({ action: 'terms' })
+      end
+    else
+      render json: { errors: { email: [{ error: 'invalid', value: params[:email] }] } }, status: :unprocessable_entity
+    end
+  end
+
   def create
     @user = User.new
     @user.assign_attributes(permitted_attributes(@user))
@@ -115,19 +134,17 @@ class WebApi::V1::UsersController < ApplicationController
 
     SideFxUserService.new.before_create(@user, current_user)
 
-    if @user.save
+    if @user.save(context: :form_submission)
       SideFxUserService.new.after_create(@user, current_user)
-      permissions = Permission.for_user(@user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
-        params: fastjson_params(granted_permissions: permissions)
+        params: fastjson_params
       ).serialized_json, status: :created
     elsif reset_confirm_on_existing_no_password_user?
       SideFxUserService.new.after_update(@user, current_user)
-      permissions = Permission.for_user(@user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
-        params: fastjson_params(granted_permissions: permissions)
+        params: fastjson_params
       ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
@@ -135,7 +152,6 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def update
-    permissions_before = Permission.for_user(@user).load
     mark_custom_field_values_to_clear!
     user_params = permitted_attributes @user
     user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
@@ -146,31 +162,8 @@ class WebApi::V1::UsersController < ApplicationController
     remove_image_if_requested!(@user, user_params, :avatar)
 
     authorize @user
-    if @user.save
-      SideFxUserService.new.after_update(@user, current_user)
-      permissions = Permission.for_user(@user).where.not(id: permissions_before.ids)
-      render json: WebApi::V1::UserSerializer.new(
-        @user,
-        params: fastjson_params(granted_permissions: permissions),
-        include: %i[granted_permissions granted_permissions.permission_scope]
-      ).serialized_json, status: :ok
-    else
-      render json: { errors: @user.errors.details }, status: :unprocessable_entity
-    end
-  end
-
-  def complete_registration
-    # NOTE: Authorize fails if registration is already flagged as complete
-    @user = current_user
-    authorize @user
-
-    user_params = permitted_attributes @user
-    user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
-
-    @user.assign_attributes(user_params)
-    @user.complete_registration
-
-    if @user.save
+    save_params = user_params.key?(:custom_field_values) ? { context: :form_submission } : {}
+    if @user.save save_params
       SideFxUserService.new.after_update(@user, current_user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
@@ -249,7 +242,7 @@ class WebApi::V1::UsersController < ApplicationController
   def update_password
     @user = current_user
     authorize @user
-    if @user.authenticate(params[:user][:current_password])
+    if @user.no_password? || @user.authenticate(params[:user][:current_password])
       if @user.update(password: params[:user][:new_password])
         render json: WebApi::V1::UserSerializer.new(
           @user,
@@ -287,10 +280,9 @@ class WebApi::V1::UsersController < ApplicationController
     return false if existing_user.changed?
 
     @user = existing_user
-    @user.reset_confirmation_with_no_password
+    @user.reset_confirmation_and_counts
     return false unless @user.save
 
-    SendConfirmationCode.call(user: @user)
     true
   end
 

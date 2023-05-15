@@ -49,7 +49,7 @@ const RegistrationCustomFieldOptions = memo(
     const handleDeleteClick =
       (userCustomFieldOptionId: string) => (event: React.FormEvent<any>) => {
         const deleteMessage = formatMessage(
-          messages.customFieldOptionDeletionConfirmation
+          messages.registrationQuestionAnswerOptionDeletionConfirmation
         );
         event.preventDefault();
 

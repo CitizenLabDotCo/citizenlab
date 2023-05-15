@@ -59,10 +59,6 @@ class UserPolicy < ApplicationPolicy
     user&.active? && (record.id == user.id || user&.admin?)
   end
 
-  def complete_registration?
-    user && !user.active? && (record.id == user.id)
-  end
-
   def destroy?
     record.id == user&.id || (user&.active? && user&.admin?)
   end
@@ -116,24 +112,17 @@ class UserPolicy < ApplicationPolicy
     [roles: %i[type project_id project_folder_id]]
   end
 
-  def permitted_attributes_for_complete_registration
-    [custom_field_values: allowed_custom_field_keys]
-  end
-
   private
 
   def allowed_custom_field_keys
-    enabled_fields = enabled_custom_fields
-    simple_keys = enabled_fields.support_single_value.pluck(:key).map(&:to_sym)
-    array_keys = enabled_fields.support_multiple_values.pluck(:key).map(&:to_sym)
+    allowed_fields = allowed_custom_fields
+    simple_keys = allowed_fields.support_single_value.pluck(:key).map(&:to_sym)
+    array_keys = allowed_fields.support_multiple_values.pluck(:key).map(&:to_sym)
     [*simple_keys, array_keys.index_with { |_k| [] }]
   end
 
-  def enabled_custom_fields
-    CustomField
-      .with_resource_type('User')
-      .enabled
-      .not_hidden
+  def allowed_custom_fields
+    CustomField.with_resource_type('User').not_hidden
   end
 end
 

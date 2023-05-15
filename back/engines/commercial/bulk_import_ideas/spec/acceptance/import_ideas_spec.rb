@@ -33,13 +33,8 @@ resource 'BulkImportIdeasImportIdeas' do
     end
   end
 
-  context 'when authorized' do
-    let(:user) { create(:admin) }
-
-    before do
-      token = Knock::AuthToken.new(payload: user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+  context 'when admin' do
+    before { admin_header_token }
 
     get 'web_api/v1/import_ideas/example_xlsx' do
       example_request 'Get the example xlsx' do

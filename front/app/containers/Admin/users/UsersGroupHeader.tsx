@@ -5,7 +5,7 @@ import { Multiloc } from 'typings';
 import Button from 'components/UI/Button';
 import T from 'components/T';
 import Outlet from 'components/Outlet';
-import { MembershipType } from 'services/groups';
+import { MembershipType } from 'api/groups/types';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import {

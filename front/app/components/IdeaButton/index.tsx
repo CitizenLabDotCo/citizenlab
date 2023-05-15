@@ -23,11 +23,8 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
-// utils
-import { openSignUpInModal } from 'events/openSignUpInModal';
-
 // events
-import { openVerificationModal } from 'events/verificationModal';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -43,8 +40,9 @@ import { LatLng } from 'leaflet';
 import { getButtonMessage } from './utils';
 import { IPhaseData } from 'services/phases';
 import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import useProjectById from 'api/projects/useProjectById';
 
 const Container = styled.div``;
 
@@ -119,7 +117,7 @@ const IdeaButton = memo<Props>(
   }) => {
     const { formatMessage } = useIntl();
     const authUser = useAuthUser();
-    const project = useProject({ projectId });
+    const project = useProjectById(projectId);
     const phases = usePhases(projectId);
     const disabledMessages: {
       [key in IIdeaPostingDisabledReason]: MessageDescriptor;
@@ -132,32 +130,23 @@ const IdeaButton = memo<Props>(
       notActivePhase: messages.postingInNonActivePhases,
       maybeNotPermitted: messages.postingMayNotBePermitted,
     };
-    const { enabled, show, disabledReason, action } = getIdeaPostingRules({
-      project,
-      phase,
-      authUser,
-    });
+    const { enabled, show, disabledReason, authenticationRequirements } =
+      getIdeaPostingRules({
+        project,
+        phase,
+        authUser,
+      });
 
-    const onClick = (event: React.MouseEvent) => {
-      event.preventDefault();
+    const pcType = participationContextType;
+    const pcId = pcType === 'phase' ? phase?.id : projectId;
 
-      trackEventByName(tracks.postYourIdeaButtonClicked);
-
-      // if not logged in
-      if (action === 'sign_in_up' || action === 'sign_in_up_and_verify') {
-        signUp();
-      }
-
-      // if logged in but not verified and verification required
-      if (action === 'verify') {
-        verify();
-      }
-
-      // if logged in and posting allowed
-      if (enabled === true) {
-        redirectToIdeaForm();
-      }
-    };
+    const context = pcId
+      ? ({
+          action: 'posting_idea',
+          id: pcId,
+          type: pcType,
+        } as const)
+      : null;
 
     const redirectToIdeaForm = () => {
       if (!isNilOrError(project)) {
@@ -180,21 +169,21 @@ const IdeaButton = memo<Props>(
       }
     };
 
-    const verify = (event?: React.MouseEvent) => {
-      event?.preventDefault();
+    if (isNilOrError(project)) return null;
 
-      const pcType = participationContextType;
-      const pcId = pcType === 'phase' ? phase?.id : projectId;
+    const onClick = (event: React.MouseEvent) => {
+      event.preventDefault();
 
-      if (pcId && pcType) {
-        trackEventByName(tracks.verificationModalOpened);
-        openVerificationModal({
-          context: {
-            action: 'posting_idea',
-            id: pcId,
-            type: pcType,
-          },
-        });
+      trackEventByName(tracks.postYourIdeaButtonClicked);
+
+      if (authenticationRequirements) {
+        signUp();
+        return;
+      }
+
+      // if logegd in and posting allowed
+      if (enabled === true) {
+        redirectToIdeaForm();
       }
     };
 
@@ -210,30 +199,26 @@ const IdeaButton = memo<Props>(
       (flow: 'signup' | 'signin') => (event?: React.MouseEvent) => {
         event?.preventDefault();
 
-        const pcType = participationContextType;
-        const pcId = pcType === 'phase' ? phase?.id : projectId;
-        const shouldVerify = action === 'sign_in_up_and_verify';
+        const successAction: SuccessAction = {
+          name: 'redirectToIdeaForm',
+          params: {
+            projectSlug: project.attributes.slug,
+          },
+        };
 
-        if (isNilOrError(authUser) && !isNilOrError(project)) {
+        if (context) {
           trackEventByName(tracks.signUpInModalOpened);
-          openSignUpInModal({
+
+          triggerAuthenticationFlow({
             flow,
-            verification: shouldVerify,
-            verificationContext:
-              shouldVerify && pcId && pcType
-                ? {
-                    action: 'posting_idea',
-                    id: pcId,
-                    type: pcType,
-                  }
-                : undefined,
-            action: () => redirectToIdeaForm(),
+            context,
+            successAction,
           });
         }
       };
 
     const verificationLink = (
-      <button onClick={verify}>
+      <button onClick={signUp}>
         {formatMessage(messages.verificationLinkText)}
       </button>
     );
@@ -282,50 +267,49 @@ const IdeaButton = memo<Props>(
         );
       }
 
-      if (!isNilOrError(project)) {
-        const inputTerm = getInputTerm(
-          project.attributes.process_type,
-          project,
-          phases
-        );
+      const inputTerm = getInputTerm(
+        project.attributes.process_type,
+        project,
+        phases
+      );
 
-        const buttonMessage = getButtonMessage(
-          phase?.attributes.participation_method ||
-            project.attributes.participation_method,
-          inputTerm
-        );
+      const buttonMessage = getButtonMessage(
+        phase?.attributes.participation_method ||
+          project.attributes.participation_method,
+        inputTerm
+      );
 
-        return (
-          <Container id={id} className={className || ''}>
-            <Tippy
-              disabled={!tippyContent}
-              interactive={true}
-              placement="bottom"
-              content={tippyContent || <></>}
-              theme="light"
-              hideOnClick={false}
+      return (
+        <Container id={id} className={className || ''}>
+          <Tippy
+            disabled={!tippyContent}
+            interactive={true}
+            placement="bottom"
+            content={tippyContent || <></>}
+            theme="light"
+            hideOnClick={false}
+          >
+            <ButtonWrapper
+              id="e2e-cta-button"
+              tabIndex={!enabled ? 0 : -1}
+              className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
+                disabledReason ? disabledReason : ''
+              }`}
             >
-              <ButtonWrapper
-                id="e2e-cta-button"
-                tabIndex={!enabled ? 0 : -1}
-                className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
-                  disabledReason ? disabledReason : ''
-                }`}
+              <Button
+                {...buttonContainerProps}
+                aria-describedby="tooltip-content"
+                onClick={onClick}
+                disabled={!enabled}
+                ariaDisabled={false}
+                id="e2e-idea-button"
               >
-                <Button
-                  {...buttonContainerProps}
-                  aria-describedby="tooltip-content"
-                  onClick={onClick}
-                  disabled={!enabled}
-                  ariaDisabled={false}
-                >
-                  <FormattedMessage {...buttonMessage} />
-                </Button>
-              </ButtonWrapper>
-            </Tippy>
-          </Container>
-        );
-      }
+                <FormattedMessage {...buttonMessage} />
+              </Button>
+            </ButtonWrapper>
+          </Tippy>
+        </Container>
+      );
     }
 
     return null;

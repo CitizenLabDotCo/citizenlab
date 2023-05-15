@@ -8,6 +8,7 @@ GOOGLE_SETUP_PROC = lambda do |env|
   OmniauthMethods::Google.new.omniauth_setup(AppConfiguration.instance, env)
 end
 
+OmniAuth.config.add_camelization 'azure_activedirectory', 'AzureActiveDirectory'
 AZURE_AD_SETUP_PROC = lambda do |env|
   OmniauthMethods::AzureActiveDirectory.new.omniauth_setup(AppConfiguration.instance, env)
 end

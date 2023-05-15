@@ -19,7 +19,7 @@ import { darken } from 'polished';
 import { Header, Title } from './styles';
 
 // typings
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 
 // intl
 import injectLocalize, { InjectedLocalized } from 'utils/localize';

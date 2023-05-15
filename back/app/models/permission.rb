@@ -11,6 +11,7 @@
 #  permission_scope_type :string
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  global_custom_fields  :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -20,9 +21,10 @@
 class Permission < ApplicationRecord
   PERMITTED_BIES = %w[everyone everyone_confirmed_email users groups admins_moderators].freeze
   ACTIONS = {
-    nil => %w[posting_initiative voting_initiative commenting_initiative],
+    # NOTE: Order of actions in each array is used when using :order_by_action
+    nil => %w[visiting posting_initiative commenting_initiative voting_initiative],
     'information' => [],
-    'ideation' => %w[posting_idea voting_idea commenting_idea],
+    'ideation' => %w[posting_idea commenting_idea voting_idea],
     'native_survey' => %w[posting_idea],
     'survey' => %w[taking_survey],
     'poll' => %w[taking_poll],
@@ -31,37 +33,47 @@ class Permission < ApplicationRecord
   }
   SCOPE_TYPES = [nil, 'Project', 'Phase'].freeze
 
+  scope :filter_enabled_actions, ->(permission_scope) { where(action: enabled_actions(permission_scope)) }
+  scope :order_by_action, lambda { |permission_scope|
+    order(Arel.sql(order_by_action_sql(permission_scope)))
+  }
+
   belongs_to :permission_scope, polymorphic: true, optional: true
   has_many :groups_permissions, dependent: :destroy
   has_many :groups, through: :groups_permissions
+  has_many :permissions_custom_fields, -> { includes(:custom_field).order('custom_fields.ordering') }, inverse_of: :permission, dependent: :destroy
+  has_many :custom_fields, -> { order(:ordering) }, through: :permissions_custom_fields
 
   validates :action, presence: true, inclusion: { in: ->(permission) { available_actions(permission.permission_scope) } }
   validates :permitted_by, presence: true, inclusion: { in: PERMITTED_BIES }
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
 
-  before_validation :set_permitted_by, on: :create
-
-  scope :for_user, lambda { |user| # TODO: take account with everyone_confirmed_email
-    next where(permitted_by: 'everyone') unless user
-    next all if user.admin?
-
-    permissions_for_everyone = where(permitted_by: %w[everyone users])
-
-    moderating_context_ids = ParticipationContextService.new.moderating_participation_context_ids(user)
-    moderating_permissions = where(permission_scope_id: moderating_context_ids)
-
-    # The way we are getting group permissions here is a bit convoluted in order
-    # to keep the relations structurally compatible for the final OR operation.
-    user_groups = Group.joins(:permissions).where(permissions: self).with_user(user)
-    group_permission_ids = GroupsPermission.where(permission: self).where(group: user_groups).select(:permission_id).distinct
-    group_permissions = where(id: group_permission_ids)
-
-    permissions_for_everyone.or(moderating_permissions).or(group_permissions)
-  }
+  before_validation :set_permitted_by_and_global_custom_fields, on: :create
+  before_validation :update_global_custom_fields, on: :update
 
   def self.available_actions(permission_scope)
     ACTIONS[permission_scope&.participation_method]
+  end
+
+  def self.enabled_actions(permission_scope)
+    # Remove any actions that are not enabled on the project
+    available_actions(permission_scope).filter_map do |action|
+      next if
+        (action == 'posting_idea' && !permission_scope&.posting_enabled?) ||
+        (action == 'voting_idea' && !permission_scope&.voting_enabled?) ||
+        (action == 'commenting_idea' && !permission_scope&.commenting_enabled?)
+
+      action
+    end
+  end
+
+  def self.order_by_action_sql(permission_scope)
+    sql = 'CASE action '
+    actions = enabled_actions(permission_scope)
+    actions.each_with_index { |action, order| sql += "WHEN '#{action}' THEN #{order} " }
+    sql += "ELSE #{actions.size} END"
+    sql
   end
 
   def participation_conditions
@@ -70,8 +82,13 @@ class Permission < ApplicationRecord
 
   private
 
-  def set_permitted_by
+  def set_permitted_by_and_global_custom_fields
     self.permitted_by ||= 'users'
+    self.global_custom_fields ||= (permitted_by == 'users')
+  end
+
+  def update_global_custom_fields
+    self.global_custom_fields = false if permitted_by == 'everyone_confirmed_email'
   end
 end
 

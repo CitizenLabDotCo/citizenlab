@@ -9,41 +9,50 @@ RSpec.describe Permission do
     end
   end
 
-  describe '#for_user' do
-    let!(:permissions) do
-      [
-        create(:global_permission, :by_everyone, action: 'posting_initiative'),
-        create(:global_permission, :by_users, action: 'voting_initiative'),
-        create(:global_permission, :by_admins_moderators, action: 'commenting_initiative'),
-        create(:permission, permitted_by: 'groups', groups: [manual_grp])
-      ]
-    end
-    let(:manual_grp) { create(:group) }
+  describe 'global_custom_fields' do
+    context 'everyone_confirmed_email' do
+      it 'is false when created' do
+        permission = create(:permission, :by_everyone_confirmed_email)
+        expect(permission.global_custom_fields).to be_falsey
+      end
 
-    context 'when user is admin' do
-      let(:admin) { build(:admin) }
+      it 'is false when updated to everyone_confirmed_email' do
+        permission = create(:permission, global_custom_fields: true)
+        permission.update!(permitted_by: 'everyone_confirmed_email')
+        expect(permission.global_custom_fields).to be_falsey
+      end
 
-      it { expect(described_class.for_user(admin)).to match_array permissions }
-    end
-
-    context 'when not logged in' do
-      it { expect(described_class.for_user(nil)).to match_array [permissions[0]] }
-    end
-
-    context 'when user is logged in' do
-      let(:user) { create(:user) }
-
-      it { expect(described_class.for_user(user)).to match_array permissions[0..1] }
+      it 'is false even when set to true' do
+        permission = create(:permission, :by_everyone_confirmed_email)
+        permission.update!(global_custom_fields: true)
+        expect(permission.global_custom_fields).to be_falsey
+      end
     end
 
-    context 'when user belongs to the authorized manual group' do
-      let(:user) { create(:user) }
+    context 'user' do
+      it 'is true when created' do
+        permission = create(:permission, :by_users, global_custom_fields: nil)
+        expect(permission.global_custom_fields).to be_truthy
+      end
+    end
+  end
 
-      before { manual_grp.add_member(user).save! }
+  describe 'scopes' do
+    let(:project) { create(:project) }
+    let!(:permission_commenting) { create(:permission, action: 'commenting_idea', permission_scope: project) }
+    let!(:permission_posting) { create(:permission, action: 'posting_idea', permission_scope: project) }
+    let!(:permission_voting) { create(:permission, action: 'voting_idea', permission_scope: project) }
 
-      it {
-        expect(described_class.for_user(user)).to match_array [permissions[0], permissions[1], permissions[3]]
-      }
+    it 'Returns permissions in the correct order' do
+      permissions = described_class.order_by_action(project)
+      expect(permissions).to eq([permission_posting, permission_commenting, permission_voting])
+    end
+
+    it 'Only returns permissions that are enabled in a project' do
+      project.update!(voting_enabled: false)
+      permissions = described_class.filter_enabled_actions(project)
+      expect(permissions.size).to eq(2)
+      expect(permissions).not_to include(permission_voting)
     end
   end
 end

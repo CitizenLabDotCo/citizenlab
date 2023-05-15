@@ -115,7 +115,11 @@ const DEFAULT_TOPIC_DATA = [
 
 let mockTopicData = DEFAULT_TOPIC_DATA;
 
-jest.mock('hooks/useTopics', () => jest.fn(() => mockTopicData));
+jest.mock('api/topics/useTopics', () =>
+  jest.fn(() => {
+    return { data: { data: mockTopicData } };
+  })
+);
 
 // Mock components
 jest.mock('components/ProjectCard', () => ({

@@ -67,6 +67,22 @@ module EmailCampaigns
       'admin'
     end
 
+    def self.recipient_role_multiloc_key
+      'email_campaigns.admin_labels.recipient_role.admins_and_moderators'
+    end
+
+    def self.recipient_segment_multiloc_key
+      'email_campaigns.admin_labels.recipient_segment.admins'
+    end
+
+    def self.content_type_multiloc_key
+      'email_campaigns.admin_labels.content_type.comments'
+    end
+
+    def self.trigger_multiloc_key
+      'email_campaigns.admin_labels.trigger.user_comments'
+    end
+
     def mailer_class
       NewCommentForAdminMailer
     end

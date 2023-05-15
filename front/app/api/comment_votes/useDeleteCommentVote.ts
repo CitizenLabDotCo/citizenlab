@@ -3,7 +3,7 @@ import commentKeys from 'api/comments/keys';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { ICommentVote } from './types';
 
-const deleteVote = async ({
+export const deleteCommentVote = async ({
   commentId: _commentId,
   voteId,
 }: {
@@ -18,7 +18,7 @@ const deleteVote = async ({
 const useDeleteVote = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: deleteVote,
+    mutationFn: deleteCommentVote,
     onSuccess: (_data, { commentId }) => {
       queryClient.invalidateQueries({
         queryKey: commentKeys.item({ id: commentId }),
