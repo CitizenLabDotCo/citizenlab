@@ -15,8 +15,7 @@ resource 'Groups' do
   context 'when authenticated' do
     before do
       @user = create(:admin, email: 'hello@citizenlab.co')
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for @user
     end
 
     get 'web_api/v1/groups' do

@@ -3,6 +3,8 @@ import streams from 'utils/streams';
 import { requestBlob } from 'utils/request';
 import { saveAs } from 'file-saver';
 import { IParticipationContextType } from 'typings';
+import projectsKeys from 'api/projects/keys';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 export interface IPollResponseAttributes {
   series: { [key: string]: number };
@@ -12,7 +14,7 @@ export async function addPollResponse(
   participationContextId: string,
   participationContextType: IParticipationContextType,
   optionIds: string[],
-  projectId?: string
+  projectId: string
 ) {
   const response = await streams.add(
     `${API_PATH}/${participationContextType}s/${participationContextId}/poll_responses`,
@@ -24,7 +26,11 @@ export async function addPollResponse(
       },
     }
   );
-  projectId && streams.fetchAllWith({ dataId: [projectId] });
+
+  queryClient.invalidateQueries({
+    queryKey: projectsKeys.item({ id: projectId }),
+  });
+
   return response;
 }
 

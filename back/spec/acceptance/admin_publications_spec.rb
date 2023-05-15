@@ -424,9 +424,7 @@ resource 'AdminPublication' do
     let(:folder) { create(:project_folder) }
 
     before do
-      @user = create(:project_folder_moderator, project_folders: [folder])
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for create(:project_folder_moderator, project_folders: [folder])
 
       @projects = %w[published published draft draft published archived archived published]
         .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps, parent_id: folder.admin_publication.id }) }

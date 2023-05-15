@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'pundit', '~> 2.0'
   s.add_dependency 'kaminari', '~> 1.2'
   s.add_dependency 'active_model_serializers', '~> 0.10.7'
-  # s.add_dependency "knock", "~> 2.1.1"
   s.add_dependency 'ice_cube'
   s.add_dependency 'mailgun-ruby', '~>1.2.0'
   s.add_dependency 'liquid', '~> 4.0'

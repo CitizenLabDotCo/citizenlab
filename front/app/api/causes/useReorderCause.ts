@@ -11,7 +11,7 @@ type IReorderCause = {
 
 const reorderCause = ({ id, ordering }: IReorderCause) =>
   fetcher<ICause>({
-    path: `/causes/${id}`,
+    path: `/causes/${id}/reorder`,
     action: 'patch',
     body: { cause: { ordering } },
   });

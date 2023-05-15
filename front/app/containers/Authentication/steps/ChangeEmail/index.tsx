@@ -20,10 +20,10 @@ import Input from 'components/HookForm/Input';
 import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
 
 // typings
-import { SetError, Status } from 'containers/Authentication/typings';
+import { SetError } from 'containers/Authentication/typings';
 
 interface Props {
-  status: Status;
+  loading: boolean;
   setError: SetError;
   onGoBack: () => void;
   onChangeEmail: (newEmail: string) => void;
@@ -37,10 +37,8 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   email: undefined,
 };
 
-const ChangeEmail = ({ status, setError, onGoBack, onChangeEmail }: Props) => {
+const ChangeEmail = ({ loading, setError, onGoBack, onChangeEmail }: Props) => {
   const { formatMessage } = useIntl();
-
-  const loading = status === 'pending';
 
   const schema = useMemo(
     () =>

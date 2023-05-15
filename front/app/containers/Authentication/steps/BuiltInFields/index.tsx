@@ -38,14 +38,13 @@ import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 // typings
 import { BuiltInFieldsUpdate } from '../../useSteps/stepConfig/typings';
 import {
-  Status,
   AuthenticationData,
   SetError,
 } from 'containers/Authentication/typings';
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 
 interface BaseProps {
-  status: Status;
+  loading: boolean;
   setError: SetError;
   onSubmit: (userId: string, update: BuiltInFieldsUpdate) => void;
 }
@@ -55,7 +54,7 @@ interface Props extends BaseProps {
 }
 
 const BuiltInFields = ({
-  status,
+  loading,
   setError,
   authenticationRequirements,
   onSubmit,
@@ -65,7 +64,6 @@ const BuiltInFields = ({
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
 
-  const loading = status === 'pending';
   const appConfigSettings = appConfiguration?.data.attributes.settings;
   const minimumPasswordLength =
     appConfigSettings?.password_login?.minimum_length ??

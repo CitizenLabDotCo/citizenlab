@@ -62,7 +62,7 @@ describe('Verification modal', () => {
     });
 
     it('verifies the user using the bogus form', () => {
-      cy.get('.e2e-idea-button:visible').first().click();
+      cy.get('.e2e-idea-button:visible').first().click({ force: true });
       cy.get('.e2e-rule-item');
       cy.get('.e2e-rule-item').should('have.length', 1);
       cy.get('.e2e-rule-item').contains('charlie');

@@ -24,8 +24,10 @@ import {
 // typings
 import {
   GetRequirements,
+  SetError,
   UpdateState,
   AuthenticationData,
+  SignUpInError,
 } from '../../typings';
 import { Step } from './typings';
 
@@ -33,6 +35,7 @@ export const sharedSteps = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
+  setError: SetError,
   updateState: UpdateState,
   anySSOEnabled: boolean
 ) => {
@@ -44,16 +47,21 @@ export const sharedSteps = (
         const token = params.token;
 
         if (typeof token === 'string') {
-          const response = await getUserDataFromToken(token);
+          try {
+            const response = await getUserDataFromToken(token);
 
-          const prefilledBuiltInFields = {
-            first_name: response.data.attributes.first_name ?? undefined,
-            last_name: response.data.attributes.last_name ?? undefined,
-            email: response.data.attributes.email ?? undefined,
-          };
+            const prefilledBuiltInFields = {
+              first_name: response.data.attributes.first_name ?? undefined,
+              last_name: response.data.attributes.last_name ?? undefined,
+              email: response.data.attributes.email ?? undefined,
+            };
 
-          updateState({ token, prefilledBuiltInFields });
-          setCurrentStep('sign-up:email-password');
+            updateState({ token, prefilledBuiltInFields });
+            setCurrentStep('sign-up:email-password');
+          } catch {
+            setCurrentStep('sign-up:invite');
+            setError('invitation_error');
+          }
         } else {
           setCurrentStep('sign-up:invite');
         }
@@ -160,6 +168,16 @@ export const sharedSteps = (
 
       TRIGGER_VERIFICATION_ONLY: () => {
         setCurrentStep('verification-only');
+      },
+
+      TRIGGER_AUTH_ERROR: (error_code?: SignUpInError) => {
+        if (error_code === 'franceconnect_merging_failed') {
+          setCurrentStep('sign-up:auth-providers');
+          setError('franceconnect_merging_failed');
+        } else {
+          setCurrentStep('sign-up:auth-providers');
+          setError('unknown');
+        }
       },
     },
 

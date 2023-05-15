@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import ActionsForm from './ActionsForm';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useProjectPermissions from 'api/project_permissions/useProjectPermissions';
 import useUpdateProjectPermission from 'api/project_permissions/useUpdateProjectPermission';
 
@@ -31,12 +31,12 @@ interface InputProps {
 interface Props extends InputProps {}
 
 const Continuous = ({ projectId }: Props) => {
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const permissions = useProjectPermissions({
-    projectId: !isNilOrError(project) ? project.id : undefined,
+    projectId: project?.data.id,
   });
   const { mutate: updateProjectPermission } = useUpdateProjectPermission(
-    project?.id
+    project?.data.id
   );
 
   const handlePermissionChange = ({
@@ -58,7 +58,7 @@ const Continuous = ({ projectId }: Props) => {
   };
 
   const config: ParticipationMethodConfig | null = !isNilOrError(project)
-    ? getMethodConfig(project.attributes.participation_method)
+    ? getMethodConfig(project.data.attributes.participation_method)
     : null;
 
   if (!isNilOrError(permissions.data) && !isNilOrError(config)) {

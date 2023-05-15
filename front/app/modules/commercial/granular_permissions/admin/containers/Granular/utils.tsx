@@ -2,7 +2,7 @@ import {
   IGlobalPermissionAction,
   IPermissionData,
 } from 'services/actionPermissions';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 import { isNilOrError } from 'utils/helperUtils';
 import messages from './messages';
 import { IPCPermissionAction } from 'typings';

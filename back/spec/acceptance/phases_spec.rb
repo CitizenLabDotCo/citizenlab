@@ -88,12 +88,8 @@ resource 'Phases' do
     end
   end
 
-  context 'when authenticated as admin' do
-    before do
-      @user = create(:admin)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+  context 'when admin' do
+    before { admin_header_token }
 
     post 'web_api/v1/projects/:project_id/phases' do
       with_options scope: :phase do
@@ -958,13 +954,9 @@ resource 'Phases' do
     end
   end
 
-  context 'when authenticated as project moderator' do
+  context 'when project moderator' do
     get 'web_api/v1/phases/:id/as_xlsx' do
-      before do
-        user = create(:project_moderator, projects: [project])
-        token = Knock::AuthToken.new(payload: user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+      before { header_token_for create(:project_moderator, projects: [project]) }
 
       context 'for an ideation phase' do
         let(:project) { create(:project, process_type: 'timeline') }
