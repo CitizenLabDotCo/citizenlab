@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Observable, of } from 'rxjs';
 
 import {
-import {
   pageFilesStream,
   ICustomPageFileData,
   ICustomPageFiles,
