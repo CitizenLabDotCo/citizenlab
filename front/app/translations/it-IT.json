@@ -1378,6 +1378,7 @@
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Confermare la password attuale e passare alla nuova.",
   "app.containers.UsersEditPage.privacyReasons": "Se siete preoccupati per la vostra privacy, potete leggere {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Invio...",
+  "app.containers.UsersEditPage.provideFirstNameIfLastName": "Il nome è obbligatorio quando si fornisce il cognome",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "Prima di andare...",
   "app.containers.UsersEditPage.submit": "Salvare le modifiche",
   "app.containers.UsersEditPage.tooManyEmails": "Ricevi troppe email? Puoi gestire le tue preferenze di posta elettronica nelle impostazioni del tuo profilo.",
