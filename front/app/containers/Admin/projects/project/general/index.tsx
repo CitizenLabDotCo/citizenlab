@@ -85,14 +85,14 @@ const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams();
   const { data: project } = useProjectById(projectId);
-  const { mutateAsync: updateProject } = useUpdateProject();
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const appConfigLocales = useAppConfigurationLocales();
   const remoteProjectFiles = useProjectFiles(projectId);
+
   const { data: remoteProjectImages } = useProjectImages(projectId || null);
   const { mutateAsync: addProjectImage } = useAddProjectImage();
   const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
-
+  const { mutateAsync: updateProject } = useUpdateProject();
   const { mutateAsync: addProject } = useAddProject();
 
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
@@ -317,12 +317,9 @@ const AdminProjectsProjectGeneral = () => {
               ...nextProjectAttributesDiff,
             });
           } else {
-            addProject(nextProjectAttributesDiff, {
-              onSuccess: (data) => {
-                latestProjectId = data.data.id;
-                isNewProject = true;
-              },
-            });
+            const response = await addProject(nextProjectAttributesDiff);
+            latestProjectId = response.data.id;
+            isNewProject = true;
           }
         }
 
