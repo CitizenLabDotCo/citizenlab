@@ -5,12 +5,15 @@ require 'rspec_api_documentation/dsl'
 
 resource 'Notifications' do
   explanation 'Messages from the platform to the user to inform on activities that may be of interest to him/her.'
+  header 'Content-Type', 'application/json'
 
-  before do
-    header 'Content-Type', 'application/json'
+  before_all do
     @user = create(:user)
     create_list(:comment_on_your_idea, 3, recipient: @user)
     create_list(:comment_on_your_comment, 2, read_at: Time.now, recipient: @user)
+  end
+
+  before do
     header_token_for @user
   end
 
