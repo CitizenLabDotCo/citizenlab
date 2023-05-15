@@ -1378,6 +1378,7 @@
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Bevestig uw huidige wachtwoord en verander het in een nieuw wachtwoord.",
   "app.containers.UsersEditPage.privacyReasons": "Als je bezorgd bent om je privacy, kan je {conditionsLink} lezen.",
   "app.containers.UsersEditPage.processing": "Verzenden...",
+  "app.containers.UsersEditPage.provideFirstNameIfLastName": "Voornaam is vereist bij het opgeven van de achternaam",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "Voor je gaat...",
   "app.containers.UsersEditPage.submit": "Wijzigingen opslaan",
   "app.containers.UsersEditPage.tooManyEmails": "Ontvang je teveel e-mails? Je kan je voorkeuren bepalen bij je profielinstellingen.",

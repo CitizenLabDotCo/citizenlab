@@ -1378,6 +1378,7 @@
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Bestätegt Äert aktuellt Passwuert a vergitt en neit Passwuert.",
   "app.containers.UsersEditPage.privacyReasons": "Wann Dir iwwer Är Privatsphär besuergt sidd, kënnt Dir {conditionsLink} liesen.",
   "app.containers.UsersEditPage.processing": "Verschécken...",
+  "app.containers.UsersEditPage.provideFirstNameIfLastName": "Virnumm ass erfuerderlech wann de Familljennumm gëtt",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "Ier Dir fortgitt...",
   "app.containers.UsersEditPage.submit": "Ännerunge späicheren",
   "app.containers.UsersEditPage.tooManyEmails": "Kritt Dir ze vill E-Mailen? Dir kënnt Är E-Mail-Präferenzen an Äre Profilastellunge änneren.",

@@ -2,12 +2,11 @@ import { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { combineLatest, of, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { projectFilesStream } from 'services/projectFiles';
 import { pageFilesStream } from 'services/pageFiles';
 import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
 
-export type TResourceType = 'project' | 'page';
+export type TResourceType = 'page';
 
 export interface InputProps {
   resetOnChange?: boolean;
@@ -29,7 +28,6 @@ function useRemoteFiles({
       setRemoteFiles(null);
     }
     const streamFn = {
-      project: projectFilesStream,
       page: pageFilesStream,
     }[resourceType];
     let observable: Observable<(UploadFile | null)[] | null> = of(null);

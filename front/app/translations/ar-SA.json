@@ -1378,6 +1378,7 @@
   "app.containers.UsersEditPage.passwordChangeSubtitle": "أكِّد كلمة مرورك الحالية وغيِّرها إلى كلمة مرور جديدة.",
   "app.containers.UsersEditPage.privacyReasons": "إذا كنت قلقًا بشأن خصوصيتك، فيمكنك قراءة {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "الإرسال جارٍ...",
+  "app.containers.UsersEditPage.provideFirstNameIfLastName": "الاسم الأول مطلوب عند تقديم الاسم الأخير",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "قبل أن تغادر...",
   "app.containers.UsersEditPage.submit": "حفظ التغييرات",
   "app.containers.UsersEditPage.tooManyEmails": "هل تستلم الكثير من الرسائل الإلكترونية؟ يمكنك إدارة تفضيلات البريد الإلكتروني في إعدادات ملفك التعريفي.",
