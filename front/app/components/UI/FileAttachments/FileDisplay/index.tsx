@@ -11,8 +11,8 @@ import { lighten } from 'polished';
 import { Icon } from '@citizenlab/cl2-component-library';
 
 // services
-import { IProjectFileData } from 'services/projectFiles';
-import { IPhaseFileData } from 'services/phaseFiles';
+import { IProjectFileData } from 'api/project_files/types';
+import { IPhaseFileData } from 'api/phase_files/types';
 import { IEventFileData } from 'api/event_files/types';
 import { ICustomPageFileData } from 'services/pageFiles';
 import { IIdeaFileData } from 'api/idea_files/types';

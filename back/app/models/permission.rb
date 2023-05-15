@@ -29,7 +29,6 @@ class Permission < ApplicationRecord
     'survey' => %w[taking_survey],
     'poll' => %w[taking_poll],
     'budgeting' => %w[commenting_idea budgeting],
-    'volunteering' => [],
     'document_annotation' => [] # Maybe needs action(s) specified?
   }
   SCOPE_TYPES = [nil, 'Project', 'Phase'].freeze
