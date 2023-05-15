@@ -82,6 +82,13 @@ class ApplicationController < ActionController::API
     }
   end
 
+  # Sub-optimal performance, since we are instantiating a serializer for each record.
+  # Since we currently (2020-05-19) only use this for notifications, and we rarely process very large numbers
+  # of notifications, we are not overly concerned by this.
+  # If performance becomes an issue, we could try patching or recreating the approach used by a fork of a similar gem:
+  # https://github.com/dvandersluis/fast_jsonapi/tree/heterogeneous-collection
+  # Better still, we can hopefully one day use a new version of the jsonapi-serializer gem that supports this
+  # 'out of the box', or switch to a different gem that does.
   def serialize_heterogeneous_collection(collection, serializers, options = {})
     serializers = serializers.to_proc
 
