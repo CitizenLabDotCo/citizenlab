@@ -7,7 +7,7 @@ import {
   IDAuth0Method,
 } from 'services/verificationMethods';
 // components
-import VerificationMethodButton from 'containers/Authentication/VerificationModal/VerificationMethodButton';
+import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
 // i18n
 import T from 'components/T';

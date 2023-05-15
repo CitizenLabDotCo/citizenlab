@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { IInitiativeVote, INewVoteProperties } from './types';
 import initiativesKeys from 'api/initiatives/keys';
 
-const addInitiativeVote = async ({
+export const addInitiativeVote = async ({
   initiativeId,
   ...requestBody
 }: INewVoteProperties) =>

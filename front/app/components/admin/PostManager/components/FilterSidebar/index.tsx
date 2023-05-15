@@ -1,7 +1,7 @@
 import React from 'react';
 import { isEmpty } from 'lodash-es';
 import { IPhaseData } from 'services/phases';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { Segment, Menu, Popup } from 'semantic-ui-react';
@@ -13,7 +13,7 @@ import messages from '../../messages';
 import { Icon } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 import { useIntl } from 'utils/cl-intl';
 
 const InfoIcon = styled(Icon)`

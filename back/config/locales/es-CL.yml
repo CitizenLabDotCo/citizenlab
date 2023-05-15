@@ -239,3 +239,10 @@ es-CL:
       paragraph_1_with_reason: "Tu cuenta en la plataforma de participación de %{organizationName} ha sido temporalmente deshabilitada por la siguiente razón:"
       for_more_information: "Para más información al respecto, puede consultar la página %{termsAndConditionsPage}."
       you_can_sign_in_again_from: "Puedes acceder de nuevo desde %{date}"
+  user:
+    anon_first_name: "Usuario"
+  time:
+    am: soy
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm

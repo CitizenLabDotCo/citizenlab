@@ -126,11 +126,14 @@ class OmniauthCallbackController < ApplicationController
     redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, redirect_params))
   end
 
+  # NOTE: sso_flow params corrected as sometimes an sso user may start from signin but actually signup and vice versa
   def signin_success_redirect
+    request.env['omniauth.params']['sso_flow'] = 'signin' if request.env['omniauth.params']['sso_flow']
     redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(locale: @user.locale), request.env['omniauth.params']))
   end
 
   def signup_success_redirect
+    request.env['omniauth.params']['sso_flow'] = 'signup' if request.env['omniauth.params']['sso_flow']
     redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: @user.locale), request.env['omniauth.params']))
   end
 
@@ -151,7 +154,7 @@ class OmniauthCallbackController < ApplicationController
       { sub: entity.id }
     end
 
-    Knock::AuthToken.new payload: payload.merge({
+    AuthToken::AuthToken.new payload: payload.merge({
       provider: provider,
       logout_supported: AuthenticationService.new.supports_logout?(provider)
     })
@@ -173,6 +176,7 @@ class OmniauthCallbackController < ApplicationController
 
     attrs = authver_method.updateable_user_attrs
     update_hash = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
+    user.confirm! # confirm user email if not already confirmed
 
     if authver_method.overwrite_user_attrs?
       user.update!(update_hash)

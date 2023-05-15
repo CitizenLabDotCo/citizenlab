@@ -130,8 +130,7 @@ resource 'Comments' do
 
     before do
       @user = create(:admin)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for @user
     end
 
     example_request 'XLSX export of comments on ideas' do
@@ -201,14 +200,35 @@ resource 'Comments' do
       end
     end
 
-    describe do
+    context 'when a moderator exports all comments' do
       before do
-        @user = create(:user)
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        @project = create(:project)
+
+        @comments = Array.new(3) do |_i|
+          create(:comment, post: create(:idea, project: @project))
+        end
+        @unmoderated_comment = create(:comment)
+
+        @user = create(:project_moderator, projects: [@project])
+        header_token_for(@user)
       end
 
-      example '[error] XLSX export by a normal user', document: false do
+      example 'XLSX export', document: false do
+        do_request
+        expect(status).to eq 200
+
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        comments_ids = worksheet.drop(1).collect { |row| row[0].value }
+
+        expect(comments_ids).to match_array @comments.pluck(:id)
+        expect(comments_ids).not_to include(@unmoderated_comment.id)
+      end
+    end
+
+    describe 'when resident' do
+      before { resident_header_token }
+
+      example '[error] XLSX export', document: false do
         do_request
         expect(status).to eq 401
       end
@@ -253,8 +273,7 @@ resource 'Comments' do
   context 'when authenticated' do
     before do
       @user = create(:user)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for @user
     end
 
     get 'web_api/v1/ideas/:idea_id/comments' do
@@ -372,9 +391,7 @@ resource 'Comments' do
       end
 
       example 'Admins cannot mark a comment as deleted without a reason', document: false do
-        @admin = create(:admin)
-        token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        admin_header_token
         do_request
         assert_status 422
       end
@@ -401,9 +418,7 @@ resource 'Comments' do
       end
 
       example 'Admins cannot modify a comment on an idea', document: false do
-        @admin = create(:admin)
-        token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        admin_header_token
         do_request
         expect(comment.reload.body_multiloc).not_to eq body_multiloc
       end

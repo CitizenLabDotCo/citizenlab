@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
-// resources
-import { PublicationStatus } from 'services/projects';
+// api
+import useProjects from 'api/projects/useProjects';
 
 // components
 import { Title } from '@citizenlab/cl2-component-library';
@@ -19,30 +19,31 @@ import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import useProjects from 'hooks/useProjects';
+
+// typings
+import { PublicationStatus } from 'api/projects/types';
 
 const publicationStatuses: PublicationStatus[] = ['published', 'archived'];
 
 const ReportTab = memo(() => {
-  const projects = useProjects({
+  const { data: projects } = useProjects({
     publicationStatuses,
     canModerate: true,
   });
 
-  const participableProjects =
-    !isNilOrError(projects) && !isNilOrError(projects)
-      ? projects.filter((project) => {
-          const processType = project?.attributes.process_type;
-          const participationMethod = project.attributes.participation_method;
-          return (
-            (processType === 'continuous' &&
-              !['information', 'survey', 'volunteering', null].includes(
-                participationMethod
-              )) ||
-            processType === 'timeline'
-          );
-        })
-      : [];
+  const participableProjects = !isNilOrError(projects)
+    ? projects.data.filter((project) => {
+        const processType = project?.attributes.process_type;
+        const participationMethod = project.attributes.participation_method;
+        return (
+          (processType === 'continuous' &&
+            !['information', 'survey', 'volunteering', null].includes(
+              participationMethod
+            )) ||
+          processType === 'timeline'
+        );
+      })
+    : [];
 
   return (
     <>

@@ -54,6 +54,7 @@ export interface IInviteError {
   rows?: number[] | undefined;
   value?: number | string | undefined;
   payload?: Record<string, any>;
+  inviter_email?: string | null;
 }
 
 type AdminRole = {

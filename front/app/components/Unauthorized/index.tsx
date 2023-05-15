@@ -4,7 +4,7 @@ import React from 'react';
 import useAuthUser from 'hooks/useAuthUser';
 
 // events
-import { openSignUpInModal } from 'events/openSignUpInModal';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // styling
 import { useTheme } from 'styled-components';
@@ -23,6 +23,7 @@ const Unauthorized = () => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
+
   const authUserPending = authUser === undefined;
 
   if (authUserPending) {
@@ -34,7 +35,7 @@ const Unauthorized = () => {
   }
 
   const signIn = () => {
-    openSignUpInModal({
+    triggerAuthenticationFlow({
       flow: 'signin',
     });
   };
@@ -48,6 +49,7 @@ const Unauthorized = () => {
       flexDirection="column"
       alignItems="center"
       padding="4rem"
+      id="e2e-not-authorized"
     >
       <Title mb="0">{formatMessage(messages.noPermission)}</Title>
       {userIsNotLoggedIn ? (

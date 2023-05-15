@@ -1,31 +1,41 @@
 import { useState, useEffect } from 'react';
 import { of, Observable } from 'rxjs';
 import {
-  IParticipationConditions,
+  Response,
+  ParticipationConditions,
   getGlobalParticipationConditions,
   getPCParticipationConditions,
 } from 'services/participationConditions';
-
-import { ContextShape } from 'events/verificationModal';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 
 // doesn't react to prop changes, which is ok here because components are unmounted btwn uses
 
-export default function useParticipationConditions(props: ContextShape) {
+export default function useParticipationConditions(
+  props: AuthenticationContext | null
+) {
   const [conditions, setConditions] = useState<
-    IParticipationConditions | undefined | null | Error
+    ParticipationConditions | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
-    const stream: Observable<IParticipationConditions | null> =
+    const stream: Observable<Response | null> =
       props?.type === 'project' || props?.type === 'phase'
         ? getPCParticipationConditions(props.id, props.type, props.action)
             .observable
         : props?.type === 'initiative'
         ? getGlobalParticipationConditions(props.action).observable
         : of(null);
-    const subscription = stream.subscribe((conditions) => {
-      setConditions(conditions);
-    });
+
+    const subscription = stream.subscribe(
+      (conditions: Response | NilOrError) => {
+        setConditions(
+          isNilOrError(conditions)
+            ? conditions
+            : conditions.data.attributes.participation_conditions
+        );
+      }
+    );
 
     return () => subscription.unsubscribe();
   }, [props]);

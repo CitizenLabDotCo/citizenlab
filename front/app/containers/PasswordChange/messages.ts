@@ -9,9 +9,13 @@ export default defineMessages({
     id: 'app.containers.ChangePassword.helmetDescription',
     defaultMessage: 'Change your password page',
   },
-  title: {
-    id: 'app.containers.ChangePassword.title',
+  titleChangePassword: {
+    id: 'app.containers.ChangePassword.titleChangePassword',
     defaultMessage: 'Change your password',
+  },
+  titleAddPassword: {
+    id: 'app.containers.ChangePassword.titleAddPassword',
+    defaultMessage: 'Add a password',
   },
   minimumPasswordLengthError: {
     id: 'app.containers.ChangePassword.password.minimumPasswordLengthError',

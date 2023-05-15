@@ -13,7 +13,7 @@ import Centerer from 'components/UI/Centerer';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useProjectFolder from 'hooks/useProjectFolder';
+import useProjectFolderBySlug from 'api/project_folders/useProjectFolderBySlug';
 import { useParams } from 'react-router-dom';
 
 // i18n
@@ -31,7 +31,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 // typings
-import { IProjectFolderData } from 'services/projectFolders';
+import { IProjectFolderData } from 'api/project_folders/types';
 
 const Container = styled.main`
   flex: 1 0 auto;
@@ -197,13 +197,13 @@ const ProjectFolderShowPage = memo<{
 
 const ProjectFolderShowPageWrapper = () => {
   const { slug } = useParams();
-  const projectFolder = useProjectFolder({ projectFolderSlug: slug });
+  const { data: projectFolder } = useProjectFolderBySlug(slug);
 
   if (isError(projectFolder)) {
     return <PageNotFound />;
   }
 
-  return <ProjectFolderShowPage projectFolder={projectFolder} />;
+  return <ProjectFolderShowPage projectFolder={projectFolder?.data} />;
 };
 
 export default ProjectFolderShowPageWrapper;

@@ -6,9 +6,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Subscription } from 'rxjs';
 
 // Resources
-import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetUserCount, { GetUserCountChildProps } from 'resources/GetUserCount';
-import { IGroupData } from 'services/groups';
+import { IGroupData } from 'api/groups/types';
 
 // hooks
 import useBlockedUsercount from 'api/blocked_users/useBlockedUsersCount';
@@ -35,6 +34,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 import Outlet from 'components/Outlet';
+import useGroups from 'api/groups/useGroups';
 
 const Container = styled.div`
   flex: 1;
@@ -158,7 +158,6 @@ export interface InputProps {
 }
 
 interface DataProps {
-  groups: GetGroupsChildProps;
   usercount: GetUserCountChildProps;
 }
 
@@ -168,8 +167,8 @@ export const GroupsListPanel = ({
   onCreateGroup,
   className,
   usercount,
-  groups: { groupsList },
 }: Props) => {
+  const { data: groups } = useGroups({});
   const [highlightedGroups, setHighlightedGroups] = useState(
     new Set<IGroupData['id']>()
   );
@@ -256,8 +255,8 @@ export const GroupsListPanel = ({
         </ButtonWrapper>
       </MenuTitle>
       <GroupsList className="e2e-groups-list">
-        {!isNilOrError(groupsList) &&
-          groupsList.map((group) => (
+        {groups &&
+          groups.data.map((group) => (
             <MenuLink
               key={group.id}
               to={`/admin/users/${group.id}`}
@@ -283,7 +282,6 @@ export const GroupsListPanel = ({
 };
 
 const Data = adopt<DataProps, InputProps>({
-  groups: <GetGroups />,
   usercount: <GetUserCount />,
 });
 

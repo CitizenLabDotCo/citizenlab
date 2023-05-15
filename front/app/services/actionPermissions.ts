@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship } from 'typings';
+import { IPCPermissionAction, IRelationship } from 'typings';
 
 export type IGlobalPermissionAction =
   | 'voting_initiative'
@@ -15,6 +15,7 @@ export interface IGlobalPermissionData {
     permitted_by: 'everyone' | 'users' | 'groups' | 'admins_moderators';
     created_at: string;
     updated_at: string;
+    global_custom_fields: boolean;
   };
   relationships: {
     permission_scope: {
@@ -25,14 +26,6 @@ export interface IGlobalPermissionData {
     };
   };
 }
-export type IPCPermissionAction =
-  | 'posting_idea'
-  | 'voting_idea'
-  | 'commenting_idea'
-  | 'commenting_idea'
-  | 'taking_survey'
-  | 'taking_poll'
-  | 'budgeting';
 export interface IPCPermissionData {
   id: string;
   type: string;
@@ -46,6 +39,7 @@ export interface IPCPermissionData {
       | 'everyone_confirmed_email';
     created_at: string;
     updated_at: string;
+    global_custom_fields: boolean;
   };
   relationships: {
     permission_scope: {
@@ -63,10 +57,6 @@ export interface IPCPermission {
   data: IPCPermissionData;
 }
 
-export interface IPCPermissions {
-  data: IPCPermissionData[];
-}
-
 export interface IGlobalPermissions {
   data: IGlobalPermissionData[];
 }
@@ -74,26 +64,7 @@ export interface IGlobalPermissions {
 export interface IPermissionUpdate {
   group_ids: string[];
   permitted_by: IPermissionData['attributes']['permitted_by'];
-}
-
-export function phasePermissions(
-  phaseId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IPCPermissions>({
-    apiEndpoint: `${API_PATH}/phases/${phaseId}/permissions`,
-    ...streamParams,
-  });
-}
-
-export function projectPermissions(
-  projectId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IPCPermissions>({
-    apiEndpoint: `${API_PATH}/projects/${projectId}/permissions`,
-    ...streamParams,
-  });
+  global_custom_fields: boolean;
 }
 
 export function globalPermissions(streamParams: IStreamParams | null = null) {
@@ -110,32 +81,6 @@ export function updateGlobalPermission(
 ) {
   return streams.update<IPCPermission>(
     `${API_PATH}/permissions/${action}`,
-    permissionId,
-    { permission }
-  );
-}
-
-export function updatePhasePermission(
-  permissionId: string,
-  phaseId: string,
-  action: string,
-  permission: Partial<IPermissionUpdate>
-) {
-  return streams.update<IPCPermission>(
-    `${API_PATH}/phases/${phaseId}/permissions/${action}`,
-    permissionId,
-    { permission }
-  );
-}
-
-export function updateProjectPermission(
-  permissionId: string,
-  projectId: string,
-  action: string,
-  permission: Partial<IPermissionUpdate>
-) {
-  return streams.update<IPCPermission>(
-    `${API_PATH}/projects/${projectId}/permissions/${action}`,
     permissionId,
     { permission }
   );

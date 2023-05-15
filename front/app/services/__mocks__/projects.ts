@@ -1,4 +1,4 @@
-import { ProcessType, IProjectData } from 'services/projects';
+import { ProcessType, IProjectData } from 'api/projects/types';
 import {
   ParticipationMethod,
   TSurveyService,
@@ -101,7 +101,7 @@ export function getProject(
         data: null, // IRelationship | null,
       },
     },
-  } as IProjectData;
+  } as unknown as IProjectData;
 }
 
 export const getProjectInputTerm = () => {

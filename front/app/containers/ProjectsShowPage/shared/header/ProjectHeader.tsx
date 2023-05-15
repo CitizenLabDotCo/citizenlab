@@ -17,7 +17,7 @@ import {
 } from 'components/ProjectableHeader';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useAuthUser from 'hooks/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -84,15 +84,16 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
     const [moduleActive, setModuleActive] = useState(false);
     const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
-    const project = useProject({ projectId });
+    const { data: project } = useProjectById(projectId);
     const authUser = useAuthUser();
-    const projectFolderId = project?.attributes.folder_id;
+    const projectFolderId = project?.data.attributes.folder_id;
 
-    if (!isNilOrError(project)) {
-      const projectHeaderImageLargeUrl = project?.attributes?.header_bg?.large;
+    if (project) {
+      const projectHeaderImageLargeUrl =
+        project.data.attributes?.header_bg?.large;
       const userCanEditProject =
         !isNilOrError(authUser) &&
-        canModerateProject(project.id, { data: authUser });
+        canModerateProject(project.data.id, { data: authUser });
 
       const setModuleToActive = () => setModuleActive(true);
 
@@ -109,7 +110,7 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
                 {userCanEditProject && (
                   <EditButton
                     icon="edit"
-                    linkTo={adminProjectsProjectPath(project.id)}
+                    linkTo={adminProjectsProjectPath(project.data.id)}
                     buttonStyle="secondary"
                     padding="5px 8px"
                   >

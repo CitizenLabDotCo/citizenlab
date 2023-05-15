@@ -44,6 +44,15 @@ class CustomFieldService
     end
   end
 
+  # To allow schema validation whilst ignoring 'required' requirements by setting all required attributes to false
+  def fields_to_json_schema_ignore_required(fields)
+    optional_fields = fields.map do |field|
+      field[:required] = false
+      field
+    end
+    fields_to_json_schema(optional_fields)
+  end
+
   # @param [AppConfiguration] configuration
   # @return [Hash{String => Object}]
   def fields_to_ui_schema_multiloc(configuration, fields)

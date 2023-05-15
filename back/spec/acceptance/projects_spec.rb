@@ -16,8 +16,7 @@ resource 'Projects' do
   context 'when admin' do
     before do
       @user = create(:admin)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for @user
 
       @projects = %w[published published draft published archived archived published]
         .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
@@ -1137,8 +1136,7 @@ resource 'Projects' do
     context 'when admin' do
       before do
         @user = create(:admin)
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        header_token_for @user
 
         @projects = %w[published published draft published archived published archived]
           .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
@@ -1154,8 +1152,7 @@ resource 'Projects' do
     context 'when non-moderator/non-admin user' do
       before do
         @user = create(:user, roles: [])
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        header_token_for @user
       end
 
       example 'Get projects with access rights' do

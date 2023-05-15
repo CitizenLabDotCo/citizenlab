@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'hooks/usePhase';
 import useFormResults from 'hooks/useFormResults';
 
@@ -33,7 +33,7 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const localize = useLocalize();
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const phase = usePhase(phaseId ?? null);
   const formResults = useFormResults({
     projectId,
@@ -50,7 +50,7 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
   if (
     isNilOrError(formResults) ||
     isNilOrError(locale) ||
-    isNilOrError(project) ||
+    !project ||
     formResults.results.length === 0
   ) {
     return <NoData message={messages.surveyNoQuestions} />;
@@ -67,7 +67,7 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
       <Box px="20px" width="100%" mb="24px">
         <Text variant="bodyM" color="primary" mt="0px" mb="0px">
           {'| '}
-          {localize(project.attributes.title_multiloc)}
+          {localize(project.data.attributes.title_multiloc)}
           {!isNilOrError(phase) && (
             <>
               {' '}

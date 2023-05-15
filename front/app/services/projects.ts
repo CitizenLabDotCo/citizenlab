@@ -1,19 +1,23 @@
 import { API_PATH } from 'containers/App/constants';
+import streams from 'utils/streams';
+
+// api
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import projectsKeys from 'api/projects/keys';
 
 // typings
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Locale } from '@citizenlab/cl2-component-library';
-import { IRelationship, Multiloc, UploadFile, CLError } from 'typings';
+import { Multiloc, UploadFile, CLError } from 'typings';
 import { IAreaData } from 'api/areas/types';
 import { IAppConfiguration } from 'api/app_configuration/types';
-
-import streams, { IStreamParams } from 'utils/streams';
 import {
   TSurveyService,
   ParticipationMethod,
   IdeaDefaultSortMethod,
   InputTerm,
 } from './participationContexts';
+import { IProject } from 'api/projects/types';
 
 export const apiEndpoint = `${API_PATH}/projects`;
 export const PROJECTABLE_HEADER_BG_ASPECT_RATIO_WIDTH = 4;
@@ -27,171 +31,8 @@ export type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 export type PublicationStatus = 'draft' | 'published' | 'archived';
 
-// keys in project.attributes.action_descriptor
-export type IProjectAction =
-  | 'commenting_idea'
-  | 'voting_idea'
-  | 'comment_voting_idea'
-  | 'posting_idea'
-  | 'taking_survey'
-  | 'taking_poll';
-
-export type PostingDisabledReason =
-  | 'project_inactive'
-  | 'not_ideation'
-  | 'posting_disabled'
-  | 'posting_limited_max_reached'
-  | 'not_permitted'
-  | 'not_verified'
-  | 'not_signed_in';
-
-export type CommentingDisabledReason =
-  | 'not_verified'
-  | 'project_inactive'
-  | 'not_supported'
-  | 'commenting_disabled'
-  | 'not_permitted'
-  | 'not_signed_in';
-
-export type ProjectVotingDisabledReason =
-  | 'project_inactive'
-  | 'not_ideation'
-  | 'voting_disabled'
-  | 'downvoting_disabled'
-  | 'not_signed_in'
-  | 'upvoting_limited_max_reached'
-  | 'downvoting_limited_max_reached'
-  | 'not_permitted'
-  | 'not_verified';
-
-export type SurveyDisabledReason =
-  | 'project_inactive'
-  | 'not_survey'
-  | 'not_permitted'
-  | 'not_verified'
-  | 'not_signed_in';
-
-export type PollDisabledReason =
-  | 'project_inactive'
-  | 'not_poll'
-  | 'not_permitted'
-  | 'already_responded'
-  | 'not_verified'
-  | 'not_signed_in';
-
 interface ProjectHeaderBgImageSizes {
   large: string | null;
-}
-
-export interface IProjectAttributes {
-  title_multiloc: Multiloc;
-  description_multiloc: Multiloc;
-  description_preview_multiloc: Multiloc;
-  slug: string;
-  header_bg: ProjectHeaderBgImageSizes;
-  ideas_count: number;
-  comments_count: number;
-  avatars_count: number;
-  created_at: string;
-  updated_at: string;
-  visible_to: Visibility;
-  process_type: ProcessType;
-  timeline_active?: 'past' | 'present' | 'future' | null;
-  participants_count: number;
-  participation_method: ParticipationMethod;
-  posting_enabled: boolean;
-  commenting_enabled: boolean;
-  // voting_enabled should be used to update the project setting
-  // and as a read value if we don't know if the user is doing an up/down vote
-  // (although the action_descriptor might be better for that too, to be checked).
-  //
-  // voting_enabled doesn't take downvoting_enabled into account
-  // or upvoting_limited_max/downvoting_limited_max.
-  // For more specific values, see the voting_idea action_descriptor
-  voting_enabled: boolean;
-  upvoting_method: 'limited' | 'unlimited';
-  upvoting_limited_max: number;
-  downvoting_enabled: boolean;
-  downvoting_method: 'limited' | 'unlimited';
-  downvoting_limited_max: number;
-  presentation_mode: PresentationMode;
-  internal_role: 'open_idea_box' | null;
-  publication_status: PublicationStatus;
-  min_budget?: number;
-  max_budget?: number;
-  survey_service?: TSurveyService;
-  survey_embed_url?: string;
-  document_annotation_embed_url?: string;
-  ordering: number;
-  poll_anonymous?: boolean;
-  ideas_order?: IdeaDefaultSortMethod;
-  input_term: InputTerm;
-  include_all_areas: boolean;
-  folder_id?: string;
-  action_descriptor: {
-    posting_idea: {
-      enabled: boolean;
-      future_enabled: string | null;
-      disabled_reason: PostingDisabledReason | null;
-    };
-    commenting_idea: {
-      enabled: boolean;
-      disabled_reason: CommentingDisabledReason | null;
-    };
-    voting_idea: {
-      // the two values below are implemented but can be deleted if not needed
-      enabled: boolean;
-      disabled_reason: ProjectVotingDisabledReason | null;
-      up: {
-        enabled: boolean;
-        disabled_reason: ProjectVotingDisabledReason | null;
-      };
-      down: {
-        enabled: boolean;
-        disabled_reason: ProjectVotingDisabledReason | null;
-      };
-    };
-    taking_survey: {
-      enabled: boolean;
-      disabled_reason: SurveyDisabledReason | null;
-    };
-    taking_poll: {
-      enabled: boolean;
-      disabled_reason: PollDisabledReason | null;
-    };
-  };
-}
-
-export interface IProjectData {
-  id: string;
-  type: 'project';
-  attributes: IProjectAttributes;
-  relationships: {
-    project_images: {
-      data: IRelationship[];
-    };
-    areas: {
-      data: IRelationship[];
-    };
-    avatars?: {
-      data?: IRelationship[];
-    };
-    topics: {
-      data: IRelationship[];
-    };
-    current_phase?: {
-      data: IRelationship | null;
-    };
-    user_basket?: {
-      data: IRelationship | null;
-    };
-    default_assignee?: {
-      data: IRelationship | null;
-    };
-    admin_publication: {
-      data: IRelationship | null;
-    };
-  };
 }
 
 export interface IUpdatedProjectProperties {
@@ -262,67 +103,26 @@ export interface IProjectFormState {
   folder_id?: string | null;
 }
 
-export interface IProject {
-  data: IProjectData;
-}
-
-export interface IProjects {
-  data: IProjectData[];
-}
-
-type IQueryParametersWithPS =
-  | {
-      publication_statuses: PublicationStatus[];
-      [key: string]: any;
-    }
-  | {
-      filter_ids: string[];
-      [key: string]: any;
-    };
-
-interface StreamParamsForProjects extends IStreamParams {
-  queryParameters: IQueryParametersWithPS;
-}
-
-export function projectsStream(streamParams: StreamParamsForProjects) {
-  return streams.get<IProjects>({ apiEndpoint, ...streamParams });
-}
-
-export function projectBySlugStream(
-  projectSlug: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IProject>({
-    apiEndpoint: `${apiEndpoint}/by_slug/${projectSlug}`,
-    ...streamParams,
-  });
-}
-
-export function projectByIdStream(
-  projectId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IProject>({
-    apiEndpoint: `${apiEndpoint}/${projectId}`,
-    ...streamParams,
-  });
-}
-
 export async function addProject(projectData: IUpdatedProjectProperties) {
   const response = await streams.add<IProject>(apiEndpoint, {
     project: projectData,
   });
   const projectId = response.data.id;
+
+  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
+  queryClient.invalidateQueries({
+    queryKey: projectsKeys.item({ id: projectId }),
+  });
+
   await streams.fetchAllWith({
-    dataId: [projectId],
     apiEndpoint: [
-      `${API_PATH}/projects`,
       `${API_PATH}/admin_publications`,
       `${API_PATH}/users/me`,
       `${API_PATH}/topics`,
       `${API_PATH}/areas`,
     ],
   });
+
   return response;
 }
 
@@ -336,10 +136,13 @@ export async function updateProject(
     { project: projectData }
   );
 
+  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
+  queryClient.invalidateQueries({
+    queryKey: projectsKeys.item({ id: projectId }),
+  });
+
   await streams.fetchAllWith({
-    dataId: [projectId],
     apiEndpoint: [
-      `${API_PATH}/projects`,
       `${API_PATH}/admin_publications`,
       `${API_PATH}/admin_publications/status_counts`,
       `${API_PATH}/users/me`,
@@ -356,31 +159,24 @@ export async function deleteProject(projectId: string) {
     `${apiEndpoint}/${projectId}`,
     projectId
   );
+
+  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/admin_publications`],
+    apiEndpoint: [`${API_PATH}/admin_publications`],
   });
+
   return response;
 }
 
 export async function copyProject(projectId: string) {
   const response = await streams.add(`${apiEndpoint}/${projectId}/copy`, {});
 
+  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
   await streams.fetchAllWith({
-    apiEndpoint: [
-      `${API_PATH}/projects`,
-      `${API_PATH}/admin_publications`,
-      `${API_PATH}/users/me`,
-    ],
+    apiEndpoint: [`${API_PATH}/admin_publications`, `${API_PATH}/users/me`],
   });
+
   return response;
-}
-
-export function getProjectUrl(project: IProjectData) {
-  return `/projects/${project.attributes.slug}`;
-}
-
-export function getProjectInputTerm(project: IProjectData) {
-  return project.attributes.input_term;
 }
 
 export async function updateProjectFolderMembership(
@@ -394,11 +190,12 @@ export async function updateProjectFolderMembership(
     { project: { folder_id: newProjectFolderId } }
   );
 
+  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
   await streams.fetchAllWith({
     dataId: [newProjectFolderId, oldProjectFolderId].filter(
       (item) => item
     ) as string[],
-    apiEndpoint: [`${API_PATH}/admin_publications`, `${API_PATH}/projects`],
+    apiEndpoint: [`${API_PATH}/admin_publications`],
   });
 
   return response;

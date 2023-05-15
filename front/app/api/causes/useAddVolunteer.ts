@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { IVolunteer } from './types';
 import causeKeys from './keys';
 
-const addVolunteer = async (causeId: string) =>
+export const addVolunteer = async (causeId: string) =>
   fetcher<IVolunteer>({
     path: `/causes/${causeId}/volunteers`,
     action: 'post',

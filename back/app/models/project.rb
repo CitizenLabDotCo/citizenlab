@@ -60,7 +60,7 @@ class Project < ApplicationRecord
   has_many :votes, through: :ideas
 
   has_many :projects_topics, dependent: :destroy
-  has_many :topics, through: :projects_topics
+  has_many :topics, -> { order(:ordering) }, through: :projects_topics
   has_many :projects_allowed_input_topics, dependent: :destroy
   has_many :allowed_input_topics, through: :projects_allowed_input_topics, source: :topic
   has_many :areas_projects, dependent: :destroy

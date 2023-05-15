@@ -28,6 +28,11 @@ export type GetGlobalPermissionsChildProps =
   | null
   | Error;
 
+// TODO remove this later when we actually start using 'visiting' as a permission
+const notVisitingPermission = (data: IGlobalPermissionData) => {
+  return (data.attributes.action as any) !== 'visiting';
+};
+
 export default class GetGlobalPermissions extends React.Component<
   Props,
   State
@@ -46,7 +51,7 @@ export default class GetGlobalPermissions extends React.Component<
       globalPermissions().observable.subscribe((permissions) => {
         this.setState({
           permissions: !isNilOrError(permissions)
-            ? permissions.data
+            ? permissions.data.filter(notVisitingPermission)
             : permissions,
         });
       }),

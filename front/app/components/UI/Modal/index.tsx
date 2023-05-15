@@ -11,6 +11,7 @@ import { FocusOn } from 'react-focus-on';
 import messages from './messages';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import clickOutside from 'utils/containers/clickOutside';
 
@@ -103,6 +104,34 @@ const StyledCloseIconButton = styled(CloseIconButton)<{
     top: 13px;
     ${props.fullScreen ? 'left: auto;' : ''};
     right: 15px;
+  `}
+`;
+
+const StyledCloseIconButton2 = styled(CloseIconButton)`
+  position: absolute;
+  top: 17px;
+  z-index: 2000;
+  border-radius: 50%;
+  border: solid 1px transparent;
+  transition: all 100ms ease-out;
+  outline: none !important;
+  padding: 10px;
+  right: 22px;
+
+  ${media.phone`
+    right: 6px;
+  `}
+
+  &:hover {
+    background: #e0e0e0;
+  }
+
+  &.focus-visible {
+    ${defaultOutline};
+  }
+  ${isRtl`
+    right: auto;
+    left: 25px;
   `}
 `;
 
@@ -327,21 +356,6 @@ export const HeaderTitle = styled.h1`
   `}
 `;
 
-export const HeaderSubtitle = styled.h2`
-  width: 100%;
-  color: ${(props) => props.theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  line-height: normal;
-  margin: 0;
-  margin-top: 5px;
-  padding: 0;
-
-  ${isRtl`
-    text-align: right;
-  `}
-`;
-
 const FooterContainer = styled.div`
   width: 100%;
   display: flex;
@@ -429,6 +443,7 @@ export interface InputProps {
   close: () => void;
   className?: string;
   header?: JSX.Element | string;
+  niceHeader?: boolean;
   footer?: JSX.Element;
   hasSkipButton?: boolean;
   skipText?: JSX.Element;
@@ -437,6 +452,7 @@ export interface InputProps {
   children: React.ReactNode;
   fullScreen?: boolean;
   zIndex?: number;
+  hideCloseButton?: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -539,11 +555,13 @@ class Modal extends PureComponent<Props, State> {
       children,
       opened,
       header,
+      niceHeader,
       footer,
       hasSkipButton,
       skipText,
       fullScreen,
       zIndex,
+      hideCloseButton,
     } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
     const smallerThanSmallTablet = windowSize
@@ -591,19 +609,65 @@ class Modal extends PureComponent<Props, State> {
                 aria-modal="true"
                 role="dialog"
               >
-                <StyledCloseIconButton
-                  fullScreen={fullScreen}
-                  className="e2e-modal-close-button"
-                  onClick={this.clickCloseButton}
-                  iconColor={colors.textSecondary}
-                  iconColorOnHover={'#000'}
-                  a11y_buttonActionMessage={messages.closeModal}
-                />
+                {!niceHeader && (
+                  <>
+                    {!hideCloseButton && (
+                      <StyledCloseIconButton
+                        fullScreen={fullScreen}
+                        className="e2e-modal-close-button"
+                        onClick={this.clickCloseButton}
+                        iconColor={colors.textSecondary}
+                        iconColorOnHover={'#000'}
+                        a11y_buttonActionMessage={messages.closeModal}
+                      />
+                    )}
 
-                {header && (
-                  <HeaderContainer>
-                    <HeaderTitle id="modal-header">{header}</HeaderTitle>
-                  </HeaderContainer>
+                    {header && (
+                      <HeaderContainer>
+                        <HeaderTitle id="modal-header">{header}</HeaderTitle>
+                      </HeaderContainer>
+                    )}
+                  </>
+                )}
+
+                {/* TODO: actually fix the header by always using the 'nice' header.
+                 * Didn't dare to do that yet because the modal with header is used
+                 * in so many different places, and I was scared of breaking something.
+                 * Made a task for this already: CL-2962
+                 * (Luuc)
+                 */}
+                {header && niceHeader && (
+                  <>
+                    <Box
+                      display="flex"
+                      flexDirection="row"
+                      alignItems="center"
+                      w="100%"
+                      py="8px"
+                      borderBottom={`solid 1px ${colors.divider}`}
+                    >
+                      <Box
+                        w="100%"
+                        h="100%"
+                        display="flex"
+                        alignItems="center"
+                        minHeight="66px"
+                      >
+                        {header}
+                      </Box>
+                    </Box>
+                    {!hideCloseButton && (
+                      <Box mr={smallerThanSmallTablet ? '0px' : '8px'}>
+                        <StyledCloseIconButton2
+                          className="e2e-modal-close-button"
+                          iconColor={colors.textSecondary}
+                          iconColorOnHover={colors.black}
+                          a11y_buttonActionMessage={messages.closeModal}
+                          onClick={this.clickCloseButton}
+                        />
+                      </Box>
+                    )}
+                  </>
                 )}
 
                 <ModalContentContainer

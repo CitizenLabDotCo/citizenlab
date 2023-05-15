@@ -10,7 +10,7 @@ import {
   getInputTerm,
 } from 'services/participationContexts';
 import { getCurrentPhase, IPhaseData } from 'services/phases';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 
 // components
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
@@ -24,7 +24,7 @@ import { PollCTABar } from 'components/ParticipationCTABars/PollCTABar';
 import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
 // utils
-import { isNilOrError } from './helperUtils';
+import { isNilOrError, NilOrError } from './helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { IIdea } from 'api/ideas/types';
 import { DocumentAnnotationCTABar } from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
@@ -52,8 +52,8 @@ type ModalContentMethodProps = {
 
 type FormTitleMethodProps = {
   project: IProjectData;
-  phases: [IPhaseData];
-  phaseFromUrl?: IPhaseData;
+  phases: IPhaseData[] | NilOrError;
+  phaseFromUrl?: IPhaseData | NilOrError;
 };
 
 type PostSortingOptionType = { text: JSX.Element; value: string };
@@ -66,7 +66,7 @@ export type ParticipationMethodConfig = {
   getModalContent: (
     props: ModalContentMethodProps
   ) => ReactNode | JSX.Element | null;
-  getFormTitle?: (props: FormTitleMethodProps) => void;
+  getFormTitle?: (props: FormTitleMethodProps) => React.ReactNode;
   getMethodPickerMessage: () => ReactNode | JSX.Element | null;
   showInputManager: boolean;
   isMethodLocked: boolean;

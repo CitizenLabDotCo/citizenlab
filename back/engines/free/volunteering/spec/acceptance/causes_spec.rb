@@ -67,11 +67,7 @@ resource 'Volunteering Causes' do
   end
 
   context 'when admin' do
-    before do
-      @admin = create(:admin)
-      token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
-      header 'Authorization', "Bearer #{token}"
-    end
+    before { admin_header_token }
 
     post 'web_api/v1/causes' do
       with_options scope: :cause do

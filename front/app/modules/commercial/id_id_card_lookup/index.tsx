@@ -10,8 +10,8 @@ const IdCardLookupForm = React.lazy(
 import {
   IDLookupMethod,
   TVerificationMethodName,
+  isLastVerificationMethod,
 } from 'services/verificationMethods';
-import isLastVerificationMethod from 'containers/Authentication/VerificationModal/isLastVerificationMethod';
 
 const verificationMethodName: TVerificationMethodName = 'id_card_lookup';
 const configuration: ModuleConfiguration = {

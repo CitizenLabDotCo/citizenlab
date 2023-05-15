@@ -67,6 +67,53 @@ resource 'Users' do
       end
     end
 
+    get 'web_api/v1/users/check/:email' do
+      let(:email) { 'test@test.com' }
+
+      context 'when a user does not exist' do
+        example_request 'Returns "terms"' do
+          assert_status 200
+          expect(json_response_body[:data][:attributes][:action]).to eq('terms')
+        end
+      end
+
+      context 'when a user exists without a password and has completed registration', document: false do
+        before { create(:user_no_password, email: 'test@test.com', registration_completed_at: Time.now) }
+
+        example_request 'Returns "confirm"' do
+          assert_status 200
+          expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+        end
+      end
+
+      context 'when a user exists with a password', document: false do
+        before { create(:user, email: 'test@test.com') }
+
+        example_request 'Returns "password"' do
+          assert_status 200
+          expect(json_response_body[:data][:attributes][:action]).to eq('password')
+        end
+      end
+
+      context 'when an invalid email is used', document: false do
+        let(:email) { 'test_test.com' }
+
+        example_request '[error] Invalid email' do
+          assert_status 422
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('invalid')
+        end
+      end
+
+      context 'when an email used by a pending invite is used', document: false do
+        before { create(:invited_user, email: 'test@test.com') }
+
+        example_request '[error] Taken by invite' do
+          assert_status 422
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken_by_invite')
+        end
+      end
+    end
+
     post 'web_api/v1/users' do
       before do
         settings = AppConfiguration.instance.settings
@@ -106,7 +153,11 @@ resource 'Users' do
         end
 
         context 'when the user_confirmation module is active' do
+          let(:success) { double }
+
           before do
+            allow(SendConfirmationCode).to receive(:call).and_return(success)
+            allow(success).to receive(:success?).and_return(true)
             SettingsService.new.activate_feature! 'user_confirmation'
           end
 
@@ -116,15 +167,11 @@ resource 'Users' do
             expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_nil # when no custom fields
           end
 
-          example_request 'Sends a confirmation email' do
-            last_email = ActionMailer::Base.deliveries.last
-            user       = User.order(:created_at).last
-            expect(last_email.body.encoded).to include user.reload.email_confirmation_code
-          end
-
           example_request 'Requires confirmation' do
             assert_status 201
             json_response = json_parse(response_body)
+            user = User.order(:created_at).last
+            expect(SendConfirmationCode).to have_received(:call).with(user: user).once
             expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true # when no custom fields
           end
         end
@@ -244,78 +291,63 @@ resource 'Users' do
       context 'light registration without a password' do
         let(:email) { Faker::Internet.email }
         let(:locale) { 'en' }
+        let(:success) { double }
 
         before do
+          allow(SendConfirmationCode).to receive(:call).and_return(success)
+          allow(success).to receive(:success?).and_return(true)
           SettingsService.new.activate_feature! 'user_confirmation'
         end
 
         describe 'create a user with no password' do
           example_request 'User successfully created and requires confirmation' do
             assert_status 201
-
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :confirmation_required)).to be(true)
+            user = User.order(:created_at).last
+            expect(SendConfirmationCode).to have_received(:call).with(user: user).once
+            expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
           end
 
           example_request 'Registration is not completed by default' do
             assert_status 201
-
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_nil
-          end
-
-          example_request 'Sends a confirmation email' do
-            last_email = ActionMailer::Base.deliveries.last
-            user       = User.order(:created_at).last
-            expect(last_email.body.encoded).to include user.reload.email_confirmation_code
+            expect(response_data.dig(:attributes, :registration_completed_at)).to be_nil
           end
         end
 
         describe 'Reusing an existing user with no password' do
           context 'when there is an existing user that has no password' do
-            before do
-              create(:user, email: email, password: nil)
-            end
+            example 'existing confirmed user is successfully returned, confirmation requirement is reset and email sent' do
+              existing_user = create(:user_no_password, email: email)
+              existing_user.confirm!
 
-            example_request 'existing user is successfully returned and confirmation requirement is reset and email resent' do
+              do_request
               assert_status 200
-
-              json_response = json_parse(response_body)
-              expect(json_response.dig(:data, :attributes, :confirmation_required)).to be(true)
-
-              last_email = ActionMailer::Base.deliveries.last
-              user       = User.order(:created_at).last
-              expect(last_email.body.encoded).to include user.reload.email_confirmation_code
+              expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
+              expect(SendConfirmationCode).to have_received(:call).with(user: existing_user).once
             end
 
-            context 'when the request tries to pass additional changed attributes' do
+            context 'when the request tries to pass additional changed attributes', document: false do
               let(:first_name) { Faker::Name.first_name }
 
-              example_request 'email taken error is returned and confirmation requirement is not reset' do
+              example 'email taken error is returned and confirmation requirement is not reset' do
+                existing_user = create(:user_no_password, email: email)
+                existing_user.confirm!
+
+                do_request
                 assert_status 422
-
-                json_response = json_parse(response_body)
-                expect(json_response.dig(:errors, :email, 0, :error)).to eq('taken')
-
-                user = User.order(:created_at).last
-                expect(user.confirmation_required?).to be(false)
+                expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
+                expect(existing_user.confirmation_required?).to be(false)
               end
             end
           end
 
           context 'when there is an existing user WITH a password' do
-            before do
-              create(:user, email: email, password: 'gravy123')
-            end
+            example 'email taken error is returned and confirmation requirement is not reset' do
+              existing_user = create(:user, email: email, password: 'gravy123')
 
-            example_request 'email taken error is returned and confirmation requirement is not reset' do
+              do_request
               assert_status 422
-
-              json_response = json_parse(response_body)
-              expect(json_response.dig(:errors, :email, 0, :error)).to eq('taken')
-
-              user = User.order(:created_at).last
-              expect(user.confirmation_required?).to be(false)
+              expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
+              expect(existing_user.confirmation_required?).to be(false)
             end
           end
         end
@@ -326,8 +358,7 @@ resource 'Users' do
   context 'when authenticated' do
     before do
       @user = create(:user, last_name: 'Smith')
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for @user
     end
 
     context 'when admin' do
@@ -937,52 +968,38 @@ resource 'Users' do
 
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
-          let(:project) { create(:continuous_project, with_permissions: true) }
-
-          before do
-            old_timers = create(:smart_group, rules: [
-              {
-                ruleType: 'custom_field_number',
-                customFieldId: create(:custom_field_number, title_multiloc: { 'en' => 'Birthyear?' }, key: 'birthyear', code: 'birthyear').id,
-                predicate: 'is_smaller_than_or_equal',
-                value: 1988
-              }
-            ])
-
-            project.permissions.find_by(action: 'posting_idea')
-              .update!(permitted_by: 'groups', groups: [old_timers])
-          end
+          let(:project) { create(:continuous_project) }
 
           example_request 'Update a user' do
-            expect(response_status).to eq 200
-            expect(response_data.dig(:attributes, :first_name)).to eq(first_name)
-            expect(json_response_body[:included].find { |i| i[:type] == 'project' }&.dig(:attributes, :slug)).to eq project.slug
-            expect(json_response_body[:included].find { |i| i[:type] == 'permission' }&.dig(:attributes, :permitted_by)).to eq 'groups'
-            expect(response_data.dig(:relationships, :granted_permissions, :data).size).to eq(1)
+            assert_status 200
+            expect(response_data.dig(:attributes, :first_name)).to eq first_name
           end
         end
 
-        # NOTE: To be included in an upcoming iteration
-        # context 'when the user_confirmation module is active' do
-        #   before do
-        #     SettingsService.new.activate_feature! 'user_confirmation'
-        #   end
+        describe 'updating the user email' do
+          let(:email) { 'new-email@email.com' }
 
-        #   describe 'Changing the email' do
-        #     let(:email) { 'new-email@email.com' }
+          context 'when the user_confirmation module is active' do
+            before do
+              SettingsService.new.activate_feature! 'user_confirmation'
+            end
 
-        #     example_request 'Requires confirmation' do
-        #       json_response = json_parse(response_body)
-        #       expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true
-        #     end
+            example_request '[error] is not allowed' do
+              json_response = json_parse(response_body)
+              assert_status 422
+              expect(@user.reload.email).not_to eq(email)
+              expect(json_response[:errors][:email][0][:error]).to eq 'change_not_permitted'
+            end
+          end
 
-        #     example_request 'Sends a confirmation email' do
-        #       last_email = ActionMailer::Base.deliveries.last
-        #       user       = User.find(id)
-        #       expect(last_email.to).to include user.reload.email
-        #     end
-        #   end
-        # end
+          context 'when the user_confirmation module is not active' do
+            example_request 'is allowed' do
+              json_response = json_parse(response_body)
+              assert_status 200
+              expect(json_response.dig(:data, :attributes, :email)).to eq(email)
+            end
+          end
+        end
 
         describe do
           example "Update a user's custom field values" do
@@ -1013,7 +1030,7 @@ resource 'Users' do
             expect(@user.custom_field_values[cf.key]).to eq(some_value)
           end
 
-          example 'Cannot modify values of disabled custom fields' do
+          example 'Can modify values of disabled custom fields' do
             cf = create(:custom_field, hidden: false, enabled: false)
             some_value = 'some_value'
             @user.update!(custom_field_values: { cf.key => some_value })
@@ -1021,8 +1038,21 @@ resource 'Users' do
             do_request(user: { custom_field_values: { cf.key => 'another_value' } })
             json_response = json_parse(response_body)
 
-            expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
+            expect(json_response.dig(:data, :attributes, :custom_field_values)).to include(cf.key.to_sym)
             expect(@user.custom_field_values[cf.key]).to eq(some_value)
+          end
+
+          # To allow for custom fields to be required or not depending on the action
+          example 'Allow update if custom fields are changed but required fields are not present', document: false do
+            cf = create(:custom_field)
+            cf_req = create(:custom_field, required: true)
+
+            do_request(user: { custom_field_values: { cf.key => 'some_value' } })
+            json_response = json_parse(response_body)
+
+            assert_status 200
+            expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq 'some_value'
+            expect(json_response.dig(:data, :attributes, :custom_field_values, cf_req.key.to_sym)).to be_nil
           end
         end
 
@@ -1095,63 +1125,6 @@ resource 'Users' do
         end
       end
 
-      post 'web_api/v1/users/complete_registration' do
-        with_options scope: :user do
-          parameter :custom_field_values, 'An object that can only contain keys for custom fields for users', required: true
-        end
-
-        let(:cf1) { create(:custom_field) }
-        let(:cf2) { create(:custom_field_multiselect, required: true) }
-        let(:cf2_options) { create_list(:custom_field_option, 2, custom_field: cf2) }
-        let(:custom_field_values) { { cf1.key => 'somevalue', cf2.key => [cf2_options.first.key] } }
-
-        example 'Complete the registration of a user' do
-          @user.update! registration_completed_at: nil
-          do_request
-          expect(response_status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_present
-          expect(json_response.dig(:data, :attributes, :custom_field_values, cf1.key.to_sym)).to eq 'somevalue'
-          expect(json_response.dig(:data, :attributes, :custom_field_values, cf2.key.to_sym)).to eq [cf2_options.first.key]
-        end
-
-        # TODO: Allow light users without required fields
-        # example '[error] Complete the registration of a user fails if not all required fields are provided' do
-        #   @user.update! registration_completed_at: nil
-        #   do_request(user: { custom_field_values: { cf2.key => nil } })
-        #   assert_status 422
-        # end
-
-        example '[error] Complete the registration of a user fails if the user has already completed signup' do
-          do_request
-          expect(response_status).to eq 401
-        end
-
-        describe do
-          let(:cf) { create(:custom_field) }
-          let(:gender_cf) { create(:custom_field_gender) }
-          let(:custom_field_values) do
-            {
-              cf.key => 'new value',
-              gender_cf.key => 'female'
-            }
-          end
-
-          example "Can't change some custom_field_values of a user verified with Bogus", document: false do
-            @user.update!(
-              registration_completed_at: nil,
-              custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' }
-            )
-            create(:verification, method_name: 'bogus', user: @user)
-            do_request
-            expect(response_status).to eq 200
-            @user.reload
-            expect(@user.custom_field_values[cf.key]).to eq 'new value'
-            expect(@user.custom_field_values[gender_cf.key]).to eq 'male'
-          end
-        end
-      end
-
       post 'web_api/v1/users/update_password' do
         with_options scope: :user do
           parameter :current_password, required: true
@@ -1173,6 +1146,32 @@ resource 'Users' do
           let(:new_password) { 'test_new_password' }
 
           example_request 'update password with correct current password' do
+            @user.reload
+            expect(response_status).to eq 200
+            expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')
+          end
+        end
+
+        describe do
+          let(:current_password) { '' }
+          let(:new_password) { 'test_new_password' }
+
+          example_request 'update password when not providing existing password' do
+            expect(response_status).to eq 422
+            json_response = json_parse(response_body)
+            expect(json_response[:errors][:current_password][0][:error]).to eq 'invalid'
+          end
+        end
+
+        describe do
+          let(:current_password) { '' }
+          let(:new_password) { 'test_new_password' }
+
+          before do
+            @user.update!(password: nil)
+          end
+
+          example_request 'update password when no existing password (passwordless or sso user)' do
             @user.reload
             expect(response_status).to eq 200
             expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')

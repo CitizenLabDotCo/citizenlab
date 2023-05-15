@@ -56,7 +56,7 @@ class IdeasFinder < ApplicationFinder
     where(project_id: project_id)
   end
 
-  def basket_condition(basket_id)
+  def basket_id_condition(basket_id)
     records.joins(:baskets).where('baskets.id': basket_id)
   end
 
