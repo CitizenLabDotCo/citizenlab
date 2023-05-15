@@ -1378,6 +1378,7 @@
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Confirme a sua palavra-passe actual e mude para nova palavra-passe.",
   "app.containers.UsersEditPage.privacyReasons": "Se está preocupado com a sua privacidade, pode ler {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Envio...",
+  "app.containers.UsersEditPage.provideFirstNameIfLastName": "O nome próprio é obrigatório quando se fornece o apelido",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "Antes de ir...",
   "app.containers.UsersEditPage.submit": "Guardar alterações",
   "app.containers.UsersEditPage.tooManyEmails": "A receber demasiados e-mails? Pode gerir as suas preferências de correio electrónico nas definições do seu perfil.",

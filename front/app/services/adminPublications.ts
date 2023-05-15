@@ -1,7 +1,7 @@
 import streams, { IStreamParams } from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 import { ILinks, Multiloc, IRelationship } from 'typings';
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 
 const apiEndpoint = `${API_PATH}/admin_publications`;
 

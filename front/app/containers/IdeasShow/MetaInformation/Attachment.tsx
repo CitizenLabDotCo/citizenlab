@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
-import { IPhaseFileData } from 'services/phaseFiles';
+import { IPhaseFileData } from 'api/phase_files/types';
 import { IEventFileData } from 'api/event_files/types';
 import { IIdeaFileData } from 'api/idea_files/types';
 import { darken } from 'polished';

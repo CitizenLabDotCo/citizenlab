@@ -25,5 +25,5 @@ export interface IProjectImages {
 
 export interface AddProjectImageObject {
   projectId: string;
-  image: string;
+  image: { image: string };
 }

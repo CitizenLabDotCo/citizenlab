@@ -57,7 +57,7 @@ module MultiTenancy
               enabled: true,
               tenant: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_TENANT_ID'),
               client_id: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_CLIENT_ID'),
-              logo_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1599721853/Product/microsoft-azure-logo.png',
+              logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
               login_mechanism_name: 'Azure Active Directory'
             },
             franceconnect_login: {

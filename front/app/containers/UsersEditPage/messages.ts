@@ -87,6 +87,10 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.image',
     defaultMessage: 'Avatar image',
   },
+  provideFirstNameIfLastName: {
+    id: 'app.containers.UsersEditPage.provideFirstNameIfLastName',
+    defaultMessage: 'First name is required when providing last name',
+  },
   /*
    * Deletion
    */

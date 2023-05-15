@@ -19,7 +19,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { ProcessType } from 'services/projects';
+import { ProcessType } from 'api/projects/types';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
 // styling
