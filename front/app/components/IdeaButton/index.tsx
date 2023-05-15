@@ -117,7 +117,7 @@ const IdeaButton = memo<Props>(
   }) => {
     const { formatMessage } = useIntl();
     const authUser = useAuthUser();
-    const project = useProjectById(projectId);
+    const { data: project } = useProjectById(projectId);
     const phases = usePhases(projectId);
     const disabledMessages: {
       [key in IIdeaPostingDisabledReason]: MessageDescriptor;
@@ -132,7 +132,7 @@ const IdeaButton = memo<Props>(
     };
     const { enabled, show, disabledReason, authenticationRequirements } =
       getIdeaPostingRules({
-        project,
+        project: project?.data,
         phase,
         authUser,
       });
@@ -157,7 +157,7 @@ const IdeaButton = memo<Props>(
           : {};
 
         clHistory.push({
-          pathname: `/projects/${project.attributes.slug}/ideas/new`,
+          pathname: `/projects/${project.data.attributes.slug}/ideas/new`,
           search: stringify(
             {
               ...positionParams,
@@ -202,7 +202,7 @@ const IdeaButton = memo<Props>(
         const successAction: SuccessAction = {
           name: 'redirectToIdeaForm',
           params: {
-            projectSlug: project.attributes.slug,
+            projectSlug: project.data.attributes.slug,
           },
         };
 
@@ -268,14 +268,14 @@ const IdeaButton = memo<Props>(
       }
 
       const inputTerm = getInputTerm(
-        project.attributes.process_type,
-        project,
+        project.data.attributes.process_type,
+        project.data,
         phases
       );
 
       const buttonMessage = getButtonMessage(
         phase?.attributes.participation_method ||
-          project.attributes.participation_method,
+          project.data.attributes.participation_method,
         inputTerm
       );
 

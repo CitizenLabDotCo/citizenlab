@@ -6,14 +6,11 @@ import { ParticipationCTAContent } from 'components/ParticipationCTABars/Partici
 
 // hooks
 import { useTheme } from 'styled-components';
-import useAuthUser from 'hooks/useAuthUser';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
-import { getSurveyTakingRules } from 'services/actionTakingRules';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { scrollToElement } from 'utils/scroll';
 import {
   CTABarProps,
@@ -28,28 +25,16 @@ import messages from '../messages';
 import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
 
-import { openSignUpInModal } from 'events/openSignUpInModal';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 
 export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
-  const authUser = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
-  const {
-    pathname,
-    // hash: divId
-  } = useLocation();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
-
-  // useEffect(() => {
-  //   const element = document.getElementById(divId);
-  //   if (element) {
-  //     element.scrollIntoView();
-  //   }
-  // }, [divId]);
 
   const scrollTo = useCallback(
     (id: string, shouldSelectCurrentPhase = true) =>
@@ -70,33 +55,7 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
     [currentPhase, project, pathname]
   );
 
-  // const { enabled, disabledReason } = getSurveyTakingRules({
-  //   project,
-  //   phaseContext: currentPhase,
-  //   signedIn: !isNilOrError(authUser),
-  // });
-
-  // const registrationNotCompleted =
-  //   !isNilOrError(authUser) && !authUser.attributes.registration_completed_at;
-  // const shouldVerify = !!(
-  //   disabledReason === 'maybeNotVerified' || disabledReason === 'notVerified'
-  // );
-
-  // const showSignIn =
-  //   shouldVerify ||
-  //   disabledReason === 'maybeNotPermitted' ||
-  //   registrationNotCompleted;
-
   const handleTakeSurveyClick = (event: FormEvent) => {
-    // if (showSignIn) {
-    //   openSignUpInModal({
-    //     flow: 'signup',
-    //     verification: shouldVerify,
-    //     verificationContext: undefined,
-    //     action: () => scrollTo('project-survey')(event),
-    //   });
-    // }
-
     scrollTo('project-survey')(event);
   };
 
@@ -104,7 +63,7 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
     return null;
   }
 
-  const CTAButton = enabled ? (
+  const CTAButton = (
     <Button
       id="e2e-take-survey-button"
       buttonStyle="primary"
@@ -118,7 +77,7 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
     >
       <FormattedMessage {...messages.takeTheSurvey} />
     </Button>
-  ) : null;
+  );
 
   return (
     <ParticipationCTAContent
@@ -127,3 +86,6 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
     />
   );
 };
+
+// TO DO: add auth?
+// Check front/app/components/ParticipationCTABars/EmbeddedSurveyCTABar/index.tsx as reference.
