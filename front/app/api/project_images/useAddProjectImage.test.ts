@@ -28,7 +28,7 @@ describe('useAddProjectImage', () => {
     act(() => {
       result.current.mutate({
         projectId: 'projectId',
-        image: 'testbase64',
+        image: { image: 'testbase64' },
       });
     });
 
@@ -50,7 +50,7 @@ describe('useAddProjectImage', () => {
     act(() => {
       result.current.mutate({
         projectId: 'projectId',
-        image: 'testbase64',
+        image: { image: 'testbase64' },
       });
     });
 

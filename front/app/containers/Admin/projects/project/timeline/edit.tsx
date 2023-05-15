@@ -1,17 +1,11 @@
 // Libraries
 import React, { FormEvent, useEffect, useState } from 'react';
-import { Subscription, combineLatest, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import moment, { Moment } from 'moment';
 import { get, isEmpty } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
 // Services
-import {
-  phaseFilesStream,
-  addPhaseFile,
-  deletePhaseFile,
-} from 'services/phaseFiles';
+import { IPhaseFiles } from 'api/phase_files/types';
 import {
   updatePhase,
   addPhase,
@@ -48,22 +42,47 @@ import { useParams } from 'react-router-dom';
 import usePhases from 'hooks/usePhases';
 import { isNilOrError } from 'utils/helperUtils';
 import usePhase, { TPhase } from 'hooks/usePhase';
+import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
+import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
+import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 
 const PhaseForm = styled.form``;
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
+const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
+  if (phaseFiles) {
+    const convertedFiles: FileType[] = [];
+    phaseFiles.data.map((phaseFile) => {
+      convertedFiles.push({
+        id: phaseFile.id,
+        url: phaseFile.attributes.file.url,
+        name: phaseFile.attributes.name,
+        size: phaseFile.attributes.size,
+        remote: true,
+      });
+    });
+    return convertedFiles;
+  }
+  return [];
+};
+
 const AdminProjectTimelineEdit = () => {
+  const { mutateAsync: addPhaseFile } = useAddPhaseFile();
+  const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { projectId, id: phaseId } = useParams() as {
     projectId: string;
-    id?: string;
+    id: string;
   };
+  const { data: phaseFiles } = usePhaseFiles(phaseId);
   const phase = usePhase(phaseId || null);
   const phases = usePhases(projectId);
   const [errors, setErrors] = useState<{
     [fieldName: string]: CLError[];
   } | null>(null);
   const [processing, setProcessing] = useState<boolean>(false);
-  const [inStatePhaseFiles, setInStatePhaseFiles] = useState<FileType[]>([]);
+  const [inStatePhaseFiles, setInStatePhaseFiles] = useState<FileType[]>(
+    convertToFileType(phaseFiles)
+  );
   const [phaseFilesToRemove, setPhaseFilesToRemove] = useState<FileType[]>([]);
   const [submitState, setSubmitState] = useState<SubmitStateType>('disabled');
   const [attributeDiff, setAttributeDiff] = useState<IUpdatedPhaseProperties>(
@@ -71,47 +90,10 @@ const AdminProjectTimelineEdit = () => {
   );
 
   useEffect(() => {
-    if (phaseId) {
-      const subscriptions: Subscription[] = [
-        phaseFilesStream(phaseId)
-          .observable.pipe(
-            switchMap((phaseFiles) => {
-              if (phaseFiles && phaseFiles.data && phaseFiles.data.length > 0) {
-                return combineLatest(
-                  phaseFiles.data.map((phaseFile) => {
-                    const {
-                      id,
-                      attributes: {
-                        name,
-                        size,
-                        file: { url },
-                      },
-                    } = phaseFile;
-
-                    return of({
-                      id,
-                      url,
-                      name,
-                      size,
-                      remote: true,
-                    });
-                  })
-                );
-              }
-              return of([]);
-            })
-          )
-          .subscribe((phaseFiles) => {
-            setInStatePhaseFiles(phaseFiles as FileType[]);
-          }),
-      ];
-
-      return () => {
-        subscriptions.forEach((subscription) => subscription.unsubscribe());
-      };
+    if (phaseFiles) {
+      setInStatePhaseFiles(convertToFileType(phaseFiles));
     }
-    return;
-  }, [phaseId, projectId]);
+  }, [phaseFiles]);
 
   const handleTitleMultilocOnChange = (title_multiloc: Multiloc) => {
     setSubmitState('enabled');
@@ -228,10 +210,14 @@ const AdminProjectTimelineEdit = () => {
           const phaseId = phaseResponse.id;
           const filesToAddPromises = inStatePhaseFiles
             .filter((file): file is UploadFile => !file.remote)
-            .map((file) => addPhaseFile(phaseId, file.base64, file.name));
+            .map((file) =>
+              addPhaseFile({ phaseId, base64: file.base64, name: file.name })
+            );
           const filesToRemovePromises = phaseFilesToRemove
             .filter((file) => file.remote)
-            .map((file) => deletePhaseFile(phaseId, file.id as string));
+            .map((file) =>
+              deletePhaseFile({ phaseId, fileId: file.id as string })
+            );
 
           await Promise.all([
             ...filesToAddPromises,

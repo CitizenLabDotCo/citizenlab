@@ -1378,6 +1378,7 @@
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Bestätigen Sie Ihr aktuelles Passwort und ändern Sie es in ein neues Passwort.",
   "app.containers.UsersEditPage.privacyReasons": "Falls du dir Sorgen um deine Privatsphäre machst, dann lese bitte {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Wird gesendet...",
+  "app.containers.UsersEditPage.provideFirstNameIfLastName": "Der Vorname ist bei der Angabe des Nachnamens erforderlich",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "Bevor du gehst...",
   "app.containers.UsersEditPage.submit": "Änderungen speichern",
   "app.containers.UsersEditPage.tooManyEmails": "Erhältst du zu viele E-Mails? Du kannst deine E-Mail-Einstellungen in den Profileinstellungen verwalten.",

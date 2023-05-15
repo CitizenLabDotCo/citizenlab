@@ -21,8 +21,6 @@
 #  fk_rails_...  (static_page_id => static_pages.id)
 #
 class StaticPageFile < ApplicationRecord
-  EXTENSION_WHITELIST = %w[pdf doc docx pages odt xls xlsx numbers ods ppt pptx key odp txt csv mp3 mp4 avi mkv]
-
   attr_accessor :filename
 
   mount_base64_file_uploader :file, StaticPageFileUploader
@@ -30,17 +28,4 @@ class StaticPageFile < ApplicationRecord
 
   validates :static_page, :name, presence: true
   validates :file, presence: true, unless: proc { Current.loading_tenant_template }
-  validate :extension_whitelist
-
-  private
-
-  def extension_whitelist
-    return if EXTENSION_WHITELIST.include? name.split('.').last.downcase
-
-    errors.add(
-      :file,
-      :extension_whitelist_error,
-      message: 'Unsupported file extension'
-    )
-  end
 end

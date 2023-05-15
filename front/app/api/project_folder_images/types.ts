@@ -1,8 +1,17 @@
-import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
 import { TProjectFolderCardSize } from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
+import projectFolderImagesKeys from './keys';
+import { Keys } from 'utils/cl-react-query/types';
 
-const apiEndpoint = `${API_PATH}/project_folders`;
+export type ProjectFolderImagesKeys = Keys<typeof projectFolderImagesKeys>;
+
+export type IQueryParameters = {
+  folderId: string;
+};
+
+export interface addProjectFolderImageObject {
+  folderId: string;
+  base64: string;
+}
 
 export const CARD_IMAGE_ASPECT_RATIO_WIDTH = 4;
 export const CARD_IMAGE_ASPECT_RATIO_HEIGHT = 3;
@@ -38,37 +47,10 @@ export interface IProjectFolderImageData {
   };
 }
 
-interface IProjectFolderImage {
+export interface IProjectFolderImage {
   data: IProjectFolderImageData;
 }
 
 export interface IProjectFolderImages {
   data: IProjectFolderImageData[];
-}
-
-export function projectFolderImagesStream(
-  projectFolderId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IProjectFolderImages | null>({
-    apiEndpoint: `${apiEndpoint}/${projectFolderId}/images`,
-    ...streamParams,
-  });
-}
-
-export function addProjectFolderImage(projectFolderId: string, base64: string) {
-  return streams.add<IProjectFolderImage>(
-    `${apiEndpoint}/${projectFolderId}/images`,
-    { image: { image: base64 } }
-  );
-}
-
-export function deleteProjectFolderImage(
-  projectFolderId: string,
-  imageId: string
-) {
-  return streams.delete(
-    `${apiEndpoint}/${projectFolderId}/images/${imageId}`,
-    imageId
-  );
 }
