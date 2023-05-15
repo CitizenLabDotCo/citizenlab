@@ -43,16 +43,18 @@ import { trackEventByName } from 'utils/analytics';
 
 type Props = {
   trackEventName?: string;
+  runOnSave?: () => void;
 };
 const CampaignConsentForm = ({
   trackEventName = 'Default email notification settings changed',
+  runOnSave,
 }: Props) => {
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
   const { formatMessage } = useIntl();
 
   const { data: originalCampaignConsents } = useCampaignConsents();
-  const { mutateAsync: updateCampaignConsents } = useUpdateCampaignConsents();
+  const { mutate: updateCampaignConsents } = useUpdateCampaignConsents();
 
   const [campaignConsents, setCampaignConsents] = useState<
     Record<string, CampaignConsent>
@@ -143,27 +145,32 @@ const CampaignConsentForm = ({
         })
       );
 
-    try {
-      // analytics
-      trackEventByName(trackEventName, {
-        extra: {
-          consentChanges: Object.fromEntries(
-            Object.values(consentChanges).map((consent: IConsentChanges) => [
-              consent.campaignConsentId,
-              consent.consented,
-            ])
-          ),
+    // analytics
+    trackEventByName(trackEventName, {
+      extra: {
+        consentChanges: Object.fromEntries(
+          Object.values(consentChanges).map((consent: IConsentChanges) => [
+            consent.campaignConsentId,
+            consent.consented,
+          ])
+        ),
+      },
+    });
+
+    setShowFeedback(false);
+    setLoading(true);
+    await updateCampaignConsents(
+      { consentChanges },
+      {
+        onSuccess: () => {
+          setShowFeedback('success');
+          runOnSave && runOnSave();
         },
-      });
-
-      setShowFeedback(false);
-      setLoading(true);
-      await updateCampaignConsents({ consentChanges });
-
-      setShowFeedback('success');
-    } catch (error) {
-      setShowFeedback('error');
-    }
+        onError: () => {
+          setShowFeedback('error');
+        },
+      }
+    );
   };
 
   return (

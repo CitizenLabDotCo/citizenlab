@@ -55,9 +55,9 @@ const EmailSettingPage = () => {
   const { mutate: updateCampaignConsents } = useUpdateCampaignConsents();
   const { data: campaignConsents } = useCampaignConsents(unsubscriptionToken);
 
-  // const closeInitialUnsubscribe = () => {
-  //   setInitialUnsubscribeStatus('hidden');
-  // };
+  const closeInitialUnsubscribe = () => {
+    setInitialUnsubscribeStatus('hidden');
+  };
 
   useEffect(() => {
     if (
@@ -103,7 +103,7 @@ const EmailSettingPage = () => {
         {initialUnsubscribeStatus && initialUnsubscribeStatus !== 'loading' && (
           <StyledCampaignConsentForm
             trackEventName="Unsubcribed from unsubscribe link flow"
-            // runOnSave={closeInitialUnsubscribe}
+            runOnSave={closeInitialUnsubscribe}
           />
         )}
       </div>
