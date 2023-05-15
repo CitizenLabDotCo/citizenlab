@@ -1,31 +1,23 @@
 // Libraries
-import React, { PureComponent, FormEvent } from 'react';
-import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
-import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+import React, { FormEvent, useEffect, useState } from 'react';
+import { Subscription, combineLatest, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import moment, { Moment } from 'moment';
 import { get, isEmpty } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
-import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Services
-import { localeStream } from 'services/locale';
 import {
   phaseFilesStream,
   addPhaseFile,
   deletePhaseFile,
 } from 'services/phaseFiles';
 import {
-  phaseStream,
   updatePhase,
   addPhase,
-  IPhase,
   IUpdatedPhaseProperties,
 } from 'services/phases';
 import eventEmitter from 'utils/eventEmitter';
-
-// Utils
-import shallowCompare from 'utils/shallowCompare';
 
 // Components
 import { Label } from '@citizenlab/cl2-component-library';
@@ -41,306 +33,199 @@ import ParticipationContext, {
 import FileUploader from 'components/UI/FileUploader';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
 
 // Typings
-import { CLError, Locale, UploadFile, Multiloc } from 'typings';
+import { CLError, UploadFile, Multiloc } from 'typings';
 
 // Resources
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import { FileType } from 'components/UI/FileUploader/FileDisplay';
+import { useParams } from 'react-router-dom';
+import usePhases from 'hooks/usePhases';
+import { isNilOrError } from 'utils/helperUtils';
+import usePhase, { TPhase } from 'hooks/usePhase';
 
 const PhaseForm = styled.form``;
+type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
-interface IParams {
-  projectId: string | null;
-  id: string | null;
-}
+const AdminProjectTimelineEdit = () => {
+  const { projectId, id: phaseId } = useParams() as {
+    projectId: string;
+    id?: string;
+  };
+  const phase = usePhase(phaseId || null);
+  const phases = usePhases(projectId);
+  const [errors, setErrors] = useState<{
+    [fieldName: string]: CLError[];
+  } | null>(null);
+  const [processing, setProcessing] = useState<boolean>(false);
+  const [inStatePhaseFiles, setInStatePhaseFiles] = useState<FileType[]>([]);
+  const [phaseFilesToRemove, setPhaseFilesToRemove] = useState<FileType[]>([]);
+  const [submitState, setSubmitState] = useState<SubmitStateType>('disabled');
+  const [attributeDiff, setAttributeDiff] = useState<IUpdatedPhaseProperties>(
+    {}
+  );
 
-interface DataProps {
-  phases: GetPhasesChildProps;
-}
+  useEffect(() => {
+    if (phaseId) {
+      const subscriptions: Subscription[] = [
+        phaseFilesStream(phaseId)
+          .observable.pipe(
+            switchMap((phaseFiles) => {
+              if (phaseFiles && phaseFiles.data && phaseFiles.data.length > 0) {
+                return combineLatest(
+                  phaseFiles.data.map((phaseFile) => {
+                    const {
+                      id,
+                      attributes: {
+                        name,
+                        size,
+                        file: { url },
+                      },
+                    } = phaseFile;
 
-interface InputProps {}
-
-interface Props extends DataProps, InputProps {}
-
-interface State {
-  locale: Locale | null;
-  phase: IPhase | null;
-  presentationMode: 'map' | 'card';
-  attributeDiff: IUpdatedPhaseProperties;
-  errors: { [fieldName: string]: CLError[] } | null;
-  processing: boolean;
-  saved: boolean;
-  loaded: boolean;
-  inStatePhaseFiles: FileType[];
-  phaseFilesToRemove: FileType[];
-  submitState: 'disabled' | 'enabled' | 'error' | 'success';
-}
-
-class AdminProjectTimelineEdit extends PureComponent<
-  Props & WrappedComponentProps & WithRouterProps,
-  State
-> {
-  params$: BehaviorSubject<IParams | null>;
-  subscriptions: Subscription[];
-
-  constructor(props: Props & WrappedComponentProps & WithRouterProps) {
-    super(props);
-    this.state = {
-      locale: null,
-      phase: null,
-      presentationMode: 'card',
-      attributeDiff: {},
-      errors: null,
-      processing: false,
-      saved: false,
-      loaded: false,
-      inStatePhaseFiles: [],
-      phaseFilesToRemove: [],
-      submitState: 'disabled',
-    };
-    this.subscriptions = [];
-    this.params$ = new BehaviorSubject(null);
-  }
-
-  componentDidMount() {
-    const { projectId, id } = this.props.params;
-
-    this.params$.next({ projectId, id });
-
-    this.subscriptions = [
-      this.params$
-        .pipe(
-          distinctUntilChanged(shallowCompare),
-          switchMap((params: IParams) => {
-            const { id } = params;
-            const locale$ = localeStream().observable;
-            const phase$ = id ? phaseStream(id).observable : of(null);
-            return combineLatest([locale$, phase$]);
-          })
-        )
-        .subscribe(([locale, phase]) => {
-          this.setState({
-            locale,
-            phase,
-            loaded: true,
-          });
-        }),
-
-      this.params$
-        .pipe(
-          distinctUntilChanged(shallowCompare),
-          switchMap((params: IParams) => {
-            return params.id
-              ? phaseFilesStream(params.id).observable.pipe(
-                  switchMap((phaseFiles) => {
-                    if (
-                      phaseFiles &&
-                      phaseFiles.data &&
-                      phaseFiles.data.length > 0
-                    ) {
-                      return combineLatest(
-                        phaseFiles.data.map((phaseFile) => {
-                          const {
-                            id,
-                            attributes: {
-                              name,
-                              size,
-                              file: { url },
-                            },
-                          } = phaseFile;
-
-                          return of({
-                            id,
-                            url,
-                            name,
-                            size,
-                            remote: true,
-                          });
-                        })
-                      );
-                    }
-
-                    return of([]);
+                    return of({
+                      id,
+                      url,
+                      name,
+                      size,
+                      remote: true,
+                    });
                   })
-                )
-              : of([]);
-          })
-        )
-        .subscribe((phaseFiles) => {
-          this.setState({ inStatePhaseFiles: phaseFiles as FileType[] });
-        }),
-    ];
-  }
+                );
+              }
+              return of([]);
+            })
+          )
+          .subscribe((phaseFiles) => {
+            setInStatePhaseFiles(phaseFiles as FileType[]);
+          }),
+      ];
 
-  componentDidUpdate() {
-    const { projectId, id } = this.props.params;
-    this.params$.next({ projectId, id });
-  }
+      return () => {
+        subscriptions.forEach((subscription) => subscription.unsubscribe());
+      };
+    }
+    return;
+  }, [phaseId, projectId]);
 
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  handleTitleMultilocOnChange = (title_multiloc: Multiloc) => {
-    this.setState(({ attributeDiff }) => ({
-      submitState: 'enabled',
-      attributeDiff: {
-        ...attributeDiff,
-        title_multiloc,
-      },
-    }));
+  const handleTitleMultilocOnChange = (title_multiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      title_multiloc,
+    });
   };
 
-  handleEditorOnChange = (description_multiloc: Multiloc) => {
-    this.setState(({ attributeDiff }) => ({
-      submitState: 'enabled',
-      attributeDiff: {
-        ...attributeDiff,
-        description_multiloc,
-      },
-    }));
+  const handleEditorOnChange = (description_multiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      description_multiloc,
+    });
   };
 
-  handleIdeasDisplayChange = (presentationMode: 'map' | 'card') => {
-    this.setState(({ attributeDiff }) => ({
-      presentationMode,
-      submitState: 'enabled',
-      attributeDiff: {
-        ...attributeDiff,
-        presentation_mode: presentationMode,
-      },
-    }));
-  };
-
-  handleDateUpdate = ({
+  const handleDateUpdate = ({
     startDate,
     endDate,
   }: {
     startDate: Moment;
     endDate: Moment;
   }) => {
-    this.setState(({ attributeDiff }) => ({
-      submitState: 'enabled',
-      attributeDiff: {
-        ...attributeDiff,
-        start_at: startDate ? startDate.locale('en').format('YYYY-MM-DD') : '',
-        end_at: endDate ? endDate.locale('en').format('YYYY-MM-DD') : '',
-      },
-    }));
-  };
-
-  handlePhaseFileOnAdd = (newFile: UploadFile) => {
-    this.setState((prevState) => {
-      const modifiedNewFile = {
-        name: newFile.name || newFile.filename,
-        size: newFile.size,
-        remote: false,
-        base64: newFile.base64,
-      };
-
-      const isDuplicate = prevState.inStatePhaseFiles.some((file) => {
-        if (file.base64 && newFile.base64) {
-          return file.base64 === newFile.base64;
-        }
-        return file.name === newFile.name;
-      });
-      const inStatePhaseFiles = isDuplicate
-        ? prevState.inStatePhaseFiles
-        : [...(prevState.inStatePhaseFiles || []), modifiedNewFile];
-      const submitState = isDuplicate ? prevState.submitState : 'enabled';
-
-      return {
-        inStatePhaseFiles,
-        submitState,
-      };
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      start_at: startDate ? startDate.locale('en').format('YYYY-MM-DD') : '',
+      end_at: endDate ? endDate.locale('en').format('YYYY-MM-DD') : '',
     });
   };
 
-  handlePhaseFileOnRemove = (fileToRemove: FileType) => {
-    this.setState((prevState) => {
-      const inStatePhaseFiles = prevState.inStatePhaseFiles.filter(
-        (file) => file.name !== fileToRemove.name
-      );
-      const phaseFilesToRemove = [
-        ...(prevState.phaseFilesToRemove || []),
-        fileToRemove,
-      ];
+  const handlePhaseFileOnAdd = (newFile: UploadFile) => {
+    const modifiedNewFile = {
+      name: newFile.name || newFile.filename,
+      size: newFile.size,
+      remote: false,
+      base64: newFile.base64,
+    };
 
-      return {
-        inStatePhaseFiles,
-        phaseFilesToRemove,
-        submitState: 'enabled',
-      };
+    const isDuplicate = inStatePhaseFiles.some((file) => {
+      if (file.base64 && newFile.base64) {
+        return file.base64 === newFile.base64;
+      }
+      return file.name === newFile.name;
     });
+
+    setInStatePhaseFiles(
+      isDuplicate
+        ? inStatePhaseFiles
+        : [...(inStatePhaseFiles || []), modifiedNewFile]
+    );
+    setSubmitState(isDuplicate ? submitState : 'enabled');
   };
 
-  handleOnSubmit = async (event: FormEvent<any>) => {
+  const handlePhaseFileOnRemove = (fileToRemove: FileType) => {
+    setInStatePhaseFiles(
+      inStatePhaseFiles.filter((file) => file.name !== fileToRemove.name)
+    );
+    setPhaseFilesToRemove([...(phaseFilesToRemove || []), fileToRemove]);
+    setSubmitState('enabled');
+  };
+
+  const handleOnSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
     eventEmitter.emit('getParticipationContext');
   };
 
-  getAttributeDiff = (
+  const getAttributeDiff = (
     participationContextConfig: IParticipationContextConfig
   ) => {
-    const attributeDiff: IUpdatedPhaseProperties = {
-      ...this.state.attributeDiff,
+    return {
+      ...attributeDiff,
       ...participationContextConfig,
     };
-
-    return attributeDiff;
   };
 
-  handleParticipationContextOnChange = (
+  const handleParticipationContextOnChange = (
     participationContextConfig: IParticipationContextConfig
   ) => {
-    this.setState({
-      submitState: 'enabled',
-      attributeDiff: this.getAttributeDiff(participationContextConfig),
-    });
+    setSubmitState('enabled');
+    setAttributeDiff(getAttributeDiff(participationContextConfig));
   };
 
-  handleParticipationContextOnSubmit = (
+  const handleParticipationContextOnSubmit = (
     participationContextConfig: IParticipationContextConfig
   ) => {
-    const { phase } = this.state;
-    const { projectId } = this.props.params;
-    const attributeDiff = this.getAttributeDiff(participationContextConfig);
-    this.save(projectId, phase, attributeDiff);
+    const attributeDiff = getAttributeDiff(participationContextConfig);
+    save(projectId, phase, attributeDiff);
   };
 
-  save = async (
+  const save = async (
     projectId: string | null,
-    phase: IPhase | null,
+    phase: TPhase | null,
     attributeDiff: IUpdatedPhaseProperties
   ) => {
-    if (!isEmpty(attributeDiff) && !this.state.processing) {
+    if (!isEmpty(attributeDiff) && !processing) {
       try {
-        const { inStatePhaseFiles, phaseFilesToRemove } = this.state;
-        let phaseResponse = phase;
+        let phaseResponse: TPhase;
+        phaseResponse = phase;
         let redirect = false;
-
-        this.setState({ processing: true });
-
+        setProcessing(true);
         if (!isEmpty(attributeDiff)) {
-          if (phase) {
-            phaseResponse = await updatePhase(phase.data.id, attributeDiff);
-            this.setState({ attributeDiff: {} });
+          if (!isNilOrError(phase)) {
+            phaseResponse = (await updatePhase(phase.id, attributeDiff)).data;
+            setAttributeDiff({});
           } else if (projectId) {
-            phaseResponse = await addPhase(projectId, attributeDiff);
+            phaseResponse = (await addPhase(projectId, attributeDiff)).data;
             redirect = true;
           }
         }
 
-        if (phaseResponse) {
-          const phaseId = phaseResponse.data.id;
+        if (!isNilOrError(phaseResponse)) {
+          const phaseId = phaseResponse.id;
           const filesToAddPromises = inStatePhaseFiles
             .filter((file): file is UploadFile => !file.remote)
             .map((file) => addPhaseFile(phaseId, file.base64, file.name));
@@ -354,41 +239,35 @@ class AdminProjectTimelineEdit extends PureComponent<
           ] as Promise<any>[]);
         }
 
-        this.setState({
-          phaseFilesToRemove: [],
-          processing: false,
-          saved: true,
-          errors: null,
-          submitState: 'success',
-        });
+        setPhaseFilesToRemove([]);
+        setProcessing(false);
+        setErrors(null);
+        setSubmitState('success');
 
         if (redirect) {
           clHistory.push(`/admin/projects/${projectId}/timeline/`);
         }
       } catch (errors) {
-        this.setState({
-          errors: get(errors, 'json.errors', null),
-          processing: false,
-          saved: false,
-          submitState: 'error',
-        });
+        setErrors(get(errors, 'json.errors', null));
+        setProcessing(false);
+        setSubmitState('error');
       }
     }
   };
 
-  quillMultilocLabel = (<FormattedMessage {...messages.descriptionLabel} />);
+  const quillMultilocLabel = (
+    <FormattedMessage {...messages.descriptionLabel} />
+  );
 
-  getStartDate = () => {
-    const { phase, attributeDiff } = this.state;
-    const { phases } = this.props;
-    const phaseAttrs = phase
-      ? { ...phase.data.attributes, ...attributeDiff }
+  const getStartDate = () => {
+    const phaseAttrs = !isNilOrError(phase)
+      ? { ...phase.attributes, ...attributeDiff }
       : { ...attributeDiff };
     let startDate: Moment | null = null;
 
     // If this is a new phase
     if (!phase) {
-      const previousPhase = phases && phases[phases.length - 1];
+      const previousPhase = !isNilOrError(phases) && phases[phases.length - 1];
       const previousPhaseEndDate = previousPhase
         ? moment(previousPhase.attributes.end_at)
         : null;
@@ -415,132 +294,113 @@ class AdminProjectTimelineEdit extends PureComponent<
     return startDate;
   };
 
-  render() {
-    const { loaded } = this.state;
+  const phaseAttrs = !isNilOrError(phase)
+    ? { ...phase.attributes, ...attributeDiff }
+    : { ...attributeDiff };
+  const startDate = getStartDate();
+  const endDate = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
 
-    if (loaded) {
-      const {
-        errors,
-        phase,
-        attributeDiff,
-        processing,
-        inStatePhaseFiles,
-        submitState,
-      } = this.state;
-      const phaseAttrs = phase
-        ? { ...phase.data.attributes, ...attributeDiff }
-        : { ...attributeDiff };
-      const startDate = this.getStartDate();
-      const endDate = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
+  return (
+    <>
+      <SectionTitle>
+        {phase && <FormattedMessage {...messages.editPhaseTitle} />}
+        {!phase && <FormattedMessage {...messages.newPhaseTitle} />}
+      </SectionTitle>
 
-      return (
-        <>
-          <SectionTitle>
-            {phase && <FormattedMessage {...messages.editPhaseTitle} />}
-            {!phase && <FormattedMessage {...messages.newPhaseTitle} />}
-          </SectionTitle>
-
-          <PhaseForm onSubmit={this.handleOnSubmit}>
-            <Section>
-              <SectionField>
-                <InputMultilocWithLocaleSwitcher
-                  id="title"
-                  label={<FormattedMessage {...messages.titleLabel} />}
-                  type="text"
-                  valueMultiloc={phaseAttrs.title_multiloc}
-                  onChange={this.handleTitleMultilocOnChange}
-                />
-                <Error apiErrors={errors && errors.title_multiloc} />
-              </SectionField>
-
-              <SectionField>
-                <ParticipationContext
-                  phase={phase}
-                  onSubmit={this.handleParticipationContextOnSubmit}
-                  onChange={this.handleParticipationContextOnChange}
-                  apiErrors={errors}
-                />
-              </SectionField>
-
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.datesLabel} />
-                </Label>
-                <DateRangePicker
-                  startDateId={'startDate'}
-                  endDateId={'endDate'}
-                  startDate={startDate}
-                  endDate={endDate}
-                  onDatesChange={this.handleDateUpdate}
-                />
-                <Error apiErrors={errors && errors.start_at} />
-                <Error apiErrors={errors && errors.end_at} />
-              </SectionField>
-
-              <SectionField className="fullWidth">
-                <QuillMultilocWithLocaleSwitcher
-                  id="description"
-                  label={this.quillMultilocLabel}
-                  valueMultiloc={phaseAttrs.description_multiloc}
-                  onChange={this.handleEditorOnChange}
-                  withCTAButton
-                />
-                <Error apiErrors={errors && errors.description_multiloc} />
-              </SectionField>
-
-              <SectionField>
-                <FileUploader
-                  id="project-timeline-edit-form-file-uploader"
-                  onFileAdd={this.handlePhaseFileOnAdd}
-                  onFileRemove={this.handlePhaseFileOnRemove}
-                  files={inStatePhaseFiles}
-                  apiErrors={errors}
-                />
-              </SectionField>
-
-              {errors && errors.project && (
-                <SectionField>
-                  <Error apiErrors={errors.project} />
-                </SectionField>
-              )}
-              {errors && errors.base && (
-                <SectionField>
-                  <Error apiErrors={errors.base} />
-                </SectionField>
-              )}
-            </Section>
-
-            <SubmitWrapper
-              loading={processing}
-              status={submitState}
-              messages={{
-                buttonSave: messages.saveLabel,
-                buttonSuccess: messages.saveSuccessLabel,
-                messageError: messages.saveErrorMessage,
-                messageSuccess: messages.saveSuccessMessage,
-              }}
+      <PhaseForm onSubmit={handleOnSubmit}>
+        <Section>
+          <SectionField>
+            <InputMultilocWithLocaleSwitcher
+              id="title"
+              label={<FormattedMessage {...messages.titleLabel} />}
+              type="text"
+              valueMultiloc={phaseAttrs.title_multiloc}
+              onChange={handleTitleMultilocOnChange}
             />
-          </PhaseForm>
-        </>
-      );
-    }
+            <Error apiErrors={errors && errors.title_multiloc} />
+          </SectionField>
+          <SectionField>
+            {/* TODO: After ParticipationContext refactor, it doesn't refetch phase service anymore
+            This caused a bug where phase data was not being used after fetching. This is a temporary fix.
+            ParticipationContext needs to be refactored to functional component. */}
+            {!isNilOrError(phase) && (
+              <ParticipationContext
+                phase={{ data: phase }}
+                onSubmit={handleParticipationContextOnSubmit}
+                onChange={handleParticipationContextOnChange}
+                apiErrors={errors}
+              />
+            )}
+            {!phase && (
+              <ParticipationContext
+                phase={undefined}
+                onSubmit={handleParticipationContextOnSubmit}
+                onChange={handleParticipationContextOnChange}
+                apiErrors={errors}
+              />
+            )}
+          </SectionField>
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.datesLabel} />
+            </Label>
+            <DateRangePicker
+              startDateId={'startDate'}
+              endDateId={'endDate'}
+              startDate={startDate}
+              endDate={endDate}
+              onDatesChange={handleDateUpdate}
+            />
+            <Error apiErrors={errors && errors.start_at} />
+            <Error apiErrors={errors && errors.end_at} />
+          </SectionField>
 
-    return null;
-  }
-}
+          <SectionField className="fullWidth">
+            <QuillMultilocWithLocaleSwitcher
+              id="description"
+              label={quillMultilocLabel}
+              valueMultiloc={phaseAttrs.description_multiloc}
+              onChange={handleEditorOnChange}
+              withCTAButton
+            />
+            <Error apiErrors={errors && errors.description_multiloc} />
+          </SectionField>
 
-const AdminProjectTimelineEditWithHOCs = injectIntl(AdminProjectTimelineEdit);
+          <SectionField>
+            <FileUploader
+              id="project-timeline-edit-form-file-uploader"
+              onFileAdd={handlePhaseFileOnAdd}
+              onFileRemove={handlePhaseFileOnRemove}
+              files={inStatePhaseFiles}
+              apiErrors={errors}
+            />
+          </SectionField>
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  phases: ({ params, render }) => (
-    <GetPhases projectId={params.projectId}>{render}</GetPhases>
-  ),
-});
+          {errors && errors.project && (
+            <SectionField>
+              <Error apiErrors={errors.project} />
+            </SectionField>
+          )}
+          {errors && errors.base && (
+            <SectionField>
+              <Error apiErrors={errors.base} />
+            </SectionField>
+          )}
+        </Section>
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <AdminProjectTimelineEditWithHOCs {...dataProps} {...inputProps} />
-    )}
-  </Data>
-));
+        <SubmitWrapper
+          loading={processing}
+          status={submitState}
+          messages={{
+            buttonSave: messages.saveLabel,
+            buttonSuccess: messages.saveSuccessLabel,
+            messageError: messages.saveErrorMessage,
+            messageSuccess: messages.saveSuccessMessage,
+          }}
+        />
+      </PhaseForm>
+    </>
+  );
+};
+
+export default AdminProjectTimelineEdit;

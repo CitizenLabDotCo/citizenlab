@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '~> 6.1'
   s.add_dependency 'smstools', '~> 0.2.2'
-  s.add_dependency 'twilio-ruby', '~> 5.65.1'
+  s.add_dependency 'twilio-ruby', '~> 5.77.0'
 
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'
