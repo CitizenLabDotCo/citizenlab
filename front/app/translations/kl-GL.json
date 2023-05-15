@@ -1378,6 +1378,7 @@
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Confirm your current password and change to new password.",
   "app.containers.UsersEditPage.privacyReasons": "Nammineq inuuneqarnerit ernummatigigukku uani atuarsinnaavutit {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Nassiunneqarpoq ..",
+  "app.containers.UsersEditPage.provideFirstNameIfLastName": "First name is required when providing last name",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "Aninnginninni ..",
   "app.containers.UsersEditPage.submit": "Allannguutit toqqukkit",
   "app.containers.UsersEditPage.tooManyEmails": "Amerlavallaanik e-mailisisarpit? E-mailisiffigisartakkatit profilinnut inissiissutini aaqqissuussinnaavatit.",
