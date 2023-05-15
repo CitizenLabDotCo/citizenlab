@@ -2,11 +2,6 @@ import { useState, useEffect } from 'react';
 import { Observable, of } from 'rxjs';
 
 import {
-  phaseFilesStream,
-  IPhaseFileData,
-  IPhaseFiles,
-} from 'services/phaseFiles';
-import {
   pageFilesStream,
   ICustomPageFileData,
   ICustomPageFiles,
@@ -14,11 +9,11 @@ import {
 
 import { isNilOrError } from 'utils/helperUtils';
 
-export type ResourceType = 'phase' | 'page';
+export type ResourceType = 'page';
 
-export type TResourceFileData = IPhaseFileData | ICustomPageFileData;
+export type TResourceFileData = ICustomPageFileData;
 
-export type TResourceFiles = IPhaseFiles | ICustomPageFiles;
+export type TResourceFiles = ICustomPageFiles;
 
 interface Props {
   resourceId: string | null;
@@ -33,8 +28,6 @@ export default function useResourceFiles({ resourceId, resourceType }: Props) {
   useEffect(() => {
     const getResourceStream = (resourceType: ResourceType) => {
       switch (resourceType) {
-        case 'phase':
-          return phaseFilesStream;
         case 'page':
           return pageFilesStream;
       }
