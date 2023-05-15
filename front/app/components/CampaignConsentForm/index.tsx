@@ -88,13 +88,13 @@ const CampaignConsentForm = ({
         ]);
       setCampaignConsents(Object.fromEntries(campaignConsentsEntries));
     }
-  }, [originalCampaignConsents]);
+  }, [originalCampaignConsents, locale, tenantLocales]);
 
   useEffect(() => {
     if (loading && !!showFeedback) {
       setLoading(false);
     }
-  }, [showFeedback]);
+  }, [showFeedback, loading]);
 
   useEffect(() => {
     setGroupedCampaignConsents(groupConsentCampaigns(campaignConsents));
@@ -115,7 +115,7 @@ const CampaignConsentForm = ({
   const toggleGroup = (contentType: string) => (e) => {
     e.stopPropagation();
     const group = groupedCampaignConsents[contentType];
-    const newGroupValue = group.group_consented == false ? true : false;
+    const newGroupValue = group.group_consented === false ? true : false;
     const newConsentValueEntries = group.children.map(
       (consent: CampaignConsentChildren): [string, CampaignConsentChildren] => [
         consent.id,

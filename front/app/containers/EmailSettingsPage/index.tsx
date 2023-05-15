@@ -88,7 +88,7 @@ const EmailSettingPage = () => {
         }
       );
     }
-  });
+  }, [unsubscriptionToken, updateCampaignConsents, campaignId]);
 
   if (isNilOrError(campaignConsents)) return null;
 

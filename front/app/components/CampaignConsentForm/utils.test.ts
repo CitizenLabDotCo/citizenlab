@@ -1,22 +1,22 @@
 import { groupConsentCampaigns } from './utils';
 
 const campaignsConsentData = {
-  '1': {
+  1: {
     consented: false,
     content_type: 'A',
     campaign_type_description: '1a',
   },
-  '2': {
+  2: {
     consented: true,
     content_type: 'B',
     campaign_type_description: '2b',
   },
-  '3': {
+  3: {
     consented: true,
     content_type: 'C',
     campaign_type_description: '3c',
   },
-  '4': {
+  4: {
     consented: false,
     content_type: 'B',
     campaign_type_description: '4b',

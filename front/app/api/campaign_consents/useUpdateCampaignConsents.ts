@@ -13,7 +13,7 @@ const updateCampaignConsents = async ({
       fetcher<ICampaignConsent>({
         path: `/consents/${campaignConsentId}${
           typeof unsubscriptionToken === 'string'
-            ? '?unsubscription_token=' + unsubscriptionToken
+            ? `?unsubscription_token=${unsubscriptionToken}`
             : ''
         }`,
         action: 'patch',

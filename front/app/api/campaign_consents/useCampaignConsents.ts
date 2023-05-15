@@ -8,7 +8,7 @@ const fetchCampaignConsents = (unsubscriptionToken) =>
   fetcher<ICampaignConsents>({
     path: `/consents${
       typeof unsubscriptionToken === 'string'
-        ? '?unsubscription_token=' + unsubscriptionToken
+        ? `?unsubscription_token=${unsubscriptionToken}`
         : ''
     }`,
     action: 'get',
