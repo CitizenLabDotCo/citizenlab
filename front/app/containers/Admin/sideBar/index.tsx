@@ -31,11 +31,10 @@ import Outlet from 'components/Outlet';
 import { InsertConfigurationOptions } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 
-import defaultNavItems from './navItems';
+import defaultNavItems, { NavItem } from './navItems';
 
 // Hooks
 import { useLocation } from 'react-router-dom';
-import { NavItem } from './navItems';
 
 const Menu = styled.div`
   z-index: 10;

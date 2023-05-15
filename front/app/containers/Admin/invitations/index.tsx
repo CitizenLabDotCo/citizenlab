@@ -1,10 +1,9 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
-import { Outlet as RouterOutlet } from 'react-router-dom';
 import GoBackButton from 'components/UI/GoBackButton';
 import { Box } from '@citizenlab/cl2-component-library';
 
