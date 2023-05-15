@@ -859,47 +859,47 @@ describe PermissionsService do
           user.add_role 'admin'
           user.reset_confirmation_and_counts
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: false,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'satisfied',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {
-                                                                     'birthyear' => 'satisfied'
-                                                                   },
-                                                                   special: {
-                                                                     password: 'satisfied',
-                                                                     confirmation: 'require',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'require'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'satisfied'
+              },
+              special: {
+                password: 'satisfied',
+                confirmation: 'require',
+                verification: 'dont_ask',
+                group_membership: 'require'
+              }
+            }
+          })
         end
 
         it 'does not permit a confirmed admin' do
           user.add_role 'admin'
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: false,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'satisfied',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {
-                                                                     'birthyear' => 'satisfied'
-                                                                   },
-                                                                   special: {
-                                                                     password: 'satisfied',
-                                                                     confirmation: 'satisfied',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'require'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'satisfied'
+              },
+              special: {
+                password: 'satisfied',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'require'
+              }
+            }
+          })
         end
       end
 
