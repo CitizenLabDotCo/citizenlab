@@ -320,7 +320,7 @@ const AdminProjectsProjectGeneral = () => {
           croppedProjectCardBase64 && latestProjectId
             ? addProjectImage({
                 projectId: latestProjectId,
-                image: croppedProjectCardBase64,
+                image: { image: croppedProjectCardBase64 },
               })
             : null;
 
