@@ -205,7 +205,6 @@ const CreateProject = memo<Props & WrappedComponentProps>(
         trackEventByName(tracks.createProjectSectionExpanded);
       }
 
-      console.log('expanding');
       setExpanded(!expanded);
     }, [expanded]);
 
@@ -221,7 +220,6 @@ const CreateProject = memo<Props & WrappedComponentProps>(
 
     const handleData = (data: InsertConfigurationOptions<ITabItem>) =>
       setTabs((tabs) => {
-        console.log('setting tabs');
         return insertConfiguration(data)(tabs);
       });
 
