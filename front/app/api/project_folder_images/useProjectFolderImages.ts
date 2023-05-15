@@ -3,29 +3,26 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import {
   IProjectFolderImages,
-  IGetImagesQueryParameters,
   ProjectFolderImagesKeys,
+  IQueryParameters,
 } from './types';
 import projectFolderImagesKeys from './keys';
 
-const fetchProjectFolderImages = (queryParameters: IGetImagesQueryParameters) =>
+const fetchProjectFolderImages = ({ folderId }: IQueryParameters) =>
   fetcher<IProjectFolderImages>({
-    path: `/project_folders/${queryParameters.folderId}/images`,
+    path: `/project_folders/${folderId}/images`,
     action: 'get',
-    queryParams: {
-      ...queryParameters.streamParams,
-    },
   });
 
-const useProjectFolderImages = (queryParams: IGetImagesQueryParameters) => {
+const useProjectFolderImages = ({ folderId }: IQueryParameters) => {
   return useQuery<
     IProjectFolderImages,
     CLErrors,
     IProjectFolderImages,
     ProjectFolderImagesKeys
   >({
-    queryKey: projectFolderImagesKeys.list(queryParams),
-    queryFn: () => fetchProjectFolderImages(queryParams),
+    queryKey: projectFolderImagesKeys.list({ folderId }),
+    queryFn: () => fetchProjectFolderImages({ folderId }),
   });
 };
 
