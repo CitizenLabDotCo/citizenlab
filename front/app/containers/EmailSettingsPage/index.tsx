@@ -13,17 +13,16 @@ import { colors } from 'utils/styleUtils';
 import { Multiloc } from 'typings';
 
 // hooks
-import useCampaignConsents from 'api/campaign_consents/useCampaignConsents';
 import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignConsents';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 
 // routing
 import { useSearchParams } from 'react-router-dom';
 
 const Container = styled.div`
   width: 100%;
+  height: calc(100vh - 78px - 78px);
   background-color: ${colors.background};
   display: flex;
   flex-direction: column;
@@ -53,7 +52,6 @@ const EmailSettingPage = () => {
   const campaignId = searchParams.get('campaign_id');
 
   const { mutate: updateCampaignConsents } = useUpdateCampaignConsents();
-  const { data: campaignConsents } = useCampaignConsents(unsubscriptionToken);
 
   const closeInitialUnsubscribe = () => {
     setInitialUnsubscribeStatus('hidden');
@@ -87,8 +85,6 @@ const EmailSettingPage = () => {
       );
     }
   }, [unsubscriptionToken, updateCampaignConsents, campaignId]);
-
-  if (isNilOrError(campaignConsents)) return null;
 
   return (
     <Container id="e2e-email-settings-page">

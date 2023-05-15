@@ -41,6 +41,9 @@ import {
 // analytics
 import { trackEventByName } from 'utils/analytics';
 
+// routing
+import { useSearchParams } from 'react-router-dom';
+
 type Props = {
   trackEventName?: string;
   runOnSave?: () => void;
@@ -52,8 +55,11 @@ const CampaignConsentForm = ({
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
   const { formatMessage } = useIntl();
+  const [searchParams, _] = useSearchParams();
+  const unsubscriptionToken = searchParams.get('unsubscription_token');
 
-  const { data: originalCampaignConsents } = useCampaignConsents();
+  const { data: originalCampaignConsents } =
+    useCampaignConsents(unsubscriptionToken);
   const { mutate: updateCampaignConsents } = useUpdateCampaignConsents();
 
   const [campaignConsents, setCampaignConsents] = useState<
