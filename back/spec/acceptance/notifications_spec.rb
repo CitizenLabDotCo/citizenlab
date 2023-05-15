@@ -82,13 +82,11 @@ resource 'Notifications' do
 
     example_request 'Mark one notifications as read' do
       explanation 'Returns the notification'
-      expect(response_status).to eq 200
+      assert_status 200
 
       expect(notification1.reload.read_at).to be_nil
-
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :id)).to eq notification2.id
-      expect(json_response.dig(:data, :attributes, :read_at)).not_to be_nil
+      expect(response_data[:id]).to eq notification2.id
+      expect(response_data.dig(:attributes, :read_at)).not_to be_nil
     end
   end
 end
