@@ -7,7 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 
 interface Props {
   projectId: string;
@@ -15,10 +15,10 @@ interface Props {
 
 const DocumentAnnotation = ({ projectId }: Props) => {
   const authUser = useAuthUser();
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
 
   if (!isNilOrError(project)) {
-    const documentUrl = project.attributes.document_annotation_embed_url;
+    const documentUrl = project.data.attributes.document_annotation_embed_url;
     const email =
       !isNilOrError(authUser) && authUser.attributes.email
         ? authUser.attributes.email

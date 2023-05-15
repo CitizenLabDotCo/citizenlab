@@ -91,6 +91,7 @@ export interface IProjectAttributes {
   max_budget?: number | null;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
+  document_annotation_embed_url?: string | null;
   // MISMATCH: ordering doesn't seem to exist on real response
   // ordering: number;
   poll_anonymous?: boolean;

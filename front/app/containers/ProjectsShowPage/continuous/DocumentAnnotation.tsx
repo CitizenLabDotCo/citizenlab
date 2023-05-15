@@ -19,7 +19,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 // styling
 import { colors } from 'utils/styleUtils';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 
 interface Props {
   project: IProjectData;

@@ -14,7 +14,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 
 const Container = styled.div``;
 
