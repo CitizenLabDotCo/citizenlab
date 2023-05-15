@@ -11,7 +11,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // typings
-import { IUpdatedProjectProperties } from 'services/projects';
+import { IUpdatedProjectProperties } from 'api/projects/types';
 import { Multiloc, CLErrors } from 'typings';
 
 interface Props {

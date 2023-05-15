@@ -43,14 +43,13 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProjectFiles from 'api/project_files/useProjectFiles';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAddProject from 'api/projects/useAddProject';
 
 import {
   IUpdatedProjectProperties,
-  addProject,
-  updateProject,
   IProjectFormState,
-} from 'services/projects';
-import { IProjectData } from 'api/projects/types';
+  IProjectData,
+} from 'api/projects/types';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import useAddProjectFile from 'api/project_files/useAddProjectFile';
 import useDeleteProjectFile from 'api/project_files/useDeleteProjectFile';
@@ -74,6 +73,7 @@ import validateTitle from './utils/validateTitle';
 import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
+import useUpdateProject from 'api/projects/useUpdateProject';
 
 export const TIMEOUT = 350;
 
@@ -88,13 +88,18 @@ const AdminProjectsProjectGeneral = () => {
   const { data: project } = useProjectById(projectId);
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const appConfigLocales = useAppConfigurationLocales();
-  const { data: remoteProjectFiles } = useProjectFiles(projectId || null);
+
   const { data: remoteProjectImages } = useProjectImages(projectId || null);
   const { mutateAsync: addProjectImage } = useAddProjectImage();
   const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
+  const { mutateAsync: updateProject } = useUpdateProject();
+  const { mutateAsync: addProject } = useAddProject();
+
+  const { data: remoteProjectFiles } = useProjectFiles(projectId || null);
   const { mutateAsync: addProjectFile } = useAddProjectFile();
   const { mutateAsync: deleteProjectFile } = useDeleteProjectFile();
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
+
   const [processing, setProcessing] =
     useState<IProjectFormState['processing']>(false);
   const [apiErrors, setApiErrors] = useState({});
@@ -311,10 +316,13 @@ const AdminProjectsProjectGeneral = () => {
         setProcessing(true);
         if (!isEmpty(nextProjectAttributesDiff)) {
           if (latestProjectId) {
-            await updateProject(latestProjectId, nextProjectAttributesDiff);
+            await updateProject({
+              projectId: latestProjectId,
+              ...nextProjectAttributesDiff,
+            });
           } else {
-            const project = await addProject(nextProjectAttributesDiff);
-            latestProjectId = project.data.id;
+            const response = await addProject(nextProjectAttributesDiff);
+            latestProjectId = response.data.id;
             isNewProject = true;
           }
         }
