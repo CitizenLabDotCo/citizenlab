@@ -32,14 +32,14 @@ import {
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // hooks
-import useProjectFolderImages from 'hooks/useProjectFolderImages';
+import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 // services
 import {
   getCardImageUrl,
   CARD_IMAGE_ASPECT_RATIO,
-} from 'services/projectFolderImages';
+} from 'api/project_folder_images/types';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
@@ -299,9 +299,9 @@ export interface Props {
 const ProjectFolderCard = memo<Props>(
   ({ publication, size, layout, className }) => {
     const isSmallerThanPhone = useBreakpoint('phone');
-    const projectFolderImages = useProjectFolderImages(
-      publication.publicationId
-    );
+    const { data: projectFolderImages } = useProjectFolderImages({
+      folderId: publication.publicationId,
+    });
 
     const handleProjectCardOnClick = useCallback(
       (projectFolderId: string) => () => {
