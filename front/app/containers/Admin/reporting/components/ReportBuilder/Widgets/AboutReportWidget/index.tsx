@@ -15,7 +15,7 @@ import PageBreakBox from '../../../../../../../components/admin/ContentBuilder/W
 // hooks
 import useReport from 'hooks/useReport';
 import useUser from 'hooks/useUser';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
@@ -56,10 +56,10 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
     : `${user.attributes.first_name} ${user.attributes.last_name}`;
 
   // Project name & time period
-  const project = useProject({ projectId });
-  const projectName = isNilOrError(project)
+  const { data: project } = useProjectById(projectId);
+  const projectName = !project
     ? ''
-    : localize(project.attributes.title_multiloc);
+    : localize(project.data.attributes.title_multiloc);
 
   const projectPeriodString =
     startAt && endAt ? toPeriodString({ startAt, endAt }) : '';

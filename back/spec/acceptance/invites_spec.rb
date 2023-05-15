@@ -11,11 +11,7 @@ resource 'Invites' do
   end
 
   context 'when admin' do
-    before do
-      @admin = create(:admin)
-      token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+    before { admin_header_token }
 
     get 'web_api/v1/invites' do
       with_options scope: :page do
@@ -94,19 +90,15 @@ resource 'Invites' do
       let!(:invite_with_group) { create(:invite, invitee: create(:admin, manual_groups: create_list(:group, 2))) }
 
       example_request 'XLSX export' do
-        expect(status).to eq 200
+        assert_status 200
       end
 
-      describe do
-        before do
-          @user = create(:user)
-          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-          header 'Authorization', "Bearer #{token}"
-        end
+      describe 'when resident' do
+        before { resident_header_token }
 
-        example '[error] XLSX export by a normal user', document: false do
+        example '[error] XLSX expor', document: false do
           do_request
-          expect(status).to eq 401
+          assert_status 401
         end
       end
     end
@@ -329,7 +321,7 @@ resource 'Invites' do
   context 'When not authenticated' do
     post 'web_api/v1/invites/by_token/:token/accept' do
       with_options scope: :invite do
-        parameter :email, 'The email of the user. Required if not sepcified at creation of the invite', required: false
+        parameter :email, 'The email of the user. Required if not specified at creation of the invite', required: false
         parameter :first_name, 'The first name of the invitee. Required if not specified at creation of the invite.', required: false
         parameter :last_name, 'The last name of the invitee. Required if not specified at creation of the invite.', required: false
         parameter :password, 'The password of the invitee.', required: true
@@ -347,13 +339,13 @@ resource 'Invites' do
       let(:locale) { 'nl-NL' }
 
       example_request 'Accept an invite' do
-        expect(status).to eq(200)
+        assert_status(200)
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :accepted_at)).to be_present
         boulettos = json_response[:included].select { |inc| inc[:id] == invite.invitee.id }&.first
         expect(boulettos&.dig(:attributes, :last_name)).to eq('Boulettos')
         expect(boulettos&.dig(:attributes, :invite_status)).to eq('accepted')
-        expect(invite.reload.invitee.registration_completed_at).to be_nil # when no custom fields
+        expect(invite.reload.invitee.registration_completed_at).not_to be_nil
       end
 
       describe do
@@ -361,7 +353,7 @@ resource 'Invites' do
 
         example 'Accept an invite using different capitalization for the email', document: false do
           do_request
-          expect(status).to eq 200
+          assert_status 200
         end
       end
 

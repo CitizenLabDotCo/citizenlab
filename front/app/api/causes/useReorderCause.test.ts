@@ -8,7 +8,7 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*causes/:id';
+const apiPath = '*causes/:id/reorder';
 const server = setupServer(
   rest.patch(apiPath, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: causesData[0] }));

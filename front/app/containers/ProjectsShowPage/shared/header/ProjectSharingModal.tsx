@@ -7,7 +7,7 @@ import SharingButtons from 'components/Sharing/SharingButtons';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 
 // i18n
 import T from 'components/T';
@@ -28,7 +28,7 @@ interface Props {
 const ProjectSharingModal = memo<Props & WrappedComponentProps>(
   ({ projectId, className, opened, close, intl: { formatMessage } }) => {
     const authUser = useAuthUser();
-    const project = useProject({ projectId });
+    const { data: project } = useProjectById(projectId);
 
     const projectUrl = location.href;
     const utmParams = !isNilOrError(authUser)
@@ -46,7 +46,7 @@ const ProjectSharingModal = memo<Props & WrappedComponentProps>(
       close();
     }, [close]);
 
-    if (!isNilOrError(project)) {
+    if (project) {
       const url = window.location.href;
       return (
         <Modal
@@ -54,7 +54,7 @@ const ProjectSharingModal = memo<Props & WrappedComponentProps>(
           opened={opened}
           close={onClose}
           closeOnClickOutside={true}
-          header={<T value={project.attributes.title_multiloc} />}
+          header={<T value={project.data.attributes.title_multiloc} />}
         >
           <Box
             width="100%"
@@ -67,7 +67,10 @@ const ProjectSharingModal = memo<Props & WrappedComponentProps>(
           >
             {opened && (
               <>
-                <T value={project.attributes.title_multiloc} maxLength={50}>
+                <T
+                  value={project.data.attributes.title_multiloc}
+                  maxLength={50}
+                >
                   {(title) => {
                     return (
                       <SharingButtons

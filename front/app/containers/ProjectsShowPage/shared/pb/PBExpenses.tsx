@@ -37,7 +37,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useBasket from 'hooks/useBasket';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'hooks/usePhase';
 import useLocale from 'hooks/useLocale';
 
@@ -274,10 +274,9 @@ const PBExpenses = ({
   const [processing, setProcessing] = useState(false);
   const locale = useLocale();
   const { data: appConfiguration } = useAppConfiguration();
-  const project = useProject({
-    projectId:
-      participationContextType === 'project' ? participationContextId : null,
-  });
+  const { data: project } = useProjectById(
+    participationContextType === 'project' ? participationContextId : null
+  );
   const phase = usePhase(
     participationContextType === 'phase' ? participationContextId : null
   );
@@ -285,9 +284,7 @@ const PBExpenses = ({
     let basketId: string | null = null;
 
     if (participationContextType === 'project') {
-      basketId = !isNilOrError(project)
-        ? project.relationships.user_basket?.data?.id || null
-        : null;
+      basketId = project?.data.relationships.user_basket?.data?.id ?? null;
     } else {
       basketId = !isNilOrError(phase)
         ? phase.relationships.user_basket?.data?.id || null
@@ -339,12 +336,12 @@ const PBExpenses = ({
     let validationStatusMessage = '';
     let progressBarColor: 'green' | 'red' | '' = '';
 
-    if (participationContextType === 'project' && !isNilOrError(project)) {
-      if (typeof project.attributes.min_budget === 'number') {
-        minBudget = project.attributes.min_budget;
+    if (participationContextType === 'project' && project) {
+      if (typeof project.data.attributes.min_budget === 'number') {
+        minBudget = project.data.attributes.min_budget;
       }
-      if (typeof project.attributes.max_budget === 'number') {
-        maxBudget = project.attributes.max_budget;
+      if (typeof project.data.attributes.max_budget === 'number') {
+        maxBudget = project.data.attributes.max_budget;
       }
     } else if (participationContextType === 'phase' && !isNilOrError(phase)) {
       if (typeof phase.attributes.min_budget === 'number') {

@@ -14,7 +14,7 @@ import {
 } from 'components/smallForm';
 
 // services
-import { sendPasswordResetMail } from 'services/auth';
+import sendPasswordResetMail from 'api/authentication/reset_password/sendPasswordResetEmail';
 
 // utils
 import { isValidEmail } from 'utils/validate';

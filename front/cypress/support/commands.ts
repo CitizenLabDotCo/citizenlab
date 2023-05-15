@@ -109,11 +109,10 @@ export function login(email: string, password: string) {
   cy.get('#e2e-landing-page');
   cy.get('#e2e-navbar');
   cy.get('#e2e-navbar-login-menu-item').click();
-  cy.get('#e2e-sign-in-container');
+  cy.get('#e2e-authentication-modal');
   cy.get('#email').type(email);
   cy.get('#password').type(password);
   cy.get('#e2e-signin-password-submit-button').click();
-  cy.get('#e2e-sign-up-in-modal').should('not.exist');
   cy.get('#e2e-user-menu-container');
   cy.wait(500);
 }
@@ -219,26 +218,11 @@ function emailConfirmation(jwt: any) {
   });
 }
 
-function completeRegistration(jwt: any) {
-  return cy.request({
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
-    },
-    method: 'POST',
-    url: 'web_api/v1/users/complete_registration',
-    body: {
-      user: { custom_field_values: {} },
-    },
-  });
-}
-
 export function apiSignup(
   firstName: string,
   lastName: string,
   email: string,
-  password: string,
-  options?: { skipCustomFields: boolean }
+  password: string
 ) {
   let originalResponse: Cypress.Response<any>;
 
@@ -249,8 +233,7 @@ export function apiSignup(
       const jwt = response.body.jwt;
 
       return emailConfirmation(jwt).then(() => {
-        if (options?.skipCustomFields) return originalResponse;
-        return completeRegistration(jwt).then(() => originalResponse);
+        return originalResponse;
       });
     });
   });

@@ -42,8 +42,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   attribute :custom_field_values, if: proc { |object, params|
     view_private_attributes? object, params
   } do |object|
-    custom_field_values = CustomFieldService.remove_hidden_custom_fields(object.custom_field_values)
-    CustomFieldService.remove_disabled_custom_fields(custom_field_values)
+    CustomFieldService.remove_hidden_custom_fields(object.custom_field_values)
   end
 
   attribute :avatar, if: proc { |object|
@@ -77,10 +76,6 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   attribute :block_reason, if: proc { |object, params|
     view_private_attributes? object, params
   }
-
-  has_many :granted_permissions, record_type: :permission, serializer: WebApi::V1::PermissionSerializer do |_object, params|
-    params[:granted_permissions]
-  end
 
   def self.view_private_attributes?(object, params = {})
     Pundit.policy!(current_user(params), object).view_private_attributes?

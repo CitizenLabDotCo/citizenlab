@@ -139,7 +139,6 @@ RSpec/ExampleLength:
 
 Metrics/MethodLength:
   CountAsOne: ['array', 'hash', 'heredoc']
-  AllowedMethods: ['included', 'prepended', 'extended']
   Exclude:
   - '**/db/migrate/**/*'
 

@@ -74,7 +74,7 @@ sr-Cyrl:
       <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>What's a citizen's proposal?</h2> <p>As a resident of $|orgName| you can place your proposal on the agenda via this platform. These proposals are preferably concrete ideas that are linked to local policy and arise from a need, desire or dream. It can be your own proposal or a collaborative one. Maybe you'd like to change or improve an existing situation or start a new project.</p> <p>The involvement of $|orgName| in the implementation of your proposal must be both necessary and possible. In an ideal scenario, you're also available for further reflection or cooperation, but that is not an obligation. "Reducing the speed limit on the highway to 80 km/h" is therefore not a strong proposal, while "Turning the main street into a pedestrian area" is. So bring on your proposals! If more information is needed, you'll receive an update or reaction.</p><h2>Why post a proposal on this platform?</h2> <p>This is the official participation platform of $|orgName|, which offers the following benefits:</p> <ul> <li>$|orgName| is officially involved as this platform's owner, and actively monitors what happens here. When you post a proposal, the person in charge automatically receives a message. You don't have to contact them to make sure your proposal is taken into account.</li> <li>This platform has been developed specifically for official participatory actions, like citizens' proposals. Every element, from the user experience to the step-by-step approach, is built precisely for this purpose. When using traditional social media, your proposal could disappear into the overload of stimuli, and an ordinary e-mail quickly disappears into a full inbox.</li> <li>Your fellow citizens are also present on this platform. They can support and refine your proposal. The more creative your proposal is and the more support it manages to gather, the more chance it will be implemented!</li> </ul> <h2>How do you get started?</h2> <p>First, check whether your proposal meets the following criteria:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>What can you expect when your proposal reaches $|initiativesVotingThreshold| votes within $|initiativesDaysLimit| days?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>What happens to the proposals that do not receive $|initiativesVotingThreshold| votes on time? </h2> <p>That happens, but don't worry. Your proposal will remain on the platform. The status of your proposal will automatically change to 'Expired'. As a result, voting will no longer be possible. If you wish, you can choose to delete your own proposal at any time.</p>
   nav_bar_items:
     home:
-      title: Кућа
+      title: Почетна
     projects:
       title: Сви пројекти
     all_input:
@@ -239,3 +239,10 @@ sr-Cyrl:
       paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
       for_more_information: "За више информација о овоме, можете консултовати %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Можете се поново пријавити од %{date}"
+  user:
+    anon_first_name: "Корисник"
+  time:
+    am: am
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm

@@ -15,8 +15,7 @@ resource 'Groups' do
   context 'when authenticated' do
     before do
       @user = create(:admin, email: 'hello@citizenlab.co')
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for @user
     end
 
     get 'web_api/v1/groups' do
@@ -94,8 +93,8 @@ resource 'Groups' do
 
       describe do
         before do
-          create(:user, email: 'k@k.com', registration_completed_at: Time.now)
-          create(:user, email: 'kk@kk.com', registration_completed_at: nil)
+          create(:user, email: 'k@k.com')
+          create(:user, email: 'kk@kk.com').update!(registration_completed_at: nil)
         end
 
         let(:title_multiloc) { build(:group).title_multiloc }

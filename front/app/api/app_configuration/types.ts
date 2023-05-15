@@ -134,7 +134,6 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     verification_methods: string[];
   };
-  jsonforms_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
@@ -212,6 +211,7 @@ export interface IAppConfigurationSettings {
   visitors_dashboard?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
   permission_option_email_confirmation?: AppConfigurationFeature;
+  permissions_custom_fields?: AppConfigurationFeature;
   input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;

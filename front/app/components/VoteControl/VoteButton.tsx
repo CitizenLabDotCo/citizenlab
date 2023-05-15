@@ -12,7 +12,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import useIdeaById from 'api/ideas/useIdeaById';
 import { FormattedDate } from 'react-intl';
 import useLocalize from 'hooks/useLocalize';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { TVoteMode } from 'api/idea_votes/types';
 
@@ -330,7 +330,8 @@ const VoteButton = ({
   const projectId = !isNilOrError(idea)
     ? idea.data.relationships.project.data.id
     : null;
-  const project = useProject({ projectId });
+
+  const { data: project } = useProjectById(projectId);
   const localize = useLocalize();
 
   const getDisabledReasonMessage = (
@@ -353,6 +354,11 @@ const VoteButton = ({
         : messages.votingDisabledPhaseOver;
     } else if (disabledReason === 'not_permitted') {
       return messages.votingNotPermitted;
+    } else if (
+      (authUser && disabledReason === 'not_active') ||
+      disabledReason === 'missing_data'
+    ) {
+      return messages.completeProfileToVote;
     } else if (disabledReason === 'not_signed_in') {
       return messages.votingNotSignedIn;
     } else if (authUser && disabledReason === 'not_verified') {
@@ -395,7 +401,7 @@ const VoteButton = ({
         day="numeric"
       />
     ) : null;
-    const projectName = localize(project.attributes.title_multiloc);
+    const projectName = localize(project.data.attributes.title_multiloc);
     const buttonVoteModeIsActive = buttonVoteMode === userVoteMode;
 
     return (

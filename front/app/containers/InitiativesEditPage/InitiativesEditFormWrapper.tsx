@@ -7,7 +7,7 @@ import InitiativeForm, {
 
 // services
 import { Locale, Multiloc, UploadFile } from 'typings';
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

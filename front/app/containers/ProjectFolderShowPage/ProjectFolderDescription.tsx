@@ -8,7 +8,7 @@ import ReactResizeDetector from 'react-resize-detector';
 import Button from 'components/UI/Button';
 
 // services
-import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
+import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
 import { useWindowSize, Box } from '@citizenlab/cl2-component-library';
 
 // i18n
@@ -23,7 +23,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { media, fontSizes, isRtl, colors } from 'utils/styleUtils';
 
 // typings
-import { IProjectFolderData } from 'services/projectFolders';
+import { IProjectFolderData } from 'api/project_folders/types';
 
 const desktopCollapsedDescriptionMaxHeight = 99999;
 const mobileCollapsedDescriptionMaxHeight = 180;
@@ -110,7 +110,9 @@ interface Props {
 
 const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
   ({ projectFolder, className, intl: { formatMessage } }) => {
-    const projectFolderFiles = useProjectFolderFiles(projectFolder.id);
+    const { data: projectFolderFiles } = useProjectFolderFiles({
+      projectFolderId: projectFolder.id,
+    });
     const { windowWidth } = useWindowSize();
     const theme = useTheme();
 
@@ -215,8 +217,8 @@ const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
                 </CollapseButtonWrapper>
               )}
           </Description>
-          {!isNilOrError(projectFolderFiles) &&
-            projectFolderFiles &&
+          {projectFolderFiles &&
+            projectFolderFiles.data &&
             projectFolderFiles.data.length > 0 && (
               <Box mb="25px">
                 <FileAttachments files={projectFolderFiles.data} />

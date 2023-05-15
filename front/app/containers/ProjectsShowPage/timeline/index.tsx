@@ -27,7 +27,7 @@ import {
 import { selectedPhase$, selectPhase } from './events';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'hooks/usePhases';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 import useLocale from 'hooks/useLocale';
@@ -89,7 +89,7 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
   const { phaseNumber } = useParams() as {
     phaseNumber: string;
   };
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const phases = usePhases(projectId);
   const locale = useLocale();
   const windowSize = useWindowSize();
@@ -107,17 +107,6 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
       selectPhase(null);
     };
   }, []);
-
-  useEffect(() => {
-    if (
-      selectedPhase !== null &&
-      !isNilOrError(phases) &&
-      project &&
-      !isNilOrError(locale)
-    ) {
-      setPhaseURL(selectedPhase.id, currentPhase?.id, phases, project, locale);
-    }
-  }, [selectedPhase, phases, project, locale, currentPhase]);
 
   useEffect(() => {
     if (!isNilOrError(phases) && phases.length > 0) {
@@ -140,6 +129,23 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
     setSelectedPhase(phase);
   };
 
+  useEffect(() => {
+    if (
+      selectedPhase !== null &&
+      !isNilOrError(phases) &&
+      project &&
+      !isNilOrError(locale)
+    ) {
+      setPhaseURL(
+        selectedPhase.id,
+        currentPhase?.id,
+        phases,
+        project.data,
+        locale
+      );
+    }
+  }, [selectedPhase, phases, project, locale, currentPhase]);
+
   if (!isNilOrError(project) && selectedPhase) {
     const selectedPhaseId = selectedPhase.id;
     const isPBPhase =
@@ -158,10 +164,10 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
                 <StyledProjectPageSectionTitle>
                   <FormattedMessage {...messages.phases} />
                 </StyledProjectPageSectionTitle>
-                <PhaseNavigation projectId={project.id} buttonStyle="white" />
+                <PhaseNavigation projectId={projectId} buttonStyle="white" />
               </Header>
               <StyledTimeline
-                projectId={project.id}
+                projectId={projectId}
                 selectedPhase={selectedPhase}
                 setSelectedPhase={handleSetSelectedPhase}
               />
@@ -172,24 +178,21 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
                   viewMode={smallerThanSmallTablet ? 'column' : 'row'}
                 />
               )}
-              <PhaseSurvey projectId={project.id} phaseId={selectedPhaseId} />
+              <PhaseSurvey projectId={projectId} phaseId={selectedPhaseId} />
               <DocumentAnnotation projectId={projectId} />
             </ContentContainer>
           </div>
           <div>
             <ContentContainer maxWidth={maxPageWidth}>
-              <PhasePoll projectId={project.id} phaseId={selectedPhaseId} />
+              <PhasePoll projectId={projectId} phaseId={selectedPhaseId} />
               <PhaseVolunteering
-                projectId={project.id}
+                projectId={projectId}
                 phaseId={selectedPhaseId}
               />
               {(participationMethod === 'ideation' ||
                 participationMethod === 'budgeting') &&
                 selectedPhaseId && (
-                  <PhaseIdeas
-                    projectId={project.id}
-                    phaseId={selectedPhaseId}
-                  />
+                  <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
                 )}
             </ContentContainer>
           </div>

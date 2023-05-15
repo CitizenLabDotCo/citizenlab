@@ -4,6 +4,7 @@ import ideasCountKeys from 'api/idea_count/keys';
 import ideaImagesKeys from 'api/idea_images/keys';
 import ideaMarkersKeys from 'api/idea_markers/keys';
 import userIdeaCountKeys from 'api/user_ideas_count/keys';
+import projectsKeys from 'api/projects/keys';
 import { API_PATH } from 'containers/App/constants';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -34,8 +35,16 @@ const useAddIdea = () => {
       queryClient.invalidateQueries({
         queryKey: ideaImagesKeys.item({ ideaId: idea.data.id }),
       });
+
+      const projectId = idea.data.relationships?.project.data.id;
+
+      if (projectId) {
+        queryClient.invalidateQueries({
+          queryKey: projectsKeys.item({ id: projectId }),
+        });
+      }
+
       streams.fetchAllWith({
-        dataId: [idea.data.relationships?.project.data.id],
         apiEndpoint: [`${API_PATH}/analytics`],
       });
     },

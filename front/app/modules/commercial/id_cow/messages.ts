@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.modules.id_cow.invalidIdSerialError',
     defaultMessage: 'Invalid ID serial',
   },
-  verifyYourIdentity: {
-    id: 'app.modules.id_cow.verifyYourIdentity',
-    defaultMessage: 'Verify your identity',
-  },
   takenFormError: {
     id: 'app.modules.id_cow.takenFormError',
     defaultMessage: 'Already taken.',
