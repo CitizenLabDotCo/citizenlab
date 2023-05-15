@@ -9,17 +9,21 @@ const updateCampaignConsents = async ({
   unsubscriptionToken,
 }: IUpdateCampaignConsentObject) =>
   Promise.all(
-    consentChanges.map(({ campaignConsentId, consented }) =>
-      fetcher<ICampaignConsent>({
-        path: `/consents/${campaignConsentId}${
-          typeof unsubscriptionToken === 'string'
-            ? `?unsubscription_token=${unsubscriptionToken}`
-            : ''
-        }`,
+    consentChanges.map(({ campaignConsentId, campaignId, consented }) => {
+      if (!campaignConsentId && !campaignId) return Promise.reject();
+      const idPart = campaignConsentId
+        ? campaignConsentId
+        : `/by_campaign_id/${campaignId}`;
+      const tokenPart =
+        typeof unsubscriptionToken === 'string'
+          ? `?unsubscription_token=${unsubscriptionToken}`
+          : '';
+      return fetcher<ICampaignConsent>({
+        path: `/consents/${idPart}${tokenPart}`,
         action: 'patch',
         body: { consent: { consented } },
-      })
-    )
+      });
+    })
   );
 
 const useUpdateCampaignConsents = () => {

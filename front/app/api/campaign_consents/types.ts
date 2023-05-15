@@ -30,6 +30,7 @@ export interface IUpdateCampaignConsentObject {
 }
 
 export interface IConsentChanges {
-  campaignConsentId: string;
+  campaignConsentId?: string;
+  campaignId?: string;
   consented: boolean;
 }

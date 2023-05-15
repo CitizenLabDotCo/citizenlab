@@ -70,9 +70,7 @@ const EmailSettingPage = () => {
     } else {
       setInitialUnsubscribeStatus('loading');
 
-      const consentChanges = [
-        { campaignConsentId: campaignId, consented: false },
-      ];
+      const consentChanges = [{ campaignId, consented: false }];
       updateCampaignConsents(
         { consentChanges, unsubscriptionToken },
         {
