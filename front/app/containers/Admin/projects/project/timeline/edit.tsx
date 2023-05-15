@@ -320,6 +320,9 @@ const AdminProjectTimelineEdit = () => {
             <Error apiErrors={errors && errors.title_multiloc} />
           </SectionField>
           <SectionField>
+            {/* TODO: After ParticipationContext refactor, it doesn't refetch phase service anymore
+            This caused a bug where phase data was not being used after fetching. This is a temporary fix.
+            ParticipationContext needs to be refactored to functional component. */}
             {!isNilOrError(phase) && (
               <ParticipationContext
                 phase={{ data: phase }}
