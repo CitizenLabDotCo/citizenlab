@@ -1378,6 +1378,7 @@
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Επιβεβαιώστε τον τρέχοντα κωδικό πρόσβασης και αλλάξτε τον σε νέο κωδικό πρόσβασης.",
   "app.containers.UsersEditPage.privacyReasons": "Εάν ανησυχείτε για το απόρρητό σας, μπορείτε να διαβάσετε το {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Αποστολή...",
+  "app.containers.UsersEditPage.provideFirstNameIfLastName": "Το μικρό όνομα απαιτείται όταν παρέχεται το επώνυμο",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "Πριν ξεκινήσετε...",
   "app.containers.UsersEditPage.submit": "Αποθήκευση αλλαγών",
   "app.containers.UsersEditPage.tooManyEmails": "Λαμβάνετε πάρα πολλά μηνύματα ηλεκτρονικού ταχυδρομείου; Μπορείτε να διαχειριστείτε τις προτιμήσεις σας για τα email στις ρυθμίσεις του προφίλ σας.",

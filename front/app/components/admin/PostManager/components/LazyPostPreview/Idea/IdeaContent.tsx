@@ -20,7 +20,7 @@ import T from 'components/T';
 import { Top, Content, Container } from '../PostPreview';
 
 // services
-import { ProcessType } from 'services/projects';
+import { ProcessType } from 'api/projects/types';
 
 // resources
 import GetIdeaById, { GetIdeaByIdChildProps } from 'resources/GetIdeaById';

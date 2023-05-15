@@ -216,12 +216,10 @@ const OfficialFeedbackPost = ({
   const { body_multiloc, author_multiloc, created_at, updated_at } =
     officialFeedbackPost.attributes;
 
-  if (showEditForm && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
+  if (showEditForm) {
     return (
       <EditFormContainer key={officialFeedbackPost.id}>
         <OfficialFeedbackForm
-          locale={locale}
-          tenantLocales={tenantLocales}
           formType="edit"
           feedback={officialFeedbackPost}
           onClose={closeEditForm}
