@@ -4,17 +4,10 @@ module Volunteering
   class WebApi::V1::CauseSerializer < ::WebApi::V1::BaseSerializer
     attributes :title_multiloc, :description_multiloc, :volunteers_count, :ordering, :created_at, :updated_at
 
-    # We specify the serializer(s) for the object(s), because if we just use polymorphic: true
+    # We specify the namespace for the serializer(s), because if we just use polymorphic: true
     # jsonapi-serializer will look for the serializer(s) in the same namespace as this serializer, which will fail.
     belongs_to :participation_context, serializer: proc { |object|
-      case object
-      when Phase
-        ::WebApi::V1::PhaseSerializer
-      when Project
-        ::WebApi::V1::ProjectSerializer
-      else
-        raise ArgumentError, "Unknown participation_context type: #{object.class.name}"
-      end
+      "::WebApi::V1::#{object.class.name}Serializer".constantize
     }
 
     has_one :user_volunteer, if: proc { |object, params|
