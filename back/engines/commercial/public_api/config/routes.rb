@@ -26,8 +26,11 @@ PublicApi::Engine.routes.draw do
     get '/ideas/comments', to: 'comments#for_ideas'
     # get '/initiatives/comments', to: 'comments#for_initiatives'
 
-    get '/ideas', to: 'ideas#index' # TODO: Filter on only ideas
+    get '/ideas', to: 'ideas#index'
     get '/ideas/:id', to: 'ideas#show'
+
+    get '/initiatives', to: 'initiatives#index'
+    get '/initiatives/:id', to: 'initiatives#show'
 
     get '/projects', to: 'projects#index'
     get '/projects/:id', to: 'projects#show'
