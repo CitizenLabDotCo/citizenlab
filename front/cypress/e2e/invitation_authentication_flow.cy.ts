@@ -46,7 +46,7 @@ function deleteInvites() {
 }
 
 describe('Invitation authentication flow', () => {
-  beforeEach(() => {
+  before(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/invitations');
 
@@ -122,7 +122,7 @@ describe('Invitation authentication flow', () => {
     });
   });
 
-  afterEach(() => {
+  after(() => {
     deleteInvites();
   });
 });
