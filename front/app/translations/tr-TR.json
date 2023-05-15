@@ -1378,6 +1378,7 @@
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Mevcut şifrenizi onaylayın ve yeni şifreyle değiştirin.",
   "app.containers.UsersEditPage.privacyReasons": "Gizliliğiniz konusunda endişeleriniz varsa {conditionsLink} sayfasını okuyabilirsiniz.",
   "app.containers.UsersEditPage.processing": "Gönderiliyor...",
+  "app.containers.UsersEditPage.provideFirstNameIfLastName": "Soyadı verilirken ad gereklidir",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "Ayrılmadan önce...",
   "app.containers.UsersEditPage.submit": "Değişiklikleri kaydet",
   "app.containers.UsersEditPage.tooManyEmails": "Çok fazla e-posta mı alıyorsunuz? E-posta tercihlerinizi profil ayarlarınızdan yönetebilirsiniz.",
