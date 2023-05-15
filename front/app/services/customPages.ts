@@ -177,6 +177,8 @@ export const FOOTER_PAGES: TFooterPage[] = [
 // but do not have a corresponding navbar item (with the exception of 'faq').
 // Their slugs and titles cannot be changed. Their
 // codes are the same as their slugs.
+// proposals here is the proposals about page (/pages/proposals),
+// not the proposals index page (/initiatives).
 type TFixedPage = TPolicyPage | 'faq' | 'proposals';
 
 export const FIXED_PAGES: TFixedPage[] = [
