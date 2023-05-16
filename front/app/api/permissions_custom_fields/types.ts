@@ -45,6 +45,7 @@ export type IPCPermissionAction =
   | 'taking_survey'
   | 'taking_poll'
   | 'budgeting';
+// CL-3466
 
 export interface IPermissionsCustomFieldData {
   id: string;

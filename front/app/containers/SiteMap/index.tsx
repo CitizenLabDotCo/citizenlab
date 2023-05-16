@@ -168,6 +168,7 @@ const SiteMap = () => {
       return page.attributes.code === 'custom';
     });
 
+    // CL-3466
     return (
       <Container>
         <SiteMapMeta />

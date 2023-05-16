@@ -46,6 +46,7 @@ export function getProject(
       // max_budget?: number,
       survey_service: surveyService,
       survey_embed_url: `mockProject${id}${surveyService}Url`,
+      // CL-3466
       ordering: 0,
       action_descriptor: {
         posting_idea: {

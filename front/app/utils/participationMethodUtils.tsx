@@ -21,6 +21,7 @@ import { EmbeddedSurveyCTABar } from 'components/ParticipationCTABars/EmbeddedSu
 import { BudgetingCTABar } from 'components/ParticipationCTABars/BudgetingCTABar';
 import { VolunteeringCTABar } from 'components/ParticipationCTABars/VolunteeringCTABar';
 import { PollCTABar } from 'components/ParticipationCTABars/PollCTABar';
+import { DocumentAnnotationCTABar } from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
 
 import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
@@ -28,7 +29,6 @@ import { CTABarProps } from 'components/ParticipationCTABars/utils';
 import { isNilOrError, NilOrError } from './helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { IIdea } from 'api/ideas/types';
-import { DocumentAnnotationCTABar } from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
 
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },

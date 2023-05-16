@@ -219,6 +219,8 @@ export interface IAppConfigurationSettings {
   };
   seat_based_billing?: AppConfigurationFeature;
   document_annotation?: AppConfigurationFeature;
+  // CL-3466
+  // Add one specifically for Konveio?
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

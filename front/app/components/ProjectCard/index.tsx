@@ -496,6 +496,7 @@ const ProjectCard = memo<Props>(
       trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
     };
 
+    // CL-3466
     if (project) {
       const postingPermission = getIdeaPostingRules({
         project: project?.data,

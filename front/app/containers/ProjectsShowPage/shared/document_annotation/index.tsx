@@ -24,6 +24,7 @@ const DocumentAnnotation = ({ projectId }: Props) => {
         ? authUser.attributes.email
         : null;
 
+    // CL-3466
     // const { enabled, disabledReason } = getSurveyTakingRules({
     //   project,
     //   phaseContext: !isError(phase) ? phase : null,

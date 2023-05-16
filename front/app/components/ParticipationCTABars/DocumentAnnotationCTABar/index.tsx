@@ -56,6 +56,7 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
     [currentPhase, project, pathname]
   );
 
+  // CL-3466
   const handleTakeSurveyClick = (event: FormEvent) => {
     scrollTo('project-survey')(event);
   };
