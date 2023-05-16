@@ -22,9 +22,7 @@ import { getParticipationMethod } from 'utils/participationMethodUtils';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { useParams } from 'react-router-dom';
 
-interface InputProps {}
-
-const NewIdeaPage = (inputProps: InputProps) => {
+const NewIdeaPage = () => {
   const { slug } = useParams();
 
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -70,13 +68,13 @@ const NewIdeaPage = (inputProps: InputProps) => {
         h="100vh"
         overflowY="scroll"
       >
-        <IdeasNewForm {...inputProps} />
+        <IdeasNewForm />
       </Box>,
       portalElement
     );
   }
 
-  return <IdeasNewForm {...inputProps} />;
+  return <IdeasNewForm />;
 };
 
 export default NewIdeaPage;

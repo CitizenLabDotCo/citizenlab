@@ -98,6 +98,7 @@ interface Props {
   formSubmitText?: MessageDescriptor;
   config?: 'default' | 'input' | 'survey';
   layout?: 'inline' | 'fullpage';
+  footer?: React.ReactNode;
 }
 
 const Form = memo(
@@ -115,6 +116,7 @@ const Form = memo(
     getApiErrorMessage,
     config,
     layout,
+    footer,
   }: Props) => {
     const { formatMessage } = useIntl();
     const [data, setData] = useState<FormData>(initialFormData);
@@ -294,6 +296,13 @@ const Form = memo(
                   translateError,
                 }}
               />
+              {footer && (
+                <Box display="flex" flexDirection="row" justifyContent="center">
+                  <Box w="100%" maxWidth="700px" px="20px" mt="0px" mb="80px">
+                    {footer}
+                  </Box>
+                </Box>
+              )}
             </FormContext.Provider>
           </APIErrorsContext.Provider>
         </Box>

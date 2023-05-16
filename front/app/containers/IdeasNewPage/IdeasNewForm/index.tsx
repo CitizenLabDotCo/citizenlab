@@ -10,16 +10,17 @@ import usePhases, { TPhases } from 'hooks/usePhases';
 import usePhase, { TPhase } from 'hooks/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
 import { useParams, useSearchParams } from 'react-router-dom';
+import useAddIdea from 'api/ideas/useAddIdea';
 
 import messages from '../messages';
 
-import IdeasNewMeta from '../IdeasNewMeta';
+// components
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
-
+import IdeasNewMeta from '../IdeasNewMeta';
 import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { Heading } from './Heading';
-import useAddIdea from 'api/ideas/useAddIdea';
+
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
 // for getting inital state from previous page
@@ -237,6 +238,7 @@ const IdeasNewPageWithJSONForm = () => {
             }
             config={isSurvey ? 'survey' : 'input'}
             formSubmitText={isSurvey ? messages.submitSurvey : undefined}
+            footer={<>Hello!</>}
           />
         </>
       ) : isError(project) || inputSchemaError ? null : (
