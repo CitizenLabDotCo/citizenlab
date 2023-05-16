@@ -53,11 +53,11 @@ class WebApi::V1::StaticPageSerializer < WebApi::V1::BaseSerializer
     current_navbaritem_title || NavBarItem.new(code: 'custom', static_page: object).title_multiloc_with_fallback
   end
 
-  has_many :pins
-  has_many :pinned_admin_publications
+  has_many :pins, serializer: :base
+  has_many :pinned_admin_publications, serializer: :admin_publication
   has_one :nav_bar_item
-  has_many :static_page_files
-  has_many :text_images
+  has_many :static_page_files, serializer: :file
+  has_many :text_images, serializer: :image
   has_many :topics
   has_many :areas
 end

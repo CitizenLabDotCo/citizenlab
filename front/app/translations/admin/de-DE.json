@@ -880,7 +880,7 @@
   "app.containers.AdminPage.DashboardPage.overview.showLess": "Weniger anzeigen",
   "app.containers.AdminPage.DashboardPage.overview.showMore": "Mehr anzeigen",
   "app.containers.AdminPage.DashboardPage.participationPerProject": "Beteiligung pro Projekt",
-  "app.containers.AdminPage.DashboardPage.participationPerTopic": "Teilnahme pro Thema",
+  "app.containers.AdminPage.DashboardPage.participationPerTopic": "Beteiligung pro Thema",
   "app.containers.AdminPage.DashboardPage.perPeriod": "Pro {period}",
   "app.containers.AdminPage.DashboardPage.previous30Days": "Letzte 30 Tage",
   "app.containers.AdminPage.DashboardPage.previous90Days": "Letzte 90 Tage",

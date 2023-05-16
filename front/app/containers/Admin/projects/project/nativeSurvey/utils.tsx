@@ -2,7 +2,7 @@ import React from 'react';
 
 // services
 import { IPhaseData, updatePhase } from 'services/phases';
-import { updateProject } from 'services/projects';
+import { updateProject } from 'api/projects/useUpdateProject';
 import { IProjectData } from 'api/projects/types';
 
 // typing
@@ -80,7 +80,8 @@ export const getFormActionsConfig = (
         viewFormResults: `/admin/projects/${project.id}/native-survey/results`,
         postingEnabled: project.attributes.posting_enabled,
         togglePostingEnabled: () => {
-          updateProject(project.id, {
+          updateProject({
+            projectId: project.id,
             posting_enabled: !project.attributes.posting_enabled,
           });
         },

@@ -22,8 +22,8 @@ class WebApi::V1::MentionsController < ApplicationController
 
     render json: WebApi::V1::UserSerializer.new(
       @users,
-      params: fastjson_params
-    ).serialized_json
+      params: jsonapi_serializer_params
+    ).serializable_hash
   end
 
   private

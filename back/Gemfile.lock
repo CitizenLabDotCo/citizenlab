@@ -14,14 +14,6 @@ GIT
       webfinger (>= 1.0.1)
 
 GIT
-  remote: https://github.com/dvandersluis/fast_jsonapi.git
-  revision: a7b3fc132eb1c8f6d5d135168f520a5f372501a9
-  branch: heterogeneous-collection
-  specs:
-    fast_jsonapi (1.5)
-      activesupport (>= 4.2)
-
-GIT
   remote: https://github.com/que-rb/que
   revision: 77c6b92952b821898c393239ce0e4047b17d7dae
   ref: 77c6b92952b821898c393239ce0e4047b17d7dae
@@ -440,9 +432,6 @@ GEM
     activerecord-postgis-adapter (7.1.1)
       activerecord (~> 6.1)
       rgeo-activerecord (~> 7.0.0)
-    activerecord_json_validator (1.3.0)
-      activerecord (>= 4.2.0, < 7)
-      json-schema (~> 2.8)
     activestorage (6.1.7.3)
       actionpack (= 6.1.7.3)
       activejob (= 6.1.7.3)
@@ -657,9 +646,11 @@ GEM
       activesupport (>= 4.2)
       aes_key_wrap
       bindata
-    json-schema (2.8.1)
-      addressable (>= 2.4)
+    json-schema (4.0.0)
+      addressable (>= 2.8)
     jsonapi-renderer (0.2.2)
+    jsonapi-serializer (2.2.0)
+      activesupport (>= 4.2)
     jwt (2.7.0)
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
@@ -1100,7 +1091,6 @@ DEPENDENCIES
   active_model_serializers (~> 0.10.12)
   activerecord-import (~> 1.4)
   activerecord-postgis-adapter (~> 7.1.1)
-  activerecord_json_validator (~> 1.3.0)
   acts_as_list (~> 1.1)
   admin_api!
   analytics!
@@ -1128,7 +1118,6 @@ DEPENDENCIES
   email_campaigns!
   factory_bot_rails
   faker
-  fast_jsonapi!
   flag_inappropriate_content!
   fog-aws (~> 3.18)
   frontend!
@@ -1154,6 +1143,8 @@ DEPENDENCIES
   interactor
   interactor-rails
   intercom (~> 4.2)
+  json-schema (~> 4.0)
+  jsonapi-serializer
   jwt (~> 2.7.0)
   kaminari (~> 1.2)
   license_finder
@@ -1196,7 +1187,6 @@ DEPENDENCIES
   rack-cors
   rack-mini-profiler
   rails (~> 6.1.7.3)
-  rails-html-sanitizer (>= 1.4.3)
   rails-i18n (~> 7.0.6)
   rails_semantic_logger
   redcarpet

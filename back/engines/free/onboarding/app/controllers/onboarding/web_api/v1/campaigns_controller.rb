@@ -29,7 +29,7 @@ module Onboarding
             cta_button_link: custom_cta ? app_config.settings('core', 'custom_onboarding_link') : nil
           })
 
-          render json: WebApi::V1::CampaignSerializer.new(campaign, params: fastjson_params)
+          render json: WebApi::V1::CampaignSerializer.new(campaign, params: jsonapi_serializer_params)
         end
       end
     end
