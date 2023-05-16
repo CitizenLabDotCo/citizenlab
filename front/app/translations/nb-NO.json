@@ -1661,6 +1661,7 @@
   "app.utils.errors.default.api_error_too_short": "Er for kort",
   "app.utils.errors.default.api_error_wrong_length": "Har feil lengde",
   "app.utils.errors.defaultapi_error_.odd": "Må være et oddetall",
+  "app.utils.notInGroup": "Du oppfyller ikke kravene for å delta.",
   "app.utils.participationMethod.onSurveySubmission": "Takk, svaret ditt er mottatt.",
   "containers.SiteMap.allProjects": "Alle prosjekter",
   "containers.SiteMap.customPageSection": "Egendefinerte sider",
