@@ -32,7 +32,7 @@ class WebApi::V1::UserCommentsController < ApplicationController
       .order('union_posts.published_at DESC, union_posts.id DESC, comments.created_at DESC')
 
     render json: {
-      **WebApi::V1::CommentSerializer.new(comments, params: fastjson_params, include: [:post]).serializable_hash,
+      **WebApi::V1::CommentSerializer.new(comments, params: jsonapi_serializer_params, include: [:post]).serializable_hash,
       links: page_links(paged_posts)
     }
   end

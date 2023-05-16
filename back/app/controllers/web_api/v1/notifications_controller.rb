@@ -17,12 +17,10 @@ class WebApi::V1::NotificationsController < ApplicationController
     end
 
     @notifications = paginate @notifications
-    render json: linked_json(
-      @notifications,
-      WebApi::V1::Notifications::NotificationSerializer,
-      params: fastjson_params,
-      serializers: NotificationService.new.serializers
-    )
+    render json: {
+      data: serialize_heterogeneous_collection(@notifications, serializers_classes),
+      links: page_links(@notifications)
+    }
   end
 
   def mark_all_read
@@ -32,31 +30,21 @@ class WebApi::V1::NotificationsController < ApplicationController
     ids = @notifications.map(&:id)
 
     if @notifications.update_all(read_at: Time.now)
-      render json: WebApi::V1::Notifications::NotificationSerializer.new(
-        Notification.find(ids),
-        params: fastjson_params,
-        serializers: NotificationService.new.serializers
-      ).serialized_json
+      render json: { data: serialize_heterogeneous_collection(Notification.find(ids), serializers_classes) }
     else
       head :internal_server_error
     end
   end
 
   def show
-    render json: WebApi::V1::Notifications::NotificationSerializer.new(
-      @notification,
-      params: fastjson_params,
-      serializers: NotificationService.new.serializers
-    ).serialized_json
+    serializer_class = serializers_classes[@notification.class]
+    render json: serializer_class.new(@notification, params: jsonapi_serializer_params).serializable_hash
   end
 
   def mark_read
     if @notification.update(read_at: Time.now)
-      render json: WebApi::V1::Notifications::NotificationSerializer.new(
-        @notification,
-        params: fastjson_params,
-        serializers: NotificationService.new.serializers
-      ).serialized_json, status: :ok
+      serializer_class = serializers_classes[@notification.class]
+      render json: serializer_class.new(@notification, params: jsonapi_serializer_params).serializable_hash, status: :ok
     else
       head :internal_server_error
     end
@@ -71,6 +59,10 @@ class WebApi::V1::NotificationsController < ApplicationController
 
   def include_load_resources
     %i[recipient initiating_user post post_status comment project phase official_feedback spam_report invite]
+  end
+
+  def serializers_classes
+    @serializers_classes ||= NotificationService.new.serializers
   end
 end
 

@@ -4,7 +4,7 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
   skip_before_action :authenticate_user
 
   def show
-    render json: WebApi::V1::AppConfigurationSerializer.new(app_configuration).serialized_json
+    render json: WebApi::V1::AppConfigurationSerializer.new(app_configuration).serializable_hash
   end
 
   def update
@@ -14,7 +14,7 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
 
     if app_configuration.save
       side_fx_service.after_update(app_configuration, current_user)
-      render json: WebApi::V1::AppConfigurationSerializer.new(app_configuration).serialized_json
+      render json: WebApi::V1::AppConfigurationSerializer.new(app_configuration).serializable_hash
     else
       render json: { errors: app_configuration.errors.details }, status: :unprocessable_entity
     end

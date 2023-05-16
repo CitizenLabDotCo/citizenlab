@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
+// api
+import useUpdateProjectFolderMembership from 'api/projects/useUpdateProjectFolderMembership';
+
 // services
-import {
-  PublicationStatus,
-  updateProjectFolderMembership,
-} from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 import { isAdmin } from 'services/permissions/roles';
 
 // hooks
@@ -41,6 +41,8 @@ const ItemsInFolder = ({ projectFolderId }: Props) => {
     childrenOfId: projectFolderId,
     publicationStatusFilter: publicationStatuses,
   });
+  const { mutate: updateProjectFolderMembership } =
+    useUpdateProjectFolderMembership();
 
   const [processing, setProcessing] = useState<string[]>([]);
 
@@ -51,8 +53,19 @@ const ItemsInFolder = ({ projectFolderId }: Props) => {
   const removeProjectFromFolder =
     (projectFolderId: string) => (projectId: string) => async () => {
       setProcessing([...processing, projectId]);
-      await updateProjectFolderMembership(projectId, null, projectFolderId);
-      setProcessing(processing.filter((item) => projectId !== item));
+
+      updateProjectFolderMembership(
+        {
+          projectId,
+          newProjectFolderId: null,
+          oldProjectFolderId: projectFolderId,
+        },
+        {
+          onSuccess: () => {
+            setProcessing(processing.filter((item) => projectId !== item));
+          },
+        }
+      );
     };
 
   if (

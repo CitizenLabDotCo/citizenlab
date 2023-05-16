@@ -9,7 +9,7 @@ import {
   PROJECTABLE_HEADER_BG_ASPECT_RATIO,
   PROJECTABLE_HEADER_BG_ASPECT_RATIO_HEIGHT,
   PROJECTABLE_HEADER_BG_ASPECT_RATIO_WIDTH,
-} from 'services/projects';
+} from 'api/projects/constants';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 
 interface Props {

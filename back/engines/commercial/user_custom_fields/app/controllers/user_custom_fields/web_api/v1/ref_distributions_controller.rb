@@ -69,7 +69,7 @@ module UserCustomFields
 
       def serialize(ref_distribution)
         serializer_class = identify_serializer_class(ref_distribution)
-        serializer_class.new(ref_distribution).serialized_json
+        serializer_class.new(ref_distribution).serializable_hash.to_json
       end
 
       def identify_serializer_class(ref_distribution)

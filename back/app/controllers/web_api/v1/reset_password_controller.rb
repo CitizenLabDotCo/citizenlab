@@ -25,8 +25,8 @@ class WebApi::V1::ResetPasswordController < ApplicationController
       if @user.update(password: reset_password_params[:password], reset_password_token: nil)
         render json: WebApi::V1::UserSerializer.new(
           @user,
-          params: fastjson_params
-        ).serialized_json
+          params: jsonapi_serializer_params
+        ).serializable_hash
       else
         render json: { errors: @user.errors.details }, status: :unprocessable_entity
       end
