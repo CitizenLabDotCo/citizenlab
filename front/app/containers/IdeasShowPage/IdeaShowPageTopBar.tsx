@@ -17,6 +17,9 @@ import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
+// utils
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+
 // typings
 import { IdeaVotingDisabledReason } from 'api/ideas/types';
 
@@ -72,7 +75,7 @@ const IdeaShowPageTopBar = ({
     if (
       !isNilOrError(authUser) &&
       project &&
-      disabled_reason === 'not_verified'
+      isFixableByAuthentication(disabled_reason)
     ) {
       const pcType =
         project.data.attributes.process_type === 'continuous'

@@ -23,6 +23,7 @@ import styled from 'styled-components';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import globalMessages from 'utils/messages';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -65,6 +66,7 @@ const disabledMessages = {
   not_verified: messages.pollDisabledNotVerified,
   missing_data: messages.pollDisabledNotActiveUser,
   not_signed_in: messages.pollDisabledMaybeNotPermitted,
+  not_in_group: globalMessages.notInGroup,
 } as const;
 
 export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {

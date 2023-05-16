@@ -21,6 +21,7 @@ import useProjectById from 'api/projects/useProjectById';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import globalMessages from 'utils/messages';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -55,6 +56,7 @@ const disabledMessages = {
   not_verified: messages.surveyDisabledNotVerified,
   missing_data: messages.surveyDisabledNotActiveUser,
   not_signed_in: messages.surveyDisabledMaybeNotPermitted,
+  not_in_group: globalMessages.notInGroup,
 } as const;
 
 const Survey = ({

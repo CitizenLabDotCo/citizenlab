@@ -4,6 +4,7 @@ import styled, { keyframes } from 'styled-components';
 import { colors, fontSizes, defaultStyles, isRtl } from 'utils/styleUtils';
 import { lighten } from 'polished';
 import messages from './messages';
+import globalMessages from 'utils/messages';
 import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -15,6 +16,7 @@ import useLocalize from 'hooks/useLocalize';
 import useProjectById from 'api/projects/useProjectById';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { TVoteMode } from 'api/idea_votes/types';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';
@@ -257,7 +259,6 @@ const Button = styled.button<{
   buttonVoteModeIsActive: boolean;
   votingEnabled: boolean | null;
   buttonVoteMode: TVoteMode;
-  disabledReason: IdeaVotingDisabledReason | null;
 }>`
   display: flex;
   align-items: center;
@@ -342,6 +343,8 @@ const VoteButton = ({
       return futureEnabled
         ? messages.votingPossibleLater
         : messages.votingDisabledProjectInactive;
+    } else if (disabledReason === 'not_in_group') {
+      return globalMessages.notInGroup;
     } else if (disabledReason === 'voting_disabled' && futureEnabled) {
       return messages.votingPossibleLater;
     } else if (disabledReason === 'upvoting_limited_max_reached') {
@@ -378,16 +381,14 @@ const VoteButton = ({
       idea.data.attributes.action_descriptor.voting_idea[buttonVoteMode]
         .future_enabled;
     const cancellingEnabled = votingDescriptor.cancelling_enabled;
-    const isSignedIn = !isNilOrError(authUser);
-    const isVerified = !isNilOrError(authUser) && authUser.attributes.verified;
     const notYetVoted = userVoteMode !== buttonVoteMode;
     const alreadyVoted = userVoteMode === buttonVoteMode;
     const buttonEnabled =
       buttonVoteModeEnabled &&
       (notYetVoted ||
         (alreadyVoted && cancellingEnabled) ||
-        (!isVerified && disabledReason === 'not_verified') ||
-        (!isSignedIn && disabledReason === 'not_signed_in'));
+        (disabledReason && isFixableByAuthentication(disabledReason)));
+
     const disabledReasonMessage = getDisabledReasonMessage(
       disabledReason,
       futureEnabled
@@ -435,7 +436,6 @@ const VoteButton = ({
             buttonVoteModeEnabled ? 'enabled' : '',
           ].join(' ')}
           tabIndex={ariaHidden ? -1 : 0}
-          disabledReason={disabledReason}
         >
           <VoteIconContainer
             styleType={styleType}

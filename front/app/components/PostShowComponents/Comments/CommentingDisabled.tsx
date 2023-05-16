@@ -16,6 +16,7 @@ import { IdeaCommentingDisabledReason } from 'api/ideas/types';
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import globalMessages from 'utils/messages';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -36,6 +37,8 @@ const calculateMessageDescriptor = (
 
   if (commentingEnabled) {
     return null;
+  } else if (commentingDisabledReason === 'not_in_group') {
+    return globalMessages.notInGroup;
   } else if (commentingDisabledReason === 'project_inactive') {
     return messages.commentingDisabledInactiveProject;
   } else if (commentingDisabledReason === 'commenting_disabled') {

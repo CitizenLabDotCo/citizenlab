@@ -20,6 +20,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // utils
 import { postIsIdea, postIsInitiative } from './utils';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // types
 import { GetUserChildProps } from 'resources/GetUser';
@@ -29,7 +30,6 @@ import { IInitiativeData } from 'api/initiatives/types';
 import { IIdeaData } from 'api/ideas/types';
 import { ICommentData } from 'api/comments/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 const Container = styled.li`
   display: flex;
@@ -192,7 +192,7 @@ const CommentReplyButton = memo<Props>(
       const disabled =
         postType === 'initiative'
           ? !commentingPermissionInitiative?.enabled
-          : isSignedIn && commentingDisabledReason === 'not_permitted';
+          : isSignedIn && !isFixableByAuthentication(commentingDisabledReason);
 
       if (!isCommentDeleted && !disabled) {
         return (
