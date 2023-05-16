@@ -48,7 +48,8 @@ export type IIdeaPostingDisabledReason =
   | 'projectInactive'
   | 'notActivePhase'
   | 'maybeNotPermitted'
-  | 'futureEnabled';
+  | 'futureEnabled'
+  | 'notInGroup';
 
 // When disabled but user might get access, here are the next steps for this user
 export type AuthenticationRequirements =
@@ -70,6 +71,11 @@ const ideaPostingDisabledReason = (
       return {
         disabledReason: null,
         authenticationRequirements: 'complete_registration',
+      };
+    case 'not_in_group':
+      return {
+        disabledReason: 'notInGroup',
+        authenticationRequirements: null,
       };
     case 'not_verified':
       return signedIn
