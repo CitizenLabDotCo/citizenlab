@@ -1661,6 +1661,7 @@
   "app.utils.errors.default.api_error_too_short": "Ass ze kuerz",
   "app.utils.errors.default.api_error_wrong_length": "Huet déi falsch Längt",
   "app.utils.errors.defaultapi_error_.odd": "Muss ongerued sinn",
+  "app.utils.notInGroup": "Dir erfëllt net den Ufuerderunge fir matzemaachen.",
   "app.utils.participationMethod.onSurveySubmission": "Merci. Mir hunn Är Äntwert kritt.",
   "containers.SiteMap.allProjects": "All Projeten",
   "containers.SiteMap.customPageSection": "Benotzerdefinéiert Säiten",
