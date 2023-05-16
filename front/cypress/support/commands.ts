@@ -1,6 +1,7 @@
 import 'cypress-file-upload';
 import './dnd';
 import { ParticipationMethod } from '../../app/services/participationContexts';
+import { IUserUpdate } from '../../app/services/users';
 import jwtDecode from 'jwt-decode';
 
 declare global {
@@ -271,8 +272,7 @@ export function apiCreateAdmin(
   });
 }
 
-// see IUserUpdate for attrs type
-export function apiUpdateCurrentUser(attrs: object) {
+export function apiUpdateCurrentUser(attrs: IUserUpdate) {
   cy.getCookie('cl2_jwt').then((cookie) => {
     if (!cookie) {
       return;
