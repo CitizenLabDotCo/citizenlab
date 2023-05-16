@@ -99,7 +99,7 @@ const MessagingDashboard = ({
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        <Box id="e2e-initiatives-admin-container">
+        <Box id="e2e-messaging-container">
           <RouterOutlet />
         </Box>
       </TabsPageLayout>

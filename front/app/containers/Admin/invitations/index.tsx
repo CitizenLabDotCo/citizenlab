@@ -50,7 +50,7 @@ const InvitationsPage = (props: WrappedComponentProps) => {
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        <div id="e2e-invitations-container">
+        <div>
           <RouterOutlet />
         </div>
       </TabbedResource>
