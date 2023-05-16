@@ -1378,6 +1378,7 @@
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Bekräfta ditt nuvarande lösenord och ändra det till ett nytt lösenord.",
   "app.containers.UsersEditPage.privacyReasons": "Om du är orolig för din sekretess kan du läsa {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Skickar...",
+  "app.containers.UsersEditPage.provideFirstNameIfLastName": "Förnamn krävs när du anger efternamn",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "Innan du går...",
   "app.containers.UsersEditPage.submit": "Spara ändringar",
   "app.containers.UsersEditPage.tooManyEmails": "Får du för många e-postmeddelanden? Du kan hantera dina e-postinställningar i profilinställningarna.",

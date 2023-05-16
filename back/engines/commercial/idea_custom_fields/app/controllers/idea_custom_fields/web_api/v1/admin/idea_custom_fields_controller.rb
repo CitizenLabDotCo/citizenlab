@@ -35,15 +35,15 @@ module IdeaCustomFields
         fields,
         params: serializer_params(@custom_form),
         include: [:options]
-      ).serialized_json
+      ).serializable_hash
     end
 
     def show
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         @custom_field,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: [:options]
-      ).serialized_json
+      ).serializable_hash
     end
 
     def update_all
@@ -61,7 +61,7 @@ module IdeaCustomFields
         IdeaCustomFieldsService.new(@custom_form).all_fields,
         params: serializer_params(@custom_form),
         include: [:options]
-      ).serialized_json
+      ).serializable_hash
     rescue UpdateAllFailedError => e
       render json: { errors: e.errors }, status: :unprocessable_entity
     end
@@ -271,7 +271,7 @@ module IdeaCustomFields
 
     def serializer_params(custom_form)
       participation_method = Factory.instance.participation_method_for custom_form.participation_context
-      fastjson_params({ constraints: participation_method.constraints, supports_answer_visible_to: participation_method.supports_answer_visible_to? })
+      jsonapi_serializer_params({ constraints: participation_method.constraints, supports_answer_visible_to: participation_method.supports_answer_visible_to? })
     end
   end
 end

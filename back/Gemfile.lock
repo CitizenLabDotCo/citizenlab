@@ -14,27 +14,6 @@ GIT
       webfinger (>= 1.0.1)
 
 GIT
-  remote: https://github.com/carrierwaveuploader/carrierwave.git
-  revision: a3ffc5381e70a4014b61b27b35540aa3b945910d
-  ref: a3ffc5381e70a4014b61b27b35540aa3b945910d
-  specs:
-    carrierwave (3.0.0.alpha)
-      activemodel (>= 6.0.0)
-      activesupport (>= 6.0.0)
-      addressable (~> 2.6)
-      image_processing (~> 1.1)
-      marcel (~> 1.0.0)
-      ssrf_filter (~> 1.0)
-
-GIT
-  remote: https://github.com/dvandersluis/fast_jsonapi.git
-  revision: a7b3fc132eb1c8f6d5d135168f520a5f372501a9
-  branch: heterogeneous-collection
-  specs:
-    fast_jsonapi (1.5)
-      activesupport (>= 4.2)
-
-GIT
   remote: https://github.com/que-rb/que
   revision: 77c6b92952b821898c393239ce0e4047b17d7dae
   ref: 77c6b92952b821898c393239ce0e4047b17d7dae
@@ -530,13 +509,19 @@ GEM
       amq-protocol (~> 2.3, >= 2.3.1)
       sorted_set (~> 1, >= 1.0.2)
     byebug (11.1.3)
+    carrierwave (3.0.0.beta)
+      activemodel (>= 6.0.0)
+      activesupport (>= 6.0.0)
+      addressable (~> 2.6)
+      image_processing (~> 1.1)
+      marcel (~> 1.0.0)
+      ssrf_filter (~> 1.0)
     carrierwave-base64 (2.10.0)
       carrierwave (>= 2.2.1)
       marcel (~> 1.0.0)
       mime-types (~> 3.0)
     case_transform (0.2)
       activesupport
-    chronic (0.10.2)
     cloudfront-rails (0.4.0)
       railties (> 4.0)
     coderay (1.1.3)
@@ -674,6 +659,8 @@ GEM
     json-schema (4.0.0)
       addressable (>= 2.8)
     jsonapi-renderer (0.2.2)
+    jsonapi-serializer (2.2.0)
+      activesupport (>= 4.2)
     jwt (2.7.0)
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
@@ -1101,8 +1088,6 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    whenever (1.0.0)
-      chronic (>= 0.6.3)
     with_env (1.1.0)
     xml-simple (1.1.9)
       rexml
@@ -1133,7 +1118,7 @@ DEPENDENCIES
   bundler-audit
   bunny (>= 2.7.2)
   byebug
-  carrierwave!
+  carrierwave (~> 3.0.0.beta)
   carrierwave-base64 (~> 2.10)
   cloudfront-rails (~> 0.4)
   content_builder!
@@ -1145,7 +1130,6 @@ DEPENDENCIES
   email_campaigns!
   factory_bot_rails
   faker
-  fast_jsonapi!
   flag_inappropriate_content!
   fog-aws (~> 3.18)
   frontend!
@@ -1172,6 +1156,7 @@ DEPENDENCIES
   interactor-rails
   intercom (~> 4.2)
   json-schema (~> 4.0)
+  jsonapi-serializer
   jwt (~> 2.7.0)
   kaminari (~> 1.2)
   license_finder
@@ -1214,7 +1199,6 @@ DEPENDENCIES
   rack-cors
   rack-mini-profiler
   rails (~> 7.0)
-  rails-html-sanitizer (>= 1.4.3)
   rails-i18n (~> 7.0.6)
   rails_semantic_logger
   redcarpet
@@ -1260,7 +1244,6 @@ DEPENDENCIES
   verification!
   volunteering!
   webmock (~> 3.18)
-  whenever (~> 1.0)
 
 BUNDLED WITH
    2.3.20

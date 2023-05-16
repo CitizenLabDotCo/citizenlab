@@ -4,7 +4,7 @@ import React from 'react';
 import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/hooks/useProjectDescriptionBuilderLayout';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
-import useProjectFiles from 'hooks/useProjectFiles';
+import useProjectFiles from 'api/project_files/useProjectFiles';
 
 // components
 import Editor from '../../Editor';
@@ -27,7 +27,7 @@ type PreviewProps = {
 const Preview = ({ projectId, projectTitle }: PreviewProps) => {
   const locale = useLocale();
   const localize = useLocalize();
-  const projectFiles = useProjectFiles(projectId);
+  const { data: projectFiles } = useProjectFiles(projectId);
 
   const projectDescriptionBuilderLayout =
     useProjectDescriptionBuilderLayout(projectId);
@@ -62,7 +62,7 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
             <Editor isPreview={true}>
               <ContentBuilderFrame editorData={editorData} />
             </Editor>
-            {!isNilOrError(projectFiles) && (
+            {projectFiles && (
               <Box maxWidth="750px" mb="25px">
                 <FileAttachments files={projectFiles.data} />
               </Box>
