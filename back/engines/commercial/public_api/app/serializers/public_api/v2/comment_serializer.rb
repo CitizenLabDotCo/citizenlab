@@ -6,7 +6,7 @@ class PublicApi::V2::CommentSerializer < ActiveModel::Serializer
   attributes :id,
     :body,
     :author_id,
-    :post_id, # TODO: Labelled idea_id in spec
+    :post_id,
     :parent_id,
     :created_at,
     :updated_at,

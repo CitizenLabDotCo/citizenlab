@@ -26,11 +26,6 @@ resource 'Posts' do
 
     include_context 'common_list_params'
 
-    # TODO: Additional filters for ideas
-    # folder_id
-    # status
-    # topic
-
     context 'Unfiltered paged request' do
       let(:page_size) { 2 }
 

@@ -70,7 +70,7 @@ resource 'Topics' do
     context 'Default locale' do
       example_request 'Successful response' do
         assert_status 200
-        # TODO: Add test to be sure of default locale
+        # TODO: Add test condition to be sure this is the default locale
         expect(json_response_body[:topic]).to include({ id: id })
       end
     end

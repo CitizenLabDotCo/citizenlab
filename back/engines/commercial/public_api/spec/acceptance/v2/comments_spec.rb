@@ -52,9 +52,6 @@ resource 'Comments' do
     end
   end
 
-  # TODO: Just comments against ideas
-  # TODO: Comments against initiatives
-
   get '/api/v2/comments/:id' do
     route_summary 'Get a single topic by id.'
     route_description 'Endpoint to retrieve a single topic from the platform.'
