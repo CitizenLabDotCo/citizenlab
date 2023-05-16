@@ -19,6 +19,7 @@ export default ({
   poll_anonymous,
   ideas_order,
   input_term,
+  document_annotation_embed_url,
 }: State) => {
   let output: IParticipationContextConfig = {} as any;
 
@@ -52,6 +53,11 @@ export default ({
       participation_method,
       survey_embed_url,
       survey_service,
+    };
+  } else if (participation_method === 'document_annotation') {
+    output = {
+      participation_method,
+      document_annotation_embed_url,
     };
   } else if (participation_method === 'poll') {
     output = {

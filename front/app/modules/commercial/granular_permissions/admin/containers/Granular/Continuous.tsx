@@ -24,11 +24,9 @@ const Container = styled.div`
   padding-bottom: 20px;
 `;
 
-interface InputProps {
+interface Props {
   projectId: string;
 }
-
-interface Props extends InputProps {}
 
 const Continuous = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
@@ -77,4 +75,4 @@ const Continuous = ({ projectId }: Props) => {
   return null;
 };
 
-export default (inputProps: InputProps) => <Continuous {...inputProps} />;
+export default Continuous;
