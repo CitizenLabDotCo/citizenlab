@@ -4,7 +4,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 
 export type CTABarProps = {
   project: IProjectData;
-  phases: Error | IPhaseData[] | null | undefined;
+  phases: IPhaseData[] | undefined;
 };
 
 export const hasProjectEndedOrIsArchived = (

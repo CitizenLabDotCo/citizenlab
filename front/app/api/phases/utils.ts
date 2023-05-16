@@ -8,9 +8,7 @@ export function canContainIdeas(phase: IPhaseData) {
   return pm === 'ideation' || pm === 'budgeting';
 }
 
-export function getCurrentPhase(
-  phases: IPhaseData[] | null | undefined | Error
-) {
+export function getCurrentPhase(phases: IPhaseData[] | undefined) {
   if (!isNilOrError(phases)) {
     const currentPhase = phases.find(
       (phase) =>
@@ -26,7 +24,7 @@ export function getCurrentPhase(
   return;
 }
 
-export function getFirstPhase(phases: IPhaseData[] | null | undefined | Error) {
+export function getFirstPhase(phases: IPhaseData[] | undefined) {
   if (!isNilOrError(phases)) {
     const firstPhase = first(
       sortBy(phases, [(phase) => phase.attributes.start_at])
@@ -38,7 +36,7 @@ export function getFirstPhase(phases: IPhaseData[] | null | undefined | Error) {
   return null;
 }
 
-export function getLastPhase(phases: IPhaseData[] | null | undefined | Error) {
+export function getLastPhase(phases: IPhaseData[] | undefined) {
   if (!isNilOrError(phases)) {
     const lastPhase = last(
       sortBy(phases, [(phase) => phase.attributes.end_at])
@@ -50,9 +48,7 @@ export function getLastPhase(phases: IPhaseData[] | null | undefined | Error) {
   return;
 }
 
-export function getLastPastPhase(
-  phases: IPhaseData[] | null | undefined | Error
-) {
+export function getLastPastPhase(phases: IPhaseData[] | undefined) {
   if (!isNilOrError(phases) && phases.length > 0) {
     const pastPhases = phases.filter(
       (phase) =>

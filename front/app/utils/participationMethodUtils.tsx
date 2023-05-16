@@ -348,7 +348,7 @@ export function getAllParticipationMethods(
  */
 export const getParticipationMethod = (
   project: IProjectData | null | undefined,
-  phases: Error | IPhaseData[] | null | undefined | null,
+  phases: IPhaseData[] | undefined,
   phaseId?: string
 ): ParticipationMethod | undefined => {
   if (isNilOrError(project)) {
