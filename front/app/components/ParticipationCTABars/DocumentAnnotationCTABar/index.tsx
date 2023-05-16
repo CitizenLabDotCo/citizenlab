@@ -8,7 +8,8 @@ import { ParticipationCTAContent } from 'components/ParticipationCTABars/Partici
 import { useTheme } from 'styled-components';
 
 // services
-import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 
 // utils
 import { scrollToElement } from 'utils/scroll';
@@ -29,7 +30,7 @@ import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 
 export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
+  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const { pathname } = useLocation();
 
   useEffect(() => {
