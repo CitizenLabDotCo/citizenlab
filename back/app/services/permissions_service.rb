@@ -5,6 +5,7 @@ class PermissionsService
     not_signed_in: 'not_signed_in',
     not_active: 'not_active',
     not_permitted: 'not_permitted',
+    not_in_group: 'not_in_group',
     missing_data: 'missing_data',
     not_verified: 'not_verified',
     blocked: 'blocked'
@@ -134,7 +135,7 @@ class PermissionsService
   end
 
   def denied_when_permitted_by_groups?(permission, user)
-    :not_permitted if !user.in_any_groups?(permission.groups)
+    :not_in_group if !user.in_any_groups?(permission.groups)
   end
 
   def base_requirements(permission)

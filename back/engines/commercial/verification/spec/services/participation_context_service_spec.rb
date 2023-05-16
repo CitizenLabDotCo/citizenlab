@@ -42,7 +42,7 @@ describe ParticipationContextService do
         ]
       )
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-      expect(service.posting_idea_disabled_reason_for_project(project, create(:user, verified: true, birthyear: 2008))).to eq 'not_permitted'
+      expect(service.posting_idea_disabled_reason_for_project(project, create(:user, verified: true, birthyear: 2008))).to eq 'not_in_group'
     end
 
     it 'returns `not_permitted` when only permitted to admins but a group requires verification' do

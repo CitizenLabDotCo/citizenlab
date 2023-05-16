@@ -37,7 +37,7 @@ describe PermissionsService do
       let(:groups) { [create(:group)] }
       let(:user) { create(:user, verified: false) }
 
-      it { expect(service.denied_reason_for_permission(group_permission, user)).to eq 'not_permitted' }
+      it { expect(service.denied_reason_for_permission(group_permission, user)).to eq 'not_in_group' }
     end
 
     context 'when unverified resident, belonging to the other group' do

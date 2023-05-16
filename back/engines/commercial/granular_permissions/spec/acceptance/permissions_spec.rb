@@ -247,7 +247,8 @@ resource 'Permissions' do
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -290,7 +291,8 @@ resource 'Permissions' do
             special: {
               password: 'dont_ask',
               confirmation: 'require',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -320,7 +322,8 @@ resource 'Permissions' do
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -364,7 +367,8 @@ resource 'Permissions' do
             special: {
               password: 'require',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -396,7 +400,8 @@ resource 'Permissions' do
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
