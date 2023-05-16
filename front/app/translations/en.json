@@ -1661,7 +1661,6 @@
   "app.utils.errors.default.api_error_too_short": "Is too short",
   "app.utils.errors.default.api_error_wrong_length": "Is the wrong length",
   "app.utils.errors.defaultapi_error_.odd": "Must be odd",
-  "app.utils.notInGroup": "You do not meet the requirements to participate in this project.",
   "app.utils.participationMethod.onSurveySubmission": "Thank you. Your response has been received.",
   "containers.SiteMap.allProjects": "All projects",
   "containers.SiteMap.customPageSection": "Custom pages",
