@@ -20,7 +20,7 @@ module Volunteering
           render json: linked_json(
             @causes,
             Volunteering::WebApi::V1::CauseSerializer,
-            params: fastjson_params(vbci: volunteers_by_cause_id),
+            params: jsonapi_serializer_params(vbci: volunteers_by_cause_id),
             include: [:user_volunteer]
           )
         end
@@ -28,8 +28,8 @@ module Volunteering
         def show
           render json: WebApi::V1::CauseSerializer.new(
             @cause,
-            params: fastjson_params
-          ).serialized_json
+            params: jsonapi_serializer_params
+          ).serializable_hash
         end
 
         def create
@@ -41,8 +41,8 @@ module Volunteering
             SideFxCauseService.new.after_create(@cause, current_user)
             render json: WebApi::V1::CauseSerializer.new(
               @cause,
-              params: fastjson_params
-            ).serialized_json, status: :created
+              params: jsonapi_serializer_params
+            ).serializable_hash, status: :created
           else
             render json: { errors: @cause.errors.details }, status: :unprocessable_entity
           end
@@ -58,8 +58,8 @@ module Volunteering
             SideFxCauseService.new.after_update(@cause, current_user)
             render json: WebApi::V1::CauseSerializer.new(
               @cause,
-              params: fastjson_params
-            ).serialized_json, status: :ok
+              params: jsonapi_serializer_params
+            ).serializable_hash, status: :ok
           else
             render json: { errors: @cause.errors.details }, status: :unprocessable_entity
           end
@@ -71,8 +71,8 @@ module Volunteering
             SideFxCauseService.new.after_update(@cause, current_user)
             render json: WebApi::V1::CauseSerializer.new(
               @cause,
-              params: fastjson_params
-            ).serialized_json, status: :ok
+              params: jsonapi_serializer_params
+            ).serializable_hash, status: :ok
           else
             render json: { errors: @cause.errors.details }, status: :unprocessable_entity
           end

@@ -29,16 +29,16 @@ class WebApi::V1::TopicsController < ApplicationController
         @topics.includes(:static_pages),
         WebApi::V1::TopicSerializer,
         include: [:static_pages],
-        params: fastjson_params(include_static_pages: true)
+        params: jsonapi_serializer_params(include_static_pages: true)
       )
       return
     end
 
-    render json: linked_json(@topics, WebApi::V1::TopicSerializer, params: fastjson_params)
+    render json: linked_json(@topics, WebApi::V1::TopicSerializer, params: jsonapi_serializer_params)
   end
 
   def show
-    render json: WebApi::V1::TopicSerializer.new(@topic, params: fastjson_params).serialized_json
+    render json: WebApi::V1::TopicSerializer.new(@topic, params: jsonapi_serializer_params).serializable_hash
   end
 
   def create
@@ -50,8 +50,8 @@ class WebApi::V1::TopicsController < ApplicationController
       SideFxTopicService.new.after_create(@topic, current_user)
       render json: ::WebApi::V1::TopicSerializer.new(
         @topic,
-        params: fastjson_params
-      ).serialized_json, status: :created
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :created
     else
       render json: { errors: @topic.errors.details }, status: :unprocessable_entity
     end
@@ -65,8 +65,8 @@ class WebApi::V1::TopicsController < ApplicationController
       SideFxTopicService.new.after_update(@topic, current_user)
       render json: ::WebApi::V1::TopicSerializer.new(
         @topic,
-        params: fastjson_params
-      ).serialized_json, status: :ok
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :ok
     else
       render json: { errors: @topic.errors.details }, status: :unprocessable_entity
     end
@@ -77,7 +77,7 @@ class WebApi::V1::TopicsController < ApplicationController
     ordering = permitted_attributes(@topic)[:ordering]
     if ordering && @topic.insert_at(ordering)
       SideFxTopicService.new.after_update(@topic, current_user)
-      render json: ::WebApi::V1::TopicSerializer.new(@topic.reload, params: fastjson_params).serialized_json, status: :ok
+      render json: ::WebApi::V1::TopicSerializer.new(@topic.reload, params: jsonapi_serializer_params).serializable_hash, status: :ok
     else
       render json: { errors: @topic.errors.details }, status: :unprocessable_entity
     end

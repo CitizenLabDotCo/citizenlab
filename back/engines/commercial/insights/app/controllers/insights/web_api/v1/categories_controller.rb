@@ -101,7 +101,7 @@ module Insights
 
       # @param categories One or a collection of categories
       def serialize(categories)
-        Insights::WebApi::V1::CategorySerializer.new(categories).serialized_json
+        Insights::WebApi::V1::CategorySerializer.new(categories).serializable_hash.to_json
       end
     end
   end
