@@ -391,10 +391,8 @@ export function apiCreateModeratorForProject(
 }
 
 export function logout() {
-  cy.get('#e2e-user-menu-container button').should('be.visible');
-  cy.get('#e2e-user-menu-container button').click({ force: true });
-  cy.get('#e2e-sign-out-link').should('be.visible');
-  cy.get('#e2e-sign-out-link').click({ force: true });
+  cy.clearCookies();
+  cy.reload();
 }
 
 export function acceptCookies() {
