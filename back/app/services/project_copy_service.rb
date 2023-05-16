@@ -221,9 +221,10 @@ class ProjectCopyService < TemplateService
       yml_pc['survey_service'] = pc.survey_service
     end
 
-    # if yml_pc['participation_method'] == 'document_annotation'
-    #   yml_pc['document_annotation_embed_url'] = pc.document_annotation_embed_url
-    # end
+    if yml_pc['participation_method'] == 'document_annotation'
+      yml_pc['document_annotation_embed_url'] = pc.document_annotation_embed_url
+      yml_pc['document_annotation_service'] = pc.document_annotation_service
+    end
 
     yml_pc
   end
