@@ -114,3 +114,7 @@ export const phasesData: IPhaseData[] = [
     },
   },
 ];
+
+export default jest.fn(() => {
+  return { data: { data: phasesData } };
+});

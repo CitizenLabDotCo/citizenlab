@@ -6,7 +6,7 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { phasesData } from './__mocks__/phasesData';
+import { phasesData } from './__mocks__/usePhases';
 
 const apiPath = '*projects/:projectId/phases';
 
