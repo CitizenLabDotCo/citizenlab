@@ -8,7 +8,7 @@ module Insights
         after_action :verify_authorized, only: [:index]
 
         def index
-          render json: TextNetworkAnalysisTaskViewSerializer.new(task_views, params: fastjson_params)
+          render json: TextNetworkAnalysisTaskViewSerializer.new(task_views, params: jsonapi_serializer_params)
         end
 
         def task_views

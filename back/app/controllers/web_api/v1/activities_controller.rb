@@ -16,7 +16,7 @@ class WebApi::V1::ActivitiesController < ApplicationController
     render json: linked_json(
       paginated_activities,
       WebApi::V1::ActivitySerializer,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: [:user]
     )
   end
