@@ -399,7 +399,7 @@ de:
       message_you_became_moderator: 'Ein Admin der Beteiligungsplattform %{organizationName} hat Sie gerade zum/zur Projektmanager*in des folgenden Projekts ernannt:'
       no_ideas: 'Noch keine Ideen'
       preheader: 'Ein Admin der Beteiligungsplattform %{organizationName} hat Sie gerade zum/zur Projektmanager*in des folgenden Projekts ernannt'
-      subject: 'Sie sind jetzt Projektmanager*in auf der Plattform von %{organizationName}'
+      subject: 'Sie sind jetzt Projektmanager*in auf der Plattform %{organizationName}'
       text_design_participatory_process: 'Als Projektmanager*in können Sie konfigurieren, wie Nutzer*innen innerhalb Ihres Projekts interagieren. Sie können neue Phasen zur Zeitleiste hinzufügen. Jede dieser Phasen kann unterschiedlich eingestellt werden bezüglich der Ideen-Eingabe, Kommentierung und Abstimmungen.'
       text_moderate_analyse_input: 'Sobald das Projekt angelaufen ist, werden die ersten Ideen eintreffen. Sie erhalten wöchentliche Berichte mit allen wichtigen Aktivitäten, damit Sie den Überblick behalten. Die Ideenübersicht in Ihrer Projektmanagement-Ansicht hilft Ihnen zu verstehen, welche Ideen die meisten Für- und Gegen-Stimmen erhalten haben.'
       text_share_project_information: 'Um die Qualität der Ideen, die Sie erhalten, zu erhöhen, ist es vor allem wichtig, die Bürger:innen genügend zu informieren. Fügen Sie eine Projektbeschreibung hinzu. Fügen Sie Bilder, wie Pläne und Skizzen, hinzu. Kommunizieren Sie alle betreffenden Veranstaltungen und Ereignisse. Denken Sie daran: gut informieren ist das A und O jeder Beteiligung!'
