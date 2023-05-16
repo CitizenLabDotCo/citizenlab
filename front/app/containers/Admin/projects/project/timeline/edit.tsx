@@ -1,7 +1,7 @@
 // Libraries
 import React, { FormEvent, useEffect, useState } from 'react';
 import moment, { Moment } from 'moment';
-import { get, isEmpty } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
 // Services
@@ -72,7 +72,7 @@ const AdminProjectTimelineEdit = () => {
     projectId: string;
     id: string;
   };
-  const { data: phaseFiles } = usePhaseFiles(phaseId);  
+  const { data: phaseFiles } = usePhaseFiles(phaseId);
   const { data: phase } = usePhase(phaseId || null);
   const { data: phases } = usePhases(projectId);
   const { mutate: addPhase } = useAddPhase();
@@ -185,13 +185,13 @@ const AdminProjectTimelineEdit = () => {
     save(projectId, phase?.data, attributeDiff);
   };
 
-  const handleError = (error: CLErrors) => {
-    setErrors(get(error.data, 'json.errors', null));
+  const handleError = (error: { errors: CLErrors }) => {
+    setErrors(error.errors || null);
     setProcessing(false);
     setSubmitState('error');
   };
 
-  const handleSaveResponse = (response) => {
+  const handleSaveResponse = async (response) => {
     const phaseResponse = response.data;
     const phaseId = phaseResponse.id;
     const filesToAddPromises = inStatePhaseFiles
@@ -201,23 +201,22 @@ const AdminProjectTimelineEdit = () => {
       );
     const filesToRemovePromises = phaseFilesToRemove
       .filter((file) => file.remote)
-      .map((file) =>
-        deletePhaseFile({ phaseId, fileId: file.id as string })
-      );
+      .map((file) => deletePhaseFile({ phaseId, fileId: file.id as string }));
 
-    Promise.all([
-      ...filesToAddPromises,
-      ...filesToRemovePromises,
-    ]).then(() => {
-      setPhaseFilesToRemove([]);
-      setProcessing(false);
-      setErrors(null);
-      setSubmitState('success');
+    await Promise.all([...filesToAddPromises, ...filesToRemovePromises]).then(
+      () => {
+        setPhaseFilesToRemove([]);
+        setProcessing(false);
+        setErrors(null);
+        setSubmitState('success');
 
-      if (redirectAfterSave) {
-        clHistory.push(`/admin/projects/${projectId}/timeline/`);
+        setAttributeDiff({});
+
+        if (redirectAfterSave) {
+          clHistory.push(`/admin/projects/${projectId}/timeline/`);
+        }
       }
-    });
+    );
   };
 
   const save = async (
@@ -237,7 +236,6 @@ const AdminProjectTimelineEdit = () => {
               onError: handleError,
             }
           );
-          setAttributeDiff({});
         } else if (projectId) {
           setRedirectAfterSave(true);
           addPhase(

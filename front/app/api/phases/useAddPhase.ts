@@ -14,7 +14,7 @@ const addPhase = async ({ projectId, ...requestBody }: AddPhaseObject) =>
 
 const useAddPhase = () => {
   const queryClient = useQueryClient();
-  return useMutation<IPhase, CLErrors, AddPhaseObject>({
+  return useMutation<IPhase, { errors: CLErrors }, AddPhaseObject>({
     mutationFn: addPhase,
     onSuccess: (response) => {
       const projectId = response.data.relationships.project.data.id;

@@ -14,7 +14,7 @@ const updatePhase = async ({ phaseId, ...requestBody }: UpdatePhaseObject) =>
 
 const useUpdatePhase = () => {
   const queryClient = useQueryClient();
-  return useMutation<IPhase, CLErrors, UpdatePhaseObject>({
+  return useMutation<IPhase, { errors: CLErrors }, UpdatePhaseObject>({
     mutationFn: updatePhase,
     onSuccess: (data, variables) => {
       const projectId = data.data.relationships.project.data.id;
