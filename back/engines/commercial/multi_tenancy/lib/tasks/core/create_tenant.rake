@@ -178,8 +178,13 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        # check values before releasing
         document_annotation: {
-          # check values
+          enabled: true,
+          allowed: true
+        },
+        # check values before releasing
+        konveio_document_annotation: {
           enabled: true,
           allowed: true
         },
