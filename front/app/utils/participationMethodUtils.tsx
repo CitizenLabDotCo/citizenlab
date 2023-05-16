@@ -9,8 +9,9 @@ import {
   ParticipationMethod,
   getInputTerm,
 } from 'services/participationContexts';
-import { getCurrentPhase, IPhaseData } from 'services/phases';
+import { getCurrentPhase } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
 
 // components
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
@@ -52,7 +53,7 @@ type ModalContentMethodProps = {
 
 type FormTitleMethodProps = {
   project: IProjectData;
-  phases: IPhaseData[] | NilOrError;
+  phases: IPhaseData[] | undefined;
   phaseFromUrl?: IPhaseData | NilOrError;
 };
 
@@ -370,7 +371,7 @@ export function getAllParticipationMethods(
  */
 export const getParticipationMethod = (
   project: IProjectData | null | undefined,
-  phases: Error | IPhaseData[] | null | undefined | null,
+  phases: IPhaseData[] | undefined,
   phaseId?: string
 ): ParticipationMethod | undefined => {
   if (isNilOrError(project)) {
@@ -395,7 +396,7 @@ export const getParticipationMethod = (
 export function getPhase(
   phaseId: string,
   phases: IPhaseData[]
-): IPhaseData | null {
+): IPhaseData | undefined {
   return phases.filter((phase) => phase.id === phaseId)[0];
 }
 

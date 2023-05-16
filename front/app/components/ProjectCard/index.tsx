@@ -21,8 +21,8 @@ import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // resources
 import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'hooks/usePhase';
-import usePhases from 'hooks/usePhases';
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
 import useAuthUser from 'hooks/useAuthUser';
 import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO,
@@ -468,8 +468,8 @@ const ProjectCard = memo<Props>(
     const { data: projectImages } = useProjectImages(projectId);
     const currentPhaseId =
       project?.data?.relationships?.current_phase?.data?.id ?? null;
-    const phase = usePhase(currentPhaseId);
-    const phases = usePhases(projectId);
+    const { data: phase } = usePhase(currentPhaseId);
+    const { data: phases } = usePhases(projectId);
     const theme = useTheme();
 
     const [visible, setVisible] = useState(false);
@@ -499,11 +499,11 @@ const ProjectCard = memo<Props>(
     if (project) {
       const postingPermission = getIdeaPostingRules({
         project: project?.data,
-        phase: !isNilOrError(phase) ? phase : null,
+        phase: phase?.data,
         authUser: !isNilOrError(authUser) ? authUser : null,
       });
-      const participationMethod = !isNilOrError(phase)
-        ? phase.attributes.participation_method
+      const participationMethod = phase
+        ? phase.data.attributes.participation_method
         : project.data.attributes.participation_method;
       const canPost = !!postingPermission.enabled;
       const canVote =
@@ -537,15 +537,15 @@ const ProjectCard = memo<Props>(
         project.data.relationships.avatars.data
           ? project.data.relationships.avatars.data.map((avatar) => avatar.id)
           : [];
-      const startAt = get(phase, 'attributes.start_at');
-      const endAt = get(phase, 'attributes.end_at');
+      const startAt = get(phase?.data, 'attributes.start_at');
+      const endAt = get(phase?.data, 'attributes.end_at');
       const timeRemaining = endAt
         ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize()
         : null;
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
       const processType = project.data.attributes.process_type;
-      const inputTerm = getInputTerm(processType, project.data, phases);
+      const inputTerm = getInputTerm(processType, project.data, phases?.data);
 
       if (isArchived) {
         countdown = (
