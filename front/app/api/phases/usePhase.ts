@@ -10,7 +10,7 @@ const fetchPhase = ({ phaseId }: { phaseId: string | undefined }) =>
     action: 'get',
   });
 
-const usePhases = (phaseId) => {
+const usePhases = (phaseId: string | undefined) => {
   return useQuery<IPhase, CLErrors, IPhase, PhasesKeys>({
     queryKey: phasesKeys.item({ phaseId }),
     queryFn: () => fetchPhase({ phaseId }),
