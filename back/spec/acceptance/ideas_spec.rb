@@ -641,6 +641,7 @@ resource 'Ideas' do
         parameter :budget, 'The budget needed to realize the idea, as determined by the city'
         parameter :idea_images_attributes, 'an array of base64 images to create'
         parameter :idea_files_attributes, 'an array of base64 files to create'
+        parameter :anonymous, 'Post this idea anonymously'
       end
       ValidationErrorHelper.new.error_fields(self, Idea)
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -737,6 +738,17 @@ resource 'Ideas' do
             json_response = json_parse response_body
             idea = Idea.find(json_response.dig(:data, :id))
             expect(idea.creation_phase).to be_nil
+          end
+        end
+
+        describe 'Creating an idea anonymously' do
+          let(:anonymous) { true }
+
+          example_request 'Posting an idea anonymously does not save an author id' do
+            assert_status 201
+            expect(response_data.dig(:attributes, :anonymous)).to be true
+            expect(response_data.dig(:attributes, :author_name)).to be_nil
+            expect(response_data.dig(:relationships, :author, :data)).to be_nil
           end
         end
 
