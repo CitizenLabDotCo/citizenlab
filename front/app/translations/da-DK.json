@@ -1661,6 +1661,7 @@
   "app.utils.errors.default.api_error_too_short": "Er for kort",
   "app.utils.errors.default.api_error_wrong_length": "Er af den forkerte længde",
   "app.utils.errors.defaultapi_error_.odd": "Skal være ulige",
+  "app.utils.notInGroup": "Du opfylder ikke betingelserne for at deltage.",
   "app.utils.participationMethod.onSurveySubmission": "Tak. Vi har modtaget dit svar.",
   "containers.SiteMap.allProjects": "Alle projekter",
   "containers.SiteMap.customPageSection": "Brugerdefinerede sider",
