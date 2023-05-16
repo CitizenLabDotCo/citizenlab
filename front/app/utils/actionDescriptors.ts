@@ -6,7 +6,7 @@ type DisabledReasonFixable =
   | 'not_verified'
   | 'missing_data';
 
-type DisabledReasonUnfixable = 'not_permitted';
+type DisabledReasonUnfixable = 'not_permitted' | 'not_in_group';
 
 export type PermissionsDisabledReason =
   | DisabledReasonFixable
