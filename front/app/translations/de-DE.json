@@ -805,7 +805,7 @@
   "app.containers.IdeasIndexPage.loading": "Lädt...",
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile": "Standardmäßig werden deine Eingaben mit deinem Profil verknüpft, es sei denn, du schaltest diese Option ein",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "Anonym posten",
-  "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Profil Sichtbarkeit",
+  "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Sichtbarkeit des Profils",
   "app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_maxLength": "Die Beitragsbeschreibung muss weniger als {limit} Zeichen lang sein",
   "app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_minLength": "Der Ideenkörper muss mehr als {limit} Zeichen lang sein",
   "app.containers.IdeasNewPage.ajv_error_contribution_title_multiloc_maxLength": "Der Beitragstitel muss weniger als {limit} Zeichen lang sein",
