@@ -19,12 +19,13 @@ PublicApi::Engine.routes.draw do
 
     get '/ideas/votes', to: 'votes#for_ideas'
     get '/ideas/comments/votes', to: 'votes#for_idea_comments'
-    # get '/initiatives/comments/votes', to: 'votes#for_comments'
+    get '/initiatives/votes', to: 'votes#for_initiatives'
+    get '/initiatives/comments/votes', to: 'votes#for_initiative_comments'
 
     get '/comments', to: 'comments#index'
     get '/comments/:id', to: 'comments#show'
     get '/ideas/comments', to: 'comments#for_ideas'
-    # get '/initiatives/comments', to: 'comments#for_initiatives'
+    get '/initiatives/comments', to: 'comments#for_initiatives'
 
     get '/ideas', to: 'ideas#index'
     get '/ideas/:id', to: 'ideas#show'

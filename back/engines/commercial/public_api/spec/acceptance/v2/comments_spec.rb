@@ -101,4 +101,21 @@ resource 'Comments' do
       expect(json_response_body[:meta]).to eq({ total_pages: 3, current_page: 1 })
     end
   end
+
+  get '/api/v2/initiatives/comments/' do
+    route_summary 'Get all comments for all initiatives (proposals).'
+    route_description 'Endpoint to retrieve all comments against initiatives from the platform. The most recent comments are returned first. The endpoint supports pagination.'
+
+    include_context 'common_list_params'
+
+    let!(:initiative_comments) { create_list(:comment, 5, post: create(:initiative)) }
+
+    let(:page_size) { 2 }
+
+    example_request 'Successful response' do
+      assert_status 200
+      expect(json_response_body[:comments].size).to eq 2
+      expect(json_response_body[:meta]).to eq({ total_pages: 3, current_page: 1 })
+    end
+  end
 end

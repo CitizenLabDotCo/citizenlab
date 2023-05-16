@@ -53,10 +53,46 @@ resource 'Votes' do
   end
 
   get '/api/v2/ideas/comments/votes/' do
-    route_summary 'Get a page of votes against comments.'
+    route_summary 'Get a page of votes against idea comments.'
     route_description 'Endpoint to retrieve all votes from the platform. The most recent votes are returned first. The endpoint supports pagination.'
 
     let!(:votes) { create_list(:comment_vote, 5) }
+
+    include_context 'common_list_params'
+
+    let(:page_size) { 2 }
+
+    example_request 'Successful response' do
+      assert_status 200
+      expect(json_response_body[:votes].size).to eq 2
+      expect(json_response_body[:meta]).to eq({ total_pages: 3, current_page: 1 })
+    end
+  end
+
+  get '/api/v2/initiatives/votes/' do
+    route_summary 'Get a page of votes against initiatives.'
+    route_description 'Endpoint to retrieve all votes from the platform. The most recent votes are returned first. The endpoint supports pagination.'
+
+    let!(:votes) { create_list(:vote, 5, votable: create(:initiative)) }
+
+    include_context 'common_list_params'
+
+    context 'Unfiltered paged request' do
+      let(:page_size) { 2 }
+
+      example_request 'Successful response' do
+        assert_status 200
+        expect(json_response_body[:votes].size).to eq 2
+        expect(json_response_body[:meta]).to eq({ total_pages: 3, current_page: 1 })
+      end
+    end
+  end
+
+  get '/api/v2/initiatives/comments/votes/' do
+    route_summary 'Get a page of votes against initiative comments.'
+    route_description 'Endpoint to retrieve all votes from the platform. The most recent votes are returned first. The endpoint supports pagination.'
+
+    let!(:votes) { create_list(:comment_vote, 5, votable: create(:comment, post: create(:initiative))) }
 
     include_context 'common_list_params'
 
