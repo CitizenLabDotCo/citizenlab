@@ -21,10 +21,9 @@ class PublicApi::V2::InitiativeSerializer < ActiveModel::Serializer
     :assignee_id,
     :assigned_at,
     :href,
-
-  def title
-    @@multiloc_service.t(object.title_multiloc)
-  end
+    def title
+      @@multiloc_service.t(object.title_multiloc)
+    end
 
   def body
     @@multiloc_service.t(object.body_multiloc)

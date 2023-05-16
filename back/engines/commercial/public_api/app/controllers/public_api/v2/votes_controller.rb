@@ -18,6 +18,5 @@ module PublicApi
     def for_initiative_comments
       list_items Vote.where(votable_type: 'Comment'), V2::IdeaCommentVoteSerializer
     end
-
   end
 end
