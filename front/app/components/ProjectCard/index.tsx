@@ -521,10 +521,10 @@ const ProjectCard = memo<Props>(
       const isFinished = project.data.attributes.timeline_active === 'past';
       const isArchived =
         project.data.attributes.publication_status === 'archived';
+      // TODO: Decide on a better way to get total number of inputs. Perhaps updating ideas_count to "input_count".
       const ideasCount = !isNilOrError(submissionCount)
         ? submissionCount.totalSubmissions + project.data.attributes.ideas_count
         : project.data.attributes.ideas_count;
-
       const commentsCount = project.data.attributes.comments_count;
       const hasAvatars =
         project.data.relationships.avatars &&
