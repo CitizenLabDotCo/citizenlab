@@ -222,7 +222,6 @@ export default defineMessages({
   // Action descriptor utils
   notInGroup: {
     id: 'app.utils.notInGroup',
-    defaultMessage:
-      'You do not meet the requirements to participate in this project.',
+    defaultMessage: 'You do not meet the requirements to participate.',
   },
 });
