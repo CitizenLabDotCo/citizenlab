@@ -1661,6 +1661,7 @@
   "app.utils.errors.default.api_error_too_short": "أقصر مما ينبغي",
   "app.utils.errors.default.api_error_wrong_length": "طول غير صحيح",
   "app.utils.errors.defaultapi_error_.odd": "يجب أن يكون فرديًا",
+  "app.utils.notInGroup": "أنت لا تفي بمتطلبات المشاركة.",
   "app.utils.participationMethod.onSurveySubmission": "شكرًا لك. تم تسلم استجابتك.",
   "containers.SiteMap.allProjects": "جميع المشاريع",
   "containers.SiteMap.customPageSection": "صفحات مخصصة",
