@@ -3,17 +3,15 @@
 require 'rails_helper'
 
 describe JsonValidator do
-  subject(:record) { Klass.new }
+  subject(:record) { klass.new }
 
   context 'with trivial string schema' do
-    before do
-      klass = Class.new do
+    let(:klass) do
+      Class.new do
         include ActiveModel::Validations
         validates :json_field, json: { schema: { type: 'string' } }
         attr_accessor :json_field
       end
-
-      stub_const('Klass', klass)
     end
 
     it 'is valid with a string' do
@@ -43,8 +41,8 @@ describe JsonValidator do
   end
 
   context 'with object schema' do
-    before do
-      klass = Class.new do
+    let(:klass) do
+      Class.new do
         include ActiveModel::Validations
         validates :json_field, json: { schema: {
           type: 'object',
@@ -55,8 +53,6 @@ describe JsonValidator do
         } }
         attr_accessor :json_field
       end
-
-      stub_const('Klass', klass)
     end
 
     it 'sets correct AR errors on its instance when invalid' do
@@ -85,8 +81,8 @@ describe JsonValidator do
   end
 
   describe 'when passed a proc to schema' do
-    before do
-      klass = Class.new do
+    let(:klass) do
+      Class.new do
         include ActiveModel::Validations
         validates :json_field, json: { schema: lambda {
                                                  self.this_got_executed = true
@@ -94,8 +90,6 @@ describe JsonValidator do
                                                } }
         attr_accessor :json_field, :this_got_executed
       end
-
-      stub_const('Klass', klass)
     end
 
     it 'calls the proc with the record as context' do

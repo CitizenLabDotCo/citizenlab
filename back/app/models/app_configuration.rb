@@ -24,7 +24,7 @@ class AppConfiguration < ApplicationRecord
   accepts_nested_attributes_for :text_images
 
   validates :settings, presence: true, json: {
-    schema: -> { AppConfiguration::Settings.json_schema_str }
+    schema: -> { AppConfiguration::Settings.json_schema }
   }
 
   validates :host, presence: true

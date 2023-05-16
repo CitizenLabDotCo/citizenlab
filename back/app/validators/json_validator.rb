@@ -25,11 +25,11 @@ class JsonValidator < ActiveModel::EachValidator
 
   private
 
-  def schema(s, record)
-    if s.is_a?(Proc)
-      record.instance_exec(&s)
+  def schema(schema_option, record)
+    if schema_option.is_a?(Proc)
+      record.instance_exec(&schema_option)
     else
-      s
+      schema_option
     end
   end
 end
