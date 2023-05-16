@@ -1661,7 +1661,7 @@
   "app.utils.errors.default.api_error_too_short": "Ist zu kurz",
   "app.utils.errors.default.api_error_wrong_length": "Hat die falsche Länge",
   "app.utils.errors.defaultapi_error_.odd": "Muss ungerade sein",
-  "app.utils.notInGroup": "Du erfüllst die Voraussetzungen für die Teilnahme nicht.",
+  "app.utils.notInGroup": "Du erfüllst die Teilnahmevoraussetzungen nicht.",
   "app.utils.participationMethod.onSurveySubmission": "Vielen Dank. Wir haben Ihre Antwort erhalten.",
   "containers.SiteMap.allProjects": "{orgName, select, München {Alle Bezirke oder Projekte} other {Alle Projekte}}",
   "containers.SiteMap.customPageSection": "Benutzerdefinierte Seiten",
