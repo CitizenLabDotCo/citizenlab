@@ -476,4 +476,17 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText',
     defaultMessage: 'this support article',
   },
+  userPrivacy: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.userPrivacy',
+    defaultMessage: 'User privacy',
+  },
+  userPrivacyLabelText: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.userPrivacyLabelText',
+    defaultMessage: 'Enable users to participate anonymously',
+  },
+  userPrivacyLabelSubtext: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.userPrivacyLabelSubtext',
+    defaultMessage:
+      'Users will be able to submit ideas, comment or reply anonymously. Admins or other users won’t be able to know the identity of the user.',
+  },
 });

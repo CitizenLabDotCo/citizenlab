@@ -6,6 +6,7 @@ import {
   IconTooltip,
   Toggle,
   IOption,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Error from 'components/UI/Error';
@@ -41,6 +42,7 @@ interface Props {
   voting_enabled: boolean;
   upvoting_method: 'unlimited' | 'limited' | null | undefined;
   upvoting_limited_max: number | null | undefined;
+  allow_anonymous_posting: boolean | null | undefined;
   noUpvotingLimitError: JSX.Element | null;
   downvoting_enabled: boolean | null | undefined;
   downvoting_method: 'unlimited' | 'limited' | null | undefined;
@@ -59,6 +61,9 @@ interface Props {
   handleUpvotingLimitOnChange: (upvoting_limited_max: string) => void;
   handleDownvotingLimitOnChange: (downvoting_limited_max: string) => void;
   handleDownvotingEnabledOnChange: (downvoting_enabled: boolean) => void;
+  handleAllowAnonymousPostingOnChange: (
+    allow_anonymous_posting: boolean
+  ) => void;
   presentation_mode: 'card' | 'map' | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
   ideas_order: IdeaDefaultSortMethod | undefined;
@@ -77,6 +82,7 @@ export default ({
   voting_enabled,
   upvoting_method,
   downvoting_method,
+  allow_anonymous_posting,
   upvoting_limited_max,
   downvoting_limited_max,
   downvoting_enabled,
@@ -91,12 +97,34 @@ export default ({
   handleUpvotingLimitOnChange,
   handleDownvotingLimitOnChange,
   handleDownvotingEnabledOnChange,
+  handleAllowAnonymousPostingOnChange,
   presentation_mode,
   handleIdeasDisplayChange,
   ideas_order,
   handleIdeaDefaultSortMethodChange,
 }: Props) => (
   <>
+    <StyledSectionField>
+      <SubSectionTitle style={{ marginBottom: '0px' }}>
+        <FormattedMessage {...messages.userPrivacy} />
+      </SubSectionTitle>
+      <Toggle
+        checked={allow_anonymous_posting || false}
+        onChange={() => {
+          handleAllowAnonymousPostingOnChange(!allow_anonymous_posting);
+        }}
+        label={
+          <>
+            <Text color="primary" mb="0px" fontSize="m" fontWeight="bold">
+              <FormattedMessage {...messages.userPrivacyLabelText} />
+            </Text>
+            <Text color="primary" mt="0px" fontSize="s">
+              <FormattedMessage {...messages.userPrivacyLabelSubtext} />
+            </Text>
+          </>
+        }
+      />
+    </StyledSectionField>
     {isCustomInputTermEnabled && (
       <CustomFieldPicker
         input_term={input_term}
@@ -104,7 +132,6 @@ export default ({
         inputTermOptions={inputTermOptions}
       />
     )}
-
     <StyledSectionField>
       <SubSectionTitle>
         <FormattedMessage {...messages.phasePermissions} />
