@@ -37,6 +37,7 @@ import styled from 'styled-components';
 
 // typings
 import { Multiloc } from 'typings';
+import AnonymousPostingToggle from './AnonymousPostingToggle';
 
 const Container = styled.div``;
 
@@ -214,6 +215,13 @@ const InitiativesSettingsPage = () => {
     }
   };
 
+  const onAnonymousPostingToggle = () => {
+    setLocalProposalsSettings({
+      ...localProposalsSettings,
+      allow_anonymous_posting: !localProposalsSettings.allow_anonymous_posting,
+    });
+  };
+
   return (
     <Container>
       <StyledSectionTitle>
@@ -224,11 +232,14 @@ const InitiativesSettingsPage = () => {
           enabled={localProposalsSettings.enabled}
           onToggle={onToggle}
         />
+        <AnonymousPostingToggle
+          enabled={localProposalsSettings.allow_anonymous_posting}
+          onToggle={onAnonymousPostingToggle}
+        />
         <VotingThreshold
           value={localProposalsSettings.voting_threshold}
           onChange={updateProposalsSetting('voting_threshold')}
         />
-
         <VotingLimit
           value={localProposalsSettings.days_limit}
           onChange={updateProposalsSetting('days_limit')}
