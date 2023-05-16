@@ -31,7 +31,10 @@ import ProjectActionButtons from './ProjectActionButtons';
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { scrollToElement } from 'utils/scroll';
-import { hasEmbeddedSurvey, hasSurveyWithAnyonePermissions } from './utils';
+import {
+  hasEmbeddedSurvey,
+  checkHasSurveyWithAnyonePermissions,
+} from './utils';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -201,7 +204,6 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       authUser,
     });
     const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
-
     return (
       <Container id="e2e-project-sidebar" className={className || ''}>
         <About>
@@ -234,7 +236,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     {...messages.xParticipants}
                     values={{ participantsCount: projectParticipantsCount }}
                   />
-                  {hasSurveyWithAnyonePermissions(project.data, phases) && (
+                  {checkHasSurveyWithAnyonePermissions(
+                    project.data,
+                    phases
+                  ) && (
                     <Box mb="4px" ml="4px">
                       <IconTooltip
                         placement="top"
@@ -346,7 +351,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               (currentPhaseParticipationMethod === 'native_survey' && (
                 <Box>
                   <ListItem>
-                    <ListItemIcon ariaHidden name="survey" />
+                    <ListItemIcon ariaHidden name="chart-bar" />
                     {!isNilOrError(surveySubmissionCount) &&
                       surveySubmissionCount.totalSubmissions}
                     <Box ml="4px">

@@ -52,6 +52,7 @@ import {
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
 import { getInputTermMessage } from 'utils/i18n';
+import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
@@ -471,6 +472,7 @@ const ProjectCard = memo<Props>(
     const phase = usePhase(currentPhaseId);
     const phases = usePhases(projectId);
     const theme = useTheme();
+    const submissionCount = useFormSubmissionCount({ projectId });
 
     const [visible, setVisible] = useState(false);
 
@@ -519,7 +521,10 @@ const ProjectCard = memo<Props>(
       const isFinished = project.data.attributes.timeline_active === 'past';
       const isArchived =
         project.data.attributes.publication_status === 'archived';
-      const ideasCount = project.data.attributes.ideas_count;
+      const ideasCount = !isNilOrError(submissionCount)
+        ? submissionCount.totalSubmissions + project.data.attributes.ideas_count
+        : project.data.attributes.ideas_count;
+
       const commentsCount = project.data.attributes.comments_count;
       const hasAvatars =
         project.data.relationships.avatars &&

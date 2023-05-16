@@ -406,8 +406,8 @@ export default defineMessages({
       'There may be more participants who submitted the survey while not registered. They will not be counted here.',
   },
   surveySubmissionsTooltip: {
-    id: 'app.containers.Projects.surveySubmissionsTooltip',
-    defaultMessage: 'External survey submissions are not counted.',
+    id: 'app.containers.Projects.surveySubmissionsTooltip2',
+    defaultMessage: 'Embedded survey submissions are not counted.',
   },
   surveySubmissions: {
     id: 'app.containers.Projects.surveySubmissions',

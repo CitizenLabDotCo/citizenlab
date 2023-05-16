@@ -20,20 +20,11 @@ export const hasEmbeddedSurvey = (
   return hasSurveyPhase;
 };
 
-export const hasSurveyWithAnyonePermissions = (
-  project: IProjectData,
+export const checkHasSurveyWithAnyonePermissions = (
+  project: IProjectData | undefined,
   phases: TPhases | null
 ) => {
-  let hasSurveyPhase = false;
-  if (!isNilOrError(phases)) {
-    phases.map((phase) => {
-      if (phase.attributes.participation_method === 'native_survey') {
-        hasSurveyPhase = true; // TODO Return true if there is a survey with anyone permissions
-      }
-    });
-  }
-  if (project.attributes.participation_method === 'native_survey') {
-    hasSurveyPhase = true;
-  }
-  return hasSurveyPhase; // TODO Return true if there is a survey with anyone permissions
+  const hasSurveyWithAnyonePermissions = true;
+
+  return hasSurveyWithAnyonePermissions;
 };
