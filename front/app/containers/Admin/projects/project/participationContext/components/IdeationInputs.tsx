@@ -31,6 +31,7 @@ import {
   IdeaDefaultSortMethod,
   InputTerm,
 } from 'services/participationContexts';
+import { AnonymousPostingToggle } from './AnonymousPostingToggle';
 
 interface Props {
   isCustomInputTermEnabled: boolean;
@@ -104,27 +105,10 @@ export default ({
   handleIdeaDefaultSortMethodChange,
 }: Props) => (
   <>
-    <StyledSectionField>
-      <SubSectionTitle style={{ marginBottom: '0px' }}>
-        <FormattedMessage {...messages.userPrivacy} />
-      </SubSectionTitle>
-      <Toggle
-        checked={allow_anonymous_posting || false}
-        onChange={() => {
-          handleAllowAnonymousPostingOnChange(!allow_anonymous_posting);
-        }}
-        label={
-          <>
-            <Text color="primary" mb="0px" fontSize="m" fontWeight="bold">
-              <FormattedMessage {...messages.userPrivacyLabelText} />
-            </Text>
-            <Text color="primary" mt="0px" fontSize="s">
-              <FormattedMessage {...messages.userPrivacyLabelSubtext} />
-            </Text>
-          </>
-        }
-      />
-    </StyledSectionField>
+    <AnonymousPostingToggle
+      allow_anonymous_posting={allow_anonymous_posting}
+      handleAllowAnonymousPostingOnChange={handleAllowAnonymousPostingOnChange}
+    />
     {isCustomInputTermEnabled && (
       <CustomFieldPicker
         input_term={input_term}

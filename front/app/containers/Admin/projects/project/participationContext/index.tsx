@@ -454,6 +454,7 @@ class ParticipationContext extends PureComponent<
                 input_term={input_term}
                 handleInputTermChange={this.handleInputTermChange}
                 inputTermOptions={this.getInputTermOptions()}
+                allow_anonymous_posting={allow_anonymous_posting}
                 min_budget={min_budget}
                 max_budget={max_budget}
                 commenting_enabled={commenting_enabled}
@@ -472,6 +473,9 @@ class ParticipationContext extends PureComponent<
                 ideas_order={ideas_order}
                 handleIdeaDefaultSortMethodChange={
                   this.handleIdeaDefaultSortMethodChange
+                }
+                handleAllowAnonymousPostingOnChange={
+                  this.handleAllowAnonymousPostingOnChange
                 }
               />
             )}

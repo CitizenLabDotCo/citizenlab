@@ -132,6 +132,7 @@ class ProjectPolicy < ApplicationPolicy
       :voting_enabled,
       :upvoting_method,
       :upvoting_limited_max,
+      :allow_anonymous_posting,
       :survey_embed_url,
       :survey_service,
       :min_budget,

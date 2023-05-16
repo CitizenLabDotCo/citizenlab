@@ -64,6 +64,7 @@ module ParticipationContext
       validates :downvoting_limited_max, presence: true,
         numericality: { only_integer: true, greater_than: 0 },
         if: %i[can_contain_ideas? downvoting_limited?]
+      validates :allow_anonymous_posting, inclusion: { in: [true, false] }
 
       # ideation?
       with_options if: :ideation? do

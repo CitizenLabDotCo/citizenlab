@@ -109,6 +109,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :voting_enabled,
       :upvoting_method,
       :upvoting_limited_max,
+      :allow_anonymous_posting,
       :presentation_mode,
       :survey_embed_url,
       :survey_service,

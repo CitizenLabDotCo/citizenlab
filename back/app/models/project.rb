@@ -38,6 +38,7 @@
 #  include_all_areas            :boolean          default(FALSE), not null
 #  posting_method               :string           default("unlimited"), not null
 #  posting_limited_max          :integer          default(1)
+#  allow_anonymous_posting      :boolean          default(FALSE), not null
 #
 # Indexes
 #
