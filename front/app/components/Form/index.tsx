@@ -298,7 +298,7 @@ const Form = memo(
               />
               {footer && (
                 <Box display="flex" flexDirection="row" justifyContent="center">
-                  <Box w="100%" maxWidth="700px" px="20px" mt="0px" mb="80px">
+                  <Box w="100%" maxWidth="700px" px="20px" mt="0px" mb="40px">
                     {footer}
                   </Box>
                 </Box>

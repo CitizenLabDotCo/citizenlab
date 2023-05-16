@@ -12,7 +12,10 @@ import useInputSchema from 'hooks/useInputSchema';
 import { useParams, useSearchParams } from 'react-router-dom';
 import useAddIdea from 'api/ideas/useAddIdea';
 
-import messages from '../messages';
+// i18n
+import { useIntl } from 'utils/cl-intl';
+import pageMessages from '../messages';
+import messages from './messages';
 
 // components
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
@@ -20,6 +23,12 @@ import IdeasNewMeta from '../IdeasNewMeta';
 import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { Heading } from './Heading';
+import {
+  Box,
+  Text,
+  Checkbox,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
@@ -66,6 +75,7 @@ const IdeasNewPageWithJSONForm = () => {
   const { data: project } = useProjectBySlug(params.slug);
   const [queryParams] = useSearchParams();
   const phaseId = queryParams.get('phase_id');
+  const { formatMessage } = useIntl();
 
   const phases = usePhases(project?.data.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
@@ -237,8 +247,31 @@ const IdeasNewPageWithJSONForm = () => {
               />
             }
             config={isSurvey ? 'survey' : 'input'}
-            formSubmitText={isSurvey ? messages.submitSurvey : undefined}
-            footer={<>Hello!</>}
+            formSubmitText={isSurvey ? pageMessages.submitSurvey : undefined}
+            footer={
+              <Box mt="-20px" mb="60px">
+                <Text fontWeight="bold">
+                  {formatMessage(messages.profileVisiblity)}
+                  <IconTooltip
+                    content={
+                      <Text color="white" fontSize="s" m="0">
+                        {formatMessage(messages.inputsAssociatedWithProfile)}
+                      </Text>
+                    }
+                    iconSize="16px"
+                    placement="top-start"
+                    display="inline"
+                    ml="4px"
+                    transform="translateY(-1px)"
+                  />
+                </Text>
+                <Checkbox
+                  checked={true}
+                  label={formatMessage(messages.postAnonymously)}
+                  onChange={() => {}}
+                />
+              </Box>
+            }
           />
         </>
       ) : isError(project) || inputSchemaError ? null : (
