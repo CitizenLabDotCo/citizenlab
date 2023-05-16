@@ -9,7 +9,7 @@ import ReadMoreWrapper from 'containers/ProjectsShowPage/shared/header/ReadMoreW
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 
 // style
 import styled from 'styled-components';
@@ -46,11 +46,11 @@ const PhaseDescription = ({
   hidden,
 }: Props) => {
   const localize = useLocalize();
-  const phase = usePhase(phaseId);
+  const { data: phase } = usePhase(phaseId);
   const { data: phaseFiles } = usePhaseFiles(phaseId);
 
-  const content = !isNilOrError(phase)
-    ? localize(phase.attributes.description_multiloc)
+  const content = phase
+    ? localize(phase.data.attributes.description_multiloc)
     : '';
   const contentIsEmpty =
     content === '' || content === '<p></p>' || content === '<p><br></p>';
@@ -70,12 +70,12 @@ const PhaseDescription = ({
         phaseId={phaseId}
         descriptionHasContent={descriptionHasContent}
       />
-      {!isNilOrError(phase) && descriptionHasContent && (
+      {phase && descriptionHasContent && (
         <>
           <ReadMoreWrapper
             fontSize="base"
             contentId="phase-description"
-            value={phase?.attributes?.description_multiloc}
+            value={phase.data.attributes?.description_multiloc}
           />
 
           {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (

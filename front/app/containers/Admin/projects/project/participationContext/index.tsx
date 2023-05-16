@@ -15,7 +15,7 @@ import { Input, IOption } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 // services
 import { IProject } from 'api/projects/types';
-import { IPhase } from 'services/phases';
+import { IPhase } from 'api/phases/types';
 import {
   ParticipationMethod,
   TSurveyService,

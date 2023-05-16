@@ -36,7 +36,7 @@ import {
 import { IParticipationContextType } from 'typings';
 import { isFieldEnabled } from 'utils/projectUtils';
 import { IQueryParameters, Sort } from 'api/ideas/types';
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 
 const Container = styled.div`
   width: 100%;
@@ -175,7 +175,7 @@ const IdeasWithoutFiltersSidebar = ({
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteIdeas(ideaQueryParameters);
   const list = data?.pages.map((page) => page.data).flat();
-  const phase = usePhase(phaseId ? phaseId : null);
+  const { data: phase } = usePhase(phaseId);
 
   useEffect(() => {
     setSelectedView(defaultView || 'card');
@@ -281,7 +281,7 @@ const IdeasWithoutFiltersSidebar = ({
               }`}
             >
               <SelectSort
-                phase={phase}
+                phase={phase?.data}
                 project={project?.data}
                 onChange={handleSortOnChange}
                 alignment={biggerThanLargeTablet ? 'right' : 'left'}

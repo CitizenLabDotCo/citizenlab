@@ -1,6 +1,6 @@
 import React from 'react';
 import { isEmpty } from 'lodash-es';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';

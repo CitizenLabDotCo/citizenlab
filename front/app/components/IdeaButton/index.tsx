@@ -38,9 +38,9 @@ import { darken } from 'polished';
 // typings
 import { LatLng } from 'leaflet';
 import { getButtonMessage } from './utils';
-import { IPhaseData } from 'services/phases';
 import useAuthUser from 'hooks/useAuthUser';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
+import { IPhaseData } from 'api/phases/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -101,7 +101,7 @@ interface Props extends Omit<ButtonProps, 'onClick'> {
   inMap?: boolean;
   className?: string;
   participationContextType: IParticipationContextType;
-  phase: IPhaseData | undefined | null;
+  phase: IPhaseData | undefined;
 }
 
 const IdeaButton = memo<Props>(
@@ -118,7 +118,7 @@ const IdeaButton = memo<Props>(
     const { formatMessage } = useIntl();
     const authUser = useAuthUser();
     const { data: project } = useProjectById(projectId);
-    const phases = usePhases(projectId);
+    const { data: phases } = usePhases(projectId);
     const disabledMessages: {
       [key in IIdeaPostingDisabledReason]: MessageDescriptor;
     } = {
@@ -270,7 +270,7 @@ const IdeaButton = memo<Props>(
       const inputTerm = getInputTerm(
         project.data.attributes.process_type,
         project.data,
-        phases
+        phases?.data
       );
 
       const buttonMessage = getButtonMessage(

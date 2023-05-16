@@ -20,7 +20,7 @@ import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 
 // services
@@ -223,7 +223,7 @@ const IdeasMap = memo<Props>((props) => {
   const { projectId, phaseId, className, id, ariaLabelledBy, tabIndex } = props;
   const authUser = useAuthUser();
   const { data: project } = useProjectById(projectId);
-  const phase = usePhase(phaseId || null);
+  const { data: phase } = usePhase(phaseId);
   const { windowWidth } = useWindowSize();
   const tablet = windowWidth <= viewportWidths.tablet;
 
@@ -260,7 +260,7 @@ const IdeasMap = memo<Props>((props) => {
 
   const ideaPostingRules = getIdeaPostingRules({
     project: project?.data,
-    phase,
+    phase: phase?.data,
     authUser,
   });
 
@@ -441,7 +441,7 @@ const IdeasMap = memo<Props>((props) => {
             participationContextType={phaseId ? 'phase' : 'project'}
             latLng={selectedLatLng}
             inMap={true}
-            phase={!isNilOrError(phase) ? phase : undefined}
+            phase={phase?.data}
           />
         </IdeaButtonWrapper>
       </InnerContainer>
