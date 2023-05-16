@@ -11,7 +11,7 @@ import InitiativesHeaderRow from './header/InitiativesHeaderRow';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 // services
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 

@@ -3,7 +3,7 @@ import moment from 'moment';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 
 // craft
 import { Element } from '@craftjs/core';
@@ -28,7 +28,6 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
 import { getTemplateData } from './getTemplateData';
 
@@ -40,20 +39,20 @@ interface Props {
 const ProjectTemplate = ({ reportId, projectId }: Props) => {
   const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
 
-  if (!project || isNilOrError(phases)) return null;
+  if (!project || !phases) return null;
 
   const { participationMethod, phaseId } = getTemplateData(
     project.data,
-    phases
+    phases.data
   );
 
   const hasPhases =
-    project.data.attributes.process_type === 'continuous' && phases.length > 0;
+    project.data.attributes.process_type === 'continuous' && phases.data.length > 0;
 
   const projectPeriod = hasPhases
-    ? getProjectPeriod(phases)
+    ? getProjectPeriod(phases.data)
     : { startAt: undefined, endAt: moment().format('YYYY-MM-DD') };
 
   return (

@@ -15,7 +15,7 @@ import {
   colors,
   Title,
 } from '@citizenlab/cl2-component-library';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 import { PhaseActionForm } from '../../components/PhaseActionForm';
 import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
 import { HandlePermissionChangeProps } from './utils';
@@ -32,7 +32,7 @@ const Timeline = ({ projectId }: InputProps) => {
   const [openedPhaseId, setOpenedPhaseId] = useState<string | null>(null);
   const { mutate: updatePhasePermission } =
     useUpdatePhasePermission(openedPhaseId);
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
 
   const handlePermissionChange = ({
     permission,
@@ -54,11 +54,13 @@ const Timeline = ({ projectId }: InputProps) => {
     }
   };
 
-  if (isNilOrError(phases)) {
+  if (!phases) {
     return null;
   }
 
-  const openedPhase = phases?.filter((phase) => phase.id === openedPhaseId)[0];
+  const openedPhase = phases.data.filter(
+    (phase) => phase.id === openedPhaseId
+  )[0];
 
   const config = getMethodConfig(
     openedPhase ? openedPhase.attributes.participation_method : 'ideation'
@@ -67,9 +69,9 @@ const Timeline = ({ projectId }: InputProps) => {
   if (!isNilOrError(config)) {
     return (
       <Container>
-        {phases &&
-          phases.length > 0 &&
-          phases.map((phase, i) => (
+        {phases.data &&
+          phases.data.length > 0 &&
+          phases.data.map((phase, i) => (
             <Accordion
               timeoutMilliseconds={1000}
               transitionHeightPx={1700}
@@ -107,8 +109,8 @@ const Timeline = ({ projectId }: InputProps) => {
               </Box>
             </Accordion>
           ))}
-        {!phases ||
-          (phases.length < 1 && (
+        {!phases.data ||
+          (phases.data.length < 1 && (
             <p>
               <FormattedMessage
                 {...messages.noActionsCanBeTakenInThisProject}

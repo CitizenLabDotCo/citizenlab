@@ -1,11 +1,10 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Survey from '../shared/survey';
 
 // hooks
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -26,13 +25,13 @@ interface Props {
 }
 
 const SurveyContainer = memo<Props>(({ projectId, phaseId, className }) => {
-  const phase = usePhase(phaseId);
+  const { data: phase } = usePhase(phaseId);
 
   if (
-    !isNilOrError(phase) &&
-    phase.attributes.participation_method === 'survey' &&
-    phase.attributes.survey_embed_url &&
-    phase.attributes.survey_service
+    phase &&
+    phase.data.attributes.participation_method === 'survey' &&
+    phase.data.attributes.survey_embed_url &&
+    phase.data.attributes.survey_service
   ) {
     return (
       <Container className={className || ''}>
@@ -42,9 +41,9 @@ const SurveyContainer = memo<Props>(({ projectId, phaseId, className }) => {
         <Survey
           className={className}
           projectId={projectId}
-          phaseId={phase.id}
-          surveyEmbedUrl={phase.attributes.survey_embed_url}
-          surveyService={phase.attributes.survey_service}
+          phaseId={phase.data.id}
+          surveyEmbedUrl={phase.data.attributes.survey_embed_url}
+          surveyService={phase.data.attributes.survey_service}
         />
       </Container>
     );
