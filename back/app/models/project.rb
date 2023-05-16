@@ -39,6 +39,7 @@
 #  posting_method                :string           default("unlimited"), not null
 #  posting_limited_max           :integer          default(1)
 #  document_annotation_embed_url :string
+#  document_annotation_service   :string
 #
 # Indexes
 #
