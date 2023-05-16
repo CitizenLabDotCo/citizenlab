@@ -1226,7 +1226,7 @@
   "app.containers.Projects.submitMyBasket": "Submit basket",
   "app.containers.Projects.survey": "Survey",
   "app.containers.Projects.surveySubmissions": "survey submissions",
-  "app.containers.Projects.surveySubmissionsTooltip": "External survey submissions are not counted.",
+  "app.containers.Projects.surveySubmissionsTooltip2": "Embedded survey submissions are not counted.",
   "app.containers.Projects.takeThePoll": "Take the poll",
   "app.containers.Projects.takeTheSurvey": "Take the survey",
   "app.containers.Projects.timeline": "Timeline",
