@@ -11,14 +11,14 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
       .order(created_at: :desc)
     @changes = paginate @changes
 
-    render json: linked_json(@changes, WebApi::V1::InitiativeStatusChangeSerializer, params: fastjson_params)
+    render json: linked_json(@changes, WebApi::V1::InitiativeStatusChangeSerializer, params: jsonapi_serializer_params)
   end
 
   def show
     render json: WebApi::V1::InitiativeStatusChangeSerializer.new(
       @change,
-      params: fastjson_params
-    ).serialized_json
+      params: jsonapi_serializer_params
+    ).serializable_hash
   end
 
   def create
@@ -48,8 +48,8 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
         SideFxInitiativeStatusChangeService.new.after_create @change, current_user
         render json: WebApi::V1::InitiativeStatusChangeSerializer.new(
           @change,
-          params: fastjson_params
-        ).serialized_json, status: :created
+          params: jsonapi_serializer_params
+        ).serializable_hash, status: :created
       else
         render json: { errors: @change.errors.details }, status: :unprocessable_entity
       end

@@ -11,6 +11,10 @@ module FlagInappropriateContent
       end
     end
 
-    belongs_to :flaggable, polymorphic: true
+    # We specify the namespace for the serializer(s), because if we just use polymorphic: true
+    # jsonapi-serializer will look for the serializer(s) in the same namespace as this serializer, which will fail.
+    belongs_to :flaggable, serializer: proc { |object|
+      "::WebApi::V1::#{object.class.name}Serializer".constantize
+    }
   end
 end
