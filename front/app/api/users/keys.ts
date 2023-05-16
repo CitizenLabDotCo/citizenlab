@@ -1,12 +1,12 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
-import { ITopicsQueryParams } from './types';
+import { IQueryParameters } from './types';
 
-const baseKey = { type: 'topic' };
+const baseKey = { type: 'user' };
 
-const topicsKeys = {
+const usersKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: (params: ITopicsQueryParams) => [
+  list: (params: IQueryParameters) => [
     { ...baseKey, operation: 'list', parameters: params },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
@@ -19,4 +19,4 @@ const topicsKeys = {
   ],
 } satisfies QueryKeys;
 
-export default topicsKeys;
+export default usersKeys;
