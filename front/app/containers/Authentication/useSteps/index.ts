@@ -58,7 +58,17 @@ export default function useSteps() {
     return authenticationDataRef.current;
   }, []);
 
-  const [currentStep, setCurrentStep] = useState<Step>('closed');
+  const [currentStep, _setCurrentStep] = useState<Step>('closed');
+
+  const setCurrentStep = useCallback((step: Step) => {
+    if (step === 'closed') {
+      invalidateAllActionDescriptors();
+      queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
+    }
+
+    _setCurrentStep(step);
+  }, []);
+
   const [state, setState] = useState<State>({
     email: null,
     /** the invite token, set in case the flow started with an invitation */
@@ -112,6 +122,7 @@ export default function useSteps() {
   }, [
     getAuthenticationData,
     getRequirements,
+    setCurrentStep,
     setError,
     updateState,
     anySSOEnabled,
@@ -127,12 +138,8 @@ export default function useSteps() {
 
       const wrappedAction = (async (...args) => {
         setError(null);
-        if (transition === 'CLOSE') {
-          invalidateAllActionDescriptors();
-          queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
-        }
-
         setLoading(true);
+
         try {
           // @ts-ignore
           await action(...args);

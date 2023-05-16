@@ -174,6 +174,11 @@ export const lightFlow = (
           return;
         }
 
+        if (requirements.special.group_membership === 'require') {
+          setCurrentStep('closed');
+          return;
+        }
+
         setCurrentStep('success');
       },
     },
@@ -204,6 +209,10 @@ export const lightFlow = (
         setCurrentStep('closed');
 
         trackEventByName(tracks.signUpFlowCompleted);
+
+        if (requirements.special.group_membership === 'require') {
+          return;
+        }
 
         const { successAction } = getAuthenticationData();
         if (successAction) {
