@@ -26,7 +26,8 @@ module MultiTenancy
 
         attribute(:survey_embed_url, if: :survey?)
         attribute(:survey_service, if: :survey?)
-        # attribute(:document_annotation_embed_url, if: :document_annotation?)
+        attribute(:document_annotation_embed_url, if: :document_annotation?)
+        attribute(:document_annotation_service, if: :document_annotation?)
       end
     end
   end

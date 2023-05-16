@@ -2,8 +2,9 @@
 
 module WebApi::V1::ParticipationContextSerializer
   extend ActiveSupport::Concern
-  include Surveys::WebApi::V1::SurveyParticipationContextSerializer
+  include DocumentAnnotation::WebApi::V1::DocumentAnnotationParticipationContextSerializer
   include Polls::WebApi::V1::PollParticipationContextSerializer
+  include Surveys::WebApi::V1::SurveyParticipationContextSerializer
 
   included do
     with_options if: proc { |object|
