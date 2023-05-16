@@ -87,6 +87,7 @@ const IdeasNewPageWithJSONForm = () => {
 
   const [processingLocation, setProcessingLocation] = useState(false);
   const [initialFormData, setInitialFormData] = useState({});
+  const [postAnonymously, setPostAnonymously] = useState(false);
 
   useEffect(() => {
     // Click on map flow :
@@ -136,6 +137,7 @@ const IdeasNewPageWithJSONForm = () => {
           !isRegularUser({ data: authUser })
             ? [phaseId]
             : null,
+        anonymous: postAnonymously,
       },
       {
         onSuccess: (idea) => {
@@ -202,6 +204,10 @@ const IdeasNewPageWithJSONForm = () => {
     [uiSchema]
   );
 
+  const togglePostAnonymously = () => {
+    setPostAnonymously((v) => !v);
+  };
+
   // get participation method config
   const phaseFromUrl = usePhase(phaseId);
   const config = getConfig(phaseFromUrl, phases, project);
@@ -266,9 +272,9 @@ const IdeasNewPageWithJSONForm = () => {
                   />
                 </Text>
                 <Checkbox
-                  checked={true}
+                  checked={postAnonymously}
                   label={formatMessage(messages.postAnonymously)}
-                  onChange={() => {}}
+                  onChange={togglePostAnonymously}
                 />
               </Box>
             }

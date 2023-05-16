@@ -157,6 +157,7 @@ export interface IIdeaAdd {
   location_description?: string | null;
   budget?: number | null;
   proposed_budget?: number | null;
+  anonymous?: boolean;
 }
 
 export interface IIdeaUpdate {
