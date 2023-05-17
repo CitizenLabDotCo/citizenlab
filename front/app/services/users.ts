@@ -2,7 +2,6 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { TRole } from 'services/permissions/roles';
-import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 
 const apiEndpoint = `${API_PATH}/users`;
 
@@ -76,20 +75,5 @@ export async function changePassword(object: IChangePassword) {
       new_password: object.password,
     },
   });
-  return response;
-}
-
-export async function deleteUser(userId: string) {
-  const response = await streams.delete(`${apiEndpoint}/${userId}`, userId);
-  await streams.fetchAllWith({
-    apiEndpoint: [
-      `${API_PATH}/groups`,
-      `${API_PATH}/users`,
-      `${API_PATH}/stats/users_count`,
-    ],
-  });
-
-  invalidateSeatsCache();
-
   return response;
 }
