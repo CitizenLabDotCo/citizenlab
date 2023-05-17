@@ -400,6 +400,7 @@
   "app.components.Upload.remaining": "remaining",
   "app.components.Upload.uploadImageLabel": "Select an image (max. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Select one or more images",
+  "app.components.UserName.anonymous": "Anonymous",
   "app.components.UserName.deletedUser": "unknown author",
   "app.components.UserName.verified": "Verified",
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "and unlock more engagement opportunities",
