@@ -64,19 +64,6 @@ export interface IUser {
   data: IUserData;
 }
 
-export interface IUserUpdate {
-  first_name?: string;
-  last_name?: string;
-  email?: string;
-  new_email?: string;
-  password?: string;
-  locale?: string;
-  avatar?: string | null;
-  roles?: TRole[];
-  bio_multiloc?: Multiloc;
-  custom_field_values?: Record<string, any>;
-}
-
 interface IChangePassword {
   current_password: string;
   password: string;

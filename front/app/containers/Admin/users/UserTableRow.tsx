@@ -14,6 +14,7 @@ import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import BlockUser from 'components/admin/UserBlockModals/BlockUser';
 import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
 import Link from 'utils/cl-router/Link';
+
 const ChangeSeatModal = lazy(
   () => import('components/admin/SeatBasedBilling/ChangeSeatModal')
 );
@@ -27,9 +28,6 @@ import blockUserMessages from 'components/admin/UserBlockModals/messages';
 import eventEmitter from 'utils/eventEmitter';
 import events from './events';
 
-// Services
-import { IUserData, deleteUser } from 'services/users';
-
 // Styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
@@ -37,6 +35,8 @@ import { colors } from 'utils/styleUtils';
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useExceedsSeats from 'hooks/useExceedsSeats';
+import useDeleteUser from 'api/users/useDeleteUser';
+import { IUserData } from 'api/users/types';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
@@ -89,6 +89,7 @@ const UserTableRow = ({
     name: 'seat_based_billing',
   });
 
+  const { mutate: deleteUser } = useDeleteUser();
   const isUserInRowAdmin = isAdmin({ data: userInRow });
   const isUserInRowModerator = !isRegularUser({ data: userInRow });
   const userInRowHasRegistered =
@@ -118,11 +119,13 @@ const UserTableRow = ({
           <FormattedMessage {...messages.youCantDeleteYourself} />
         );
       } else {
-        deleteUser(userInRow.id).catch(() => {
-          eventEmitter.emit<JSX.Element>(
-            events.userDeletionFailed,
-            <FormattedMessage {...messages.userDeletionFailed} />
-          );
+        deleteUser(userInRow.id, {
+          onError: () => {
+            eventEmitter.emit<JSX.Element>(
+              events.userDeletionFailed,
+              <FormattedMessage {...messages.userDeletionFailed} />
+            );
+          },
         });
       }
     }
