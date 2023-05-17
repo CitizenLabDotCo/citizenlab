@@ -5,6 +5,7 @@ export const phasesData: IPhaseData[] = [
     id: 'MockPhaseInformationId',
     type: 'phase',
     attributes: {
+      allow_anonymous_participation: false,
       title_multiloc: { en: 'A Mock Information phase' },
       description_multiloc: { en: 'For testing purposes' },
       start_at: 'today',
@@ -43,6 +44,7 @@ export const phasesData: IPhaseData[] = [
     id: 'MockPhasePollId',
     type: 'phase',
     attributes: {
+      allow_anonymous_participation: false,
       title_multiloc: { en: 'A Mock Poll phase' },
       description_multiloc: { en: 'For testing purposes' },
       start_at: 'today',
@@ -79,6 +81,7 @@ export const phasesData: IPhaseData[] = [
     id: 'MockPhaseIdeationId',
     type: 'phase',
     attributes: {
+      allow_anonymous_participation: false,
       title_multiloc: { en: 'A Mock Information phase' },
       description_multiloc: { en: 'For testing purposes' },
       start_at: 'today',
