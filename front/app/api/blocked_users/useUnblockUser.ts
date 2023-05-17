@@ -16,13 +16,13 @@ const useUnblockUser = () => {
   const queryClient = useQueryClient();
   return useMutation<IUser, Error | CLErrorsJSON, string>({
     mutationFn: unblockUser,
-    onSuccess: (_data, userId) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: blockedUsersCountKeys.items(),
       });
       queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
       queryClient.invalidateQueries({
-        queryKey: usersKeys.item({ id: userId }),
+        queryKey: usersKeys.items(),
       });
     },
   });

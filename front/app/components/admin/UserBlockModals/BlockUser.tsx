@@ -24,7 +24,7 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { IUserData } from 'api/users/types';
+import { IUser, IUserData } from 'api/users/types';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -37,7 +37,7 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 type Props = {
   open: boolean;
   setClose: () => void;
-  user: IUserData;
+  user: IUser;
   tenant: GetAppConfigurationChildProps;
 };
 
@@ -67,7 +67,7 @@ const BlockUserModal = ({ open, setClose, user, tenant }: Props) => {
 
   const onFormSubmit = ({ reason }: FormValues) => {
     blockUser(
-      { userId: user.id, reason },
+      { userId: user.data.id, reason },
       {
         onSuccess: (response) => {
           setUpdatedUser(response.data);
@@ -89,7 +89,7 @@ const BlockUserModal = ({ open, setClose, user, tenant }: Props) => {
   if (success && !isNilOrError(updatedUser)) {
     return (
       <SuccessfulUserBlock
-        name={`${user.attributes.first_name} ${user.attributes.last_name}`}
+        name={`${user.data.attributes.first_name} ${user.data.attributes.last_name}`}
         date={moment(updatedUser?.attributes.block_end_at).format('LL')}
         resetSuccess={() => setSuccess(false)}
         opened={true}
