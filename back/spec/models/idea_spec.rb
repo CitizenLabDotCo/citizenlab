@@ -538,6 +538,9 @@ RSpec.describe Idea do
   end
 
   describe 'anonymous participation' do
+
+    let(:author) { create(:user) }
+
     it 'has no author if set to anonymous' do
       idea = create(:idea, anonymous: true)
       expect(idea.author).to be_nil
@@ -548,20 +551,34 @@ RSpec.describe Idea do
       expect(idea.author_hash.length).to eq 32
     end
 
-    it 'has an identical author hash on each idea when the author and project are the same' do
-      author = create(:user)
+    context 'ideas are not anonymous' do
+      it 'has the same author hash for ideas in different projects when the author is the same' do
+        idea1 = create(:idea, author: author)
+        idea2 = create(:idea, author: author)
+        expect(idea1.author_hash).to eq idea2.author_hash
+      end
+    end
+
+    context 'ideas are anonymous' do
+      it 'has the same author hash on each idea when the author and project are the same' do
+        project = create(:project)
+        idea1 = create(:idea, author: author, project: project, anonymous: true)
+        idea2 = create(:idea, author: author, project: project, anonymous: true)
+        expect(idea1.author_hash).to eq idea2.author_hash
+      end
+
+      it 'has a different author hash for ideas in different projects when the author is the same' do
+        idea1 = create(:idea, author: author, anonymous: true)
+        idea2 = create(:idea, author: author, anonymous: true)
+        expect(idea1.author_hash).not_to eq idea2.author_hash
+      end
+    end
+
+    it 'has a different author hash for ideas in the same project when one idea is anonymous and the other is not' do
       project = create(:project)
       idea1 = create(:idea, author: author, project: project)
-      idea2 = create(:idea, author: author, project: project)
-      expect(idea1.author_hash).to eq idea2.author_hash
-    end
-
-    it 'has a different author hash for ideas in different projects when the author is the same' do
-      author = create(:user)
-      idea1 = create(:idea, author: author)
-      idea2 = create(:idea, author: author)
+      idea2 = create(:idea, author: author, project: project, anonymous: true)
       expect(idea1.author_hash).not_to eq idea2.author_hash
     end
-
   end
 end
