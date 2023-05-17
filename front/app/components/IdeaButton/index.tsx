@@ -11,7 +11,10 @@ import {
   getIdeaPostingRules,
   IIdeaPostingDisabledReason,
 } from 'services/actionTakingRules';
-import { getInputTerm } from 'services/participationContexts';
+import {
+  getInputTerm,
+  ParticipationMethod,
+} from 'services/participationContexts';
 
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
@@ -43,6 +46,8 @@ import usePhases from 'api/phases/usePhases';
 import { IPhaseData } from 'api/phases/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import useProjectById from 'api/projects/useProjectById';
+import usePhases from 'api/phases/usePhases';
+import useAuthUser from 'hooks/useAuthUser';
 
 const Container = styled.div``;
 
@@ -94,7 +99,7 @@ const TooltipContentText = styled.div`
   }
 `;
 
-interface Props extends Omit<ButtonProps, 'onClick'> {
+export interface Props extends Omit<ButtonProps, 'onClick'> {
   id?: string;
   projectId: string;
   latLng?: LatLng | null;
@@ -102,6 +107,10 @@ interface Props extends Omit<ButtonProps, 'onClick'> {
   className?: string;
   participationContextType: IParticipationContextType;
   phase: IPhaseData | undefined;
+  participationMethod: Extract<
+    ParticipationMethod,
+    'ideation' | 'native_survey'
+  >;
 }
 
 const IdeaButton = memo<Props>(
@@ -113,12 +122,14 @@ const IdeaButton = memo<Props>(
     className,
     latLng,
     phase,
+    participationMethod,
     ...buttonContainerProps
   }) => {
     const { formatMessage } = useIntl();
-    const authUser = useAuthUser();
     const { data: project } = useProjectById(projectId);
     const { data: phases } = usePhases(projectId);
+    const authUser = useAuthUser();
+
     const disabledMessages: {
       [key in IIdeaPostingDisabledReason]: MessageDescriptor;
     } = {
@@ -273,11 +284,7 @@ const IdeaButton = memo<Props>(
         phases?.data
       );
 
-      const buttonMessage = getButtonMessage(
-        phase?.attributes.participation_method ||
-          project.data.attributes.participation_method,
-        inputTerm
-      );
+      const buttonMessage = getButtonMessage(participationMethod, inputTerm);
 
       return (
         <Container id={id} className={className || ''}>
