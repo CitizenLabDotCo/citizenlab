@@ -5,7 +5,6 @@ import { API_PATH } from 'containers/App/constants';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import usersKeys from './keys';
-import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 import groupsKeys from 'api/groups/keys';
 
 const updateUserWithCacheInvalidation = async ({
@@ -25,7 +24,6 @@ const updateUserWithCacheInvalidation = async ({
 
   queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
   queryClient.invalidateQueries({ queryKey: groupsKeys.all() });
-  queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
 
   return user;
 };
