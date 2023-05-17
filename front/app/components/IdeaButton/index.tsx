@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 
@@ -12,12 +11,10 @@ import {
   getIdeaPostingRules,
   IIdeaPostingDisabledReason,
 } from 'services/actionTakingRules';
-import { getInputTerm } from 'services/participationContexts';
-
-// resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import {
+  getInputTerm,
+  ParticipationMethod,
+} from 'services/participationContexts';
 
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
@@ -25,8 +22,8 @@ import Tippy from '@tippyjs/react';
 import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
 // events
@@ -46,6 +43,9 @@ import { LatLng } from 'leaflet';
 import { getButtonMessage } from './utils';
 import { IPhaseData } from 'api/phases/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import useProjectById from 'api/projects/useProjectById';
+import usePhases from 'api/phases/usePhases';
+import useAuthUser from 'hooks/useAuthUser';
 
 const Container = styled.div``;
 
@@ -97,41 +97,37 @@ const TooltipContentText = styled.div`
   }
 `;
 
-interface DataProps {
-  project: GetProjectChildProps;
-  phases: GetPhasesChildProps;
-  authUser: GetAuthUserChildProps;
-}
-
-interface InputProps extends Omit<ButtonProps, 'onClick'> {
+export interface Props extends Omit<ButtonProps, 'onClick'> {
   id?: string;
   projectId: string;
   latLng?: LatLng | null;
   inMap?: boolean;
   className?: string;
   participationContextType: IParticipationContextType;
-  buttonText?: MessageDescriptor;
   phase: IPhaseData | undefined;
+  participationMethod: Extract<
+    ParticipationMethod,
+    'ideation' | 'native_survey'
+  >;
 }
 
-interface Props extends InputProps, DataProps {}
-
-const IdeaButton = memo<Props & WrappedComponentProps>(
+const IdeaButton = memo<Props>(
   ({
     id,
-    project,
-    phases,
-    authUser,
     participationContextType,
     projectId,
     inMap,
     className,
     latLng,
-    buttonText,
     phase,
-    intl: { formatMessage },
+    participationMethod,
     ...buttonContainerProps
   }) => {
+    const { formatMessage } = useIntl();
+    const { data: project } = useProjectById(projectId);
+    const { data: phases } = usePhases(projectId);
+    const authUser = useAuthUser();
+
     const disabledMessages: {
       [key in IIdeaPostingDisabledReason]: MessageDescriptor;
     } = {
@@ -145,7 +141,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
     };
     const { enabled, show, disabledReason, authenticationRequirements } =
       getIdeaPostingRules({
-        project,
+        project: project?.data,
         phase,
         authUser,
       });
@@ -170,7 +166,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
           : {};
 
         clHistory.push({
-          pathname: `/projects/${project.attributes.slug}/ideas/new`,
+          pathname: `/projects/${project.data.attributes.slug}/ideas/new`,
           search: stringify(
             {
               ...positionParams,
@@ -215,7 +211,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
         const successAction: SuccessAction = {
           name: 'redirectToIdeaForm',
           params: {
-            projectSlug: project.attributes.slug,
+            projectSlug: project.data.attributes.slug,
           },
         };
 
@@ -281,17 +277,12 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       }
 
       const inputTerm = getInputTerm(
-        project.attributes.process_type,
-        project,
-        phases
+        project.data.attributes.process_type,
+        project.data,
+        phases?.data
       );
 
-      const buttonMessage = getButtonMessage(
-        phase?.attributes.participation_method ||
-          project.attributes.participation_method,
-        buttonText,
-        inputTerm
-      );
+      const buttonMessage = getButtonMessage(participationMethod, inputTerm);
 
       return (
         <Container id={id} className={className || ''}>
@@ -330,20 +321,4 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
   }
 );
 
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  project: ({ projectId, render }) => (
-    <GetProject projectId={projectId}>{render}</GetProject>
-  ),
-  phases: ({ projectId, render }) => (
-    <GetPhases projectId={projectId}>{render}</GetPhases>
-  ),
-});
-
-const IdeaButtonWithHoC = injectIntl(IdeaButton);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <IdeaButtonWithHoC {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default IdeaButton;

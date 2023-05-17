@@ -1,17 +1,13 @@
-import { MessageDescriptor } from 'react-intl';
-import { InputTerm, ParticipationMethod } from 'services/participationContexts';
-
+import { InputTerm } from 'services/participationContexts';
+import { Props } from '.';
 import { getInputTermMessage } from 'utils/i18n';
 import messages from './messages';
 
 export const getButtonMessage = (
-  participationMethod: ParticipationMethod,
-  buttonText: MessageDescriptor | undefined,
+  participationMethod: Props['participationMethod'],
   inputTerm: InputTerm
 ) => {
-  if (buttonText) {
-    return buttonText;
-  } else if (participationMethod === 'native_survey') {
+  if (participationMethod === 'native_survey') {
     return messages.takeTheSurvey;
   }
   return getInputTermMessage(inputTerm, {
