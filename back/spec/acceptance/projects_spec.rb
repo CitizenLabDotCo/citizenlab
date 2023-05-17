@@ -1318,6 +1318,7 @@ resource 'Projects' do
         parameter :downvoting_limited_max, 'Only for continuous projects with limited voting. Number of downvotes a citizen can perform in this project. Defaults to 10', required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
+        parameter :document_annotation_embed_url, 'The URL of the document_annotation external API, if participation_method is set to document_annotation', required: false
         parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}. Defaults to card.", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
