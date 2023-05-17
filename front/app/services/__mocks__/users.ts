@@ -1,4 +1,4 @@
-import { IUser } from 'services/users';
+import { IUser } from 'api/users/types';
 
 export const makeUser = (attributes = {}, id?: string): IUser => {
   return {

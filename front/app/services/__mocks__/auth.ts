@@ -1,4 +1,4 @@
-import { IUser } from 'services/users';
+import { IUser } from 'api/users/types';
 import { makeUser } from './users';
 import { BehaviorSubject } from 'rxjs';
 

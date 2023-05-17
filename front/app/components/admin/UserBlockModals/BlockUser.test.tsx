@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, waitFor } from 'utils/testUtils/rtl';
 import BlockUserModal from './BlockUser';
 import { makeUser } from 'services/__mocks__/users';
-import { IUser } from 'services/users';
+import { IUser } from 'api/users/types';
 
 const user: IUser = makeUser();
 

@@ -1,4 +1,4 @@
-import { IUser } from 'services/users';
+import { IUser } from 'api/users/types';
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 

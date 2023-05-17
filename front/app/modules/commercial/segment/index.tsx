@@ -4,7 +4,7 @@ import { authUserStream } from 'services/auth';
 import { combineLatest } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 import { get, isFunction, isNil } from 'lodash-es';
-import { IUser } from 'services/users';
+import { IUser } from 'api/users/types';
 import {
   isRegularUser,
   isProjectModerator,
