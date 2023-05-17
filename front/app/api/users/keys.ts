@@ -10,7 +10,7 @@ const usersKeys = {
     { ...baseKey, operation: 'list', parameters: params },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ id, slug }: { id?: string; slug?: string }) => [
+  item: ({ id, slug }: { id?: string | null; slug?: string | null }) => [
     {
       ...baseKey,
       operation: 'item',

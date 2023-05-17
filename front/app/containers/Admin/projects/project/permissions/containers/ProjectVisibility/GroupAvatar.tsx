@@ -7,7 +7,7 @@ import Avatar from 'components/Avatar';
 // Style
 import styled, { css } from 'styled-components';
 import useMemberships from 'api/group_memberships/useMemberships';
-import useUser from 'hooks/useUser';
+import useUserById from 'api/users/useUserById';
 import { isNilOrError } from 'utils/helperUtils';
 
 const AvatarWrapper = styled.div`
@@ -79,13 +79,11 @@ const GroupAvatar = ({ groupId, className }: Props) => {
 };
 
 const UserAvatar = ({ userId }: { userId?: string }) => {
-  const user = useUser({
-    userId,
-  });
+  const { data: user } = useUserById(userId);
   if (isNilOrError(user)) return null;
   return (
     <AvatarWrapper>
-      <Avatar userId={user.id} size={30} />
+      <Avatar userId={user.data.id} size={30} />
     </AvatarWrapper>
   );
 };

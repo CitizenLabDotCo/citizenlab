@@ -8,7 +8,7 @@ import { debounce } from 'lodash-es';
 import styled from 'styled-components';
 import { IUserData } from 'services/users';
 import Button from 'components/UI/Button';
-import useUser from 'hooks/useUser';
+import useUserById from 'api/users/useUserById';
 
 interface DataProps {
   users: GetUsersChildProps;
@@ -53,7 +53,7 @@ const UserSelect = ({
 }: DataProps & Props) => {
   const canLoadMore = users.hasNextPage;
   const usersList = Array.isArray(users.usersList) ? users.usersList : [];
-  const selectedUser = useUser({ userId: selectedUserId });
+  const { data: selectedUser } = useUserById(selectedUserId);
 
   const handleChange = (option: UserOptionTypeBase, { action }) => {
     if (action === 'clear') {

@@ -4,7 +4,6 @@
  */
 
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -12,7 +11,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import Link from 'utils/cl-router/Link';
 
 // hooks
-import useUser from 'hooks/useUser';
+import useUserById from 'api/users/useUserById';
 
 // styles
 import styled from 'styled-components';
@@ -121,10 +120,10 @@ export interface Props {
 }
 
 const Avatar = memo(({ isLinkToProfile, userId, ...props }: Props) => {
-  const user = useUser({ userId });
-  if (isNilOrError(user)) return null;
+  const { data: user } = useUserById(userId);
+  if (!user) return null;
 
-  const { slug } = user.attributes;
+  const { slug } = user.data.attributes;
   const profileLink = `/profile/${slug}`;
   const hasValidProfileLink = profileLink !== '/profile/undefined';
 
@@ -154,10 +153,10 @@ const AvatarInner = ({
   hideIfNoAvatar,
   ...props
 }: Props) => {
-  const user = useUser({ userId });
-  if (isNilOrError(user)) return null;
+  const { data: user } = useUserById(userId);
+  if (!user) return null;
 
-  const { slug, avatar, verified } = user.attributes;
+  const { slug, avatar, verified } = user.data.attributes;
   const profileLink = `/profile/${slug}`;
   // In dev mode, slug is sometimes undefined,
   // while !isNilOrError(user) passes... To be solved properly

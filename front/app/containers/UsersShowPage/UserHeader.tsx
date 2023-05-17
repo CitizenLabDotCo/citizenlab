@@ -32,7 +32,7 @@ import { colors } from 'utils/styleUtils';
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'hooks/useAuthUser';
-import useUser from 'hooks/useUser';
+import useUserBySlug from 'api/users/useUserBySlug';
 
 const BlockUser = React.lazy(
   () => import('components/admin/UserBlockModals/BlockUser')
@@ -57,7 +57,7 @@ interface Props {
 
 const UserHeader = ({ userSlug }: Props) => {
   const authUser = useAuthUser();
-  const user = useUser({ slug: userSlug });
+  const { data: user } = useUserBySlug(userSlug);
   const isSmallerThanTablet = useBreakpoint('tablet');
   const hideBio = useFeatureFlag({ name: 'disable_user_bios' });
   const isUserBlockingEnabled = useFeatureFlag({
@@ -67,22 +67,24 @@ const UserHeader = ({ userSlug }: Props) => {
   const [showBlockUserModal, setShowBlockUserModal] = useState(false);
   const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
 
-  if (isNilOrError(user)) {
+  if (!user) {
     return null;
   }
-  const memberSinceMoment = moment(user.attributes.created_at).format('LL');
+  const memberSinceMoment = moment(user.data.attributes.created_at).format(
+    'LL'
+  );
   let hasDescription = false;
 
-  forOwn(user.attributes.bio_multiloc, (value, _key) => {
+  forOwn(user.data.attributes.bio_multiloc, (value, _key) => {
     if (!isEmpty(value) && value !== '<p></p>' && value !== '<p><br></p>') {
       hasDescription = true;
     }
   });
 
-  const isBlocked = user.attributes?.blocked;
+  const isBlocked = user.data.attributes?.blocked;
   const isCurrentUserAdmin =
     !isNilOrError(authUser) && isAdmin({ data: authUser });
-  const canBlock = isCurrentUserAdmin && user.id !== authUser?.id;
+  const canBlock = isCurrentUserAdmin && user.data.id !== authUser?.id;
 
   const userBlockingRelatedActions: IAction[] = isUserBlockingEnabled
     ? [
@@ -108,7 +110,7 @@ const UserHeader = ({ userSlug }: Props) => {
       data-testid="userHeader"
     >
       <Box w="100%" display="flex" justifyContent="center" mb="40px">
-        <Avatar userId={user.id} size={isSmallerThanTablet ? 120 : 150} />
+        <Avatar userId={user.data.id} size={isSmallerThanTablet ? 120 : 150} />
       </Box>
 
       <Box
@@ -124,8 +126,8 @@ const UserHeader = ({ userSlug }: Props) => {
             placement={'top'}
             theme={'dark'}
             content={formatMessage(blockUserMessages.bocknigInfo, {
-              from: moment(user.attributes.block_start_at).format('LL'),
-              to: moment(user.attributes.block_end_at).format('LL'),
+              from: moment(user.data.attributes.block_start_at).format('LL'),
+              to: moment(user.data.attributes.block_end_at).format('LL'),
             })}
           >
             <Badge color={colors.error}>
@@ -135,7 +137,7 @@ const UserHeader = ({ userSlug }: Props) => {
         )}
         <Box display="flex" alignItems="center" color="tenantText">
           <Title id="e2e-usersshowpage-fullname" color="tenantText" mr="10px">
-            {user.attributes.first_name} {user.attributes.last_name}
+            {user.data.attributes.first_name} {user.data.attributes.last_name}
           </Title>
           {isCurrentUserAdmin && canBlock && (
             <MoreActionsMenu
@@ -148,17 +150,20 @@ const UserHeader = ({ userSlug }: Props) => {
           {formatMessage(messages.memberSince, { date: memberSinceMoment })}
         </Text>
         {!hideBio &&
-          !isEmpty(user.attributes.bio_multiloc) &&
+          !isEmpty(user.data.attributes.bio_multiloc) &&
           hasDescription && (
             <Bio data-testid="userHeaderBio">
               <QuillEditedContent>
-                {user.attributes.bio_multiloc && (
-                  <T value={user.attributes.bio_multiloc} supportHtml={true} />
+                {user.data.attributes.bio_multiloc && (
+                  <T
+                    value={user.data.attributes.bio_multiloc}
+                    supportHtml={true}
+                  />
                 )}
               </QuillEditedContent>
             </Bio>
           )}
-        {!isNilOrError(authUser) && authUser.id === user.id && (
+        {!isNilOrError(authUser) && authUser.id === user.data.id && (
           <Button
             linkTo="/profile/edit"
             buttonStyle="text"
@@ -177,7 +182,7 @@ const UserHeader = ({ userSlug }: Props) => {
               open={showBlockUserModal}
             />
             <UnblockUser
-              user={user}
+              user={user.data}
               setClose={() => setShowUnblockUserModal(false)}
               open={showUnblockUserModal}
             />

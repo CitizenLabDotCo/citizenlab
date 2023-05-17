@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 
 // hooks
-import useUser from 'hooks/useUser';
+import useUserById from 'api/users/useUserById';
 
 // components
 import { Text } from '@citizenlab/cl2-component-library';
@@ -12,7 +12,6 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   createdAt: string;
@@ -21,10 +20,10 @@ interface Props {
 }
 
 const EditedText = ({ createdAt, updatedAt, userId }: Props) => {
-  const user = useUser({ userId });
+  const { data: user } = useUserById(userId);
   const { formatMessage } = useIntl();
 
-  if (isNilOrError(user)) return null;
+  if (!user) return null;
 
   const createdOn = moment(createdAt).format('DD/MM/YYYY');
   const lastUpdateDaysAgo = moment().diff(moment(updatedAt), 'days');
@@ -35,7 +34,7 @@ const EditedText = ({ createdAt, updatedAt, userId }: Props) => {
       {' • '}
       {formatMessage(messages.lastUpdate, {
         days: lastUpdateDaysAgo,
-        author: user.attributes.first_name ?? '',
+        author: user.data.attributes.first_name ?? '',
       })}
     </Text>
   );

@@ -9,7 +9,7 @@ import UserName from 'components/UI/UserName';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // hooks
-import useUser from 'hooks/useUser';
+import useUserById from 'api/users/useUserById';
 import useLocale from 'hooks/useLocale';
 
 // style
@@ -130,11 +130,11 @@ const Author = memo(
     underline,
   }: Props) => {
     const locale = useLocale();
-    const author = useUser({ userId: authorId });
+    const { data: author } = useUserById(authorId);
     const authorCanModerate =
       !isNilOrError(author) &&
       showModeration &&
-      canModerateProject(projectId, { data: author });
+      canModerateProject(projectId, { data: author.data });
 
     if (!isNilOrError(locale)) {
       return (

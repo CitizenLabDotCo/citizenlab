@@ -14,7 +14,7 @@ import PageBreakBox from '../../../../../../../components/admin/ContentBuilder/W
 
 // hooks
 import useReport from 'hooks/useReport';
-import useUser from 'hooks/useUser';
+import useUserById from 'api/users/useUserById';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 
@@ -50,10 +50,10 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
   const userId = isNilOrError(report)
     ? null
     : report.relationships.owner.data.id;
-  const user = useUser({ userId });
-  const projectModerator = isNilOrError(user)
+  const { data: user } = useUserById(userId);
+  const projectModerator = !user
     ? null
-    : `${user.attributes.first_name} ${user.attributes.last_name}`;
+    : `${user.data.attributes.first_name} ${user.data.attributes.last_name}`;
 
   // Project name & time period
   const { data: project } = useProjectById(projectId);

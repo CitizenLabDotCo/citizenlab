@@ -16,7 +16,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
-import useUser from 'hooks/useUser';
+import useUserBySlug from 'api/users/useUserById';
 
 // style
 import styled from 'styled-components';
@@ -28,7 +28,7 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import Unauthorized from 'components/Unauthorized';
 
 // utils
-import { isNil, isError } from 'utils/helperUtils';
+import { isError } from 'utils/helperUtils';
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // typings
@@ -148,10 +148,10 @@ interface Props {
 const UsersShowPageOuter = ({ className }: Props) => {
   const params = useParams();
   const { formatMessage } = useIntl();
-  const user = useUser({ slug: params.userSlug });
+  const { data: user } = useUserBySlug(params.slug);
   const previousPathName = useContext(PreviousPathnameContext);
 
-  if (isNil(user)) return null;
+  if (!user) return null;
 
   if (isError(user)) {
     return (
@@ -169,11 +169,11 @@ const UsersShowPageOuter = ({ className }: Props) => {
     );
   }
 
-  if (!user.attributes.registration_completed_at) {
+  if (!user.data.attributes.registration_completed_at) {
     return <Unauthorized />;
   }
 
-  return <UsersShowPage className={className} user={user} />;
+  return <UsersShowPage className={className} user={user.data} />;
 };
 
 export default UsersShowPageOuter;
