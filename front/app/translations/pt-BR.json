@@ -400,6 +400,7 @@
   "app.components.Upload.remaining": "restante",
   "app.components.Upload.uploadImageLabel": "Selecione uma imagem (máx. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Selecione uma ou mais imagens",
+  "app.components.UserName.anonymous": "Anonymous",
   "app.components.UserName.deletedUser": "autor desconhecido",
   "app.components.UserName.verified": "Verificado",
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "e desbloquear mais oportunidades de participação",
