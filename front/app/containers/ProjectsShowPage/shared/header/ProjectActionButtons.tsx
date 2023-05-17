@@ -134,13 +134,13 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
 
   const isProjectArchived = publication_status === 'archived';
   const isProcessTypeContinuous = process_type === 'continuous';
-  const isProcessTypeTimeline = process_type === 'timeline';
   const participationMethod = isProcessTypeContinuous
     ? project.data.attributes.participation_method
     : currentPhase?.attributes.participation_method;
   const ideas_count = isProcessTypeContinuous
     ? project.data.attributes.ideas_count
     : currentPhase?.attributes.ideas_count;
+  // For a continuous project, hasCurrentPhaseEnded will always return false.
   const hasCurrentPhaseEnded = currentPhase
     ? pastPresentOrFuture([
         currentPhase.attributes.start_at,
@@ -155,20 +155,19 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const showSeeIdeasButton =
     isParticipationMethodIdeation && isNumber(ideas_count) && ideas_count > 0;
 
-  const showIdeasButton = isParticipationMethodIdeation && !isProjectArchived;
+  const showPostIdeaButton =
+    !isProjectArchived && isParticipationMethodIdeation;
 
-  const showNativeSurvey =
-    isParticipationMethodNativeSurvey && !isProjectArchived;
+  const showTakeNativeSurveyButton =
+    !isProjectArchived && isParticipationMethodNativeSurvey;
 
-  const showSurvey =
+  const showTakeSurveyButton =
+    !isProjectArchived &&
     participationMethod === 'survey' &&
-    (!isProjectArchived || !hasCurrentPhaseEnded);
+    !hasCurrentPhaseEnded;
 
-  const showPoll =
-    participationMethod === 'poll' &&
-    ((isProcessTypeContinuous && !isProjectArchived) ||
-      (isProcessTypeTimeline && !hasCurrentPhaseEnded));
-
+  const showTakePollButton =
+    participationMethod === 'poll' && !hasCurrentPhaseEnded;
   const isPhaseIdeation =
     currentPhase?.attributes.participation_method === 'ideation';
 
@@ -199,7 +198,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           />
         </SeeIdeasButton>
       )}
-      {showIdeasButton && !hasCurrentPhaseEnded && (
+      {showPostIdeaButton && !hasCurrentPhaseEnded && (
         <IdeaButton
           id="project-ideabutton"
           projectId={project.data.id}
@@ -209,7 +208,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           participationMethod="ideation"
         />
       )}
-      {showNativeSurvey && !hasCurrentPhaseEnded && (
+      {showTakeNativeSurveyButton && !hasCurrentPhaseEnded && (
         <IdeaButton
           id="project-survey-button"
           data-testid="e2e-project-survey-button"
@@ -220,7 +219,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           participationMethod="native_survey"
         />
       )}
-      {showSurvey && (
+      {showTakeSurveyButton && (
         <Button
           buttonStyle="primary"
           onClick={handleTakeSurveyClick}
@@ -230,7 +229,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           <FormattedMessage {...messages.takeTheSurvey} />
         </Button>
       )}
-      {showPoll && (
+      {showTakePollButton && (
         <Button
           buttonStyle="primary"
           onClick={(e: MouseEvent) => {
