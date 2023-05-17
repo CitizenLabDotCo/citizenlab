@@ -28,7 +28,6 @@ import { stylingConsts } from 'utils/styleUtils';
 import { useIntl } from 'utils/cl-intl';
 
 // services
-import { changePassword } from 'services/users';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -41,6 +40,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import clHistory from 'utils/cl-router/history';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
+import useChangePassword from 'api/users/useChangePassword';
 
 type FormValues = {
   current_password: string;
@@ -52,6 +52,7 @@ type Props = {
 };
 
 const ChangePassword = ({ tenant }: Props) => {
+  const { mutateAsync: changePassword } = useChangePassword();
   const authUser = useAuthUser();
   const { formatMessage } = useIntl();
   const [success, setSuccess] = useState(false);
@@ -104,9 +105,13 @@ const ChangePassword = ({ tenant }: Props) => {
     resolver: yupResolver(schema),
   });
 
+  if (isNilOrError(authUser)) {
+    return null;
+  }
+
   const onFormSubmit = async ({ ...formValues }: FormValues) => {
     try {
-      await changePassword(formValues);
+      await changePassword({ userId: authUser.id, ...formValues });
       setSuccess(true);
       await streams.fetchAllWith({
         apiEndpoint: [`${API_PATH}/users/me`],
@@ -115,10 +120,6 @@ const ChangePassword = ({ tenant }: Props) => {
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
-
-  if (isNilOrError(authUser)) {
-    return null;
-  }
 
   if (success) return <ChangePasswordSuccess />;
   return (
