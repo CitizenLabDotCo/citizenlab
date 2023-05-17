@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { TRole } from 'services/permissions/roles';
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -82,10 +82,6 @@ export interface IUserUpdate {
 interface IChangePassword {
   current_password: string;
   password: string;
-}
-
-export function usersStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IUsers>({ apiEndpoint, ...streamParams });
 }
 
 export function userByIdStream(userId: string) {
