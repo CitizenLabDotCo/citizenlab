@@ -400,6 +400,7 @@
   "app.components.Upload.remaining": "преосталих",
   "app.components.Upload.uploadImageLabel": "Изаберите слику (макс. {maxImageSizeInMb}МБ)",
   "app.components.Upload.uploadMultipleImagesLabel": "Изаберите једну или више слика",
+  "app.components.UserName.anonymous": "Anonymous",
   "app.components.UserName.deletedUser": "непознатог аутора",
   "app.components.UserName.verified": "Проверено",
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "и откључати више могућности ангажовања",
