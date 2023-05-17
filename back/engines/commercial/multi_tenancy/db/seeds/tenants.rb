@@ -271,11 +271,6 @@ module MultiTenancy
               allowed: true
             },
             # check values before releasing
-            document_annotation: {
-              enabled: true,
-              allowed: true
-            },
-            # check values before releasing
             konveio_document_annotation: {
               enabled: true,
               allowed: true
