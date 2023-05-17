@@ -13,9 +13,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import useAddIdea from 'api/ideas/useAddIdea';
 
 // i18n
-import { useIntl } from 'utils/cl-intl';
-import pageMessages from '../messages';
-import messages from './messages';
+import messages from '../messages';
 
 // components
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
@@ -23,12 +21,8 @@ import IdeasNewMeta from '../IdeasNewMeta';
 import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { Heading } from './Heading';
-import {
-  Box,
-  Text,
-  Checkbox,
-  IconTooltip,
-} from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
+import ProfileVisiblity from 'components/ProfileVisibility';
 
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
@@ -71,12 +65,10 @@ const getConfig = (
 const IdeasNewPageWithJSONForm = () => {
   const { mutateAsync: addIdea } = useAddIdea();
   const params = useParams<{ slug: string }>();
-  // const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const { data: project } = useProjectBySlug(params.slug);
   const [queryParams] = useSearchParams();
   const phaseId = queryParams.get('phase_id');
-  const { formatMessage } = useIntl();
 
   const { data: phases } = usePhases(project?.data.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
@@ -124,6 +116,8 @@ const IdeasNewPageWithJSONForm = () => {
     if (data.location_description && !data.location_point_geojson) {
       location_point_geojson = await geocode(data.location_description);
     }
+
+    console.log({ postAnonymously });
 
     location_point_geojson = await getLocationGeojson(initialFormData, data);
     const idea = await addIdea({
@@ -195,10 +189,6 @@ const IdeasNewPageWithJSONForm = () => {
     [uiSchema]
   );
 
-  const togglePostAnonymously = () => {
-    setPostAnonymously((v) => !v);
-  };
-
   // get participation method config
   const { data: phaseFromUrl } = usePhase(phaseId);
   const config = getConfig(phaseFromUrl?.data, phases, project);
@@ -244,28 +234,12 @@ const IdeasNewPageWithJSONForm = () => {
               />
             }
             config={isSurvey ? 'survey' : 'input'}
-            formSubmitText={isSurvey ? pageMessages.submitSurvey : undefined}
+            formSubmitText={isSurvey ? messages.submitSurvey : undefined}
             footer={
               <Box mt="-20px" mb="60px">
-                <Text fontWeight="bold">
-                  {formatMessage(messages.profileVisiblity)}
-                  <IconTooltip
-                    content={
-                      <Text color="white" fontSize="s" m="0">
-                        {formatMessage(messages.inputsAssociatedWithProfile)}
-                      </Text>
-                    }
-                    iconSize="16px"
-                    placement="top-start"
-                    display="inline"
-                    ml="4px"
-                    transform="translateY(-1px)"
-                  />
-                </Text>
-                <Checkbox
-                  checked={postAnonymously}
-                  label={formatMessage(messages.postAnonymously)}
-                  onChange={togglePostAnonymously}
+                <ProfileVisiblity
+                  postAnonymously={postAnonymously}
+                  setPostAnonymously={setPostAnonymously}
                 />
               </Box>
             }

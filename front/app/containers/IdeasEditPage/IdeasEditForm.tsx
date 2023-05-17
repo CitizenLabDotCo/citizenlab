@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useState, useCallback, useContext, useEffect } from 'react';
 
 // components
 import PageContainer from 'components/UI/PageContainer';
@@ -8,6 +8,7 @@ import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
 import IdeasEditMeta from './IdeasEditMeta';
+import ProfileVisiblity from 'components/ProfileVisibility';
 
 // services
 import { usePermission } from 'services/permissions';
@@ -53,6 +54,7 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
   const { data: remoteImages } = useIdeaImages(ideaId);
   const { data: remoteFiles } = useIdeaFiles(ideaId);
 
+  const [postAnonymously, setPostAnonymously] = useState(false);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
     projectId: project?.data.id,
     inputId: ideaId,
@@ -228,6 +230,16 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
             getApiErrorMessage={getApiErrorMessage}
             config={'input'}
             title={TitleComponent}
+            footer={
+              idea.data.attributes.anonymous ? undefined : (
+                <Box mt="-20px" mb="60px">
+                  <ProfileVisiblity
+                    postAnonymously={postAnonymously}
+                    setPostAnonymously={setPostAnonymously}
+                  />
+                </Box>
+              )
+            }
           />
         </>
       ) : isError(project) || inputSchemaError ? null : (
