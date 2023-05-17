@@ -14,11 +14,9 @@ module AnonymousParticipation
 
     private
 
-    # TODO: Could the user hash be based only on the user id if not anonymous?
-    # Then a non-anonymized post gets a consistent avatar across projects
     def set_author_hash
       # SHA-256 would be more secure, but is it really needed? Random UUID on the end is a salt
-      salt = anonymous? ? project_id + '84c168c4-a240-4f0a-8468-9e2cf714d4e1' : '335b6eb2-9e7c-405c-9221-9b8919b64b8b'
+      salt = anonymous? ? "#{project_id}84c168c4-a240-4f0a-8468-9e2cf714d4e1" : '335b6eb2-9e7c-405c-9221-9b8919b64b8b'
       self.author_hash = Digest::MD5.hexdigest(author_id + salt)
     end
 
