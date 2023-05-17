@@ -127,7 +127,7 @@ fr:
     admin_digest:
       subject: 'Votre rapport hebdomadaire du %{time}'
       preheader: 'Rapport hebdomadaire de la plateforme de %{organizationName}'
-      title_your_weekly_report: '%{firstName}, votre rapport hebdomadaire'
+      title_your_weekly_report: '%{firstName}, voici votre rapport hebdomadaire !'
       text_introduction: 'Voici une sélection des idées les plus actives la semaine dernière. Découvrez ce qui se passe sur votre plateforme !'
       cta_visit_the_platform: 'Visitez votre plateforme'
       new_users: 'Nouveaux utilisateurs'
@@ -142,15 +142,15 @@ fr:
       x_days_ago_by_author: 'Il y a %{x} jours par %{author}'
     admin_rights_received:
       cta_manage_platform: 'Gérez votre plateforme'
-      message_you_became_administrator: 'Vous avez reçu les droits d''administrateur pour la plateforme participative de %{organizationName}.'
-      preheader: 'Vous avez reçu les droits d''administrateur pour la plateforme participative de %{organizationName}'
-      subject: 'Vous êtes devenu administrateur sur la plateforme de %{organizationName}'
+      message_you_became_administrator: "Vous avez reçu les droits d'administration pour la plateforme de participation de %{organizationName}.\n\n"
+      preheader: 'Vous avez reçu les droits d''administration pour la plateforme de participation de %{organizationName}.'
+      subject: "Vous êtes désormais administrateur·rice de la plateforme de %{organizationName} !\n"
       text_create_participatory_process: 'En tant qu''administrateur, vous pouvez créer et configurer des nouveaux projets participatifs. Vous pouvez ajouter des phases en utilisant la frise chronologique. Chacune des phases peut avoir son propre fonctionnement pour la publication d''idées, les commentaires et les votes.'
       text_moderate_analyse_input: 'Une fois que les projets sont lancés, les premières idées vont commencer à arriver. Vous recevrez des rapports hebdomadaires contenant les activités principales afin que vous puissiez avoir une vue d''ensemble de ce qui se passe sur la plateforme. La vue d''ensemble des idées vous aidera à modérer et gérer les contributions.'
-      text_platform_setup: 'En tant qu''administrateur, vous pouvez configurer la plateforme participative. Choisissez un logo, des images, des couleurs, écrivez un message personnalisé sur la page d''accueil, écrivez les invitations, choisissez les questions à poser à vos utilisateurs... '
+      text_platform_setup: 'En tant qu''administrateur, vous pouvez configurer la plateforme participative. Choisissez un logo, des images, des couleurs, écrivez un message personnalisé sur la page d''accueil, invitez de nouvelles personnes à rejoindre la plateforme, choisissez les questions à poser à vos utilisateurs... '
       title_create_participatory_process: 'Concevoir le processus de participation'
       title_moderate_analyse_input: 'Modérer et analyser les contributions'
-      title_platform_setup: 'Configurez votre plateforme'
+      title_platform_setup: 'Configurer votre plateforme'
       title_what_can_you_do_administrator: 'Que pouvez-vous faire en tant qu’administrateur ?'
       title_you_became_administrator: 'Vous êtes devenu administrateur'
     comment_marked_as_spam:
@@ -268,7 +268,7 @@ fr:
       subject: 'Votre rapport administrateur projet hebdomadaire du %{time}'
       preheader: 'Résumé du rapport administrateur projet de %{organizationName}'
       title_your_weekly_report: '%{firstName}, votre rapport hebdomadaire'
-      text_introduction: 'Voici une sélection des idées qui ont généré le plus d''activité la semaine dernière. Découvrez ce qui se passe sur votre plateforme!'
+      text_introduction: 'Voici une sélection des idées qui ont généré le plus d''activité la semaine dernière. Découvrez ce qui se passe sur votre plateforme !'
       cta_manage: 'Gérez votre projet'
       new_users: 'Nouveaux utilisateurs'
       new_ideas: 'Nouvelles idées'

@@ -23,7 +23,7 @@ import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
@@ -88,7 +88,7 @@ const ProjectsShowPage = ({ project }: Props) => {
   const [mounted, setMounted] = useState(false);
   const locale = useLocale();
   const { data: appConfig } = useAppConfiguration();
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
 
   const [search] = useSearchParams();
   const scrollToEventId = search.get('scrollToEventId');
@@ -99,7 +99,7 @@ const ProjectsShowPage = ({ project }: Props) => {
   });
 
   const loading = useMemo(() => {
-    return anyIsUndefined(locale, appConfig, project, phases, events);
+    return anyIsUndefined(locale, appConfig, project, phases?.data, events);
   }, [locale, appConfig, project, phases, events]);
 
   // Check that all child components are mounted
@@ -195,7 +195,7 @@ const ProjectsShowPageWrapper = () => {
   const { pathname } = useLocation();
   const { slug, phaseNumber } = useParams();
   const { data: project, status, error } = useProjectBySlug(slug);
-  const phases = usePhases(project?.data.id);
+  const { data: phases } = usePhases(project?.data.id);
   const user = useAuthUser();
 
   const processType = project?.data.attributes?.process_type;
@@ -240,9 +240,9 @@ const ProjectsShowPageWrapper = () => {
 
   const isTimelineProjectAndHasValidPhaseParam =
     processType === 'timeline' &&
-    !isNilOrError(phases) &&
+    phases &&
     urlSegments.length === 4 &&
-    isValidPhase(phaseNumber, phases);
+    isValidPhase(phaseNumber, phases.data);
 
   if (
     urlSegments[1] === 'projects' &&

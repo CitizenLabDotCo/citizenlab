@@ -432,9 +432,6 @@ GEM
     activerecord-postgis-adapter (7.1.1)
       activerecord (~> 6.1)
       rgeo-activerecord (~> 7.0.0)
-    activerecord_json_validator (1.3.0)
-      activerecord (>= 4.2.0, < 7)
-      json-schema (~> 2.8)
     activestorage (6.1.7.3)
       actionpack (= 6.1.7.3)
       activejob (= 6.1.7.3)
@@ -649,8 +646,8 @@ GEM
       activesupport (>= 4.2)
       aes_key_wrap
       bindata
-    json-schema (2.8.1)
-      addressable (>= 2.4)
+    json-schema (4.0.0)
+      addressable (>= 2.8)
     jsonapi-renderer (0.2.2)
     jsonapi-serializer (2.2.0)
       activesupport (>= 4.2)
@@ -1094,7 +1091,6 @@ DEPENDENCIES
   active_model_serializers (~> 0.10.12)
   activerecord-import (~> 1.4)
   activerecord-postgis-adapter (~> 7.1.1)
-  activerecord_json_validator (~> 1.3.0)
   acts_as_list (~> 1.1)
   admin_api!
   analytics!
@@ -1147,6 +1143,7 @@ DEPENDENCIES
   interactor
   interactor-rails
   intercom (~> 4.2)
+  json-schema (~> 4.0)
   jsonapi-serializer
   jwt (~> 2.7.0)
   kaminari (~> 1.2)

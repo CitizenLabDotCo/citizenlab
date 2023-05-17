@@ -1,15 +1,15 @@
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 export type CTABarProps = {
   project: IProjectData;
-  phases: Error | IPhaseData[] | null | undefined;
+  phases: IPhaseData[] | undefined;
 };
 
 export const hasProjectEndedOrIsArchived = (
   project: IProjectData,
-  currentPhase: IPhaseData | null
+  currentPhase: IPhaseData | undefined
 ) => {
   const { publication_status } = project.attributes;
   const hasProjectEnded = currentPhase

@@ -70,7 +70,7 @@ module MultiTenancy
             .join(' UNION ')
 
           app_configuration = ActiveRecord::Base.connection.execute(sql_query)
-          app_configuration.map { |record| new(record) }
+          app_configuration.map { |record| instantiate(record) }
         end
       end
     end
