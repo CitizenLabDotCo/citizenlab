@@ -1661,7 +1661,7 @@
   "app.utils.errors.default.api_error_too_short": "Est trop court",
   "app.utils.errors.default.api_error_wrong_length": "Est de la mauvaise longueur",
   "app.utils.errors.defaultapi_error_.odd": "Ça doit être bizarre",
-  "app.utils.notInGroup": "Tu ne réponds pas aux critères de participation.",
+  "app.utils.notInGroup": "Vous ne répondez pas aux critères de participation.",
   "app.utils.participationMethod.onSurveySubmission": "Merci, votre réponse a bien été reçue.",
   "containers.SiteMap.allProjects": "Tous les projets",
   "containers.SiteMap.customPageSection": "Pages personnalisées",
