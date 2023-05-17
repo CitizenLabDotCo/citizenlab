@@ -5,7 +5,7 @@ module Surveys::SurveyParticipationContext
 
   SURVEY_SERVICES = %w[
     typeform survey_monkey google_forms enalyzer survey_xact
-    qualtrics microsoft_forms smart_survey snap_survey konveio
+    qualtrics microsoft_forms smart_survey snap_survey
   ].freeze
 
   included do
@@ -53,10 +53,6 @@ module Surveys::SurveyParticipationContext
       validates :survey_embed_url, if: %i[survey? microsoft_forms?], format: {
         with: %r{\Ahttps://.*\.(microsoft|office)\.com/},
         message: 'Not a valid Microsoft Forms survey embed'
-      }
-      validates :survey_embed_url, if: %i[survey? konveio?], format: {
-        with: %r{\Ahttps://.*\.konveio\.com/.*\z},
-        message: 'Not a valid Konveio embed URL'
       }
       before_validation :strip_survey_embed_url
     end
@@ -108,10 +104,6 @@ module Surveys::SurveyParticipationContext
 
   def smart_survey?
     survey_service == 'smart_survey'
-  end
-
-  def konveio?
-    survey_service == 'konveio'
   end
 
   def strip_survey_embed_url
