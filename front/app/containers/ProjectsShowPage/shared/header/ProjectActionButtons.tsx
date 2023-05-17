@@ -148,7 +148,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       ]) === 'past'
     : false;
   const inputTerm = getInputTerm(process_type, project.data, phases?.data);
-
+  const isParticipationMethodNativeSurvey =
+    participationMethod === 'native_survey';
   const isParticipationMethodIdeation = participationMethod === 'ideation';
 
   const showSeeIdeasButton =
@@ -157,7 +158,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const showIdeasButton = isParticipationMethodIdeation && !isProjectArchived;
 
   const showNativeSurvey =
-    participationMethod === 'native_survey' && !isProjectArchived;
+    isParticipationMethodNativeSurvey && !isProjectArchived;
 
   const showSurvey =
     participationMethod === 'survey' &&
