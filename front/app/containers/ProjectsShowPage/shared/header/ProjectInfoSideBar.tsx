@@ -15,6 +15,8 @@ import usePhases from 'api/phases/usePhases';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
+import usePhasesPermissions from 'api/phase_permissions/usePhasesPermissions';
+import useProjectPermissions from 'api/project_permissions/useProjectPermissions';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -33,8 +35,9 @@ import ProjectActionButtons from './ProjectActionButtons';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { scrollToElement } from 'utils/scroll';
 import {
+  NestedIPCPermissions,
   hasEmbeddedSurvey,
-  checkHasSurveyWithAnyonePermissions,
+  hasSurveyWithAnyonePermissions,
 } from './utils';
 
 // i18n
@@ -135,6 +138,10 @@ interface Props {
 const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
+  const { data: projectPermissions } = useProjectPermissions({ projectId });
+  const phasesPermissions = usePhasesPermissions(
+    phases?.data.map((phase) => phase.id)
+  ) as NestedIPCPermissions[];
   const { data: events } = useEvents({
     projectIds: [projectId],
     sort: '-start_at',
@@ -207,6 +214,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       authUser,
     });
     const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
+
     return (
       <Container id="e2e-project-sidebar" className={className || ''}>
         <About>
@@ -239,18 +247,20 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     {...messages.xParticipants}
                     values={{ participantsCount: projectParticipantsCount }}
                   />
-                  {checkHasSurveyWithAnyonePermissions(
-                    project.data,
-                    phases
-                  ) && (
+                  {
                     <Box mb="4px" ml="4px">
-                      <IconTooltip
-                        placement="top"
-                        iconColor={colors.coolGrey300}
-                        content={formatMessage(messages.participantsTooltip)}
-                      />
+                      {hasSurveyWithAnyonePermissions(
+                        projectPermissions,
+                        phasesPermissions
+                      ) && (
+                        <IconTooltip
+                          placement="top"
+                          iconColor={colors.coolGrey300}
+                          content={formatMessage(messages.participantsTooltip)}
+                        />
+                      )}
                     </Box>
-                  )}
+                  }
                 </ListItem>
               )}
             {projectType === 'timeline' && phases && phases.data.length > 1 && (
@@ -354,7 +364,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     <Box ml="4px">
                       <FormattedMessage {...messages.surveySubmissions} />
                     </Box>
-                    {hasEmbeddedSurvey(project.data, phases) && (
+                    {hasEmbeddedSurvey(project.data, phases?.data) && (
                       <Box mb="4px" ml="4px">
                         <IconTooltip
                           placement="top"

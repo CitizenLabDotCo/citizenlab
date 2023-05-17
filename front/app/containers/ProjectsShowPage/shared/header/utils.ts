@@ -1,5 +1,9 @@
+import { TPhases } from 'api/phases/types';
+import {
+  IPCPermissionData,
+  IPCPermissions,
+} from 'api/project_permissions/types';
 import { IProjectData } from 'api/projects/types';
-import { TPhases } from 'hooks/usePhases';
 import { isNilOrError } from 'utils/helperUtils';
 
 export const hasEmbeddedSurvey = (
@@ -20,11 +24,35 @@ export const hasEmbeddedSurvey = (
   return hasSurveyPhase;
 };
 
-export const checkHasSurveyWithAnyonePermissions = (
-  project: IProjectData | undefined,
-  phases: TPhases | null
+export interface NestedIPCPermissions {
+  data: { data: IPCPermissionData[] };
+}
+
+export const hasSurveyWithAnyonePermissions = (
+  projectPermissions: IPCPermissions | undefined,
+  phasesPermissions: NestedIPCPermissions[] | undefined | null
 ) => {
-  const hasSurveyWithAnyonePermissions = true;
+  let hasSurveyWithAnyonePermissions = false;
+
+  if (!isNilOrError(phasesPermissions) && phasesPermissions.length > 0) {
+    phasesPermissions.map((permissions) => {
+      if (permissions.data && permissions.data.data) {
+        permissions.data.data.map((permission) => {
+          if (permission.attributes.permitted_by === 'everyone') {
+            hasSurveyWithAnyonePermissions = true;
+          }
+        });
+      }
+    });
+  } else if (projectPermissions) {
+    if (projectPermissions.data.length > 0) {
+      projectPermissions.data.map((permission) => {
+        if (permission.attributes.permitted_by === 'everyone') {
+          hasSurveyWithAnyonePermissions = true;
+        }
+      });
+    }
+  }
 
   return hasSurveyWithAnyonePermissions;
 };
