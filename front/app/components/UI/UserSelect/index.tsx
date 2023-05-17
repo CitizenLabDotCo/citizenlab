@@ -117,7 +117,7 @@ const UserSelect = ({
         backspaceRemovesValue={false}
         menuShouldScrollIntoView={false}
         isClearable
-        value={selectedUser}
+        value={selectedUser?.data}
         placeholder={placeholder}
         options={
           canLoadMore ? [...usersList, { value: 'loadMore' }] : usersList
