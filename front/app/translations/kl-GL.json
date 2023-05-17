@@ -400,6 +400,7 @@
   "app.components.Upload.remaining": "sinneruttut",
   "app.components.Upload.uploadImageLabel": "Assimik toqqaagit (ann. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Assimik ataatsimik amerlanernilluunniit toqqaagit",
+  "app.components.UserName.anonymous": "Anonymous",
   "app.components.UserName.deletedUser": "allagaqartoq ilisimaneqanngilaq",
   "app.components.UserName.verified": "Uppernarseriigaq",
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "innuttaasutut pissarsiat atoruk",
