@@ -1,10 +1,5 @@
 import React, { FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
-
-// resources & typings
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // permissions
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
@@ -36,6 +31,7 @@ import T from 'components/T';
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useUserById from 'api/users/useUserById';
 
 const Container = styled.div`
   width: 100%;
@@ -125,32 +121,21 @@ const CommentContainer = styled.div`
   }
 `;
 
-interface InputProps {
+interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
   comments: ICommentData[];
   userId: string;
 }
 
-interface DataProps {
-  user: GetUserChildProps;
-}
-
 const nothingHappens = () => {};
 
-interface Props extends InputProps, DataProps {}
-
-const PostCommentGroup = ({
-  postType,
-  comments,
-  userId,
-  user,
-  postId,
-}: Props) => {
+const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
+  const { data: user } = useUserById(userId);
   const post = initiative || idea;
 
   const onIdeaLinkClick = (event: FormEvent<any>) => {
@@ -170,11 +155,10 @@ const PostCommentGroup = ({
   }
 
   const { slug, title_multiloc } = post.data.attributes;
-  const projectId: string | null = get(
-    post,
-    'relationships.project.data.id',
-    null
-  );
+  const projectId: string | null =
+    postType === 'idea' && 'project' in post.data.relationships
+      ? post.data.relationships.project.data.id
+      : null;
 
   return (
     <Container>
@@ -211,7 +195,7 @@ const PostCommentGroup = ({
               commentId={comment.id}
               commentType="parent"
               commentCreatedAt={comment.attributes.created_at}
-              moderator={canModerateProject(projectId, { data: user })}
+              moderator={canModerateProject(projectId, { data: user.data })}
             />
             <CommentBody
               commentId={comment.id}
@@ -243,14 +227,4 @@ const PostCommentGroup = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  user: ({ userId, render }) => <GetUser id={userId}>{render}</GetUser>,
-});
-
-const WrappedPostComments = (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <PostCommentGroup {...inputProps} {...dataProps} />}
-  </Data>
-);
-
-export default WrappedPostComments;
+export default PostCommentGroup;
