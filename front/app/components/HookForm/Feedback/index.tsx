@@ -3,15 +3,9 @@ import { useFormContext } from 'react-hook-form';
 import Error, { findErrorMessage, TFieldName } from 'components/UI/Error';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import {
-  Text,
-  Title,
-  Box,
-  colors,
-  Icon,
-} from '@citizenlab/cl2-component-library';
+import { Text, Title, Box } from '@citizenlab/cl2-component-library';
 import { scrollToElement } from 'utils/scroll';
-import CloseIconButton from 'components/UI/CloseIconButton';
+import SuccessFeedback from './SuccessFeedback';
 import messages from './messages';
 import { get } from 'lodash-es';
 import { RHFErrors } from 'typings';
@@ -89,31 +83,12 @@ const Feedback = ({
       {isSubmitted && (
         <Box id="feedback" data-testid="feedback" key={submitCount}>
           {successMessageIsShown && (
-            <Box
-              bgColor={colors.successLight}
-              borderRadius="3px"
-              px="12px"
-              py="4px"
-              mb="12px"
-              role="alert"
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              data-testid="feedbackSuccessMessage"
-            >
-              <Box display="flex" gap="16px" alignItems="center">
-                <Icon
-                  name="check-circle"
-                  fill={colors.success}
-                  width="24px"
-                  height="24px"
-                />
-                <Title color="success" variant="h4" as="h3">
-                  {successMessage || formatMessage(messages.successMessage)}
-                </Title>
-              </Box>
-              <CloseIconButton onClick={closeSuccessMessage} />
-            </Box>
+            <SuccessFeedback
+              successMessage={
+                successMessage || formatMessage(messages.successMessage)
+              }
+              closeSuccessMessage={closeSuccessMessage}
+            />
           )}
           {errorMessageIsShown && (
             <Error

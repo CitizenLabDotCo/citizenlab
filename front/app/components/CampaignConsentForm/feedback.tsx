@@ -1,14 +1,8 @@
 import React, { useEffect } from 'react';
 import Error from 'components/UI/Error';
-import {
-  Text,
-  Title,
-  Box,
-  colors,
-  Icon,
-} from '@citizenlab/cl2-component-library';
+import { Text, Box } from '@citizenlab/cl2-component-library';
 import { scrollToElement } from 'utils/scroll';
-import CloseIconButton from 'components/UI/CloseIconButton';
+import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
 
 type FeedbackProps = {
   successMessage: string;
@@ -25,40 +19,19 @@ const Feedback = ({
 }: FeedbackProps) => {
   useEffect(() => {
     if (showFeedback) {
-      scrollToElement({ id: 'feedback' });
+      scrollToElement({ id: 'email_campaigns_feedback' });
     }
   }, [showFeedback]);
 
   return (
     <>
       {showFeedback && (
-        <Box id="feedback" data-testid="feedback">
+        <Box id="email_campaigns_feedback" data-testid="feedback">
           {showFeedback === 'success' && (
-            <Box
-              bgColor={colors.successLight}
-              borderRadius="3px"
-              px="12px"
-              py="4px"
-              mb="24px"
-              role="alert"
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              data-testid="feedbackSuccessMessage"
-            >
-              <Box display="flex" gap="16px" alignItems="center">
-                <Icon
-                  name="check-circle"
-                  fill={colors.success}
-                  width="24px"
-                  height="24px"
-                />
-                <Title color="success" variant="h4" as="h3">
-                  {successMessage}
-                </Title>
-              </Box>
-              <CloseIconButton onClick={closeFeedback} />
-            </Box>
+            <SuccessFeedback
+              successMessage={successMessage}
+              closeSuccessMessage={closeFeedback}
+            />
           )}
           {showFeedback === 'error' && (
             <Error
