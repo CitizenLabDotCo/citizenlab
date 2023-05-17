@@ -1184,7 +1184,7 @@ resource 'Ideas' do
             expect(response_data.dig(:attributes, :location_description)).to eq 'HERE'
           end
 
-          example 'Updating an idea to anonymous', document: false do
+          example 'Changing an idea to anonymous', document: false do
             @idea.update! publication_status: 'published', anonymous: false, author: @user
             do_request idea: { anonymous: true }
             assert_status 200
@@ -1193,23 +1193,12 @@ resource 'Ideas' do
           end
 
           example 'Updating an anonymously posted idea with an author', document: false do
-            @idea.update! anonymous: true, author: nil
-            do_request idea: { author_id: @user.id }
+            @idea.update! publication_status: 'published', anonymous: true, author: nil
+            do_request idea: { author_id: @user.id, publication_status: 'published' }
             assert_status 200
             expect(response_data.dig(:relationships, :author, :data, :id)).to eq @user.id
             expect(response_data.dig(:attributes, :anonymous)).to eq false
           end
-
-          # describe 'Updating an anonomous idea anonymously' do
-          #   let(:anonymous) { true }
-          #
-          #   example_request 'Posting an idea anonymously does not save an author id' do
-          #     assert_status 201
-          #     expect(response_data.dig(:attributes, :anonymous)).to be true
-          #     expect(response_data.dig(:attributes, :author_name)).to be_nil
-          #     expect(response_data.dig(:relationships, :author, :data)).to be_nil
-          #   end
-          # end
         end
 
         context 'when moderator' do
