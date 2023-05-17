@@ -81,6 +81,7 @@ const Invitation = ({ loading, setError, onSubmit }: Props) => {
             width="auto"
             disabled={loading}
             processing={loading}
+            id="e2e-invite-submit-button"
           >
             {formatMessage(sharedMessages.continue)}
           </Button>
