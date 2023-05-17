@@ -51,7 +51,7 @@ const UserSelect = ({
   id,
   inputId,
 }: DataProps & Props) => {
-  const canLoadMore = users.lastPage !== users.currentPage;
+  const canLoadMore = users.hasNextPage;
   const usersList = Array.isArray(users.usersList) ? users.usersList : [];
   const selectedUser = useUser({ userId: selectedUserId });
 
@@ -145,8 +145,8 @@ const Data = adopt<DataProps, InputProps>({
     <GetUsers
       pageSize={5}
       sort="last_name"
-      isNotProjectModeratorOfProjectId={isNotProjectModeratorOfProjectId}
-      isNotFolderModeratorOfFolderId={isNotFolderModeratorOfFolderId}
+      is_not_project_moderator={isNotProjectModeratorOfProjectId}
+      is_not_folder_moderator={isNotFolderModeratorOfFolderId}
     >
       {render}
     </GetUsers>

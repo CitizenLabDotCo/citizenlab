@@ -106,9 +106,9 @@ export type Sort =
   | '-role';
 
 export interface IQueryParameters {
-  'page[number]': number;
-  'page[size]': number;
-  sort: Sort;
+  pageNumber?: number;
+  pageSize?: number;
+  sort?: Sort;
   search?: string;
   group?: string;
   can_moderate_project?: string;

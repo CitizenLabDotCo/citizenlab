@@ -166,7 +166,7 @@ const FeedbackSettings = ({ ideaId, className, prospectAssignees }: Props) => {
 
 const Data = adopt<DataProps, InputProps>({
   prospectAssignees: ({ projectId, render }) => (
-    <GetUsers canModerateProject={projectId}>{render}</GetUsers>
+    <GetUsers can_moderate_project={projectId}>{render}</GetUsers>
   ),
 });
 

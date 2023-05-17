@@ -1,5 +1,5 @@
 // Libraries
-import React, { PureComponent } from 'react';
+import React, { useEffect, useState } from 'react';
 import { isArray, includes } from 'lodash-es';
 import { Subscription } from 'rxjs';
 
@@ -14,203 +14,178 @@ import eventEmitter from 'utils/eventEmitter';
 import events from './events';
 
 // Resources
-import GetUsers, {
-  GetUsersChildProps,
-  InputProps as GetUsersInputProps,
-} from 'resources/GetUsers';
+import { IQueryParameters } from 'api/users/types';
 
 // Services
 import { MembershipType } from 'api/groups/types';
+import useUsers from 'api/users/useUsers';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 // Typings
-interface InputProps {
-  search: GetUsersInputProps['search'];
-  groupId?: GetUsersInputProps['groupId'];
+interface Props {
+  search: IQueryParameters['search'];
+  groupId?: IQueryParameters['group'];
   groupType?: MembershipType;
-  onlyBlocked?: GetUsersInputProps['onlyBlocked'];
+  onlyBlocked?: IQueryParameters['only_blocked'];
   deleteUsersFromGroup?: (userIds: string[]) => void;
-  // These are used in the inputProps for GetUsers
-  canModerate?: GetUsersInputProps['canModerate'];
-  notCitizenlabMember?: GetUsersInputProps['notCitizenlabMember'];
-  includeInactive?: GetUsersInputProps['includeInactive'];
+  canModerate?: IQueryParameters['can_moderate'];
+  notCitizenlabMember?: IQueryParameters['not_citizenlab_member'];
+  includeInactive?: IQueryParameters['include_inactive'];
 }
-
-interface DataProps {
-  users: GetUsersChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
 
 type error = {
   errorName: string;
   errorElement: JSX.Element;
 };
 
-type selectedUsersType = string[] | 'none' | 'all';
+type SelectedUsersType = string[] | 'none' | 'all';
 
-export interface State {
-  selectedUsers: selectedUsersType;
-  errors: error[];
-}
+const UserManager = ({
+  groupId,
+  groupType,
+  search,
+  notCitizenlabMember = false,
+  deleteUsersFromGroup,
+  includeInactive,
+  canModerate,
+  onlyBlocked,
+}: Props) => {
+  const [selectedUsers, setSelectedUsers] = useState<SelectedUsersType>('none');
+  const [errors, setErrors] = useState<error[]>([]);
+  const { data: users } = useUsers({
+    include_inactive: includeInactive,
+    search,
+    group: groupId,
+    can_moderate: canModerate,
+    only_blocked: onlyBlocked,
+  });
 
-const initialState: State = {
-  selectedUsers: 'none',
-  errors: [],
-};
+  useEffect(() => {
+    // When an error occurs, print it for 4 seconds then remove the message from the component state
+    const handleError = (errorName, errorElement) => {
+      setErrors((errors) => [...errors, { errorName, errorElement }]);
 
-export class UserManager extends PureComponent<Props, State> {
-  subscriptions: Subscription[] = [];
+      setTimeout(
+        () =>
+          setErrors((errors) =>
+            errors.filter((err) => err.errorName !== errorName)
+          ),
 
-  constructor(props: Props) {
-    super(props);
-    this.state = initialState;
-  }
-
-  // When changing group, the user changes views and expects to have a clean state
-  componentDidUpdate(prevProps: Props) {
-    if (this.props.groupId !== prevProps.groupId) {
-      this.setState(initialState);
-    }
-  }
-
-  // Listening to events coming from the different actions to print messages in case of errors
-  componentDidMount() {
-    this.subscriptions = [
+        4000
+      );
+    };
+    const subscriptions: Subscription[] = [
       eventEmitter
         .observeEvent<JSX.Element>(events.userDeletionFailed)
         .subscribe(({ eventName, eventValue }) => {
-          this.handleError(eventName, eventValue);
+          handleError(eventName, eventValue);
         }),
       eventEmitter
         .observeEvent<JSX.Element>(events.membershipDeleteFailed)
         .subscribe(({ eventName, eventValue }) => {
-          this.handleError(eventName, eventValue);
+          handleError(eventName, eventValue);
         }),
       eventEmitter
         .observeEvent<JSX.Element>(events.membershipAddFailed)
         .subscribe(({ eventName, eventValue }) => {
-          this.handleError(eventName, eventValue);
+          handleError(eventName, eventValue);
         }),
       eventEmitter
         .observeEvent<JSX.Element>(events.userRoleChangeFailed)
         .subscribe(({ eventName, eventValue }) => {
-          this.handleError(eventName, eventValue);
+          handleError(eventName, eventValue);
         }),
     ];
-  }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
+    return () =>
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }, []);
 
-  // When an error occurs, print it for 4 seconds then remove the message from the component state
-  handleError = (errorName, errorElement) => {
-    this.setState({
-      errors: [...this.state.errors, { errorName, errorElement }],
+  useEffect(() => {
+    setSelectedUsers('none');
+    setErrors([]);
+  }, [groupId]);
+
+  const toggleAllUsers = () => {
+    setSelectedUsers((selectedUsers) => {
+      return selectedUsers === 'all' ? 'none' : 'all';
     });
-    setTimeout(
-      () =>
-        this.setState({
-          errors: this.state.errors.filter(
-            (err) => err.errorName !== errorName
-          ),
-        }),
-      4000
-    );
   };
 
-  toggleAllUsers = () => {
-    this.setState((state) => ({
-      selectedUsers: state.selectedUsers === 'all' ? 'none' : 'all',
-    }));
+  const unselectAllUsers = () => {
+    setSelectedUsers('none');
   };
 
-  unselectAllUsers = () => {
-    this.setState({ selectedUsers: 'none' });
-  };
+  const handleUserSelectedOnChange =
+    (allUsersIds: string[]) => (userId: string) => {
+      setSelectedUsers((selectedUsers) => {
+        let newSelectedUsers: SelectedUsersType = 'none';
 
-  handleUserSelectedOnChange = (allUsersIds: string[]) => (userId: string) => {
-    this.setState((state) => {
-      let newSelectedUsers: string[] | 'none' | 'all' = 'none';
-
-      if (isArray(state.selectedUsers)) {
-        if (includes(state.selectedUsers, userId)) {
-          const userIds = state.selectedUsers.filter((item) => item !== userId);
-          newSelectedUsers = userIds.length > 0 ? userIds : 'none';
-        } else {
-          newSelectedUsers = [...state.selectedUsers, userId];
+        if (isArray(selectedUsers)) {
+          if (includes(selectedUsers, userId)) {
+            const userIds = selectedUsers.filter((item) => item !== userId);
+            newSelectedUsers = userIds.length > 0 ? userIds : 'none';
+          } else {
+            newSelectedUsers = [...selectedUsers, userId];
+          }
+        } else if (selectedUsers === 'none') {
+          newSelectedUsers = [userId];
+        } else if (isArray(allUsersIds)) {
+          newSelectedUsers = allUsersIds
+            .filter((user) => user !== userId)
+            .map((user) => user);
         }
-      } else if (state.selectedUsers === 'none') {
-        newSelectedUsers = [userId];
-      } else if (isArray(allUsersIds)) {
-        newSelectedUsers = allUsersIds
-          .filter((user) => user !== userId)
-          .map((user) => user);
-      }
 
-      return { selectedUsers: newSelectedUsers };
-    });
-  };
+        return newSelectedUsers;
+      });
+    };
 
-  render() {
-    const {
-      users,
-      groupType,
-      groupId,
-      search,
-      notCitizenlabMember = false,
-    } = this.props;
-    const { selectedUsers, errors } = this.state;
-
-    if (isArray(users.usersList) && users.usersList.length === 0) {
-      return (
-        <Box mb="40px">
-          {search ? (
-            <NoUsers noSuchSearchResult={true} />
-          ) : (
-            <NoUsers groupType={groupType} />
-          )}
-        </Box>
-      );
-    }
-
-    if (isArray(users.usersList) && users.usersList.length > 0) {
-      const allUsersIds = users.usersList.map((user) => user.id);
-
-      return (
-        <>
-          <UserTableActions
-            groupType={groupType}
-            groupId={groupId}
-            selectedUsers={selectedUsers}
-            allUsersIds={allUsersIds}
-            toggleSelectAll={this.toggleAllUsers}
-            unselectAll={this.unselectAllUsers}
-            deleteUsersFromGroup={this.props.deleteUsersFromGroup}
-          />
-
-          {errors &&
-            errors.length > 0 &&
-            errors.map((err) => (
-              <Error text={err.errorElement} key={err.errorName} />
-            ))}
-
-          <UserTable
-            selectedUsers={selectedUsers}
-            handleSelect={this.handleUserSelectedOnChange(allUsersIds)}
-            notCitizenlabMember={notCitizenlabMember}
-            {...users}
-          />
-        </>
-      );
-    }
-
-    return null;
+  if (users?.data && users.data.length === 0) {
+    return (
+      <Box mb="40px">
+        {search ? (
+          <NoUsers noSuchSearchResult={true} />
+        ) : (
+          <NoUsers groupType={groupType} />
+        )}
+      </Box>
+    );
   }
-}
 
-export default (inputProps: InputProps) => (
-  <GetUsers pageSize={20} {...inputProps}>
-    {(users) => <UserManager {...inputProps} users={users} />}
-  </GetUsers>
-);
+  if (users?.data && users.data.length > 0) {
+    const allUsersIds = users.data.map((user) => user.id);
+
+    return (
+      <>
+        <UserTableActions
+          groupType={groupType}
+          groupId={groupId}
+          selectedUsers={selectedUsers}
+          allUsersIds={allUsersIds}
+          toggleSelectAll={toggleAllUsers}
+          unselectAll={unselectAllUsers}
+          deleteUsersFromGroup={deleteUsersFromGroup}
+        />
+
+        {errors &&
+          errors.length > 0 &&
+          errors.map((err) => (
+            <Error text={err.errorElement} key={err.errorName} />
+          ))}
+
+        <UserTable
+          selectedUsers={selectedUsers}
+          handleSelect={handleUserSelectedOnChange(allUsersIds)}
+          notCitizenlabMember={notCitizenlabMember}
+          usersList={users.data}
+          currentPage={getPageNumberFromUrl(users.links.self) || 1}
+          lastPage={getPageNumberFromUrl(users.links.last) || 1}
+        />
+      </>
+    );
+  }
+
+  return null;
+};
+
+export default UserManager;

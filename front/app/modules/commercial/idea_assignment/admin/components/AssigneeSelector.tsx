@@ -96,7 +96,7 @@ const IdeaAssignment = ({ adminsAndMods, projectId }: Props) => {
 
 const Data = adopt<DataProps, InputProps>({
   adminsAndMods: ({ projectId, render }) => (
-    <GetUsers canModerateProject={projectId}>{render}</GetUsers>
+    <GetUsers can_moderate_project={projectId}>{render}</GetUsers>
   ),
 });
 

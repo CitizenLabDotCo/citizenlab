@@ -62,6 +62,12 @@ interface InputProps {
   selectedUsers: string[] | 'none' | 'all';
   handleSelect: (userId: string) => void;
   notCitizenlabMember: boolean;
+  currentPage: number | null;
+  lastPage: number | null;
+  sortAttribute: SortAttribute;
+  sortDirection: 'ascending' | 'descending' | undefined;
+  onChangePage: (pageNumber: number) => void;
+  onChangeSorting: (sortAttribute: SortAttribute) => void;
 }
 
 interface Props extends InputProps, GetUsersChildProps {}

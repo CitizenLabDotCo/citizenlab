@@ -233,7 +233,7 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   statuses: <GetInitiativeStatuses />,
-  prospectAssignees: <GetUsers canAdmin />,
+  prospectAssignees: <GetUsers can_admin />,
   allowedTransitions: ({ initiativeId, render }) => (
     <GetInitiativeAllowedTransitions id={initiativeId}>
       {render}

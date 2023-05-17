@@ -119,15 +119,15 @@ const AssigneeFilter = ({
 const Data = adopt<DataProps, InputProps>({
   prospectAssignees: ({ type, projectId, render }) =>
     type === 'ProjectIdeas' && projectId ? (
-      <GetUsers canModerateProject={projectId} pageSize={250}>
+      <GetUsers can_moderate_project={projectId} pageSize={250}>
         {render}
       </GetUsers>
     ) : type === 'AllIdeas' ? (
-      <GetUsers canModerate pageSize={250}>
+      <GetUsers can_moderate pageSize={250}>
         {render}
       </GetUsers>
     ) : (
-      <GetUsers canAdmin pageSize={250}>
+      <GetUsers can_admin pageSize={250}>
         {render}
       </GetUsers>
     ),
