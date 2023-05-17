@@ -4,10 +4,9 @@ import {
   Box,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import { SubSectionTitle } from 'components/admin/Section';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import React from 'react';
-import messages from '../../messages';
-import { StyledSectionField } from './styling';
+import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 interface AnonymousPostingToggleProps {
@@ -24,7 +23,7 @@ export const AnonymousPostingToggle = ({
   const { formatMessage } = useIntl();
 
   return (
-    <StyledSectionField>
+    <SectionField>
       <SubSectionTitle style={{ marginBottom: '0px' }}>
         <FormattedMessage {...messages.userPrivacy} />
       </SubSectionTitle>
@@ -55,6 +54,6 @@ export const AnonymousPostingToggle = ({
           </Box>
         }
       />
-    </StyledSectionField>
+    </SectionField>
   );
 };

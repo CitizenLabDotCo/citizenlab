@@ -27,6 +27,7 @@ import ThresholdReachedMessage from './ThresholdReachedMessage';
 import EligibilityCriteria from './EligibilityCriteria';
 import PageBody from './PageBody';
 import SubmitButton from './SubmitButton';
+import { AnonymousPostingToggle } from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -37,7 +38,6 @@ import styled from 'styled-components';
 
 // typings
 import { Multiloc } from 'typings';
-import { AnonymousPostingToggle } from 'containers/Admin/projects/project/participationContext/components/AnonymousPostingToggle';
 
 const Container = styled.div``;
 

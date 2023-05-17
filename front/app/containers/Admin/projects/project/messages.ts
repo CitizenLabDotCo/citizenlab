@@ -476,22 +476,4 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText',
     defaultMessage: 'this support article',
   },
-  userPrivacy: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.userPrivacy',
-    defaultMessage: 'User privacy',
-  },
-  userPrivacyLabelText: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.userPrivacyLabelText2',
-    defaultMessage: 'Allow users to participate anonymously',
-  },
-  userPrivacyLabelSubtext: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.userPrivacyLabelSubtext2',
-    defaultMessage:
-      'Users will be able to hide their identity from other users and admins. Admins can still ban/moderate their inputs.',
-  },
-  userPrivacyLabelTooltip: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.userPrivacyLabelTooltip',
-    defaultMessage:
-      'Users may still choose to participate with their real name, but they will have the option to submit inputs or comments anonymously if they choose to do so. All users will still need to comply with the requirements set in the Access Rights tab for their comments and/or inputs to go through. ',
-  },
 });

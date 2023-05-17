@@ -29,7 +29,7 @@ import {
   InputTerm,
 } from 'services/participationContexts';
 import { ApiErrors } from '..';
-import { AnonymousPostingToggle } from './AnonymousPostingToggle';
+import { AnonymousPostingToggle } from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 
 interface Props {
   isCustomInputTermEnabled: boolean;
