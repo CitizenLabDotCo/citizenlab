@@ -400,6 +400,7 @@
   "app.components.Upload.remaining": "تبقى",
   "app.components.Upload.uploadImageLabel": "حدّد صورة (بحجم أقصى {maxImageSizeInMb} ميغابايت)",
   "app.components.Upload.uploadMultipleImagesLabel": "حدّد صورة واحدة أو أكثر",
+  "app.components.UserName.anonymous": "مجهول",
   "app.components.UserName.deletedUser": "مؤلف غير معروف",
   "app.components.UserName.verified": "تم التحقق منه",
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "وافتح المزيد من فرص المشاركة",
