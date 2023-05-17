@@ -14,8 +14,7 @@ import useUser from 'hooks/useUser';
 import { IUserData } from 'services/users';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 const Name = styled.span<{
@@ -73,22 +72,40 @@ interface Props extends StyleProps {
   className?: string;
   isLinkToProfile?: boolean;
   hideLastName?: boolean;
+  isAnonymous?: boolean;
 }
 
-const UserName = (props: Props & WrappedComponentProps) => {
-  const {
-    intl: { formatMessage },
-    userId,
-    className,
-    isLinkToProfile,
-    hideLastName,
-    fontWeight,
-    fontSize,
-    underline,
-    color,
-    canModerate,
-  } = props;
+const UserName = ({
+  userId,
+  className,
+  isLinkToProfile,
+  hideLastName,
+  fontWeight,
+  fontSize,
+  underline,
+  color,
+  canModerate,
+  isAnonymous,
+}: Props) => {
+  const { formatMessage } = useIntl();
   const user = useUser({ userId });
+
+  if (isAnonymous) {
+    return (
+      <Name
+        fontWeight={fontWeight}
+        fontSize={fontSize}
+        underline={underline}
+        className={`
+          ${className || ''}
+          e2e-username
+        `}
+        color={color}
+      >
+        {formatMessage(messages.anonymous)}
+      </Name>
+    );
+  }
 
   if (userId === null) {
     // Deleted user
@@ -157,4 +174,4 @@ const UserName = (props: Props & WrappedComponentProps) => {
   return null;
 };
 
-export default injectIntl(UserName);
+export default UserName;

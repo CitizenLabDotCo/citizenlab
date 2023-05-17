@@ -229,7 +229,10 @@ const CompactIdeaCard = memo<IdeaCardProps>(
               />
             )}
             <Body>
-              <StyledUserName userId={authorId || null} />
+              <StyledUserName
+                userId={authorId || null}
+                isAnonymous={idea.data.attributes.anonymous}
+              />
               <Separator aria-hidden>&bull;</Separator>
               {!isNilOrError(locale) && (
                 <TimeAgo>
