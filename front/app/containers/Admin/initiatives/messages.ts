@@ -117,17 +117,4 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.enableProposals',
     defaultMessage: 'Enable proposals',
   },
-  userPrivacy: {
-    id: 'app.containers.Admin.initiatives.userPrivacy',
-    defaultMessage: 'User privacy',
-  },
-  userPrivacyLabelText: {
-    id: 'app.containers.Admin.initiatives.userPrivacyLabelText',
-    defaultMessage: 'Enable users to participate anonymously',
-  },
-  userPrivacyLabelSubtext: {
-    id: 'app.containers.Admin.initiatives.userPrivacyLabelSubtext',
-    defaultMessage:
-      'Users will be able to submit ideas, comment or reply anonymously. Admins or other users won’t be able to know the identity of the user.',
-  },
 });
