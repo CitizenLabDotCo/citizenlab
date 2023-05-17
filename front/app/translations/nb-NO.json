@@ -400,6 +400,7 @@
   "app.components.Upload.remaining": "gjenstår",
   "app.components.Upload.uploadImageLabel": "Velg et bilde (max. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Velg ett eller flere bilder",
+  "app.components.UserName.anonymous": "Anonym",
   "app.components.UserName.deletedUser": "ukjent forfatter",
   "app.components.UserName.verified": "Bekreftet",
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "og lås opp flere muligheter for innbyggerengasjement",
