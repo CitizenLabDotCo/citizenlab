@@ -52,7 +52,7 @@ export interface IParticipationContextConfig {
   upvoting_method?: 'unlimited' | 'limited' | null;
   upvoting_limited_max?: number | null;
   downvoting_enabled: boolean | null;
-  allow_anonymous_posting?: boolean | null;
+  allow_anonymous_participation?: boolean | null;
   downvoting_method?: 'unlimited' | 'limited' | null;
   downvoting_limited_max?: number | null;
   presentation_mode?: 'map' | 'card' | null;
@@ -116,7 +116,7 @@ class ParticipationContext extends PureComponent<
       upvoting_method: 'unlimited',
       upvoting_limited_max: null,
       downvoting_enabled: true,
-      allow_anonymous_posting: false,
+      allow_anonymous_participation: false,
       downvoting_method: 'unlimited',
       downvoting_limited_max: null,
       presentation_mode: 'card',
@@ -153,7 +153,7 @@ class ParticipationContext extends PureComponent<
           upvoting_limited_max: newData.upvoting_limited_max,
           downvoting_limited_max: newData.downvoting_limited_max,
           downvoting_enabled: newData.downvoting_enabled,
-          allow_anonymous_posting: newData.allow_anonymous_posting,
+          allow_anonymous_participation: newData.allow_anonymous_participation,
           presentation_mode: newData.presentation_mode,
           min_budget: newData.min_budget,
           max_budget: newData.max_budget,
@@ -219,7 +219,7 @@ class ParticipationContext extends PureComponent<
       voting_enabled: ideation ? true : null,
       upvoting_method: ideation ? 'unlimited' : null,
       downvoting_enabled: ideation ? true : null,
-      allow_anonymous_posting: ideationOrBudgeting ? false : null,
+      allow_anonymous_participation: ideationOrBudgeting ? false : null,
       downvoting_method: ideation ? 'unlimited' : null,
       presentation_mode: ideationOrBudgeting ? 'card' : null,
       survey_embed_url: null,
@@ -272,8 +272,10 @@ class ParticipationContext extends PureComponent<
     this.setState({ downvoting_enabled });
   };
 
-  handleAllowAnonymousPostingOnChange = (allow_anonymous_posting: boolean) => {
-    this.setState({ allow_anonymous_posting });
+  handleAllowAnonymousParticipationOnChange = (
+    allow_anonymous_participation: boolean
+  ) => {
+    this.setState({ allow_anonymous_participation });
   };
 
   handleDownvotingMethodOnChange = (
@@ -401,7 +403,7 @@ class ParticipationContext extends PureComponent<
       upvoting_limited_max,
       downvoting_limited_max,
       downvoting_enabled,
-      allow_anonymous_posting,
+      allow_anonymous_participation,
       min_budget,
       max_budget,
       survey_embed_url,
@@ -496,7 +498,7 @@ class ParticipationContext extends PureComponent<
                   downvoting_enabled={downvoting_enabled}
                   noUpvotingLimitError={noUpvotingLimitError}
                   noDownvotingLimitError={noDownvotingLimitError}
-                  allow_anonymous_posting={allow_anonymous_posting}
+                  allow_anonymous_participation={allow_anonymous_participation}
                   apiErrors={apiErrors}
                   togglePostingEnabled={this.togglePostingEnabled}
                   toggleCommentingEnabled={this.toggleCommentingEnabled}
@@ -514,8 +516,8 @@ class ParticipationContext extends PureComponent<
                   handleDownvotingEnabledOnChange={
                     this.handleDownvotingEnabledOnChange
                   }
-                  handleAllowAnonymousPostingOnChange={
-                    this.handleAllowAnonymousPostingOnChange
+                  handleAllowAnonymousParticipationOnChange={
+                    this.handleAllowAnonymousParticipationOnChange
                   }
                   presentation_mode={presentation_mode}
                   handleIdeasDisplayChange={this.handleIdeasDisplayChange}

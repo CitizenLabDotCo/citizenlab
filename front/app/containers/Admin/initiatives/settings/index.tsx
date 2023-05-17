@@ -218,7 +218,8 @@ const InitiativesSettingsPage = () => {
   const onAnonymousPostingToggle = () => {
     setLocalProposalsSettings({
       ...localProposalsSettings,
-      allow_anonymous_posting: !localProposalsSettings.allow_anonymous_posting,
+      allow_anonymous_participation:
+        !localProposalsSettings.allow_anonymous_participation,
     });
   };
 
@@ -233,7 +234,7 @@ const InitiativesSettingsPage = () => {
           onToggle={onToggle}
         />
         <AnonymousPostingToggle
-          enabled={localProposalsSettings.allow_anonymous_posting}
+          enabled={localProposalsSettings.allow_anonymous_participation}
           onToggle={onAnonymousPostingToggle}
         />
         <VotingThreshold

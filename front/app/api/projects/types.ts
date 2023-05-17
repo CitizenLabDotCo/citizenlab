@@ -158,7 +158,7 @@ export interface IProjectAttributes {
   upvoting_method: 'limited' | 'unlimited';
   upvoting_limited_max: number;
   downvoting_enabled: boolean;
-  allow_anonymous_posting: boolean;
+  allow_anonymous_participation: boolean;
   downvoting_method: 'limited' | 'unlimited';
   downvoting_limited_max: number;
   presentation_mode: PresentationMode;

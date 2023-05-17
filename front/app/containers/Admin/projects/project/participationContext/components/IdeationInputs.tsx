@@ -42,7 +42,7 @@ interface Props {
   voting_enabled: boolean;
   upvoting_method: 'unlimited' | 'limited' | null | undefined;
   upvoting_limited_max: number | null | undefined;
-  allow_anonymous_posting: boolean | null | undefined;
+  allow_anonymous_participation: boolean | null | undefined;
   noUpvotingLimitError: JSX.Element | null;
   downvoting_enabled: boolean | null | undefined;
   downvoting_method: 'unlimited' | 'limited' | null | undefined;
@@ -61,8 +61,8 @@ interface Props {
   handleUpvotingLimitOnChange: (upvoting_limited_max: string) => void;
   handleDownvotingLimitOnChange: (downvoting_limited_max: string) => void;
   handleDownvotingEnabledOnChange: (downvoting_enabled: boolean) => void;
-  handleAllowAnonymousPostingOnChange: (
-    allow_anonymous_posting: boolean
+  handleAllowAnonymousParticipationOnChange: (
+    allow_anonymous_participation: boolean
   ) => void;
   presentation_mode: 'card' | 'map' | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
@@ -82,7 +82,7 @@ export default ({
   voting_enabled,
   upvoting_method,
   downvoting_method,
-  allow_anonymous_posting,
+  allow_anonymous_participation,
   upvoting_limited_max,
   downvoting_limited_max,
   downvoting_enabled,
@@ -97,7 +97,7 @@ export default ({
   handleUpvotingLimitOnChange,
   handleDownvotingLimitOnChange,
   handleDownvotingEnabledOnChange,
-  handleAllowAnonymousPostingOnChange,
+  handleAllowAnonymousParticipationOnChange,
   presentation_mode,
   handleIdeasDisplayChange,
   ideas_order,
@@ -109,9 +109,11 @@ export default ({
         <FormattedMessage {...messages.userPrivacy} />
       </SubSectionTitle>
       <Toggle
-        checked={allow_anonymous_posting || false}
+        checked={allow_anonymous_participation || false}
         onChange={() => {
-          handleAllowAnonymousPostingOnChange(!allow_anonymous_posting);
+          handleAllowAnonymousParticipationOnChange(
+            !allow_anonymous_participation
+          );
         }}
         label={
           <>
