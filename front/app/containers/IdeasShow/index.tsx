@@ -351,6 +351,7 @@ export const IdeasShow = ({
                   statusId={statusId}
                   authorId={authorId}
                   compact={isCompactView}
+                  anonymous={idea.data.attributes.anonymous}
                 />
               </Box>
             )}

@@ -72,7 +72,7 @@ interface Props extends StyleProps {
   className?: string;
   isLinkToProfile?: boolean;
   hideLastName?: boolean;
-  isAnonymous?: boolean;
+  anonymous?: boolean;
 }
 
 const UserName = ({
@@ -85,12 +85,12 @@ const UserName = ({
   underline,
   color,
   canModerate,
-  isAnonymous,
+  anonymous,
 }: Props) => {
   const { formatMessage } = useIntl();
   const user = useUser({ userId });
 
-  if (isAnonymous) {
+  if (anonymous) {
     return (
       <Name
         fontWeight={fontWeight}
