@@ -58,10 +58,6 @@ module EmailCampaigns
       users_scope
     end
 
-    def self.category
-      'commented'
-    end
-
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.registered_users'
     end

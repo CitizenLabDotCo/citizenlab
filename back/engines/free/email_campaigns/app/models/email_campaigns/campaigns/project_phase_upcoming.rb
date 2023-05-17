@@ -50,10 +50,6 @@ module EmailCampaigns
       { 'Notifications::ProjectPhaseUpcoming' => { 'created' => true } }
     end
 
-    def self.category
-      'admin'
-    end
-
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.admins_and_moderators'
     end
