@@ -4,8 +4,6 @@ import { isEmpty, isString } from 'lodash-es';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 import clHistory from 'utils/cl-router/history';
 
 // Components
@@ -35,8 +33,11 @@ import { MembershipType } from 'api/groups/types';
 import useUpdateGroup from 'api/groups/useUpdateGroup';
 import useDeleteGroup from 'api/groups/useDeleteGroup';
 import useDeleteMembership from 'api/group_memberships/useDeleteMembership';
+import { useQueryClient } from '@tanstack/react-query';
+import usersKeys from 'api/users/keys';
 
 const UsersGroup = () => {
+  const queryClient = useQueryClient();
   const isVerificationEnabled = useFeatureFlag({ name: 'verification' });
   const { formatMessage } = useIntl();
   const { groupId } = useParams() as { groupId: string };
@@ -110,9 +111,7 @@ const UsersGroup = () => {
 
         try {
           await Promise.all(promises);
-          await streams.fetchAllWith({
-            apiEndpoint: [`${API_PATH}/users`],
-          });
+          queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
         } catch (error) {
           eventEmitter.emit<JSX.Element>(
             events.membershipDeleteFailed,

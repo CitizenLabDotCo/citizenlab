@@ -3,8 +3,7 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import groupKeys from './keys';
 import { IGroup, IGroupUpdate } from './types';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
+import usersKeys from 'api/users/keys';
 
 const updateGroup = ({ id, ...requestBody }: IGroupUpdate) =>
   fetcher<IGroup>({
@@ -19,10 +18,7 @@ const useUpdateGroup = () => {
     mutationFn: updateGroup,
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: groupKeys.lists() });
-      await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/users`],
-        onlyFetchActiveStreams: true,
-      });
+      queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
     },
   });
 };

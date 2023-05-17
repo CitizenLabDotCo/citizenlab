@@ -40,6 +40,8 @@ import { rgba } from 'polished';
 // Typings
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
+import usersKeys from 'api/users/keys';
+import { useQueryClient } from '@tanstack/react-query';
 
 const TableOptions = styled.div`
   min-height: 60px;
@@ -174,6 +176,7 @@ const UserTableActions = ({
   deleteUsersFromGroup,
   groupType,
 }: Props) => {
+  const queryClient = useQueryClient();
   const { formatDate, formatMessage } = useIntl();
   const { data: manualGroups } = useGroups({ membershipType: 'manual' });
   const { mutateAsync: addGroupMembership } = useAddMembership();
@@ -266,9 +269,7 @@ const UserTableActions = ({
       try {
         setProcessing(true);
         await Promise.all(promises);
-        await streams.fetchAllWith({
-          apiEndpoint: [`${API_PATH}/users`],
-        });
+        queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
         await timeout(1000);
         success();
         return true;
