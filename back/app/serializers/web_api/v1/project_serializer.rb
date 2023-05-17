@@ -41,6 +41,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     voting_disabled_reason = @participation_context_service.idea_voting_disabled_reason_for object, user
     upvoting_disabled_reason = @participation_context_service.idea_voting_disabled_reason_for object, user, mode: 'up'
     downvoting_disabled_reason = @participation_context_service.idea_voting_disabled_reason_for object, user, mode: 'down'
+    annotating_document_disabled_reason = @participation_context_service.annotating_document_disabled_reason_for_project object, user
     taking_survey_disabled_reason = @participation_context_service.taking_survey_disabled_reason_for_project object, user
     taking_poll_disabled_reason = @participation_context_service.taking_poll_disabled_reason_for_project object, user
     {
@@ -69,6 +70,10 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
         # You can vote if you can comment.
         enabled: !commenting_disabled_reason,
         disabled_reason: commenting_disabled_reason
+      },
+      annotating_document: {
+        enabled: !annotating_document_disabled_reason,
+        disabled_reason: annotating_document_disabled_reason
       },
       taking_survey: {
         enabled: !taking_survey_disabled_reason,

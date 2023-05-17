@@ -183,6 +183,37 @@ describe ParticipationContextService do
     end
   end
 
+  describe 'annotating_document_disabled_reason' do
+    it 'returns nil when annotating the document is allowed' do
+      project = create(:continuous_document_annotation_project, with_permissions: true)
+      permission = service.get_participation_context(project).permissions.find_by(action: 'annotating_document')
+      groups = create_list(:group, 2, projects: [project])
+      permission.update!(permitted_by: 'groups', group_ids: groups.map(&:id))
+      user = create(:user)
+      group = groups.first
+      group.add_member user
+      group.save!
+      expect(service.annotating_document_disabled_reason_for_project(project, user)).to be_nil
+    end
+
+    it 'returns `not_signed_in` when user needs to be signed in' do
+      project = create(:continuous_document_annotation_project, with_permissions: true)
+      permission = service.get_participation_context(project).permissions.find_by(action: 'annotating_document')
+      permission.update!(permitted_by: 'users')
+      expect(service.annotating_document_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
+    end
+
+    it 'returns `not_permitted` when annotating the document is not permitted' do
+      project = create(:continuous_document_annotation_project, with_permissions: true)
+      permission = service.get_participation_context(project).permissions.find_by(action: 'annotating_document')
+      permission.update!(
+        permitted_by: 'groups',
+        group_ids: create_list(:group, 2).map(&:id)
+      )
+      expect(service.annotating_document_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
+    end
+  end
+
   describe 'taking_survey_disabled_reason' do
     it 'returns nil when taking the survey is allowed' do
       project = create(:continuous_survey_project, with_permissions: true)

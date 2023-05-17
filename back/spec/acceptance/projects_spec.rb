@@ -150,6 +150,7 @@ resource 'Projects' do
               }
             },
             comment_voting_idea: { enabled: false, disabled_reason: 'project_inactive' },
+            annotating_document: { enabled: false, disabled_reason: 'project_inactive' },
             taking_survey: { enabled: false, disabled_reason: 'project_inactive' },
             taking_poll: { enabled: false, disabled_reason: 'project_inactive' }
           }

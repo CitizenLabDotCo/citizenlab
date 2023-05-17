@@ -40,7 +40,7 @@ describe ParticipationContextService do
     end
 
     it "returns true when it's possible to annotate a document" do
-      expect(service).to receive(:document_annotation_disabled_reason_for_context).and_return nil
+      expect(service).to receive(:annotating_document_disabled_reason_for_context).and_return nil
       project = create(:continuous_project, no_participation_attributes)
       expect(service.participation_possible_for_context?(project, create(:user))).to be true
     end
@@ -627,18 +627,18 @@ describe ParticipationContextService do
   describe 'document_annotation_disabled_reason' do
     it 'returns `not_document_annotation` when the active context is not document_annotation' do
       project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'ideation' })
-      expect(service.document_annotation_disabled_reason_for_project(project, create(:user)))
+      expect(service.annotating_document_disabled_reason_for_project(project, create(:user)))
         .to eq 'not_document_annotation'
     end
 
     it 'returns `project_inactive` when the timeline has past' do
       project = create(:project_with_past_phases)
-      expect(service.document_annotation_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
+      expect(service.annotating_document_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
     end
 
     it 'returns `project_inactive` when the continuous project is archived' do
       project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
-      expect(service.document_annotation_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
+      expect(service.annotating_document_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
     end
   end
 
