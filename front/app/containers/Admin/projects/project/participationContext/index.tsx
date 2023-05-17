@@ -78,7 +78,7 @@ interface DataProps {
   survey_monkey_enabled: GetFeatureFlagChildProps;
   snap_survey_enabled: GetFeatureFlagChildProps;
   isCustomInputTermEnabled: GetFeatureFlagChildProps;
-  // CL-3466
+  isDocumentAnnotationEnabled: GetFeatureFlagChildProps;
 }
 
 export type ApiErrors = CLErrors | null | undefined;
@@ -388,6 +388,7 @@ class ParticipationContext extends PureComponent<
       snap_survey_enabled,
       google_forms_enabled,
       isCustomInputTermEnabled,
+      isDocumentAnnotationEnabled,
     } = this.props;
 
     const className = this.props['className'];
@@ -530,25 +531,26 @@ class ParticipationContext extends PureComponent<
               />
             )}
 
-            {participation_method === 'document_annotation' && (
-              <SectionField>
-                <SubSectionTitle>
-                  {this.props.intl.formatMessage(
-                    messages.documentAnnotationEmbedUrl
-                  )}
-                </SubSectionTitle>
-                <Input
-                  onChange={this.handleDocumentAnnotationEmbedUrlChange}
-                  type="text"
-                  value={document_annotation_embed_url}
-                />
-                <Error
-                  apiErrors={
-                    apiErrors && apiErrors.document_annotation_embed_url
-                  }
-                />
-              </SectionField>
-            )}
+            {participation_method === 'document_annotation' &&
+              isDocumentAnnotationEnabled && (
+                <SectionField>
+                  <SubSectionTitle>
+                    {this.props.intl.formatMessage(
+                      messages.documentAnnotationEmbedUrl
+                    )}
+                  </SubSectionTitle>
+                  <Input
+                    onChange={this.handleDocumentAnnotationEmbedUrlChange}
+                    type="text"
+                    value={document_annotation_embed_url}
+                  />
+                  <Error
+                    apiErrors={
+                      apiErrors && apiErrors.document_annotation_embed_url
+                    }
+                  />
+                </SectionField>
+              )}
 
             {participation_method === 'survey' && (
               <SurveyInputs
@@ -580,6 +582,7 @@ const Data = adopt<DataProps>({
   snap_survey_enabled: <GetFeatureFlag name="snap_survey_surveys" />,
   microsoft_forms_enabled: <GetFeatureFlag name="microsoft_forms_surveys" />,
   isCustomInputTermEnabled: <GetFeatureFlag name="idea_custom_copy" />,
+  isDocumentAnnotationEnabled: <GetFeatureFlag name="document_annotation" />,
 });
 
 const ParticipationContextWithIntl = injectIntl(ParticipationContext);
