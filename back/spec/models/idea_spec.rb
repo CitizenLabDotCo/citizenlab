@@ -538,7 +538,6 @@ RSpec.describe Idea do
   end
 
   describe 'anonymous participation' do
-
     let(:author) { create(:user) }
 
     it 'has no author if set to anonymous' do
@@ -596,5 +595,11 @@ RSpec.describe Idea do
       expect(idea.author_hash).not_to eq old_idea_hash
     end
 
+    it 'generates a different author_hash if the author changes' do
+      idea = create(:idea)
+      old_idea_hash = idea.author_hash
+      idea.update!(author: author)
+      expect(idea.author_hash).not_to eq old_idea_hash
+    end
   end
 end
