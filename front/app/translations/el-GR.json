@@ -400,6 +400,7 @@
   "app.components.Upload.remaining": "υπόλοιπο",
   "app.components.Upload.uploadImageLabel": "Επιλέξτε μια εικόνα (μέγ. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Επιλέξτε μία ή περισσότερες εικόνες",
+  "app.components.UserName.anonymous": "Ανώνυμος",
   "app.components.UserName.deletedUser": "άγνωστος συντάκτης",
   "app.components.UserName.verified": "Επαληθευμένος",
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "και ξεκλειδώστε περισσότερες ευκαιρίες δέσμευσης",
