@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useState,
   FormEvent,
+  MouseEvent,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isNumber } from 'lodash-es';
@@ -131,54 +132,42 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
 
   const { process_type, publication_status } = project.data.attributes;
 
-  const isProjectArchived =
-    project.data.attributes.publication_status === 'archived';
+  const isProjectArchived = publication_status === 'archived';
   const isProcessTypeContinuous = process_type === 'continuous';
-  const participation_method = isProcessTypeContinuous
+  const isProcessTypeTimeline = process_type === 'timeline';
+  const participationMethod = isProcessTypeContinuous
     ? project.data.attributes.participation_method
     : currentPhase?.attributes.participation_method;
   const ideas_count = isProcessTypeContinuous
     ? project.data.attributes.ideas_count
     : currentPhase?.attributes.ideas_count;
-  const hasProjectEnded = currentPhase
+  const hasTimelineProjectEnded = currentPhase
     ? pastPresentOrFuture([
         currentPhase.attributes.start_at,
         currentPhase.attributes.end_at,
       ]) === 'past'
     : false;
-  const inputTerm = getInputTerm(
-    project.data.attributes.process_type,
-    project.data,
-    phases?.data
-  );
+  const inputTerm = getInputTerm(process_type, project.data, phases?.data);
 
-  const isParticipationMethodIdeation = participation_method === 'ideation';
-
-  const isParticipationMethodNativeSurvey =
-    participation_method === 'native_survey' ||
-    currentPhase?.attributes.participation_method === 'native_survey';
+  const isParticipationMethodIdeation = participationMethod === 'ideation';
 
   const showSeeIdeasButton =
-    ((isProcessTypeContinuous && isParticipationMethodIdeation) ||
-      currentPhase?.attributes.participation_method === 'ideation') &&
-    isNumber(ideas_count) &&
-    ideas_count > 0;
+    isParticipationMethodIdeation && isNumber(ideas_count) && ideas_count > 0;
 
-  const showIdeasButton =
-    isParticipationMethodIdeation && publication_status !== 'archived';
+  const showIdeasButton = isParticipationMethodIdeation && !isProjectArchived;
 
   const showNativeSurvey =
-    isParticipationMethodNativeSurvey && publication_status !== 'archived';
+    participationMethod === 'native_survey' && !isProjectArchived;
 
   const showSurvey =
-    (!isProjectArchived && phases && participation_method === 'survey') ||
-    (currentPhase?.attributes.participation_method === 'survey' &&
-      !hasProjectEnded);
+    participationMethod === 'survey' &&
+    ((isProcessTypeContinuous && !isProjectArchived) ||
+      (isProcessTypeTimeline && !hasTimelineProjectEnded));
 
   const showPoll =
-    ((isProcessTypeContinuous && participation_method === 'poll') ||
-      currentPhase?.attributes.participation_method === 'poll') &&
-    !hasProjectEnded;
+    participationMethod === 'poll' &&
+    ((isProcessTypeContinuous && !isProjectArchived) ||
+      (isProcessTypeTimeline && !hasTimelineProjectEnded));
 
   const isPhaseIdeation =
     currentPhase?.attributes.participation_method === 'ideation';
@@ -192,7 +181,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         <SeeIdeasButton
           id="e2e-project-see-ideas-button"
           buttonStyle="secondary"
-          onClick={(e) => {
+          onClick={(e: MouseEvent) => {
             e.preventDefault();
             scrollTo('project-ideas');
           }}
@@ -210,16 +199,17 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           />
         </SeeIdeasButton>
       )}
-      {showIdeasButton && !hasProjectEnded && (
+      {showIdeasButton && !hasTimelineProjectEnded && (
         <IdeaButton
           id="project-ideabutton"
           projectId={project.data.id}
           participationContextType={isPhaseIdeation ? 'phase' : 'project'}
           fontWeight="500"
           phase={currentPhase}
+          participationMethod="ideation"
         />
       )}
-      {showNativeSurvey && !hasProjectEnded && (
+      {showNativeSurvey && !hasTimelineProjectEnded && (
         <IdeaButton
           id="project-survey-button"
           data-testid="e2e-project-survey-button"
@@ -227,6 +217,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
           fontWeight="500"
           phase={currentPhase}
+          participationMethod="native_survey"
         />
       )}
       {showSurvey && (
@@ -242,7 +233,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       {showPoll && (
         <Button
           buttonStyle="primary"
-          onClick={(e) => {
+          onClick={(e: MouseEvent) => {
             e.preventDefault();
             scrollTo('project-poll');
           }}
