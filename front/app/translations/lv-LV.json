@@ -400,6 +400,7 @@
   "app.components.Upload.remaining": "atliek",
   "app.components.Upload.uploadImageLabel": "Izvēlēties attēlu (max. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Izvēlieties vienu vai vairākus attēlus",
+  "app.components.UserName.anonymous": "Anonīms",
   "app.components.UserName.deletedUser": "nezināms autors",
   "app.components.UserName.verified": "Pārbaudīts",
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "un atbloķēt vairāk iesaistes iespēju.",
