@@ -16,7 +16,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
-import useUserBySlug from 'api/users/useUserById';
+import useUserBySlug from 'api/users/useUserBySlug';
 
 // style
 import styled from 'styled-components';
@@ -146,11 +146,10 @@ interface Props {
 }
 
 const UsersShowPageOuter = ({ className }: Props) => {
-  const params = useParams();
+  const { userSlug } = useParams() as { userSlug: string };
   const { formatMessage } = useIntl();
-  const { data: user } = useUserBySlug(params.slug);
+  const { data: user } = useUserBySlug(userSlug);
   const previousPathName = useContext(PreviousPathnameContext);
-
   if (!user) return null;
 
   if (isError(user)) {

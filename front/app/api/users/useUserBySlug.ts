@@ -6,7 +6,7 @@ import { IUser, UsersKeys } from './types';
 
 const fetchUserBySlug = ({ slug }: { slug: string | null }) =>
   fetcher<IUser>({
-    path: `/user/by_slug/${slug}`,
+    path: `/users/by_slug/${slug}`,
     action: 'get',
   });
 
