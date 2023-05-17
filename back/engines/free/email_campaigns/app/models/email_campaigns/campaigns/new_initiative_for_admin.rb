@@ -74,7 +74,7 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.admins_and_managers'
+      'email_campaigns.admin_labels.recipient_segment.admins'
     end
 
     def self.content_type_multiloc_key
@@ -82,7 +82,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.new_proposal_is_posted'
+      'email_campaigns.admin_labels.trigger.new_proposal_is_published'
     end
 
     def generate_commands(recipient:, activity:, time: nil)

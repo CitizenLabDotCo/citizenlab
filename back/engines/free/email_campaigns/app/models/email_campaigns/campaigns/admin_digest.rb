@@ -77,10 +77,6 @@ module EmailCampaigns
       'email_campaigns.admin_labels.content_type.general'
     end
 
-    def self.trigger_multiloc_key
-      'scheduled'
-    end
-
     def generate_commands(recipient:, time: Time.now)
       [{
         event_payload: {
