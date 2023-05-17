@@ -580,5 +580,21 @@ RSpec.describe Idea do
       idea2 = create(:idea, author: author, project: project, anonymous: true)
       expect(idea1.author_hash).not_to eq idea2.author_hash
     end
+
+    it 'deletes the author if anonymous is updated' do
+      idea = create(:idea)
+      idea.update!(anonymous: true)
+      expect(idea.author).to be_nil
+    end
+
+    it 'if an author is supplied on update it changes anonymous to false and changes the author hash' do
+      idea = create(:idea, anonymous: true)
+      old_idea_hash = idea.author_hash
+      idea.update!(author: author)
+      expect(idea.author).not_to be_nil
+      expect(idea.anonymous).to be false
+      expect(idea.author_hash).not_to eq old_idea_hash
+    end
+
   end
 end
