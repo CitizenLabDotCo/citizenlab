@@ -177,7 +177,7 @@ const UserHeader = ({ userSlug }: Props) => {
         {isCurrentUserAdmin && (
           <>
             <BlockUser
-              user={user}
+              user={user.data}
               setClose={() => setShowBlockUserModal(false)}
               open={showBlockUserModal}
             />
