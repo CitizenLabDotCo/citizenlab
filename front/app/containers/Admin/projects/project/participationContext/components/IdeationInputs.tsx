@@ -6,7 +6,6 @@ import {
   IconTooltip,
   Toggle,
   IOption,
-  Text,
 } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Error from 'components/UI/Error';
