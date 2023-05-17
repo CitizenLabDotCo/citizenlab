@@ -84,16 +84,6 @@ interface IChangePassword {
   password: string;
 }
 
-export function userByIdStream(userId: string) {
-  return streams.get<IUser>({ apiEndpoint: `${apiEndpoint}/${userId}` });
-}
-
-export function userBySlugStream(userSlug: string) {
-  return streams.get<IUser>({
-    apiEndpoint: `${apiEndpoint}/by_slug/${userSlug}`,
-  });
-}
-
 export async function updateUser(userId: string, object: IUserUpdate) {
   const response = await streams.update<IUser>(
     `${apiEndpoint}/${userId}`,
