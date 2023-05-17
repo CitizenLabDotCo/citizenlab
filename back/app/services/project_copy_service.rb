@@ -223,7 +223,6 @@ class ProjectCopyService < TemplateService
 
     if yml_pc['participation_method'] == 'document_annotation'
       yml_pc['document_annotation_embed_url'] = pc.document_annotation_embed_url
-      yml_pc['document_annotation_service'] = pc.document_annotation_service
     end
 
     yml_pc

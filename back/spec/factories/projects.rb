@@ -411,7 +411,6 @@ FactoryBot.define do
     factory :document_annotation_project do
       process_type { 'continuous' }
       participation_method { 'document_annotation' }
-      document_annotation_service { 'konveio' }
       document_annotation_embed_url { 'https://citizenlab.konveio.com/document-title' } # value?
     end
 

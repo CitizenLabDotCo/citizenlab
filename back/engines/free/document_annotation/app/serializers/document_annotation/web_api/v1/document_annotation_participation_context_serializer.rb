@@ -8,7 +8,6 @@ module DocumentAnnotation::WebApi::V1::DocumentAnnotationParticipationContextSer
       object.participation_context?
     } do
       attribute :document_annotation_embed_url
-      attribute :document_annotation_service
     end
   end
 end
