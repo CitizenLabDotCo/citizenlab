@@ -167,6 +167,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     !hasCurrentPhaseEnded;
 
   const showTakePollButton =
+    // TODO: hide if project is archived?
     participationMethod === 'poll' && !hasCurrentPhaseEnded;
   const isPhaseIdeation =
     currentPhase?.attributes.participation_method === 'ideation';
