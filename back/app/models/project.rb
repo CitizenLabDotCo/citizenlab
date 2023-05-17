@@ -4,41 +4,41 @@
 #
 # Table name: projects
 #
-#  id                           :uuid             not null, primary key
-#  title_multiloc               :jsonb
-#  description_multiloc         :jsonb
-#  slug                         :string
-#  created_at                   :datetime         not null
-#  updated_at                   :datetime         not null
-#  header_bg                    :string
-#  ideas_count                  :integer          default(0), not null
-#  visible_to                   :string           default("public"), not null
-#  description_preview_multiloc :jsonb
-#  presentation_mode            :string           default("card")
-#  participation_method         :string           default("ideation")
-#  posting_enabled              :boolean          default(TRUE)
-#  commenting_enabled           :boolean          default(TRUE)
-#  voting_enabled               :boolean          default(TRUE), not null
-#  upvoting_method              :string           default("unlimited"), not null
-#  upvoting_limited_max         :integer          default(10)
-#  process_type                 :string           default("timeline"), not null
-#  internal_role                :string
-#  survey_embed_url             :string
-#  survey_service               :string
-#  max_budget                   :integer
-#  comments_count               :integer          default(0), not null
-#  default_assignee_id          :uuid
-#  poll_anonymous               :boolean          default(FALSE), not null
-#  downvoting_enabled           :boolean          default(TRUE), not null
-#  ideas_order                  :string
-#  input_term                   :string           default("idea")
-#  min_budget                   :integer          default(0)
-#  downvoting_method            :string           default("unlimited"), not null
-#  downvoting_limited_max       :integer          default(10)
-#  include_all_areas            :boolean          default(FALSE), not null
-#  posting_method               :string           default("unlimited"), not null
-#  posting_limited_max          :integer          default(1)
-#  allow_anonymous_posting      :boolean          default(FALSE), not null
+#  id                            :uuid             not null, primary key
+#  title_multiloc                :jsonb
+#  description_multiloc          :jsonb
+#  slug                          :string
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#  header_bg                     :string
+#  ideas_count                   :integer          default(0), not null
+#  visible_to                    :string           default("public"), not null
+#  description_preview_multiloc  :jsonb
+#  presentation_mode             :string           default("card")
+#  participation_method          :string           default("ideation")
+#  posting_enabled               :boolean          default(TRUE)
+#  commenting_enabled            :boolean          default(TRUE)
+#  voting_enabled                :boolean          default(TRUE), not null
+#  upvoting_method               :string           default("unlimited"), not null
+#  upvoting_limited_max          :integer          default(10)
+#  process_type                  :string           default("timeline"), not null
+#  internal_role                 :string
+#  survey_embed_url              :string
+#  survey_service                :string
+#  max_budget                    :integer
+#  comments_count                :integer          default(0), not null
+#  default_assignee_id           :uuid
+#  poll_anonymous                :boolean          default(FALSE), not null
+#  downvoting_enabled            :boolean          default(TRUE), not null
+#  ideas_order                   :string
+#  input_term                    :string           default("idea")
+#  min_budget                    :integer          default(0)
+#  downvoting_method             :string           default("unlimited"), not null
+#  downvoting_limited_max        :integer          default(10)
+#  include_all_areas             :boolean          default(FALSE), not null
+#  posting_method                :string           default("unlimited"), not null
+#  posting_limited_max           :integer          default(1)
+#  allow_anonymous_participation :boolean          default(FALSE), not null
 #
 # Indexes
 #
