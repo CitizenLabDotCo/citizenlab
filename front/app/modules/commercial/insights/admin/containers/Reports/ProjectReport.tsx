@@ -82,7 +82,6 @@ interface Props {
   project: GetProjectChildProps;
 }
 
-// CL-3466
 const PARTICIPATION_METHOD_MESSAGES: Record<
   ParticipationMethod,
   MessageDescriptor

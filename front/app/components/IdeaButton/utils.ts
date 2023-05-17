@@ -11,9 +11,6 @@ export const getButtonMessage = (
     return messages.takeTheSurvey;
   }
 
-  // CL-3466
-  // Add Konveio after BE?
-
   return getInputTermMessage(inputTerm, {
     idea: messages.submitYourIdea,
     option: messages.addAnOption,

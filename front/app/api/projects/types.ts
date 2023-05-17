@@ -166,8 +166,6 @@ export interface IProjectAttributes {
   min_budget?: number | null;
   max_budget?: number | null;
   survey_service?: TSurveyService | null;
-  // CL-3466
-  // Add service?
   survey_embed_url?: string | null;
   document_annotation_embed_url?: string | null;
   // MISMATCH: ordering doesn't seem to exist on real response
@@ -306,8 +304,6 @@ export interface IUpdatedProjectProperties {
   max_budget?: number | null;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
-  // CL-3466
-  // Add service?
   document_annotation_embed_url?: string | null;
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
