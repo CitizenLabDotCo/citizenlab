@@ -1165,6 +1165,18 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "anonymous_participation": {
+        "type": "object",
+        "title": "Anonymous participation",
+        "description": "Turning on this feature is recommended if boosting engagement is important and/or the client is running a complex project where they anticipate some residents being afraid of speaking up. Users may still choose to participate with their real name, but if enabled they will have the option to submit inputs, comments or proposals anonymously if they choose to do so. All users will still need to comply with the requirements for participation set by admins or project moderators for that project.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
       }
     },
   "dependencies": {
