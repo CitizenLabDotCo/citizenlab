@@ -37,7 +37,7 @@ import styled from 'styled-components';
 
 // typings
 import { Multiloc } from 'typings';
-import AnonymousPostingToggle from './AnonymousPostingToggle';
+import { AnonymousPostingToggle } from 'containers/Admin/projects/project/participationContext/components/AnonymousPostingToggle';
 
 const Container = styled.div``;
 
@@ -215,11 +215,10 @@ const InitiativesSettingsPage = () => {
     }
   };
 
-  const onAnonymousPostingToggle = () => {
+  const onAnonymousPostingToggle = (value: boolean) => {
     setLocalProposalsSettings({
       ...localProposalsSettings,
-      allow_anonymous_participation:
-        !localProposalsSettings.allow_anonymous_participation,
+      allow_anonymous_participation: value,
     });
   };
 
@@ -234,8 +233,10 @@ const InitiativesSettingsPage = () => {
           onToggle={onToggle}
         />
         <AnonymousPostingToggle
-          enabled={localProposalsSettings.allow_anonymous_participation}
-          onToggle={onAnonymousPostingToggle}
+          allow_anonymous_participation={
+            localProposalsSettings.allow_anonymous_participation
+          }
+          handleAllowAnonymousParticipationOnChange={onAnonymousPostingToggle}
         />
         <VotingThreshold
           value={localProposalsSettings.voting_threshold}

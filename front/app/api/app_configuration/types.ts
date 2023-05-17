@@ -59,7 +59,7 @@ export type ProposalsSettings = {
   allowed: boolean;
   enabled: boolean;
   days_limit: number;
-  allow_anonymous_posting: boolean;
+  allow_anonymous_participation: boolean;
   eligibility_criteria: Multiloc;
   threshold_reached_message: Multiloc;
   voting_threshold: number;

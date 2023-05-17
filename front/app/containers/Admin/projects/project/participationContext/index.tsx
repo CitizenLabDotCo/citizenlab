@@ -51,7 +51,7 @@ export interface IParticipationContextConfig {
   voting_enabled?: boolean | null;
   upvoting_method?: 'unlimited' | 'limited' | null;
   upvoting_limited_max?: number | null;
-  downvoting_enabled: boolean | null;
+  downvoting_enabled?: boolean | null;
   allow_anonymous_participation?: boolean | null;
   downvoting_method?: 'unlimited' | 'limited' | null;
   downvoting_limited_max?: number | null;

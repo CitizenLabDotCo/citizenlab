@@ -481,12 +481,17 @@ export default defineMessages({
     defaultMessage: 'User privacy',
   },
   userPrivacyLabelText: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.userPrivacyLabelText',
-    defaultMessage: 'Enable users to participate anonymously',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.userPrivacyLabelText2',
+    defaultMessage: 'Allow users to participate anonymously',
   },
   userPrivacyLabelSubtext: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.userPrivacyLabelSubtext',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.userPrivacyLabelSubtext2',
     defaultMessage:
-      'Users will be able to submit ideas, comment or reply anonymously. Admins or other users won’t be able to know the identity of the user.',
+      'Users will be able to hide their identity from other users and admins. Admins can still ban/moderate their inputs.',
+  },
+  userPrivacyLabelTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.userPrivacyLabelTooltip',
+    defaultMessage:
+      'Users may still choose to participate with their real name, but they will have the option to submit inputs or comments anonymously if they choose to do so. All users will still need to comply with the requirements set in the Access Rights tab for their comments and/or inputs to go through. ',
   },
 });
