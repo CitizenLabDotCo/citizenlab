@@ -1,5 +1,5 @@
 import React from 'react';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 import clHistory from 'utils/cl-router/history';
 import { render, userEvent } from 'utils/testUtils/rtl';
 import HomePage, { adminRedirectPath } from '.';

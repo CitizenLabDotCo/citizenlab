@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import { IUsers } from 'services/users';
+import { IUsers } from 'api/users/types';
 import { ProjectFolderModeratorAdd } from './types';
 import projectFolderModeratorsKeys from './keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';

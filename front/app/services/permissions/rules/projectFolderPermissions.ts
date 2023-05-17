@@ -1,4 +1,4 @@
-import { IUserData, IUser } from 'services/users';
+import { IUserData, IUser } from 'api/users/types';
 import { isAdmin, TRole } from 'services/permissions/roles';
 import { IProjectFolderData } from 'api/project_folders/types';
 import {

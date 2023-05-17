@@ -24,7 +24,7 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';

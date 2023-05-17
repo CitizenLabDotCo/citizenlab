@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import useUserById from 'api/users/useUserById';
 
 // services
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';

@@ -2,7 +2,7 @@ import React from 'react';
 import ProjectRow, { Props } from '.';
 import { render, screen } from 'utils/testUtils/rtl';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 const publication: IAdminPublicationContent = {
   id: '1',

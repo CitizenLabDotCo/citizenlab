@@ -15,7 +15,7 @@ import { forOwn } from 'lodash-es';
 
 // typings
 import { ErrorObject } from 'ajv';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 import { isNilOrError } from 'utils/helperUtils';
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 

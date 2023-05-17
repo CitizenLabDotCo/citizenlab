@@ -19,7 +19,7 @@ import GetAppConfiguration, {
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // services
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

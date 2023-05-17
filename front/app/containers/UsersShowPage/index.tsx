@@ -32,7 +32,7 @@ import { isError } from 'utils/helperUtils';
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // typings
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 import { IQueryParameters } from 'api/ideas/types';
 
 const NotFoundContainer = styled.main`

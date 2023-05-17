@@ -6,7 +6,7 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 import { Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 import Button from 'components/UI/Button';
 import useUserById from 'api/users/useUserById';
 

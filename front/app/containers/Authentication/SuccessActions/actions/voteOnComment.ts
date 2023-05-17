@@ -1,4 +1,4 @@
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 import { addCommentVote } from 'api/comment_votes/useAddCommentVote';
 import { deleteCommentVote } from 'api/comment_votes/useDeleteCommentVote';
 import streams from 'utils/streams';

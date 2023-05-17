@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import projectFolderModeratorsKeys from './keys';
 import { ProjectFolderModeratorsKeys, ProjectForderParams } from './types';
-import { IUsers } from 'services/users';
+import { IUsers } from 'api/users/types';
 
 const fetchProjectForlderModerators = ({
   projectFolderId,

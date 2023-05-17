@@ -1,7 +1,7 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { authUserStream } from 'services/auth';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 interface InputProps {}
 

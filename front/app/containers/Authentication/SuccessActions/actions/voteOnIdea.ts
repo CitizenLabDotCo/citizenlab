@@ -1,4 +1,4 @@
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 import { addIdeaVote } from 'api/idea_votes/useAddIdeaVote';
 import { deleteIdeaVote } from 'api/idea_votes/useDeleteIdeaVote';
 import { queryClient } from 'utils/cl-react-query/queryClient';

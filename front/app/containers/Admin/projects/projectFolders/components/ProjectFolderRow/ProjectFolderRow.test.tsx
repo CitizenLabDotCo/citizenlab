@@ -2,7 +2,7 @@ import React from 'react';
 import ProjectFolderRow, { Props } from '.';
 import { render, screen } from 'utils/testUtils/rtl';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 const folderId = 'folderId';
 const folderPublication: IAdminPublicationContent = {
