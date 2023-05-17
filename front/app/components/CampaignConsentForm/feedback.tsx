@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Error from 'components/UI/Error';
 import {
   Text,
@@ -23,26 +23,15 @@ const Feedback = ({
   showFeedback,
   closeFeedback,
 }: FeedbackProps) => {
-  const [feedbackIsVisible, setFeedbackIsVisible] = useState(false);
-
   useEffect(() => {
-    if (feedbackIsVisible) {
+    if (showFeedback) {
       scrollToElement({ id: 'feedback' });
     }
-  }, [feedbackIsVisible]);
-
-  useEffect(() => {
-    setFeedbackIsVisible(!!showFeedback);
   }, [showFeedback]);
-
-  const closeSuccessMessage = () => {
-    closeFeedback();
-    setFeedbackIsVisible(false);
-  };
 
   return (
     <>
-      {feedbackIsVisible && (
+      {showFeedback && (
         <Box id="feedback" data-testid="feedback">
           {showFeedback === 'success' && (
             <Box
@@ -68,7 +57,7 @@ const Feedback = ({
                   {successMessage}
                 </Title>
               </Box>
-              <CloseIconButton onClick={closeSuccessMessage} />
+              <CloseIconButton onClick={closeFeedback} />
             </Box>
           )}
           {showFeedback === 'error' && (
