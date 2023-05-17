@@ -1,5 +1,5 @@
 // api
-import { updateUser } from 'services/users';
+import { updateUser } from 'api/users/useUpdateUser';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import getAuthUser from 'api/authentication/auth_user/getAuthUser';
@@ -69,7 +69,7 @@ export const missingDataFlow = (
         userId: string,
         builtInFieldUpdate: BuiltInFieldsUpdate
       ) => {
-        await updateUser(userId, builtInFieldUpdate);
+        await updateUser({ userId, ...builtInFieldUpdate });
         const { requirements } = await getRequirements();
 
         if (requirements.special.verification === 'require') {
@@ -103,7 +103,7 @@ export const missingDataFlow = (
     'missing-data:custom-fields': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (userId: string, formData: FormData) => {
-        await updateUser(userId, { custom_field_values: formData });
+        await updateUser({ userId, custom_field_values: formData });
         setCurrentStep('success');
       },
       SKIP: async () => {

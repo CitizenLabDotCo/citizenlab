@@ -2,9 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { TRole } from 'services/permissions/roles';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
-import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 
 const apiEndpoint = `${API_PATH}/users`;
 
@@ -82,32 +80,6 @@ export interface IUserUpdate {
 interface IChangePassword {
   current_password: string;
   password: string;
-}
-
-export async function updateUser(userId: string, object: IUserUpdate) {
-  const response = await streams.update<IUser>(
-    `${apiEndpoint}/${userId}`,
-    userId,
-    { user: object }
-  );
-
-  await streams.fetchAllWith({
-    dataId: [userId],
-    apiEndpoint: [
-      `${API_PATH}/groups`,
-      `${API_PATH}/users`,
-      `${API_PATH}/stats/users_count`,
-    ],
-  });
-
-  // Invalidate seats if the user's roles have changed
-  if (object.roles) {
-    invalidateSeatsCache();
-  }
-
-  queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
-
-  return response;
 }
 
 export async function changePassword(object: IChangePassword) {

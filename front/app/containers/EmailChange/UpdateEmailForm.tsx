@@ -8,7 +8,6 @@ import { TAuthUser } from 'hooks/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { updateUser } from 'services/users';
 
 // components
 import {
@@ -29,6 +28,7 @@ import Input from 'components/HookForm/Input';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import useUpdateUser from 'api/users/useUpdateUser';
 
 type UpdateEmailFormProps = {
   updateSuccessful: boolean;
@@ -46,7 +46,8 @@ const UpdateEmailForm = ({
   user,
 }: UpdateEmailFormProps) => {
   const { formatMessage } = useIntl();
-  const appConfiguration = useAppConfiguration();
+  const { data: appConfiguration } = useAppConfiguration();
+  const { mutateAsync: updateUser } = useUpdateUser();
   const [error, setError] = useState<'taken' | undefined>(undefined);
 
   if (isNilOrError(user)) {
@@ -56,7 +57,7 @@ const UpdateEmailForm = ({
   const onFormSubmit = async (formValues: FormValues) => {
     try {
       // If confirmation required, launch modal
-      if (appConfiguration.data?.data.attributes.settings.user_confirmation) {
+      if (appConfiguration?.data?.attributes.settings.user_confirmation) {
         resendEmailConfirmationCode(formValues.email)
           .then(() => {
             setOpenConfirmationModal(true);
@@ -67,7 +68,7 @@ const UpdateEmailForm = ({
           });
       } else {
         // Otherwise, update the user's email
-        await updateUser(user.id, { ...formValues });
+        await updateUser({ userId: user.id, ...formValues });
         setUpdateSuccessful(true);
       }
     } catch (error) {

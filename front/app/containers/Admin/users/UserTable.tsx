@@ -8,9 +8,6 @@ import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/Pagination';
 import UserTableRow from './UserTableRow';
 
-// Services
-import { IUserData, updateUser } from 'services/users';
-
 // Events --- For error handling
 import eventEmitter from 'utils/eventEmitter';
 import events from './events';
@@ -27,7 +24,8 @@ import messages from './messages';
 import styled from 'styled-components';
 import useAuthUser from 'hooks/useAuthUser';
 import Warning from 'components/UI/Warning';
-import { IQueryParameters } from 'api/users/types';
+import { IQueryParameters, IUserData } from 'api/users/types';
+import useUpdateUser from 'api/users/useUpdateUser';
 
 const Container = styled.div`
   flex: 1;
@@ -80,6 +78,7 @@ const UsersTable = ({
   notCitizenlabMember,
 }: Props) => {
   const authUser = useAuthUser();
+  const { mutate: updateUser } = useUpdateUser();
 
   if (isNilOrError(authUser)) {
     return null;
@@ -94,7 +93,10 @@ const UsersTable = ({
         <FormattedMessage {...messages.youCantUnadminYourself} />
       );
     } else {
-      updateUser(user.id, { roles: getNewRoles(user, changeToNormalUser) });
+      updateUser({
+        userId: user.id,
+        roles: getNewRoles(user, changeToNormalUser),
+      });
     }
   };
 

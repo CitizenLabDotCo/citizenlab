@@ -5,7 +5,7 @@ import createAccountWithPassword, {
 } from 'api/authentication/sign_up/createAccountWithPassword';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
-import { updateUser } from 'services/users';
+import { updateUser } from 'api/users/useUpdateUser';
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 
 // tracks
@@ -159,7 +159,7 @@ export const signUpFlow = (
       },
       SUBMIT: async (userId: string, formData: FormData) => {
         try {
-          await updateUser(userId, { custom_field_values: formData });
+          await updateUser({ userId, custom_field_values: formData });
           setCurrentStep('success');
           trackEventByName(tracks.signUpCustomFieldsStepCompleted);
         } catch (e) {
