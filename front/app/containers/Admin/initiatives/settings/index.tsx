@@ -2,10 +2,12 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { isEmpty, isNaN, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { API_PATH } from 'containers/App/constants';
+
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
 import useCustomPage from 'hooks/useCustomPage';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // services
 import { ProposalsSettings } from 'api/app_configuration/types';
@@ -58,6 +60,9 @@ type ProposalsSettingName = keyof ProposalsSettings;
 
 const InitiativesSettingsPage = () => {
   const { data: appConfiguration } = useAppConfiguration();
+  const hasAnonymousParticipationEnabled = useFeatureFlag({
+    name: 'anonymous_participation',
+  });
   const {
     mutate: updateAppConfiguration,
     isLoading: isAppConfigurationLoading,
@@ -232,12 +237,14 @@ const InitiativesSettingsPage = () => {
           enabled={localProposalsSettings.enabled}
           onToggle={onToggle}
         />
-        <AnonymousPostingToggle
-          allow_anonymous_participation={
-            localProposalsSettings.allow_anonymous_participation
-          }
-          handleAllowAnonymousParticipationOnChange={onAnonymousPostingToggle}
-        />
+        {hasAnonymousParticipationEnabled && (
+          <AnonymousPostingToggle
+            allow_anonymous_participation={
+              localProposalsSettings.allow_anonymous_participation
+            }
+            handleAllowAnonymousParticipationOnChange={onAnonymousPostingToggle}
+          />
+        )}
         <VotingThreshold
           value={localProposalsSettings.voting_threshold}
           onChange={updateProposalsSetting('voting_threshold')}

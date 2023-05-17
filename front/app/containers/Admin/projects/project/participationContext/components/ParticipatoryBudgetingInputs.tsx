@@ -31,6 +31,9 @@ import {
 import { ApiErrors } from '..';
 import { AnonymousPostingToggle } from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 
+// api
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 interface Props {
   isCustomInputTermEnabled: boolean;
   input_term: InputTerm | undefined;
@@ -78,6 +81,9 @@ export default ({
   handleIdeaDefaultSortMethodChange,
   handleAllowAnonymousParticipationOnChange,
 }: Props) => {
+  const hasAnonymousParticipationEnabled = useFeatureFlag({
+    name: 'anonymous_participation',
+  });
   const minBudgetInputValue =
     // need to check the type because if min_budget is 0,
     // it'll evaluate to null
@@ -89,12 +95,14 @@ export default ({
 
   return (
     <>
-      <AnonymousPostingToggle
-        allow_anonymous_participation={allow_anonymous_participation}
-        handleAllowAnonymousParticipationOnChange={
-          handleAllowAnonymousParticipationOnChange
-        }
-      />
+      {hasAnonymousParticipationEnabled && (
+        <AnonymousPostingToggle
+          allow_anonymous_participation={allow_anonymous_participation}
+          handleAllowAnonymousParticipationOnChange={
+            handleAllowAnonymousParticipationOnChange
+          }
+        />
+      )}
       {isCustomInputTermEnabled && (
         <CustomFieldPicker
           input_term={input_term}
