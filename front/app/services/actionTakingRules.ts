@@ -124,6 +124,8 @@ const ideaPostingDisabledReason = (
  *  phase: The phase context in which the button is rendered. NOT necessarily the active phase. Optional.
  *  authUser: The currently authenticated user
  */
+
+// CL-3466
 export const getIdeaPostingRules = ({
   project,
   phase,

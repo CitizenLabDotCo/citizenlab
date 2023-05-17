@@ -6,6 +6,7 @@ export const project1: IProjectData = {
   attributes: {
     survey_embed_url: null,
     survey_service: null,
+    // CL-3466
     poll_anonymous: false,
     participation_method: 'ideation',
     posting_enabled: true,

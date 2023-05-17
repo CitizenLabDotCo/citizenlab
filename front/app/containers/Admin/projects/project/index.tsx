@@ -90,6 +90,7 @@ interface State {
 
 interface Props extends InputProps, DataProps {}
 
+// CL-3466
 export class AdminProjectsProjectIndex extends PureComponent<
   Props & WrappedComponentProps & InjectedLocalized & WithRouterProps,
   State

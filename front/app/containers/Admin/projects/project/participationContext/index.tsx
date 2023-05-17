@@ -78,6 +78,7 @@ interface DataProps {
   survey_monkey_enabled: GetFeatureFlagChildProps;
   snap_survey_enabled: GetFeatureFlagChildProps;
   isCustomInputTermEnabled: GetFeatureFlagChildProps;
+  // CL-3466
 }
 
 export type ApiErrors = CLErrors | null | undefined;

@@ -128,6 +128,8 @@ const ProjectsShowPage = ({ project }: Props) => {
       <ContentWrapper id="e2e-project-page">
         <ProjectHeader projectId={projectId} />
         <ProjectCTABar projectId={projectId} />
+        {/* CL-3466*/}
+
         <div id="participation-detail">
           {processType === 'continuous' ? (
             <>
