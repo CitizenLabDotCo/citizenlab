@@ -50,6 +50,9 @@ const UserManager = ({
   canModerate,
   onlyBlocked,
 }: Props) => {
+  const [sort, setSort] = useState<IQueryParameters['sort']>('last_name');
+  const [pageNumber, setPageNumber] =
+    useState<IQueryParameters['pageNumber']>(1);
   const [selectedUsers, setSelectedUsers] = useState<SelectedUsersType>('none');
   const [errors, setErrors] = useState<error[]>([]);
   const { data: users } = useUsers({
@@ -58,6 +61,8 @@ const UserManager = ({
     group: groupId,
     can_moderate: canModerate,
     only_blocked: onlyBlocked,
+    sort,
+    pageNumber,
   });
 
   useEffect(() => {
@@ -180,6 +185,9 @@ const UserManager = ({
           usersList={users.data}
           currentPage={getPageNumberFromUrl(users.links.self) || 1}
           lastPage={getPageNumberFromUrl(users.links.last) || 1}
+          onChangeSorting={setSort}
+          sort={sort}
+          onChangePage={setPageNumber}
         />
       </>
     );
