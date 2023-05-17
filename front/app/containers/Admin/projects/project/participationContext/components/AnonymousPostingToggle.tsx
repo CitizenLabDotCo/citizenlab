@@ -36,7 +36,7 @@ export const AnonymousPostingToggle = ({
           );
         }}
         label={
-          <>
+          <Box ml="8px">
             <Box display="flex">
               <Text color="primary" mb="0px" fontSize="m" fontWeight="bold">
                 <FormattedMessage {...messages.userPrivacyLabelText} />
@@ -52,7 +52,7 @@ export const AnonymousPostingToggle = ({
             <Text color="primary" mt="0px" fontSize="s">
               <FormattedMessage {...messages.userPrivacyLabelSubtext} />
             </Text>
-          </>
+          </Box>
         }
       />
     </StyledSectionField>
