@@ -37,6 +37,7 @@ import {
 import { getLocationGeojson } from '../utils';
 import { IProject } from 'api/projects/types';
 import { IPhases, IPhaseData } from 'api/phases/types';
+import { Multiloc } from 'typings';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -61,6 +62,20 @@ const getConfig = (
 
   return config;
 };
+
+interface FormValues {
+  title_multiloc: Multiloc;
+  body_multiloc: Multiloc;
+  author_id?: string;
+  idea_images_attributes?: { image: string }[];
+  idea_files_attributes?: {
+    file_by_content: { content: string };
+    name: string;
+  };
+  location_description?: string;
+  location_point_geojson?: GeoJSON.Point;
+  topic_ids?: string[];
+}
 
 const IdeasNewPageWithJSONForm = () => {
   const { mutateAsync: addIdea } = useAddIdea();
@@ -110,26 +125,27 @@ const IdeasNewPageWithJSONForm = () => {
     }
   }, [search]);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: FormValues) => {
+    if (!project) return;
+
     let location_point_geojson;
 
     if (data.location_description && !data.location_point_geojson) {
       location_point_geojson = await geocode(data.location_description);
+    } else {
+      location_point_geojson = await getLocationGeojson(initialFormData, data);
     }
 
-    console.log({ postAnonymously });
-
-    location_point_geojson = await getLocationGeojson(initialFormData, data);
     const idea = await addIdea({
       ...data,
       location_point_geojson,
-      project_id: project?.data.id,
+      project_id: project.data.id,
       publication_status: 'published',
       phase_ids:
         phaseId && !isNilOrError(authUser) && !isRegularUser({ data: authUser })
           ? [phaseId]
           : null,
-      anonymous: postAnonymously,
+      anonymous: postAnonymously ? true : undefined,
     });
 
     const ideaId = idea.data.id;

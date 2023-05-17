@@ -35,6 +35,7 @@ import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { PreviousPathnameContext } from 'context';
+import { IIdeaUpdate } from 'api/ideas/types';
 
 const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -128,12 +129,13 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
       });
     }
 
-    const payload = {
+    const payload: IIdeaUpdate = {
       ...ideaWithoutImages,
       idea_images_attributes,
       location_point_geojson,
       project_id: project?.data.id,
       publication_status: 'published',
+      anonymous: postAnonymously ? true : undefined,
     };
 
     const idea = await updateIdea({
