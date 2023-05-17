@@ -126,15 +126,12 @@ gem 'omniauth-google-oauth2'
 gem 'sentry-ruby'
 gem 'sentry-rails'
 gem 'simple_segment', '~>1.5'
-gem 'omniauth_openid_connect'
+gem 'omniauth_openid_connect', '~> 0.7.1'
+gem 'faraday-jwt', '~> 0.1.0'
 gem 'acts_as_list', '~> 1.1'
 gem 'bunny', '>= 2.7.2'
 gem 'faker'
 gem 'order_as_specified'
-# Forked to support a userinfo response in JWT form
-# Can go back to vanilla when this PR is merged and released:
-# https://github.com/nov/openid_connect/pull/48
-gem 'openid_connect', github: 'CitizenLabDotCo/openid_connect'
 gem 'scenic'
 gem 'ice_cube', '~> 0.16'
 
