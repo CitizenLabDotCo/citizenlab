@@ -53,14 +53,6 @@ GIT
       jwt (~> 2.2.1)
       rails (>= 5)
 
-GIT
-  remote: https://github.com/que-rb/que
-  revision: 531b7916a1267b20c71cd0dbfe7e70853642418e
-  ref: 77c6b92952b821898c393239ce0e4047b17d7dae
-  branch: master
-  specs:
-    que (2.2.1)
-
 PATH
   remote: engines/commercial/admin_api
   specs:
@@ -857,6 +849,7 @@ GEM
     pundit (2.3.0)
       activesupport (>= 3.0.0)
     qonfig (0.28.0)
+    que (2.2.1)
     que-web (0.10.0)
       que (>= 1)
       sinatra
@@ -1237,7 +1230,7 @@ DEPENDENCIES
   public_api!
   puma (~> 6.2.2)
   pundit (~> 2.3.0)
-  que!
+  que (~> 2.2.1)
   que-web
   rack-attack (~> 6)
   rack-cors
