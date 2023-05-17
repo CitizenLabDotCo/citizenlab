@@ -14,8 +14,8 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
 import messages from './messages';
-import { getLocalized } from 'utils/i18n';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -24,8 +24,6 @@ import { groupConsentCampaigns } from './utils';
 // hooks
 import useCampaignConsents from 'api/campaign_consents/useCampaignConsents';
 import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignConsents';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useLocale from 'hooks/useLocale';
 
 // typings
 import {
@@ -52,8 +50,8 @@ const CampaignConsentForm = ({
   trackEventName = 'Default email notification settings changed',
   runOnSave,
 }: Props) => {
-  const locale = useLocale();
-  const tenantLocales = useAppConfigurationLocales();
+  const localize = useLocalize();
+
   const { formatMessage } = useIntl();
   const [searchParams, _] = useSearchParams();
   const unsubscriptionToken = searchParams.get('unsubscription_token');
@@ -82,21 +80,15 @@ const CampaignConsentForm = ({
           consent.id,
           {
             consented: consent.attributes.consented,
-            content_type: getLocalized(
-              consent.attributes.content_type_multiloc,
-              locale,
-              tenantLocales
-            ),
-            campaign_type_description: getLocalized(
-              consent.attributes.campaign_type_description_multiloc,
-              locale,
-              tenantLocales
+            content_type: localize(consent.attributes.content_type_multiloc),
+            campaign_type_description: localize(
+              consent.attributes.campaign_type_description_multiloc
             ),
           },
         ]);
       setCampaignConsents(Object.fromEntries(campaignConsentsEntries));
     }
-  }, [originalCampaignConsents, locale, tenantLocales]);
+  }, [originalCampaignConsents, localize]);
 
   useEffect(() => {
     if (loading && !!showFeedback) {
