@@ -8017,7 +8017,6 @@ models:
       action: budgeting
       permitted_by: groups
       permission_scope_ref: *verifiedPb
-      # Do we need a similar permission here for annotating_document ?
     - &115
       action: taking_survey
       permitted_by: groups
