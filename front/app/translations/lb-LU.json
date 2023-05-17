@@ -400,6 +400,7 @@
   "app.components.Upload.remaining": "verbleiwend",
   "app.components.Upload.uploadImageLabel": "Wielt e Bild (max. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Wielt een oder méi Biller aus",
+  "app.components.UserName.anonymous": "Anonym",
   "app.components.UserName.deletedUser": "Onbekannten Auteur",
   "app.components.UserName.verified": "Iwwerpréift",
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "a méi Méiglechkeete fräischalten, Iech ze engagéieren",
