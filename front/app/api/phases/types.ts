@@ -52,8 +52,6 @@ export interface IPhaseAttributes {
   min_budget?: number;
   max_budget?: number;
   survey_service?: TSurveyService;
-  // CL-3466
-  // Add service for document_annotation?
   survey_embed_url?: string;
   poll_anonymous?: boolean;
   ideas_count: number;
@@ -89,12 +87,10 @@ export interface IUpdatedPhaseProperties {
   min_budget?: number | null;
   max_budget?: number | null;
   survey_service?: TSurveyService | null;
-  // CL-3466
-  // Add service for document_annotation?
   survey_embed_url?: string | null;
-  document_annotation_embed_url?: string | null;
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
+  document_annotation_embed_url?: string | null;
 }
 export interface AddPhaseObject extends IUpdatedPhaseProperties {
   projectId: string;

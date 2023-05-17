@@ -28,4 +28,3 @@ export default (project: Props) => ({
   surveyUrl: project.surveyUrl || randomString(),
   surveyService: project.surveyService || 'typeform',
 });
-// CL-3466

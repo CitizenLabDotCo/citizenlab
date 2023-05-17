@@ -78,6 +78,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
           iconSize="20px"
           padding="6px 12px"
           fontSize="14px"
+          participationMethod="ideation"
         />
       </Box>
     ) : (

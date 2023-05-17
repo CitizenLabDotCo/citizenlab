@@ -65,6 +65,7 @@ export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
       iconSize="20px"
       padding="6px 12px"
       fontSize="14px"
+      participationMethod="native_survey"
     />
   );
 
