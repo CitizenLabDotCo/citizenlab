@@ -35,7 +35,7 @@ import { first, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { includes, get } from 'lodash-es';
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import { authUserStream } from 'services/auth';
-import { updateUser } from 'api/users/useUpdateUser';
+import updateUserWithCacheInvalidation from 'api/users/updateUser';
 import { Locale } from 'typings';
 import { locales } from 'containers/App/constants';
 import { setCookieLocale, getCookieLocale } from 'utils/localeCookie';
@@ -116,7 +116,7 @@ export function updateLocale(locale: Locale, appConfig: IAppConfiguration) {
         // updates the users locale preference,
         // which will trigger 1 that will set the locale to the locale stream
         // which will trigger 3 that will change the url accordingly
-        updateUser({ userId: authUser.data.id, locale });
+        updateUserWithCacheInvalidation({ userId: authUser.data.id, locale });
       } else {
         // if there's no auth user, set a cookie to remember this choice
         setCookieLocale(locale);

@@ -22,7 +22,7 @@ const useUpdateUser = () => {
     mutationFn: updateUser,
     onSuccess: async (_data, variables) => {
       await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/stats/users_count`],
+        apiEndpoint: [`${API_PATH}/stats/users_count`, `${API_PATH}/users/me`],
       });
 
       // Invalidate seats if the user's roles have changed
