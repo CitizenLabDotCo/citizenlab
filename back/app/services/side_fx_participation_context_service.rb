@@ -12,7 +12,6 @@ class SideFxParticipationContextService
       pc.participation_method,
       pc.survey_service,
       pc.survey_embed_url
-      # ?
     )
   end
 
