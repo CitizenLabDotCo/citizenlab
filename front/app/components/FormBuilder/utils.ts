@@ -3,7 +3,7 @@ import {
   ICustomFieldInputType,
   IFlatCustomField,
 } from 'services/formCustomFields';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 // utils

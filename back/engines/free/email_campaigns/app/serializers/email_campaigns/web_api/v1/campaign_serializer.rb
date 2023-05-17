@@ -77,7 +77,7 @@ module EmailCampaigns
 
     belongs_to :author, record_type: :user, serializer: ::WebApi::V1::UserSerializer
 
-    has_many :groups, if: proc { |object|
+    has_many :groups, serializer: ::WebApi::V1::GroupSerializer, if: proc { |object|
       recipient_configurable? object
     }
 

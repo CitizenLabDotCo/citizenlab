@@ -1,4 +1,4 @@
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 
 const getProjectPeriod = (phases: IPhaseData[]) => {
   const startAt = phases[0].attributes.start_at;

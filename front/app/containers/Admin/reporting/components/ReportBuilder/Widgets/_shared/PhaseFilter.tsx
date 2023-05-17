@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect } from 'react';
 
 // hooks
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 
 // components
 import { Box, Text, Select } from '@citizenlab/cl2-component-library';
@@ -9,12 +9,9 @@ import { Box, Text, Select } from '@citizenlab/cl2-component-library';
 // i18n
 import useLocalize from 'hooks/useLocalize';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // typings
 import { IOption } from 'typings';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 import { ParticipationMethod } from 'services/participationContexts';
 
 interface Props {
@@ -37,13 +34,13 @@ const PhaseFilter = ({
   participationMethod,
   onPhaseFilter,
 }: Props) => {
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
   const localize = useLocalize();
 
   const correctPhases = useMemo(() => {
-    return isNilOrError(phases)
-      ? null
-      : phases.filter(isCorrectPhase(participationMethod));
+    return phases
+      ? phases.data.filter(isCorrectPhase(participationMethod))
+      : null;
   }, [phases, participationMethod]);
 
   const phaseOptions = useMemo(() => {

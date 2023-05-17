@@ -91,14 +91,10 @@ gem 'sinatra', '~> 3.0.6' # Fixes CVE-2022-45442. Sinatra is a dependency of que
 gem 'que-web'
 
 gem 'activerecord-import', '~> 1.4'
-gem 'activerecord_json_validator', '~> 1.3.0'
+gem 'json-schema', '~> 4.0'
 gem 'activerecord-postgis-adapter', '~> 7.1.1'
 
-# Processing images
-# We need `config.download_retry_count`.
-# It should be available in the version next to 2.2.2
-gem 'carrierwave', git: 'https://github.com/carrierwaveuploader/carrierwave.git',
-  ref: 'a3ffc5381e70a4014b61b27b35540aa3b945910d'
+gem 'carrierwave', '~> 3.0.0.beta'
 gem 'carrierwave-base64', '~> 2.10'
 gem 'fog-aws', '~> 3.18'
 
@@ -152,9 +148,7 @@ gem 'dalli', '~> 3.2.4'
 gem 'mailgun-ruby', '~>1.2.8'
 gem 'rails_semantic_logger'
 gem 'rinku', '~> 2'
-# For serialization of heterogeneous collections (i.e. notifications), see
-# https://github.com/Netflix/fast_jsonapi/pull/410.
-gem 'fast_jsonapi', github: 'dvandersluis/fast_jsonapi', branch: 'heterogeneous-collection'
+gem 'jsonapi-serializer'
 gem 'rack-attack', '~> 6'
 
 # mjml-rails cannot find the MJML parser when installed
@@ -163,12 +157,6 @@ gem 'rack-attack', '~> 6'
 gem 'intercom', '~> 4.2'
 gem 'mjml-rails', '~> 4.8'
 gem 'cloudfront-rails', '~> 0.4'
-
-# Included here because of CVE-2022-32209.
-# See https://groups.google.com/g/rubyonrails-security/c/ce9PhUANQ6s
-# The gem is a dependency of Rails, but we use Rails 6.1.6 and no Rails upgrade is available yet.
-# Specifying this gem explicitly can probably be removed when the Rails upgrade is available.
-gem 'rails-html-sanitizer', '>= 1.4.3'
 
 Dir.children('engines/free').each do |engine_name|
   path = "engines/free/#{engine_name}"

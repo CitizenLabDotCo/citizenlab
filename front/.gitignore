@@ -34,3 +34,5 @@ cypress/screenshots/
 
 #Local VsCode config
 .vscode/*
+
+cypress.env

@@ -39,7 +39,7 @@ import rocket from 'assets/img/rocket.png';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 
 interface InputProps {
   postType: 'idea' | 'initiative';
@@ -75,7 +75,7 @@ const SharingModalContent = ({
   const { data: project } = useProjectById(
     idea?.data.relationships.project.data.id
   );
-  const phases = usePhases(idea?.data.relationships.project.data.id);
+  const { data: phases } = usePhases(idea?.data.relationships.project.data.id);
 
   useEffect(() => {
     trackEventByName(tracks.sharingModalOpened.name, {
@@ -110,7 +110,7 @@ const SharingModalContent = ({
       const inputTerm = getInputTerm(
         project.data.attributes.process_type,
         project.data,
-        phases
+        phases?.data
       );
 
       emailSharingSubject = getInputTermMessage(inputTerm, {

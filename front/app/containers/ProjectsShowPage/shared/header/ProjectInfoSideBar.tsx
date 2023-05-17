@@ -11,7 +11,7 @@ import moment from 'moment';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
@@ -20,7 +20,8 @@ import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 import clHistory from 'utils/cl-router/history';
 
 // services
-import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // components
@@ -133,19 +134,21 @@ interface Props {
 
 const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const { data: project } = useProjectById(projectId);
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
   const { data: events } = useEvents({
     projectIds: [projectId],
     sort: '-start_at',
   });
   const authUser = useAuthUser();
   const { formatMessage } = useIntl();
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
+  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const [shareModalOpened, setShareModalOpened] = useState(false);
   const surveySubmissionCount = useFormSubmissionCount({ projectId });
 
   useEffect(() => {
-    setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
+    setCurrentPhase(
+      getCurrentPhase(phases?.data) || getLastPhase(phases?.data)
+    );
   }, [phases]);
 
   const scrollTo = useCallback(
@@ -200,7 +203,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       currentPhase?.attributes?.participation_method;
     const { disabledReason } = getIdeaPostingRules({
       project: project.data,
-      phase: !isNilOrError(currentPhase) ? currentPhase : null,
+      phase: currentPhase,
       authUser,
     });
     const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
@@ -250,26 +253,20 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   )}
                 </ListItem>
               )}
-            {projectType === 'timeline' &&
-              !isNilOrError(phases) &&
-              phases.length > 1 && (
-                <ListItem>
-                  <ListItemIcon
-                    ariaHidden
-                    name="timeline"
-                    className="timeline"
+            {projectType === 'timeline' && phases && phases.data.length > 1 && (
+              <ListItem>
+                <ListItemIcon ariaHidden name="timeline" className="timeline" />
+                <ListItemButton
+                  id="e2e-project-sidebar-phases-count"
+                  onClick={scrollTo('project-timeline', false)}
+                >
+                  <FormattedMessage
+                    {...messages.xPhases}
+                    values={{ phasesCount: phases.data.length }}
                   />
-                  <ListItemButton
-                    id="e2e-project-sidebar-phases-count"
-                    onClick={scrollTo('project-timeline', false)}
-                  >
-                    <FormattedMessage
-                      {...messages.xPhases}
-                      values={{ phasesCount: phases.length }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              )}
+                </ListItemButton>
+              </ListItem>
+            )}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'ideation') ||
               currentPhaseParticipationMethod === 'ideation' ||
@@ -302,7 +299,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                           values={{ ideasCount }}
                         />
                       )}
-                      {!isNilOrError(currentPhase) &&
+                      {currentPhase &&
                         currentPhaseParticipationMethod === 'ideation' &&
                         !hasProjectEnded && (
                           <FormattedMessage
@@ -321,7 +318,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                             values={{ ideasCount }}
                           />
                         )}
-                      {!isNilOrError(currentPhase) &&
+                      {currentPhase &&
                         currentPhaseParticipationMethod === 'ideation' &&
                         hasProjectEnded && (
                           <FormattedMessage

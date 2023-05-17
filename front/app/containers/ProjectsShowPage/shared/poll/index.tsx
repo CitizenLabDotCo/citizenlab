@@ -5,7 +5,7 @@ import { IParticipationContextType } from 'typings';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 
 // resources
 import GetPollQuestions, {
@@ -69,12 +69,12 @@ const disabledMessages = {
 
 export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
   const { data: project } = useProjectById(projectId);
-  const phase = usePhase(phaseId);
+  const { data: phase } = usePhase(phaseId);
 
   if (
     isNilOrError(pollQuestions) ||
     !project ||
-    !(type === 'phase' ? !isNilOrError(phase) : true)
+    !(type === 'phase' ? phase : true)
   ) {
     return null;
   }

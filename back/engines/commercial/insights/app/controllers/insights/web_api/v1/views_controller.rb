@@ -51,10 +51,10 @@ module Insights
       def serialize(views)
         options = {
           include: [:data_sources],
-          params: fastjson_params
+          params: jsonapi_serializer_params
         }
 
-        Insights::WebApi::V1::ViewSerializer.new(views, options).serialized_json
+        Insights::WebApi::V1::ViewSerializer.new(views, options).serializable_hash.to_json
       end
 
       def view

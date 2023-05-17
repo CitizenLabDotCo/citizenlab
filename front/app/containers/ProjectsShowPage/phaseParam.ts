@@ -1,4 +1,4 @@
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 
 // https://stackoverflow.com/a/10834843
 function isIntegerOverZero(str: string | undefined) {

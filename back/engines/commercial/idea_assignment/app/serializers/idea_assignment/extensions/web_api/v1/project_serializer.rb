@@ -7,7 +7,7 @@ module IdeaAssignment
         module ProjectSerializer
           def self.included(base)
             base.class_eval do
-              belongs_to :default_assignee, record_type: :assignee, if: proc { |object, params|
+              belongs_to :default_assignee, record_type: :assignee, serializer: :user, if: proc { |object, params|
                 can_moderate? object, params
               }
             end

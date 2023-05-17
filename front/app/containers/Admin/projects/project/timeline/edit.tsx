@@ -1,22 +1,11 @@
 // Libraries
 import React, { FormEvent, useEffect, useState } from 'react';
-import { Subscription, combineLatest, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import moment, { Moment } from 'moment';
-import { get, isEmpty } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
 // Services
-import {
-  phaseFilesStream,
-  addPhaseFile,
-  deletePhaseFile,
-} from 'services/phaseFiles';
-import {
-  updatePhase,
-  addPhase,
-  IUpdatedPhaseProperties,
-} from 'services/phases';
+import { IPhaseFiles } from 'api/phase_files/types';
 import eventEmitter from 'utils/eventEmitter';
 
 // Components
@@ -40,78 +29,71 @@ import messages from './messages';
 import styled from 'styled-components';
 
 // Typings
-import { CLError, UploadFile, Multiloc } from 'typings';
+import { CLErrors, UploadFile, Multiloc } from 'typings';
 
 // Resources
 import { FileType } from 'components/UI/FileUploader/FileDisplay';
 import { useParams } from 'react-router-dom';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
+import usePhase from 'api/phases/usePhase';
+import useAddPhase from 'api/phases/useAddPhase';
+import useUpdatePhase from 'api/phases/useUpdatePhase';
+import { IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
+
 import { isNilOrError } from 'utils/helperUtils';
-import usePhase, { TPhase } from 'hooks/usePhase';
+import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
+import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
+import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 
 const PhaseForm = styled.form``;
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
+const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
+  if (phaseFiles) {
+    const convertedFiles: FileType[] = [];
+    phaseFiles.data.map((phaseFile) => {
+      convertedFiles.push({
+        id: phaseFile.id,
+        url: phaseFile.attributes.file.url,
+        name: phaseFile.attributes.name,
+        size: phaseFile.attributes.size,
+        remote: true,
+      });
+    });
+    return convertedFiles;
+  }
+  return [];
+};
+
 const AdminProjectTimelineEdit = () => {
+  const { mutateAsync: addPhaseFile } = useAddPhaseFile();
+  const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { projectId, id: phaseId } = useParams() as {
     projectId: string;
-    id?: string;
+    id: string;
   };
-  const phase = usePhase(phaseId || null);
-  const phases = usePhases(projectId);
-  const [errors, setErrors] = useState<{
-    [fieldName: string]: CLError[];
-  } | null>(null);
+  const { data: phaseFiles } = usePhaseFiles(phaseId);
+  const { data: phase } = usePhase(phaseId || null);
+  const { data: phases } = usePhases(projectId);
+  const { mutate: addPhase } = useAddPhase();
+  const { mutate: updatePhase } = useUpdatePhase();
+  const [errors, setErrors] = useState<CLErrors | null>(null);
   const [processing, setProcessing] = useState<boolean>(false);
-  const [inStatePhaseFiles, setInStatePhaseFiles] = useState<FileType[]>([]);
+  const [inStatePhaseFiles, setInStatePhaseFiles] = useState<FileType[]>(
+    convertToFileType(phaseFiles)
+  );
   const [phaseFilesToRemove, setPhaseFilesToRemove] = useState<FileType[]>([]);
   const [submitState, setSubmitState] = useState<SubmitStateType>('disabled');
   const [attributeDiff, setAttributeDiff] = useState<IUpdatedPhaseProperties>(
     {}
   );
+  const [redirectAfterSave, setRedirectAfterSave] = useState<boolean>(false);
 
   useEffect(() => {
-    if (phaseId) {
-      const subscriptions: Subscription[] = [
-        phaseFilesStream(phaseId)
-          .observable.pipe(
-            switchMap((phaseFiles) => {
-              if (phaseFiles && phaseFiles.data && phaseFiles.data.length > 0) {
-                return combineLatest(
-                  phaseFiles.data.map((phaseFile) => {
-                    const {
-                      id,
-                      attributes: {
-                        name,
-                        size,
-                        file: { url },
-                      },
-                    } = phaseFile;
-
-                    return of({
-                      id,
-                      url,
-                      name,
-                      size,
-                      remote: true,
-                    });
-                  })
-                );
-              }
-              return of([]);
-            })
-          )
-          .subscribe((phaseFiles) => {
-            setInStatePhaseFiles(phaseFiles as FileType[]);
-          }),
-      ];
-
-      return () => {
-        subscriptions.forEach((subscription) => subscription.unsubscribe());
-      };
+    if (phaseFiles) {
+      setInStatePhaseFiles(convertToFileType(phaseFiles));
     }
-    return;
-  }, [phaseId, projectId]);
+  }, [phaseFiles]);
 
   const handleTitleMultilocOnChange = (title_multiloc: Multiloc) => {
     setSubmitState('enabled');
@@ -200,57 +182,70 @@ const AdminProjectTimelineEdit = () => {
     participationContextConfig: IParticipationContextConfig
   ) => {
     const attributeDiff = getAttributeDiff(participationContextConfig);
-    save(projectId, phase, attributeDiff);
+    save(projectId, phase?.data, attributeDiff);
   };
 
-  const save = async (
-    projectId: string | null,
-    phase: TPhase | null,
-    attributeDiff: IUpdatedPhaseProperties
-  ) => {
-    if (!isEmpty(attributeDiff) && !processing) {
-      try {
-        let phaseResponse: TPhase;
-        phaseResponse = phase;
-        let redirect = false;
-        setProcessing(true);
-        if (!isEmpty(attributeDiff)) {
-          if (!isNilOrError(phase)) {
-            phaseResponse = (await updatePhase(phase.id, attributeDiff)).data;
-            setAttributeDiff({});
-          } else if (projectId) {
-            phaseResponse = (await addPhase(projectId, attributeDiff)).data;
-            redirect = true;
-          }
-        }
+  const handleError = (error: { errors: CLErrors }) => {
+    setErrors(error.errors || null);
+    setProcessing(false);
+    setSubmitState('error');
+  };
 
-        if (!isNilOrError(phaseResponse)) {
-          const phaseId = phaseResponse.id;
-          const filesToAddPromises = inStatePhaseFiles
-            .filter((file): file is UploadFile => !file.remote)
-            .map((file) => addPhaseFile(phaseId, file.base64, file.name));
-          const filesToRemovePromises = phaseFilesToRemove
-            .filter((file) => file.remote)
-            .map((file) => deletePhaseFile(phaseId, file.id as string));
+  const handleSaveResponse = async (response) => {
+    const phaseResponse = response.data;
+    const phaseId = phaseResponse.id;
+    const filesToAddPromises = inStatePhaseFiles
+      .filter((file): file is UploadFile => !file.remote)
+      .map((file) =>
+        addPhaseFile({ phaseId, base64: file.base64, name: file.name })
+      );
+    const filesToRemovePromises = phaseFilesToRemove
+      .filter((file) => file.remote)
+      .map((file) => deletePhaseFile({ phaseId, fileId: file.id as string }));
 
-          await Promise.all([
-            ...filesToAddPromises,
-            ...filesToRemovePromises,
-          ] as Promise<any>[]);
-        }
-
+    await Promise.all([...filesToAddPromises, ...filesToRemovePromises]).then(
+      () => {
         setPhaseFilesToRemove([]);
         setProcessing(false);
         setErrors(null);
         setSubmitState('success');
 
-        if (redirect) {
+        setAttributeDiff({});
+
+        if (redirectAfterSave) {
           clHistory.push(`/admin/projects/${projectId}/timeline/`);
         }
-      } catch (errors) {
-        setErrors(get(errors, 'json.errors', null));
-        setProcessing(false);
-        setSubmitState('error');
+      }
+    );
+  };
+
+  const save = async (
+    projectId: string | null,
+    phase: IPhaseData | undefined,
+    attributeDiff: IUpdatedPhaseProperties
+  ) => {
+    if (!isEmpty(attributeDiff) && !processing) {
+      setProcessing(true);
+      if (!isEmpty(attributeDiff)) {
+        if (phase) {
+          setRedirectAfterSave(false);
+          updatePhase(
+            { phaseId: phase.id, ...attributeDiff },
+            {
+              onSuccess: handleSaveResponse,
+              onError: handleError,
+            }
+          );
+        } else if (projectId) {
+          setRedirectAfterSave(true);
+          addPhase(
+            { projectId, ...attributeDiff },
+            {
+              onSuccess: handleSaveResponse,
+              onError: handleError,
+            }
+          );
+        }
       }
     }
   };
@@ -260,14 +255,15 @@ const AdminProjectTimelineEdit = () => {
   );
 
   const getStartDate = () => {
-    const phaseAttrs = !isNilOrError(phase)
-      ? { ...phase.attributes, ...attributeDiff }
+    const phaseAttrs = phase
+      ? { ...phase.data.attributes, ...attributeDiff }
       : { ...attributeDiff };
     let startDate: Moment | null = null;
 
     // If this is a new phase
     if (!phase) {
-      const previousPhase = !isNilOrError(phases) && phases[phases.length - 1];
+      const previousPhase =
+        !isNilOrError(phases) && phases[phases.data.length - 1];
       const previousPhaseEndDate = previousPhase
         ? moment(previousPhase.attributes.end_at)
         : null;
@@ -294,8 +290,8 @@ const AdminProjectTimelineEdit = () => {
     return startDate;
   };
 
-  const phaseAttrs = !isNilOrError(phase)
-    ? { ...phase.attributes, ...attributeDiff }
+  const phaseAttrs = phase
+    ? { ...phase.data.attributes, ...attributeDiff }
     : { ...attributeDiff };
   const startDate = getStartDate();
   const endDate = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
@@ -320,12 +316,25 @@ const AdminProjectTimelineEdit = () => {
             <Error apiErrors={errors && errors.title_multiloc} />
           </SectionField>
           <SectionField>
-            <ParticipationContext
-              phase={!isNilOrError(phase) ? { data: phase } : undefined}
-              onSubmit={handleParticipationContextOnSubmit}
-              onChange={handleParticipationContextOnChange}
-              apiErrors={errors}
-            />
+            {/* TODO: After ParticipationContext refactor, it doesn't refetch phase service anymore
+            This caused a bug where phase data was not being used after fetching. This is a temporary fix.
+            ParticipationContext needs to be refactored to functional component. */}
+            {phase && (
+              <ParticipationContext
+                phase={phase}
+                onSubmit={handleParticipationContextOnSubmit}
+                onChange={handleParticipationContextOnChange}
+                apiErrors={errors}
+              />
+            )}
+            {!phase && (
+              <ParticipationContext
+                phase={undefined}
+                onSubmit={handleParticipationContextOnSubmit}
+                onChange={handleParticipationContextOnChange}
+                apiErrors={errors}
+              />
+            )}
           </SectionField>
           <SectionField>
             <Label>
