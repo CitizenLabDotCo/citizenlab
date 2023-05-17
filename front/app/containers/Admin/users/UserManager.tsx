@@ -63,6 +63,7 @@ const UserManager = ({
     only_blocked: onlyBlocked,
     sort,
     pageNumber,
+    not_citizenlab_member: notCitizenlabMember,
   });
 
   useEffect(() => {

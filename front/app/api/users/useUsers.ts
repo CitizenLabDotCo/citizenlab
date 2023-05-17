@@ -10,7 +10,7 @@ const fetchUsers = ({ pageNumber, pageSize, ...rest }: IQueryParameters) =>
     action: 'get',
     queryParams: {
       'page[number]': pageNumber ?? 1,
-      'page[size]': pageSize ?? 250,
+      'page[size]': pageSize ?? 20,
       ...rest,
     },
   });
