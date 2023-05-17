@@ -162,8 +162,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
 
   const showSurvey =
     participationMethod === 'survey' &&
-    ((isProcessTypeContinuous && !isProjectArchived) ||
-      (isProcessTypeTimeline && !hasCurrentPhaseEnded));
+    (!isProjectArchived || !hasCurrentPhaseEnded);
 
   const showPoll =
     participationMethod === 'poll' &&
