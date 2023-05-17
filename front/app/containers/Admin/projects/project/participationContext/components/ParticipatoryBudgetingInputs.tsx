@@ -29,12 +29,14 @@ import {
   InputTerm,
 } from 'services/participationContexts';
 import { ApiErrors } from '..';
+import { AnonymousPostingToggle } from './AnonymousPostingToggle';
 
 interface Props {
   isCustomInputTermEnabled: boolean;
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
   inputTermOptions: IOption[];
+  allow_anonymous_participation: boolean | null | undefined;
   min_budget: number | null | undefined;
   max_budget: number | null | undefined;
   commenting_enabled: boolean | null | undefined;
@@ -50,6 +52,9 @@ interface Props {
   handleIdeaDefaultSortMethodChange: (
     ideas_order: IdeaDefaultSortMethod
   ) => void;
+  handleAllowAnonymousParticipationOnChange: (
+    allow_anonymous_participation: boolean
+  ) => void;
 }
 
 export default ({
@@ -57,6 +62,7 @@ export default ({
   input_term,
   handleInputTermChange,
   inputTermOptions,
+  allow_anonymous_participation,
   min_budget,
   max_budget,
   commenting_enabled,
@@ -70,6 +76,7 @@ export default ({
   handleIdeasDisplayChange,
   ideas_order,
   handleIdeaDefaultSortMethodChange,
+  handleAllowAnonymousParticipationOnChange,
 }: Props) => {
   const minBudgetInputValue =
     // need to check the type because if min_budget is 0,
@@ -82,6 +89,12 @@ export default ({
 
   return (
     <>
+      <AnonymousPostingToggle
+        allow_anonymous_participation={allow_anonymous_participation}
+        handleAllowAnonymousParticipationOnChange={
+          handleAllowAnonymousParticipationOnChange
+        }
+      />
       {isCustomInputTermEnabled && (
         <CustomFieldPicker
           input_term={input_term}
