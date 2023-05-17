@@ -19,11 +19,11 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
     @moderators = User.project_moderator(params[:project_id])
     @moderators = paginate @moderators
 
-    render json: linked_json(@moderators, ::WebApi::V1::UserSerializer, params: fastjson_params)
+    render json: linked_json(@moderators, ::WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
   end
 
   def show
-    render json: ::WebApi::V1::UserSerializer.new(@moderator, params: fastjson_params).serialized_json
+    render json: ::WebApi::V1::UserSerializer.new(@moderator, params: jsonapi_serializer_params).serializable_hash
   end
 
   # insert
@@ -34,8 +34,8 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
       ::SideFxUserService.new.after_update(@user, current_user)
       render json: ::WebApi::V1::UserSerializer.new(
         @user,
-        params: fastjson_params
-      ).serialized_json, status: :created
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :created
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
@@ -61,7 +61,7 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
     render json: linked_json(
       @users,
       ::WebApi::V1::ProjectModeratorSerializer,
-      params: fastjson_params(project_id: params[:project_id])
+      params: jsonapi_serializer_params(project_id: params[:project_id])
     )
   end
 

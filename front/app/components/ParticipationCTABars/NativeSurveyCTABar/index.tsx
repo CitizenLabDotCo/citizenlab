@@ -10,33 +10,35 @@ import { useTheme } from 'styled-components';
 import useAuthUser from 'hooks/useAuthUser';
 
 // services
-import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 
 export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
   const theme = useTheme();
   const authUser = useAuthUser();
-  const phases = usePhases(project.id);
+  const { data: phases } = usePhases(project.id);
   const isSmallerThanPhone = useBreakpoint('phone');
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
+  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
 
   useEffect(() => {
-    setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
+    setCurrentPhase(
+      getCurrentPhase(phases?.data) || getLastPhase(phases?.data)
+    );
   }, [phases, project]);
 
   const isPhaseNativeSurvey =
     currentPhase?.attributes.participation_method === 'native_survey';
   const { disabledReason } = getIdeaPostingRules({
     project,
-    phase: !isNilOrError(currentPhase) ? currentPhase : null,
+    phase: currentPhase,
     authUser,
   });
   const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
@@ -63,6 +65,7 @@ export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
       iconSize="20px"
       padding="6px 12px"
       fontSize="14px"
+      participationMethod="native_survey"
     />
   );
 

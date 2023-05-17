@@ -1,5 +1,5 @@
 import React from 'react';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarPhasesItem from './FilterSidebarPhasesItem';
 import { FormattedMessage } from 'utils/cl-intl';

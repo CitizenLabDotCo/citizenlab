@@ -3,7 +3,7 @@ import { ManagerType, TFilterMenu } from '../../..';
 
 // services
 import { IIdeaData } from 'api/ideas/types';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 

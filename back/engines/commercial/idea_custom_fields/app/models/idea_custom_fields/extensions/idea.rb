@@ -20,12 +20,10 @@ module IdeaCustomFields
         # base.class_eval do
         #   validates :custom_field_values, json: {
         #     schema: -> { extra_idea_fields_schema },
-        #     message: ->(errors) { errors }
         #   }, on: :publication, if: :validate_extra_fields_on_publication?
 
         #   validates :custom_field_values, json: {
         #     schema: -> { extra_idea_fields_schema },
-        #     message: ->(errors) { errors }
         #   }, if: :validate_extra_fields_on_update?
         # end
       end
