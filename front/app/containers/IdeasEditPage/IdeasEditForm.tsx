@@ -35,7 +35,24 @@ import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { PreviousPathnameContext } from 'context';
+
+// typings
 import { IIdeaUpdate } from 'api/ideas/types';
+import { Multiloc } from 'typings';
+
+interface FormValues {
+  title_multiloc: Multiloc;
+  body_multiloc: Multiloc;
+  author_id?: string;
+  idea_images_attributes?: { image: string }[];
+  idea_files_attributes?: {
+    file_by_content: { content: string };
+    name: string;
+  };
+  location_description?: string;
+  location_point_geojson?: GeoJSON.Point;
+  topic_ids?: string[];
+}
 
 const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -110,7 +127,7 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
       idea.data.attributes.location_point_geojson;
   }
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: FormValues) => {
     const { idea_images_attributes, ...ideaWithoutImages } = data;
 
     const location_point_geojson = await getLocationGeojson(

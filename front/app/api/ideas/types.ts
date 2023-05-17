@@ -178,6 +178,7 @@ export interface IIdeaUpdate {
   budget?: number | null;
   proposed_budget?: number | null;
   anonymous?: true;
+  idea_images_attributes?: { image: string }[];
 }
 
 export interface IIdeas {
