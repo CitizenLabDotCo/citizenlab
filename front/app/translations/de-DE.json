@@ -400,6 +400,7 @@
   "app.components.Upload.remaining": "restliche",
   "app.components.Upload.uploadImageLabel": "Bild auswählen (max. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Ein oder mehrere Bilder auswählen",
+  "app.components.UserName.anonymous": "Anonym",
   "app.components.UserName.deletedUser": "unbekannte Person",
   "app.components.UserName.verified": "Verifiziert",
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "und schalte das Bürgerpotential frei",
