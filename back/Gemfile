@@ -86,8 +86,8 @@ gem 'pundit', '~> 2.3.0'
 gem 'active_model_serializers', '~> 0.10.12'
 
 gem 'jwt', '~> 2.7.0'
-gem 'que', git: 'https://github.com/que-rb/que', branch: 'master', ref: '77c6b92952b821898c393239ce0e4047b17d7dae'
-gem 'que-web'
+gem 'que', '~> 1.3.0'
+gem 'que-web', '~> 0.10.0'
 
 gem 'activerecord-import', '~> 1.4'
 gem 'json-schema', '~> 4.0'
