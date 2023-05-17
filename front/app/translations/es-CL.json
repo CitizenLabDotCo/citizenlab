@@ -430,7 +430,7 @@
   "app.components.admin.SlugInput.resultingURL": "URL resultante",
   "app.components.admin.SlugInput.slugTooltip": "El slug es el conjunto único de palabras al final de la dirección web de la página, o URL.",
   "app.components.admin.SlugInput.urlSlugBrokenLinkWarning": "Si cambia la URL, los enlaces a la página con la antigua URL ya no funcionarán.",
-  "app.components.admin.SlugInput.urlSlugLabel": "Babosa",
+  "app.components.admin.SlugInput.urlSlugLabel": "Slug",
   "app.components.admin.UserFilterConditions.addCondition": "Añadir una condición",
   "app.components.admin.UserFilterConditions.field_email": "Correo electrónico",
   "app.components.admin.UserFilterConditions.field_lives_in": "Vive en",
