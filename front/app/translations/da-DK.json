@@ -400,6 +400,7 @@
   "app.components.Upload.remaining": "resterende",
   "app.components.Upload.uploadImageLabel": "Vælg et billede (max. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Vælg et eller flere billeder",
+  "app.components.UserName.anonymous": "Anonym",
   "app.components.UserName.deletedUser": "ukendt forfatter",
   "app.components.UserName.verified": "Verificeret",
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "så du kan tage aktiv del i udviklingen",
