@@ -265,6 +265,8 @@ export const IdeasShow = ({
       locale
     );
 
+    const anonymous = idea.data.attributes.anonymous;
+
     content = (
       <>
         <IdeaMeta ideaId={ideaId} />
@@ -351,7 +353,7 @@ export const IdeasShow = ({
                   statusId={statusId}
                   authorId={authorId}
                   compact={isCompactView}
-                  anonymous={idea.data.attributes.anonymous}
+                  anonymous={anonymous}
                 />
               </Box>
             )}
@@ -383,6 +385,7 @@ export const IdeasShow = ({
               statusId={statusId}
               authorId={authorId}
               insideModal={insideModal}
+              anonymous={anonymous}
             />
           )}
         </Box>
