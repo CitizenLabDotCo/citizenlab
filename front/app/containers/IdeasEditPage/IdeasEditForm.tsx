@@ -46,7 +46,7 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
     context: idea?.data || null,
   });
 
-  const { mutate: updateIdea } = useUpdateIdea();
+  const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: project } = useProjectById(
     isNilOrError(idea) ? null : idea.data.relationships.project.data.id
   );
@@ -134,21 +134,16 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
       publication_status: 'published',
     };
 
-    updateIdea(
-      {
-        id: ideaId,
-        requestBody: isImageNew
-          ? omit(payload, 'idea_files_attributes')
-          : omit(payload, ['idea_images_attributes', 'idea_files_attributes']),
-      },
-      {
-        onSuccess: (idea) => {
-          clHistory.push({
-            pathname: `/ideas/${idea.data.attributes.slug}`,
-          });
-        },
-      }
-    );
+    const idea = await updateIdea({
+      id: ideaId,
+      requestBody: isImageNew
+        ? omit(payload, 'idea_files_attributes')
+        : omit(payload, ['idea_images_attributes', 'idea_files_attributes']),
+    });
+
+    clHistory.push({
+      pathname: `/ideas/${idea.data.attributes.slug}`,
+    });
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
