@@ -20,7 +20,7 @@ import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetInitiatives, {
   GetInitiativesChildProps,
 } from 'resources/GetInitiatives';
-import { TPhases } from 'hooks/usePhases';
+import { TPhases } from 'api/phases/types';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';

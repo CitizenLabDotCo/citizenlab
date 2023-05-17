@@ -1,4 +1,4 @@
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 
 export const mockPhaseInformationData: IPhaseData = {
   id: 'MockPhaseInformationId',

@@ -13,19 +13,19 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // hooks
 import { useParams } from 'react-router-dom';
-import usePhases from 'hooks/usePhases';
-import { isNilOrError } from 'utils/helperUtils';
-import { getCurrentPhase, IPhaseData } from 'services/phases';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
 
 export const IdeaForm = () => {
   const { projectId } = useParams() as {
     projectId: string;
   };
 
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
   let phaseToUse;
-  if (!isNilOrError(phases)) {
-    phaseToUse = getCurrentOrLastIdeationPhase(phases);
+  if (phases) {
+    phaseToUse = getCurrentOrLastIdeationPhase(phases.data);
   }
 
   return (

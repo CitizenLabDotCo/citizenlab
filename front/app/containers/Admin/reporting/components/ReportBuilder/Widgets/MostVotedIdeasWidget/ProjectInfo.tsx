@@ -2,7 +2,7 @@ import React from 'react';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
@@ -11,9 +11,6 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   projectId?: string;
@@ -24,7 +21,7 @@ const ProjectInfo = ({ projectId, phaseId }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
-  const phase = usePhase(phaseId ?? null);
+  const { data: phase } = usePhase(phaseId);
 
   if (!project) return null;
 
@@ -35,19 +32,15 @@ const ProjectInfo = ({ projectId, phaseId }: Props) => {
     return null;
   }
 
-  if (
-    project.data.attributes.process_type === 'timeline' &&
-    isNilOrError(phase)
-  ) {
+  if (project.data.attributes.process_type === 'timeline' && !phase) {
     return null;
   }
 
   const projectTitle = localize(project.data.attributes.title_multiloc);
 
-  const hasPhase =
-    project.data.attributes.process_type === 'timeline' && !isNilOrError(phase);
+  const hasPhase = project.data.attributes.process_type === 'timeline' && phase;
   const ideasCount = hasPhase
-    ? phase.attributes.ideas_count
+    ? phase.data.attributes.ideas_count
     : project.data.attributes.ideas_count;
 
   return (
@@ -55,7 +48,7 @@ const ProjectInfo = ({ projectId, phaseId }: Props) => {
       <Text mt="4px" mb="4px" color="primary">
         {'| '}
         {projectTitle}
-        {hasPhase ? ` (${localize(phase.attributes.title_multiloc)})` : ''}
+        {hasPhase ? ` (${localize(phase.data.attributes.title_multiloc)})` : ''}
       </Text>
       <Text mt="4px" mb="4px" color="textSecondary" fontSize="s">
         {formatMessage(messages.totalIdeas, { numberOfIdeas: ideasCount })}

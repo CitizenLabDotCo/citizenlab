@@ -6,7 +6,7 @@ import VoteButton from './VoteButton';
 
 // services
 import { IdeaVotingDisabledReason } from 'api/ideas/types';
-import { getLatestRelevantPhase } from 'services/phases';
+import { getLatestRelevantPhase } from 'api/phases/utils';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -24,7 +24,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'hooks/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaVote from 'api/idea_votes/useIdeaVote';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 import useAddIdeaVote from 'api/idea_votes/useAddIdeaVote';
 import { TVoteMode } from 'api/idea_votes/types';
 import useDeleteIdeaVote from 'api/idea_votes/useDeleteIdeaVote';
@@ -77,7 +77,7 @@ const VoteControl = ({
   const { data: project } = useProjectById(
     idea?.data.relationships.project.data.id
   );
-  const phases = usePhases(idea?.data.relationships.project.data.id);
+  const { data: phases } = usePhases(idea?.data.relationships.project.data.id);
   const { data: voteData } = useIdeaVote(
     idea?.data.relationships.user_vote?.data?.id
   );
@@ -150,9 +150,9 @@ const VoteControl = ({
     (item) => item.id
   );
   const ideaPhases =
-    !isNilOrError(phases) &&
-    phases
-      ?.filter((phase) => includes(ideaPhaseIds, phase.id))
+    phases &&
+    phases?.data
+      .filter((phase) => includes(ideaPhaseIds, phase.id))
       .map((phase) => phase);
   const isContinuousProject =
     project?.data.attributes.process_type === 'continuous';
