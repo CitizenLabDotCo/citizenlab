@@ -33,42 +33,50 @@ const StyledAvatar = styled(Avatar)`
 interface Props {
   authorId: string | null;
   ideaId: string;
+  anonymous?: boolean;
   className?: string;
 }
 
-const IdeaPostedBy = memo<Props>(({ authorId, ideaId, className }) => {
-  const userName = (
-    <UserName userId={authorId} isLinkToProfile fontWeight={500} />
-  );
-  const { data: idea } = useIdeaById(ideaId);
-
-  if (!isNilOrError(idea)) {
-    const ideaPublishedAtDate = idea.data.attributes.published_at;
-    const date = (
-      <FormattedDate
-        value={ideaPublishedAtDate}
-        year="numeric"
-        month="long"
-        day="numeric"
+const IdeaPostedBy = memo<Props>(
+  ({ authorId, ideaId, anonymous, className }) => {
+    const userName = (
+      <UserName
+        userId={authorId}
+        isLinkToProfile
+        fontWeight={500}
+        anonymous={anonymous}
       />
     );
+    const { data: idea } = useIdeaById(ideaId);
 
-    return (
-      <Container className={`e2e-idea-author ${className || ''}`}>
-        <StyledAvatar
-          userId={authorId}
-          size={30}
-          isLinkToProfile={!!authorId}
+    if (!isNilOrError(idea)) {
+      const ideaPublishedAtDate = idea.data.attributes.published_at;
+      const date = (
+        <FormattedDate
+          value={ideaPublishedAtDate}
+          year="numeric"
+          month="long"
+          day="numeric"
         />
-        <FormattedMessage
-          {...messages.byUserOnDate}
-          values={{ userName, date }}
-        />
-      </Container>
-    );
+      );
+
+      return (
+        <Container className={`e2e-idea-author ${className || ''}`}>
+          <StyledAvatar
+            userId={authorId}
+            size={30}
+            isLinkToProfile={!!authorId}
+          />
+          <FormattedMessage
+            {...messages.byUserOnDate}
+            values={{ userName, date }}
+          />
+        </Container>
+      );
+    }
+
+    return null;
   }
-
-  return null;
-});
+);
 
 export default IdeaPostedBy;

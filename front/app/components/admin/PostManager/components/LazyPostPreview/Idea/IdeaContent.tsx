@@ -247,7 +247,11 @@ const IdeaContent = ({
           )}
 
           <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />
-          <StyledPostedBy ideaId={ideaId} authorId={authorId} />
+          <StyledPostedBy
+            ideaId={ideaId}
+            authorId={authorId}
+            anonymous={idea.attributes.anonymous}
+          />
           <Row>
             <Left>
               {ideaImageLarge && (
