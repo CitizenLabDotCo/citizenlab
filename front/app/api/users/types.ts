@@ -95,8 +95,6 @@ export interface IChangePassword {
   password: string;
 }
 
-export type SortAttribute = 'email' | 'last_name' | 'created_at' | 'role';
-
 export type Sort =
   | 'created_at'
   | '-created_at'

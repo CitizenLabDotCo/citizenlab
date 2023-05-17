@@ -36,8 +36,8 @@ jest.mock('hooks/useAppConfigurationLocales', () =>
 );
 
 const mockChangePassword = jest.fn();
-jest.mock('api/users/chagePassword', () =>
-  jest.fn(() => ({ mutate: mockChangePassword, reset: jest.fn() }))
+jest.mock('api/users/useChangePassword', () =>
+  jest.fn(() => ({ mutateAsync: mockChangePassword }))
 );
 
 jest.mock('hooks/useAuthUser', () => {
@@ -59,6 +59,7 @@ describe('ChangePassword', () => {
 
     await waitFor(async () => {
       expect(mockChangePassword).toHaveBeenCalledWith({
+        userId: 'userId',
         current_password: 'test-current-password',
         password: 'test-new-password',
       });
