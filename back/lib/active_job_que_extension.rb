@@ -20,15 +20,19 @@ module ActiveJobQueExtension
   end
 
   # Removing the freeze step from
-  # https://github.com/que-rb/que/blob/77c6b92952b821898c393239ce0e4047b17d7dae/lib/que/active_job/extensions.rb#L14
+  # https://github.com/que-rb/que/blob/531b7916a1267b20c71cd0dbfe7e70853642418e/lib/que/active_job/extensions.rb#L15-L34
   def perform(*args)
-    Que.internal_log(:active_job_perform, self) { { args: args } }
+    args, kwargs = Que.split_out_ruby2_keywords(args)
+
+    Que.internal_log(:active_job_perform, self) do
+      { args: args, kwargs: kwargs }
+    end
 
     _run(
       args: que_filter_args(
         args.map { |a| a.is_a?(Hash) ? a.deep_symbolize_keys : a }
       ),
-      reraise_errors: true
+      kwargs: que_filter_args(kwargs.deep_symbolize_keys),
     )
   end
 end
