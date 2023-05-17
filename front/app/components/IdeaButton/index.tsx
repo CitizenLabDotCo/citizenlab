@@ -46,8 +46,6 @@ import usePhases from 'api/phases/usePhases';
 import { IPhaseData } from 'api/phases/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-import useAuthUser from 'hooks/useAuthUser';
 
 const Container = styled.div``;
 
