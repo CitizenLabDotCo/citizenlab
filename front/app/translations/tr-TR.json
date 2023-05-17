@@ -400,6 +400,7 @@
   "app.components.Upload.remaining": "kalan",
   "app.components.Upload.uploadImageLabel": "Bir görsel seçin (en fazla {maxImageSizeInMb} MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Bir veya daha fazla görsel seçin",
+  "app.components.UserName.anonymous": "Anonim",
   "app.components.UserName.deletedUser": "bilinmeyen yazar",
   "app.components.UserName.verified": "Doğrulandı",
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "ve daha fazla etkileşim fırsatını kullanıma açın",
