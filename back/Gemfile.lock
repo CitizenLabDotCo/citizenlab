@@ -1218,7 +1218,6 @@ DEPENDENCIES
   simple_segment (~> 1.5)
   simplecov
   simplecov-rcov
-  sinatra (~> 3.0.6)
   smart_groups!
   spring
   spring-commands-rspec
