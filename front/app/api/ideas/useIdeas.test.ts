@@ -74,6 +74,8 @@ export const data: IIdeaData[] = [
           future_enabled: null,
         },
       },
+      anonymous: false,
+      author_hash: 'abc123',
     },
     relationships: {
       topics: {

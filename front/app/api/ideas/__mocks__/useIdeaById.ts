@@ -63,6 +63,8 @@ export const ideaData: IIdeaData[] = [
           future_enabled: null,
         },
       },
+      anonymous: false,
+      author_hash: 'abc123',
     },
     relationships: {
       topics: {
@@ -157,6 +159,8 @@ export const ideaData: IIdeaData[] = [
           future_enabled: null,
         },
       },
+      anonymous: false,
+      author_hash: 'abc123',
     },
     relationships: {
       topics: {
