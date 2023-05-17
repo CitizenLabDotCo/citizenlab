@@ -68,7 +68,7 @@ const getConfig = (
 };
 
 const IdeasNewPageWithJSONForm = () => {
-  const { mutate: addIdea } = useAddIdea();
+  const { mutateAsync: addIdea } = useAddIdea();
   const params = useParams<{ slug: string }>();
   // const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
@@ -125,51 +125,43 @@ const IdeasNewPageWithJSONForm = () => {
     }
 
     location_point_geojson = await getLocationGeojson(initialFormData, data);
-    addIdea(
-      {
-        ...data,
-        location_point_geojson,
-        project_id: project?.data.id,
-        publication_status: 'published',
-        phase_ids:
-          phaseId &&
-          !isNilOrError(authUser) &&
-          !isRegularUser({ data: authUser })
-            ? [phaseId]
-            : null,
-        anonymous: postAnonymously,
-      },
-      {
-        onSuccess: (idea) => {
-          const ideaId = idea.data.id;
+    const idea = await addIdea({
+      ...data,
+      location_point_geojson,
+      project_id: project?.data.id,
+      publication_status: 'published',
+      phase_ids:
+        phaseId && !isNilOrError(authUser) && !isRegularUser({ data: authUser })
+          ? [phaseId]
+          : null,
+      anonymous: postAnonymously,
+    });
 
-          // Check ParticipationMethodConfig for form submission action
-          if (
-            project?.data.attributes.process_type === 'timeline' &&
-            !isNilOrError(phases)
-          ) {
-            // Check if URL contains specific phase_id
-            const phaseUsed =
-              phases.find((phase) => phase.id === phaseId) ||
-              getCurrentPhase(phases);
-            if (!isNilOrError(phaseUsed)) {
-              getMethodConfig(
-                phaseUsed?.attributes?.participation_method
-              ).onFormSubmission({
-                project: project.data,
-                ideaId,
-                idea,
-                phaseId: phaseUsed.id,
-              });
-            }
-          } else if (!isNilOrError(project)) {
-            getMethodConfig(
-              project?.data.attributes.participation_method
-            ).onFormSubmission({ project: project.data, ideaId, idea });
-          }
-        },
+    const ideaId = idea.data.id;
+
+    // Check ParticipationMethodConfig for form submission action
+    if (
+      project?.data.attributes.process_type === 'timeline' &&
+      !isNilOrError(phases)
+    ) {
+      // Check if URL contains specific phase_id
+      const phaseUsed =
+        phases.find((phase) => phase.id === phaseId) || getCurrentPhase(phases);
+      if (!isNilOrError(phaseUsed)) {
+        getMethodConfig(
+          phaseUsed?.attributes?.participation_method
+        ).onFormSubmission({
+          project: project.data,
+          ideaId,
+          idea,
+          phaseId: phaseUsed.id,
+        });
       }
-    );
+    } else if (!isNilOrError(project)) {
+      getMethodConfig(
+        project?.data.attributes.participation_method
+      ).onFormSubmission({ project: project.data, ideaId, idea });
+    }
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
