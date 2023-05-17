@@ -4,11 +4,11 @@ export interface CampaignConsent {
   consented: boolean;
 }
 
-export interface CampaignConsentChildren extends CampaignConsent {
+export interface CampaignConsentChild extends CampaignConsent {
   id: string;
 }
 
 export interface GroupedCampaignConsent {
-  children: CampaignConsentChildren[];
+  children: CampaignConsentChild[];
   group_consented: boolean | 'mixed';
 }

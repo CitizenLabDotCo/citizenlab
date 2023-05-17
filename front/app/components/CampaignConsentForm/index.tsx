@@ -28,7 +28,7 @@ import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignCo
 // typings
 import {
   CampaignConsent,
-  CampaignConsentChildren,
+  CampaignConsentChild,
   GroupedCampaignConsent,
 } from './typings';
 import {
@@ -117,7 +117,7 @@ const CampaignConsentForm = ({
     const group = groupedCampaignConsents[contentType];
     const newGroupValue = group.group_consented === false ? true : false;
     const newConsentValueEntries = group.children.map(
-      (consent: CampaignConsentChildren): [string, CampaignConsentChildren] => [
+      (consent: CampaignConsentChild): [string, CampaignConsentChild] => [
         consent.id,
         { ...consent, consented: newGroupValue },
       ]
@@ -213,7 +213,7 @@ const CampaignConsentForm = ({
                   id,
                   consented,
                   campaign_type_description,
-                }: CampaignConsentChildren) => (
+                }: CampaignConsentChild) => (
                   <Checkbox
                     key={id}
                     size="20px"
