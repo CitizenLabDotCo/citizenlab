@@ -131,7 +131,7 @@ module EmailCampaigns
         else
           EmailCampaigns::RecentExample.where(campaign_class: campaign_type).order(:created_at).first.destroy
           campaign_command =
-            filter_n_campaigns_with_command_for_campaign_type(campaigns_with_command, campaign_type, 1).first          
+            filter_n_campaigns_with_command_for_campaign_type(campaigns_with_command, campaign_type, 1).first
           save_example(campaign_command[0], campaign_command[1])
         end
       end
