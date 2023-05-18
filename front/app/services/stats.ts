@@ -92,11 +92,14 @@ export function ideasByProjectStream(
 // Users
 
 export interface IUsersCount {
-  count: number;
-  administrators_count: number;
-  moderators_count: number;
+  data: {
+    attributes: {
+      count: number;
+      administrators_count: number;
+      moderators_count: number;
+    };
+  };
 }
-
 export interface IUsersByTime {
   series: {
     users: {
