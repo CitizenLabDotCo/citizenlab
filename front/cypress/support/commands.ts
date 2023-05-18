@@ -1,6 +1,8 @@
 import 'cypress-file-upload';
 import './dnd';
 import { ParticipationMethod } from '../../app/services/participationContexts';
+import { IUserUpdate } from '../../app/api/users/types';
+import jwtDecode from 'jwt-decode';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -17,6 +19,7 @@ declare global {
       setLoginCookie: typeof setLoginCookie;
       apiSignup: typeof apiSignup;
       apiCreateAdmin: typeof apiCreateAdmin;
+      apiUpdateCurrentUser: typeof apiUpdateCurrentUser;
       apiRemoveUser: typeof apiRemoveUser;
       apiGetUsersCount: typeof apiGetUsersCount;
       apiGetSeats: typeof apiGetSeats;
@@ -269,6 +272,28 @@ export function apiCreateAdmin(
   });
 }
 
+export function apiUpdateCurrentUser(attrs: IUserUpdate) {
+  cy.getCookie('cl2_jwt').then((cookie) => {
+    if (!cookie) {
+      return;
+    }
+    const jwt = cookie.value;
+    const userId = jwtDecode<{ sub: string }>(jwt).sub;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/users/${userId}`,
+      body: {
+        user: attrs,
+      },
+    });
+  });
+}
+
 export function apiRemoveUser(userId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -366,10 +391,8 @@ export function apiCreateModeratorForProject(
 }
 
 export function logout() {
-  cy.get('#e2e-user-menu-container button').should('be.visible');
-  cy.get('#e2e-user-menu-container button').click({ force: true });
-  cy.get('#e2e-sign-out-link').should('be.visible');
-  cy.get('#e2e-sign-out-link').click({ force: true });
+  cy.clearCookies();
+  cy.reload();
 }
 
 export function acceptCookies() {
@@ -1411,6 +1434,7 @@ Cypress.Commands.add('signUp', signUp);
 Cypress.Commands.add('apiLogin', apiLogin);
 Cypress.Commands.add('apiSignup', apiSignup);
 Cypress.Commands.add('apiCreateAdmin', apiCreateAdmin);
+Cypress.Commands.add('apiUpdateCurrentUser', apiUpdateCurrentUser);
 Cypress.Commands.add('apiRemoveUser', apiRemoveUser);
 Cypress.Commands.add('apiGetUsersCount', apiGetUsersCount);
 Cypress.Commands.add('apiGetSeats', apiGetSeats);

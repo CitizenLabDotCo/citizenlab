@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 import FormattedStatusLabel from '../components/FormattedStatusLabel';
@@ -99,7 +99,7 @@ const ExistingSMSCampaign = (props: WithRouterProps) => {
   const isDraft = status === 'draft';
 
   return (
-    <>
+    <Box background={colors.white} p="40px">
       <HelmetIntl
         title={{ id: 'test', defaultMessage: 'View SMS' }}
         description={{
@@ -118,7 +118,7 @@ const ExistingSMSCampaign = (props: WithRouterProps) => {
         <span>{getAdditionalInfoByStatus(campaign)}</span>
       </>
       <StyledSMSCampaignForm formIsLocked={!isDraft} campaign={campaign} />
-    </>
+    </Box>
   );
 };
 

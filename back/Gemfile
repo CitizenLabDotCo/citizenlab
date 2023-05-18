@@ -45,7 +45,7 @@ group :development, :test do
   gem 'rack-mini-profiler', require: %w[prepend_net_http_patch rack-mini-profiler]
   gem 'rspec_api_documentation'
   gem 'rspec_junit_formatter'
-  gem 'rspec-rails', '~> 6.0.1'
+  gem 'rspec-rails', '~> 6.0.2'
   gem 'rspec-parameterized'
   gem 'rspec-sqlimit'
   gem 'rspec-its'
@@ -87,7 +87,6 @@ gem 'active_model_serializers', '~> 0.10.12'
 
 gem 'jwt', '~> 2.7.0'
 gem 'que', git: 'https://github.com/que-rb/que', branch: 'master', ref: '77c6b92952b821898c393239ce0e4047b17d7dae'
-gem 'sinatra', '~> 3.0.6' # Fixes CVE-2022-45442. Sinatra is a dependency of que-web, but que-web depends on sinatra >= 0.
 gem 'que-web'
 
 gem 'activerecord-import', '~> 1.4'
@@ -126,15 +125,12 @@ gem 'omniauth-google-oauth2'
 gem 'sentry-ruby'
 gem 'sentry-rails'
 gem 'simple_segment', '~>1.5'
-gem 'omniauth_openid_connect'
+gem 'omniauth_openid_connect', '~> 0.7.1'
+gem 'faraday-jwt', '~> 0.1.0'
 gem 'acts_as_list', '~> 1.1'
 gem 'bunny', '>= 2.7.2'
 gem 'faker'
 gem 'order_as_specified'
-# Forked to support a userinfo response in JWT form
-# Can go back to vanilla when this PR is merged and released:
-# https://github.com/nov/openid_connect/pull/48
-gem 'openid_connect', github: 'CitizenLabDotCo/openid_connect'
 gem 'scenic'
 gem 'ice_cube', '~> 0.16'
 

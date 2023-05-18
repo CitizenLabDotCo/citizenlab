@@ -1,10 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { API_PATH } from 'containers/App/constants';
 import fetcher from 'utils/cl-react-query/fetcher';
-import streams from 'utils/streams';
 import usersKeys from './keys';
 import groupsKeys from 'api/groups/keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
+import userCountKeys from 'api/users_count/keys';
 
 const deleteUser = (id: string) =>
   fetcher({
@@ -18,10 +17,9 @@ const useDeleteUser = () => {
   return useMutation({
     mutationFn: deleteUser,
     onSuccess: async () => {
-      await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/stats/users_count`],
+      queryClient.invalidateQueries({
+        queryKey: userCountKeys.items(),
       });
-
       invalidateSeatsCache();
 
       queryClient.invalidateQueries({ queryKey: usersKeys.lists() });

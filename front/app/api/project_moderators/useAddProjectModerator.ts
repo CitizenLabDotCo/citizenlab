@@ -5,9 +5,8 @@ import { IUsers } from 'api/users/types';
 import { ProjectModeratorAdd } from './types';
 import projectModeratorsKeys from './keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
 import usersKeys from 'api/users/keys';
+import userCountKeys from 'api/users_count/keys';
 
 const addModerator = async ({ moderatorId, projectId }: ProjectModeratorAdd) =>
   fetcher<IUsers>({
@@ -32,9 +31,11 @@ const useAddProjectModerator = () => {
       });
       queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
       invalidateSeatsCache();
-      await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/stats/users_count`],
+
+      queryClient.invalidateQueries({
+        queryKey: userCountKeys.items(),
       });
+      invalidateSeatsCache();
     },
   });
 };

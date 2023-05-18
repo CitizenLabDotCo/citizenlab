@@ -22,7 +22,7 @@ export default function useInitiativesPermissions(
 
   useEffect(() => {
     if (appConfiguration && actionDescriptor) {
-      if (actionDescriptor.enabled) {
+      if (actionDescriptor?.enabled) {
         setActionPermission({
           show: true,
           enabled: true,

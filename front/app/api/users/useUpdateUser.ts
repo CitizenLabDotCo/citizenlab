@@ -8,6 +8,7 @@ import usersKeys from './keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 import groupsKeys from 'api/groups/keys';
+import userCountKeys from 'api/users_count/keys';
 
 export const updateUser = async ({ userId, ...requestBody }: IUserUpdate) =>
   fetcher<IUser>({
@@ -22,7 +23,7 @@ const useUpdateUser = () => {
     mutationFn: updateUser,
     onSuccess: async (_data, variables) => {
       await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/stats/users_count`, `${API_PATH}/users/me`],
+        apiEndpoint: [`${API_PATH}/users/me`],
       });
 
       // Invalidate seats if the user's roles have changed
@@ -33,6 +34,9 @@ const useUpdateUser = () => {
       queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
       queryClient.invalidateQueries({ queryKey: groupsKeys.all() });
       queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
+      queryClient.invalidateQueries({
+        queryKey: userCountKeys.items(),
+      });
     },
   });
 };

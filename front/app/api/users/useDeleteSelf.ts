@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { API_PATH, AUTH_PATH } from 'containers/App/constants';
+import { AUTH_PATH } from 'containers/App/constants';
 import fetcher from 'utils/cl-react-query/fetcher';
 import streams from 'utils/streams';
 import usersKeys from './keys';
@@ -8,6 +8,7 @@ import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import { getJwt, removeJwt, decode } from 'utils/auth/jwt';
 import clHistory from 'utils/cl-router/history';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import userCountKeys from 'api/users_count/keys';
 
 const deleteUser = (id?: string) =>
   fetcher({
@@ -34,8 +35,8 @@ const useDeleteSelf = () => {
       }
       clHistory.push('/');
 
-      await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/stats/users_count`],
+      queryClient.invalidateQueries({
+        queryKey: userCountKeys.items(),
       });
 
       invalidateSeatsCache();
