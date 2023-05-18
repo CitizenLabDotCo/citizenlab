@@ -5,7 +5,7 @@
 # Table name: email_campaigns_recent_examples
 #
 #  id             :uuid             not null, primary key
-#  type           :string           not null
+#  campaign_class :string           not null
 #  mail_body_html :string           not null
 #  locale         :string           not null
 #  subject        :string           not null
@@ -15,7 +15,7 @@
 #
 # Indexes
 #
-#  index_email_campaigns_recent_examples_on_type  (type)
+#  index_email_campaigns_recent_examples_on_campaign_class  (campaign_class)
 #
 module EmailCampaigns
   class RecentExample < ApplicationRecord

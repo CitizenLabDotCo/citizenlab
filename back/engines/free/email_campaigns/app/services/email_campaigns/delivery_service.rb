@@ -112,7 +112,40 @@ module EmailCampaigns
       campaigns_with_recipients = assign_campaigns_recipients(valid_campaigns, options)
       campaigns_with_command    = assign_campaigns_command(campaigns_with_recipients, options)
 
+      save_examples(campaigns_with_command)
       process_send_campaigns(campaigns_with_command)
+    end
+
+    def save_examples(campaigns_with_command)
+      campaign_types = campaigns_with_command.map { |(_command, campaign)| campaign.type }.uniq
+      campaign_types.each do |campaign_type|
+        puts "campaign_type: #{campaign_type}"
+        if EmailCampaigns::RecentExample.where(campaign_class: campaign_type).count < 10
+          n_needed = 10 - EmailCampaigns::RecentExample.where(campaign_class: campaign_type).count
+
+          campaign_commands_to_process = campaigns_with_command.select { |(_command, campaign)| campaign.type == campaign_type }.first(n_needed)
+          campaign_commands_to_process.each do |(command, campaign)|
+            mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
+
+            example = EmailCampaigns::RecentExample.new(
+              campaign_class: campaign_type,
+              mail_body_html: mail.body.to_s, # preview_html(campaign, command[:recipient]),
+              locale: command[:recipient].locale,
+              subject: mail.subject, # campaign.subject_multiloc[command[:recipient].locale],
+              recipient: command[:recipient].id
+            )
+            if example.save
+              puts "Saved example for campaign #{campaign_type}"
+            else
+              puts "Failed to save example for campaign #{campaign_type}"
+              puts example.errors.full_messages
+            end
+          end
+        else # rubocop:disable Style/EmptyElse
+          # Already have 10 examples for campaign #{campaign_type}
+          # Rotate one example
+        end
+      end
     end
 
     def filter_valid_campaigns_before_send(campaigns, options)
