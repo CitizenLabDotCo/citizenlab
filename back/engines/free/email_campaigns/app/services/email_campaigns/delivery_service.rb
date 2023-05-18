@@ -122,35 +122,43 @@ module EmailCampaigns
       campaign_types = campaigns_with_command.map { |(_command, campaign)| campaign.type }.uniq
 
       campaign_types.each do |campaign_type|
-        if EmailCampaigns::RecentExample.where(campaign_class: campaign_type).count < EXAMPLES_PER_CAMPAIGN
-          n_needed = EXAMPLES_PER_CAMPAIGN - EmailCampaigns::RecentExample.where(campaign_class: campaign_type).count
+        n_lacking = EXAMPLES_PER_CAMPAIGN - EmailCampaigns::RecentExample.where(campaign_class: campaign_type).count
 
-          campaign_commands_to_process = campaigns_with_command.select do |(_command, campaign)|
-            campaign.type == campaign_type
-          end.first(n_needed)
-
-          campaign_commands_to_process.each do |(command, campaign)|
-            mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
-
-            example = EmailCampaigns::RecentExample.new(
-              campaign_class: campaign_type,
-              mail_body_html: mail.body.to_s,
-              locale: command[:recipient].locale,
-              subject: mail.subject,
-              recipient: command[:recipient].id # We can serialize email for response, if user exists, else a 'user_deleted' string
-            )
-            if example.save
-              puts "Saved example for campaign #{campaign_type}"
-            else
-              puts "Failed to save example for campaign #{campaign_type}"
-              puts example.errors.full_messages
-            end
-          end
-        else # rubocop:disable Style/EmptyElse
-          # Already have 10 examples for campaign #{campaign_type}
-          # Rotate one example
+        if n_lacking.positive?
+          campaign_commands =
+            filter_n_campaigns_with_command_for_campaign_type(campaigns_with_command, campaign_type, n_lacking)
+          campaign_commands.each { |(command, campaign)| save_example(command, campaign) }
+        else
+          EmailCampaigns::RecentExample.where(campaign_class: campaign_type).order(:created_at).first.destroy
+          campaign_command =
+            filter_n_campaigns_with_command_for_campaign_type(campaigns_with_command, campaign_type, 1).first          
+          save_example(campaign_command[0], campaign_command[1])
         end
       end
+    end
+
+    def save_example(command, campaign)
+      mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
+
+      example = EmailCampaigns::RecentExample.new(
+        campaign_class: campaign.type,
+        mail_body_html: mail.body.to_s,
+        locale: command[:recipient].locale,
+        subject: mail.subject,
+        recipient: command[:recipient].id # We can serialize email for response, if user exists, else a 'user_deleted' string
+      )
+
+      return if example.save
+
+      # TODO: Develop error handling, if needed.
+      puts "Failed to save example for campaign #{campaign_type}"
+      # Sentry error?
+    end
+
+    def filter_n_campaigns_with_command_for_campaign_type(campaigns_with_command, campaign_type, n)
+      campaigns_with_command.select do |(_command, campaign)|
+        campaign.type == campaign_type
+      end.first(n)
     end
 
     def filter_valid_campaigns_before_send(campaigns, options)
