@@ -4,7 +4,7 @@ const baseKey = { type: 'campaign' };
 
 const campaignsKeys = {
   all: () => [baseKey],
-  items: () => [{ ...baseKey, operation: 'item' }],
+  lists: () => [{ ...baseKey, operation: 'list' }],
   item: ({ campaignId }: { campaignId?: string }) => [
     {
       ...baseKey,
