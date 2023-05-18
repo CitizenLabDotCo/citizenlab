@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from email_campaigns (originally 20230518144244)
 
 class CreateEmailCampaignsRecentExamples < ActiveRecord::Migration[6.1]
