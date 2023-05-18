@@ -19,7 +19,7 @@ import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { groupConsentCampaigns } from './utils';
+import { groupCampaignsConsent, sortGroupedCampaignConsents } from './utils';
 
 // hooks
 import useCampaignConsents from 'api/campaign_consents/useCampaignConsents';
@@ -81,6 +81,7 @@ const CampaignConsentForm = ({
           {
             consented: consent.attributes.consented,
             content_type: localize(consent.attributes.content_type_multiloc),
+            content_type_ordering: consent.attributes.content_type_ordering,
             campaign_type_description: localize(
               consent.attributes.campaign_type_description_multiloc
             ),
@@ -97,7 +98,7 @@ const CampaignConsentForm = ({
   }, [showFeedback, loading]);
 
   useEffect(() => {
-    setGroupedCampaignConsents(groupConsentCampaigns(campaignConsents));
+    setGroupedCampaignConsents(groupCampaignsConsent(campaignConsents));
   }, [campaignConsents]);
 
   if (isNilOrError(originalCampaignConsents)) return null;
@@ -183,51 +184,53 @@ const CampaignConsentForm = ({
         showFeedback={showFeedback}
         closeFeedback={() => setShowFeedback(false)}
       />
-      {Object.entries(groupedCampaignConsents).map(
-        (
-          [contentType, { children, group_consented }]: [
-            string,
-            GroupedCampaignConsent
-          ],
-          i
-        ) => (
-          <Accordion
-            key={i}
-            title={
-              <CheckboxWithPartialCheck
-                id={contentType}
-                checked={group_consented}
-                onChange={toggleGroup(contentType)}
-                label={<Box m="14px 0">{contentType}</Box>}
-              />
-            }
-          >
-            <Box ml="34px">
-              <ScreenReaderOnly>
-                <legend>
-                  <FormattedMessage {...messages.ally_categoryLabel} />
-                </legend>
-              </ScreenReaderOnly>
-              {children.map(
-                ({
-                  id,
-                  consented,
-                  campaign_type_description,
-                }: CampaignConsentChild) => (
-                  <Checkbox
-                    key={id}
-                    size="20px"
-                    mb="12px"
-                    checked={consented}
-                    onChange={onChange(id)}
-                    label={campaign_type_description}
-                  />
-                )
-              )}
-            </Box>
-          </Accordion>
-        )
-      )}
+      {Object.entries(groupedCampaignConsents)
+        .sort(sortGroupedCampaignConsents)
+        .map(
+          (
+            [contentType, { children, group_consented }]: [
+              string,
+              GroupedCampaignConsent
+            ],
+            i
+          ) => (
+            <Accordion
+              key={i}
+              title={
+                <CheckboxWithPartialCheck
+                  id={contentType}
+                  checked={group_consented}
+                  onChange={toggleGroup(contentType)}
+                  label={<Box m="14px 0">{contentType}</Box>}
+                />
+              }
+            >
+              <Box ml="34px">
+                <ScreenReaderOnly>
+                  <legend>
+                    <FormattedMessage {...messages.ally_categoryLabel} />
+                  </legend>
+                </ScreenReaderOnly>
+                {children.map(
+                  ({
+                    id,
+                    consented,
+                    campaign_type_description,
+                  }: CampaignConsentChild) => (
+                    <Checkbox
+                      key={id}
+                      size="20px"
+                      mb="12px"
+                      checked={consented}
+                      onChange={onChange(id)}
+                      label={campaign_type_description}
+                    />
+                  )
+                )}
+              </Box>
+            </Accordion>
+          )
+        )}
       <Box mt="20px" display="flex">
         <Button type="submit" processing={loading} onClick={onFormSubmit}>
           {formatMessage(messages.submit)}

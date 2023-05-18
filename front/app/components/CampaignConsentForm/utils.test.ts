@@ -1,4 +1,4 @@
-import { groupConsentCampaigns } from './utils';
+import { groupCampaignsConsent } from './utils';
 
 const campaignsConsentData = {
   1: {
@@ -68,7 +68,7 @@ const expectedGroupedData = {
 
 describe('groupConsentCampaigns', () => {
   it('should return the same schema and data if no elements are hidden', () => {
-    const groupedData = groupConsentCampaigns(campaignsConsentData);
+    const groupedData = groupCampaignsConsent(campaignsConsentData);
 
     expect(groupedData).toEqual(expectedGroupedData);
   });

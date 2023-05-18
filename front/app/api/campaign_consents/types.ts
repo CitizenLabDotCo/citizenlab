@@ -12,6 +12,7 @@ export interface ICampaignConsentData {
 
 export interface ICampaignConsentAttributes {
   campaign_name: string;
+  content_type_ordering: number;
   campaign_type_description_multiloc: Multiloc;
   content_type_multiloc: Multiloc;
   consented: boolean;
