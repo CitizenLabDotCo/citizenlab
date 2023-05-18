@@ -114,4 +114,70 @@ RSpec.describe Initiative do
       expect(described_class.order_status.ids).to eq [i1.id, i2.id, i3.id]
     end
   end
+
+  describe 'anonymous participation' do
+    let(:author) { create(:user) }
+
+    it 'has an author hash of consistent length' do
+      initiative = create(:initiative)
+      expect(initiative.author_hash.length).to eq 32
+    end
+
+    context 'ideas are not anonymous' do
+      it 'has the same author hash on each initiative when the author is the same' do
+        initiative1 = create(:initiative, author: author)
+        initiative2 = create(:initiative, author: author)
+        expect(initiative1.author_hash).to eq initiative2.author_hash
+      end
+    end
+
+    context 'initiatives are anonymous' do
+      it 'has no author if set to anonymous' do
+        initiative = create(:initiative, anonymous: true)
+        expect(initiative.author).to be_nil
+      end
+
+      it 'has the same author hash on each initiative when the anonymous author is the same' do
+        initiative1 = create(:initiative, author: author, anonymous: true)
+        initiative2 = create(:initiative, author: author, anonymous: true)
+        expect(initiative1.author_hash).to eq initiative2.author_hash
+      end
+
+      it 'has a different author hash for initiatives when one initiative is anonymous and the other is not' do
+        initiative1 = create(:initiative, author: author)
+        initiative2 = create(:initiative, author: author, anonymous: true)
+        expect(initiative1.author_hash).not_to eq initiative2.author_hash
+      end
+    end
+
+    context 'updating initiatives' do
+      it 'can publish an anonymous initiative' do
+        initiative = create(:initiative, publication_status: 'draft', anonymous: true)
+        initiative.update!(publication_status: 'published')
+        expect(initiative.author).to be_nil
+      end
+
+      it 'deletes the author if anonymous is updated' do
+        initiative = create(:initiative)
+        initiative.update!(anonymous: true)
+        expect(initiative.author).to be_nil
+      end
+
+      it 'sets anonymous to false and changes the author hash if an author is supplied on update' do
+        initiative = create(:idea, anonymous: true)
+        old_initiative_hash = initiative.author_hash
+        initiative.update!(author: author)
+        expect(initiative.author).not_to be_nil
+        expect(initiative.anonymous).to be false
+        expect(initiative.author_hash).not_to eq old_initiative_hash
+      end
+
+      it 'generates a different author_hash if the author changes' do
+        initiative = create(:idea)
+        old_initiative_hash = initiative.author_hash
+        initiative.update!(author: author)
+        expect(initiative.author_hash).not_to eq old_initiative_hash
+      end
+    end
+  end
 end
