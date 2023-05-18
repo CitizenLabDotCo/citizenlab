@@ -136,7 +136,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     ActiveRecord::Base.transaction do
       saved = @initiative.save save_options
       if saved
-        authorize @initiative
+        authorize @initiative unless @initiative.anonymous? # Cannot auth the user if updated to anonymous
         service.after_update(@initiative, current_user)
       end
     end

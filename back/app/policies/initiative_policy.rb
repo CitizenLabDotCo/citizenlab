@@ -57,6 +57,7 @@ class InitiativePolicy < ApplicationPolicy
       :author_id,
       :location_description,
       :header_bg,
+      :anonymous,
       { location_point_geojson: [:type, { coordinates: [] }],
         title_multiloc: CL2_SUPPORTED_LOCALES,
         body_multiloc: CL2_SUPPORTED_LOCALES,
