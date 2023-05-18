@@ -151,7 +151,7 @@ module EmailCampaigns
       return if example.save
 
       # TODO: Develop error handling, if needed.
-      puts "Failed to save example for campaign #{campaign_type}"
+      puts "Failed to save example for campaign #{campaign.type}"
       # Sentry error?
     end
 
