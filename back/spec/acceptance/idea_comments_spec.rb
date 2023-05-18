@@ -250,7 +250,9 @@ resource 'Comments' do
       expect(json_response.dig(:data, :attributes)).to include(
         downvotes_count: 0,
         publication_status: 'published',
-        is_admin_comment: false
+        is_admin_comment: false,
+        anonymous: false,
+        author_hash: comment.author_hash
       )
       expect(json_response.dig(:data, :relationships)).to include(
         post: {
@@ -294,6 +296,7 @@ resource 'Comments' do
         parameter :author_id, 'The user id of the user owning the comment. Signed in user by default', required: false
         parameter :body_multiloc, 'Multi-locale field with the comment body', required: true
         parameter :parent_id, 'The id of the comment this comment is a response to', required: false
+        parameter :anonymous, 'Post this comment anonymously - true/false', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Comment)
       response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::COMMENTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
@@ -374,6 +377,17 @@ resource 'Comments' do
           expect(blocked_error[:blocked_words].pluck(:attribute).uniq).to eq(['body_multiloc'])
         end
       end
+
+      describe 'anomymous commenting' do
+        let(:anonymous) { true }
+
+        example_request 'Create an anonymous comment on an idea' do
+          assert_status 201
+          expect(response_data.dig(:relationships, :author, :data, :id)).to be_nil
+          expect(response_data.dig(:attributes, :anonymous)).to be true
+          expect(response_data.dig(:attributes, :author_name)).to be_nil
+        end
+      end
     end
 
     post 'web_api/v1/comments/:id/mark_as_deleted' do
@@ -402,6 +416,7 @@ resource 'Comments' do
         parameter :author_id, 'The user id of the user owning the comment. Signed in user by default'
         parameter :body_multiloc, 'Multi-locale field with the comment body'
         parameter :parent_id, 'The id of the comment this comment is a response to'
+        parameter :anonymous, 'Change this comment to anonymous - true'
       end
       ValidationErrorHelper.new.error_fields(self, Comment)
       response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::COMMENTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
@@ -421,6 +436,24 @@ resource 'Comments' do
         admin_header_token
         do_request
         expect(comment.reload.body_multiloc).not_to eq body_multiloc
+      end
+
+      describe 'anomymous commenting' do
+        let(:anonymous) { true }
+
+        example_request 'Change an comment on an idea to anonymous' do
+          assert_status 200
+          expect(response_data.dig(:relationships, :author, :data, :id)).to be_nil
+          expect(response_data.dig(:attributes, :anonymous)).to be true
+          expect(response_data.dig(:attributes, :author_name)).to be_nil
+        end
+
+        example '[Error] Cannot update an anonymous comment' do
+          comment.update!(anonymous: true)
+          do_request
+          assert_status 401
+          expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
+        end
       end
     end
 

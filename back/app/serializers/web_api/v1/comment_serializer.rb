@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::CommentSerializer < WebApi::V1::BaseSerializer
-  attributes :upvotes_count, :downvotes_count, :publication_status, :children_count, :created_at, :updated_at
+  attributes :upvotes_count, :downvotes_count, :publication_status, :children_count, :created_at, :updated_at, :anonymous, :author_hash
 
   attribute :body_multiloc do |object|
     if object.publication_status != 'deleted'

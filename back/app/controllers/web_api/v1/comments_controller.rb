@@ -234,6 +234,7 @@ class WebApi::V1::CommentsController < ApplicationController
     # else's name
     params.require(:comment).permit(
       :parent_id,
+      :anonymous,
       body_multiloc: CL2_SUPPORTED_LOCALES
     )
   end
@@ -241,7 +242,7 @@ class WebApi::V1::CommentsController < ApplicationController
   def comment_update_params
     attrs = []
     if @comment.author_id == current_user&.id
-      attrs += [body_multiloc: CL2_SUPPORTED_LOCALES]
+      attrs += [:anonymous, {body_multiloc: CL2_SUPPORTED_LOCALES}]
     end
     params.require(:comment).permit(attrs)
   end

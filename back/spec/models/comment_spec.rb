@@ -82,13 +82,14 @@ RSpec.describe Comment do
     end
 
     context 'creating anonymous comments' do
+      let(:project) { create(:project) }
+
       it 'has no author if set to anonymous' do
         comment = create(:comment, anonymous: true)
         expect(comment.author).to be_nil
       end
 
       it 'has the same author hash on each comment when the author and project are the same' do
-        project = create(:project)
         idea1 = create(:idea, project: project)
         idea2 = create(:idea, project: project)
         comment1 = create(:comment, author: author, post: idea1, anonymous: true)
@@ -103,7 +104,6 @@ RSpec.describe Comment do
       end
 
       it 'has a different author hash for comments in the same project when one idea is anonymous and the other is not' do
-        project = create(:project)
         idea1 = create(:idea, project: project)
         idea2 = create(:idea, project: project)
         comment1 = create(:comment, author: author, post: idea1)
@@ -136,5 +136,4 @@ RSpec.describe Comment do
       end
     end
   end
-
 end
