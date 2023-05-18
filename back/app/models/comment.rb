@@ -19,6 +19,8 @@
 #  body_updated_at    :datetime
 #  children_count     :integer          default(0), not null
 #  post_type          :string
+#  author_hash        :string
+#  anonymous          :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -35,6 +37,8 @@
 #  fk_rails_...  (author_id => users.id)
 #
 class Comment < ApplicationRecord
+  include AnonymousParticipation
+
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
 
   belongs_to :author, class_name: 'User', optional: true

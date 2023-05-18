@@ -64,4 +64,77 @@ RSpec.describe Comment do
       expect { described_class.counter_culture_fix_counts }.not_to raise_error
     end
   end
+
+  describe 'anonymous participation' do
+    let(:author) { create(:user) }
+
+    it 'has an author hash of consistent length' do
+      comment = create(:comment)
+      expect(comment.author_hash.length).to eq 32
+    end
+
+    context 'creating comments that are not anonymous' do
+      it 'has the same author hash for comments in different projects when the author is the same' do
+        comment1 = create(:comment, author: author)
+        comment2 = create(:comment, author: author)
+        expect(comment1.author_hash).to eq comment2.author_hash
+      end
+    end
+
+    context 'creating anonymous comments' do
+      it 'has no author if set to anonymous' do
+        comment = create(:comment, anonymous: true)
+        expect(comment.author).to be_nil
+      end
+
+      it 'has the same author hash on each comment when the author and project are the same' do
+        project = create(:project)
+        idea1 = create(:idea, project: project)
+        idea2 = create(:idea, project: project)
+        comment1 = create(:comment, author: author, post: idea1, anonymous: true)
+        comment2 = create(:comment, author: author, post: idea2, anonymous: true)
+        expect(comment1.author_hash).to eq comment2.author_hash
+      end
+
+      it 'has a different author hash for comments in different projects when the author is the same' do
+        comment1 = create(:comment, author: author, anonymous: true)
+        comment2 = create(:comment, author: author, anonymous: true)
+        expect(comment1.author_hash).not_to eq comment2.author_hash
+      end
+
+      it 'has a different author hash for comments in the same project when one idea is anonymous and the other is not' do
+        project = create(:project)
+        idea1 = create(:idea, project: project)
+        idea2 = create(:idea, project: project)
+        comment1 = create(:comment, author: author, post: idea1)
+        comment2 = create(:comment, author: author, post: idea2, anonymous: true)
+        expect(comment1.author_hash).not_to eq comment2.author_hash
+      end
+    end
+
+    context 'updating comments' do
+      it 'deletes the author if anonymous is updated' do
+        comment = create(:comment)
+        comment.update!(anonymous: true)
+        expect(comment.author).to be_nil
+      end
+
+      it 'sets anonymous to false and changes the author hash if an author is supplied on update' do
+        comment = create(:comment, anonymous: true)
+        old_comment_hash = comment.author_hash
+        comment.update!(author: author)
+        expect(comment.author).not_to be_nil
+        expect(comment.anonymous).to be false
+        expect(comment.author_hash).not_to eq old_comment_hash
+      end
+
+      it 'generates a different author_hash if the author changes' do
+        comment = create(:comment)
+        old_comment_hash = comment.author_hash
+        comment.update!(author: author)
+        expect(comment.author_hash).not_to eq old_comment_hash
+      end
+    end
+  end
+
 end
