@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { updateCampaign, ICampaignData } from 'services/campaigns';
+import { updateCampaign } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
@@ -7,17 +7,17 @@ import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import GetCampaign from 'resources/GetCampaign';
-import { isNilOrError } from 'utils/helperUtils';
 import { Box } from '@citizenlab/cl2-component-library';
 import { colors } from 'utils/styleUtils';
+import { isNil } from 'utils/helperUtils';
+import { useParams } from 'react-router-dom';
+import useCampaign from 'api/campaigns/useCampaign';
 
-interface Props {
-  campaign: ICampaignData;
-}
+const Edit = () => {
+  const { campaignId } = useParams();
+  const { data: { data: campaign } = {} } = useCampaign(campaignId);
+  if (isNil(campaign)) return null;
 
-const Edit = ({ campaign }: Props) => {
   const handleSubmit = async (values: FormValues) => {
     await updateCampaign(campaign.id, {
       ...values,
@@ -51,10 +51,4 @@ const Edit = ({ campaign }: Props) => {
   );
 };
 
-export default withRouter((withRouterProps: WithRouterProps) => (
-  <GetCampaign id={withRouterProps.params.campaignId}>
-    {(campaign) =>
-      isNilOrError(campaign) ? null : <Edit campaign={campaign} />
-    }
-  </GetCampaign>
-));
+export default Edit;
