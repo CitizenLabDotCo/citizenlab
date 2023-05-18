@@ -540,11 +540,6 @@ RSpec.describe Idea do
   describe 'anonymous participation' do
     let(:author) { create(:user) }
 
-    it 'has no author if set to anonymous' do
-      idea = create(:idea, anonymous: true)
-      expect(idea.author).to be_nil
-    end
-
     it 'has an author hash of consistent length' do
       idea = create(:idea)
       expect(idea.author_hash.length).to eq 32
@@ -559,8 +554,14 @@ RSpec.describe Idea do
     end
 
     context 'ideas are anonymous' do
+      let(:project) { create(:project) }
+
+      it 'has no author if set to anonymous' do
+        idea = create(:idea, anonymous: true)
+        expect(idea.author).to be_nil
+      end
+
       it 'has the same author hash on each idea when the author and project are the same' do
-        project = create(:project)
         idea1 = create(:idea, author: author, project: project, anonymous: true)
         idea2 = create(:idea, author: author, project: project, anonymous: true)
         expect(idea1.author_hash).to eq idea2.author_hash
@@ -571,35 +572,36 @@ RSpec.describe Idea do
         idea2 = create(:idea, author: author, anonymous: true)
         expect(idea1.author_hash).not_to eq idea2.author_hash
       end
+
+      it 'has a different author hash for ideas in the same project when one idea is anonymous and the other is not' do
+        idea1 = create(:idea, author: author, project: project)
+        idea2 = create(:idea, author: author, project: project, anonymous: true)
+        expect(idea1.author_hash).not_to eq idea2.author_hash
+      end
     end
 
-    it 'has a different author hash for ideas in the same project when one idea is anonymous and the other is not' do
-      project = create(:project)
-      idea1 = create(:idea, author: author, project: project)
-      idea2 = create(:idea, author: author, project: project, anonymous: true)
-      expect(idea1.author_hash).not_to eq idea2.author_hash
-    end
+    context 'updating ideas' do
+      it 'deletes the author if anonymous is updated' do
+        idea = create(:idea)
+        idea.update!(anonymous: true)
+        expect(idea.author).to be_nil
+      end
 
-    it 'deletes the author if anonymous is updated' do
-      idea = create(:idea)
-      idea.update!(anonymous: true)
-      expect(idea.author).to be_nil
-    end
+      it 'sets anonymous to false and changes the author hash if an author is supplied on update' do
+        idea = create(:idea, anonymous: true)
+        old_idea_hash = idea.author_hash
+        idea.update!(author: author)
+        expect(idea.author).not_to be_nil
+        expect(idea.anonymous).to be false
+        expect(idea.author_hash).not_to eq old_idea_hash
+      end
 
-    it 'if an author is supplied on update it changes anonymous to false and changes the author hash' do
-      idea = create(:idea, anonymous: true)
-      old_idea_hash = idea.author_hash
-      idea.update!(author: author)
-      expect(idea.author).not_to be_nil
-      expect(idea.anonymous).to be false
-      expect(idea.author_hash).not_to eq old_idea_hash
-    end
-
-    it 'generates a different author_hash if the author changes' do
-      idea = create(:idea)
-      old_idea_hash = idea.author_hash
-      idea.update!(author: author)
-      expect(idea.author_hash).not_to eq old_idea_hash
+      it 'generates a different author_hash if the author changes' do
+        idea = create(:idea)
+        old_idea_hash = idea.author_hash
+        idea.update!(author: author)
+        expect(idea.author_hash).not_to eq old_idea_hash
+      end
     end
   end
 end
