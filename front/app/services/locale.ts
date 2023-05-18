@@ -35,12 +35,13 @@ import { first, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { includes, get } from 'lodash-es';
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import { authUserStream } from 'services/auth';
-import updateUserWithCacheInvalidation from 'api/users/updateUser';
+import { updateUser } from 'api/users/useUpdateUser';
 import { Locale } from 'typings';
-import { locales } from 'containers/App/constants';
+import { API_PATH, locales } from 'containers/App/constants';
 import { setCookieLocale, getCookieLocale } from 'utils/localeCookie';
 import clHistory from 'utils/cl-router/history';
 import { IAppConfiguration } from 'api/app_configuration/types';
+import streams from 'utils/streams';
 
 export const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(
   null as any
@@ -108,7 +109,7 @@ combineLatest([$authUser, $tenantLocales]).subscribe(
 export function updateLocale(locale: Locale, appConfig: IAppConfiguration) {
   const tenantLocales = appConfig.data.attributes.settings.core.locales;
   // "gets" the tenants locale and authUser
-  $authUser.pipe(first()).subscribe((authUser) => {
+  $authUser.pipe(first()).subscribe(async (authUser) => {
     // if the locale is supported on this tenant
     if (includes(tenantLocales, locale)) {
       // if there is an authenticated user
@@ -116,7 +117,10 @@ export function updateLocale(locale: Locale, appConfig: IAppConfiguration) {
         // updates the users locale preference,
         // which will trigger 1 that will set the locale to the locale stream
         // which will trigger 3 that will change the url accordingly
-        updateUserWithCacheInvalidation({ userId: authUser.data.id, locale });
+        await updateUser({ userId: authUser.data.id, locale });
+        await streams.fetchAllWith({
+          apiEndpoint: [`${API_PATH}/users/me`],
+        });
       } else {
         // if there's no auth user, set a cookie to remember this choice
         setCookieLocale(locale);
