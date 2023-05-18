@@ -1,28 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { adopt } from 'react-adopt';
 
-// services & resources
-import {
-  sendCampaign,
-  sendCampaignPreview,
-  ICampaignData,
-  isDraft,
-} from 'services/campaigns';
-import GetCampaign from 'resources/GetCampaign';
+import { sendCampaign, sendCampaignPreview, isDraft } from 'services/campaigns';
 import GetGroup from 'resources/GetGroup';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // components
 import Button from 'components/UI/Button';
@@ -40,10 +25,18 @@ import Modal from 'components/UI/Modal';
 import Stamp from './Stamp';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isNil, isNilOrError } from 'utils/helperUtils';
 
 // styling
 import { fontSizes } from 'utils/styleUtils';
+import { useState } from 'react';
+
+// hooks
+import useLocalize from 'hooks/useLocalize';
+import useAppConfiguration from 'api/app_configuration/__mocks__/useAppConfiguration';
+import useAuthUser from 'hooks/useAuthUser';
+import { useParams } from 'react-router-dom';
+import useCampaign from 'api/campaigns/useCampaign';
 
 const PageHeader = styled.div`
   display: flex;
@@ -129,55 +122,39 @@ const SendNowWarning = styled.div`
   margin-bottom: 30px;
 `;
 
-interface InputProps {}
+const Show = () => {
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
-interface DataProps {
-  campaign: ICampaignData;
-  user: GetAuthUserChildProps;
-  tenant: GetAppConfigurationChildProps;
-}
+  const [isCampaignSending, setIsCampaignSending] = useState(false);
+  const [showSendConfirmationModal, setShowSendConfirmationModal] =
+    useState(false);
 
-interface Props extends InputProps, DataProps {}
+  const appConfiguration = useAppConfiguration();
+  const user = useAuthUser();
+  const { campaignId } = useParams();
+  const { data: { data: campaign } = {} } = useCampaign(campaignId);
+  if (isNil(campaign)) return null;
 
-interface State {
-  showSendConfirmationModal: boolean;
-  isCampaignSending: boolean;
-}
-
-class Show extends React.Component<
-  Props & WithRouterProps & WrappedComponentProps & InjectedLocalized,
-  State
-> {
-  constructor(
-    props: Props & WithRouterProps & WrappedComponentProps & InjectedLocalized
-  ) {
-    super(props);
-    this.state = {
-      showSendConfirmationModal: false,
-      isCampaignSending: false,
-    };
-  }
-
-  handleSend = (noGroupsSelected: boolean) => () => {
+  const handleSend = (noGroupsSelected: boolean) => () => {
     if (noGroupsSelected) {
-      this.openSendConfirmationModal();
+      openSendConfirmationModal();
     } else {
-      this.setState({ isCampaignSending: true }, () => {
-        sendCampaign(this.props.campaign.id);
-      });
+      setIsCampaignSending(true);
+      sendCampaign(campaign.id);
     }
   };
 
-  handleSendTestEmail = () => {
-    sendCampaignPreview(this.props.campaign.id).then(() => {
-      const previewSentConfirmation = this.props.intl.formatMessage(
+  const handleSendTestEmail = () => {
+    sendCampaignPreview(campaign.id).then(() => {
+      const previewSentConfirmation = formatMessage(
         messages.previewSentConfirmation
       );
       window.alert(previewSentConfirmation);
     });
   };
 
-  handleGroupLinkClick =
+  const handleGroupLinkClick =
     (groupId?: string) => (event: React.FormEvent<any>) => {
       event.preventDefault();
       if (groupId) {
@@ -187,206 +164,181 @@ class Show extends React.Component<
       }
     };
 
-  getSenderName = (senderType: string) => {
-    const { user, tenant, localize } = this.props;
+  const getSenderName = (senderType: string) => {
     let senderName: string | null = null;
 
     if (senderType === 'author' && !isNilOrError(user)) {
       senderName = `${user.attributes.first_name} ${user.attributes.last_name}`;
-    } else if (senderType === 'organization' && !isNilOrError(tenant)) {
-      senderName = localize(tenant.attributes.settings.core.organization_name);
+    } else if (senderType === 'organization') {
+      senderName = localize(
+        appConfiguration.data.data.attributes.settings.core.organization_name
+      );
     }
 
     return senderName;
   };
 
-  openSendConfirmationModal = () => {
-    this.setState({ showSendConfirmationModal: true });
+  const openSendConfirmationModal = () => {
+    setShowSendConfirmationModal(true);
   };
 
-  closeSendConfirmationModal = () => {
-    this.setState({ showSendConfirmationModal: false });
+  const closeSendConfirmationModal = () => {
+    setShowSendConfirmationModal(false);
   };
 
-  confirmSendCampaign = (campaignId: string) => () => {
-    this.setState({ isCampaignSending: true }, () => {
-      sendCampaign(campaignId).then(() => {
-        this.closeSendConfirmationModal();
-      });
+  const confirmSendCampaign = (campaignId: string) => () => {
+    setIsCampaignSending(true);
+    sendCampaign(campaignId).then(() => {
+      closeSendConfirmationModal();
     });
   };
 
-  render() {
-    const { campaign } = this.props;
-    const { showSendConfirmationModal, isCampaignSending } = this.state;
+  if (campaign) {
+    const groupIds: string[] = campaign.relationships.groups.data.map(
+      (group) => group.id
+    );
+    const senderType = campaign.attributes.sender;
+    const senderName = getSenderName(senderType);
+    const noGroupsSelected = groupIds.length === 0;
 
-    if (campaign) {
-      const groupIds: string[] = campaign.relationships.groups.data.map(
-        (group) => group.id
-      );
-      const senderType = campaign.attributes.sender;
-      const senderName = this.getSenderName(senderType);
-      const noGroupsSelected = groupIds.length === 0;
-
-      return (
-        <Box background={colors.white} p="40px" id="e2e-custom-email-container">
-          <PageHeader>
-            <PageTitleWrapper>
-              <Title mr="12px">
-                <T value={campaign.attributes.subject_multiloc} />
-              </Title>
-              {isDraft(campaign) ? (
-                <StatusLabel
-                  backgroundColor={colors.brown}
-                  text={<FormattedMessage {...messages.draft} />}
-                />
-              ) : (
-                <StatusLabel
-                  backgroundColor={colors.success}
-                  text={<FormattedMessage {...messages.sent} />}
-                />
-              )}
-            </PageTitleWrapper>
-            {isDraft(campaign) && (
-              <Buttons>
-                <Button
-                  linkTo={`/admin/messaging/emails/custom/${campaign.id}/edit`}
-                  buttonStyle="secondary"
-                >
-                  <FormattedMessage {...messages.editButtonLabel} />
-                </Button>
-                <Button
-                  buttonStyle="admin-dark"
-                  icon="send"
-                  iconPos="right"
-                  onClick={this.handleSend(noGroupsSelected)}
-                  disabled={isCampaignSending}
-                  processing={isCampaignSending}
-                >
-                  <FormattedMessage {...messages.send} />
-                </Button>
-              </Buttons>
+    return (
+      <Box background={colors.white} p="40px" id="e2e-custom-email-container">
+        <PageHeader>
+          <PageTitleWrapper>
+            <Title mr="12px">
+              <T value={campaign.attributes.subject_multiloc} />
+            </Title>
+            {isDraft(campaign) ? (
+              <StatusLabel
+                backgroundColor={colors.brown}
+                text={<FormattedMessage {...messages.draft} />}
+              />
+            ) : (
+              <StatusLabel
+                backgroundColor={colors.success}
+                text={<FormattedMessage {...messages.sent} />}
+              />
             )}
-          </PageHeader>
-          <CampaignHeader>
-            <StampIcon />
-            <FromTo>
-              <div>
-                <FromToHeader>
-                  <FormattedMessage {...messages.campaignFrom} />
-                  &nbsp;
-                </FromToHeader>
-                <span>{senderName}</span>
-              </div>
-              <div>
-                <FromToHeader>
-                  <FormattedMessage {...messages.campaignTo} />
-                  &nbsp;
-                </FromToHeader>
-                {noGroupsSelected && (
-                  <GroupLink onClick={this.handleGroupLinkClick()}>
-                    {this.props.intl.formatMessage(messages.allUsers)}
-                  </GroupLink>
-                )}
-                {groupIds.map((groupId, index) => (
-                  <GetGroup key={groupId} id={groupId}>
-                    {(group) => {
-                      if (index < groupIds.length - 1) {
-                        return (
-                          <GroupLink
-                            onClick={this.handleGroupLinkClick(groupId)}
-                          >
-                            {!isNilOrError(group) &&
-                              this.props.localize(
-                                group.attributes.title_multiloc
-                              )}
-                            ,{' '}
-                          </GroupLink>
-                        );
-                      }
+          </PageTitleWrapper>
+          {isDraft(campaign) && (
+            <Buttons>
+              <Button
+                linkTo={`/admin/messaging/emails/custom/${campaign.id}/edit`}
+                buttonStyle="secondary"
+              >
+                <FormattedMessage {...messages.editButtonLabel} />
+              </Button>
+              <Button
+                buttonStyle="admin-dark"
+                icon="send"
+                iconPos="right"
+                onClick={handleSend(noGroupsSelected)}
+                disabled={isCampaignSending}
+                processing={isCampaignSending}
+              >
+                <FormattedMessage {...messages.send} />
+              </Button>
+            </Buttons>
+          )}
+        </PageHeader>
+        <CampaignHeader>
+          <StampIcon />
+          <FromTo>
+            <div>
+              <FromToHeader>
+                <FormattedMessage {...messages.campaignFrom} />
+                &nbsp;
+              </FromToHeader>
+              <span>{senderName}</span>
+            </div>
+            <div>
+              <FromToHeader>
+                <FormattedMessage {...messages.campaignTo} />
+                &nbsp;
+              </FromToHeader>
+              {noGroupsSelected && (
+                <GroupLink onClick={handleGroupLinkClick()}>
+                  {formatMessage(messages.allUsers)}
+                </GroupLink>
+              )}
+              {groupIds.map((groupId, index) => (
+                <GetGroup key={groupId} id={groupId}>
+                  {(group) => {
+                    if (index < groupIds.length - 1) {
                       return (
-                        <GroupLink onClick={this.handleGroupLinkClick(groupId)}>
+                        <GroupLink onClick={handleGroupLinkClick(groupId)}>
                           {!isNilOrError(group) &&
-                            this.props.localize(
-                              group.attributes.title_multiloc
-                            )}
+                            localize(group.attributes.title_multiloc)}
+                          ,{' '}
                         </GroupLink>
                       );
-                    }}
-                  </GetGroup>
-                ))}
-              </div>
-            </FromTo>
-            {isDraft(campaign) && (
-              <StyledButtonContainer>
-                <SendTestEmailButton onClick={this.handleSendTestEmail}>
-                  <FormattedMessage {...messages.sendTestEmailButton} />
-                </SendTestEmailButton>
-                &nbsp;
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.sendTestEmailTooltip} />
-                  }
-                />
-              </StyledButtonContainer>
-            )}
-          </CampaignHeader>
-
-          {isDraft(campaign) ? (
-            <DraftCampaignDetails campaignId={campaign.id} />
-          ) : (
-            <SentCampaignDetails campaignId={campaign.id} />
+                    }
+                    return (
+                      <GroupLink onClick={handleGroupLinkClick(groupId)}>
+                        {!isNilOrError(group) &&
+                          localize(group.attributes.title_multiloc)}
+                      </GroupLink>
+                    );
+                  }}
+                </GetGroup>
+              ))}
+            </div>
+          </FromTo>
+          {isDraft(campaign) && (
+            <StyledButtonContainer>
+              <SendTestEmailButton onClick={handleSendTestEmail}>
+                <FormattedMessage {...messages.sendTestEmailButton} />
+              </SendTestEmailButton>
+              &nbsp;
+              <IconTooltip
+                content={
+                  <FormattedMessage {...messages.sendTestEmailTooltip} />
+                }
+              />
+            </StyledButtonContainer>
           )}
+        </CampaignHeader>
 
-          <Modal
-            opened={showSendConfirmationModal}
-            close={this.closeSendConfirmationModal}
-            header={<FormattedMessage {...messages.confirmSendHeader} />}
-          >
-            <ModalContainer>
-              <SendNowWarning>
-                <FormattedMessage {...messages.toAllUsers} />
-              </SendNowWarning>
-              <ButtonsWrapper>
-                <Button
-                  buttonStyle="secondary"
-                  linkTo={`/admin/messaging/emails/custom/${campaign.id}/edit`}
-                >
-                  <FormattedMessage {...messages.changeRecipientsButton} />
-                </Button>
-                <Button
-                  buttonStyle="primary"
-                  onClick={this.confirmSendCampaign(this.props.campaign.id)}
-                  icon="send"
-                  iconPos="right"
-                  disabled={isCampaignSending}
-                  processing={isCampaignSending}
-                >
-                  <FormattedMessage {...messages.sendNowButton} />
-                </Button>
-              </ButtonsWrapper>
-            </ModalContainer>
-          </Modal>
-        </Box>
-      );
-    }
+        {isDraft(campaign) ? (
+          <DraftCampaignDetails campaignId={campaign.id} />
+        ) : (
+          <SentCampaignDetails campaignId={campaign.id} />
+        )}
 
-    return null;
+        <Modal
+          opened={showSendConfirmationModal}
+          close={closeSendConfirmationModal}
+          header={<FormattedMessage {...messages.confirmSendHeader} />}
+        >
+          <ModalContainer>
+            <SendNowWarning>
+              <FormattedMessage {...messages.toAllUsers} />
+            </SendNowWarning>
+            <ButtonsWrapper>
+              <Button
+                buttonStyle="secondary"
+                linkTo={`/admin/messaging/emails/custom/${campaign.id}/edit`}
+              >
+                <FormattedMessage {...messages.changeRecipientsButton} />
+              </Button>
+              <Button
+                buttonStyle="primary"
+                onClick={confirmSendCampaign(campaign.id)}
+                icon="send"
+                iconPos="right"
+                disabled={isCampaignSending}
+                processing={isCampaignSending}
+              >
+                <FormattedMessage {...messages.sendNowButton} />
+              </Button>
+            </ButtonsWrapper>
+          </ModalContainer>
+        </Modal>
+      </Box>
+    );
   }
-}
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  campaign: ({ params, render }) => (
-    <GetCampaign id={params.campaignId}>{render}</GetCampaign>
-  ),
-  user: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
-  tenant: ({ render }) => <GetAppConfiguration>{render}</GetAppConfiguration>,
-});
+  return null;
+};
 
-const ShowWithHOCs = injectIntl(injectLocalize(Show));
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <ShowWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default Show;
