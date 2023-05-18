@@ -55,7 +55,7 @@ resource 'Stats - Users' do
     example_request 'Count all users' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:attributes, :count)).to eq User.active.count
+      expect(json_response[:data].dig(:attributes, :count)).to eq User.active.count
     end
   end
 
