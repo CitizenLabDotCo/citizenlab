@@ -416,7 +416,7 @@ resource 'Comments' do
         parameter :author_id, 'The user id of the user owning the comment. Signed in user by default'
         parameter :body_multiloc, 'Multi-locale field with the comment body'
         parameter :parent_id, 'The id of the comment this comment is a response to'
-        parameter :anonymous, 'Change this comment to anonymous - true'
+        parameter :anonymous, 'Change this comment to anonymous - true/false'
       end
       ValidationErrorHelper.new.error_fields(self, Comment)
       response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::COMMENTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
