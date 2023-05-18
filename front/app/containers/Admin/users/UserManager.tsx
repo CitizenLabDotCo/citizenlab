@@ -44,13 +44,13 @@ const UserManager = ({
   groupId,
   groupType,
   search,
-  notCitizenlabMember = false,
+  notCitizenlabMember,
   deleteUsersFromGroup,
   includeInactive,
   canModerate,
   onlyBlocked,
 }: Props) => {
-  const [sort, setSort] = useState<IQueryParameters['sort']>('last_name');
+  const [sort, setSort] = useState<IQueryParameters['sort']>('-created_at');
   const [pageNumber, setPageNumber] =
     useState<IQueryParameters['pageNumber']>(1);
   const [selectedUsers, setSelectedUsers] = useState<SelectedUsersType>('none');

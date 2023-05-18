@@ -57,7 +57,7 @@ const SortableTh = ({ sortDirection, onClick, children }: SortableThProps) => (
 interface Props {
   selectedUsers: string[] | 'none' | 'all';
   handleSelect: (userId: string) => void;
-  notCitizenlabMember: boolean;
+  notCitizenlabMember?: boolean;
   currentPage: number | null;
   lastPage: number | null;
   sort: IQueryParameters['sort'];
