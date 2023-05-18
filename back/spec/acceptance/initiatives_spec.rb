@@ -516,6 +516,17 @@ resource 'Initiatives' do
         end
       end
 
+      describe do
+        let(:assignee_id) { create(:admin).id }
+
+        example 'Changing the assignee as a non-admin does not work', document: false do
+          do_request
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :relationships, :assignee)).to be_nil
+        end
+      end
+
       describe 'updating anomymous initiatives' do
         let(:anonymous) { true }
 
@@ -531,17 +542,6 @@ resource 'Initiatives' do
           do_request
           assert_status 401
           expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
-        end
-      end
-
-      describe do
-        let(:assignee_id) { create(:admin).id }
-
-        example 'Changing the assignee as a non-admin does not work', document: false do
-          do_request
-          expect(status).to be 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :relationships, :assignee)).to be_nil
         end
       end
     end
