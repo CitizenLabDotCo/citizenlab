@@ -27,6 +27,7 @@ import ThresholdReachedMessage from './ThresholdReachedMessage';
 import EligibilityCriteria from './EligibilityCriteria';
 import PageBody from './PageBody';
 import SubmitButton from './SubmitButton';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -34,11 +35,10 @@ import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 // typings
 import { Multiloc } from 'typings';
-
-const Container = styled.div``;
 
 export const StyledWarning = styled(Warning)`
   margin-bottom: 7px;
@@ -215,49 +215,54 @@ const InitiativesSettingsPage = () => {
   };
 
   return (
-    <Container>
-      <StyledSectionTitle>
-        <FormattedMessage {...messages.settingsTabTitle} />
-      </StyledSectionTitle>
-      <Section>
-        <ProposalsFeatureToggle
-          enabled={localProposalsSettings.enabled}
-          onToggle={onToggle}
-        />
-        <VotingThreshold
-          value={localProposalsSettings.voting_threshold}
-          onChange={updateProposalsSetting('voting_threshold')}
-        />
+    <>
+      <Title color="primary" mb="30px">
+        <FormattedMessage {...messages.settingsTab} />
+      </Title>
+      <Box background={colors.white} p="40px">
+        <StyledSectionTitle>
+          <FormattedMessage {...messages.settingsTabTitle} />
+        </StyledSectionTitle>
+        <Section>
+          <ProposalsFeatureToggle
+            enabled={localProposalsSettings.enabled}
+            onToggle={onToggle}
+          />
+          <VotingThreshold
+            value={localProposalsSettings.voting_threshold}
+            onChange={updateProposalsSetting('voting_threshold')}
+          />
 
-        <VotingLimit
-          value={localProposalsSettings.days_limit}
-          onChange={updateProposalsSetting('days_limit')}
-        />
+          <VotingLimit
+            value={localProposalsSettings.days_limit}
+            onChange={updateProposalsSetting('days_limit')}
+          />
 
-        <ThresholdReachedMessage
-          value={localProposalsSettings.threshold_reached_message}
-          onChange={updateProposalsSetting('threshold_reached_message')}
-        />
+          <ThresholdReachedMessage
+            value={localProposalsSettings.threshold_reached_message}
+            onChange={updateProposalsSetting('threshold_reached_message')}
+          />
 
-        <EligibilityCriteria
-          value={localProposalsSettings.eligibility_criteria}
-          onChange={updateProposalsSetting('eligibility_criteria')}
-        />
+          <EligibilityCriteria
+            value={localProposalsSettings.eligibility_criteria}
+            onChange={updateProposalsSetting('eligibility_criteria')}
+          />
 
-        <PageBody
-          value={newProposalsPageBody}
-          onChange={updateProposalsPageBody}
-        />
-      </Section>
+          <PageBody
+            value={newProposalsPageBody}
+            onChange={updateProposalsPageBody}
+          />
+        </Section>
 
-      <SubmitButton
-        disabled={!validate()}
-        processing={processing || isAppConfigurationLoading}
-        error={error || isAppConfigurationError}
-        success={success}
-        handleSubmit={handleSubmit}
-      />
-    </Container>
+        <SubmitButton
+          disabled={!validate()}
+          processing={processing || isAppConfigurationLoading}
+          error={error || isAppConfigurationError}
+          success={success}
+          handleSubmit={handleSubmit}
+        />
+      </Box>
+    </>
   );
 };
 

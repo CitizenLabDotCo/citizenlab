@@ -5,4 +5,8 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.granularPermissionsTitle',
     defaultMessage: 'Who can contribute ?',
   },
+  permissionsText: {
+    id: 'app.containers.Admin.initiatives.permissionsText',
+    defaultMessage: 'Permissions',
+  },
 });

@@ -21,6 +21,7 @@ import { trackPage } from 'utils/analytics';
 const ConsentManager = lazy(() => import('components/ConsentManager'));
 
 // components
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import ErrorBoundary from 'components/ErrorBoundary';
 import Navigate from 'utils/cl-router/Navigate';
 import Authentication from 'containers/Authentication';
@@ -43,7 +44,6 @@ import { localeStream } from 'services/locale';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useLocation } from 'react-router-dom';
 
@@ -52,7 +52,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled, { ThemeProvider } from 'styled-components';
-import { getTheme, media } from 'utils/styleUtils';
+import { getTheme, stylingConsts } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -77,21 +77,6 @@ const Container = styled.div<{
       height: 100%;
       overflow: hidden;
     `};
-`;
-
-const InnerContainer = styled.div`
-  width: 100vw;
-  padding-top: ${(props) => props.theme.menuHeight}px;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-
-  ${media.tablet`
-    min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - ${(
-    props
-  ) => props.theme.mobileMenuHeight}px);
-  `}
 `;
 
 export interface IOpenPostPageModalEvent {
@@ -328,6 +313,7 @@ const App = ({ children }: Props) => {
   };
 
   const isAdminPage = isPage('admin', location.pathname);
+  const isPagesAndMenuPage = isPage('pages_menu', location.pathname);
   const isInitiativeFormPage = isPage('initiative_form', location.pathname);
   const isIdeaFormPage = isPage('idea_form', location.pathname);
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
@@ -349,6 +335,7 @@ const App = ({ children }: Props) => {
     !isIdeaEditPage &&
     !isInitiativeEditPage;
   const { pathname } = removeLocale(location.pathname);
+  const showFrontOfficeNavbar = !isAdminPage || isPagesAndMenuPage;
 
   return (
     <>
@@ -401,10 +388,27 @@ const App = ({ children }: Props) => {
                   <ConsentManager />
                 </Suspense>
               </ErrorBoundary>
-              <ErrorBoundary>
-                <MainHeader setRef={setNavbarRef} />
-              </ErrorBoundary>
-              <InnerContainer>
+              {showFrontOfficeNavbar && (
+                <ErrorBoundary>
+                  <MainHeader setRef={setNavbarRef} />
+                </ErrorBoundary>
+              )}
+              <Box
+                width="100vw"
+                display="flex"
+                flexDirection="column"
+                alignItems="stretch"
+                pt={
+                  showFrontOfficeNavbar
+                    ? `${stylingConsts.menuHeight}px`
+                    : undefined
+                }
+                minHeight={
+                  isSmallerThanTablet
+                    ? `calc(100vh - ${stylingConsts.menuHeight}px - ${stylingConsts.mobileMenuHeight}px)`
+                    : `calc(100vh - ${stylingConsts.menuHeight}px)`
+                }
+              >
                 <HasPermission
                   item={{
                     type: 'route',
@@ -417,7 +421,7 @@ const App = ({ children }: Props) => {
                     <Navigate to="/" />
                   </HasPermission.No>
                 </HasPermission>
-              </InnerContainer>
+              </Box>
               {showFooter && (
                 <Suspense fallback={null}>
                   <PlatformFooter />
