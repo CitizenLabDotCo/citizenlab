@@ -21,11 +21,11 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       .active
       .count
 
-    render json: {
+    render json: raw_json({
       count: count,
       administrators_count: User.billed_admins.count,
       moderators_count: User.billed_moderators.count
-    }
+    })
   end
 
   def users_by_time_serie
