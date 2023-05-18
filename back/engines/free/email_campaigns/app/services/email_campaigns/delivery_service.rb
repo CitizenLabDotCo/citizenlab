@@ -50,6 +50,8 @@ module EmailCampaigns
       Campaigns::YourProposedInitiativesDigest
     ].freeze
 
+    EXAMPLES_PER_CAMPAIGN = 10
+
     def campaign_types
       campaign_classes.map(&:name)
     end
@@ -118,21 +120,24 @@ module EmailCampaigns
 
     def save_examples(campaigns_with_command)
       campaign_types = campaigns_with_command.map { |(_command, campaign)| campaign.type }.uniq
-      campaign_types.each do |campaign_type|
-        puts "campaign_type: #{campaign_type}"
-        if EmailCampaigns::RecentExample.where(campaign_class: campaign_type).count < 10
-          n_needed = 10 - EmailCampaigns::RecentExample.where(campaign_class: campaign_type).count
 
-          campaign_commands_to_process = campaigns_with_command.select { |(_command, campaign)| campaign.type == campaign_type }.first(n_needed)
+      campaign_types.each do |campaign_type|
+        if EmailCampaigns::RecentExample.where(campaign_class: campaign_type).count < EXAMPLES_PER_CAMPAIGN
+          n_needed = EXAMPLES_PER_CAMPAIGN - EmailCampaigns::RecentExample.where(campaign_class: campaign_type).count
+
+          campaign_commands_to_process = campaigns_with_command.select do |(_command, campaign)|
+            campaign.type == campaign_type
+          end.first(n_needed)
+
           campaign_commands_to_process.each do |(command, campaign)|
             mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
 
             example = EmailCampaigns::RecentExample.new(
               campaign_class: campaign_type,
-              mail_body_html: mail.body.to_s, # preview_html(campaign, command[:recipient]),
+              mail_body_html: mail.body.to_s,
               locale: command[:recipient].locale,
-              subject: mail.subject, # campaign.subject_multiloc[command[:recipient].locale],
-              recipient: command[:recipient].id
+              subject: mail.subject,
+              recipient: command[:recipient].id # We can serialize email for response, if user exists, else a 'user_deleted' string
             )
             if example.save
               puts "Saved example for campaign #{campaign_type}"
