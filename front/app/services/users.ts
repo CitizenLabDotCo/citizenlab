@@ -5,6 +5,7 @@ import { TRole } from 'services/permissions/roles';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
+import userCountKeys from 'api/users_count/keys';
 
 const apiEndpoint = `${API_PATH}/users`;
 
@@ -107,11 +108,7 @@ export async function updateUser(userId: string, object: IUserUpdate) {
 
   await streams.fetchAllWith({
     dataId: [userId],
-    apiEndpoint: [
-      `${API_PATH}/groups`,
-      `${API_PATH}/users`,
-      `${API_PATH}/stats/users_count`,
-    ],
+    apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`],
   });
 
   // Invalidate seats if the user's roles have changed
@@ -120,6 +117,9 @@ export async function updateUser(userId: string, object: IUserUpdate) {
   }
 
   queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
+  queryClient.invalidateQueries({
+    queryKey: userCountKeys.items(),
+  });
 
   return response;
 }
@@ -137,14 +137,13 @@ export async function changePassword(object: IChangePassword) {
 export async function deleteUser(userId: string) {
   const response = await streams.delete(`${apiEndpoint}/${userId}`, userId);
   await streams.fetchAllWith({
-    apiEndpoint: [
-      `${API_PATH}/groups`,
-      `${API_PATH}/users`,
-      `${API_PATH}/stats/users_count`,
-    ],
+    apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`],
   });
 
   invalidateSeatsCache();
 
+  queryClient.invalidateQueries({
+    queryKey: userCountKeys.items(),
+  });
   return response;
 }

@@ -4,9 +4,9 @@ const baseKey = {
   type: 'users_count',
 };
 
-const userUsersCountKeys = {
+const userCountKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
 } satisfies QueryKeys;
 
-export default userUsersCountKeys;
+export default userCountKeys;
