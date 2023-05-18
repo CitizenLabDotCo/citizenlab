@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Link from 'utils/cl-router/Link';
-import { NavItem } from '.';
+import { NavItem } from './navItems';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';

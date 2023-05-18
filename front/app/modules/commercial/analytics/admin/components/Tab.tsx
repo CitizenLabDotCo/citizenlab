@@ -24,7 +24,7 @@ const Tab = ({ onData, formatMessage }: ITabsOutlet) => {
         url: '/admin/dashboard/visitors',
         feature: 'analytics',
       },
-      insertAfterName: 'overview',
+      insertAfterName: 'moderation',
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visitorsDashboardEnabled]);
