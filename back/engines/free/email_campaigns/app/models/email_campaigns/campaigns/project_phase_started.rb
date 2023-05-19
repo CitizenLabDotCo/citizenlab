@@ -55,7 +55,7 @@ module EmailCampaigns
     end
 
     def self.recipient_role_multiloc_key
-      'email_campaigns.admin_labels.recipient_role.project_participants'
+      'email_campaigns.admin_labels.recipient_role.registered_users'
     end
 
     def self.recipient_segment_multiloc_key

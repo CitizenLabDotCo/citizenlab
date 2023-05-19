@@ -62,10 +62,6 @@ module EmailCampaigns
       'email_campaigns.admin_labels.content_type.proposals'
     end
 
-    def self.trigger_multiloc_key
-      'scheduled'
-    end
-
     def mailer_class
       YourProposedInitiativesDigestMailer
     end

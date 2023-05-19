@@ -62,7 +62,7 @@ module EmailCampaigns
     end
 
     def self.recipient_role_multiloc_key
-      'email_campaigns.admin_labels.recipient_role.admins_and_moderators'
+      'email_campaigns.admin_labels.recipient_role.admins_and_managers'
     end
 
     def self.recipient_segment_multiloc_key

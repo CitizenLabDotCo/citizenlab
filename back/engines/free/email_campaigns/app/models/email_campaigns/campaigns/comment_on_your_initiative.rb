@@ -59,11 +59,11 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.users_engaged_with_the_proposal'
+      'email_campaigns.admin_labels.recipient_segment.user_who_published_the_proposal'
     end
 
     def self.content_type_multiloc_key
-      'email_campaigns.admin_labels.content_type.comments'
+      'email_campaigns.admin_labels.content_type.proposals'
     end
 
     def self.trigger_multiloc_key

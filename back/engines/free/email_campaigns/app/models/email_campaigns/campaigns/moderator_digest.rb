@@ -74,10 +74,6 @@ module EmailCampaigns
       'email_campaigns.admin_labels.content_type.general'
     end
 
-    def self.trigger_multiloc_key
-      'scheduled'
-    end
-
     def generate_commands(recipient:, time: nil)
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       recipient.moderatable_project_ids.filter_map do |project_id|
