@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 
+// api
 import { isRegularUser } from 'services/permissions/roles';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-
-import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 import usePhases from 'api/phases/usePhases';
@@ -11,6 +10,12 @@ import usePhase from 'api/phases/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
 import { useParams, useSearchParams } from 'react-router-dom';
 import useAddIdea from 'api/ideas/useAddIdea';
+
+// Cookies
+import {
+  setCookieAnonymousConfirmation,
+  getCookieAnonymousConfirmation,
+} from 'components/AnonymousParticipationConfirmationModal/AnonymousCookieManagement';
 
 // i18n
 import messages from '../messages';
@@ -23,21 +28,24 @@ import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { Heading } from './Heading';
 import { Box } from '@citizenlab/cl2-component-library';
 import ProfileVisiblity from 'components/ProfileVisibility';
+import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 
+// utils
 import { geocode, reverseGeocode } from 'utils/locationTools';
-
-// for getting inital state from previous page
-import { parse } from 'qs';
-import { getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { getCurrentPhase } from 'api/phases/utils';
 import {
   ParticipationMethodConfig,
   getMethodConfig,
 } from 'utils/participationMethodUtils';
 import { getLocationGeojson } from '../utils';
-import { IProject } from 'api/projects/types';
-import { IPhases, IPhaseData } from 'api/phases/types';
+import { isError, isNilOrError } from 'utils/helperUtils';
+import { getCurrentPhase } from 'api/phases/utils';
+import { parse } from 'qs';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+
+// types
 import { Multiloc } from 'typings';
+import { IPhases, IPhaseData } from 'api/phases/types';
+import { IProject } from 'api/projects/types';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -93,7 +101,12 @@ const IdeasNewPageWithJSONForm = () => {
 
   const search = location.search;
 
+  const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
+    useState(false);
   const [processingLocation, setProcessingLocation] = useState(false);
+  const [formDataOnSubmit, setFormDataOnSubmit] = useState<
+    FormValues | undefined
+  >(undefined);
   const [initialFormData, setInitialFormData] = useState({});
   const [postAnonymously, setPostAnonymously] = useState(false);
 
@@ -127,6 +140,27 @@ const IdeasNewPageWithJSONForm = () => {
 
   const onSubmit = async (data: FormValues) => {
     if (!project) return;
+
+    setFormDataOnSubmit(data);
+
+    const hasAnonymousConfirmationCookie = getCookieAnonymousConfirmation();
+    if (
+      project.data.attributes.posting_enabled &&
+      postAnonymously &&
+      !hasAnonymousConfirmationCookie
+    ) {
+      // TODO: REPLACE WITH ALLOW_ANONYMOUS_PARTICIPATION
+      setShowAnonymousConfirmationModal(true);
+    } else {
+      continueSubmission(data);
+    }
+  };
+
+  const continueSubmission = async (data: FormValues | undefined) => {
+    if (!project || !data) {
+      setShowAnonymousConfirmationModal(false);
+      return;
+    }
 
     let location_point_geojson;
 
@@ -264,6 +298,14 @@ const IdeasNewPageWithJSONForm = () => {
       ) : isError(project) || inputSchemaError ? null : (
         <FullPageSpinner />
       )}
+      <AnonymousParticipationConfirmationModal
+        onConfirmAnonymousParticipation={() => {
+          setCookieAnonymousConfirmation();
+          continueSubmission(formDataOnSubmit);
+        }}
+        showAnonymousConfirmationModal={showAnonymousConfirmationModal}
+        setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
+      />
     </PageContainer>
   );
 };
