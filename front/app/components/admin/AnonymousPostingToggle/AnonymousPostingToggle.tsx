@@ -37,7 +37,12 @@ export const AnonymousPostingToggle = ({
         label={
           <Box ml="8px">
             <Box display="flex">
-              <Text color="primary" mb="0px" fontSize="m" fontWeight="bold">
+              <Text
+                color="primary"
+                mb="0px"
+                fontSize="m"
+                style={{ fontWeight: 600 }}
+              >
                 <FormattedMessage {...messages.userPrivacyLabelText} />
               </Text>
               <Box ml="4px" mt="16px">
@@ -48,7 +53,7 @@ export const AnonymousPostingToggle = ({
               </Box>
             </Box>
 
-            <Text color="primary" mt="0px" fontSize="s">
+            <Text color="coolGrey600" mt="0px" fontSize="m">
               <FormattedMessage {...messages.userPrivacyLabelSubtext} />
             </Text>
           </Box>
