@@ -1,136 +1,136 @@
-sr-SP:
+sr-Cyrl:
   symbols:
-    outside: negde drugde
+    outside: негде другде
   idea_statuses:
-    proposed: predloženo
-    proposed_description: Ova ideja je predložena administraciji
-    viewed: pregledano
-    viewed_description: Ova ideja je pogledana
-    under_consideration: razmatra se
-    under_consideration_description: Ova ideja se razmatra
-    accepted: prihvaćeno
-    accepted_description: Ova ideja je prihvaćena i biće realizovana
-    implemented: realizovano
-    implemented_description: Ova ideja je realizovana
-    rejected: odbijeno
-    rejected_description: Ova ideja je odbijena
+    proposed: предложено
+    proposed_description: Ова идеја је предложена граду
+    viewed: гледано
+    viewed_description: Ову идеју је видео неко из града
+    under_consideration: у разматрању
+    under_consideration_description: Ову идеју је град узео у обзир
+    accepted: прихваћено
+    accepted_description: Ова идеја је прихваћена и биће спроведена од стране града
+    implemented: имплементиран
+    implemented_description: Ову идеју је спровео град
+    rejected: одбијен
+    rejected_description: Ова идеја је одбијена
   initiative_statuses:
-    proposed: predloženo
-    proposed_description: predloženo
-    expired: isteklo
-    expired_description: isteklo
-    threshold_reached: sakupljeno dovoljno glasova
-    threshold_reached_description: sakupljeno dovoljno glasova
-    answered: odgovoreno
-    answered_description: odgovoreno
-    ineligible: nije moguće
-    ineligible_description: nije moguće
+    proposed: предложено
+    proposed_description: предложено
+    expired: истекао
+    expired_description: истекао
+    threshold_reached: достигнут праг
+    threshold_reached_description: достигнут праг
+    answered: одговорио
+    answered_description: одговорио
+    ineligible: неподобни
+    ineligible_description: неподобни
   topics:
-    nature: Ekologija
-    nature_description: Ekologija
-    waste: Komunalna pitanja
-    waste_description: Komunalna pitanja
-    sustainability: Održivi razvoj
-    sustainability_description: Održivi razvoj
-    mobility: Mobilnost
-    mobility_description: Mobilnost
-    technology: Energija i tehnologija
-    technology_description: Energija i tehnologija
-    economy: Posao, ekonomija i turizam
-    economy_description: Posao, ekonomija i turizam
-    housing: Stanovanje
-    housing_description: Stanovanje
-    public_space: Javni prostori
-    public_space_description: Javni prostori
-    safety: Sigurnost
-    safety_description: Sigurnost
-    education: Obrazovanje i omladina
-    education_description: Obrazovanje i omladina
-    culture: Kultura i sport
-    culture_description: Kultura i sport
-    health: Zdravlje
-    health_description: Zdravlje
-    inclusion: Socijalna inkluzija
-    inclusion_description: Socijalna inkluzija
-    community: Razvoj zajednice
-    community_description: Razvoj zajednice
-    services: Javne službe
-    services_description: Javne službe
-    other: Drugo
-    other_description: Drugo
+    nature: Природа и биодиверзитет
+    nature_description: Природа и биодиверзитет
+    waste: Чистоћа и отпад
+    waste_description: Чистоћа и отпад
+    sustainability: Одрживи развој
+    sustainability_description: Одрживи развој
+    mobility: Мобилност
+    mobility_description: Мобилност
+    technology: Енергија и технологија
+    technology_description: Енергија и технологија
+    economy: Рад, привреда и туризам
+    economy_description: Рад, привреда и туризам
+    housing: Становање
+    housing_description: Становање
+    public_space: Јавни простори и зграде
+    public_space_description: Јавни простори и зграде
+    safety: Сигурност
+    safety_description: Сигурност
+    education: Образовање и омладина
+    education_description: Образовање и омладина
+    culture: Култура, спорт и манифестације
+    culture_description: Култура, спорт и манифестације
+    health: Здравље и благостање
+    health_description: Здравље и благостање
+    inclusion: Социјална инклузија
+    inclusion_description: Социјална инклузија
+    community: Развој заједнице
+    community_description: Развој заједнице
+    services: Јавне службе
+    services_description: Јавне службе
+    other: Остало
+    other_description: Остало
   static_pages:
-    terms_and_conditions_title: Uslovi korišćenja
+    terms_and_conditions_title: Услови коришћења
     terms_and_conditions_body: >
-      <p>U ovim Uslovima i odredbama navedena su pravila i smernice doprinosa za platformu i oni su namenjeni kao pomoć u ostvarenju konstruktivnog dijaloga.</p> <p>Dobrodošle su vaše ideje za unapređenje platforme i možete ih slati na support@citizenlab.co.</p> <h2>Кo može da učestvuje?</h2> <p>Preko platforme svako može da vidi javne projekte. Ako biste želeli da doprinesete sadržajem (na primer, da podesete unos ili glasate), biće potrebno da se registrujete i napravite nalog. Možete da se registrujete pomoću adrese e-pošte. Na nekim platformama takođe je moguće da se prijavite pomoću postojećeg Facebook ili Google naloga. Ako koristite bilo koju od ovih usluga, vaše ime, adresa e-pošte i profilna fotografija biće podeljeni i dodati na vaš nalog na platformi.</p> <p>Imajte u vidu da vam kreairanje naloga ne daje pravo vlasništva. Administratori platforme mogu da odbiju, suspenduju ili izbrišu naloge iz različitih razloga, kao što je nepoštovanje uslova i odredaba navedenih na ovoj stranici.</p> <p>Opšti uslovi za vaš nalog su sledeći: </p> <ul> <li> <strong>Možete da kreirate jedan nalog</strong> <p>Jedna osoba ne može da kreira i održava više naloga. Detalji koje dajete na nalogu moraju da budu tačni i nalog ne može da se prebaci na nekog drugog bez dozvole administratora platforme. </p> </li> <li> <strong>Vaš nalog ne može se koristiti za komercijalnu promociju</strong> <p>Nalog ne može da se koristi samo u svrhu oglašavanja, marketinga proizvoda ili usluge itd.</p> </li> <li> <strong>Vi ste odgovorni za čuvanje bezbednosti i poverljivosti svog naloga</strong> <p>Vi ste jedina osoba koja treba da koristi vaš nalog i da ima pristup lozinci i detaljima prijave za svoj nalog. Кako biste poboljšali bezbednost svog naloga, savetujemo da koristite lozinku sa kombinacijom brojeva, malih slova i velikih slova. Mi ne snosimo odgovornost za bilo kakav gubitak ili štetu do koje dođe na vašem nalogu i ne možemo da odgovaramo u slučaju njegove krađe (na primer, putem fišinga). Imajte u vidu da mi od vas nikada nećemo tražiti vaše detalje za prijavljivanje, kao što je lozinka. </p>  <h2>Vaša aktivnost na platformi</h2> <p>Кako bi učešće bilo bezbedno i produktivno, postoje neka ograničenja vezano za vrstu sadržaja koji se može objavljivati na ovoj platformi. Svi sadržaji koje postavljate na platformu ne smeju da sadrže sledeće:</p> <ul> <li> <strong>Privatni podaci</strong> <p>Poverljivi podaci i lične informacije o drugim osobama, kao što su brojevi telefona i adrese ne smeju se postavljati, osim ako imate njihovo izričito ovlašćenje i saglasnost.  </p> <li><strong>Spam / malver / fišing / virusi / crvi / Trojanci</strong> <p>Zlonamerni sadržaj ili veze sa ciljem da naruše privatnost drugih ili nanesu štetu ili onemoguće nečiji pregledač ili računar.</p> </li> <li> <strong>Pretnje, uvrede i ostali vidovi neprikladnog sadržaja </strong> <p>Lični napadi i uvrede, preteće ponašanje ili jezik, diskriminatorni komentari, vulgarnost i drugo uvredljivo izražavanje.</p> </li> <li><strong>Oglašavanje i komercijalna aktivnost</strong> <p>Sadržaj koji se postavlja samo u svrhu oglašavanja komercijalne usluge ili proizvoda.</p> </li> <li> <strong>Sadržaj sa autorskim pravom</strong> <p>Sadržaj koji narušava nečija prava intelektualne svojine (na primer, slike zaštićene autorskim pravom).</p> </li> <li> <strong>Nezakonite aktivnosti</strong> <p>Sadržaj koji na bilo koji način promoviše nezakonite aktivnosti.</li></p> </ul> <p>Prosleđeni i bilo kakav drugi sadržaj koji obuhvata bilo šta od gorenavedenog može biti izmenjen, izbrisan ili će se na neki drugi način sprečiti njegovo postavljanje, a nalog može biti privremeno blokiran ili trajno izbrisan. Novi ili dodatni nalozi koji budu bili kreirani kako bi se izbeglo privremeno ili trajno suspendovanje takođe mogu biti nadgledani ili izbrisani.</p> <h2>Važeći zakoni</h2> <p>Upotreba naloga ne sme narušavati važeće zakone. To se odnosi na bilo kakva kršenja zakona o zaštiti ličnih podataka, prava intelektualne svojine, krivičnog zakonika itd.</p> <p>Mi ni na koji način ne možemo da snosimo odgovornost za sadržaj koji se postavlja na platformu, a koji nije u skladu sa navedenim pravilima i zakonima. Prekršaje možete prijaviti na support@citizenlab.co i to može dovesti do brisanja odgovarajućih poruka i/ili suspendovanja ili trajnog ukidanja spornog naloga.</p> <p>Moguće je da sadržaj koji se postavlja na platformu sadrži štetne datoteke ili veze. Preuzimanjem datoteka ili pristupanjem vezama preko platforme, prihvatate rizik i odgovornost za bilo kakvu štetu koja može da nastane.</p> <h2>Pravo svojine</h2> <p>Ova platforma zaštićena je pravom intelektualne svojine koja se odnosi na njegov saržaj, izvorni kôd, baze podataka itd. Svi originalni sadržaji koje postavite na platformu mogu biti vidljivi za javnost i potpadaju pod licencu Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) Public License, što omogućuje da vaš sadržaj može da se deli ili prilagođava uz atribuciju. Ni na koji drugi način nije dozvoljeno umnožavanje, distribuiranje, modifikovanje ili prenos platforme ili bilo koji od njenih sadržaja koji ne potpadaju pod javni domen, bez dozvole.</p>
-    privacy_policy_title: Politika privatnosti
+      <p>These terms & conditions outline the rules and guidelines of contributing to the platform and are meant to help ensure a constructive dialogue.</p> <p>Your ideas to further improve the platform are welcome and can be sent to support@citizenlab.co.</p> <h2>Who can participate?</h2> <p>Anyone is able to view public projects via the platform. If you’d like to contribute content (e.g., submit input or vote), you will need to register and create an account. You can register using your e-mail address; for some platforms, it may also be possible to sign in using an existing Facebook or Google account. If you use either of these services, your name, email address and profile photo will be shared with and added to your platform account.</p> <p>Please note that the creation of your account does not give you ownership. Platform administrators can refuse, suspend or delete accounts for reasons such as not adhering to the terms and conditions outlined on this page.</p> <p>The general conditions for your account are the following: </p> <ul> <li> <strong>You may create one account</strong> <p>An individual may not create and maintain multiple accounts. The account details you provide must be accurate and this account cannot be transferred to someone else without permission from a platform administrator. </p> </li> <li> <strong>Your account cannot be used for commercial promotion</strong> <p>An account may not be used for the sole purpose of advertising, marketing a product or service, etc.</p> </li> <li> <strong>You are responsible for keeping your account information secure and confidential</strong> <p>You are the only person who should use your account and have access to your account’s password and login details. To improve your account security, we advise using a password with a combination of numbers, lowercase letters and uppercase letters. We are not responsible for any loss or damage incurred to your account and cannot be held responsible for its theft (e.g., via phishing). Note that we will never ask you for your log-in details such as your password. </p>  <h2>Your activity on the platform</h2> <p>To ensure safe and productive participation, there are some restrictions on the type of content that may be published on this platform. Any content you post on the platform must be free of:</p> <ul> <li> <strong>Private data</strong> <p>Confidential data and personal information about others, such as telephone numbers and addresses may not be posted without their express authorization and consent.  </p> <li><strong>Spam / malware / phishing / viruses / worms / Trojans</strong> <p>Malicious content or links that are meant violate others’ privacy or to damage or disrupt others’ browsers or computers.</p> </li> <li> <strong>Threats, insults and other inappropriate content </strong> <p>Personal attacks and insults, threatening behavior or language, discriminatory comments, profanity and other offensive language.</p> </li> <li><strong>Advertising and commercial activity</strong> <p>Content posted with the sole purpose of advertising a commercial service or product.</p> </li> <li> <strong>Copyrighted material</strong> <p>Content that infringes upon intellectual property rights (e.g., copyrighted images).</p> </li> <li> <strong>Illegal activities</strong> <p>Content that in any way promotes illegal activities.</li></p> </ul> <p>Submissions and other content that includes any of the above may be edited, deleted or otherwise prevented from being posted, and the account may be temporarily blocked or permanently deleted. New or additional accounts created to avoid temporary or permanent suspension may also be monitored and deleted.</p> <h2>Applicable laws</h2> <p>The use of an account may not infringe upon applicable laws. This includes any violation of privacy legislation, intellectual property rights, the criminal code, etc.</p> <p>We cannot be held liable in any way for content posted on the platform that does not adhere to the above rules and laws. Violations can be reported to support@citizenlab.co and may result in the relevant messages being deleted and/or the underlying account being suspended or permanently revoked.</p> <p>It is possible that content posted on the platform can contain harmful files or links. By downloading files or accessing hyperlinks via the platform, you assume the risk and responsibility for any damage that may incur.</p> <h2>Property rights</h2> <p>This platform is protected by intellectual property rights related to its content, source code, databases, etc. Any original content that you post on the platform may be visible to the public and falls under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) Public License, which allows your content to be shared or adapted with attribution. You may not otherwise reproduce, distribute, modify or transmit the platform and any of its contents that do not fall under the public domain without permission.</p>
+    privacy_policy_title: Правила о приватности
     privacy_policy_body: >
-      <p> Odgovorni za obradu podataka: </p> <p> CitizenLab NV - Anspachlaan 65 - 1000 Brisel - Belgija </p> <p> Email adresa za kontakt: support@citizenlab.co </p> <p> Organizacija: // ubacite kontakt klijenta </p> <h2> 1. POLITIKA PRIVATNOSTI </h2> <p> Ova „Politika privatnosti“ odnosi se na „Lične podatke“ koje je CitizenLab prikupio u ime organizacije putem ove web stranice. </p> <h2> 2. ŠTA SU LIČNI PODACI? </h2> <p> U ovoj politici privatnosti lični podaci se odnose na informacije koje omogućuju vašu identifikaciju. Lice koje je moguće identifikovati je neko ko se može identifikovati, bilo direktno ili indirektno, posebnim pozivanjem na identifikacioni broj ili na jedan ili više faktora koji su povezani sa fizičkim, fiziološkim, mentalnim, ekonomskim, kulturnim ili socijalnim identitetom. Tipičan primer ličnih podataka su vaše ime i email adresa. </p> <h2> 3. KOJE LIČNE PODATKE PRIKUPLJAMO? </h2> <p> Vaše lične podatke možemo prikupiti iz sledeća tri izvora: </p> <h3> 3.1 lični podaci koje navedete tokom postupka registracije na platformi, od kojih neki nisu obavezni. </h3> <p> Lični podaci koje bismo mogli prikupiti od vas su: </p> <ul> <li> Ime i prezime </li> <li> Email adresa </li> <li> Godina rođenja </li> <li> Pol </li> <li> Mesto prebivališta </li> <li> Željeni jezik </li> </ul> <p> Ovu listu možete proširiti na zahtev organizacije. Ako se odlučite da se prijavite preko nezavisnog identiteta poput Google naloga, Facebook-a ili FranceConnect, od njih ćemo dobiti ove podatke. Ako odlučite da verifikujete svoj identitet kod nezavisnog provajdera identifikacije kao COV, FranceConnect ili CSAM, od njih ćemo dobiti ove informacije. </p> <h3> 3.2 Lični podaci koje navedete prilikom preduzimanja participativnih radnji na našoj platformi. < / h3> <p> Svaka akcija koju preduzmete na platformi (glasanje, objavljivanje ideje, pisanje komentara, odgovaranje na anketu, ...) se registruje i čuva. Ovi podaci su takođe povezani sa vašim podacima o registraciji (3.1), što podrazumeva da organizacija može povezati vaš profil na platformi sa ovim podacima o učešću. </p> <h3> 3.3 Lični podaci koje prikupljamo kada posetite našu platformu. </h3> <p> Mi (i nezavisni procesori koji deluju u naše ime) prikupljamo informacije o korišćenju naše platforme za procenu dobrog funkcionisanja i sigurnosti platforme. U tu svrhu prikupljamo tehničke informacije koje vas mogu identifikovati, kao što su vaša IP adresa i detalji pretraživača. Korišćenjem naših usluga pristajete da se ovi podaci prikupljaju. </p> <p> Takođe prikupljamo podatke o korišćenju kako bismo poboljšali naše usluge. Uvek možete da onemogućite ovo putem menadžera saglasnosti. </p> < h2> 4. KAKO KORISTIMO LIČNE PODATKE? </h2> <p> Vaše lične podatke možemo koristiti u sledeće svrhe: </p> <ul> <li> Prvo i najvažnije, da bismo vaše podatke preneli organizaciji sa relevantnim kontekstom, kako bi kreirala objedinjene izveštaje o svim podacima prikupljenim na ovoj platformi i imala pomoć prilikom donošenja odluka. </li> <li> U svrhe kreiranja i održavanja vašeg korisničkog profila na ovoj web lokaciji. </li> <li> Za upravljanje identifikacijom i potvrdom identiteta korisnika. </li> <li> Da bismo vam pružili informacije o zajednici i/ili vas obavestili u slučaju kada bi vas aktivnosti na platformi mogle zanimati. U svakom trenutku možete da onemogućite email obaveštenja putem svog korisničkog profila. </li> <li> Da biste poboljšali naše usluge i nadzirali njihove funkcionalnosti. </li> </ul> <p> Lični podaci se čuvaju za period potreban radi obrade. Nakon toga, podaci će biti izbrisani ili anonimizirani. </p> <h2> 5. SA KIM DELIMO VAŠE LIČNE PODATKE? </h2> <p> Vaše lične podatke delimo sa organizacijom u ime koje prikupljamo ove podatke. Vaše podatke delimo sa potprocesorima koji rade u naše ime. Nikada nećemo prodati ili iznajmiti vaše lične podatke drugim dobavljačima usluga, niti ćemo deliti vaše lične podatke sa bilo kojim dobavljačem usluga koji nije u skladu sa GDPR-om. </p> <h2> 6. GDE PRENOSIMO VAŠE LIČNE PODATKE? </h2> <p> Vaše lične podatke prenosimo samo dobavljačima usluga sa sedištem van Evropskog ekonomskog prostora ako su u skladu sa članom 44 GDPR.</p><h2> 7. KOJA PRAVA IMATE? </h2> <p> Imate pravo da pregledate svoje lične podatke u bilo kom trenutku, kao i pravo da budete obavešteni o upotrebi vaših ličnih podataka od strane Citizenlab-a. </p> < h3> 7.1 Pravo na ispravku, brisanje i ograničenje obrade </h3> <p> Slobodni ste da odlučite da li ćete svoje lične podatke dostaviti Citizenlabu ili ne. Pored toga, uvek imate pravo da zatražite da Citizenlab ispravi, dopuni ili ukloni vaše lične podatke. Pristajete da odbijanje pružanja ili zahtev za brisanje ličnih podataka znači da određene usluge više ne mogu biti isporučene. Takođe možete zatražiti da obrada vaših ličnih podataka bude ograničena. Ako odlučite da uklonite svoj nalog sa platforme, lični podaci prikupljeni o vama biće uklonjeni sa naših servera. Neki lični podaci o vama mogli bi ostati u evidencijskim podacima koje čuvamo iz sigurnosnih i pravnih razloga do 30 dana. </p> <h3> 7.2 Pravo na prigovor </h3> <p> Imate pravo da uložite prigovor na obradu vaših ličnih podataka iz ozbiljnih i legitimnih razloga. Pored toga, uvek imate pravo da prigovorite upotrebi svojih ličnih podataka u svrhe direktnog marketinga; u takvim slučajevima ne morate da navodite razloge. </p> <h3> 7.3 Pravo na prenosivost podataka </h3> <p> Imate pravo da lične podatke koje ste dostavili Citizenlabu pribavite u struktuiranom, tipičnom obliku i mašinski čitljivom obrascu i/ili da takve prenesete različitim kontrolorima. </p> <h3> 7.4 Pravo na povlačenje saglasnosti </h3> <p> Ukoliko se obrada zasniva na vašoj prethodnoj saglasnosti, imate pravo da povučete ovo odobrenje. </p> <h3> 7.5 Ostvarivanje ličnih prava </h3> <p> Svoja prava možete ostvariti tako što ćete kontaktirati Citizenlab, putem email-a na support@citizenlab.co, ili poštom na Anspachlaan 65, 1000 Brisel, Belgija, ili pomoću obrasca „Kontaktirajte nas“ na našoj veb lokaciji, pod uslovom da priložite kopiju prednje strane svoje lične karte. </p> <h3> 7.6 Automatsko donošenje odluka i profilisanje </h3> <p > Obrada vaših ličnih podataka ne uključuje profilisanje i Citizenlab ih takođe neće podvrgavati automatskom donošenju odluka. </p> <h3> 7.7 Pravo na ulaganje žalbe </h3> <p> Imate Pravo podnošenja žalbe organu za zaštitu privatnosti vaše zemlje ili belgijskom organu za zaštitu privatnosti pod kojim je CitizenLab nadležan: Drukpersstraat 35, 1000 Brisel, Belgija, Tel +32 (0) 2 274 48 00, faks +32 (0 ) 2 274 48 35, e-mail: contact@adp-gba.be. To ne utiče na olakšanje pred građanskim sudom. </p> <h2> 8. DODATNE INFORMACIJE O PRIKUPLJANJU I OBRADI PODATAKA </h2> <h3> Pravni postupci </h3> <p> CitizenLab i Organizacije kojima obrađujemo ove podatke mogu koristiti Lične podatke Korisnika u pravne svrhe, za sudske ili pravne postupke prethodne faze u slučaju nezakonite upotrebe ove Aplikacije ili srodnih usluga. Korisnik je svestan da će CitizenLab i Organizacija sa kojom radimo možda biti obavezni da otkriju lične podatke na zahtev nadležnih državnih institucija za obradu podataka. Pravni osnov za ovu obradu je prihvatanje uslova i odredbi (ugovorna osnova) i data saglasnost. </p> <h3> Mere bezbednosti </h3> <p> Citizenlab je razvio mere bezbednosti koje su tehnološki prilagođene i organizacioni nivo za sprečavanje uništavanja, gubitka, falsifikovanja, promene, zabranjenog pristupa ili pogrešnog otkrivanja ličnih podataka trećim licima, kao i bilo koje druge zabranjene obrade ovih podataka. Citizenlab ni pod kojim okolnostima ne može biti odgovoran za bilo kakav direktan ili indirektan gubitak koji je rezultat netačne ili nezakonite upotrebe vaših ličnih podataka od strane treće strane. U svakom trenutku morate da se pridržavate sigurnosnih uputstava, uključujući sprečavanje svih zabranjenih pristupa vašim detaljima za prijavu i lozinci. Sami ste odgovorni za upotrebu  na vašem računaru, za IP adresu i vaše identifikacione detalje, kao i za njihovu poverljivost. </p> <h3> Izmene ove politike privatnosti </h3> <p > CitizenLab zadržava pravo da u bilo kom trenutku promeni ovu politiku privatnosti tako što će obavestiti korisnike na ovoj stranici. Savetujemo vam da na ovoj stranici pogledate moguće promene. Datum poslednje promene naveden je na dnu stranice. Ako se korisnik protivi nekoj promeni politike, korisnik ne sme da nastavi da koristi ovu aplikaciju. Ako nije drugačije naznačeno, važeća Politika privatnosti koja se primenjuje u to vreme primenjuje se na sve lične podatke koje smo prikupili. </p> <p> <em> Najnovije ažuriranje: 17.12.2019 </em> </p>
-    infopage_title: Informacije
-    infopage_body: "<p> Ova <strong> platforma za učešće </strong> inicijativa je vaše opštine ili organizacije i može se koristiti za različite procese javnih konsultacija: prikupljanje ideja, glasanje, diskusije, ankete, upitnike, participativno budžetiranje, mapiranje, planiranje scenarija, podršku savetodavnim odborima ... </p>\n<p> Na početnoj stranici videćete koji <strong> su procesi aktivni </strong> i u kojoj su <strong> fazi </strong> trenutno. </p>\n<p><img data-cl2-text-image-text-reference=\"e2c7bc7a-017d-4887-a3cb-b94185617a59\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<h2> Kako da se prijavim na platformu? </h2>\n<p> Prijavljivanje se vrši lako - navođenjem imena i prezimena i email adrese. Takođe, možete da koristite svoj Google ili Facebook nalog. Samo će vaše ime i prezime biti vidljivo drugima. </p>\n<h2> Mogu li sam da koristim platformu, npr. kako bih organizovao javnu raspravu? </h2>\n<p> Apsolutno. Zatražite od odgovornih u vašoj opštini ili organizaciji da vam daju potrebna prava i dozvole kako biste postali moderator projekta. Jednom kada dobijete ove dozvole, možete da postavite svoj projekat i vremenske okvire, kao i da delite informacije koje želite (video, dokumente, slike ...). Ovo će vam takođe omogućiti da pozovete druge na platformu, i podstaknete ih da postavljaju ideje u okviru vašeg projekta, glasaju ili komentarišu. </p>\n<h2> Mogu li da učestvujem kao udruženje/organizacija/odbor? </h2>\n<p> Da, to je moguće. S obzirom na to da su drugima samo vaša imena i prezimena vidljiva na platformi, možete jednostavno koristiti ime svoje organizacije prilikom kreiranja profila. </p>\n<h2> Zašto bih koristio ovu platformu, umesto da sam kreiram svoju web stranicu? </h2>\n<p> Tim posvećenih programera i stručnjaka za onlajn učešće (<a href=\"https://www.citizenlab.co/en\" target=\"_blank\">CitizenLab,</a> po nalogu vaše opštine ili organizacije) svakodnevno poboljšava i ažurira ovu platformu. Čak se i najmanja greška rešava odmah, a ako imate kreativne predloge, oni vam mogu pomoći da uvidite koje se funkcije platforme mogu koristiti za njih. <p><img data-cl2-text-image-text-reference=\"392d0e47-e5f9-41ab-9ceb-affac617b8b1\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<p><strong><em> Potrebno vam je više informacija? </em> </strong> <em> Želite li da koristite platformu? Pitanja ili utisci? Obratite se odgovornima u vašoj opštini ili organizaciji, ili kontaktirajte CitizenLab putem support@citizenlab.co. </em> </p><strong>"
-    faq_title: FAQ
-    faq_body: "<h2 class=\"ql-align-justify\">Čemu je namenjena ova platforma?</h2><p class=\"ql-align-justify\">Platforma predstavlja centralno mesto za razmenu informacija i prikupljanje različitih podataka i povratnih informacija. Participativni projekti koji su trenutno aktivni prikazani su na početnoj stranici - svaki od njih može da podrazumeva drugačiji način učešća, bilo da se radi o dodavanju nove ideje, komentarisanju predloga, glasanju i određivanju prioriteta ili popunjavanja ankete.</p><h2 class=\"ql-align-justify\">Kako mogu da učestvujem?</h2><p class=\"ql-align-justify\">U svakom trenutku možete pregledati aktivne projekte, a ukoliko želite da uzmete učešće u njima potrebno je da se registrujete.  Ovo je potrebno kako bi se održala zajednica i osigurala legitimnost dobijenih unosa. </p><h2 class=\"ql-align-justify\">Koje informacije o meni su vidljive javno?</h2><p class=\"ql-align-justify\">Vidljivo je vaše ime, fotografija i biografija - ukoliko ste je dodali. Ove informacije u svakom trenutku možete promeniti u svojim podešavanjima.</p><h2 class=\"ql-align-justify\">Zašto ne mogu da objavim sadržaj ili postavim komentar?</h2><p class=\"ql-align-justify\">Objavljivanje, komentarisanje i glasanje je omogućeno samo tokom određenog vremenskog intervala ili faze projekta. U nekim slučajevima, projekat može biti otvoren samo za unose od strane određene grupe korisnika.</p><p class=\"ql-align-justify\">Ukoliko je objavljivanje unosa u okviru određenog projekta predviđeno, videćete dugme koje omogućuje da unesete vaš sadržaj. Takođe, možete pretražiti i ostale aktivne projekte kako biste pronašli dodatne mogućnosti angažovanja.</p><h2 class=\"ql-align-justify\">Kako da izmenim ili obrišem svoj unos?</h2><p class=\"ql-align-justify\">Ako ste već objavili unos, ali želite da ga izmenite ili izbrišete, ovu opciju možete pronaći klikom na tri male tačke u gornjem desnom uglu objave.</p><h2 class=\"ql-align-justify\">Kakve su smernice za učešće i politika moderiranja? </h2><p class=\"ql-align-justify\">Cilj naših smernica je da pomognu da platforma bude bezbedan prostor za sve oblike učešća. Zato vas molimo da vodite računa o tome da vaše objave ne sadrže: </p><ul>\n    <li class=\"ql-align-justify\">Lične napade, uvrede, uvredljive ili diskriminišuće komentare</li>\n    <li class=\"ql-align-justify\">Uvredljiv ton, uključujući i psovke</li>\n    <li class=\"ql-align-justify\">Marketinški ili reklamni materijal</li>\n    <li class=\"ql-align-justify\">Lične podatke drugih pojedinaca</li>\n    <li class=\"ql-align-justify\">Materijal koji je zaštićen autorskim pravima (poput fotografija)</li>\n    </ul><p class=\"ql-align-justify\">Bilo koje objave ili komentari koji se ne pridržavaju ovih smernica mogu biti izmenjene ili obrisane, dok se u ekstremnim situacijama može zabraniti i njihova objava. Molimo vas da pogledate naša Pravila i uslove za više informacija.</p><h2 class=\"ql-align-justify\">Kako da prijavim uvredljiv sadržaj?</h2><p class=\"ql-align-justify\">Da biste prijavili ovakav sadržaj, kliknite na tri male tačke u gornjem desnom uglu objave. Nakon toga, navedite razlog zbog kojeg prijavljujete sadržaj – nakon čega će biti poslato obaveštenje da se isti pregleda.</p><h2 class=\"ql-align-justify\">Zašto imam poteškoća sa registracijom ili prijavljivanjem?</h2><p class=\"ql-align-justify\">Ako ne možete da se registrujete, razlog može biti to što ste se već registrovali sa istom email adresom ili vam je poziv za priključivanje platformi prethodno poslat. Ukoliko vidite obaveštenje da je na vašu email adresu već poslat poziv koji je na čekanju, proverite svoju poštu i kliknite na link u pozivnici kako biste registrovali nalog. Ukoliko ne možete da pronađete pozivnicu, proverite vaš spam folder ili zatražite da vam se pošalje nova. </p><h2 class=\"ql-align-justify\">Kako da resetujem lozinku?</h2><p class=\"ql-align-justify\">Resetovanje lozinke možete zatražiti putem stranice za prijavljivanje. Ukoliko resetujete lozinku, link će biti poslat na vašu email adresu, te je potrebno da sledite uputstva kako biste je promenili. Iz sigurnosnih razloga, link važi jedan sat. U slučaju da je link istekao, možete jednostavno da kliknete na opciju „Zaboravili ste lozinku?“, koja se nalazi na stranici za prijavljivanje, nakon čega će biti generisan novi link za resetovanje lozinke.  </p><p class=\"ql-align-justify\">Ukoliko niste dobili poruku, proverite da li se ona nalazi u vašoj spam pošti, kao i da li ste prilikom zahtevanja linka uneli ispravnu email adresu. </p><h2 class=\"ql-align-justify\">Šta ćete učiniti sa mojim podacima?</h2><p class=\"ql-align-justify\">Pročitajte našu politiku privatnosti za više informacija o prikupljanju i korišćenju podataka. Ukratko, nikada nećemo koristiti vaše podatke za oglašavanje, marketing ili druge vrste neželjene pošte.</p><h2 class=\"ql-align-justify\">Koju vrstu email obaveštenja ću dobijati?</h2><p class=\"ql-align-justify\">Može se desiti da dobijete email obaveštenja koja su povezana sa vašim nalogom i vašim aktivnostima na platformi – na primer, u situacijama u kojima neko odgovori na neku od vaših objava. U svojim podešavanjima, pod sekcijom “Obaveštenja” možete uključiti i isključiti vrste poruka koje primate putem elektronske pošte i tako odrediti koja email obaveštenja želite da dobijate. </p><h2 class=\"ql-align-justify\">Kako da obrišem svoj nalog?</h2><p class=\"ql-align-justify\">U vašim podešavanjima postoji mogućnost brisanja vašeg naloga. Sve vaše prethodne objave i komentari će se i dalje nalaziti na platformi, ali će vaše ime biti uklonjeno iz njih, odnosno zamenjeno sa ispisom “nepoznati autor”. Ako želite da izbrišete i sve unose koje ste objavili, potrebno je da to učinite pre brisanja naloga.</p>"
-    initiatives_title: Predlozi
+      <p>Responsible for the processing of the Data:</p> <p>CitizenLab NV - Anspachlaan 65 - 1000 Brussels - Belgium</p> <p>Contact e-mail address: support@citizenlab.co</p> <p>Organization: //insert client contacts</p> <h2>1. PRIVACY POLICY</h2> <p>This ‘Privacy Policy’ applies to the ‘Personal Data’ collected by CitizenLab on behalf of the organization through this website.</p> <h2>2. WHAT ARE PERSONAL DATA?</h2> <p>In this Privacy Policy, Personal Data refers to information that makes it possible to identify you. An identifiable person is someone who can be identified, either directly or indirectly, in particular by referring to an identification number or to one or more factors that are linked to physical, physiological, mental, economic, cultural or social identity. A typical example of personal information is your name and email address.</p> <h2>3. WHAT PERSONAL DATA DO WE COLLECT?</h2> <p>We might collect your Personal Data from the following three sources:</p> <h3>3.1 Personal Data that you provide during the registration process on the Platform, some of which are optional.</h3> <p>The personal data that we might collect from you are:</p> <ul> <li>First and last name</li> <li>E-mail address</li> <li>Year of birth</li> <li>Gender</li> <li>Area of residence</li> <li>Preferred language</li> </ul> <p>This list can be extended on request of the organization. If you choose to sign-in via a 3rd party authentication provider as Google Accounts, Facebook or FranceConnect, we will get this data from them. If you choose to verify your identity with a 3rd party identity provider as COW, FranceConnect or CSAM, we will get this information from them.</p> <h3>3.2 Personal data that you provide when taking participative action on our platform.</h3> <p>Every action you take on the platform (voting, posting an idea, writing a comment, answering a poll,…) is registered and stored. This data is also linked to your registration data (3.1), implying that the organization can link your platform profile to this participation data.</p> <h3>3.3 Personal Data that we collect when you visit our platform.</h3> <p>We (and third party processors acting on our behalf) collect information about usage of our platform for assessing the good functioning and security of the platform. To this end, we collect technical information that can identify you, such as your IP address and browser details. By using our services you agree to this data being collected.</p> <p>We also gather usage data to improve our services, you can opt-out of this collection at all time from the consent manager.</p> <h2>4. HOW DO WE USE PERSONAL DATA?</h2> <p>We might use your personal data for the following purposes:</p> <ul> <li>First and foremost, to communicate your input to the organization with relevant context, and to draw aggregated reports of all the data collected on this platform to assist their decision-making.</li> <li>To create and maintain your user profile on this website.</li> <li>To manage the identification and authentication of users.</li> <li>To provide information about your community and/or alert you when activities on the platform may interest you. You can opt-out of user emails from your user profile at any time.</li> <li>To improve our services and monitor their functionalities.</li> </ul> <p>The personal data is only stored and processed for the period required for the purpose of the processing. After that, the data will be deleted or anonymized.</p> <h2>5. WITH WHOM DO WE SHARE YOUR PERSONAL DATA?</h2> <p>We share your personal data with the organization on behalf of which we gather this data. We share your data to the sub-processors working on our behalf. We will never sell or rent your personal data to other service providers, nor will we share your Personal Data with any service providers who are not compliant with the GDPR.</p> <h2>6. WHERE DO WE TRANSFER YOUR PERSONAL DATA TO?</h2> <p>We only transfer your Personal Data to service providers established outside the European Economic Area if they comply to art 44 GDPR.</p> <h2>7. WHAT RIGHTS DO YOU HAVE?</h2> <p>You have the right to view your personal data at any time, as well as the right to be informed of the use that Citizenlab makes of your personal data.</p> <h3>7.1 Right to rectification, erasure and restriction of processing</h3> <p>You are free to decide whether or not to provide your personal data to Citizenlab. In addition, you always have the right to request Citizenlab to correct, supplement or remove your personal data. You acknowledge that a refusal to provide or a request for the erasure of personal data means that certain services can no longer be delivered. You may also request that the processing of your personal data is limited. If you choose to remove your account from the platform, the personal data that was collected about you will be removed from our servers. Some personal information about you might remain in the logging data we keep for security and legal reasons for up to 30 days.</p> <h3>7.2 Right to object</h3> <p>You have the right to object to the processing of your personal data for serious and legitimate reasons. In addition, you always have the right to object to the use of your personal data for direct marketing purposes; in such cases, you do not have to state reasons.</p> <h3>7.3 Right to data portability</h3> <p>You have the right to obtain the personal data you have provided to Citizenlab in a structured, typical and machine-readable form and/or have such transferred to different controllers.</p> <h3>7.4 Right to withdraw consent</h3> <p>Insofar as the processing is based on your prior consent, you have the right to withdraw this approval.</p> <h3>7.5 Exercising your rights</h3> <p>You can exercise your rights by contacting Citizenlab to this end, either by email to support@citizenlab.co, by post to Anspachlaan 65, 1000 Brussels, Belgium or by using the “Contact us” form on our Website, provided you enclose a copy of the front of your identity card.</p> <h3>7.6 Automated decision-making and profiling</h3> <p>The processing of your personal data does not include profiling and shall also not be subjected by Citizenlab to automated decision-making.</p> <h3>7.7 Right to lodge a complaint</h3> <p>You have the right to lodge a complaint to the Privacy authority of your country, or the Belgian Privacy Authority under which authority CitizenLab falls: Drukpersstraat 35, 1000 Brussels, Belgium, Tel +32 (0)2 274 48 00, Fax +32 (0)2 274 48 35, e-mail: contact@adp-gba.be. This does not affect relief before a civil court.</p> <h2>8. ADDITIONAL INFORMATION ON DATA COLLECTION AND PROCESSING</h2> <h3>Legal procedures</h3> <p>CitizenLab and the Organization we process this data for might use the Personal Data of the User for legal purposes, for the court or legal proceedings preceding phases in the event of unlawful use of this Application or the related services. The User is aware that CitizenLab and the Organization we work with might be obliged to disclose the personal data at the request of competent government institutions for the processing of the Data. The legal basis for this processing is the acceptance of the terms and conditions (contractual basis) and given consent.</p> <h3>Security Measures</h3> <p>Citizenlab has developed security measures which have been adjusted at the technological and organisational level to prevent the destruction, loss, falsification, changing, prohibited access or the erroneous disclosure to third parties of personal data as well as any other prohibited processing of this data. Under no circumstances can Citizenlab be held liable for any direct or indirect loss resulting from the incorrect or unlawful use of your personal data by a third party. You must at all times comply with the security instructions, including by preventing all prohibited access to your login details and password. You are solely responsible for the use made from the website on your computer, IP-address and your identification details, as well as for the confidentiality of such.</p> <h3>Changes to this privacy policy</h3> <p>CitizenLab reserves the right to change this privacy policy at any time by notifying Users on this page. We encourage you to check this page for possible changes. The date of the last change is indicated at the bottom of the page. If a User objects to any change in the policy, the User must not continue to use this Application. Unless otherwise indicated, the valid Privacy Policy applicable at that time applies to all Personal Data that we have collected.</p> <p><em>Most recent update: 17/12/2019</em></p>
+    infopage_title: Страница са информацијама
+    infopage_body: "<p>This <strong>all-in-one participation platform</strong> is an initiative of your municipality or organisation and can be used for different public consultation processes: collecting ideas, voting, discussing, surveys, polls, participatory budgeting, online mapping, scenario planning, support for advisory boards and committees, ...</p>\n<p>On the home page, you'll see which <strong>processes are active </strong>and in which <strong>phase </strong>they currently are.</p>\n<p><img data-cl2-text-image-text-reference=\"e2c7bc7a-017d-4887-a3cb-b94185617a59\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<h2>How do I sign in on the platform?</h2>\n<p>Signing in is done easily by giving your first and last name and your e-mail address. You could also use your Google or Facebook account. Only your first and last name will be visible to others.</p>\n<h2>Can I use the platform myself, e.g. to organise a public consultation?</h2>\n<p>Absolutely. Ask the responsible within your municipality or organisation to give you the needed permission rights to become a project moderator. Once granted these permissions, you can set up your own project and timeline and share the information you want (video, documents, images, ...). This will also allow you to invite others to the platform, enabling them to post ideas within your project, vote or comment.</p>\n<h2>Can I participate as an association/organisation/committee? </h2>\n<p>Yes, that's possible. Given that only your first and last name are visible to others on the platform, you can simply use your organisation's name while setting up your profile.</p>\n<h2>Why would I use this platform and not create a website myself?</h2>\n<p>A team of dedicated developers and specialists in online participation (<a href=\"https://www.citizenlab.co/en\" target=\"_blank\">CitizenLab,</a> commissioned by your municipality or organisation) is improving and updating this platform on a daily basis. Even the smallest bug gets tackled immediately and if you have creative proposals, they can help you pointing out which features of the platform can be used for this or which ones are in the pipeline.</p>\n<p><img data-cl2-text-image-text-reference=\"392d0e47-e5f9-41ab-9ceb-affac617b8b1\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<p><strong><em>Need more information?</em></strong><em> Do you want to use the platform? Questions or feedback? Contact the responsible within your municipality or organisation. Or contact CitizenLab through support@citizenlab.co.</em></p><strong>"
+    faq_title: ФАК
+    faq_body: "<h2 class=\"ql-align-justify\">What is this platform for?</h2><p class=\"ql-align-justify\">This platform is designed as a central hub to share information and get input and feedback. Participation projects that are currently active are shown on the homepage - each participation project may have a different mode of engagement, whether it’s adding an idea, commenting on a proposal, voting on and prioritising projects, or taking a survey. </p><h2 class=\"ql-align-justify\">How do I participate? </h2><p class=\"ql-align-justify\">You can always browse public projects, but you’ll need to sign up in order to take an action. This helps to maintain a community feel and ensure the legitimacy of the input. </p><h2 class=\"ql-align-justify\">What information can people see about me?</h2><p class=\"ql-align-justify\">Your name, photo and bio, if you’ve added one, are visible. You can always change these in your Settings.</p><h2 class=\"ql-align-justify\">Why can’t I post my input or submit a comment?</h2><p class=\"ql-align-justify\">Posting, commenting and voting may be enabled only during certain times or phases of a project. In some instances, a project may only be open to contributions from a certain stakeholder group.</p><p class=\"ql-align-justify\">If posting is currently enabled for a project, you’ll see a button that prompts you to submit a post. Alternatively, you can browse other active projects for additional engagement opportunities.</p><h2 class=\"ql-align-justify\">How do I edit or delete my input?</h2><p class=\"ql-align-justify\">If you’ve posted your input but want to make edits or delete it, you can find this option by clicking on the three small dots on the top right of the post. </p><h2 class=\"ql-align-justify\">What are the community guidelines and moderation policies?</h2><p class=\"ql-align-justify\">Our community guidelines are here to help ensure that the platform is a safe space for everyone to participate. Please ensure your posts are free of:</p><ul>\n  <li class=\"ql-align-justify\">Personal attacks, insults, abusive or discriminatory comments</li>\n  <li class=\"ql-align-justify\">Offensive language including profanity</li>\n  <li class=\"ql-align-justify\">Marketing or advertising material</li>\n  <li class=\"ql-align-justify\">Personal information about other individuals</li>\n  <li class=\"ql-align-justify\">Copyrighted material such as images</li>\n  </ul><p class=\"ql-align-justify\">Any posts or comments that do not adhere to these guidelines may be edited or deleted, or in extreme instances, prevented from being posted. Please review our Terms &amp; Conditions for more information. </p><h2 class=\"ql-align-justify\">How do I report an offensive post?</h2><p class=\"ql-align-justify\">Click on the three small dots on the top right corner of the post to report it. Please indicate the reason you are reporting the content - this will send a notification for the post to be reviewed.</p><h2 class=\"ql-align-justify\">Why am I having difficulty signing up or logging in?</h2><p class=\"ql-align-justify\">If you’re unable to sign up, it may be because you’ve already registered with the same email address or previously received an invitation to join the platform. If you see a message that your email address is taken by a pending invite, please check your email and follow the link in the invitation to register your account. If you can’t find the invite, try looking in your spam box or request a new invitation. </p><h2 class=\"ql-align-justify\">How do I reset my password?</h2><p class=\"ql-align-justify\">You can always request to reset your password from the log in page. If you reset your password, a link will be sent to your email address - follow the instructions to change your password. For security reasons, the link is valid for one hour. If the link has expired, you can simply click on ‘Forgot password?’ in the log in page again to generate a new reset link.</p><p class=\"ql-align-justify\">If you didn’t receive the email, check to make sure that it’s not in your spam and that you’re sending the link to the same email address that you signed up with.</p><h2 class=\"ql-align-justify\">What will you do with my data?</h2><p class=\"ql-align-justify\">Review our privacy policy for more information on data collection and usage. In short, we will never use your data for advertising, marketing or other types of spam.</p><h2 class=\"ql-align-justify\">What emails will I receive?</h2><p class=\"ql-align-justify\">You may receive emails related to your account and your activity on the platform, for instance, when someone responds to one of your posts. You can control which emails you receive in your Settings. There is a section called “Notifications” where you can turn email notifications on and off.</p><h2 class=\"ql-align-justify\">How do I delete my account?</h2><p class=\"ql-align-justify\">In your Settings there is the option to delete your account. Input that you’ve posted will remain published, but your name will be removed from the post and replaced with ‘unknown author.’ If you’d like to delete all of your input, please do so before deleting your account. </p>"
+    initiatives_title: Предлози
     initiatives_body: >
-      <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>Šta je predlog građana?</h2> <p>Кao rezident $|orgName| možete da postavite svoj predlog u dnevni red putem platforme. Poželjno je da ovi predlozi budu konkretne ideje koje su povezane sa lokalnom politikom i javljaju se zbog postojanja potrebe, želje ili sna. To može da bude vaš lični predlog ili neki zajednički. Možda biste želeli da promenite ili unapredite postojeću situaciju ili započnete novi projekat.</p> <p>Umešanost $|orgName| u primeni vašeg predloga mora biti i neophodna i moguća. U idealnom scenariju, vi ste takođe dostupni za dalja razmatranja ili saradnju, ali vam to nije obaveza. „Smanjenje ograničenja brzine na auto-putu na 80 km/h” u tom smislu nije jak predlog, dok „Pretvaranje glavne ulice u pešačku zonu” to jeste. Prema tome, iznesite svoje predloge! Ako je potrebno više informacija, primićete ažuriranje ili reakciju.</p><h2>Zašto postavljati predloge na ovu platformu?</h2> <p>Ovo je zvanična platforma za učešće $|orgName|, što donosi sledeće pogodnosti:</p> <ul> <li>$|orgName| zvanično su umešani kao vlasnik ove platforme i aktivno nadziru šta se ovde događa. Кada postavite predlog, nadležna osoba automatski prima poruku. Nije potrebno da ih kontaktirate kako biste se uverili da će vaš predlog biti razmotren.</li> <li>Ova platforma razvijena je namenski za zvanične aktivnosti učešća, kao što su predlozi građana. Svaki element, od korisničkog iskustva do pristupa korak-po-korak, napravljen je isključivo u ovu svrhu. Кada koristite tradicionalne društvene mreže, vaš predlog može da nestane u masi stimulišućih sadržaja i obična poruka e-pošte brzo nestane u punom sandučetu.</li> <li>Vaši sugrađani takođe su prisutni na ovoj platformi. Oni podržavaju i rafinišu vaš predlog Što je vaš predlog kreativniji i što veću podršku uspe da sakupi, to su i šanse veće da će se sprovesti u delo!</li> </ul> <h2>Кako da počnete?</h2> <p>Prvo, proverite da li vaš predlog ispunjava sledeće kriterijume:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>Šta možete da očekujete kada vaš predlog dostigne $|initiativesVotingThreshold| glasova u roku od $|initiativesDaysLimit| dana?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>Šta se dešava sa predlozima koj ne dobiju $|initiativesVotingThreshold| glasova na vreme? </h2> <p>To se dešava, ne brinite. Vaš predlog će ostati na platformi. Status vašeg predloga automatski će se promeniti na 'Isteklo'. Кao rezultat, glasanje više neće biti moguće. Ako želite, možete da izaberete da izbrišete svoj predlog u bilo kom trenutku.</p>
+      <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>What's a citizen's proposal?</h2> <p>As a resident of $|orgName| you can place your proposal on the agenda via this platform. These proposals are preferably concrete ideas that are linked to local policy and arise from a need, desire or dream. It can be your own proposal or a collaborative one. Maybe you'd like to change or improve an existing situation or start a new project.</p> <p>The involvement of $|orgName| in the implementation of your proposal must be both necessary and possible. In an ideal scenario, you're also available for further reflection or cooperation, but that is not an obligation. "Reducing the speed limit on the highway to 80 km/h" is therefore not a strong proposal, while "Turning the main street into a pedestrian area" is. So bring on your proposals! If more information is needed, you'll receive an update or reaction.</p><h2>Why post a proposal on this platform?</h2> <p>This is the official participation platform of $|orgName|, which offers the following benefits:</p> <ul> <li>$|orgName| is officially involved as this platform's owner, and actively monitors what happens here. When you post a proposal, the person in charge automatically receives a message. You don't have to contact them to make sure your proposal is taken into account.</li> <li>This platform has been developed specifically for official participatory actions, like citizens' proposals. Every element, from the user experience to the step-by-step approach, is built precisely for this purpose. When using traditional social media, your proposal could disappear into the overload of stimuli, and an ordinary e-mail quickly disappears into a full inbox.</li> <li>Your fellow citizens are also present on this platform. They can support and refine your proposal. The more creative your proposal is and the more support it manages to gather, the more chance it will be implemented!</li> </ul> <h2>How do you get started?</h2> <p>First, check whether your proposal meets the following criteria:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>What can you expect when your proposal reaches $|initiativesVotingThreshold| votes within $|initiativesDaysLimit| days?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>What happens to the proposals that do not receive $|initiativesVotingThreshold| votes on time? </h2> <p>That happens, but don't worry. Your proposal will remain on the platform. The status of your proposal will automatically change to 'Expired'. As a result, voting will no longer be possible. If you wish, you can choose to delete your own proposal at any time.</p>
   nav_bar_items:
     home:
-      title: Početna
+      title: Почетна
     projects:
-      title: Svi projekti
+      title: Сви пројекти
     all_input:
-      title: Svi postovi
+      title: Сав унос
     proposals:
-      title: Predlozi
+      title: Предлози
     events:
-      title: Događaji
+      title: Догађаји
     about:
-      title: Više informacija
+      title: О томе
     faq:
-      title: Најчешћа питања
+      title: ФАК
   projects:
-    open_idea_project_title: Imate ideju? Predstavite je nadležnima!
-    open_idea_project_description_preview: Imate ideju koja se ne uklapa u neki od postojećih projekata? Objavite je ovde, skupite podršku i uvrstite je na dnevni red!
+    open_idea_project_title: Идеја? Донесите то свом савету!
+    open_idea_project_description_preview: Можда имате идеју која се не уклапа у неки од постојећих пројеката? Онда то поставите овде, прикупите подршку и ставите је на политички дневни ред!
     open_idea_project_description: >
-      <p>Ovde možete pokrenuti sopstvenu ideju, ukoliko se ne uklapa u neki od postojećih projekata. </p> <p> <strong> Cilj? </strong> Uvrstite svoju ideju na dnevni red. </p><p> <strong> Kako? </strong> Prikupljanjem podrške - odnosno najmanje 100 glasova u 3 meseca. To možete učiniti tako što ćete ideju prvo učiniti „privlačnom“. Opišite je na jasan i zanimljiv način, dodajte slike, dajte jake argumente zasnovane na činjenicama, dodajte priloge sa detaljima i informacijama... Nakon što to učinite, počnite da delite svoju ideju na društvenim mrežama ili putem email obaveštenja. Pozovite ljude da se pridruže diskusiji o vašoj ideji ili ih jednostavno ubedite da je podrže glasanjem za. </p> <p> <strong> O čemu? </strong> Vaša ideja može biti o mnogim stvarima, sve dok je povezana sa vašim gradom i njegovom politikom. To može biti problem sa kojim se suočavate, rešenje koje zamislite ili čak kombinacija obe stvari. Može biti ambiciozno i dugoročno, ili vrlo opipljivo i orijentisano na brzu izvodljivost. </p> <p> <strong> A onda? </strong> Da li ste postigli 100 glasova za 3 meseca? Čestitamo! Vaša ideja će se uzeti u obzir. Ako se vaša ideja smatra izvodljivom i ne šteti određenim grupama ili pojedincima, imaćete priliku da svoj predlog iznesete na zvaničnom sastanku. Tokom sastanka, dobićete povratne informacije o tome šta može biti učinjeno sa vašom idejom i zašto. Ako za 3 meseca ne sakupite 100 glasova, vaš predlog neće biti razmatran.</p> <p>Radoznali smo da saznamo vaše ideje! </p>
+      <p>Овде можете покренути сопствену идеју ако се не уклапа у неки од постојећих пројеката.</p><p><strong>Циљ?</strong> Да би ваша идеја била на политичкој агенди.</p><p><strong>Како?</strong> Прикупљањем подршке, односно најмање 100 гласова за 3 месеца. То можете учинити тако што ћете своју идеју прво учинити „привлачном“. Напишите то на јасан и занимљив начин, додајте слике, дајте јаке аргументе засноване на чињеницама, додајте прилоге са додатним детаљима или позадинским информацијама,... Након што то урадите, почните да делите своју идеју на друштвеним мрежама или путем е-поште. Позовите људе да се придруже дискусији о вашој идеји или их једноставно убедите да је подрже гласањем за.</p><p><strong>О чему?</strong> Ваша идеја може да се односи на много ствари, све док је везана за ваш град и његову политику. То може бити проблем који имате, решење које замислите или чак комбинација обоје. Може бити дивља и дугорочна, или врло опипљива и брза победа.</p><p><strong>И онда? </strong>Да ли сте достигли 100 гласова за 3 месеца? Честитам! Град ће сада узети у обзир вашу идеју. Ако се ваша идеја сматра изводљивом и не штети одређеним групама или појединцима, имаћете прилику да изнесете свој предлог током седнице већа. Током истог састанка, чланови савета ће вам дати директну повратну информацију о томе шта ће или неће урадити са вашом идејом и зашто. Ако не прикупите 100 гласова за 3 месеца, ваш предлог неће бити разматран.</p><p>Радознали смо да сазнамо више о вашим идејама!</p>
   events:
-    council_meeting_title: Sastanak odbora
+    council_meeting_title: Састанак Савета
     council_meeting_description: >
-      <p> Tokom ovog sastanka biće predstavljene građanske inicijative koje su dobile 100 glasova za manje od 3 meseca. </p> <p> Veće će zatim podeliti svoje mišljenje o svakoj ideji. </p>
+      <p>На овој седници Већа биће представљене оне грађанске иницијативе које су за мање од 3 месеца добиле 100 гласова.</p><p>Веће ће затим поделити своје мишљење о свакој идеји.</p>
   custom_fields:
     users:
       gender:
-        title: Pol
+        title: Пол
       birthyear:
-        title: Godina rođenja
+        title: Година рођења
       domicile:
-        title: Mesto prebivališta
+        title: Место становања
       education:
-        title: Obrazovanje
+        title: образовање
     ideas:
       title:
-        title: Naslov
+        title: Наслов
         description:
       body:
-        title: Opis
+        title: Опис
         description:
       author_id:
-        title: Autor
+        title: Аутор
       topic_ids:
-        title: Tema
+        title: Ознаке
         description:
       location:
-        title: Lokacija
+        title: Локација
         description:
       proposed_budget:
-        title: Predloženi budžet
+        title: Предложени буџет
         description:
       budget:
-        title: Budžet
+        title: Буџет
       images:
-        title: Slike
+        title: Слике
         description:
       attachments:
-        title: Prilozi
+        title: Прилози
         description:
       section1:
         description:
@@ -144,86 +144,105 @@ sr-SP:
     categories:
       main_content:
         idea:
-          title: Šta je vaša ideja ?
+          title: Шта је твоја идеја?
         question:
-          title: Šta je vaše pitanje ?
+          title: Шта је ваше питање?
         contribution:
-          title: Šta je vaš prilog ?
+          title: Који је ваш допринос?
         project:
-          title: Šta je vaš projekat ?
+          title: Шта је ваш пројекат?
         issue:
-          title: Šta je vaša tema ?
+          title: Који је твој коментар?
         option:
-          title: Šta je vaša opcija ?
+          title: Која је твоја опција?
       details:
-        title: Detalji
+        title: Детаљи
       attachements:
-        title: Slike i prilozi
+        title: Слике и прилози
       extra:
-        title: Dodatne informacije
+        title: Додатне Информације
   custom_field_options:
     gender:
-      male: Muškarac
-      female: Žena
-      unspecified: Ostalo
+      male: Мушки
+      female: Женско
+      unspecified: Остало
     domicile:
-      outside: Negde drugo
+      outside: Негде другде
     education:
-      ISCED2: Osnovna škola
-      ISCED3: Gimnazija
-      ISCED4: Srednja škola stručnog usmerenja
-      ISCED5: Viša škola
-      ISCED6: Visoka stručna sprema
-      ISCED7: Master
-      ISCED8: Doktor nauka
+      ISCED2: Ниже средње образовање
+      ISCED3: Више средње образовање
+      ISCED4: Нетерцијарно образовање након средње школе
+      ISCED5: Кратки циклус терцијарног образовања
+      ISCED6: Бацхелор или еквивалент
+      ISCED7: Мастер или еквивалент
+      ISCED8: Докторске или еквивалентне
   initiatives:
     default_threshold_reached_message: >
-      <p>Inicijatori su pozvani da predstave svoj predlog na sledećem sastanku nadležnih organa. Uskoro ćemo objaviti zvanično obaveštenje.</p>
+      <p>Позивају се иницијатори да изнесу свој предлог на следећој седници већа. Обезбедићемо званично ажурирање.</p>
     default_eligibility_criteria: >
-      <ul> <li>Mora biti u skladu sa važećim oblastima i kompetencijala lokalne uprave</li> <li>Mora staviti interes javnosti ispred ličnog interesa</li> <li>Ne sme podsticati diskriminaciju po bilo kom osnovu, ili imati negativan uticaj na druge</li></ul>
+      <ul> <li>Мора да спада у области политике и надлежности локалне политике</li> <li>Служи јавном интересу, а не вашем индивидуалном интересу</li> <li>Не дискриминише на основу пола, расе, старости или порекла</li> <li>Не штети другима</li> </ul>
   reset_password_mailer:
     send_reset_password:
-      cta_reset_password: 'Resetujte vašu lozinku'
-      message_you_reset_your_password: 'Zatražili ste resetovanje lozinke za %{organizationName} participativnu platformu. Kliknite na dugme u nastavku da biste izabrali novu, sigurnu lozinku. Link ističe za 1 sat.'
-      subject: '%{organizationName}: Resetujte lozinku'
-      title_reset_your_password: 'Izaberite novu lozinku'
+      cta_reset_password: 'Ресетујте вашу лозинку'
+      message_you_reset_your_password: 'Захтевали сте ресетовање лозинке за платформу за учешће %{organizationName}. Кликните на дугме испод да бисте изабрали нову, безбедну лозинку. Веза истиче за 1 сат.'
+      subject: '%{organizationName}: Ресетујте лозинку'
+      title_reset_your_password: 'Изаберите нову лозинку'
   xlsx_export:
     column_headers:
-      input_id: 'ID'
-      latitude: 'Geografska širina'
-      longitude: 'Geografska dužina'
-      author_fullname: 'Ime autora'
-      author_email: 'E-pošta autora'
-      author_id: 'ID autora'
+      input_id: 'ИД'
+      latitude: 'Географска ширина'
+      longitude: 'Географска дужина'
+      author_fullname: 'Име аутора'
+      author_email: 'Имејл аутора'
+      author_id: 'ИД аутора'
       budget: 'Буџет'
-      created_at: 'Predato u'
-      published_at: 'Objavljeno u'
-      comments_count: 'Komentari'
-      upvotes_count: 'Glasovi za'
-      downvotes_count: 'Glasovi protiv'
-      baskets_count: 'Korpe'
-      input_url: 'URL'
-      project: 'Projekti'
+      created_at: 'Послано на'
+      published_at: 'Објављено на'
+      comments_count: 'Коментари'
+      upvotes_count: 'Упвотес'
+      downvotes_count: 'Довнвотес'
+      baskets_count: 'Баскетс'
+      input_url: 'УРЛ'
+      project: 'Пројекат'
       status: 'Статус'
-      assignee_fullname: 'Zadužena osoba'
-      assignee_email: 'E-pošta dodeljenog korisnika'
+      assignee_fullname: 'Асигнее'
+      assignee_email: 'Имејл примаоца'
   form_builder:
     default_select_field:
-      title: 'Vaše pitanje'
-      option1: 'Opcija 1'
-      option2: 'Opcija 2'
+      title: 'Ваше питање'
+      option1: 'Опција 1'
+      option2: 'Опција 2'
     survey_end_page:
-      title: 'Kraj ankete'
-      description: "Prosledite svoje odgovore tako što ćete ispod izabrati „Prosledi anketu”."
+      title: 'Крај анкете'
+      description: "Пошаљите своје одговоре тако што ћете изабрати „Пошаљи анкету“ испод."
   project_copy:
-    title_suffix: 'Kопија'
+    title_suffix: 'Копирај'
   confirmations_mailer:
     send_confirmation_code:
-      subject: "Потврдите вашу емаил адресу на %{organizationName} партиципативној платформи"
-      header: "Ваш конфирмациони код"
+      subject: "Потврдите своју адресу е-поште за платформу за учешће %{organizationName}"
+      header: "Ваш код за потврду"
       header_message: "Здраво %{firstName}!"
-      thanks_for_signing_up: "Хвала што сте се регистровали на %{organizationName} партиципативну платформу."
-      please_confirm_your_email_address: "Да бисте завршили регистрацију молимо вас да верификујете вашу емаил адресу."
-      copy_paste_the_link_below: "Копирајте код у наставку у регистрациону форму на платформи."
-      the_link_is_valid_for: "Овај линк важи 24 часа. Уколико истекне можете <a href=\"%{link}\">затражити нови</a>."
-      did_you_receive_this_email_in_error: "Ову поруку сте добили грешком? <a href=\"%{link}\">Јавите нам</a>."
+      confirm_email_address: "Потврдите вашу емаил адресу"
+      thanks_for_signing_up: "Хвала што сте се пријавили за платформу за учешће %{organizationName}."
+      best_regards: "Срдачан поздрав,"
+      ignore_email: "Ако нисте тражили код, можете безбедно да игноришете ову е-поруку."
+      expire_code: "Овај код ће истећи за "
+      24_hours: "24 сати."
+      copy_paste_the_link_below: "Копирајте и налепите код испод у формулар за регистрацију на платформи."
+      the_link_is_valid_for: "Ова веза важи 24 сата. Ако је веза истекла, можете <a href=\"%{link}\">захтевати нови код</a>."
+      did_you_receive_this_email_in_error: "Да ли сте ову е-пошту добили грешком? <a href=\"%{link}\">Обавестите нас</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Ваш налог је привремено онемогућен'
+      title_user_blocked: 'Ваш налог је привремено онемогућен'
+      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
+      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
+      for_more_information: "За више информација о овоме, можете консултовати %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "Можете се поново пријавити од %{date}"
+  user:
+    anon_first_name: "Корисник"
+  time:
+    am: am
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm
