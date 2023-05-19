@@ -28,6 +28,8 @@
 #  proposed_budget          :integer
 #  custom_field_values      :jsonb            not null
 #  creation_phase_id        :uuid
+#  author_hash              :string
+#  anonymous                :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -48,6 +50,7 @@
 #
 class Idea < ApplicationRecord
   include Post
+  include AnonymousParticipation
   extend OrderAsSpecified
 
   belongs_to :project, touch: true
