@@ -468,7 +468,7 @@ resource 'Initiatives' do
         end
 
         example 'Check for the automatic creation of an upvote by the author when the publication status of an initiative is updated from draft to published', document: false do
-          @initiative.update(publication_status: 'draft')
+          @initiative.update!(publication_status: 'draft')
           do_request initiative: { publication_status: 'published' }
           json_response = json_parse(response_body)
           new_initiative = Initiative.find(json_response.dig(:data, :id))
