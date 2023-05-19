@@ -30,7 +30,7 @@ describe ParticipationContextService do
       expect(service.posting_idea_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
     end
 
-    it 'returns `not_permitted` when not permitted and a permitted group requires verification, while the user is verified' do
+    it 'returns `not_in_group` when not permitted and a permitted group requires verification, while the user is verified' do
       project = create(:continuous_project, with_permissions: true)
       permission = project.permissions.find_by(action: 'posting_idea')
       birthyear = create(:custom_field_birthyear)
