@@ -25,6 +25,10 @@ export interface ICampaignData {
     deliveries_count: number;
     schedule: any;
     schedule_multiloc: Multiloc;
+    content_type_multiloc: Multiloc;
+    recipient_role_multiloc: Multiloc;
+    recipient_segment_multiloc: Multiloc;
+    trigger_multiloc: Multiloc;
   };
   relationships: {
     author: {
