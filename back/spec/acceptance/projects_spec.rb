@@ -126,8 +126,10 @@ resource 'Projects' do
     get 'web_api/v1/projects/:id' do
       let(:id) { @projects.first.id }
 
-      example_request 'Get one project by id' do
-        expect(status).to eq 200
+      example 'Get one project by id' do
+        PermissionsService.new.update_all_permissions
+        do_request
+        assert_status 200
 
         expect(json_response.dig(:data, :id)).to eq @projects.first.id
         expect(json_response.dig(:data, :type)).to eq 'project'
@@ -158,6 +160,9 @@ resource 'Projects' do
           areas: { data: [] },
           user_basket: { data: nil }
         )
+        expect(json_response.dig(:data, :relationships, :permissions, :data).size)
+          .to eq Permission.available_actions(@projects.first).length
+        expect(json_response[:included].pluck(:type)).to include 'admin_publication', 'permission'
       end
 
       example 'Get a project with a basket', document: false do
