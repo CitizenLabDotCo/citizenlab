@@ -10,8 +10,8 @@ import eventEmitter from 'utils/eventEmitter';
 import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
 // services
@@ -205,9 +205,7 @@ interface Props {
   insideModal?: boolean;
 }
 
-// Hardcoded pages don't actually exist in the database-
-// their codes are the same as their slugs, which are used to render
-// the footer. The slugs link to hard-coded components, see app/routes.ts.
+// Hard-coded in front-end, not possible to edit
 type THardcodedPage = 'cookie-policy' | 'accessibility-statement';
 
 type TFooterPage = TPolicyPage | THardcodedPage;
@@ -226,11 +224,8 @@ const MESSAGES_MAP: { [key in TFooterPage]: MessageDescriptor } = {
   'accessibility-statement': messages.accessibilityStatement,
 };
 
-const PlatformFooter = ({
-  className,
-  insideModal,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+const PlatformFooter = ({ className, insideModal }: Props) => {
+  const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const customizedA11yHrefEnabled = useFeatureFlag({
     name: 'custom_accessibility_statement_link',
@@ -327,4 +322,4 @@ const PlatformFooter = ({
   );
 };
 
-export default injectIntl(PlatformFooter);
+export default PlatformFooter;

@@ -65,7 +65,7 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   bottom_info_section_multiloc: Multiloc;
   header_bg: ImageSizes | null;
 
-  code: TPageCode;
+  code: TCustomPageCode;
   // not sure about these
 
   projects_filter_type: ProjectsFilterTypes;
@@ -126,11 +126,6 @@ export function listCustomPages(streamParams: IStreamParams | null = null) {
   });
 }
 
-// Policy pages of which only the content can be edited
-// in 'policy' tab in settings (both for non-commercial and
-// commercial customers). Their codes are the same as their slugs.
-export type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
-
 enum POLICY_PAGE {
   termsAndConditions = 'terms-and-conditions',
   privacyPolicy = 'privacy-policy',
@@ -148,23 +143,19 @@ export function isPolicyPageSlug(slug: string): slug is TPolicyPage {
   return slug === termsAndConditionsSlug || slug === privacyPolicySlug;
 }
 
-// Pages that exist in the static_pages database,
-// but do not have a corresponding navbar item (with the exception of 'faq').
-// Their slugs and titles cannot be changed. Their
-// codes are the same as their slugs.
-// proposals here is the proposals about page (/pages/proposals),
-// not the proposals index page (/initiatives).
-type TFixedPage = TPolicyPage | 'faq' | 'proposals';
+export type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
 
-export const FIXED_PAGES: TFixedPage[] = [
-  'terms-and-conditions',
-  'privacy-policy',
-  'proposals',
-];
-
-export type TPageCode =
-  | 'about'
-  | TFixedPage
+export type TCustomPageCode =
+  // Content of policy pages can only be edited
+  // in 'policy' tab in settings (both for non-commercial and
+  // commercial customers). Their codes are the same as their slugs.
+  | TPolicyPage
   // Everything about 'custom' pages can be changed: their
   // title, navbar name, content and slug.
-  | 'custom';
+  | 'custom'
+  // 'about' is just a custom page in the end, with a different page code (legacy)
+  | 'about'
+  | 'faq'
+  // proposals here is the proposals about page (/pages/initiatives),
+  // not the proposals index page (/initiatives).
+  | 'proposals';

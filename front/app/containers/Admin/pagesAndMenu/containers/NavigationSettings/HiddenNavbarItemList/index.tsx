@@ -4,9 +4,8 @@ import React, { useMemo } from 'react';
 import { getNavbarItemSlug, addNavbarItem } from 'services/navbar';
 import {
   deleteCustomPage,
-  FIXED_PAGES,
   ICustomPageData,
-  TPageCode,
+  TCustomPageCode,
 } from 'services/customPages';
 
 // hooks
@@ -31,7 +30,11 @@ import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from 'utils/navbar';
 
-const FIXED_PAGES_SET = new Set<TPageCode>(FIXED_PAGES);
+const FIXED_PAGES_SET = new Set<TCustomPageCode>([
+  'terms-and-conditions',
+  'privacy-policy',
+  'proposals',
+]);
 const isNotFixedPage = (page: ICustomPageData) =>
   !FIXED_PAGES_SET.has(page.attributes.code);
 

@@ -3,13 +3,15 @@ import CustomPageSettingsForm from '../../CustomPageSettingsForm';
 import useCustomPage from 'hooks/useCustomPage';
 import { useParams } from 'react-router-dom';
 import { isNilOrError } from 'utils/helperUtils';
-import { TPageCode, updateCustomPage } from 'services/customPages';
+import { TCustomPageCode, updateCustomPage } from 'services/customPages';
 import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
 import streams from 'utils/streams';
 import { apiEndpoint as navbarItemsEndpoint } from 'services/navbar';
 import { omit } from 'lodash-es';
 
-const customPagesAllowedToEditSlug: TPageCode[] = ['about', 'custom'];
+// Pages which are not allowed to have their slug edited are linked to internally
+// E.g. search for '/pages/faq' in the front codebase to find out.
+const customPagesAllowedToEditSlug: TCustomPageCode[] = ['about', 'custom'];
 
 const EditCustomPageSettings = () => {
   const { customPageId } = useParams() as { customPageId: string };
