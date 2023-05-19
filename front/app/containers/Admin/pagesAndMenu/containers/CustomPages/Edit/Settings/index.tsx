@@ -12,7 +12,15 @@ import { omit } from 'lodash-es';
 // Pages which are not allowed to have their slug edited are linked to internally.
 // E.g. search for '/pages/faq' in the front codebase to find out.
 // Also see HiddenNavbarItemList/index.tsx
-const customPagesAllowedToEditSlug: TCustomPageCode[] = ['about', 'custom'];
+type TCustomPageWithSlugNotAllowedToEdit =
+  | 'faq'
+  | 'proposals'
+  | 'privacy-policy'
+  | 'terms-and-conditions';
+const customPagesWithSlugAllowedToEdit: Exclude<
+  TCustomPageCode,
+  TCustomPageWithSlugNotAllowedToEdit
+>[] = ['about', 'custom'];
 
 const EditCustomPageSettings = () => {
   const { customPageId } = useParams() as { customPageId: string };
@@ -64,7 +72,7 @@ const EditCustomPageSettings = () => {
         showNavBarItemTitle={hasNavbarItem}
         onSubmit={handleOnSubmit}
         hideSlug={
-          !customPagesAllowedToEditSlug.includes(customPage.attributes.code)
+          !customPagesWithSlugAllowedToEdit.includes(customPage.attributes.code)
         }
       />
     );
