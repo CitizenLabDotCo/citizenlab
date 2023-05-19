@@ -1,10 +1,9 @@
-import { useQueries } from '@tanstack/react-query';
+import { UseQueryOptions, useQueries } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 import phasePermissionKeys from './keys';
 import { IPCPermissions } from './types';
-import usePhasePermissions from './usePhasePermissions';
 
-type PhasesPermissionsReturnType = ReturnType<typeof usePhasePermissions>;
+type PhasesPermissionsReturnType = UseQueryOptions<IPCPermissions>[];
 
 export const fetchPhasePermissions = (phaseId: string) => {
   return fetcher<IPCPermissions>({
@@ -20,8 +19,7 @@ const usePhasesPermissions = (phaseIds?: string[]) => {
         queryFn: () => fetchPhasePermissions(phaseId),
       }))
     : [];
-
-  return useQueries<PhasesPermissionsReturnType[]>({
+  return useQueries<PhasesPermissionsReturnType>({
     queries,
   });
 };
