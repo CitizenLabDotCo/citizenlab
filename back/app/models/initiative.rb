@@ -71,9 +71,6 @@ class Initiative < ApplicationRecord
     post.after_validation :set_assigned_at, if: ->(record) { record.assignee_id && record.assignee_id_changed? }
   end
 
-  # def should
-  # end
-
   with_options unless: :draft? do
     # Problem is that this validation happens too soon, as the first idea status change is created after create.
     # initiative.validates :initiative_status, presence: true
