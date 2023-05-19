@@ -27,8 +27,7 @@ resource 'Phases' do
       do_request
       assert_status 200
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:included].size).not_to eq 0
-      expect(json_response.dig(:included, 0, :type)).to eq 'permission'
+      expect(json_response[:included].pluck(:type)).to include 'permission'
     end
   end
 
