@@ -75,6 +75,7 @@ const PostedBy = memo<Props>(
         />
       );
 
+      console.log(authorId);
       return (
         <Item className={`first ${className || ''}`} compact={compact}>
           <Header>{formatMessage(messages.postedBy)}</Header>
