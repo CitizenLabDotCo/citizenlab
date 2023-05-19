@@ -52,6 +52,7 @@ import {
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
 import { getInputTermMessage } from 'utils/i18n';
+import { getMethodConfig } from 'utils/participationMethodUtils';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
@@ -497,6 +498,9 @@ const ProjectCard = memo<Props>(
     };
 
     if (project) {
+      const methodConfig = getMethodConfig(
+        project.data.attributes.participation_method
+      );
       const postingPermission = getIdeaPostingRules({
         project: project?.data,
         phase: phase?.data,
@@ -528,8 +532,7 @@ const ProjectCard = memo<Props>(
       const showIdeasCount =
         !(
           project.data.attributes.process_type === 'continuous' &&
-          project.data.attributes.participation_method !== 'ideation' &&
-          project.data.attributes.participation_method === 'native_survey'
+          !methodConfig.showInputCount
         ) && ideasCount > 0;
       const showCommentsCount = commentsCount > 0;
       const showFooter = hasAvatars || showIdeasCount || showCommentsCount;
