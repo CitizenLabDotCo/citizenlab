@@ -49,7 +49,8 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
   );
 
   const hasPhases =
-    project.data.attributes.process_type === 'continuous' && phases.data.length > 0;
+    project.data.attributes.process_type === 'continuous' &&
+    phases.data.length > 0;
 
   const projectPeriod = hasPhases
     ? getProjectPeriod(phases.data)
