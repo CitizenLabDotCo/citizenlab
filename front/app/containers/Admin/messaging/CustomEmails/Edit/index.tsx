@@ -15,7 +15,7 @@ import useCampaign from 'api/campaigns/useCampaign';
 import { CampaignFormValues } from 'api/campaigns/types';
 
 const Edit = () => {
-  const { mutate: updateCampaign } = useUpdateCampaign();
+  const { mutateAsync: updateCampaign } = useUpdateCampaign();
   const { campaignId } = useParams();
   const { data: { data: campaign } = {} } = useCampaign(campaignId);
   if (isNil(campaign)) return null;

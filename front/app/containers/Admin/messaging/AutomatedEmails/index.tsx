@@ -1,8 +1,6 @@
 import React from 'react';
 import { isUndefined } from 'lodash-es';
-import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
-import { ICampaignData, updateCampaign } from 'services/campaigns';
-import { isNilOrError } from 'utils/helperUtils';
+import { ICampaignData } from 'services/campaigns';
 import T from 'components/T';
 import { Toggle, Box, Text, Title } from '@citizenlab/cl2-component-library';
 import {
@@ -13,17 +11,26 @@ import {
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { colors } from 'utils/styleUtils';
+import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
+import useCampaigns from 'api/campaigns/useCampaigns';
 
-type Props = GetCampaignsChildProps;
+const AutomatedEmails = () => {
+  const { data: { data: campaigns } = {} } = useCampaigns({
+    withoutCampaignNames: ['manual'],
+    pageSize: 250,
+  });
+  const { mutate: updateCampaign } = useUpdateCampaign();
 
-const AutomatedCampaigns = ({ campaigns }: Props) => {
+  if (!campaigns) return null;
+
   const handleOnEnabledToggle = (campaign: ICampaignData) => () => {
-    updateCampaign(campaign.id, {
-      enabled: !campaign.attributes.enabled,
+    updateCampaign({
+      id: campaign.id,
+      campaign: {
+        enabled: !campaign.attributes.enabled,
+      },
     });
   };
-
-  if (isNilOrError(campaigns)) return null;
 
   return (
     <>
@@ -62,8 +69,4 @@ const AutomatedCampaigns = ({ campaigns }: Props) => {
   );
 };
 
-export default () => (
-  <GetCampaigns withoutCampaignNames={['manual']} pageSize={250}>
-    {(campaigns) => <AutomatedCampaigns {...campaigns} />}
-  </GetCampaigns>
-);
+export default AutomatedEmails;

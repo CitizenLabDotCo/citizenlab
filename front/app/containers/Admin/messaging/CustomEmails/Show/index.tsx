@@ -25,7 +25,7 @@ import Modal from 'components/UI/Modal';
 import Stamp from './Stamp';
 
 // utils
-import { isNil, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // styling
 import { fontSizes } from 'utils/styleUtils';
@@ -33,7 +33,7 @@ import { useState } from 'react';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useAppConfiguration from 'api/app_configuration/__mocks__/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
 import { useParams } from 'react-router-dom';
 import useCampaign from 'api/campaigns/useCampaign';
@@ -130,11 +130,11 @@ const Show = () => {
   const [showSendConfirmationModal, setShowSendConfirmationModal] =
     useState(false);
 
-  const appConfiguration = useAppConfiguration();
+  const { data: appConfiguration } = useAppConfiguration();
   const user = useAuthUser();
   const { campaignId } = useParams();
   const { data: { data: campaign } = {} } = useCampaign(campaignId);
-  if (isNil(campaign)) return null;
+  if (!campaign || !appConfiguration) return null;
 
   const handleSend = (noGroupsSelected: boolean) => () => {
     if (noGroupsSelected) {
@@ -171,7 +171,7 @@ const Show = () => {
       senderName = `${user.attributes.first_name} ${user.attributes.last_name}`;
     } else if (senderType === 'organization') {
       senderName = localize(
-        appConfiguration.data.data.attributes.settings.core.organization_name
+        appConfiguration.data.attributes.settings.core.organization_name
       );
     }
 
