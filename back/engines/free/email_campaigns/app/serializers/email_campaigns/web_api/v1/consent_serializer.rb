@@ -22,7 +22,7 @@ module EmailCampaigns
 
     attribute :content_type_ordering do |object|
       if object.campaign_type.safe_constantize&.content_type_multiloc_key.present?
-        group_ordering('content_type', object.campaign_type.safe_constantize&.content_type_multiloc_key.split('.').last)
+        group_ordering('content_type', object.campaign_type.safe_constantize&.content_type_multiloc_key&.split('.')&.last)
       end
     end
   end
