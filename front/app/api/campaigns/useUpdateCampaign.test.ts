@@ -27,7 +27,7 @@ describe('useUpdateCampaign', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        campaign: { subject_multiloc: { en: 'name' } },
+        campaign: { enabled: true },
       });
     });
 
@@ -48,7 +48,7 @@ describe('useUpdateCampaign', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        campaign: { subject_multiloc: { en: 'name' } },
+        campaign: { enabled: true },
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));
