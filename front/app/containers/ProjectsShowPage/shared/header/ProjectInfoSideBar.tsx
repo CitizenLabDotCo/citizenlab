@@ -34,11 +34,7 @@ import ProjectActionButtons from './ProjectActionButtons';
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { scrollToElement } from 'utils/scroll';
-import {
-  NestedIPCPermissions,
-  hasEmbeddedSurvey,
-  hasSurveyWithAnyonePermissions,
-} from './utils';
+import { hasEmbeddedSurvey, hasSurveyWithAnyonePermissions } from './utils';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -141,7 +137,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const { data: projectPermissions } = useProjectPermissions({ projectId });
   const phasesPermissions = usePhasesPermissions(
     phases?.data.map((phase) => phase.id)
-  ) as NestedIPCPermissions[];
+  );
   const { data: events } = useEvents({
     projectIds: [projectId],
     sort: '-start_at',

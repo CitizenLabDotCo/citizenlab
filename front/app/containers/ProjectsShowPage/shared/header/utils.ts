@@ -1,8 +1,6 @@
+import { UseQueryResult } from '@tanstack/react-query';
 import { TPhases } from 'api/phases/types';
-import {
-  IPCPermissionData,
-  IPCPermissions,
-} from 'api/project_permissions/types';
+import { IPCPermissions } from 'api/project_permissions/types';
 import { IProjectData } from 'api/projects/types';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -24,13 +22,12 @@ export const hasEmbeddedSurvey = (
   return hasSurveyPhase;
 };
 
-export interface NestedIPCPermissions {
-  data: { data: IPCPermissionData[] };
-}
-
 export const hasSurveyWithAnyonePermissions = (
   projectPermissions: IPCPermissions | undefined,
-  phasesPermissions: NestedIPCPermissions[] | undefined | null
+  phasesPermissions:
+    | UseQueryResult<IPCPermissions, unknown>[]
+    | undefined
+    | null
 ) => {
   let hasSurveyWithAnyonePermissions = false;
 
