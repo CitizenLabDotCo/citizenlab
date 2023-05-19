@@ -52,7 +52,6 @@ import {
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
 import { getInputTermMessage } from 'utils/i18n';
-import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
@@ -472,7 +471,6 @@ const ProjectCard = memo<Props>(
     const { data: phase } = usePhase(currentPhaseId);
     const { data: phases } = usePhases(projectId);
     const theme = useTheme();
-    const submissionCount = useFormSubmissionCount({ projectId });
 
     const [visible, setVisible] = useState(false);
 
@@ -521,10 +519,7 @@ const ProjectCard = memo<Props>(
       const isFinished = project.data.attributes.timeline_active === 'past';
       const isArchived =
         project.data.attributes.publication_status === 'archived';
-      // TODO: Decide on a better way to get total number of inputs. Perhaps updating ideas_count to "input_count".
-      const ideasCount = !isNilOrError(submissionCount)
-        ? submissionCount.totalSubmissions + project.data.attributes.ideas_count
-        : project.data.attributes.ideas_count;
+      const ideasCount = project.data.attributes.ideas_count;
       const commentsCount = project.data.attributes.comments_count;
       const hasAvatars =
         project.data.relationships.avatars &&
@@ -533,7 +528,8 @@ const ProjectCard = memo<Props>(
       const showIdeasCount =
         !(
           project.data.attributes.process_type === 'continuous' &&
-          project.data.attributes.participation_method !== 'ideation'
+          (project.data.attributes.participation_method !== 'ideation' ||
+            project.data.attributes.participation_method !== 'native_survey')
         ) && ideasCount > 0;
       const showCommentsCount = commentsCount > 0;
       const showFooter = hasAvatars || showIdeasCount || showCommentsCount;
