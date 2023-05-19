@@ -56,7 +56,7 @@ const InitiativeAssignedToYouNotification = ({ notification }: Props) => {
 
   return (
     <NotificationWrapper
-      linkTo={'/admin/initiatives/manage'}
+      linkTo={'/admin/initiatives'}
       timing={notification.attributes.created_at}
       icon="initiatives"
       isRead={!!notification.attributes.read_at}

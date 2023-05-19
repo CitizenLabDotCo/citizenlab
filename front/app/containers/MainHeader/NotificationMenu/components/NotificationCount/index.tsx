@@ -7,7 +7,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // components
-import { IconButton } from '@citizenlab/cl2-component-library';
+import { IconButton, Box } from '@citizenlab/cl2-component-library';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -18,7 +18,7 @@ const Container = styled.div`
   position: relative;
 `;
 
-const NewNotificationsIndicator = styled.div`
+export const NewNotificationsIndicator = styled.div`
   color: #fff;
   font-size: ${fontSizes.xs}px;
   line-height: ${fontSizes.xs}px;
@@ -33,9 +33,6 @@ const NewNotificationsIndicator = styled.div`
       theme.invertedNavbarColors && theme.navbarBackgroundColor
         ? theme.navbarBackgroundColor
         : '#fff'};
-  position: absolute;
-  top: -9px;
-  left: 15px;
   min-width: 18px;
   min-height: 18px;
   display: flex;
@@ -75,9 +72,11 @@ const NotificationCount = ({ dropdownOpened, onClick }: Props) => {
           ariaControls="notifications-dropdown"
         />
         {unreadNotificationsCount > 0 ? (
-          <NewNotificationsIndicator>
-            {unreadNotificationsCount}
-          </NewNotificationsIndicator>
+          <Box position="absolute" top="-9px" left="15px">
+            <NewNotificationsIndicator>
+              {unreadNotificationsCount}
+            </NewNotificationsIndicator>
+          </Box>
         ) : null}
       </Container>
     );
