@@ -54,7 +54,6 @@ class InitiativePolicy < ApplicationPolicy
   def permitted_attributes
     shared = [
       :publication_status,
-      :author_id,
       :location_description,
       :header_bg,
       :anonymous,
@@ -65,7 +64,7 @@ class InitiativePolicy < ApplicationPolicy
         area_ids: [] }
     ]
 
-    admin? ? [:assignee_id, *shared] : shared
+    admin? ? [:author_id, :assignee_id, *shared] : shared
   end
 
   private
