@@ -353,31 +353,32 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   )}
                 </ListItem>
               )}
-            {(projectType === 'continuous' &&
+            {((projectType === 'continuous' &&
               projectParticipationMethod === 'native_survey') ||
-              (currentPhaseParticipationMethod === 'native_survey' && (
-                <Box>
-                  <ListItem>
-                    <ListItemIcon ariaHidden name="chart-bar" />
-                    {!isNilOrError(surveySubmissionCount) &&
-                      surveySubmissionCount.totalSubmissions}
-                    <Box ml="4px">
-                      <FormattedMessage {...messages.surveySubmissions} />
+              currentPhase?.attributes.participation_method ===
+                'native_survey') && (
+              <Box>
+                <ListItem>
+                  <ListItemIcon ariaHidden name="chart-bar" />
+                  {!isNilOrError(surveySubmissionCount) &&
+                    surveySubmissionCount.totalSubmissions}
+                  <Box ml="4px">
+                    <FormattedMessage {...messages.surveySubmissions} />
+                  </Box>
+                  {hasEmbeddedSurvey(project.data, phases?.data) && (
+                    <Box mb="4px" ml="4px">
+                      <IconTooltip
+                        placement="top"
+                        iconColor={colors.coolGrey300}
+                        content={formatMessage(
+                          messages.surveySubmissionsTooltip
+                        )}
+                      />
                     </Box>
-                    {hasEmbeddedSurvey(project.data, phases?.data) && (
-                      <Box mb="4px" ml="4px">
-                        <IconTooltip
-                          placement="top"
-                          iconColor={colors.coolGrey300}
-                          content={formatMessage(
-                            messages.surveySubmissionsTooltip
-                          )}
-                        />
-                      </Box>
-                    )}
-                  </ListItem>
-                </Box>
-              ))}
+                  )}
+                </ListItem>
+              </Box>
+            )}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'budgeting') ||
               currentPhase?.attributes.participation_method === 'budgeting') &&

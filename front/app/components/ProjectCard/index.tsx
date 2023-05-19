@@ -528,8 +528,8 @@ const ProjectCard = memo<Props>(
       const showIdeasCount =
         !(
           project.data.attributes.process_type === 'continuous' &&
-          (project.data.attributes.participation_method !== 'ideation' ||
-            project.data.attributes.participation_method !== 'native_survey')
+          project.data.attributes.participation_method !== 'ideation' &&
+          project.data.attributes.participation_method === 'native_survey'
         ) && ideasCount > 0;
       const showCommentsCount = commentsCount > 0;
       const showFooter = hasAvatars || showIdeasCount || showCommentsCount;
