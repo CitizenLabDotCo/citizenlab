@@ -23,6 +23,8 @@ module EmailCampaigns
       end
     end
 
+    private
+
     def save_example(command, campaign)
       mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
 

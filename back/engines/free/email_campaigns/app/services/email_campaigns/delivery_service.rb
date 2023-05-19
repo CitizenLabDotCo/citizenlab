@@ -50,8 +50,6 @@ module EmailCampaigns
       Campaigns::YourProposedInitiativesDigest
     ].freeze
 
-    EXAMPLES_PER_CAMPAIGN = 10
-
     def campaign_types
       campaign_classes.map(&:name)
     end
