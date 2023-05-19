@@ -641,6 +641,7 @@ resource 'Ideas' do
         parameter :budget, 'The budget needed to realize the idea, as determined by the city'
         parameter :idea_images_attributes, 'an array of base64 images to create'
         parameter :idea_files_attributes, 'an array of base64 files to create'
+        parameter :anonymous, 'Post this idea anonymously'
       end
       ValidationErrorHelper.new.error_fields(self, Idea)
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -737,6 +738,17 @@ resource 'Ideas' do
             json_response = json_parse response_body
             idea = Idea.find(json_response.dig(:data, :id))
             expect(idea.creation_phase).to be_nil
+          end
+        end
+
+        describe 'Creating an idea anonymously' do
+          let(:anonymous) { true }
+
+          example_request 'Posting an idea anonymously does not save an author id' do
+            assert_status 201
+            expect(response_data.dig(:attributes, :anonymous)).to be true
+            expect(response_data.dig(:attributes, :author_name)).to be_nil
+            expect(response_data.dig(:relationships, :author, :data)).to be_nil
           end
         end
 
@@ -954,6 +966,7 @@ resource 'Ideas' do
         parameter :location_description, 'A human readable description of the location the idea applies to'
         parameter :proposed_budget, 'The budget needed to realize the idea, as proposed by the author'
         parameter :budget, 'The budget needed to realize the idea, as determined by the city'
+        parameter :anonymous, 'Post this idea anonymously'
       end
       ValidationErrorHelper.new.error_fields(self, Idea)
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -1153,16 +1166,37 @@ resource 'Ideas' do
             @idea.update! publication_status: 'published'
             do_request idea: { author_id: nil }
             assert_status 422
-            json_response = json_parse response_body
-            expect(json_response).to include_response_error(:author, 'blank')
+            expect(json_response_body).to include_response_error(:author, 'blank')
           end
 
           example '[error] Publishing an idea without author', document: false do
             @idea.update! publication_status: 'draft', author: nil
             do_request idea: { publication_status: 'published' }
             assert_status 422
-            json_response = json_parse response_body
-            expect(json_response).to include_response_error(:author, 'blank')
+            expect(json_response_body).to include_response_error(:author, 'blank')
+          end
+
+          example 'Updating values of an anonymously posted idea', document: false do
+            @idea.update! publication_status: 'published', anonymous: true, author: nil
+            do_request idea: { location_description: 'HERE' }
+            assert_status 200
+            expect(response_data.dig(:attributes, :location_description)).to eq 'HERE'
+          end
+
+          example 'Changing an idea to anonymous', document: false do
+            @idea.update! publication_status: 'published', anonymous: false, author: @user
+            do_request idea: { anonymous: true }
+            assert_status 200
+            expect(response_data.dig(:attributes, :anonymous)).to be true
+            expect(response_data.dig(:attributes, :author_name)).to be_nil
+          end
+
+          example 'Updating an anonymously posted idea with an author', document: false do
+            @idea.update! publication_status: 'published', anonymous: true, author: nil
+            do_request idea: { author_id: @user.id, publication_status: 'published' }
+            assert_status 200
+            expect(response_data.dig(:relationships, :author, :data, :id)).to eq @user.id
+            expect(response_data.dig(:attributes, :anonymous)).to be false
           end
         end
 

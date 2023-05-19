@@ -282,7 +282,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def idea_simple_attributes(submittable_field_keys)
     simple_attributes = %i[location_description proposed_budget] & submittable_field_keys
-    simple_attributes.push(:publication_status, :project_id, :author_id)
+    simple_attributes.push(:publication_status, :project_id, :author_id, :anonymous)
     if submittable_field_keys.include?(:idea_images_attributes)
       simple_attributes << [idea_images_attributes: [:image]]
     end
@@ -356,7 +356,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def invalid_blank_author_for_update?(input, params)
     author_removal = params[:idea].key?(:author_id) && params[:idea][:author_id].nil?
-    publishing = params[:idea][:publication_status] == 'published'
+    publishing = params[:idea][:publication_status] == 'published' && input.publication_status != 'published'
 
     return false unless author_removal || (publishing && !input.author_id)
 
