@@ -527,6 +527,16 @@ resource 'Initiatives' do
         end
       end
 
+      describe 'updating the author of an initiative' do
+        let(:author_id) { create(:admin).id }
+
+        example '[Error] Cannot update the author as a non-admin', document: false do
+          do_request
+          assert_status 401
+          expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
+        end
+      end
+
       describe 'updating anomymous initiatives' do
         let(:anonymous) { true }
 

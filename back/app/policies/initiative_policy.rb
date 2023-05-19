@@ -19,7 +19,7 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def create?
-    return true if record.draft?
+    return true if record.draft? # Does this mean anyone can edit drafts?
     return true if active? && admin?
 
     reason = posting_denied_reason user
