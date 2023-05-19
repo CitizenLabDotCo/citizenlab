@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import inputsKeys from './keys';
 import { IInsightsInputs, QueryParameters, InputsKeys } from './types';
 
-export const defaultPageSize = 20;
+export const defaultPageSize = 2;
 
 const fetchInputs = (
   viewId: string,

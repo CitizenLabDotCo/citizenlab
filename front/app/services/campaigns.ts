@@ -94,10 +94,6 @@ export function listCampaigns(streamParams: IStreamParams | null = null) {
   });
 }
 
-export function createCampaign(campaignData: CampaignCreation) {
-  return streams.add<ICampaign>(`${apiEndpoint}`, { campaign: campaignData });
-}
-
 export async function sendCampaign(campaignId: string) {
   const stream = await streams.add<ICampaign>(
     `${apiEndpoint}/${campaignId}/send`,

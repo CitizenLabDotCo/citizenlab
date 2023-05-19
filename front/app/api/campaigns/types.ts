@@ -63,18 +63,11 @@ export interface ICampaign {
   data: ICampaignData;
 }
 
-export interface QueryProps {
+export interface QueryParameters {
   campaignNames?: string[];
   withoutCampaignNames?: string[];
   pageSize?: number;
   pageNumber?: number;
-}
-
-export interface QueryParameters {
-  campaign_names: string[];
-  without_campaign_names: string[];
-  'page[number]': number;
-  'page[size]': number;
 }
 
 export interface IDeliveriesData {
