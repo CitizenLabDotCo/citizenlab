@@ -126,30 +126,20 @@ export function listCustomPages(streamParams: IStreamParams | null = null) {
   });
 }
 
-// The following types and resources were moved from old "pages" code.
-// Mainly they refer to pages that have special properties, like
-// the FAQ/about pages, and terms/conditions and privacy policies
-
-// These types refer to the "code" attribute of a page.
-// The 'standard page' distinction is only relevant for non-commercial
-// customers: they can edit the content of these pages, but nothing else.
-// For commercial customers, these behave as 'custom' pages.
-type TStandardPage = 'about';
-
 // Policy pages of which only the content can be edited
 // in 'policy' tab in settings (both for non-commercial and
 // commercial customers). Their codes are the same as their slugs.
 export type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
 
-export const POLICY_PAGES: TPolicyPage[] = [
-  'terms-and-conditions',
-  'privacy-policy',
-];
-
-export enum POLICY_PAGE {
+enum POLICY_PAGE {
   termsAndConditions = 'terms-and-conditions',
   privacyPolicy = 'privacy-policy',
 }
+
+export const POLICY_PAGES: TPolicyPage[] = [
+  POLICY_PAGE.termsAndConditions,
+  POLICY_PAGE.privacyPolicy,
+];
 
 export function isPolicyPageSlug(slug: string): slug is TPolicyPage {
   const termsAndConditionsSlug: TPolicyPage = POLICY_PAGE.termsAndConditions;
@@ -188,7 +178,7 @@ export const FIXED_PAGES: TFixedPage[] = [
 ];
 
 export type TPageCode =
-  | TStandardPage
+  | 'about'
   | TFixedPage
   // Everything about 'custom' pages can be changed: their
   // title, navbar name, content and slug.
