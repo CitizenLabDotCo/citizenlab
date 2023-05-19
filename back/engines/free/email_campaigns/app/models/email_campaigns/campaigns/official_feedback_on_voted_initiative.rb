@@ -50,10 +50,6 @@ module EmailCampaigns
       users_scope.where(id: activity.item.recipient.id)
     end
 
-    def self.category
-      'voted'
-    end
-
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.registered_users'
     end

@@ -58,10 +58,6 @@ module EmailCampaigns
       ['project_moderator']
     end
 
-    def self.category
-      'admin'
-    end
-
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.managers'
     end
