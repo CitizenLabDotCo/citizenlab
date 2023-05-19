@@ -15,7 +15,7 @@ import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
 // services
-import { FOOTER_PAGES, TFooterPage } from 'services/customPages';
+import { TPolicyPage } from 'services/customPages';
 
 // style
 import styled, { css } from 'styled-components';
@@ -205,9 +205,21 @@ interface Props {
   insideModal?: boolean;
 }
 
-type TMessagesMap = { [key in TFooterPage]: MessageDescriptor };
+// Hardcoded pages don't actually exist in the database-
+// their codes are the same as their slugs, which are used to render
+// the footer. The slugs link to hard-coded components, see app/routes.ts.
+type THardcodedPage = 'cookie-policy' | 'accessibility-statement';
 
-const MESSAGES_MAP: TMessagesMap = {
+type TFooterPage = TPolicyPage | THardcodedPage;
+
+const FOOTER_PAGES: TFooterPage[] = [
+  'terms-and-conditions',
+  'privacy-policy',
+  'cookie-policy',
+  'accessibility-statement',
+];
+
+const MESSAGES_MAP: { [key in TFooterPage]: MessageDescriptor } = {
   'terms-and-conditions': messages.termsAndConditions,
   'privacy-policy': messages.privacyPolicy,
   'cookie-policy': messages.cookiePolicy,

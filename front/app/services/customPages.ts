@@ -148,21 +148,6 @@ export function isPolicyPageSlug(slug: string): slug is TPolicyPage {
   return slug === termsAndConditionsSlug || slug === privacyPolicySlug;
 }
 
-// Hardcoded pages don't actually exist in the database-
-// their codes are the same as their slugs, which are used to render
-// the footer. The slugs link to hard-coded components, see app/routes.ts.
-type THardcodedPage = 'cookie-policy' | 'accessibility-statement';
-
-// Pages in the footer.
-export type TFooterPage = TPolicyPage | THardcodedPage;
-
-export const FOOTER_PAGES: TFooterPage[] = [
-  'terms-and-conditions',
-  'privacy-policy',
-  'cookie-policy',
-  'accessibility-statement',
-];
-
 // Pages that exist in the static_pages database,
 // but do not have a corresponding navbar item (with the exception of 'faq').
 // Their slugs and titles cannot be changed. Their
