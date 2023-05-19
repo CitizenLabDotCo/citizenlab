@@ -22,9 +22,13 @@ resource 'Phases' do
     end
     let(:project_id) { @project.id }
 
-    example_request 'List all phases of a project' do
+    example 'List all phases of a project' do
+      PermissionsService.new.update_all_permissions
+      do_request
       assert_status 200
       expect(json_response[:data].size).to eq 2
+      expect(json_response[:included].size).not_to eq 0
+      expect(json_response.dig(:included, 0, :type)).to eq 'permission'
     end
   end
 
@@ -50,6 +54,8 @@ resource 'Phases' do
 
       expect(json_response.dig(:data, :relationships, :permissions, :data).size)
         .to eq(Permission.available_actions(@phases.first).length)
+
+      expect(json_response[:included].pluck(:type)).to include 'permission'
     end
   end
 
