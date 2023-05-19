@@ -12,7 +12,7 @@
   "app.components.AnonymousPostingToggle.userPrivacy": "User privacy",
   "app.components.AnonymousPostingToggle.userPrivacyLabelSubtext2": "Users will be able to hide their identity from other users and admins. Admins can still ban/moderate their inputs.",
   "app.components.AnonymousPostingToggle.userPrivacyLabelText2": "Allow users to participate anonymously",
-  "app.components.AnonymousPostingToggle.userPrivacyLabelTooltip": "Users may still choose to participate with their real name, but they will have the option to submit inputs or comments anonymously if they choose to do so. All users will still need to comply with the requirements set in the Access Rights tab for their comments and/or inputs to go through.",
+  "app.components.AnonymousPostingToggle.userPrivacyLabelTooltip2": "Users may still choose to participate with their real name, but they will have the option to submit contributions anonymously if they choose to do so. All users will still need to comply with the requirements set in the Access Rights tab for their contributions to go through.",
   "app.components.BillingWarning.billingWarning": "Once additional seats are added, your billing will be increased. Reach out to your GovSuccess Manager to learn more about it.",
   "app.components.ConfirmationModal.accountConfirmation": "Account confirmation",
   "app.components.ConfirmationModal.disabled": "Disabled",
