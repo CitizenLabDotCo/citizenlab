@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-# This migration comes from email_campaigns (originally 20230518144244)
-
-class CreateEmailCampaignsRecentExamples < ActiveRecord::Migration[6.1]
+class CreateEmailCampaignsExamples < ActiveRecord::Migration[6.1]
   def change
-    create_table :email_campaigns_recent_examples, id: :uuid do |t|
+    create_table :email_campaigns_examples, id: :uuid do |t|
       t.string :campaign_class, null: false, index: true
       t.string :mail_body_html, null: false
       t.string :locale, null: false

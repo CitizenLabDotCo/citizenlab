@@ -30,7 +30,7 @@ module EmailCampaigns
   class Campaigns::AdminDigest < Campaign
     include Disableable
     include Consentable
-    # include Schedulable
+    include Schedulable
     include RecipientConfigurable
     include Trackable
     include LifecycleStageRestrictable
@@ -115,15 +115,14 @@ module EmailCampaigns
     end
 
     def content_worth_sending?(_)
-      # [
-      #   statistics.dig(:activities, :new_ideas, :increase),
-      #   statistics.dig(:activities, :new_initiatives, :increase),
-      #   statistics.dig(:activities, :new_comments, :increase),
-      #   statistics.dig(:users, :new_visitors, :increase),
-      #   statistics.dig(:users, :new_users, :increase),
-      #   statistics.dig(:users, :active_users, :increase)
-      # ].any?(&:positive?)
-      true
+      [
+        statistics.dig(:activities, :new_ideas, :increase),
+        statistics.dig(:activities, :new_initiatives, :increase),
+        statistics.dig(:activities, :new_comments, :increase),
+        statistics.dig(:users, :new_visitors, :increase),
+        statistics.dig(:users, :new_users, :increase),
+        statistics.dig(:users, :active_users, :increase)
+      ].any?(&:positive?)
     end
 
     def statistics
@@ -146,10 +145,9 @@ module EmailCampaigns
     end
 
     def days_ago
-      # t1, t2 = ic_schedule.first 2
-      # t2 ||= t1 + 7.days
-      # ((t2 - t1) / 1.day).days
-      7.days
+      t1, t2 = ic_schedule.first 2
+      t2 ||= t1 + 7.days
+      ((t2 - t1) / 1.day).days
     end
 
     def stat_increase(stats = [])

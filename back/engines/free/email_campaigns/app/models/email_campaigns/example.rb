@@ -2,7 +2,7 @@
 
 # == Schema Information
 #
-# Table name: email_campaigns_recent_examples
+# Table name: email_campaigns_examples
 #
 #  id             :uuid             not null, primary key
 #  campaign_class :string           not null
@@ -15,9 +15,9 @@
 #
 # Indexes
 #
-#  index_email_campaigns_recent_examples_on_campaign_class  (campaign_class)
+#  index_email_campaigns_examples_on_campaign_class  (campaign_class)
 #
 module EmailCampaigns
-  class RecentExample < ApplicationRecord
+  class Example < ApplicationRecord
   end
 end
