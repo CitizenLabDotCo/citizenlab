@@ -1,21 +1,23 @@
 import React from 'react';
 
 import useAuthUser from 'hooks/useAuthUser';
-import { createCampaign } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import GoBackButton from 'components/UI/GoBackButton';
-import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
+import CampaignForm, { PageTitle } from '../CampaignForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
+import { CampaignFormValues } from 'api/campaigns/types';
+import useAddCampaign from 'api/campaigns/useAddCampaign';
 
 const New = () => {
+  const { mutateAsync: addCampaign } = useAddCampaign();
   const authUser = useAuthUser();
-  const handleSubmit = async (values: FormValues) => {
-    const response = await createCampaign({
+  const handleSubmit = async (values: CampaignFormValues) => {
+    const response = await addCampaign({
       campaign_name: 'manual',
       ...values,
     });
