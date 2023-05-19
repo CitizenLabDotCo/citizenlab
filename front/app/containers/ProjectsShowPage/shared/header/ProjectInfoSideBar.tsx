@@ -250,7 +250,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                         phasesPermissions
                       ) && (
                         <IconTooltip
-                          placement="top"
+                          placement="top-start"
                           iconColor={colors.coolGrey300}
                           content={formatMessage(messages.participantsTooltip)}
                         />
@@ -364,7 +364,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   {hasEmbeddedSurvey(project.data, phases?.data) && (
                     <Box mb="4px" ml="4px">
                       <IconTooltip
-                        placement="top"
+                        placement="top-start"
                         iconColor={colors.coolGrey300}
                         content={formatMessage(
                           messages.surveySubmissionsTooltip
