@@ -10,8 +10,9 @@ import { apiEndpoint as navbarItemsEndpoint } from 'services/navbar';
 import { omit } from 'lodash-es';
 
 // Pages which are not allowed to have their slug edited are linked to internally.
+// Changing them would break these links.
 // E.g. 'faq'. Search for '/pages/faq' in the front codebase to find out.
-// Partly related: HiddenNavbarItemList.
+// Partly related: HiddenNavbarItemList
 const customPageSlugAllowedToEdit: { [key in TCustomPageCode]: boolean } = {
   about: true,
   custom: true,
