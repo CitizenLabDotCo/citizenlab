@@ -56,9 +56,8 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
     [currentPhase, project, pathname]
   );
 
-  // CL-3466
-  const handleTakeSurveyClick = (event: FormEvent) => {
-    scrollTo('project-survey')(event);
+  const handleClick = (event: FormEvent) => {
+    scrollTo('document-annotation')(event);
   };
 
   if (hasProjectEndedOrIsArchived(project, currentPhase)) {
@@ -67,9 +66,8 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
 
   const CTAButton = (
     <Button
-      id="e2e-take-survey-button"
       buttonStyle="primary"
-      onClick={handleTakeSurveyClick}
+      onClick={handleClick}
       fontWeight="500"
       bgColor={theme.colors.white}
       textColor={theme.colors.tenantText}
@@ -77,7 +75,7 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
       padding="6px 12px"
       fontSize="14px"
     >
-      <FormattedMessage {...messages.takeTheSurvey} />
+      <FormattedMessage {...messages.reviewDocument} />
     </Button>
   );
 
@@ -89,5 +87,6 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
   );
 };
 
+// CL-3466
 // TO DO: add auth?
 // Check front/app/components/ParticipationCTABars/EmbeddedSurveyCTABar/index.tsx as reference.

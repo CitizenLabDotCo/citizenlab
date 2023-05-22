@@ -60,7 +60,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const { data: phases } = usePhases(projectId);
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const { pathname, hash: divId } = useLocation();
-  // CL-3466
+
   useEffect(() => {
     setCurrentPhase(
       getCurrentPhase(phases?.data) || getLastPhase(phases?.data)
@@ -151,6 +151,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const isParticipationMethodNativeSurvey =
     participationMethod === 'native_survey';
   const isParticipationMethodIdeation = participationMethod === 'ideation';
+  const isParticipationMethodDocumentAnnotation =
+    participationMethod === 'document_annotation';
 
   const showSeeIdeasButton =
     isParticipationMethodIdeation && isNumber(ideas_count) && ideas_count > 0;
@@ -174,6 +176,11 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
 
   const isPhaseNativeSurvey =
     currentPhase?.attributes.participation_method === 'native_survey';
+
+  const showDocumentAnnotationCTAButton =
+    !isProjectArchived &&
+    isParticipationMethodDocumentAnnotation &&
+    !hasCurrentPhaseEnded;
 
   return (
     <Container className={className || ''}>
@@ -240,6 +247,18 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           fontWeight="500"
         >
           <FormattedMessage {...messages.takeThePoll} />
+        </Button>
+      )}
+      {showDocumentAnnotationCTAButton && (
+        <Button
+          buttonStyle="primary"
+          onClick={(e: MouseEvent) => {
+            e.preventDefault();
+            scrollTo('document-annotation');
+          }}
+          fontWeight="500"
+        >
+          <FormattedMessage {...messages.reviewDocument} />
         </Button>
       )}
     </Container>

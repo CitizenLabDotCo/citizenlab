@@ -35,6 +35,7 @@ const DocumentAnnotation = ({ project, className }: Props) => {
       ? authUser.attributes.email
       : null;
 
+  // CL-3466
   // const { enabled, disabledReason } = getSurveyTakingRules({
   //   project,
   //   phaseContext: !isError(phase) ? phase : null,
@@ -55,7 +56,7 @@ const DocumentAnnotation = ({ project, className }: Props) => {
               <h2>{formatMessage(messages.invisbleTitleDocumentAnnotation)}</h2>
             </ScreenReaderOnly>
             <Box
-              id="project-survey"
+              id="document-annotation"
               className={`${className} e2e-document-annotation`}
             >
               <ProjectPageSectionTitle>

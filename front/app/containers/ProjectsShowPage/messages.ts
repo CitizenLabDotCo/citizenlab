@@ -299,6 +299,10 @@ export default defineMessages({
     id: 'app.containers.Projects.takeTheSurvey',
     defaultMessage: 'Take the survey',
   },
+  reviewDocument: {
+    id: 'app.containers.Projects.reviewDocument',
+    defaultMessage: 'Review the document',
+  },
   takeThePoll: {
     id: 'app.containers.Projects.takeThePoll',
     defaultMessage: 'Take the poll',

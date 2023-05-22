@@ -602,7 +602,7 @@ const ProjectCard = memo<Props>(
       ) {
         ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
       } else if (participationMethod === 'document_annotation') {
-        ctaMessage = <FormattedMessage {...messages.reviewTheDocument} />;
+        ctaMessage = <FormattedMessage {...messages.reviewDocument} />;
       } else if (participationMethod === 'poll') {
         ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
       } else if (participationMethod === 'ideation' && canPost) {
