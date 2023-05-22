@@ -1226,7 +1226,7 @@
   "app.containers.Projects.submitMyBasket": "Soumettre",
   "app.containers.Projects.survey": "Enquête",
   "app.containers.Projects.surveySubmissions": "soumissions d'enquêtes",
-  "app.containers.Projects.surveySubmissionsTooltip2": "Les envois de sondages intégrés ne sont pas pris en compte.",
+  "app.containers.Projects.surveySubmissionsTooltip2": "Les réponses aux enquêtes externes ne sont pas prises en compte.",
   "app.containers.Projects.takeThePoll": "{tenantName, select, vitrysurseine {Répondre à l'enquête} other {Répondre au sondage}}",
   "app.containers.Projects.takeTheSurvey": "Répondre à l'enquête",
   "app.containers.Projects.timeline": "Ligne du temps",
