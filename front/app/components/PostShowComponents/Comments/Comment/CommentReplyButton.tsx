@@ -1,6 +1,5 @@
 import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { get } from 'lodash-es';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -182,17 +181,19 @@ const CommentReplyButton = memo<Props>(
     ]);
 
     if (!isNilOrError(comment)) {
-      const commentingDisabledReason = get(
-        post,
-        'attributes.action_descriptor.commenting_idea.disabled_reason'
-      );
+      const commentingDisabledReason =
+        'action_descriptor' in post.attributes &&
+        post.attributes.action_descriptor.commenting_idea.disabled_reason;
+
       const isCommentDeleted =
         comment.attributes.publication_status === 'deleted';
       const isSignedIn = !isNilOrError(authUser);
       const disabled =
         postType === 'initiative'
           ? !commentingPermissionInitiative?.enabled
-          : isSignedIn && !isFixableByAuthentication(commentingDisabledReason);
+          : isSignedIn &&
+            commentingDisabledReason &&
+            !isFixableByAuthentication(commentingDisabledReason);
 
       if (!isCommentDeleted && !disabled) {
         return (
