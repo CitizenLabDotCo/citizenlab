@@ -49,9 +49,9 @@ const mockAuthUserData: IUserData = {
   },
 };
 
-jest.mock('hooks/useAuthUser', () => {
-  return () => mockAuthUserData;
-});
+jest.mock('api/me/useAuthUser', () => () => ({
+  data: { data: mockAuthUserData },
+}));
 
 describe('<ModeratorListRow />', () => {
   it('shows an enabled delete button when user is an admin', () => {

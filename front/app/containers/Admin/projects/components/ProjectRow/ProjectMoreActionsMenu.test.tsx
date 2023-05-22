@@ -39,9 +39,7 @@ const mockProject = {
   },
 };
 
-jest.mock('hooks/useAuthUser', () => {
-  return () => mockUserData;
-});
+jest.mock('api/me/useAuthUser', () => () => ({ data: { data: mockUserData } }));
 
 jest.mock('api/projects/useProjectById', () => {
   return jest.fn(() => ({ data: { data: mockProject } }));

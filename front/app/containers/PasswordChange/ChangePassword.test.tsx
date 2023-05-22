@@ -37,9 +37,9 @@ jest.mock('hooks/useAppConfigurationLocales', () =>
 jest.mock('services/users', () => ({
   changePassword: jest.fn(() => null),
 }));
-jest.mock('hooks/useAuthUser', () => {
-  return () => mockUserData;
-});
+jest.mock('api/me/useAuthUser', () => () => ({
+  data: { data: mockUserData },
+}));
 
 describe('ChangePassword', () => {
   it('submits correct data', async () => {

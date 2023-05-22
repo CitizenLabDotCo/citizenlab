@@ -5,7 +5,7 @@ import NotificationMenu from '.';
 
 jest.mock('services/auth');
 
-let mockUserData: {
+const mockUserData: {
   id: string;
   type: string;
   attributes: Partial<IUserAttributes>;
@@ -17,7 +17,12 @@ let mockUserData: {
   },
 };
 
-jest.mock('hooks/useAuthUser', () => jest.fn(() => mockUserData));
+type MockUserData = { data: typeof mockUserData } | null;
+let mockAuthUser: MockUserData = {
+  data: mockUserData,
+};
+
+jest.mock('api/me/useAuthUser', () => jest.fn(() => ({ data: mockAuthUser })));
 
 describe('NotificationMenu', () => {
   it('Opens and closes the dropdown when clicking the notifications icon', async () => {
@@ -36,7 +41,7 @@ describe('NotificationMenu', () => {
   });
 
   it('Does not render if the user is not logged in', () => {
-    mockUserData = null;
+    mockAuthUser = null;
     render(<NotificationMenu />);
 
     const notificationsIcon = screen.queryByRole('button');

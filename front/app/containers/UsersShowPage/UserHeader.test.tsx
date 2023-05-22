@@ -17,11 +17,9 @@ jest.mock('hooks/useUser', () => {
 
 let mockUserId = 'userId';
 
-jest.mock('hooks/useAuthUser', () => {
-  return () => ({
-    id: mockUserId,
-  });
-});
+jest.mock('api/me/useAuthUser', () => () => ({
+  data: { data: { id: mockUserId } },
+}));
 
 let mockDisableUsersBiosValue = false;
 

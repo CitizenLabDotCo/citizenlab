@@ -24,9 +24,9 @@ const mockUserData: IUserData = {
   },
 };
 jest.mock('hooks/useHomepageSettings');
-jest.mock('hooks/useAuthUser', () => {
-  return () => mockUserData;
-});
+jest.mock('api/me/useAuthUser', () => () => ({
+  data: { data: mockUserData },
+}));
 
 describe('HomePage', () => {
   it('Tries to redirect on hitting the A key if you have admin access', async () => {
