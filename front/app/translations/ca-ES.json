@@ -1661,6 +1661,7 @@
   "app.utils.errors.default.api_error_too_short": "És massa curt",
   "app.utils.errors.default.api_error_wrong_length": "Té una longitud incorrecta",
   "app.utils.errors.defaultapi_error_.odd": "Deu ser estrany",
+  "app.utils.notInGroup": "No compleixes els requisits per participar.",
   "app.utils.participationMethod.onSurveySubmission": "Gràcies. S'ha rebut la vostra resposta.",
   "containers.SiteMap.allProjects": "Tots els projectes",
   "containers.SiteMap.customPageSection": "Pàgines personalitzades",
