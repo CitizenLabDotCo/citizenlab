@@ -86,6 +86,7 @@ const IndexElement = () => {
     item: { type: 'route', path: pathname },
     action: 'access',
   });
+
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
 
@@ -93,7 +94,12 @@ const IndexElement = () => {
 
   const redirectURL = accessAuthorized
     ? null
-    : getRedirectURL(appConfiguration.data, authUser.data, pathname, urlLocale);
+    : getRedirectURL(
+        appConfiguration.data,
+        authUser?.data,
+        pathname,
+        urlLocale
+      );
 
   if (redirectURL) return <Navigate to={redirectURL} />;
 

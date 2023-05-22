@@ -55,7 +55,6 @@ import { Locale } from 'typings';
 // utils
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import useAuthUser from 'api/me/useAuthUser';
-import signOut from 'api/authentication/sign_in_out/signOut';
 import { configureScope } from '@sentry/react';
 
 const Container = styled.div<{
@@ -272,9 +271,7 @@ const App = ({ children }: Props) => {
   ]);
 
   useEffect(() => {
-    if (!authUser) {
-      signOut();
-    } else {
+    if (authUser) {
       configureScope((scope) => {
         scope.setUser({
           id: authUser.data.id,

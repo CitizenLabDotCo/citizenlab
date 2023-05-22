@@ -5,7 +5,7 @@ import meKeys from './keys';
 import { IUser } from 'services/users';
 import { MeKeys } from './types';
 
-const fetchMe = () =>
+export const fetchMe = () =>
   fetcher<IUser>({
     path: `/users/me`,
     action: 'get',
@@ -13,8 +13,12 @@ const fetchMe = () =>
 
 const useAuthUser = () => {
   return useQuery<IUser, CLErrors, IUser, MeKeys>({
-    queryKey: meKeys.items(),
+    queryKey: meKeys.all(),
     queryFn: () => fetchMe(),
+    retry: false,
+    keepPreviousData: false,
+    staleTime: 0,
+    cacheTime: 0,
   });
 };
 
