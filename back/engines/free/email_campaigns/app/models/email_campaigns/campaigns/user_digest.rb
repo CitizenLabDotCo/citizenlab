@@ -51,10 +51,6 @@ module EmailCampaigns
       end
     end
 
-    def self.category
-      'scheduled'
-    end
-
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.registered_users'
     end
@@ -65,10 +61,6 @@ module EmailCampaigns
 
     def self.content_type_multiloc_key
       'email_campaigns.admin_labels.content_type.general'
-    end
-
-    def self.trigger_multiloc_key
-      'scheduled'
     end
 
     def mailer_class
