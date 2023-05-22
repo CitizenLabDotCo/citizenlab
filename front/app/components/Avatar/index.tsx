@@ -201,7 +201,9 @@ const AvatarInner = ({
               colors={[
                 theme.colors.tenantPrimary,
                 theme.colors.tenantSecondary,
-                colors.coolGrey300,
+                colors.grey300,
+                lighten(0.3, theme.colors.tenantPrimary),
+                lighten(0.3, theme.colors.tenantSecondary),
               ]}
             />
           </Box>
