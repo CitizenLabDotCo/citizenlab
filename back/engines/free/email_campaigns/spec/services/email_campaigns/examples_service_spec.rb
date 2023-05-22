@@ -25,5 +25,40 @@ describe EmailCampaigns::ExamplesService do
         recipient_id: recipient.id
       )
     end
+
+    it 'does not save a new example in case there are 5 recent examples for the campaign' do
+      create_list(:campaign_example, 5)
+
+      recipient = create(:admin)
+      campaign = build(:admin_rights_received_campaign)
+      command = {
+        recipient: recipient,
+        event_payload: {},
+        activity: create(:admin_rights_given_activity)
+      }
+
+      expect { service.save_examples([[command, campaign]]) }.not_to change { EmailCampaigns::Example.all.ids.sort }
+    end
+
+    it 'replaces the oldest example if there are less than 5 recent examples for the campaign' do
+      recent_examples = create_list(:campaign_example, 3)
+      old_example = create(:campaign_example, created_at: Time.now - 2.weeks, updated_at: Time.now - 2.weeks)
+      oldest_example = create(:campaign_example, created_at: Time.now - 3.weeks, updated_at: Time.now - 3.weeks)
+
+      recipient = create(:admin)
+      campaign = build(:admin_rights_received_campaign)
+      command = {
+        recipient: recipient,
+        event_payload: {},
+        activity: create(:admin_rights_given_activity)
+      }
+
+      expect { service.save_examples([[command, campaign]]) }.to change { EmailCampaigns::Example.all.ids.sort }
+
+      expect(EmailCampaigns::Example.ids).to include(*recent_examples.map(&:id))
+      expect(EmailCampaigns::Example.ids).to include(old_example.id)
+      expect(EmailCampaigns::Example.ids).not_to include(oldest_example.id)
+      expect(EmailCampaigns::Example.where(recipient: recipient).all).to be_present
+    end
   end
 end
