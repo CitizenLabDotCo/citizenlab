@@ -122,9 +122,36 @@ export interface Props {
   authorHash?: string;
 }
 
-const Avatar = memo(({ isLinkToProfile, userId, ...props }: Props) => {
-  const user = useUser({ userId });
-  if (isNilOrError(user)) {
+const Avatar = memo(
+  ({ isLinkToProfile, userId, authorHash, ...props }: Props) => {
+    const user = useUser({ userId });
+    if (isNilOrError(user)) {
+      return (
+        <AvatarInner
+          userId={userId}
+          isLinkToProfile={isLinkToProfile}
+          authorHash={authorHash}
+          {...props}
+        />
+      );
+    }
+
+    const { slug } = user.attributes;
+    const profileLink = `/profile/${slug}`;
+    const hasValidProfileLink = profileLink !== '/profile/undefined';
+
+    if (isLinkToProfile && hasValidProfileLink) {
+      return (
+        <Link to={profileLink}>
+          <AvatarInner
+            userId={userId}
+            isLinkToProfile={isLinkToProfile}
+            {...props}
+          />
+        </Link>
+      );
+    }
+
     return (
       <AvatarInner
         userId={userId}
@@ -133,27 +160,7 @@ const Avatar = memo(({ isLinkToProfile, userId, ...props }: Props) => {
       />
     );
   }
-
-  const { slug } = user.attributes;
-  const profileLink = `/profile/${slug}`;
-  const hasValidProfileLink = profileLink !== '/profile/undefined';
-
-  if (isLinkToProfile && hasValidProfileLink) {
-    return (
-      <Link to={profileLink}>
-        <AvatarInner
-          userId={userId}
-          isLinkToProfile={isLinkToProfile}
-          {...props}
-        />
-      </Link>
-    );
-  }
-
-  return (
-    <AvatarInner userId={userId} isLinkToProfile={isLinkToProfile} {...props} />
-  );
-});
+);
 
 const AvatarInner = ({
   isLinkToProfile,
@@ -180,7 +187,6 @@ const AvatarInner = ({
   const borderColor = props.borderColor || 'transparent';
   const bgColor = props.bgColor || 'transparent';
 
-  console.log(authorHash);
   if (isNilOrError(user)) {
     return (
       <Container aria-hidden className={className} size={containerSize}>

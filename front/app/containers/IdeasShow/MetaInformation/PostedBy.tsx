@@ -56,6 +56,8 @@ const PostedBy = memo<Props>(
 
     if (!isNilOrError(idea)) {
       const ideaPublishedAtDate = idea.data.attributes.published_at;
+      const authorHash = idea.data.attributes.author_hash;
+
       const userName = (
         <UserName
           userId={authorId}
@@ -75,7 +77,6 @@ const PostedBy = memo<Props>(
         />
       );
 
-      console.log(authorId);
       return (
         <Item className={`first ${className || ''}`} compact={compact}>
           <Header>{formatMessage(messages.postedBy)}</Header>
@@ -84,6 +85,7 @@ const PostedBy = memo<Props>(
               userId={authorId}
               size={30}
               isLinkToProfile={!!authorId}
+              authorHash={authorHash}
             />
             <FormattedMessage
               {...messages.byUserOnDate}
