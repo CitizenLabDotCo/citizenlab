@@ -91,25 +91,12 @@ export function ideasByProjectStream(
 
 // Users
 
-export interface IUsersCount {
-  count: number;
-  administrators_count: number;
-  moderators_count: number;
-}
-
 export interface IUsersByTime {
   series: {
     users: {
       [key: string]: number;
     };
   };
-}
-
-export function usersCount(streamParams: IStreamParams | null = null) {
-  return streams.get<IUsersCount>({
-    apiEndpoint: `${apiEndpoint}/users_count`,
-    ...streamParams,
-  });
 }
 
 export const activeUsersByTimeXlsxEndpoint = `${apiEndpoint}/active_users_by_time_as_xlsx`;

@@ -1752,7 +1752,8 @@ resource 'Idea Custom Fields' do
 
         assert_status 200
         expect(CustomFieldOption.count).to eq 2
-        added_option1, added_option2 = CustomFieldOption.all
+        added_option1 = CustomFieldOption.find_by custom_field: field1_to_update
+        added_option2 = CustomFieldOption.find_by custom_field: field2_to_update
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
