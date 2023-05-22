@@ -92,7 +92,11 @@ const AnonymousParticipationConfirmationModal = ({
           >
             {formatMessage(messages.cancel)}
           </Button>
-          <Button width="100%" onClick={onConfirmAnonymousParticipation}>
+          <Button
+            id="e2e-continue-anonymous-participation-btn"
+            width="100%"
+            onClick={onConfirmAnonymousParticipation}
+          >
             {formatMessage(messages.continue)}
           </Button>
         </Box>
