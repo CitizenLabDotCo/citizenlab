@@ -27,6 +27,7 @@ import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
 
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
@@ -64,7 +65,12 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
     return null;
   }
 
-  const CTAButton = (
+  const actionDescriptor = project.attributes.action_descriptor.taking_survey;
+  const showSignIn =
+    actionDescriptor.enabled ||
+    isFixableByAuthentication(actionDescriptor.disabled_reason);
+
+  const CTAButton = showSignIn ? (
     <Button
       buttonStyle="primary"
       onClick={handleClick}
@@ -77,7 +83,7 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
     >
       <FormattedMessage {...messages.reviewDocument} />
     </Button>
-  );
+  ) : null;
 
   return (
     <ParticipationCTAContent
@@ -88,5 +94,4 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
 };
 
 // CL-3466
-// TO DO: add auth?
 // Check front/app/components/ParticipationCTABars/EmbeddedSurveyCTABar/index.tsx as reference.
