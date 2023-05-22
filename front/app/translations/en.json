@@ -316,6 +316,7 @@
   "app.components.ProjectCard.joinDiscussion": "Join the discussion",
   "app.components.ProjectCard.learnMore": "Learn more",
   "app.components.ProjectCard.remaining": "{timeRemaining} remaining",
+  "app.components.ProjectCard.reviewTheDocument": "Review the document",
   "app.components.ProjectCard.submitAnIssue": "Submit a comment",
   "app.components.ProjectCard.submitYourIdea": "Submit your idea",
   "app.components.ProjectCard.submitYourProject": "Submit your project",
