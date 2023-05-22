@@ -8,24 +8,15 @@ import {
   Text,
   Title,
   Icon,
+  ListItem,
+  fontSizes,
 } from '@citizenlab/cl2-component-library';
-import {
-  List as AutomatedEmailsList,
-  Row,
-  TextCell,
-} from 'components/admin/ResourceList';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { colors } from 'utils/styleUtils';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import useLocalize from 'hooks/useLocalize';
-import styled from 'styled-components';
-
-const StyledIcon = styled(Icon)`
-  flex: 0 0 24px;
-  margin-top: -1.5px;
-`;
 
 const AutomatedEmails = () => {
   const { data: { data: campaigns } = {} } = useCampaigns({
@@ -94,20 +85,20 @@ const AutomatedEmails = () => {
           <FormattedMessage {...messages.automatedEmailCampaignsInfo} />
         </Text>
       </Box>
-      <Box background={colors.white} p="40px">
-        <AutomatedEmailsList>
-          {groupedCampaigns.map(([recipient_role, group]: [string, any], i) => (
-            <Box key={i}>
-              <Title color="primary" variant="h4">
-                {recipient_role}
-              </Title>
-              {group.map(([content_type, campaigns]: [string, any[]], ii) => (
-                <Box key={ii}>
-                  <Title color="primary" variant="h6">
-                    {content_type}
-                  </Title>
-                  {campaigns.map((campaign) => (
-                    <Row key={campaign.id}>
+      <Box background={colors.white} p="20px 40px">
+        {groupedCampaigns.map(([recipient_role, group]: [string, any], i) => (
+          <Box key={i} mb="30px">
+            <Title color="primary" variant="h3" mt="20px">
+              {recipient_role}
+            </Title>
+            {group.map(([content_type, campaigns]: [string, any[]], ii) => (
+              <Box key={ii}>
+                <Title color="primary" variant="h4">
+                  {content_type}
+                </Title>
+                {campaigns.map((campaign) => (
+                  <ListItem key={campaign.id} p="10px 0">
+                    <Box display="flex" alignItems="center">
                       <Toggle
                         disabled={isUndefined(campaign.attributes.enabled)}
                         checked={
@@ -116,36 +107,43 @@ const AutomatedEmails = () => {
                         }
                         onChange={handleOnEnabledToggle(campaign)}
                       />
-                      <Box>
-                        <TextCell className="expand">
+                      <Box display="flex" flexDirection="column" ml="20px">
+                        <Text color="grey800" m="0">
                           {campaign.admin_campaign_description}
-                        </TextCell>
-                        <Box>
-                          <Text>
-                            <StyledIcon
+                        </Text>
+                        <Box display="flex">
+                          <Box display="flex" justifyContent="center">
+                            <Icon
                               name="user"
-                              fill={colors.textSecondary}
-                              marginRight="6px"
+                              fill={colors.coolGrey600}
+                              width={`${fontSizes.m}px`}
+                              m="-2px 5px 0 0"
                             />
-                            {campaign.recipient_segment}
-                          </Text>
-                          <Text>
-                            <StyledIcon
+                            <Text m="0" color="coolGrey600" fontSize="s">
+                              {campaign.recipient_segment}
+                            </Text>
+                          </Box>
+                          <Box ml="5px">·</Box>
+                          <Box display="flex" justifyContent="center" ml="5px">
+                            <Icon
                               name="clock"
-                              fill={colors.textSecondary}
-                              marginRight="6px"
+                              fill={colors.coolGrey600}
+                              width={`${fontSizes.m}px`}
+                              m="-2px 5px 0 0"
                             />
-                            {campaign.trigger || campaign.schedule}
-                          </Text>
+                            <Text m="0" color="coolGrey600" fontSize="s">
+                              {campaign.trigger || campaign.schedule}
+                            </Text>
+                          </Box>
                         </Box>
                       </Box>
-                    </Row>
-                  ))}
-                </Box>
-              ))}
-            </Box>
-          ))}
-        </AutomatedEmailsList>
+                    </Box>
+                  </ListItem>
+                ))}
+              </Box>
+            ))}
+          </Box>
+        ))}
       </Box>
     </>
   );
