@@ -1226,7 +1226,7 @@
   "app.containers.Projects.submitMyBasket": "Enviar bolsa",
   "app.containers.Projects.survey": "Consulta",
   "app.containers.Projects.surveySubmissions": "envíos de encuestas",
-  "app.containers.Projects.surveySubmissionsTooltip2": "Los envíos de encuestas incrustadas no se contabilizan.",
+  "app.containers.Projects.surveySubmissionsTooltip2": "Los envíos de encuestas de terceros integradas en la plataforma no se contabilizan.",
   "app.containers.Projects.takeThePoll": "Responder la consulta ciudadana",
   "app.containers.Projects.takeTheSurvey": "Haz la consulta",
   "app.containers.Projects.timeline": "Línea de tiempo",
