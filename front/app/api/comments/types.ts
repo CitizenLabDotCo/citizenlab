@@ -64,6 +64,7 @@ export interface INewComment {
   author_id: string;
   parent_id?: string;
   body_multiloc: Multiloc;
+  anonymous?: boolean;
 }
 
 export interface IUpdatedComment {

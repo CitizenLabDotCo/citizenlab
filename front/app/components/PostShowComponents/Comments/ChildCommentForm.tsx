@@ -10,6 +10,7 @@ import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
 import Link from 'utils/cl-router/Link';
+import { Checkbox, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -32,7 +33,6 @@ import { colors, defaultStyles } from 'utils/styleUtils';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 
@@ -119,6 +119,7 @@ const ChildCommentForm = ({
   const [canSubmit, setCanSubmit] = useState(false);
   const [profanityApiError, setProfanityApiError] = useState(false);
   const [hasApiError, setHasApiError] = useState(false);
+  const [postAnonymously, setPostAnonymously] = useState(false);
 
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const processing =
@@ -205,6 +206,7 @@ const ChildCommentForm = ({
               author_id: authUser.id,
               parent_id: parentId,
               body_multiloc: commentBodyMultiloc,
+              anonymous: postAnonymously,
             },
             {
               onSuccess: () => {
@@ -248,6 +250,7 @@ const ChildCommentForm = ({
               author_id: authUser.id,
               parent_id: parentId,
               body_multiloc: commentBodyMultiloc,
+              anonymous: postAnonymously,
             },
             {
               onSuccess: () => {
@@ -374,6 +377,12 @@ const ChildCommentForm = ({
                 getTextareaRef={setRef}
               />
               <ButtonWrapper>
+                <Checkbox
+                  ml="8px"
+                  checked={postAnonymously}
+                  label={formatMessage(messages.postAnonymously)}
+                  onChange={() => setPostAnonymously(!postAnonymously)}
+                />
                 <CancelButton
                   disabled={processing}
                   onClick={onCancel}

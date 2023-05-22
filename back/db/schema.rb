@@ -947,6 +947,7 @@ ActiveRecord::Schema.define(version: 2023_05_18_133943) do
     t.integer "downvoting_limited_max", default: 10
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
+    t.boolean "allow_anonymous_participation", default: false, null: false
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -1084,6 +1085,7 @@ ActiveRecord::Schema.define(version: 2023_05_18_133943) do
     t.boolean "include_all_areas", default: false, null: false
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
+    t.boolean "allow_anonymous_participation", default: false, null: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 

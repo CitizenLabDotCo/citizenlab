@@ -6,8 +6,8 @@ import { isNumber } from 'lodash-es';
 export const getLocationGeojson = async (
   initialFormData: { [k: string]: any } | null,
   data: {
-    location_description: string | null | undefined;
-    location_point_geojson: any;
+    location_description?: string | null;
+    location_point_geojson?: any;
   }
 ) => {
   const search = location.search;

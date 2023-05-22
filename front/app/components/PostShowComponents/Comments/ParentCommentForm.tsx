@@ -8,7 +8,7 @@ import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
 import Link from 'utils/cl-router/Link';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Checkbox, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -131,7 +131,7 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
   const [hasApiError, setHasApiError] = useState(false);
   const [profanityApiError, setProfanityApiError] = useState(false);
   const [hasEmptyError, setHasEmptyError] = useState(true);
-
+  const [postAnonymously, setPostAnonymously] = useState(false);
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -198,6 +198,7 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
             ideaId: postId,
             author_id: authUser.id,
             body_multiloc: commentBodyMultiloc,
+            anonymous: postAnonymously,
           },
           {
             onSuccess: (comment) => {
@@ -247,6 +248,7 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
             initiativeId: postId,
             author_id: authUser.id,
             body_multiloc: commentBodyMultiloc,
+            anonymous: postAnonymously,
           },
           {
             onSuccess: (comment) => {
@@ -380,6 +382,12 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
                 getTextareaRef={setRef}
               />
               <ButtonWrapper className={focused || processing ? 'visible' : ''}>
+                <Checkbox
+                  ml="8px"
+                  checked={postAnonymously}
+                  label={formatMessage(messages.postAnonymously)}
+                  onChange={() => setPostAnonymously(!postAnonymously)}
+                />
                 <CancelButton
                   disabled={processing}
                   onClick={close}

@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 // hooks
 import useLocale from 'hooks/useLocale';
 import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 import useFormResults from 'hooks/useFormResults';
 
 // components
@@ -34,7 +34,7 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
   const locale = useLocale();
   const localize = useLocalize();
   const { data: project } = useProjectById(projectId);
-  const phase = usePhase(phaseId ?? null);
+  const { data: phase } = usePhase(phaseId ?? null);
   const formResults = useFormResults({
     projectId,
     phaseId,
@@ -68,12 +68,12 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
         <Text variant="bodyM" color="primary" mt="0px" mb="0px">
           {'| '}
           {localize(project.data.attributes.title_multiloc)}
-          {!isNilOrError(phase) && (
+          {phase && (
             <>
               {' '}
               (
               {formatMessage(messages.phase, {
-                phaseName: localize(phase.attributes.title_multiloc),
+                phaseName: localize(phase.data.attributes.title_multiloc),
               })}
               )
             </>
