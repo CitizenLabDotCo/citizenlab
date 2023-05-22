@@ -1657,6 +1657,7 @@
   "app.containers.AdminPage.groups.permissions.onlyAdmins": "Only admins can change this setting.",
   "app.containers.AdminPage.groups.permissions.option1": "Option 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Pending invitation",
+  "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Who can annotate the document?",
   "app.containers.AdminPage.groups.permissions.permissionAction_budgeting_subtitle": "Who can spend the budget?",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_inputs_subtitle": "Who can comment on inputs?",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle": "Who can comment on proposals?",
