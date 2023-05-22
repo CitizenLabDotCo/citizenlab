@@ -40,7 +40,7 @@ const ParticipationMethodPicker = ({
   handleParticipationMethodOnChange,
 }: Props) => {
   const documentAnnotationEnabled = useFeatureFlag({
-    name: 'document_annotation',
+    name: 'konveio_document_annotation',
   });
   const participatoryBudgetingEnabled = useFeatureFlag({
     name: 'participatory_budgeting',
