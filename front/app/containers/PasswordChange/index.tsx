@@ -36,7 +36,7 @@ import GetAppConfiguration, {
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import GoBackButton from 'components/UI/GoBackButton';
 import clHistory from 'utils/cl-router/history';
 import streams from 'utils/streams';
@@ -52,11 +52,11 @@ type Props = {
 };
 
 const ChangePassword = ({ tenant }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const [success, setSuccess] = useState(false);
   const userHasPreviousPassword =
-    !isNilOrError(authUser) && !authUser.attributes?.no_password;
+    !isNilOrError(authUser) && !authUser.data.attributes?.no_password;
   const pageTitle = userHasPreviousPassword
     ? messages.titleChangePassword
     : messages.titleAddPassword;

@@ -7,7 +7,8 @@ import Warning from 'components/UI/Warning';
 import T from 'components/T';
 
 // hooks
-import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
+import { IUserData } from 'services/users';
 import useProjectById from 'api/projects/useProjectById';
 
 // services
@@ -30,7 +31,7 @@ interface Props {
 const calculateMessageDescriptor = (
   commentingEnabled: boolean | null,
   commentingDisabledReason: IdeaCommentingDisabledReason | null,
-  authUser: TAuthUser
+  authUser: IUserData | undefined
 ) => {
   const isLoggedIn = !isNilOrError(authUser);
 
@@ -63,7 +64,7 @@ const CommentingDisabled = ({
   commentingEnabled,
   commentingDisabledReason,
 }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
 
   const signUpIn = (flow: 'signin' | 'signup') => {
@@ -94,7 +95,7 @@ const CommentingDisabled = ({
   const messageDescriptor = calculateMessageDescriptor(
     commentingEnabled,
     commentingDisabledReason,
-    authUser
+    authUser?.data
   );
 
   const projectTitle = project?.data.attributes.title_multiloc;

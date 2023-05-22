@@ -19,7 +19,7 @@ import {
 } from 'containers/Authentication/steps/AuthProviders/styles';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // services
 import { verifyBogus } from '../services/verify';
@@ -32,7 +32,7 @@ interface Props {
 
 const VerificationFormBogus = memo<Props>(
   ({ onCancel, onVerified, className }) => {
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
 
     const [desiredError, setDesiredError] = useState<string>('');
     const [desiredErrorError, setDesiredErrorError] = useState<string | null>(
@@ -58,7 +58,7 @@ const VerificationFormBogus = memo<Props>(
 
           const endpointsToRefetch = [`${API_PATH}/users/me`];
           if (!isNilOrError(authUser)) {
-            endpointsToRefetch.push(`${API_PATH}/users/${authUser.id}`);
+            endpointsToRefetch.push(`${API_PATH}/users/${authUser.data.id}`);
           }
 
           await streams.fetchAllWith({

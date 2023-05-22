@@ -4,7 +4,7 @@ import { isRegularUser } from 'services/permissions/roles';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 import { isError, isNilOrError } from 'utils/helperUtils';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 import usePhases from 'api/phases/usePhases';
 import usePhase from 'api/phases/usePhase';
@@ -62,7 +62,7 @@ const IdeasNewPageWithJSONForm = () => {
   const { mutate: addIdea } = useAddIdea();
   const params = useParams<{ slug: string }>();
   // const previousPathName = useContext(PreviousPathnameContext);
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: project } = useProjectBySlug(params.slug);
   const [queryParams] = useSearchParams();
   const phaseId = queryParams.get('phase_id');
@@ -121,9 +121,7 @@ const IdeasNewPageWithJSONForm = () => {
         project_id: project?.data.id,
         publication_status: 'published',
         phase_ids:
-          phaseId &&
-          !isNilOrError(authUser) &&
-          !isRegularUser({ data: authUser })
+          phaseId && !isNilOrError(authUser) && !isRegularUser(authUser)
             ? [phaseId]
             : null,
       },
@@ -198,8 +196,7 @@ const IdeasNewPageWithJSONForm = () => {
   }
 
   const canUserEditProject =
-    !isNilOrError(authUser) &&
-    canModerateProject(project.data.id, { data: authUser });
+    !isNilOrError(authUser) && canModerateProject(project.data.id, authUser);
   const isSurvey = config.postType === 'nativeSurvey';
 
   return (

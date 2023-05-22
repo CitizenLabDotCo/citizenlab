@@ -8,7 +8,7 @@ import messages from './messages';
 import { isAdmin } from 'services/permissions/roles';
 import { IUserData } from 'services/users';
 import styled from 'styled-components';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectModerator';
 
@@ -26,7 +26,7 @@ const ModeratorListRow = ({ isLastItem, moderator, projectId }: Props) => {
   const { mutate: deleteProjectModerator, isLoading } =
     useDeleteProjectModerator();
   const { formatMessage } = useIntl();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   if (isNilOrError(authUser)) {
     return null;
@@ -69,7 +69,7 @@ const ModeratorListRow = ({ isLastItem, moderator, projectId }: Props) => {
         icon="delete"
         // Component is on a page that is accessible
         // for both project moderators and admins
-        disabled={!isAdmin({ data: authUser })}
+        disabled={!isAdmin(authUser)}
         processing={isLoading}
       >
         {formatMessage(messages.deleteModeratorLabel)}

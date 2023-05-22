@@ -2,7 +2,7 @@ import { authUserStream } from 'services/auth';
 import { IUser } from 'services/users';
 import { isObject } from 'lodash-es';
 import { map } from 'rxjs/operators';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 
 import {
@@ -108,7 +108,7 @@ const usePermission = ({
   action: string;
   context?: any;
 }) => {
-  const user = useAuthUser();
+  const { data: user } = useAuthUser();
   const { data: appConfig } = useAppConfiguration();
 
   if (!item) {
@@ -122,7 +122,7 @@ const usePermission = ({
     return (
       !isNilOrError(user) &&
       !isNilOrError(appConfig) &&
-      rule(item, { data: user }, appConfig?.data, context)
+      rule(item, user, appConfig?.data, context)
     );
   } else {
     throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;

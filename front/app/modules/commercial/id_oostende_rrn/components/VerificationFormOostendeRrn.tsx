@@ -21,7 +21,7 @@ import {
 } from 'containers/Authentication/steps/AuthProviders/styles';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // services
 import { verifyOostendeRrn } from '../services/verify';
@@ -43,7 +43,7 @@ interface Props {
 
 const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
   ({ onCancel, onVerified, className, intl }) => {
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
 
     const [rrn, setRrn] = useState('');
     const [rrnError, setRrnError] = useState<string | null>(null);
@@ -85,7 +85,7 @@ const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
             ];
 
             if (!isNilOrError(authUser)) {
-              endpointsToRefetch.push(`${API_PATH}/users/${authUser.id}`);
+              endpointsToRefetch.push(`${API_PATH}/users/${authUser.data.id}`);
             }
 
             await streams.fetchAllWith({

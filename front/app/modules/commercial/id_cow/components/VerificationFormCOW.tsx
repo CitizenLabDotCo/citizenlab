@@ -22,7 +22,7 @@ import {
 } from 'containers/Authentication/steps/AuthProviders/styles';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // services
 import { verifyCOW } from '../services/verify';
@@ -43,7 +43,7 @@ interface Props {
 
 const VerificationFormCOW = memo<Props & WrappedComponentProps>(
   ({ onCancel, onVerified, className, intl }) => {
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
 
     const [run, setRun] = useState('');
     const [idSerial, setIdSerial] = useState('');
@@ -92,7 +92,7 @@ const VerificationFormCOW = memo<Props & WrappedComponentProps>(
 
             const endpointsToRefetch = [`${API_PATH}/users/me`];
             if (!isNilOrError(authUser)) {
-              endpointsToRefetch.push(`${API_PATH}/users/${authUser.id}`);
+              endpointsToRefetch.push(`${API_PATH}/users/${authUser.data.id}`);
             }
 
             await streams.fetchAllWith({

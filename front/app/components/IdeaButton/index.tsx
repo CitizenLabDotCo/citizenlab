@@ -45,7 +45,7 @@ import { IPhaseData } from 'api/phases/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 const Container = styled.div``;
 
@@ -126,7 +126,7 @@ const IdeaButton = memo<Props>(
     const { formatMessage } = useIntl();
     const { data: project } = useProjectById(projectId);
     const { data: phases } = usePhases(projectId);
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
 
     const disabledMessages: {
       [key in IIdeaPostingDisabledReason]: MessageDescriptor;
@@ -143,7 +143,7 @@ const IdeaButton = memo<Props>(
       getIdeaPostingRules({
         project: project?.data,
         phase,
-        authUser,
+        authUser: authUser?.data,
       });
 
     const pcType = participationContextType;

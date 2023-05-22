@@ -21,7 +21,7 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useComment from 'api/comments/useComment';
 import useComments from 'api/comments/useComments';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 const Container = styled.div`
@@ -62,7 +62,7 @@ const ParentComment = ({
     'commenting_initiative'
   );
   const theme = useTheme();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: comment } = useComment(commentId);
   const {
     data: childCommentsData,

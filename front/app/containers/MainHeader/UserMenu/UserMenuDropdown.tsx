@@ -10,7 +10,7 @@ import HasPermission from 'components/HasPermission';
 import signOut from 'api/authentication/sign_in_out/signOut';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
 
 // events
@@ -36,7 +36,7 @@ interface Props {
 }
 
 const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: authenticationRequirementsResponse } =
     useAuthenticationRequirements(GLOBAL_CONTEXT);
 
@@ -46,7 +46,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
       .permitted;
 
   const isConfirmedUser =
-    !isNilOrError(authUser) && !authUser.attributes.confirmation_required;
+    !isNilOrError(authUser) && !authUser.data.attributes.confirmation_required;
 
   const handleToggleDropdown = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
@@ -92,7 +92,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
           {isConfirmedUser && (
             <DropdownListItem
               id="e2e-my-ideas-page-link"
-              linkTo={`/profile/${authUser.attributes.slug}`}
+              linkTo={`/profile/${authUser.data.attributes.slug}`}
               onClick={handleCloseDropdown}
               buttonStyle="text"
               bgHoverColor={colors.grey300}

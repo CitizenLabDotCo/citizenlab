@@ -37,7 +37,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import useLocale from 'hooks/useLocale';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
@@ -112,7 +112,7 @@ interface Props {
 
 const ParentCommentForm = ({ postId, postType, className }: Props) => {
   const locale = useLocale();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
   const smallerThanTablet = useBreakpoint('tablet');
@@ -196,7 +196,7 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
         addCommentToIdea(
           {
             ideaId: postId,
-            author_id: authUser.id,
+            author_id: authUser.data.id,
             body_multiloc: commentBodyMultiloc,
           },
           {
@@ -226,7 +226,7 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
                   projectId,
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'InitiativesNewFormWrapper (citizen side)',
-                  userId: authUser.id,
+                  userId: authUser.data.id,
                   host: !isNilOrError(appConfiguration)
                     ? appConfiguration.data.attributes.host
                     : null,
@@ -245,7 +245,7 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
         addCommentToInitiative(
           {
             initiativeId: postId,
-            author_id: authUser.id,
+            author_id: authUser.data.id,
             body_multiloc: commentBodyMultiloc,
           },
           {
@@ -275,7 +275,7 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
                   projectId,
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'InitiativesNewFormWrapper (citizen side)',
-                  userId: authUser.id,
+                  userId: authUser.data.id,
                   host: !isNilOrError(appConfiguration)
                     ? appConfiguration.data.attributes.host
                     : null,
@@ -333,8 +333,7 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
     null
   );
   const isModerator =
-    !isNilOrError(authUser) &&
-    canModerateProject(projectId, { data: authUser });
+    !isNilOrError(authUser) && canModerateProject(projectId, authUser);
   const canComment = authUser && commentingEnabled;
   const placeholder = formatMessage(
     messages[`${postType}CommentBodyPlaceholder`]
@@ -344,9 +343,9 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
     return (
       <Container className={className || ''}>
         <StyledAvatar
-          userId={authUser?.id}
+          userId={authUser?.data.id}
           size={30}
-          isLinkToProfile={!!authUser?.id}
+          isLinkToProfile={!!authUser?.data.id}
           moderator={isModerator}
         />
         <FormContainer

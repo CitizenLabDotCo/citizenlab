@@ -18,7 +18,7 @@ import messages from '../messages';
 import styled from 'styled-components';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 const CompleteProfileIcon = styled(Icon)`
   width: 48px;
@@ -37,7 +37,7 @@ const CompleteProfileStep = ({
   onSkip,
   currentOnboardingCampaignName,
 }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
 
   if (!isNilOrError(authUser)) {
@@ -49,7 +49,7 @@ const CompleteProfileStep = ({
           <Left>
             <Icons>
               <StyledAvatar
-                userId={authUser?.id}
+                userId={authUser?.data.id}
                 size={50}
                 fillColor="#fff"
                 padding={0}
@@ -61,7 +61,7 @@ const CompleteProfileStep = ({
               <FormattedMessage
                 {...messages.completeYourProfile}
                 tagName="h2"
-                values={{ firstName: authUser.attributes.first_name }}
+                values={{ firstName: authUser.data.attributes.first_name }}
               />
             </Text>
           </Left>

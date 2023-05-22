@@ -17,7 +17,7 @@ import { client } from '../../utils/apolloUtils';
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolders from 'api/project_folders/useProjectFolders';
 import {
   userModeratesFolder,
@@ -146,7 +146,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
     const tenantLocales = useAppConfigurationLocales();
     const graphqlTenantLocales = useGraphqlTenantLocales();
     const { data: projectFolders } = useProjectFolders({});
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
     const localize = useLocalize();
     const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
     const [startDate, setStartDate] = useState<string | null>(null);
@@ -310,7 +310,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
         !isNilOrError(projectFolders.data) &&
         !isNilOrError(authUser)
           ? [
-              ...(isAdmin({ data: authUser })
+              ...(isAdmin(authUser)
                 ? [
                     {
                       value: noFolderOption,
@@ -319,7 +319,9 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
                   ]
                 : []),
               ...projectFolders.data
-                .filter((folder) => userModeratesFolder(authUser, folder.id))
+                .filter((folder) =>
+                  userModeratesFolder(authUser.data, folder.id)
+                )
                 .map((folder) => {
                   return {
                     value: folder.id,
@@ -345,7 +347,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
     );
 
     const isSelectDisabled = !!(
-      isProjectFolderModerator(authUser) &&
+      isProjectFolderModerator(authUser.data) &&
       folderOptions &&
       folderOptions.length === 1
     );

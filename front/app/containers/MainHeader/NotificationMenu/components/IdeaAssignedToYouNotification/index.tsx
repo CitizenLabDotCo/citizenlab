@@ -16,7 +16,7 @@ import T from 'components/T';
 
 // resources
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 interface Props {
   notification: IIdeaAssignedToYouNotificationData;
@@ -27,7 +27,7 @@ const IdeaAssignedToYouNotification = ({ notification }: Props) => {
   const onClickUserName = (event: MouseEvent | KeyboardEvent) => {
     event.stopPropagation();
   };
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const projectId = idea ? idea.data.relationships.project.data.id : null;
 
   const getNotificationMessage = (): JSX.Element => {
@@ -66,12 +66,9 @@ const IdeaAssignedToYouNotification = ({ notification }: Props) => {
 
   const getLinkTo = () => {
     if (!isNilOrError(authUser)) {
-      if (isAdmin({ data: authUser })) {
+      if (isAdmin(authUser)) {
         return '/admin/ideas';
-      } else if (
-        projectId &&
-        isProjectModerator({ data: authUser }, projectId)
-      ) {
+      } else if (projectId && isProjectModerator(authUser, projectId)) {
         return `/admin/projects/${projectId}/ideas`;
       }
     }

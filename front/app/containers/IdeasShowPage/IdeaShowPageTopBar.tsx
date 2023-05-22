@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // components
 import VoteControl from 'components/VoteControl';
@@ -65,7 +65,7 @@ const IdeaShowPageTopBar = ({
   className,
   deselectIdeaOnMap,
 }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
 
   const onDisabledVoteClick = (disabled_reason: IdeaVotingDisabledReason) => {

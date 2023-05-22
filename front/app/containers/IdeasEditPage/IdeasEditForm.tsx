@@ -16,7 +16,7 @@ import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 import useInputSchema from 'hooks/useInputSchema';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
@@ -37,7 +37,7 @@ import { PreviousPathnameContext } from 'context';
 
 const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
   const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
   const granted = usePermission({

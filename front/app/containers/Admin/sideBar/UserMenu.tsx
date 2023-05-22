@@ -16,7 +16,7 @@ import { colors } from 'utils/styleUtils';
 import { ItemMenu, StyledBox } from './styles';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 
@@ -36,7 +36,7 @@ export const UserMenu = () => {
     ? appConfig.data.attributes.settings.core.locales
     : [];
   const iconDivRef = useRef<HTMLDivElement | null>(null);
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const [isUserMenuPopupOpen, setIsUserMenuPopupOpen] = useState(false);
   const [isNotificationsPopupOpen, setIsNotificationsPopupOpen] =
     useState(false);
@@ -53,7 +53,8 @@ export const UserMenu = () => {
     return null;
   }
 
-  const unreadNotificationsCount = authUser.attributes.unread_notifications;
+  const unreadNotificationsCount =
+    authUser.data.attributes.unread_notifications;
 
   const getRole = (user: IUserData): MessageDescriptor => {
     const highestRole = user.attributes.highest_role;
@@ -79,7 +80,7 @@ export const UserMenu = () => {
           onClick={() => setIsUserMenuPopupOpen(true)}
         >
           <Box display="flex" alignItems="center" w="100%" pr="6px">
-            <Avatar userId={authUser.id} size={30} addVerificationBadge />
+            <Avatar userId={authUser.data.id} size={30} addVerificationBadge />
             <Box
               display="flex"
               flex="1"
@@ -100,7 +101,7 @@ export const UserMenu = () => {
                 textAlign="left"
                 fontWeight="bold"
               >
-                {`${authUser.attributes.first_name} ${authUser.attributes.last_name}`}
+                {`${authUser.data.attributes.first_name} ${authUser.data.attributes.last_name}`}
               </Text>
               <Text
                 color="white"
@@ -112,7 +113,7 @@ export const UserMenu = () => {
                 w="100%"
                 textAlign="left"
               >
-                {formatMessage({ ...getRole(authUser) })}
+                {formatMessage({ ...getRole(authUser.data) })}
               </Text>
             </Box>
             <Box ref={iconDivRef}>

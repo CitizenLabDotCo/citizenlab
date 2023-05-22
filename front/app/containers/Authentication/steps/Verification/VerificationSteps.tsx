@@ -6,7 +6,7 @@ import VerificationMethods from './VerificationMethods';
 import Outlet from 'components/Outlet';
 
 // resource hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useVerificationMethods from 'hooks/useVerificationMethods';
 
 // style
@@ -37,7 +37,7 @@ const VerificationSteps = memo<Props>(({ context, onCompleted, onError }) => {
     useState<TVerificationStep>('method-selection');
   const [method, setMethod] = useState<TVerificationMethod | null>(null);
 
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const verificationMethods = useVerificationMethods();
 
   useEffect(() => {

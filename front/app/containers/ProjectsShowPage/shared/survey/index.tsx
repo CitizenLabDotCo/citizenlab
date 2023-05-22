@@ -15,7 +15,7 @@ import Warning from 'components/UI/Warning';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
 // i18n
@@ -65,7 +65,7 @@ const Survey = ({
   className,
 }: Props) => {
   const { data: project } = useProjectById(projectId);
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: phase } = usePhase(phaseId ?? null);
 
   const signUpIn = (flow: 'signin' | 'signup') => {
@@ -99,10 +99,12 @@ const Survey = ({
       project.data.attributes.action_descriptor.taking_survey;
 
     if (enabled) {
-      const email = !isNilOrError(authUser) ? authUser.attributes.email : null;
-      const user_id = !isNilOrError(authUser) ? authUser.id : null;
+      const email = !isNilOrError(authUser)
+        ? authUser.data.attributes.email
+        : null;
+      const user_id = !isNilOrError(authUser) ? authUser.data.id : null;
       const language = !isNilOrError(authUser)
-        ? authUser.attributes.locale
+        ? authUser.data.attributes.locale
         : undefined;
 
       return (

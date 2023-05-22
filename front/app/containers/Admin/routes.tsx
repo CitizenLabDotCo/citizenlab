@@ -25,7 +25,8 @@ const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
 // hooks
 import { usePermission } from 'services/permissions';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
+import { IUserData } from 'services/users';
 
 // utils
 import { isRegularUser } from 'services/permissions/roles';
@@ -44,7 +45,7 @@ const isTemplatePreviewPage = (urlSegments: string[]) =>
 
 const getRedirectURL = (
   appConfiguration: IAppConfigurationData,
-  authUser: TAuthUser,
+  authUser: IUserData | undefined,
   pathname: string | undefined,
   urlLocale: string | null
 ) => {
@@ -86,13 +87,13 @@ const IndexElement = () => {
     action: 'access',
   });
   const { data: appConfiguration } = useAppConfiguration();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   if (isNilOrError(appConfiguration) || authUser === undefined) return null;
 
   const redirectURL = accessAuthorized
     ? null
-    : getRedirectURL(appConfiguration.data, authUser, pathname, urlLocale);
+    : getRedirectURL(appConfiguration.data, authUser.data, pathname, urlLocale);
 
   if (redirectURL) return <Navigate to={redirectURL} />;
 

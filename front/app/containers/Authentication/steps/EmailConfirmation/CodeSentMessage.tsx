@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // components
 import { Box, Icon, Success } from '@citizenlab/cl2-component-library';
@@ -21,9 +21,10 @@ interface Props {
 const CodeSentMessage = ({ email }: Props) => {
   const [storedEmail, setStoredEmail] = useState<string | undefined>();
 
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const userEmail =
-    email ?? (isNilOrError(authUser) ? undefined : authUser.attributes.email);
+    email ??
+    (isNilOrError(authUser) ? undefined : authUser.data.attributes.email);
 
   useEffect(() => {
     if (userEmail) {

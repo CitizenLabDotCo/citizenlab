@@ -10,7 +10,7 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 // hooks
 import useAnySSOEnabled from '../useAnySSOEnabled';
 import { useLocation } from 'react-router-dom';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // utils
 import { getStepConfig } from './stepConfig';
@@ -42,7 +42,7 @@ let initialized = false;
 export default function useSteps() {
   const anySSOEnabled = useAnySSOEnabled();
   const { pathname, search } = useLocation();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   // The authentication data will be initialized with the global sign up flow.
   // In practice, this will be overwritten before firing the flow (see event

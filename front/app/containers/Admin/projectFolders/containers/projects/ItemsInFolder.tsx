@@ -12,7 +12,7 @@ import { isAdmin } from 'services/permissions/roles';
 import useAdminPublications, {
   IAdminPublicationContent,
 } from 'hooks/useAdminPublications';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -36,7 +36,7 @@ interface Props {
 }
 
 const ItemsInFolder = ({ projectFolderId }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { list: projectsInFolder } = useAdminPublications({
     childrenOfId: projectFolderId,
     publicationStatusFilter: publicationStatuses,
@@ -75,7 +75,7 @@ const ItemsInFolder = ({ projectFolderId }: Props) => {
     // is also truthy, so we won't reach the fallback message
     projectsInFolder.length > 0
   ) {
-    const userIsAdmin = authUser && isAdmin({ data: authUser });
+    const userIsAdmin = authUser && isAdmin(authUser);
 
     return (
       <SortableList

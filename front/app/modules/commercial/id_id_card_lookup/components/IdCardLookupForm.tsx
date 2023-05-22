@@ -22,7 +22,7 @@ import {
 } from 'containers/Authentication/steps/AuthProviders/styles';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // services
 import { verifyIDLookup } from '../services/verify';
@@ -45,7 +45,7 @@ interface Props {
 
 const VerificationFormLookup = memo<Props & WrappedComponentProps>(
   ({ onCancel, onVerified, className, method, intl }) => {
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
 
     const [cardId, setCardId] = useState<string>('');
     const [cardIdError, setCardIdError] = useState<string | null>(null);
@@ -80,7 +80,7 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
             const endpointsToRefetch = [`${API_PATH}/users/me`];
 
             if (!isNilOrError(authUser)) {
-              endpointsToRefetch.push(`${API_PATH}/users/${authUser.id}`);
+              endpointsToRefetch.push(`${API_PATH}/users/${authUser.data.id}`);
             }
 
             await streams.fetchAllWith({

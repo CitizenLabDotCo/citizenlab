@@ -11,7 +11,7 @@ import { WrappedComponentProps } from 'react-intl';
 import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // services
 import { IUserData } from 'services/users';
@@ -30,7 +30,7 @@ const UsersEditPageMeta = React.memo<Props & WrappedComponentProps>(
   ({ intl, user }) => {
     const locale = useLocale();
     const tenantLocales = useAppConfigurationLocales();
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
     const { data: appConfig } = useAppConfiguration();
 
     if (
@@ -66,8 +66,8 @@ const UsersEditPageMeta = React.memo<Props & WrappedComponentProps>(
           <title>
             {`
             ${
-              authUser && authUser.attributes.unread_notifications
-                ? `(${authUser.attributes.unread_notifications}) `
+              authUser && authUser.data.attributes.unread_notifications
+                ? `(${authUser.data.attributes.unread_notifications}) `
                 : ''
             }
             ${usersEditPageIndexTitle}`}

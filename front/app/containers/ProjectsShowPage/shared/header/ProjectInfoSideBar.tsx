@@ -13,7 +13,7 @@ import moment from 'moment';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useEvents from 'api/events/useEvents';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -134,7 +134,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     projectIds: [projectId],
     sort: '-start_at',
   });
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const [shareModalOpened, setShareModalOpened] = useState(false);
@@ -198,7 +198,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     const { disabledReason } = getIdeaPostingRules({
       project: project.data,
       phase: currentPhase,
-      authUser,
+      authUser: authUser?.data,
     });
     const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
 

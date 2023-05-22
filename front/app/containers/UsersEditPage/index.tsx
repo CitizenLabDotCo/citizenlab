@@ -24,7 +24,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // Hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import VerificationStatus from './VerificationStatus';
 import LoginCredentials from './LoginCredentials';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -48,7 +48,7 @@ const Wrapper = styled.div``;
 export default () => {
   const { data: appConfig } = useAppConfiguration();
   const passwordLoginActive = useFeatureFlag({ name: 'password_login' });
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const loaded = appConfig !== undefined && authUser !== undefined;
   const showEditPage =
     loaded && !isNilOrError(appConfig) && !isNilOrError(authUser);
@@ -57,14 +57,14 @@ export default () => {
     clHistory.push('/');
   }
 
-  if (showEditPage && !authUser.attributes.registration_completed_at) {
+  if (showEditPage && !authUser.data.attributes.registration_completed_at) {
     return <Unauthorized />;
   }
 
   if (showEditPage) {
     return (
       <Container id="e2e-user-edit-profile-page">
-        <UsersEditPageMeta user={authUser} />
+        <UsersEditPageMeta user={authUser.data} />
         <ScreenReaderOnly>
           <FormattedMessage
             tagName="h1"
@@ -75,7 +75,7 @@ export default () => {
           <VerificationStatus />
           <ProfileForm />
           <FragmentForm />
-          {passwordLoginActive && <LoginCredentials user={authUser} />}
+          {passwordLoginActive && <LoginCredentials user={authUser.data} />}
           <ProfileDeletion />
           <CampaignsConsentForm />
         </Wrapper>
