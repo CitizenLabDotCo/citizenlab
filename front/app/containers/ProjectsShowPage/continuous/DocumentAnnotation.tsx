@@ -11,7 +11,7 @@ import {
 } from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
 import { Box } from '@citizenlab/cl2-component-library';
-import Konveio from '../shared/document_annotation/Konveio';
+import Konveio from 'containers/ProjectsShowPage/shared/document_annotation/Konveio';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
