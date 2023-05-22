@@ -147,6 +147,9 @@ const AuthProviders = memo<Props>(
               last={false}
               method={claveUnicaMethod}
               onClick={handleOnClaveUnicaSelected}
+              message={formatMessage(messages.continueWithLoginMechanism, {
+                loginMechanismName: 'ClaveÚnica',
+              })}
             />
           </>
         )}

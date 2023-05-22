@@ -10,10 +10,6 @@ import icon from './clave-unica-icon.svg';
 // typings
 import { TVerificationMethod } from 'services/verificationMethods';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
 const Container = styled.div<{ last: boolean }>`
   margin-bottom: ${({ last }) => (last ? '0px' : '15px')};
   display: flex;
@@ -70,9 +66,10 @@ interface Props {
   method: TVerificationMethod;
   last: boolean;
   onClick: (method: TVerificationMethod) => void;
+  message: string | JSX.Element;
 }
 
-const ClaveUnicaButton = ({ method, last, onClick }: Props) => {
+const ClaveUnicaButton = ({ method, last, onClick, message }: Props) => {
   const handleOnClick = () => {
     onClick(method);
     const jwt = getJwt();
@@ -87,9 +84,7 @@ const ClaveUnicaButton = ({ method, last, onClick }: Props) => {
         <ClaveUnicaButtonIcon />
         <ClaveUnicaButtonLabel>Iniciar sesión</ClaveUnicaButtonLabel>
       </ButtonWrapper>
-      <HelperText>
-        <FormattedMessage {...messages.verifyClaveUnica} />
-      </HelperText>
+      {message && <HelperText>{message}</HelperText>}
     </Container>
   );
 };

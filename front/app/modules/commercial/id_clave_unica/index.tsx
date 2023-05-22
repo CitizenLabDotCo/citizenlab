@@ -8,6 +8,8 @@ import {
   isLastVerificationMethod,
   TVerificationMethodName,
 } from 'services/verificationMethods';
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const verificationMethodName: TVerificationMethodName = 'clave_unica';
 const configuration: ModuleConfiguration = {
@@ -25,7 +27,14 @@ const configuration: ModuleConfiguration = {
           verificationMethodName,
           verificationMethods
         );
-        return <ClaveUnicaButton last={last} method={method} {...otherProps} />;
+        return (
+          <ClaveUnicaButton
+            last={last}
+            method={method}
+            message={<FormattedMessage {...messages.verifyClaveUnica} />}
+            {...otherProps}
+          />
+        );
       }
 
       return null;
