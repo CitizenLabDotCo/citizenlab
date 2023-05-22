@@ -7,7 +7,7 @@ class CreateEmailCampaignsExamples < ActiveRecord::Migration[6.1]
       t.string :mail_body_html, null: false
       t.string :locale, null: false
       t.string :subject, null: false
-      t.string :recipient, null: false
+      t.references :recipient, type: :uuid, index: true, null: true, foreign_key: { to_table: 'users' }
 
       t.timestamps
     end

@@ -22,7 +22,7 @@ describe EmailCampaigns::ExamplesService do
         mail_body_html: kind_of(String),
         locale: 'en',
         subject: 'You became an administrator on the platform of Liege',
-        recipient: recipient.id
+        recipient_id: recipient.id
       )
     end
   end

@@ -19,5 +19,6 @@
 #
 module EmailCampaigns
   class Example < ApplicationRecord
+    belongs_to :recipient, class_name: 'User', optional: true
   end
 end

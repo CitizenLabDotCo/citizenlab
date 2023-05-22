@@ -33,7 +33,7 @@ module EmailCampaigns
         mail_body_html: mail.body.to_s,
         locale: command[:recipient].locale,
         subject: mail.subject,
-        recipient: command[:recipient].id # We can serialize email for response, if user exists, else a 'user_deleted' string
+        recipient: command[:recipient]
       )
 
       return if example.save
