@@ -59,16 +59,6 @@ export type IParticipationContextType = 'project' | 'phase';
 
 export type IPCAction = IProjectAction | IIdeaAction;
 
-export type IPCPermissionAction =
-  | 'posting_idea'
-  | 'voting_idea'
-  | 'commenting_idea'
-  | 'commenting_idea'
-  | 'taking_survey'
-  | 'taking_poll'
-  | 'budgeting';
-// CL-3466
-
 export interface ITab {
   name: string;
   label: string;

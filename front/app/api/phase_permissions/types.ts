@@ -1,6 +1,7 @@
-import { IPCPermissionAction, IRelationship } from 'typings';
+import { IRelationship } from 'typings';
 import { Keys } from 'utils/cl-react-query/types';
 import phasePermissionKeys from './keys';
+import { IPCPermissionAction } from 'services/actionPermissions';
 
 export type PhasePermissionKeys = Keys<typeof phasePermissionKeys>;
 
