@@ -38,7 +38,9 @@ export const getPermissionActionSectionSubtitle = ({
       taking_survey: messages.permissionAction_take_survey_subtitle,
       taking_poll: messages.permissionAction_take_poll_subtitle,
       budgeting: messages.permissionAction_budgeting_subtitle,
-    }[permissionAction];
+      annotating_document:
+        messages.permissionAction_annotating_document_subtitle,
+    };
   }
   if (postType === 'initiative') {
     return {
