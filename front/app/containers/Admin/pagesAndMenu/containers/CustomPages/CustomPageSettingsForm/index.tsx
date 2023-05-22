@@ -251,7 +251,7 @@ const CustomPageSettingsForm = ({
                 />
               </Box>
             )}
-            {slug && previewUrl && !hideSlug && (
+            {!hideSlug && (
               <Box mb={fieldMarginBottom}>
                 <SlugInput
                   slug={slug}

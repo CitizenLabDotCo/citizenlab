@@ -27,7 +27,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // services
 import { DEFAULT_PAGE_SLUGS } from 'services/navbar';
-import { TPageCode } from 'services/customPages';
+import { TCustomPageCode } from 'services/customPages';
 import useAuthUser from 'hooks/useAuthUser';
 import useProjects from 'api/projects/useProjects';
 
@@ -152,7 +152,7 @@ const SiteMap = () => {
 
   if (!isNilOrError(pages)) {
     const nonCustomStaticPages = pages.filter((page) => {
-      const showPageConditions: Record<TPageCode, boolean> = {
+      const showPageConditions: Record<TCustomPageCode, boolean> = {
         proposals: proposalsEnabled,
         about: true,
         faq: true,
