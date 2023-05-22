@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.components.UserName.anonymous',
     defaultMessage: 'Anonymous',
   },
+  anonymousTooltip: {
+    id: 'app.components.UserName.anonymousTooltip',
+    defaultMessage: 'This user has decided to anonymise their contribution',
+  },
 });

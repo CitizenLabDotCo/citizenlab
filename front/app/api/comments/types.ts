@@ -22,6 +22,7 @@ interface CommentAttributes {
 interface IPresentComment extends CommentAttributes {
   body_multiloc: Multiloc;
   publication_status: 'published';
+  anonymous?: boolean;
 }
 
 interface IDeletedComment extends CommentAttributes {
