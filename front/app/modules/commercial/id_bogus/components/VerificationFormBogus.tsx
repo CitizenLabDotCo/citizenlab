@@ -23,6 +23,8 @@ import useAuthUser from 'api/me/useAuthUser';
 
 // services
 import { verifyBogus } from '../services/verify';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import meKeys from 'api/me/keys';
 
 interface Props {
   onCancel: () => void;
@@ -56,11 +58,12 @@ const VerificationFormBogus = memo<Props>(
         try {
           await verifyBogus(desiredError);
 
-          const endpointsToRefetch = [`${API_PATH}/users/me`];
+          const endpointsToRefetch: string[] = [];
           if (!isNilOrError(authUser)) {
             endpointsToRefetch.push(`${API_PATH}/users/${authUser.data.id}`);
           }
 
+          queryClient.invalidateQueries({ queryKey: meKeys.all() });
           await streams.fetchAllWith({
             apiEndpoint: endpointsToRefetch,
           });

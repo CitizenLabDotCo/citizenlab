@@ -4,6 +4,7 @@ import membershipsKeys from './keys';
 import groupsKeys from 'api/groups/keys';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
+import meKeys from 'api/me/keys';
 
 const deleteMembership = ({
   groupId,
@@ -27,8 +28,9 @@ const useDeleteMembership = () => {
         queryKey: membershipsKeys.lists(),
       });
       queryClient.invalidateQueries({ queryKey: groupsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: meKeys.all() });
       await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/users/me`],
+        apiEndpoint: [`${API_PATH}/users`],
       });
     },
   });

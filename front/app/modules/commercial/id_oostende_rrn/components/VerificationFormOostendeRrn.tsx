@@ -33,6 +33,8 @@ import messages from '../messages';
 
 // images
 import { TVerificationMethod } from 'services/verificationMethods';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import meKeys from 'api/me/keys';
 
 interface Props {
   onCancel: () => void;
@@ -79,7 +81,6 @@ const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
             await verifyOostendeRrn(rrn);
 
             const endpointsToRefetch = [
-              `${API_PATH}/users/me`,
               `${API_PATH}/users/me/locked_attributes`,
               `${API_PATH}/users/custom_fields/schema`,
             ];
@@ -88,6 +89,7 @@ const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
               endpointsToRefetch.push(`${API_PATH}/users/${authUser.data.id}`);
             }
 
+            queryClient.invalidateQueries({ queryKey: meKeys.all() });
             await streams.fetchAllWith({
               apiEndpoint: endpointsToRefetch,
             });

@@ -34,6 +34,8 @@ import messages from '../messages';
 
 // images
 import helpImage from './COWHelpImage.png';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import meKeys from 'api/me/keys';
 
 interface Props {
   onCancel: () => void;
@@ -90,11 +92,12 @@ const VerificationFormCOW = memo<Props & WrappedComponentProps>(
             setProcessing(true);
             await verifyCOW(run, idSerial);
 
-            const endpointsToRefetch = [`${API_PATH}/users/me`];
+            const endpointsToRefetch: string[] = [];
             if (!isNilOrError(authUser)) {
               endpointsToRefetch.push(`${API_PATH}/users/${authUser.data.id}`);
             }
 
+            queryClient.invalidateQueries({ queryKey: meKeys.all() });
             await streams.fetchAllWith({
               apiEndpoint: endpointsToRefetch,
             });

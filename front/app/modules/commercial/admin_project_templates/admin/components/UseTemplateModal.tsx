@@ -55,6 +55,7 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 
 // typings
 import { Locale, Multiloc, IOption } from 'typings';
+import meKeys from 'api/me/keys';
 
 const Content = styled.div`
   padding-left: 30px;
@@ -249,11 +250,9 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
             },
           });
           queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
+          queryClient.invalidateQueries({ queryKey: meKeys.all() });
           await streams.fetchAllWith({
-            apiEndpoint: [
-              `${API_PATH}/admin_publications`,
-              `${API_PATH}/users/me`,
-            ],
+            apiEndpoint: [`${API_PATH}/admin_publications`],
           });
 
           if (emitSuccessEvent) {

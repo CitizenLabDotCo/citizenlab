@@ -39,8 +39,8 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import useAuthUser from 'api/me/useAuthUser';
 import GoBackButton from 'components/UI/GoBackButton';
 import clHistory from 'utils/cl-router/history';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import meKeys from 'api/me/keys';
 
 type FormValues = {
   current_password: string;
@@ -108,9 +108,7 @@ const ChangePassword = ({ tenant }: Props) => {
     try {
       await changePassword(formValues);
       setSuccess(true);
-      await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/users/me`],
-      });
+      queryClient.invalidateQueries({ queryKey: meKeys.all() });
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }

@@ -1,4 +1,3 @@
-import { configureScope } from '@sentry/react';
 import 'focus-visible';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
@@ -6,9 +5,7 @@ import { includes, uniq } from 'lodash-es';
 import moment from 'moment';
 import 'moment-timezone';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { combineLatest } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { endsWith, isNilOrError, isPage } from 'utils/helperUtils';
+import { endsWith, isPage } from 'utils/helperUtils';
 
 // constants
 import { appLocalesMomentPairs, locales } from 'containers/App/constants';
@@ -37,9 +34,7 @@ import HasPermission from 'components/HasPermission';
 
 // services
 import { IAppConfigurationStyle } from 'api/app_configuration/types';
-import signOut from 'api/authentication/sign_in_out/signOut';
 import signOutAndDeleteAccount from 'api/authentication/sign_in_out/signOutAndDeleteAccount';
-import { authUserStream } from 'services/auth';
 import { localeStream } from 'services/locale';
 
 // hooks
@@ -59,6 +54,9 @@ import { Locale } from 'typings';
 
 // utils
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import useAuthUser from 'api/me/useAuthUser';
+import signOut from 'api/authentication/sign_in_out/signOut';
+import { configureScope } from '@sentry/react';
 
 const Container = styled.div<{
   disableScroll?: boolean;
@@ -89,7 +87,6 @@ interface Props {
   children: React.ReactNode;
 }
 
-const authUser$ = authUserStream().observable;
 const locale$ = localeStream().observable;
 
 const App = ({ children }: Props) => {
@@ -97,6 +94,7 @@ const App = ({ children }: Props) => {
   const [isAppInitialized, setIsAppInitialized] = useState(false);
   const [previousPathname, setPreviousPathname] = useState<string | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
+  const { data: authUser } = useAuthUser();
 
   const [modalId, setModalId] = useState<string | null>(null);
   const [modalSlug, setModalSlug] = useState<string | null>(null);
@@ -231,22 +229,7 @@ const App = ({ children }: Props) => {
     }
 
     const subscriptions = [
-      combineLatest([
-        authUser$.pipe(
-          tap((authUser) => {
-            if (isNilOrError(authUser)) {
-              signOut();
-            } else {
-              configureScope((scope) => {
-                scope.setUser({
-                  id: authUser.data.id,
-                });
-              });
-            }
-          })
-        ),
-        locale$,
-      ]).subscribe(([_, locale]) => {
+      locale$.subscribe((locale) => {
         const momentLoc = appLocalesMomentPairs[locale] || 'en';
         moment.locale(momentLoc);
         setLocale(locale);
@@ -287,6 +270,18 @@ const App = ({ children }: Props) => {
     appConfiguration,
     location,
   ]);
+
+  useEffect(() => {
+    if (!authUser) {
+      signOut();
+    } else {
+      configureScope((scope) => {
+        scope.setUser({
+          id: authUser.data.id,
+        });
+      });
+    }
+  }, [authUser]);
 
   useEffect(() => {
     trackPage(location.pathname);
