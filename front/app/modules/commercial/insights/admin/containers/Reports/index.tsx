@@ -36,12 +36,13 @@ const ReportTab = memo(() => {
         const processType = project?.attributes.process_type;
         const participationMethod = project.attributes.participation_method;
 
-        // CL-3466
         return (
           (processType === 'continuous' &&
-            !['information', 'survey', 'volunteering', null].includes(
-              participationMethod
-            )) ||
+            participationMethod !== 'information' &&
+            participationMethod !== 'survey' &&
+            participationMethod !== 'volunteering' &&
+            participationMethod !== 'document_annotation' &&
+            participationMethod !== null) ||
           processType === 'timeline'
         );
       })
