@@ -41,6 +41,7 @@
   "app.components.Comments.mostRecent": "Most recent",
   "app.components.Comments.mostUpvoted": "Most voted",
   "app.components.Comments.official": "Official",
+  "app.components.Comments.postAnonymously": "Post anonymously",
   "app.components.Comments.replyToComment": "Reply to comment",
   "app.components.Comments.reportAsSpam": "Report as spam",
   "app.components.Comments.seeOriginal": "See original",
