@@ -97,6 +97,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     return null;
   }
 
+  // CL-3466
   const handleTakeSurveyClick = (event: FormEvent) => {
     event.preventDefault();
 

@@ -125,7 +125,6 @@ const ideaPostingDisabledReason = (
  *  authUser: The currently authenticated user
  */
 
-// CL-3466
 export const getIdeaPostingRules = ({
   project,
   phase,
