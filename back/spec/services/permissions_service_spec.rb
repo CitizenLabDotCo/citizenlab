@@ -28,9 +28,9 @@ describe PermissionsService do
       expect(service.denied_reason_for_resource(nil, action)).to eq 'not_signed_in'
     end
 
-    it 'returns `not_permitted` when user is not in authorized groups' do
+    it 'returns `not_in_group` when user is not in authorized groups' do
       permission.update!(permitted_by: 'groups', group_ids: create_list(:group, 2).map(&:id))
-      expect(service.denied_reason_for_resource(user, action)).to eq 'not_permitted'
+      expect(service.denied_reason_for_resource(user, action)).to eq 'not_in_group'
     end
   end
 
@@ -267,11 +267,11 @@ describe PermissionsService do
       context 'when light confirmed resident who is not a group member' do
         before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
 
-        it { expect(denied_reason).to eq 'not_permitted' }
+        it { expect(denied_reason).to eq 'not_in_group' }
       end
 
       context 'when fully registered resident who is not a group member' do
-        it { expect(denied_reason).to eq 'not_permitted' }
+        it { expect(denied_reason).to eq 'not_in_group' }
       end
 
       context 'when admin' do
@@ -284,6 +284,12 @@ describe PermissionsService do
         before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
 
         it { expect(denied_reason).to eq 'not_active' }
+      end
+
+      context 'when permitted by is changed from groups to users' do
+        before { permission.update!(permitted_by: 'users') }
+
+        it { expect(denied_reason).to be_nil }
       end
     end
 
@@ -372,7 +378,8 @@ describe PermissionsService do
             special: {
               password: 'dont_ask',
               confirmation: 'dont_ask',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -393,7 +400,8 @@ describe PermissionsService do
             special: {
               password: 'dont_ask',
               confirmation: 'dont_ask',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -412,7 +420,8 @@ describe PermissionsService do
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -432,7 +441,8 @@ describe PermissionsService do
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -462,7 +472,8 @@ describe PermissionsService do
             special: {
               password: 'dont_ask',
               confirmation: 'require',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -485,7 +496,8 @@ describe PermissionsService do
             special: {
               password: 'dont_ask',
               confirmation: 'require',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -507,7 +519,8 @@ describe PermissionsService do
             special: {
               password: 'dont_ask',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -529,7 +542,8 @@ describe PermissionsService do
             special: {
               password: 'satisfied',
               confirmation: 'require',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -550,7 +564,8 @@ describe PermissionsService do
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -573,7 +588,8 @@ describe PermissionsService do
             special: {
               password: 'satisfied',
               confirmation: 'require',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -595,7 +611,8 @@ describe PermissionsService do
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -628,7 +645,8 @@ describe PermissionsService do
             special: {
               password: 'require',
               confirmation: 'require',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -653,7 +671,8 @@ describe PermissionsService do
             special: {
               password: 'require',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -678,7 +697,8 @@ describe PermissionsService do
             special: {
               password: 'satisfied',
               confirmation: 'require',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -702,7 +722,8 @@ describe PermissionsService do
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -728,7 +749,8 @@ describe PermissionsService do
             special: {
               password: 'satisfied',
               confirmation: 'require',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -753,7 +775,8 @@ describe PermissionsService do
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -761,121 +784,153 @@ describe PermissionsService do
     end
 
     context 'when permitted_by is set to groups' do
-      let(:permission) { create(:permission, permitted_by: 'groups', global_custom_fields: false) }
+      let(:group) { create(:group) }
+      let(:permission) { create(:permission, permitted_by: 'groups', groups: [group], global_custom_fields: false) }
 
-      before do
-        field = CustomField.find_by code: 'birthyear'
-        create(:permissions_custom_field, permission: permission, custom_field: field, required: true)
+      context 'user is not in the group' do
+        before do
+          field = CustomField.find_by code: 'birthyear'
+          create(:permissions_custom_field, permission: permission, custom_field: field, required: true)
+        end
+
+        it 'does not permit a visitor' do
+          expect(service.requirements(permission, nil)).to eq({
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'require',
+                last_name: 'require',
+                email: 'require'
+              },
+              custom_fields: {
+                'birthyear' => 'require'
+              },
+              special: {
+                password: 'require',
+                confirmation: 'require',
+                verification: 'dont_ask',
+                group_membership: 'require'
+              }
+            }
+          })
+        end
+
+        it 'does not permit a light unconfirmed resident' do
+          user.reset_confirmation_and_counts
+          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: { 'birthyear' => 1968 })
+          expect(service.requirements(permission, user)).to eq({
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'require',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'satisfied'
+              },
+              special: {
+                password: 'require',
+                confirmation: 'require',
+                verification: 'dont_ask',
+                group_membership: 'require'
+              }
+            }
+          })
+        end
+
+        it 'does not permit a fully registered confirmed resident' do
+          expect(service.requirements(permission, user)).to eq({
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'satisfied'
+              },
+              special: {
+                password: 'satisfied',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'require'
+              }
+            }
+          })
+        end
+
+        it 'does not permit an unconfirmed admin' do
+          user.add_role 'admin'
+          user.reset_confirmation_and_counts
+          expect(service.requirements(permission, user)).to eq({
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'satisfied'
+              },
+              special: {
+                password: 'satisfied',
+                confirmation: 'require',
+                verification: 'dont_ask',
+                group_membership: 'require'
+              }
+            }
+          })
+        end
+
+        it 'does not permit a confirmed admin' do
+          user.add_role 'admin'
+          expect(service.requirements(permission, user)).to eq({
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'satisfied'
+              },
+              special: {
+                password: 'satisfied',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'require'
+              }
+            }
+          })
+        end
       end
 
-      it 'does not permit a visitor' do
-        expect(service.requirements(permission, nil)).to eq({
-          permitted: false,
-          requirements: {
-            built_in: {
-              first_name: 'require',
-              last_name: 'require',
-              email: 'require'
-            },
-            custom_fields: {
-              'birthyear' => 'require'
-            },
-            special: {
-              password: 'require',
-              confirmation: 'require',
-              verification: 'dont_ask'
-            }
-          }
-        })
-      end
+      context 'user is in the group' do
+        before { create(:membership, user: user, group: group) }
 
-      it 'does not permit a light unconfirmed resident' do
-        user.reset_confirmation_and_counts
-        user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: { 'birthyear' => 1968 })
-        expect(service.requirements(permission, user)).to eq({
-          permitted: false,
-          requirements: {
-            built_in: {
-              first_name: 'require',
-              last_name: 'satisfied',
-              email: 'satisfied'
-            },
-            custom_fields: {
-              'birthyear' => 'satisfied'
-            },
-            special: {
-              password: 'require',
-              confirmation: 'require',
-              verification: 'dont_ask'
+        it 'permits a fully registered confirmed resident who is in the group' do
+          expect(service.requirements(permission, user)).to eq({
+            permitted: true,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {},
+              special: {
+                password: 'satisfied',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'satisfied'
+              }
             }
-          }
-        })
-      end
-
-      it 'permits a fully registered confirmed resident' do
-        expect(service.requirements(permission, user)).to eq({
-          permitted: true,
-          requirements: {
-            built_in: {
-              first_name: 'satisfied',
-              last_name: 'satisfied',
-              email: 'satisfied'
-            },
-            custom_fields: {
-              'birthyear' => 'satisfied'
-            },
-            special: {
-              password: 'satisfied',
-              confirmation: 'satisfied',
-              verification: 'dont_ask'
-            }
-          }
-        })
-      end
-
-      it 'does not permit an unconfirmed admin' do
-        user.add_role 'admin'
-        user.reset_confirmation_and_counts
-        expect(service.requirements(permission, user)).to eq({
-          permitted: false,
-          requirements: {
-            built_in: {
-              first_name: 'satisfied',
-              last_name: 'satisfied',
-              email: 'satisfied'
-            },
-            custom_fields: {
-              'birthyear' => 'satisfied'
-            },
-            special: {
-              password: 'satisfied',
-              confirmation: 'require',
-              verification: 'dont_ask'
-            }
-          }
-        })
-      end
-
-      it 'permits a confirmed admin' do
-        user.add_role 'admin'
-        expect(service.requirements(permission, user)).to eq({
-          permitted: true,
-          requirements: {
-            built_in: {
-              first_name: 'satisfied',
-              last_name: 'satisfied',
-              email: 'satisfied'
-            },
-            custom_fields: {
-              'birthyear' => 'satisfied'
-            },
-            special: {
-              password: 'satisfied',
-              confirmation: 'satisfied',
-              verification: 'dont_ask'
-            }
-          }
-        })
+          })
+        end
       end
     end
 
@@ -897,7 +952,8 @@ describe PermissionsService do
             special: {
               password: 'require',
               confirmation: 'dont_ask',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -918,7 +974,8 @@ describe PermissionsService do
             special: {
               password: 'require',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -938,7 +995,8 @@ describe PermissionsService do
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -959,7 +1017,8 @@ describe PermissionsService do
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -979,7 +1038,8 @@ describe PermissionsService do
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
