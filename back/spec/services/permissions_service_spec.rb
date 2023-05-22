@@ -285,6 +285,12 @@ describe PermissionsService do
 
         it { expect(denied_reason).to eq 'not_active' }
       end
+
+      context 'when permitted by is changed from groups to users' do
+        before { permission.update!(permitted_by: 'users') }
+
+        it { expect(denied_reason).to be_nil }
+      end
     end
 
     context 'when permitted by moderators' do
