@@ -1661,6 +1661,7 @@
   "app.utils.errors.default.api_error_too_short": "Is te kort",
   "app.utils.errors.default.api_error_wrong_length": "Is de verkeerde lengte",
   "app.utils.errors.defaultapi_error_.odd": "Moet oneven zijn",
+  "app.utils.notInGroup": "Je voldoet niet aan de eisen om deel te nemen.",
   "app.utils.participationMethod.onSurveySubmission": "Bedankt! Je antwoord is goed ontvangen.",
   "containers.SiteMap.allProjects": "Alle projecten",
   "containers.SiteMap.customPageSection": "Aangepaste pagina's",
