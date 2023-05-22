@@ -238,7 +238,7 @@ export type CommentingDisabledReason =
   | 'commenting_disabled'
   | PermissionsDisabledReason;
 
-export type ProjectVotingDisabledReason =
+type ProjectVotingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
   | 'voting_disabled'
@@ -254,12 +254,12 @@ export type PostingDisabledReason =
   | 'posting_limited_max_reached'
   | PermissionsDisabledReason;
 
-export type SurveyDisabledReason =
+type SurveyDisabledReason =
   | 'project_inactive'
   | 'not_survey'
   | PermissionsDisabledReason;
 
-export type PollDisabledReason =
+type PollDisabledReason =
   | 'project_inactive'
   | 'not_poll'
   | 'already_responded'
