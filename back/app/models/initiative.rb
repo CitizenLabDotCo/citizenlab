@@ -62,7 +62,7 @@ class Initiative < ApplicationRecord
     post.validates :title_multiloc, presence: true, multiloc: { presence: true }
     post.validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
     post.validates :author, presence: true, on: :publication, unless: :anonymous?
-    post.validates :author, presence: true, if: :author_id_changed?, unless: :anonymous?
+    post.validates :author, presence: true, if: :author_required_on_change?
     post.validates :slug, uniqueness: true, presence: true
 
     post.before_validation :strip_title
@@ -172,6 +172,10 @@ class Initiative < ApplicationRecord
     return unless initial_status && initiative_status_changes.empty? && !draft?
 
     initiative_status_changes.build(initiative_status: initial_status)
+  end
+
+  def author_required_on_change?
+    author_id_changed? && !anonymous?
   end
 end
 
