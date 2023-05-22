@@ -495,7 +495,7 @@
   "app.components.anonymousParticipationModal.cancel": "Annuleren",
   "app.components.anonymousParticipationModal.continue": "Ga verder",
   "app.components.anonymousParticipationModal.participateAnonymously": "Doe anoniem mee",
-  "app.components.anonymousParticipationModal.participateAnonymouslyModalText": "Dit zal veilig <b>je profiel</b> verbergen voor admins, moderators en andere bewoners op deze specifieke bijdrage, waardoor niemand deze bijdrage aan jezelf kan koppelen.",
+  "app.components.anonymousParticipationModal.participateAnonymouslyModalText": "Dit zal veilig <b>je profiel verbergen</b> voor admins, beheerders en andere bewoners bij deze specifieke bijdrage, waardoor niemand deze bijdrage aan jou kan koppelen.",
   "app.components.form.ErrorDisplay.guidelinesLinkText": "Onze richtlijnen",
   "app.components.form.ErrorDisplay.next": "Volgende",
   "app.components.form.ErrorDisplay.previous": "Vorige",
