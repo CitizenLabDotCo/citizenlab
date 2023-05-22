@@ -1,5 +1,9 @@
+import meKeys from 'api/me/keys';
 import { queryClient } from './queryClient';
 
 export const resetQueryCache = async () => {
-  queryClient.invalidateQueries();
+  await queryClient.resetQueries({
+    queryKey: meKeys.all(),
+  });
+  await queryClient.invalidateQueries();
 };

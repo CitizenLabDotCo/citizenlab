@@ -93,7 +93,7 @@ async function fetcher({ path, action, body, queryParams }) {
 
   try {
     data = await response.json();
-  } catch {
+  } catch (e) {
     if (
       action === 'post' &&
       (response.status === 201 || response.status === 200)

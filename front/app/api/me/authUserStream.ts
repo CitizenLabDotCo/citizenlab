@@ -18,9 +18,6 @@ const authUserStreamQueryObserver = new QueryObserver<
   queryKey: meKeys.all(),
   queryFn: fetchMe,
   retry: false,
-  keepPreviousData: false,
-  staleTime: 0,
-  cacheTime: 0,
 });
 
 authUserStreamQueryObserver.subscribe((query) => {
