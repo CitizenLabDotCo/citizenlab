@@ -184,6 +184,7 @@ export interface IProjectAttributes {
     };
     taking_survey: ActionDescriptor<SurveyDisabledReason>;
     taking_poll: ActionDescriptor<PollDisabledReason>;
+    annotating_document: ActionDescriptor<DocumentAnnotationDisabledReason>;
   };
 }
 
@@ -262,6 +263,11 @@ export type PollDisabledReason =
   | 'project_inactive'
   | 'not_poll'
   | 'already_responded'
+  | PermissionsDisabledReason;
+
+type DocumentAnnotationDisabledReason =
+  | 'project_inactive'
+  | 'not_document_annotation'
   | PermissionsDisabledReason;
 
 interface ProjectHeaderBgImageSizes {

@@ -87,6 +87,10 @@ export const project1: IProjectData = {
         enabled: false,
         disabled_reason: 'not_poll',
       },
+      annotating_document: {
+        enabled: false,
+        disabled_reason: 'not_document_annotation',
+      },
     },
     avatars_count: 8,
     participants_count: 8,
@@ -210,6 +214,10 @@ export const project2: IProjectData = {
           enabled: true,
           disabled_reason: null,
         },
+      },
+      annotating_document: {
+        enabled: false,
+        disabled_reason: 'not_document_annotation',
       },
       // MISMATCH: this attribute doesn't exist on our type
       // comment_voting_idea: {
