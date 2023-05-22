@@ -60,6 +60,10 @@ export default defineMessages({
     id: 'app.components.ProjectCard.takeTheSurvey',
     defaultMessage: 'Take the survey',
   },
+  reviewTheDocument: {
+    id: 'app.components.ProjectCard.reviewTheDocument',
+    defaultMessage: 'Review the document',
+  },
   takeThePoll: {
     id: 'app.components.ProjectCard.takeThePoll',
     defaultMessage: 'Take the poll',

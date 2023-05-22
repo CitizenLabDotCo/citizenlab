@@ -496,7 +496,6 @@ const ProjectCard = memo<Props>(
       trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
     };
 
-    // CL-3466
     if (project) {
       const postingPermission = getIdeaPostingRules({
         project: project?.data,
@@ -602,6 +601,8 @@ const ProjectCard = memo<Props>(
         participationMethod === 'native_survey'
       ) {
         ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
+      } else if (participationMethod === 'document_annotation') {
+        ctaMessage = <FormattedMessage {...messages.reviewTheDocument} />;
       } else if (participationMethod === 'poll') {
         ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
       } else if (participationMethod === 'ideation' && canPost) {
