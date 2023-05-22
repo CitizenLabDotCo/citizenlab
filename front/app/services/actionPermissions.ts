@@ -37,7 +37,7 @@ export type IPCPermissionAction =
   | 'budgeting'
   | 'annotating_document';
 
-export interface IPCPermissionData {
+interface IPCPermissionData {
   id: string;
   type: string;
   attributes: {
@@ -64,15 +64,15 @@ export interface IPCPermissionData {
 
 export type IPermissionData = IPCPermissionData | IGlobalPermissionData;
 
-export interface IPCPermission {
+interface IPCPermission {
   data: IPCPermissionData;
 }
 
-export interface IGlobalPermissions {
+interface IGlobalPermissions {
   data: IGlobalPermissionData[];
 }
 
-export interface IPermissionUpdate {
+interface IPermissionUpdate {
   group_ids: string[];
   permitted_by: IPermissionData['attributes']['permitted_by'];
   global_custom_fields: boolean;
