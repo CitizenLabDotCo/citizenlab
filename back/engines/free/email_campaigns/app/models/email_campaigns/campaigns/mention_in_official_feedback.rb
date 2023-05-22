@@ -63,7 +63,7 @@ module EmailCampaigns
     end
 
     def self.content_type_multiloc_key
-      'email_campaigns.admin_labels.content_type.comments'
+      'email_campaigns.admin_labels.content_type.general'
     end
 
     def self.trigger_multiloc_key
