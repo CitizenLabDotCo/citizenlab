@@ -52,6 +52,11 @@ export const missingDataFlow = (
           return;
         }
 
+        if (requirements.special.group_membership === 'require') {
+          setCurrentStep('closed');
+          return;
+        }
+
         setCurrentStep('success');
       },
     },
@@ -92,7 +97,10 @@ export const missingDataFlow = (
                 return;
               }
 
-              setCurrentStep('success');
+              if (requirements.special.group_membership === 'require') {
+                setCurrentStep('closed');
+                return;
+              }
             },
           }
         );
@@ -109,20 +117,29 @@ export const missingDataFlow = (
           return;
         }
 
+        if (requirements.special.group_membership === 'require') {
+          setCurrentStep('closed');
+          return;
+        }
+
         setCurrentStep('success');
       },
     },
 
     'missing-data:custom-fields': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT: (userId: string, formData: FormData) => {
+      SUBMIT: async (userId: string, formData: FormData) => {
         updateUser(
+          { userId, custom_field_values: formData },
           {
-            userId,
-            custom_field_values: formData,
-          },
-          {
-            onSuccess: () => {
+            onSuccess: async () => {
+              const { requirements } = await getRequirements();
+
+              if (requirements.special.group_membership === 'require') {
+                setCurrentStep('closed');
+                return;
+              }
+
               setCurrentStep('success');
             },
           }

@@ -65,7 +65,7 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   bottom_info_section_multiloc: Multiloc;
   header_bg: ImageSizes | null;
 
-  code: TPageCode;
+  code: TCustomPageCode;
   // not sure about these
 
   projects_filter_type: ProjectsFilterTypes;
@@ -126,30 +126,15 @@ export function listCustomPages(streamParams: IStreamParams | null = null) {
   });
 }
 
-// The following types and resources were moved from old "pages" code.
-// Mainly they refer to pages that have special properties, like
-// the FAQ/about pages, and terms/conditions and privacy policies
-
-// These types refer to the "code" attribute of a page.
-// The 'standard page' distinction is only relevant for non-commercial
-// customers: they can edit the content of these pages, but nothing else.
-// For commercial customers, these behave as 'custom' pages.
-type TStandardPage = 'about' | 'faq';
-
-// Policy pages of which only the content can be edited
-// in 'policy' tab in settings (both for non-commercial and
-// commercial customers). Their codes are the same as their slugs.
-export type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
-
-export const POLICY_PAGES: TPolicyPage[] = [
-  'terms-and-conditions',
-  'privacy-policy',
-];
-
-export enum POLICY_PAGE {
+enum POLICY_PAGE {
   termsAndConditions = 'terms-and-conditions',
   privacyPolicy = 'privacy-policy',
 }
+
+export const POLICY_PAGES: TPolicyPage[] = [
+  POLICY_PAGE.termsAndConditions,
+  POLICY_PAGE.privacyPolicy,
+];
 
 export function isPolicyPageSlug(slug: string): slug is TPolicyPage {
   const termsAndConditionsSlug: TPolicyPage = POLICY_PAGE.termsAndConditions;
@@ -158,33 +143,19 @@ export function isPolicyPageSlug(slug: string): slug is TPolicyPage {
   return slug === termsAndConditionsSlug || slug === privacyPolicySlug;
 }
 
-// Hardcoded pages don't actually exist in the database-
-// their codes are the same as their slugs, which are used to render
-// the footer. The slugs link to hard-coded components, see app/routes.ts.
-type THardcodedPage = 'cookie-policy' | 'accessibility-statement';
+export type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
 
-// Pages in the footer.
-export type TFooterPage = TPolicyPage | THardcodedPage;
-
-export const FOOTER_PAGES: TFooterPage[] = [
-  'terms-and-conditions',
-  'privacy-policy',
-  'cookie-policy',
-  'accessibility-statement',
-];
-
-// Pages that exist in the static_pages database,
-// but do not have a corresponding navbar item.
-// Their slugs and titles cannot be changed. Their
-// codes are the same as their slugs.
-type TFixedPage = TPolicyPage | 'proposals';
-
-export const FIXED_PAGES: TFixedPage[] = [
-  'terms-and-conditions',
-  'privacy-policy',
-  'proposals',
-];
-
-// Everything about 'custom' pages can be changed: their
-// title, navbar name, content and slug.
-export type TPageCode = TStandardPage | TFixedPage | 'custom';
+export type TCustomPageCode =
+  // Content of policy pages can only be edited
+  // in 'policy' tab in settings (both for non-commercial and
+  // commercial customers). Their codes are the same as their slugs.
+  | TPolicyPage
+  // Everything about 'custom' pages can be changed: their
+  // title, navbar name, content and slug.
+  | 'custom'
+  // 'about' is just a custom page in the end, with a different page code (legacy)
+  | 'about'
+  | 'faq'
+  // proposals here is the proposals about page (/pages/initiatives),
+  // not the proposals index page (/initiatives).
+  | 'proposals';

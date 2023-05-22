@@ -213,7 +213,7 @@ pt:
       option1: 'Opção 1'
       option2: 'Opção 2'
     survey_end_page:
-      title: 'Fim do inquérito'
+      title: 'Fim da pesquisa'
       description: "Por favor, submeta as suas respostas, seleccionando abaixo 'Submeter inquérito'."
   project_copy:
     title_suffix: 'Cópia'

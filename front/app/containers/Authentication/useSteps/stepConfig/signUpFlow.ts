@@ -98,6 +98,11 @@ export const signUpFlow = (
             return;
           }
 
+          if (requirements.special.group_membership === 'require') {
+            setCurrentStep('closed');
+            return;
+          }
+
           setCurrentStep('success');
         } catch (e) {
           trackEventByName(tracks.signInEmailPasswordFailed);
@@ -126,6 +131,11 @@ export const signUpFlow = (
           return;
         }
 
+        if (requirements.special.group_membership === 'require') {
+          setCurrentStep('closed');
+          return;
+        }
+
         setCurrentStep('success');
       },
     },
@@ -151,6 +161,11 @@ export const signUpFlow = (
           return;
         }
 
+        if (requirements.special.group_membership === 'require') {
+          setCurrentStep('closed');
+          return;
+        }
+
         setCurrentStep('success');
       },
     },
@@ -162,12 +177,16 @@ export const signUpFlow = (
       },
       SUBMIT: (userId: string, formData: FormData) => {
         updateUser(
+          { userId, custom_field_values: formData },
           {
-            userId,
-            custom_field_values: formData,
-          },
-          {
-            onSuccess: () => {
+            onSuccess: async () => {
+              const { requirements } = await getRequirements();
+
+              if (requirements.special.group_membership === 'require') {
+                setCurrentStep('closed');
+                return;
+              }
+
               setCurrentStep('success');
               trackEventByName(tracks.signUpCustomFieldsStepCompleted);
             },
@@ -179,6 +198,13 @@ export const signUpFlow = (
         );
       },
       SKIP: async () => {
+        const { requirements } = await getRequirements();
+
+        if (requirements.special.group_membership === 'require') {
+          setCurrentStep('closed');
+          return;
+        }
+
         setCurrentStep('success');
         trackEventByName(tracks.signUpCustomFieldsStepSkipped);
       },
