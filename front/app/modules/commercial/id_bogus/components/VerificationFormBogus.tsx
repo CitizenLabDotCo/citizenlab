@@ -84,7 +84,7 @@ const VerificationFormBogus = memo<Props>(
           }
         }
       },
-      [desiredError, authUser, onVerified]
+      [desiredError, authUser, onVerified, queryClient]
     );
 
     const onCancelButtonClicked = useCallback(() => {
