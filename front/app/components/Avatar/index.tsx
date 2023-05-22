@@ -188,22 +188,26 @@ const AvatarInner = ({
   const bgColor = props.bgColor || 'transparent';
 
   if (isNilOrError(user)) {
-    return (
-      <Container aria-hidden className={className} size={containerSize}>
-        <Box padding={paddingValue.toString()}>
-          <BoringAvatar
-            size={avatarSize}
-            name={authorHash}
-            variant="bauhaus"
-            colors={[
-              theme.colors.tenantPrimary,
-              theme.colors.tenantSecondary,
-              colors.coolGrey300,
-            ]}
-          />
-        </Box>
-      </Container>
-    );
+    if (authorHash === null) {
+      return null;
+    } else {
+      return (
+        <Container aria-hidden className={className} size={containerSize}>
+          <Box padding={paddingValue.toString()}>
+            <BoringAvatar
+              size={avatarSize}
+              name={authorHash}
+              variant="bauhaus"
+              colors={[
+                theme.colors.tenantPrimary,
+                theme.colors.tenantSecondary,
+                colors.coolGrey300,
+              ]}
+            />
+          </Box>
+        </Container>
+      );
+    }
   }
 
   // In dev mode, slug is sometimes undefined,
