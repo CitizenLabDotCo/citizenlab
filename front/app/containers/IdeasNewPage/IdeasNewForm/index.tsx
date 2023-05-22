@@ -145,11 +145,10 @@ const IdeasNewPageWithJSONForm = () => {
 
     const hasAnonymousConfirmationCookie = getCookieAnonymousConfirmation();
     if (
-      project.data.attributes.posting_enabled &&
+      project.data.attributes.allow_anonymous_participation &&
       postAnonymously &&
       !hasAnonymousConfirmationCookie
     ) {
-      // TODO: REPLACE WITH ALLOW_ANONYMOUS_PARTICIPATION
       setShowAnonymousConfirmationModal(true);
     } else {
       continueSubmission(data);
@@ -286,12 +285,15 @@ const IdeasNewPageWithJSONForm = () => {
             config={isSurvey ? 'survey' : 'input'}
             formSubmitText={isSurvey ? messages.submitSurvey : undefined}
             footer={
-              <Box mt="-20px" mb="60px">
-                <ProfileVisiblity
-                  postAnonymously={postAnonymously}
-                  setPostAnonymously={setPostAnonymously}
-                />
-              </Box>
+              !isSurvey &&
+              project.data.attributes.allow_anonymous_participation ? (
+                <Box mt="-20px" mb="60px">
+                  <ProfileVisiblity
+                    postAnonymously={postAnonymously}
+                    setPostAnonymously={setPostAnonymously}
+                  />
+                </Box>
+              ) : undefined
             }
           />
         </>
