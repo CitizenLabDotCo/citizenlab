@@ -21,6 +21,7 @@ describe('Idea posting anonymous', () => {
       description: projectDescription,
       publicationStatus: 'published',
       participationMethod: 'ideation',
+      allow_anonymous_participation: true,
     }).then((response) => {
       projectId = response.body.data.id;
       projectSlug = response.body.data.attributes.slug;
@@ -45,6 +46,8 @@ describe('Idea posting anonymous', () => {
 
     cy.get('.e2e-checkbox').first().click();
     cy.get('.e2e-submit-idea-form').click();
+    cy.get('#e2e-continue-anonymous-participation-btn').should('exist');
+    cy.get('#e2e-continue-anonymous-participation-btn').click();
 
     cy.get('#e2e-idea-show');
     cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
@@ -52,7 +55,7 @@ describe('Idea posting anonymous', () => {
     cy.get('.e2e-modal-close-button').should('exist');
     cy.get('.e2e-modal-close-button').first().click();
 
-    cy.get('e2e-username').should('include.text', 'Anonymous');
+    cy.get('.e2e-username').should('include.text', 'Anonymous');
   });
 
   after(() => {

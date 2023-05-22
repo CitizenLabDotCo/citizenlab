@@ -4,6 +4,7 @@ export const project1: IProjectData = {
   id: 'be3f645b-3e1d-4afc-b91b-d68c4dc0100b',
   type: 'project',
   attributes: {
+    allow_anonymous_participation: false,
     survey_embed_url: null,
     survey_service: null,
     poll_anonymous: false,
@@ -143,6 +144,7 @@ export const project2: IProjectData = {
   id: '4bf7531c-1d1e-45a5-adb2-cabfccadd358',
   type: 'project',
   attributes: {
+    allow_anonymous_participation: false,
     survey_embed_url: null,
     survey_service: null,
     poll_anonymous: false,
