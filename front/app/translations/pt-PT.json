@@ -1661,6 +1661,7 @@
   "app.utils.errors.default.api_error_too_short": "É demasiado curto",
   "app.utils.errors.default.api_error_wrong_length": "É o comprimento errado",
   "app.utils.errors.defaultapi_error_.odd": "Deve ser estranho",
+  "app.utils.notInGroup": "Não preenche os requisitos para participar.",
   "app.utils.participationMethod.onSurveySubmission": "Obrigado. A sua resposta foi recebida.",
   "containers.SiteMap.allProjects": "Todos os projectos",
   "containers.SiteMap.customPageSection": "Páginas personalizadas",

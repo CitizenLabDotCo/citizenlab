@@ -1661,6 +1661,7 @@
   "app.utils.errors.default.api_error_too_short": "È troppo corto",
   "app.utils.errors.default.api_error_wrong_length": "È la lunghezza sbagliata",
   "app.utils.errors.defaultapi_error_.odd": "Deve essere strano",
+  "app.utils.notInGroup": "Non soddisfi i requisiti per partecipare.",
   "app.utils.participationMethod.onSurveySubmission": "Grazie. La risposta è stata ricevuta.",
   "containers.SiteMap.allProjects": "Tutti i progetti",
   "containers.SiteMap.customPageSection": "Pagine personalizzate",

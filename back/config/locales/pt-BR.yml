@@ -204,7 +204,7 @@ pt:
       baskets_count: 'Cestas'
       input_url: 'URL'
       project: 'Projeto'
-      status: 'Estado'
+      status: 'Status'
       assignee_fullname: 'Atribuído'
       assignee_email: 'E-mail do assinante'
   form_builder:
@@ -214,7 +214,7 @@ pt:
       option2: 'Opção 2'
     survey_end_page:
       title: 'Fim da pesquisa'
-      description: "Por favor, submeta as suas respostas, seleccionando abaixo 'Submeter inquérito'."
+      description: "Por favor, submeta as suas respostas, selecionando abaixo 'Submeter pesquisa'."
   project_copy:
     title_suffix: 'Cópia'
   confirmations_mailer:
@@ -235,8 +235,8 @@ pt:
     send_user_blocked_email:
       subject: 'A sua conta foi temporariamente desactivada'
       title_user_blocked: 'A sua conta foi temporariamente desactivada'
-      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
-      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
+      paragraph_1_without_reason: "Sua conta na plataforma de participação do %{organizationName} foi temporariamente desativada por violação das diretrizes da comunidade."
+      paragraph_1_with_reason: "Sua conta na plataforma de participação do %{organizationName} foi desativada temporariamente pelo seguinte motivo:"
       for_more_information: "Para mais informações sobre este assunto, pode consultar o %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Pode voltar a assinar a partir de %{date}"
   user:

@@ -1661,6 +1661,7 @@
   "app.utils.errors.default.api_error_too_short": "Jest zbyt krótki",
   "app.utils.errors.default.api_error_wrong_length": "Ma niewłaściwą długość",
   "app.utils.errors.defaultapi_error_.odd": "To musi być nieparzyste.",
+  "app.utils.notInGroup": "Nie spełniasz wymogów uczestnictwa.",
   "app.utils.participationMethod.onSurveySubmission": "Dziękuję. Twoja odpowiedź została przyjęta.",
   "containers.SiteMap.allProjects": "Wszystkie projekty",
   "containers.SiteMap.customPageSection": "Strony niestandardowe",

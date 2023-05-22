@@ -1661,6 +1661,7 @@
   "app.utils.errors.default.api_error_too_short": "Je prekratko",
   "app.utils.errors.default.api_error_wrong_length": "Je pogrešne dužine",
   "app.utils.errors.defaultapi_error_.odd": "Mora da bude neparno",
+  "app.utils.notInGroup": "Не испуњавате услове за учешће.",
   "app.utils.participationMethod.onSurveySubmission": "Hvala Vam. Primili smo Vaš odgovor.",
   "containers.SiteMap.allProjects": "Svi projekti",
   "containers.SiteMap.customPageSection": "Prilagođene stranice",

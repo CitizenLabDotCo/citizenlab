@@ -1661,6 +1661,7 @@
   "app.utils.errors.default.api_error_too_short": "Ir pārāk īss",
   "app.utils.errors.default.api_error_wrong_length": "Nepareizs garums",
   "app.utils.errors.defaultapi_error_.odd": "Jābūt nepāra skaitlim",
+  "app.utils.notInGroup": "Jūs neatbilstat prasībām, lai piedalītos konkursā.",
   "app.utils.participationMethod.onSurveySubmission": "Paldies. Jūsu atbilde ir saņemta.",
   "containers.SiteMap.allProjects": "Visi projekti",
   "containers.SiteMap.customPageSection": "Pielāgotās lapas",
