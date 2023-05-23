@@ -164,7 +164,7 @@ RSpec.describe Initiative do
       end
 
       it 'sets anonymous to false and changes the author hash if an author is supplied on update' do
-        initiative = create(:idea, anonymous: true)
+        initiative = create(:initiative, anonymous: true)
         old_initiative_hash = initiative.author_hash
         initiative.update!(author: author)
         expect(initiative.author).not_to be_nil
@@ -173,10 +173,28 @@ RSpec.describe Initiative do
       end
 
       it 'generates a different author_hash if the author changes' do
-        initiative = create(:idea)
+        initiative = create(:initiative)
         old_initiative_hash = initiative.author_hash
         initiative.update!(author: author)
         expect(initiative.author_hash).not_to eq old_initiative_hash
+      end
+
+      it 'does not require an author if draft' do
+        initiative = create(:initiative, publication_status: 'draft')
+        initiative.author = nil
+        expect(initiative).to be_valid
+      end
+
+      it 'requires an author if published' do
+        initiative = create(:initiative, publication_status: 'published')
+        initiative.author = nil
+        expect(initiative).not_to be_valid
+      end
+
+      it 'does not require an author if published and posted anonymously' do
+        initiative = create(:initiative, publication_status: 'published', anonymous: true)
+        initiative.author = nil
+        expect(initiative).to be_valid
       end
     end
   end
