@@ -95,6 +95,3 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
     />
   );
 };
-
-// CL-3466
-// Check front/app/components/ParticipationCTABars/EmbeddedSurveyCTABar/index.tsx as reference.
