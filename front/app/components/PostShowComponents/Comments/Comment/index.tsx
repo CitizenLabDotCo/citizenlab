@@ -123,7 +123,6 @@ class Comment extends PureComponent<Props & WrappedComponentProps, State> {
     if (!isNilOrError(comment)) {
       const commentId = comment.id;
       const authorId = !isNilOrError(author) ? author.id : null;
-      const authorHash = 'comment.attributes?.author_hash'; // TODO: Implement when comments are in place
       const lastComment =
         (commentType === 'parent' && !hasChildComments) ||
         (commentType === 'child' && last === true);
@@ -146,7 +145,7 @@ class Comment extends PureComponent<Props & WrappedComponentProps, State> {
                 <CommentHeader
                   projectId={projectId}
                   authorId={authorId}
-                  authorHash={authorHash}
+                  authorHash={comment.attributes.author_hash}
                   commentId={commentId}
                   commentType={commentType}
                   commentCreatedAt={comment.attributes.created_at}
