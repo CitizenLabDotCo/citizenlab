@@ -16,6 +16,7 @@
   "app.components.AuthProviders.continueWithAzure": "Turpināt ar {azureProviderName}",
   "app.components.AuthProviders.continueWithFacebook": "Turpināt ar Facebook",
   "app.components.AuthProviders.continueWithGoogle": "Turpināt ar Google",
+  "app.components.AuthProviders.continueWithLoginMechanism": "Turpināt ar {loginMechanismName}",
   "app.components.AuthProviders.franceConnectMergingFailed": "Izmantojot šo e-pasta adresi, jau ir izveidots konts.{br}{br}Jūs nevarat piekļūt platformai, izmantojot FranceConnect, jo nesakrīt personas dati. Lai pieteiktos, izmantojot FranceConnect, vispirms šajā platformā ir jāmaina vārds vai uzvārds, lai tas atbilstu jūsu oficiāli reģistrētajiem datiem.{br}{br}Jūs varat pieteikties, kā parasti, kā norādīts tālāk.",
   "app.components.AuthProviders.goToLogIn": "Jums jau ir konts? {goToOtherFlowLink}",
   "app.components.AuthProviders.goToSignUp": "Jums nav konta? {goToOtherFlowLink}",
