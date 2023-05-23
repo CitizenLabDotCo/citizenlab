@@ -1229,6 +1229,8 @@
   "app.containers.Projects.xContributions": "{ideasCount, plural, one {# contribution} other {# contributions}}",
   "app.containers.Projects.xContributionsInCurrentPhase": "{ideasCount, plural, one {# contribution} other {# contributions}} in the current phase",
   "app.containers.Projects.xContributionsInFinalPhase": "{ideasCount, plural, one {# contribution} other {# contributions}} in the final phase",
+  "app.containers.Projects.xDocuments": "{documentsCount, plural, no {# documents} one {# document} other {# documents}} to review",
+  "app.containers.Projects.xDocumentsInCurrentPhase": "{documentsCount, plural, no {# documents} one {# document} other {# documents}} to review in the current phase",
   "app.containers.Projects.xEvents": "{eventsCount, plural, one {# event} other {# events}}",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, one {# idea} other {# ideas}}",
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, one {# idea} other {# ideas}} in the current phase",
