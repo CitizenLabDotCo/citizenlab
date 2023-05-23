@@ -76,7 +76,7 @@ const InitiativesNewFormWrapper = ({
     topic_ids: [],
     position: location_description,
   };
-
+  const [postAnonymously, setPostAnonymously] = useState(false);
   const [formValues, setFormValues] = useState<SimpleFormValues>(initialValues);
   const [image, setImage] = useState<UploadFile | null>(null);
   const [imageId, setImageId] = useState<string | null>(null);
@@ -180,12 +180,13 @@ const InitiativesNewFormWrapper = ({
         if (initiativeId) {
           updateInitiative({
             initiativeId,
-            requestBody: formAPIValues,
+            requestBody: { anonymous: postAnonymously, ...formAPIValues },
           });
         } else {
           addInitiative(
             {
               ...formAPIValues,
+              anonymous: postAnonymously,
               publication_status: 'draft',
             },
             { onSuccess: (initiative) => setInitiativeId(initiative.data.id) }
@@ -258,6 +259,7 @@ const InitiativesNewFormWrapper = ({
             initiativeId,
             requestBody: {
               ...formAPIValues,
+              anonymous: postAnonymously,
               publication_status: 'published',
             },
           },
@@ -275,6 +277,7 @@ const InitiativesNewFormWrapper = ({
           {
             ...formAPIValues,
             publication_status: 'published',
+            anonymous: postAnonymously,
           },
           { onSuccess: (initiative) => setInitiativeId(initiative.data.id) }
         );
@@ -484,6 +487,8 @@ const InitiativesNewFormWrapper = ({
       topics={topics}
       titleProfanityError={titleProfanityError}
       descriptionProfanityError={descriptionProfanityError}
+      postAnonymously={postAnonymously}
+      setPostAnonymously={setPostAnonymously}
     />
   );
 };

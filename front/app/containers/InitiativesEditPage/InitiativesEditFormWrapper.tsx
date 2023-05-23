@@ -69,7 +69,9 @@ const InitiativesEditFormWrapper = ({
   };
 
   const [formValues, setFormValues] = useState<SimpleFormValues>(initialValues);
-
+  const [postAnonymously, setPostAnonymously] = useState(
+    initiative.attributes.anonymous
+  );
   const [oldImageId, setOldImageId] = useState<string | null>(null);
   const [image, setImage] = useState<UploadFile | null>(null);
   const [publishing, setPublishing] = useState<boolean>(false);
@@ -183,6 +185,7 @@ const InitiativesEditFormWrapper = ({
         initiativeId: initiative.id,
         requestBody: {
           ...formAPIValues,
+          anonymous: postAnonymously,
           publication_status: 'published',
         },
       });
@@ -403,6 +406,8 @@ const InitiativesEditFormWrapper = ({
       topics={topics}
       titleProfanityError={titleProfanityError}
       descriptionProfanityError={descriptionProfanityError}
+      postAnonymously={postAnonymously}
+      setPostAnonymously={setPostAnonymously}
     />
   );
 };
