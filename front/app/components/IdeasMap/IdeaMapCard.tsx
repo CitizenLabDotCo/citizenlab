@@ -17,7 +17,7 @@ import {
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 
 // i18n
 import T from 'components/T';
@@ -143,7 +143,7 @@ interface Props {
 const IdeaMapCard = memo<Props>(
   ({ ideaMarker, onClose, className, projectId, phaseId }) => {
     const { data: appConfig } = useAppConfiguration();
-    const phase = usePhase(phaseId || null);
+    const { data: phase } = usePhase(phaseId || null);
     const { data: project } = useProjectById(projectId);
     const { windowWidth } = useWindowSize();
     const tablet = windowWidth <= viewportWidths.tablet;
@@ -155,9 +155,8 @@ const IdeaMapCard = memo<Props>(
       project?.data.attributes.participation_method === 'budgeting';
 
     const isParticipatoryBudgetPhase =
-      !isNilOrError(phase) &&
-      phase.attributes.participation_method === 'budgeting';
-    const isParticipatoryBudgetIdea = isNilOrError(phase)
+      phase && phase.data.attributes.participation_method === 'budgeting';
+    const isParticipatoryBudgetIdea = phase
       ? isParticipatoryBudgetProject
       : isParticipatoryBudgetPhase;
 

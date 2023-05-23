@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_18_133943) do
+ActiveRecord::Schema.define(version: 2023_05_16_150847) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -202,8 +202,6 @@ ActiveRecord::Schema.define(version: 2023_05_18_133943) do
     t.datetime "body_updated_at"
     t.integer "children_count", default: 0, null: false
     t.string "post_type"
-    t.string "author_hash"
-    t.boolean "anonymous", default: false, null: false
     t.index ["author_id"], name: "index_comments_on_author_id"
     t.index ["created_at"], name: "index_comments_on_created_at"
     t.index ["lft"], name: "index_comments_on_lft"
@@ -614,8 +612,6 @@ ActiveRecord::Schema.define(version: 2023_05_18_133943) do
     t.uuid "assignee_id"
     t.integer "official_feedbacks_count", default: 0, null: false
     t.datetime "assigned_at"
-    t.string "author_hash"
-    t.boolean "anonymous", default: false, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_initiatives_search", using: :gin
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
@@ -947,6 +943,7 @@ ActiveRecord::Schema.define(version: 2023_05_18_133943) do
     t.integer "downvoting_limited_max", default: 10
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
+    t.boolean "allow_anonymous_participation", default: false, null: false
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -1084,6 +1081,7 @@ ActiveRecord::Schema.define(version: 2023_05_18_133943) do
     t.boolean "include_all_areas", default: false, null: false
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
+    t.boolean "allow_anonymous_participation", default: false, null: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 

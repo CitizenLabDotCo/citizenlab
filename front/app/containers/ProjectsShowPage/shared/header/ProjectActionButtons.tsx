@@ -10,13 +10,14 @@ import { isNumber } from 'lodash-es';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // services
-import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
 import { getInputTerm } from 'services/participationContexts';
 
 // components
@@ -55,12 +56,14 @@ interface Props {
 
 const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const { data: project } = useProjectById(projectId);
-  const phases = usePhases(projectId);
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
+  const { data: phases } = usePhases(projectId);
+  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const { pathname, hash: divId } = useLocation();
 
   useEffect(() => {
-    setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
+    setCurrentPhase(
+      getCurrentPhase(phases?.data) || getLastPhase(phases?.data)
+    );
   }, [phases]);
 
   useEffect(() => {
@@ -146,7 +149,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const inputTerm = getInputTerm(
     project.data.attributes.process_type,
     project.data,
-    phases
+    phases?.data
   );
 
   const isParticipationMethodIdeation = participation_method === 'ideation';

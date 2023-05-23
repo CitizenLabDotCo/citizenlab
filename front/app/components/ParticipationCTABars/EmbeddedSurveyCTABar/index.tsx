@@ -11,7 +11,8 @@ import { useTheme } from 'styled-components';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // services
-import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
 
 // utils
 import { scrollToElement } from 'utils/scroll';
@@ -33,7 +34,7 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 
 export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
+  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const { pathname, hash: divId } = useLocation();
 
   useEffect(() => {

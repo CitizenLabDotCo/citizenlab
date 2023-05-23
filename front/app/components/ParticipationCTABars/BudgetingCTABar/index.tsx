@@ -9,7 +9,8 @@ import { useTheme } from 'styled-components';
 import useBasket from 'hooks/useBasket';
 
 // services
-import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
 
 // utils
 import { scrollToElement } from 'utils/scroll';
@@ -25,7 +26,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
+  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   let basketId: string | null = null;
   if (currentPhase) {
     basketId = currentPhase.relationships.user_basket?.data?.id || null;

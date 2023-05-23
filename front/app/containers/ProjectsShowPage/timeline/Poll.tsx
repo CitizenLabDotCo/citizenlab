@@ -1,12 +1,11 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Poll from '../shared/poll';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // hooks
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -24,12 +23,9 @@ interface Props {
 }
 
 const PollContainer = memo<Props>(({ projectId, phaseId, className }) => {
-  const phase = usePhase(phaseId);
+  const { data: phase } = usePhase(phaseId);
 
-  if (
-    !isNilOrError(phase) &&
-    phase.attributes.participation_method === 'poll'
-  ) {
+  if (phase && phase.data.attributes.participation_method === 'poll') {
     return (
       <Container
         className={`e2e-timeline-project-poll-container ${className || ''}`}

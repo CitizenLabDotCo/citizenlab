@@ -59,6 +59,7 @@ export type ProposalsSettings = {
   allowed: boolean;
   enabled: boolean;
   days_limit: number;
+  allow_anonymous_participation: boolean;
   eligibility_criteria: Multiloc;
   threshold_reached_message: Multiloc;
   voting_threshold: number;
@@ -173,6 +174,7 @@ export interface IAppConfigurationSettings {
   project_management?: AppConfigurationFeature;
   idea_assignment?: AppConfigurationFeature;
   blocking_profanity?: AppConfigurationFeature;
+  anonymous_participation?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
   idea_author_change?: AppConfigurationFeature;
   idea_custom_copy?: AppConfigurationFeature;

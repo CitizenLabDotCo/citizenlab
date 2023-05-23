@@ -1,10 +1,10 @@
-import { TPhases } from 'hooks/usePhases';
+import { IPhases } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 export const isReady = (
   project: IProjectData | NilOrError,
-  phases: TPhases
+  phases: IPhases | NilOrError
 ): project is IProjectData => {
   return (
     !isNilOrError(project) &&
