@@ -22,6 +22,8 @@
 #  assignee_id              :uuid
 #  official_feedbacks_count :integer          default(0), not null
 #  assigned_at              :datetime
+#  author_hash              :string
+#  anonymous                :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -37,6 +39,7 @@
 #
 class Initiative < ApplicationRecord
   include Post
+  include AnonymousParticipation
 
   mount_base64_uploader :header_bg, InitiativeHeaderBgUploader
 
@@ -58,8 +61,8 @@ class Initiative < ApplicationRecord
   with_options unless: :draft? do |post|
     post.validates :title_multiloc, presence: true, multiloc: { presence: true }
     post.validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
-    post.validates :author, presence: true, on: :publication
-    post.validates :author, presence: true, if: :author_id_changed?
+    post.validates :author, presence: true, on: :publication, unless: :anonymous?
+    post.validates :author, presence: true, if: :author_id_changed?, unless: :anonymous?
     post.validates :slug, uniqueness: true, presence: true
 
     post.before_validation :strip_title

@@ -46,6 +46,7 @@ interface InputProps {
   commentType: 'parent' | 'child';
   commentCreatedAt: string;
   moderator: boolean;
+  anonymous?: boolean;
 }
 
 interface Props extends InputProps {}
@@ -62,6 +63,7 @@ export default class CommentHeader extends PureComponent<Props, State> {
       commentCreatedAt,
       moderator,
       className,
+      anonymous,
     } = this.props;
     const hasAuthorId = !!authorId;
 
@@ -82,6 +84,7 @@ export default class CommentHeader extends PureComponent<Props, State> {
             fontSize={fontSizes.base}
             fontWeight={400}
             underline={true}
+            anonymous={anonymous}
           />
         </Left>
         <Right>{moderator && <AdminBadge />}</Right>

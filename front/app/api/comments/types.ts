@@ -22,6 +22,7 @@ interface CommentAttributes {
 interface IPresentComment extends CommentAttributes {
   body_multiloc: Multiloc;
   publication_status: 'published';
+  anonymous?: boolean;
 }
 
 interface IDeletedComment extends CommentAttributes {
@@ -64,6 +65,7 @@ export interface INewComment {
   author_id: string;
   parent_id?: string;
   body_multiloc: Multiloc;
+  anonymous?: boolean;
 }
 
 export interface IUpdatedComment {

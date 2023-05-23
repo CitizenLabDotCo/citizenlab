@@ -17,6 +17,10 @@ import { IUserData } from 'services/users';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
+// components
+import Tippy from '@tippyjs/react';
+import { Box, Text } from '@citizenlab/cl2-component-library';
+
 const Name = styled.span<{
   color?: string;
   fontWeight?: number;
@@ -92,18 +96,31 @@ const UserName = ({
 
   if (anonymous) {
     return (
-      <Name
-        fontWeight={fontWeight}
-        fontSize={fontSize}
-        underline={underline}
-        className={`
+      <Tippy
+        placement="top-start"
+        maxWidth={'260px'}
+        theme={'dark'}
+        content={
+          <Box style={{ cursor: 'default' }}>
+            <Text my="8px" color="white" fontSize="s">
+              {formatMessage(messages.anonymousTooltip)}
+            </Text>
+          </Box>
+        }
+      >
+        <Name
+          fontWeight={fontWeight}
+          fontSize={fontSize}
+          underline={underline}
+          className={`
           ${className || ''}
           e2e-username
         `}
-        color={color}
-      >
-        {formatMessage(messages.anonymous)}
-      </Name>
+          color={color}
+        >
+          {formatMessage(messages.anonymous)}
+        </Name>
+      </Tippy>
     );
   }
 

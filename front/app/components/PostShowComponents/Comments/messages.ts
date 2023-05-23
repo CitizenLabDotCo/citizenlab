@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  postAnonymously: {
+    id: 'app.components.Comments.postAnonymously',
+    defaultMessage: 'Post anonymously',
+  },
   invisibleTitleComments: {
     id: 'app.components.Comments.invisibleTitleComments',
     defaultMessage: 'Comments',
