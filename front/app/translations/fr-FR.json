@@ -495,7 +495,7 @@
   "app.components.anonymousParticipationModal.cancel": "Annuler",
   "app.components.anonymousParticipationModal.continue": "Continuer",
   "app.components.anonymousParticipationModal.participateAnonymously": "Participer de façon anonyme",
-  "app.components.anonymousParticipationModal.participateAnonymouslyModalText3": "Tu as sélectionné \"Publier anonymement\". Ceci cachera en toute sécurité <b>ton profil</b> aux administrateurs, modérateurs et autres résidents pour cette contribution spécifique, de sorte que personne ne puisse relier cette contribution à toi.",
+  "app.components.anonymousParticipationModal.participateAnonymouslyModalText3": "En choisissant \"Publier anonymement\",  <b>votre profil sera masqué</b> aux administrateurs, gestionnaires et autres utilisateurs de la plateforme <b>pour cette contribution en particulier</b>, empêchant ainsi toute possibilité de faire le lien entre cette contribution et votre profil.",
   "app.components.form.ErrorDisplay.guidelinesLinkText": "nos directives",
   "app.components.form.ErrorDisplay.next": "Suivant",
   "app.components.form.ErrorDisplay.previous": "Précédent",
