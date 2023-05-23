@@ -14,9 +14,9 @@ export default defineMessages({
     defaultMessage: 'Participate anonymously',
   },
   participateAnonymouslyModalText: {
-    id: 'app.components.anonymousParticipationModal.participateAnonymouslyModalText2',
+    id: 'app.components.anonymousParticipationModal.participateAnonymouslyModalText3',
     defaultMessage:
-      "You selected 'Post anonymously'. This will safely <b>hide your profile</b> from admins, moderators and other residents for this specific contribution so that nobody is able to link this contribution to you",
+      "You selected 'Post anonymously'. This will safely <b>hide your profile</b> from admins, moderators and other residents for this specific contribution so that nobody is able to link this contribution to you.",
   },
   anonymousParticipationWarning: {
     id: 'app.components.anonymousParticipationModal.anonymousParticipationWarning',
