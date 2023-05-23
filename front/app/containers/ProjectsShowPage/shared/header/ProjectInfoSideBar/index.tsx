@@ -145,6 +145,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     );
   }, [phases]);
 
+  // Add more specific types to id?
   const scrollTo = useCallback(
     (id: string, shouldSelectCurrentPhase = true) =>
       (event: FormEvent) => {
@@ -366,6 +367,32 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                         ? messages.xSurveys
                         : messages.xSurveysInCurrentPhase)}
                       values={{ surveysCount: 1 }}
+                    />
+                  )}
+                </ListItem>
+              )}
+            {((projectType === 'continuous' &&
+              projectParticipationMethod === 'document_annotation') ||
+              currentPhaseParticipationMethod === 'document_annotation') &&
+              !isProjectArchived &&
+              !hasProjectEnded && (
+                <ListItem>
+                  <ListItemIcon ariaHidden name="blank-paper" />
+                  {!isNilOrError(authUser) ? (
+                    <ListItemButton onClick={scrollTo('document-annotation')}>
+                      <FormattedMessage
+                        {...(projectType === 'continuous'
+                          ? messages.xDocuments
+                          : messages.xDocumentsInCurrentPhase)}
+                        values={{ documentsCount: 1 }}
+                      />
+                    </ListItemButton>
+                  ) : (
+                    <FormattedMessage
+                      {...(projectType === 'continuous'
+                        ? messages.xDocuments
+                        : messages.xDocumentsInCurrentPhase)}
+                      values={{ documentsCount: 1 }}
                     />
                   )}
                 </ListItem>
