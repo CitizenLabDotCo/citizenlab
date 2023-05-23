@@ -69,7 +69,6 @@ export type SuccessAction =
   | VoteOnCommentAction
   | VoteOnIdeaAction
   | VoteOnInitiativeAction;
-// CL-3466
 
 export const getAction = ({ name, params }: SuccessAction) => {
   if (name === 'assignBudget') return assignBudget(params);
