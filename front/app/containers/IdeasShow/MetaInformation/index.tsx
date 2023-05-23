@@ -31,6 +31,7 @@ interface Props {
   projectId: string;
   statusId: string;
   compact?: boolean;
+  anonymous?: boolean;
   className?: string;
 }
 
@@ -40,6 +41,7 @@ const MetaInformation = ({
   statusId,
   authorId,
   compact,
+  anonymous,
   className,
 }: Props) => {
   const locale = useLocale();
@@ -69,7 +71,12 @@ const MetaInformation = ({
 
     return (
       <Container className={`${className || ''} ${compact ? 'compact' : ''}`}>
-        <PostedBy authorId={authorId} ideaId={ideaId} compact={compact} />
+        <PostedBy
+          authorId={authorId}
+          ideaId={ideaId}
+          compact={compact}
+          anonymous={anonymous}
+        />
         <Status statusId={statusId} compact={compact} />
         {topicsEnabled && <IdeaTopics ideaId={ideaId} compact={compact} />}
         {locationEnabled && (

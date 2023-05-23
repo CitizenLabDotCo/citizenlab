@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.components.UserName.verified',
     defaultMessage: 'Verified',
   },
+  anonymous: {
+    id: 'app.components.UserName.anonymous',
+    defaultMessage: 'Anonymous',
+  },
 });
