@@ -11,16 +11,7 @@ class OmniauthCallbackController < ApplicationController
     verification_method = get_verification_method(auth_provider)
 
     if auth_method && verification_method
-      # If token is present, the user is already logged in, which means they try to verify not authenticate.
-      if request.env['omniauth.params']['token'] && auth_method.verification_prioritized?
-        verification_callback(verification_method)
-        # We need it only for ClaveUnica. For FC, we never verify, only authenticate.
-        auth = request.env['omniauth.auth']
-        @identity = Identity.find_or_build_with_omniauth(auth, auth_method)
-        @identity.update(user: @user) unless @identity.user
-      else
-        auth_callback(verify: verification_method, authver_method: auth_method)
-      end
+      auth_or_verification_callback(verify: verification_method, authver_method: auth_method)
     elsif auth_method
       auth_callback(verify: verification_method, authver_method: auth_method)
     elsif verification_method
@@ -48,6 +39,21 @@ class OmniauthCallbackController < ApplicationController
   end
 
   private
+
+  # Currently, only FranceConnect and ClaveUnica use this method (support both verification and authentication).
+  def auth_or_verification_callback(verify:, authver_method:)
+    # If token is present, the user is already logged in, which means they try to verify not authenticate.
+    if request.env['omniauth.params']['token'] && auth_method.verification_prioritized?
+      # We need it only for ClaveUnica. For FC, we never verify, only authenticate.
+      verification_callback(verification_method)
+      # Apart from verification, we also create an identity to be able to authenticate with this provider.
+      auth = request.env['omniauth.auth']
+      @identity = Identity.find_or_build_with_omniauth(auth, auth_method)
+      @identity.update(user: @user) unless @identity.user
+    else
+      auth_callback(verify: verification_method, authver_method: auth_method)
+    end
+  end
 
   def auth_callback(verify:, authver_method:)
     auth = request.env['omniauth.auth']

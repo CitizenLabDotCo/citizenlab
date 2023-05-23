@@ -17,17 +17,5 @@ module IdClaveUnica
     def self.feature_description
       'Allow users to authenticate and verify with a ClaveUnica account.'
     end
-
-    add_setting 'client_id', schema: {
-      title: 'Client ID',
-      type: 'string',
-      private: true
-    }
-
-    add_setting 'client_secret', schema: {
-      title: 'Client Secret',
-      type: 'string',
-      private: true
-    }
   end
 end
