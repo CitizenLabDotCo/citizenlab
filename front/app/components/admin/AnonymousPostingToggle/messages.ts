@@ -10,9 +10,9 @@ export default defineMessages({
     defaultMessage: 'Allow users to participate anonymously',
   },
   userAnonymityLabelSubtext: {
-    id: 'app.components.AnonymousPostingToggle.userAnonymityLabelSubtext',
+    id: 'app.components.AnonymousPostingToggle.userAnonymityLabelSubtext2',
     defaultMessage:
-      'Users will be able to hide their identity from other users and admins. Admins can still ban/moderate their inputs.',
+      'Users will be able to hide their identity from other users, project moderators and admins. These contributions can still be moderated.',
   },
   userAnonymityLabelTooltip: {
     id: 'app.components.AnonymousPostingToggle.userAnonymityLabelTooltip',
