@@ -39,7 +39,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
 // typings
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { isNilOrError } from 'utils/helperUtils';
 

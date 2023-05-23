@@ -38,5 +38,5 @@ class WebApi::V1::HomePageSerializer < WebApi::V1::BaseSerializer
     TextImageService.new.render_data_images object, :bottom_info_section_multiloc
   end
 
-  has_many :pinned_admin_publications
+  has_many :pinned_admin_publications, serializer: :admin_publication
 end

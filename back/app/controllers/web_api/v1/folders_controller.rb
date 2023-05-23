@@ -21,7 +21,7 @@ class WebApi::V1::FoldersController < ApplicationController
     render json: linked_json(
       @project_folders,
       WebApi::V1::FolderSerializer,
-      params: fastjson_params(visible_children_count_by_parent_id: visible_children_count_by_parent_id),
+      params: jsonapi_serializer_params(visible_children_count_by_parent_id: visible_children_count_by_parent_id),
       include: %i[admin_publication images]
     )
   end
@@ -29,9 +29,9 @@ class WebApi::V1::FoldersController < ApplicationController
   def show
     render json: WebApi::V1::FolderSerializer.new(
       @project_folder,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: %i[admin_publication images]
-    ).serialized_json
+    ).serializable_hash
   end
 
   def by_slug
@@ -50,9 +50,9 @@ class WebApi::V1::FoldersController < ApplicationController
 
       render json: WebApi::V1::FolderSerializer.new(
         @project_folder,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: [:admin_publication]
-      ).serialized_json, status: :created
+      ).serializable_hash, status: :created
     else
       render json: { errors: @project_folder.errors.details }, status: :unprocessable_entity
     end
@@ -68,9 +68,9 @@ class WebApi::V1::FoldersController < ApplicationController
       ProjectFolders::SideFxService.new.after_update(@project_folder, current_user)
       render json: WebApi::V1::FolderSerializer.new(
         @project_folder,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: [:admin_publication]
-      ).serialized_json, status: :ok
+      ).serializable_hash, status: :ok
     else
       render json: { errors: @project_folder.errors.details }, status: :unprocessable_entity
     end

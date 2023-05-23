@@ -17,11 +17,9 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 
-// services
-import { updateProject } from 'services/projects';
-
 // hooks
 import useProjectById from 'api/projects/useProjectById';
+import useUpdateProject from 'api/projects/useUpdateProject';
 
 const ViewingRightsSection = styled(Section)`
   margin-bottom: 30px;
@@ -57,7 +55,7 @@ const ProjectVisibility = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const { data: project } = useProjectById(projectId);
-
+  const { mutate: updateProject } = useUpdateProject();
   const [projectVisibility, setProjectVisibility] = useState<
     'public' | 'admins' | 'groups'
   >(project ? project.data.attributes.visible_to : 'public');
@@ -71,7 +69,7 @@ const ProjectVisibility = ({
   const handlePermissionTypeChange = (
     projectVisibility: 'public' | 'groups' | 'admins'
   ) => {
-    updateProject(projectId, { visible_to: projectVisibility });
+    updateProject({ projectId, visible_to: projectVisibility });
   };
 
   const noOp = () => {

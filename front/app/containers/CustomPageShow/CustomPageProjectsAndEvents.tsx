@@ -5,7 +5,7 @@ import useAdminPublications from 'hooks/useAdminPublications';
 import { ICustomPageData } from 'services/customPages';
 import ContentContainer from 'components/ContentContainer';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 import useAdminPublicationsStatusCounts from 'hooks/useAdminPublicationsStatusCounts';
 import ProjectAndFolderCardsInner from 'components/ProjectAndFolderCards/ProjectAndFolderCardsInner';
 import { colors } from 'utils/styleUtils';

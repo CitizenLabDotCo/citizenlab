@@ -61,6 +61,7 @@ module MultiTenancy
           ProjectFolders::Image => serialize_records(ProjectFolders::Image),
           ProjectImage => serialize_records(ProjectImage),
           ProjectsAllowedInputTopic => serialize_records(ProjectsAllowedInputTopic),
+          ReportBuilder::Report => serialize_records(ReportBuilder::Report),
           StaticPage => serialize_records(StaticPage),
           StaticPageFile => serialize_records(StaticPageFile),
           Topic => serialize_records(Topic),
@@ -149,7 +150,7 @@ module MultiTenancy
         end
 
         each_node = ->(&b) { ref_dependencies_graph.each_key(&b) }
-        each_child = ->(n, &b) { ref_dependencies_graph[n].each(&b) }
+        each_child = ->(n, &b) { ref_dependencies_graph.fetch(n).each(&b) }
 
         sorted_classes = TSort.tsort(each_node, each_child)
         models.slice(*sorted_classes)

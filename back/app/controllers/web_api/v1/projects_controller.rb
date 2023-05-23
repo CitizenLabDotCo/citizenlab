@@ -40,7 +40,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: linked_json(
       @projects,
       WebApi::V1::ProjectSerializer,
-      params: fastjson_params(instance_options),
+      params: jsonapi_serializer_params(instance_options),
       include: %i[admin_publication project_images current_phase]
     )
   end
@@ -48,9 +48,9 @@ class WebApi::V1::ProjectsController < ApplicationController
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: %i[admin_publication project_images current_phase]
-    ).serialized_json
+    ).serializable_hash
   end
 
   def by_slug
@@ -68,9 +68,9 @@ class WebApi::V1::ProjectsController < ApplicationController
       sidefx.after_create(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: [:admin_publication]
-      ).serialized_json, status: :created
+      ).serializable_hash, status: :created
     else
       render json: { errors: @project.errors.details }, status: :unprocessable_entity
     end
@@ -91,9 +91,9 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: [:admin_publication]
-    ).serialized_json, status: :created
+    ).serializable_hash, status: :created
   end
 
   def update
@@ -111,9 +111,9 @@ class WebApi::V1::ProjectsController < ApplicationController
       sidefx.after_update(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: [:admin_publication]
-      ).serialized_json, status: :ok
+      ).serializable_hash, status: :ok
     else
       render json: { errors: @project.errors.details }, status: :unprocessable_entity, include: ['project_images']
     end

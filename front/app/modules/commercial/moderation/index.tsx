@@ -6,7 +6,7 @@ const AdminModerationComponent = React.lazy(() => import('./admin/containers'));
 
 const configuration: ModuleConfiguration = {
   routes: {
-    admin: [
+    'admin.dashboards': [
       {
         path: 'moderation',
         element: <AdminModerationComponent />,
@@ -14,7 +14,7 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
-    'app.containers.Admin.sideBar.navItems': (props) => <NavItem {...props} />,
+    'app.containers.Admin.dashboards.tabs': (props) => <NavItem {...props} />,
   },
 };
 

@@ -7,7 +7,7 @@ module Insights
         attributes :created_at
 
         has_many :categories
-        has_many :inputs do |task, _params|
+        has_many :inputs, serializer: ::WebApi::V1::IdeaSerializer do |task, _params|
           task.inputs
         end
       end

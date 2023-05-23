@@ -61,10 +61,6 @@ module EmailCampaigns
       ['admin']
     end
 
-    def self.category
-      'admin'
-    end
-
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.admins'
     end
@@ -75,10 +71,6 @@ module EmailCampaigns
 
     def self.content_type_multiloc_key
       'email_campaigns.admin_labels.content_type.general'
-    end
-
-    def self.trigger_multiloc_key
-      'scheduled'
     end
 
     def generate_commands(recipient:, time: Time.now)

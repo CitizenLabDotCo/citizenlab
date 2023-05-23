@@ -1,9 +1,9 @@
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { Locale } from 'typings';
 
 export default function setPhaseUrl(
-  selectedPhaseId: string,
+  selectedPhaseId: string | undefined,
   currentPhaseId: string | undefined,
   phases: IPhaseData[],
   project: IProjectData,

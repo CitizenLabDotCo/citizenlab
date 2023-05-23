@@ -102,7 +102,6 @@ class Idea < ApplicationRecord
 
   # validates :custom_field_values, json: {
   #   schema: :schema_for_validation,
-  #   message: ->(errors) { errors }
   # }
 
   with_options unless: :draft? do

@@ -25,7 +25,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // hooks
 import useFormResults from 'hooks/useFormResults';
 import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 
 // Services
 import { downloadSurveyResults } from 'services/formCustomFields';
@@ -40,7 +40,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const [urlParams] = useSearchParams();
   const phaseId = urlParams.get('phase_id');
   const { data: project } = useProjectById(projectId);
-  const phase = usePhase(phaseId);
+  const { data: phase } = usePhase(phaseId);
   const formResults = useFormResults({
     projectId,
     phaseId,
@@ -55,7 +55,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const handleDownloadResults = async () => {
     try {
       setIsDownloading(true);
-      await downloadSurveyResults(project.data, locale, phase);
+      await downloadSurveyResults(project.data, locale, phase?.data);
     } catch (error) {
       // Not handling errors for now
     } finally {

@@ -8,7 +8,7 @@ import useLocalize from 'hooks/useLocalize';
 import { usePermission } from 'services/permissions';
 
 // services
-import { IUpdatedProjectProperties } from 'services/projects';
+import { IUpdatedProjectProperties } from 'api/projects/types';
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 // components

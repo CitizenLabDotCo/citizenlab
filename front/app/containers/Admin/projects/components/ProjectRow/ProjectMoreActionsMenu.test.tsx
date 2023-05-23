@@ -1,7 +1,9 @@
 import React from 'react';
 import ProjectMoreActionsMenu, { Props } from './ProjectMoreActionsMenu';
-import { render, screen, userEvent } from 'utils/testUtils/rtl';
+import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
 import { IUserData } from 'services/users';
+import { setupServer } from 'msw/node';
+import { rest } from 'msw';
 
 const defaultProps: Props = {
   projectId: 'projectId',
@@ -45,16 +47,22 @@ jest.mock('api/projects/useProjectById', () => {
   return jest.fn(() => ({ data: { data: mockProject } }));
 });
 
-jest.mock('services/projects', () =>
-  jest.fn(() => {
-    return {
-      copyProject: jest.fn().mockImplementation(() => Promise.reject()),
-      deleteProject: jest.fn().mockImplementation(() => Promise.reject()),
-    };
+const copyApiPath = '*projects/:projectId/copy';
+const deleteApiPath = '*projects/:id';
+
+const server = setupServer(
+  rest.post(copyApiPath, (_req, res, ctx) => {
+    return res(ctx.status(500));
+  }),
+  rest.delete(deleteApiPath, (_req, res, ctx) => {
+    return res(ctx.status(500));
   })
 );
 
 describe('ProjectMoreActionsMenu', () => {
+  beforeAll(() => server.listen());
+  afterAll(() => server.close());
+
   it('calls setError with an error when copying fails', async () => {
     const setErrorFn = jest.fn();
     const props: Props = {
@@ -73,9 +81,11 @@ describe('ProjectMoreActionsMenu', () => {
 
     await user.click(copyProjectButton);
 
-    expect(setErrorFn).toHaveBeenLastCalledWith(
-      'There was an error copying this project, please try again later.'
-    );
+    await waitFor(() => {
+      expect(setErrorFn).toHaveBeenLastCalledWith(
+        'There was an error copying this project, please try again later.'
+      );
+    });
   });
 
   it('calls setError with an error when deleting fails', async () => {
@@ -95,9 +105,11 @@ describe('ProjectMoreActionsMenu', () => {
 
     await user.click(deleteProjectButton);
 
-    expect(setErrorFn).toHaveBeenLastCalledWith(
-      'There was an error deleting this project, please try again later.'
-    );
+    await waitFor(() => {
+      expect(setErrorFn).toHaveBeenLastCalledWith(
+        'There was an error deleting this project, please try again later.'
+      );
+    });
   });
 
   describe('When user is an admin', () => {

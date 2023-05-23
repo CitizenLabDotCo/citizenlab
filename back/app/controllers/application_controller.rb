@@ -61,7 +61,7 @@ class ApplicationController < ActionController::API
     payload[:'X-Amzn-Trace-Id'] = request.headers['X-Amzn-Trace-Id']
   end
 
-  def fastjson_params(extra_params = {})
+  def jsonapi_serializer_params(extra_params = {})
     { current_user: current_user, **extra_params.symbolize_keys }
   end
 
@@ -80,6 +80,22 @@ class ApplicationController < ActionController::API
       **serializer.new(collection, options).serializable_hash,
       links: page_links(collection)
     }
+  end
+
+  # Sub-optimal performance, since we are instantiating a serializer for each record.
+  # Since we currently (2020-05-19) only use this for notifications, and we rarely process very large numbers
+  # of notifications, we are not overly concerned by this.
+  # If performance becomes an issue, we could try patching or recreating the approach used by a fork of a similar gem:
+  # https://github.com/dvandersluis/fast_jsonapi/tree/heterogeneous-collection
+  # Better still, we can hopefully one day use a new version of the jsonapi-serializer gem that supports this
+  # 'out of the box', or switch to a different gem that does.
+  def serialize_heterogeneous_collection(collection, serializers, options = {})
+    serializers = serializers.to_proc
+
+    collection.map do |record|
+      serializer_class = serializers.call(record.class)
+      serializer_class.new(record, **options, params: jsonapi_serializer_params).serializable_hash[:data]
+    end
   end
 
   def page_links(collection)

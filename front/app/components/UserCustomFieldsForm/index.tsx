@@ -43,6 +43,7 @@ export default ({
   const { data: userCustomFieldsSchema } = useCustomFieldsSchema(
     authenticationContext
   );
+
   const locale = useLocale();
 
   const handleOnSubmit = (formData) => {

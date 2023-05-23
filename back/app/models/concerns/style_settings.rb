@@ -5,11 +5,7 @@ module StyleSettings
 
   included do
     validates :style, presence: true, json: {
-      schema: style_json_schema_str,
-      message: ->(errors) { errors.map { |e| { fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message] } } },
-      options: {
-        errors_as_objects: true
-      }
+      schema: style_json_schema
     }, allow_blank: true
 
     before_validation :ensure_style

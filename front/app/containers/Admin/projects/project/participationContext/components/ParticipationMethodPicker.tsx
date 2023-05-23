@@ -22,7 +22,7 @@ import { ParticipationMethod } from 'services/participationContexts';
 import { ApiErrors } from '..';
 import { getMethodConfig } from 'utils/participationMethodUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { IPhase } from 'services/phases';
+import { IPhase } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import Warning from 'components/UI/Warning';
 
@@ -46,7 +46,7 @@ export const ParticipationMethodPicker = ({
   handleParticipationMethodOnChange,
 }: Props) => {
   const chooseParticipationMethod = () => {
-    if (!isNilOrError(phase)) {
+    if (!isNilOrError(phase) && phase.data) {
       return phase.data.attributes.participation_method;
     }
     if (!isNilOrError(project)) {
@@ -58,7 +58,8 @@ export const ParticipationMethodPicker = ({
   };
 
   const isExistingProjectOrPhase =
-    !isNilOrError(project) || !isNilOrError(phase);
+    !isNilOrError(project) || !isNilOrError(phase?.data);
+
   const config = getMethodConfig(chooseParticipationMethod());
 
   return (

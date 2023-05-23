@@ -21,6 +21,7 @@ import useProjectById from 'api/projects/useProjectById';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import globalMessages from 'utils/messages';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -28,7 +29,7 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 // styling
 import styled from 'styled-components';
 import SurveyXact from './SurveyXact';
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -55,6 +56,7 @@ const disabledMessages = {
   not_verified: messages.surveyDisabledNotVerified,
   missing_data: messages.surveyDisabledNotActiveUser,
   not_signed_in: messages.surveyDisabledMaybeNotPermitted,
+  not_in_group: globalMessages.notInGroup,
 } as const;
 
 const Survey = ({
@@ -66,7 +68,7 @@ const Survey = ({
 }: Props) => {
   const { data: project } = useProjectById(projectId);
   const authUser = useAuthUser();
-  const phase = usePhase(phaseId ?? null);
+  const { data: phase } = usePhase(phaseId ?? null);
 
   const signUpIn = (flow: 'signin' | 'signup') => {
     if (!isNilOrError(project)) {
@@ -171,10 +173,10 @@ const Survey = ({
 
     const notCurrentPhase =
       project.data.attributes.process_type === 'timeline' &&
-      !isNilOrError(phase) &&
+      phase &&
       pastPresentOrFuture([
-        phase.attributes.start_at,
-        phase.attributes.end_at,
+        phase.data.attributes.start_at,
+        phase.data.attributes.end_at,
       ]) !== 'present';
 
     const message = notCurrentPhase

@@ -184,8 +184,7 @@ class User < ApplicationRecord
 
   # NOTE: All validation except for required
   validates :custom_field_values, json: {
-    schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.with_resource_type('User')) },
-    message: ->(errors) { errors }
+    schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.with_resource_type('User')) }
   }, on: :form_submission
 
   validates :password, length: { maximum: 72 }, allow_nil: true
@@ -194,7 +193,7 @@ class User < ApplicationRecord
   validate :validate_minimum_password_length
   validate :validate_password_not_common
 
-  validates :roles, json: { schema: -> { User.roles_json_schema }, message: ->(errors) { errors } }
+  validates :roles, json: { schema: -> { User.roles_json_schema } }
 
   validate :validate_not_duplicate_email
   validate :validate_not_duplicate_new_email

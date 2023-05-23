@@ -1,4 +1,3 @@
-import 'whatwg-fetch';
 import { from } from 'rxjs';
 import { UploadFile } from 'typings';
 import { isString } from 'lodash-es';

@@ -36,7 +36,7 @@ module CustomMaps
 
     validates :title_multiloc, presence: true, multiloc: { presence: true }
     validates :default_enabled, inclusion: { in: [true, false] }
-    validates :geojson, presence: true, json: { schema: GEOJSON_SCHEMA, message: ->(errors) { errors } }
+    validates :geojson, presence: true, json: { schema: GEOJSON_SCHEMA }
     validates :marker_svg_url,
       format: { with: %r{\Ahttps://.*\z}, message: 'should start with https://' },
       allow_nil: true

@@ -12,7 +12,7 @@ import { Container, StyledSection } from './components/styling';
 
 // services
 import { IProject } from 'api/projects/types';
-import { IPhase } from 'services/phases';
+import { IPhase } from 'api/phases/types';
 import {
   ParticipationMethod,
   TSurveyService,
@@ -137,8 +137,7 @@ class ParticipationContext extends PureComponent<
   componentDidMount() {
     const { project, phase } = this.props;
     const participationContext = project ?? phase;
-
-    if (participationContext) {
+    if (participationContext && participationContext.data) {
       const newData = participationContext.data.attributes;
       this.setState((prevState) => {
         return {

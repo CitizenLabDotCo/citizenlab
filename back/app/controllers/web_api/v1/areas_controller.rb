@@ -19,16 +19,16 @@ class WebApi::V1::AreasController < ApplicationController
         @areas.includes([static_pages: :nav_bar_item]),
         WebApi::V1::AreaSerializer,
         include: [:static_pages],
-        params: fastjson_params(include_static_pages: true)
+        params: jsonapi_serializer_params(include_static_pages: true)
       )
       return
     end
 
-    render json: linked_json(@areas, WebApi::V1::AreaSerializer, params: fastjson_params)
+    render json: linked_json(@areas, WebApi::V1::AreaSerializer, params: jsonapi_serializer_params)
   end
 
   def show
-    render json: WebApi::V1::AreaSerializer.new(@area, params: fastjson_params).serialized_json
+    render json: WebApi::V1::AreaSerializer.new(@area, params: jsonapi_serializer_params).serializable_hash
   end
 
   def create
@@ -40,8 +40,8 @@ class WebApi::V1::AreasController < ApplicationController
       @side_fx_service.after_create(@area, current_user)
       render json: WebApi::V1::AreaSerializer.new(
         @area,
-        params: fastjson_params
-      ).serialized_json, status: :created
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :created
     else
       render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end
@@ -55,8 +55,8 @@ class WebApi::V1::AreasController < ApplicationController
       @side_fx_service.after_update(@area, current_user)
       render json: WebApi::V1::AreaSerializer.new(
         @area,
-        params: fastjson_params
-      ).serialized_json, status: :ok
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :ok
     else
       render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end
@@ -76,7 +76,7 @@ class WebApi::V1::AreasController < ApplicationController
     @side_fx_service.before_update(@area, current_user)
     if @area.insert_at(permitted_attributes(@area)[:ordering])
       @side_fx_service.after_update(@area, current_user)
-      render json: WebApi::V1::AreaSerializer.new(@area.reload, params: fastjson_params).serialized_json, status: :ok
+      render json: WebApi::V1::AreaSerializer.new(@area.reload, params: jsonapi_serializer_params).serializable_hash, status: :ok
     else
       render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end

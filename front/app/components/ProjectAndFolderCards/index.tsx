@@ -11,7 +11,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // typings
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 import useAdminPublications from 'hooks/useAdminPublications';
 
 export type PublicationTab = PublicationStatus | 'all';

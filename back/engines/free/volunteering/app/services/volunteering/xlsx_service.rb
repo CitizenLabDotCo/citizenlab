@@ -25,8 +25,12 @@ module Volunteering
 
       pa = Axlsx::Package.new
 
-      participation_context.causes.order(:ordering).each do |cause|
-        sheetname = @@multiloc_service.t(cause.title_multiloc)
+      sheetnames = participation_context.causes.to_h do |cause|
+        [cause.id, @@multiloc_service.t(cause.title_multiloc)]
+      end
+      duplicate_names = (sheetnames.values.uniq.size != sheetnames.size)
+      participation_context.causes.order(:ordering).each_with_index do |cause, i|
+        sheetname = duplicate_names ? "#{i + 1} - " + sheetnames[cause.id] : sheetnames[cause.id]
         xlsx_service.generate_sheet pa.workbook, sheetname, columns, volunteers.where(cause: cause)
       end
 

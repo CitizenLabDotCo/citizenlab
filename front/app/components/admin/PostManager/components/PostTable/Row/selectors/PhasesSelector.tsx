@@ -1,6 +1,7 @@
 import React, { MouseEvent } from 'react';
 import { xor } from 'lodash-es';
-import { IPhaseData, canContainIdeas } from 'services/phases';
+import { canContainIdeas } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
 import { Label, Popup } from 'semantic-ui-react';
 import T from 'components/T';
 

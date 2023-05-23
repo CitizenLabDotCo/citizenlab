@@ -7,7 +7,7 @@ RSpec.describe IdeaFile do
     let(:idea) { create(:idea) }
 
     it 'is valid for all whitelisted file extensions' do
-      IdeaFile::EXTENSION_WHITELIST.each do |extension|
+      IdeaFileUploader.new.extension_allowlist.each do |extension|
         idea_file = described_class.new(
           idea: idea,
           name: "some_file_name.#{extension}"
@@ -19,8 +19,12 @@ RSpec.describe IdeaFile do
     it 'is not valid for any non-whitelisted file extension' do
       idea_file = described_class.new(
         idea: idea,
-        name: 'some_file_name.notwhitelisted'
+        file_by_content: {
+          content: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP...',
+          name: 'some_file_name.notwhitelisted'
+        }
       )
+
       expect(idea_file).not_to be_valid
     end
   end

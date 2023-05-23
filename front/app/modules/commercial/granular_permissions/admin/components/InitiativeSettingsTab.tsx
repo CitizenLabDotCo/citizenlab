@@ -18,12 +18,12 @@ const Tab: FC<Props & WrappedComponentProps> = ({
     () =>
       onData({
         configuration: {
-          label: formatMessage(messages.permissionTab),
+          label: formatMessage(messages.permissions),
           name: 'permissions',
           url: '/admin/initiatives/permissions',
           feature: 'granular_permissions',
         },
-        insertAfterName: 'manage',
+        insertAfterName: 'settings',
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

@@ -25,7 +25,7 @@ import { AuthProvider } from 'containers/Authentication/steps/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
-import { NavItem } from 'containers/Admin/sideBar';
+import { NavItem } from 'containers/Admin/sideBar/navItems';
 import { LatLngTuple } from 'leaflet';
 import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 import { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
@@ -34,7 +34,7 @@ import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import { ICommentData } from 'api/comments/types';
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
 import { TNotificationData } from 'services/notifications';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 import { TVerificationMethod } from 'services/verificationMethods';
 import { SignUpInFlow } from 'containers/Authentication/typings';
 import {

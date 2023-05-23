@@ -66,7 +66,7 @@ module CustomMaps
         end
 
         def serialized_layer
-          CustomMaps::WebApi::V1::LayerSerializer.new(@layer).serialized_json
+          CustomMaps::WebApi::V1::LayerSerializer.new(@layer).serializable_hash.to_json
         end
 
         def layer_errors

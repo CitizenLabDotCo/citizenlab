@@ -21,7 +21,7 @@ module GeographicDashboard
           linked_json(
             @ideas,
             WebApi::V1::IdeaGeotagSerializer,
-            params: fastjson_params(geotags: idea_geotags)
+            params: jsonapi_serializer_params(geotags: idea_geotags)
           )
         end
 

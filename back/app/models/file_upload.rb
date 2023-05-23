@@ -21,9 +21,5 @@
 #  fk_rails_...  (idea_id => ideas.id)
 #
 class FileUpload < IdeaFile
-  private
-
-  def extension_whitelist
-    # Do nothing. All file types are allowed.
-  end
+  mount_base64_file_uploader :file, FileUploadUploader
 end

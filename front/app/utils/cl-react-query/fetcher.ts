@@ -100,6 +100,7 @@ async function fetcher({ path, action, body, queryParams }) {
     ) {
       return; // TODO temporary workaround
     }
+
     reportError('Unsupported case. No valid JSON.');
     throw new Error('Unsupported case. No valid JSON.');
   }

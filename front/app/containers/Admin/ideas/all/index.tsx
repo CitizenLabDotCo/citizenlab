@@ -7,7 +7,7 @@ import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 
 interface DataProps {
   projects: GetProjectsChildProps;

@@ -34,7 +34,7 @@ module EmailCampaigns
     end
 
     attribute :trigger_multiloc do |object|
-      if object.class.trigger_multiloc_key.present? && object.class.trigger_multiloc_key != 'scheduled'
+      if object.class.trigger_multiloc_key.present?
         @multiloc_service ||= MultilocService.new
         @multiloc_service.i18n_to_multiloc(object.class.trigger_multiloc_key)
       end
@@ -77,7 +77,7 @@ module EmailCampaigns
 
     belongs_to :author, record_type: :user, serializer: ::WebApi::V1::UserSerializer
 
-    has_many :groups, if: proc { |object|
+    has_many :groups, serializer: ::WebApi::V1::GroupSerializer, if: proc { |object|
       recipient_configurable? object
     }
 

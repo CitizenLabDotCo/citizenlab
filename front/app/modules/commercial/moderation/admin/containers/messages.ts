@@ -2,8 +2,8 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   pageTitle: {
-    id: 'app.containers.Admin.Moderation.pageTitle',
-    defaultMessage: 'Moderation',
+    id: 'app.containers.Admin.Moderation.pageTitle1',
+    defaultMessage: 'Feed',
   },
   type: {
     id: 'app.containers.Admin.Moderation.type',
