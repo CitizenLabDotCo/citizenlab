@@ -61,6 +61,7 @@ module MultiTenancy
           ProjectFolders::Image => serialize_records(ProjectFolders::Image),
           ProjectImage => serialize_records(ProjectImage),
           ProjectsAllowedInputTopic => serialize_records(ProjectsAllowedInputTopic),
+          ReportBuilder::Report => serialize_records(ReportBuilder::Report),
           StaticPage => serialize_records(StaticPage),
           StaticPageFile => serialize_records(StaticPageFile),
           Topic => serialize_records(Topic),
