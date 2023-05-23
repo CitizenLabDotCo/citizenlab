@@ -36,7 +36,7 @@ module EmailCampaigns
     def save_example(command, campaign)
       ErrorReporter.handle do
         mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
-        example = EmailCampaigns::Example.create!(
+        EmailCampaigns::Example.create!(
           campaign_class: campaign.type,
           mail_body_html: mail.body.to_s,
           locale: command[:recipient].locale,
