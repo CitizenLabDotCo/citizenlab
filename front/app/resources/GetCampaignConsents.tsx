@@ -6,7 +6,7 @@ import {
   IConsents,
 } from 'services/campaignConsents';
 import { isNilOrError } from 'utils/helperUtils';
-import { authUserStream } from 'services/auth';
+import authUserStream from 'api/me/authUserStream';
 import { switchMap } from 'rxjs/operators';
 
 interface InputProps {}
@@ -41,8 +41,8 @@ export default class GetConsents extends React.Component<Props, State> {
 
   componentDidMount() {
     this.subscriptions = [
-      authUserStream()
-        .observable.pipe(
+      authUserStream
+        .pipe(
           switchMap((user) => {
             if (!isNilOrError(user)) {
               return consentsStream().observable;

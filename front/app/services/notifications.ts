@@ -1,8 +1,9 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
-import { authUserStream } from './auth';
 import { Multiloc } from 'typings';
+import meKeys from 'api/me/keys';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 const apiEndpoint = `${API_PATH}/notifications`;
 
@@ -453,6 +454,6 @@ export function notificationsStream(streamParams: IStreamParams | null = null) {
 
 export async function markAllAsRead() {
   const response = await streams.add(`${apiEndpoint}/mark_all_read`, null);
-  await authUserStream().fetch();
+  await queryClient.invalidateQueries({ queryKey: meKeys.all() });
   return response;
 }

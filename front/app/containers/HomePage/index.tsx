@@ -44,8 +44,6 @@ const HomePage = () => {
     }
   }, [pressedLetterAKey, userHasAdminAccess]);
 
-  console.log(authUser);
-
   if (!isNilOrError(homepageSettings)) {
     return (
       <Container id="e2e-landing-page">
