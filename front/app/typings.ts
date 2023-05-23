@@ -9,8 +9,6 @@ import {
   TAppConfigurationSetting,
   TAppConfigurationSettingWithEnabled,
 } from 'api/app_configuration/types';
-import { IIdeaAction } from 'api/ideas/types';
-import { IProjectAction } from 'api/projects/types';
 import { WrappedComponentProps } from 'react-intl';
 
 declare global {
@@ -56,8 +54,6 @@ export type ILocationInfo =
     };
 
 export type IParticipationContextType = 'project' | 'phase';
-
-export type IPCAction = IProjectAction | IIdeaAction;
 
 export interface ITab {
   name: string;

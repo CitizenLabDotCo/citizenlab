@@ -22,7 +22,6 @@ export type HandlePermissionChangeProps = {
   groupIds: string[];
 };
 
-// CL-3466
 export const getPermissionActionSectionSubtitle = ({
   permissionAction,
   postType,
