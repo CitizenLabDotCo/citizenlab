@@ -136,7 +136,6 @@ class WebApi::V1::InitiativesController < ApplicationController
     ActiveRecord::Base.transaction do
       saved = @initiative.save save_options
       if saved
-        authorize @initiative
         service.after_update(@initiative, current_user)
       end
     end
