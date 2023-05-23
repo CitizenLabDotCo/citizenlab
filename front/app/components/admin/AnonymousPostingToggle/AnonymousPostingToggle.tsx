@@ -25,7 +25,7 @@ export const AnonymousPostingToggle = ({
   return (
     <SectionField>
       <SubSectionTitle style={{ marginBottom: '0px' }}>
-        <FormattedMessage {...messages.userPrivacy} />
+        <FormattedMessage {...messages.userAnonymity} />
       </SubSectionTitle>
       <Toggle
         checked={allow_anonymous_participation || false}
@@ -43,18 +43,18 @@ export const AnonymousPostingToggle = ({
                 fontSize="m"
                 style={{ fontWeight: 600 }}
               >
-                <FormattedMessage {...messages.userPrivacyLabelText} />
+                <FormattedMessage {...messages.userAnonymityLabelText} />
               </Text>
               <Box ml="4px" mt="16px">
                 <IconTooltip
                   placement="top-start"
-                  content={formatMessage(messages.userPrivacyLabelTooltip)}
+                  content={formatMessage(messages.userAnonymityLabelTooltip)}
                 />
               </Box>
             </Box>
 
             <Text color="coolGrey600" mt="0px" fontSize="m">
-              <FormattedMessage {...messages.userPrivacyLabelSubtext} />
+              <FormattedMessage {...messages.userAnonymityLabelSubtext} />
             </Text>
           </Box>
         }
