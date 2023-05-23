@@ -25,7 +25,7 @@ class SideFxIdeaService
     if idea.just_published?
       after_publish idea, user
     elsif idea.published?
-      LogActivityJob.perform_later(idea, 'changed', user, idea.updated_at.to_i)
+      LogActivityJob.perform_later(idea, 'changed', user_for_activity(idea, user), idea.updated_at.to_i)
       scrape_facebook(idea)
     end
 
@@ -33,7 +33,7 @@ class SideFxIdeaService
       LogActivityJob.perform_later(
         idea,
         'changed_status',
-        user,
+        user_for_activity(idea, user),
         idea.updated_at.to_i,
         payload: { change: idea.idea_status_id_previous_change }
       )
@@ -43,7 +43,7 @@ class SideFxIdeaService
       LogActivityJob.perform_later(
         idea,
         'changed_title',
-        user,
+        user_for_activity(idea, user),
         idea.updated_at.to_i,
         payload: { change: idea.title_multiloc_previous_change }
       )
@@ -54,7 +54,7 @@ class SideFxIdeaService
     LogActivityJob.perform_later(
       idea,
       'changed_body',
-      user,
+      user_for_activity(idea, user),
       idea.updated_at.to_i,
       payload: { change: idea.body_multiloc_previous_change }
     )
@@ -87,8 +87,12 @@ class SideFxIdeaService
   end
 
   def log_activity_jobs_after_published(idea, user)
-    LogActivityJob.set(wait: 20.seconds).perform_later(idea, 'published', user, idea.published_at.to_i)
+    LogActivityJob.set(wait: 20.seconds).perform_later(idea, 'published', user_for_activity(idea, user), idea.published_at.to_i)
     scrape_facebook(idea)
+  end
+
+  def user_for_activity(idea, user)
+    idea.anonymous? ? nil : user
   end
 
   def scrape_facebook(idea)

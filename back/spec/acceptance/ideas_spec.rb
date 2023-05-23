@@ -750,6 +750,10 @@ resource 'Ideas' do
             expect(response_data.dig(:attributes, :author_name)).to be_nil
             expect(response_data.dig(:relationships, :author, :data)).to be_nil
           end
+
+          example 'Does not log activities for the author', document: false do
+            expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
+          end
         end
 
         describe 'For projects without ideas_order' do
@@ -1197,6 +1201,10 @@ resource 'Ideas' do
             assert_status 200
             expect(response_data.dig(:relationships, :author, :data, :id)).to eq @user.id
             expect(response_data.dig(:attributes, :anonymous)).to be false
+          end
+
+          example 'Does not log activities for the author', document: false do
+            expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
           end
         end
 

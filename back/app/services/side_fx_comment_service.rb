@@ -11,7 +11,7 @@ class SideFxCommentService
   end
 
   def after_create(comment, user)
-    LogActivityJob.perform_later(comment, 'created', user, comment.created_at.to_i)
+    LogActivityJob.perform_later(comment, 'created', user_for_activity(comment, user), comment.created_at.to_i)
     notify_mentioned_users(comment, user)
   end
 
@@ -23,10 +23,10 @@ class SideFxCommentService
   end
 
   def after_update(comment, user)
-    LogActivityJob.perform_later(comment, 'changed', user, comment.updated_at.to_i)
+    LogActivityJob.perform_later(comment, 'changed', user_for_activity(comment, user), comment.updated_at.to_i)
     return unless comment.body_multiloc_previously_changed?
 
-    LogActivityJob.perform_later(comment, 'changed_body', user, comment.body_updated_at.to_i, payload: { change: comment.body_multiloc_previous_change })
+    LogActivityJob.perform_later(comment, 'changed_body', user_for_activity(comment, user), comment.body_updated_at.to_i, payload: { change: comment.body_multiloc_previous_change })
     notify_updated_mentioned_users(comment, user)
   end
 
@@ -73,7 +73,7 @@ class SideFxCommentService
     end
 
     mentioned_users.uniq.each do |mentioned_user|
-      LogActivityJob.perform_later(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: mentioned_user.id })
+      LogActivityJob.perform_later(comment, 'mentioned', user_for_activity(comment, user), comment.created_at.to_i, payload: { mentioned_user: mentioned_user.id })
     end
   end
 
@@ -85,8 +85,12 @@ class SideFxCommentService
     end
 
     mentioned_users.uniq.each do |mentioned_user|
-      LogActivityJob.perform_later(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: mentioned_user.id })
+      LogActivityJob.perform_later(comment, 'mentioned', user_for_activity(comment, user), comment.created_at.to_i, payload: { mentioned_user: mentioned_user.id })
     end
+  end
+
+  def user_for_activity(comment, user)
+    comment.anonymous? ? nil : user
   end
 end
 
