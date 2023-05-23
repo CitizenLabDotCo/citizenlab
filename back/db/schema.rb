@@ -340,7 +340,7 @@ ActiveRecord::Schema.define(version: 2023_05_19_085843) do
     t.string "mail_body_html", null: false
     t.string "locale", null: false
     t.string "subject", null: false
-    t.uuid "recipient_id", null: true
+    t.uuid "recipient_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["campaign_class"], name: "index_email_campaigns_examples_on_campaign_class"

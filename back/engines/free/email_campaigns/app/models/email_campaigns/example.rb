@@ -9,7 +9,7 @@
 #  mail_body_html :string           not null
 #  locale         :string           not null
 #  subject        :string           not null
-#  recipient      :string           not null
+#  recipient_id   :uuid
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #

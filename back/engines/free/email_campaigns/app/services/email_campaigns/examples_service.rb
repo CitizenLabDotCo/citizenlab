@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# ExamplesService is responsible for maintaining an adequate and relevant sample
+# of email campaign examples in the database. It's called by the email campaigns
+# send pipeline on every email. It decided whether the email's html is worth
+# storing, and if so stores it and cleans up less relevant examples.
 module EmailCampaigns
   class ExamplesService
     EXAMPLES_PER_CAMPAIGN = 5
@@ -30,15 +34,16 @@ module EmailCampaigns
     private
 
     def save_example(command, campaign)
-      mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
-
-      example = EmailCampaigns::Example.create!(
-        campaign_class: campaign.type,
-        mail_body_html: mail.body.to_s,
-        locale: command[:recipient].locale,
-        subject: mail.subject,
-        recipient: command[:recipient]
-      )
+      ErrorReporter.handle do
+        mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
+        example = EmailCampaigns::Example.create!(
+          campaign_class: campaign.type,
+          mail_body_html: mail.body.to_s,
+          locale: command[:recipient].locale,
+          subject: mail.subject,
+          recipient: command[:recipient]
+        )
+      end
     end
 
     def filter_n_campaigns_with_command_for_campaign_type(campaigns_with_command, campaign_type, n)
