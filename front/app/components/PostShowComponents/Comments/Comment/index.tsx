@@ -150,6 +150,7 @@ class Comment extends PureComponent<Props & WrappedComponentProps, State> {
                   commentCreatedAt={comment.attributes.created_at}
                   moderator={moderator}
                   className={commentType === 'parent' ? 'marginBottom' : ''}
+                  anonymous={comment.attributes.anonymous}
                 />
 
                 <Content>

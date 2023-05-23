@@ -110,6 +110,7 @@ export interface Props {
   horizontalLayout?: boolean;
   underline?: boolean;
   color?: string;
+  anonymous?: boolean;
 }
 
 const Author = memo(
@@ -127,6 +128,7 @@ const Author = memo(
     fontSize,
     horizontalLayout,
     color,
+    anonymous,
     underline,
   }: Props) => {
     const locale = useLocale();
@@ -165,6 +167,7 @@ const Author = memo(
                   fontSize={fontSize}
                   color={color}
                   underline={underline}
+                  anonymous={anonymous}
                 />
               </AuthorNameContainer>
               <TimeAgo className={horizontalLayout ? 'horizontalLayout' : ''}>
