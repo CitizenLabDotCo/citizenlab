@@ -25,8 +25,8 @@ import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import ProjectSharingModal from './ProjectSharingModal';
-import ProjectActionButtons from './ProjectActionButtons';
+import ProjectSharingModal from '../ProjectSharingModal';
+import ProjectActionButtons from '../ProjectActionButtons';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
