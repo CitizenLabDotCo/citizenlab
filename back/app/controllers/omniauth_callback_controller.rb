@@ -44,7 +44,7 @@ class OmniauthCallbackController < ApplicationController
   def auth_or_verification_callback(verify:, authver_method:)
     # If token is present, the user is already logged in, which means they try to verify not authenticate.
     if request.env['omniauth.params']['token'] && auth_method.verification_prioritized?
-      # We need it only for ClaveUnica. For FC, we never verify, only authenticate.
+      # We need it only for ClaveUnica. For FC, we never verify, only authenticate (even when user clicks "verify").
       verification_callback(verification_method)
       # Apart from verification, we also create an identity to be able to authenticate with this provider.
       auth = request.env['omniauth.auth']
