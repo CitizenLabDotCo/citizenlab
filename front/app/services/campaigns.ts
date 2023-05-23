@@ -4,11 +4,6 @@ import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/campaigns`;
 
-export interface ICampaignsData {
-  data: ICampaignData[];
-  links: ILinks;
-}
-
 export interface ICampaignData {
   id: string;
   type: string;
