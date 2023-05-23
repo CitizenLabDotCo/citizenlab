@@ -58,10 +58,11 @@ class Initiative < ApplicationRecord
 
   belongs_to :assignee, class_name: 'User', optional: true
 
+  validates :author, presence: true, on: :publication, unless: :anonymous?
+
   with_options unless: :draft? do |post|
     post.validates :title_multiloc, presence: true, multiloc: { presence: true }
     post.validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
-    post.validates :author, presence: true, on: :publication, unless: :anonymous?
     post.validates :author, presence: true, if: :author_required_on_change?
     post.validates :slug, uniqueness: true, presence: true
 

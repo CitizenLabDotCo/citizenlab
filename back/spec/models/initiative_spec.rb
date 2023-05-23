@@ -196,6 +196,16 @@ RSpec.describe Initiative do
         initiative.author = nil
         expect(initiative).to be_valid
       end
+
+      it 'requires an author on publication' do
+        initiative = build(:initiative, publication_status: 'draft', author: nil)
+        expect(initiative.save(context: :publication)).to be false
+      end
+
+      it 'does not require an author on publication if posted anonymously' do
+        initiative = build(:initiative, publication_status: 'draft', author: nil, anonymous: true)
+        expect(initiative.save(context: :publication)).to be true
+      end
     end
   end
 end
