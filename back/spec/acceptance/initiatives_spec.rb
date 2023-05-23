@@ -546,7 +546,6 @@ resource 'Initiatives' do
           assert_status 401
           expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
         end
-
       end
 
       describe 'updating anomymous initiatives' do
