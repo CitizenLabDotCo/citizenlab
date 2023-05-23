@@ -70,10 +70,10 @@ export interface QueryParameters {
   pageNumber?: number;
 }
 
-export interface IDeliveriesData {
-  data: IDeliveryData[];
-  links: ILinks;
-}
+// export interface IDeliveriesData {
+//   data: IDeliveryData[];
+//   links: ILinks;
+// }
 export interface IDeliveryData {
   id: string;
   type: string;
@@ -97,13 +97,13 @@ export interface IDeliveryData {
   };
 }
 
-export interface ICampaignStats {
-  sent: number;
-  bounced: number;
-  failed: number;
-  accepted: number;
-  delivered: number;
-  opened: number;
-  clicked: number;
-  all: number;
-}
+// export interface ICampaignStats {
+//   sent: number;
+//   bounced: number;
+//   failed: number;
+//   accepted: number;
+//   delivered: number;
+//   opened: number;
+//   clicked: number;
+//   all: number;
+// }

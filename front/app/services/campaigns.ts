@@ -36,15 +36,6 @@ export interface ICampaignData {
   };
 }
 
-export interface CampaignCreation {
-  campaign_name: string;
-  subject_multiloc: Multiloc;
-  body_multiloc: Multiloc;
-  sender: string;
-  reply_to?: string;
-  group_ids?: string[];
-}
-
 export interface ICampaign {
   data: ICampaignData;
 }
@@ -85,13 +76,6 @@ export interface ICampaignStats {
   opened: number;
   clicked: number;
   all: number;
-}
-
-export function listCampaigns(streamParams: IStreamParams | null = null) {
-  return streams.get<ICampaignsData>({
-    apiEndpoint: `${apiEndpoint}`,
-    ...streamParams,
-  });
 }
 
 export async function sendCampaign(campaignId: string) {

@@ -18,9 +18,8 @@ import messages from '../../messages';
 import { fontSizes, colors } from 'utils/styleUtils';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { parse } from 'qs';
-import clHistory from 'utils/cl-router/history';
 
 const NoCampaignsWrapper = styled.div`
   display: flex;
