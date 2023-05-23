@@ -5,7 +5,7 @@ import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 
 // cache
 import streams from 'utils/streams';
-import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 // tracks
 import tracks from '../../tracks';
@@ -183,7 +183,7 @@ export const sharedSteps = (
 
     success: {
       CONTINUE: async () => {
-        await Promise.all([streams.reset(), resetQueryCache()]);
+        await Promise.all([streams.reset(), invalidateQueryCache()]);
         setCurrentStep('closed');
 
         trackEventByName(tracks.signUpFlowCompleted);

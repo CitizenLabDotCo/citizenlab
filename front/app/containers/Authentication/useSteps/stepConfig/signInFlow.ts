@@ -92,13 +92,13 @@ export const signInFlow = (
             return;
           }
 
-          setCurrentStep('closed');
-
           const { successAction } = getAuthenticationData();
+
           if (successAction) {
             triggerSuccessAction(successAction);
           }
 
+          setCurrentStep('closed');
           trackEventByName(tracks.signInEmailPasswordCompleted);
         } catch (e) {
           trackEventByName(tracks.signInEmailPasswordFailed);

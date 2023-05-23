@@ -18,7 +18,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 
-import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 const Container = styled.div`
   display: flex;
@@ -58,7 +58,7 @@ const VerificationSteps = memo<Props>(({ context, onCompleted, onError }) => {
   const goToSuccessStep = useCallback(() => {
     if (!isNilOrError(authUser)) {
       streams.reset().then(async () => {
-        await resetQueryCache();
+        await invalidateQueryCache();
         setActiveStep('success');
         setMethod(null);
       });

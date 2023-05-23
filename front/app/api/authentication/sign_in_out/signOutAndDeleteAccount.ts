@@ -3,7 +3,7 @@ import { AUTH_PATH } from 'containers/App/constants';
 import { getJwt, removeJwt, decode } from 'utils/auth/jwt';
 import streams from 'utils/streams';
 import clHistory from 'utils/cl-router/history';
-import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 export default function signOutAndDeleteAccount() {
   return new Promise((resolve, _reject) => {
@@ -22,7 +22,7 @@ export default function signOutAndDeleteAccount() {
             window.location.href = url;
           } else {
             await streams.reset();
-            await resetQueryCache();
+            await invalidateQueryCache();
           }
           clHistory.push('/');
           resolve(true);

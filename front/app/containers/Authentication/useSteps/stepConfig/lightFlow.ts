@@ -8,7 +8,7 @@ import checkUser from 'api/users/checkUser';
 
 // cache
 import streams from 'utils/streams';
-import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 // tracks
 import tracks from '../../tracks';
@@ -200,7 +200,7 @@ export const lightFlow = (
           return;
         }
 
-        await Promise.all([streams.reset(), resetQueryCache()]);
+        await Promise.all([streams.reset(), invalidateQueryCache()]);
         setCurrentStep('closed');
 
         trackEventByName(tracks.signUpFlowCompleted);

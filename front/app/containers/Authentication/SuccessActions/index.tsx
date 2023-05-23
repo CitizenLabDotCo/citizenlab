@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { BehaviorSubject } from 'rxjs';
 import { getAction, SuccessAction } from './actions';
-import { authUserStream } from 'services/auth';
+import authUserStream from 'api/me/authUserStream';
 import { IUserData } from 'services/users';
 
 const successAction$ = new BehaviorSubject<SuccessAction | null>(null);
@@ -14,7 +14,7 @@ const getAuthUser = () => {
   let streamSubscription;
 
   const promise = new Promise<IUserData>((resolve, reject) => {
-    streamSubscription = authUserStream().observable.subscribe((response) => {
+    streamSubscription = authUserStream.subscribe((response) => {
       if (response === undefined) return;
       if (response === null) {
         reject();
