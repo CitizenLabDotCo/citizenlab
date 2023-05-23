@@ -16,6 +16,7 @@
   "app.components.AuthProviders.continueWithAzure": "Weider mat {azureProviderName}",
   "app.components.AuthProviders.continueWithFacebook": "Weiderfuere mat Facebook",
   "app.components.AuthProviders.continueWithGoogle": "Weiderfuere mat Google",
+  "app.components.AuthProviders.continueWithLoginMechanism": "Fuert weider mat {loginMechanismName}",
   "app.components.AuthProviders.franceConnectMergingFailed": "Et gëtt schonn e Kont mat dëser E-Mail-Adress.{br}{br}Dir hutt mat FranceConnect keen Zougrëff op d'Plattform, well d'Personalien net iwwereneestëmmen. Fir Iech mat FranceConnect anzeloggen, musst Dir fir d'éischt Äre Vir- oder Nonumm op dëser Plattform änneren, fir datt si mat Ären offiziellen Donnéeë iwwereneestëmmen.{br}{br}Dir kënnt Iech hei ënne wéi Dir et gewinnt sidd aloggen.",
   "app.components.AuthProviders.goToLogIn": "Hutt Dir schonn e Kont? {goToOtherFlowLink}",
   "app.components.AuthProviders.goToSignUp": "Dir hutt kee Kont? {goToOtherFlowLink}",
