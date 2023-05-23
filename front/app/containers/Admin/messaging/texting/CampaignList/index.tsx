@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Box } from '@citizenlab/cl2-component-library';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import TextCampaignListRow from './TextCampaignListRow';
 
@@ -18,7 +18,7 @@ import messages from '../../messages';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 const NoCampaignsWrapper = styled.div`
   display: flex;
@@ -57,25 +57,27 @@ const TextingCampaignsList = () => {
 
   if (textingCampaigns.length === 0) {
     return (
-      <NoCampaignsWrapper>
-        <Icon name="message" width="40px" height="40px" />
-        <NoCampaignsHeader>
-          <FormattedMessage {...messages.noTextingCampaignsHeader} />
-        </NoCampaignsHeader>
-        <Button
-          buttonStyle="cl-blue"
-          icon="plus-circle"
-          linkTo="/admin/messaging/texting/new"
-          id="e2e-add-text-campaign-button"
-        >
-          <FormattedMessage {...messages.addTextButton} />
-        </Button>
-      </NoCampaignsWrapper>
+      <Box background={colors.white} p="40px">
+        <NoCampaignsWrapper>
+          <Icon name="message" width="40px" height="40px" />
+          <NoCampaignsHeader>
+            <FormattedMessage {...messages.noTextingCampaignsHeader} />
+          </NoCampaignsHeader>
+          <Button
+            buttonStyle="cl-blue"
+            icon="plus-circle"
+            linkTo="/admin/messaging/texting/new"
+            id="e2e-add-text-campaign-button"
+          >
+            <FormattedMessage {...messages.addTextButton} />
+          </Button>
+        </NoCampaignsWrapper>
+      </Box>
     );
   }
 
   return (
-    <>
+    <Box background={colors.white} p="40px">
       <ButtonWrapper>
         <Button
           buttonStyle="cl-blue"
@@ -89,10 +91,18 @@ const TextingCampaignsList = () => {
       <Table>
         <thead>
           <tr>
-            <TableHeader>Message</TableHeader>
-            <TableHeader>Date sent</TableHeader>
-            <TableHeader>Recipients</TableHeader>
-            <StatusTableHeader>Status</StatusTableHeader>
+            <TableHeader>
+              <FormattedMessage {...messages.message} />
+            </TableHeader>
+            <TableHeader>
+              <FormattedMessage {...messages.dateSent} />
+            </TableHeader>
+            <TableHeader>
+              <FormattedMessage {...messages.recipients} />
+            </TableHeader>
+            <StatusTableHeader>
+              <FormattedMessage {...messages.status} />
+            </StatusTableHeader>
           </tr>
         </thead>
         <tbody>
@@ -103,7 +113,7 @@ const TextingCampaignsList = () => {
           })}
         </tbody>
       </Table>
-    </>
+    </Box>
   );
 };
 

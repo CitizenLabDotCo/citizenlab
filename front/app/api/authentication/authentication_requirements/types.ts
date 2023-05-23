@@ -53,6 +53,7 @@ export interface AuthenticationRequirements {
       password: RequirementStatus;
       confirmation: RequirementStatus;
       verification: RequirementStatus;
+      group_membership: RequirementStatus;
     };
   };
 }

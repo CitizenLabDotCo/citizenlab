@@ -6,7 +6,7 @@ const AdminInvitationsInvite = lazy(() => import('./invite'));
 const AdminInvitationsAll = lazy(() => import('./all'));
 
 export default () => ({
-  path: 'invitations',
+  path: 'users/invitations',
   element: (
     <PageLoading>
       <AdminInvitationsContainer />

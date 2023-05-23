@@ -425,7 +425,7 @@ const Moderation = () => {
 
   if (!isNilOrError(moderations)) {
     return (
-      <Container id="e2e-moderation-container">
+      <Container>
         <PageTitleWrapper>
           <StyledPageTitle>
             <FormattedMessage {...messages.pageTitle} />

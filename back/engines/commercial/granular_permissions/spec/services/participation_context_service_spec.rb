@@ -27,9 +27,9 @@ describe ParticipationContextService do
       expect(service.posting_idea_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
     end
 
-    it 'returns `not_permitted` when posting is not permitted' do
+    it 'returns `not_in_group` when posting is not permitted' do
       permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
-      expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
+      expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'not_in_group'
     end
 
     it 'returns nil when everyone can post and the user is not signed in' do
@@ -56,26 +56,26 @@ describe ParticipationContextService do
         expect(service.commenting_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
       end
 
-      it 'returns `not_permitted` commenting is not permitted for the user' do
+      it 'returns `not_in_group` commenting is not permitted for the user' do
         permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
-        expect(service.commenting_idea_disabled_reason_for_project(project, user)).to eq 'not_permitted'
+        expect(service.commenting_idea_disabled_reason_for_project(project, user)).to eq 'not_in_group'
 
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'not_permitted'
+        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'not_in_group'
       end
     end
 
     context 'for continuous project' do
-      it "returns 'not_permitted' when commenting is disabled in a continuous project" do
+      it "returns 'not_in_group' when commenting is disabled in a continuous project" do
         project = create(:continuous_project, with_permissions: true)
         permission = project.permissions.find_by(action: 'commenting_idea')
         permission.update!(
           permitted_by: 'groups',
           group_ids: create_list(:group, 2).map(&:id)
         )
-        expect(service.commenting_idea_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
+        expect(service.commenting_idea_disabled_reason_for_project(project, create(:user))).to eq 'not_in_group'
         idea = create(:idea, project: project)
-        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'not_permitted'
+        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'not_in_group'
       end
     end
   end
@@ -100,12 +100,12 @@ describe ParticipationContextService do
         expect(service.idea_voting_disabled_reason_for(idea, nil, mode: 'down')).to eq 'not_signed_in'
       end
 
-      it "returns 'not_permitted' if it's in the current phase and voting is not permitted" do
+      it "returns 'not_in_group' if it's in the current phase and voting is not permitted" do
         permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_permitted'
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_permitted'
-        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_permitted'
-        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_permitted'
+        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_in_group'
+        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_in_group'
+        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_in_group'
+        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_in_group'
       end
     end
 
@@ -113,7 +113,7 @@ describe ParticipationContextService do
       context 'for a normal user' do
         let(:user) { create(:user) }
 
-        it "returns 'not_permitted' if voting is not permitted" do
+        it "returns 'not_in_group' if voting is not permitted" do
           project = create(:continuous_project, with_permissions: true)
           idea = create(:idea, project: project)
           permission = project.permissions.find_by(action: 'voting_idea')
@@ -121,10 +121,10 @@ describe ParticipationContextService do
             permitted_by: 'groups',
             group_ids: create_list(:group, 2).map(&:id)
           )
-          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_permitted'
-          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_permitted'
-          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_permitted'
-          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_permitted'
+          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_in_group'
+          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_in_group'
+          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_in_group'
+          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_in_group'
         end
       end
 
@@ -170,7 +170,7 @@ describe ParticipationContextService do
     end
 
     context 'continuous project' do
-      it "returns 'not_permitted' if voting is not permitted" do
+      it "returns 'not_in_group' if voting is not permitted" do
         project = create(:continuous_project, with_permissions: true)
         idea = create(:idea, project: project)
         permission = project.permissions.find_by(action: 'voting_idea')
@@ -178,7 +178,7 @@ describe ParticipationContextService do
           permitted_by: 'groups',
           group_ids: create_list(:group, 2).map(&:id)
         )
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq 'not_permitted'
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq 'not_in_group'
       end
     end
   end
@@ -234,14 +234,14 @@ describe ParticipationContextService do
       expect(service.taking_survey_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
     end
 
-    it 'returns `not_permitted` when taking the survey is not permitted' do
+    it 'returns `not_in_group` when taking the survey is not permitted' do
       project = create(:continuous_survey_project, with_permissions: true)
       permission = service.get_participation_context(project).permissions.find_by(action: 'taking_survey')
       permission.update!(
         permitted_by: 'groups',
         group_ids: create_list(:group, 2).map(&:id)
       )
-      expect(service.taking_survey_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
+      expect(service.taking_survey_disabled_reason_for_project(project, create(:user))).to eq 'not_in_group'
     end
   end
 
@@ -285,7 +285,7 @@ describe ParticipationContextService do
         expect(service.budgeting_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
       end
 
-      it 'returns `not_permitted` when the idea is in the current phase and budgeting is not permitted' do
+      it 'returns `not_in_group` when the idea is in the current phase and budgeting is not permitted' do
         project = create(
           :project_with_current_phase,
           current_phase_attrs: { with_permissions: true, participation_method: 'budgeting', max_budget: 10_000 }
@@ -296,7 +296,7 @@ describe ParticipationContextService do
           permitted_by: 'groups',
           group_ids: create_list(:group, 2).map(&:id)
         )
-        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_permitted'
+        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_in_group'
       end
 
       it "returns 'project_inactive' when the timeline is over" do
@@ -307,7 +307,7 @@ describe ParticipationContextService do
     end
 
     context 'continuous project' do
-      it "returns 'not_permitted' when budgeting is disabled in a continuous project" do
+      it "returns 'not_in_group' when budgeting is disabled in a continuous project" do
         project = create(:continuous_budgeting_project, with_permissions: true)
         permission = project.permissions.find_by(action: 'budgeting')
         permission.update!(
@@ -315,7 +315,7 @@ describe ParticipationContextService do
           group_ids: create_list(:group, 2).map(&:id)
         )
         idea = create(:idea, project: project)
-        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_permitted'
+        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_in_group'
       end
 
       it "returns 'project_inactive' when the project is archived" do
