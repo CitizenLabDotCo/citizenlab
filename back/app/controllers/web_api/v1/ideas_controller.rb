@@ -275,14 +275,14 @@ class WebApi::V1::IdeasController < ApplicationController
     complex_attributes = idea_complex_attributes(custom_form, submittable_field_keys)
     attributes << complex_attributes if complex_attributes.any?
     if user_can_moderate_project
-      attributes.concat %i[idea_status_id budget] + [phase_ids: []]
+      attributes.concat %i[author_id idea_status_id budget] + [phase_ids: []]
     end
     attributes
   end
 
   def idea_simple_attributes(submittable_field_keys)
     simple_attributes = %i[location_description proposed_budget] & submittable_field_keys
-    simple_attributes.push(:publication_status, :project_id, :author_id, :anonymous)
+    simple_attributes.push(:publication_status, :project_id, :anonymous)
     if submittable_field_keys.include?(:idea_images_attributes)
       simple_attributes << [idea_images_attributes: [:image]]
     end

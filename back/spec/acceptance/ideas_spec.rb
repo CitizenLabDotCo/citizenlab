@@ -13,7 +13,7 @@ resource 'Ideas' do
       with_options scope: :idea do
         parameter :project_id, 'The identifier of the project that hosts the idea', required: true
         parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
-        parameter :author_id, 'The user id of the user owning the idea', extra: 'Required if not draft'
+        parameter :author_id, 'The user id of the user owning the idea. This can only be specified by moderators and is inferred from the JWT token for residents.'
         parameter :idea_status_id, 'The status of the idea, only allowed for admins', extra: "Defaults to status with code 'proposed'"
         parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(',')}"
         parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
@@ -629,7 +629,7 @@ resource 'Ideas' do
       with_options scope: :idea do
         parameter :project_id, 'The identifier of the project that hosts the idea', required: true
         parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
-        parameter :author_id, 'The user id of the user owning the idea', extra: 'Required if not draft'
+        parameter :author_id, 'The user id of the user owning the idea. This can only be specified by moderators and is inferred from the JWT token for residents.'
         parameter :idea_status_id, 'The status of the idea, only allowed for admins', extra: "Defaults to status with code 'proposed'"
         parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(',')}"
         parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
@@ -956,7 +956,7 @@ resource 'Ideas' do
       with_options scope: :idea do
         parameter :project_id, 'The idea of the project that hosts the idea'
         parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
-        parameter :author_id, 'The user id of the user owning the idea', extra: 'Required if not draft'
+        parameter :author_id, 'The user id of the user owning the idea. This can only be specified by moderators and is inferred from the JWT token for residents.'
         parameter :idea_status_id, 'The status of the idea, only allowed for admins'
         parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}"
         parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'

@@ -293,7 +293,6 @@ resource 'Comments' do
 
     post 'web_api/v1/ideas/:idea_id/comments' do
       with_options scope: :comment do
-        parameter :author_id, 'The user id of the user owning the comment. Signed in user by default', required: false
         parameter :body_multiloc, 'Multi-locale field with the comment body', required: true
         parameter :parent_id, 'The id of the comment this comment is a response to', required: false
         parameter :anonymous, 'Post this comment anonymously - true/false', required: false
@@ -413,7 +412,6 @@ resource 'Comments' do
 
     patch 'web_api/v1/comments/:id' do
       with_options scope: :comment do
-        parameter :author_id, 'The user id of the user owning the comment. Signed in user by default'
         parameter :body_multiloc, 'Multi-locale field with the comment body'
         parameter :parent_id, 'The id of the comment this comment is a response to'
         parameter :anonymous, 'Change this comment to anonymous - true/false'

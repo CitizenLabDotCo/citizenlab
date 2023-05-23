@@ -15,12 +15,12 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def index_xlsx?
-    active? && admin?
+    active? && UserRoleService.new.can_moderate_initiatives?(user)
   end
 
   def create?
     return true if record.draft?
-    return true if active? && admin?
+    return true if active? && can_moderate?
 
     reason = posting_denied_reason user
     raise_not_authorized reason if reason
@@ -30,7 +30,7 @@ class InitiativePolicy < ApplicationPolicy
 
   def show?
     return true if active? && owner?
-    return true if active? && admin?
+    return true if active? && can_moderate?
 
     %w[draft published closed].include?(record.publication_status)
   end
@@ -48,7 +48,7 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def allowed_transitions?
-    admin?
+    can_moderate?
   end
 
   def permitted_attributes
@@ -64,7 +64,7 @@ class InitiativePolicy < ApplicationPolicy
         area_ids: [] }
     ]
 
-    admin? ? [:author_id, :assignee_id, *shared] : shared
+    can_moderate? ? [:author_id, :assignee_id, *shared] : shared
   end
 
   private

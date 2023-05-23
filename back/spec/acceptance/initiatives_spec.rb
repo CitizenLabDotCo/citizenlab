@@ -320,7 +320,7 @@ resource 'Initiatives' do
     end
 
     with_options scope: :initiative do
-      parameter :author_id, 'The user id of the user owning the initiative', extra: 'Required if not draft'
+      parameter :author_id, 'The user id of the user owning the initiative. This can only be specified by moderators and is inferred from the JWT token for residents.'
       parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(',')}"
       parameter :title_multiloc, 'Multi-locale field with the initiative title', required: true, extra: 'Maximum 100 characters'
       parameter :body_multiloc, 'Multi-locale field with the initiative body', extra: 'Required if not draft'
@@ -436,7 +436,7 @@ resource 'Initiatives' do
     end
 
     with_options scope: :initiative do
-      parameter :author_id, 'The user id of the user owning the initiative', extra: 'Required if not draft'
+      parameter :author_id, 'The user id of the user owning the initiative. This can only be specified by moderators and is inferred from the JWT token for residents.'
       parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}"
       parameter :title_multiloc, 'Multi-locale field with the initiative title', extra: 'Maximum 100 characters'
       parameter :body_multiloc, 'Multi-locale field with the initiative body', extra: 'Required if not draft'
