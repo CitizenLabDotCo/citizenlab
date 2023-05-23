@@ -33,6 +33,11 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const { pathname } = useLocation();
+  const actionDescriptor =
+    project.attributes.action_descriptor.annotating_document;
+  const showSignIn =
+    actionDescriptor.enabled ||
+    isFixableByAuthentication(actionDescriptor.disabled_reason);
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
@@ -59,16 +64,14 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
 
   const handleClick = (event: FormEvent) => {
     scrollTo('document-annotation')(event);
+
+    // CL-3466
+    // Implement auth behavior?
   };
 
   if (hasProjectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
-
-  const actionDescriptor = project.attributes.action_descriptor.taking_survey;
-  const showSignIn =
-    actionDescriptor.enabled ||
-    isFixableByAuthentication(actionDescriptor.disabled_reason);
 
   const CTAButton = showSignIn ? (
     <Button
