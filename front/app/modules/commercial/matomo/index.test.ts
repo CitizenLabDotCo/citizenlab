@@ -7,7 +7,6 @@ import { trackPage } from 'utils/analytics';
 import { setupMatomo } from './setup';
 import { trackPageChange } from './actions';
 
-jest.mock('services/auth');
 jest.mock('api/app_configuration/appConfigurationStream');
 
 jest.mock('routes', () => ({

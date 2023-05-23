@@ -3,8 +3,6 @@ import { IUserAttributes } from 'services/users';
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 import NotificationMenu from '.';
 
-jest.mock('services/auth');
-
 const mockUserData: {
   id: string;
   type: string;
