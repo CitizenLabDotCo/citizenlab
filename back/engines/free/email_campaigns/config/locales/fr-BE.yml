@@ -594,7 +594,7 @@ fr-BE:
         comments: 'Commentaires'
         content_moderation: 'Modération du contenu'
         general: 'Général'
-        inputs: 'Entrées'
+        inputs: 'Contributions'
         permissions: 'Permissions'
         projects: 'Projets'
         proposals: 'Propositions'
