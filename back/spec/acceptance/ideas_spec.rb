@@ -752,6 +752,17 @@ resource 'Ideas' do
           end
         end
 
+        describe 'Creating a native survey response when posting anomymously is enabled' do
+          let(:project) { create(:continuous_native_survey_project, allow_anonymous_participation: true) }
+
+          example_request 'Posting a survey automatically sets anonymous to true' do
+            assert_status 201
+            expect(response_data.dig(:attributes, :anonymous)).to be true
+            expect(response_data.dig(:attributes, :author_name)).to be_nil
+            expect(response_data.dig(:relationships, :author, :data)).to be_nil
+          end
+        end
+
         describe 'For projects without ideas_order' do
           let(:project) { create(:continuous_project) }
 

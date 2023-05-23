@@ -142,6 +142,9 @@ class WebApi::V1::IdeasController < ApplicationController
       input.creation_phase = (participation_context if participation_method.form_in_phase?)
       input.phase_ids = [participation_context.id] if phase_ids.empty?
     end
+    if participation_context.native_survey? && participation_context.allow_anonymous_participation?
+      input.anonymous = true
+    end
     input.author ||= current_user
     service.before_create(input, current_user)
 

@@ -5,6 +5,13 @@ require 'active_support/concern'
 module AnonymousParticipation
   extend ActiveSupport::Concern
   included do
+    class << self
+      def create_author_hash(author_id, project_id, anonymous)
+        salt = anonymous ? "#{project_id}84c168c4-a240-4f0a-8468-9e2cf714d4e1" : '335b6eb2-9e7c-405c-9221-9b8919b64b8b'
+        Digest::MD5.hexdigest(author_id + salt)
+      end
+    end
+
     before_validation :set_anonymous_values
 
     def anonymous?
@@ -26,8 +33,11 @@ module AnonymousParticipation
     def set_author_hash
       return if author_id.blank?
 
-      salt = anonymous? ? "#{project_id}84c168c4-a240-4f0a-8468-9e2cf714d4e1" : '335b6eb2-9e7c-405c-9221-9b8919b64b8b'
-      self.author_hash = Digest::MD5.hexdigest(author_id + salt)
+      self.author_hash = self.class.create_author_hash author_id, project_string, anonymous?
+    end
+
+    def project_string
+      try(:project_id)
     end
   end
 end
