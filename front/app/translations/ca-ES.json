@@ -16,6 +16,7 @@
   "app.components.AuthProviders.continueWithAzure": "Continueu amb {azureProviderName}",
   "app.components.AuthProviders.continueWithFacebook": "Continueu amb Facebook",
   "app.components.AuthProviders.continueWithGoogle": "Continueu amb Google",
+  "app.components.AuthProviders.continueWithLoginMechanism": "Continueu amb {loginMechanismName}",
   "app.components.AuthProviders.franceConnectMergingFailed": "Ja existeix un compte amb aquesta adreça electrònica.{br}{br}No podeu accedir a la plataforma mitjançant FranceConnect perquè les dades personals no coincideixen. Per iniciar la sessió amb FranceConnect, primer haureu de canviar el vostre nom o cognom en aquesta plataforma perquè coincideixi amb les vostres dades oficials.{br}{br}Podeu iniciar la sessió com ho feu normalment a continuació.",
   "app.components.AuthProviders.goToLogIn": "Ja teniu un compte? {goToOtherFlowLink}",
   "app.components.AuthProviders.goToSignUp": "No teniu un compte? {goToOtherFlowLink}",
