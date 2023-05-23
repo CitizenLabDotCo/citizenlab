@@ -110,12 +110,14 @@ export interface Props {
   horizontalLayout?: boolean;
   underline?: boolean;
   color?: string;
+  authorHash?: string;
   anonymous?: boolean;
 }
 
 const Author = memo(
   ({
     authorId,
+    authorHash,
     createdAt,
     size,
     isLinkToProfile,
@@ -145,6 +147,7 @@ const Author = memo(
             {showAvatar && (
               <StyledAvatar
                 userId={authorId}
+                authorHash={authorHash}
                 size={size}
                 isLinkToProfile={isLinkToProfile}
                 moderator={authorCanModerate}

@@ -145,6 +145,7 @@ class Comment extends PureComponent<Props & WrappedComponentProps, State> {
                 <CommentHeader
                   projectId={projectId}
                   authorId={authorId}
+                  authorHash={comment.attributes.author_hash}
                   commentId={commentId}
                   commentType={commentType}
                   commentCreatedAt={comment.attributes.created_at}
