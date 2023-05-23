@@ -402,7 +402,7 @@
   "app.components.Upload.uploadImageLabel": "Select an image (max. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Select one or more images",
   "app.components.UserName.anonymous": "Anonymous",
-  "app.components.UserName.anonymousTooltip": "This user has decided to anonymise their contribution",
+  "app.components.UserName.anonymousTooltip2": "This user has decided to anonymize their contribution",
   "app.components.UserName.deletedUser": "unknown author",
   "app.components.UserName.verified": "Verified",
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "and unlock more engagement opportunities",
