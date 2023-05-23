@@ -11,7 +11,8 @@ import messages from './messages';
 
 // Components
 import ProfileForm from './ProfileForm';
-import CampaignsConsentForm from './CampaignsConsentForm';
+import CampaignsConsentForm from 'components/CampaignConsentForm';
+
 import ProfileDeletion from './ProfileDeletion';
 import UsersEditPageMeta from './UsersEditPageMeta';
 import FragmentForm from './FragmentForm';

@@ -92,13 +92,18 @@ export const signInFlow = (
             return;
           }
 
+          setCurrentStep('closed');
+
+          if (requirements.special.group_membership === 'require') {
+            return;
+          }
+
           const { successAction } = getAuthenticationData();
 
           if (successAction) {
             triggerSuccessAction(successAction);
           }
 
-          setCurrentStep('closed');
           trackEventByName(tracks.signInEmailPasswordCompleted);
         } catch (e) {
           trackEventByName(tracks.signInEmailPasswordFailed);

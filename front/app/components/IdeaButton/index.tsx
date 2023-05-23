@@ -25,6 +25,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { MessageDescriptor } from 'react-intl';
 import messages from './messages';
+import globalMessages from 'utils/messages';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -138,6 +139,7 @@ const IdeaButton = memo<Props>(
       futureEnabled: messages.postingNotYetPossible,
       notActivePhase: messages.postingInNonActivePhases,
       maybeNotPermitted: messages.postingMayNotBePermitted,
+      notInGroup: globalMessages.notInGroup,
     };
     const { enabled, show, disabledReason, authenticationRequirements } =
       getIdeaPostingRules({

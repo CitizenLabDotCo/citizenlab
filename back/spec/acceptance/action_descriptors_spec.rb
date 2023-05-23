@@ -41,7 +41,7 @@ resource 'ActionDescriptors' do
                 },
                 commenting_initiative: {
                   enabled: false,
-                  disabled_reason: 'not_permitted'
+                  disabled_reason: 'not_in_group'
                 },
                 voting_initiative: {
                   enabled: true,
@@ -53,7 +53,7 @@ resource 'ActionDescriptors' do
                 },
                 comment_voting_initiative: {
                   enabled: false,
-                  disabled_reason: 'not_permitted'
+                  disabled_reason: 'not_in_group'
                 }
               }
             }
