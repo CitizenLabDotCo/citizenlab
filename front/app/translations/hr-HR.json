@@ -16,6 +16,7 @@
   "app.components.AuthProviders.continueWithAzure": "Nastavite putem {azureProviderName}",
   "app.components.AuthProviders.continueWithFacebook": "Nastavite uz Facebook",
   "app.components.AuthProviders.continueWithGoogle": "Nastavite uz Google",
+  "app.components.AuthProviders.continueWithLoginMechanism": "Nastavite s {loginMechanismName}",
   "app.components.AuthProviders.franceConnectMergingFailed": "Već postoji račun s ovom adresom e-pošte.{br}{br}Ne možete pristupiti platformi koristeći FranceConnect jer se podaci ne poklapaju. Za prijavu koristeći FranceConnect morat ćete prvo promijeniti soje ime ili prezime na platformi kako bi odgovarale službenim podacima.{br}{br}U nastavku se možete prijaviti kako to inače činite.",
   "app.components.AuthProviders.goToLogIn": "Već imate račun? {goToOtherFlowLink}",
   "app.components.AuthProviders.goToSignUp": "Nemate račun? {goToOtherFlowLink}",
