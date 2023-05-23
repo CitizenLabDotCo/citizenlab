@@ -1184,7 +1184,7 @@
   "app.containers.AdminPage.ProjectEdit.inputManagerLinkText": "gestion des contributions",
   "app.containers.AdminPage.ProjectEdit.inputManagerTab": "Gestion des contributions",
   "app.containers.AdminPage.ProjectEdit.inputPostingEnabled": "Soumettre des contributions",
-  "app.containers.AdminPage.ProjectEdit.inputVotingEnabled": "Votez sur les contributions",
+  "app.containers.AdminPage.ProjectEdit.inputVotingEnabled": "Voter pour des contributions",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Vue par défaut",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Choisissez la vue par défaut des contributions des participants : cartes dans une vue en grille ou épingles sur une carte. Les participants peuvent basculer manuellement entre les deux vues.",
   "app.containers.AdminPage.ProjectEdit.konveio": "Konveio",
