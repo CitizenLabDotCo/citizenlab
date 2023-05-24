@@ -17,8 +17,8 @@ const fetchCampaigns = (filters: QueryParameters) => {
     queryParams: {
       campaign_names,
       without_campaign_names,
-      'page[number]': pageNumber,
-      'page[size]': pageSize,
+      'page[number]': pageNumber || 1,
+      'page[size]': pageSize || 20,
     },
   });
 };
