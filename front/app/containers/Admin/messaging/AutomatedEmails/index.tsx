@@ -21,7 +21,7 @@ const AutomatedEmails = () => {
   });
   const { mutate: updateCampaign } = useUpdateCampaign();
 
-  if (!campaigns) return null;
+  if (!campaigns?.pages) return null;
 
   const handleOnEnabledToggle = (campaign: ICampaignData) => () => {
     updateCampaign({
@@ -44,25 +44,28 @@ const AutomatedEmails = () => {
       </Box>
       <Box background={colors.white} p="40px">
         <AutomatedEmailsList>
-          {campaigns.data.map((campaign) => (
-            <Row key={campaign.id}>
-              <Toggle
-                disabled={isUndefined(campaign.attributes.enabled)}
-                checked={
-                  isUndefined(campaign.attributes.enabled) ||
-                  campaign.attributes.enabled
-                }
-                onChange={handleOnEnabledToggle(campaign)}
-              />
-              <TextCell className="expand">
-                <T
-                  value={
-                    campaign.attributes.admin_campaign_description_multiloc
+          {campaigns.pages
+            .map((page) => page.data)
+            .flat()
+            .map((campaign) => (
+              <Row key={campaign.id}>
+                <Toggle
+                  disabled={isUndefined(campaign.attributes.enabled)}
+                  checked={
+                    isUndefined(campaign.attributes.enabled) ||
+                    campaign.attributes.enabled
                   }
+                  onChange={handleOnEnabledToggle(campaign)}
                 />
-              </TextCell>
-            </Row>
-          ))}
+                <TextCell className="expand">
+                  <T
+                    value={
+                      campaign.attributes.admin_campaign_description_multiloc
+                    }
+                  />
+                </TextCell>
+              </Row>
+            ))}
         </AutomatedEmailsList>
       </Box>
     </>
