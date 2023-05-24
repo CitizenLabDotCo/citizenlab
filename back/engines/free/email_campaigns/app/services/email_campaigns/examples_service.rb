@@ -34,8 +34,8 @@ module EmailCampaigns
 
         next if n_lacking < 0
 
-        new_campaign_commands.each do |(command, campaign)|
-          save_example(command, campaign)
+        new_campaign_commands.each do |(command, camp)|
+          save_example(command, camp)
         end
       end
     end
