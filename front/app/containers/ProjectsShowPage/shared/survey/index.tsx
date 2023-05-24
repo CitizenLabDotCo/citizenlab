@@ -99,125 +99,119 @@ const Survey = ({
     signUpIn('signup');
   };
 
-  if (project) {
-    const { enabled, disabled_reason } =
-      project.data.attributes.action_descriptor.taking_survey;
+  if (project === undefined) return null;
 
-    if (enabled) {
-      const email =
-        !isNilOrError(authUser) && authUser.attributes.email
-          ? authUser.attributes.email
-          : null;
-      const user_id = !isNilOrError(authUser) ? authUser.id : null;
-      const language = !isNilOrError(authUser)
-        ? authUser.attributes.locale
+  const { enabled, disabled_reason } =
+    project.data.attributes.action_descriptor.taking_survey;
+  const notCurrentPhase =
+    project.data.attributes.process_type === 'timeline' &&
+    phase &&
+    pastPresentOrFuture([
+      phase.data.attributes.start_at,
+      phase.data.attributes.end_at,
+    ]) !== 'present';
+
+  if (enabled) {
+    const email =
+      !isNilOrError(authUser) && authUser.attributes.email
+        ? authUser.attributes.email
         : null;
-
-      return (
-        <Container
-          id="project-survey"
-          className={`${className} e2e-${surveyService}-survey enabled`}
-        >
-          <ProjectPageSectionTitle>
-            <FormattedMessage {...messages.survey} />
-          </ProjectPageSectionTitle>
-
-          {surveyService === 'typeform' && (
-            <TypeformSurvey
-              typeformUrl={surveyEmbedUrl}
-              email={email}
-              user_id={user_id}
-              language={language}
-            />
-          )}
-
-          {surveyService === 'survey_monkey' && (
-            <SurveymonkeySurvey surveymonkeyUrl={surveyEmbedUrl} />
-          )}
-
-          {surveyService === 'google_forms' && (
-            <GoogleFormsSurvey googleFormsUrl={surveyEmbedUrl} />
-          )}
-
-          {surveyService === 'enalyzer' && (
-            <EnalyzerSurvey enalyzerUrl={surveyEmbedUrl} />
-          )}
-
-          {surveyService === 'qualtrics' && (
-            <QualtricsSurvey qualtricsUrl={surveyEmbedUrl} />
-          )}
-
-          {surveyService === 'smart_survey' && (
-            <SmartSurvey
-              smartSurveyUrl={surveyEmbedUrl}
-              email={email}
-              user_id={user_id}
-            />
-          )}
-
-          {surveyService === 'microsoft_forms' && (
-            <MicrosoftFormsSurvey microsoftFormsUrl={surveyEmbedUrl} />
-          )}
-
-          {surveyService === 'survey_xact' && (
-            <SurveyXact surveyXactUrl={surveyEmbedUrl} />
-          )}
-
-          {surveyService === 'snap_survey' && (
-            <SnapSurvey snapSurveyUrl={surveyEmbedUrl} />
-          )}
-        </Container>
-      );
-    }
-
-    const notCurrentPhase =
-      project.data.attributes.process_type === 'timeline' &&
-      phase &&
-      pastPresentOrFuture([
-        phase.data.attributes.start_at,
-        phase.data.attributes.end_at,
-      ]) !== 'present';
-
-    const message = notCurrentPhase
-      ? messages.surveyDisabledNotActivePhase
-      : disabledMessages[disabled_reason] ?? messages.surveyDisabledNotPossible;
+    const user_id = !isNilOrError(authUser) ? authUser.id : null;
+    const language = !isNilOrError(authUser)
+      ? authUser.attributes.locale
+      : null;
 
     return (
-      <Container className={`warning ${className || ''}`}>
-        <Warning icon="lock">
-          <FormattedMessage
-            {...message}
-            values={{
-              verificationLink: (
-                <button onClick={signUp}>
-                  <FormattedMessage {...messages.verificationLinkText} />
-                </button>
-              ),
-              signUpLink: (
-                <button onClick={signUp}>
-                  <FormattedMessage {...messages.signUpLinkText} />
-                </button>
-              ),
-              completeRegistrationLink: (
-                <button onClick={signUp}>
-                  <FormattedMessage
-                    {...messages.completeRegistrationLinkText}
-                  />
-                </button>
-              ),
-              logInLink: (
-                <button onClick={signIn}>
-                  <FormattedMessage {...messages.logInLinkText} />
-                </button>
-              ),
-            }}
+      <Container
+        id="project-survey"
+        className={`${className} e2e-${surveyService}-survey enabled`}
+      >
+        <ProjectPageSectionTitle>
+          <FormattedMessage {...messages.survey} />
+        </ProjectPageSectionTitle>
+
+        {surveyService === 'typeform' && (
+          <TypeformSurvey
+            typeformUrl={surveyEmbedUrl}
+            email={email}
+            user_id={user_id}
+            language={language}
           />
-        </Warning>
+        )}
+
+        {surveyService === 'survey_monkey' && (
+          <SurveymonkeySurvey surveymonkeyUrl={surveyEmbedUrl} />
+        )}
+
+        {surveyService === 'google_forms' && (
+          <GoogleFormsSurvey googleFormsUrl={surveyEmbedUrl} />
+        )}
+
+        {surveyService === 'enalyzer' && (
+          <EnalyzerSurvey enalyzerUrl={surveyEmbedUrl} />
+        )}
+
+        {surveyService === 'qualtrics' && (
+          <QualtricsSurvey qualtricsUrl={surveyEmbedUrl} />
+        )}
+
+        {surveyService === 'smart_survey' && (
+          <SmartSurvey
+            smartSurveyUrl={surveyEmbedUrl}
+            email={email}
+            user_id={user_id}
+          />
+        )}
+
+        {surveyService === 'microsoft_forms' && (
+          <MicrosoftFormsSurvey microsoftFormsUrl={surveyEmbedUrl} />
+        )}
+
+        {surveyService === 'survey_xact' && (
+          <SurveyXact surveyXactUrl={surveyEmbedUrl} />
+        )}
+
+        {surveyService === 'snap_survey' && (
+          <SnapSurvey snapSurveyUrl={surveyEmbedUrl} />
+        )}
       </Container>
     );
   }
 
-  return null;
+  return (
+    <Container className={`warning ${className || ''}`}>
+      <Warning icon="lock">
+        <FormattedMessage
+          {...(notCurrentPhase
+            ? messages.surveyDisabledNotActivePhase
+            : disabledMessages[disabled_reason] ??
+              messages.surveyDisabledNotPossible)}
+          values={{
+            verificationLink: (
+              <button onClick={signUp}>
+                <FormattedMessage {...messages.verificationLinkText} />
+              </button>
+            ),
+            signUpLink: (
+              <button onClick={signUp}>
+                <FormattedMessage {...messages.signUpLinkText} />
+              </button>
+            ),
+            completeRegistrationLink: (
+              <button onClick={signUp}>
+                <FormattedMessage {...messages.completeRegistrationLinkText} />
+              </button>
+            ),
+            logInLink: (
+              <button onClick={signIn}>
+                <FormattedMessage {...messages.logInLinkText} />
+              </button>
+            ),
+          }}
+        />
+      </Warning>
+    </Container>
+  );
 };
 
 export default Survey;
