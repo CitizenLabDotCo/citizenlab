@@ -11,7 +11,12 @@ import SurveyInputs from './components/SurveyInputs';
 import { Container, StyledSection } from './components/styling';
 import IdeationInputs from './components/IdeationInputs';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { Input, IOption } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Input,
+  IOption,
+} from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 // services
 import { IProject } from 'api/projects/types';
@@ -44,6 +49,7 @@ import { adopt } from 'react-adopt';
 import getOutput from './utils/getOutput';
 import validate from './utils/validate';
 import { anyIsDefined } from 'utils/helperUtils';
+import Warning from 'components/UI/Warning';
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
@@ -534,11 +540,19 @@ class ParticipationContext extends PureComponent<
             {participation_method === 'document_annotation' &&
               isKonveioDocumentAnnotationEnabled && (
                 <SectionField>
-                  <SubSectionTitle>
-                    {this.props.intl.formatMessage(
-                      messages.documentAnnotationEmbedUrl
-                    )}
-                  </SubSectionTitle>
+                  <Box display="flex">
+                    <Box mr="8px">
+                      <SubSectionTitle>
+                        {this.props.intl.formatMessage(
+                          messages.documentAnnotationEmbedUrl
+                        )}
+                      </SubSectionTitle>
+                    </Box>
+                    <IconTooltip content="test" />
+                  </Box>
+                  <Box mb="24px">
+                    <Warning>{'Test'}</Warning>
+                  </Box>
                   <Input
                     onChange={this.handleDocumentAnnotationEmbedUrlChange}
                     type="text"
