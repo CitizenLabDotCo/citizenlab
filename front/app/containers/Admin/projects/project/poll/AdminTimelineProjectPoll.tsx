@@ -1,6 +1,5 @@
 // Libraries
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { isError } from 'lodash-es';
 
@@ -19,7 +18,7 @@ import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 
 const Container = styled.div`
   display: flex;
@@ -50,9 +49,11 @@ interface Props {
 
 const AdminTimelineProjectPoll = ({ projectId }: Props) => {
   const localize = useLocalize();
-  const phases = usePhases(projectId);
-  const pollPhases = !isNilOrError(phases)
-    ? phases.filter((phase) => phase.attributes.participation_method === 'poll')
+  const { data: phases } = usePhases(projectId);
+  const pollPhases = phases
+    ? phases.data.filter(
+        (phase) => phase.attributes.participation_method === 'poll'
+      )
     : null;
 
   if (!pollPhases || pollPhases.length === 0) return null;

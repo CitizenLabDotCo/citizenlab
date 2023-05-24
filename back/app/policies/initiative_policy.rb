@@ -19,7 +19,6 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def create?
-    return true if record.draft?
     return true if active? && can_moderate?
 
     reason = posting_denied_reason user

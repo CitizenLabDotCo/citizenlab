@@ -5,7 +5,7 @@ import { IBasketData, updateBasket } from 'services/baskets';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 import useBasket from 'hooks/useBasket';
 import useAuthUser from 'hooks/useAuthUser';
 import useIdeas from 'api/ideas/useIdeas';
@@ -33,13 +33,12 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 // utils
 import {
   isNilOrError,
-  NilOrError,
   capitalizeParticipationContextType,
 } from 'utils/helperUtils';
 
 // typings
 import { IParticipationContextType } from 'typings';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 
 const Container = styled.div`
   padding: 10px;
@@ -126,7 +125,7 @@ interface InputProps {
 
 interface DataProps {
   basket: IBasketData;
-  phase: IPhaseData | NilOrError;
+  phase: IPhaseData | undefined;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -186,7 +185,7 @@ const PBBasket = ({
 
   if (
     participationContextType === 'phase' &&
-    !isNilOrError(phase) &&
+    phase &&
     pastPresentOrFuture([
       phase.attributes.start_at,
       phase.attributes.end_at,
@@ -289,7 +288,7 @@ const Wrapper = ({
     participationContextType === 'project' ? participationContextId : null
   );
 
-  const phase = usePhase(
+  const { data: phase } = usePhase(
     participationContextType === 'phase' ? participationContextId : null
   );
 
@@ -299,8 +298,8 @@ const Wrapper = ({
     basketId = project.data.relationships.user_basket?.data?.id;
   }
 
-  if (!isNilOrError(phase)) {
-    basketId = phase.relationships.user_basket?.data?.id;
+  if (phase) {
+    basketId = phase.data.relationships.user_basket?.data?.id;
   }
 
   const basket = useBasket(basketId);
@@ -315,7 +314,7 @@ const Wrapper = ({
       participationContextId={participationContextId}
       participationContextType={participationContextType}
       basket={basket}
-      phase={phase}
+      phase={phase?.data}
     />
   );
 };

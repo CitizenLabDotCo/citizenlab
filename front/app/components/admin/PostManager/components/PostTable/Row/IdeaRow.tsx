@@ -2,7 +2,7 @@ import React, { ChangeEvent, useState, MouseEvent } from 'react';
 import { uniq, isEmpty } from 'lodash-es';
 import { useDrag } from 'react-dnd';
 // services
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 import { IIdeaData } from 'api/ideas/types';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 

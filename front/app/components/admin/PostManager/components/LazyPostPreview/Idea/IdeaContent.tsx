@@ -213,6 +213,9 @@ const IdeaContent = ({
     const proposedBudget = idea.attributes.proposed_budget;
     const processType = project.attributes.process_type;
 
+    const allowAnonymousParticipation =
+      project.attributes.allow_anonymous_participation;
+
     return (
       <Container>
         <Top>
@@ -247,7 +250,11 @@ const IdeaContent = ({
           )}
 
           <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />
-          <StyledPostedBy ideaId={ideaId} authorId={authorId} />
+          <StyledPostedBy
+            ideaId={ideaId}
+            authorId={authorId}
+            anonymous={idea.attributes.anonymous}
+          />
           <Row>
             <Left>
               {ideaImageLarge && (
@@ -297,7 +304,11 @@ const IdeaContent = ({
                 permissionToPost
               />
 
-              <StyledComments postId={ideaId} postType="idea" />
+              <StyledComments
+                allowAnonymousParticipation={allowAnonymousParticipation}
+                postId={ideaId}
+                postType="idea"
+              />
             </Left>
             <Right>
               <VotePreview ideaId={ideaId} />

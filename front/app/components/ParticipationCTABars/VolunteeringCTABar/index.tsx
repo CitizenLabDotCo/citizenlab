@@ -8,7 +8,8 @@ import { ParticipationCTAContent } from 'components/ParticipationCTABars/Partici
 import { useTheme } from 'styled-components';
 
 // services
-import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
@@ -23,7 +24,7 @@ import messages from '../messages';
 
 export const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
+  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
