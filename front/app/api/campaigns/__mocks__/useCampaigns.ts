@@ -16,7 +16,6 @@ export const campaignsData: ICampaignData[] = [
       },
       created_at: '2021-03-03T09:00:00.000Z',
       updated_at: '2021-03-03T09:00:00.000Z',
-
       campaign_name: 'campaign_name',
       admin_campaign_description_multiloc: {
         en: 'Weekly overview of your own proposals - all users',
@@ -51,7 +50,6 @@ export const campaignsData: ICampaignData[] = [
       },
       created_at: '2021-03-03T09:00:00.000Z',
       updated_at: '2021-03-03T09:00:00.000Z',
-
       campaign_name: 'campaign_name',
       admin_campaign_description_multiloc: {
         en: 'Weekly overview of your own proposals - all users',
