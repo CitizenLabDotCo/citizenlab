@@ -1,6 +1,8 @@
 import React from 'react';
 import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
+import useAuthUser from 'hooks/useAuthUser';
 
 // components
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
@@ -25,17 +27,12 @@ interface Props {
   email: string | null;
   user_id: string | null;
   className?: string;
-  language: string | null;
 }
 
-const TypeformSurvey = ({
-  typeformUrl,
-  email,
-  user_id,
-  className,
-  language,
-}: Props) => {
+const TypeformSurvey = ({ typeformUrl, email, user_id, className }: Props) => {
+  const authUser = useAuthUser();
   const isSmallerThanTablet = useBreakpoint('tablet');
+  const language = !isNilOrError(authUser) ? authUser.attributes.locale : null;
   const queryString = stringify(omitBy({ email, user_id, language }, isNil));
   const surveyUrl = `${typeformUrl}?${queryString}&disable-auto-focus=true`;
 

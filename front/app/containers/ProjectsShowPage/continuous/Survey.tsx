@@ -44,7 +44,8 @@ const SurveyContainer = ({ project, className }: Props) => {
               <h2>{formatMessage(messages.invisibleTitleSurvey)}</h2>
             </ScreenReaderOnly>
             <Survey
-              projectId={project.id}
+              project={project}
+              phaseId={null}
               surveyService={project.attributes.survey_service}
               surveyEmbedUrl={project.attributes.survey_embed_url}
             />

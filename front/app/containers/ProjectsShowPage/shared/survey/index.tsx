@@ -11,29 +11,23 @@ import QualtricsSurvey from './QualtricsSurvey';
 import SmartSurvey from './SmartSurvey';
 import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
 import SnapSurvey from './SnapSurvey';
-import Warning from 'components/UI/Warning';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
 
 // i18n
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 import globalMessages from 'utils/messages';
 
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
 // styling
 import styled from 'styled-components';
 import SurveyXact from './SurveyXact';
-import usePhase from 'api/phases/usePhase';
 
 // utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
-import { SurveyDisabledReason } from 'api/projects/types';
+import { IProjectData, SurveyDisabledReason } from 'api/projects/types';
+import ParticipationPermission from '../ParticipationPermission';
 
 const Container = styled.div`
   position: relative;
@@ -44,8 +38,8 @@ const Container = styled.div`
 `;
 
 interface Props {
-  projectId: string;
-  phaseId?: string | null;
+  project: IProjectData;
+  phaseId: string | null;
   surveyEmbedUrl: string;
   surveyService: TSurveyService;
   className?: string;
@@ -59,69 +53,35 @@ const disabledMessages: { [key in SurveyDisabledReason]: MessageDescriptor } = {
   not_signed_in: messages.surveyDisabledMaybeNotPermitted,
   not_in_group: globalMessages.notInGroup,
   not_permitted: messages.surveyDisabledNotPermitted,
-  not_survey: messages.surveyDisabledNotSurvey,
+  not_survey: messages.surveyDisabledNotActivePhase,
 };
 
 const Survey = ({
-  projectId,
+  project,
   phaseId,
   surveyEmbedUrl,
   surveyService,
   className,
 }: Props) => {
-  const { data: project } = useProjectById(projectId);
   const authUser = useAuthUser();
-  const { data: phase } = usePhase(phaseId ?? null);
-
-  const signUpIn = (flow: 'signin' | 'signup') => {
-    if (!isNilOrError(project)) {
-      const pcType = phaseId ? 'phase' : 'project';
-      const pcId = phaseId ?? projectId;
-
-      if (!pcId || !pcType) return;
-
-      triggerAuthenticationFlow({
-        flow,
-        context: {
-          action: 'taking_survey',
-          id: pcId,
-          type: pcType,
-        },
-      });
-    }
-  };
-
-  const signIn = () => {
-    signUpIn('signin');
-  };
-
-  const signUp = () => {
-    signUpIn('signup');
-  };
-
-  if (project === undefined) return null;
-
   const { enabled, disabled_reason } =
-    project.data.attributes.action_descriptor.taking_survey;
-  const notCurrentPhase =
-    project.data.attributes.process_type === 'timeline' &&
-    phase &&
-    pastPresentOrFuture([
-      phase.data.attributes.start_at,
-      phase.data.attributes.end_at,
-    ]) !== 'present';
-
-  if (enabled) {
-    const email =
-      !isNilOrError(authUser) && authUser.attributes.email
-        ? authUser.attributes.email
-        : null;
-    const user_id = !isNilOrError(authUser) ? authUser.id : null;
-    const language = !isNilOrError(authUser)
-      ? authUser.attributes.locale
+    project.attributes.action_descriptor.taking_survey;
+  const email =
+    !isNilOrError(authUser) && authUser.attributes.email
+      ? authUser.attributes.email
       : null;
+  const userId = !isNilOrError(authUser) ? authUser.id : null;
 
-    return (
+  return (
+    <ParticipationPermission
+      projectId={project.id}
+      action="taking_survey"
+      enabled={enabled}
+      phaseId={phaseId}
+      disabledMessage={
+        disabled_reason ? disabledMessages[disabled_reason] : null
+      }
+    >
       <Container
         id="project-survey"
         className={`${className} e2e-${surveyService}-survey enabled`}
@@ -134,8 +94,7 @@ const Survey = ({
           <TypeformSurvey
             typeformUrl={surveyEmbedUrl}
             email={email}
-            user_id={user_id}
-            language={language}
+            user_id={userId}
           />
         )}
 
@@ -159,7 +118,7 @@ const Survey = ({
           <SmartSurvey
             smartSurveyUrl={surveyEmbedUrl}
             email={email}
-            user_id={user_id}
+            user_id={userId}
           />
         )}
 
@@ -175,42 +134,7 @@ const Survey = ({
           <SnapSurvey snapSurveyUrl={surveyEmbedUrl} />
         )}
       </Container>
-    );
-  }
-
-  return (
-    <Container className={`warning ${className || ''}`}>
-      <Warning icon="lock">
-        <FormattedMessage
-          {...(notCurrentPhase
-            ? messages.surveyDisabledNotActivePhase
-            : disabledMessages[disabled_reason] ??
-              messages.surveyDisabledNotPossible)}
-          values={{
-            verificationLink: (
-              <button onClick={signUp}>
-                <FormattedMessage {...messages.verificationLinkText} />
-              </button>
-            ),
-            signUpLink: (
-              <button onClick={signUp}>
-                <FormattedMessage {...messages.signUpLinkText} />
-              </button>
-            ),
-            completeRegistrationLink: (
-              <button onClick={signUp}>
-                <FormattedMessage {...messages.completeRegistrationLinkText} />
-              </button>
-            ),
-            logInLink: (
-              <button onClick={signIn}>
-                <FormattedMessage {...messages.logInLinkText} />
-              </button>
-            ),
-          }}
-        />
-      </Warning>
-    </Container>
+    </ParticipationPermission>
   );
 };
 

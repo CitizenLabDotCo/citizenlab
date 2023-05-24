@@ -190,7 +190,7 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
                   viewMode={smallerThanSmallTablet ? 'column' : 'row'}
                 />
               )}
-              <PhaseSurvey projectId={projectId} phaseId={selectedPhaseId} />
+              <PhaseSurvey project={project.data} phaseId={selectedPhaseId} />
               {participationMethod === 'document_annotation' && (
                 <PhaseDocumentAnnotation
                   phase={selectedPhase}
