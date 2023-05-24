@@ -62,7 +62,7 @@ describe EmailCampaigns::ExamplesService do
     end
 
     it 'does not delete any examples from other campaigns' do
-      other_campaign_examples = create_list(:campaign_example, 5, campaign_class: 'SomeFakeCampaign', created_at: 1.year.ago)
+      create_list(:campaign_example, 5, campaign_class: 'SomeFakeCampaign', created_at: 1.year.ago)
       create(:campaign_example)
 
       recipient = create(:admin)
@@ -88,7 +88,7 @@ describe EmailCampaigns::ExamplesService do
         activity: create(:admin_rights_given_activity)
       }
 
-      expect { service.save_examples([[command, campaign]]) }.to change { EmailCampaigns::Example.count }.from(6).to(5)
+      expect { service.save_examples([[command, campaign]]) }.to change(EmailCampaigns::Example, :count).from(6).to(5)
       expect(old_examples.map(&:id) & EmailCampaigns::Example.ids).to be_empty
     end
   end
