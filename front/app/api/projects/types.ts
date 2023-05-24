@@ -251,7 +251,7 @@ export type SurveyDisabledReason =
   | 'not_survey'
   | PermissionsDisabledReason;
 
-type PollDisabledReason =
+export type PollDisabledReason =
   | 'project_inactive'
   | 'not_poll'
   | 'already_responded'
