@@ -7,7 +7,7 @@ class UpdateQueTablesToVersion5 < ActiveRecord::Migration[6.1]
       # environments because some objects that `que` expects to be present are very
       # likely to be missing. This is because `schema.rb` cannot represent certain
       # database constructs, such as triggers and functions. Therefore, a simple
-      # `db:reset` removes objects.
+      # `db:reset` removes those objects.
       Que.execute(DEV_QUE_SQL_MIGRATION_5)
     else
       Que.migrate!(version: 5)
@@ -22,7 +22,7 @@ class UpdateQueTablesToVersion5 < ActiveRecord::Migration[6.1]
   # environments because some objects that `que` expects to be present are very
   # likely to be missing. This is because `schema.rb` cannot represent certain
   # database constructs, such as triggers and functions. Therefore, a simple
-  # `db:reset` removes objects.
+  # `db:reset` removes those objects.
   #
   # The original migration can be found here:
   # https://github.com/que-rb/que/blob/v1.3.1/lib/que/migrations/5/up.sql
