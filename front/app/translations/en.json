@@ -37,6 +37,7 @@
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "Please {signUpLink} or {signInLink} to comment.",
   "app.components.Comments.commentingInitiativeNotPermitted": "Commenting is currently not enabled.",
   "app.components.Comments.commentingMaybeNotPermitted": "Please {signInLink} to see what actions can be taken.",
+  "app.components.Comments.inputsAssociatedWithProfile": "By default your submissions will be associated with your profile, unless you select this option.",
   "app.components.Comments.invisibleTitleComments": "Comments",
   "app.components.Comments.mostRecent": "Most recent",
   "app.components.Comments.mostUpvoted": "Most voted",
