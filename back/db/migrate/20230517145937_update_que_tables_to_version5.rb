@@ -3,11 +3,7 @@
 class UpdateQueTablesToVersion5 < ActiveRecord::Migration[6.1]
   def up
     if Rails.env.development? || Rails.env.test?
-      # We need to run a slightly different migration in development and test
-      # environments because some objects that `que` expects to be present are very
-      # likely to be missing. This is because `schema.rb` cannot represent certain
-      # database constructs, such as triggers and functions. Therefore, a simple
-      # `db:reset` removes those objects.
+      # See the comment on DEV_QUE_SQL_MIGRATION_5 for why we need to do this.
       Que.execute(DEV_QUE_SQL_MIGRATION_5)
     else
       Que.migrate!(version: 5)

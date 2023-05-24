@@ -15,12 +15,11 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Wrapper = styled.div`
-  height: calc(100vh - ${(props) => props.theme.menuHeight}px);
   display: flex;
   background: #fff;
   position: fixed;
   right: 0;
-  top: ${(props) => props.theme.menuHeight}px;
+  top: 0px;
   left: 210px;
   bottom: 0;
   ${media.tablet`
