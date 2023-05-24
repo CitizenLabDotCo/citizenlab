@@ -81,16 +81,6 @@ interface Props extends FormValues, FormProps {
   setPostAnonymously: (newValue: boolean) => void;
 }
 
-interface State {
-  postAnonymously: boolean;
-  touched: {
-    [key in keyof FormValues]?: boolean | undefined;
-  };
-  errors: {
-    [key in keyof FormValues]?: { message: MessageDescriptor } | undefined;
-  };
-}
-
 const InitiativeForm = ({
   locale,
   title_multiloc,
@@ -119,8 +109,12 @@ const InitiativeForm = ({
   setPostAnonymously,
   postAnonymously,
 }: Props) => {
-  const [touched, setTouched] = useState<State['touched']>({});
-  const [errors, setErrors] = useState<State['errors']>({});
+  const [touched, setTouched] = useState<{
+    [key in keyof FormValues]?: boolean | undefined;
+  }>({});
+  const [errors, setErrors] = useState<{
+    [key in keyof FormValues]?: { message: MessageDescriptor } | undefined;
+  }>({});
 
   const { formatMessage } = useIntl();
   const titleMinLength = 10;

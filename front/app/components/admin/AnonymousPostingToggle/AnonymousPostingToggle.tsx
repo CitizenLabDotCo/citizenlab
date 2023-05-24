@@ -3,6 +3,8 @@ import {
   Text,
   Box,
   IconTooltip,
+  StatusLabel,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import React from 'react';
@@ -26,6 +28,11 @@ export const AnonymousPostingToggle = ({
     <SectionField>
       <SubSectionTitle style={{ marginBottom: '0px' }}>
         <FormattedMessage {...messages.userAnonymity} />
+        <StatusLabel
+          text={formatMessage(messages.betaLabel)}
+          backgroundColor={colors.background}
+          variant="outlined"
+        />
       </SubSectionTitle>
       <Toggle
         checked={allow_anonymous_participation || false}
