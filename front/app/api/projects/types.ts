@@ -257,7 +257,7 @@ export type PollDisabledReason =
   | 'already_responded'
   | PermissionsDisabledReason;
 
-type DocumentAnnotationDisabledReason =
+export type DocumentAnnotationDisabledReason =
   | 'project_inactive'
   | 'not_document_annotation'
   | PermissionsDisabledReason;
