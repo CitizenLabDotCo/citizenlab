@@ -19,7 +19,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 import globalMessages from 'utils/messages';
 
@@ -33,6 +33,7 @@ import usePhase from 'api/phases/usePhase';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { SurveyDisabledReason } from 'api/projects/types';
 
 const Container = styled.div`
   position: relative;
@@ -50,14 +51,16 @@ interface Props {
   className?: string;
 }
 
-const disabledMessages = {
+const disabledMessages: { [key in SurveyDisabledReason]: MessageDescriptor } = {
   project_inactive: messages.surveyDisabledProjectInactive,
   not_active: messages.surveyDisabledNotActiveUser,
   not_verified: messages.surveyDisabledNotVerified,
   missing_data: messages.surveyDisabledNotActiveUser,
   not_signed_in: messages.surveyDisabledMaybeNotPermitted,
   not_in_group: globalMessages.notInGroup,
-} as const;
+  not_permitted: messages.surveyDisabledNotPermitted,
+  not_survey: messages.surveyDisabledNotSurvey,
+};
 
 const Survey = ({
   projectId,

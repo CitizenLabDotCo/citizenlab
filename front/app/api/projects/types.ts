@@ -246,7 +246,7 @@ export type PostingDisabledReason =
   | 'posting_limited_max_reached'
   | PermissionsDisabledReason;
 
-type SurveyDisabledReason =
+export type SurveyDisabledReason =
   | 'project_inactive'
   | 'not_survey'
   | PermissionsDisabledReason;

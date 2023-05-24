@@ -34,6 +34,10 @@ export default defineMessages({
     defaultMessage:
       'This survey can only be taken when this phase in the timeline is active.',
   },
+  surveyDisabledNotSurvey: {
+    id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledNotSurvey',
+    defaultMessage: 'The active phase is not a survey.',
+  },
   verificationLinkText: {
     id: 'app.containers.ProjectsShowPage.process.survey.verificationLinkText',
     defaultMessage: 'Verify your account now.',
