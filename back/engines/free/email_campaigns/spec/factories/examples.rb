@@ -6,6 +6,6 @@ FactoryBot.define do
     association :recipient, factory: :user
     locale { 'en' }
     subject { 'You became an administrator on the platform of Liege' }
-    mail_body_html { '<html><body>Faker::Lorem.paragraph</body></html>' }
+    mail_body_html { "<html><body>#{Faker::Lorem.paragraph}</body></html>" }
   end
 end
