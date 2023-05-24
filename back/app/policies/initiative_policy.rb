@@ -19,7 +19,6 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def create?
-    return true if record.draft?
     return true if active? && admin?
 
     reason = posting_denied_reason user
@@ -57,6 +56,7 @@ class InitiativePolicy < ApplicationPolicy
       :author_id,
       :location_description,
       :header_bg,
+      :anonymous,
       { location_point_geojson: [:type, { coordinates: [] }],
         title_multiloc: CL2_SUPPORTED_LOCALES,
         body_multiloc: CL2_SUPPORTED_LOCALES,

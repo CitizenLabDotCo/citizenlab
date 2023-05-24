@@ -38,6 +38,7 @@ interface Props {
   allComments: ICommentData[];
   loading: boolean;
   className?: string;
+  allowAnonymousParticipation?: boolean;
 }
 
 const CommentsSection = memo<Props & WrappedComponentProps>(
@@ -47,6 +48,7 @@ const CommentsSection = memo<Props & WrappedComponentProps>(
     allComments,
     loading,
     className,
+    allowAnonymousParticipation,
     intl: { formatMessage },
   }) => {
     const [commentPostedMessage, setCommentPostedMessage] = useState('');
@@ -116,6 +118,7 @@ const CommentsSection = memo<Props & WrappedComponentProps>(
               commentId={parentComment.id}
               childCommentIds={childCommentIds}
               className={loading ? 'loading' : ''}
+              allowAnonymousParticipation={allowAnonymousParticipation}
             />
           );
         })}

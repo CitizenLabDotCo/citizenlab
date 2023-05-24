@@ -312,6 +312,7 @@ const IdeasNewPageWithJSONForm = () => {
       <AnonymousParticipationConfirmationModal
         onConfirmAnonymousParticipation={() => {
           setCookieAnonymousConfirmation();
+          setShowAnonymousConfirmationModal(false);
           continueSubmission(formDataOnSubmit);
         }}
         showAnonymousConfirmationModal={showAnonymousConfirmationModal}

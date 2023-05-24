@@ -10,6 +10,11 @@ import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
 import Link from 'utils/cl-router/Link';
+import {
+  Checkbox,
+  Text,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -32,9 +37,13 @@ import { colors, defaultStyles } from 'utils/styleUtils';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
+import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+import {
+  getCookieAnonymousConfirmation,
+  setCookieAnonymousConfirmation,
+} from 'components/AnonymousParticipationConfirmationModal/AnonymousCookieManagement';
 
 const Container = styled.div`
   display: flex;
@@ -91,6 +100,7 @@ interface Props {
   projectId?: string | null;
   parentId: string;
   className?: string;
+  allowAnonymousParticipation?: boolean;
 }
 
 const ChildCommentForm = ({
@@ -99,6 +109,7 @@ const ChildCommentForm = ({
   postType,
   projectId,
   className,
+  allowAnonymousParticipation,
 }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
@@ -119,7 +130,9 @@ const ChildCommentForm = ({
   const [canSubmit, setCanSubmit] = useState(false);
   const [profanityApiError, setProfanityApiError] = useState(false);
   const [hasApiError, setHasApiError] = useState(false);
-
+  const [postAnonymously, setPostAnonymously] = useState(false);
+  const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
+    useState(false);
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const processing =
     isAddCommentToIdeaLoading || isAddCommentToInitiativeLoading;
@@ -135,8 +148,10 @@ const ChildCommentForm = ({
         )
         .subscribe(({ eventValue }) => {
           const { authorFirstName, authorLastName, authorSlug } = eventValue;
-          const tag = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
-          setInputValue(tag);
+          if (authorFirstName && authorLastName && authorSlug) {
+            const tag = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
+            setInputValue(tag);
+          }
           setFocused(true);
         }),
     ];
@@ -181,6 +196,20 @@ const ChildCommentForm = ({
   };
 
   const onSubmit = async () => {
+    const hasAnonymousConfirmationCookie = getCookieAnonymousConfirmation();
+
+    if (
+      allowAnonymousParticipation &&
+      postAnonymously &&
+      !hasAnonymousConfirmationCookie
+    ) {
+      setShowAnonymousConfirmationModal(true);
+    } else {
+      continueSubmission();
+    }
+  };
+
+  const continueSubmission = async () => {
     if (!isNilOrError(locale) && !isNilOrError(authUser) && canSubmit) {
       const commentBodyMultiloc = {
         [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
@@ -205,6 +234,7 @@ const ChildCommentForm = ({
               author_id: authUser.id,
               parent_id: parentId,
               body_multiloc: commentBodyMultiloc,
+              anonymous: postAnonymously,
             },
             {
               onSuccess: () => {
@@ -248,6 +278,7 @@ const ChildCommentForm = ({
               author_id: authUser.id,
               parent_id: parentId,
               body_multiloc: commentBodyMultiloc,
+              anonymous: postAnonymously,
             },
             {
               onSuccess: () => {
@@ -374,6 +405,18 @@ const ChildCommentForm = ({
                 getTextareaRef={setRef}
               />
               <ButtonWrapper>
+                {allowAnonymousParticipation && (
+                  <Checkbox
+                    ml="8px"
+                    checked={postAnonymously}
+                    label={
+                      <Text mb="12px" fontSize="s" color="coolGrey600">
+                        {formatMessage(messages.postAnonymously)}
+                      </Text>
+                    }
+                    onChange={() => setPostAnonymously(!postAnonymously)}
+                  />
+                )}
                 <CancelButton
                   disabled={processing}
                   onClick={onCancel}
@@ -395,6 +438,15 @@ const ChildCommentForm = ({
             </label>
           </Form>
         </FormContainer>
+        <AnonymousParticipationConfirmationModal
+          onConfirmAnonymousParticipation={() => {
+            setCookieAnonymousConfirmation();
+            setShowAnonymousConfirmationModal(false);
+            continueSubmission();
+          }}
+          showAnonymousConfirmationModal={showAnonymousConfirmationModal}
+          setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
+        />
       </Container>
     );
   }
