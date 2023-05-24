@@ -26,24 +26,27 @@ class SideFxInitiativeService
   end
 
   def after_update(initiative, user)
+    remove_user_from_past_activities_with_item(initiative, user) if initiative.anonymous_previously_changed?(to: true)
+
     if initiative.publication_status_previous_change == %w[draft published]
       after_publish initiative, user
     elsif initiative.published?
-      LogActivityJob.perform_later(initiative, 'changed', user_for_activity(initiative, user), initiative.updated_at.to_i)
+      LogActivityJob.perform_later(initiative, 'changed', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i)
     end
 
     if initiative.assignee_id_previously_changed?
       initiating_user = @automatic_assignment ? nil : user
-      LogActivityJob.perform_later(initiative, 'changed_assignee', user_for_activity(initiative, initiating_user), initiative.updated_at.to_i, payload: { change: initiative.assignee_id_previous_change })
+      LogActivityJob.perform_later(initiative, 'changed_assignee', user_for_activity_on_anonymizable_item(initiative, initiating_user), initiative.updated_at.to_i, payload: { change: initiative.assignee_id_previous_change })
     end
 
     if initiative.title_multiloc_previously_changed?
-      LogActivityJob.perform_later(initiative, 'changed_title', user_for_activity(initiative, user), initiative.updated_at.to_i, payload: { change: initiative.title_multiloc_previous_change })
+      LogActivityJob.perform_later(initiative, 'changed_title', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i, payload: { change: initiative.title_multiloc_previous_change })
     end
 
     return unless initiative.body_multiloc_previously_changed?
 
-    LogActivityJob.perform_later(initiative, 'changed_body', user_for_activity(initiative, user), initiative.updated_at.to_i, payload: { change: initiative.body_multiloc_previous_change })
+    LogActivityJob.perform_later(initiative, 'changed_body', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i, payload: { change: initiative.body_multiloc_previous_change })
+
   end
 
   def before_destroy(initiative, user); end
@@ -79,11 +82,7 @@ class SideFxInitiativeService
   end
 
   def log_activity_jobs_after_published(initiative, user)
-    LogActivityJob.set(wait: 20.seconds).perform_later(initiative, 'published', user_for_activity(initiative, user), initiative.published_at.to_i)
-  end
-
-  def user_for_activity(initiative, user)
-    initiative.anonymous? ? nil : user
+    LogActivityJob.set(wait: 20.seconds).perform_later(initiative, 'published', user_for_activity_on_anonymizable_item(initiative, user), initiative.published_at.to_i)
   end
 end
 
