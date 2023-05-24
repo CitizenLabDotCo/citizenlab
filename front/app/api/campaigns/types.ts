@@ -59,62 +59,13 @@ export interface IUpdateCampaignProperties {
   campaign: CampaignUpdate;
 }
 
-export interface CampaignAdd extends CampaignFormValues {
-  campaign_name: string;
-}
-
 export interface ICampaign {
   data: ICampaignData;
 }
 
-export interface QueryProps {
+export interface QueryParameters {
   campaignNames?: string[];
   withoutCampaignNames?: string[];
   pageSize?: number;
   pageNumber?: number;
-}
-
-export interface QueryParameters {
-  campaign_names: string[];
-  without_campaign_names: string[];
-  'page[number]': number;
-  'page[size]': number;
-}
-
-export interface IDeliveriesData {
-  data: IDeliveryData[];
-  links: ILinks;
-}
-export interface IDeliveryData {
-  id: string;
-  type: string;
-  attributes: {
-    delivery_status:
-      | 'sent'
-      | 'bounced'
-      | 'failed'
-      | 'accepted'
-      | 'delivered'
-      | 'opened'
-      | 'clicked';
-    sent_at: string;
-    created_at: string;
-    updated_at: string;
-  };
-  relationships: {
-    user: {
-      data: IRelationship;
-    };
-  };
-}
-
-export interface ICampaignStats {
-  sent: number;
-  bounced: number;
-  failed: number;
-  accepted: number;
-  delivered: number;
-  opened: number;
-  clicked: number;
-  all: number;
 }

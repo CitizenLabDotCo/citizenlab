@@ -1,14 +1,31 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
+import clHistory from 'utils/cl-router/history';
+import { stringify, parse } from 'qs';
 
 // Typing
 interface Props {
   currentPage: number;
   totalPages: number;
-  loadPage: (arg: number) => void;
+  loadPage?: (arg: number) => void;
 }
 
 const Pagination = ({ currentPage, totalPages, loadPage }: Props) => {
+  const location = useLocation();
+  const query = parse(location.search, { ignoreQueryPrefix: true });
+
+  const handlePaginationClick = (newPageNumber: number) => {
+    clHistory.push({
+      pathname: location.pathname,
+      search: stringify(
+        { ...query, pageNumber: newPageNumber },
+        { addQueryPrefix: true }
+      ),
+    });
+  };
+  const handleLoadPage = loadPage || handlePaginationClick;
+
   const calculateMenuItems = (c, m) => {
     const current = c;
     const last = m;
@@ -41,7 +58,7 @@ const Pagination = ({ currentPage, totalPages, loadPage }: Props) => {
   };
 
   const handleItemClick = (_event, data) => {
-    loadPage(parseInt(data.name, 10));
+    handleLoadPage(parseInt(data.name, 10));
   };
 
   const pageItems = calculateMenuItems(currentPage, totalPages);

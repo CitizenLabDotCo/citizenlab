@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Multiloc } from 'typings';
 import styled from 'styled-components';
 
 // i18n
@@ -27,15 +28,14 @@ import Feedback from 'components/HookForm/Feedback';
 import Select from 'components/HookForm/Select';
 import MultipleSelect from 'components/HookForm/MultipleSelect';
 
+// resources
+
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import useAuthUser from 'hooks/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useGroups from 'api/groups/useGroups';
-
-// types
 import { IGroupData } from 'api/groups/types';
-import { CampaignFormValues } from 'api/campaigns/types';
+import useGroups from 'api/groups/useGroups';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -57,9 +57,17 @@ export const PageTitle = styled.h1`
   margin: 2rem 0 1rem;
 `;
 
+export interface FormValues {
+  sender: 'author' | 'organization';
+  reply_to: string;
+  subject_multiloc: Multiloc;
+  body_multiloc: Multiloc;
+  group_ids?: string[];
+}
+
 type CampaignFormProps = {
-  onSubmit: (formValues: CampaignFormValues) => void | Promise<void>;
-  defaultValues?: Partial<CampaignFormValues>;
+  onSubmit: (formValues: FormValues) => void | Promise<void>;
+  defaultValues?: Partial<FormValues>;
 } & WrappedComponentProps;
 
 const CampaignForm = ({
@@ -98,7 +106,7 @@ const CampaignForm = ({
     return null;
   }
 
-  const onFormSubmit = async (formValues: CampaignFormValues) => {
+  const onFormSubmit = async (formValues: FormValues) => {
     try {
       await onSubmit(formValues);
     } catch (error) {

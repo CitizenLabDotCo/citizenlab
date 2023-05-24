@@ -4,11 +4,6 @@ import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/campaigns`;
 
-export interface ICampaignsData {
-  data: ICampaignData[];
-  links: ILinks;
-}
-
 export interface ICampaignData {
   id: string;
   type: string;
@@ -85,13 +80,6 @@ export interface ICampaignStats {
   opened: number;
   clicked: number;
   all: number;
-}
-
-export function listCampaigns(streamParams: IStreamParams | null = null) {
-  return streams.get<ICampaignsData>({
-    apiEndpoint: `${apiEndpoint}`,
-    ...streamParams,
-  });
 }
 
 export function createCampaign(campaignData: CampaignCreation) {

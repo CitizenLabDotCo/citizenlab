@@ -2,9 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import campaignsKeys from './keys';
-import { ICampaignsData, QueryProps, CampaignsKeys } from './types';
+import { ICampaignsData, QueryParameters, CampaignsKeys } from './types';
 
-const fetchCampaigns = (filters: QueryProps) => {
+const fetchCampaigns = (filters: QueryParameters) => {
   const {
     campaignNames: campaign_names,
     withoutCampaignNames: without_campaign_names,
@@ -23,7 +23,7 @@ const fetchCampaigns = (filters: QueryProps) => {
   });
 };
 
-const useCampaigns = (queryParams: QueryProps) => {
+const useCampaigns = (queryParams: QueryParameters) => {
   return useQuery<ICampaignsData, CLErrors, ICampaignsData, CampaignsKeys>({
     queryKey: campaignsKeys.list(queryParams),
     queryFn: () => fetchCampaigns(queryParams),
