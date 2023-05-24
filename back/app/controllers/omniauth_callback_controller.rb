@@ -43,15 +43,15 @@ class OmniauthCallbackController < ApplicationController
   # Currently, only FranceConnect and ClaveUnica use this method (support both verification and authentication).
   def auth_or_verification_callback(verify:, authver_method:)
     # If token is present, the user is already logged in, which means they try to verify not authenticate.
-    if request.env['omniauth.params']['token'] && auth_method.verification_prioritized?
+    if request.env['omniauth.params']['token'] && authver_method.verification_prioritized?
       # We need it only for ClaveUnica. For FC, we never verify, only authenticate (even when user clicks "verify").
-      verification_callback(verification_method)
+      verification_callback(verify)
       # Apart from verification, we also create an identity to be able to authenticate with this provider.
       auth = request.env['omniauth.auth']
-      @identity = Identity.find_or_build_with_omniauth(auth, auth_method)
+      @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
       @identity.update(user: @user) unless @identity.user
     else
-      auth_callback(verify: verification_method, authver_method: auth_method)
+      auth_callback(verify: verify, authver_method: authver_method)
     end
   end
 
