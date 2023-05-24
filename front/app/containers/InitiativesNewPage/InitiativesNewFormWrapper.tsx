@@ -198,40 +198,6 @@ const InitiativesNewFormWrapper = ({
         // successful save.
         setHasBannerChanged(false);
       }
-
-      // save any changes to initiative image.
-      if (
-        (hasImageChanged && initiativeId) ||
-        (initiativeId && imageId && image === null)
-      ) {
-        if (image && image.base64) {
-          addInitiativeImage(
-            {
-              initiativeId,
-              image: { image: image.base64 },
-            },
-            {
-              onSuccess: (data) => {
-                setImageId(data.data.id);
-              },
-            }
-          );
-        } else if (!image && imageId) {
-          deleteInitiativeImage(
-            { initiativeId, imageId },
-            {
-              onSuccess: () => {
-                setImageId(null);
-              },
-            }
-          );
-        } else {
-          // Image saving mechanism works on the hypothesis that any defined
-          // image will have a base64 key, and when you need to remove an image
-          // it was previously saved. If not, let's report it so it gets fixed.
-          reportError('There was an error with an initiative image');
-        }
-      }
       setSaving(false);
     } catch (errorResponse) {
       // saving changes while working should have a minimal error feedback,
@@ -288,10 +254,6 @@ const InitiativesNewFormWrapper = ({
         );
       }
 
-      console.log('image', image);
-      console.log('imageId', imageId);
-      console.log('hasImageChanged', hasImageChanged);
-
       // save any changes to initiative image.
       if (hasImageChanged && initiativeId) {
         if (image && image.base64) {
@@ -308,7 +270,6 @@ const InitiativesNewFormWrapper = ({
           );
           // remove image from remote if it was saved
         } else if (!image && imageId) {
-          console.log('Should be deleting!!!!!');
           deleteInitiativeImage(
             { initiativeId, imageId },
             {
@@ -430,15 +391,16 @@ const InitiativesNewFormWrapper = ({
   const onAddFile = (file: UploadFile) => {
     if (initiativeId) {
       setSaving(true);
-
       addInitiativeFile(
         {
           initiativeId,
           file: { file: file.base64, name: file.name },
         },
         {
-          onSuccess: () => {
+          onSuccess: (_data) => {
             setSaving(false);
+            const fileToAdd = file;
+            fileToAdd.id = _data.data.id;
             setFiles((files) => [...files, file]);
           },
           onError: (errorResponse) => {
@@ -476,6 +438,9 @@ const InitiativesNewFormWrapper = ({
         }
       );
     }
+    setFiles((files) =>
+      [...files].filter((file) => file.base64 !== fileToRemove.base64)
+    );
   };
 
   return (
