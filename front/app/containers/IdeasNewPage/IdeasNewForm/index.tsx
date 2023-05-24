@@ -278,7 +278,10 @@ const IdeasNewPageWithJSONForm = () => {
             formSubmitText={isSurvey ? messages.submitSurvey : undefined}
             footer={
               !isSurvey &&
-              project.data.attributes.allow_anonymous_participation ? (
+              (project.data.attributes.allow_anonymous_participation ||
+                (phases &&
+                  getCurrentPhase(phases.data)?.attributes
+                    .allow_anonymous_participation)) ? (
                 <Box
                   p="40px"
                   mb="20px"
