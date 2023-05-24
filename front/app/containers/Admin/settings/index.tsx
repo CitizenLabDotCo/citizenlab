@@ -53,6 +53,11 @@ const SettingsPage = () => {
       url: '/admin/settings/areas',
     },
     {
+      name: 'statuses',
+      label: formatMessage(messages.tabStatuses),
+      url: '/admin/settings/statuses',
+    },
+    {
       name: 'policies',
       label: formatMessage(messages.tabPolicies),
       url: '/admin/settings/policies',
