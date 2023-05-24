@@ -203,7 +203,6 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     });
     const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
 
-    // CL-3466
     return (
       <Container id="e2e-project-sidebar" className={className || ''}>
         <About>

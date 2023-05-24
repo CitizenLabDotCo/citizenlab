@@ -42,7 +42,7 @@ import { colors, viewportWidths, isRtl } from 'utils/styleUtils';
 // other
 import { isValidPhase } from '../phaseParam';
 import setPhaseURL from './setPhaseURL';
-import DocumentAnnotation from './document_annotation';
+import PhaseDocumentAnnotation from './document_annotation';
 import { useParams } from 'react-router-dom';
 
 const Container = styled.div``;
@@ -192,7 +192,7 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
               )}
               <PhaseSurvey projectId={projectId} phaseId={selectedPhaseId} />
               {participationMethod === 'document_annotation' && (
-                <DocumentAnnotation phase={selectedPhase} />
+                <PhaseDocumentAnnotation phase={selectedPhase} />
               )}
             </ContentContainer>
           </div>

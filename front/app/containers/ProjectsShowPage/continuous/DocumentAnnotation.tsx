@@ -11,7 +11,7 @@ import {
 } from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
 import { Box } from '@citizenlab/cl2-component-library';
-import Konveio from 'containers/ProjectsShowPage/shared/document_annotation/Konveio';
+import DocumentAnnotation from 'containers/ProjectsShowPage/shared/document_annotation';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -26,7 +26,7 @@ interface Props {
   className?: string;
 }
 
-const DocumentAnnotation = ({ project, className }: Props) => {
+const ContinuousDocumentAnnotation = ({ project, className }: Props) => {
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
   const documentUrl = project.attributes.document_annotation_embed_url;
@@ -56,7 +56,7 @@ const DocumentAnnotation = ({ project, className }: Props) => {
                 {formatMessage(messages.document)}
               </ProjectPageSectionTitle>
 
-              <Konveio documentUrl={documentUrl} email={email} />
+              <DocumentAnnotation documentUrl={documentUrl} email={email} />
             </Box>
           </SectionContainer>
         </ContentContainer>
@@ -67,4 +67,4 @@ const DocumentAnnotation = ({ project, className }: Props) => {
   return null;
 };
 
-export default DocumentAnnotation;
+export default ContinuousDocumentAnnotation;

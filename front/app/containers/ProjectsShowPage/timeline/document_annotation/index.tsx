@@ -1,6 +1,4 @@
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
-import Konveio from 'containers/ProjectsShowPage/shared/document_annotation/Konveio';
-
 import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -8,12 +6,13 @@ import messages from './messages';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { IPhaseData } from 'api/phases/types';
+import DocumentAnnotation from 'containers/ProjectsShowPage/shared/document_annotation';
 
 interface Props {
   phase: IPhaseData;
 }
 
-const DocumentAnnotation = ({ phase }: Props) => {
+const PhaseDocumentAnnotation = ({ phase }: Props) => {
   const authUser = useAuthUser();
 
   const documentUrl = phase.attributes.document_annotation_embed_url;
@@ -29,7 +28,7 @@ const DocumentAnnotation = ({ phase }: Props) => {
           <FormattedMessage {...messages.document} />
         </ProjectPageSectionTitle>
 
-        <Konveio documentUrl={documentUrl} email={email} />
+        <DocumentAnnotation documentUrl={documentUrl} email={email} />
       </Box>
     );
   }
@@ -37,4 +36,4 @@ const DocumentAnnotation = ({ phase }: Props) => {
   return null;
 };
 
-export default DocumentAnnotation;
+export default PhaseDocumentAnnotation;
