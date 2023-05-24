@@ -7,7 +7,6 @@ import messages from '../../messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import { isAdmin } from 'services/permissions/roles';
 import useAuthUser from 'hooks/useAuthUser';
 
 interface Props {
