@@ -200,7 +200,10 @@ const InitiativesNewFormWrapper = ({
       }
 
       // save any changes to initiative image.
-      if (hasImageChanged && initiativeId) {
+      if (
+        (hasImageChanged && initiativeId) ||
+        (initiativeId && imageId && image === null)
+      ) {
         if (image && image.base64) {
           addInitiativeImage(
             {
@@ -228,8 +231,6 @@ const InitiativesNewFormWrapper = ({
           // it was previously saved. If not, let's report it so it gets fixed.
           reportError('There was an error with an initiative image');
         }
-
-        setHasImageChanged(false);
       }
       setSaving(false);
     } catch (errorResponse) {
@@ -287,7 +288,10 @@ const InitiativesNewFormWrapper = ({
         );
       }
 
-      // setHasBannerChanged(false);
+      console.log('image', image);
+      console.log('imageId', imageId);
+      console.log('hasImageChanged', hasImageChanged);
+
       // save any changes to initiative image.
       if (hasImageChanged && initiativeId) {
         if (image && image.base64) {
@@ -302,9 +306,9 @@ const InitiativesNewFormWrapper = ({
               },
             }
           );
-
           // remove image from remote if it was saved
         } else if (!image && imageId) {
+          console.log('Should be deleting!!!!!');
           deleteInitiativeImage(
             { initiativeId, imageId },
             {
@@ -318,8 +322,6 @@ const InitiativesNewFormWrapper = ({
           // image will have a base64 key, if not, something wrong has happened.
           reportError('Unexpected state of initiative image');
         }
-
-        setHasImageChanged(false);
       }
     } catch (errorResponse) {
       const apiErrors = get(errorResponse, 'json.errors');
@@ -412,7 +414,16 @@ const InitiativesNewFormWrapper = ({
   };
 
   const onChangeImage = (newValue: UploadFile | null) => {
-    setImage(newValue);
+    if (newValue) {
+      setImage(newValue);
+    } else {
+      const currentImageId = image?.id;
+      if (currentImageId) {
+        setImage(newValue);
+      } else {
+        setImage(newValue);
+      }
+    }
     setHasImageChanged(true);
   };
 

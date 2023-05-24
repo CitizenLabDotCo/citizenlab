@@ -1,7 +1,11 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
+
+// utils
 import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
+import Link from 'utils/cl-router/Link';
 
 // Components
 import {
@@ -16,7 +20,7 @@ import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import FileUploader from 'components/UI/FileUploader';
 import Error from 'components/UI/Error';
-import Link from 'utils/cl-router/Link';
+import ProfileVisiblity from 'components/ProfileVisibility';
 
 // intl
 import messages from './messages';
@@ -26,8 +30,6 @@ import { MessageDescriptor, FormattedMessage, useIntl } from 'utils/cl-intl';
 import { Multiloc, Locale, UploadFile } from 'typings';
 import { ITopicData } from 'api/topics/types';
 import { FormSubmitFooter } from './SubmitFooter';
-import ProfileVisiblity from 'components/ProfileVisibility';
-import { useEffect, useState } from 'react';
 
 const Form = styled.form`
   display: flex;
@@ -165,6 +167,11 @@ const InitiativeForm = ({
     setErrors(errorList);
   }, [bodyMinLength, body_multiloc, image, locale, title_multiloc, topic_ids]);
 
+  const updateTouched = (fieldName: string) => {
+    const touchedArray = touched;
+    touchedArray[fieldName] = true;
+    setTouched(touchedArray);
+  };
   const onBlur = (fieldName: string) => () => {
     // making sure the props are updated before validation and save.
     setTimeout(() => {
@@ -176,54 +183,42 @@ const InitiativeForm = ({
   };
 
   const handleOnPublish = () => {
-    if (errors && Object.values(errors).every((error) => !error)) {
+    if (Object.values(errors).every((val) => val === undefined)) {
       onPublish();
     }
   };
 
   const changeAndSaveTopics = (topic_ids: string[]) => {
-    const touchedArray = touched;
-    touchedArray.topic_ids = true;
-    setTouched(touchedArray);
+    updateTouched('topic_ids');
     onChangeTopics(topic_ids.map((x) => x));
   };
 
   const addBanner = (banner: UploadFile[]) => {
-    const touchedArray = touched;
-    touchedArray.banner = true;
-    setTouched(touchedArray);
+    updateTouched('banner');
     onChangeBanner(banner[0]);
     onBlur('banner')();
   };
 
   const removeBanner = () => {
-    const touchedArray = touched;
-    touchedArray.banner = true;
-    setTouched(touchedArray);
+    updateTouched('banner');
     onChangeBanner(null);
     onBlur('banner')();
   };
 
   const addImage = (image: UploadFile[]) => {
-    const touchedArray = touched;
-    touchedArray.image = true;
-    setTouched(touchedArray);
+    updateTouched('image');
     onChangeImage(image[0]);
     onBlur('image')();
   };
 
   const removeImage = () => {
-    const touchedArray = touched;
-    touchedArray.image = true;
-    setTouched(touchedArray);
+    updateTouched('image');
     onChangeImage(null);
     onBlur('image')();
   };
 
   const handleTitleOnChange = (value: string) => {
-    const touchedArray = touched;
-    touchedArray.title_multiloc = true;
-    setTouched(touchedArray);
+    updateTouched('title_multiloc');
     if (locale && onChangeTitle) {
       onChangeTitle({
         ...title_multiloc,
@@ -233,9 +228,7 @@ const InitiativeForm = ({
   };
 
   const handleBodyOnChange = (value: string) => {
-    const touchedArray = touched;
-    touchedArray.body_multiloc = true;
-    setTouched(touchedArray);
+    updateTouched('body_multiloc');
     if (locale && onChangeBody) {
       onChangeBody({
         ...body_multiloc,
