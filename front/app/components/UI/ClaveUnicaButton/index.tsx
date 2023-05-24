@@ -99,6 +99,8 @@ const ClaveUnicaButton = ({
         className={disabled ? 'disabled' : undefined}
       >
         <ClaveUnicaButtonIcon />
+        {/* This text should be always like that and should not be translated
+        according to the guideline https://drive.google.com/file/d/1-aBGu5XEjHD1LYcqOZP_mUg4ekFLDv6v/view */}
         <ClaveUnicaButtonLabel>Iniciar sesión</ClaveUnicaButtonLabel>
       </ButtonWrapper>
       {message && <HelperText>{message}</HelperText>}

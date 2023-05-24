@@ -102,6 +102,13 @@ const AuthProviders = memo<Props>(
     const showFCButton =
       franceconnectLoginEnabled && error !== 'franceconnect_merging_failed';
 
+    const showMainAuthMethods =
+      isPasswordSigninOrSignupAllowed ||
+      facebookLoginEnabled ||
+      azureAdLoginEnabled ||
+      viennaCitizenLoginEnabled ||
+      claveUnicaLoginEnabled;
+
     return (
       <Container id="e2e-sign-up-container" className={className}>
         {showFCButton && (
@@ -113,22 +120,14 @@ const AuthProviders = memo<Props>(
           />
         )}
 
-        {claveUnicaLoginEnabled && (
-          <>
-            {franceconnectLoginEnabled && <Or />}
-            <StyledExpandedAuthProviderButton
-              flow={flow}
-              onSelectAuthProvider={onSelectAuthProvider}
-            />
-          </>
-        )}
+        {showMainAuthMethods && franceconnectLoginEnabled && <Or />}
 
-        {(isPasswordSigninOrSignupAllowed ||
-          facebookLoginEnabled ||
-          azureAdLoginEnabled ||
-          viennaCitizenLoginEnabled ||
-          claveUnicaLoginEnabled) &&
-          (franceconnectLoginEnabled || claveUnicaLoginEnabled) && <Or />}
+        {claveUnicaLoginEnabled && (
+          <StyledExpandedAuthProviderButton
+            flow={flow}
+            onSelectAuthProvider={onSelectAuthProvider}
+          />
+        )}
 
         <Outlet
           id="app.components.SignUpIn.AuthProviders.ContainerStart"
