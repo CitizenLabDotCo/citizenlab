@@ -52,7 +52,7 @@ const CustomEmails = () => {
   const { data } = useCampaigns({
     campaignNames: ['manual'],
     pageNumber: pageNumberInt,
-    pageSize: 2,
+    pageSize: 10,
   });
   if (!data) return null;
 
