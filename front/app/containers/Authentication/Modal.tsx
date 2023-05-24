@@ -26,6 +26,7 @@ import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
 import BuiltInFields from './steps/BuiltInFields';
 import Password from './steps/Password';
 import Success from './steps/Success';
+import ClaveUnicaEmail from './steps/ClaveUnicaEmail';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -58,6 +59,8 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sign-up:verification': messages.verifyYourIdentity,
   'sign-up:custom-fields': messages.completeYourProfile,
   'sign-up:invite': messages.signUp,
+  'clave-unica:email': messages.signUp,
+  'clave-unica:email-confirmation': messages.confirmYourEmail,
 
   // light flow
   'light-flow:email': messages.beforeYouParticipate,
@@ -129,7 +132,10 @@ const AuthModal = ({ setModalOpen }: Props) => {
   });
   const fullscreenModalEnabled = _fullscreenModalEnabled && false;
 
-  const closable = currentStep !== 'closed' && currentStep !== 'success';
+  const closable =
+    currentStep !== 'closed' &&
+    currentStep !== 'success' &&
+    currentStep !== 'clave-unica:email';
 
   const headerMessage = HEADER_MESSAGES[currentStep];
 
@@ -302,6 +308,24 @@ const AuthModal = ({ setModalOpen }: Props) => {
             loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT')}
+          />
+        )}
+
+        {currentStep === 'clave-unica:email' && (
+          <ClaveUnicaEmail
+            loading={loading}
+            setError={setError}
+            onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
+          />
+        )}
+
+        {currentStep === 'clave-unica:email-confirmation' && (
+          <EmailConfirmation
+            state={state}
+            loading={loading}
+            setError={setError}
+            onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+            onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
           />
         )}
 
