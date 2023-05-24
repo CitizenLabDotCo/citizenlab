@@ -49,17 +49,16 @@ const CustomEmails = () => {
   const pageNumber = query.pageNumber;
   const pageNumberInt = pageNumber ? parseInt(pageNumber as string, 10) : 1;
 
-  const { data } = useCampaigns({
+  const { data: campaigns } = useCampaigns({
     campaignNames: ['manual'],
     pageNumber: pageNumberInt,
     pageSize: 10,
   });
-  if (!data) return null;
+  if (!campaigns) return null;
 
-  const campaigns = data.data;
-  const lastPage = getPageNumberFromUrl(data.links.last) || 1;
+  const lastPage = getPageNumberFromUrl(campaigns.links.last) || 1;
 
-  if (campaigns.length === 0) {
+  if (campaigns.data.length === 0) {
     return (
       <Box background={colors.white} p="40px">
         <NoCampaignsWrapper>
@@ -92,8 +91,8 @@ const CustomEmails = () => {
         </Box>
 
         <Box background={colors.white} p="40px">
-          <List key={campaigns.map((c) => c.id).join()}>
-            {campaigns.map((campaign) =>
+          <List key={campaigns.data.map((c) => c.id).join()}>
+            {campaigns.data.map((campaign) =>
               isDraft(campaign) ? (
                 <DraftCampaignRow key={campaign.id} campaign={campaign} />
               ) : (
