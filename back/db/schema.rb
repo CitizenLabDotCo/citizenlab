@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_19_085843) do
+ActiveRecord::Schema.define(version: 2023_05_24_151508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -336,14 +336,14 @@ ActiveRecord::Schema.define(version: 2023_05_19_085843) do
   end
 
   create_table "email_campaigns_examples", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "campaign_class", null: false
     t.string "mail_body_html", null: false
     t.string "locale", null: false
     t.string "subject", null: false
     t.uuid "recipient_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["campaign_class"], name: "index_email_campaigns_examples_on_campaign_class"
+    t.uuid "campaign_id"
+    t.index ["campaign_id"], name: "index_email_campaigns_examples_on_campaign_id"
   end
 
   create_table "email_campaigns_unsubscription_tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
