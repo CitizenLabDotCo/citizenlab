@@ -26,12 +26,12 @@ const Container = styled.div`
 
 interface Props {
   projectId: string;
-  phaseId?: string | null;
-  className?: string;
+  phaseId: string | null;
   children: ReactNode;
   action: IPCPermissionAction;
-  disabledMessage?: MessageDescriptor;
+  disabledMessage: MessageDescriptor | null;
   enabled: boolean;
+  className?: string;
 }
 
 const ParticipationPermission = ({

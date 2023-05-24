@@ -1,6 +1,4 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import useAuthUser from 'hooks/useAuthUser';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -28,12 +26,7 @@ interface Props {
 
 const ContinuousDocumentAnnotation = ({ project, className }: Props) => {
   const { formatMessage } = useIntl();
-  const authUser = useAuthUser();
   const documentUrl = project.attributes.document_annotation_embed_url;
-  const email =
-    !isNilOrError(authUser) && authUser.attributes.email
-      ? authUser.attributes.email
-      : null;
 
   if (documentUrl) {
     return (
@@ -56,7 +49,11 @@ const ContinuousDocumentAnnotation = ({ project, className }: Props) => {
                 {formatMessage(messages.document)}
               </ProjectPageSectionTitle>
 
-              <DocumentAnnotation documentUrl={documentUrl} email={email} />
+              <DocumentAnnotation
+                documentUrl={documentUrl}
+                project={project}
+                phaseId={null}
+              />
             </Box>
           </SectionContainer>
         </ContentContainer>
