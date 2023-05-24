@@ -20,6 +20,7 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 import useVerificationMethods from 'hooks/useVerificationMethods';
 import { isNilOrError } from 'utils/helperUtils';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div`
   display: flex;
@@ -60,7 +61,11 @@ const ClaveUnicaExpandedAuthProviderButton = memo<Props>(
     const [tacError, setTacError] = useState(false);
     const [privacyAccepted, setPrivacyAccepted] = useState(false);
     const [privacyError, setPrivacyError] = useState(false);
-    const showConsent = showConsentOnFlow === flow;
+    const isShowClaveUnicaConsentsEnabled = useFeatureFlag({
+      name: 'show_clave_unica_consents',
+    });
+    const showConsent =
+      showConsentOnFlow === flow && isShowClaveUnicaConsentsEnabled;
     const { formatMessage } = useIntl();
     const verificationMethods = useVerificationMethods();
 

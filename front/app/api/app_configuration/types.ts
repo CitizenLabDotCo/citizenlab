@@ -65,6 +65,10 @@ export type ProposalsSettings = {
 };
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
+  show_clave_unica_consents: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   advanced_custom_pages: {
     allowed: boolean;
     enabled: boolean;
