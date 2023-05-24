@@ -55,10 +55,6 @@ export interface IUpdateCampaignProperties {
   campaign: CampaignUpdate;
 }
 
-export interface CampaignAdd extends CampaignFormValues {
-  campaign_name: string;
-}
-
 export interface ICampaign {
   data: ICampaignData;
 }
