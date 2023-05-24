@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { get } from 'lodash-es';
 import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -127,48 +126,6 @@ const InitiativeForm = ({
   const titleMinLength = 10;
   const titleMaxLength = 72;
   const bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 30;
-  const requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids'];
-
-  const validations = {
-    title_multiloc: () => {
-      const title = title_multiloc ? title_multiloc[locale] : undefined;
-
-      if (title && title.length > 0 && title.length < titleMinLength) {
-        return { message: messages.titleMinLengthError };
-      } else if (title && title.length > 0 && title.length > titleMaxLength) {
-        return { message: messages.titleMaxLengthError };
-      } else if (!title || title === '') {
-        return { message: messages.titleEmptyError };
-      }
-
-      return undefined;
-    },
-    body_multiloc: () => {
-      const body = body_multiloc ? body_multiloc[locale] : undefined;
-      if (
-        body &&
-        stripHtmlTags(body).length < bodyMinLength &&
-        body.length > 0
-      ) {
-        return { message: messages.descriptionBodyLengthError };
-      } else if (!body || body === '') {
-        return { message: messages.descriptionEmptyError };
-      }
-      return undefined;
-    },
-    topic_ids: () => {
-      if (topic_ids.length === 0) {
-        return { message: messages.topicEmptyError };
-      }
-      return undefined;
-    },
-    image: () => {
-      if (!image) {
-        return { message: messages.imageEmptyError };
-      }
-      return undefined;
-    },
-  };
 
   useEffect(() => {
     const requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids'];
@@ -206,12 +163,6 @@ const InitiativeForm = ({
         }
         return undefined;
       },
-      image: () => {
-        if (!image) {
-          return { message: messages.imageEmptyError };
-        }
-        return undefined;
-      },
     };
     const errorList = {};
     requiredFields.forEach((fieldName) => {
@@ -225,16 +176,15 @@ const InitiativeForm = ({
     setTimeout(() => {
       const touchedCopy = Object.assign({}, touched);
       touchedCopy[fieldName] = true;
-      const errorsCopy = Object.assign({}, errors);
-      errorsCopy[fieldName] = get(validations, fieldName, () => undefined)();
       setTouched(touchedCopy);
-      setErrors(errorsCopy);
       onSave();
     }, 5);
   };
 
   const handleOnPublish = () => {
-    onPublish();
+    if (errors && Object.values(errors).every((error) => !error)) {
+      onPublish();
+    }
   };
 
   const changeAndSaveTopics = (topic_ids: string[]) => {
@@ -269,6 +219,9 @@ const InitiativeForm = ({
   };
 
   const removeImage = () => {
+    const touchedArray = touched;
+    touchedArray.image = true;
+    setTouched(touchedArray);
     onChangeImage(null);
     onBlur('image')();
   };

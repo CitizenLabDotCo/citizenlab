@@ -5,13 +5,15 @@ import InitiativeForm, {
   FormValues,
   SimpleFormValues,
 } from 'components/InitiativeForm';
+import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 
+// types
 import { Locale, Multiloc, UploadFile } from 'typings';
-
 import { ITopicData } from 'api/topics/types';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { reportError } from 'utils/loggingUtils';
 
 // style
 import { media } from 'utils/styleUtils';
@@ -23,12 +25,11 @@ import { geocode } from 'utils/locationTools';
 import { isEqual, pick, get, omitBy, isEmpty, debounce } from 'lodash-es';
 import { Point } from 'geojson';
 
-import { reportError } from 'utils/loggingUtils';
-
 // tracks
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
+// api
 import useAddInitiative from 'api/initiatives/useAddInitiative';
 import { IInitiativeAdd } from 'api/initiatives/types';
 import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
@@ -38,11 +39,6 @@ import useAuthUser from 'hooks/useAuthUser';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
-import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
-import {
-  getCookieAnonymousConfirmation,
-  setCookieAnonymousConfirmation,
-} from 'components/AnonymousParticipationConfirmationModal/AnonymousCookieManagement';
 
 const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;
@@ -143,7 +139,6 @@ const InitiativesNewFormWrapper = ({
 
   const getValuesToSend = async (
     changedValues: Partial<FormValues>,
-    hasBannerChanged: boolean,
     banner: UploadFile | undefined | null
   ) => {
     // build API readable object
@@ -162,14 +157,14 @@ const InitiativesNewFormWrapper = ({
       (entry) => entry === undefined
     );
 
-    if (hasBannerChanged) {
-      formAPIValues.header_bg = banner ? banner.base64 : null;
-    }
+    formAPIValues.header_bg = banner ? banner.base64 : null;
+
     return formAPIValues as Partial<IInitiativeAdd>;
   };
 
   const handleSave = async () => {
     const changedValues = getChangedValues();
+
     // if nothing has changed, do noting.
     if (isEmpty(changedValues) && !hasBannerChanged && !hasImageChanged) return;
 
@@ -177,15 +172,10 @@ const InitiativesNewFormWrapper = ({
     if (saving) return;
 
     // setting flags for user feedback and avoiding double sends.
-
     setSaving(true);
 
     try {
-      const formAPIValues = await getValuesToSend(
-        changedValues,
-        hasBannerChanged,
-        banner
-      );
+      const formAPIValues = await getValuesToSend(changedValues, banner);
       // save any changes to the initiative data.
       if (!isEmpty(formAPIValues)) {
         if (initiativeId) {
@@ -206,7 +196,6 @@ const InitiativesNewFormWrapper = ({
         // feed back what was saved to the api into the initialValues object
         // so that we can determine with certainty what has changed since last
         // successful save.
-
         setHasBannerChanged(false);
       }
 
@@ -254,12 +243,7 @@ const InitiativesNewFormWrapper = ({
   const debouncedSave = debounce(handleSave, 500);
 
   const handlePublish = async () => {
-    const hasAnonymousConfirmationCookie = getCookieAnonymousConfirmation();
-    if (
-      allowAnonymousParticipation &&
-      postAnonymously &&
-      !hasAnonymousConfirmationCookie
-    ) {
+    if (allowAnonymousParticipation && postAnonymously) {
       setShowAnonymousConfirmationModal(true);
     } else {
       continuePublish();
@@ -270,11 +254,7 @@ const InitiativesNewFormWrapper = ({
     const changedValues = getChangedValues();
 
     try {
-      const formAPIValues = await getValuesToSend(
-        changedValues,
-        hasBannerChanged,
-        banner
-      );
+      const formAPIValues = await getValuesToSend(changedValues, banner);
 
       // save any changes to the initiative data.
       if (initiativeId) {
@@ -428,13 +408,12 @@ const InitiativesNewFormWrapper = ({
   const onChangeBanner = (newValue: UploadFile | null) => {
     setBanner(newValue);
     setHasBannerChanged(true);
+    handleSave();
   };
 
   const onChangeImage = (newValue: UploadFile | null) => {
-    if (newValue) {
-      setImage(newValue);
-      setHasImageChanged(true);
-    }
+    setImage(newValue);
+    setHasImageChanged(true);
   };
 
   const onAddFile = (file: UploadFile) => {
@@ -517,7 +496,6 @@ const InitiativesNewFormWrapper = ({
       />
       <AnonymousParticipationConfirmationModal
         onConfirmAnonymousParticipation={() => {
-          setCookieAnonymousConfirmation();
           continuePublish();
         }}
         showAnonymousConfirmationModal={showAnonymousConfirmationModal}
