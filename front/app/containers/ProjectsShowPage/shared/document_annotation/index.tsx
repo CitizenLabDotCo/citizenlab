@@ -5,10 +5,13 @@ import { MessageDescriptor } from 'react-intl';
 import { DocumentAnnotationDisabledReason } from 'api/projects/types';
 import messages from './messages';
 import globalMessages from 'utils/messages';
+import ParticipationPermission from '../ParticipationPermission';
 
 interface Props {
   documentUrl: string;
   email: string | null;
+  projectId: string;
+  enabled: boolean;
 }
 
 const disabledMessages: {
@@ -25,8 +28,21 @@ const disabledMessages: {
     messages.documentAnnotationDisabledNotDocumentAnnotation,
 };
 
-const DocumentAnnotation = ({ documentUrl, email }: Props) => {
-  return <Konveio documentUrl={documentUrl} email={email} />;
+const DocumentAnnotation = ({
+  documentUrl,
+  email,
+  projectId,
+  enabled,
+}: Props) => {
+  return (
+    <ParticipationPermission
+      projectId={projectId}
+      action="annotating_document"
+      enabled={enabled}
+    >
+      <Konveio documentUrl={documentUrl} email={email} />;
+    </ParticipationPermission>
+  );
 };
 
 export default DocumentAnnotation;
