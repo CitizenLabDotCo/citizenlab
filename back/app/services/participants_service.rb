@@ -101,6 +101,19 @@ class ParticipantsService
     User.where(id: participant_ids)
   end
 
+  # Returns the count of project participants including anonymous posts
+  def project_participants_count(project)
+    # TODO: Wrap in cache
+    # Get anonymous count
+    participant_ids = Rails.cache.fetch("#{project.cache_key}/participant_ids", expires_in: 1.day) do
+      projects_participants([project]).pluck(:id)
+    end
+    participant_author_hashes = participant_ids.map { |id| Idea.create_author_hash(id, project.id, true) }
+    anonymous_count = Idea.where(project: project, anonymous: true).where.not(author_hash: participant_author_hashes).distinct.count(:author_hash)
+    # TODO: Add anonymous comments
+    participant_ids.size + anonymous_count
+  end
+
   def projects_participants(projects, options = {})
     since = options[:since]
     actions = options[:actions] || PARTICIPANT_ACTIONS

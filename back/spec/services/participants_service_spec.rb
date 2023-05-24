@@ -75,6 +75,23 @@ describe ParticipantsService do
       expect(service.projects_participants([project]).map(&:id)).to match_array participants.map(&:id)
     end
 
+    it 'returns project participant count including anonymous posts' do
+      project = create(:project)
+      pp1, pp2, pp3, pp4, pp5 = create_list(:user, 5)
+
+      idea1 = create(:idea, project: project, author: pp1)
+      create(:idea, project: project, author: pp2)
+      create(:idea, project: project, author: pp3)
+      create(:idea, project: project, author: pp3, anonymous: true)
+      create(:idea, project: project, author: pp4, anonymous: true)
+
+      create(:comment, post: idea1, author: pp5, anonymous: true)
+      create(:comment, post: idea1, author: pp4)
+      create(:comment, post: idea1, author: pp2)
+
+      expect(service.project_participants_count(project)).to eq 5
+    end
+
     it 'returns participants of a poll' do
       poll = create(:continuous_poll_project)
       responses = create_list(:poll_response, 2, participation_context: poll)
