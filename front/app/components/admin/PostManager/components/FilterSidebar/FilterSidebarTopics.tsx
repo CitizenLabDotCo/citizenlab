@@ -58,6 +58,7 @@ const FilterSidebarTopics = ({
       >
         <FormattedMessage {...messages.allTopics} />
       </Menu.Item>
+      <Divider />
       {isAdmin({ data: authUser }) && (
         <Box display="inline-flex">
           <Button
@@ -74,7 +75,6 @@ const FilterSidebarTopics = ({
           </Button>
         </Box>
       )}
-      <Divider />
       {selectableTopics.map((topic) => (
         <FilterSidebarTopicsItem
           key={topic.id}

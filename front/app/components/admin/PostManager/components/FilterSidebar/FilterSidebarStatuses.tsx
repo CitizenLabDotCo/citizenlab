@@ -46,6 +46,7 @@ const FilterSidebarStatuses = ({
         <Menu.Item onClick={clearFilter} active={!selectedStatus}>
           <FormattedMessage {...messages.allStatuses} />
         </Menu.Item>
+        <Divider />
         {isAdmin({ data: authUser }) && (
           <Box display="inline-flex">
             <Button
@@ -62,7 +63,6 @@ const FilterSidebarStatuses = ({
             </Button>
           </Box>
         )}
-        <Divider />
         {(statuses as (IIdeaStatusData | IInitiativeStatusData)[]).map(
           (status) => (
             <FilterSidebarStatusesItem

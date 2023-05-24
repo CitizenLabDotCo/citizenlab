@@ -47,25 +47,23 @@ const FilterSidebarProjects = ({
           <Menu.Item onClick={clearFilter} active={!selectedProject}>
             <FormattedMessage {...messages.allProjects} />
           </Menu.Item>
-          {isAdmin({ data: authUser }) && (
-            <Box display="inline-flex">
-              <Button
-                buttonStyle="text"
-                icon="edit"
-                pl="12px"
-                linkTo="/admin/projects"
-                iconPos="right"
-                iconSize="14px"
-              >
-                <Text m="0px" color="coolGrey600" fontSize="s" textAlign="left">
-                  <FormattedMessage {...messages.editProjects} />
-                </Text>
-              </Button>
-            </Box>
-          )}
           <Divider />
         </>
       )}
+      <Box display="inline-flex">
+        <Button
+          buttonStyle="text"
+          icon="edit"
+          pl="12px"
+          linkTo="/admin/projects"
+          iconPos="right"
+          iconSize="14px"
+        >
+          <Text m="0px" color="coolGrey600" fontSize="s" textAlign="left">
+            <FormattedMessage {...messages.editProjects} />
+          </Text>
+        </Button>
+      </Box>
       {projects &&
         projects.map((project) => (
           <FilterSidebarProjectsItem
