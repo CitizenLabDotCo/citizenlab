@@ -76,8 +76,9 @@ describe EmailCampaigns::ExamplesService do
       expect { service.save_examples([[command, campaign]]) }.not_to change { EmailCampaigns::Example.where(campaign_class: 'SomeFakeCampaign').count }
     end
 
-    it 'reduces the number of stored campaigns if there are more than EXAMLPES_PER_CAMPAIGN (5)' do
-      create_list(:campaign_example, 6, created_at: 1.year.ago)
+    it 'reduces the number of stored campaigns if there are more than EXAMPLES_PER_CAMPAIGN (5)' do
+      create_list(:campaign_example, 4)
+      old_examples = create_list(:campaign_example, 2, created_at: 1.year.ago)
 
       recipient = create(:admin)
       campaign = build(:admin_rights_received_campaign)
@@ -88,6 +89,7 @@ describe EmailCampaigns::ExamplesService do
       }
 
       expect { service.save_examples([[command, campaign]]) }.to change { EmailCampaigns::Example.count }.from(6).to(5)
+      expect(old_examples.map(&:id) & EmailCampaigns::Example.ids).to be_empty
     end
   end
 end

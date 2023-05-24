@@ -19,13 +19,22 @@ module EmailCampaigns
           .count
         n_lacking = EXAMPLES_PER_CAMPAIGN - recent_examples_n
 
-        next if n_lacking <= 0
+        next if n_lacking == 0
 
-        campaign_commands =
+        total_examples = Example.where(campaign_class: campaign_type).count
+
+        new_campaign_commands =
           filter_n_campaigns_with_command_for_campaign_type(campaigns_with_command, campaign_type, n_lacking)
 
-        Example.order(created_at: :asc).limit(campaign_commands.size).destroy_all
-        campaign_commands.each do |(command, campaign)|
+        Example
+          .where(campaign_class: campaign_type)
+          .order(created_at: :asc)
+          .limit([new_campaign_commands.size, n_lacking].min + [0, (total_examples - EXAMPLES_PER_CAMPAIGN)].max)
+          .destroy_all
+
+        next if n_lacking < 0
+
+        new_campaign_commands.each do |(command, campaign)|
           save_example(command, campaign)
         end
       end
