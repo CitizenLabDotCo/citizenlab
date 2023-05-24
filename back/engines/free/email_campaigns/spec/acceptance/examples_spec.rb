@@ -40,6 +40,31 @@ resource 'Campaing examples' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq id
+      expect(json_response[:data]).to include({
+        id: id,
+        type: 'example',
+        attributes: a_hash_including({
+          mail_body_html: kind_of(String),
+          locale: 'en',
+          subject: 'You became an administrator on the platform of Liege',
+          created_at: kind_of(String),
+          updated_at: kind_of(String)
+        }),
+        relationships: {
+          campaign: {
+            data: {
+              id: example1.campaign_id,
+              type: 'campaign'
+            }
+          },
+          recipient: {
+            data: {
+              id: example1.recipient.id,
+              type: 'user'
+            }
+          }
+        }
+      })
     end
   end
 end
