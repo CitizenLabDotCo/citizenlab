@@ -1688,7 +1688,6 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Statusit massakkut peqataasut inputiinut atassuserneqarnikut peerneqarsinnaanngillat. Quppernermi {manageTab}-imi statusit, inputinit pioreersunit peersinnaavatit/allanngortissinnaavatit.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Una statusi peerneqarsinnaananilu nuunneqarsinnaanngilaq.",
   "app.containers.admin.ideaStatuses.all.manage": "Manage",
-  "app.containers.admin.ideaStatuses.all.subtitleInputStatuses": "Statusit peqataasut inputiinut ilanngunneqarsinnaasut ilanngukkit, allanngortitikkit imaluunniit piikkit. Statusit tamanit takuneqarsinnaapput peqataasullu suliniut pillugu malinnaasittarlugit. Quppernermi {linkToManageTab}-imi statusimik ilanngussisinnaavutit.",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Atuutilersitsinissamut imaluunniit ingerlariaqqinnissamut toqqarneqarpoq",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeTitle": "Akuerineqarpoq",
   "app.containers.admin.ideaStatuses.form.category": "Kategori",

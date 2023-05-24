@@ -1830,7 +1830,6 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Statusar som för närvarande är tilldelade indata från deltagare kan inte tas bort. Du kan ta bort/ändra status från befintliga indata på fliken {manageTab}.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Den här statusen kan inte tas bort eller flyttas.",
   "app.containers.admin.ideaStatuses.all.manage": "Redigera",
-  "app.containers.admin.ideaStatuses.all.subtitleInputStatuses": "Lägg till, redigera och ta bort de statusar som kan tilldelas indata från deltagare. Statusen visas offentligt och hjälper dig hålla deltagare informerade om projektet. Du kan lägga till en status för indata på fliken {linkToManageTab}.",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Vald för implementering eller nästa steg",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeTitle": "Godkänd",
   "app.containers.admin.ideaStatuses.form.category": "Kategori",

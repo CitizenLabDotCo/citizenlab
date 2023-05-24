@@ -1688,7 +1688,6 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Els estats assignats actualment a l'entrada dels participants no es poden eliminar. Podeu eliminar/canviar l'estat de l'entrada existent a la pestanya {manageTab}.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Aquest estat no es pot eliminar ni moure.",
   "app.containers.admin.ideaStatuses.all.manage": "Edit",
-  "app.containers.admin.ideaStatuses.all.subtitleInputStatuses": "Afegiu, editeu i suprimiu els estats que es poden assignar a l'entrada dels participants. L'estat és visible públicament i ajuda a mantenir els participants informats sobre el projecte. Podeu afegir un estat per introduir-lo a la pestanya {linkToManageTab}.",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Seleccionat per a la implementació o els passos següents",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeTitle": "Aprovat",
   "app.containers.admin.ideaStatuses.form.category": "Categoria",

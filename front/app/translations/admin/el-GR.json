@@ -1688,7 +1688,6 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Οι καταστάσεις που έχουν εκχωρηθεί επί του παρόντος στην εισήγηση συμμετεχόντων δεν μπορούν να διαγραφούν. Μπορείτε να καταργήσετε/αλλάξετε την κατάσταση από την υπάρχουσα εισήγηση στην καρτέλα {manageTab}.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Αυτή η κατάσταση δεν μπορεί να διαγραφεί ή να μετακινηθεί.",
   "app.containers.admin.ideaStatuses.all.manage": "Edit",
-  "app.containers.admin.ideaStatuses.all.subtitleInputStatuses": "Προσθέστε, επεξεργαστείτε και διαγράψτε τις καταστάσεις που μπορούν να εκχωρηθούν στην εισήγηση συμμετεχόντων. Η κατάσταση είναι δημόσια ορατή και συμβάλλει στην ενημέρωση των συμμετεχόντων σχετικά με το έργο. Μπορείτε να προσθέσετε μια κατάσταση στην εισήγηση στην καρτέλα {linkToManageTab}.",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Επιλεγμένο για υλοποίηση ή επόμενα βήματα",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeTitle": "Εγκεκριμένο",
   "app.containers.admin.ideaStatuses.form.category": "Κατηγορία",

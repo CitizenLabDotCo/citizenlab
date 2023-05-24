@@ -1830,7 +1830,6 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Dalībnieka ievades datiem šobrīd piešķirtos statusus nav iespējams dzēst. Jūs varat dzēst/mainīt statusu esošajiem ievades datiem cilnē {manageTab}.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Šo statusu nevar dzēst vai pārvietot.",
   "app.containers.admin.ideaStatuses.all.manage": "Rediģēt",
-  "app.containers.admin.ideaStatuses.all.subtitleInputStatuses": "Pievienot, rediģēt un dzēst statusus, ko var piešķirt dalībnieka ievades datiem. Statuss ir publiski redzams un ļauj informēt dalībniekus par projektu. Jūs varat pievienot statusu ievades datiem cilnē {linkToManageTab}.",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Izvēlēts īstenošanai vai turpmākajiem soļiem",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeTitle": "Apstiprināts",
   "app.containers.admin.ideaStatuses.form.category": "Kategorija",

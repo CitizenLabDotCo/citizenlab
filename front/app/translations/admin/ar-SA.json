@@ -1830,7 +1830,6 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "لا يمكن حذف الحالات المعيَّنة حاليًا لمدخلات المشاركين. يمكنك إزالة الحالة أو تغييرها من المدخلات الحالية في علامة التبويب {manageTab}.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "لا يمكن حذف هذه الحالة أو نقلها.",
   "app.containers.admin.ideaStatuses.all.manage": "إدارة",
-  "app.containers.admin.ideaStatuses.all.subtitleInputStatuses": "أضف الحالات التي يمكن تعيينها لمدخلات المشاركين وعدِّلها واحذفها. يمكن للجميع رؤية الحالة؛ فهي تساعد في إبقاء المشاركين على علم بمستجدات المشروع. يمكنك إضافة حالة للمدخلات في علامة التبويب {linkToManageTab}.",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "محدد للتنفيذ أو الخطوات التالية",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeTitle": "معتمد",
   "app.containers.admin.ideaStatuses.form.category": "الفئة",

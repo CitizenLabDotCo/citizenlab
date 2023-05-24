@@ -1830,7 +1830,6 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Katılımcı girdisine atanmış olan durumlar silinemez. {manageTab} sekmesinde mevcut girdiden durumu kaldırabilir veya değiştirebilirsiniz.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Bu durum silinemez veya taşınamaz.",
   "app.containers.admin.ideaStatuses.all.manage": "Düzenle",
-  "app.containers.admin.ideaStatuses.all.subtitleInputStatuses": "Katılımcı girdisine atanabilecek durumları ekleyin, düzenleyin ve silin. Durum herkes tarafından görülebilir ve katılımcıların proje hakkında bilgilendirilmesine yardımcı olur. {linkToManageTab} sekmesinde girdiye bir durum ekleyebilirsiniz.",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Uygulama veya sonraki adımlar için seçilenler",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeTitle": "Onaylandı",
   "app.containers.admin.ideaStatuses.form.category": "Kategori",

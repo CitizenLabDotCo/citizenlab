@@ -1830,7 +1830,6 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Статуси који су тренутно додељени уносу учесника не могу се избрисати. Можете уклонити/променити статус постојећег уноса на картици {manageTab}.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Овај статус се не може избрисати или преместити.",
   "app.containers.admin.ideaStatuses.all.manage": "Уредити",
-  "app.containers.admin.ideaStatuses.all.subtitleInputStatuses": "Додајте, уредите и избришите статусе који се могу доделити уносу учесника. Статус је јавно видљив и помаже да учесници буду информисани о пројекту. Можете додати статус за унос на картици {linkToManageTab}.",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Изабрано за имплементацију или следеће кораке",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeTitle": "Одобрено",
   "app.containers.admin.ideaStatuses.form.category": "Категорија",
