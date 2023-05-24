@@ -11,12 +11,6 @@ import useInputSchema from 'hooks/useInputSchema';
 import { useParams, useSearchParams } from 'react-router-dom';
 import useAddIdea from 'api/ideas/useAddIdea';
 
-// Cookies
-import {
-  setCookieAnonymousConfirmation,
-  getCookieAnonymousConfirmation,
-} from 'components/AnonymousParticipationConfirmationModal/AnonymousCookieManagement';
-
 // i18n
 import messages from '../messages';
 
@@ -143,11 +137,9 @@ const IdeasNewPageWithJSONForm = () => {
 
     setFormDataOnSubmit(data);
 
-    const hasAnonymousConfirmationCookie = getCookieAnonymousConfirmation();
     if (
       project.data.attributes.allow_anonymous_participation &&
-      postAnonymously &&
-      !hasAnonymousConfirmationCookie
+      postAnonymously
     ) {
       setShowAnonymousConfirmationModal(true);
     } else {
@@ -311,7 +303,6 @@ const IdeasNewPageWithJSONForm = () => {
       )}
       <AnonymousParticipationConfirmationModal
         onConfirmAnonymousParticipation={() => {
-          setCookieAnonymousConfirmation();
           setShowAnonymousConfirmationModal(false);
           continueSubmission(formDataOnSubmit);
         }}

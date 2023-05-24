@@ -44,10 +44,6 @@ import useLocale from 'hooks/useLocale';
 import useAuthUser from 'hooks/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import {
-  getCookieAnonymousConfirmation,
-  setCookieAnonymousConfirmation,
-} from 'components/AnonymousParticipationConfirmationModal/AnonymousCookieManagement';
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 
 const Container = styled.div`
@@ -191,13 +187,7 @@ const ParentCommentForm = ({
   };
 
   const onSubmit = async () => {
-    const hasAnonymousConfirmationCookie = getCookieAnonymousConfirmation();
-
-    if (
-      allowAnonymousParticipation &&
-      postAnonymously &&
-      !hasAnonymousConfirmationCookie
-    ) {
+    if (allowAnonymousParticipation && postAnonymously) {
       setShowAnonymousConfirmationModal(true);
     } else {
       continueSubmission();
@@ -448,7 +438,6 @@ const ParentCommentForm = ({
         </FormContainer>
         <AnonymousParticipationConfirmationModal
           onConfirmAnonymousParticipation={() => {
-            setCookieAnonymousConfirmation();
             setShowAnonymousConfirmationModal(false);
             continueSubmission();
           }}

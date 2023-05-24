@@ -40,10 +40,6 @@ import useAuthUser from 'hooks/useAuthUser';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
-import {
-  getCookieAnonymousConfirmation,
-  setCookieAnonymousConfirmation,
-} from 'components/AnonymousParticipationConfirmationModal/AnonymousCookieManagement';
 
 const Container = styled.div`
   display: flex;
@@ -196,13 +192,7 @@ const ChildCommentForm = ({
   };
 
   const onSubmit = async () => {
-    const hasAnonymousConfirmationCookie = getCookieAnonymousConfirmation();
-
-    if (
-      allowAnonymousParticipation &&
-      postAnonymously &&
-      !hasAnonymousConfirmationCookie
-    ) {
+    if (allowAnonymousParticipation && postAnonymously) {
       setShowAnonymousConfirmationModal(true);
     } else {
       continueSubmission();
@@ -440,7 +430,6 @@ const ChildCommentForm = ({
         </FormContainer>
         <AnonymousParticipationConfirmationModal
           onConfirmAnonymousParticipation={() => {
-            setCookieAnonymousConfirmation();
             setShowAnonymousConfirmationModal(false);
             continueSubmission();
           }}
