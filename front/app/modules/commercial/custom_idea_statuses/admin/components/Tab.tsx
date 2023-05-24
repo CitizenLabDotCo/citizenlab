@@ -22,10 +22,10 @@ const Tab: FC<Props & WithRouterProps & WrappedComponentProps> = ({
         configuration: {
           name: 'statuses',
           label: formatMessage(messages.tabStatuses),
-          url: '/admin/ideas/statuses',
+          url: '/admin/settings/statuses',
           active: location.pathname.includes('/admin/ideas/statuses'),
         },
-        insertAfterName: 'manage',
+        insertAfterName: 'areas',
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
