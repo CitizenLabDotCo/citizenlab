@@ -251,11 +251,20 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
             title={TitleComponent}
             footer={
               idea.data.attributes.anonymous ? undefined : (
-                <Box mt="-20px" mb="60px">
-                  <ProfileVisiblity
-                    postAnonymously={postAnonymously}
-                    setPostAnonymously={setPostAnonymously}
-                  />
+                <Box
+                  p="40px"
+                  mb="20px"
+                  boxShadow="0px 2px 4px -1px rgba(0,0,0,0.06)"
+                  borderRadius="3px"
+                  width="100%"
+                  background="white"
+                >
+                  <Box mt="-20px">
+                    <ProfileVisiblity
+                      postAnonymously={postAnonymously}
+                      setPostAnonymously={setPostAnonymously}
+                    />
+                  </Box>
                 </Box>
               )
             }
