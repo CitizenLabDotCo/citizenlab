@@ -39,7 +39,7 @@ const DocumentAnnotation = ({ documentUrl, project, phaseId }: Props) => {
       ? authUser.attributes.email
       : null;
   const { enabled, disabled_reason } =
-    project.attributes.action_descriptor.taking_survey;
+    project.attributes.action_descriptor.annotating_document;
 
   return (
     <ParticipationPermission
