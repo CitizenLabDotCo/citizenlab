@@ -68,7 +68,7 @@ const disabledMessages: { [key in PollDisabledReason] } = {
   missing_data: messages.pollDisabledNotActiveUser,
   not_signed_in: messages.pollDisabledMaybeNotPermitted,
   not_in_group: globalMessages.notInGroup,
-  not_poll: messages.pollDisabledNotPoll,
+  not_poll: messages.pollDisabledNotActivePhase,
   already_responded: messages.pollDisabledAlreadyResponded,
   not_permitted: messages.pollDisabledNotPermitted,
 };

@@ -41,10 +41,6 @@ export default defineMessages({
     id: 'app.containers.Projects.PollForm.pollDisabledNotActivePhase1',
     defaultMessage: 'This poll can only be taken when this phase is active.',
   },
-  pollDisabledNotPoll: {
-    id: 'app.containers.Projects.PollForm.pollDisabledNotActivePhase1',
-    defaultMessage: 'The active phase is not a poll.',
-  },
   signUpLinkText: {
     id: 'app.containers.Projects.PollForm.signUpLinkText',
     defaultMessage: 'sign up',
