@@ -33,5 +33,13 @@ module OmniauthMethods
     def merging_error_code
       raise NotImplementedError
     end
+
+    def email_always_present?
+      true
+    end
+
+    def verification_prioritized?
+      raise NotImplementedError
+    end
   end
 end

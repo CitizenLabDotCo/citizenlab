@@ -35,7 +35,7 @@ import {
   AuthenticationData,
 } from '../typings';
 import { SSOParams } from 'services/singleSignOn';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNil, isNilOrError } from 'utils/helperUtils';
 
 let initialized = false;
 
@@ -248,9 +248,21 @@ export default function useSteps() {
         window.history.replaceState(null, '', '/');
       }
 
-      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')();
+      const enterClaveUnicaEmail =
+        !isNilOrError(authUser) && isNil(authUser.attributes.email);
+
+      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(enterClaveUnicaEmail);
     }
   }, [pathname, search, currentStep, transition, authUser, setError]);
+
+  // always show ClaveUnica modal to user
+  useEffect(() => {
+    if (isNilOrError(authUser)) return;
+    if (currentStep !== 'closed') return;
+    if (isNil(authUser.attributes.email)) {
+      transition(currentStep, 'REOPEN_CLAVE_UNICA')();
+    }
+  }, [authUser, currentStep, transition]);
 
   return {
     currentStep,
