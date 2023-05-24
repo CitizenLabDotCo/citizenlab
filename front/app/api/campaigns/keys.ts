@@ -9,7 +9,7 @@ const campaignsKeys = {
   list: (parameters: QueryParameters) => [
     { ...baseKey, operation: 'list', parameters },
   ],
-  item: ({ campaignId }: { campaignId?: string }) => [
+  item: ({ campaignId }: { campaignId: string }) => [
     {
       ...baseKey,
       operation: 'item',

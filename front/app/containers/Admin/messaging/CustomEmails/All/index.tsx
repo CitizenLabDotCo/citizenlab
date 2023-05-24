@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { isDraft } from 'services/campaigns';
@@ -18,8 +18,6 @@ import messages from '../../messages';
 import { fontSizes, colors } from 'utils/styleUtils';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import { useLocation } from 'react-router-dom';
-import { parse } from 'qs';
 
 const NoCampaignsWrapper = styled.div`
   display: flex;
@@ -44,22 +42,23 @@ const NoCampaignsDescription = styled.p`
 `;
 
 const CustomEmails = () => {
-  const location = useLocation();
-  const query = parse(location.search, { ignoreQueryPrefix: true });
-  const pageNumber = query.pageNumber;
-  const pageNumberInt = pageNumber ? parseInt(pageNumber as string, 10) : 1;
-
-  const { data } = useCampaigns({
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data: campaigns, fetchNextPage } = useCampaigns({
     campaignNames: ['manual'],
-    pageNumber: pageNumberInt,
-    pageSize: 2,
+    pageSize: 10,
   });
-  if (!data) return null;
 
-  const campaigns = data.data;
-  const lastPage = getPageNumberFromUrl(data.links.last) || 1;
+  if (!campaigns?.pages) return null;
 
-  if (campaigns.length === 0) {
+  const campaignsList = campaigns?.pages[currentPage - 1];
+  const lastPage = getPageNumberFromUrl(campaigns?.pages[0].links.last) || 1;
+
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+    fetchNextPage({ pageParam: page });
+  };
+
+  if (campaignsList.data.length === 0) {
     return (
       <Box background={colors.white} p="40px">
         <NoCampaignsWrapper>
@@ -92,8 +91,8 @@ const CustomEmails = () => {
         </Box>
 
         <Box background={colors.white} p="40px">
-          <List key={campaigns.map((c) => c.id).join()}>
-            {campaigns.map((campaign) =>
+          <List key={campaignsList.data.map((c) => c.id).join()}>
+            {campaignsList.data.map((campaign) =>
               isDraft(campaign) ? (
                 <DraftCampaignRow key={campaign.id} campaign={campaign} />
               ) : (
@@ -101,7 +100,11 @@ const CustomEmails = () => {
               )
             )}
           </List>
-          <Pagination currentPage={pageNumberInt} totalPages={lastPage} />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={lastPage}
+            loadPage={goToPage}
+          />
         </Box>
       </>
     );
