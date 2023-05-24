@@ -1,11 +1,4 @@
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useState,
-  FormEvent,
-  MouseEvent,
-} from 'react';
+import React, { memo, useEffect, useState, FormEvent, MouseEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isNumber } from 'lodash-es';
 
@@ -27,7 +20,6 @@ import IdeaButton from 'components/IdeaButton';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import { scrollToElement } from 'utils/scroll';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -36,13 +28,12 @@ import { getInputTermMessage } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
-import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 
 // router
-import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
 
 const Container = styled.div``;
 
@@ -74,45 +65,31 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     }
   }, [divId]);
 
-  const scrollTo = useCallback(
-    (id: string) => {
-      if (project) {
-        const isOnProjectPage = pathname.endsWith(
-          `/projects/${project.data.attributes.slug}`
-        );
-
-        currentPhase && selectPhase(currentPhase);
-
-        if (isOnProjectPage) {
-          scrollToElement({ id, shouldFocus: true });
-        } else {
-          clHistory.push(`/projects/${project.data.attributes.slug}#${id}`);
-        }
-      }
-    },
-    [currentPhase, project, pathname]
-  );
-
   if (isNilOrError(project)) {
     return null;
   }
 
-  // CL-3466
   const handleTakeSurveyClick = (event: FormEvent) => {
     event.preventDefault();
 
     const { enabled, disabled_reason } =
       project.data.attributes.action_descriptor.taking_survey;
 
-    if (enabled === true) {
-      scrollTo('project-survey');
+    if (enabled) {
+      scrollTo({
+        elementId: 'project-survey',
+        pathname,
+        projectSlug: project.data.attributes.slug,
+        currentPhase,
+      });
       return;
     }
 
     if (isFixableByAuthentication(disabled_reason)) {
       const successAction: SuccessAction = {
-        name: 'scrollToSurvey',
+        name: 'scrollTo',
         params: {
+          elementId: 'project-survey',
           pathname,
           projectSlug: project.data.attributes.slug,
           currentPhase,
@@ -125,6 +102,44 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           type: currentPhase ? 'phase' : 'project',
           id: currentPhase?.id ?? project.data.id,
           action: 'taking_survey',
+        },
+        successAction,
+      });
+    }
+  };
+
+  const handleReviewDocumentClick = (event: FormEvent) => {
+    event.preventDefault();
+    const { enabled, disabled_reason } =
+      project.data.attributes.action_descriptor.annotating_document;
+
+    if (enabled) {
+      scrollTo({
+        elementId: 'document-annotation',
+        pathname,
+        projectSlug: project.data.attributes.slug,
+        currentPhase,
+      });
+      return;
+    }
+
+    if (isFixableByAuthentication(disabled_reason)) {
+      const successAction: SuccessAction = {
+        name: 'scrollTo',
+        params: {
+          elementId: 'document-annotation',
+          pathname,
+          projectSlug: project.data.attributes.slug,
+          currentPhase,
+        },
+      };
+
+      triggerAuthenticationFlow({
+        flow: 'signup',
+        context: {
+          type: currentPhase ? 'phase' : 'project',
+          id: currentPhase?.id ?? project.data.id,
+          action: 'annotating_document',
         },
         successAction,
       });
@@ -191,7 +206,12 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           buttonStyle="secondary"
           onClick={(e: MouseEvent) => {
             e.preventDefault();
-            scrollTo('project-ideas');
+            scrollTo({
+              elementId: 'project-ideas',
+              pathname,
+              projectSlug: project.data.attributes.slug,
+              currentPhase,
+            });
           }}
           fontWeight="500"
         >
@@ -243,7 +263,12 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           buttonStyle="primary"
           onClick={(e: MouseEvent) => {
             e.preventDefault();
-            scrollTo('project-poll');
+            scrollTo({
+              elementId: 'project-poll',
+              pathname,
+              projectSlug: project.data.attributes.slug,
+              currentPhase,
+            });
           }}
           fontWeight="500"
         >
@@ -253,10 +278,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       {showDocumentAnnotationCTAButton && (
         <Button
           buttonStyle="primary"
-          onClick={(e: MouseEvent) => {
-            e.preventDefault();
-            scrollTo('document-annotation');
-          }}
+          onClick={handleReviewDocumentClick}
           fontWeight="500"
         >
           <FormattedMessage {...messages.reviewDocument} />

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, FormEvent } from 'react';
+import React, { useEffect, useState, FormEvent } from 'react';
 
 // components
 import { Button } from '@citizenlab/cl2-component-library';
@@ -15,7 +15,6 @@ import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
 
 // utils
-import { scrollToElement } from 'utils/scroll';
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
@@ -27,10 +26,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // router
-import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
-import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
 
 export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
@@ -48,39 +46,29 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
     }
   }, [divId]);
 
-  const scrollToSurvey = useCallback(() => {
-    const isOnProjectPage = pathname.endsWith(
-      `/projects/${project.attributes.slug}`
-    );
+  const { enabled, disabled_reason } =
+    project.attributes.action_descriptor.taking_survey;
 
-    const id = 'project-survey';
-    currentPhase && selectPhase(currentPhase);
-
-    if (isOnProjectPage) {
-      scrollToElement({ id, shouldFocus: true });
-    } else {
-      clHistory.push(`/projects/${project.attributes.slug}#${id}`);
-    }
-  }, [currentPhase, project, pathname]);
-
-  const actionDescriptor = project.attributes.action_descriptor.taking_survey;
-
-  const showSignIn =
-    actionDescriptor.enabled ||
-    isFixableByAuthentication(actionDescriptor.disabled_reason);
+  const showSignIn = enabled || isFixableByAuthentication(disabled_reason);
 
   const handleTakeSurveyClick = (event: FormEvent) => {
     event.preventDefault();
 
-    if (actionDescriptor.enabled) {
-      scrollToSurvey();
+    if (enabled) {
+      scrollTo({
+        elementId: 'project-survey',
+        pathname,
+        projectSlug: project.attributes.slug,
+        currentPhase,
+      });
       return;
     }
 
-    if (isFixableByAuthentication(actionDescriptor.disabled_reason)) {
+    if (isFixableByAuthentication(disabled_reason)) {
       const successAction: SuccessAction = {
-        name: 'scrollToSurvey',
+        name: 'scrollTo',
         params: {
+          elementId: 'project-survey',
           pathname,
           projectSlug: project.attributes.slug,
           currentPhase,

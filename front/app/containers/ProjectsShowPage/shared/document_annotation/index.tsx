@@ -1,4 +1,3 @@
-// CL-3466 Add auth stuff
 import React from 'react';
 import Konveio from './Konveio';
 import { MessageDescriptor } from 'react-intl';
