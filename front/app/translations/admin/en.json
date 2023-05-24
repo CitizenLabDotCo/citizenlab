@@ -199,6 +199,7 @@
   "app.components.admin.seatSetSuccess.orderCompleted": "Order completed",
   "app.components.admin.seatSetSuccess.reflectedMessage": "The changes on your plan will be reflected on your next billing cycle.",
   "app.components.admin.seatSetSuccess.rightsGranted": "{seatType} rights have been granted to the selected user(s).",
+  "app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess": "Collecting feedback on a document is a custom feature, and is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Contribution",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "More information on how to embed a link for Google Forms can be found in {googleFormsTooltipLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/articles/5050525",
