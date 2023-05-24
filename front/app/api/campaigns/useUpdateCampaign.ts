@@ -11,7 +11,7 @@ const updateCampaign = async ({
   fetcher<ICampaign>({
     path: `/campaigns/${campaignId}`,
     action: 'patch',
-    body: campaign,
+    body: { campaign },
   });
 
 const useUpdateCampaign = () => {
