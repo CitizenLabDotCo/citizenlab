@@ -1,6 +1,5 @@
 // libraries
 import React, { useMemo } from 'react';
-import Link from 'utils/cl-router/Link';
 import styled from 'styled-components';
 import Tippy from '@tippyjs/react';
 import { isNilOrError } from 'utils/helperUtils';
@@ -118,19 +117,10 @@ const IdeaStatuses = () => {
     return (
       <Section>
         <SectionTitle>
-          <FormattedMessage {...messages.titleIdeaStatuses} />
+          <FormattedMessage {...messages.titleIdeaStatuses1} />
         </SectionTitle>
         <SectionDescription>
-          <FormattedMessage
-            {...messages.subtitleInputStatuses}
-            values={{
-              linkToManageTab: (
-                <Link to="/admin/ideas">
-                  <FormattedMessage {...messages.manage} />
-                </Link>
-              ),
-            }}
-          />
+          <FormattedMessage {...messages.subtitleInputStatuses1} />
         </SectionDescription>
         <ButtonWrapper>
           <Button

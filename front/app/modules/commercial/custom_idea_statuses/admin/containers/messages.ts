@@ -17,14 +17,19 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.all.editIdeaStatus',
     defaultMessage: 'Edit status',
   },
-  titleIdeaStatuses: {
-    id: 'app.containers.admin.ideaStatuses.all.titleIdeaStatuses',
-    defaultMessage: 'Statuses',
+  titleIdeaStatuses1: {
+    id: 'app.containers.admin.ideaStatuses.all.titleIdeaStatuses1',
+    defaultMessage: 'Edit input statuses',
   },
   subtitleInputStatuses: {
     id: 'app.containers.admin.ideaStatuses.all.subtitleInputStatuses',
     defaultMessage:
       "Here you can add, edit and delete the statuses that can be assigned to inputs. The status is publicly visible and helps participants know what's happening with their input. You can add a status to inputs in the {linkToManageTab} tab.",
+  },
+  subtitleInputStatuses1: {
+    id: 'app.containers.admin.ideaStatuses.all.subtitleInputStatuses1',
+    defaultMessage:
+      'Manage the status that can be assigned to participant input within a project. The status is publicly visible and helps in keeping participants informed.',
   },
   manage: {
     id: 'app.containers.admin.ideaStatuses.all.manage',
