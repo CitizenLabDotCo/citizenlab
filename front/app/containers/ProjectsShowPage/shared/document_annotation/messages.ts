@@ -22,11 +22,8 @@ export default defineMessages({
   },
   documentAnnotationDisabledNotActivePhase: {
     id: 'app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotActivePhase1',
-    defaultMessage: 'This poll can only be taken when this phase is active.',
-  },
-  documentAnnotationDisabledNotDocumentAnnotation: {
-    id: 'app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotDocumentAnnotation',
-    defaultMessage: 'The active phase has no document to review.',
+    defaultMessage:
+      'This document can only be reviewed when this phase is active.',
   },
   documentAnnotationDisabledNotVerified: {
     id: 'app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified',

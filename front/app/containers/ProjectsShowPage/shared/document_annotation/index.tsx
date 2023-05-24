@@ -28,8 +28,7 @@ const disabledMessages: {
   not_signed_in: messages.documentAnnotationDisabledMaybeNotPermitted,
   not_in_group: globalMessages.notInGroup,
   not_permitted: messages.documentAnnotationDisabledNotPermitted,
-  not_document_annotation:
-    messages.documentAnnotationDisabledNotDocumentAnnotation,
+  not_document_annotation: messages.documentAnnotationDisabledNotActivePhase,
 };
 
 const DocumentAnnotation = ({ documentUrl, project, phaseId }: Props) => {
