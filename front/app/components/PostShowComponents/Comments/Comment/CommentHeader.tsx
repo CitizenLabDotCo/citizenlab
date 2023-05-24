@@ -41,10 +41,12 @@ interface InputProps {
   className?: string;
   projectId?: string | null;
   authorId: string | null;
+  authorHash?: string;
   commentId: string;
   commentType: 'parent' | 'child';
   commentCreatedAt: string;
   moderator: boolean;
+  anonymous?: boolean;
 }
 
 interface Props extends InputProps {}
@@ -56,10 +58,12 @@ export default class CommentHeader extends PureComponent<Props, State> {
     const {
       projectId,
       authorId,
+      authorHash,
       commentType,
       commentCreatedAt,
       moderator,
       className,
+      anonymous,
     } = this.props;
     const hasAuthorId = !!authorId;
 
@@ -68,6 +72,7 @@ export default class CommentHeader extends PureComponent<Props, State> {
         <Left>
           <StyledAuthor
             authorId={authorId}
+            authorHash={authorHash}
             isLinkToProfile={hasAuthorId}
             size={30}
             projectId={projectId}
@@ -79,6 +84,7 @@ export default class CommentHeader extends PureComponent<Props, State> {
             fontSize={fontSizes.base}
             fontWeight={400}
             underline={true}
+            anonymous={anonymous}
           />
         </Left>
         <Right>{moderator && <AdminBadge />}</Right>

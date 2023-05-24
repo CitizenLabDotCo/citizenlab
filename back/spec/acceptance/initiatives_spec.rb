@@ -527,10 +527,21 @@ resource 'Initiatives' do
         end
       end
 
-      describe 'updating the author of an initiative' do
+      describe 'changing the author of my own initiative' do
         let(:author_id) { create(:admin).id }
 
-        example '[Error] Cannot update the author as a non-admin', document: false do
+        example '[Error] Cannot change the author from your own id as a non-admin', document: false do
+          do_request
+          assert_status 401
+          expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
+        end
+      end
+
+      describe 'changing the author of another authors initiative' do
+        let(:author_id) { @user.id }
+
+        example '[Error] Cannot update another authors record to your own id as a non-admin', document: false do
+          @initiative.update!(author: create(:user))
           do_request
           assert_status 401
           expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
@@ -582,6 +593,17 @@ resource 'Initiatives' do
         example_request 'Change the publication status' do
           expect(response_status).to eq 200
           expect(response_data.dig(:attributes, :publication_status)).to eq 'published'
+        end
+      end
+
+      describe 'changing a draft initiative of another user' do
+        let(:title_multiloc) { { 'en' => 'Changed title' } }
+
+        example '[Error] Cannot update an anonymous initiative as a non-admin' do
+          @initiative.update!(author: create(:user))
+          do_request
+          assert_status 401
+          expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
         end
       end
     end

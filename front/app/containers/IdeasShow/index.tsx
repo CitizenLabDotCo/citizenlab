@@ -373,7 +373,13 @@ export const IdeasShow = ({
             </Box>
             <Box mb="100px">
               <Suspense fallback={<LoadingComments />}>
-                <LazyComments postId={ideaId} postType="idea" />
+                <LazyComments
+                  allowAnonymousParticipation={
+                    project.attributes.allow_anonymous_participation
+                  }
+                  postId={ideaId}
+                  postType="idea"
+                />
               </Suspense>
             </Box>
           </Box>

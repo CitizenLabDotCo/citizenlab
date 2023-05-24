@@ -51,6 +51,7 @@ const IdeaPostedBy = memo<Props>(
 
     if (!isNilOrError(idea)) {
       const ideaPublishedAtDate = idea.data.attributes.published_at;
+      const authorHash = idea.data.attributes.author_hash;
       const date = (
         <FormattedDate
           value={ideaPublishedAtDate}
@@ -64,6 +65,7 @@ const IdeaPostedBy = memo<Props>(
         <Container className={`e2e-idea-author ${className || ''}`}>
           <StyledAvatar
             userId={authorId}
+            authorHash={authorHash}
             size={30}
             isLinkToProfile={!!authorId}
           />
