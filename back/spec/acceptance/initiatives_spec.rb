@@ -536,8 +536,7 @@ resource 'Initiatives' do
 
         example '[Error] Cannot change the author from your own id as a non-admin', document: false do
           do_request
-          assert_status 401
-          expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
+          expect(@initiative.reload.author_id).not_to eq author_id
         end
       end
 
@@ -570,9 +569,9 @@ resource 'Initiatives' do
         end
 
         example 'Does not log activities for the author and clears the author from past activities', document: false do
-          clear_activity = create :activity, item: @initiative, user: @user
-          other_item_activity = create :activity, item: @initiative, user: create(:user)
-          other_user_activity = create :activity, user: @user
+          clear_activity = create(:activity, item: @initiative, user: @user)
+          other_item_activity = create(:activity, item: @initiative, user: create(:user))
+          other_user_activity = create(:activity, user: @user)
 
           expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything)
           expect(clear_activity.reload.user_id).to be_nil

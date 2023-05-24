@@ -458,9 +458,9 @@ resource 'Comments' do
         end
 
         example 'Does not log activities for the author and clears the author from past activities', document: false do
-          clear_activity = create :activity, item: comment, user: @user
-          other_item_activity = create :activity, item: comment, user: create(:user)
-          other_user_activity = create :activity, user: @user
+          clear_activity = create(:activity, item: comment, user: @user)
+          other_item_activity = create(:activity, item: comment, user: create(:user))
+          other_user_activity = create(:activity, user: @user)
 
           expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
           expect(clear_activity.reload.user_id).to be_nil

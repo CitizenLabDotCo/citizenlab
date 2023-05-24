@@ -46,7 +46,6 @@ class SideFxInitiativeService
     return unless initiative.body_multiloc_previously_changed?
 
     LogActivityJob.perform_later(initiative, 'changed_body', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i, payload: { change: initiative.body_multiloc_previous_change })
-
   end
 
   def before_destroy(initiative, user); end
