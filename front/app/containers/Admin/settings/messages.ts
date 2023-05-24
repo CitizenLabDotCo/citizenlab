@@ -28,6 +28,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabBranding',
     defaultMessage: 'Branding',
   },
+  tabStatuses: {
+    id: 'app.containers.AdminPage.SettingsPage.tabStatuses',
+    defaultMessage: 'Statuses',
+  },
   tabPolicies: {
     id: 'app.containers.AdminPage.SettingsPage.tabPolicies',
     defaultMessage: 'Policies',
