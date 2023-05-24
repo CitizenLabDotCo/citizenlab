@@ -1854,7 +1854,6 @@
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "Gerenciar entradas e seus status.",
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "Gerenciador de entrada | Plataforma de participação de {orgName}",
   "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Dê feedback, adicione tópicos e mova entradas de um projeto para outro",
-  "app.containers.admin.ideas.all.inputManagerPageTitle": "Gerenciamento de Informações",
   "app.containers.admin.ideas.all.tabManage": "Administrar",
   "app.containers.admin.import.downloadTemplate": "Baixar modelo",
   "app.containers.admin.import.importDescription": "Importar entradas existentes de uma planilha Excel.",

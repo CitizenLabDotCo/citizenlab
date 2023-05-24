@@ -1854,7 +1854,6 @@
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "Управљајте уносима и њиховим статусима.",
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "Менаџер уноса | Платформа за учешће од {orgName}",
   "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Дајте повратне информације, додајте ознаке и премештајте унос из једног пројекта у други",
-  "app.containers.admin.ideas.all.inputManagerPageTitle": "Менаџер уноса",
   "app.containers.admin.ideas.all.tabManage": "Уредити",
   "app.containers.admin.import.downloadTemplate": "Преузмите шаблон",
   "app.containers.admin.import.importDescription": "Увезите постојеће уносе из Екцел датотеке.",

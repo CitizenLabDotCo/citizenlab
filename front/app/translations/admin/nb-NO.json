@@ -1854,7 +1854,6 @@
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "Administrer oppføringer og deres statuser.",
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "Innspillsadministrator I Involveringsplattform av {orgName}",
   "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Gi tilbakemelding, legg til tagger og flytt oppføringer fra ett prosjekt til et annet",
-  "app.containers.admin.ideas.all.inputManagerPageTitle": "Innspillsadministrator",
   "app.containers.admin.ideas.all.tabManage": "Rediger",
   "app.containers.admin.import.downloadTemplate": "Last ned malen",
   "app.containers.admin.import.importDescription": "Importer eksisterende oppføringer fra en Excel-fil.",

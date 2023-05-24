@@ -1854,7 +1854,6 @@
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "Gestiona los aportes y sus estados.",
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "Administrar aportes ciudadanos de la plataforma de participación de {orgName}",
   "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Dar retroalimentación, agregar temas y trasladar los aportes de un proyecto a otro",
-  "app.containers.admin.ideas.all.inputManagerPageTitle": "Gestión de aportes",
   "app.containers.admin.ideas.all.tabManage": "Administrar",
   "app.containers.admin.import.downloadTemplate": "Descargar el modelo",
   "app.containers.admin.import.importDescription": "Importar aportes existentes desde un archivo de Excel.",

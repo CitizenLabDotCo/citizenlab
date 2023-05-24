@@ -1854,7 +1854,6 @@
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "Verwalten Sie Beiträge und Stati.",
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "Beitragsmanager | Beteiligungsplattform {orgName}",
   "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Feedback geben, Themen hinzufügen und Beiträge von einem Projekt in ein anderes verschieben",
-  "app.containers.admin.ideas.all.inputManagerPageTitle": "Beitragsmanager",
   "app.containers.admin.ideas.all.tabManage": "Verwalten",
   "app.containers.admin.import.downloadTemplate": "Vorlage herunterladen",
   "app.containers.admin.import.importDescription": "Importieren Sie analog gesammelte Beiträge aus einer Excel-Datei.",

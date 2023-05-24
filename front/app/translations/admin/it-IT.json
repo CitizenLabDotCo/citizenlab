@@ -1712,7 +1712,6 @@
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "Manage input and their statuses.",
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "Input manager | Participation platform of {orgName}",
   "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Give feedback, add tags and move input from one project to another",
-  "app.containers.admin.ideas.all.inputManagerPageTitle": "Input manager",
   "app.containers.admin.ideas.all.tabManage": "Edit",
   "app.containers.admin.import.downloadTemplate": "Download template",
   "app.containers.admin.import.importDescription": "Import existing inputs from an Excel file.",

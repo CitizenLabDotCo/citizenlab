@@ -1634,7 +1634,6 @@
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "إدارة المدخلات وحالاتها.",
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "مدير الفكرة",
   "app.containers.admin.ideas.all.inputManagerPageSubtitle": "تقديم ملاحظات وإضافة وسوم ونقل مدخلات من مشروع إلى آخر",
-  "app.containers.admin.ideas.all.inputManagerPageTitle": "مدير الفكرة",
   "app.containers.admin.ideas.all.tabManage": "إدارة",
   "app.containers.admin.import.downloadTemplate": "تنزيل القالب",
   "app.containers.admin.import.importDescription": "استيراد مدخلات موجودة من ملف Excel.",

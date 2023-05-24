@@ -1712,7 +1712,6 @@
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "Gestioneu les entrades i els seus estats.",
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "Gestor d'entrada | Plataforma de participació de {orgName}",
   "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Doneu comentaris, afegiu etiquetes i moveu les aportacions d'un projecte a un altre",
-  "app.containers.admin.ideas.all.inputManagerPageTitle": "Input manager",
   "app.containers.admin.ideas.all.tabManage": "Edit",
   "app.containers.admin.import.downloadTemplate": "Download template",
   "app.containers.admin.import.importDescription": "Importa les entrades existents des d'un fitxer Excel.",
