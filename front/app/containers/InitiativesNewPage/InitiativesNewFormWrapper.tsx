@@ -38,6 +38,11 @@ import useAuthUser from 'hooks/useAuthUser';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
+import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+import {
+  getCookieAnonymousConfirmation,
+  setCookieAnonymousConfirmation,
+} from 'components/AnonymousParticipationConfirmationModal/AnonymousCookieManagement';
 
 const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;
@@ -92,6 +97,12 @@ const InitiativesNewFormWrapper = ({
   const [initiativeId, setInitiativeId] = useState<string | null>(null);
   const [saving, setSaving] = useState<boolean>(false);
   const [hasImageChanged, setHasImageChanged] = useState<boolean>(false);
+  const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
+    useState<boolean>(false);
+
+  const allowAnonymousParticipation =
+    appConfiguration?.data.attributes.settings.initiatives
+      ?.allow_anonymous_participation;
 
   useEffect(() => {
     addInitiative(
@@ -243,6 +254,19 @@ const InitiativesNewFormWrapper = ({
   const debouncedSave = debounce(handleSave, 500);
 
   const handlePublish = async () => {
+    const hasAnonymousConfirmationCookie = getCookieAnonymousConfirmation();
+    if (
+      allowAnonymousParticipation &&
+      postAnonymously &&
+      !hasAnonymousConfirmationCookie
+    ) {
+      setShowAnonymousConfirmationModal(true);
+    } else {
+      continuePublish();
+    }
+  };
+
+  const continuePublish = async () => {
     const changedValues = getChangedValues();
 
     try {
@@ -283,7 +307,7 @@ const InitiativesNewFormWrapper = ({
         );
       }
 
-      setHasBannerChanged(false);
+      // setHasBannerChanged(false);
       // save any changes to initiative image.
       if (hasImageChanged && initiativeId) {
         if (image && image.base64) {
@@ -465,31 +489,41 @@ const InitiativesNewFormWrapper = ({
   };
 
   return (
-    <StyledInitiativeForm
-      onPublish={handlePublish}
-      onSave={debouncedSave}
-      locale={locale}
-      {...formValues}
-      image={image}
-      banner={banner}
-      files={files}
-      apiErrors={apiErrors}
-      publishError={publishError}
-      publishing={isAdding && isUpdating}
-      onChangeTitle={onChangeTitle}
-      onChangeBody={onChangeBody}
-      onChangeTopics={onChangeTopics}
-      onChangePosition={onChangePosition}
-      onChangeBanner={onChangeBanner}
-      onChangeImage={onChangeImage}
-      onAddFile={onAddFile}
-      onRemoveFile={onRemoveFile}
-      topics={topics}
-      titleProfanityError={titleProfanityError}
-      descriptionProfanityError={descriptionProfanityError}
-      postAnonymously={postAnonymously}
-      setPostAnonymously={setPostAnonymously}
-    />
+    <>
+      <StyledInitiativeForm
+        onPublish={handlePublish}
+        onSave={debouncedSave}
+        locale={locale}
+        {...formValues}
+        image={image}
+        banner={banner}
+        files={files}
+        apiErrors={apiErrors}
+        publishError={publishError}
+        publishing={isAdding && isUpdating}
+        onChangeTitle={onChangeTitle}
+        onChangeBody={onChangeBody}
+        onChangeTopics={onChangeTopics}
+        onChangePosition={onChangePosition}
+        onChangeBanner={onChangeBanner}
+        onChangeImage={onChangeImage}
+        onAddFile={onAddFile}
+        onRemoveFile={onRemoveFile}
+        topics={topics}
+        titleProfanityError={titleProfanityError}
+        descriptionProfanityError={descriptionProfanityError}
+        postAnonymously={postAnonymously}
+        setPostAnonymously={setPostAnonymously}
+      />
+      <AnonymousParticipationConfirmationModal
+        onConfirmAnonymousParticipation={() => {
+          setCookieAnonymousConfirmation();
+          continuePublish();
+        }}
+        showAnonymousConfirmationModal={showAnonymousConfirmationModal}
+        setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
+      />
+    </>
   );
 };
 

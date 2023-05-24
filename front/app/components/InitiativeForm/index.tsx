@@ -225,46 +225,45 @@ const InitiativeForm = ({
     setTimeout(() => {
       const touchedCopy = Object.assign({}, touched);
       touchedCopy[fieldName] = true;
-      const errprsCopy = Object.assign({}, errors);
-      errprsCopy[fieldName] = get(validations, fieldName, () => undefined)();
+      const errorsCopy = Object.assign({}, errors);
+      errorsCopy[fieldName] = get(validations, fieldName, () => undefined)();
       setTouched(touchedCopy);
-      setErrors(errprsCopy);
+      setErrors(errorsCopy);
       onSave();
     }, 5);
   };
 
   const handleOnPublish = () => {
-    if (Object.values(errors).every((val) => val === undefined)) {
-      onPublish();
-    } else {
-      const newTouched = Object.assign({}, touched);
-      const newErrors = Object.assign({}, errors);
-      requiredFields.forEach((fieldName) => {
-        newTouched[fieldName] = true;
-        newErrors[fieldName] = get(validations, fieldName, () => undefined)();
-      });
-      setTouched(newTouched);
-      setErrors(newErrors);
-    }
+    onPublish();
   };
 
   const changeAndSaveTopics = (topic_ids: string[]) => {
-    onChangeTopics(topic_ids);
-    onBlur('topic_ids')();
-    onBlur('body_multiloc')();
+    const touchedArray = touched;
+    touchedArray.topic_ids = true;
+    setTouched(touchedArray);
+    onChangeTopics(topic_ids.map((x) => x));
   };
 
   const addBanner = (banner: UploadFile[]) => {
+    const touchedArray = touched;
+    touchedArray.banner = true;
+    setTouched(touchedArray);
     onChangeBanner(banner[0]);
     onBlur('banner')();
   };
 
   const removeBanner = () => {
+    const touchedArray = touched;
+    touchedArray.banner = true;
+    setTouched(touchedArray);
     onChangeBanner(null);
     onBlur('banner')();
   };
 
   const addImage = (image: UploadFile[]) => {
+    const touchedArray = touched;
+    touchedArray.image = true;
+    setTouched(touchedArray);
     onChangeImage(image[0]);
     onBlur('image')();
   };
@@ -275,6 +274,9 @@ const InitiativeForm = ({
   };
 
   const handleTitleOnChange = (value: string) => {
+    const touchedArray = touched;
+    touchedArray.title_multiloc = true;
+    setTouched(touchedArray);
     if (locale && onChangeTitle) {
       onChangeTitle({
         ...title_multiloc,
@@ -284,6 +286,9 @@ const InitiativeForm = ({
   };
 
   const handleBodyOnChange = (value: string) => {
+    const touchedArray = touched;
+    touchedArray.body_multiloc = true;
+    setTouched(touchedArray);
     if (locale && onChangeBody) {
       onChangeBody({
         ...body_multiloc,
