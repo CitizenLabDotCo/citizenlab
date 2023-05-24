@@ -60,5 +60,34 @@ describe EmailCampaigns::ExamplesService do
       expect(EmailCampaigns::Example.ids).not_to include(oldest_example.id)
       expect(EmailCampaigns::Example.where(recipient: recipient).all).to be_present
     end
+
+    it 'does not delete any examples from other campaigns' do
+      other_campaign_examples = create_list(:campaign_example, 5, campaign_class: 'SomeFakeCampaign', created_at: 1.year.ago)
+      create(:campaign_example)
+
+      recipient = create(:admin)
+      campaign = build(:admin_rights_received_campaign)
+      command = {
+        recipient: recipient,
+        event_payload: {},
+        activity: create(:admin_rights_given_activity)
+      }
+
+      expect { service.save_examples([[command, campaign]]) }.not_to change { EmailCampaigns::Example.where(campaign_class: 'SomeFakeCampaign').count }
+    end
+
+    it 'reduces the number of stored campaigns if there are more than EXAMLPES_PER_CAMPAIGN (5)' do
+      create_list(:campaign_example, 6, created_at: 1.year.ago)
+
+      recipient = create(:admin)
+      campaign = build(:admin_rights_received_campaign)
+      command = {
+        recipient: recipient,
+        event_payload: {},
+        activity: create(:admin_rights_given_activity)
+      }
+
+      expect { service.save_examples([[command, campaign]]) }.to change { EmailCampaigns::Example.count }.from(6).to(5)
+    end
   end
 end
