@@ -308,10 +308,8 @@ class ParticipationContextService
   def posting_limit_reached?(context, user)
     return true if context.posting_limited? && context.ideas.where(author: user).size >= context.posting_limited_max
 
-    # TODO: Check this works for 'everyone' surveys
     if context.native_survey? && context.allow_anonymous_participation?
       author_hash = Idea.create_author_hash user.id, context.id, true
-      # TODO: Needs an index on author_hash for this query
       return context.ideas.where(author_hash: author_hash).size >= context.posting_limited_max
     end
 
