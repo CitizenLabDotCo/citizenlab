@@ -22,8 +22,4 @@ export default defineMessages({
     id: 'app.containers.admin.ideas.all.tabManage',
     defaultMessage: 'Manage',
   },
-  tabStatuses: {
-    id: 'app.containers.admin.ideas.all.tabStatuses',
-    defaultMessage: 'Statuses',
-  },
 });
