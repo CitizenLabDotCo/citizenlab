@@ -12,6 +12,7 @@ import clickOutside from 'utils/containers/clickOutside';
 import Link from 'utils/cl-router/Link';
 import {
   Checkbox,
+  IconTooltip,
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
@@ -402,6 +403,20 @@ const ChildCommentForm = ({
                     label={
                       <Text mb="12px" fontSize="s" color="coolGrey600">
                         {formatMessage(messages.postAnonymously)}
+                        <IconTooltip
+                          content={
+                            <Text color="white" fontSize="s" m="0">
+                              {formatMessage(
+                                messages.inputsAssociatedWithProfile
+                              )}
+                            </Text>
+                          }
+                          iconSize="16px"
+                          placement="top-start"
+                          display="inline"
+                          ml="4px"
+                          transform="translate(0,-1)"
+                        />
                       </Text>
                     }
                     onChange={() => setPostAnonymously(!postAnonymously)}

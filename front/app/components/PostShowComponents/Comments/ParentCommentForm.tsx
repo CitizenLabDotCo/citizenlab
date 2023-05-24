@@ -12,6 +12,7 @@ import {
   Checkbox,
   useBreakpoint,
   Text,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
 // tracking
@@ -410,6 +411,20 @@ const ParentCommentForm = ({
                     label={
                       <Text mb="12px" fontSize="s" color="coolGrey600">
                         {formatMessage(messages.postAnonymously)}
+                        <IconTooltip
+                          content={
+                            <Text color="white" fontSize="s" m="0">
+                              {formatMessage(
+                                messages.inputsAssociatedWithProfile
+                              )}
+                            </Text>
+                          }
+                          iconSize="16px"
+                          placement="top-start"
+                          display="inline"
+                          ml="4px"
+                          transform="translate(0,-1)"
+                        />
                       </Text>
                     }
                     onChange={() => setPostAnonymously(!postAnonymously)}

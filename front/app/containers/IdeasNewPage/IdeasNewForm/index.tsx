@@ -104,6 +104,11 @@ const IdeasNewPageWithJSONForm = () => {
   const [initialFormData, setInitialFormData] = useState({});
   const [postAnonymously, setPostAnonymously] = useState(false);
 
+  const allowAnonymousPosting =
+    project?.data.attributes.allow_anonymous_participation ||
+    (phases &&
+      getCurrentPhase(phases.data)?.attributes.allow_anonymous_participation);
+
   useEffect(() => {
     // Click on map flow :
     // clicked location is passed in url params
@@ -137,10 +142,7 @@ const IdeasNewPageWithJSONForm = () => {
 
     setFormDataOnSubmit(data);
 
-    if (
-      project.data.attributes.allow_anonymous_participation &&
-      postAnonymously
-    ) {
+    if (allowAnonymousPosting && postAnonymously) {
       setShowAnonymousConfirmationModal(true);
     } else {
       continueSubmission(data);
@@ -277,11 +279,7 @@ const IdeasNewPageWithJSONForm = () => {
             config={isSurvey ? 'survey' : 'input'}
             formSubmitText={isSurvey ? messages.submitSurvey : undefined}
             footer={
-              !isSurvey &&
-              (project.data.attributes.allow_anonymous_participation ||
-                (phases &&
-                  getCurrentPhase(phases.data)?.attributes
-                    .allow_anonymous_participation)) ? (
+              !isSurvey && allowAnonymousPosting ? (
                 <Box
                   p="40px"
                   mb="20px"
