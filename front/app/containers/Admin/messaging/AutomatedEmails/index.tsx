@@ -15,7 +15,7 @@ import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 import useCampaigns from 'api/campaigns/useCampaigns';
 
 const AutomatedEmails = () => {
-  const { data: { data: campaigns } = {} } = useCampaigns({
+  const { data: campaigns } = useCampaigns({
     withoutCampaignNames: ['manual'],
     pageSize: 250,
   });
@@ -44,7 +44,7 @@ const AutomatedEmails = () => {
       </Box>
       <Box background={colors.white} p="40px">
         <AutomatedEmailsList>
-          {campaigns.map((campaign) => (
+          {campaigns.data.map((campaign) => (
             <Row key={campaign.id}>
               <Toggle
                 disabled={isUndefined(campaign.attributes.enabled)}
