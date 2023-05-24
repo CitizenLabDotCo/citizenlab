@@ -5,7 +5,7 @@ import {
   Text,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import { LabelHeaderDescription } from './labels';
@@ -19,6 +19,7 @@ import { IPhase } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import Warning from 'components/UI/Warning';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import Tippy from '@tippyjs/react';
 
 interface Props {
   participation_method: ParticipationMethod;
@@ -39,8 +40,13 @@ const ParticipationMethodPicker = ({
   project,
   handleParticipationMethodOnChange,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const documentAnnotationEnabled = useFeatureFlag({
     name: 'konveio_document_annotation',
+  });
+  const documentAnnotationAllowed = useFeatureFlag({
+    name: 'konveio_document_annotation',
+    onlyCheckAllowed: true,
   });
   const participatoryBudgetingEnabled = useFeatureFlag({
     name: 'participatory_budgeting',
@@ -192,26 +198,40 @@ const ParticipationMethodPicker = ({
               }
             />
           )}
-          {documentAnnotationEnabled && (
-            <ParticipationMethodRadio
-              onChange={handleParticipationMethodOnChange}
-              currentValue={participation_method}
-              value="document_annotation"
-              name="participationmethod"
-              id={'participationmethod-document_annotation'}
-              label={
-                <LabelHeaderDescription
-                  header={
-                    <FormattedMessage {...messages.documentAnnotationMethod} />
-                  }
-                  description={
-                    <FormattedMessage
-                      {...messages.documentAnnotationMethodDescription}
+          {documentAnnotationAllowed && (
+            <Tippy
+              maxWidth="250px"
+              placement="right-end"
+              content={formatMessage(messages.contactGovSuccessToAccess)}
+              disabled={documentAnnotationEnabled}
+              hideOnClick={false}
+            >
+              <div>
+                <ParticipationMethodRadio
+                  disabled={!documentAnnotationEnabled}
+                  onChange={handleParticipationMethodOnChange}
+                  currentValue={participation_method}
+                  value="document_annotation"
+                  name="participationmethod"
+                  id={'participationmethod-document_annotation'}
+                  label={
+                    <LabelHeaderDescription
+                      disabled={!documentAnnotationEnabled}
+                      header={
+                        <FormattedMessage
+                          {...messages.documentAnnotationMethod}
+                        />
+                      }
+                      description={
+                        <FormattedMessage
+                          {...messages.documentAnnotationMethodDescription}
+                        />
+                      }
                     />
                   }
                 />
-              }
-            />
+              </div>
+            </Tippy>
           )}
           {volunteeringEnabled && (
             <ParticipationMethodRadio

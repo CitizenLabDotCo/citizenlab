@@ -485,4 +485,9 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText',
     defaultMessage: 'this support article',
   },
+  contactGovSuccessToAccess: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess',
+    defaultMessage:
+      'Collecting feedback on a document is a custom feature, and is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
+  },
 });
