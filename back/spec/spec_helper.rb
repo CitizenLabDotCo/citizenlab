@@ -123,8 +123,9 @@ RSpec.configure do |config|
   config.before(:suite) do
     require './engines/free/email_campaigns/spec/factories/campaigns'
     require './engines/free/email_campaigns/spec/factories/campaigns_groups'
-    require './engines/free/email_campaigns/spec/factories/deliveries'
     require './engines/free/email_campaigns/spec/factories/consents'
+    require './engines/free/email_campaigns/spec/factories/deliveries'
+    require './engines/free/email_campaigns/spec/factories/examples'
     require './engines/free/email_campaigns/spec/factories/unsubscription_tokens'
     require './engines/free/surveys/spec/factories/responses'
     require './engines/free/polls/spec/factories/questions'
