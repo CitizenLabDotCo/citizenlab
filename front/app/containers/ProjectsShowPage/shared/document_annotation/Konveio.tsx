@@ -3,6 +3,8 @@ import { parse, stringify } from 'qs';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
+import useAuthUser from 'hooks/useAuthUser';
 
 const StyledIframe = styled.iframe`
   display: block;
@@ -13,10 +15,16 @@ const StyledIframe = styled.iframe`
 type Props = {
   documentUrl: string;
   className?: string;
-  email: string | null;
 };
 
-const Konveio = ({ documentUrl, className, email }: Props) => {
+const Konveio = ({ documentUrl, className }: Props) => {
+  const authUser = useAuthUser();
+
+  const email =
+    !isNilOrError(authUser) && authUser.attributes.email
+      ? authUser.attributes.email
+      : null;
+
   // Parse survey URL
   const urlSplit = documentUrl.split('?');
   const urlParams = parse(urlSplit[1] ? urlSplit[1] : {});

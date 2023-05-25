@@ -8,11 +8,8 @@ import {
 import messages from './messages';
 import globalMessages from 'utils/messages';
 import ParticipationPermission from '../ParticipationPermission';
-import useAuthUser from 'hooks/useAuthUser';
-import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
-  documentUrl: string;
   project: IProjectData;
   phaseId: string | null;
 }
@@ -30,32 +27,32 @@ const disabledMessages: {
   not_document_annotation: messages.documentAnnotationDisabledNotActivePhase,
 };
 
-const DocumentAnnotation = ({ documentUrl, project, phaseId }: Props) => {
-  const authUser = useAuthUser();
-  const email =
-    !isNilOrError(authUser) && authUser.attributes.email
-      ? authUser.attributes.email
-      : null;
+const DocumentAnnotation = ({ project, phaseId }: Props) => {
   const { enabled: _enabled, disabled_reason } =
     project.attributes.action_descriptor.annotating_document;
+  const documentUrl = project.attributes.document_annotation_embed_url;
 
-  return (
-    <ParticipationPermission
-      id="document-annotation"
-      projectId={project.id}
-      action="annotating_document"
-      // We want to always show the document.
-      // Konveio itself show a popup requesting
-      // a sign up/in before commenting is possible.
-      enabled={true}
-      phaseId={phaseId}
-      disabledMessage={
-        disabled_reason ? disabledMessages[disabled_reason] : null
-      }
-    >
-      <Konveio documentUrl={documentUrl} email={email} />;
-    </ParticipationPermission>
-  );
+  if (documentUrl) {
+    return (
+      <ParticipationPermission
+        id="document-annotation"
+        projectId={project.id}
+        action="annotating_document"
+        // We want to always show the document.
+        // Konveio itself show a popup requesting
+        // a sign up/in before commenting is possible.
+        enabled={true}
+        phaseId={phaseId}
+        disabledMessage={
+          disabled_reason ? disabledMessages[disabled_reason] : null
+        }
+      >
+        <Konveio documentUrl={documentUrl} />;
+      </ParticipationPermission>
+    );
+  }
+
+  return null;
 };
 
 export default DocumentAnnotation;

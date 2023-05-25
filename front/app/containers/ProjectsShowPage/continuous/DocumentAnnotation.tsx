@@ -26,37 +26,28 @@ interface Props {
 
 const ContinuousDocumentAnnotation = ({ project, className }: Props) => {
   const { formatMessage } = useIntl();
-  const documentUrl = project.attributes.document_annotation_embed_url;
 
-  if (documentUrl) {
-    return (
-      <Box className={className} background={colors.background}>
-        <ContentContainer maxWidth={maxPageWidth}>
-          <SectionContainer>
-            <ScreenReaderOnly>
-              <h2>{formatMessage(messages.invisbleTitleDocumentAnnotation)}</h2>
-            </ScreenReaderOnly>
-            <Box
-              id="document-annotation"
-              className={`${className} e2e-document-annotation`}
-            >
-              <ProjectPageSectionTitle>
-                {formatMessage(messages.document)}
-              </ProjectPageSectionTitle>
+  return (
+    <Box className={className} background={colors.background}>
+      <ContentContainer maxWidth={maxPageWidth}>
+        <SectionContainer>
+          <ScreenReaderOnly>
+            <h2>{formatMessage(messages.invisbleTitleDocumentAnnotation)}</h2>
+          </ScreenReaderOnly>
+          <Box
+            id="document-annotation"
+            className={`${className} e2e-document-annotation`}
+          >
+            <ProjectPageSectionTitle>
+              {formatMessage(messages.document)}
+            </ProjectPageSectionTitle>
 
-              <DocumentAnnotation
-                documentUrl={documentUrl}
-                project={project}
-                phaseId={null}
-              />
-            </Box>
-          </SectionContainer>
-        </ContentContainer>
-      </Box>
-    );
-  }
-
-  return null;
+            <DocumentAnnotation project={project} phaseId={null} />
+          </Box>
+        </SectionContainer>
+      </ContentContainer>
+    </Box>
+  );
 };
 
 export default ContinuousDocumentAnnotation;
