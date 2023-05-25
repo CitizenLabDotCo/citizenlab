@@ -13,7 +13,6 @@ import { ITopicData } from 'api/topics/types';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { reportError } from 'utils/loggingUtils';
 
 // style
 import { media } from 'utils/styleUtils';
@@ -63,12 +62,12 @@ const InitiativesNewFormWrapper = ({
   const { data: appConfiguration } = useAppConfiguration();
   const { mutate: addInitiative } = useAddInitiative();
   const authUser = useAuthUser();
-  const { mutate: addInitiativeImage, isLoading: isAdding } =
+  const { mutateAsync: addInitiativeImage, isLoading: isAdding } =
     useAddInitiativeImage();
-  const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
+  const { mutateAsync: deleteInitiativeImage } = useDeleteInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
   const { mutate: deleteInitiativeFile } = useDeleteInitiativeFile();
-  const { mutate: updateInitiative, isLoading: isUpdating } =
+  const { mutateAsync: updateInitiative, isLoading: isUpdating } =
     useUpdateInitiative();
 
   const initialValues = {
@@ -164,6 +163,7 @@ const InitiativesNewFormWrapper = ({
 
   const handleSave = async () => {
     const changedValues = getChangedValues();
+    if (isUpdating) return;
 
     // if nothing has changed, do noting.
     if (isEmpty(changedValues) && !hasBannerChanged && !hasImageChanged) return;
@@ -210,6 +210,12 @@ const InitiativesNewFormWrapper = ({
   const debouncedSave = debounce(handleSave, 500);
 
   const handlePublish = async () => {
+    // if we're already saving, do nothing.
+    if (saving) return;
+
+    // setting flags for user feedback and avoiding double sends.
+    setSaving(true);
+
     if (allowAnonymousParticipation && postAnonymously) {
       setShowAnonymousConfirmationModal(true);
     } else {
@@ -219,13 +225,11 @@ const InitiativesNewFormWrapper = ({
 
   const continuePublish = async () => {
     const changedValues = getChangedValues();
-
     try {
       const formAPIValues = await getValuesToSend(changedValues, banner);
-
       // save any changes to the initiative data.
       if (initiativeId) {
-        updateInitiative(
+        await updateInitiative(
           {
             initiativeId,
             requestBody: {
@@ -253,37 +257,7 @@ const InitiativesNewFormWrapper = ({
           { onSuccess: (initiative) => setInitiativeId(initiative.data.id) }
         );
       }
-
-      // save any changes to initiative image.
-      if (hasImageChanged && initiativeId) {
-        if (image && image.base64) {
-          addInitiativeImage(
-            {
-              initiativeId,
-              image: { image: image.base64 },
-            },
-            {
-              onSuccess: (data) => {
-                setImageId(data.data.id);
-              },
-            }
-          );
-          // remove image from remote if it was saved
-        } else if (!image && imageId) {
-          deleteInitiativeImage(
-            { initiativeId, imageId },
-            {
-              onSuccess: () => {
-                setImageId(null);
-              },
-            }
-          );
-        } else if (image) {
-          // Image saving mechanism works on the hypothesis that any defined
-          // image will have a base64 key, if not, something wrong has happened.
-          reportError('Unexpected state of initiative image');
-        }
-      }
+      setSaving(false);
     } catch (errorResponse) {
       const apiErrors = get(errorResponse, 'json.errors');
 
@@ -374,12 +348,41 @@ const InitiativesNewFormWrapper = ({
     handleSave();
   };
 
-  const onChangeImage = (newValue: UploadFile | null) => {
-    if (newValue) {
-      setImage(newValue);
+  const onChangeImage = async (newValue: UploadFile | null) => {
+    if (initiativeId && newValue && newValue.base64) {
+      await addInitiativeImage(
+        {
+          initiativeId,
+          image: { image: newValue.base64 },
+        },
+        {
+          onSuccess: (data) => {
+            setSaving(false);
+            setImageId(data.data.id);
+            const newImage = newValue;
+            newImage.id = data.data.id;
+            setImage(newImage);
+          },
+          onError: () => {
+            setSaving(false);
+          },
+        }
+      );
     } else {
       const currentImageId = image?.id;
-      if (currentImageId) {
+      if (currentImageId && initiativeId && imageId) {
+        await deleteInitiativeImage(
+          { initiativeId, imageId: currentImageId },
+          {
+            onSuccess: () => {
+              setSaving(false);
+              setImageId(null);
+            },
+            onError: () => {
+              setSaving(false);
+            },
+          }
+        );
         setImage(newValue);
       } else {
         setImage(newValue);
