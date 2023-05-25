@@ -2,7 +2,7 @@ import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 import keys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
 import { GLOBAL_CONTEXT } from './constants';
-import { IPCPermissionAction } from 'services/actionPermissions';
+import { IParticipationContextPermissionAction } from 'services/actionPermissions';
 
 interface InitiativeContext {
   type: 'initiative';
@@ -11,13 +11,13 @@ interface InitiativeContext {
 
 export interface ProjectContext {
   type: 'project' | 'phase';
-  action: IPCPermissionAction;
+  action: IParticipationContextPermissionAction;
   id: string /* project or phase id, depending on type attribute */;
 }
 
 interface IdeaContext {
   type: 'idea';
-  action: IPCPermissionAction;
+  action: IParticipationContextPermissionAction;
   id: string /* idea id */;
 }
 

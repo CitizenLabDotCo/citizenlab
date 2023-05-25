@@ -1,7 +1,7 @@
 import {
   IGlobalPermissionAction,
   IPermissionData,
-  IPCPermissionAction,
+  IParticipationContextPermissionAction,
 } from 'services/actionPermissions';
 import { IProjectData } from 'api/projects/types';
 import { isNilOrError } from 'utils/helperUtils';
@@ -10,7 +10,9 @@ import { FieldType } from 'containers/Admin/settings/registration/CustomFieldRou
 import { MessageDescriptor } from 'react-intl';
 
 type GetPermissionActionMessageProps = {
-  permissionAction: IPCPermissionAction | IGlobalPermissionAction;
+  permissionAction:
+    | IParticipationContextPermissionAction
+    | IGlobalPermissionAction;
   postType: 'defaultInput' | 'nativeSurvey' | 'initiative';
   project: IProjectData | null | undefined;
 };
@@ -29,7 +31,7 @@ export const getPermissionActionSectionSubtitle = ({
 }: GetPermissionActionMessageProps) => {
   if (postType !== 'initiative' && !isNilOrError(project)) {
     const participationContextPermissionActionMessages: {
-      [key in IPCPermissionAction]: MessageDescriptor;
+      [key in IParticipationContextPermissionAction]: MessageDescriptor;
     } = {
       posting_idea:
         postType === 'nativeSurvey'

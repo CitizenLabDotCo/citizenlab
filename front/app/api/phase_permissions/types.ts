@@ -1,7 +1,7 @@
 import { IRelationship } from 'typings';
 import { Keys } from 'utils/cl-react-query/types';
 import phasePermissionKeys from './keys';
-import { IPCPermissionAction } from 'services/actionPermissions';
+import { IParticipationContextPermissionAction } from 'services/actionPermissions';
 
 export type PhasePermissionKeys = Keys<typeof phasePermissionKeys>;
 
@@ -29,7 +29,7 @@ export interface IPCPermissionData {
   id: string;
   type: string;
   attributes: {
-    action: IPCPermissionAction;
+    action: IParticipationContextPermissionAction;
     permitted_by:
       | 'everyone'
       | 'users'

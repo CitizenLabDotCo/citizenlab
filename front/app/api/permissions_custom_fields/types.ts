@@ -2,7 +2,7 @@ import { Keys } from 'utils/cl-react-query/types';
 import eventsKeys from './keys';
 import {
   IGlobalPermissionAction,
-  IPCPermissionAction,
+  IParticipationContextPermissionAction,
 } from 'services/actionPermissions';
 
 export type EventsKeys = Keys<typeof eventsKeys>;
@@ -19,7 +19,7 @@ export type IListParameters = {
   phaseId?: string | null;
   initiativeContext?: boolean | null;
   projectId?: string | null;
-  action: IGlobalPermissionAction | IPCPermissionAction;
+  action: IGlobalPermissionAction | IParticipationContextPermissionAction;
 };
 
 export interface IPermissionsCustomField {

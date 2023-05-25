@@ -14,7 +14,7 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import styled from 'styled-components';
 
 // utils
-import { IPCPermissionAction } from 'services/actionPermissions';
+import { IParticipationContextPermissionAction } from 'services/actionPermissions';
 
 const Container = styled.div`
   position: relative;
@@ -28,7 +28,7 @@ interface Props {
   projectId: string;
   phaseId: string | null;
   children: ReactNode;
-  action: IPCPermissionAction;
+  action: IParticipationContextPermissionAction;
   disabledMessage: MessageDescriptor | null;
   enabled: boolean;
   className?: string;

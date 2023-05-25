@@ -27,7 +27,7 @@ export interface IGlobalPermissionData {
   };
 }
 
-export type IPCPermissionAction =
+export type IParticipationContextPermissionAction =
   | 'posting_idea'
   | 'voting_idea'
   | 'commenting_idea'
@@ -36,11 +36,11 @@ export type IPCPermissionAction =
   | 'budgeting'
   | 'annotating_document';
 
-interface IPCPermissionData {
+interface IParticipationContextPermissionData {
   id: string;
   type: string;
   attributes: {
-    action: IPCPermissionAction;
+    action: IParticipationContextPermissionAction;
     permitted_by:
       | 'everyone'
       | 'users'
@@ -61,10 +61,12 @@ interface IPCPermissionData {
   };
 }
 
-export type IPermissionData = IPCPermissionData | IGlobalPermissionData;
+export type IPermissionData =
+  | IParticipationContextPermissionData
+  | IGlobalPermissionData;
 
-interface IPCPermission {
-  data: IPCPermissionData;
+interface IParticipationContextPermission {
+  data: IParticipationContextPermissionData;
 }
 
 interface IGlobalPermissions {
@@ -89,7 +91,7 @@ export function updateGlobalPermission(
   action: string,
   permission: Partial<IPermissionUpdate>
 ) {
-  return streams.update<IPCPermission>(
+  return streams.update<IParticipationContextPermission>(
     `${API_PATH}/permissions/${action}`,
     permissionId,
     { permission }
