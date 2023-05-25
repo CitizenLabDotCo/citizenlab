@@ -1,4 +1,4 @@
-import { Locale, Multiloc } from 'typings';
+import { Locale } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
 import campaignExamplesKeys from './keys';
@@ -15,7 +15,7 @@ export interface ICampaignExampleData {
   attributes: {
     mail_body_html: string;
     locale: Locale;
-    subject: Multiloc;
+    subject: string;
     created_at: string;
     updated_at: string;
   };
