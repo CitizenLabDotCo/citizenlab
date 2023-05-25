@@ -43,6 +43,10 @@ export const getAppConfigurationData = (
         additional_admins_number: 0,
         additional_moderators_number: 0,
       },
+      show_clave_unica_consents: {
+        allowed: true,
+        enabled: true,
+      },
       advanced_custom_pages: {
         allowed: true,
         enabled: true,
