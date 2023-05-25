@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FormEvent } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // components
 import { Button } from '@citizenlab/cl2-component-library';
@@ -51,28 +51,23 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
 
   const showSignIn = enabled || isFixableByAuthentication(disabled_reason);
 
-  const handleTakeSurveyClick = (event: FormEvent) => {
-    event.preventDefault();
+  const handleTakeSurveyClick = () => {
+    const scrollToParams = {
+      elementId: 'project-survey',
+      pathname,
+      projectSlug: project.attributes.slug,
+      currentPhase,
+    };
 
     if (enabled) {
-      scrollTo({
-        elementId: 'project-survey',
-        pathname,
-        projectSlug: project.attributes.slug,
-        currentPhase,
-      });
+      scrollTo(scrollToParams)();
       return;
     }
 
     if (isFixableByAuthentication(disabled_reason)) {
       const successAction: SuccessAction = {
         name: 'scrollTo',
-        params: {
-          elementId: 'project-survey',
-          pathname,
-          projectSlug: project.attributes.slug,
-          currentPhase,
-        },
+        params: scrollToParams,
       };
 
       triggerAuthenticationFlow({
@@ -91,26 +86,26 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
     return null;
   }
 
-  const CTAButton = showSignIn ? (
-    <Button
-      id="e2e-take-survey-button"
-      buttonStyle="primary"
-      onClick={handleTakeSurveyClick}
-      fontWeight="500"
-      bgColor={theme.colors.white}
-      textColor={theme.colors.tenantText}
-      textHoverColor={theme.colors.black}
-      padding="6px 12px"
-      fontSize="14px"
-    >
-      <FormattedMessage {...messages.takeTheSurvey} />
-    </Button>
-  ) : null;
-
   return (
     <ParticipationCTAContent
       currentPhase={currentPhase}
-      CTAButton={CTAButton}
+      CTAButton={
+        showSignIn ? (
+          <Button
+            id="e2e-take-survey-button"
+            buttonStyle="primary"
+            onClick={handleTakeSurveyClick}
+            fontWeight="500"
+            bgColor={theme.colors.white}
+            textColor={theme.colors.tenantText}
+            textHoverColor={theme.colors.black}
+            padding="6px 12px"
+            fontSize="14px"
+          >
+            <FormattedMessage {...messages.takeTheSurvey} />
+          </Button>
+        ) : null
+      }
     />
   );
 };

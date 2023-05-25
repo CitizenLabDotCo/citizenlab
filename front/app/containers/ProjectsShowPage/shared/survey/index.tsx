@@ -74,6 +74,7 @@ const Survey = ({
 
   return (
     <ParticipationPermission
+      id="project-survey"
       projectId={project.id}
       action="taking_survey"
       enabled={enabled}
@@ -82,10 +83,7 @@ const Survey = ({
         disabled_reason ? disabledMessages[disabled_reason] : null
       }
     >
-      <Container
-        id="project-survey"
-        className={`${className} e2e-${surveyService}-survey enabled`}
-      >
+      <Container className={`${className} e2e-${surveyService}-survey enabled`}>
         <ProjectPageSectionTitle>
           <FormattedMessage {...messages.survey} />
         </ProjectPageSectionTitle>

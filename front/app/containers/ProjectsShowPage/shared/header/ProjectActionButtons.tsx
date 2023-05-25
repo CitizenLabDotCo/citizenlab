@@ -81,7 +81,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         pathname,
         projectSlug: project.data.attributes.slug,
         currentPhase,
-      });
+      })();
       return;
     }
 
@@ -119,7 +119,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         pathname,
         projectSlug: project.data.attributes.slug,
         currentPhase,
-      });
+      })();
       return;
     }
 
@@ -211,7 +211,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
               pathname,
               projectSlug: project.data.attributes.slug,
               currentPhase,
-            });
+            })();
           }}
           fontWeight="500"
         >
@@ -268,7 +268,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
               pathname,
               projectSlug: project.data.attributes.slug,
               currentPhase,
-            });
+            })();
           }}
           fontWeight="500"
         >

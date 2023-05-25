@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FormEvent } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Components
 import { Button } from '@citizenlab/cl2-component-library';
@@ -27,6 +27,8 @@ import { useLocation } from 'react-router-dom';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
@@ -40,15 +42,35 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
 
-  const handleClick = (event: FormEvent) => {
-    event.preventDefault();
-
-    scrollTo({
+  const handleClick = () => {
+    const scrollParams = {
       elementId: 'document-annotation',
       pathname,
       projectSlug: project.attributes.slug,
       currentPhase,
-    });
+    };
+
+    if (enabled) {
+      scrollTo(scrollParams)();
+      return;
+    }
+
+    if (isFixableByAuthentication(disabled_reason)) {
+      const successAction: SuccessAction = {
+        name: 'scrollTo',
+        params: scrollParams,
+      };
+
+      triggerAuthenticationFlow({
+        flow: 'signup',
+        context: {
+          type: currentPhase ? 'phase' : 'project',
+          action: 'annotating_document',
+          id: currentPhase ? currentPhase.id : project.id,
+        },
+        successAction,
+      });
+    }
   };
 
   if (hasProjectEndedOrIsArchived(project, currentPhase)) {

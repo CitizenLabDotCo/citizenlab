@@ -41,6 +41,7 @@ const DocumentAnnotation = ({ documentUrl, project, phaseId }: Props) => {
 
   return (
     <ParticipationPermission
+      id="document-annotation"
       projectId={project.id}
       action="annotating_document"
       // We want to always show the document.

@@ -12,7 +12,7 @@ export interface ScrollToParams {
 
 export const scrollTo =
   ({ elementId, pathname, projectSlug, currentPhase }: ScrollToParams) =>
-  async () => {
+  () => {
     const isOnProjectPage = pathname.endsWith(`/projects/${projectSlug}`);
 
     const id = elementId;

@@ -25,6 +25,7 @@ const Container = styled.div`
 `;
 
 interface Props {
+  id: string;
   projectId: string;
   phaseId: string | null;
   children: ReactNode;
@@ -35,6 +36,7 @@ interface Props {
 }
 
 const ParticipationPermission = ({
+  id,
   projectId,
   phaseId,
   className,
@@ -68,7 +70,7 @@ const ParticipationPermission = ({
   };
 
   return (
-    <>
+    <div id={id}>
       {/*
         disabledMessage check is needed,
         FormattedMessage currently doesn't require it
@@ -108,7 +110,7 @@ const ParticipationPermission = ({
         </Container>
       )}
       {enabled && <>{children}</>}
-    </>
+    </div>
   );
 };
 
