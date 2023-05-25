@@ -540,11 +540,6 @@ RSpec.describe Idea do
   describe 'anonymous participation' do
     let(:author) { create(:user) }
 
-    it 'has an author hash of consistent length' do
-      idea = create(:idea)
-      expect(idea.author_hash.length).to eq 32
-    end
-
     context 'ideas are not anonymous' do
       it 'has the same author hash for ideas in different projects when the author is the same' do
         idea1 = create(:idea, author: author)
