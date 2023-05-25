@@ -9,6 +9,8 @@ import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInp
 import PollInputs from './components/PollInputs';
 import SurveyInputs from './components/SurveyInputs';
 import { Container, StyledSection } from './components/styling';
+import NativeSurveyInputs from './components/NativeSurveyInputs';
+import IdeationInputs from './components/IdeationInputs';
 
 // services
 import { IProject } from 'api/projects/types';
@@ -42,7 +44,6 @@ import { IOption } from '@citizenlab/cl2-component-library';
 import getOutput from './utils/getOutput';
 import validate from './utils/validate';
 import { anyIsDefined } from 'utils/helperUtils';
-import IdeationInputs from './components/IdeationInputs';
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
@@ -539,7 +540,14 @@ class ParticipationContext extends PureComponent<
                 togglePollAnonymous={this.togglePollAnonymous}
               />
             )}
-
+            {participation_method === 'native_survey' && (
+              <NativeSurveyInputs
+                allow_anonymous_participation={allow_anonymous_participation}
+                handleAllowAnonymousParticipationOnChange={
+                  this.handleAllowAnonymousParticipationOnChange
+                }
+              />
+            )}
             {participation_method === 'survey' && (
               <SurveyInputs
                 survey_service={survey_service}
