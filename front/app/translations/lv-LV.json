@@ -504,6 +504,7 @@
   "app.components.form.ErrorDisplay.save": "Saglabāt",
   "app.components.form.ErrorDisplay.submitSurvey": "Aptaujas iesniegšana",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Sāciet rakstīt, lai meklētu pēc lietotāja e-pasta adreses vai vārda...",
+  "app.components.form.anonymousSurveyMessage": "Visas šajā aptaujā sniegtās atbildes ir anonīmas",
   "app.components.form.blockedVerified": "Šo lauku jūs nevarat rediģēt, jo tas satur pārbaudītu informāciju",
   "app.components.form.controls.adminFieldTooltip": "Lauks ir redzams tikai administratoriem",
   "app.components.form.controls.notPublic": "*Šī atbilde tiks izpausta tikai moderatoriem, bet ne sabiedrībai.",
