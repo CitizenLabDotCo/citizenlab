@@ -201,6 +201,14 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       authUser,
     });
     const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
+    const surveyMessage =
+      projectType === 'continuous'
+        ? messages.oneSurvey
+        : messages.oneSurveyInCurrentPhase;
+    const docAnnotationMessage =
+      projectType === 'continuous'
+        ? messages.oneDocToReview
+        : messages.oneDocToReviewInCurrentPhase;
 
     return (
       <Container id="e2e-project-sidebar" className={className || ''}>
@@ -352,20 +360,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                       id="e2e-project-sidebar-surveys-count"
                       onClick={scrollTo('project-survey')}
                     >
-                      <FormattedMessage
-                        {...(projectType === 'continuous'
-                          ? messages.xSurveys
-                          : messages.xSurveysInCurrentPhase)}
-                        values={{ surveysCount: 1 }}
-                      />
+                      <FormattedMessage {...surveyMessage} />
                     </ListItemButton>
                   ) : (
-                    <FormattedMessage
-                      {...(projectType === 'continuous'
-                        ? messages.xSurveys
-                        : messages.xSurveysInCurrentPhase)}
-                      values={{ surveysCount: 1 }}
-                    />
+                    <FormattedMessage {...surveyMessage} />
                   )}
                 </ListItem>
               )}
@@ -378,20 +376,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   <ListItemIcon ariaHidden name="blank-paper" />
                   {!isNilOrError(authUser) ? (
                     <ListItemButton onClick={scrollTo('document-annotation')}>
-                      <FormattedMessage
-                        {...(projectType === 'continuous'
-                          ? messages.xDocuments
-                          : messages.xDocumentsInCurrentPhase)}
-                        values={{ documentsCount: 1 }}
-                      />
+                      <FormattedMessage {...docAnnotationMessage} />
                     </ListItemButton>
                   ) : (
-                    <FormattedMessage
-                      {...(projectType === 'continuous'
-                        ? messages.xDocuments
-                        : messages.xDocumentsInCurrentPhase)}
-                      values={{ documentsCount: 1 }}
-                    />
+                    <FormattedMessage {...docAnnotationMessage} />
                   )}
                 </ListItem>
               )}
@@ -412,20 +400,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                         );
                       }}
                     >
-                      <FormattedMessage
-                        {...(projectType === 'continuous'
-                          ? messages.xSurveys
-                          : messages.xSurveysInCurrentPhase)}
-                        values={{ surveysCount: 1 }}
-                      />
+                      <FormattedMessage {...surveyMessage} />
                     </ListItemButton>
                   ) : (
-                    <FormattedMessage
-                      {...(projectType === 'continuous'
-                        ? messages.xSurveys
-                        : messages.xSurveysInCurrentPhase)}
-                      values={{ surveysCount: 1 }}
-                    />
+                    <FormattedMessage {...surveyMessage} />
                   )}
                 </ListItem>
               )}

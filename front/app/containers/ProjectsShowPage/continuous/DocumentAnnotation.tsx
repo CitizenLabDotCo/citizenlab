@@ -30,12 +30,7 @@ const ContinuousDocumentAnnotation = ({ project, className }: Props) => {
 
   if (documentUrl) {
     return (
-      <Box
-        className={`e2e-continuous-project-document-annotation-container ${
-          className || ''
-        }`}
-        background={colors.background}
-      >
+      <Box className={className} background={colors.background}>
         <ContentContainer maxWidth={maxPageWidth}>
           <SectionContainer>
             <ScreenReaderOnly>

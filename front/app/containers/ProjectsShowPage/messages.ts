@@ -250,25 +250,21 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {# questions} one {# question} other {# questions}} in the final phase',
   },
-  xSurveys: {
-    id: 'app.containers.Projects.xSurveys',
-    defaultMessage:
-      '{surveysCount, plural, no {# surveys} one {# survey} other {# surveys}}',
+  oneSurvey: {
+    id: 'app.containers.Projects.oneSurvey',
+    defaultMessage: '1 survey',
   },
-  xSurveysInCurrentPhase: {
-    id: 'app.containers.Projects.xSurveysInCurrentPhase',
-    defaultMessage:
-      '{surveysCount, plural, no {# surveys} one {# survey} other {# surveys}} in the current phase',
+  oneSurveyInCurrentPhase: {
+    id: 'app.containers.Projects.oneSurveyInCurrentPhase',
+    defaultMessage: '1 survey in the current phase',
   },
-  xDocuments: {
-    id: 'app.containers.Projects.xDocuments',
-    defaultMessage:
-      '{documentsCount, plural, no {# documents} one {# document} other {# documents}} to review',
+  oneDocToReview: {
+    id: 'app.containers.Projects.oneDocToReview',
+    defaultMessage: '1 document to review',
   },
-  xDocumentsInCurrentPhase: {
-    id: 'app.containers.Projects.xDocumentsInCurrentPhase',
-    defaultMessage:
-      '{documentsCount, plural, no {# documents} one {# document} other {# documents}} to review in the current phase',
+  oneDocToReviewInCurrentPhase: {
+    id: 'app.containers.Projects.oneDocToReviewInCurrentPhase',
+    defaultMessage: '1 document to review in the current phase',
   },
   poll: {
     id: 'app.containers.Projects.poll',
