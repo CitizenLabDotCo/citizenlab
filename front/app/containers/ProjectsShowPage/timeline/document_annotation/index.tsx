@@ -13,21 +13,15 @@ interface Props {
 }
 
 const PhaseDocumentAnnotation = ({ phase, project }: Props) => {
-  const documentUrl = phase.attributes.document_annotation_embed_url;
+  return (
+    <Box position="relative" minHeight="500px">
+      <ProjectPageSectionTitle>
+        <FormattedMessage {...messages.document} />
+      </ProjectPageSectionTitle>
 
-  if (documentUrl) {
-    return (
-      <Box position="relative" minHeight="500px">
-        <ProjectPageSectionTitle>
-          <FormattedMessage {...messages.document} />
-        </ProjectPageSectionTitle>
-
-        <DocumentAnnotation project={project} phaseId={phase.id} />
-      </Box>
-    );
-  }
-
-  return null;
+      <DocumentAnnotation project={project} phaseId={phase.id} />
+    </Box>
+  );
 };
 
 export default PhaseDocumentAnnotation;
