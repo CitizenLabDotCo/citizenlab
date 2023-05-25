@@ -504,6 +504,7 @@
   "app.components.form.ErrorDisplay.save": "Guardar",
   "app.components.form.ErrorDisplay.submitSurvey": "Submeter inquérito",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Comece a digitar para procurar por e-mail ou nome do utilizador...",
+  "app.components.form.anonymousSurveyMessage": "Todas as respostas a este inquérito são anónimas",
   "app.components.form.blockedVerified": "Não pode editar este campo porque contém informação verificada",
   "app.components.form.controls.adminFieldTooltip": "Campo visível apenas para os administradores",
   "app.components.form.controls.notPublic": "*Esta resposta só será partilhada com os moderadores, e não com o público.",
