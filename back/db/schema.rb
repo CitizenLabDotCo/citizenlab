@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_05_162820) do
+ActiveRecord::Schema.define(version: 2023_05_24_151508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -333,6 +333,17 @@ ActiveRecord::Schema.define(version: 2023_04_05_162820) do
     t.index ["campaign_id"], name: "index_email_campaigns_deliveries_on_campaign_id"
     t.index ["sent_at"], name: "index_email_campaigns_deliveries_on_sent_at"
     t.index ["user_id"], name: "index_email_campaigns_deliveries_on_user_id"
+  end
+
+  create_table "email_campaigns_examples", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "mail_body_html", null: false
+    t.string "locale", null: false
+    t.string "subject", null: false
+    t.uuid "recipient_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.uuid "campaign_id"
+    t.index ["campaign_id"], name: "index_email_campaigns_examples_on_campaign_id"
   end
 
   create_table "email_campaigns_unsubscription_tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1121,8 +1132,10 @@ ActiveRecord::Schema.define(version: 2023_04_05_162820) do
     t.datetime "expired_at"
     t.jsonb "args", default: [], null: false
     t.jsonb "data", default: {}, null: false
+    t.integer "job_schema_version", default: 1
     t.index ["args"], name: "que_jobs_args_gin_idx", opclass: :jsonb_path_ops, using: :gin
     t.index ["data"], name: "que_jobs_data_gin_idx", opclass: :jsonb_path_ops, using: :gin
+    t.index ["job_schema_version", "queue", "priority", "run_at", "id"], name: "que_poll_idx_with_job_schema_version", where: "((finished_at IS NULL) AND (expired_at IS NULL))"
     t.index ["queue", "priority", "run_at", "id"], name: "que_poll_idx", where: "((finished_at IS NULL) AND (expired_at IS NULL))"
   end
 
@@ -1133,6 +1146,7 @@ ActiveRecord::Schema.define(version: 2023_04_05_162820) do
     t.text "ruby_hostname", null: false
     t.text "queues", null: false, array: true
     t.boolean "listening", null: false
+    t.integer "job_schema_version", default: 1
   end
 
   create_table "que_values", primary_key: "key", id: :text, force: :cascade do |t|
