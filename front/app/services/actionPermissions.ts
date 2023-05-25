@@ -28,12 +28,12 @@ export interface IGlobalPermissionData {
 }
 
 export type IPCPermissionAction =
-  | 'posting_idea' // proj
-  | 'voting_idea' // proj, idea
-  | 'commenting_idea' // proj, idea
-  | 'taking_survey' // proj
-  | 'taking_poll' // proj
-  | 'budgeting' // idea
+  | 'posting_idea'
+  | 'voting_idea'
+  | 'commenting_idea'
+  | 'taking_survey'
+  | 'taking_poll'
+  | 'budgeting'
   | 'annotating_document';
 
 interface IPCPermissionData {
