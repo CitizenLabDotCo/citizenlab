@@ -22,11 +22,7 @@ const PhaseDocumentAnnotation = ({ phase, project }: Props) => {
           <FormattedMessage {...messages.document} />
         </ProjectPageSectionTitle>
 
-        <DocumentAnnotation
-          documentUrl={documentUrl}
-          project={project}
-          phaseId={phase.id}
-        />
+        <DocumentAnnotation project={project} phaseId={phase.id} />
       </Box>
     );
   }
