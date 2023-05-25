@@ -110,7 +110,7 @@ class ParticipantsService
     end
     participant_author_hashes = participant_ids.map { |id| Idea.create_author_hash(id, project.id, true) }
     anonymous_count = Idea.where(project: project, anonymous: true).where.not(author_hash: participant_author_hashes).distinct.count(:author_hash)
-    # TODO: Add anonymous comments
+    # TODO: Add anonymous comments & add all the options in too
     participant_ids.size + anonymous_count
   end
 
