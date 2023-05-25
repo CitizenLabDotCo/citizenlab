@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { isUndefined } from 'lodash-es';
-import { flow, map, groupBy, entries, sortBy } from 'lodash/fp';
-import { ICampaignData } from 'services/campaigns';
+import { ICampaignData } from 'api/campaigns/types';
 import {
   Toggle,
   Box,
@@ -18,14 +17,30 @@ import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import useLocalize from 'hooks/useLocalize';
 
+const groupBy = (key: string) => (result, current) => {
+  const resultObj = Object.fromEntries(result);
+  const groupingKey = current[key];
+  if (!resultObj[groupingKey]) {
+    resultObj[groupingKey] = [];
+  }
+  resultObj[groupingKey].push(current);
+  return Object.entries(resultObj);
+};
+
+const sortBy = (key: string) => (a, b) => {
+  const numA = a[1][0].attributes[`${key}_ordering`];
+  const numB = b[1][0].attributes[`${key}_ordering`];
+  return numA - numB;
+};
+
 const AutomatedEmails = () => {
-  const { data: { data: campaigns } = {} } = useCampaigns({
+  const { data: campaigns } = useCampaigns({
     withoutCampaignNames: ['manual'],
     pageSize: 250,
   });
   const { mutate: updateCampaign } = useUpdateCampaign();
   const localize = useLocalize();
-  const [groupedCampaigns, setGroupedCampaigns] = useState([]);
+  const [groupedCampaigns, setGroupedCampaigns] = useState<any[]>([]);
 
   const handleOnEnabledToggle = (campaign: ICampaignData) => () => {
     updateCampaign({
@@ -37,39 +52,45 @@ const AutomatedEmails = () => {
   };
 
   useEffect(() => {
-    const groupCampaigns = flow([
-      map((campaign: any) => ({
-        content_type: localize(campaign.attributes.content_type_multiloc),
-        recipient_role: localize(campaign.attributes.recipient_role_multiloc),
-        recipient_segment: localize(
-          campaign.attributes.recipient_segment_multiloc
-        ),
-        trigger:
-          campaign.attributes.trigger_multiloc &&
-          localize(campaign.attributes.trigger_multiloc),
-        admin_campaign_description: localize(
-          campaign.attributes.admin_campaign_description_multiloc
-        ),
-        schedule:
-          campaign.attributes.schedule_multiloc &&
-          localize(campaign.attributes.schedule_multiloc),
-        ...campaign,
-      })),
-      groupBy('recipient_role'),
-      entries,
-      sortBy((g: any) => g[1][0].attributes.recipient_role_ordering),
-      map(([recipient_role, group]) => [
-        recipient_role,
-        flow([
-          groupBy('content_type'),
-          entries,
-          sortBy((g: any) => g[1][0].attributes.content_type_ordering),
-        ])(group),
-      ]),
-    ]);
-
-    if (campaigns) {
-      setGroupedCampaigns(groupCampaigns(campaigns));
+    if (campaigns?.pages) {
+      setGroupedCampaigns(
+        campaigns.pages
+          .map((page) => page.data)
+          .flat()
+          .map(
+            ({
+              attributes: {
+                content_type_multiloc,
+                recipient_role_multiloc,
+                recipient_segment_multiloc,
+                trigger_multiloc,
+                campaign_description_multiloc,
+                schedule_multiloc,
+                ...attributes
+              },
+              ...campaign
+            }) => ({
+              content_type: localize(content_type_multiloc),
+              recipient_role: localize(recipient_role_multiloc),
+              recipient_segment: localize(recipient_segment_multiloc),
+              trigger: trigger_multiloc && localize(trigger_multiloc),
+              campaign_description: localize(campaign_description_multiloc),
+              schedule: schedule_multiloc && localize(schedule_multiloc),
+              ...{
+                attributes: { ...attributes },
+                ...campaign,
+              },
+            })
+          )
+          .reduce(groupBy('recipient_role'), [])
+          .sort(sortBy('recipient_role'))
+          .map(([recipient_role, group]) => [
+            recipient_role,
+            group
+              .reduce(groupBy('content_type'), [])
+              .sort(sortBy('content_type')),
+          ])
+      );
     }
   }, [campaigns, localize]);
 
@@ -109,7 +130,7 @@ const AutomatedEmails = () => {
                       />
                       <Box display="flex" flexDirection="column" ml="20px">
                         <Text color="grey800" m="0">
-                          {campaign.admin_campaign_description}
+                          {campaign.campaign_description}
                         </Text>
                         <Box display="flex">
                           <Box display="flex" justifyContent="center">

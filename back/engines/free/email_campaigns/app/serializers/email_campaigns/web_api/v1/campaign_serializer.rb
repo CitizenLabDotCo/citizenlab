@@ -9,8 +9,8 @@ module EmailCampaigns
       object.class.campaign_name
     end
 
-    attribute :admin_campaign_description_multiloc do |object|
-      object.class.admin_campaign_description_multiloc
+    attribute :campaign_description_multiloc do |object|
+      object.class.campaign_description_multiloc
     end
 
     attribute :recipient_role_multiloc do |object|

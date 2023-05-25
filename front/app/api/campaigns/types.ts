@@ -14,7 +14,7 @@ export interface ICampaignData {
   type: string;
   attributes: {
     campaign_name: string;
-    admin_campaign_description_multiloc: Multiloc;
+    campaign_description_multiloc: Multiloc;
     enabled?: boolean;
     subject_multiloc: Multiloc;
     body_multiloc: Multiloc;
@@ -25,10 +25,10 @@ export interface ICampaignData {
     deliveries_count: number;
     schedule: any;
     schedule_multiloc: Multiloc;
-    content_type_multiloc: Multiloc;
-    recipient_role_multiloc: Multiloc;
-    recipient_segment_multiloc: Multiloc;
-    trigger_multiloc: Multiloc;
+    content_type_multiloc?: Multiloc;
+    recipient_role_multiloc?: Multiloc;
+    recipient_segment_multiloc?: Multiloc;
+    trigger_multiloc?: Multiloc;
   };
   relationships: {
     author: {

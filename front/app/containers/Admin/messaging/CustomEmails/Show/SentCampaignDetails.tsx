@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { ICampaignData } from 'services/campaigns';
+import { ICampaignData } from 'api/campaigns/types';
 import GetCampaign from 'resources/GetCampaign';
 import { isNilOrError } from 'utils/helperUtils';
 
