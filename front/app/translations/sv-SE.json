@@ -16,6 +16,7 @@
   "app.components.AuthProviders.continueWithAzure": "Fortsätt med {azureProviderName}",
   "app.components.AuthProviders.continueWithFacebook": "Fortsätt med Facebook",
   "app.components.AuthProviders.continueWithGoogle": "Fortsätt med Google",
+  "app.components.AuthProviders.continueWithLoginMechanism": "Fortsätt med {loginMechanismName}",
   "app.components.AuthProviders.franceConnectMergingFailed": "Det finns redan ett konto med den här e-postadressen.{br}{br}Du kan inte få tillgång till plattformen via FranceConnect eftersom personuppgifterna inte stämmer överens. Om du vill logga in via FranceConnect måste du först ändra ditt för- eller efternamn på denna plattform så att de stämmer överens med dina officiella uppgifter.{br}{br}Du kan logga in som vanligt nedan.",
   "app.components.AuthProviders.goToLogIn": "Har du redan ett konto? {goToOtherFlowLink}",
   "app.components.AuthProviders.goToSignUp": "Har du inget konto? {goToOtherFlowLink}",
