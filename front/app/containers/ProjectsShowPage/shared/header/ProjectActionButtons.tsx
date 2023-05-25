@@ -69,31 +69,26 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     return null;
   }
 
-  const handleTakeSurveyClick = (event: FormEvent) => {
-    event.preventDefault();
+  const handleTakeSurveyClick = () => {
+    const scrollParams = {
+      elementId: 'project-survey',
+      pathname,
+      projectSlug: project.data.attributes.slug,
+      currentPhase,
+    };
 
     const { enabled, disabled_reason } =
       project.data.attributes.action_descriptor.taking_survey;
 
     if (enabled) {
-      scrollTo({
-        elementId: 'project-survey',
-        pathname,
-        projectSlug: project.data.attributes.slug,
-        currentPhase,
-      })();
+      scrollTo(scrollParams)();
       return;
     }
 
     if (isFixableByAuthentication(disabled_reason)) {
       const successAction: SuccessAction = {
         name: 'scrollTo',
-        params: {
-          elementId: 'project-survey',
-          pathname,
-          projectSlug: project.data.attributes.slug,
-          currentPhase,
-        },
+        params: scrollParams,
       };
 
       triggerAuthenticationFlow({
@@ -108,30 +103,26 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     }
   };
 
-  const handleReviewDocumentClick = (event: FormEvent) => {
-    event.preventDefault();
+  const handleReviewDocumentClick = () => {
+    const scrollParams = {
+      elementId: 'document-annotation',
+      pathname,
+      projectSlug: project.data.attributes.slug,
+      currentPhase,
+    };
+
     const { enabled, disabled_reason } =
       project.data.attributes.action_descriptor.annotating_document;
 
     if (enabled) {
-      scrollTo({
-        elementId: 'document-annotation',
-        pathname,
-        projectSlug: project.data.attributes.slug,
-        currentPhase,
-      })();
+      scrollTo(scrollParams)();
       return;
     }
 
     if (isFixableByAuthentication(disabled_reason)) {
       const successAction: SuccessAction = {
         name: 'scrollTo',
-        params: {
-          elementId: 'document-annotation',
-          pathname,
-          projectSlug: project.data.attributes.slug,
-          currentPhase,
-        },
+        params: scrollParams,
       };
 
       triggerAuthenticationFlow({
