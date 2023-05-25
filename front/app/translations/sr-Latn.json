@@ -1240,8 +1240,6 @@
   "app.containers.Projects.xQuestions": "{ideasCount, plural, one {# pitanje} other {# pitanja}}",
   "app.containers.Projects.xQuestionsInCurrentPhase": "{ideasCount, plural, one {# pitanje} other {# pitanja}} u trenutnoj fazi",
   "app.containers.Projects.xQuestionsInFinalPhase": "{ideasCount, plural, one {# pitanje} other {# pitanja}} u finalnoj fazi",
-  "app.containers.Projects.xSurveys": "{surveysCount, plural, one {# anketa} other {# ankete}}",
-  "app.containers.Projects.xSurveysInCurrentPhase": "{surveysCount, plural, one {# anketa} other {# ankete}} u trenutnoj fazi",
   "app.containers.Projects.xUpcomingEvents": "{upcomingEventsCount, plural, one {# predstojeći događaj} other {# predstojećih događaja}}",
   "app.containers.Projects.yourBudget": "Total budget",
   "app.containers.ProjectsIndexPage.metaDescription": "Istražite sve trenutne projekte od {orgName} i saznajte kako možete učestvovati. Pridružite nam se u diskusiji o lokalnim projektima do kojih vam je stalo.",

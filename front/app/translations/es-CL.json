@@ -1240,8 +1240,6 @@
   "app.containers.Projects.xQuestions": "{ideasCount, plural, no {# preguntas} one {# preguntas} other {# preguntas}}",
   "app.containers.Projects.xQuestionsInCurrentPhase": "{ideasCount, plural, no {# preguntas} one {# preguntas} other {# preguntas}} en la fase actual",
   "app.containers.Projects.xQuestionsInFinalPhase": "{ideasCount, plural, no {# preguntas} one {# preguntas} other {# preguntas}} en la fase final",
-  "app.containers.Projects.xSurveys": "{surveysCount, plural, one {# consulta} other {# consultas}}",
-  "app.containers.Projects.xSurveysInCurrentPhase": "{surveysCount, plural, one {# consulta} other {# consultas}} en la fase actual",
   "app.containers.Projects.xUpcomingEvents": "{upcomingEventsCount, plural, one {# próximo evento} other {# próximos eventos}}",
   "app.containers.Projects.yourBudget": "Presupuesto total",
   "app.containers.ProjectsIndexPage.metaDescription": "Explora todos los proyectos en curso de {orgName} para entender cómo puedes participar.\nÚnete a la conversación sobre los proyectos que más te interesen.",

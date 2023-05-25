@@ -1173,8 +1173,6 @@
   "app.containers.Projects.xQuestions": "{ideasCount, plural, 0 {# apeqquteqanngilaq} one {# apeqqut} other {# apeqqutit}}",
   "app.containers.Projects.xQuestionsInCurrentPhase": "{ideasCount, plural, 0 {# apeqquteqanngilaq} one {# apeqqut} other {# apeqqutit}} immikkoortumi massakkut pineqartumi",
   "app.containers.Projects.xQuestionsInFinalPhase": "{ideasCount, plural, 0 {# suliassaqanngilaq} one {# suliaq} other {# suliat}} immikkoortumi kingullermi",
-  "app.containers.Projects.xSurveys": "{surveysCount, plural, no {# surveys} one {# immersuilluni apersuineq} other {# surveys}}",
-  "app.containers.Projects.xSurveysInCurrentPhase": "{surveysCount, plural, no {# surveys} one {# survey} other {# surveys}} i den nuværende fase",
   "app.containers.Projects.xUpcomingEvents": "{upcomingEventsCount, plural, no {# kommende begivenheder} one {# kommende begivenhed} other {# kommende begivenheder}}",
   "app.containers.Projects.yourBudget": "Missingersuutitit",
   "app.containers.ProjectsIndexPage.metaDescription": "Uani {orgName} suliniutit ingerlasut tamaasa paasiniarlugu sumi peqataasinnaanerlutit misissukkit. Sumiiffimmi suliniutit ilinnut pingaarutillit oqallisiginiarlugit aggerit. ",
