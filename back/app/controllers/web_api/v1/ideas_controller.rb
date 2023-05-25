@@ -142,6 +142,7 @@ class WebApi::V1::IdeasController < ApplicationController
       input.creation_phase = (participation_context if participation_method.form_in_phase?)
       input.phase_ids = [participation_context.id] if phase_ids.empty?
     end
+    # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
     if participation_context.native_survey? && participation_context.allow_anonymous_participation?
       input.anonymous = true
     end
