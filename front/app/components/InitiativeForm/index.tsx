@@ -182,7 +182,16 @@ const InitiativeForm = ({
     }, 5);
   };
 
+  const validateRequiredFields = () => {
+    const requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids'];
+    requiredFields.forEach((fieldName) => {
+      updateTouched(fieldName);
+      onBlur(fieldName)();
+    });
+  };
+
   const handleOnPublish = () => {
+    validateRequiredFields();
     if (Object.values(errors).every((val) => val === undefined)) {
       onPublish();
     }
