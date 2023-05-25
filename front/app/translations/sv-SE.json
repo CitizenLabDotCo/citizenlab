@@ -504,6 +504,7 @@
   "app.components.form.ErrorDisplay.save": "Spara",
   "app.components.form.ErrorDisplay.submitSurvey": "Skicka undersökning",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Börja skriva för att söka efter användarens e-postadress eller namn...",
+  "app.components.form.anonymousSurveyMessage": "Alla svar på denna enkät är anonymiserade.",
   "app.components.form.blockedVerified": "Du kan inte redigera det här fältet eftersom det innehåller verifierad information",
   "app.components.form.controls.adminFieldTooltip": "Fältet är endast synligt för administratörer",
   "app.components.form.controls.notPublic": "*Detta svar kommer endast att delas med moderatorer och delas inte offentligt.",
