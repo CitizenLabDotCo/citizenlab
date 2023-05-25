@@ -3,7 +3,7 @@ import PageLoading from 'components/UI/PageLoading';
 
 const ToolsWrapper = lazy(() => import('.'));
 
-const reportingRoutes = () => {
+const toolsRoutes = () => {
   return {
     path: 'tools',
     element: (
@@ -14,4 +14,4 @@ const reportingRoutes = () => {
   };
 };
 
-export default reportingRoutes;
+export default toolsRoutes;
