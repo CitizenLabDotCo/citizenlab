@@ -504,6 +504,7 @@
   "app.components.form.ErrorDisplay.save": "Risparmiare",
   "app.components.form.ErrorDisplay.submitSurvey": "Invia sondaggio",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Inizia a digitare per cercare per email o nome dell'utente...",
+  "app.components.form.anonymousSurveyMessage": "Tutte le risposte a questo sondaggio sono anonime.",
   "app.components.form.blockedVerified": "Non puoi modificare questo campo perché contiene informazioni verificate",
   "app.components.form.controls.adminFieldTooltip": "Campo visibile solo agli amministratori",
   "app.components.form.controls.notPublic": "*Questa risposta sarà condivisa solo con i moderatori e non con il pubblico.",
