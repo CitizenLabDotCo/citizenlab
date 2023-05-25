@@ -55,8 +55,7 @@ const AutomatedEmails = () => {
     if (campaigns?.pages) {
       setGroupedCampaigns(
         campaigns.pages
-          .map((page) => page.data)
-          .flat()
+          .flatMap((page) => page.data)
           .map(
             ({
               attributes: {
