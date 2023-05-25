@@ -504,6 +504,7 @@
   "app.components.form.ErrorDisplay.save": "Enregistrer",
   "app.components.form.ErrorDisplay.submitSurvey": "Envoyer l'enquête",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Commencez à taper pour rechercher par email ou nom d'utilisateur...",
+  "app.components.form.anonymousSurveyMessage": "Toutes les réponses à cette enquête sont anonymes",
   "app.components.form.blockedVerified": "Vous ne pouvez pas modifier ce champ car il contient des informations vérifiées",
   "app.components.form.controls.adminFieldTooltip": "Champ visible uniquement pour les administrateurs",
   "app.components.form.controls.notPublic": "*Cette réponse ne sera communiquée qu'aux modérateurs, et non au public.",
