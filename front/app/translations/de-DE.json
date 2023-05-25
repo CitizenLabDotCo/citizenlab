@@ -1001,7 +1001,7 @@
   "app.containers.InitiativesShow.reportAsSpamModalTitle": "Warum wollen Sie dies als Spam melden?",
   "app.containers.InitiativesShow.twitterMessage": "Stimme für {initiativeTitle} auf",
   "app.containers.InitiativesShow.whatsAppMessage": "{initiativeTitle} | von der Beteiligungsplattform {orgName}",
-  "app.containers.Navbar.completeProfile": "Vollständiges Profil",
+  "app.containers.Navbar.completeProfile": "Profil vervollständigen",
   "app.containers.Navbar.confirmEmail": "E-Mail-Adresse bestätigen",
   "app.containers.Navbar.unverified": "Nicht verifiziert",
   "app.containers.Navbar.verified": "Verifiziert",
