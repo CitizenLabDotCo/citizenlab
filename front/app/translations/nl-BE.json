@@ -16,6 +16,7 @@
   "app.components.AuthProviders.continueWithAzure": "Doorgaan met {azureProviderName}",
   "app.components.AuthProviders.continueWithFacebook": "Doorgaan met Facebook",
   "app.components.AuthProviders.continueWithGoogle": "Doorgaan met Google",
+  "app.components.AuthProviders.continueWithLoginMechanism": "Ga verder met {loginMechanismName}",
   "app.components.AuthProviders.franceConnectMergingFailed": "Er bestaat al een account met dit e-mailadres.{br}{br}Je hebt geen toegang tot het platform via FranceConnect omdat de persoonlijke gegevens niet overeenkomen. Om je aan te melden met FranceConnect, moet je eerst je voornaam of achternaam op dit platform wijzigen zodat deze overeenkomt met je officiële gegevens.{br}{br}Je kunt je hieronder aanmelden zoals je normaal doet.",
   "app.components.AuthProviders.goToLogIn": "Heb je al een account? {goToOtherFlowLink}",
   "app.components.AuthProviders.goToSignUp": "Heb je geen account? {goToOtherFlowLink}",
