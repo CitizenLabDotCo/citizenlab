@@ -211,7 +211,6 @@ class WebApi::V1::IdeasController < ApplicationController
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save save_options
-        authorize input
         service.after_update(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,

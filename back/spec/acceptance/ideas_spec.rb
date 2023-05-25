@@ -1067,6 +1067,25 @@ resource 'Ideas' do
           end
         end
 
+        describe 'Changing an idea to anonymous' do
+          let(:anonymous) { true }
+
+          example 'Change an idea to anonymous as a non-admin', document: false do
+            do_request
+            assert_status 200
+            expect(response_data.dig(:attributes, :anonymous)).to be true
+          end
+        end
+
+        describe 'Changing an author' do
+          let(:author_id) { create(:user).id }
+
+          example '[Error] Cannot change an author as a non-admin', document: false do
+            do_request
+            assert_status 401
+          end
+        end
+
         context 'when admin' do
           before do
             @user = create(:admin)
