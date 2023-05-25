@@ -145,7 +145,6 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     );
   }, [phases]);
 
-  // Add more specific types to id?
   const scrollTo = useCallback(
     (id: string, shouldSelectCurrentPhase = true) =>
       (event: FormEvent) => {
