@@ -82,9 +82,11 @@ interface Props extends FormValues, FormProps {
   descriptionProfanityError: boolean;
   postAnonymously: boolean;
   setPostAnonymously: (newValue: boolean) => void;
+  publishedAnonymously?: boolean;
 }
 
 const InitiativeForm = ({
+  publishedAnonymously,
   locale,
   title_multiloc,
   body_multiloc,
@@ -453,7 +455,7 @@ const InitiativeForm = ({
             </FormLabel>
           </SectionField>
         </StyledFormSection>
-        {allowAnonymousParticipation && (
+        {allowAnonymousParticipation && !publishedAnonymously && (
           <StyledFormSection>
             <Box mt="-20px">
               <ProfileVisiblity

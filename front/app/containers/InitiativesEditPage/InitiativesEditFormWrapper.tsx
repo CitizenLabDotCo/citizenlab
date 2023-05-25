@@ -408,6 +408,7 @@ const InitiativesEditFormWrapper = ({
       descriptionProfanityError={descriptionProfanityError}
       postAnonymously={postAnonymously}
       setPostAnonymously={setPostAnonymously}
+      publishedAnonymously={initiative.attributes?.author_name === null}
     />
   );
 };
