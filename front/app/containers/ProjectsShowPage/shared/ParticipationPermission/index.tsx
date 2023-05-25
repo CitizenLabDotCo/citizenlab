@@ -4,7 +4,7 @@ import React, { ReactNode } from 'react';
 import Warning from 'components/UI/Warning';
 
 // i18n
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 // events
