@@ -504,6 +504,7 @@
   "app.components.form.ErrorDisplay.save": "Save",
   "app.components.form.ErrorDisplay.submitSurvey": "Submit survey",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Start typing to search by user email or name...",
+  "app.components.form.anonymousSurveyMessage": "All responses to this survey are anonymized",
   "app.components.form.blockedVerified": "You can't edit this field because it contains verified informtion",
   "app.components.form.controls.adminFieldTooltip": "Field only visible to admins",
   "app.components.form.controls.notPublic": "*This answer will only be shared with moderators, and not to the public.",
