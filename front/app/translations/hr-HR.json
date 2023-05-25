@@ -504,6 +504,7 @@
   "app.components.form.ErrorDisplay.save": "Uštedjeti",
   "app.components.form.ErrorDisplay.submitSurvey": "Pošaljite upitnik",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Započnite pretragu unosom korisnikove e-pošte ili imena...",
+  "app.components.form.anonymousSurveyMessage": "Svi odgovori na ovu anketu su anonimizirani",
   "app.components.form.blockedVerified": "Ne možete urediti ovo polje jer sadrži potvrđene informacije",
   "app.components.form.controls.adminFieldTooltip": "Polje je vidljivo samo administratorima",
   "app.components.form.controls.notPublic": "*Ovaj će se odgovor dijeliti samo s moderatorima, a ne javnosti.",
