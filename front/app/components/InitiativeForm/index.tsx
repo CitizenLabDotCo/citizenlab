@@ -30,6 +30,7 @@ import { MessageDescriptor, FormattedMessage, useIntl } from 'utils/cl-intl';
 import { Multiloc, Locale, UploadFile } from 'typings';
 import { ITopicData } from 'api/topics/types';
 import { FormSubmitFooter } from './SubmitFooter';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const Form = styled.form`
   display: flex;
@@ -111,6 +112,7 @@ const InitiativeForm = ({
   setPostAnonymously,
   postAnonymously,
 }: Props) => {
+  const appConfiguration = useAppConfiguration();
   const [touched, setTouched] = useState<{
     [key in keyof FormValues]?: boolean | undefined;
   }>({});
@@ -246,6 +248,9 @@ const InitiativeForm = ({
     }
   };
 
+  const allowAnonymousParticipation =
+    appConfiguration.data?.data.attributes.settings.initiatives
+      ?.allow_anonymous_participation;
   const mapsLoaded = window.googleMaps;
 
   if (!isNilOrError(topics)) {
@@ -448,14 +453,17 @@ const InitiativeForm = ({
             </FormLabel>
           </SectionField>
         </StyledFormSection>
-        <StyledFormSection>
-          <Box mt="-20px">
-            <ProfileVisiblity
-              postAnonymously={postAnonymously}
-              setPostAnonymously={setPostAnonymously}
-            />
-          </Box>
-        </StyledFormSection>
+        {allowAnonymousParticipation && (
+          <StyledFormSection>
+            <Box mt="-20px">
+              <ProfileVisiblity
+                postAnonymously={postAnonymously}
+                setPostAnonymously={setPostAnonymously}
+              />
+            </Box>
+          </StyledFormSection>
+        )}
+
         <FormSubmitFooter
           className="e2e-initiative-publish-button"
           message={messages.publishButton}
