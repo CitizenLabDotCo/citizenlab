@@ -13,15 +13,10 @@ import moment from 'moment';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useEvents from 'api/events/useEvents';
-import useAuthUser from 'hooks/useAuthUser';
-
-// router
-import clHistory from 'utils/cl-router/history';
 
 // services
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
-import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -134,8 +129,6 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     projectIds: [projectId],
     sort: '-start_at',
   });
-  const authUser = useAuthUser();
-
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const [shareModalOpened, setShareModalOpened] = useState(false);
 
@@ -195,12 +188,6 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       project.data.attributes.participation_method;
     const currentPhaseParticipationMethod =
       currentPhase?.attributes?.participation_method;
-    const { disabledReason } = getIdeaPostingRules({
-      project: project.data,
-      phase: currentPhase,
-      authUser,
-    });
-    const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
     const surveyMessage =
       projectType === 'continuous'
         ? messages.oneSurvey
@@ -267,13 +254,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   'ideation')) &&
               isNumber(ideasCount) &&
               ideasCount > 0 && (
-                <ListItem>
+                <ListItem id="e2e-project-sidebar-ideas-count">
                   <ListItemIcon ariaHidden name="idea" />
                   {project.data.attributes.ideas_count > 0 ? (
-                    <ListItemButton
-                      id="e2e-project-sidebar-ideas-count"
-                      onClick={scrollTo('project-ideas')}
-                    >
+                    <ListItemButton onClick={scrollTo('project-ideas')}>
                       {projectType === 'continuous' && (
                         <FormattedMessage
                           {...getInputTermMessage(
@@ -338,14 +322,9 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               projectParticipationMethod === 'budgeting') ||
               currentPhase?.attributes.participation_method === 'budgeting') &&
               maxBudget && (
-                <ListItem>
+                <ListItem id="e2e-project-sidebar-pb-budget">
                   <ListItemIcon ariaHidden name="coin-stack" />
-                  <ListItemButton
-                    id="e2e-project-sidebar-pb-budget"
-                    onClick={scrollTo('project-ideas')}
-                  >
-                    <FormattedBudget value={maxBudget} />
-                  </ListItemButton>
+                  <FormattedBudget value={maxBudget} />
                 </ListItem>
               )}
             {((projectType === 'continuous' &&
@@ -353,18 +332,9 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               currentPhaseParticipationMethod === 'survey') &&
               !isProjectArchived &&
               !hasProjectEnded && (
-                <ListItem>
+                <ListItem id="e2e-project-sidebar-surveys-count">
                   <ListItemIcon ariaHidden name="survey" />
-                  {!isNilOrError(authUser) ? (
-                    <ListItemButton
-                      id="e2e-project-sidebar-surveys-count"
-                      onClick={scrollTo('project-survey')}
-                    >
-                      <FormattedMessage {...surveyMessage} />
-                    </ListItemButton>
-                  ) : (
-                    <FormattedMessage {...surveyMessage} />
-                  )}
+                  <FormattedMessage {...surveyMessage} />
                 </ListItem>
               )}
             {((projectType === 'continuous' &&
@@ -374,13 +344,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               !hasProjectEnded && (
                 <ListItem>
                   <ListItemIcon ariaHidden name="blank-paper" />
-                  {!isNilOrError(authUser) ? (
-                    <ListItemButton onClick={scrollTo('document-annotation')}>
-                      <FormattedMessage {...docAnnotationMessage} />
-                    </ListItemButton>
-                  ) : (
-                    <FormattedMessage {...docAnnotationMessage} />
-                  )}
+                  <FormattedMessage {...docAnnotationMessage} />
                 </ListItem>
               )}
             {((projectType === 'continuous' &&
@@ -389,53 +353,30 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               postingIsEnabled &&
               !isProjectArchived &&
               !hasProjectEnded && (
-                <ListItem>
+                <ListItem id="e2e-project-sidebar-surveys-count">
                   <ListItemIcon ariaHidden name="survey" />
-                  {!isNilOrError(authUser) && !hasUserParticipated ? (
-                    <ListItemButton
-                      id="e2e-project-sidebar-surveys-count"
-                      onClick={() => {
-                        clHistory.push(
-                          `/projects/${project.data.attributes.slug}/ideas/new`
-                        );
-                      }}
-                    >
-                      <FormattedMessage {...surveyMessage} />
-                    </ListItemButton>
-                  ) : (
-                    <FormattedMessage {...surveyMessage} />
-                  )}
+                  <FormattedMessage {...surveyMessage} />
                 </ListItem>
               )}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'poll') ||
               currentPhaseParticipationMethod === 'poll') && (
-              <ListItem>
+              <ListItem id="e2e-project-sidebar-polls-count">
                 <ListItemIcon ariaHidden name="survey" />
-                <ListItemButton
-                  id="e2e-project-sidebar-polls-count"
-                  onClick={scrollTo('project-poll')}
-                >
-                  <FormattedMessage
-                    {...(projectType === 'continuous'
-                      ? messages.poll
-                      : messages.pollInCurrentPhase)}
-                  />
-                </ListItemButton>
+                <FormattedMessage
+                  {...(projectType === 'continuous'
+                    ? messages.poll
+                    : messages.pollInCurrentPhase)}
+                />
               </ListItem>
             )}
             {!isNilOrError(events) && events.data.length > 0 && (
-              <ListItem>
+              <ListItem id="e2e-project-sidebar-eventcount">
                 <ListItemIcon ariaHidden name="calendar" />
-                <ListItemButton
-                  id="e2e-project-sidebar-eventcount"
-                  onClick={scrollTo('project-events')}
-                >
-                  <FormattedMessage
-                    {...messages.xEvents}
-                    values={{ eventsCount: events.data.length }}
-                  />
-                </ListItemButton>
+                <FormattedMessage
+                  {...messages.xEvents}
+                  values={{ eventsCount: events.data.length }}
+                />
               </ListItem>
             )}
             <ListItem id="e2e-project-sidebar-share-button">
