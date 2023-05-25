@@ -504,6 +504,7 @@
   "app.components.form.ErrorDisplay.save": "Lagre",
   "app.components.form.ErrorDisplay.submitSurvey": "Send spørreundersøkelse",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Start å skrive for å søke bruker ved hjelp av epost eller navn...",
+  "app.components.form.anonymousSurveyMessage": "Alle svar på denne undersøkelsen er anonymisert",
   "app.components.form.blockedVerified": "Du kan ikke redigere dette feltet fordi det inneholder informasjon som er bekreftet",
   "app.components.form.controls.adminFieldTooltip": "Feltet er bare synlig for administratorer",
   "app.components.form.controls.notPublic": "*Dette svaret deles bare med moderatorene, og ikke offentlig.",
