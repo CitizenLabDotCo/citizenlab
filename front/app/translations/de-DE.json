@@ -504,6 +504,7 @@
   "app.components.form.ErrorDisplay.save": "Speichern",
   "app.components.form.ErrorDisplay.submitSurvey": "Umfrage abschicken",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Beginnen Sie mit der Eingabe, um nach einer E-Mail oder einem Namen des Nutzers / der Nutzerin zu suchen...",
+  "app.components.form.anonymousSurveyMessage": "Alle Antworten auf diese Umfrage sind anonymisiert",
   "app.components.form.blockedVerified": "Sie können dieses Feld nicht bearbeiten, da es verifizierte Informationen enthält",
   "app.components.form.controls.adminFieldTooltip": "Feld nur für Admins sichtbar",
   "app.components.form.controls.notPublic": "*Diese Antwort wird nur an Projektmanager*innen weitergegeben und nicht an die Öffentlichkeit.",
