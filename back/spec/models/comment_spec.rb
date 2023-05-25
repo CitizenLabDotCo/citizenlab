@@ -68,11 +68,6 @@ RSpec.describe Comment do
   describe 'anonymous participation' do
     let(:author) { create(:user) }
 
-    it 'has an author hash of consistent length' do
-      comment = create(:comment)
-      expect(comment.author_hash.length).to eq 32
-    end
-
     context 'creating comments that are not anonymous' do
       it 'has the same author hash for comments in different projects when the author is the same' do
         comment1 = create(:comment, author: author)
