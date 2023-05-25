@@ -9,6 +9,8 @@ EmailCampaigns::Engine.routes.draw do
         get :preview, on: :member
         get :deliveries, on: :member
         get :stats, on: :member
+        resources :examples, only: %i[index]
+        get 'examples/:id', action: 'show', controller: 'examples', on: :collection
       end
 
       resources :consents, only: %i[index update] do
