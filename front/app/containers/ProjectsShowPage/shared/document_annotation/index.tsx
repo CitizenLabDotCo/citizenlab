@@ -36,14 +36,17 @@ const DocumentAnnotation = ({ documentUrl, project, phaseId }: Props) => {
     !isNilOrError(authUser) && authUser.attributes.email
       ? authUser.attributes.email
       : null;
-  const { enabled, disabled_reason } =
+  const { enabled: _enabled, disabled_reason } =
     project.attributes.action_descriptor.annotating_document;
 
   return (
     <ParticipationPermission
       projectId={project.id}
       action="annotating_document"
-      enabled={enabled}
+      // We want to always show the document.
+      // Konveio itself show a popup requesting
+      // a sign up/in before commenting is possible.
+      enabled={true}
       phaseId={phaseId}
       disabledMessage={
         disabled_reason ? disabledMessages[disabled_reason] : null
