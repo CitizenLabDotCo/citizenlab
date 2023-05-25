@@ -504,6 +504,7 @@
   "app.components.form.ErrorDisplay.save": "يحفظ",
   "app.components.form.ErrorDisplay.submitSurvey": "إرسال الاستبيان",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "جارٍ بدء الكتابة للبحث بحسب البريد الإلكتروني للمستخدم أو اسمه...",
+  "app.components.form.anonymousSurveyMessage": "جميع الردود على هذا الاستطلاع مجهولة المصدر",
   "app.components.form.blockedVerified": "لا يمكنك تعديل هذا الحقل؛ لأنه يحتوي على معلومات تم التحقق من صحتها",
   "app.components.form.controls.adminFieldTooltip": "لا يظهر الحقل إلا للمسؤولين فقط",
   "app.components.form.controls.notPublic": "*ستتاح هذه الإجابة للمشاركة مع المشرفين فحسب، وليس مع الجمهور.",
