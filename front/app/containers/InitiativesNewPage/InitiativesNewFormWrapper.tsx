@@ -64,7 +64,8 @@ const InitiativesNewFormWrapper = ({
   const authUser = useAuthUser();
   const { mutateAsync: addInitiativeImage, isLoading: isAdding } =
     useAddInitiativeImage();
-  const { mutateAsync: deleteInitiativeImage } = useDeleteInitiativeImage();
+  const { mutateAsync: deleteInitiativeImage, isLoading: isDeleting } =
+    useDeleteInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
   const { mutate: deleteInitiativeFile } = useDeleteInitiativeFile();
   const { mutateAsync: updateInitiative, isLoading: isUpdating } =
@@ -163,13 +164,12 @@ const InitiativesNewFormWrapper = ({
 
   const handleSave = async () => {
     const changedValues = getChangedValues();
-    if (isUpdating) return;
+
+    // if we're already publishing, do nothing.
+    if (isUpdating || saving) return;
 
     // if nothing has changed, do noting.
     if (isEmpty(changedValues) && !hasBannerChanged && !hasImageChanged) return;
-
-    // if we're already publishing, do nothing.
-    if (saving) return;
 
     // setting flags for user feedback and avoiding double sends.
     setSaving(true);
@@ -210,7 +210,7 @@ const InitiativesNewFormWrapper = ({
   const debouncedSave = debounce(handleSave, 500);
 
   const handlePublish = async () => {
-    // if we're already saving, do nothing.
+    // // if we're already saving, do nothing.
     if (saving) return;
 
     // setting flags for user feedback and avoiding double sends.
@@ -225,6 +225,9 @@ const InitiativesNewFormWrapper = ({
 
   const continuePublish = async () => {
     const changedValues = getChangedValues();
+
+    if (saving) return;
+
     try {
       const formAPIValues = await getValuesToSend(changedValues, banner);
       // save any changes to the initiative data.
@@ -349,6 +352,8 @@ const InitiativesNewFormWrapper = ({
   };
 
   const onChangeImage = async (newValue: UploadFile | null) => {
+    setSaving(true);
+
     if (initiativeId && newValue && newValue.base64) {
       await addInitiativeImage(
         {
@@ -357,11 +362,11 @@ const InitiativesNewFormWrapper = ({
         },
         {
           onSuccess: (data) => {
-            setSaving(false);
             setImageId(data.data.id);
             const newImage = newValue;
             newImage.id = data.data.id;
             setImage(newImage);
+            setSaving(false);
           },
           onError: () => {
             setSaving(false);
@@ -375,8 +380,8 @@ const InitiativesNewFormWrapper = ({
           { initiativeId, imageId: currentImageId },
           {
             onSuccess: () => {
-              setSaving(false);
               setImageId(null);
+              setSaving(false);
             },
             onError: () => {
               setSaving(false);
@@ -458,7 +463,7 @@ const InitiativesNewFormWrapper = ({
         files={files}
         apiErrors={apiErrors}
         publishError={publishError}
-        publishing={isAdding && isUpdating}
+        publishing={isAdding || isUpdating || isDeleting}
         onChangeTitle={onChangeTitle}
         onChangeBody={onChangeBody}
         onChangeTopics={onChangeTopics}

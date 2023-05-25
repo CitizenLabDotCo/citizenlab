@@ -179,9 +179,9 @@ const InitiativeForm = ({
   const onBlur = (fieldName: string) => () => {
     // making sure the props are updated before validation and save.
     setTimeout(() => {
-      const touchedCopy = Object.assign({}, touched);
-      touchedCopy[fieldName] = true;
-      setTouched(touchedCopy);
+      const touchedUpdate = Object.assign({}, touched);
+      touchedUpdate[fieldName] = true;
+      setTouched(touchedUpdate);
       onSave();
     }, 5);
   };
