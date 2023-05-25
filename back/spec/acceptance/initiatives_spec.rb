@@ -320,7 +320,7 @@ resource 'Initiatives' do
     end
 
     with_options scope: :initiative do
-      parameter :author_id, 'The user id of the user owning the initiative', extra: 'Required if not draft'
+      parameter :author_id, 'The user id of the user owning the initiative. This can only be specified by moderators and is inferred from the JWT token for residents.'
       parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(',')}"
       parameter :title_multiloc, 'Multi-locale field with the initiative title', required: true, extra: 'Maximum 100 characters'
       parameter :body_multiloc, 'Multi-locale field with the initiative body', extra: 'Required if not draft'
@@ -422,6 +422,10 @@ resource 'Initiatives' do
         expect(response_data.dig(:attributes, :anonymous)).to be true
         expect(response_data.dig(:attributes, :author_name)).to be_nil
       end
+
+      example 'Does not log activities for the author', document: false do
+        expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything)
+      end
     end
   end
 
@@ -432,7 +436,7 @@ resource 'Initiatives' do
     end
 
     with_options scope: :initiative do
-      parameter :author_id, 'The user id of the user owning the initiative', extra: 'Required if not draft'
+      parameter :author_id, 'The user id of the user owning the initiative. This can only be specified by moderators and is inferred from the JWT token for residents.'
       parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}"
       parameter :title_multiloc, 'Multi-locale field with the initiative title', extra: 'Maximum 100 characters'
       parameter :body_multiloc, 'Multi-locale field with the initiative body', extra: 'Required if not draft'
@@ -532,8 +536,7 @@ resource 'Initiatives' do
 
         example '[Error] Cannot change the author from your own id as a non-admin', document: false do
           do_request
-          assert_status 401
-          expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
+          expect(@initiative.reload.author_id).not_to eq author_id
         end
       end
 
@@ -563,6 +566,17 @@ resource 'Initiatives' do
           do_request
           assert_status 401
           expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
+        end
+
+        example 'Does not log activities for the author and clears the author from past activities', document: false do
+          clear_activity = create(:activity, item: @initiative, user: @user)
+          other_item_activity = create(:activity, item: @initiative, user: create(:user))
+          other_user_activity = create(:activity, user: @user)
+
+          expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything)
+          expect(clear_activity.reload.user_id).to be_nil
+          expect(other_item_activity.reload.user_id).to be_present
+          expect(other_user_activity.reload.user_id).to eq @user.id
         end
       end
     end

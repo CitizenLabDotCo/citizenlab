@@ -13,7 +13,7 @@ resource 'Ideas' do
       with_options scope: :idea do
         parameter :project_id, 'The identifier of the project that hosts the idea', required: true
         parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
-        parameter :author_id, 'The user id of the user owning the idea', extra: 'Required if not draft'
+        parameter :author_id, 'The user id of the user owning the idea. This can only be specified by moderators and is inferred from the JWT token for residents.'
         parameter :idea_status_id, 'The status of the idea, only allowed for admins', extra: "Defaults to status with code 'proposed'"
         parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(',')}"
         parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
@@ -629,7 +629,7 @@ resource 'Ideas' do
       with_options scope: :idea do
         parameter :project_id, 'The identifier of the project that hosts the idea', required: true
         parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
-        parameter :author_id, 'The user id of the user owning the idea', extra: 'Required if not draft'
+        parameter :author_id, 'The user id of the user owning the idea. This can only be specified by moderators and is inferred from the JWT token for residents.'
         parameter :idea_status_id, 'The status of the idea, only allowed for admins', extra: "Defaults to status with code 'proposed'"
         parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(',')}"
         parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
@@ -749,6 +749,10 @@ resource 'Ideas' do
             expect(response_data.dig(:attributes, :anonymous)).to be true
             expect(response_data.dig(:attributes, :author_name)).to be_nil
             expect(response_data.dig(:relationships, :author, :data)).to be_nil
+          end
+
+          example 'Does not log activities for the author', document: false do
+            expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
           end
         end
 
@@ -978,7 +982,7 @@ resource 'Ideas' do
       with_options scope: :idea do
         parameter :project_id, 'The idea of the project that hosts the idea'
         parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
-        parameter :author_id, 'The user id of the user owning the idea', extra: 'Required if not draft'
+        parameter :author_id, 'The user id of the user owning the idea. This can only be specified by moderators and is inferred from the JWT token for residents.'
         parameter :idea_status_id, 'The status of the idea, only allowed for admins'
         parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}"
         parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'
@@ -1238,6 +1242,21 @@ resource 'Ideas' do
             assert_status 200
             expect(response_data.dig(:relationships, :author, :data, :id)).to eq @user.id
             expect(response_data.dig(:attributes, :anonymous)).to be false
+          end
+
+          example 'Does not log activities for the author', document: false do
+            expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
+          end
+
+          example 'Does not log activities for the author and clears the author from past activities', document: false do
+            clear_activity = create(:activity, item: @idea, user: @user)
+            other_item_activity = create(:activity, item: @idea, user: create(:user))
+            other_user_activity = create(:activity, user: @user)
+
+            expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
+            expect(clear_activity.reload.user_id).to be_nil
+            expect(other_item_activity.reload.user_id).to be_present
+            expect(other_user_activity.reload.user_id).to eq @user.id
           end
         end
 

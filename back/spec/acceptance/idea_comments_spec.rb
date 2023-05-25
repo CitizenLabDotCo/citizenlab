@@ -293,7 +293,6 @@ resource 'Comments' do
 
     post 'web_api/v1/ideas/:idea_id/comments' do
       with_options scope: :comment do
-        parameter :author_id, 'The user id of the user owning the comment. Signed in user by default', required: false
         parameter :body_multiloc, 'Multi-locale field with the comment body', required: true
         parameter :parent_id, 'The id of the comment this comment is a response to', required: false
         parameter :anonymous, 'Post this comment anonymously - true/false', required: false
@@ -387,6 +386,10 @@ resource 'Comments' do
           expect(response_data.dig(:attributes, :anonymous)).to be true
           expect(response_data.dig(:attributes, :author_name)).to be_nil
         end
+
+        example 'Does not log activities for the author', document: false do
+          expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
+        end
       end
     end
 
@@ -413,7 +416,6 @@ resource 'Comments' do
 
     patch 'web_api/v1/comments/:id' do
       with_options scope: :comment do
-        parameter :author_id, 'The user id of the user owning the comment. Signed in user by default'
         parameter :body_multiloc, 'Multi-locale field with the comment body'
         parameter :parent_id, 'The id of the comment this comment is a response to'
         parameter :anonymous, 'Change this comment to anonymous - true/false'
@@ -453,6 +455,17 @@ resource 'Comments' do
           do_request
           assert_status 401
           expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
+        end
+
+        example 'Does not log activities for the author and clears the author from past activities', document: false do
+          clear_activity = create(:activity, item: comment, user: @user)
+          other_item_activity = create(:activity, item: comment, user: create(:user))
+          other_user_activity = create(:activity, user: @user)
+
+          expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
+          expect(clear_activity.reload.user_id).to be_nil
+          expect(other_item_activity.reload.user_id).to be_present
+          expect(other_user_activity.reload.user_id).to eq @user.id
         end
       end
     end
