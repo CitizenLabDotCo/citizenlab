@@ -504,7 +504,7 @@
   "app.components.form.ErrorDisplay.save": "Bewaar",
   "app.components.form.ErrorDisplay.submitSurvey": "Vragenlijst indienen",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Begin met typen om te zoeken op email of naam...",
-  "app.components.form.anonymousSurveyMessage": "Alle antwoorden op deze enquête zijn geanonimiseerd",
+  "app.components.form.anonymousSurveyMessage": "Alle antwoorden op deze vragenlijst zijn geanonimiseerd",
   "app.components.form.blockedVerified": "Je kunt dit veld niet bewerken omdat het bevestigde informatie bevat",
   "app.components.form.controls.adminFieldTooltip": "Veld alleen zichtbaar voor admins",
   "app.components.form.controls.notPublic": "*Dit antwoord wordt alleen gedeeld met moderators, en niet publiekelijk.",
