@@ -1073,7 +1073,7 @@ resource 'Ideas' do
           example 'Change an idea to anonymous as a non-admin', document: false do
             do_request
             assert_status 200
-            expect(response_data.dig(:attributes, :anonymous)).to eq true
+            expect(response_data.dig(:attributes, :anonymous)).to be true
           end
         end
 
