@@ -504,6 +504,7 @@
   "app.components.form.ErrorDisplay.save": "Späicheren",
   "app.components.form.ErrorDisplay.submitSurvey": "Ëmfro areechen",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Fänkt un ze tippen, fir no Benotzer-E-Mail oder Numm ze sichen......",
+  "app.components.form.anonymousSurveyMessage": "All Äntwerten op dës Ëmfro sinn anonymiséiert",
   "app.components.form.blockedVerified": "Dir kënnt dëst Feld editéieren, well et verifizéiert Informatiounen enthält",
   "app.components.form.controls.adminFieldTooltip": "Feld nëmme fir Verwalter zu gesinn",
   "app.components.form.controls.notPublic": "*Dës Äntwert gëtt nëmme mat de Moderatore gedeelt, an net mat der Allgemengheet.",
