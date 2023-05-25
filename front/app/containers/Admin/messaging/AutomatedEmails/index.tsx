@@ -106,7 +106,7 @@ const AutomatedEmails = () => {
           <FormattedMessage {...messages.automatedEmailCampaignsInfo} />
         </Text>
       </Box>
-      <Box background={colors.white} p="20px 40px">
+      <Box background={colors.white} p="12px 40px">
         {groupedCampaigns.map(([recipient_role, group]: [string, any], i) => (
           <Box key={i} mb="30px">
             <Title color="primary" variant="h3" mt="20px">
@@ -114,11 +114,11 @@ const AutomatedEmails = () => {
             </Title>
             {group.map(([content_type, campaigns]: [string, any[]], ii) => (
               <Box key={ii}>
-                <Title color="primary" variant="h4">
+                <Title color="primary" variant="h4" mt="24px">
                   {content_type}
                 </Title>
                 {campaigns.map((campaign) => (
-                  <ListItem key={campaign.id} p="10px 0">
+                  <ListItem key={campaign.id} p="8px 0">
                     <Box display="flex" alignItems="center">
                       <Toggle
                         disabled={isUndefined(campaign.attributes.enabled)}
@@ -132,31 +132,37 @@ const AutomatedEmails = () => {
                         <Text color="grey800" m="0">
                           {campaign.campaign_description}
                         </Text>
-                        <Box display="flex">
-                          <Box display="flex" justifyContent="center">
-                            <Icon
-                              name="user"
-                              fill={colors.coolGrey600}
-                              width={`${fontSizes.m}px`}
-                              m="-2px 5px 0 0"
-                            />
-                            <Text m="0" color="coolGrey600" fontSize="s">
-                              {campaign.recipient_segment}
-                            </Text>
+                        {campaign.recipient_segment && campaign.trigger && (
+                          <Box display="flex">
+                            <Box display="flex" justifyContent="center">
+                              <Icon
+                                name="user"
+                                fill={colors.coolGrey600}
+                                width={`${fontSizes.m}px`}
+                                m="-2px 4px 0 0"
+                              />
+                              <Text m="0" color="coolGrey600" fontSize="s">
+                                {campaign.recipient_segment}
+                              </Text>
+                            </Box>
+                            <Box ml="4px">·</Box>
+                            <Box
+                              display="flex"
+                              justifyContent="center"
+                              ml="4px"
+                            >
+                              <Icon
+                                name="clock"
+                                fill={colors.coolGrey600}
+                                width={`${fontSizes.m}px`}
+                                m="-2px 4px 0 0"
+                              />
+                              <Text m="0" color="coolGrey600" fontSize="s">
+                                {campaign.trigger || campaign.schedule}
+                              </Text>
+                            </Box>
                           </Box>
-                          <Box ml="5px">·</Box>
-                          <Box display="flex" justifyContent="center" ml="5px">
-                            <Icon
-                              name="clock"
-                              fill={colors.coolGrey600}
-                              width={`${fontSizes.m}px`}
-                              m="-2px 5px 0 0"
-                            />
-                            <Text m="0" color="coolGrey600" fontSize="s">
-                              {campaign.trigger || campaign.schedule}
-                            </Text>
-                          </Box>
-                        </Box>
+                        )}
                       </Box>
                     </Box>
                   </ListItem>
