@@ -67,6 +67,12 @@ const navItems: NavItem[] = [
     message: 'reporting',
   },
   {
+    name: 'tools',
+    link: `/admin/tools`,
+    iconName: 'tools',
+    message: 'tools',
+  },
+  {
     name: 'menu',
     link: '/admin/pages-menu',
     iconName: 'sidebar-pages-menu',
