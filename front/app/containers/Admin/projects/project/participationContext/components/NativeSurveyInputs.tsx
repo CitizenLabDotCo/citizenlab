@@ -3,7 +3,11 @@ import { AnonymousPostingToggle } from 'components/admin/AnonymousPostingToggle/
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+// components
 import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
+
+// intl
 import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
