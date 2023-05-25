@@ -166,7 +166,7 @@ const InitiativesNewFormWrapper = ({
     const changedValues = getChangedValues();
 
     // if we're already publishing, do nothing.
-    if (isUpdating || saving) return;
+    if (isUpdating || isAdding || isDeleting || saving) return;
 
     // if nothing has changed, do noting.
     if (isEmpty(changedValues) && !hasBannerChanged && !hasImageChanged) return;
@@ -207,7 +207,7 @@ const InitiativesNewFormWrapper = ({
     }
   };
 
-  const debouncedSave = debounce(handleSave, 500);
+  const debouncedSave = debounce(handleSave, 1000);
 
   const handlePublish = async () => {
     // // if we're already saving, do nothing.
