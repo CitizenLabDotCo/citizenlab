@@ -256,8 +256,9 @@ const IdeasNewPageWithJSONForm = () => {
 
   const isSurvey = config.postType === 'nativeSurvey';
   const isAnonymousSurvey =
-    (isSurvey && project?.data.attributes.allow_anonymous_participation) ||
-    currentPhase?.attributes?.allow_anonymous_participation;
+    isSurvey &&
+    (project?.data.attributes.allow_anonymous_participation ||
+      currentPhase?.attributes?.allow_anonymous_participation);
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
