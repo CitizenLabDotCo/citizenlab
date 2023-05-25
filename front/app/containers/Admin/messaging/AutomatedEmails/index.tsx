@@ -45,8 +45,8 @@ const AutomatedEmails = () => {
       <Box background={colors.white} p="40px">
         <AutomatedEmailsList>
           {campaigns.pages
-            .map((page) => page.data)
-            .flat()
+            .flatMap((page) => page.data)
+            
             .map((campaign) => (
               <Row key={campaign.id}>
                 <Toggle
