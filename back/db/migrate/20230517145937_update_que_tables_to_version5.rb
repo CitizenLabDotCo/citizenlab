@@ -2,11 +2,15 @@
 
 class UpdateQueTablesToVersion5 < ActiveRecord::Migration[6.1]
   def up
+    return unless Apartment::Tenant.current == 'public'
+
     # See the comment on DEV_QUE_SQL_MIGRATION_5 for why we need to do this.
     Que.execute(DEV_QUE_SQL_MIGRATION_5)
   end
 
   def down
+    return unless Apartment::Tenant.current == 'public'
+
     Que.migrate!(version: 4)
   end
 
