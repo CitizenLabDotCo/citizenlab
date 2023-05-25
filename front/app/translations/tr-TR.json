@@ -504,6 +504,7 @@
   "app.components.form.ErrorDisplay.save": "Kaydet",
   "app.components.form.ErrorDisplay.submitSurvey": "Anket gönderin",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Kullanıcı e-posta adresine veya adına göre aramak için yazmaya başlayın...",
+  "app.components.form.anonymousSurveyMessage": "Bu ankete verilen tüm yanıtlar anonimleştirilmiştir",
   "app.components.form.blockedVerified": "Doğrulanmış bilgiler içerdiğinden bu alanı düzenleyemezsiniz",
   "app.components.form.controls.adminFieldTooltip": "Alan yalnızca yöneticiler tarafından görülebilir",
   "app.components.form.controls.notPublic": "*Bu cevap sadece moderatörlerle paylaşılacak, kamuoyu ile paylaşılmayacaktır.",
