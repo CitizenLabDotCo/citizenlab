@@ -504,6 +504,7 @@
   "app.components.form.ErrorDisplay.save": "Save",
   "app.components.form.ErrorDisplay.submitSurvey": "Пошаљите анкету",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Почните да куцате да бисте претраживали по корисничком имејлу или имену...",
+  "app.components.form.anonymousSurveyMessage": "All responses to this survey are anonymized",
   "app.components.form.blockedVerified": "Не можете да измените ово поље јер садржи верификоване информације",
   "app.components.form.controls.adminFieldTooltip": "Поље видљиво само администраторима",
   "app.components.form.controls.notPublic": "*Овај одговор ће бити подељен само модераторима, а не јавности.",
