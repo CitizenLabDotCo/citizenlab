@@ -504,6 +504,7 @@
   "app.components.form.ErrorDisplay.save": "Αποθήκευση",
   "app.components.form.ErrorDisplay.submitSurvey": "Υποβολή έρευνας",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Ξεκινήστε να πληκτρολογείτε για αναζήτηση με βάση το email ή το όνομα του χρήστη...",
+  "app.components.form.anonymousSurveyMessage": "Όλες οι απαντήσεις σε αυτή την έρευνα είναι ανώνυμες",
   "app.components.form.blockedVerified": "Δεν μπορείτε να επεξεργαστείτε αυτό το πεδίο επειδή περιέχει επαληθευμένες πληροφορίες",
   "app.components.form.controls.adminFieldTooltip": "Πεδίο ορατό μόνο στους διαχειριστές",
   "app.components.form.controls.notPublic": "*Αυτή η απάντηση θα κοινοποιηθεί μόνο στους συντονιστές και όχι στο κοινό.",
