@@ -27,7 +27,7 @@ describe('useUpdateCampaign', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        campaign: { enabled: true },
+        campaign: { enabled: false },
       });
     });
 
@@ -48,7 +48,7 @@ describe('useUpdateCampaign', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        campaign: { enabled: true },
+        campaign: { enabled: false },
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));
