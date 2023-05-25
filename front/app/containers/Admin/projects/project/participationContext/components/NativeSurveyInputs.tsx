@@ -1,52 +1,40 @@
-import {
-  Toggle,
-  Text,
-  Box,
-  IconTooltip,
-  StatusLabel,
-  colors,
-} from '@citizenlab/cl2-component-library';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import React from 'react';
+import { AnonymousPostingToggle } from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
+
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+// components
+import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
+
+// intl
 import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-interface AnonymousPostingToggleProps {
+interface Props {
   allow_anonymous_participation: boolean | null | undefined;
   handleAllowAnonymousParticipationOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
-  toggleLabel?: JSX.Element;
 }
 
-export const AnonymousPostingToggle = ({
+export default ({
   allow_anonymous_participation,
   handleAllowAnonymousParticipationOnChange,
-  toggleLabel,
-}: AnonymousPostingToggleProps) => {
+}: Props) => {
   const { formatMessage } = useIntl();
-
+  const hasAnonymousParticipationEnabled = useFeatureFlag({
+    name: 'anonymous_participation',
+  });
   return (
-    <SectionField>
-      <SubSectionTitle style={{ marginBottom: '0px' }}>
-        <FormattedMessage {...messages.userAnonymity} />
-        <StatusLabel
-          text={formatMessage(messages.betaLabel)}
-          backgroundColor={colors.background}
-          variant="outlined"
-        />
-      </SubSectionTitle>
-      <Toggle
-        checked={allow_anonymous_participation || false}
-        onChange={() => {
-          handleAllowAnonymousParticipationOnChange(
-            !allow_anonymous_participation
-          );
-        }}
-        label={
-          toggleLabel ? (
-            toggleLabel
-          ) : (
+    <>
+      {hasAnonymousParticipationEnabled && (
+        <AnonymousPostingToggle
+          allow_anonymous_participation={allow_anonymous_participation}
+          handleAllowAnonymousParticipationOnChange={
+            handleAllowAnonymousParticipationOnChange
+          }
+          toggleLabel={
             <Box ml="8px">
               <Box display="flex">
                 <Text
@@ -55,7 +43,7 @@ export const AnonymousPostingToggle = ({
                   fontSize="m"
                   style={{ fontWeight: 600 }}
                 >
-                  <FormattedMessage {...messages.userAnonymityLabelText} />
+                  <FormattedMessage {...messages.userAnonymityLabelMain} />
                 </Text>
                 <Box ml="4px" mt="16px">
                   <IconTooltip
@@ -69,9 +57,9 @@ export const AnonymousPostingToggle = ({
                 <FormattedMessage {...messages.userAnonymityLabelSubtext} />
               </Text>
             </Box>
-          )
-        }
-      />
-    </SectionField>
+          }
+        />
+      )}
+    </>
   );
 };

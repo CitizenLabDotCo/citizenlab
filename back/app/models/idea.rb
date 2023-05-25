@@ -33,6 +33,7 @@
 #
 # Indexes
 #
+#  index_ideas_on_author_hash     (author_hash)
 #  index_ideas_on_author_id       (author_id)
 #  index_ideas_on_idea_status_id  (idea_status_id)
 #  index_ideas_on_location_point  (location_point) USING gist

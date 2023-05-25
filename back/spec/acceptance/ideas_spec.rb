@@ -752,6 +752,28 @@ resource 'Ideas' do
           end
         end
 
+        describe 'Creating a native survey response when posting anonymously is enabled' do
+          let(:project) { create(:continuous_native_survey_project, allow_anonymous_participation: true) }
+
+          example_request 'Posting a survey automatically sets anonymous to true' do
+            assert_status 201
+            expect(response_data.dig(:attributes, :anonymous)).to be true
+            expect(response_data.dig(:attributes, :author_name)).to be_nil
+            expect(response_data.dig(:relationships, :author, :data)).to be_nil
+          end
+        end
+
+        describe 'Creating a native survey response when posting anonymously is not enabled' do
+          let(:project) { create(:continuous_native_survey_project, allow_anonymous_participation: false) }
+
+          example_request 'Posting a survey does not set the survey to anonymous' do
+            assert_status 201
+            expect(response_data.dig(:attributes, :anonymous)).to be false
+            expect(response_data.dig(:attributes, :author_name)).not_to be_nil
+            expect(response_data.dig(:relationships, :author, :data)).not_to be_nil
+          end
+        end
+
         describe 'For projects without ideas_order' do
           let(:project) { create(:continuous_project) }
 
@@ -1064,6 +1086,25 @@ resource 'Ideas' do
             expect(status).to be 200
             json_response = json_parse response_body
             expect(json_response.dig(:data, :attributes, :budget)).to eq previous_value
+          end
+        end
+
+        describe 'Changing an idea to anonymous' do
+          let(:anonymous) { true }
+
+          example 'Change an idea to anonymous as a non-admin', document: false do
+            do_request
+            assert_status 200
+            expect(response_data.dig(:attributes, :anonymous)).to be true
+          end
+        end
+
+        describe 'Changing an author' do
+          let(:author_id) { create(:user).id }
+
+          example '[Error] Cannot change an author as a non-admin', document: false do
+            do_request
+            assert_status 401
           end
         end
 
