@@ -1,11 +1,3 @@
-GIT
-  remote: https://github.com/que-rb/que
-  revision: 77c6b92952b821898c393239ce0e4047b17d7dae
-  ref: 77c6b92952b821898c393239ce0e4047b17d7dae
-  branch: master
-  specs:
-    que (1.0.0.beta4)
-
 PATH
   remote: engines/commercial/admin_api
   specs:
@@ -809,8 +801,9 @@ GEM
     pundit (2.3.0)
       activesupport (>= 3.0.0)
     qonfig (0.28.0)
-    que-web (0.9.3)
-      que (~> 1.0.0.beta3)
+    que (1.3.1)
+    que-web (0.10.0)
+      que (>= 1)
       sinatra
     racc (1.6.2)
     rack (2.2.7)
@@ -1189,8 +1182,8 @@ DEPENDENCIES
   public_api!
   puma (~> 6.2.2)
   pundit (~> 2.3.0)
-  que!
-  que-web
+  que (~> 1.3.0)
+  que-web (~> 0.10.0)
   rack-attack (~> 6)
   rack-cors
   rack-mini-profiler
