@@ -168,6 +168,7 @@ class ParticipationContext extends PureComponent<
           poll_anonymous: newData.poll_anonymous,
           ideas_order: newData.ideas_order,
           input_term: newData.input_term,
+          document_annotation_embed_url: newData.document_annotation_embed_url,
           loaded: true,
         };
       });
