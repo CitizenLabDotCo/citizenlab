@@ -2,13 +2,13 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   userAnonymityLabelMain: {
-    id: 'app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelMain',
-    defaultMessage: 'Anonymise all user data',
+    id: 'app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelMain2',
+    defaultMessage: 'Anonymize all user data',
   },
   userAnonymityLabelSubtext: {
-    id: 'app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelSubtext',
+    id: 'app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelSubtext2',
     defaultMessage:
-      "All of the survey's inputs from users will be anonymised before being recorded",
+      "All of the survey's inputs from users will be anonymized before being recorded",
   },
   userAnonymityLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelTooltip',
