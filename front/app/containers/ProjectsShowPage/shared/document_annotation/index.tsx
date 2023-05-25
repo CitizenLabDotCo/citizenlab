@@ -12,6 +12,7 @@ import ParticipationPermission from '../ParticipationPermission';
 interface Props {
   project: IProjectData;
   phaseId: string | null;
+  documentUrl: string;
 }
 
 const disabledMessages: {
@@ -27,10 +28,9 @@ const disabledMessages: {
   not_document_annotation: messages.documentAnnotationDisabledNotActivePhase,
 };
 
-const DocumentAnnotation = ({ project, phaseId }: Props) => {
+const DocumentAnnotation = ({ project, phaseId, documentUrl }: Props) => {
   const { enabled: _enabled, disabled_reason } =
     project.attributes.action_descriptor.annotating_document;
-  const documentUrl = project.attributes.document_annotation_embed_url;
 
   if (documentUrl) {
     return (
