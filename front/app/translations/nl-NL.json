@@ -1240,8 +1240,6 @@
   "app.containers.Projects.xQuestions": "{ideasCount, plural, one {# vraag} other {# vragen}}",
   "app.containers.Projects.xQuestionsInCurrentPhase": "{ideasCount, plural, one {# vraag} other {# vragen}} in de huidige fase",
   "app.containers.Projects.xQuestionsInFinalPhase": "{ideasCount, plural, one {# vraag} other {# vragen}} in de laatste fase",
-  "app.containers.Projects.xSurveys": "{surveysCount, plural, one {# vragenlijst} other {# vragenlijsten}}",
-  "app.containers.Projects.xSurveysInCurrentPhase": "{surveysCount, plural, one {# vragenlijst} other {# vragenlijsten}} in de huidige fase",
   "app.containers.Projects.xUpcomingEvents": "{upcomingEventsCount, plural, no {# aankomende activiteiten} one {# aankomende activiteit} other {# aankomende activiteiten}}",
   "app.containers.Projects.yourBudget": "Totale budget",
   "app.containers.ProjectsIndexPage.metaDescription": "Verken alle lopende projecten van {orgName} en ontdek hoe jij kan deelnemen.\nBespreek die lokale projecten die voor jou het belangrijkst zijn.",

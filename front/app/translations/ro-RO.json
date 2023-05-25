@@ -1165,8 +1165,6 @@
   "app.containers.Projects.xQuestions": "{ideasCount, plural, one {# întrebare} other {# întrebări}}",
   "app.containers.Projects.xQuestionsInCurrentPhase": "{ideasCount, plural, one {# întrebare} other {# întrebări}} în faza curentă",
   "app.containers.Projects.xQuestionsInFinalPhase": "{ideasCount, plural, one {# întrebare} other {# întrebări}} în faza finală",
-  "app.containers.Projects.xSurveys": "{surveysCount, plural, one {# sondaj} few {# sondaje} other {# sondaje}}",
-  "app.containers.Projects.xSurveysInCurrentPhase": "{surveysCount, plural, one {# sondaj} few {# sondaje} other {# sondaje}} în faza curentă",
   "app.containers.Projects.xUpcomingEvents": "{upcomingEventsCount, plural, no {# evenimente viitoare} one {# eveniment viitor} other {# evenimente viitoare}}",
   "app.containers.Projects.yourBudget": "Bugetul dumneavoastră",
   "app.containers.ProjectsIndexPage.metaDescription": "Explorează toate proiectele în curs de desfășurare a {orgName} pentru a înțelege modul în care puteți să participați.\n Vino și discută proiectele locale care contează cel mai mult pentru tine.",
