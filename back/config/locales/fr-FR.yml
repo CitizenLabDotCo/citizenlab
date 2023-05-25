@@ -6,13 +6,13 @@ fr:
     proposed_description: Cette idée à été proposée à l'administration
     viewed: vue
     viewed_description: Cette idée a été vue par une personne de la ville
-    under_consideration: pris.e en considération
+    under_consideration: prise en considération
     under_consideration_description: Cette idée a été prise en considération par l'administration
     accepted: acceptée
     accepted_description: Cette idée a été acceptée et sera mise en place par l'administration
-    implemented: mis.e en place
+    implemented: mise en place
     implemented_description: Cette idée a été mise en place par l'administration
-    rejected: non-retenu.e
+    rejected: non-retenue
     rejected_description: Cette idée n'a pas été retenue
   initiative_statuses:
     proposed: soumise
