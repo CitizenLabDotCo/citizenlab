@@ -10,32 +10,32 @@ module EmailCampaigns
     RECENCY_THRESHOLD = 1.week
 
     def save_examples(campaigns_with_command)
-      campaign_types = campaigns_with_command.map { |(_command, campaign)| campaign.type }.uniq
+      campaigns = campaigns_with_command.map { |(_command, campaign)| campaign }.uniq
 
-      campaign_types.each do |campaign_type|
+      campaigns.each do |campaign|
         recent_examples_n = Example
-          .where(campaign_class: campaign_type)
+          .where(campaign: campaign)
           .where('created_at > ?', RECENCY_THRESHOLD.ago)
           .count
         n_lacking = EXAMPLES_PER_CAMPAIGN - recent_examples_n
 
         next if n_lacking == 0
 
-        total_examples = Example.where(campaign_class: campaign_type).count
+        total_examples = Example.where(campaign: campaign).count
 
         new_campaign_commands =
-          filter_n_campaigns_with_command_for_campaign_type(campaigns_with_command, campaign_type, n_lacking)
+          filter_n_campaigns_with_command_for_campaign(campaigns_with_command, campaign, n_lacking)
 
         Example
-          .where(campaign_class: campaign_type)
+          .where(campaign: campaign)
           .order(created_at: :asc)
           .limit([new_campaign_commands.size, n_lacking].min + [0, (total_examples - EXAMPLES_PER_CAMPAIGN)].max)
           .destroy_all
 
         next if n_lacking < 0
 
-        new_campaign_commands.each do |(command, campaign)|
-          save_example(command, campaign)
+        new_campaign_commands.each do |(command, camp)|
+          save_example(command, camp)
         end
       end
     end
@@ -46,7 +46,7 @@ module EmailCampaigns
       ErrorReporter.handle do
         mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
         EmailCampaigns::Example.create!(
-          campaign_class: campaign.type,
+          campaign: campaign,
           mail_body_html: mail.body.to_s,
           locale: command[:recipient].locale,
           subject: mail.subject,
@@ -55,9 +55,9 @@ module EmailCampaigns
       end
     end
 
-    def filter_n_campaigns_with_command_for_campaign_type(campaigns_with_command, campaign_type, n)
-      campaigns_with_command.select do |(_command, campaign)|
-        campaign.type == campaign_type
+    def filter_n_campaigns_with_command_for_campaign(campaigns_with_command, campaign, n)
+      campaigns_with_command.select do |(_command, camp)|
+        camp.id == campaign.id
       end.first(n)
     end
   end

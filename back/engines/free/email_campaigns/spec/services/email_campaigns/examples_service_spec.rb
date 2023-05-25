@@ -8,17 +8,16 @@ describe EmailCampaigns::ExamplesService do
   describe 'save_examples' do
     it 'saves an example when there are no examples yet' do
       recipient = create(:admin)
-      campaign = build(:admin_rights_received_campaign)
+      campaign = create(:admin_rights_received_campaign)
       command = {
         recipient: recipient,
-        event_payload: {},
-        activity: create(:admin_rights_given_activity)
+        event_payload: {}
       }
 
       expect { service.save_examples([[command, campaign]]) }.to change(EmailCampaigns::Example, :count).from(0).to(1)
 
       expect(EmailCampaigns::Example.first).to have_attributes(
-        campaign_class: 'EmailCampaigns::Campaigns::AdminRightsReceived',
+        campaign_id: campaign.id,
         mail_body_html: kind_of(String),
         locale: 'en',
         subject: 'You became an administrator on the platform of Liege',
@@ -27,30 +26,28 @@ describe EmailCampaigns::ExamplesService do
     end
 
     it 'does not save a new example in case there are 5 recent examples for the campaign' do
-      create_list(:campaign_example, 5)
+      campaign = create(:admin_rights_received_campaign)
+      create_list(:campaign_example, 5, campaign: campaign)
 
       recipient = create(:admin)
-      campaign = build(:admin_rights_received_campaign)
       command = {
         recipient: recipient,
-        event_payload: {},
-        activity: create(:admin_rights_given_activity)
+        event_payload: {}
       }
 
       expect { service.save_examples([[command, campaign]]) }.not_to change { EmailCampaigns::Example.all.ids.sort }
     end
 
     it 'replaces the oldest example if there are less than 5 recent examples for the campaign' do
-      recent_examples = create_list(:campaign_example, 3)
-      old_example = create(:campaign_example, created_at: Time.now - 2.weeks, updated_at: Time.now - 2.weeks)
-      oldest_example = create(:campaign_example, created_at: Time.now - 3.weeks, updated_at: Time.now - 3.weeks)
+      campaign = create(:admin_rights_received_campaign)
+      recent_examples = create_list(:campaign_example, 3, campaign: campaign)
+      old_example = create(:campaign_example, created_at: Time.now - 2.weeks, updated_at: Time.now - 2.weeks, campaign: campaign)
+      oldest_example = create(:campaign_example, created_at: Time.now - 3.weeks, updated_at: Time.now - 3.weeks, campaign: campaign)
 
       recipient = create(:admin)
-      campaign = build(:admin_rights_received_campaign)
       command = {
         recipient: recipient,
-        event_payload: {},
-        activity: create(:admin_rights_given_activity)
+        event_payload: {}
       }
 
       expect { service.save_examples([[command, campaign]]) }.to change { EmailCampaigns::Example.all.ids.sort }
@@ -62,30 +59,29 @@ describe EmailCampaigns::ExamplesService do
     end
 
     it 'does not delete any examples from other campaigns' do
-      create_list(:campaign_example, 5, campaign_class: 'SomeFakeCampaign', created_at: 1.year.ago)
-      create(:campaign_example)
+      campaign1 = create(:admin_rights_received_campaign)
+      campaign2 = create(:comment_deleted_by_admin_campaign)
+      create_list(:campaign_example, 5, campaign: campaign1, created_at: 1.year.ago)
+      create(:campaign_example, campaign: campaign2)
 
       recipient = create(:admin)
-      campaign = build(:admin_rights_received_campaign)
       command = {
         recipient: recipient,
-        event_payload: {},
-        activity: create(:admin_rights_given_activity)
+        event_payload: {}
       }
 
-      expect { service.save_examples([[command, campaign]]) }.not_to change { EmailCampaigns::Example.where(campaign_class: 'SomeFakeCampaign').count }
+      expect { service.save_examples([[command, campaign2]]) }.not_to change { EmailCampaigns::Example.where(campaign: campaign1).count }
     end
 
     it 'reduces the number of stored campaigns if there are more than EXAMPLES_PER_CAMPAIGN (5)' do
-      create_list(:campaign_example, 4)
-      old_examples = create_list(:campaign_example, 2, created_at: 1.year.ago)
+      campaign = create(:admin_rights_received_campaign)
+      create_list(:campaign_example, 4, campaign: campaign)
+      old_examples = create_list(:campaign_example, 2, created_at: 1.year.ago, campaign: campaign)
 
       recipient = create(:admin)
-      campaign = build(:admin_rights_received_campaign)
       command = {
         recipient: recipient,
-        event_payload: {},
-        activity: create(:admin_rights_given_activity)
+        event_payload: {}
       }
 
       expect { service.save_examples([[command, campaign]]) }.to change(EmailCampaigns::Example, :count).from(6).to(5)
