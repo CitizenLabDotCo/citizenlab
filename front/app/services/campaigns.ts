@@ -73,9 +73,12 @@ export async function sendCampaign(campaignId: string) {
     `${apiEndpoint}/${campaignId}/send`,
     {}
   );
+
   await streams.fetchAllWith({
-    apiEndpoint: [`${apiEndpoint}/${campaignId}`, `${API_PATH}/campaigns`],
+    apiEndpoint: [`${apiEndpoint}/${campaignId}`],
   });
+  await queryClient.invalidateQueries({ queryKey: campaignsKeys.all() });
+
   return stream;
 }
 

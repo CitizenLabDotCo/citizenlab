@@ -48,22 +48,23 @@ function deleteInvites() {
 describe('Invitation authentication flow', () => {
   before(() => {
     cy.setAdminLoginCookie();
-    cy.visit('/admin/invitations');
+    cy.visit('/admin/users/invitations');
 
     cy.get('input[type=file]').selectFile('cypress/fixtures/invites.xlsx');
-    cy.get('.e2e-submit-wrapper-button').click();
-    cy.get('p.success');
+    cy.contains('Send out invitations').should('be.enabled');
+    cy.contains('Send out invitations').click({ force: true });
+    cy.get('p.success').should('exist');
     cy.logout();
   });
 
   it('has correct invitations', () => {
     cy.goToLandingPage();
     cy.setAdminLoginCookie();
-    cy.visit('/admin/invitations/all');
+    cy.visit('/admin/users/invitations/all');
 
-    cy.get('#e2e-invitations-container').contains('jack@johnson.com');
-    cy.get('#e2e-invitations-container').contains('Jack Johnson');
-    cy.get('#e2e-invitations-container').contains('John Jackson');
+    cy.contains('jack@johnson.com');
+    cy.contains('Jack Johnson');
+    cy.contains('John Jackson');
 
     cy.logout();
   });
