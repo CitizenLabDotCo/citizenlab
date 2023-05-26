@@ -146,6 +146,10 @@ class WebApi::V1::IdeasController < ApplicationController
     service.before_create(input, current_user)
 
     authorize input
+    if anonymous_not_allowed?(participation_context)
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unauthorized
+      return
+    end
     verify_profanity input
 
     save_options = {}
@@ -185,6 +189,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def update
     input = Idea.find params[:id]
     project = input.project
+    participation_context = ParticipationContextService.new.get_participation_context project
     authorize input
 
     if invalid_blank_author_for_update? input, params
@@ -203,6 +208,10 @@ class WebApi::V1::IdeasController < ApplicationController
     CustomFieldService.new.cleanup_custom_field_values! update_params[:custom_field_values]
     input.assign_attributes update_params
     authorize input
+    if anonymous_not_allowed?(participation_context)
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unauthorized
+      return
+    end
     verify_profanity input
 
     service.before_update(input, current_user)
@@ -322,6 +331,10 @@ class WebApi::V1::IdeasController < ApplicationController
     else
       authorize :idea, :index_xlsx?
     end
+  end
+
+  def anonymous_not_allowed?(participation_context)
+    params.dig('idea', 'anonymous') && !participation_context.allow_anonymous_participation
   end
 
   def serialization_options_for(ideas)

@@ -742,13 +742,26 @@ resource 'Ideas' do
         end
 
         describe 'Creating an idea anonymously' do
+          let(:allow_anonymous_participation) { true }
           let(:anonymous) { true }
+
+          before { project.update! allow_anonymous_participation: allow_anonymous_participation }
 
           example_request 'Posting an idea anonymously does not save an author id' do
             assert_status 201
             expect(response_data.dig(:attributes, :anonymous)).to be true
             expect(response_data.dig(:attributes, :author_name)).to be_nil
             expect(response_data.dig(:relationships, :author, :data)).to be_nil
+          end
+
+          describe 'when anonymous posting is not allowed' do
+            let(:allow_anonymous_participation) { false }
+
+            example_request 'Rejects the anonymous parameter' do
+              assert_status 401
+              json_response = json_parse response_body
+              expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+            end
           end
         end
 
@@ -1176,27 +1189,44 @@ resource 'Ideas' do
             expect(json_response_body).to include_response_error(:author, 'blank')
           end
 
-          example 'Updating values of an anonymously posted idea', document: false do
-            @idea.update! publication_status: 'published', anonymous: true, author: nil
-            do_request idea: { location_description: 'HERE' }
-            assert_status 200
-            expect(response_data.dig(:attributes, :location_description)).to eq 'HERE'
-          end
+          describe 'Changing an idea to anonymous' do
+            let(:allow_anonymous_participation) { true }
 
-          example 'Changing an idea to anonymous', document: false do
-            @idea.update! publication_status: 'published', anonymous: false, author: @user
-            do_request idea: { anonymous: true }
-            assert_status 200
-            expect(response_data.dig(:attributes, :anonymous)).to be true
-            expect(response_data.dig(:attributes, :author_name)).to be_nil
-          end
+            before { @project.update! allow_anonymous_participation: allow_anonymous_participation }
 
-          example 'Updating an anonymously posted idea with an author', document: false do
-            @idea.update! publication_status: 'published', anonymous: true, author: nil
-            do_request idea: { author_id: @user.id, publication_status: 'published' }
-            assert_status 200
-            expect(response_data.dig(:relationships, :author, :data, :id)).to eq @user.id
-            expect(response_data.dig(:attributes, :anonymous)).to be false
+            example 'Updating values of an anonymously posted idea', document: false do
+              @idea.update! publication_status: 'published', anonymous: true, author: nil
+              do_request idea: { location_description: 'HERE' }
+              assert_status 200
+              expect(response_data.dig(:attributes, :location_description)).to eq 'HERE'
+            end
+
+            example 'Changing an idea to anonymous', document: false do
+              @idea.update! publication_status: 'published', anonymous: false, author: @user
+              do_request idea: { anonymous: true }
+              assert_status 200
+              expect(response_data.dig(:attributes, :anonymous)).to be true
+              expect(response_data.dig(:attributes, :author_name)).to be_nil
+            end
+
+            example 'Updating an anonymously posted idea with an author', document: false do
+              @idea.update! publication_status: 'published', anonymous: true, author: nil
+              do_request idea: { author_id: @user.id, publication_status: 'published' }
+              assert_status 200
+              expect(response_data.dig(:relationships, :author, :data, :id)).to eq @user.id
+              expect(response_data.dig(:attributes, :anonymous)).to be false
+            end
+
+            describe 'when anonymous posting is not allowed' do
+              let(:allow_anonymous_participation) { false }
+
+              example 'Rejects the anonymous parameter' do
+                do_request idea: { anonymous: true }
+                assert_status 401
+                json_response = json_parse response_body
+                expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+              end
+            end
           end
         end
 

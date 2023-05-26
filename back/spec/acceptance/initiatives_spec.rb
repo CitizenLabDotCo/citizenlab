@@ -414,13 +414,30 @@ resource 'Initiatives' do
     end
 
     describe 'anomymous posting of inititatives' do
+      let(:allow_anonymous_participation) { true }
       let(:anonymous) { true }
+
+      before do
+        config = AppConfiguration.instance
+        config.settings['initiatives']['allow_anonymous_participation'] = allow_anonymous_participation
+        config.save!
+      end
 
       example_request 'Create an anonymous initiative' do
         assert_status 201
         expect(response_data.dig(:relationships, :author, :data, :id)).to be_nil
         expect(response_data.dig(:attributes, :anonymous)).to be true
         expect(response_data.dig(:attributes, :author_name)).to be_nil
+      end
+
+      describe 'when anonymous posting is not allowed' do
+        let(:allow_anonymous_participation) { false }
+
+        example_request 'Rejects the anonymous parameter' do
+          assert_status 401
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+        end
       end
     end
   end
@@ -549,7 +566,14 @@ resource 'Initiatives' do
       end
 
       describe 'updating anomymous initiatives' do
+        let(:allow_anonymous_participation) { true }
         let(:anonymous) { true }
+
+        before do
+          config = AppConfiguration.instance
+          config.settings['initiatives']['allow_anonymous_participation'] = allow_anonymous_participation
+          config.save!
+        end
 
         example_request 'Change a published initiative to anonymous' do
           assert_status 200
@@ -563,6 +587,16 @@ resource 'Initiatives' do
           do_request
           assert_status 401
           expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
+        end
+
+        describe 'when anonymous posting is not allowed' do
+          let(:allow_anonymous_participation) { false }
+
+          example_request 'Rejects the anonymous parameter' do
+            assert_status 401
+            json_response = json_parse response_body
+            expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+          end
         end
       end
     end
@@ -578,6 +612,12 @@ resource 'Initiatives' do
 
       describe 'updating anomymous initiatives' do
         let(:anonymous) { true }
+
+        before do
+          config = AppConfiguration.instance
+          config.settings['initiatives']['allow_anonymous_participation'] = true
+          config.save!
+        end
 
         example_request 'Change a draft initiative to anonymous' do
           assert_status 200

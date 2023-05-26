@@ -379,13 +379,26 @@ resource 'Comments' do
       end
 
       describe 'anomymous commenting' do
+        let(:allow_anonymous_participation) { true }
         let(:anonymous) { true }
+
+        before { @idea.project.update! allow_anonymous_participation: allow_anonymous_participation }
 
         example_request 'Create an anonymous comment on an idea' do
           assert_status 201
           expect(response_data.dig(:relationships, :author, :data, :id)).to be_nil
           expect(response_data.dig(:attributes, :anonymous)).to be true
           expect(response_data.dig(:attributes, :author_name)).to be_nil
+        end
+
+        describe 'when anonymous posting is not allowed' do
+          let(:allow_anonymous_participation) { false }
+
+          example_request 'Rejects the anonymous parameter' do
+            assert_status 401
+            json_response = json_parse response_body
+            expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+          end
         end
       end
     end
@@ -439,7 +452,10 @@ resource 'Comments' do
       end
 
       describe 'anomymous commenting' do
+        let(:allow_anonymous_participation) { true }
         let(:anonymous) { true }
+
+        before { @idea.project.update! allow_anonymous_participation: allow_anonymous_participation }
 
         example_request 'Change an comment on an idea to anonymous' do
           assert_status 200
@@ -453,6 +469,16 @@ resource 'Comments' do
           do_request
           assert_status 401
           expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
+        end
+
+        describe 'when anonymous posting is not allowed' do
+          let(:allow_anonymous_participation) { false }
+
+          example_request 'Rejects the anonymous parameter' do
+            assert_status 401
+            json_response = json_parse response_body
+            expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+          end
         end
       end
     end
