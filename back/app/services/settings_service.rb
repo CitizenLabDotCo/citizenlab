@@ -14,7 +14,10 @@ class SettingsService
     else
       res = settings.clone
       missing_features.each do |f|
-        res[f] = { 'allowed' => false, 'enabled' => false }
+        res[f] = {
+          'allowed' => (default = default_setting(schema, f, 'allowed')).nil? ? false : default,
+          'enabled' => (default = default_setting(schema, f, 'enabled')).nil? ? false : default
+        }
       end
       res
     end
@@ -26,7 +29,7 @@ class SettingsService
       required_settings = schema.dig('properties', feature, 'required-settings') || []
       required_settings.each do |setting|
         if settings.dig(feature, setting).nil?
-          default_value = schema.dig('properties', feature, 'properties', setting, 'default')
+          default_value = default_setting(schema, feature, setting)
           res[feature][setting] = default_value unless default_value.nil?
         end
       end
@@ -104,5 +107,11 @@ class SettingsService
         authentication_token_lifetime_in_days: 30
       }
     }
+  end
+
+  private
+
+  def default_setting(schema, feature, setting)
+    schema.dig('properties', feature, 'properties', setting, 'default')
   end
 end
