@@ -23,6 +23,7 @@ const useCampaignExamples = ({ campaignId }: ICampaignExampleParameters) => {
   >({
     queryKey: campaignExamplesKeys.list({ campaignId }),
     queryFn: () => fetchCampaignExamples({ campaignId }),
+    enabled: !!campaignId,
   });
 };
 

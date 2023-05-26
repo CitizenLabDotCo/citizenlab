@@ -6,7 +6,7 @@ import campaignExamplesKeys from './keys';
 export type CampaignExamplesKeys = Keys<typeof campaignExamplesKeys>;
 
 export interface ICampaignExampleParameters {
-  campaignId: String;
+  campaignId: string | null;
 }
 
 export interface ICampaignExampleData {

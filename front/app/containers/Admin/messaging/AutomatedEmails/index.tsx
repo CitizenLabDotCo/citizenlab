@@ -9,6 +9,7 @@ import {
   Icon,
   ListItem,
   fontSizes,
+  Button,
 } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -16,6 +17,7 @@ import { colors } from 'utils/styleUtils';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import useLocalize from 'hooks/useLocalize';
+import ExampleModal from './ExampleModal';
 
 const groupBy = (key: string) => (result, current) => {
   const resultObj = Object.fromEntries(result);
@@ -41,6 +43,9 @@ const AutomatedEmails = () => {
   const { mutate: updateCampaign } = useUpdateCampaign();
   const localize = useLocalize();
   const [groupedCampaigns, setGroupedCampaigns] = useState<any[]>([]);
+  const [exampleModalCampaignId, setExampleModalCampaignId] = useState<
+    string | null
+  >(null);
 
   const handleOnEnabledToggle = (campaign: ICampaignData) => () => {
     updateCampaign({
@@ -164,6 +169,19 @@ const AutomatedEmails = () => {
                           </Box>
                         )}
                       </Box>
+                      <Box
+                        display="flex"
+                        justifyContent="flex-end"
+                        flexGrow={1}
+                      >
+                        <Button
+                          icon="eye"
+                          onClick={() => setExampleModalCampaignId(campaign.id)}
+                          buttonStyle="secondary"
+                        >
+                          View
+                        </Button>
+                      </Box>
                     </Box>
                   </ListItem>
                 ))}
@@ -172,6 +190,10 @@ const AutomatedEmails = () => {
           </Box>
         ))}
       </Box>
+      <ExampleModal
+        campaignId={exampleModalCampaignId}
+        onClose={() => setExampleModalCampaignId(null)}
+      />
     </>
   );
 };
