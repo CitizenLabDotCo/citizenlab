@@ -90,24 +90,20 @@ class ParticipantsService
     participants
   end
 
-  # Returns the participants of a project.
+  # Returns all the known participants of a single project - cached.
   # @param project[Project]
-  # @param options[Hash] - NOTE: Options appears never to be used in the codebase
   # @return[ActiveRecord::Relation] List of users that participated in the project
-  def project_participants(project, options = {})
+  def project_participants(project)
     participant_ids = Rails.cache.fetch("#{project.cache_key}/participant_ids", expires_in: 1.day) do
-      projects_participants([project], options).pluck(:id)
+      projects_participants([project]).pluck(:id)
     end
     User.where(id: participant_ids)
   end
 
-  # Returns the total count of project participants including anonymous posts
+  # Returns the total count of all project participants including anonymous posts - cached
   def project_participants_count(project)
-    Rails.cache.fetch("#{project.cache_key}/participant_count", expires_in: 1.hour) do
-      participant_ids = Rails.cache.fetch("#{project.cache_key}/participant_ids", expires_in: 1.day) do
-        projects_participants([project]).pluck(:id)
-      end
-
+    Rails.cache.fetch("#{project.cache_key}/participant_count", expires_in: 1.day) do
+      participant_ids = projects_participants([project]).pluck(:id)
       participant_author_hashes = participant_ids.map { |id| Idea.create_author_hash(id, project.id, true) }
       anonymous_idea_hashes = Idea.where(project: project, anonymous: true)
         .where.not(author_hash: participant_author_hashes)

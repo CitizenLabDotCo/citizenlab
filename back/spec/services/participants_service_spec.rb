@@ -92,7 +92,7 @@ describe ParticipantsService do
       create(:idea, project: project, author: pp2, anonymous: true)
       create(:comment, post: idea1, author: pp3, anonymous: true)
       expect(service.project_participants_count(project)).to eq 3
-      travel_to Time.now + 1.hour do
+      travel_to Time.now + 1.day do
         expect(service.project_participants_count(project)).to eq 3
       end
 
@@ -101,7 +101,7 @@ describe ParticipantsService do
       create(:comment, post: idea1, author: pp4, anonymous: true)
       create(:comment, post: idea1, author: pp5, anonymous: true)
       expect(service.project_participants_count(project)).to eq 3
-      travel_to Time.now + 2.hours do
+      travel_to Time.now + 2.days do
         expect(service.project_participants_count(project)).to eq 5
       end
 
@@ -109,7 +109,7 @@ describe ParticipantsService do
       create(:native_survey_response, project: project, author: nil, title_multiloc: { 'en' => 'title' }, body_multiloc: { 'en' => 'body' })
       create(:native_survey_response, project: project, author: nil, title_multiloc: { 'en' => 'title' }, body_multiloc: { 'en' => 'body' })
       expect(service.project_participants_count(project)).to eq 5
-      travel_to Time.now + 3.hours do
+      travel_to Time.now + 3.days do
         expect(service.project_participants_count(project)).to eq 7
       end
     end
