@@ -182,10 +182,6 @@ export function isOrReturnsString(s: any, ...args: any[]): s is Function {
   return isString(s) || (isFunction(s) && isString(s(...args)));
 }
 
-export function matchPathToUrl(tabUrl: string) {
-  return new RegExp(`^/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(/)?$`);
-}
-
 export const isTopBarNavActive = (
   basePath: string,
   pathname: string,
