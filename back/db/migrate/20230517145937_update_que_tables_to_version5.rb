@@ -2,27 +2,30 @@
 
 class UpdateQueTablesToVersion5 < ActiveRecord::Migration[6.1]
   def up
-    if Rails.env.development? || Rails.env.test?
-      # See the comment on DEV_QUE_SQL_MIGRATION_5 for why we need to do this.
-      Que.execute(DEV_QUE_SQL_MIGRATION_5)
-    else
-      Que.migrate!(version: 5)
-    end
+    return unless Apartment::Tenant.current == 'public'
+
+    # See the comment on DEV_QUE_SQL_MIGRATION_5 for why we need to do this.
+    Que.execute(DEV_QUE_SQL_MIGRATION_5)
   end
 
   def down
+    return unless Apartment::Tenant.current == 'public'
+
     Que.migrate!(version: 4)
   end
 
-  # We need to run a slightly different migration in development and test
-  # environments because some objects that `que` expects to be present are very
-  # likely to be missing. This is because `schema.rb` cannot represent certain
-  # database constructs, such as triggers and functions. Therefore, a simple
-  # `db:reset` removes those objects.
+  # We need to run a slightly different migration because the trigger `que_job_notify`
+  # is sometimes missing, which causes the following error:
+  # PG::UndefinedObject: ERROR: trigger "que_job_notify" for table "que_jobs" does not exist.
   #
-  # The original migration can be found here:
+  # We haven't been able to explain why this error occurs in the production and staging
+  # environments. However, in development and test environments, this issue arises because schema.rb
+  # cannot accurately represent certain database constructs, such as triggers and functions.
+  # Therefore, a simple `db:reset` which we run regularly locally removes those objects.
+  #
+  # You can find the original migration here:
   # https://github.com/que-rb/que/blob/v1.3.1/lib/que/migrations/5/up.sql
-  # The only difference is the "IF EXISTS" clauses in the DROP statements.
+  # The only difference is the addition of "IF EXISTS" clauses in the DROP statements.
   DEV_QUE_SQL_MIGRATION_5 = <<~SQL
     DROP TRIGGER IF EXISTS que_job_notify ON que_jobs;
     DROP FUNCTION IF EXISTS que_job_notify();
