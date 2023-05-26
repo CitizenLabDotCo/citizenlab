@@ -1,11 +1,12 @@
 import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { ICampaignExampleData } from 'api/campaign_examples/types';
-import useUser from 'hooks/useUser';
-import { isNilOrError } from 'utils/helperUtils';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import Frame from 'react-frame-component';
 import styled from 'styled-components';
+import T from 'components/T';
+import { ICampaign } from 'services/campaigns';
 
 const StyledFrame = styled(Frame)`
   border-radius: ${(props) => props.theme.borderRadius};
@@ -14,15 +15,28 @@ const StyledFrame = styled(Frame)`
   height: 450px;
 `;
 
-const ExampleFrame = ({ example }: { example: ICampaignExampleData }) => {
-  const user = useUser({ userId: example.relationships.recipient.data.id });
+const ExampleFrame = ({
+  example,
+  campaign,
+}: {
+  example: ICampaignExampleData;
+  campaign?: ICampaign;
+}) => {
+  const { data: appConfig } = useAppConfiguration();
+  const orgName = appConfig?.data.attributes.settings.core.organization_name;
   return (
     <Box>
-      <Box>
-        <Text>subject: {example.attributes.subject}</Text>
-      </Box>
-      <Box>
-        <Text>to: {!isNilOrError(user) && user.attributes.email}</Text>
+      <Box mb="16px">
+        <Text my="4px">
+          <b>Subject:</b> {example.attributes.subject}
+        </Text>
+        <Text my="4px">
+          <b>From:</b> <T value={orgName} />
+        </Text>
+        <Text my="4px">
+          <b>To:</b>{' '}
+          <T value={campaign?.data.attributes.recipient_segment_multiloc} />
+        </Text>
       </Box>
       <StyledFrame>
         <div

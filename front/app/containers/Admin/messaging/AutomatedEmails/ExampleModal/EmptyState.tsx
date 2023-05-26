@@ -12,7 +12,7 @@ const EmptyState = () => {
         Click on the button below to check some email examples on our support
         page.
       </Text>
-      <Box display="flex" justifyContent="center">
+      <Box display="flex" justifyContent="center" mt="32px">
         <Button>See examples on our support page</Button>
       </Box>
     </div>
