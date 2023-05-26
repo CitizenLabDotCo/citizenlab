@@ -327,7 +327,7 @@
   "app.containers.Admin.Insights.Reports.inputs": "Bijdragen",
   "app.containers.Admin.Insights.Reports.inputsByStatusTitle": "Bijdragen volgens status",
   "app.containers.Admin.Insights.Reports.month": "maand",
-  "app.containers.Admin.Insights.Reports.native_survey": "Native-enquête",
+  "app.containers.Admin.Insights.Reports.native_survey": "Ingebouwde enquête-tool",
   "app.containers.Admin.Insights.Reports.noData": "Er zijn geen gegevens om te tonen.",
   "app.containers.Admin.Insights.Reports.noPhase": "Geen fase aangemaakt voor dit project",
   "app.containers.Admin.Insights.Reports.numberOfVotesDown": "Stemmen tegen",
