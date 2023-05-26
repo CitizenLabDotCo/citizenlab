@@ -10,8 +10,8 @@ export default defineMessages({
     defaultMessage: 'Post anonymously',
   },
   inputsAssociatedWithProfile: {
-    id: 'app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile',
+    id: 'app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1',
     defaultMessage:
-      'By default your inputs will be associated with your profile, unless you toggle this option',
+      'By default your submissions will be associated with your profile, unless you select this option.',
   },
 });

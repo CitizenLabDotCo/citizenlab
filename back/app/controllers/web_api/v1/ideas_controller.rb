@@ -142,6 +142,10 @@ class WebApi::V1::IdeasController < ApplicationController
       input.creation_phase = (participation_context if participation_method.form_in_phase?)
       input.phase_ids = [participation_context.id] if phase_ids.empty?
     end
+    # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
+    if participation_context.native_survey? && participation_context.allow_anonymous_participation?
+      input.anonymous = true
+    end
     input.author ||= current_user
     service.before_create(input, current_user)
 
@@ -220,7 +224,6 @@ class WebApi::V1::IdeasController < ApplicationController
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save save_options
-        authorize input
         service.after_update(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
@@ -284,14 +287,14 @@ class WebApi::V1::IdeasController < ApplicationController
     complex_attributes = idea_complex_attributes(custom_form, submittable_field_keys)
     attributes << complex_attributes if complex_attributes.any?
     if user_can_moderate_project
-      attributes.concat %i[idea_status_id budget] + [phase_ids: []]
+      attributes.concat %i[author_id idea_status_id budget] + [phase_ids: []]
     end
     attributes
   end
 
   def idea_simple_attributes(submittable_field_keys)
     simple_attributes = %i[location_description proposed_budget] & submittable_field_keys
-    simple_attributes.push(:publication_status, :project_id, :author_id, :anonymous)
+    simple_attributes.push(:publication_status, :project_id, :anonymous)
     if submittable_field_keys.include?(:idea_images_attributes)
       simple_attributes << [idea_images_attributes: [:image]]
     end
