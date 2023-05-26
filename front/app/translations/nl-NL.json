@@ -814,7 +814,7 @@
   "app.containers.IdeasIndexPage.inputsPageTitle": "Bijdragen",
   "app.containers.IdeasIndexPage.loadMore": "Laad meer bijdrages...",
   "app.containers.IdeasIndexPage.loading": "Bezig met laden...",
-  "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "Standaard worden je inzendingen gekoppeld aan je profiel, tenzij je deze optie selecteert.",
+  "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "Je inzendingen worden standaard aan je profiel gekoppeld, tenzij je deze optie selecteert.",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "Anoniem plaatsen",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Zichtbaarheid van het profiel",
   "app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_maxLength": "De omschrijving van de bijdrage mag niet langer zijn dan {limit} tekens",
