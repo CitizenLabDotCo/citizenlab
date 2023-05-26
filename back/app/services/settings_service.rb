@@ -15,8 +15,8 @@ class SettingsService
       res = settings.clone
       missing_features.each do |f|
         res[f] = {
-          'allowed' => (default = default_setting(schema, f, 'allowed')).nil? ? false : default,
-          'enabled' => (default = default_setting(schema, f, 'enabled')).nil? ? false : default
+          'allowed' => !!default_setting(schema, f, 'allowed'),
+          'enabled' => !!default_setting(schema, f, 'enabled')
         }
       end
       res
