@@ -92,7 +92,7 @@ class ParticipantsService
 
   # Returns the participants of a project.
   # @param project[Project]
-  # @param options[Hash]
+  # @param options[Hash] - NOTE: Options appears never to be used in the codebase
   # @return[ActiveRecord::Relation] List of users that participated in the project
   def project_participants(project, options = {})
     participant_ids = Rails.cache.fetch("#{project.cache_key}/participant_ids", expires_in: 1.day) do
@@ -101,17 +101,26 @@ class ParticipantsService
     User.where(id: participant_ids)
   end
 
-  # Returns the count of project participants including anonymous posts
+  # Returns the total count of project participants including anonymous posts
   def project_participants_count(project)
-    # TODO: Wrap in cache
-    # Get anonymous count
-    participant_ids = Rails.cache.fetch("#{project.cache_key}/participant_ids", expires_in: 1.day) do
-      projects_participants([project]).pluck(:id)
+    Rails.cache.fetch("#{project.cache_key}/participant_count", expires_in: 1.hour) do
+      participant_ids = Rails.cache.fetch("#{project.cache_key}/participant_ids", expires_in: 1.day) do
+        projects_participants([project]).pluck(:id)
+      end
+
+      participant_author_hashes = participant_ids.map { |id| Idea.create_author_hash(id, project.id, true) }
+      anonymous_idea_hashes = Idea.where(project: project, anonymous: true)
+        .where.not(author_hash: participant_author_hashes)
+        .distinct.pluck(:author_hash)
+      anonymous_comment_hashes = Comment.joins(:idea)
+        .where(anonymous: true)
+        .where(idea: { project: project })
+        .where.not(author_hash: participant_author_hashes + anonymous_idea_hashes)
+        .distinct.pluck(:author_hash)
+      everyone_survey_count = Idea.where(project: project, author: nil, anonymous: false).count
+
+      participant_ids.size + anonymous_idea_hashes.size + anonymous_comment_hashes.size + everyone_survey_count
     end
-    participant_author_hashes = participant_ids.map { |id| Idea.create_author_hash(id, project.id, true) }
-    anonymous_count = Idea.where(project: project, anonymous: true).where.not(author_hash: participant_author_hashes).distinct.count(:author_hash)
-    # TODO: Add anonymous comments & add all the options in too
-    participant_ids.size + anonymous_count
   end
 
   def projects_participants(projects, options = {})
