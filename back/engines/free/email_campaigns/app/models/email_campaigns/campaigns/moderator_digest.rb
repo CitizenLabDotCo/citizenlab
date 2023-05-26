@@ -122,7 +122,6 @@ module EmailCampaigns
 
     def statistics(project)
       ps = ParticipantsService.new
-      # TODO: These need to be able to calculate
       participants_increase = ps.projects_participants([project], since: (Time.now - days_ago)).size
       participants_past_increase = ps.projects_participants([project], since: (Time.now - (days_ago * 2))).size - participants_increase
       ideas = Idea.published.where(project_id: project.id).load
