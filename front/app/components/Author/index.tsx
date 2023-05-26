@@ -130,8 +130,8 @@ const Author = memo(
     fontSize,
     horizontalLayout,
     color,
-    anonymous,
     underline,
+    anonymous,
   }: Props) => {
     const locale = useLocale();
     const author = useUser({ userId: authorId });

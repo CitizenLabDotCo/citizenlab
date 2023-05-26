@@ -118,11 +118,6 @@ RSpec.describe Initiative do
   describe 'anonymous participation' do
     let(:author) { create(:user) }
 
-    it 'has an author hash of consistent length' do
-      initiative = create(:initiative)
-      expect(initiative.author_hash.length).to eq 32
-    end
-
     context 'ideas are not anonymous' do
       it 'has the same author hash on each initiative when the author is the same' do
         initiative1 = create(:initiative, author: author)

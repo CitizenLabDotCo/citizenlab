@@ -11,14 +11,9 @@ import useInputSchema from 'hooks/useInputSchema';
 import { useParams, useSearchParams } from 'react-router-dom';
 import useAddIdea from 'api/ideas/useAddIdea';
 
-// Cookies
-import {
-  setCookieAnonymousConfirmation,
-  getCookieAnonymousConfirmation,
-} from 'components/AnonymousParticipationConfirmationModal/AnonymousCookieManagement';
-
 // i18n
 import messages from '../messages';
+import { useIntl } from 'utils/cl-intl';
 
 // components
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
@@ -29,6 +24,7 @@ import { Heading } from './Heading';
 import { Box } from '@citizenlab/cl2-component-library';
 import ProfileVisiblity from 'components/ProfileVisibility';
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+import Warning from 'components/UI/Warning';
 
 // utils
 import { geocode, reverseGeocode } from 'utils/locationTools';
@@ -87,6 +83,7 @@ interface FormValues {
 
 const IdeasNewPageWithJSONForm = () => {
   const { mutateAsync: addIdea } = useAddIdea();
+  const { formatMessage } = useIntl();
   const params = useParams<{ slug: string }>();
   const authUser = useAuthUser();
   const { data: project } = useProjectBySlug(params.slug);
@@ -109,6 +106,12 @@ const IdeasNewPageWithJSONForm = () => {
   >(undefined);
   const [initialFormData, setInitialFormData] = useState({});
   const [postAnonymously, setPostAnonymously] = useState(false);
+  const currentPhase = getCurrentPhase(phases?.data);
+
+  const allowAnonymousPosting =
+    project?.data.attributes.allow_anonymous_participation ||
+    (phases &&
+      getCurrentPhase(phases.data)?.attributes.allow_anonymous_participation);
 
   useEffect(() => {
     // Click on map flow :
@@ -143,12 +146,7 @@ const IdeasNewPageWithJSONForm = () => {
 
     setFormDataOnSubmit(data);
 
-    const hasAnonymousConfirmationCookie = getCookieAnonymousConfirmation();
-    if (
-      project.data.attributes.allow_anonymous_participation &&
-      postAnonymously &&
-      !hasAnonymousConfirmationCookie
-    ) {
+    if (allowAnonymousPosting && postAnonymously) {
       setShowAnonymousConfirmationModal(true);
     } else {
       continueSubmission(data);
@@ -249,7 +247,12 @@ const IdeasNewPageWithJSONForm = () => {
   const canUserEditProject =
     !isNilOrError(authUser) &&
     canModerateProject(project.data.id, { data: authUser });
+
   const isSurvey = config.postType === 'nativeSurvey';
+  const isAnonymousSurvey =
+    isSurvey &&
+    (project?.data.attributes.allow_anonymous_participation ||
+      currentPhase?.attributes?.allow_anonymous_participation);
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
@@ -265,28 +268,37 @@ const IdeasNewPageWithJSONForm = () => {
             getApiErrorMessage={getApiErrorMessage}
             inputId={undefined}
             title={
-              <Heading
-                project={project.data}
-                titleText={
-                  config.getFormTitle ? (
-                    config.getFormTitle({
-                      project: project.data,
-                      phases: phases?.data,
-                      phaseFromUrl: phaseFromUrl?.data,
-                    })
-                  ) : (
-                    <></>
-                  )
-                }
-                isSurvey={isSurvey}
-                canUserEditProject={canUserEditProject}
-              />
+              <>
+                <Heading
+                  project={project.data}
+                  titleText={
+                    config.getFormTitle ? (
+                      config.getFormTitle({
+                        project: project.data,
+                        phases: phases?.data,
+                        phaseFromUrl: phaseFromUrl?.data,
+                      })
+                    ) : (
+                      <></>
+                    )
+                  }
+                  isSurvey={isSurvey}
+                  canUserEditProject={canUserEditProject}
+                />
+                {isAnonymousSurvey && (
+                  <Box mx="auto" p="20px" maxWidth="700px">
+                    <Warning
+                      icon="shield-checkered"
+                      text={formatMessage(messages.anonymousSurveyMessage)}
+                    />
+                  </Box>
+                )}
+              </>
             }
             config={isSurvey ? 'survey' : 'input'}
             formSubmitText={isSurvey ? messages.submitSurvey : undefined}
             footer={
-              !isSurvey &&
-              project.data.attributes.allow_anonymous_participation ? (
+              !isSurvey && allowAnonymousPosting ? (
                 <Box
                   p="40px"
                   mb="20px"
@@ -311,7 +323,6 @@ const IdeasNewPageWithJSONForm = () => {
       )}
       <AnonymousParticipationConfirmationModal
         onConfirmAnonymousParticipation={() => {
-          setCookieAnonymousConfirmation();
           setShowAnonymousConfirmationModal(false);
           continueSubmission(formDataOnSubmit);
         }}

@@ -237,6 +237,10 @@ resource 'Comments' do
           expect(response_data.dig(:attributes, :anonymous)).to be true
           expect(response_data.dig(:attributes, :author_name)).to be_nil
         end
+
+        example 'Does not log activities for the author', document: false do
+          expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything)
+        end
       end
     end
 
@@ -297,6 +301,17 @@ resource 'Comments' do
           do_request
           assert_status 401
           expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
+        end
+
+        example 'Does not log activities for the author and clears the author from past activities', document: false do
+          clear_activity = create(:activity, item: comment, user: @user)
+          other_item_activity = create(:activity, item: comment, user: create(:user))
+          other_user_activity = create(:activity, user: @user)
+
+          expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything)
+          expect(clear_activity.reload.user_id).to be_nil
+          expect(other_item_activity.reload.user_id).to be_present
+          expect(other_user_activity.reload.user_id).to eq @user.id
         end
       end
     end
