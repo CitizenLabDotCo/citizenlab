@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_24_151508) do
+ActiveRecord::Schema.define(version: 2023_05_26_072941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1120,7 +1120,7 @@ ActiveRecord::Schema.define(version: 2023_05_24_151508) do
     t.index ["tenant_id"], name: "index_public_api_api_clients_on_tenant_id"
   end
 
-  create_table "que_jobs", comment: "4", force: :cascade do |t|
+  create_table "que_jobs", comment: "5", force: :cascade do |t|
     t.integer "priority", limit: 2, default: 100, null: false
     t.datetime "run_at", default: -> { "now()" }, null: false
     t.text "job_class", null: false
