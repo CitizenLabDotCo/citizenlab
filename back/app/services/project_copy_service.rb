@@ -540,6 +540,8 @@ class ProjectCopyService < TemplateService
         'published_at' => shift_timestamp(idea.published_at, shift_timestamps)&.iso8601,
         'project_ref' => lookup_ref(idea.project_id, :project),
         'author_ref' => lookup_ref(idea.author_id, :user),
+        'author_hash' => idea.author_hash,
+        'anonymous' => idea.anonymous,
         'created_at' => shift_timestamp(idea.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(idea.updated_at, shift_timestamps)&.iso8601,
         'location_point_geojson' => idea.location_point_geojson,
@@ -614,6 +616,8 @@ class ProjectCopyService < TemplateService
     (Comment.where(parent_id: nil).where(post_id: @project.ideas.published.where.not(author_id: nil).ids, post_type: 'Idea') + Comment.where.not(parent_id: nil).where(post_id: @project.ideas.published.ids, post_type: 'Idea')).map do |c|
       yml_comment = {
         'author_ref' => lookup_ref(c.author_id, :user),
+        'author_hash' => c.author_hash,
+        'anonymous' => c.anonymous,
         'post_ref' => lookup_ref(c.post_id, :idea),
         'body_multiloc' => c.body_multiloc,
         'created_at' => shift_timestamp(c.created_at, shift_timestamps)&.iso8601,

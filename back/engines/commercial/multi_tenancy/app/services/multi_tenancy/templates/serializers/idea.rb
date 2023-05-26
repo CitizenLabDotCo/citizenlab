@@ -14,6 +14,8 @@ module MultiTenancy
           proposed_budget
           publication_status
           title_multiloc
+          author_hash
+          anonymous
         ]
 
         attribute(:published_at) { |idea| serialize_timestamp(idea.published_at) }
