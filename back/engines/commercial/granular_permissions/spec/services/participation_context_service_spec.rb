@@ -206,10 +206,7 @@ describe ParticipationContextService do
     it 'returns `not_permitted` when annotating the document is not permitted' do
       project = create(:continuous_document_annotation_project, with_permissions: true)
       permission = service.get_participation_context(project).permissions.find_by(action: 'annotating_document')
-      permission.update!(
-        permitted_by: 'groups',
-        group_ids: create_list(:group, 2).map(&:id)
-      )
+      permission.update!(permitted_by: 'admins_moderators')
       expect(service.annotating_document_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
     end
   end
