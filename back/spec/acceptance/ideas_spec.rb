@@ -1109,6 +1109,8 @@ resource 'Ideas' do
         describe 'Changing an idea to anonymous' do
           let(:anonymous) { true }
 
+          before { @project.update! allow_anonymous_participation: true }
+
           example 'Change an idea to anonymous as a non-admin', document: false do
             do_request
             assert_status 200
@@ -1272,21 +1274,21 @@ resource 'Ideas' do
                 expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
               end
             end
-          end
 
-          example 'Does not log activities for the author', document: false do
-            expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
-          end
+            example 'Does not log activities for the author', document: false do
+              expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
+            end
 
-          example 'Does not log activities for the author and clears the author from past activities', document: false do
-            clear_activity = create(:activity, item: @idea, user: @user)
-            other_item_activity = create(:activity, item: @idea, user: create(:user))
-            other_user_activity = create(:activity, user: @user)
+            example 'Does not log activities for the author and clears the author from past activities', document: false do
+              clear_activity = create(:activity, item: @idea, user: @user)
+              other_item_activity = create(:activity, item: @idea, user: create(:user))
+              other_user_activity = create(:activity, user: @user)
 
-            expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
-            expect(clear_activity.reload.user_id).to be_nil
-            expect(other_item_activity.reload.user_id).to be_present
-            expect(other_user_activity.reload.user_id).to eq @user.id
+              expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
+              expect(clear_activity.reload.user_id).to be_nil
+              expect(other_item_activity.reload.user_id).to be_present
+              expect(other_user_activity.reload.user_id).to eq @user.id
+            end
           end
         end
 
