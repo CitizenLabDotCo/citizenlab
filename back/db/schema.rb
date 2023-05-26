@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_26_072941) do
+ActiveRecord::Schema.define(version: 2023_05_26_072942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1120,7 +1120,7 @@ ActiveRecord::Schema.define(version: 2023_05_26_072941) do
     t.index ["tenant_id"], name: "index_public_api_api_clients_on_tenant_id"
   end
 
-  create_table "que_jobs", comment: "5", force: :cascade do |t|
+  create_table "que_jobs", comment: "6", force: :cascade do |t|
     t.integer "priority", limit: 2, default: 100, null: false
     t.datetime "run_at", default: -> { "now()" }, null: false
     t.text "job_class", null: false
@@ -1132,11 +1132,12 @@ ActiveRecord::Schema.define(version: 2023_05_26_072941) do
     t.datetime "expired_at"
     t.jsonb "args", default: [], null: false
     t.jsonb "data", default: {}, null: false
-    t.integer "job_schema_version", default: 1
+    t.integer "job_schema_version", null: false
+    t.jsonb "kwargs", default: {}, null: false
     t.index ["args"], name: "que_jobs_args_gin_idx", opclass: :jsonb_path_ops, using: :gin
     t.index ["data"], name: "que_jobs_data_gin_idx", opclass: :jsonb_path_ops, using: :gin
-    t.index ["job_schema_version", "queue", "priority", "run_at", "id"], name: "que_poll_idx_with_job_schema_version", where: "((finished_at IS NULL) AND (expired_at IS NULL))"
-    t.index ["queue", "priority", "run_at", "id"], name: "que_poll_idx", where: "((finished_at IS NULL) AND (expired_at IS NULL))"
+    t.index ["job_schema_version", "queue", "priority", "run_at", "id"], name: "que_poll_idx", where: "((finished_at IS NULL) AND (expired_at IS NULL))"
+    t.index ["kwargs"], name: "que_jobs_kwargs_gin_idx", opclass: :jsonb_path_ops, using: :gin
   end
 
   create_table "que_lockers", primary_key: "pid", id: :integer, default: nil, force: :cascade do |t|
