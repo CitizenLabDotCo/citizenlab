@@ -9,12 +9,12 @@ require:
 AllCops:
   NewCops: enable
   Exclude:
-  - 'db/schema.rb'
-  - '**/*.builder'
-  - '**/.*.*'
-  - '**/bin/**/*'
-  - 'engines/ee/**/*'
-  - 'vendor/**/*'
+    - "db/schema.rb"
+    - "**/*.builder"
+    - "**/.*.*"
+    - "**/bin/**/*"
+    - "engines/ee/**/*"
+    - "vendor/**/*"
 
 Layout/HashAlignment:
   EnforcedColonStyle: [key, table]
@@ -22,8 +22,8 @@ Layout/HashAlignment:
 
 Metrics/BlockLength:
   Exclude:
-    - 'engines/*/*/spec/**/*'
-    - 'spec/**/*'
+    - "engines/*/*/spec/**/*"
+    - "spec/**/*"
 
 Style/Documentation:
   # Most classes are not documented, so turn off this Cop.
@@ -31,11 +31,11 @@ Style/Documentation:
 
 Style/SymbolProc:
   Enabled: true
-  IgnoredMethods:
+  AllowedMethods:
     - attribute
     - throttle
   Exclude:
-    - 'db/migrate/**/*'
+    - "db/migrate/**/*"
 
 Style/NumericPredicate:
   # Turned off because `something == 0` and `something.zero?`
@@ -72,6 +72,10 @@ Layout/EndAlignment:
 Layout/TrailingWhitespace:
   AllowInHeredoc: true
 
+Lint/AmbiguousBlockAssociation:
+  AllowedPatterns:
+    - change
+
 Lint/UnusedMethodArgument:
   AllowUnusedKeywordArguments: true
 
@@ -95,26 +99,26 @@ Rails/DynamicFindBy:
 Rails/CreateTableWithTimestamps:
   # Some migrations do not add timestamps, so they are excluded.
   Exclude:
-    - 'db/migrate/20170318143940_create_join_table_projects_topics.rb'
-    - 'db/migrate/20170318144700_create_join_table_areas_projects.rb'
-    - 'db/migrate/20170318181018_create_join_table_ideas_topics.rb'
-    - 'db/migrate/20170319000059_create_join_table_areas_ideas.rb'
-    - 'db/migrate/20171010114629_create_groups_projects.rb'
-    - 'db/migrate/20171010114644_create_memberships.rb'
-    - 'db/migrate/20171031131310_create_page_links.rb'
-    - 'db/migrate/20190603100709_create_join_table_areas_initiatives.rb'
-    - 'db/migrate/20190603100803_create_join_table_initiatives_topics.rb'
-    - 'db/migrate/20191210205216_create_id_cards.id_id_card_lookup.rb'
-    - 'db/migrate/20191218161144_create_unsubscription_tokens.email_campaigns.rb'
-    - 'db/migrate/20200807132541_create_common_passwords.rb'
-    - 'db/migrate/20210619133856_create_zeroshot_classification_tables.insights.rb'
+    - "db/migrate/20170318143940_create_join_table_projects_topics.rb"
+    - "db/migrate/20170318144700_create_join_table_areas_projects.rb"
+    - "db/migrate/20170318181018_create_join_table_ideas_topics.rb"
+    - "db/migrate/20170319000059_create_join_table_areas_ideas.rb"
+    - "db/migrate/20171010114629_create_groups_projects.rb"
+    - "db/migrate/20171010114644_create_memberships.rb"
+    - "db/migrate/20171031131310_create_page_links.rb"
+    - "db/migrate/20190603100709_create_join_table_areas_initiatives.rb"
+    - "db/migrate/20190603100803_create_join_table_initiatives_topics.rb"
+    - "db/migrate/20191210205216_create_id_cards.id_id_card_lookup.rb"
+    - "db/migrate/20191218161144_create_unsubscription_tokens.email_campaigns.rb"
+    - "db/migrate/20200807132541_create_common_passwords.rb"
+    - "db/migrate/20210619133856_create_zeroshot_classification_tables.insights.rb"
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
 
 RSpec/SharedContext:
   Exclude:
-  - '**/spec/acceptance/**/*'
+    - "**/spec/acceptance/**/*"
 
 Style/IfUnlessModifier:
   Enabled: false
@@ -126,26 +130,25 @@ Layout/MultilineMethodCallIndentation:
 
 RSpec/DescribeClass:
   IgnoredMetadata:
-    type: ['request']
+    type: ["request"]
 
 RSpec/EmptyExampleGroup:
   # `context` and `describe` are found as empty example groups when
   # `example_request`, `post`, etc are used, so exclude acceptance tests.
   Exclude:
-    - '**/spec/acceptance/**/*'
+    - "**/spec/acceptance/**/*"
 
 RSpec/ExampleLength:
   Enabled: false
 
 Metrics/MethodLength:
-  CountAsOne: ['array', 'hash', 'heredoc']
+  CountAsOne: ["array", "hash", "heredoc"]
   Exclude:
-  - '**/db/migrate/**/*'
+    - "**/db/migrate/**/*"
 
 Lint/Void:
   Exclude:
-    - 'engines/commercial/multi_tenancy/config/initializers/sentry.rb'
-
+    - "engines/commercial/multi_tenancy/config/initializers/sentry.rb"
 
 Rails/UnknownEnv:
   # config/initializers/apartment.rb refers to staging, which is not part of the default settings.

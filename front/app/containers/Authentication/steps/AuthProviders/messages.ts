@@ -29,6 +29,10 @@ export default defineMessages({
     id: 'app.components.AuthProviders.continueWithAzure',
     defaultMessage: 'Continue with {azureProviderName}',
   },
+  continueWithLoginMechanism: {
+    id: 'app.components.AuthProviders.continueWithLoginMechanism',
+    defaultMessage: 'Continue with {loginMechanismName}',
+  },
   signUpButtonAltText: {
     id: 'app.components.AuthProviders.signUpButtonAltText',
     defaultMessage: 'Sign up with {loginMechanismName}',
