@@ -48,6 +48,10 @@ c rails-console:
 rails-console-exec:
 	docker exec -it "$$(docker ps | awk '/cl-back-web/ {print $$1}' | head -1)" bin/rails c
 
+# search_path=localhost specifies the schema of localhost tenant
+psql:
+	docker-compose run -it -e PGPASSWORD=postgres -e PGOPTIONS="--search_path=localhost" postgres psql -U postgres -h postgres -d cl2_back_development
+
 # =================
 # E2E tests
 # =================
