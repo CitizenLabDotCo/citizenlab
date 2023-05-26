@@ -101,7 +101,7 @@ class WebApi::V1::InitiativesController < ApplicationController
 
     authorize @initiative
     if anonymous_not_allowed?
-      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unauthorized
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
       return
     end
     verify_profanity @initiative
@@ -131,7 +131,7 @@ class WebApi::V1::InitiativesController < ApplicationController
 
     authorize @initiative
     if anonymous_not_allowed?
-      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unauthorized
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
       return
     end
     verify_profanity @initiative

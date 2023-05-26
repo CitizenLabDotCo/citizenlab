@@ -398,7 +398,7 @@ resource 'Comments' do
           let(:allow_anonymous_participation) { false }
 
           example_request 'Rejects the anonymous parameter' do
-            assert_status 401
+            assert_status 422
             json_response = json_parse response_body
             expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
           end
@@ -488,7 +488,7 @@ resource 'Comments' do
           let(:allow_anonymous_participation) { false }
 
           example_request 'Rejects the anonymous parameter' do
-            assert_status 401
+            assert_status 422
             json_response = json_parse response_body
             expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
           end

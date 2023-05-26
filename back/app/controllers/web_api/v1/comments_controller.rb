@@ -143,7 +143,7 @@ class WebApi::V1::CommentsController < ApplicationController
     @comment.author ||= current_user
     authorize @comment, policy_class: @policy_class
     if anonymous_not_allowed?
-      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unauthorized
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
       return
     end
     verify_profanity @comment
@@ -166,7 +166,7 @@ class WebApi::V1::CommentsController < ApplicationController
     # @comment.attributes = pundit_params_for(@comment).permit(@policy_class.new(current_user, @comment).permitted_attributes_for_update)
     authorize @comment, policy_class: @policy_class
     if anonymous_not_allowed?
-      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unauthorized
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
       return
     end
     verify_profanity @comment

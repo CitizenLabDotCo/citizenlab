@@ -151,7 +151,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     authorize input
     if anonymous_not_allowed?(participation_context)
-      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unauthorized
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
       return
     end
     verify_profanity input
@@ -213,7 +213,7 @@ class WebApi::V1::IdeasController < ApplicationController
     input.assign_attributes update_params
     authorize input
     if anonymous_not_allowed?(participation_context)
-      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unauthorized
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
       return
     end
     verify_profanity input
