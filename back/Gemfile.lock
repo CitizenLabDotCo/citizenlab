@@ -801,7 +801,7 @@ GEM
     pundit (2.3.0)
       activesupport (>= 3.0.0)
     qonfig (0.28.0)
-    que (1.4.1)
+    que (2.0.0)
     que-web (0.10.0)
       que (>= 1)
       sinatra
@@ -1182,7 +1182,7 @@ DEPENDENCIES
   public_api!
   puma (~> 6.2.2)
   pundit (~> 2.3.0)
-  que (~> 1.4.1)
+  que (~> 2.0.0)
   que-web (~> 0.10.0)
   rack-attack (~> 6)
   rack-cors
