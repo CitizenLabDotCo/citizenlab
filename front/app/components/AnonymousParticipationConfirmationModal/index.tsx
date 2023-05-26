@@ -67,6 +67,11 @@ const AnonymousParticipationConfirmationModal = ({
               {...messages.participateAnonymouslyModalText}
             />
           </Text>
+          <Text color="tenantText" fontSize="s">
+            <FormattedMessage
+              {...messages.participateAnonymouslyModalTextSection2}
+            />
+          </Text>
           <Warning
             text={
               <Text color="primary" m="0px" fontSize="s">

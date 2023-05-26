@@ -12,6 +12,7 @@ import {
   Checkbox,
   useBreakpoint,
   Text,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
 // tracking
@@ -44,10 +45,6 @@ import useLocale from 'hooks/useLocale';
 import useAuthUser from 'hooks/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import {
-  getCookieAnonymousConfirmation,
-  setCookieAnonymousConfirmation,
-} from 'components/AnonymousParticipationConfirmationModal/AnonymousCookieManagement';
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 
 const Container = styled.div`
@@ -191,13 +188,7 @@ const ParentCommentForm = ({
   };
 
   const onSubmit = async () => {
-    const hasAnonymousConfirmationCookie = getCookieAnonymousConfirmation();
-
-    if (
-      allowAnonymousParticipation &&
-      postAnonymously &&
-      !hasAnonymousConfirmationCookie
-    ) {
+    if (allowAnonymousParticipation && postAnonymously) {
       setShowAnonymousConfirmationModal(true);
     } else {
       continueSubmission();
@@ -420,6 +411,20 @@ const ParentCommentForm = ({
                     label={
                       <Text mb="12px" fontSize="s" color="coolGrey600">
                         {formatMessage(messages.postAnonymously)}
+                        <IconTooltip
+                          content={
+                            <Text color="white" fontSize="s" m="0">
+                              {formatMessage(
+                                messages.inputsAssociatedWithProfile
+                              )}
+                            </Text>
+                          }
+                          iconSize="16px"
+                          placement="top-start"
+                          display="inline"
+                          ml="4px"
+                          transform="translate(0,-1)"
+                        />
                       </Text>
                     }
                     onChange={() => setPostAnonymously(!postAnonymously)}
@@ -448,7 +453,6 @@ const ParentCommentForm = ({
         </FormContainer>
         <AnonymousParticipationConfirmationModal
           onConfirmAnonymousParticipation={() => {
-            setCookieAnonymousConfirmation();
             setShowAnonymousConfirmationModal(false);
             continueSubmission();
           }}

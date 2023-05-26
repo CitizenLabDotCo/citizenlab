@@ -11,12 +11,6 @@ import useInputSchema from 'hooks/useInputSchema';
 import { useParams, useSearchParams } from 'react-router-dom';
 import useAddIdea from 'api/ideas/useAddIdea';
 
-// Cookies
-import {
-  setCookieAnonymousConfirmation,
-  getCookieAnonymousConfirmation,
-} from 'components/AnonymousParticipationConfirmationModal/AnonymousCookieManagement';
-
 // i18n
 import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
@@ -114,6 +108,11 @@ const IdeasNewPageWithJSONForm = () => {
   const [postAnonymously, setPostAnonymously] = useState(false);
   const currentPhase = getCurrentPhase(phases?.data);
 
+  const allowAnonymousPosting =
+    project?.data.attributes.allow_anonymous_participation ||
+    (phases &&
+      getCurrentPhase(phases.data)?.attributes.allow_anonymous_participation);
+
   useEffect(() => {
     // Click on map flow :
     // clicked location is passed in url params
@@ -147,12 +146,7 @@ const IdeasNewPageWithJSONForm = () => {
 
     setFormDataOnSubmit(data);
 
-    const hasAnonymousConfirmationCookie = getCookieAnonymousConfirmation();
-    if (
-      project.data.attributes.allow_anonymous_participation &&
-      postAnonymously &&
-      !hasAnonymousConfirmationCookie
-    ) {
+    if (allowAnonymousPosting && postAnonymously) {
       setShowAnonymousConfirmationModal(true);
     } else {
       continueSubmission(data);
@@ -304,8 +298,7 @@ const IdeasNewPageWithJSONForm = () => {
             config={isSurvey ? 'survey' : 'input'}
             formSubmitText={isSurvey ? messages.submitSurvey : undefined}
             footer={
-              !isSurvey &&
-              project.data.attributes.allow_anonymous_participation ? (
+              !isSurvey && allowAnonymousPosting ? (
                 <Box
                   p="40px"
                   mb="20px"
@@ -330,7 +323,6 @@ const IdeasNewPageWithJSONForm = () => {
       )}
       <AnonymousParticipationConfirmationModal
         onConfirmAnonymousParticipation={() => {
-          setCookieAnonymousConfirmation();
           setShowAnonymousConfirmationModal(false);
           continueSubmission(formDataOnSubmit);
         }}

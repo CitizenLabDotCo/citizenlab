@@ -46,6 +46,8 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 20px;
@@ -182,6 +184,7 @@ const IdeaContent = ({
   const { data: ideaImages } = useIdeaImages(ideaId);
   const { data: ideaFiles } = useIdeaFiles(ideaId);
   const { mutate: deleteIdea } = useDeleteIdea();
+  const { data: phases } = usePhases(project?.id);
 
   const handleClickDelete = (processType: ProcessType) => () => {
     const deleteConfirmationMessage = {
@@ -197,6 +200,7 @@ const IdeaContent = ({
   };
 
   if (!isNilOrError(idea) && !isNilOrError(locale) && !isNilOrError(project)) {
+    const currentPhase = getCurrentPhase(phases?.data);
     const ideaId = idea.id;
     const ideaTitle = localize(idea.attributes.title_multiloc);
     const ideaImageLarge =
@@ -212,9 +216,9 @@ const IdeaContent = ({
     const authorId = idea.relationships.author.data?.id || null;
     const proposedBudget = idea.attributes.proposed_budget;
     const processType = project.attributes.process_type;
-
     const allowAnonymousParticipation =
-      project.attributes.allow_anonymous_participation;
+      project.attributes.allow_anonymous_participation ||
+      currentPhase?.attributes.allow_anonymous_participation;
 
     return (
       <Container>

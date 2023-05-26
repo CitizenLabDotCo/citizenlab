@@ -1,8 +1,11 @@
 import * as React from 'react';
-import { get } from 'lodash-es';
+import { useEffect, useState } from 'react';
+
+// utils
 import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
+import Link from 'utils/cl-router/Link';
 
 // Components
 import {
@@ -12,22 +15,22 @@ import {
 } from 'components/UI/FormComponents';
 import { SectionField } from 'components/admin/Section';
 import TopicsPicker from 'components/UI/TopicsPicker';
-import { Input, LocationInput } from '@citizenlab/cl2-component-library';
+import { Box, Input, LocationInput } from '@citizenlab/cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import FileUploader from 'components/UI/FileUploader';
 import Error from 'components/UI/Error';
-import Link from 'utils/cl-router/Link';
+import ProfileVisiblity from 'components/ProfileVisibility';
 
 // intl
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { MessageDescriptor, injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { MessageDescriptor, FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
 import { ITopicData } from 'api/topics/types';
 import { FormSubmitFooter } from './SubmitFooter';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const Form = styled.form`
   display: flex;
@@ -77,452 +80,405 @@ interface Props extends FormValues, FormProps {
   topics: ITopicData[];
   titleProfanityError: boolean;
   descriptionProfanityError: boolean;
+  postAnonymously: boolean;
+  setPostAnonymously: (newValue: boolean) => void;
+  publishedAnonymously?: boolean;
 }
 
-interface State {
-  touched: {
+const InitiativeForm = ({
+  publishedAnonymously,
+  locale,
+  title_multiloc,
+  body_multiloc,
+  topic_ids,
+  image,
+  onSave,
+  onPublish,
+  onChangeTopics,
+  onChangeBanner,
+  onChangeImage,
+  onChangeTitle,
+  onChangeBody,
+  position,
+  onChangePosition,
+  banner,
+  files,
+  onAddFile,
+  onRemoveFile,
+  publishError,
+  apiErrors,
+  topics,
+  titleProfanityError,
+  descriptionProfanityError,
+  publishing,
+  setPostAnonymously,
+  postAnonymously,
+}: Props) => {
+  const appConfiguration = useAppConfiguration();
+  const [touched, setTouched] = useState<{
     [key in keyof FormValues]?: boolean | undefined;
-  };
-  errors: {
+  }>({});
+  const [errors, setErrors] = useState<{
     [key in keyof FormValues]?: { message: MessageDescriptor } | undefined;
-  };
-}
+  }>({});
 
-class InitiativeForm extends React.Component<
-  Props & WrappedComponentProps,
-  State
-> {
-  static titleMinLength = 10;
-  static titleMaxLength = 72;
-  static bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 30;
-  static requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids'];
+  const { formatMessage } = useIntl();
+  const titleMinLength = 10;
+  const titleMaxLength = 72;
+  const bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 30;
 
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      touched: {} as State['touched'],
-      errors: {} as State['errors'],
+  useEffect(() => {
+    const requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids'];
+
+    const validations = {
+      title_multiloc: () => {
+        const title = title_multiloc ? title_multiloc[locale] : undefined;
+
+        if (title && title.length > 0 && title.length < titleMinLength) {
+          return { message: messages.titleMinLengthError };
+        } else if (title && title.length > 0 && title.length > titleMaxLength) {
+          return { message: messages.titleMaxLengthError };
+        } else if (!title || title === '') {
+          return { message: messages.titleEmptyError };
+        }
+
+        return undefined;
+      },
+      body_multiloc: () => {
+        const body = body_multiloc ? body_multiloc[locale] : undefined;
+        if (
+          body &&
+          stripHtmlTags(body).length < bodyMinLength &&
+          body.length > 0
+        ) {
+          return { message: messages.descriptionBodyLengthError };
+        } else if (!body || body === '') {
+          return { message: messages.descriptionEmptyError };
+        }
+        return undefined;
+      },
+      topic_ids: () => {
+        if (topic_ids.length === 0) {
+          return { message: messages.topicEmptyError };
+        }
+        return undefined;
+      },
     };
-  }
-
-  componentDidMount() {
-    const errors = {};
-    InitiativeForm.requiredFields.forEach((fieldName) => {
-      errors[fieldName] = this.validations[fieldName]();
+    const errorList = {};
+    requiredFields.forEach((fieldName) => {
+      errorList[fieldName] = validations[fieldName]();
     });
-    this.setState({ errors });
-  }
+    setErrors(errorList);
+  }, [bodyMinLength, body_multiloc, image, locale, title_multiloc, topic_ids]);
 
-  componentDidUpdate(prevProps: Props) {
-    // we generally validate on blur, but when the form is almost ready to be
-    // sent, we want to have the publish button active as soon as it's usable
-
-    // getting the non null errors
-    const errorEntries = Object.entries(this.state.errors).filter(
-      (entry) => entry[1]
-    );
-    // if there's only one
-    if (errorEntries.length === 1) {
-      // if the value of this field was changed
-      if (prevProps[errorEntries[0][0]] !== this.props[errorEntries[0][0]]) {
-        // run validation for that field
-        this.validate(errorEntries[0][0]);
-      }
-    }
-
-    // also, when the form is in a publishable state, if we modify a field we
-    // want to make sure detect the form is no longer valid as soon as possible
-
-    // if the form is valid
-    if (errorEntries.length === 0) {
-      // find what prop whas changed and run its validation
-      Object.entries(prevProps)
-        .filter((entry) => entry[1] !== this.props[entry[0]])
-        .forEach(
-          (entry) => this.validations[entry[0]] && this.validate(entry[0])
-        );
-    }
-  }
-
-  validations = {
-    title_multiloc: () => {
-      const { title_multiloc } = this.props;
-      const title = title_multiloc
-        ? title_multiloc[this.props.locale]
-        : undefined;
-
-      if (
-        title &&
-        title.length > 0 &&
-        title.length < InitiativeForm.titleMinLength
-      ) {
-        return { message: messages.titleMinLengthError };
-      } else if (
-        title &&
-        title.length > 0 &&
-        title.length > InitiativeForm.titleMaxLength
-      ) {
-        return { message: messages.titleMaxLengthError };
-      } else if (!title || title === '') {
-        return { message: messages.titleEmptyError };
-      }
-
-      return undefined;
-    },
-    body_multiloc: () => {
-      const { body_multiloc } = this.props;
-      const body = body_multiloc ? body_multiloc[this.props.locale] : undefined;
-      if (
-        body &&
-        stripHtmlTags(body).length < InitiativeForm.bodyMinLength &&
-        body.length > 0
-      ) {
-        return { message: messages.descriptionBodyLengthError };
-      } else if (!body || body === '') {
-        return { message: messages.descriptionEmptyError };
-      }
-      return undefined;
-    },
-    topic_ids: () => {
-      const { topic_ids } = this.props;
-      if (topic_ids.length === 0) {
-        return { message: messages.topicEmptyError };
-      }
-      return undefined;
-    },
-    image: () => {
-      const { image } = this.props;
-      if (!image) {
-        return { message: messages.imageEmptyError };
-      }
-      return undefined;
-    },
+  const updateTouched = (fieldName: string) => {
+    const touchedArray = touched;
+    touchedArray[fieldName] = true;
+    setTouched(touchedArray);
   };
-
-  validate = (fieldName: string) => {
-    const errors = Object.assign({}, this.state.errors);
-    errors[fieldName] = get(this.validations, fieldName, () => undefined)();
-    this.setState({ errors });
-  };
-
-  onBlur = (fieldName: string) => () => {
+  const onBlur = (fieldName: string) => () => {
     // making sure the props are updated before validation and save.
     setTimeout(() => {
-      const touched = Object.assign({}, this.state.touched);
-      touched[fieldName] = true;
-      const errors = Object.assign({}, this.state.errors);
-      errors[fieldName] = get(this.validations, fieldName, () => undefined)();
-      this.setState({ touched, errors });
-      this.props.onSave();
+      const touchedUpdate = Object.assign({}, touched);
+      touchedUpdate[fieldName] = true;
+      setTouched(touchedUpdate);
+      onSave();
     }, 5);
   };
 
-  handleOnPublish = () => {
-    const { errors, touched } = this.state;
+  const validateRequiredFields = () => {
+    const requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids'];
+    requiredFields.forEach((fieldName) => {
+      updateTouched(fieldName);
+      onBlur(fieldName)();
+    });
+  };
+
+  const handleOnPublish = () => {
+    validateRequiredFields();
     if (Object.values(errors).every((val) => val === undefined)) {
-      this.props.onPublish();
-    } else {
-      const newTouched = Object.assign({}, touched);
-      const newErrors = Object.assign({}, errors);
-      InitiativeForm.requiredFields.forEach((fieldName) => {
-        newTouched[fieldName] = true;
-        newErrors[fieldName] = get(
-          this.validations,
-          fieldName,
-          () => undefined
-        )();
-      });
-
-      this.setState({ touched: newTouched, errors: newErrors });
+      onPublish();
     }
   };
 
-  changeAndSaveTopics = (topic_ids: string[]) => {
-    this.props.onChangeTopics(topic_ids);
-    this.onBlur('topic_ids')();
-    this.onBlur('body_multiloc')();
+  const changeAndSaveTopics = (topic_ids: string[]) => {
+    updateTouched('topic_ids');
+    onChangeTopics(topic_ids.map((x) => x));
   };
 
-  addBanner = (banner: UploadFile[]) => {
-    this.props.onChangeBanner(banner[0]);
-    this.onBlur('banner')();
+  const addBanner = (banner: UploadFile[]) => {
+    updateTouched('banner');
+    onChangeBanner(banner[0]);
+    onBlur('banner')();
   };
 
-  removeBanner = () => {
-    this.props.onChangeBanner(null);
-    this.onBlur('banner')();
+  const removeBanner = () => {
+    updateTouched('banner');
+    onChangeBanner(null);
+    onBlur('banner')();
   };
 
-  addImage = (image: UploadFile[]) => {
-    this.props.onChangeImage(image[0]);
-    this.onBlur('image')();
+  const addImage = (image: UploadFile[]) => {
+    updateTouched('image');
+    onChangeImage(image[0]);
+    onBlur('image')();
   };
 
-  removeImage = () => {
-    this.props.onChangeImage(null);
-    this.onBlur('image')();
+  const removeImage = () => {
+    updateTouched('image');
+    onChangeImage(null);
+    onBlur('image')();
   };
 
-  handleTitleOnChange = (value: string) => {
-    if (this.props.locale && this.props.onChangeTitle) {
-      this.props.onChangeTitle({
-        ...this.props.title_multiloc,
-        [this.props.locale]: value,
+  const handleTitleOnChange = (value: string) => {
+    updateTouched('title_multiloc');
+    if (locale && onChangeTitle) {
+      onChangeTitle({
+        ...title_multiloc,
+        [locale]: value,
       });
     }
   };
 
-  handleBodyOnChange = (value: string) => {
-    if (this.props.locale && this.props.onChangeBody) {
-      this.props.onChangeBody({
-        ...this.props.body_multiloc,
-        [this.props.locale]: value,
+  const handleBodyOnChange = (value: string) => {
+    updateTouched('body_multiloc');
+    if (locale && onChangeBody) {
+      onChangeBody({
+        ...body_multiloc,
+        [locale]: value,
       });
     }
   };
 
-  render() {
-    const {
-      locale,
-      title_multiloc,
-      publishing,
-      body_multiloc,
-      topic_ids,
-      position,
-      onChangePosition,
-      banner,
-      image,
-      files,
-      onAddFile,
-      onRemoveFile,
-      publishError,
-      intl: { formatMessage },
-      apiErrors,
-      topics,
-      titleProfanityError,
-      descriptionProfanityError,
-    } = this.props;
+  const allowAnonymousParticipation =
+    appConfiguration.data?.data.attributes.settings.initiatives
+      ?.allow_anonymous_participation;
+  const mapsLoaded = window.googleMaps;
 
-    const { touched, errors } = this.state;
+  if (!isNilOrError(topics)) {
+    const availableTopics = topics.filter((topic) => !isNilOrError(topic));
 
-    const mapsLoaded = window.googleMaps;
+    return (
+      <Form id="initiative-form">
+        <StyledFormSection>
+          <FormSectionTitle message={messages.formGeneralSectionTitle} />
 
-    if (!isNilOrError(topics)) {
-      const availableTopics = topics.filter((topic) => !isNilOrError(topic));
-
-      return (
-        <Form id="initiative-form">
-          <StyledFormSection>
-            <FormSectionTitle message={messages.formGeneralSectionTitle} />
-
-            <SectionField id="e2e-initiative-form-title-section">
-              <FormLabel
-                htmlFor="e2e-initiative-title-input"
-                labelMessage={messages.titleLabel}
-                subtextMessage={messages.titleLabelSubtext2}
-              >
-                <Input
-                  type="text"
-                  id="e2e-initiative-title-input"
-                  value={title_multiloc?.[locale] || ''}
-                  locale={locale}
-                  onChange={this.handleTitleOnChange}
-                  onBlur={this.onBlur('title_multiloc')}
-                  autocomplete="off"
-                  maxCharCount={72}
-                />
-                {touched.title_multiloc && errors.title_multiloc ? (
-                  <Error
-                    id="e2e-proposal-title-error"
-                    text={formatMessage(errors.title_multiloc.message)}
-                  />
-                ) : (
-                  apiErrors &&
-                  apiErrors.title_multiloc && (
-                    <Error apiErrors={apiErrors.title_multiloc} />
-                  )
-                )}
-              </FormLabel>
-              {titleProfanityError && (
-                <Error
-                  text={
-                    <FormattedMessage
-                      {...messages.profanityError}
-                      values={{
-                        guidelinesLink: (
-                          <Link to="/pages/faq" target="_blank">
-                            {formatMessage(messages.guidelinesLinkText)}
-                          </Link>
-                        ),
-                      }}
-                    />
-                  }
-                />
-              )}
-            </SectionField>
-
-            <SectionField id="e2e-initiative-form-description-section">
-              <FormLabel
-                id="description-label-id"
-                htmlFor="body"
-                labelMessage={messages.descriptionLabel}
-                subtextMessage={messages.descriptionLabelSubtext}
-              />
-              <QuillEditor
-                id="body"
-                value={body_multiloc?.[locale] || ''}
+          <SectionField id="e2e-initiative-form-title-section">
+            <FormLabel
+              htmlFor="e2e-initiative-title-input"
+              labelMessage={messages.titleLabel}
+              subtextMessage={messages.titleLabelSubtext2}
+            >
+              <Input
+                type="text"
+                id="e2e-initiative-title-input"
+                value={title_multiloc?.[locale] || ''}
                 locale={locale}
-                noVideos={true}
-                noAlign={true}
-                onChange={this.handleBodyOnChange}
-                onBlur={this.onBlur('body_multiloc')}
+                onChange={handleTitleOnChange}
+                onBlur={onBlur('title_multiloc')}
+                autocomplete="off"
+                maxCharCount={72}
               />
-              {touched.body_multiloc && errors.body_multiloc ? (
-                <Error text={formatMessage(errors.body_multiloc.message)} />
+              {touched.title_multiloc && errors.title_multiloc ? (
+                <Error
+                  id="e2e-proposal-title-error"
+                  text={formatMessage(errors.title_multiloc.message)}
+                />
               ) : (
                 apiErrors &&
-                apiErrors.body_multiloc && (
-                  <Error apiErrors={apiErrors.body_multiloc} />
+                apiErrors.title_multiloc && (
+                  <Error apiErrors={apiErrors.title_multiloc} />
                 )
               )}
-              {descriptionProfanityError && (
-                <Error
-                  text={
-                    <FormattedMessage
-                      {...messages.profanityError}
-                      values={{
-                        guidelinesLink: (
-                          <Link to="/pages/faq" target="_blank">
-                            {formatMessage(messages.guidelinesLinkText)}
-                          </Link>
-                        ),
-                      }}
-                    />
-                  }
-                />
-              )}
-            </SectionField>
-          </StyledFormSection>
-
-          <StyledFormSection>
-            <FormSectionTitle message={messages.formDetailsSectionTitle} />
-
-            <SectionField aria-live="polite">
-              <FormLabel
-                labelMessage={messages.topicsLabel}
-                subtextMessage={messages.topicsLabelDescription}
-                htmlFor="field-topic-multiple-picker"
-              />
-              <TopicsPicker
-                id="field-topic-multiple-picker"
-                selectedTopicIds={topic_ids}
-                onChange={this.changeAndSaveTopics}
-                availableTopics={availableTopics}
-              />
-              {touched.topic_ids && errors.topic_ids ? (
-                <Error text={formatMessage(errors.topic_ids.message)} />
-              ) : (
-                apiErrors &&
-                apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
-              )}
-            </SectionField>
-            {mapsLoaded && (
-              <SectionField>
-                <FormLabel
-                  labelMessage={messages.locationLabel}
-                  subtextMessage={messages.locationLabelSubtext}
-                  htmlFor="initiative-location-picker"
-                  optional
-                >
-                  <LocationInput
-                    id="initiative-location-picker"
-                    className="e2e-initiative-location-input"
-                    value={position || ''}
-                    onChange={onChangePosition}
-                    onBlur={this.onBlur('position')}
-                    placeholder={formatMessage(messages.locationPlaceholder)}
+            </FormLabel>
+            {titleProfanityError && (
+              <Error
+                text={
+                  <FormattedMessage
+                    {...messages.profanityError}
+                    values={{
+                      guidelinesLink: (
+                        <Link to="/pages/faq" target="_blank">
+                          {formatMessage(messages.guidelinesLinkText)}
+                        </Link>
+                      ),
+                    }}
                   />
-                </FormLabel>
-              </SectionField>
+                }
+              />
             )}
-          </StyledFormSection>
-          <StyledFormSection>
-            <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
-            <SectionField id="e2e-iniatiative-banner-dropzone">
-              <FormLabel
-                labelMessage={messages.bannerUploadLabel}
-                subtextMessage={messages.bannerUploadLabelSubtext}
-                htmlFor="initiative-banner-dropzone"
-                optional
+          </SectionField>
+
+          <SectionField id="e2e-initiative-form-description-section">
+            <FormLabel
+              id="description-label-id"
+              htmlFor="body"
+              labelMessage={messages.descriptionLabel}
+              subtextMessage={messages.descriptionLabelSubtext}
+            />
+            <QuillEditor
+              id="body"
+              value={body_multiloc?.[locale] || ''}
+              locale={locale}
+              noVideos={true}
+              noAlign={true}
+              onChange={handleBodyOnChange}
+              onBlur={onBlur('body_multiloc')}
+            />
+            {touched.body_multiloc && errors.body_multiloc ? (
+              <Error text={formatMessage(errors.body_multiloc.message)} />
+            ) : (
+              apiErrors &&
+              apiErrors.body_multiloc && (
+                <Error apiErrors={apiErrors.body_multiloc} />
+              )
+            )}
+            {descriptionProfanityError && (
+              <Error
+                text={
+                  <FormattedMessage
+                    {...messages.profanityError}
+                    values={{
+                      guidelinesLink: (
+                        <Link to="/pages/faq" target="_blank">
+                          {formatMessage(messages.guidelinesLinkText)}
+                        </Link>
+                      ),
+                    }}
+                  />
+                }
               />
-              <ImagesDropzone
-                id="initiative-banner-dropzone"
-                images={banner ? [banner] : null}
-                imagePreviewRatio={360 / 1440}
-                acceptedFileTypes={{
-                  'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-                }}
-                onAdd={this.addBanner}
-                onRemove={this.removeBanner}
-              />
-              {apiErrors && apiErrors.header_bg && (
-                <Error apiErrors={apiErrors.header_bg} />
-              )}
-            </SectionField>
-            <SectionField id="e2e-iniatiative-img-dropzone">
-              <FormLabel
-                labelMessage={messages.imageUploadLabel}
-                subtextMessage={messages.imageUploadLabelSubtext}
-                htmlFor="initiative-image-dropzone"
-                optional
-              />
-              <ImagesDropzone
-                id="initiative-image-dropzone"
-                images={image ? [image] : null}
-                imagePreviewRatio={135 / 298}
-                acceptedFileTypes={{
-                  'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-                }}
-                onAdd={this.addImage}
-                onRemove={this.removeImage}
-              />
-              {touched.image && errors.image && (
-                <Error text={formatMessage(errors.image.message)} />
-              )}
-            </SectionField>
+            )}
+          </SectionField>
+        </StyledFormSection>
+
+        <StyledFormSection>
+          <FormSectionTitle message={messages.formDetailsSectionTitle} />
+
+          <SectionField aria-live="polite">
+            <FormLabel
+              labelMessage={messages.topicsLabel}
+              subtextMessage={messages.topicsLabelDescription}
+              htmlFor="field-topic-multiple-picker"
+            />
+            <TopicsPicker
+              id="field-topic-multiple-picker"
+              selectedTopicIds={topic_ids}
+              onChange={changeAndSaveTopics}
+              availableTopics={availableTopics}
+            />
+            {touched.topic_ids && errors.topic_ids ? (
+              <Error text={formatMessage(errors.topic_ids.message)} />
+            ) : (
+              apiErrors &&
+              apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
+            )}
+          </SectionField>
+          {mapsLoaded && (
             <SectionField>
               <FormLabel
-                labelMessage={messages.fileUploadLabel}
-                subtextMessage={messages.fileUploadLabelSubtext}
-                htmlFor="e2e-initiative-file-upload"
+                labelMessage={messages.locationLabel}
+                subtextMessage={messages.locationLabelSubtext}
+                htmlFor="initiative-location-picker"
                 optional
               >
-                <FileUploader
-                  id="e2e-initiative-file-upload"
-                  onFileAdd={onAddFile}
-                  onFileRemove={onRemoveFile}
-                  files={files}
-                  apiErrors={apiErrors}
+                <LocationInput
+                  id="initiative-location-picker"
+                  className="e2e-initiative-location-input"
+                  value={position || ''}
+                  onChange={onChangePosition}
+                  onBlur={onBlur('position')}
+                  placeholder={formatMessage(messages.locationPlaceholder)}
                 />
               </FormLabel>
             </SectionField>
+          )}
+        </StyledFormSection>
+        <StyledFormSection>
+          <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
+          <SectionField id="e2e-iniatiative-banner-dropzone">
+            <FormLabel
+              labelMessage={messages.bannerUploadLabel}
+              subtextMessage={messages.bannerUploadLabelSubtext}
+              htmlFor="initiative-banner-dropzone"
+              optional
+            />
+            <ImagesDropzone
+              id="initiative-banner-dropzone"
+              images={banner ? [banner] : null}
+              imagePreviewRatio={360 / 1440}
+              acceptedFileTypes={{
+                'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+              }}
+              onAdd={addBanner}
+              onRemove={removeBanner}
+            />
+            {apiErrors && apiErrors.header_bg && (
+              <Error apiErrors={apiErrors.header_bg} />
+            )}
+          </SectionField>
+          <SectionField id="e2e-iniatiative-img-dropzone">
+            <FormLabel
+              labelMessage={messages.imageUploadLabel}
+              subtextMessage={messages.imageUploadLabelSubtext}
+              htmlFor="initiative-image-dropzone"
+              optional
+            />
+            <ImagesDropzone
+              id="initiative-image-dropzone"
+              images={image ? [image] : null}
+              imagePreviewRatio={135 / 298}
+              acceptedFileTypes={{
+                'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+              }}
+              onAdd={addImage}
+              onRemove={removeImage}
+            />
+            {touched.image && errors.image && (
+              <Error text={formatMessage(errors.image.message)} />
+            )}
+          </SectionField>
+          <SectionField>
+            <FormLabel
+              labelMessage={messages.fileUploadLabel}
+              subtextMessage={messages.fileUploadLabelSubtext}
+              htmlFor="e2e-initiative-file-upload"
+              optional
+            >
+              <FileUploader
+                id="e2e-initiative-file-upload"
+                onFileAdd={onAddFile}
+                onFileRemove={onRemoveFile}
+                files={files}
+                apiErrors={apiErrors}
+              />
+            </FormLabel>
+          </SectionField>
+        </StyledFormSection>
+        {allowAnonymousParticipation && !publishedAnonymously && (
+          <StyledFormSection>
+            <Box mt="-20px">
+              <ProfileVisiblity
+                postAnonymously={postAnonymously}
+                setPostAnonymously={setPostAnonymously}
+              />
+            </Box>
           </StyledFormSection>
-          <FormSubmitFooter
-            className="e2e-initiative-publish-button"
-            message={messages.publishButton}
-            error={publishError}
-            errorMessage={messages.submitApiError}
-            processing={publishing}
-            onSubmit={this.handleOnPublish}
-          />
-        </Form>
-      );
-    }
+        )}
 
-    return null;
+        <FormSubmitFooter
+          className="e2e-initiative-publish-button"
+          message={messages.publishButton}
+          error={publishError}
+          errorMessage={messages.submitApiError}
+          processing={publishing}
+          onSubmit={handleOnPublish}
+        />
+      </Form>
+    );
   }
-}
 
-const InitiativeFormWithHOCs = injectIntl(InitiativeForm);
+  return null;
+};
 
-export default InitiativeFormWithHOCs;
+export default InitiativeForm;

@@ -88,7 +88,7 @@ const InitiativeCard = ({
     initiativeImageId
   );
 
-  if (!initiative || isNilOrError(initiativeAuthor)) return null;
+  if (!initiative) return null;
 
   const onCardClick = (event: FormEvent) => {
     event.preventDefault();
@@ -120,7 +120,6 @@ const InitiativeCard = ({
   ]
     .filter((item) => isString(item) && item !== '')
     .join(' ');
-
   return (
     <Card
       className={cardClassNames}
@@ -133,6 +132,7 @@ const InitiativeCard = ({
           authorId={initiativeAuthorId}
           createdAt={initiative.data.attributes.published_at}
           size={34}
+          anonymous={initiative.data.attributes.anonymous}
         />
       }
       footer={
