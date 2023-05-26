@@ -181,7 +181,7 @@ const InitiativesNewFormWrapper = ({
         if (initiativeId) {
           updateInitiative({
             initiativeId,
-            requestBody: { anonymous: postAnonymously, ...formAPIValues },
+            requestBody: { ...formAPIValues },
           });
         } else {
           addInitiative(
