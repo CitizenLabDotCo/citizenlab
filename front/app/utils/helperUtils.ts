@@ -186,6 +186,18 @@ export function matchPathToUrl(tabUrl: string) {
   return new RegExp(`^/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(/)?$`);
 }
 
+export const isTopBarNavActive = (
+  basePath: string,
+  pathname: string,
+  tabUrl: string
+): boolean => {
+  if (pathname.endsWith(basePath) && tabUrl.endsWith(basePath)) {
+    return true;
+  }
+
+  return !tabUrl.endsWith(basePath) && pathname.includes(tabUrl);
+};
+
 export const anyIsUndefined = (...args) => args.some(isUndefined);
 export const anyIsDefined = (...args) => args.some((arg) => !isUndefined(arg));
 
