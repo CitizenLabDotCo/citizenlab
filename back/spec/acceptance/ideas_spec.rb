@@ -1106,9 +1106,10 @@ resource 'Ideas' do
         describe 'Changing an author' do
           let(:author_id) { create(:user).id }
 
-          example '[Error] Cannot change an author as a non-admin', document: false do
+          example 'author_id parameter is ignored as a non-admin', document: false do
             do_request
-            assert_status 401
+            assert_status 200
+            expect(response_data.dig(:relationships, :author, :data, :id)).not_to eq author_id
           end
         end
 
