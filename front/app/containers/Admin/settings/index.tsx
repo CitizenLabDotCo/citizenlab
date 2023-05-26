@@ -19,7 +19,6 @@ import { useIntl } from 'utils/cl-intl';
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 import Outlet from 'components/Outlet';
-import { matchPathToUrl } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 
 const SettingsPage = () => {
@@ -68,7 +67,7 @@ const SettingsPage = () => {
       <Outlet id="app.containers.Admin.settings.tabs" onData={handleData} />
       <NavigationTabs>
         {tabs.map(({ url, label }) => (
-          <Tab key={url} active={matchPathToUrl(url).test(pathname)}>
+          <Tab key={url} active={pathname.includes(url)}>
             <Link to={url}>{label}</Link>
           </Tab>
         ))}
