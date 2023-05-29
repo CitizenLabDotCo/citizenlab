@@ -13,7 +13,7 @@ import { IConsentCookie } from './consent';
 // typings
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import { CategorizedDestinations, IPreferences } from './typings';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 export const getCategory = (
   tenant: IAppConfigurationData,

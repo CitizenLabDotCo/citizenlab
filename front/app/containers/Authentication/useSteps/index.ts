@@ -253,7 +253,7 @@ export default function useSteps() {
       }
 
       const enterClaveUnicaEmail =
-        !isNilOrError(authUser) && isNil(authUser.attributes.email);
+        !isNilOrError(authUser) && isNil(authUser.data.attributes.email);
 
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(enterClaveUnicaEmail);
     }
@@ -263,7 +263,7 @@ export default function useSteps() {
   useEffect(() => {
     if (isNilOrError(authUser)) return;
     if (currentStep !== 'closed') return;
-    if (isNil(authUser.attributes.email)) {
+    if (isNil(authUser.data.attributes.email)) {
       transition(currentStep, 'REOPEN_CLAVE_UNICA')();
     }
   }, [authUser, currentStep, transition]);

@@ -8,7 +8,7 @@ import T from 'components/T';
 
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 import useProjectById from 'api/projects/useProjectById';
 
 // services

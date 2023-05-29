@@ -3,7 +3,7 @@ import { IProjectData, PostingDisabledReason } from 'api/projects/types';
 import { isNilOrError } from 'utils/helperUtils';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 import { IPhaseData } from 'api/phases/types';
 
 interface ActionPermissionHide {

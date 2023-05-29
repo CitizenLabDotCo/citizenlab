@@ -1,4 +1,4 @@
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 const meData: IUserData = {
   id: 'dd3f228f-26dc-4844-8315-8277e8f7676e',

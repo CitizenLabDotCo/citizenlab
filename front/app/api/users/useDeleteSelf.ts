@@ -7,7 +7,7 @@ import groupsKeys from 'api/groups/keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import { getJwt, removeJwt, decode } from 'utils/auth/jwt';
 import clHistory from 'utils/cl-router/history';
-import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import userCountKeys from 'api/users_count/keys';
 
 const deleteUser = (id?: string) =>
@@ -31,7 +31,7 @@ const useDeleteSelf = () => {
         window.location.href = url;
       } else {
         await streams.reset();
-        await resetQueryCache();
+        await invalidateQueryCache();
       }
       clHistory.push('/');
 

@@ -25,7 +25,7 @@ const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
 import { usePermission } from 'services/permissions';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 // utils
 import { isRegularUser } from 'services/permissions/roles';

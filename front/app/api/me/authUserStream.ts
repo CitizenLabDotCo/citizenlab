@@ -5,7 +5,7 @@ import meKeys from './keys';
 import { MeKeys } from './types';
 import { BehaviorSubject } from 'rxjs';
 import { fetchMe } from './useAuthUser';
-import { IUser } from 'services/users';
+import { IUser } from 'api/users/types';
 
 const authUserStream = new BehaviorSubject<IUser | undefined>(undefined);
 
