@@ -26,6 +26,11 @@ export default defineMessages({
     id: 'app.containers.Admin.tools.learnMore',
     defaultMessage: 'Learn more',
   },
+  workshopsSupportLink: {
+    id: 'app.containers.Admin.tools.workshopsSupportLink',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/4155778-setting-up-an-online-workshop',
+  },
   widgetTitle: {
     id: 'app.containers.Admin.tools.widgetTitle',
     defaultMessage: 'Widget',

@@ -36,7 +36,14 @@ export const Workshops = () => {
                 {formatMessage(messages.manageWorkshops)}
               </Text>
             </Button>
-            <Text ml="26px">{formatMessage(messages.learnMore)}</Text>
+            <Button
+              height="45px"
+              buttonStyle="text"
+              linkTo={formatMessage(messages.workshopsSupportLink)}
+              openLinkInNewTab
+            >
+              <Text color="primary">{formatMessage(messages.learnMore)}</Text>
+            </Button>
           </Box>
         </Box>
       </Box>
