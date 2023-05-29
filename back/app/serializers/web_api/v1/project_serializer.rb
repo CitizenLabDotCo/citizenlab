@@ -87,7 +87,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 
   attribute :participants_count do |object, _params|
     @participants_service ||= ParticipantsService.new
-    @participants_service.project_participants(object).size
+    @participants_service.project_participants_count(object)
   end
 
   attribute :allocated_budget do |object, params|
