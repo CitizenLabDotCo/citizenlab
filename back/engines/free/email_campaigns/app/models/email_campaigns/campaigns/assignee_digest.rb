@@ -57,7 +57,7 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.admins_and_managers'
+      'email_campaigns.admin_labels.recipient_segment.admins_and_managers_assigned_to_the_input'
     end
 
     def self.content_type_multiloc_key

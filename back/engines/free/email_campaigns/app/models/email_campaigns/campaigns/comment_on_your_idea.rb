@@ -63,7 +63,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.user_comments_on_input'
+      'email_campaigns.admin_labels.trigger.user_comments'
     end
 
     def generate_commands(recipient:, activity:, time: nil)
