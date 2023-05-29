@@ -44,10 +44,6 @@ jest.mock('api/users/useChangePassword', () =>
   jest.fn(() => ({ mutateAsync: mockChangePassword }))
 );
 
-jest.mock('hooks/useAuthUser', () => {
-  return () => mockUserData;
-});
-
 describe('ChangePassword', () => {
   it('submits correct data', async () => {
     const user = userEvent.setup();
