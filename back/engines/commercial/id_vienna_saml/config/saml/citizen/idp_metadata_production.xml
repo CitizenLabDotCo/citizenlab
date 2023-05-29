@@ -8,7 +8,7 @@
       <mdui:UIInfo xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui">
         <mdui:DisplayName xml:lang="de">https://mein.wien.gv.at/stdportal-idp/extern.wien.gv.at</mdui:DisplayName>
         <mdui:Description xml:lang="de">https://mein.wien.gv.at/stdportal-idp/extern.wien.gv.at</mdui:Description>
-        <mdui:Logo height="70" width="79" xml:lang="en">https://www.wien.gv.at/Wien.WienAt.Customer-theme/images/logo-stadt-wien.svg</mdui:Logo>
+        <mdui:Logo height="70" width="79" xml:lang="en">https://www.portalverbund.at/sites/www.portalverbund.at/img/logo.png</mdui:Logo>
       </mdui:UIInfo>
     </md:Extensions>
     <md:KeyDescriptor use="signing">
@@ -23,18 +23,6 @@ SigAlgName: SHA256withRSA--></ds:X509Certificate>
         </ds:X509Data>
       </ds:KeyInfo>
     </md:KeyDescriptor>
-    <md:KeyDescriptor use="signing">
-      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-        <ds:X509Data>
-          <ds:X509Certificate>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<!--IssuerDN: CN=Stadt Wien Portalverbund CA 1, O=Stadt Wien, C=AT
-SubjectDN: CN=pvp.wien.gv.at, OU=MA 01, O=Stadt Wien, C=AT
-NotBefore: Wed Apr 26 13:17:54 CEST 2023
-NotAfter: Mon Apr 24 13:17:54 CEST 2028
-SerialNumber: 68828805089363845994580505240922826219019592380 (0xc0e63eee417d73e71731eb2f57076a0797462bc)
-SigAlgName: SHA256withRSA--></ds:X509Certificate>
-        </ds:X509Data>
-      </ds:KeyInfo>
-    </md:KeyDescriptor>
     <md:KeyDescriptor use="encryption">
       <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
         <ds:X509Data>
@@ -47,24 +35,12 @@ SigAlgName: SHA256withRSA--></ds:X509Certificate>
         </ds:X509Data>
       </ds:KeyInfo>
     </md:KeyDescriptor>
-    <md:KeyDescriptor use="encryption">
-      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-        <ds:X509Data>
-          <ds:X509Certificate>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<!--IssuerDN: CN=Stadt Wien Portalverbund CA 1, O=Stadt Wien, C=AT
-SubjectDN: CN=pvp.wien.gv.at, OU=MA 01, O=Stadt Wien, C=AT
-NotBefore: Wed Apr 26 13:17:54 CEST 2023
-NotAfter: Mon Apr 24 13:17:54 CEST 2028
-SerialNumber: 68828805089363845994580505240922826219019592380 (0xc0e63eee417d73e71731eb2f57076a0797462bc)
-SigAlgName: SHA256withRSA--></ds:X509Certificate>
-        </ds:X509Data>
-      </ds:KeyInfo>
-    </md:KeyDescriptor>
     <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://mein.wien.gv.at/stdportal-idp/extern.wien.gv.at/profile/SAML2/Redirect/SLO" ResponseLocation="https://mein.wien.gv.at/stdportal-idp/extern.wien.gv.at/profile/SAML2/Redirect/SLO"/>
     <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
     <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
     <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
-    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://mein.wien.gv.at/stdportal-idp/extern.wien.gv.at/profile/SAML2/POST/SSO"/>
     <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://mein.wien.gv.at/stdportal-idp/extern.wien.gv.at/profile/SAML2/Redirect/SSO"/>
+    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://mein.wien.gv.at/stdportal-idp/extern.wien.gv.at/profile/SAML2/POST/SSO"/>
   </md:IDPSSODescriptor>
   <md:Organization>
     <md:OrganizationName xml:lang="en">Magistrat der Stadt Wien</md:OrganizationName>
