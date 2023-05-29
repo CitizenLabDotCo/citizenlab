@@ -181,7 +181,7 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Adicione tópicos a uma entrada usando arrastar e soltar.",
   "app.components.admin.PostManager.up": "Acima",
   "app.components.admin.PostManager.votes": "Votos",
-  "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {Menos de um dia} one {Um dia} other {# dias}} esquerda",
+  "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {Menos de um dia} one {Um dia} other {# dias}} restantes",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "De",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "grupo",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "Projeto",
