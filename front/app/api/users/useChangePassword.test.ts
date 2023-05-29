@@ -8,7 +8,7 @@ import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { usersData } from './__mocks__/useUsers';
 
-const apiPath = '*users/:id';
+const apiPath = '*users/:id/update_password';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
