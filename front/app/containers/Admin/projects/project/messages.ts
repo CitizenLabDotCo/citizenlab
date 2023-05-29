@@ -375,9 +375,9 @@ export default defineMessages({
     defaultMessage: 'Collect feedback on a document',
   },
   documentAnnotationMethodDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.documentAnnotationMethodDescription',
+    id: 'app.containers.AdminPage.ProjectEdit.documentAnnotationMethodDescription1',
     defaultMessage:
-      'Embed an interactive PDF and collect comments and feedback with Konveio',
+      'Embed an interactive PDF and collect comments and feedback with Konveio.',
   },
   surveyEmbedUrl: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyEmbedUrl',
