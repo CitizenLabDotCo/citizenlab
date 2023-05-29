@@ -1161,7 +1161,7 @@
   "app.containers.AdminPage.ProjectEdit.disabled": "Disabled",
   "app.containers.AdminPage.ProjectEdit.documentAnnotationEmbedUrl": "Embed URL",
   "app.containers.AdminPage.ProjectEdit.documentAnnotationMethod1": "Collect feedback on a document",
-  "app.containers.AdminPage.ProjectEdit.documentAnnotationMethodDescription": "Embed an interactive PDF and collect comments and feedback with Konveio",
+  "app.containers.AdminPage.ProjectEdit.documentAnnotationMethodDescription1": "Embed an interactive PDF and collect comments and feedback with Konveio.",
   "app.containers.AdminPage.ProjectEdit.downvotingDisabled": "Disabled",
   "app.containers.AdminPage.ProjectEdit.downvotingEnabled": "Enabled",
   "app.containers.AdminPage.ProjectEdit.downvotingMethodTitle": "Number of downvotes per participant",
