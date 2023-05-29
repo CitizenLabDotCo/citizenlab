@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { updateCampaign, ICampaignData } from 'services/campaigns';
+import { ICampaignData } from 'services/campaigns';
+import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
@@ -18,12 +19,16 @@ interface Props {
 }
 
 const Edit = ({ campaign }: Props) => {
+  const { mutate: updateCampaign } = useUpdateCampaign();
   const handleSubmit = async (values: FormValues) => {
-    await updateCampaign(campaign.id, {
-      ...values,
-    });
-
-    clHistory.push(`/admin/messaging/emails/custom/${campaign.id}`);
+    updateCampaign(
+      { id: campaign.id, campaign: values },
+      {
+        onSuccess: () => {
+          clHistory.push(`/admin/messaging/emails/custom/${campaign.id}`);
+        },
+      }
+    );
   };
 
   const goBack = () => {

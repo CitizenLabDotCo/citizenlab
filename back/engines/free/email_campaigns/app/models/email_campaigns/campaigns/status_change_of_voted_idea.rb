@@ -53,16 +53,12 @@ module EmailCampaigns
         .where.not(id: activity.item.comments.pluck(:author_id))
     end
 
-    def self.category
-      'voted'
-    end
-
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.registered_users'
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.users_engaged_with_the_idea'
+      'email_campaigns.admin_labels.recipient_segment.users_engaged_with_the_input'
     end
 
     def self.content_type_multiloc_key
@@ -70,7 +66,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.idea_status_is_changed'
+      'email_campaigns.admin_labels.trigger.input_status_is_changed'
     end
 
     def generate_commands(recipient:, activity:)
