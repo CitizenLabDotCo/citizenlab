@@ -1854,7 +1854,6 @@
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "Hantera indata och deras statusar.",
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "Indatahanteraren | Plattform för deltagande för {orgName}",
   "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Ge återkoppling, lägg till ämnen och flytta indata från ett projekt till ett annat",
-  "app.containers.admin.ideas.all.inputManagerPageTitle": "Indatahanteraren",
   "app.containers.admin.ideas.all.tabManage": "Redigera",
   "app.containers.admin.import.downloadTemplate": "Ladda ner mall",
   "app.containers.admin.import.importDescription": "Importera befintliga indata från en Excel-fil.",

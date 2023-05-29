@@ -1854,7 +1854,6 @@
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "Zarządzaj inicjatywami i i ich statusami.",
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "Zarządzanie inicjatywami | Platforma partycypacyjna {orgName}",
   "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Przekazuj informacje zwrotne, dodawaj tematy i przenoś inicjatywy z jednego projektu do drugiego",
-  "app.containers.admin.ideas.all.inputManagerPageTitle": "Zarządzanie inicjatywami",
   "app.containers.admin.ideas.all.tabManage": "Zarządzaj",
   "app.containers.admin.import.downloadTemplate": "Pobierz szablon",
   "app.containers.admin.import.importDescription": "Importuj istniejące dane wejściowe z pliku Excel.",

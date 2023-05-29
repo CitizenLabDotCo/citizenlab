@@ -1854,7 +1854,6 @@
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "Administrer input og deres statusser.",
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "Input manager | Borgerinddragelsesplatformen for {orgName}",
   "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Giv feedback, tilføj mærker, og flyt input fra et projekt til et andet",
-  "app.containers.admin.ideas.all.inputManagerPageTitle": "Idéoverblik",
   "app.containers.admin.ideas.all.tabManage": "Administrere",
   "app.containers.admin.import.downloadTemplate": "Download skabelon",
   "app.containers.admin.import.importDescription": "Import af eksisterende input fra en Excel-fil.",

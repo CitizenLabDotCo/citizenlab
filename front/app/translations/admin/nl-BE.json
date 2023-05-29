@@ -1854,7 +1854,6 @@
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "Bijdragen en hun statussen beheren.",
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "Beheer bijdragen | Participatieplatform van {orgName}",
   "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Beheer hier de bijdragen van alle projecten. Geef feedback, voeg tags toe, verander de status of verplaats bijdragen van het ene project naar het andere.",
-  "app.containers.admin.ideas.all.inputManagerPageTitle": "Beheer bijdragen",
   "app.containers.admin.ideas.all.tabManage": "Beheren",
   "app.containers.admin.import.downloadTemplate": "Sjabloon downloaden",
   "app.containers.admin.import.importDescription": "Importeer bestaande invoer uit een Excel-bestand.",

@@ -1854,7 +1854,6 @@
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "Upravljajte unosima i njihovim statusima.",
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "Voditelj unosa | Platforma za sudjelovanje organizacije {orgName}",
   "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Pružite povratne informacije, dodajte teme i premještajte unose iz jednog projekta u drugi",
-  "app.containers.admin.ideas.all.inputManagerPageTitle": "Voditelj unosa",
   "app.containers.admin.ideas.all.tabManage": "Uredi",
   "app.containers.admin.import.downloadTemplate": "Preuzmi predložak",
   "app.containers.admin.import.importDescription": "Uvezite postojeće unose iz Excel datoteke.",
