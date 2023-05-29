@@ -37,11 +37,12 @@ import appConfigurationStream from 'api/app_configuration/appConfigurationStream
 import authUserStream from 'api/me/authUserStream';
 import { updateUser } from 'api/users/useUpdateUser';
 import { Locale } from 'typings';
-import { API_PATH, locales } from 'containers/App/constants';
+import { locales } from 'containers/App/constants';
 import { setCookieLocale, getCookieLocale } from 'utils/localeCookie';
 import clHistory from 'utils/cl-router/history';
 import { IAppConfiguration } from 'api/app_configuration/types';
-import streams from 'utils/streams';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import meKeys from 'api/me/keys';
 
 export const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(
   null as any
@@ -118,9 +119,7 @@ export function updateLocale(locale: Locale, appConfig: IAppConfiguration) {
         // which will trigger 1 that will set the locale to the locale stream
         // which will trigger 3 that will change the url accordingly
         await updateUser({ userId: authUser.data.id, locale });
-        await streams.fetchAllWith({
-          apiEndpoint: [`${API_PATH}/users/me`],
-        });
+        queryClient.invalidateQueries({ queryKey: meKeys.all() });
       } else {
         // if there's no auth user, set a cookie to remember this choice
         setCookieLocale(locale);
