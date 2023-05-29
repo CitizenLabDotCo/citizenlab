@@ -31,6 +31,8 @@ export const Workshops = () => {
               icon="arrow-right"
               iconColor={colors.white}
               iconPos="right"
+              linkTo={`${window.location.origin}/workshops`}
+              openLinkInNewTab
             >
               <Text color="white">
                 {formatMessage(messages.manageWorkshops)}
