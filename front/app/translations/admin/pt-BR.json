@@ -199,7 +199,7 @@
   "app.components.admin.seatSetSuccess.orderCompleted": "Encomenda concluída",
   "app.components.admin.seatSetSuccess.reflectedMessage": "As alterações em seu plano serão refletidas em sua próxima fatura.",
   "app.components.admin.seatSetSuccess.rightsGranted": "{seatType} direitos foram concedidos ao(s) usuário(s) selecionado(s).",
-  "app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess": "Collecting feedback on a document is a custom feature, and is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.",
+  "app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess": "A coleta de comentários sobre um documento é um recurso personalizado e não está incluído em sua licença atual. Entre em contato com seu gerente GovSuccess para saber mais sobre isso.",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Proposta",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Mais informações sobre como incorporar um link para os Formulários Google podem ser encontradas em {googleFormsTooltipLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/articles/5050525",
