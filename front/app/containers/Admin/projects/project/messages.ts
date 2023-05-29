@@ -490,4 +490,18 @@ export default defineMessages({
     defaultMessage:
       'Collecting feedback on a document is a custom feature, and is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
   },
+  konveioSupport: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupport',
+    defaultMessage:
+      'Provide the link to your Konveio document here. Read our {supportArticleLink} for more information on setting up Konveio.',
+  },
+  konveioSupportPageURL: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/7946532-embedding-konveio-pdf-documents-for-collecting-feedback',
+  },
+  konveioSupportArticle: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle',
+    defaultMessage: 'support article',
+  },
 });

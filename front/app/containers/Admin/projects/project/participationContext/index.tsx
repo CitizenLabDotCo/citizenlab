@@ -37,7 +37,7 @@ import GetFeatureFlag, {
 } from 'resources/GetFeatureFlag';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from '../messages';
 
@@ -49,7 +49,6 @@ import { adopt } from 'react-adopt';
 import getOutput from './utils/getOutput';
 import validate from './utils/validate';
 import { anyIsDefined } from 'utils/helperUtils';
-import Warning from 'components/UI/Warning';
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
@@ -90,6 +89,7 @@ interface DataProps {
 export type ApiErrors = CLErrors | null | undefined;
 
 interface InputProps {
+  className?: string;
   onChange: (arg: IParticipationContextConfig) => void;
   onSubmit: (arg: IParticipationContextConfig) => void;
   phase?: IPhase | undefined | null;
@@ -383,6 +383,7 @@ class ParticipationContext extends PureComponent<
 
   render() {
     const {
+      className,
       apiErrors,
       surveys_enabled,
       typeform_enabled,
@@ -396,9 +397,8 @@ class ParticipationContext extends PureComponent<
       google_forms_enabled,
       isCustomInputTermEnabled,
       isKonveioDocumentAnnotationEnabled,
+      intl: { formatMessage },
     } = this.props;
-
-    const className = this.props['className'];
 
     const {
       participation_method,
@@ -544,15 +544,29 @@ class ParticipationContext extends PureComponent<
                   <Box display="flex">
                     <Box mr="8px">
                       <SubSectionTitle>
-                        {this.props.intl.formatMessage(
-                          messages.documentAnnotationEmbedUrl
-                        )}
+                        {formatMessage(messages.documentAnnotationEmbedUrl)}
                       </SubSectionTitle>
                     </Box>
-                    <IconTooltip content="test" />
-                  </Box>
-                  <Box mb="24px">
-                    <Warning>{'Test'}</Warning>
+                    <IconTooltip
+                      content={
+                        <FormattedMessage
+                          {...messages.konveioSupport}
+                          values={{
+                            supportArticleLink: (
+                              <a
+                                href={formatMessage(
+                                  messages.konveioSupportPageURL
+                                )}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                {formatMessage(messages.konveioSupportArticle)}
+                              </a>
+                            ),
+                          }}
+                        />
+                      }
+                    />
                   </Box>
                   <Input
                     onChange={this.handleDocumentAnnotationEmbedUrlChange}
