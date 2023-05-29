@@ -541,7 +541,9 @@ class ParticipationContext extends PureComponent<
                 <Box display="flex">
                   <Box mr="8px">
                     <SubSectionTitle>
-                      {formatMessage(messages.documentAnnotationEmbedUrl)}
+                      {formatMessage(
+                        messages.konveioDocumentAnnotationEmbedUrl
+                      )}
                     </SubSectionTitle>
                   </Box>
                   <IconTooltip

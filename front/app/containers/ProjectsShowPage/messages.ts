@@ -26,8 +26,8 @@ export default defineMessages({
     defaultMessage: 'Take the survey',
   },
   invisbleTitleDocumentAnnotation: {
-    id: 'app.containers.Projects.invisbleTitleDocumentAnnotation',
-    defaultMessage: 'Annotate the document',
+    id: 'app.containers.Projects.invisbleTitleDocumentAnnotation1',
+    defaultMessage: 'Review the document',
   },
   invisibleTitlePoll: {
     id: 'app.containers.Projects.invisibleTitlePoll',

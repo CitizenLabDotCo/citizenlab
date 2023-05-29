@@ -383,9 +383,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.surveyEmbedUrl',
     defaultMessage: 'Survey Embed URL',
   },
-  documentAnnotationEmbedUrl: {
-    id: 'app.containers.AdminPage.ProjectEdit.documentAnnotationEmbedUrl',
-    defaultMessage: 'Embed URL',
+  konveioDocumentAnnotationEmbedUrl: {
+    id: 'app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl',
+    defaultMessage: 'Embed Konveio URL',
   },
   titleSurveyResults: {
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.titleSurveyResults',
