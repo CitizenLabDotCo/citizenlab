@@ -59,7 +59,6 @@ describe('ChangePassword', () => {
 
     await waitFor(async () => {
       expect(mockChangePassword).toHaveBeenCalledWith({
-        userId: 'userId',
         current_password: 'test-current-password',
         password: 'test-new-password',
       });

@@ -3,14 +3,11 @@ import { CLErrorsJSON } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { IUser, IChangePassword } from './types';
 
-export const changePassword = async ({
-  userId,
-  ...requestBody
-}: IChangePassword) =>
+export const changePassword = async (requestBody: IChangePassword) =>
   fetcher<IUser>({
-    path: `/users/${userId}/update_password`,
+    path: `/users/update_password`,
     action: 'post',
-    body: { user: { ...requestBody } },
+    body: { user: requestBody },
   });
 
 const useChangePassword = () => {

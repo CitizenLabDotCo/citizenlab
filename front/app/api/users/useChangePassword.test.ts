@@ -8,7 +8,7 @@ import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { usersData } from './__mocks__/useUsers';
 
-const apiPath = '*users/:id/update_password';
+const apiPath = '*users/update_password';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
@@ -29,7 +29,6 @@ describe('useChangePassword', () => {
       result.current.mutate({
         current_password: 'old_password',
         password: 'new_password',
-        userId: 'id',
       });
     });
 
@@ -52,7 +51,6 @@ describe('useChangePassword', () => {
       result.current.mutate({
         current_password: 'old_password',
         password: 'new_password',
-        userId: 'id',
       });
     });
 

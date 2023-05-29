@@ -90,7 +90,6 @@ export interface IUserUpdate {
 }
 
 export interface IChangePassword {
-  userId: string;
   current_password: string;
   password: string;
 }

@@ -111,7 +111,7 @@ const ChangePassword = ({ tenant }: Props) => {
 
   const onFormSubmit = async ({ ...formValues }: FormValues) => {
     try {
-      await changePassword({ userId: authUser.id, ...formValues });
+      await changePassword(formValues);
       setSuccess(true);
       await streams.fetchAllWith({
         apiEndpoint: [`${API_PATH}/users/me`],
