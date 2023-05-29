@@ -47,7 +47,7 @@ export const AnonymousPostingToggle = ({
           toggleLabel ? (
             toggleLabel
           ) : (
-            <Box ml="8px">
+            <Box ml="8px" id="e2e-anonymous-posting-toggle">
               <Box display="flex">
                 <Text
                   color="primary"
