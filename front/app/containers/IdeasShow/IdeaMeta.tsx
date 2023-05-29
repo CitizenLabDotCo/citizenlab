@@ -1,17 +1,9 @@
 // libraries
 import React from 'react';
-import { adopt } from 'react-adopt';
 import { Helmet } from 'react-helmet';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetIdeaById, { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
+
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 
 // i18n
@@ -23,37 +15,35 @@ import { isNilOrError } from 'utils/helperUtils';
 import { imageSizes } from 'utils/fileUtils';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import useUserById from 'api/users/useUserById';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useProjectById from 'api/projects/useProjectById';
+import useLocale from 'hooks/useLocale';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'hooks/useAuthUser';
 
-interface InputProps {
+interface Props {
   ideaId: string;
 }
 
-interface DataProps {
-  idea: GetIdeaByIdChildProps;
-  project: GetProjectChildProps;
-  author: GetUserChildProps;
-  locale: GetLocaleChildProps;
-  tenant: GetAppConfigurationChildProps;
-  authUser: GetAuthUserChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const IdeaMeta = ({
-  idea,
-  locale,
-  tenant,
-  authUser,
-  author,
-  project,
-  ideaId,
-}: Props) => {
+const IdeaMeta = ({ ideaId }: Props) => {
+  const locale = useLocale();
+  const authUser = useAuthUser();
+  const { data: appConfiguration } = useAppConfiguration();
+  const { data: idea } = useIdeaById(ideaId);
   const { data: ideaImages } = useIdeaImages(ideaId);
+  const { data: author } = useUserById(
+    idea?.data.relationships?.author?.data?.id
+  );
+  const { data: project } = useProjectById(
+    idea?.data.relationships.project.data.id
+  );
   const localize = useLocalize();
 
-  if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(idea)) {
-    const { title_multiloc, body_multiloc } = idea.attributes;
-    const tenantLocales = tenant.attributes.settings.core.locales;
+  if (!isNilOrError(locale) && appConfiguration && idea) {
+    const { title_multiloc, body_multiloc } = idea.data.attributes;
+    const appConfigurationLocales =
+      appConfiguration.data.attributes.settings.core.locales;
     const localizedTitle = localize(title_multiloc, { maxChar: 50 });
     const ideaDescription = stripHtml(localize(body_multiloc), 250);
 
@@ -63,11 +53,11 @@ const IdeaMeta = ({
         : null;
     const ideaUrl = window.location.href;
     const projectTitle =
-      !isNilOrError(project) &&
-      localize(project.attributes.title_multiloc, { maxChar: 20 });
-    const projectSlug = !isNilOrError(project) && project.attributes.slug;
-    const ideaAuthorName = !isNilOrError(author)
-      ? `${author.attributes.first_name} ${author.attributes.last_name}`
+      project &&
+      localize(project.data.attributes.title_multiloc, { maxChar: 20 });
+    const projectSlug = project && project.data.attributes.slug;
+    const ideaAuthorName = author
+      ? `${author.data.attributes.first_name} ${author.data.attributes.last_name}`
       : 'anonymous';
 
     const articleJson = {
@@ -79,7 +69,7 @@ const IdeaMeta = ({
         '@type': 'WebPage',
         '@id': ideaUrl,
       },
-      datePublished: idea.attributes.published_at,
+      datePublished: idea.data.attributes.published_at,
     };
 
     const json = {
@@ -90,16 +80,18 @@ const IdeaMeta = ({
           '@type': 'ListItem',
           position: 1,
           item: {
-            '@id': tenant.attributes.host,
-            name: tenant.attributes.name,
-            image: tenant.attributes.logo ? tenant.attributes.logo.large : null,
+            '@id': appConfiguration.data.attributes.host,
+            name: appConfiguration.data.attributes.name,
+            image: appConfiguration.data.attributes.logo
+              ? appConfiguration.data.attributes.logo.large
+              : null,
           },
         },
         {
           '@type': 'ListItem',
           position: 2,
           item: {
-            '@id': `${tenant.attributes.host}/projects`,
+            '@id': `${appConfiguration.data.attributes.host}/projects`,
             name: 'Projects',
           },
         },
@@ -107,7 +99,7 @@ const IdeaMeta = ({
           '@type': 'ListItem',
           position: 2,
           item: {
-            '@id': `${tenant.attributes.host}/projects/${projectSlug}`,
+            '@id': `${appConfiguration.data.attributes.host}/projects/${projectSlug}`,
             name: projectTitle,
           },
         },
@@ -115,7 +107,7 @@ const IdeaMeta = ({
           '@type': 'ListItem',
           position: 4,
           item: {
-            '@id': `${tenant.attributes.host}/ideas`,
+            '@id': `${appConfiguration.data.attributes.host}/ideas`,
             name: 'Ideas',
           },
         },
@@ -127,14 +119,15 @@ const IdeaMeta = ({
         <title>
           {`
             ${
-              authUser && authUser.attributes.unread_notifications
+              !isNilOrError(authUser) &&
+              authUser.attributes.unread_notifications
                 ? `(${authUser.attributes.unread_notifications}) `
                 : ''
             }
             ${localizedTitle}`}
         </title>
         {getCanonicalLink()}
-        {getAlternateLinks(tenantLocales)}
+        {getAlternateLinks(appConfigurationLocales)}
         <meta name="title" content={localizedTitle} />
         <meta name="description" content={ideaDescription} />
 
@@ -172,30 +165,4 @@ const IdeaMeta = ({
   return null;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  idea: ({ ideaId, render }) => (
-    <GetIdeaById ideaId={ideaId}>{render}</GetIdeaById>
-  ),
-  project: ({ idea, render }) =>
-    !isNilOrError(idea) ? (
-      <GetProject projectId={idea.relationships.project.data.id}>
-        {render}
-      </GetProject>
-    ) : null,
-  author: ({ idea, render }) => (
-    <GetUser
-      id={!isNilOrError(idea) ? idea.relationships.author.data?.id : null}
-    >
-      {render}
-    </GetUser>
-  ),
-  locale: <GetLocale />,
-  tenant: <GetAppConfiguration />,
-  authUser: <GetAuthUser />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <IdeaMeta {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default IdeaMeta;

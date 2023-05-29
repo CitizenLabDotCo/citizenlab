@@ -1,5 +1,4 @@
 import React from 'react';
-import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -14,7 +13,6 @@ import GetAppConfigurationLocales, {
 } from 'resources/GetAppConfigurationLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
@@ -28,6 +26,7 @@ import Outlet from 'components/Outlet';
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useUserById from 'api/users/useUserById';
 
 const footerHeight = '30px';
 const footerTopMargin = '6px';
@@ -116,7 +115,6 @@ interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
   comment: GetCommentChildProps;
-  author: GetUserChildProps;
   commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
 }
 
@@ -125,7 +123,6 @@ interface Props extends InputProps, DataProps {}
 const CommentFooter = ({
   onEditing,
   authUser,
-  author,
   commentType,
   postId,
   postType,
@@ -137,6 +134,7 @@ const CommentFooter = ({
   locale,
   commentingPermissionInitiative,
 }: Props) => {
+  const { data: author } = useUserById(comment?.relationships.author.data?.id);
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -167,7 +165,7 @@ const CommentFooter = ({
           commentId={commentId}
           commentType={commentType}
           authUser={authUser}
-          author={author}
+          author={author?.data}
           post={post}
           comment={comment}
           commentingPermissionInitiative={commentingPermissionInitiative}
@@ -198,11 +196,6 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   comment: ({ commentId, render }) => (
     <GetComment id={commentId}>{render}</GetComment>
-  ),
-  author: ({ comment, render }) => (
-    <GetUser id={get(comment, 'relationships.author.data.id')}>
-      {render}
-    </GetUser>
   ),
   commentingPermissionInitiative: (
     <GetInitiativesPermissions action="commenting_initiative" />

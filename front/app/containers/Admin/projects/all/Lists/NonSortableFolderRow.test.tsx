@@ -5,7 +5,7 @@ import {
   IAdminPublicationContent,
   IUseAdminPublicationsOutput,
 } from 'hooks/useAdminPublications';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 const folderId = 'folderId';
 const folderPublication: IAdminPublicationContent = {
