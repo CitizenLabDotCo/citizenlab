@@ -1,7 +1,7 @@
 import React from 'react';
 import ModeratorListRow from './ModeratorListRow';
 import { render, screen } from 'utils/testUtils/rtl';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 const projectId = 'projectId';
 const projectModeratorRole = {

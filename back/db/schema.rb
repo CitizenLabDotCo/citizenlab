@@ -344,6 +344,7 @@ ActiveRecord::Schema.define(version: 2023_05_24_151508) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "campaign_id"
     t.index ["campaign_id"], name: "index_email_campaigns_examples_on_campaign_id"
+    t.index ["recipient_id"], name: "index_email_campaigns_examples_on_recipient_id"
   end
 
   create_table "email_campaigns_unsubscription_tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1398,6 +1399,7 @@ ActiveRecord::Schema.define(version: 2023_05_24_151508) do
   add_foreign_key "email_campaigns_campaigns", "users", column: "author_id"
   add_foreign_key "email_campaigns_campaigns_groups", "email_campaigns_campaigns", column: "campaign_id"
   add_foreign_key "email_campaigns_deliveries", "email_campaigns_campaigns", column: "campaign_id"
+  add_foreign_key "email_campaigns_examples", "users", column: "recipient_id"
   add_foreign_key "event_files", "events"
   add_foreign_key "events", "projects"
   add_foreign_key "groups_permissions", "groups"
