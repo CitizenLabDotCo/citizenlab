@@ -142,6 +142,10 @@ class WebApi::V1::CommentsController < ApplicationController
     @comment.post_id = @post_id
     @comment.author ||= current_user
     authorize @comment, policy_class: @policy_class
+    if anonymous_not_allowed?
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
+      return
+    end
     verify_profanity @comment
     SideFxCommentService.new.before_create @comment, current_user
     if @comment.save
@@ -161,6 +165,10 @@ class WebApi::V1::CommentsController < ApplicationController
     # We cannot pass policy class to permitted_attributes
     # @comment.attributes = pundit_params_for(@comment).permit(@policy_class.new(current_user, @comment).permitted_attributes_for_update)
     authorize @comment, policy_class: @policy_class
+    if anonymous_not_allowed?
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
+      return
+    end
     verify_profanity @comment
     SideFxCommentService.new.before_update @comment, current_user
     if @comment.save
@@ -253,6 +261,18 @@ class WebApi::V1::CommentsController < ApplicationController
     children_by_parent = child_comments.group_by(&:parent_id)
     root_comments.flat_map do |root_comment|
       [root_comment, *children_by_parent[root_comment.id]]
+    end
+  end
+
+  def anonymous_not_allowed?
+    return false if !params.dig('comment', 'anonymous')
+
+    case @post_type
+    when 'Idea'
+      !ParticipationContextService.new.get_participation_context(@comment.post.project).allow_anonymous_participation
+    when 'Initiative'
+      !AppConfiguration.instance.settings.dig('initiatives', 'allow_anonymous_participation')
+    else raise "Unsupported post type #{@post_type}"
     end
   end
 end

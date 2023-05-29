@@ -100,6 +100,10 @@ class WebApi::V1::InitiativesController < ApplicationController
     service.before_create(@initiative, current_user)
 
     authorize @initiative
+    if anonymous_not_allowed?
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
+      return
+    end
     verify_profanity @initiative
 
     save_options = {}
@@ -126,6 +130,10 @@ class WebApi::V1::InitiativesController < ApplicationController
     remove_image_if_requested!(@initiative, initiative_params, :header_bg)
 
     authorize @initiative
+    if anonymous_not_allowed?
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
+      return
+    end
     verify_profanity @initiative
 
     service.before_update(@initiative, current_user)
@@ -196,5 +204,9 @@ class WebApi::V1::InitiativesController < ApplicationController
 
   def display_names_restricted?
     UserDisplayNameService.new(Tenant.current, current_user).restricted?
+  end
+
+  def anonymous_not_allowed?
+    params.dig('initiative', 'anonymous') && !AppConfiguration.instance.settings.dig('initiatives', 'allow_anonymous_participation')
   end
 end
