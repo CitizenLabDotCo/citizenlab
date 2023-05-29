@@ -1,6 +1,5 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-const Tab = React.lazy(() => import('./admin/components/Tab'));
 
 const AdminWidgetsContainerComponent = React.lazy(
   () => import('./admin/containers')
@@ -8,7 +7,7 @@ const AdminWidgetsContainerComponent = React.lazy(
 
 const configuration: ModuleConfiguration = {
   routes: {
-    'admin.settings': [
+    'admin.tools': [
       {
         path: 'widgets',
         element: <AdminWidgetsContainerComponent />,
@@ -16,7 +15,7 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
-    'app.containers.Admin.settings.tabs': (props) => <Tab {...props} />,
+    'app.containers.admin.tools': () => <></>,
   },
 };
 

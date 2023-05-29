@@ -1,24 +1,18 @@
 import React from 'react';
-import { Box, Title } from '@citizenlab/cl2-component-library';
-import { useIntl } from 'utils/cl-intl';
+import { Box } from '@citizenlab/cl2-component-library';
 import messages from './messages';
-import Workshops from './Workshops';
-import Widget from './Widget';
-import PublicAPI from './PublicAPI';
+import Outlet from 'components/Outlet';
+import { Outlet as RouterOutlet } from 'react-router-dom';
+import HelmetIntl from 'components/HelmetIntl';
 
-export const ToolsPage = () => {
-  const { formatMessage } = useIntl();
-
-  return (
-    <Box width="100%" display="flex" justifyContent="center">
-      <Box maxWidth="800px">
-        <Title color="primary">{formatMessage(messages.tools)}</Title>
-        <Workshops />
-        <Widget />
-        <PublicAPI />
-      </Box>
+export const ToolsIndex = () => (
+  <>
+    <Outlet id="app.containers.admin.tools" />
+    <HelmetIntl title={messages.tools} description={messages.tools} />
+    <Box>
+      <RouterOutlet />
     </Box>
-  );
-};
+  </>
+);
 
-export default ToolsPage;
+export default ToolsIndex;

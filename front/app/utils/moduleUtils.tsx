@@ -259,6 +259,7 @@ export interface OutletsPropertyMap {
     notification: TNotificationData;
   };
   'app.containers.HomePage.EventsWidget': Record<string, any>;
+  'app.containers.admin.tools': Record<string, any>;
   'app.components.SignUpIn.AuthProviders.ContainerStart': {
     flow: SignUpInFlow;
     onContinue: (authProvider: AuthProvider) => void;
@@ -310,6 +311,7 @@ interface Routes {
   'admin.dashboards': RouteConfiguration[];
   'admin.project_templates': RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
+  'admin.tools': RouteConfiguration[];
   'admin.reporting': RouteConfiguration[];
 }
 
@@ -433,6 +435,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       ),
       'admin.settings': parseModuleRoutes(
         mergedRoutes?.['admin.settings'],
+        RouteTypes.ADMIN
+      ),
+      'admin.tools': parseModuleRoutes(
+        mergedRoutes?.['admin.tools'],
         RouteTypes.ADMIN
       ),
       'admin.reporting': parseModuleRoutes(

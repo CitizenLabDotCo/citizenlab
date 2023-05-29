@@ -35,6 +35,7 @@ export const Widget = () => {
             iconColor={colors.white}
             iconPos="right"
             width="fit-content"
+            linkTo="/admin/tools/widgets"
           >
             <Text color="white">{formatMessage(messages.manageWidget)}</Text>
           </Button>
