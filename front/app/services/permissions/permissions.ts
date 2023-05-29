@@ -1,5 +1,5 @@
 import authUserStream from 'api/me/authUserStream';
-import { IUser } from 'services/users';
+import { IUser } from 'api/users/types';
 import { isObject } from 'lodash-es';
 import { map } from 'rxjs/operators';
 import useAuthUser from 'api/me/useAuthUser';

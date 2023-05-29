@@ -7,7 +7,7 @@ import {
   userEvent,
 } from 'utils/testUtils/rtl';
 import ChangePassword from '.';
-import { changePassword, IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 const mockUserData: IUserData = {
   id: 'userId',
@@ -34,12 +34,19 @@ jest.mock('hooks/useLocale');
 jest.mock('hooks/useAppConfigurationLocales', () =>
   jest.fn(() => ['en', 'nl-NL'])
 );
-jest.mock('services/users', () => ({
-  changePassword: jest.fn(() => null),
-}));
+
 jest.mock('api/me/useAuthUser', () => () => ({
   data: { data: mockUserData },
 }));
+
+const mockChangePassword = jest.fn();
+jest.mock('api/users/useChangePassword', () =>
+  jest.fn(() => ({ mutateAsync: mockChangePassword }))
+);
+
+jest.mock('hooks/useAuthUser', () => {
+  return () => mockUserData;
+});
 
 describe('ChangePassword', () => {
   it('submits correct data', async () => {
@@ -55,7 +62,7 @@ describe('ChangePassword', () => {
     fireEvent.click(container.querySelector('#password-submit-button'));
 
     await waitFor(async () => {
-      expect(changePassword).toHaveBeenCalledWith({
+      expect(mockChangePassword).toHaveBeenCalledWith({
         current_password: 'test-current-password',
         password: 'test-new-password',
       });

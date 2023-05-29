@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import meKeys from './keys';
-import { IUser } from 'services/users';
 import { MeKeys } from './types';
+import { IUser } from 'api/users/types';
 
 export const fetchMe = () =>
   fetcher<IUser>({

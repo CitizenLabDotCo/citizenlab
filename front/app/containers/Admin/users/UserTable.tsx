@@ -8,12 +8,6 @@ import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/Pagination';
 import UserTableRow from './UserTableRow';
 
-// Services
-import { IUserData, updateUser } from 'services/users';
-
-// Resources
-import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
-
 // Events --- For error handling
 import eventEmitter from 'utils/eventEmitter';
 import events from './events';
@@ -30,6 +24,8 @@ import messages from './messages';
 import styled from 'styled-components';
 import useAuthUser from 'api/me/useAuthUser';
 import Warning from 'components/UI/Warning';
+import { IQueryParameters, IUserData } from 'api/users/types';
+import useUpdateUser from 'api/users/useUpdateUser';
 
 const Container = styled.div`
   flex: 1;
@@ -58,18 +54,21 @@ const SortableTh = ({ sortDirection, onClick, children }: SortableThProps) => (
   </Th>
 );
 
-interface InputProps {
+interface Props {
   selectedUsers: string[] | 'none' | 'all';
   handleSelect: (userId: string) => void;
-  notCitizenlabMember: boolean;
+  notCitizenlabMember?: boolean;
+  currentPage: number | null;
+  lastPage: number | null;
+  sort: IQueryParameters['sort'];
+  onChangePage: (pageNumber: number) => void;
+  onChangeSorting: (sort: IQueryParameters['sort']) => void;
+  usersList: IUserData[];
 }
-
-interface Props extends InputProps, GetUsersChildProps {}
 
 const UsersTable = ({
   usersList,
-  sortAttribute,
-  sortDirection,
+  sort,
   currentPage,
   lastPage,
   selectedUsers,
@@ -79,6 +78,7 @@ const UsersTable = ({
   notCitizenlabMember,
 }: Props) => {
   const { data: authUser } = useAuthUser();
+  const { mutate: updateUser } = useUpdateUser();
 
   if (isNilOrError(authUser)) {
     return null;
@@ -93,17 +93,20 @@ const UsersTable = ({
         <FormattedMessage {...messages.youCantUnadminYourself} />
       );
     } else {
-      updateUser(user.id, { roles: getNewRoles(user, changeToNormalUser) });
+      updateUser({
+        userId: user.id,
+        roles: getNewRoles(user, changeToNormalUser),
+      });
     }
   };
 
-  const handleSortingOnChange = (sortAttribute: SortAttribute) => () => {
+  const handleSortingOnChange = (sort: IQueryParameters['sort']) => () => {
     trackEventByName(tracks.sortChange.name, {
       extra: {
-        sortAttribute,
+        sort,
       },
     });
-    onChangeSorting(sortAttribute);
+    onChangeSorting(sort);
   };
 
   const handlePaginationClick = (pageNumber: number) => {
@@ -134,25 +137,43 @@ const UsersTable = ({
               <Th />
               <SortableTh
                 sortDirection={
-                  sortAttribute === 'last_name' ? sortDirection : undefined
+                  sort === 'last_name'
+                    ? 'descending'
+                    : sort === '-last_name'
+                    ? 'ascending'
+                    : undefined
                 }
-                onClick={handleSortingOnChange('last_name')}
+                onClick={handleSortingOnChange(
+                  sort === 'last_name' ? '-last_name' : 'last_name'
+                )}
               >
                 <FormattedMessage {...messages.name} />
               </SortableTh>
               <SortableTh
                 sortDirection={
-                  sortAttribute === 'email' ? sortDirection : undefined
+                  sort === 'email'
+                    ? 'descending'
+                    : sort === '-email'
+                    ? 'ascending'
+                    : undefined
                 }
-                onClick={handleSortingOnChange('email')}
+                onClick={handleSortingOnChange(
+                  sort === 'email' ? '-email' : 'email'
+                )}
               >
                 <FormattedMessage {...messages.email} />
               </SortableTh>
               <SortableTh
                 sortDirection={
-                  sortAttribute === 'created_at' ? sortDirection : undefined
+                  sort === 'created_at'
+                    ? 'descending'
+                    : sort === '-created_at'
+                    ? 'ascending'
+                    : undefined
                 }
-                onClick={handleSortingOnChange('created_at')}
+                onClick={handleSortingOnChange(
+                  sort === 'created_at' ? '-created_at' : 'created_at'
+                )}
               >
                 <FormattedMessage {...messages.since} />
               </SortableTh>

@@ -13,7 +13,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import { isAdmin, isRegularUser } from 'services/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import { IUser } from 'services/users';
+import { IUser } from 'api/users/types';
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import { IAppConfiguration } from 'api/app_configuration/types';
 

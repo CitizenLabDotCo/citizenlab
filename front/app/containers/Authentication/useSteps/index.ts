@@ -35,7 +35,8 @@ import {
   AuthenticationData,
 } from '../typings';
 import { SSOParams } from 'services/singleSignOn';
-import { isNilOrError } from 'utils/helperUtils';
+import useUpdateUser from 'api/users/useUpdateUser';
+import { isNil, isNilOrError } from 'utils/helperUtils';
 
 let initialized = false;
 
@@ -43,6 +44,7 @@ export default function useSteps() {
   const anySSOEnabled = useAnySSOEnabled();
   const { pathname, search } = useLocation();
   const { data: authUser } = useAuthUser();
+  const { mutate: updateUser } = useUpdateUser();
 
   // The authentication data will be initialized with the global sign up flow.
   // In practice, this will be overwritten before firing the flow (see event
@@ -117,7 +119,8 @@ export default function useSteps() {
       setCurrentStep,
       setError,
       updateState,
-      anySSOEnabled
+      anySSOEnabled,
+      updateUser
     );
   }, [
     getAuthenticationData,
@@ -126,6 +129,7 @@ export default function useSteps() {
     setError,
     updateState,
     anySSOEnabled,
+    updateUser,
   ]);
 
   /** given the current step and a transition supported by that step, performs the transition */
@@ -248,9 +252,21 @@ export default function useSteps() {
         window.history.replaceState(null, '', '/');
       }
 
-      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')();
+      const enterClaveUnicaEmail =
+        !isNilOrError(authUser) && isNil(authUser.attributes.email);
+
+      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(enterClaveUnicaEmail);
     }
   }, [pathname, search, currentStep, transition, authUser, setError]);
+
+  // always show ClaveUnica modal to user
+  useEffect(() => {
+    if (isNilOrError(authUser)) return;
+    if (currentStep !== 'closed') return;
+    if (isNil(authUser.attributes.email)) {
+      transition(currentStep, 'REOPEN_CLAVE_UNICA')();
+    }
+  }, [authUser, currentStep, transition]);
 
   return {
     currentStep,

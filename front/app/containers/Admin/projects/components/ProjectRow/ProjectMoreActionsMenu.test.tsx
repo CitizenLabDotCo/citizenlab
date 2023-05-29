@@ -1,7 +1,7 @@
 import React from 'react';
 import ProjectMoreActionsMenu, { Props } from './ProjectMoreActionsMenu';
 import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 

@@ -33,8 +33,9 @@ import messages from '../messages';
 
 // images
 import { TVerificationMethod } from 'services/verificationMethods';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 import meKeys from 'api/me/keys';
+import usersKeys from 'api/users/keys';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Props {
   onCancel: () => void;
@@ -46,7 +47,7 @@ interface Props {
 const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
   ({ onCancel, onVerified, className, intl }) => {
     const { data: authUser } = useAuthUser();
-
+    const queryClient = useQueryClient();
     const [rrn, setRrn] = useState('');
     const [rrnError, setRrnError] = useState<string | null>(null);
     const [formError, setFormError] = useState<string | null>(null);
@@ -86,7 +87,9 @@ const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
             ];
 
             if (!isNilOrError(authUser)) {
-              endpointsToRefetch.push(`${API_PATH}/users/${authUser.data.id}`);
+              queryClient.invalidateQueries(
+                usersKeys.item({ id: authUser.data.id })
+              );
             }
 
             queryClient.invalidateQueries({ queryKey: meKeys.all() });

@@ -1,8 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
 import { isEmpty, get } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -36,7 +34,8 @@ import T from 'components/T';
 // typings
 import { IDLookupMethod } from 'services/verificationMethods';
 import meKeys from 'api/me/keys';
-import { queryClient } from 'utils/cl-react-query/queryClient';
+import usersKeys from 'api/users/keys';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Props {
   onCancel: () => void;
@@ -48,7 +47,7 @@ interface Props {
 const VerificationFormLookup = memo<Props & WrappedComponentProps>(
   ({ onCancel, onVerified, className, method, intl }) => {
     const { data: authUser } = useAuthUser();
-
+    const queryClient = useQueryClient();
     const [cardId, setCardId] = useState<string>('');
     const [cardIdError, setCardIdError] = useState<string | null>(null);
     const [formError, setFormError] = useState<string | null>(null);
@@ -79,16 +78,13 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
           try {
             await verifyIDLookup(cardId);
 
-            const endpointsToRefetch: string[] = [];
-
             if (!isNilOrError(authUser)) {
-              endpointsToRefetch.push(`${API_PATH}/users/${authUser.data.id}`);
+              queryClient.invalidateQueries(
+                usersKeys.item({ id: authUser.data.id })
+              );
             }
 
             queryClient.invalidateQueries({ queryKey: meKeys.all() });
-            await streams.fetchAllWith({
-              apiEndpoint: endpointsToRefetch,
-            });
 
             onVerified();
           } catch (error) {

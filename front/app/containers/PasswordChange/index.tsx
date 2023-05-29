@@ -28,7 +28,6 @@ import { stylingConsts } from 'utils/styleUtils';
 import { useIntl } from 'utils/cl-intl';
 
 // services
-import { changePassword } from 'services/users';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -41,6 +40,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import clHistory from 'utils/cl-router/history';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import meKeys from 'api/me/keys';
+import useChangePassword from 'api/users/useChangePassword';
 
 type FormValues = {
   current_password: string;
@@ -53,6 +53,7 @@ type Props = {
 
 const ChangePassword = ({ tenant }: Props) => {
   const { data: authUser } = useAuthUser();
+  const { mutateAsync: changePassword } = useChangePassword();
   const { formatMessage } = useIntl();
   const [success, setSuccess] = useState(false);
   const userHasPreviousPassword =
@@ -104,6 +105,10 @@ const ChangePassword = ({ tenant }: Props) => {
     resolver: yupResolver(schema),
   });
 
+  if (isNilOrError(authUser)) {
+    return null;
+  }
+
   const onFormSubmit = async ({ ...formValues }: FormValues) => {
     try {
       await changePassword(formValues);
@@ -113,10 +118,6 @@ const ChangePassword = ({ tenant }: Props) => {
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
-
-  if (isNilOrError(authUser)) {
-    return null;
-  }
 
   if (success) return <ChangePasswordSuccess />;
   return (

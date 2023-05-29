@@ -1,8 +1,6 @@
 import React from 'react';
 import { isUndefined } from 'lodash-es';
-import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
-import { ICampaignData, updateCampaign } from 'services/campaigns';
-import { isNilOrError } from 'utils/helperUtils';
+import { ICampaignData } from 'services/campaigns';
 import T from 'components/T';
 import { Toggle, Box, Text, Title } from '@citizenlab/cl2-component-library';
 import {
@@ -13,17 +11,26 @@ import {
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { colors } from 'utils/styleUtils';
+import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
+import useCampaigns from 'api/campaigns/useCampaigns';
 
-type Props = GetCampaignsChildProps;
+const AutomatedEmails = () => {
+  const { data: campaigns } = useCampaigns({
+    withoutCampaignNames: ['manual'],
+    pageSize: 250,
+  });
+  const { mutate: updateCampaign } = useUpdateCampaign();
 
-const AutomatedCampaigns = ({ campaigns }: Props) => {
+  if (!campaigns?.pages) return null;
+
   const handleOnEnabledToggle = (campaign: ICampaignData) => () => {
-    updateCampaign(campaign.id, {
-      enabled: !campaign.attributes.enabled,
+    updateCampaign({
+      id: campaign.id,
+      campaign: {
+        enabled: !campaign.attributes.enabled,
+      },
     });
   };
-
-  if (isNilOrError(campaigns)) return null;
 
   return (
     <>
@@ -37,33 +44,32 @@ const AutomatedCampaigns = ({ campaigns }: Props) => {
       </Box>
       <Box background={colors.white} p="40px">
         <AutomatedEmailsList>
-          {campaigns.map((campaign) => (
-            <Row key={campaign.id}>
-              <Toggle
-                disabled={isUndefined(campaign.attributes.enabled)}
-                checked={
-                  isUndefined(campaign.attributes.enabled) ||
-                  campaign.attributes.enabled
-                }
-                onChange={handleOnEnabledToggle(campaign)}
-              />
-              <TextCell className="expand">
-                <T
-                  value={
-                    campaign.attributes.admin_campaign_description_multiloc
+          {campaigns.pages
+            .flatMap((page) => page.data)
+
+            .map((campaign) => (
+              <Row key={campaign.id}>
+                <Toggle
+                  disabled={isUndefined(campaign.attributes.enabled)}
+                  checked={
+                    isUndefined(campaign.attributes.enabled) ||
+                    campaign.attributes.enabled
                   }
+                  onChange={handleOnEnabledToggle(campaign)}
                 />
-              </TextCell>
-            </Row>
-          ))}
+                <TextCell className="expand">
+                  <T
+                    value={
+                      campaign.attributes.admin_campaign_description_multiloc
+                    }
+                  />
+                </TextCell>
+              </Row>
+            ))}
         </AutomatedEmailsList>
       </Box>
     </>
   );
 };
 
-export default () => (
-  <GetCampaigns withoutCampaignNames={['manual']} pageSize={250}>
-    {(campaigns) => <AutomatedCampaigns {...campaigns} />}
-  </GetCampaigns>
-);
+export default AutomatedEmails;

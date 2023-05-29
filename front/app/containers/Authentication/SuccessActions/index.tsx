@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { BehaviorSubject } from 'rxjs';
 import { getAction, SuccessAction } from './actions';
 import authUserStream from 'api/me/authUserStream';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 const successAction$ = new BehaviorSubject<SuccessAction | null>(null);
 

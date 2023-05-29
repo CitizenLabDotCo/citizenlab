@@ -1,13 +1,10 @@
 import { IRelationship, Multiloc, ILinks } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import campaignsKeys from 'api/campaigns/keys';
 
 const apiEndpoint = `${API_PATH}/campaigns`;
-
-export interface ICampaignsData {
-  data: ICampaignData[];
-  links: ILinks;
-}
 
 export interface ICampaignData {
   id: string;
@@ -34,16 +31,6 @@ export interface ICampaignData {
       data: IRelationship[];
     };
   };
-}
-
-export interface CampaignUpdate {
-  campaign_name?: string;
-  subject_multiloc?: Multiloc;
-  body_multiloc?: Multiloc;
-  sender?: string;
-  reply_to?: string;
-  group_ids?: string[];
-  enabled?: boolean;
 }
 
 export interface CampaignCreation {
@@ -97,24 +84,14 @@ export interface ICampaignStats {
   all: number;
 }
 
-export function listCampaigns(streamParams: IStreamParams | null = null) {
-  return streams.get<ICampaignsData>({
-    apiEndpoint: `${apiEndpoint}`,
-    ...streamParams,
-  });
-}
-
-export function createCampaign(campaignData: CampaignCreation) {
-  return streams.add<ICampaign>(`${apiEndpoint}`, { campaign: campaignData });
-}
-
-export function updateCampaign(
-  campaignId: string,
-  campaignData: CampaignUpdate
-) {
-  return streams.update<ICampaign>(`${apiEndpoint}/${campaignId}`, campaignId, {
+export async function createCampaign(campaignData: CampaignCreation) {
+  const stream = await streams.add<ICampaign>(`${apiEndpoint}`, {
     campaign: campaignData,
   });
+
+  queryClient.invalidateQueries({ queryKey: campaignsKeys.lists() });
+
+  return stream;
 }
 
 export async function sendCampaign(campaignId: string) {
@@ -122,9 +99,12 @@ export async function sendCampaign(campaignId: string) {
     `${apiEndpoint}/${campaignId}/send`,
     {}
   );
+
   await streams.fetchAllWith({
-    apiEndpoint: [`${apiEndpoint}/${campaignId}`, `${API_PATH}/campaigns`],
+    apiEndpoint: [`${apiEndpoint}/${campaignId}`],
   });
+  await queryClient.invalidateQueries({ queryKey: campaignsKeys.all() });
+
   return stream;
 }
 

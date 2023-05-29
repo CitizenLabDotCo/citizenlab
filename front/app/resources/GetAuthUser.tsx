@@ -1,5 +1,5 @@
 import useAuthUser from 'api/me/useAuthUser';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 type children = (renderProps: GetAuthUserChildProps) => JSX.Element | null;
 

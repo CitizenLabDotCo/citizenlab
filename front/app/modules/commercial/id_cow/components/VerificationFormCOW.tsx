@@ -1,8 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
 import { isEmpty, get } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -34,8 +32,9 @@ import messages from '../messages';
 
 // images
 import helpImage from './COWHelpImage.png';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 import meKeys from 'api/me/keys';
+import usersKeys from 'api/users/keys';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Props {
   onCancel: () => void;
@@ -46,7 +45,7 @@ interface Props {
 const VerificationFormCOW = memo<Props & WrappedComponentProps>(
   ({ onCancel, onVerified, className, intl }) => {
     const { data: authUser } = useAuthUser();
-
+    const queryClient = useQueryClient();
     const [run, setRun] = useState('');
     const [idSerial, setIdSerial] = useState('');
     const [runError, setRunError] = useState<string | null>(null);
@@ -92,16 +91,13 @@ const VerificationFormCOW = memo<Props & WrappedComponentProps>(
             setProcessing(true);
             await verifyCOW(run, idSerial);
 
-            const endpointsToRefetch: string[] = [];
             if (!isNilOrError(authUser)) {
-              endpointsToRefetch.push(`${API_PATH}/users/${authUser.data.id}`);
+              queryClient.invalidateQueries(
+                usersKeys.item({ id: authUser.data.id })
+              );
             }
 
             queryClient.invalidateQueries({ queryKey: meKeys.all() });
-            await streams.fetchAllWith({
-              apiEndpoint: endpointsToRefetch,
-            });
-
             setProcessing(false);
 
             onVerified();

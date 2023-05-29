@@ -7,9 +7,8 @@ import groupsKeys from 'api/groups/keys';
 
 import { IGroupMemberships, MembershipAdd } from './types';
 
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
 import meKeys from 'api/me/keys';
+import usersKeys from 'api/users/keys';
 
 const addMembership = async ({ groupId, userId }: MembershipAdd) =>
   fetcher<IGroupMemberships>({
@@ -26,10 +25,7 @@ const useAddMembership = () => {
       queryClient.invalidateQueries({ queryKey: membershipsKeys.lists() });
       queryClient.invalidateQueries({ queryKey: groupsKeys.lists() });
       queryClient.invalidateQueries({ queryKey: meKeys.all() });
-
-      await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/users`],
-      });
+      queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
     },
   });
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { IUserAttributes } from 'services/users';
+import { IUserAttributes } from 'api/users/types';
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 import NotificationMenu from '.';
 

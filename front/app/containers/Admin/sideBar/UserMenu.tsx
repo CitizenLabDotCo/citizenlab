@@ -26,7 +26,7 @@ import Avatar from 'components/Avatar';
 
 // services
 import signOut from 'api/authentication/sign_in_out/signOut';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 export const UserMenu = () => {
   const { formatMessage } = useIntl();

@@ -2,9 +2,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 import membershipsKeys from './keys';
 import groupsKeys from 'api/groups/keys';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
 import meKeys from 'api/me/keys';
+import usersKeys from 'api/users/keys';
 
 const deleteMembership = ({
   groupId,
@@ -29,9 +28,7 @@ const useDeleteMembership = () => {
       });
       queryClient.invalidateQueries({ queryKey: groupsKeys.lists() });
       queryClient.invalidateQueries({ queryKey: meKeys.all() });
-      await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/users`],
-      });
+      queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
     },
   });
 };
