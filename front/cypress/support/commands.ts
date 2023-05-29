@@ -485,7 +485,8 @@ export function apiCreateIdea(
   locationGeoJSON?: { type: string; coordinates: number[] },
   locationDescription?: string,
   jwt?: string,
-  budget?: number
+  budget?: number,
+  anonymous?: boolean
 ) {
   let headers: { 'Content-Type': string; Authorization: string } | null = null;
 
@@ -521,6 +522,7 @@ export function apiCreateIdea(
           location_point_geojson: locationGeoJSON,
           location_description: locationDescription,
           budget,
+          anonymous,
         },
       },
     });

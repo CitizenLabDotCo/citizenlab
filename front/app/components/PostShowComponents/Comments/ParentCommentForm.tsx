@@ -406,6 +406,7 @@ const ParentCommentForm = ({
               <ButtonWrapper className={focused || processing ? 'visible' : ''}>
                 {allowAnonymousParticipation && (
                   <Checkbox
+                    id="e2e-anonymous-comment-checkbox"
                     ml="8px"
                     checked={postAnonymously}
                     label={
