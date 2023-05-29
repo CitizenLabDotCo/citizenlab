@@ -207,6 +207,7 @@ de:
       status: 'Status'
       assignee_fullname: 'Zugewiesen an'
       assignee_email: 'E-Mail-Adresse des Empfängers / der Empfängerin'
+    anonymous: 'Anonym'
   form_builder:
     default_select_field:
       title: 'Ihre Frage'
