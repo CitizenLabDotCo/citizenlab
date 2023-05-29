@@ -34,13 +34,13 @@ import GetAppConfiguration, {
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import useAuthUser from 'api/me/useAuthUser';
 import GoBackButton from 'components/UI/GoBackButton';
 import clHistory from 'utils/cl-router/history';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import meKeys from 'api/me/keys';
 import useChangePassword from 'api/users/useChangePassword';
+import { handleCLErrorsIsh } from 'utils/errorUtils';
 
 type FormValues = {
   current_password: string;
@@ -115,7 +115,7 @@ const ChangePassword = ({ tenant }: Props) => {
       setSuccess(true);
       queryClient.invalidateQueries({ queryKey: meKeys.all() });
     } catch (error) {
-      handleHookFormSubmissionError(error, methods.setError);
+      handleCLErrorsIsh(error, methods.setError);
     }
   };
 
