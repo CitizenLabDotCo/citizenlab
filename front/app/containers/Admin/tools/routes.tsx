@@ -1,20 +1,21 @@
 import React, { lazy } from 'react';
 import moduleConfiguration from 'modules';
 import PageLoading from 'components/UI/PageLoading';
+import messages from './messages';
+import Outlet from 'components/Outlet';
+import { Outlet as RouterOutlet } from 'react-router-dom';
+import HelmetIntl from 'components/HelmetIntl';
 
-const ToolsWrapper = lazy(() => import('.'));
-const Tools = lazy(() => import('./Tools'));
+const Tools = lazy(() => import('.'));
 
 const toolsRoutes = () => {
-  console.log(
-    "moduleConfiguration.routes['admin.tools']",
-    moduleConfiguration.routes['admin.tools']
-  );
   return {
     path: 'tools',
     element: (
       <PageLoading>
-        <ToolsWrapper />
+        <Outlet id="app.containers.admin.tools" />
+        <HelmetIntl title={messages.tools} />
+        <RouterOutlet />
       </PageLoading>
     ),
     children: [

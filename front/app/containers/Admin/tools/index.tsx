@@ -1,18 +1,32 @@
 import React from 'react';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
+import { useIntl } from 'utils/cl-intl';
+import { isAdmin } from 'services/permissions/roles';
+import useAuthUser from 'hooks/useAuthUser';
+import { isNilOrError } from 'utils/helperUtils';
 import messages from './messages';
-import Outlet from 'components/Outlet';
-import { Outlet as RouterOutlet } from 'react-router-dom';
-import HelmetIntl from 'components/HelmetIntl';
+import Workshops from './Workshops';
+import Widget from './Widget';
+import PublicAPI from './PublicAPI';
 
-export const ToolsIndex = () => (
-  <>
-    <Outlet id="app.containers.admin.tools" />
-    <HelmetIntl title={messages.tools} />
-    <Box>
-      <RouterOutlet />
+export const Tools = () => {
+  const { formatMessage } = useIntl();
+  const authUser = useAuthUser();
+
+  if (isNilOrError(authUser)) return null;
+
+  const isUserAdmin = isAdmin({ data: authUser });
+
+  return (
+    <Box width="100%" display="flex" justifyContent="center">
+      <Box maxWidth="800px">
+        <Title color="primary">{formatMessage(messages.tools)}</Title>
+        <Workshops />
+        {isUserAdmin && <Widget />}
+        {isUserAdmin && <PublicAPI />}
+      </Box>
     </Box>
-  </>
-);
+  );
+};
 
-export default ToolsIndex;
+export default Tools;

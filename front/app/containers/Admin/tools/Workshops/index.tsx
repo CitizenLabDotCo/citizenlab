@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import workshopsImage from './workshops.png';
 
 export const Workshops = () => {
