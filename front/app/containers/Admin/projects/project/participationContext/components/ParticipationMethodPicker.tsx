@@ -41,12 +41,12 @@ const ParticipationMethodPicker = ({
   handleParticipationMethodOnChange,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const documentAnnotationEnabled = useFeatureFlag({
-    name: 'konveio_document_annotation',
-  });
   const documentAnnotationAllowed = useFeatureFlag({
     name: 'konveio_document_annotation',
     onlyCheckAllowed: true,
+  });
+  const documentAnnotationEnabled = useFeatureFlag({
+    name: 'konveio_document_annotation',
   });
   const participatoryBudgetingEnabled = useFeatureFlag({
     name: 'participatory_budgeting',

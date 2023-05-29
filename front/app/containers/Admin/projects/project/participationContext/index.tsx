@@ -83,7 +83,6 @@ interface DataProps {
   survey_monkey_enabled: GetFeatureFlagChildProps;
   snap_survey_enabled: GetFeatureFlagChildProps;
   isCustomInputTermEnabled: GetFeatureFlagChildProps;
-  isKonveioDocumentAnnotationEnabled: GetFeatureFlagChildProps;
 }
 
 export type ApiErrors = CLErrors | null | undefined;
@@ -396,7 +395,6 @@ class ParticipationContext extends PureComponent<
       snap_survey_enabled,
       google_forms_enabled,
       isCustomInputTermEnabled,
-      isKonveioDocumentAnnotationEnabled,
       intl: { formatMessage },
     } = this.props;
 
@@ -538,48 +536,47 @@ class ParticipationContext extends PureComponent<
               />
             )}
 
-            {participation_method === 'document_annotation' &&
-              isKonveioDocumentAnnotationEnabled && (
-                <SectionField>
-                  <Box display="flex">
-                    <Box mr="8px">
-                      <SubSectionTitle>
-                        {formatMessage(messages.documentAnnotationEmbedUrl)}
-                      </SubSectionTitle>
-                    </Box>
-                    <IconTooltip
-                      content={
-                        <FormattedMessage
-                          {...messages.konveioSupport}
-                          values={{
-                            supportArticleLink: (
-                              <a
-                                href={formatMessage(
-                                  messages.konveioSupportPageURL
-                                )}
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                {formatMessage(messages.konveioSupportArticle)}
-                              </a>
-                            ),
-                          }}
-                        />
-                      }
-                    />
+            {participation_method === 'document_annotation' && (
+              <SectionField>
+                <Box display="flex">
+                  <Box mr="8px">
+                    <SubSectionTitle>
+                      {formatMessage(messages.documentAnnotationEmbedUrl)}
+                    </SubSectionTitle>
                   </Box>
-                  <Input
-                    onChange={this.handleDocumentAnnotationEmbedUrlChange}
-                    type="text"
-                    value={document_annotation_embed_url}
-                  />
-                  <Error
-                    apiErrors={
-                      apiErrors && apiErrors.document_annotation_embed_url
+                  <IconTooltip
+                    content={
+                      <FormattedMessage
+                        {...messages.konveioSupport}
+                        values={{
+                          supportArticleLink: (
+                            <a
+                              href={formatMessage(
+                                messages.konveioSupportPageURL
+                              )}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              {formatMessage(messages.konveioSupportArticle)}
+                            </a>
+                          ),
+                        }}
+                      />
                     }
                   />
-                </SectionField>
-              )}
+                </Box>
+                <Input
+                  onChange={this.handleDocumentAnnotationEmbedUrlChange}
+                  type="text"
+                  value={document_annotation_embed_url}
+                />
+                <Error
+                  apiErrors={
+                    apiErrors && apiErrors.document_annotation_embed_url
+                  }
+                />
+              </SectionField>
+            )}
 
             {participation_method === 'survey' && (
               <SurveyInputs
@@ -611,9 +608,6 @@ const Data = adopt<DataProps>({
   snap_survey_enabled: <GetFeatureFlag name="snap_survey_surveys" />,
   microsoft_forms_enabled: <GetFeatureFlag name="microsoft_forms_surveys" />,
   isCustomInputTermEnabled: <GetFeatureFlag name="idea_custom_copy" />,
-  isKonveioDocumentAnnotationEnabled: (
-    <GetFeatureFlag name="konveio_document_annotation" />
-  ),
 });
 
 const ParticipationContextWithIntl = injectIntl(ParticipationContext);
