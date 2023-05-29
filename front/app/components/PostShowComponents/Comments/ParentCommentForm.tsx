@@ -8,7 +8,12 @@ import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
 import Link from 'utils/cl-router/Link';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Checkbox,
+  useBreakpoint,
+  Text,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -40,6 +45,7 @@ import useLocale from 'hooks/useLocale';
 import useAuthUser from 'hooks/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 
 const Container = styled.div`
   display: flex;
@@ -108,9 +114,15 @@ interface Props {
   postType: 'idea' | 'initiative';
   postingComment: (arg: boolean) => void;
   className?: string;
+  allowAnonymousParticipation?: boolean;
 }
 
-const ParentCommentForm = ({ postId, postType, className }: Props) => {
+const ParentCommentForm = ({
+  postId,
+  postType,
+  className,
+  allowAnonymousParticipation,
+}: Props) => {
   const locale = useLocale();
   const authUser = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
@@ -131,7 +143,9 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
   const [hasApiError, setHasApiError] = useState(false);
   const [profanityApiError, setProfanityApiError] = useState(false);
   const [hasEmptyError, setHasEmptyError] = useState(true);
-
+  const [postAnonymously, setPostAnonymously] = useState(false);
+  const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
+    useState(false);
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -174,6 +188,14 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
   };
 
   const onSubmit = async () => {
+    if (allowAnonymousParticipation && postAnonymously) {
+      setShowAnonymousConfirmationModal(true);
+    } else {
+      continueSubmission();
+    }
+  };
+
+  const continueSubmission = async () => {
     const projectId: string | null =
       idea?.data.relationships.project.data.id || null;
 
@@ -198,6 +220,7 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
             ideaId: postId,
             author_id: authUser.id,
             body_multiloc: commentBodyMultiloc,
+            anonymous: postAnonymously,
           },
           {
             onSuccess: (comment) => {
@@ -247,6 +270,7 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
             initiativeId: postId,
             author_id: authUser.id,
             body_multiloc: commentBodyMultiloc,
+            anonymous: postAnonymously,
           },
           {
             onSuccess: (comment) => {
@@ -380,6 +404,32 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
                 getTextareaRef={setRef}
               />
               <ButtonWrapper className={focused || processing ? 'visible' : ''}>
+                {allowAnonymousParticipation && (
+                  <Checkbox
+                    ml="8px"
+                    checked={postAnonymously}
+                    label={
+                      <Text mb="12px" fontSize="s" color="coolGrey600">
+                        {formatMessage(messages.postAnonymously)}
+                        <IconTooltip
+                          content={
+                            <Text color="white" fontSize="s" m="0">
+                              {formatMessage(
+                                messages.inputsAssociatedWithProfile
+                              )}
+                            </Text>
+                          }
+                          iconSize="16px"
+                          placement="top-start"
+                          display="inline"
+                          ml="4px"
+                          transform="translate(0,-1)"
+                        />
+                      </Text>
+                    }
+                    onChange={() => setPostAnonymously(!postAnonymously)}
+                  />
+                )}
                 <CancelButton
                   disabled={processing}
                   onClick={close}
@@ -401,6 +451,14 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
             </label>
           </Form>
         </FormContainer>
+        <AnonymousParticipationConfirmationModal
+          onConfirmAnonymousParticipation={() => {
+            setShowAnonymousConfirmationModal(false);
+            continueSubmission();
+          }}
+          showAnonymousConfirmationModal={showAnonymousConfirmationModal}
+          setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
+        />
       </Container>
     );
   }
