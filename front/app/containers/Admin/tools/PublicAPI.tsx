@@ -32,6 +32,7 @@ export const PublicAPI = () => {
             iconColor={colors.white}
             iconPos="right"
             width="fit-content"
+            disabled
           >
             <Text color="white">
               {formatMessage(messages.managePublicAPIKeys)}
