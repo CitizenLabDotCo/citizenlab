@@ -1094,7 +1094,8 @@ export function apiCreatePhase(
   description?: string,
   surveyUrl?: string,
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms',
-  maxBudget?: number
+  maxBudget?: number,
+  allow_anonymous_participation?: boolean
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1122,6 +1123,7 @@ export function apiCreatePhase(
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
           max_budget: maxBudget,
+          allow_anonymous_participation: allow_anonymous_participation,
         },
       },
     });
