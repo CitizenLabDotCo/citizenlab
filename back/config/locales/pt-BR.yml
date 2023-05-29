@@ -207,7 +207,7 @@ pt:
       status: 'Status'
       assignee_fullname: 'Atribuído'
       assignee_email: 'E-mail do assinante'
-    anonymous: 'Anonymous'
+    anonymous: 'Anônimo'
   form_builder:
     default_select_field:
       title: 'Sua pergunta'
