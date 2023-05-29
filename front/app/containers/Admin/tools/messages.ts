@@ -49,7 +49,7 @@ export default defineMessages({
     defaultMessage: 'Widget image',
   },
   publicAPITitle: {
-    id: 'app.containers.Admin.tools.widgetTitle',
+    id: 'app.containers.Admin.tools.publicAPITitle',
     defaultMessage: 'Public API Access',
   },
   publicAPIDescription: {

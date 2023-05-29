@@ -8,7 +8,7 @@ import HelmetIntl from 'components/HelmetIntl';
 export const ToolsIndex = () => (
   <>
     <Outlet id="app.containers.admin.tools" />
-    <HelmetIntl title={messages.tools} description={messages.tools} />
+    <HelmetIntl title={messages.tools} />
     <Box>
       <RouterOutlet />
     </Box>
