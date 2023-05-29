@@ -207,6 +207,7 @@ sr-Latn:
       status: 'Status'
       assignee_fullname: 'Dodeljeni korisnik'
       assignee_email: 'E-pošta dodeljenog korisnika'
+    anonymous: 'Анонимоус'
   form_builder:
     default_select_field:
       title: 'Vaše pitanje'
