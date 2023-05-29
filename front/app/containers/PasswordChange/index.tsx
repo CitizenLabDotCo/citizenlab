@@ -34,13 +34,13 @@ import GetAppConfiguration, {
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import useAuthUser from 'hooks/useAuthUser';
 import GoBackButton from 'components/UI/GoBackButton';
 import clHistory from 'utils/cl-router/history';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 import useChangePassword from 'api/users/useChangePassword';
+import { handleCLErrorsIsh } from 'utils/errorUtils';
 
 type FormValues = {
   current_password: string;
@@ -117,7 +117,7 @@ const ChangePassword = ({ tenant }: Props) => {
         apiEndpoint: [`${API_PATH}/users/me`],
       });
     } catch (error) {
-      handleHookFormSubmissionError(error, methods.setError);
+      handleCLErrorsIsh(error, methods.setError);
     }
   };
 
