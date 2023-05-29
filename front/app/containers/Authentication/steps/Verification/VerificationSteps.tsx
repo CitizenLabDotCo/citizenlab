@@ -58,7 +58,7 @@ const VerificationSteps = memo<Props>(({ context, onCompleted, onError }) => {
   const goToSuccessStep = useCallback(() => {
     if (!isNilOrError(authUser)) {
       streams.reset().then(async () => {
-        await invalidateQueryCache();
+        invalidateQueryCache();
         setActiveStep('success');
         setMethod(null);
       });

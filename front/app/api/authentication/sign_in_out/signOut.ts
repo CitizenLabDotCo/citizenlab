@@ -23,7 +23,7 @@ export default async function signOut() {
       window.location.href = url;
     } else {
       await resetMeQuery();
-      await invalidateQueryCache();
+      invalidateQueryCache();
       await streams.reset();
       const { pathname } = removeLocale(location.pathname);
 

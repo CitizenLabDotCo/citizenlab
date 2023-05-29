@@ -31,7 +31,7 @@ const useDeleteSelf = () => {
         window.location.href = url;
       } else {
         await streams.reset();
-        await invalidateQueryCache();
+        invalidateQueryCache();
       }
       clHistory.push('/');
 

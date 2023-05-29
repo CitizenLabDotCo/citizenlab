@@ -5,6 +5,6 @@ export const resetMeQuery = async () => {
   await queryClient.resetQueries({ queryKey: meKeys.all() });
 };
 
-export const invalidateQueryCache = async () => {
-  await queryClient.invalidateQueries();
+export const invalidateQueryCache = () => {
+  queryClient.invalidateQueries();
 };

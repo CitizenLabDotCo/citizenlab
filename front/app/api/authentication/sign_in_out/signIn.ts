@@ -25,7 +25,7 @@ export default async function signIn(parameters: Parameters) {
     const authUser = await getAuthUserAsync();
 
     await streams.reset();
-    await invalidateQueryCache();
+    invalidateQueryCache();
 
     return authUser;
   } catch (error) {
