@@ -27,13 +27,6 @@ const navItems: NavItem[] = [
     message: 'projects',
   },
   {
-    name: 'workshops',
-    link: '/admin/workshops',
-    iconName: 'sidebar-workshops',
-    message: 'workshops',
-    featureNames: ['workshops'],
-  },
-  {
     name: 'ideas',
     link: '/admin/ideas',
     iconName: 'sidebar-input-manager',
