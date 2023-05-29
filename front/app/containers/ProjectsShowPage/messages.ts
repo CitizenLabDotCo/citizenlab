@@ -401,13 +401,12 @@ export default defineMessages({
       'What do you think of this project? Join the discussion at {projectUrl} to make your voice heard!',
   },
   participantsTooltip: {
-    id: 'app.containers.Projects.participantsTooltip',
-    defaultMessage:
-      'There may be more participants who submitted the survey while not registered. They will not be counted here.',
+    id: 'app.containers.Projects.participantsTooltip2',
+    defaultMessage: 'This number also reflects anonymous survey submissions.',
   },
   surveySubmissionsTooltip: {
-    id: 'app.containers.Projects.surveySubmissionsTooltip2',
-    defaultMessage: 'Embedded survey submissions are not counted.',
+    id: 'app.containers.Projects.surveySubmissionsTooltip3',
+    defaultMessage: 'External survey submissions are not counted.',
   },
   surveySubmissions: {
     id: 'app.containers.Projects.surveySubmissions',

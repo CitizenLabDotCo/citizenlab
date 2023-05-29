@@ -17,6 +17,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 import usePhasesPermissions from 'api/phase_permissions/usePhasesPermissions';
 import useProjectPermissions from 'api/project_permissions/useProjectPermissions';
+import { isAdmin } from 'services/permissions/roles';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -147,6 +148,9 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const [shareModalOpened, setShareModalOpened] = useState(false);
   const surveySubmissionCount = useFormSubmissionCount({ projectId });
+  const isAdminUser = !isNilOrError(authUser)
+    ? isAdmin({ data: authUser })
+    : false;
 
   useEffect(() => {
     setCurrentPhase(
@@ -248,13 +252,17 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                       {hasSurveyWithAnyonePermissions(
                         projectPermissions,
                         phasesPermissions
-                      ) && (
-                        <IconTooltip
-                          placement="top-start"
-                          iconColor={colors.coolGrey300}
-                          content={formatMessage(messages.participantsTooltip)}
-                        />
-                      )}
+                      ) &&
+                        isAdminUser && (
+                          <IconTooltip
+                            placement="top-start"
+                            maxTooltipWidth={200}
+                            iconColor={colors.coolGrey300}
+                            content={formatMessage(
+                              messages.participantsTooltip
+                            )}
+                          />
+                        )}
                     </Box>
                   }
                 </ListItem>
@@ -352,29 +360,30 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'native_survey') ||
               currentPhase?.attributes.participation_method ===
-                'native_survey') && (
-              <Box>
-                <ListItem>
-                  <ListItemIcon ariaHidden name="chart-bar" />
-                  {!isNilOrError(surveySubmissionCount) &&
-                    surveySubmissionCount.totalSubmissions}
-                  <Box ml="4px">
-                    <FormattedMessage {...messages.surveySubmissions} />
-                  </Box>
-                  {hasEmbeddedSurvey(project.data, phases?.data) && (
-                    <Box mb="4px" ml="4px">
-                      <IconTooltip
-                        placement="top-start"
-                        iconColor={colors.coolGrey300}
-                        content={formatMessage(
-                          messages.surveySubmissionsTooltip
-                        )}
-                      />
+                'native_survey') &&
+              surveySubmissionCount && (
+                <Box>
+                  <ListItem>
+                    <ListItemIcon ariaHidden name="chart-bar" />
+                    {!isNilOrError(surveySubmissionCount) &&
+                      surveySubmissionCount.totalSubmissions}
+                    <Box ml="4px">
+                      <FormattedMessage {...messages.surveySubmissions} />
                     </Box>
-                  )}
-                </ListItem>
-              </Box>
-            )}
+                    {hasEmbeddedSurvey(project.data, phases?.data) && (
+                      <Box mb="4px" ml="4px">
+                        <IconTooltip
+                          placement="top-start"
+                          iconColor={colors.coolGrey300}
+                          content={formatMessage(
+                            messages.surveySubmissionsTooltip
+                          )}
+                        />
+                      </Box>
+                    )}
+                  </ListItem>
+                </Box>
+              )}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'budgeting') ||
               currentPhase?.attributes.participation_method === 'budgeting') &&
