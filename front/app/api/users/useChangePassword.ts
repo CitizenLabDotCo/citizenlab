@@ -8,7 +8,7 @@ export const changePassword = async ({
   ...requestBody
 }: IChangePassword) =>
   fetcher<IUser>({
-    path: `/users/${userId}`,
+    path: `/users/${userId}/update_password`,
     action: 'post',
     body: { user: { ...requestBody } },
   });
