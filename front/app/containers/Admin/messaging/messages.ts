@@ -256,6 +256,18 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.automatedEmails',
     defaultMessage: 'Automated emails',
   },
+  automatedEmailsRecipients: {
+    id: 'app.containers.Admin.emails.automatedEmailsRecipients',
+    defaultMessage: 'Users who will receive this email',
+  },
+  automatedEmailsTriggers: {
+    id: 'app.containers.Admin.emails.automatedEmailsTriggers',
+    defaultMessage: 'Event that triggers this email',
+  },
+  automatedEmailsDigest: {
+    id: 'app.containers.Admin.emails.automatedEmailsDigest',
+    defaultMessage: 'The email will only be sent if there is content',
+  },
   allUsers: {
     id: 'app.containers.Admin.emails.allUsers',
     defaultMessage: 'All users',

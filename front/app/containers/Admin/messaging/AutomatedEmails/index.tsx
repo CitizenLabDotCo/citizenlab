@@ -6,11 +6,11 @@ import {
   Box,
   Text,
   Title,
-  Icon,
+  IconTooltip,
   ListItem,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { colors } from 'utils/styleUtils';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
@@ -40,6 +40,7 @@ const AutomatedEmails = () => {
   });
   const { mutate: updateCampaign } = useUpdateCampaign();
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const [groupedCampaigns, setGroupedCampaigns] = useState<any[]>([]);
 
   const handleOnEnabledToggle = (campaign: ICampaignData) => () => {
@@ -93,7 +94,7 @@ const AutomatedEmails = () => {
     }
   }, [campaigns, localize]);
 
-  if (!campaigns) return null;
+  if (!campaigns?.pages) return null;
 
   return (
     <>
@@ -113,7 +114,12 @@ const AutomatedEmails = () => {
             </Title>
             {group.map(([content_type, campaigns]: [string, any[]], ii) => (
               <Box key={ii}>
-                <Title color="primary" variant="h4" mt="24px">
+                <Title
+                  color="primary"
+                  variant="h4"
+                  mt="24px"
+                  fontWeight="normal"
+                >
                   {content_type}
                 </Title>
                 {campaigns.map((campaign) => (
@@ -131,37 +137,59 @@ const AutomatedEmails = () => {
                         <Text color="grey800" m="0">
                           {campaign.campaign_description}
                         </Text>
-                        {campaign.recipient_segment && campaign.trigger && (
-                          <Box display="flex">
-                            <Box display="flex" justifyContent="center">
-                              <Icon
-                                name="user"
-                                fill={colors.coolGrey600}
-                                width={`${fontSizes.m}px`}
-                                m="-2px 4px 0 0"
-                              />
-                              <Text m="0" color="coolGrey600" fontSize="s">
-                                {campaign.recipient_segment}
-                              </Text>
+                        {campaign.recipient_segment &&
+                          (campaign.trigger || campaign.schedule) && (
+                            <Box display="flex">
+                              <Box display="flex" justifyContent="center">
+                                <IconTooltip
+                                  placement="top"
+                                  icon="user"
+                                  m="-2px 4px 0 0"
+                                  iconColor={colors.coolGrey600}
+                                  iconSize={`${fontSizes.m}px`}
+                                  content={formatMessage(
+                                    messages.automatedEmailsRecipients
+                                  )}
+                                />
+                                <Text m="0" color="coolGrey600" fontSize="s">
+                                  {campaign.recipient_segment}
+                                </Text>
+                              </Box>
+                              <Box ml="4px">·</Box>
+                              <Box
+                                display="flex"
+                                justifyContent="center"
+                                ml="4px"
+                              >
+                                <IconTooltip
+                                  placement="top"
+                                  icon="clock"
+                                  m="-2px 4px 0 0"
+                                  iconColor={colors.coolGrey600}
+                                  iconSize={`${fontSizes.m}px`}
+                                  content={formatMessage(
+                                    messages.automatedEmailsTriggers
+                                  )}
+                                />
+                                <Text m="0" color="coolGrey600" fontSize="s">
+                                  {campaign.trigger || campaign.schedule}
+                                </Text>
+                              </Box>
+                              {campaign.attributes.campaign_name.includes(
+                                'digest'
+                              ) && (
+                                <IconTooltip
+                                  placement="right-start"
+                                  m="-2px 0 0 5px"
+                                  iconColor={colors.coolGrey600}
+                                  iconSize={`${fontSizes.s}px`}
+                                  content={formatMessage(
+                                    messages.automatedEmailsDigest
+                                  )}
+                                />
+                              )}
                             </Box>
-                            <Box ml="4px">·</Box>
-                            <Box
-                              display="flex"
-                              justifyContent="center"
-                              ml="4px"
-                            >
-                              <Icon
-                                name="clock"
-                                fill={colors.coolGrey600}
-                                width={`${fontSizes.m}px`}
-                                m="-2px 4px 0 0"
-                              />
-                              <Text m="0" color="coolGrey600" fontSize="s">
-                                {campaign.trigger || campaign.schedule}
-                              </Text>
-                            </Box>
-                          </Box>
-                        )}
+                          )}
                       </Box>
                     </Box>
                   </ListItem>
