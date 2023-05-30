@@ -179,7 +179,7 @@ const AutomatedEmails = () => {
                           onClick={() => setExampleModalCampaignId(campaign.id)}
                           buttonStyle="secondary"
                         >
-                          View
+                          <FormattedMessage {...messages.viewExample} />
                         </Button>
                       </Box>
                     </Box>

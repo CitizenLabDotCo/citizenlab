@@ -12,6 +12,8 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // i18n
 import T from 'components/T';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../../messages';
 
 const StyledFrame = styled(Frame)`
   border-radius: ${(props) => props.theme.borderRadius};
@@ -33,13 +35,21 @@ const ExampleFrame = ({
     <Box>
       <Box mb="16px">
         <Text my="4px">
-          <b>Subject:</b> {example.attributes.subject}
+          <b>
+            <FormattedMessage {...messages.subject} />
+          </b>{' '}
+          {example.attributes.subject}
         </Text>
         <Text my="4px">
-          <b>From:</b> <T value={orgName} />
+          <b>
+            <FormattedMessage {...messages.from} />
+          </b>{' '}
+          <T value={orgName} />
         </Text>
         <Text my="4px">
-          <b>To:</b>{' '}
+          <b>
+            <FormattedMessage {...messages.to} />
+          </b>
           <T value={campaign?.data.attributes.recipient_segment_multiloc} />
         </Text>
       </Box>

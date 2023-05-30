@@ -264,6 +264,35 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.groups',
     defaultMessage: 'Groups',
   },
+  viewExample: {
+    id: 'app.containers.Admin.emails.viewExample',
+    defaultMessage: 'View',
+  },
+  noExampleYet: {
+    id: 'app.containers.Admin.emails.noExampleYet',
+    defaultMessage:
+      'We can’t show you an example email as no email of this type has been sent yet. As soon as one is sent you’ll be able to view it here.',
+  },
+  supportButtonLabel: {
+    id: 'app.containers.Admin.emails.supportButtonLabel',
+    defaultMessage: 'See examples on our support page',
+  },
+  sentToUsers: {
+    id: 'app.containers.Admin.emails.sentToUsers',
+    defaultMessage: 'These are emails sent to users',
+  },
+  subject: {
+    id: 'app.containers.Admin.emails.subject',
+    defaultMessage: 'Subject:',
+  },
+  from: {
+    id: 'app.containers.Admin.emails.from',
+    defaultMessage: 'From:',
+  },
+  to: {
+    id: 'app.containers.Admin.emails.to',
+    defaultMessage: 'To:',
+  },
   nameVariablesInfo: {
     id: 'app.containers.Admin.emails.nameVariablesInfo',
     defaultMessage:

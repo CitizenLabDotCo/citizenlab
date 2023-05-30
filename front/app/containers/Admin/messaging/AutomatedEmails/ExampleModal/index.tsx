@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 // i18n
 import T from 'components/T';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../../messages';
 
 // Components
 import Modal from 'components/UI/Modal';
@@ -85,7 +87,9 @@ const ExampleModal = ({
                 />
               </Box>
               <Box display="flex" w="100%" justifyContent="center">
-                <Text color="grey500">These are emails sent to users</Text>
+                <Text color="grey500">
+                  <FormattedMessage {...messages.sentToUsers} />
+                </Text>
               </Box>
             </Box>
           )}
