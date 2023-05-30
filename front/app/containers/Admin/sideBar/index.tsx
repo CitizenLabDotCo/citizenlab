@@ -17,7 +17,6 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { media, colors, stylingConsts } from 'utils/styleUtils';
-import { darkSkyBlue } from 'components/admin/NavigationTabs/Tab';
 
 // resources
 import GetIdeasCount, {
@@ -141,7 +140,7 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
               height={
                 isPagesAndMenuPage ? `${stylingConsts.menuHeight}px` : '60px'
               }
-              background={darkSkyBlue}
+              background={colors.teal500}
               mb="10px"
               display="flex"
               alignItems="center"

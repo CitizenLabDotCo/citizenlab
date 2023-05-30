@@ -15,7 +15,7 @@ export const Widget = () => {
           px="40px"
           w="320px"
           h="240px"
-          background="#7FBBCA"
+          background={colors.teal500}
           display="flex"
           alignItems="flex-end"
           justifyContent="center"

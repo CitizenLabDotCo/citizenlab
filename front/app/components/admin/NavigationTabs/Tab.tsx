@@ -8,8 +8,6 @@ import {
   activeBorderSize,
 } from './tabsStyleConstants';
 
-export const darkSkyBlue = '#7FBBCA'; // TODO: Use color from component library.
-
 const Tab = styled.div`
   ${({ active }: TabProps) => css`
     list-style: none;
@@ -48,7 +46,7 @@ const Tab = styled.div`
     }`}
 
     ${active &&
-    `border-color: ${darkSkyBlue};
+    `border-color: ${colors.teal500};
     // border-color: ${colors.primary}; TODO : set accent color in component library
 
     > * {

@@ -3,7 +3,6 @@ import { Box, Text, Badge, colors } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import apiImage from './apIllustration.png';
 
 export const PublicAPI = () => {
   const { formatMessage } = useIntl();
@@ -11,9 +10,7 @@ export const PublicAPI = () => {
   return (
     <Box>
       <Box background={colors.white} display="flex" p="20px">
-        <Box w="320px" h="240px">
-          <img src={apiImage} alt={formatMessage(messages.publicAPIImage)} />
-        </Box>
+        <Box w="320px" h="240px" background={colors.grey200} />
         <Box ml="32px" display="flex" flexDirection="column">
           <Box width="fit-content" mb="10px">
             <Badge className="inverse" color={colors.coolGrey300}>
