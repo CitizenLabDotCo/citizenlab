@@ -214,7 +214,7 @@ const ParticipationMethodPicker = ({
                   currentValue={participation_method}
                   value="document_annotation"
                   name="participationmethod"
-                  id={'participationmethod-document_annotation'}
+                  id="participationmethod-document_annotation"
                   label={
                     <LabelHeaderDescription
                       disabled={!documentAnnotationEnabled}
