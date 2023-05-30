@@ -18,9 +18,8 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isTopBarNavActive } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-import { isTopBarNavActive } from 'utils/helperUtils';
 
 // typings
 import { ITab } from 'typings';
