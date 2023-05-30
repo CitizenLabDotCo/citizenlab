@@ -18,7 +18,7 @@ import { trackPage } from 'utils/analytics';
 const ConsentManager = lazy(() => import('components/ConsentManager'));
 
 // components
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
 import ErrorBoundary from 'components/ErrorBoundary';
 import Navigate from 'utils/cl-router/Navigate';
 import Authentication from 'containers/Authentication';
@@ -94,7 +94,7 @@ const App = ({ children }: Props) => {
   const [isAppInitialized, setIsAppInitialized] = useState(false);
   const [previousPathname, setPreviousPathname] = useState<string | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
-  const { data: authUser } = useAuthUser();
+  const { data: authUser, isLoading } = useAuthUser();
 
   const [modalId, setModalId] = useState<string | null>(null);
   const [modalSlug, setModalSlug] = useState<string | null>(null);
@@ -331,6 +331,21 @@ const App = ({ children }: Props) => {
     !isInitiativeEditPage;
   const { pathname } = removeLocale(location.pathname);
   const showFrontOfficeNavbar = !isAdminPage || isPagesAndMenuPage;
+
+  // Ensure authUser is loaded before rendering the app
+  if (!authUser && isLoading) {
+    return (
+      <Box
+        display="flex"
+        w="100%"
+        h="100%"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Spinner />
+      </Box>
+    );
+  }
 
   return (
     <>
