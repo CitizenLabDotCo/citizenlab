@@ -21,7 +21,7 @@ const Tab: FC<Props & WithRouterProps & WrappedComponentProps> = ({
       onData({
         configuration: {
           name: 'statuses',
-          label: formatMessage(messages.tabStatuses),
+          label: formatMessage(messages.tabInputStatuses),
           url: '/admin/settings/statuses',
           active: location.pathname.includes('/admin/ideas/statuses'),
         },

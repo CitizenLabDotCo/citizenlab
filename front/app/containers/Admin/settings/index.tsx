@@ -54,7 +54,7 @@ const SettingsPage = () => {
     },
     {
       name: 'statuses',
-      label: formatMessage(messages.tabStatuses),
+      label: formatMessage(messages.tabInputStatuses),
       url: '/admin/settings/statuses',
     },
     {
