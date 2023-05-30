@@ -277,6 +277,11 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.supportButtonLabel',
     defaultMessage: 'See examples on our support page',
   },
+  supportButtonLink: {
+    id: 'app.containers.Admin.emails.supportButtonLink',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/2762939-what-are-automated-emails',
+  },
   sentToUsers: {
     id: 'app.containers.Admin.emails.sentToUsers',
     defaultMessage: 'These are emails sent to users',
