@@ -121,7 +121,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def custom_from_email
-    AppConfiguration.instance.settings.dig('core', 'from_email')
+    app_settings.core.from_email
   end
 
   def to_email
