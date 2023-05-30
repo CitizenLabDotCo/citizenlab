@@ -259,7 +259,6 @@ export interface OutletsPropertyMap {
     notification: TNotificationData;
   };
   'app.containers.HomePage.EventsWidget': Record<string, any>;
-  'app.containers.admin.tools': Record<string, any>;
   'app.components.SignUpIn.AuthProviders.ContainerStart': {
     flow: SignUpInFlow;
     onContinue: (authProvider: AuthProvider) => void;
