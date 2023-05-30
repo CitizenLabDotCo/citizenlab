@@ -114,7 +114,10 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def from_email
-    email = AppConfiguration.instance.settings.dig('core', 'from_email') || ENV.fetch('DEFAULT_FROM_EMAIL')
+    custom_email = AppConfiguration.instance.settings.dig('core', 'from_email')
+    ::Rails.application.config.action_mailer.mailgun_settings[:domain] = custom_email.split('@').last if custom_email
+
+    email = custom_email || ENV.fetch('DEFAULT_FROM_EMAIL')
 
     email_address_with_name(email, organization_name)
   end
