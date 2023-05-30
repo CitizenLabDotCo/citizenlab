@@ -208,7 +208,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Hvad skal et input hedde?",
   "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Høringssvar",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Angiv linket til dit Konveio-dokument her. Læs vores {supportArticleLink} for mere information om opsætning af Konveio.",
-  "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "støtteartikel",
+  "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "supportartikel",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL": "https://support.citizenlab.co/en/articles/7946532-embedding-konveio-pdf-documents-for-collecting-feedback",
   "app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired": "Der kræves et maksimumsbudget",
   "app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError": "Minimumsbudgettet kan ikke være større end maksimumsbudgettet",
