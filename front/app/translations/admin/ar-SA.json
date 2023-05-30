@@ -694,7 +694,6 @@
   "app.containers.Admin.emails.status": "حالة",
   "app.containers.Admin.emails.toAllUsers": "هل ترغب في إرسال هذه الرسالة الإلكترونية إلى جميع المستخدمين؟",
   "app.containers.Admin.ideas.import": "استيراد",
-  "app.containers.Admin.ideas.tabStatuses": "الحالات",
   "app.containers.Admin.initiatives.addNewProposal": "إضافة مقترح",
   "app.containers.Admin.initiatives.enableProposals": "تمكين المقترحات",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "تقديم المُقترح",

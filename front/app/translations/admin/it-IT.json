@@ -635,7 +635,6 @@
   "app.containers.Admin.emails.statsButton": "Statistics",
   "app.containers.Admin.emails.toAllUsers": "Do you want to send this email to all registered users?",
   "app.containers.Admin.ideas.import": "Import",
-  "app.containers.Admin.ideas.tabStatuses": "Statuses",
   "app.containers.Admin.initiatives.addNewProposal": "Add a proposal",
   "app.containers.Admin.initiatives.enableProposals": "Abilita proposte",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Proposal submission",

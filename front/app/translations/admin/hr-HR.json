@@ -694,7 +694,6 @@
   "app.containers.Admin.emails.status": "Status",
   "app.containers.Admin.emails.toAllUsers": "Želite li poslati ovu e-poruku svim registriranim korisnicima?",
   "app.containers.Admin.ideas.import": "Uvoz",
-  "app.containers.Admin.ideas.tabStatuses": "Statusi",
   "app.containers.Admin.initiatives.addNewProposal": "Dodajte prijedlog",
   "app.containers.Admin.initiatives.enableProposals": "Omogući prijedloge",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Slanje prijedloga",

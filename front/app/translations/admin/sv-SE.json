@@ -694,7 +694,6 @@
   "app.containers.Admin.emails.status": "Status",
   "app.containers.Admin.emails.toAllUsers": "Vill du skicka det här e-postmeddelandet till alla registrerade användare?",
   "app.containers.Admin.ideas.import": "Importera",
-  "app.containers.Admin.ideas.tabStatuses": "Statusar",
   "app.containers.Admin.initiatives.addNewProposal": "Lägg till ett förslag",
   "app.containers.Admin.initiatives.enableProposals": "Aktivera förslag",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Inlämning av förslag",

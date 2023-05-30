@@ -694,7 +694,6 @@
   "app.containers.Admin.emails.status": "Status",
   "app.containers.Admin.emails.toAllUsers": "Czy chcesz wysłać tę wiadomość do wszystkich użytkowników?",
   "app.containers.Admin.ideas.import": "Import",
-  "app.containers.Admin.ideas.tabStatuses": "Statusy",
   "app.containers.Admin.initiatives.addNewProposal": "Dodaj propozycję",
   "app.containers.Admin.initiatives.enableProposals": "Włącz oddolne propozycje",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Składanie wniosków",

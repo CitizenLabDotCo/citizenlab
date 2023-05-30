@@ -694,7 +694,6 @@
   "app.containers.Admin.emails.status": "Status",
   "app.containers.Admin.emails.toAllUsers": "Wil je deze e-mail naar alle gebruikers sturen?",
   "app.containers.Admin.ideas.import": "Importeren",
-  "app.containers.Admin.ideas.tabStatuses": "Statussen",
   "app.containers.Admin.initiatives.addNewProposal": "Een initiatief toevoegen",
   "app.containers.Admin.initiatives.enableProposals": "Voorstellen inschakelen",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Indienen van een voorstel",

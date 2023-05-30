@@ -635,7 +635,6 @@
   "app.containers.Admin.emails.statsButton": "Στατιστικά στοιχεία",
   "app.containers.Admin.emails.toAllUsers": "Θέλετε να στείλετε αυτό το μήνυμα ηλεκτρονικού ταχυδρομείου σε όλους τους εγγεγραμμένους χρήστες;",
   "app.containers.Admin.ideas.import": "Εισαγωγή",
-  "app.containers.Admin.ideas.tabStatuses": "Καταστάσεις",
   "app.containers.Admin.initiatives.addNewProposal": "Προσθήκη πρότασης",
   "app.containers.Admin.initiatives.enableProposals": "Ενεργοποίηση προτάσεων",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Υποβολή πρότασης",

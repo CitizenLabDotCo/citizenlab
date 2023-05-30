@@ -635,7 +635,6 @@
   "app.containers.Admin.emails.statsButton": "Estadístiques",
   "app.containers.Admin.emails.toAllUsers": "Voleu enviar aquest correu electrònic a tots els usuaris registrats?",
   "app.containers.Admin.ideas.import": "Importar",
-  "app.containers.Admin.ideas.tabStatuses": "Estats",
   "app.containers.Admin.initiatives.addNewProposal": "Afegir una proposta",
   "app.containers.Admin.initiatives.enableProposals": "Habilitar les propostes",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Presentació de la proposta",

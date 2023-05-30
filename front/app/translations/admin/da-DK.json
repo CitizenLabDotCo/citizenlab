@@ -694,7 +694,6 @@
   "app.containers.Admin.emails.status": "Status",
   "app.containers.Admin.emails.toAllUsers": "Ønsker du at sende denne e-mail til alle registrerede brugere?",
   "app.containers.Admin.ideas.import": "Import",
-  "app.containers.Admin.ideas.tabStatuses": "Statusser",
   "app.containers.Admin.initiatives.addNewProposal": "Tilføj et forslag",
   "app.containers.Admin.initiatives.enableProposals": "Aktiver borgerforslag",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Afsendelse af forslag",

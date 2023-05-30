@@ -694,7 +694,6 @@
   "app.containers.Admin.emails.status": "Status",
   "app.containers.Admin.emails.toAllUsers": "Do you want to send this email to all registered users?",
   "app.containers.Admin.ideas.import": "Import",
-  "app.containers.Admin.ideas.tabStatuses": "Statuses",
   "app.containers.Admin.initiatives.addNewProposal": "{tenantName, select, stirlingcouncil {Add a petition} other {Add a proposal}}",
   "app.containers.Admin.initiatives.enableProposals": "Enable proposals",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Proposal submission",

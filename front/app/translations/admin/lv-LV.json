@@ -694,7 +694,6 @@
   "app.containers.Admin.emails.status": "Statuss",
   "app.containers.Admin.emails.toAllUsers": "Vai vēlaties nosūtīt šo e-pastu visiem reģistrētajiem lietotājiem?",
   "app.containers.Admin.ideas.import": "Importēt",
-  "app.containers.Admin.ideas.tabStatuses": "Statusi",
   "app.containers.Admin.initiatives.addNewProposal": "Pievienot priekšlikumu",
   "app.containers.Admin.initiatives.enableProposals": "Iespēja iesniegt priekšlikumus",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Priekšlikuma iesniegšana",

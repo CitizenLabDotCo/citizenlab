@@ -635,7 +635,6 @@
   "app.containers.Admin.emails.statsButton": "Kisitsisitigut nalunaarsukkat",
   "app.containers.Admin.emails.toAllUsers": "Atuisunut nalunaarsukkanut tamanut e-maili una nassiutissaviuk?",
   "app.containers.Admin.ideas.import": "Import",
-  "app.containers.Admin.ideas.tabStatuses": "Statusit",
   "app.containers.Admin.initiatives.addNewProposal": "Siunnersuummik ilanngussigit",
   "app.containers.Admin.initiatives.enableProposals": "Enable proposals",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Proposal submission",
