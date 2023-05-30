@@ -167,6 +167,12 @@
             "description": "What a tag unit should be called on this platform (e.g., department, theme, etc.). Input the singular form here with all lowercase letters. If left blank, this field defaults to 'tag'.",
             "$ref": "#/definitions/multiloc_string"
           },
+          "from_email": {
+            "title": "From email",
+            "description": "The email used in the from field when users receive emails from automated campaigns.",
+            "type": "string",
+            "format": "email"
+          },
           "reply_to_email": {
             "title": "Reply-to email",
             "description": "The email used in the reply-to field when users receive emails from automated campaigns.",
