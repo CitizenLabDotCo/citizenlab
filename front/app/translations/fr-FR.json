@@ -1279,7 +1279,7 @@
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.completeRegistrationLinkText": "compléter l'inscription",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.logInLinkText": "se connecter",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.signUpLinkText": "s'inscrire",
-  "app.containers.ProjectsShowPage.shared.ParticipationPermission.verificationLinkText": "Vérifie ton compte maintenant.",
+  "app.containers.ProjectsShowPage.shared.ParticipationPermission.verificationLinkText": "Vérifiez votre compte maintenant.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledMaybeNotPermitted": "Seuls certains utilisateurs peuvent consulter ce document. Tu peux d'abord consulter {signUpLink} ou {logInLink} .",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotActivePhase1": "Ce document ne peut être consulté que lorsque cette phase est active.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotActiveUser": "Tu peux consulter le document à l'adresse {completeRegistrationLink} .",
