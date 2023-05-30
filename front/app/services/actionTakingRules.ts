@@ -1,11 +1,10 @@
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { IProjectData, PostingDisabledReason } from 'api/projects/types';
-import { GetPhaseChildProps } from 'resources/GetPhase';
 import { isNilOrError } from 'utils/helperUtils';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 import { TAuthUser } from 'hooks/useAuthUser';
-import { TPhase } from 'hooks/usePhase';
+import { IPhaseData } from 'api/phases/types';
 
 interface ActionPermissionHide {
   show: false;
@@ -48,7 +47,8 @@ export type IIdeaPostingDisabledReason =
   | 'projectInactive'
   | 'notActivePhase'
   | 'maybeNotPermitted'
-  | 'futureEnabled';
+  | 'futureEnabled'
+  | 'notInGroup';
 
 // When disabled but user might get access, here are the next steps for this user
 export type AuthenticationRequirements =
@@ -70,6 +70,11 @@ const ideaPostingDisabledReason = (
       return {
         disabledReason: null,
         authenticationRequirements: 'complete_registration',
+      };
+    case 'not_in_group':
+      return {
+        disabledReason: 'notInGroup',
+        authenticationRequirements: null,
       };
     case 'not_verified':
       return signedIn
@@ -131,7 +136,7 @@ export const getIdeaPostingRules = ({
   authUser,
 }: {
   project: IProjectData | null | undefined;
-  phase: GetPhaseChildProps | TPhase;
+  phase: IPhaseData | undefined;
   authUser: GetAuthUserChildProps | TAuthUser;
 }): ActionPermission<IIdeaPostingDisabledReason> => {
   const signedIn = !isNilOrError(authUser);
@@ -152,7 +157,7 @@ export const getIdeaPostingRules = ({
     }
 
     // timeline
-    if (!isNilOrError(phase)) {
+    if (phase) {
       // not an enabled ideation phase
       if (
         !(
@@ -188,10 +193,7 @@ export const getIdeaPostingRules = ({
 
     // continuous, not an enabled ideation project
     // TODO: Will need to update this section after we add new permissions in back office in i5
-    if (
-      isNilOrError(phase) &&
-      project.attributes.participation_method === 'native_survey'
-    ) {
+    if (!phase && project.attributes.participation_method === 'native_survey') {
       if (!project.attributes.posting_enabled) {
         return {
           show: true,
@@ -230,7 +232,7 @@ export const getIdeaPostingRules = ({
     }
 
     if (
-      isNilOrError(phase) &&
+      !phase &&
       !(
         project.attributes.participation_method === 'ideation' &&
         project.attributes.posting_enabled &&

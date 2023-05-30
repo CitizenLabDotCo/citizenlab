@@ -1,5 +1,5 @@
 import { IAppConfigurationData } from 'api/app_configuration/types';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 export interface IDestinationMap {}
 

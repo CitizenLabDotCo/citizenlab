@@ -13,7 +13,7 @@ import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 
 // resources
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 
 const StyledDiv = styled.div`
   margin-bottom: 30px;
@@ -22,7 +22,7 @@ const StyledDiv = styled.div`
 const AdminProjectIdeas = () => {
   const { projectId } = useParams() as { projectId: string };
   const { data: project } = useProjectById(projectId);
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
 
   const defaultTimelineProjectVisibleFilterMenu = 'phases';
   const defaultContinuousProjectVisibleFilterMenu = 'statuses';
@@ -51,7 +51,7 @@ const AdminProjectIdeas = () => {
         <PostManager
           type="ProjectIdeas"
           projectId={project.data.id}
-          phases={phases}
+          phases={phases?.data}
           visibleFilterMenus={
             project.data.attributes.process_type === 'timeline'
               ? timelineProjectVisibleFilterMenus

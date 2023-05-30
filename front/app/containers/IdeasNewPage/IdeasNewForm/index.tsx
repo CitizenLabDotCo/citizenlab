@@ -6,8 +6,8 @@ import { canModerateProject } from 'services/permissions/rules/projectPermission
 import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
-import usePhases, { TPhases } from 'hooks/usePhases';
-import usePhase, { TPhase } from 'hooks/usePhase';
+import usePhases from 'api/phases/usePhases';
+import usePhase from 'api/phases/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
 import { useParams, useSearchParams } from 'react-router-dom';
 
@@ -25,17 +25,18 @@ import { geocode, reverseGeocode } from 'utils/locationTools';
 // for getting inital state from previous page
 import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { getCurrentPhase } from 'services/phases';
+import { getCurrentPhase } from 'api/phases/utils';
 import {
   ParticipationMethodConfig,
   getMethodConfig,
 } from 'utils/participationMethodUtils';
 import { getLocationGeojson } from '../utils';
 import { IProject } from 'api/projects/types';
+import { IPhases, IPhaseData } from 'api/phases/types';
 
 const getConfig = (
-  phaseFromUrl: TPhase,
-  phases: TPhases,
+  phaseFromUrl: IPhaseData | undefined,
+  phases: IPhases | undefined,
   project: IProject | undefined
 ) => {
   let config: ParticipationMethodConfig | null | undefined = null;
@@ -44,8 +45,8 @@ const getConfig = (
     config = getMethodConfig(phaseFromUrl.attributes.participation_method);
   } else {
     if (phases && project?.data.attributes.process_type === 'timeline') {
-      const participationMethod =
-        getCurrentPhase(phases)?.attributes.participation_method;
+      const participationMethod = getCurrentPhase(phases?.data)?.attributes
+        .participation_method;
       if (!isNilOrError(participationMethod)) {
         config = getMethodConfig(participationMethod);
       }
@@ -66,7 +67,7 @@ const IdeasNewPageWithJSONForm = () => {
   const [queryParams] = useSearchParams();
   const phaseId = queryParams.get('phase_id');
 
-  const phases = usePhases(project?.data.id);
+  const { data: phases } = usePhases(project?.data.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
     projectId: project?.data.id,
     phaseId,
@@ -131,14 +132,11 @@ const IdeasNewPageWithJSONForm = () => {
           const ideaId = idea.data.id;
 
           // Check ParticipationMethodConfig for form submission action
-          if (
-            project?.data.attributes.process_type === 'timeline' &&
-            !isNilOrError(phases)
-          ) {
+          if (project?.data.attributes.process_type === 'timeline' && phases) {
             // Check if URL contains specific phase_id
             const phaseUsed =
-              phases.find((phase) => phase.id === phaseId) ||
-              getCurrentPhase(phases);
+              phases.data.find((phase) => phase.id === phaseId) ||
+              getCurrentPhase(phases.data);
             if (!isNilOrError(phaseUsed)) {
               getMethodConfig(
                 phaseUsed?.attributes?.participation_method
@@ -192,8 +190,8 @@ const IdeasNewPageWithJSONForm = () => {
   );
 
   // get participation method config
-  const phaseFromUrl = usePhase(phaseId);
-  const config = getConfig(phaseFromUrl, phases, project);
+  const { data: phaseFromUrl } = usePhase(phaseId);
+  const config = getConfig(phaseFromUrl?.data, phases, project);
 
   if (isNilOrError(project) || !config) {
     return null;
@@ -224,8 +222,8 @@ const IdeasNewPageWithJSONForm = () => {
                   config.getFormTitle ? (
                     config.getFormTitle({
                       project: project.data,
-                      phases,
-                      phaseFromUrl,
+                      phases: phases?.data,
+                      phaseFromUrl: phaseFromUrl?.data,
                     })
                   ) : (
                     <></>

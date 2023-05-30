@@ -50,10 +50,6 @@ module EmailCampaigns
       users_scope.where(id: activity.item.recipient.id)
     end
 
-    def self.category
-      'mention'
-    end
-
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.registered_users'
     end
@@ -63,7 +59,7 @@ module EmailCampaigns
     end
 
     def self.content_type_multiloc_key
-      'email_campaigns.admin_labels.content_type.comments'
+      'email_campaigns.admin_labels.content_type.general'
     end
 
     def self.trigger_multiloc_key

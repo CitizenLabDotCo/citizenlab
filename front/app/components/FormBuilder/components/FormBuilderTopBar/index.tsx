@@ -3,7 +3,7 @@ import React from 'react';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -57,13 +57,13 @@ const FormBuilderTopBar = ({
   };
   const { data: project } = useProjectById(projectId);
 
-  const phase = usePhase(phaseId || null);
+  const { data: phase } = usePhase(phaseId || null);
 
   if (!project) {
     return null;
   }
 
-  const isPostingEnabled = getIsPostingEnabled(project.data, phase);
+  const isPostingEnabled = getIsPostingEnabled(project.data, phase?.data);
   let viewFormLink = phaseId
     ? `/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`
     : `/projects/${project.data.attributes.slug}/ideas/new`;

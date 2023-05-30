@@ -5,7 +5,7 @@ import { IParticipationContextType } from 'typings';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 
 // resources
 import GetPollQuestions, {
@@ -23,6 +23,7 @@ import styled from 'styled-components';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import globalMessages from 'utils/messages';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -65,16 +66,17 @@ const disabledMessages = {
   not_verified: messages.pollDisabledNotVerified,
   missing_data: messages.pollDisabledNotActiveUser,
   not_signed_in: messages.pollDisabledMaybeNotPermitted,
+  not_in_group: globalMessages.notInGroup,
 } as const;
 
 export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
   const { data: project } = useProjectById(projectId);
-  const phase = usePhase(phaseId);
+  const { data: phase } = usePhase(phaseId);
 
   if (
     isNilOrError(pollQuestions) ||
     !project ||
-    !(type === 'phase' ? !isNilOrError(phase) : true)
+    !(type === 'phase' ? phase : true)
   ) {
     return null;
   }

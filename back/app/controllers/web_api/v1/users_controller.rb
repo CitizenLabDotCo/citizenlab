@@ -243,7 +243,7 @@ class WebApi::V1::UsersController < ApplicationController
     @user = current_user
     authorize @user
     if @user.no_password? || @user.authenticate(params[:user][:current_password])
-      if @user.update(password: params[:user][:new_password])
+      if @user.update(password: params[:user][:password])
         render json: WebApi::V1::UserSerializer.new(
           @user,
           params: jsonapi_serializer_params

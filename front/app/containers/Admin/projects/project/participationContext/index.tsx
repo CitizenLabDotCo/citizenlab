@@ -12,7 +12,7 @@ import { Container, StyledSection } from './components/styling';
 
 // services
 import { IProject } from 'api/projects/types';
-import { IPhase } from 'services/phases';
+import { IPhase } from 'api/phases/types';
 import {
   ParticipationMethod,
   TSurveyService,

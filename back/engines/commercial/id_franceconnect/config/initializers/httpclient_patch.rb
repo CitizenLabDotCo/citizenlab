@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'httpclient'
+
 # Copied from https://gitlab.com/gitlab-org/gitlab-foss/-/merge_requests/30749
 
 # By default, httpclient (and hence anything that uses rack-oauth2)

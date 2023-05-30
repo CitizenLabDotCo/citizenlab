@@ -4,7 +4,7 @@ import React, { memo, FormEvent, useState } from 'react';
 import Button from 'components/UI/Button';
 
 // services
-import { getLatestRelevantPhase } from 'services/phases';
+import { getLatestRelevantPhase } from 'api/phases/utils';
 import { addBasket, updateBasket } from 'services/baskets';
 
 // hooks
@@ -12,7 +12,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'hooks/useBasket';
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -99,7 +99,7 @@ const AssignBudgetControl = memo(
     const authUser = useAuthUser();
     const { data: idea } = useIdeaById(ideaId);
     const { data: project } = useProjectById(projectId);
-    const phases = usePhases(projectId);
+    const { data: phases } = usePhases(projectId);
 
     const isContinuousProject =
       project?.data.attributes.process_type === 'continuous';
@@ -108,8 +108,8 @@ const AssignBudgetControl = memo(
       ? idea.data.relationships?.phases?.data?.map((item) => item.id)
       : null;
 
-    const ideaPhases = !isNilOrError(phases)
-      ? phases?.filter(
+    const ideaPhases = phases
+      ? phases.data.filter(
           (phase) =>
             Array.isArray(ideaPhaseIds) && ideaPhaseIds.includes(phase.id)
         )

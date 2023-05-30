@@ -24,30 +24,27 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { IUserData } from 'services/users';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
+import { IUserData } from 'api/users/types';
 import useBlockUser from 'api/blocked_users/useBlockUser';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 type Props = {
   open: boolean;
   setClose: () => void;
   user: IUserData;
-  tenant: GetAppConfigurationChildProps;
 };
 
 type FormValues = {
   reason: string;
 };
 
-const BlockUserModal = ({ open, setClose, user, tenant }: Props) => {
+const BlockUserModal = ({ open, setClose, user }: Props) => {
   const [success, setSuccess] = useState(false);
   const [updatedUser, setUpdatedUser] = useState<IUserData | undefined>();
+  const { data: appConfiguration } = useAppConfiguration();
 
   const { mutate: blockUser } = useBlockUser();
 
@@ -82,11 +79,11 @@ const BlockUserModal = ({ open, setClose, user, tenant }: Props) => {
   };
 
   const blockingDuration =
-    (!isNilOrError(tenant) &&
-      tenant.attributes.settings.user_blocking?.duration) ||
+    (appConfiguration &&
+      appConfiguration.data.attributes.settings.user_blocking?.duration) ||
     90;
 
-  if (success && !isNilOrError(updatedUser)) {
+  if (success && updatedUser) {
     return (
       <SuccessfulUserBlock
         name={`${user.attributes.first_name} ${user.attributes.last_name}`}
@@ -152,8 +149,4 @@ const BlockUserModal = ({ open, setClose, user, tenant }: Props) => {
   );
 };
 
-export default (InputProps) => (
-  <GetAppConfiguration>
-    {(tenant) => <BlockUserModal tenant={tenant} {...InputProps} />}
-  </GetAppConfiguration>
-);
+export default BlockUserModal;

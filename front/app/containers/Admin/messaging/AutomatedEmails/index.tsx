@@ -1,80 +1,75 @@
 import React from 'react';
 import { isUndefined } from 'lodash-es';
-import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
-import { ICampaignData, updateCampaign } from 'services/campaigns';
-import { isNilOrError } from 'utils/helperUtils';
+import { ICampaignData } from 'services/campaigns';
 import T from 'components/T';
-import { Toggle } from '@citizenlab/cl2-component-library';
+import { Toggle, Box, Text, Title } from '@citizenlab/cl2-component-library';
 import {
   List as AutomatedEmailsList,
   Row,
   TextCell,
 } from 'components/admin/ResourceList';
-import Warning from 'components/UI/Warning';
-import styled from 'styled-components';
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import { colors } from 'utils/styleUtils';
+import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
+import useCampaigns from 'api/campaigns/useCampaigns';
 
-const StyledWarning = styled(Warning)`
-  max-width: 600px;
-  margin-bottom: 30px;
-`;
+const AutomatedEmails = () => {
+  const { data: campaigns } = useCampaigns({
+    withoutCampaignNames: ['manual'],
+    pageSize: 250,
+  });
+  const { mutate: updateCampaign } = useUpdateCampaign();
 
-type DataProps = GetCampaignsChildProps;
+  if (!campaigns?.pages) return null;
 
-type Props = DataProps;
-
-class AutomatedCampaigns extends React.PureComponent<
-  Props & WrappedComponentProps
-> {
-  handleOnEnabledToggle = (campaign: ICampaignData) => () => {
-    updateCampaign(campaign.id, {
-      enabled: !campaign.attributes.enabled,
+  const handleOnEnabledToggle = (campaign: ICampaignData) => () => {
+    updateCampaign({
+      id: campaign.id,
+      campaign: {
+        enabled: !campaign.attributes.enabled,
+      },
     });
   };
 
-  render() {
-    const { campaigns } = this.props;
-
-    if (isNilOrError(campaigns)) return null;
-
-    return (
-      <>
-        <StyledWarning
-          text={<FormattedMessage {...messages.automatedEmailCampaignsInfo} />}
-        />
+  return (
+    <>
+      <Box mb="28px">
+        <Title color="primary">
+          <FormattedMessage {...messages.automatedEmails} />
+        </Title>
+        <Text color="coolGrey600">
+          <FormattedMessage {...messages.automatedEmailCampaignsInfo} />
+        </Text>
+      </Box>
+      <Box background={colors.white} p="40px">
         <AutomatedEmailsList>
-          {campaigns.map((campaign) => (
-            <Row key={campaign.id}>
-              <Toggle
-                disabled={isUndefined(campaign.attributes.enabled)}
-                checked={
-                  isUndefined(campaign.attributes.enabled) ||
-                  campaign.attributes.enabled
-                }
-                onChange={this.handleOnEnabledToggle(campaign)}
-              />
-              <TextCell className="expand">
-                <T
-                  value={
-                    campaign.attributes.admin_campaign_description_multiloc
+          {campaigns.pages
+            .flatMap((page) => page.data)
+
+            .map((campaign) => (
+              <Row key={campaign.id}>
+                <Toggle
+                  disabled={isUndefined(campaign.attributes.enabled)}
+                  checked={
+                    isUndefined(campaign.attributes.enabled) ||
+                    campaign.attributes.enabled
                   }
+                  onChange={handleOnEnabledToggle(campaign)}
                 />
-              </TextCell>
-            </Row>
-          ))}
+                <TextCell className="expand">
+                  <T
+                    value={
+                      campaign.attributes.admin_campaign_description_multiloc
+                    }
+                  />
+                </TextCell>
+              </Row>
+            ))}
         </AutomatedEmailsList>
-      </>
-    );
-  }
-}
+      </Box>
+    </>
+  );
+};
 
-const AutomatedCampaignsWithIntl = injectIntl(AutomatedCampaigns);
-
-export default () => (
-  <GetCampaigns withoutCampaignNames={['manual']} pageSize={250}>
-    {(campaigns) => <AutomatedCampaignsWithIntl {...campaigns} />}
-  </GetCampaigns>
-);
+export default AutomatedEmails;

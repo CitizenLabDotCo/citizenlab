@@ -38,7 +38,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useBasket from 'hooks/useBasket';
 import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 import useLocale from 'hooks/useLocale';
 
 const Container = styled.div`
@@ -277,7 +277,7 @@ const PBExpenses = ({
   const { data: project } = useProjectById(
     participationContextType === 'project' ? participationContextId : null
   );
-  const phase = usePhase(
+  const { data: phase } = usePhase(
     participationContextType === 'phase' ? participationContextId : null
   );
   function getBasketId() {
@@ -286,8 +286,8 @@ const PBExpenses = ({
     if (participationContextType === 'project') {
       basketId = project?.data.relationships.user_basket?.data?.id ?? null;
     } else {
-      basketId = !isNilOrError(phase)
-        ? phase.relationships.user_basket?.data?.id || null
+      basketId = phase
+        ? phase?.data.relationships.user_basket?.data?.id || null
         : null;
     }
 
@@ -314,7 +314,7 @@ const PBExpenses = ({
     !isNilOrError(locale) &&
     !isNilOrError(appConfiguration) &&
     ((participationContextType === 'project' && !isNilOrError(project)) ||
-      (participationContextType === 'phase' && !isNilOrError(phase)))
+      (participationContextType === 'phase' && phase))
   ) {
     const currency = appConfiguration.data.attributes.settings.core.currency;
     const spentBudget = !isNilOrError(basket)
@@ -343,12 +343,12 @@ const PBExpenses = ({
       if (typeof project.data.attributes.max_budget === 'number') {
         maxBudget = project.data.attributes.max_budget;
       }
-    } else if (participationContextType === 'phase' && !isNilOrError(phase)) {
-      if (typeof phase.attributes.min_budget === 'number') {
-        minBudget = phase.attributes.min_budget;
+    } else if (participationContextType === 'phase' && phase) {
+      if (typeof phase.data.attributes.min_budget === 'number') {
+        minBudget = phase.data.attributes.min_budget;
       }
-      if (typeof phase.attributes.max_budget === 'number') {
-        maxBudget = phase.attributes.max_budget;
+      if (typeof phase.data.attributes.max_budget === 'number') {
+        maxBudget = phase.data.attributes.max_budget;
       }
     }
 

@@ -11,7 +11,6 @@ import settingsRoutes from './settings/routes';
 import createAdminMessagingRoutes from './messaging/routes';
 import ideasRoutes from './ideas/routes';
 import pagesAndMenuRoutes from './pagesAndMenu/routes';
-import customFieldRoutes from './settings/registration/CustomFieldRoutes/routes';
 import projectFoldersRoutes from './projectFolders/routes';
 import reportingRoutes from './reporting/routes';
 
@@ -123,7 +122,6 @@ const createAdminRoutes = () => {
       invitationsRoutes(),
       createAdminMessagingRoutes(),
       ideasRoutes(),
-      customFieldRoutes(),
       projectFoldersRoutes(),
       reportingRoutes(),
       {
