@@ -105,6 +105,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.signOut',
     defaultMessage: 'Sign out',
   },
+  yourProfile: {
+    id: 'app.containers.AdminPage.SideBar.user.yourProfile',
+    defaultMessage: 'Your profile',
+  },
   administrator: {
     id: 'app.containers.AdminPage.SideBar.administrator',
     defaultMessage: 'Administrator',
