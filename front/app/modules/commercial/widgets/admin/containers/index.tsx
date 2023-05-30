@@ -11,11 +11,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 const AdminSettingsWidgets = () => {
   const location = useLocation();
+  const hasGoBackLink = location.key !== 'default';
 
   const goBack = () => {
     clHistory.goBack();
   };
-  const hasGoBackLink = location.key !== 'default';
 
   return (
     <>
