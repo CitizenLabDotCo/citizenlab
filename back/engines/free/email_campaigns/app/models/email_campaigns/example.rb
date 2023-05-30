@@ -15,7 +15,12 @@
 #
 # Indexes
 #
-#  index_email_campaigns_examples_on_campaign_id  (campaign_id)
+#  index_email_campaigns_examples_on_campaign_id   (campaign_id)
+#  index_email_campaigns_examples_on_recipient_id  (recipient_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (recipient_id => users.id)
 #
 module EmailCampaigns
   class Example < ApplicationRecord

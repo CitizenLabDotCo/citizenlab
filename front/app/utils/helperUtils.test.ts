@@ -3,6 +3,7 @@ import {
   isEmptyMultiloc,
   isNonEmptyString,
   isPage,
+  isTopBarNavActive,
 } from './helperUtils';
 
 describe('isNilOrError', () => {
@@ -101,5 +102,39 @@ describe('isPage', () => {
         isPage('idea_edit', '/en/ideas/edit-this-is-an-example-idea')
       ).toBe(false);
     });
+  });
+});
+
+describe('isTopBarNavActive', () => {
+  it('returns true when pathname and tabUrl end with basePath', () => {
+    const basePath = '/dashboard';
+    const pathname = '/user/dashboard';
+    const tabUrl = '/user/dashboard';
+    const result = isTopBarNavActive(basePath, pathname, tabUrl);
+    expect(result).toBe(true);
+  });
+
+  it('returns false when tabUrl but not pathname ends with basePath', () => {
+    const basePath = '/dashboard';
+    const pathname = '/user/profile';
+    const tabUrl = '/user/dashboard';
+    const result = isTopBarNavActive(basePath, pathname, tabUrl);
+    expect(result).toBe(false);
+  });
+
+  it('returns true when pathname includes tabUrl but tabUrl does not end with basePath', () => {
+    const basePath = '/dashboard';
+    const pathname = '/user/dashboard/edit/34';
+    const tabUrl = '/dashboard/edit';
+    const result = isTopBarNavActive(basePath, pathname, tabUrl);
+    expect(result).toBe(true);
+  });
+
+  it('returns false when neither pathname ends with basePath nor pathname includes tabUrl', () => {
+    const basePath = '/dashboard';
+    const pathname = '/user/profile';
+    const tabUrl = '/dashboard/edit';
+    const result = isTopBarNavActive(basePath, pathname, tabUrl);
+    expect(result).toBe(false);
   });
 });

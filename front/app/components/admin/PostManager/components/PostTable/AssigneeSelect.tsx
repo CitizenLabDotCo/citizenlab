@@ -97,9 +97,9 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   prospectAssignees: ({ projectId, render }) =>
     projectId ? (
-      <GetUsers canModerateProject={projectId}>{render}</GetUsers>
+      <GetUsers can_moderate_project={projectId}>{render}</GetUsers>
     ) : (
-      <GetUsers canAdmin>{render}</GetUsers>
+      <GetUsers can_admin>{render}</GetUsers>
     ),
 });
 

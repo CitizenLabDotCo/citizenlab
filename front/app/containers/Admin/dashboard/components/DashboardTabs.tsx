@@ -14,7 +14,7 @@ import NavigationTabs, {
 } from 'components/admin/NavigationTabs';
 
 // utils
-import { matchPathToUrl } from 'utils/helperUtils';
+import { isTopBarNavActive } from 'utils/helperUtils';
 
 interface Props {
   children?: React.ReactNode;
@@ -36,11 +36,11 @@ const DashboardTabs = memo<Props & WithRouterProps>(
             () => (
               <NavigationTabs className="e2e-resource-tabs">
                 {tabs.map((tab) => {
-                  const active = Boolean(
-                    location?.pathname &&
-                      matchPathToUrl(tab.url).test(location.pathname)
+                  const active = isTopBarNavActive(
+                    '/admin/dashboard',
+                    location?.pathname,
+                    tab.url
                   );
-
                   const classes = [tab.name, active ? 'active' : ''].join(' ');
 
                   if (tab.feature) {
