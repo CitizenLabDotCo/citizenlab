@@ -92,7 +92,8 @@ class ApplicationMailer < ActionMailer::Base
       subject: subject,
       from: from_email,
       to: to_email,
-      reply_to: reply_to_email
+      reply_to: reply_to_email,
+      domain: domain
     }
   end
 
@@ -114,12 +115,13 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def from_email
-    custom_email = AppConfiguration.instance.settings.dig('core', 'from_email')
-    ::Rails.application.config.action_mailer.mailgun_settings[:domain] = custom_email.split('@').last if custom_email
-
-    email = custom_email || ENV.fetch('DEFAULT_FROM_EMAIL')
+    email = custom_from_email || ENV.fetch('DEFAULT_FROM_EMAIL')
 
     email_address_with_name(email, organization_name)
+  end
+
+  def custom_from_email
+    AppConfiguration.instance.settings.dig('core', 'from_email')
   end
 
   def to_email
@@ -128,6 +130,10 @@ class ApplicationMailer < ActionMailer::Base
 
   def reply_to_email
     app_settings.core.reply_to_email.presence || ENV.fetch('DEFAULT_FROM_EMAIL')
+  end
+
+  def domain
+    custom_from_email&.split('@')&.last
   end
 
   def app_settings
