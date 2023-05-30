@@ -10,7 +10,7 @@ export const PublicAPI = () => {
   return (
     <Box>
       <Box background={colors.white} display="flex" p="20px">
-        <Box w="320px" h="240px" background={colors.grey200} />
+        <Box w="415px" h="240px" background={colors.grey200} />
         <Box ml="32px" display="flex" flexDirection="column">
           <Box width="fit-content" mb="10px">
             <Badge className="inverse" color={colors.coolGrey300}>
