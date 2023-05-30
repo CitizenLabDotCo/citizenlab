@@ -114,7 +114,7 @@ describe('isTopBarNavActive', () => {
     expect(result).toBe(true);
   });
 
-  it('returns false when only tabUrl ends with basePath', () => {
+  it('returns false when tabUrl but not pathname ends with basePath', () => {
     const basePath = '/dashboard';
     const pathname = '/user/profile';
     const tabUrl = '/user/dashboard';
