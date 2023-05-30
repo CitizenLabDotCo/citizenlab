@@ -20,6 +20,7 @@ import messages from '../messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { isTopBarNavActive } from 'utils/helperUtils';
 
 // typings
 import { ITab } from 'typings';
@@ -71,7 +72,10 @@ const DashboardTabs = ({ showReportBuilderTab, children }: Props) => {
     <>
       <NavigationTabs>
         {tabs.map(({ url, label }) => (
-          <Tab key={url} active={pathname.includes(url)}>
+          <Tab
+            key={url}
+            active={isTopBarNavActive('/admin/reporting', pathname, url)}
+          >
             <Link to={url}>{label}</Link>
           </Tab>
         ))}

@@ -20,6 +20,7 @@ import { InsertConfigurationOptions, ITab } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 import Outlet from 'components/Outlet';
 import { colors } from 'utils/styleUtils';
+import { isTopBarNavActive } from 'utils/helperUtils';
 
 const SettingsPage = () => {
   const { formatMessage } = useIntl();
@@ -67,7 +68,10 @@ const SettingsPage = () => {
       <Outlet id="app.containers.Admin.settings.tabs" onData={handleData} />
       <NavigationTabs>
         {tabs.map(({ url, label }) => (
-          <Tab key={url} active={pathname.includes(url)}>
+          <Tab
+            key={url}
+            active={isTopBarNavActive('/admin/settings', pathname, url)}
+          >
             <Link to={url}>{label}</Link>
           </Tab>
         ))}
