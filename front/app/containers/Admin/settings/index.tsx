@@ -19,8 +19,8 @@ import { useIntl } from 'utils/cl-intl';
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 import Outlet from 'components/Outlet';
-import { matchPathToUrl } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
+import { isTopBarNavActive } from 'utils/helperUtils';
 
 const SettingsPage = () => {
   const { formatMessage } = useIntl();
@@ -68,7 +68,10 @@ const SettingsPage = () => {
       <Outlet id="app.containers.Admin.settings.tabs" onData={handleData} />
       <NavigationTabs>
         {tabs.map(({ url, label }) => (
-          <Tab key={url} active={matchPathToUrl(url).test(pathname)}>
+          <Tab
+            key={url}
+            active={isTopBarNavActive('/admin/settings', pathname, url)}
+          >
             <Link to={url}>{label}</Link>
           </Tab>
         ))}

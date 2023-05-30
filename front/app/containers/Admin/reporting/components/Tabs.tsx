@@ -18,7 +18,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils
-import { matchPathToUrl, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isTopBarNavActive } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // typings
@@ -71,7 +71,10 @@ const DashboardTabs = ({ showReportBuilderTab, children }: Props) => {
     <>
       <NavigationTabs>
         {tabs.map(({ url, label }) => (
-          <Tab key={url} active={matchPathToUrl(url).test(pathname)}>
+          <Tab
+            key={url}
+            active={isTopBarNavActive('/admin/reporting', pathname, url)}
+          >
             <Link to={url}>{label}</Link>
           </Tab>
         ))}
