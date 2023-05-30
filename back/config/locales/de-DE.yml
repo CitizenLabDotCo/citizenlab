@@ -2,7 +2,7 @@ de:
   symbols:
     outside: Anderer Ort
   idea_statuses:
-    proposed: vorgeschlagen
+    proposed: eingereicht
     proposed_description: Diese Idee wurde der Stadt vorgeschlagen
     viewed: angesehen
     viewed_description: Diese Idee ist von jemandem aus der Stadt gesehen worden
@@ -16,7 +16,7 @@ de:
     rejected_description: Diese Idee wurde abgelehnt
   initiative_statuses:
     proposed: Offen
-    proposed_description: vorgeschlagen
+    proposed_description: eingereicht
     expired: Grenzwert nicht erreicht
     expired_description: abgelaufen
     threshold_reached: Schwelle erreicht
