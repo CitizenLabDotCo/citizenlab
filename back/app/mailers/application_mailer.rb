@@ -114,7 +114,9 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def from_email
-    email_address_with_name(ENV.fetch('DEFAULT_FROM_EMAIL'), organization_name)
+    email = AppConfiguration.instance.settings.dig('core', 'from_email') || ENV.fetch('DEFAULT_FROM_EMAIL')
+
+    email_address_with_name(email, organization_name)
   end
 
   def to_email
