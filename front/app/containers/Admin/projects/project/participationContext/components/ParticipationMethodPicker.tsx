@@ -124,7 +124,7 @@ const ParticipationMethodPicker = ({
               currentValue={participation_method}
               value="budgeting"
               name="participationmethod"
-              id={'participationmethod-budgeting'}
+              id="participationmethod-budgeting"
               label={
                 <LabelHeaderDescription
                   header={
@@ -147,7 +147,7 @@ const ParticipationMethodPicker = ({
               currentValue={participation_method}
               value="poll"
               name="participationmethod"
-              id={'participationmethod-poll'}
+              id="participationmethod-poll"
               label={
                 <LabelHeaderDescription
                   header={<FormattedMessage {...messages.createPoll} />}
@@ -164,7 +164,7 @@ const ParticipationMethodPicker = ({
               currentValue={participation_method}
               value="native_survey"
               name="participationmethod"
-              id={'participationmethod-native_survey'}
+              id="participationmethod-native_survey"
               disabled={isExistingProjectOrPhase}
               label={
                 <LabelHeaderDescription
@@ -185,7 +185,7 @@ const ParticipationMethodPicker = ({
               currentValue={participation_method}
               value="survey"
               name="participationmethod"
-              id={'participationmethod-survey'}
+              id="participationmethod-survey"
               label={
                 <LabelHeaderDescription
                   header={
@@ -214,7 +214,7 @@ const ParticipationMethodPicker = ({
                   currentValue={participation_method}
                   value="document_annotation"
                   name="participationmethod"
-                  id={'participationmethod-document_annotation'}
+                  id="participationmethod-document_annotation"
                   label={
                     <LabelHeaderDescription
                       disabled={!documentAnnotationEnabled}
@@ -240,7 +240,7 @@ const ParticipationMethodPicker = ({
               currentValue={participation_method}
               value="volunteering"
               name="participationmethod"
-              id={'participationmethod-volunteering'}
+              id="participationmethod-volunteering"
               label={
                 <LabelHeaderDescription
                   header={<FormattedMessage {...messages.findVolunteers} />}

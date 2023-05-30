@@ -241,7 +241,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       )}
       {showTakeSurveyButton && (
         <Button
-          buttonStyle="primary"
           onClick={handleTakeSurveyClick}
           fontWeight="500"
           data-testid="take-survey-button"
@@ -251,7 +250,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       )}
       {showTakePollButton && (
         <Button
-          buttonStyle="primary"
           onClick={(e: MouseEvent) => {
             e.preventDefault();
             scrollTo({
@@ -267,11 +265,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         </Button>
       )}
       {showDocumentAnnotationCTAButton && (
-        <Button
-          buttonStyle="primary"
-          onClick={handleReviewDocumentClick}
-          fontWeight="500"
-        >
+        <Button onClick={handleReviewDocumentClick} fontWeight="500">
           <FormattedMessage {...messages.reviewDocument} />
         </Button>
       )}

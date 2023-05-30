@@ -42,7 +42,6 @@ export const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
   const CTAButton = (
     <Button
       id="e2e-participation-cta-volunteer"
-      buttonStyle="primary"
       onClick={handleVolunteerClick}
       fontWeight="500"
       bgColor={theme.colors.white}

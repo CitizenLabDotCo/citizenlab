@@ -83,7 +83,6 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
       CTAButton={
         showSignIn ? (
           <Button
-            buttonStyle="primary"
             onClick={handleClick}
             fontWeight="500"
             bgColor={theme.colors.white}

@@ -58,7 +58,6 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
 
   const CTAButton = hasUserParticipated ? null : (
     <Button
-      buttonStyle="primary"
       onClick={handleAllocateBudgetClick}
       fontWeight="500"
       bgColor={theme.colors.white}
