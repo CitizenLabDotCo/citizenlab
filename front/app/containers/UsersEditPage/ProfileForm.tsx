@@ -4,7 +4,6 @@ import { adopt } from 'react-adopt';
 import streams from 'utils/streams';
 
 // services
-import { updateUser } from 'services/users';
 import GetLockedFields, {
   GetLockedFieldsChildProps,
 } from 'resources/GetLockedFields';
@@ -48,6 +47,7 @@ import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
 import eventEmitter from 'utils/eventEmitter';
+import useUpdateUser from 'api/users/useUpdateUser';
 
 const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 5px;
@@ -86,6 +86,7 @@ const ProfileForm = ({
   lockedFields,
   authUser,
 }: Props) => {
+  const { mutateAsync: updateUser } = useUpdateUser();
   const localeOptions: IOption[] = tenantLocales.map((locale) => ({
     value: locale,
     label: appLocalePairs[locale],
@@ -160,7 +161,7 @@ const ProfileForm = ({
     });
 
     try {
-      await updateUser(authUser.id, { ...newFormValues, avatar });
+      await updateUser({ userId: authUser.id, ...newFormValues, avatar });
       streams.fetchAllWith({
         apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`],
       });

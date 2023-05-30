@@ -8,7 +8,7 @@ import {
   isProjectModerator,
   isSuperAdmin,
 } from '../roles';
-import { IUser } from 'services/users';
+import { IUser } from 'api/users/types';
 import { IAppConfigurationData } from 'api/app_configuration/types';
 
 const MODERATOR_ROUTES = [

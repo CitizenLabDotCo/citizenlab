@@ -22,13 +22,13 @@ import { postIsIdea, postIsInitiative } from './utils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // types
-import { GetUserChildProps } from 'resources/GetUser';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { GetInitiativesPermissionsChildProps } from 'resources/GetInitiativesPermissions';
 import { IInitiativeData } from 'api/initiatives/types';
 import { IIdeaData } from 'api/ideas/types';
 import { ICommentData } from 'api/comments/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { IUserData } from 'api/users/types';
 
 const Container = styled.li`
   display: flex;
@@ -60,7 +60,7 @@ interface Props {
   commentId: string;
   commentType: 'parent' | 'child' | undefined;
   authUser: GetAuthUserChildProps;
-  author: GetUserChildProps;
+  author?: IUserData;
   post: IIdeaData | IInitiativeData;
   comment: ICommentData;
   commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
