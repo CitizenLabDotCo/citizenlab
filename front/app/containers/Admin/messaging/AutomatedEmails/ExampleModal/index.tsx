@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import Modal from 'components/UI/Modal';
-import useCampaignExamples from 'api/campaign_examples/useCampaignExamples';
-import { Button, Box, Text } from '@citizenlab/cl2-component-library';
-import useCampaign from 'api/campaigns/useCampaign';
+
+// i18n
 import T from 'components/T';
+
+// Components
+import Modal from 'components/UI/Modal';
 import EmptyState from './EmptyState';
 import ExampleFrame from './ExampleFrame';
+import { Button, Box, Text } from '@citizenlab/cl2-component-library';
 
+// Hooks
+import useCampaignExamples from 'api/campaign_examples/useCampaignExamples';
+import useCampaign from 'api/campaigns/useCampaign';
+
+/** Modulo function, since JS's native `%` remainder function works differently for negative numbers */
 const mod = (n: number, m: number) => ((n % m) + m) % m;
+
 const ExampleModal = ({
   campaignId,
   onClose,
