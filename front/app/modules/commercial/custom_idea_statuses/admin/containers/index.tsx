@@ -126,7 +126,7 @@ const IdeaStatuses = () => {
           <Button
             buttonStyle="cl-blue"
             icon="plus-circle"
-            linkTo="/admin/ideas/statuses/new"
+            linkTo="/admin/settings/statuses/new"
           >
             <FormattedMessage {...messages.addIdeaStatus} />
           </Button>
@@ -163,7 +163,7 @@ const IdeaStatuses = () => {
             </Tippy>
 
             <Button
-              linkTo={`/admin/ideas/statuses/${defaultStatus.id}`}
+              linkTo={`/admin/settings/statuses/${defaultStatus.id}`}
               buttonStyle="secondary"
               icon="edit"
             >
@@ -221,7 +221,7 @@ const IdeaStatuses = () => {
                       </div>
                     </Tippy>
                     <Button
-                      linkTo={`/admin/ideas/statuses/${ideaStatus.id}`}
+                      linkTo={`/admin/settings/statuses/${ideaStatus.id}`}
                       buttonStyle="secondary"
                       icon="edit"
                     >
