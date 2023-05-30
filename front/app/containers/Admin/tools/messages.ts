@@ -1,8 +1,8 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  tools: {
-    id: 'app.containers.Admin.tools',
+  toolsLabel: {
+    id: 'app.containers.Admin.tools.toolsLabel',
     defaultMessage: 'Tools',
   },
   workshopsImage: {

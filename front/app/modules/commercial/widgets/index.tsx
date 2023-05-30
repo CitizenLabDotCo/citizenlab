@@ -14,9 +14,6 @@ const configuration: ModuleConfiguration = {
       },
     ],
   },
-  outlets: {
-    'app.containers.admin.tools': React.Fragment,
-  },
 };
 
 export default configuration;

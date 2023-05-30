@@ -20,7 +20,7 @@ export const Tools = () => {
   return (
     <Box width="100%" display="flex" justifyContent="center">
       <Box maxWidth="800px">
-        <Title color="primary">{formatMessage(messages.tools)}</Title>
+        <Title color="primary">{formatMessage(messages.toolsLabel)}</Title>
         <Workshops />
         {isUserAdmin && <Widget />}
         {isUserAdmin && <PublicAPI />}
