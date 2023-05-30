@@ -1835,7 +1835,7 @@
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Löschen",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Bearbeiten",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Status bearbeiten",
-  "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Stati, die aktuell Teilnehmendenbeiträgen zugeordnet sind, können nicht gelöscht werden. Sie können den Status von bestehenden Eingaben in der Registerkarte {manageTab} entfernen/ändern.",
+  "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Stati, die den Beiträgen von Nutzer*innen zugewiesen sind, können nicht gelöscht werden. Sie können den Status von bestehenden Beiträgen auf der Registerkarte {manageTab} entfernen/ändern.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Dieser Status kann nicht gelöscht oder verschoben werden.",
   "app.containers.admin.ideaStatuses.all.manage": "Verwalten",
   "app.containers.admin.ideaStatuses.all.subtitleInputStatuses": "Hinzufügen, Bearbeiten und Löschen der Stati, die Teilnehmendenbeiträgen zugewiesen werden können. Der Status ist öffentlich sichtbar und hilft, die Teilnehmenden über das Projekt zu informieren. In der Registerkarte {linkToManageTab} können Sie der Eingabe einen Status hinzufügen.",
