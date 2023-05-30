@@ -1278,7 +1278,7 @@
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Bekræft din konto nu.",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.completeRegistrationLinkText": "Fuldfør registrering",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.logInLinkText": "Log ind",
-  "app.containers.ProjectsShowPage.shared.ParticipationPermission.signUpLinkText": "Tilmeld dig",
+  "app.containers.ProjectsShowPage.shared.ParticipationPermission.signUpLinkText": "registrer dig",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.verificationLinkText": "Bekræft din konto nu.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledMaybeNotPermitted": "Kun bestemte brugere kan se dette dokument. Du bedes først skrive til {signUpLink} eller {logInLink} .",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotActivePhase1": "Dette dokument kan kun gennemses, når denne fase er aktiv.",
