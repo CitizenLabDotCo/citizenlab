@@ -77,7 +77,7 @@ const ActionsForm = ({
   ] = useState(true);
 
   const handlePermissionChange =
-    (permission: IPermissionData) =>
+    (permission: IPermissionData, phaseId?: string | null) =>
     (
       permittedBy: IPermissionData['attributes']['permitted_by'],
       groupIds: string[]
@@ -102,7 +102,13 @@ const ActionsForm = ({
         globalCustomFields = previousGroupsGlobalCustomFields;
       }
 
-      onChange({ permission, permittedBy, groupIds, globalCustomFields });
+      onChange({
+        permission,
+        permittedBy,
+        groupIds,
+        globalCustomFields,
+        phaseId,
+      });
     };
 
   if (isEmpty(permissions)) {
@@ -136,7 +142,7 @@ const ActionsForm = ({
                 permissionData={permission}
                 groupIds={permission.relationships.groups.data.map((p) => p.id)}
                 projectType={postType}
-                onChange={handlePermissionChange(permission)}
+                onChange={handlePermissionChange(permission, phaseId)}
               />
               {permission.attributes.permitted_by !== 'everyone' &&
                 permission.attributes.permitted_by !== 'admins_moderators' && (

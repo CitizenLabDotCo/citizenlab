@@ -33,15 +33,16 @@ const Timeline = ({ projectId }: InputProps) => {
   const { data: phases } = usePhases(projectId);
 
   const handlePermissionChange = ({
+    phaseId,
     permission,
     permittedBy,
     groupIds,
     globalCustomFields,
   }: HandlePermissionChangeProps) => {
-    if (openedPhaseId) {
+    if (phaseId) {
       updatePhasePermission({
         permissionId: permission.id,
-        phaseId: openedPhaseId,
+        phaseId,
         action: permission.attributes.action,
         permission: {
           permitted_by: permittedBy,
