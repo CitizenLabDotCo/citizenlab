@@ -6,6 +6,7 @@ import { ITab } from 'typings';
 import Link from 'utils/cl-router/Link';
 import { colors, fontSizes } from 'utils/styleUtils';
 
+// very similar to front/app/components/admin/NavigationTabs/Tab.tsx
 const Container = styled.div`
   list-style: none;
   cursor: pointer;

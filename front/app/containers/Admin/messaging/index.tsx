@@ -87,10 +87,11 @@ const MessagingDashboard = ({
   return (
     <>
       <NavigationTabs>
-        {tabs.map(({ url, label }) => (
+        {tabs.map(({ url, label, statusLabel }) => (
           <Tab
             key={url}
             active={isTopBarNavActive('/admin/messaging', pathname, url)}
+            statusLabel={statusLabel}
           >
             <Link to={url}>{label}</Link>
           </Tab>
