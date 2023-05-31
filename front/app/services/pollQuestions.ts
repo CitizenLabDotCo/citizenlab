@@ -32,15 +32,6 @@ export interface IPollQuestion {
   };
 }
 
-export function pollQuestionsStream(
-  participationContextId: string,
-  participationContextType: IParticipationContextType
-) {
-  return streams.get<{ data: IPollQuestion[] }>({
-    apiEndpoint: `${API_PATH}/${participationContextType}s/${participationContextId}/poll_questions`,
-  });
-}
-
 export async function addPollQuestion(
   participationContextId: string,
   participationContextType: IParticipationContextType,
