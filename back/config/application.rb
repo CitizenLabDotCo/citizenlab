@@ -65,6 +65,12 @@ module Cl2Back
     config.middleware.use ActionDispatch::Cookies # Required for all session management
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
 
+    # In Rails 6.1+, Active Record provides a new internal API for connection
+    # management. Single database applications do not need to make any changes except to
+    # opt-in to the new behavior. In Rails 7.0, the legacy connection handling has been
+    # deprecated.
+    config.active_record.legacy_connection_handling = false
+
     case ENV.fetch('ACTION_MAILER_DELIVERY_METHOD')
     when 'mailgun'
       config.action_mailer.delivery_method = :mailgun
