@@ -17,7 +17,7 @@ const addPollOption = async ({ questionId, title_multiloc }: AddPollOption) =>
     },
   });
 
-const useAddPhase = () => {
+const useAddPollOption = () => {
   const queryClient = useQueryClient();
   return useMutation<IPollOptions, { errors: CLErrors }, AddPollOption>({
     mutationFn: addPollOption,
@@ -29,4 +29,4 @@ const useAddPhase = () => {
   });
 };
 
-export default useAddPhase;
+export default useAddPollOption;

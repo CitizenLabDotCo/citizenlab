@@ -10,7 +10,7 @@ type UpdatePollOption = {
   title_multiloc: Multiloc;
 };
 
-const updatePollResponse = async ({
+const updatePollOption = async ({
   optionId,
   questionId: _questionId,
   title_multiloc,
@@ -21,10 +21,10 @@ const updatePollResponse = async ({
     body: { title_multiloc },
   });
 
-const useUpdatePollResonse = () => {
+const useUpdatePollOption = () => {
   const queryClient = useQueryClient();
   return useMutation<IPollOption, { errors: CLErrors }, UpdatePollOption>({
-    mutationFn: updatePollResponse,
+    mutationFn: updatePollOption,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: pollOptionsKeys.list({ questionId: variables.questionId }),
@@ -33,4 +33,4 @@ const useUpdatePollResonse = () => {
   });
 };
 
-export default useUpdatePollResonse;
+export default useUpdatePollOption;
