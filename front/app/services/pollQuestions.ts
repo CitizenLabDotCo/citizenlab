@@ -1,7 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { Multiloc, IParticipationContextType } from 'typings';
-import { capitalizeParticipationContextType } from 'utils/helperUtils';
 import projectsKeys from 'api/projects/keys';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
@@ -30,37 +29,6 @@ export interface IPollQuestion {
       };
     };
   };
-}
-
-export async function addPollQuestion(
-  participationContextId: string,
-  participationContextType: IParticipationContextType,
-  titleMultiloc: Multiloc
-) {
-  const response = await streams.add<{ data: IPollQuestion }>(
-    `${API_PATH}/poll_questions`,
-    {
-      participation_context_id: participationContextId,
-      participation_context_type: capitalizeParticipationContextType(
-        participationContextType
-      ),
-      title_multiloc: titleMultiloc,
-    }
-  );
-
-  if (participationContextType === 'project') {
-    queryClient.invalidateQueries({
-      queryKey: projectsKeys.item({ id: participationContextId }),
-    });
-  } else {
-    streams.fetchAllWith({
-      apiEndpoint: [
-        `${API_PATH}/phases/${participationContextId}/poll_questions`,
-      ],
-    });
-  }
-
-  return response;
 }
 
 export async function deletePollQuestion(

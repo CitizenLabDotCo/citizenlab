@@ -7,11 +7,8 @@ import styled from 'styled-components';
 
 // Services / Data loading
 import {
-  addPollQuestion,
-  deletePollQuestion,
   updatePollQuestion,
   reorderPollQuestion,
-  IPollQuestion,
 } from 'services/pollQuestions';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -28,6 +25,9 @@ import messages from './messages';
 
 // Typings
 import { Multiloc, IParticipationContextType } from 'typings';
+import useAddPollQuestion from 'api/poll_questions/useAddPollQuestion';
+import useDeletePollQuestion from 'api/poll_questions/useDeletePollQuestion';
+import { IPollQuestionData } from 'api/poll_questions/types';
 
 const StyledList = styled(List)`
   margin: 10px 0;
@@ -36,7 +36,7 @@ const StyledList = styled(List)`
 interface Props {
   participationContextId: string;
   participationContextType: IParticipationContextType;
-  pollQuestions: IPollQuestion[] | null | undefined;
+  pollQuestions: IPollQuestionData[] | null | undefined;
 }
 
 const PollAdminForm = ({
@@ -44,6 +44,8 @@ const PollAdminForm = ({
   participationContextType,
   pollQuestions,
 }: Props) => {
+  const { mutate: addPollQuestion } = useAddPollQuestion();
+  const { mutate: deletePollQuestion } = useDeletePollQuestion();
   const [newQuestionTitle, setNewQuestionTitle] = useState<Multiloc | null>(
     null
   );
@@ -54,7 +56,7 @@ const PollAdminForm = ({
     useState<Multiloc | null>(null);
   const [editingOptionsId, setEditingOptionsId] = useState<string | null>(null);
   const [itemsWhileDragging, setItemsWhileDragging] = useState<
-    IPollQuestion[] | null
+    IPollQuestionData[] | null
   >(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -107,13 +109,18 @@ const PollAdminForm = ({
       newQuestionTitle
     ) {
       addPollQuestion(
-        participationContextId,
-        participationContextType,
-        newQuestionTitle
-      ).then((res) => {
-        setNewQuestionTitle(null);
-        setEditingOptionsId(res.data.id);
-      });
+        {
+          participationContextId,
+          participationContextType,
+          title_multiloc: newQuestionTitle,
+        },
+        {
+          onSuccess: (res) => {
+            setNewQuestionTitle(null);
+            setEditingOptionsId(res.data.id);
+          },
+        }
+      );
     }
   };
   const cancelNewQuestion = () => {
@@ -149,11 +156,11 @@ const PollAdminForm = ({
 
   // Delete question
   const deleteQuestion = (questionId: string) => () => {
-    deletePollQuestion(
+    deletePollQuestion({
       questionId,
       participationContextId,
-      participationContextType
-    );
+      participationContextType,
+    });
   };
 
   // Option edition

@@ -11,7 +11,7 @@ interface IPollQuestionAttributes {
   ordering: number;
 }
 
-export interface IPollQuestion {
+export interface IPollQuestionData {
   id: string;
   type: 'question';
   attributes: IPollQuestionAttributes;
@@ -31,8 +31,12 @@ export interface IPollQuestion {
   };
 }
 
+export type IPollQuestion = {
+  data: IPollQuestionData;
+};
+
 export type IPollQuestions = {
-  data: IPollQuestion[];
+  data: IPollQuestionData[];
 };
 
 export type IPollQuestionParameters = {
