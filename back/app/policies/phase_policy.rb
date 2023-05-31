@@ -40,7 +40,7 @@ class PhasePolicy < ApplicationPolicy
   end
 
   def index_xlsx?
-    ProjectPolicy.new(user, record.project).index_xlsx?
+    survey_results?
   end
 
   def delete_inputs?
