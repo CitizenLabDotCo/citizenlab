@@ -30,7 +30,7 @@ module Cl2Back
     require_dependency Rails.root.join('lib/citizen_lab')
 
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    config.load_defaults 6.1
 
     # Configuration for the application, engines, and railties goes here.
     #
