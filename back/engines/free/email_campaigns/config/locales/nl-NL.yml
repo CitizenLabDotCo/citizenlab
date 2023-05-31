@@ -384,16 +384,16 @@ nl:
       updated: '%{officialName} schreef:'
       cta_view: 'Ga naar dit voorstel'
       event_description: '%{officialName} gaf een update bij het voorstel ''%{initiativeTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{organizationName}.'
-      main_header: 'Er is een update bij het initiatief waarop je hebt gestemd'
-      subject: 'Een initiatief waar je op gestemd hebt, heeft een update ontvangen op het platform van %{organizationName}'
-      preheader: '%{officialName} schreef een officiële update bij het initiatief waarop je stemde'
+      main_header: 'Er is een update bij het voorstel waarop je hebt gestemd'
+      subject: 'Een voorstel waar je op gestemd hebt, heeft een update ontvangen op het platform van %{organizationName}'
+      preheader: '%{officialName} schreef een officiële update bij het voorstel waarop je stemde'
     official_feedback_on_your_initiative:
       updated: '%{officialName} schreef:'
       cta_view: 'Ga naar je voorstel'
-      event_description: '%{officialName} gaf een update bij je initiatief ''%{initiativeTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{organizationName}.'
+      event_description: '%{officialName} gaf een update bij je voorstel ''%{initiativeTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{organizationName}.'
       main_header: 'Je hebt een update ontvangen van %{officialName}'
       subject: 'Je hebt een update ontvangen op het platform van %{organizationName}'
-      preheader: '%{officialName} schreef een update bij je initiatief'
+      preheader: '%{officialName} schreef een update bij je voorstel'
     project_moderation_rights_received:
       cta_manage_project: 'Beheer dit project'
       message_you_became_moderator: 'Een admin van het platform van %{organizationName} heeft jou zojuist projectbeheerder gemaakt van het volgende project:'
@@ -462,26 +462,26 @@ nl:
       subject: 'De status van een idee waarop je je stem uitbracht werd gewijzigd'
       preheader: '%{organizationName} wijzigde de status van een idee waarop je stemde'
     status_change_of_voted_initiative:
-      status_change: 'De nieuwe status van dit initiatief is ''%{initiativeStatus}'''
+      status_change: 'De nieuwe status van dit voorstel is ''%{initiativeStatus}'''
       cta_view_initiative: 'Ga naar dit voorstel'
-      event_description: 'De status van het initiatief ''%{initiativeTitle}'' is bijgewerkt op het digitale participatieplatform van %{organizationName}.'
-      main_header: 'Een initiatief waar je op gestemd hebt, heeft een nieuwe status'
-      subject: 'De status van een initiatief waarop je je stem uitbracht werd gewijzigd'
-      preheader: 'De status van een initiatief waarop je stemde werd gewijzigd'
+      event_description: 'De status van het voorstel ''%{initiativeTitle}'' is bijgewerkt op het digitale participatieplatform van %{organizationName}.'
+      main_header: 'Een voorstel waar je op gestemd hebt, heeft een nieuwe status'
+      subject: 'De status van een voorstel waarop je je stem uitbracht werd gewijzigd'
+      preheader: 'De status van een voorstel waarop je stemde werd gewijzigd'
     status_change_of_commented_initiative:
-      status_change: 'De nieuwe status van dit initiatief is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Ga naar dit initiatief'
-      event_description: 'De status van het initiatief ''%{initiativeTitle}'' is bijgewerkt op het digitale participatieplatform van %{organizationName}.'
-      main_header: 'Een initiatief waar je op hebt gereageerd, heeft een nieuwe status'
-      subject: 'De status van een initiatief waarop je reageerde werd gewijzigd'
-      preheader: 'De status van een initiatief waarop je reageerde werd gewijzigd'
+      status_change: 'De nieuwe status van dit voorstel is ''%{initiativeStatus}'''
+      cta_view_initiative: 'Ga naar dit voorstel'
+      event_description: 'De status van het voorstel ''%{initiativeTitle}'' is bijgewerkt op het digitale participatieplatform van %{organizationName}.'
+      main_header: 'Een voorstel waar je op hebt gereageerd, heeft een nieuwe status'
+      subject: 'De status van een voorstel waarop je reageerde werd gewijzigd'
+      preheader: 'De status van een voorstel waarop je reageerde werd gewijzigd'
     status_change_of_your_initiative:
-      status_change: 'De nieuwe status van je initiatief is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Ga naar je initiatief'
-      event_description: 'De status van het initiatief ''%{initiativeTitle}'' is bijgewerkt op het digitale participatieplatform van %{organizationName}.'
-      main_header: 'Je initiatief heeft een nieuwe status'
-      subject: 'De status van je initiatief werd gewijzigd'
-      preheader: 'De status van je initiatief werd gewijzigd'
+      status_change: 'De nieuwe status van je voorstel is ''%{initiativeStatus}'''
+      cta_view_initiative: 'Ga naar je voorstel'
+      event_description: 'De status van het voorstel ''%{initiativeTitle}'' is bijgewerkt op het digitale participatieplatform van %{organizationName}.'
+      main_header: 'Je voorstel heeft een nieuwe status'
+      subject: 'De status van je voorstel werd gewijzigd'
+      preheader: 'De status van je voorstel werd gewijzigd'
     user_digest:
       subject: "Wekelijkse update van het participatieplatform van %{organizationName}"
       commented: "%{authorFirstName} schreef:"
@@ -490,10 +490,10 @@ nl:
       intro_text: "Hier is een overzicht van wat er is gebeurd op het participatieplatform van %{organizationName}."
       cta_go_to_the_platform: "Ga naar het platform"
       title_no_activity_past_week: "Geen activiteit de afgelopen week"
-      title_proposals: "Gestarte initiatieven"
-      proposals_started_text: "Initiatieven zijn bijdrages die steun moeten vinden van anderen (mensen zoals jij!) om vooruit te geraken. Hieronder is een lijst met initiatieven die vorige week naar voren werden gebracht. Klik op de initiatieven om hen in detail te bekijken, feedback te geven en hen te steunen!"
-      title_successful_proposals: "Ontdek de initiatieven"
-      successful_proposals_text: "Deze initiatieven hebben genoeg steun gevonden om naar de volgende stap te gaan! Klik op het initiatief om meer te weten te komen over wat er hierna gebeurt."
+      title_proposals: "Gestarte voorstellen"
+      proposals_started_text: "Voorstellen zijn bijdrages die steun moeten vinden van anderen (mensen zoals jij!) om vooruit te komen. Hieronder is een lijst met voorstellen die vorige week naar voren werden gebracht. Klik op de voorstellen om ze in detail te bekijken, feedback te geven en ze te steunen!"
+      title_successful_proposals: "Voorstellen die de drempel hebben bereikt"
+      successful_proposals_text: "Deze voorstellen hebben genoeg steun gevonden om naar de volgende stap te gaan! Klik op het voorstel om meer te weten te komen over wat er hierna gebeurt."
       today_by_author: "Vandaag door %{author}"
       yesterday_by_author: "Gisteren door %{author}"
       x_days_ago_by_author: "%{x} dagen geleden door %{author}"
@@ -506,10 +506,10 @@ nl:
       unread_notifications: "Je hebt nieuwe meldingen! Bezoek het platform om te ontdekken wat er aan het gebeuren is."
     threshold_reached_for_admin:
       by_author: 'door %{authorName}'
-      cta_process_initiative: 'Zet de volgende stappen met dit initiatief'
-      event_description: 'Een initiatief heeft voldoende stemmen bereikt. Klik op de onderstaande knop om naar de volgende stappen te gaan!'
-      main_header: 'Een initiatief heeft het benodigd aantal stemmen bereikt!'
-      subject: 'Een initiatief heeft het benodigd aantal stemmen op je platform bereikt'
+      cta_process_initiative: 'Zet de volgende stappen met dit voorstel'
+      event_description: 'Een voorstel heeft voldoende stemmen bereikt. Klik op de onderstaande knop om naar de volgende stappen te gaan!'
+      main_header: 'Een voorstel heeft het benodigd aantal stemmen bereikt!'
+      subject: 'Een voorstel heeft het benodigd aantal stemmen op je platform bereikt'
       preheader: 'Tijd om de volgende stappen te nemen'
     first_idea_published:
       action_add_image: '%{addImageLink} om de visibiliteit van je idee te vergroten'
@@ -554,11 +554,11 @@ nl:
       subject: 'Jouw idee op het platform van %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Wekelijkse update van je initiatief'
-      preheader: 'Wat is er de afgelopen week met je initiatief gebeurd?'
-      title_your_weekly_report: 'Hoe gaat het met je initiatief?'
-      text_introduction: 'Hieronder vind je een update van de belangrijkste cijfers. Ga naar de pagina van je initiatief om actie te ondernemen en op tijd voldoende stemmen te verzamelen.'
-      cta_see_your_initiative: 'Ga naar je initiatief'
+      subject: 'Wekelijkse update van je voorstel'
+      preheader: 'Wat is er de afgelopen week met je voorstel gebeurd?'
+      title_your_weekly_report: 'Hoe gaat het met je voorstel?'
+      text_introduction: 'Hieronder vind je een update van de belangrijkste cijfers. Ga naar de pagina van je voorstel om actie te ondernemen en op tijd voldoende stemmen te verzamelen.'
+      cta_see_your_initiative: 'Ga naar je voorstel'
       total_votes: 'Totale aantal stemmen'
       new_votes: 'Nieuwe stemmen'
       remaining_votes: 'Resterende stemmen'
@@ -574,22 +574,22 @@ nl:
         admins: 'Admins'
         admins_and_managers: 'Admins en beheerders'
         all_users: 'Alle gebruikers'
-        all_users_who_uploaded_proposals: 'Alle gebruikers die initiatieven hebben geüpload'
+        all_users_who_uploaded_proposals: 'Alle gebruikers die voorstellen hebben geüpload'
         managers: 'Beheerders'
-        managers_assigned_to_a_proposal: 'Aan een initiatief toegewezen beheerders'
+        managers_assigned_to_a_proposal: 'Aan een voorstel toegewezen beheerders'
         user_assigned_to_the_idea: 'Gebruiker toegewezen aan het idee'
         user_receiving_admin_rights: 'Gebruiker die admin-rechten krijgt'
         user_receiving_folder_moderator_rights: 'Gebruiker die mapbeheerdersrechten krijgt'
         user_receiving_project_moderator_rights: 'Gebruiker die projectbeheerdersrechten krijgt'
         user_who_commented: 'Gebruiker die een reactie gaf'
         user_who_is_mentioned: 'Gebruiker die genoemd wordt'
-        user_who_published_proposal: 'Gebruiker die initiatief heeft gepubliceerd'
+        user_who_published_proposal: 'Gebruiker die voorstel heeft gepubliceerd'
         user_who_published_the_idea: 'Gebruiker die het idee publiceerde'
         user_who_registers: 'Gebruiker die zich registreert'
         user_who_was_invited: 'Gebruiker die werd uitgenodigd'
         users_engaged_with_the_idea: 'Gebruikers betrokken bij het idee'
         users_engaged_with_the_project: 'Gebruikers betrokken bij het project'
-        users_engaged_with_the_proposal: 'Gebruikers betrokken bij het initiatief'
+        users_engaged_with_the_proposal: 'Gebruikers betrokken bij het voorstel'
       content_type:
         comments: 'Reacties'
         content_moderation: 'Inhoudelijke moderatie'
@@ -597,7 +597,7 @@ nl:
         ideas: 'Ideeën'
         permissions: 'Machtigingen'
         projects: 'Projecten'
-        proposals: 'Initiatieven'
+        proposals: 'Voorstellen'
         votes: 'Stemmen'
       trigger:
         comment_is_deleted: 'Reactie is verwijderd'
@@ -608,22 +608,22 @@ nl:
         idea_is_updated: 'Idee is bijgewerkt'
         idea_status_is_changed: 'De status van het idee is veranderd'
         new_idea_is_published: 'Nieuw idee wordt gepubliceerd'
-        new_proposal_is_posted: 'Nieuw initiatief is geplaatst'
+        new_proposal_is_posted: 'Nieuw voorstel is geplaatst'
         project_changes_phase: 'Fase van project wijzigt'
-        proposal_gets_reported_as_spam: 'Initiatief wordt gerapporteerd als spam'
-        proposal_is_assigned_to_user: 'Initiatief is toegewezen aan gebruiker'
-        proposal_is_updated: 'Het initiatief wordt bijgewerkt'
-        proposal_is_upvoted_above_threshold: 'Initiatief wordt boven de drempel gestemd'
-        proposal_status_is_changed: 'De status van het initiatief is gewijzigd'
+        proposal_gets_reported_as_spam: 'Voorstel wordt gerapporteerd als spam'
+        proposal_is_assigned_to_user: 'Voorstel is toegewezen aan gebruiker'
+        proposal_is_updated: 'Het voorstel wordt bijgewerkt'
+        proposal_is_upvoted_above_threshold: 'Voorstel wordt boven de drempel gestemd'
+        proposal_status_is_changed: 'De status van het voorstel is gewijzigd'
         user_comments: 'Reacties van de gebruiker'
         user_comments_on_idea: 'Reacties van gebruikers op idee'
-        user_comments_on_proposal: 'Gebruiker reageert op het initiatief'
+        user_comments_on_proposal: 'Gebruiker reageert op het voorstel'
         user_is_given_admin_rights: 'Gebruiker krijgt admin-rechten'
         user_is_given_folder_moderator_rights: 'Gebruiker krijgt mapbeheerdersrechten'
         user_is_given_project_moderator_rights: 'Gebruiker krijgt projectbeheerdersrechten'
         user_is_mentioned: 'Gebruiker wordt genoemd'
         user_publishes_an_idea: 'Gebruiker publiceert een idee'
-        user_publishes_proposal: 'Gebruiker publiceert initiatief'
+        user_publishes_proposal: 'Gebruiker publiceert voorstel'
         user_registers_for_the_first_time: 'Gebruiker registreert zich voor het eerst'
         user_replies_to_comment: 'Gebruiker reageert op reactie'
         7_days_after_invite_is_sent: '7 dagen na verzending van de uitnodiging'
