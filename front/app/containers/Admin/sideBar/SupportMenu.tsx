@@ -57,7 +57,7 @@ export const SupportMenu = () => {
     >
       <Box width="224px">
         <ItemMenu
-          linkTo={formatMessage(messages.linkToGuide)}
+          linkTo={formatMessage(messages.linkToSupport)}
           buttonStyle="text"
           openLinkInNewTab
         >
