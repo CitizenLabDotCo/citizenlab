@@ -151,7 +151,7 @@ gem 'rack-attack', '~> 6'
 # through the emails engine and is therefore specified
 # in the main app.
 gem 'intercom', '~> 4.2'
-gem 'mjml-rails', '~> 4.8'
+gem 'mjml-rails', '~> 4.9'
 gem 'cloudfront-rails', '~> 0.4'
 
 Dir.children('engines/free').each do |engine_name|
