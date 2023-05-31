@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "active_support/core_ext/integer/time"
+require 'active_support/core_ext/integer/time'
 
 # The test environment is used exclusively to run your application's
 # test suite. You never need to work with it otherwise. Remember that
@@ -30,7 +30,6 @@ Rails.application.configure do
 
   # Caching must be turned on for Rack::Attack to work and Rack::Attack tests to pass.
   # config.cache_store = :null_store
-
 
   # Raise exceptions instead of rendering exception templates.
   config.action_dispatch.show_exceptions = false
