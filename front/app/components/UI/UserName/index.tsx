@@ -109,6 +109,7 @@ const UserName = ({
         }
       >
         <Name
+          id="e2e-anonymous-username"
           fontWeight={fontWeight}
           fontSize={fontSize}
           underline={underline}
