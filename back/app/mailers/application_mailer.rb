@@ -133,7 +133,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def domain
-    custom_from_email&.split('@')&.last
+    from_email&.split('@')&.last
   end
 
   def app_settings
