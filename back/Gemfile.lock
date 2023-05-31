@@ -545,7 +545,7 @@ GEM
       multipart-post (~> 2)
     faraday-net_http (3.0.2)
     ffi (1.15.5)
-    fog-aws (3.18.0)
+    fog-aws (3.19.0)
       fog-core (~> 2.1)
       fog-json (~> 1.1)
       fog-xml (~> 0.1)
@@ -1121,7 +1121,7 @@ DEPENDENCIES
   faker
   faraday-jwt (~> 0.1.0)
   flag_inappropriate_content!
-  fog-aws (~> 3.18)
+  fog-aws (~> 3.19)
   frontend!
   geographic_dashboard!
   google_tag_manager!
