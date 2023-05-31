@@ -159,7 +159,7 @@ interface Props {
   groupId?: string;
   deleteUsersFromGroup?: (userIds: string[]) => void;
   onSearch: (newValue: string) => void;
-  showSelectAndExport: boolean;
+  usersDataLength: number;
 }
 
 const UserTableActions = ({
@@ -171,7 +171,7 @@ const UserTableActions = ({
   deleteUsersFromGroup,
   groupType,
   onSearch,
-  showSelectAndExport,
+  usersDataLength,
 }: Props) => {
   const queryClient = useQueryClient();
   const { formatDate, formatMessage } = useIntl();
@@ -180,6 +180,7 @@ const UserTableActions = ({
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([]);
   const [processing, setProcessing] = useState(false);
+  const showSelectAndExport = usersDataLength !== 0;
 
   const toggleAllUsers = () => {
     trackEventByName(tracks.toggleAllUsers.name);
@@ -438,12 +439,7 @@ const UserTableActions = ({
       <Box flex="0 0 250px">
         <SearchInput
           onChange={onSearch}
-          // Not important here. Requires quite some refactoring
-          // to get users here in a nice and consistent manner.
-          // This a11y_... prop needs to be required so we always have it
-          // on the citizen side. Whenever this components is touched,
-          // you can give it the right value (number of users resulting from the search) here.
-          a11y_numberOfSearchResults={0}
+          a11y_numberOfSearchResults={usersDataLength}
         />
       </Box>
     </Box>

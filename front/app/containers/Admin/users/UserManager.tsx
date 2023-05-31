@@ -177,7 +177,7 @@ const UserManager = ({
         unselectAll={unselectAllUsers}
         deleteUsersFromGroup={deleteUsersFromGroup}
         onSearch={searchUser}
-        showSelectAndExport={users.data.length !== 0}
+        usersDataLength={users.data.length}
       />
 
       {errors &&
