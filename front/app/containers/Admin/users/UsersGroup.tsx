@@ -1,6 +1,5 @@
 // Libraries
 import React, { useState } from 'react';
-import { isEmpty, isString } from 'lodash-es';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -48,7 +47,6 @@ const UsersGroup = () => {
   const [groupEditionModal, setGroupEditionModal] = useState<
     false | MembershipType
   >(false);
-  const [search, setSearch] = useState<string | undefined>(undefined);
 
   const closeGroupEditionModal = () => {
     setGroupEditionModal(false);
@@ -89,10 +87,6 @@ const UsersGroup = () => {
         },
       });
     }
-  };
-
-  const searchGroup = (searchTerm: string) => {
-    setSearch(isString(searchTerm) && !isEmpty(searchTerm) ? searchTerm : '');
   };
 
   const deleteUsersFromGroup = async (userIds: string[]) => {
@@ -142,11 +136,9 @@ const UsersGroup = () => {
           groupType={group.data.attributes.membership_type}
           onEdit={openGroupEditionModal}
           onDelete={handleDeleteGroup(group.data.id)}
-          onSearch={searchGroup}
         />
 
         <UserManager
-          search={search}
           groupId={group.data.id}
           groupType={group.data.attributes.membership_type}
           deleteUsersFromGroup={deleteUsersFromGroup}
