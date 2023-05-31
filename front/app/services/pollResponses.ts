@@ -5,7 +5,10 @@ import projectsKeys from 'api/projects/keys';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
 export interface IPollResponseAttributes {
-  series: { [key: string]: number };
+  data: {
+    type: 'responses_count';
+    attributes: { series: { [key: string]: number } };
+  };
 }
 
 export async function addPollResponse(

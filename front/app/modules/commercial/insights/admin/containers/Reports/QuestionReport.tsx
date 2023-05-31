@@ -35,7 +35,8 @@ const QuestionReport = memo(
               )?.attributes.title_multiloc;
               return {
                 code: relOption.id,
-                value: pollResponses.series.options[relOption.id],
+                value:
+                  pollResponses.data.attributes.series.options[relOption.id],
                 name: option ? localize(option) : 'TODOfallbacksomehow',
               };
             });
