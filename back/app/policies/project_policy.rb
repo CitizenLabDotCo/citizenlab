@@ -73,7 +73,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def submission_count?
-    survey_results?
+    show?
   end
 
   def delete_inputs?
