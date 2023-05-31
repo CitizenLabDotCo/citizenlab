@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // Services / Data loading
 import { IPollQuestion } from 'services/pollQuestions';
-import { IPollOptionData, deletePollOption } from 'services/pollOptions';
+import { IPollOptionData } from 'api/poll_options/types';
 
 // Components
 import T from 'components/T';
@@ -24,6 +24,7 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { Text } from '@citizenlab/cl2-component-library';
 import usePollOptions from 'api/poll_options/usePollOptions';
+import useDeletePollOption from 'api/poll_options/useDeletePollOption';
 
 const Container = styled.div``;
 
@@ -47,6 +48,7 @@ interface Props {
 
 const OptionForm = ({ question, collapse }: Props) => {
   const { data: pollOptions } = usePollOptions(question.id);
+  const { mutate: deletePollOption } = useDeletePollOption();
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const closeRow = () => {
@@ -62,7 +64,7 @@ const OptionForm = ({ question, collapse }: Props) => {
   };
 
   const deleteOption = (optionId: string) => () => {
-    deletePollOption(optionId);
+    deletePollOption({ optionId, questionId: question.id });
   };
 
   return (
@@ -103,6 +105,7 @@ const OptionForm = ({ question, collapse }: Props) => {
               {pollOptions.data.map((pollOption: IPollOptionData) =>
                 editingId === pollOption.id ? (
                   <OptionFormRow
+                    questionId={question.id}
                     key={pollOption.id}
                     mode="edit"
                     closeRow={closeRow}

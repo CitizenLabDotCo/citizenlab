@@ -16,3 +16,7 @@ export interface IPollOptionData {
     ordering: number;
   };
 }
+
+export type IPollOption = {
+  data: IPollOptionData;
+};

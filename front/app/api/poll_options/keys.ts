@@ -5,7 +5,7 @@ const baseKey = { type: 'option' };
 const pollOptionsKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: ({ questionId }: { questionId: string }) => [
+  list: ({ questionId }: { questionId?: string }) => [
     { ...baseKey, operation: 'list', parameters: { questionId } },
   ],
 } satisfies QueryKeys;
