@@ -183,7 +183,7 @@ const EmailAndPassword = ({
             {formatMessage(sharedMessages.forgotPassword)}
           </TextLink>
         </Box>
-        <Box mt="12px">
+        <Text mt="12px">
           {anySSOEnabled ? (
             <TextButton
               id="e2e-login-options"
@@ -197,18 +197,18 @@ const EmailAndPassword = ({
               {...messages.goToSignUp}
               values={{
                 goToOtherFlowLink: (
-                  <button
+                  <TextButton
                     id="e2e-goto-signup"
                     onClick={onSwitchFlow}
                     className="link"
                   >
                     {formatMessage(messages.signUp)}
-                  </button>
+                  </TextButton>
                 ),
               }}
             />
           )}
-        </Box>
+        </Text>
       </FormProvider>
     </Box>
   );
