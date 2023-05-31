@@ -68,12 +68,8 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
-  def survey_results?
-    active_moderator?
-  end
-
   def submission_count?
-    survey_results?
+    show?
   end
 
   def delete_inputs?
