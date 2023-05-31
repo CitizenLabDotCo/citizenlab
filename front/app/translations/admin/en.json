@@ -630,6 +630,7 @@
   "app.containers.Admin.Users.userDeletionConfirmation": "Permanently remove this user?",
   "app.containers.Admin.Users.userDeletionFailed": "An error occurred while deleting this user, please try again.",
   "app.containers.Admin.Users.userExportFileName": "user_export",
+  "app.containers.Admin.Users.userInsights": "User insights",
   "app.containers.Admin.Users.youCantDeleteYourself": "You cannot delete your own account via the user admin page",
   "app.containers.Admin.Users.youCantUnadminYourself": "You cannot give up your role as an admin now",
   "app.containers.Admin.emails.addCampaignButton": "Create a new email",
