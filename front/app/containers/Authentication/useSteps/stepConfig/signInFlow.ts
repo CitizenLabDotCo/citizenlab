@@ -94,6 +94,10 @@ export const signInFlow = (
 
           setCurrentStep('closed');
 
+          if (requirements.special.group_membership === 'require') {
+            return;
+          }
+
           const { successAction } = getAuthenticationData();
           if (successAction) {
             triggerSuccessAction(successAction);

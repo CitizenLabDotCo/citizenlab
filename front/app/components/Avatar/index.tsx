@@ -4,7 +4,6 @@
  */
 
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Box, Icon } from '@citizenlab/cl2-component-library';
@@ -12,13 +11,14 @@ import FeatureFlag from 'components/FeatureFlag';
 import Link from 'utils/cl-router/Link';
 
 // hooks
-import useUser from 'hooks/useUser';
+import useUserById from 'api/users/useUserById';
 
 // styles
 import styled, { useTheme } from 'styled-components';
 import { lighten } from 'polished';
 import { colors } from 'utils/styleUtils';
 import BoringAvatar from 'boring-avatars';
+import { isNilOrError } from 'utils/helperUtils';
 
 export const Container = styled.div<{ size: number }>`
   flex: 0 0 ${({ size }) => size}px;
@@ -124,7 +124,7 @@ export interface Props {
 
 const Avatar = memo(
   ({ isLinkToProfile, userId, authorHash, ...props }: Props) => {
-    const user = useUser({ userId });
+    const { data: user } = useUserById(userId);
     if (isNilOrError(user)) {
       return (
         <AvatarInner
@@ -136,7 +136,7 @@ const Avatar = memo(
       );
     }
 
-    const { slug } = user.attributes;
+    const slug = user?.data.attributes.slug;
     const profileLink = `/profile/${slug}`;
     const hasValidProfileLink = profileLink !== '/profile/undefined';
 
@@ -172,7 +172,7 @@ const AvatarInner = ({
   authorHash,
   ...props
 }: Props) => {
-  const user = useUser({ userId });
+  const { data: user } = useUserById(userId);
   const theme = useTheme();
 
   const avatarSize = props.size;
@@ -214,7 +214,7 @@ const AvatarInner = ({
 
   // In dev mode, slug is sometimes undefined,
   // while !isNilOrError(user) passes... To be solved properly
-  const { slug, avatar, verified } = user.attributes;
+  const { slug, avatar, verified } = user.data.attributes;
   const profileLink = `/profile/${slug}`;
   const hasValidProfileLink = profileLink !== '/profile/undefined';
   const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;

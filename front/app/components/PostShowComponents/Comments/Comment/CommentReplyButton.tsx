@@ -1,6 +1,5 @@
 import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { get } from 'lodash-es';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -20,16 +19,16 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // utils
 import { postIsIdea, postIsInitiative } from './utils';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // types
-import { GetUserChildProps } from 'resources/GetUser';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { GetInitiativesPermissionsChildProps } from 'resources/GetInitiativesPermissions';
 import { IInitiativeData } from 'api/initiatives/types';
 import { IIdeaData } from 'api/ideas/types';
 import { ICommentData } from 'api/comments/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { IUserData } from 'api/users/types';
 
 const Container = styled.li`
   display: flex;
@@ -61,7 +60,7 @@ interface Props {
   commentId: string;
   commentType: 'parent' | 'child' | undefined;
   authUser: GetAuthUserChildProps;
-  author: GetUserChildProps;
+  author?: IUserData;
   post: IIdeaData | IInitiativeData;
   comment: ICommentData;
   commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
@@ -182,17 +181,19 @@ const CommentReplyButton = memo<Props>(
     ]);
 
     if (!isNilOrError(comment)) {
-      const commentingDisabledReason = get(
-        post,
-        'attributes.action_descriptor.commenting_idea.disabled_reason'
-      );
+      const commentingDisabledReason =
+        'action_descriptor' in post.attributes &&
+        post.attributes.action_descriptor.commenting_idea.disabled_reason;
+
       const isCommentDeleted =
         comment.attributes.publication_status === 'deleted';
       const isSignedIn = !isNilOrError(authUser);
       const disabled =
         postType === 'initiative'
           ? !commentingPermissionInitiative?.enabled
-          : isSignedIn && commentingDisabledReason === 'not_permitted';
+          : isSignedIn &&
+            commentingDisabledReason &&
+            !isFixableByAuthentication(commentingDisabledReason);
 
       if (!isCommentDeleted && !disabled) {
         return (

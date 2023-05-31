@@ -5,9 +5,10 @@ module IdClaveUnica
     include ClaveUnicaVerification
 
     def profile_to_user_attrs(auth)
-      Rails.logger.info("GREPME Clave unica auth response: #{auth.inspect}")
+      info = {
+        locale: AppConfiguration.instance.closest_locale_to('es-CL')
+      }
 
-      info = {}
       if (fn = auth.dig('extra', 'raw_info', 'name', 'nombres'))
         info[:first_name] = fn.join(' ')
       end
@@ -19,7 +20,7 @@ module IdClaveUnica
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless Verification::VerificationService.new.active?(configuration, name)
+      return unless Verification::VerificationService.new.active?(configuration, name) || configuration.feature_activated?('clave_unica_login')
 
       options = env['omniauth.strategy'].options
       options[:scope] = %i[openid run name]
@@ -61,6 +62,14 @@ module IdClaveUnica
       }
 
       "https://#{host}/api/v1/accounts/app/logout?#{url_params.to_query}"
+    end
+
+    def email_always_present?
+      false
+    end
+
+    def verification_prioritized?
+      true
     end
   end
 end

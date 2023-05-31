@@ -225,6 +225,18 @@
         }
       },
 
+      "show_clave_unica_consents": {
+        "type": "object",
+        "title": "Show consent checkboxes for ClaveUnica registration",
+        "description":  "We need this feature only because we don't know if it's allowed to disable the ClaveUnica button. After certificating our implementation of ClaveUnica, we'll remove this feature.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
       "jsonforms_custom_fields": {
         "type": "object",
         "title": "Rework of user custom fields (experimental)",

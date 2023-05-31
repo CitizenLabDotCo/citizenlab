@@ -1,5 +1,4 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';
 
 // styles
@@ -8,10 +7,10 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // hooks
-import useUser from 'hooks/useUser';
+import useUserById from 'api/users/useUserById';
 
 // services
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -92,7 +91,7 @@ const UserName = ({
   anonymous,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const user = useUser({ userId });
+  const { data: user } = useUserById(userId);
 
   if (anonymous) {
     return (
@@ -144,14 +143,14 @@ const UserName = ({
     );
   }
 
-  if (!isNilOrError(user)) {
+  if (user) {
     const getName = (user: IUserData) => {
       const firstName = user.attributes.first_name;
       const lastName = user.attributes.last_name;
       return `${firstName} ${!hideLastName && lastName ? lastName : ''}`;
     };
-    const name = getName(user);
-    const profileLink = `/profile/${user.attributes.slug}`;
+    const name = getName(user.data);
+    const profileLink = `/profile/${user.data.attributes.slug}`;
 
     const classNames = `
       ${className || ''}

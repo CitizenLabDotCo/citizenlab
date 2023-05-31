@@ -2,9 +2,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrorsJSON } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import blockedUsersCountKeys from './keys';
-import { IUser } from 'services/users';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
+import { IUser } from 'api/users/types';
+import usersKeys from 'api/users/keys';
 
 const unblockUser = async (userId: string) =>
   fetcher<IUser>({
@@ -21,9 +20,9 @@ const useUnblockUser = () => {
       queryClient.invalidateQueries({
         queryKey: blockedUsersCountKeys.items(),
       });
-      streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/users`],
-        partialApiEndpoint: ['users/by_slug'],
+      queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: usersKeys.items(),
       });
     },
   });

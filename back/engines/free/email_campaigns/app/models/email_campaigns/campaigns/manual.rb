@@ -46,10 +46,6 @@ module EmailCampaigns
     # every schedule trigger
     before_send :only_manual_send
 
-    def self.category
-      'official'
-    end
-
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.registered_users'
     end

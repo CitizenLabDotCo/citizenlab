@@ -4,6 +4,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import { createCampaign } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import GoBackButton from 'components/UI/GoBackButton';
 import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
@@ -27,7 +28,7 @@ const New = () => {
   };
 
   return (
-    <div>
+    <Box background={colors.white} p="40px">
       <GoBackButton onClick={goBack} />
       <PageTitle>
         <FormattedMessage {...messages.addCampaignTitle} />
@@ -40,7 +41,7 @@ const New = () => {
         }}
         onSubmit={handleSubmit}
       />
-    </div>
+    </Box>
   );
 };
 

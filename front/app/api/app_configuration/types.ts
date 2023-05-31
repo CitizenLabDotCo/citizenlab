@@ -66,6 +66,10 @@ export type ProposalsSettings = {
 };
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
+  show_clave_unica_consents: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   advanced_custom_pages: {
     allowed: boolean;
     enabled: boolean;
@@ -108,9 +112,10 @@ export interface IAppConfigurationSettings {
   franceconnect_login?: {
     allowed: boolean;
     enabled: boolean;
-    environment: string;
-    identifier: string;
-    secret: string;
+  };
+  clave_unica_login?: {
+    allowed: boolean;
+    enabled: boolean;
   };
   custom_accessibility_statement_link: {
     allowed: boolean;
