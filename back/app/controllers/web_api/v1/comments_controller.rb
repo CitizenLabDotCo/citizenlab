@@ -89,11 +89,11 @@ class WebApi::V1::CommentsController < ApplicationController
       .where(post_type: @post_type)
       .includes(:author, :"#{@post_type.underscore}")
       .order(:lft)
-    if (@post_type == 'Idea') && params[:project].present?
-      @comments = @comments.where(ideas: { project_id: params[:project] })
-    end
-    if (@post_type == 'Idea')
+    if @post_type == 'Idea'
       @comments = @comments.where(ideas: { project_id: UserRoleService.new.moderatable_projects(current_user) })
+      if params[:project].present?
+        @comments = @comments.where(ideas: { project_id: params[:project] })
+      end
     end
     @comments = @comments.where(post_id: post_ids) if post_ids.present?
 
