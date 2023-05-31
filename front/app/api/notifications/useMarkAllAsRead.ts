@@ -6,7 +6,7 @@ import { authUserStream } from 'services/auth';
 
 const markAppAsRead = async () =>
   fetcher<INotifications>({
-    path: `/notifications/mark_all_as_read`,
+    path: `/notifications/mark_all_read`,
     action: 'post',
     body: null,
   });

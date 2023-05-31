@@ -13,6 +13,14 @@ export type IQueryParameters = {
 export interface IBaseNotificationData {
   id: string;
   type: string;
+  relationships: {
+    recipient: {
+      data: {
+        id: string;
+        type: string;
+      };
+    };
+  };
 }
 
 export interface IAdminRightsReceivedNotificationData
