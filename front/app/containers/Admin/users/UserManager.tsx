@@ -1,6 +1,6 @@
 // Libraries
 import React, { useEffect, useState } from 'react';
-import { isArray, includes } from 'lodash-es';
+import { isArray, includes, isString, isEmpty } from 'lodash-es';
 import { Subscription } from 'rxjs';
 
 // Components
@@ -23,7 +23,6 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 // Typings
 interface Props {
-  search: IQueryParameters['search'];
   groupId?: IQueryParameters['group'];
   groupType?: MembershipType;
   onlyBlocked?: IQueryParameters['only_blocked'];
@@ -43,7 +42,6 @@ type SelectedUsersType = string[] | 'none' | 'all';
 const UserManager = ({
   groupId,
   groupType,
-  search,
   notCitizenlabMember,
   deleteUsersFromGroup,
   includeInactive,
@@ -55,6 +53,11 @@ const UserManager = ({
     useState<IQueryParameters['pageNumber']>(1);
   const [selectedUsers, setSelectedUsers] = useState<SelectedUsersType>('none');
   const [errors, setErrors] = useState<error[]>([]);
+  const [search, setSearch] = useState<string | undefined>(undefined);
+  const searchUser = (searchTerm: string) => {
+    setSearch(isString(searchTerm) && !isEmpty(searchTerm) ? searchTerm : '');
+  };
+
   const { data: users } = useUsers({
     include_inactive: includeInactive,
     search,
@@ -171,6 +174,7 @@ const UserManager = ({
           toggleSelectAll={toggleAllUsers}
           unselectAll={unselectAllUsers}
           deleteUsersFromGroup={deleteUsersFromGroup}
+          onSearch={searchUser}
         />
 
         {errors &&

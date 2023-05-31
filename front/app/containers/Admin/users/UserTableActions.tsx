@@ -5,9 +5,10 @@ import { saveAs } from 'file-saver';
 
 // Components
 import Checkbox from 'components/UI/Checkbox';
-import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
+import { Icon, Dropdown, Box } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import Button from 'components/UI/Button';
+import SearchInput from 'components/UI/SearchInput';
 
 // api
 import { MembershipType } from 'api/groups/types';
@@ -43,15 +44,7 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 import usersKeys from 'api/users/keys';
 import { useQueryClient } from '@tanstack/react-query';
 
-const TableOptions = styled.div`
-  min-height: 60px;
-  display: flex;
-  align-items: center;
-  padding-bottom: 15px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin-bottom: 10px;
-  border-bottom: solid 1px ${colors.primary};
+const StyledBox = styled(Box)`
   user-select: none;
 `;
 
@@ -165,6 +158,7 @@ interface Props {
   allUsersIds: string[];
   groupId?: string;
   deleteUsersFromGroup?: (userIds: string[]) => void;
+  onSearch: (newValue: string) => void;
 }
 
 const UserTableActions = ({
@@ -175,6 +169,7 @@ const UserTableActions = ({
   unselectAll,
   deleteUsersFromGroup,
   groupType,
+  onSearch,
 }: Props) => {
   const queryClient = useQueryClient();
   const { formatDate, formatMessage } = useIntl();
@@ -326,98 +321,126 @@ const UserTableActions = ({
       : 'exportSelectedUsers';
 
   return (
-    <TableOptions>
-      <SelectAllCheckbox
-        label={
-          <SelectAllCheckboxLabel>
-            <FormattedMessage {...messages.select} />
-            {selectedCount > 0 && (
-              <UserCount className="e2e-selected-count">
-                ({selectedCount})
-              </UserCount>
-            )}
-          </SelectAllCheckboxLabel>
-        }
-        checked={selectedUsers === 'all'}
-        indeterminate={isArray(selectedUsers) && selectedUsers.length > 0}
-        onChange={toggleAllUsers}
-      />
-      <ActionButtons>
-        {selectedUsers !== 'none' && manualGroups && (
-          <ActionButtonWrapper>
+    <Box
+      width="100%"
+      display="flex"
+      justifyContent="space-between"
+      borderBottom={`solid 1px ${colors.primary}`}
+      mt="20px"
+    >
+      <StyledBox
+        minHeight="60px"
+        display="flex"
+        alignItems="center"
+        paddingBottom="15px"
+        paddingLeft="5px"
+        paddingRight="5px"
+      >
+        <SelectAllCheckbox
+          label={
+            <SelectAllCheckboxLabel>
+              <FormattedMessage {...messages.select} />
+              {selectedCount > 0 && (
+                <UserCount className="e2e-selected-count">
+                  ({selectedCount})
+                </UserCount>
+              )}
+            </SelectAllCheckboxLabel>
+          }
+          checked={selectedUsers === 'all'}
+          indeterminate={isArray(selectedUsers) && selectedUsers.length > 0}
+          onChange={toggleAllUsers}
+        />
+        <ActionButtons>
+          {selectedUsers !== 'none' && manualGroups && (
+            <ActionButtonWrapper>
+              <Button
+                className="e2e-move-users"
+                onClick={toggleDropdown}
+                buttonStyle="admin-dark-text"
+              >
+                <StyledIcon name="folder-move" />
+                <FormattedMessage {...messages.moveUsersTableAction} />
+              </Button>
+
+              <Dropdown
+                width="300px"
+                top="45px"
+                left="0px"
+                opened={dropdownOpened}
+                onClickOutside={toggleDropdown}
+                content={
+                  <DropdownList>
+                    {manualGroups.data.map((group) => (
+                      <DropdownListItem
+                        key={group.id}
+                        onClick={toggleGroup(group.id)}
+                        className="e2e-dropdown-item"
+                      >
+                        <DropdownListItemText>
+                          <T value={group.attributes.title_multiloc} />
+                        </DropdownListItemText>
+                        <Checkbox
+                          checked={includes(selectedGroupIds, group.id)}
+                          onChange={toggleGroup(group.id)}
+                        />
+                      </DropdownListItem>
+                    ))}
+                  </DropdownList>
+                }
+                footer={
+                  <DropdownFooterButton
+                    className="e2e-dropdown-submit"
+                    buttonStyle="cl-blue"
+                    onClick={addUsersToGroups}
+                    processing={processing}
+                    fullWidth={true}
+                    padding="12px"
+                    whiteSpace="normal"
+                    disabled={
+                      !selectedGroupIds || selectedGroupIds.length === 0
+                    }
+                  >
+                    <FormattedMessage {...messages.moveUsersButton} />
+                  </DropdownFooterButton>
+                }
+              />
+            </ActionButtonWrapper>
+          )}
+
+          {groupType === 'manual' && selectedUsers !== 'none' && (
             <Button
-              className="e2e-move-users"
-              onClick={toggleDropdown}
+              onClick={handleGroupsDeleteClick}
+              className="hasLeftMargin"
               buttonStyle="admin-dark-text"
             >
-              <StyledIcon name="folder-move" />
-              <FormattedMessage {...messages.moveUsersTableAction} />
+              <StyledIcon name="delete" />
+              <FormattedMessage {...messages.membershipDelete} />
             </Button>
+          )}
 
-            <Dropdown
-              width="300px"
-              top="45px"
-              left="0px"
-              opened={dropdownOpened}
-              onClickOutside={toggleDropdown}
-              content={
-                <DropdownList>
-                  {manualGroups.data.map((group) => (
-                    <DropdownListItem
-                      key={group.id}
-                      onClick={toggleGroup(group.id)}
-                      className="e2e-dropdown-item"
-                    >
-                      <DropdownListItemText>
-                        <T value={group.attributes.title_multiloc} />
-                      </DropdownListItemText>
-                      <Checkbox
-                        checked={includes(selectedGroupIds, group.id)}
-                        onChange={toggleGroup(group.id)}
-                      />
-                    </DropdownListItem>
-                  ))}
-                </DropdownList>
-              }
-              footer={
-                <DropdownFooterButton
-                  className="e2e-dropdown-submit"
-                  buttonStyle="cl-blue"
-                  onClick={addUsersToGroups}
-                  processing={processing}
-                  fullWidth={true}
-                  padding="12px"
-                  whiteSpace="normal"
-                  disabled={!selectedGroupIds || selectedGroupIds.length === 0}
-                >
-                  <FormattedMessage {...messages.moveUsersButton} />
-                </DropdownFooterButton>
-              }
-            />
-          </ActionButtonWrapper>
-        )}
-
-        {groupType === 'manual' && selectedUsers !== 'none' && (
           <Button
-            onClick={handleGroupsDeleteClick}
-            className="hasLeftMargin"
+            onClick={exportUsers}
+            className={`export e2e-${exportType} hasLeftMargin`}
             buttonStyle="admin-dark-text"
           >
-            <StyledIcon name="delete" />
-            <FormattedMessage {...messages.membershipDelete} />
+            <StyledIcon name="user-data" />
+            <FormattedMessage {...messages[exportType]} />
           </Button>
-        )}
-
-        <Button
-          onClick={exportUsers}
-          className={`export e2e-${exportType} hasLeftMargin`}
-          buttonStyle="admin-dark-text"
-        >
-          <StyledIcon name="user-data" />
-          <FormattedMessage {...messages[exportType]} />
-        </Button>
-      </ActionButtons>
-    </TableOptions>
+        </ActionButtons>
+      </StyledBox>
+      <Box flex="0 0 250px">
+        <SearchInput
+          onChange={onSearch}
+          // Not important here. Requires quite some refactoring
+          // to get users here in a nice and consistent manner.
+          // This a11y_... prop needs to be required so we always have it
+          // on the citizen side. Whenever this components is touched,
+          // you can give it the right value (number of users resulting from the search) here.
+          a11y_numberOfSearchResults={0}
+        />
+      </Box>
+    </Box>
   );
 };
 
