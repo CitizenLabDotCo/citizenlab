@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_24_151508) do
+ActiveRecord::Schema.define(version: 2023_05_31_171149) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -738,6 +738,28 @@ ActiveRecord::Schema.define(version: 2023_05_24_151508) do
     t.index ["task_id"], name: "index_insights_zeroshot_classification_tasks_inputs_on_task_id"
   end
 
+  create_table "internal_comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "author_id"
+    t.string "post_type"
+    t.uuid "post_id"
+    t.uuid "parent_id"
+    t.integer "lft", null: false
+    t.integer "rgt", null: false
+    t.jsonb "body_multiloc", default: {}
+    t.string "publication_status", default: "published", null: false
+    t.datetime "body_updated_at"
+    t.integer "children_count", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["author_id"], name: "index_internal_comments_on_author_id"
+    t.index ["created_at"], name: "index_internal_comments_on_created_at"
+    t.index ["lft"], name: "index_internal_comments_on_lft"
+    t.index ["parent_id"], name: "index_internal_comments_on_parent_id"
+    t.index ["post_id"], name: "index_internal_comments_on_post_id"
+    t.index ["post_type", "post_id"], name: "index_internal_comments_on_post"
+    t.index ["rgt"], name: "index_internal_comments_on_rgt"
+  end
+
   create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "token", null: false
     t.uuid "inviter_id"
@@ -1433,6 +1455,7 @@ ActiveRecord::Schema.define(version: 2023_05_24_151508) do
   add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_categories", column: "category_id"
   add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_zeroshot_classification_tasks", column: "task_id"
   add_foreign_key "insights_zeroshot_classification_tasks_inputs", "insights_zeroshot_classification_tasks", column: "task_id"
+  add_foreign_key "internal_comments", "users", column: "author_id"
   add_foreign_key "invites", "users", column: "invitee_id"
   add_foreign_key "invites", "users", column: "inviter_id"
   add_foreign_key "maps_layers", "maps_map_configs", column: "map_config_id"
