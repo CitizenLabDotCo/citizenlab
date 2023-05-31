@@ -10,7 +10,6 @@ import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
-import Link from 'utils/cl-router/Link';
 
 // i18n
 import messages from './messages';
@@ -69,11 +68,11 @@ const SettingsPage = () => {
       <NavigationTabs>
         {tabs.map(({ url, label }) => (
           <Tab
+            label={label}
+            url={url}
             key={url}
             active={isTopBarNavActive('/admin/settings', pathname, url)}
-          >
-            <Link to={url}>{label}</Link>
-          </Tab>
+          />
         ))}
       </NavigationTabs>
 
