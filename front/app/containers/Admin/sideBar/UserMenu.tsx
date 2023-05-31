@@ -162,10 +162,14 @@ export const UserMenu = () => {
           </ItemMenu>
         )}
         <ItemMenu
-          linkTo={formatMessage(messages.linkToCommunityPlatform)}
+          linkTo={`/profile/${authUser.attributes.slug}`}
           buttonStyle="text"
-          onClick={signOut}
         >
+          <Box display="flex" justifyContent="space-between" w="100%">
+            {formatMessage({ ...messages.myProfile })}
+          </Box>
+        </ItemMenu>
+        <ItemMenu buttonStyle="text" onClick={signOut}>
           <Box display="flex" justifyContent="space-between" w="100%">
             {formatMessage({ ...messages.signOut })}
             <Icon name="power" fill={colors.grey300} />

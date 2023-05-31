@@ -1605,6 +1605,7 @@
   "app.containers.AdminPage.SideBar.support": "Support",
   "app.containers.AdminPage.SideBar.toPlatform": "To platform",
   "app.containers.AdminPage.SideBar.tools": "Tools",
+  "app.containers.AdminPage.SideBar.user.myProfile": "My profile",
   "app.containers.AdminPage.SideBar.users": "Users",
   "app.containers.AdminPage.SideBar.workshops": "Workshops",
   "app.containers.AdminPage.Topics.addTopics": "Add",
