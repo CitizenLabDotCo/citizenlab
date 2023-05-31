@@ -1,6 +1,6 @@
 import { IGraphPoint } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
-import usePollOptions from 'hooks/usePollOptions';
+import usePollOptions from 'api/poll_options/usePollOptions';
 import usePollResponses from 'hooks/usePollResponses';
 import React, { memo } from 'react';
 import { WrappedComponentProps } from 'react-intl';
@@ -23,14 +23,14 @@ const QuestionReport = memo(
   }: Props & WrappedComponentProps) => {
     const localize = useLocalize();
 
-    const pollOptions = usePollOptions(question.id);
+    const { data: pollOptions } = usePollOptions(question.id);
 
     const getPollResponsesSerie = (question: IPollQuestion) => {
       const serie: IGraphPoint[] | undefined =
-        isNilOrError(pollResponses) || isNilOrError(pollOptions)
+        isNilOrError(pollResponses) || !pollOptions
           ? undefined
           : question.relationships.options.data.map((relOption) => {
-              const option = pollOptions.find(
+              const option = pollOptions.data.find(
                 (fullOption) => fullOption && relOption.id === fullOption.id
               )?.attributes.title_multiloc;
               return {

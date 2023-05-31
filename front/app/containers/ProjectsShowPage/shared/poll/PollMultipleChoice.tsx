@@ -1,8 +1,4 @@
 import React from 'react';
-import GetPollOptions, {
-  GetPollOptionsChildProps,
-} from 'resources/GetPollOptions';
-import { adopt } from 'react-adopt';
 import { IPollQuestion } from 'services/pollQuestions';
 import styled from 'styled-components';
 import Checkbox from 'components/UI/Checkbox';
@@ -16,6 +12,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import usePollOptions from 'api/poll_options/usePollOptions';
 
 const StyledFieldSet = styled.fieldset`
   width: 100%;
@@ -34,7 +31,7 @@ const MaxText = styled.span`
   font-weight: 400;
 `;
 
-interface InputProps {
+interface Props {
   question: IPollQuestion;
   index: number;
   value: string[] | undefined;
@@ -42,23 +39,17 @@ interface InputProps {
   onChange: (questionId: string, optionId: string) => () => void;
 }
 
-interface DataProps {
-  options: GetPollOptionsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
 const PollMultipleChoice = ({
   question,
   index,
-  options,
   value,
   disabled,
   onChange,
 }: Props) => {
+  const { data: options } = usePollOptions(question.id);
   return (
     <StyledFieldSet key={question.id}>
-      {isNilOrError(options) || options.length === 0 ? null : (
+      {isNilOrError(options) || options.data.length === 0 ? null : (
         <QuestionContainer className="e2e-poll-question">
           <Question>
             <QuestionNumber>{index + 1}</QuestionNumber>
@@ -74,7 +65,7 @@ const PollMultipleChoice = ({
               </MaxText>
             </QuestionText>
           </Question>
-          {options.map((option) => (
+          {options.data.map((option) => (
             <StyledCheckbox
               className="e2e-poll-option"
               key={option.id}
@@ -94,14 +85,4 @@ const PollMultipleChoice = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  options: ({ question, render }) => (
-    <GetPollOptions questionId={question.id}>{render}</GetPollOptions>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataprops) => <PollMultipleChoice {...inputProps} {...dataprops} />}
-  </Data>
-);
+export default PollMultipleChoice;

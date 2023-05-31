@@ -1,12 +1,8 @@
 // Libraries
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Services / Data loading
-import GetPollOptions, {
-  GetPollOptionsChildProps,
-} from 'resources/GetPollOptions';
 import { IPollQuestion } from 'services/pollQuestions';
 import { IPollOptionData, deletePollOption } from 'services/pollOptions';
 
@@ -27,6 +23,7 @@ import messages from '../messages';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { Text } from '@citizenlab/cl2-component-library';
+import usePollOptions from 'api/poll_options/usePollOptions';
 
 const Container = styled.div``;
 
@@ -43,143 +40,109 @@ const DisabledDragHandle = styled.div`
   padding: 1rem;
 `;
 
-interface InputProps {
+interface Props {
   question: IPollQuestion;
   collapse: () => void;
 }
 
-interface DataProps {
-  pollOptions: GetPollOptionsChildProps;
-}
+const OptionForm = ({ question, collapse }: Props) => {
+  const { data: pollOptions } = usePollOptions(question.id);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
-interface Props extends InputProps, DataProps {}
-
-interface State {
-  editingId: string | null;
-}
-
-export class OptionForm extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      editingId: null,
-    };
-  }
-
-  closeRow = () => {
-    this.setState({ editingId: null });
+  const closeRow = () => {
+    setEditingId(null);
   };
 
-  editOption = (optionId: string) => () => {
-    this.setState({ editingId: optionId });
+  const editOption = (optionId: string) => () => {
+    setEditingId(optionId);
   };
 
-  addOption = () => {
-    this.setState({ editingId: 'new' });
+  const addOption = () => {
+    setEditingId('new');
   };
 
-  deleteOption = (optionId: string) => () => {
+  const deleteOption = (optionId: string) => () => {
     deletePollOption(optionId);
   };
 
-  render() {
-    const { question, collapse, pollOptions } = this.props;
-    const { editingId } = this.state;
-    return (
-      <Container
-        key={question.id}
-        id={question.id}
-        className="e2e-options-form"
-      >
-        <Row>
-          <DisabledDragHandle>
-            <Icon name="sort" />
-          </DisabledDragHandle>
-          <TextCell className="expand">
-            <b>
-              <FormattedMessage
-                {...messages.optionsFormHeader}
-                values={{
-                  questionTitle: (
-                    <Text display="inline" fontWeight="normal">
-                      <T value={question.attributes.title_multiloc} />
-                    </Text>
-                  ),
-                }}
+  return (
+    <Container key={question.id} id={question.id} className="e2e-options-form">
+      <Row>
+        <DisabledDragHandle>
+          <Icon name="sort" />
+        </DisabledDragHandle>
+        <TextCell className="expand">
+          <b>
+            <FormattedMessage
+              {...messages.optionsFormHeader}
+              values={{
+                questionTitle: (
+                  <Text display="inline" fontWeight="normal">
+                    <T value={question.attributes.title_multiloc} />
+                  </Text>
+                ),
+              }}
+            />
+          </b>
+        </TextCell>
+      </Row>
+      <OptionsContainer>
+        <List
+          key={
+            isNilOrError(pollOptions)
+              ? 0
+              : pollOptions.data.length + (editingId === 'new' ? 1 : 0)
+          }
+        >
+          {!isNilOrError(pollOptions) && (
+            <>
+              <QuestionDetailsFormRow
+                question={question}
+                onCancelOptionEditing={collapse}
               />
-            </b>
-          </TextCell>
-        </Row>
-        <OptionsContainer>
-          <List
-            key={
-              isNilOrError(pollOptions)
-                ? 0
-                : pollOptions.length + (editingId === 'new' ? 1 : 0)
-            }
-          >
-            {!isNilOrError(pollOptions) && (
-              <>
-                <QuestionDetailsFormRow
-                  question={question}
-                  onCancelOptionEditing={collapse}
-                />
-                {pollOptions.map((pollOption: IPollOptionData) =>
-                  editingId === pollOption.id ? (
-                    <OptionFormRow
-                      key={pollOption.id}
-                      mode="edit"
-                      closeRow={this.closeRow}
-                      optionId={pollOption.id}
-                      titleMultiloc={pollOption.attributes.title_multiloc}
-                    />
-                  ) : (
-                    <OptionRow
-                      key={pollOption.id}
-                      pollOptionId={pollOption.id}
-                      pollOptionTitle={pollOption.attributes.title_multiloc}
-                      deleteOption={this.deleteOption(pollOption.id)}
-                      editOption={this.editOption(pollOption.id)}
-                    />
-                  )
-                )}
-              </>
-            )}
-            {editingId === 'new' ? (
-              <OptionFormRow
-                key="new"
-                mode="new"
-                questionId={question.id}
-                closeRow={this.closeRow}
-              />
-            ) : (
-              <StyledButton
-                className="e2e-add-option"
-                buttonStyle="admin-dark"
-                icon="plus-circle"
-                onClick={this.addOption}
-                autoFocus
-              >
-                <FormattedMessage {...messages.addAnswerOption} />
-              </StyledButton>
-            )}
-          </List>
-        </OptionsContainer>
-      </Container>
-    );
-  }
-}
+              {pollOptions.data.map((pollOption: IPollOptionData) =>
+                editingId === pollOption.id ? (
+                  <OptionFormRow
+                    key={pollOption.id}
+                    mode="edit"
+                    closeRow={closeRow}
+                    optionId={pollOption.id}
+                    titleMultiloc={pollOption.attributes.title_multiloc}
+                  />
+                ) : (
+                  <OptionRow
+                    key={pollOption.id}
+                    pollOptionId={pollOption.id}
+                    pollOptionTitle={pollOption.attributes.title_multiloc}
+                    deleteOption={deleteOption(pollOption.id)}
+                    editOption={editOption(pollOption.id)}
+                  />
+                )
+              )}
+            </>
+          )}
+          {editingId === 'new' ? (
+            <OptionFormRow
+              key="new"
+              mode="new"
+              questionId={question.id}
+              closeRow={closeRow}
+            />
+          ) : (
+            <StyledButton
+              className="e2e-add-option"
+              buttonStyle="admin-dark"
+              icon="plus-circle"
+              onClick={addOption}
+              autoFocus
+            >
+              <FormattedMessage {...messages.addAnswerOption} />
+            </StyledButton>
+          )}
+        </List>
+      </OptionsContainer>
+    </Container>
+  );
+};
 
-const Data = adopt<DataProps, InputProps>({
-  pollOptions: ({ question, render }) => (
-    <GetPollOptions questionId={question.id}>{render}</GetPollOptions>
-  ),
-});
-
-const OptionFormWithData = (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <OptionForm {...inputProps} {...dataProps} />}
-  </Data>
-);
-
-export default OptionFormWithData;
+export default OptionForm;
