@@ -11,15 +11,14 @@ import settingsRoutes from './settings/routes';
 import createAdminMessagingRoutes from './messaging/routes';
 import ideasRoutes from './ideas/routes';
 import pagesAndMenuRoutes from './pagesAndMenu/routes';
-import customFieldRoutes from './settings/registration/CustomFieldRoutes/routes';
 import projectFoldersRoutes from './projectFolders/routes';
 import reportingRoutes from './reporting/routes';
+import toolsRoutes from './tools/routes';
 
 // components
 import PageLoading from 'components/UI/PageLoading';
 import { Navigate, useLocation } from 'react-router-dom';
 const AdminContainer = lazy(() => import('containers/Admin'));
-const AdminWorkshops = lazy(() => import('containers/Admin/workshops'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
 
 // hooks
@@ -123,17 +122,9 @@ const createAdminRoutes = () => {
       invitationsRoutes(),
       createAdminMessagingRoutes(),
       ideasRoutes(),
-      customFieldRoutes(),
       projectFoldersRoutes(),
       reportingRoutes(),
-      {
-        path: 'workshops',
-        element: (
-          <PageLoading>
-            <AdminWorkshops />
-          </PageLoading>
-        ),
-      },
+      toolsRoutes(),
       // This path is only reachable via URL.
       // It's a pragmatic solution to reduce workload
       // on the team so admins can set their favicon.

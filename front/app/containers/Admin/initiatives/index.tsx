@@ -22,7 +22,7 @@ import { insertConfiguration } from 'utils/moduleUtils';
 import styled from 'styled-components';
 
 // utils
-import { matchPathToUrl } from 'utils/helperUtils';
+import { isTopBarNavActive } from 'utils/helperUtils';
 
 const StyledTabsPageLayout = styled(TabsPageLayout)`
   padding-left: 44px;
@@ -57,7 +57,10 @@ const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
         />
         <NavigationTabs>
           {tabs.map(({ url, label }) => (
-            <Tab key={url} active={matchPathToUrl(url).test(pathname)}>
+            <Tab
+              key={url}
+              active={isTopBarNavActive('/admin/initiatives', pathname, url)}
+            >
               <Link to={url}>{label}</Link>
             </Tab>
           ))}

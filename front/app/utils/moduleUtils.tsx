@@ -310,6 +310,7 @@ interface Routes {
   'admin.dashboards': RouteConfiguration[];
   'admin.project_templates': RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
+  'admin.tools': RouteConfiguration[];
   'admin.reporting': RouteConfiguration[];
 }
 
@@ -433,6 +434,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       ),
       'admin.settings': parseModuleRoutes(
         mergedRoutes?.['admin.settings'],
+        RouteTypes.ADMIN
+      ),
+      'admin.tools': parseModuleRoutes(
+        mergedRoutes?.['admin.tools'],
         RouteTypes.ADMIN
       ),
       'admin.reporting': parseModuleRoutes(

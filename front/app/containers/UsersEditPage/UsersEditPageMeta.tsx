@@ -14,7 +14,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
 
 // services
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

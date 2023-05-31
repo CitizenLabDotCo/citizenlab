@@ -1,8 +1,6 @@
-import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
 import { isDraft } from 'services/campaigns';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -18,6 +16,8 @@ import NewCampaignButton from './NewCampaignButton';
 import messages from '../../messages';
 
 import { fontSizes, colors } from 'utils/styleUtils';
+import useCampaigns from 'api/campaigns/useCampaigns';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 const NoCampaignsWrapper = styled.div`
   display: flex;
@@ -41,19 +41,25 @@ const NoCampaignsDescription = styled.p`
   max-width: 450px;
 `;
 
-interface DataProps extends GetCampaignsChildProps {}
+const CustomEmails = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data: campaigns, fetchNextPage } = useCampaigns({
+    campaignNames: ['manual'],
+    pageSize: 10,
+  });
 
-interface Props extends DataProps {}
+  const campaignsList = campaigns?.pages[currentPage - 1];
 
-const Campaigns = ({
-  campaigns,
-  currentPage,
-  lastPage,
-  onChangePage,
-}: Props) => {
-  if (isNilOrError(campaigns)) return null;
+  if (!campaignsList) return null;
 
-  if (campaigns.length === 0) {
+  const lastPage = getPageNumberFromUrl(campaigns?.pages[0].links.last) || 1;
+
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+    fetchNextPage({ pageParam: page });
+  };
+
+  if (campaignsList.data.length === 0) {
     return (
       <Box background={colors.white} p="40px">
         <NoCampaignsWrapper>
@@ -86,8 +92,8 @@ const Campaigns = ({
         </Box>
 
         <Box background={colors.white} p="40px">
-          <List key={campaigns.map((c) => c.id).join()}>
-            {campaigns.map((campaign) =>
+          <List key={campaignsList.data.map((c) => c.id).join()}>
+            {campaignsList.data.map((campaign) =>
               isDraft(campaign) ? (
                 <DraftCampaignRow key={campaign.id} campaign={campaign} />
               ) : (
@@ -98,7 +104,7 @@ const Campaigns = ({
           <Pagination
             currentPage={currentPage}
             totalPages={lastPage}
-            loadPage={onChangePage}
+            loadPage={goToPage}
           />
         </Box>
       </>
@@ -106,8 +112,4 @@ const Campaigns = ({
   }
 };
 
-export default () => (
-  <GetCampaigns campaignNames={['manual']} pageSize={10}>
-    {(campaigns) => <Campaigns {...campaigns} />}
-  </GetCampaigns>
-);
+export default CustomEmails;

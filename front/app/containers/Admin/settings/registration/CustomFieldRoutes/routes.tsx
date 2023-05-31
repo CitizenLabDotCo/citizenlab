@@ -23,7 +23,7 @@ const AdminCustomFieldRegistrationOptionsEditComponent = React.lazy(
 );
 
 export default () => ({
-  path: 'settings/registration/custom-fields',
+  path: 'custom-fields',
   element: <AdminCustomFieldsContainer />,
   children: [
     {

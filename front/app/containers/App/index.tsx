@@ -38,7 +38,7 @@ import HasPermission from 'components/HasPermission';
 // services
 import { IAppConfigurationStyle } from 'api/app_configuration/types';
 import signOut from 'api/authentication/sign_in_out/signOut';
-import signOutAndDeleteAccount from 'api/authentication/sign_in_out/signOutAndDeleteAccount';
+import useDeleteSelf from 'api/users/useDeleteSelf';
 import { authUserStream } from 'services/auth';
 import { localeStream } from 'services/locale';
 
@@ -94,6 +94,7 @@ const locale$ = localeStream().observable;
 
 const App = ({ children }: Props) => {
   const location = useLocation();
+  const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
   const [previousPathname, setPreviousPathname] = useState<string | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
@@ -265,14 +266,15 @@ const App = ({ children }: Props) => {
       eventEmitter
         .observeEvent('deleteProfileAndShowSuccessModal')
         .subscribe(() => {
-          signOutAndDeleteAccount().then((success) => {
-            if (success) {
+          signOutAndDeleteAccount(undefined, {
+            onSuccess: () => {
               setUserDeletedSuccessfullyModalOpened(true);
               setUserSuccessfullyDeleted(true);
-            } else {
+            },
+            onError: () => {
               setUserDeletedSuccessfullyModalOpened(true);
               setUserSuccessfullyDeleted(false);
-            }
+            },
           });
         }),
     ];
@@ -286,6 +288,7 @@ const App = ({ children }: Props) => {
     redirectsEnabled,
     appConfiguration,
     location,
+    signOutAndDeleteAccount,
   ]);
 
   useEffect(() => {
