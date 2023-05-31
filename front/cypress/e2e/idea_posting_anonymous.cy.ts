@@ -1,13 +1,19 @@
 import moment = require('moment');
-import { randomString } from '../support/commands';
+import { randomEmail, randomString } from '../support/commands';
 
 describe('Continuous ideation with anonymous participation allowed', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString(30);
+  const email = randomEmail();
+  const password = randomString(15);
   let projectId: string;
   let projectSlug: string;
+  let userId: string;
 
   before(() => {
+    cy.apiSignup('firstName', 'lastName', email, password).then((response) => {
+      userId = response.body.data.id;
+    });
     cy.setAdminLoginCookie();
     cy.getAuthUser()
       .then((user) => {
@@ -69,7 +75,7 @@ describe('Continuous ideation with anonymous participation allowed', () => {
     const ideaTitle = randomString(20);
     const ideaContent = randomString(60);
 
-    cy.setLoginCookie('user@citizenlab.co', 'democracy2.0');
+    cy.setLoginCookie(email, password);
 
     cy.visit(`/projects/${projectSlug}/ideas/new`);
 
@@ -102,6 +108,7 @@ describe('Continuous ideation with anonymous participation allowed', () => {
   });
 
   after(() => {
+    cy.apiRemoveUser(userId);
     cy.apiRemoveProject(projectId);
   });
 });
@@ -109,10 +116,16 @@ describe('Continuous ideation with anonymous participation allowed', () => {
 describe('Timeline ideation with anonymous participation allowed', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString(30);
+  const email = randomEmail();
+  const password = randomString(15);
   let projectId: string;
   let projectSlug: string;
+  let userId: string;
 
   before(() => {
+    cy.apiSignup('firstName', 'lastName', email, password).then((response) => {
+      userId = response.body.data.id;
+    });
     cy.setAdminLoginCookie();
     cy.getAuthUser().then(() => {
       cy.apiCreateProject({
@@ -183,7 +196,7 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     const ideaTitle = randomString(20);
     const ideaContent = randomString(60);
 
-    cy.setLoginCookie('user@citizenlab.co', 'democracy2.0');
+    cy.setLoginCookie(email, password);
 
     cy.visit(`/projects/${projectSlug}/ideas/new`);
 
@@ -216,6 +229,7 @@ describe('Timeline ideation with anonymous participation allowed', () => {
   });
 
   after(() => {
+    cy.apiRemoveUser(userId);
     cy.apiRemoveProject(projectId);
   });
 });

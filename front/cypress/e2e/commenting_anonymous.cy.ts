@@ -1,16 +1,22 @@
 import moment = require('moment');
-import { randomString } from '../support/commands';
+import { randomEmail, randomString } from '../support/commands';
 
 describe('Idea with anonymous commenting allowed', () => {
   const projectTitle = randomString();
   const ideaTitle = randomString(20);
   const ideaContent = randomString(60);
+  const email = randomEmail();
+  const password = randomString(15);
   let projectId: string;
   let projectSlug: string;
   let ideaId: string;
   let ideaSlug: string;
+  let userId: string;
 
   before(() => {
+    cy.apiSignup('firstName', 'lastName', email, password).then((response) => {
+      userId = response.body.data.id;
+    });
     cy.setAdminLoginCookie();
     cy.getAuthUser().then(() => {
       cy.apiCreateProject({
@@ -51,7 +57,7 @@ describe('Idea with anonymous commenting allowed', () => {
   });
 
   it('resident can submit anonymous comments', () => {
-    cy.setLoginCookie('user@citizenlab.co', 'democracy2.0');
+    cy.setLoginCookie(email, password);
     cy.visit(`/ideas/${ideaSlug}`);
     cy.get('#submit-comment').should('exist');
     cy.get('#submit-comment').click().type('Anonymous comment body');
@@ -67,6 +73,7 @@ describe('Idea with anonymous commenting allowed', () => {
   });
 
   after(() => {
+    cy.apiRemoveUser(userId);
     cy.apiRemoveIdea(ideaId);
     cy.apiRemoveProject(projectId);
   });

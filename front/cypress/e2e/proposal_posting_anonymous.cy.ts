@@ -1,13 +1,19 @@
 import moment = require('moment');
-import { randomString } from '../../../support/commands';
+import { randomEmail, randomString } from '../support/commands';
 
 describe('Initiatives with anonymous participation allowed', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString(30);
+  const email = randomEmail();
+  const password = randomString(15);
   let projectId: string;
   let projectSlug: string;
+  let userId: string;
 
   before(() => {
+    cy.apiSignup('firstName', 'lastName', email, password).then((response) => {
+      userId = response.body.data.id;
+    });
     cy.setAdminLoginCookie();
     cy.visit('/admin/initiatives/settings');
     cy.apiGetAppConfiguration().then((response) => {
@@ -73,7 +79,7 @@ describe('Initiatives with anonymous participation allowed', () => {
     const initiativeTitle = randomString(20);
     const initiativeContent = randomString(60);
 
-    cy.setLoginCookie('user@citizenlab.co', 'democracy2.0');
+    cy.setLoginCookie(email, password);
 
     cy.visit(`/initiatives/new`);
     cy.get('#e2e-initiative-title-input').as('titleInput');
