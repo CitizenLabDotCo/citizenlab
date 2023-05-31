@@ -1,40 +1,41 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useUpdatePollOption from './useUpdatePollOption';
+import useUpdatePollQuestion from './useUpdatePollQuestion';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { pollOptionsData } from './__mocks__/usePollOptions';
+import { pollQuestionsData } from './__mocks__/usePollQuestions';
 
-const apiPath = '*/poll_options/:optionId';
+const apiPath = '*/poll_questions/:questionId';
 
 const server = setupServer(
   rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: pollOptionsData[0] }));
+    return res(ctx.status(200), ctx.json({ data: pollQuestionsData[0] }));
   })
 );
 
-describe('useUpdatePollOption', () => {
+describe('useUpdatePollQuestion', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useUpdatePollOption(), {
+    const { result, waitFor } = renderHook(() => useUpdatePollQuestion(), {
       wrapper: createQueryClientWrapper(),
     });
 
     act(() => {
       result.current.mutate({
-        optionId: 'optionId',
         questionId: 'questionId',
         title_multiloc: { en: 'mock title' },
+        participationContextId: '1',
+        participationContextType: 'project',
       });
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(pollOptionsData[0]);
+    expect(result.current.data?.data).toEqual(pollQuestionsData[0]);
   });
 
   it('returns error correctly', async () => {
@@ -44,15 +45,16 @@ describe('useUpdatePollOption', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useUpdatePollOption(), {
+    const { result, waitFor } = renderHook(() => useUpdatePollQuestion(), {
       wrapper: createQueryClientWrapper(),
     });
 
     act(() => {
       result.current.mutate({
-        optionId: 'optionId',
         questionId: 'questionId',
         title_multiloc: { en: 'mock title' },
+        participationContextId: '1',
+        participationContextType: 'project',
       });
     });
 

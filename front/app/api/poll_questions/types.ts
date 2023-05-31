@@ -4,7 +4,7 @@ import { IParticipationContextType, Multiloc } from 'typings';
 
 export type PollQuestionsKeys = Keys<typeof pollQuestionsKeys>;
 
-interface IPollQuestionAttributes {
+export interface IPollQuestionAttributes {
   question_type: 'multiple_options' | 'single_option';
   max_options: number | null;
   title_multiloc: Multiloc;
