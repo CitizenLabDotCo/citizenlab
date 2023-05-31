@@ -1,6 +1,6 @@
-import { IPollQuestion } from '../types';
+import { IPollQuestionData } from '../types';
 
-export const pollQuestionsData: IPollQuestion[] = [
+export const pollQuestionsData: IPollQuestionData[] = [
   {
     id: '6a11060b-0efe-404b-9a68-2e84114873f9',
     type: 'question',

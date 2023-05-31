@@ -6,10 +6,7 @@ import { clone } from 'lodash-es';
 import styled from 'styled-components';
 
 // Services / Data loading
-import {
-  updatePollQuestion,
-  reorderPollQuestion,
-} from 'services/pollQuestions';
+
 import { isNilOrError } from 'utils/helperUtils';
 
 // Components
@@ -28,6 +25,8 @@ import { Multiloc, IParticipationContextType } from 'typings';
 import useAddPollQuestion from 'api/poll_questions/useAddPollQuestion';
 import useDeletePollQuestion from 'api/poll_questions/useDeletePollQuestion';
 import { IPollQuestionData } from 'api/poll_questions/types';
+import useUpdatePollQuestion from 'api/poll_questions/useUpdatePollQuestion';
+import useReorderPollQuestion from 'api/poll_questions/useReorderPollQuestion';
 
 const StyledList = styled(List)`
   margin: 10px 0;
@@ -46,6 +45,8 @@ const PollAdminForm = ({
 }: Props) => {
   const { mutate: addPollQuestion } = useAddPollQuestion();
   const { mutate: deletePollQuestion } = useDeletePollQuestion();
+  const { mutate: updatePollQuestion } = useUpdatePollQuestion();
+  const { mutate: reorderPollQuestion, isLoading } = useReorderPollQuestion();
   const [newQuestionTitle, setNewQuestionTitle] = useState<Multiloc | null>(
     null
   );
@@ -58,10 +59,9 @@ const PollAdminForm = ({
   const [itemsWhileDragging, setItemsWhileDragging] = useState<
     IPollQuestionData[] | null
   >(null);
-  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
-    if (!isProcessing) {
+    if (!isLoading) {
       const listItems = getListItems();
 
       if (!listItems) return;
@@ -81,8 +81,12 @@ const PollAdminForm = ({
     const field = listItems.find((listItem) => listItem.id === fieldId);
 
     if (field && field.attributes.ordering !== toIndex) {
-      setIsProcessing(true);
-      reorderPollQuestion(fieldId, toIndex).then(() => setIsProcessing(false));
+      reorderPollQuestion({
+        questionId: fieldId,
+        ordering: toIndex,
+        participationContextId,
+        participationContextType,
+      });
     } else {
       setItemsWhileDragging(null);
     }
@@ -140,12 +144,20 @@ const PollAdminForm = ({
 
   const saveEditingQuestion = () => {
     if (editingQuestionId && editingQuestionTitle) {
-      updatePollQuestion(editingQuestionId, {
-        title_multiloc: editingQuestionTitle,
-      }).then(() => {
-        setEditingQuestionId(null);
-        setEditingQuestionTitle(null);
-      });
+      updatePollQuestion(
+        {
+          questionId: editingQuestionId,
+          title_multiloc: editingQuestionTitle,
+          participationContextId,
+          participationContextType,
+        },
+        {
+          onSuccess: () => {
+            setEditingQuestionId(null);
+            setEditingQuestionTitle(null);
+          },
+        }
+      );
     }
   };
 

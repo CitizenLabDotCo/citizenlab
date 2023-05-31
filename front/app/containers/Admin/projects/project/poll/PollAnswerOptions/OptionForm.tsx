@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Services / Data loading
-import { IPollQuestion } from 'services/pollQuestions';
+import { IPollQuestionData } from 'api/poll_questions/types';
 import { IPollOptionData } from 'api/poll_options/types';
 
 // Components
@@ -42,7 +42,7 @@ const DisabledDragHandle = styled.div`
 `;
 
 interface Props {
-  question: IPollQuestion;
+  question: IPollQuestionData;
   collapse: () => void;
 }
 

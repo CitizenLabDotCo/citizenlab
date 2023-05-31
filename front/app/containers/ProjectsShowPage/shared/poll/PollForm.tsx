@@ -5,7 +5,7 @@ import { IParticipationContextType } from 'typings';
 
 import Button from 'components/UI/Button';
 
-import { IPollQuestion } from 'services/pollQuestions';
+import { IPollQuestionData } from 'api/poll_questions/types';
 import { addPollResponse } from 'services/pollResponses';
 
 import styled from 'styled-components';
@@ -57,7 +57,7 @@ export const QuestionText = styled.span`
 `;
 
 interface Props {
-  questions: IPollQuestion[];
+  questions: IPollQuestionData[];
   projectId: string;
   id: string | null;
   type: IParticipationContextType;

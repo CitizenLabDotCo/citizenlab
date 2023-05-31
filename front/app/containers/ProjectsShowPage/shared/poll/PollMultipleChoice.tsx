@@ -1,5 +1,5 @@
 import React from 'react';
-import { IPollQuestion } from 'services/pollQuestions';
+import { IPollQuestionData } from 'api/poll_questions/types';
 import styled from 'styled-components';
 import Checkbox from 'components/UI/Checkbox';
 import {
@@ -32,7 +32,7 @@ const MaxText = styled.span`
 `;
 
 interface Props {
-  question: IPollQuestion;
+  question: IPollQuestionData;
   index: number;
   value: string[] | undefined;
   disabled: boolean;

@@ -4,13 +4,13 @@ import usePollOptions from 'api/poll_options/usePollOptions';
 import usePollResponses from 'hooks/usePollResponses';
 import React, { memo } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { IPollQuestion } from 'services/pollQuestions';
+import { IPollQuestionData } from 'api/poll_questions/types';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import ResponseGraph from './Charts/ResponseGraph';
 
 interface Props {
-  question: IPollQuestion;
+  question: IPollQuestionData;
   participationContextId: string;
   participationContextType: 'phase' | 'project';
 }
@@ -25,7 +25,7 @@ const QuestionReport = memo(
 
     const { data: pollOptions } = usePollOptions(question.id);
 
-    const getPollResponsesSerie = (question: IPollQuestion) => {
+    const getPollResponsesSerie = (question: IPollQuestionData) => {
       const serie: IGraphPoint[] | undefined =
         isNilOrError(pollResponses) || !pollOptions
           ? undefined
