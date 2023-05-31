@@ -31,16 +31,12 @@ class PhasePolicy < ApplicationPolicy
     ProjectPolicy.new(user, record.project).update?
   end
 
-  def survey_results?
-    ProjectPolicy.new(user, record.project).survey_results?
-  end
-
   def submission_count?
     show?
   end
 
   def index_xlsx?
-    survey_results?
+    ProjectPolicy.new(user, record.project).index_xlsx?
   end
 
   def delete_inputs?

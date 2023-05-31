@@ -20,8 +20,7 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.not_to permit(:index_xlsx) }
-      it { is_expected.not_to permit(:survey_results) }
-      it { is_expected.not_to permit(:submission_count) }
+      it { is_expected.to     permit(:submission_count) }
       it { is_expected.not_to permit(:delete_inputs) }
 
       it 'should index the project' do
@@ -38,8 +37,7 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.not_to permit(:index_xlsx) }
-      it { is_expected.not_to permit(:survey_results) }
-      it { is_expected.not_to permit(:submission_count) }
+      it { is_expected.to     permit(:submission_count) }
       it { is_expected.not_to permit(:delete_inputs) }
 
       it 'should index the project' do
@@ -60,7 +58,6 @@ describe ProjectPolicy do
       it { is_expected.to permit(:reorder) }
       it { is_expected.to permit(:destroy) }
       it { is_expected.to permit(:index_xlsx) }
-      it { is_expected.to permit(:survey_results) }
       it { is_expected.to permit(:submission_count) }
       it { is_expected.to permit(:delete_inputs) }
 
@@ -128,7 +125,6 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.not_to permit(:index_xlsx) }
-      it { is_expected.not_to permit(:survey_results) }
       it { is_expected.not_to permit(:submission_count) }
       it { is_expected.not_to permit(:delete_inputs) }
 
@@ -146,7 +142,6 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.not_to permit(:index_xlsx) }
-      it { is_expected.not_to permit(:survey_results) }
       it { is_expected.not_to permit(:submission_count) }
       it { is_expected.not_to permit(:delete_inputs) }
 
@@ -168,7 +163,6 @@ describe ProjectPolicy do
       it { is_expected.to permit(:reorder) }
       it { is_expected.to permit(:destroy) }
       it { is_expected.to permit(:index_xlsx) }
-      it { is_expected.to permit(:survey_results) }
       it { is_expected.to permit(:submission_count) }
       it { is_expected.not_to permit(:delete_inputs) }
 
@@ -192,7 +186,6 @@ describe ProjectPolicy do
     it { is_expected.not_to permit(:reorder) }
     it { is_expected.not_to permit(:destroy) }
     it { is_expected.not_to permit(:index_xlsx) }
-    it { is_expected.not_to permit(:survey_results) }
     it { is_expected.not_to permit(:submission_count) }
 
     it 'should not index the project'  do
@@ -210,7 +203,6 @@ describe ProjectPolicy do
     it { is_expected.not_to permit(:reorder) }
     it { is_expected.not_to permit(:destroy) }
     it { is_expected.not_to permit(:index_xlsx) }
-    it { is_expected.not_to permit(:survey_results) }
     it { is_expected.not_to permit(:submission_count) }
 
     it 'should not index the project'  do
@@ -226,14 +218,13 @@ describe ProjectPolicy do
     let!(:user) { create(:user) }
     let!(:project) { create(:private_groups_project, user: user, groups_count: 2) }
 
-    it { is_expected.to permit(:show) }
+    it { is_expected.to     permit(:show) }
     it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:reorder) }
     it { is_expected.not_to permit(:destroy) }
     it { is_expected.not_to permit(:index_xlsx) }
-    it { is_expected.not_to permit(:survey_results) }
-    it { is_expected.not_to permit(:submission_count) }
+    it { is_expected.to     permit(:submission_count) }
 
     it 'should index the project' do
       expect(scope.resolve.size).to eq 1
@@ -254,7 +245,6 @@ describe ProjectPolicy do
     it { is_expected.to permit(:reorder) }
     it { is_expected.to permit(:destroy) }
     it { is_expected.to permit(:index_xlsx) }
-    it { is_expected.to permit(:survey_results) }
     it { is_expected.to permit(:submission_count) }
 
     it 'should index the project' do
@@ -278,7 +268,6 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.not_to permit(:index_xlsx) }
-      it { is_expected.not_to permit(:survey_results) }
       it { is_expected.not_to permit(:submission_count) }
 
       it 'should not index the project'  do
@@ -295,7 +284,6 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.not_to permit(:index_xlsx) }
-      it { is_expected.not_to permit(:survey_results) }
       it { is_expected.not_to permit(:submission_count) }
 
       it 'should not index the project'  do
@@ -316,7 +304,6 @@ describe ProjectPolicy do
       it { is_expected.to permit(:reorder) }
       it { is_expected.to permit(:destroy) }
       it { is_expected.to permit(:index_xlsx) }
-      it { is_expected.to permit(:survey_results) }
       it { is_expected.to permit(:submission_count) }
 
       it 'should index the project' do
