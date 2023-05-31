@@ -15,9 +15,7 @@ class IdeaPolicy < ApplicationPolicy
         scope.all
       elsif user
         projects = Pundit.policy_scope(user, Project)
-        user_scope = scope.where(project: projects, publication_status: %w[published closed])
-        user_scope = user_scope.or(scope.where(project_id: user.moderatable_project_ids)) if user&.project_moderator?
-        user_scope
+        scope.where(project: projects, publication_status: %w[published closed])
       else
         scope
           .left_outer_joins(project: [:admin_publication])

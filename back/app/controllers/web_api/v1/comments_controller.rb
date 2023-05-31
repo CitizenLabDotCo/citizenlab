@@ -92,6 +92,9 @@ class WebApi::V1::CommentsController < ApplicationController
     if (@post_type == 'Idea') && params[:project].present?
       @comments = @comments.where(ideas: { project_id: params[:project] })
     end
+    if (@post_type == 'Idea')
+      @comments = @comments.where(ideas: { project_id: UserRoleService.new.moderatable_projects(current_user) })
+    end
     @comments = @comments.where(post_id: post_ids) if post_ids.present?
 
     I18n.with_locale(current_user&.locale) do
