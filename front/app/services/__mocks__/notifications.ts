@@ -1,4 +1,4 @@
-import { INotifications, TNotificationData } from 'services/notifications';
+import { INotifications, TNotificationData } from 'api/notifications/types';
 import { BehaviorSubject } from 'rxjs';
 
 let mockNotifications: INotifications[] | null = null;
