@@ -6,7 +6,6 @@ import { IParticipationContextType } from 'typings';
 import Button from 'components/UI/Button';
 
 import { IPollQuestionData } from 'api/poll_questions/types';
-import { addPollResponse } from 'services/pollResponses';
 
 import styled from 'styled-components';
 import { fontSizes, defaultCardStyle } from 'utils/styleUtils';
@@ -16,6 +15,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import PollSingleChoice from './PollSingleChoice';
 import PollMultipleChoice from './PollMultipleChoice';
+import useAddPollResponse from 'api/poll_responses/useAddPollResponse';
 
 const PollContainer = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -68,8 +68,9 @@ interface Answers {
   [questionId: string]: string[];
 }
 
-const PollForm = ({ questions, projectId, id, type, disabled }: Props) => {
+const PollForm = ({ questions, id, type, disabled }: Props) => {
   const [answers, setAnswers] = useState<Answers>({});
+  const { mutate: addPollResponse } = useAddPollResponse();
 
   const changeAnswerSingle = (questionId: string, optionId: string) => () => {
     setAnswers({ ...answers, [questionId]: [optionId] });
@@ -85,7 +86,11 @@ const PollForm = ({ questions, projectId, id, type, disabled }: Props) => {
 
   const sendAnswer = () => {
     if (validate() && id) {
-      addPollResponse(id, type, Object.values(answers).flat(), projectId);
+      addPollResponse({
+        participationContextId: id,
+        participationContextType: type,
+        optionIds: Object.values(answers).flat(),
+      });
     }
   };
 
