@@ -1,7 +1,6 @@
 import React, { memo, useMemo } from 'react';
 
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import Link from 'utils/cl-router/Link';
 
 // typings
 import { ITab } from 'typings';
@@ -47,23 +46,23 @@ const DashboardTabs = memo<Props & WithRouterProps>(
                     return (
                       <FeatureFlag key={tab.url} name={tab.feature}>
                         <Tab
+                          label={tab.label}
+                          url={tab.url}
                           key={tab.url}
                           active={active}
                           className={`${classes} intercom-admin-dashboard-tab-${tab.name}`}
-                        >
-                          <Link to={tab.url}>{tab.label}</Link>
-                        </Tab>
+                        />
                       </FeatureFlag>
                     );
                   } else {
                     return (
                       <Tab
+                        label={tab.label}
+                        url={tab.url}
                         key={tab.url}
                         active={active}
                         className={`${classes} intercom-admin-dashboard-tab-${tab.name}`}
-                      >
-                        <Link to={tab.url}>{tab.label}</Link>
-                      </Tab>
+                      />
                     );
                   }
                 })}

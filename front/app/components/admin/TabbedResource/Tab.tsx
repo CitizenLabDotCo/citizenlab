@@ -1,4 +1,4 @@
-import { StatusLabel } from '@citizenlab/cl2-component-library';
+import { Box, StatusLabel } from '@citizenlab/cl2-component-library';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
@@ -44,10 +44,6 @@ const Container = styled.div`
   }
 `;
 
-const StatusLabelWithMargin = styled(StatusLabel)`
-  margin-left: 12px;
-`;
-
 interface Props {
   tab: ITab;
   className?: string;
@@ -79,11 +75,13 @@ const Tab = ({
       <Link to={url}>
         {label}
         {statusLabel && (
-          <StatusLabelWithMargin
-            text={statusLabel}
-            backgroundColor={colors.background}
-            variant="outlined"
-          />
+          <Box ml="12px" display="inline">
+            <StatusLabel
+              text={statusLabel}
+              backgroundColor={colors.background}
+              variant="outlined"
+            />
+          </Box>
         )}
       </Link>
     </Container>

@@ -10,7 +10,6 @@ import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
-import Link from 'utils/cl-router/Link';
 import Outlet from 'components/Outlet';
 
 // i18n
@@ -72,11 +71,11 @@ const DashboardTabs = ({ showReportBuilderTab, children }: Props) => {
       <NavigationTabs>
         {tabs.map(({ url, label }) => (
           <Tab
+            label={label}
+            url={url}
             key={url}
             active={isTopBarNavActive('/admin/reporting', pathname, url)}
-          >
-            <Link to={url}>{label}</Link>
-          </Tab>
+          />
         ))}
       </NavigationTabs>
       <TabsPageLayout>{children}</TabsPageLayout>

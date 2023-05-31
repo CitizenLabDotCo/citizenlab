@@ -17,7 +17,6 @@ import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
-import Link from 'utils/cl-router/Link';
 import { isTopBarNavActive } from 'utils/helperUtils';
 
 interface DataProps {
@@ -89,12 +88,12 @@ const MessagingDashboard = ({
       <NavigationTabs>
         {tabs.map(({ url, label, statusLabel }) => (
           <Tab
+            label={label}
+            url={url}
             key={url}
             active={isTopBarNavActive('/admin/messaging', pathname, url)}
             statusLabel={statusLabel}
-          >
-            <Link to={url}>{label}</Link>
-          </Tab>
+          />
         ))}
       </NavigationTabs>
 
