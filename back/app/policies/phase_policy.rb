@@ -31,6 +31,10 @@ class PhasePolicy < ApplicationPolicy
     ProjectPolicy.new(user, record.project).update?
   end
 
+  def survey_results?
+    ProjectPolicy.new(user, record.project).survey_results?
+  end
+
   def submission_count?
     show?
   end
