@@ -166,7 +166,7 @@ export const UserMenu = () => {
           buttonStyle="text"
         >
           <Box display="flex" justifyContent="space-between" w="100%">
-            {formatMessage({ ...messages.yourProfile })}
+            {formatMessage({ ...messages.myProfile })}
           </Box>
         </ItemMenu>
         <ItemMenu buttonStyle="text" onClick={signOut}>
