@@ -12,7 +12,13 @@ export const claveUnicaFlow = (
     'clave-unica:email': {
       SUBMIT_EMAIL: async (email: string) => {
         await resendEmailConfirmationCode(email);
-        setCurrentStep('clave-unica:email-confirmation');
+
+        const { requirements } = await getRequirements();
+        if (requirements.special.confirmation === 'require') {
+          setCurrentStep('clave-unica:email-confirmation');
+        } else {
+          setCurrentStep('success');
+        }
       },
     },
     'clave-unica:email-confirmation': {
