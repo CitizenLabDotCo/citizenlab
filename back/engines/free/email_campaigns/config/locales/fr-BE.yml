@@ -577,7 +577,7 @@ fr-BE:
         all_users_who_uploaded_proposals: 'Tous les utilisateurs qui ont soumis des propositions'
         managers: 'Gestionnaires'
         admins_assigned_to_a_proposal: 'Administrateurs assignés à une proposition'
-        admins_and_managers_assigned_to_the_input: 'Admins & managers assignés à l''entrée'
+        admins_and_managers_assigned_to_the_input: 'Les administrateurs et les gestionnaires assignés à la contribution'
         user_receiving_admin_rights: 'Utilisateur qui reçoit les droits d''administrateur'
         user_receiving_folder_moderator_rights: 'Utilisateur qui reçoit les droits de gestionnaire de dossier'
         user_receiving_project_moderator_rights: 'Utilisateur qui reçoit les droits de gestionnaire de projet'
