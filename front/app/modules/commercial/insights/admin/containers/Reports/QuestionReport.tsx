@@ -1,7 +1,7 @@
 import { IGraphPoint } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 import usePollOptions from 'api/poll_options/usePollOptions';
-import usePollResponses from 'hooks/usePollResponses';
+import usePollResponses from 'api/poll_responses/usePollResponses';
 import React, { memo } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { IPollQuestionData } from 'api/poll_questions/types';
@@ -24,6 +24,10 @@ const QuestionReport = memo(
     const localize = useLocalize();
 
     const { data: pollOptions } = usePollOptions(question.id);
+    const { data: pollResponses } = usePollResponses({
+      participationContextId,
+      participationContextType,
+    });
 
     const getPollResponsesSerie = (question: IPollQuestionData) => {
       const serie: IGraphPoint[] | undefined =
@@ -42,11 +46,6 @@ const QuestionReport = memo(
             });
       return serie;
     };
-
-    const pollResponses = usePollResponses({
-      participationContextId,
-      participationContextType,
-    });
 
     return (
       <ResponseGraph

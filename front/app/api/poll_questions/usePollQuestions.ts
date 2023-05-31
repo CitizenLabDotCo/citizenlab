@@ -17,7 +17,7 @@ const fetchQuestions = ({
     action: 'get',
   });
 
-const usePhases = ({
+const usePollQuestions = ({
   participationContextId,
   participationContextType,
 }: IPollQuestionParameters) => {
@@ -31,4 +31,4 @@ const usePhases = ({
   });
 };
 
-export default usePhases;
+export default usePollQuestions;

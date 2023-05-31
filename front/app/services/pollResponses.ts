@@ -4,7 +4,7 @@ import { IParticipationContextType } from 'typings';
 import projectsKeys from 'api/projects/keys';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
-export interface IPollResponseAttributes {
+export interface IPollResponse {
   data: {
     type: 'responses_count';
     attributes: { series: { [key: string]: number } };
@@ -39,7 +39,7 @@ export function getPollResponses(
   participationContextId: string,
   participationContextType: IParticipationContextType
 ) {
-  const response = streams.get<IPollResponseAttributes>({
+  const response = streams.get<IPollResponse>({
     apiEndpoint: `${API_PATH}/${participationContextType}s/${participationContextId}/poll_responses/responses_count`,
   });
   return response;
