@@ -40,7 +40,7 @@ const AutomatedEmails = () => {
             recipient_role: localize(recipient_role_multiloc),
             recipient_segment: localize(recipient_segment_multiloc),
             campaign_description: localize(campaign_description_multiloc),
-            trigger: trigger_multiloc && localize(trigger_multiloc),
+            trigger: localize(trigger_multiloc),
             schedule: schedule_multiloc && localize(schedule_multiloc),
             ...campaign,
           };
