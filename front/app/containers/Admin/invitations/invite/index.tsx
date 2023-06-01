@@ -38,7 +38,7 @@ import {
 
 import useBulkInviteEmails from 'api/invites/useBulkInviteEmails';
 import useBulkInviteCountNewSeatsEmails from 'api/invites/useBulkInviteCountNewSeatsEmails';
-import useBulkInviteXLSX from 'api/invites/useBulkInviteSLSX';
+import useBulkInviteXLSX from 'api/invites/useBulkInviteXLSX';
 import useBulkInviteCountNewSeatsXLSX from 'api/invites/useBulkInviteCountNewSeatsXLSX';
 
 // i18n
