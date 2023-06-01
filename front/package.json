@@ -237,7 +237,7 @@
     "webpack-cli": "4.9.1",
     "webpack-dev-server": "4.11.1",
     "whatwg-fetch": "3.6.2",
-    "yargs": "17.5.1"
+    "yargs": "17.7.2"
   },
   "resolutions": {
     "react-test-renderer": "16.14.0"
