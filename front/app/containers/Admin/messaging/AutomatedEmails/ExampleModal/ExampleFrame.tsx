@@ -27,31 +27,35 @@ const ExampleFrame = ({
   campaign,
 }: {
   example: ICampaignExampleData;
-  campaign?: ICampaign;
+  campaign: ICampaign;
 }) => {
   const { data: appConfig } = useAppConfiguration();
   const orgName = appConfig?.data.attributes.settings.core.organization_name;
   return (
     <Box>
       <Box mb="16px">
-        <Text my="4px">
-          <b>
+        <Box my="4px" display="flex" gap="8px">
+          <Text fontWeight="bold" my="0">
             <FormattedMessage {...messages.subject} />
-          </b>{' '}
-          {example.attributes.subject}
-        </Text>
-        <Text my="4px">
-          <b>
+          </Text>
+          <Text my="0">{example.attributes.subject}</Text>
+        </Box>
+        <Box my="4px" display="flex" gap="8px">
+          <Text fontWeight="bold" my="0">
             <FormattedMessage {...messages.from} />
-          </b>{' '}
-          <T value={orgName} />
-        </Text>
-        <Text my="4px">
-          <b>
+          </Text>
+          <Text my="0">
+            <T value={orgName} />
+          </Text>
+        </Box>
+        <Box my="4px" display="flex" gap="8px">
+          <Text fontWeight="bold" my="0">
             <FormattedMessage {...messages.to} />
-          </b>
-          <T value={campaign?.data.attributes.recipient_segment_multiloc} />
-        </Text>
+          </Text>
+          <Text my="0">
+            <T value={campaign?.data.attributes.recipient_segment_multiloc} />
+          </Text>
+        </Box>
       </Box>
       <StyledFrame>
         <div

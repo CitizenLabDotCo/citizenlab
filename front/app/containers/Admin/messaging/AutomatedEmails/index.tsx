@@ -190,10 +190,12 @@ const AutomatedEmails = () => {
           </Box>
         ))}
       </Box>
-      <ExampleModal
-        campaignId={exampleModalCampaignId}
-        onClose={() => setExampleModalCampaignId(null)}
-      />
+      {exampleModalCampaignId && (
+        <ExampleModal
+          campaignId={exampleModalCampaignId}
+          onClose={() => setExampleModalCampaignId(null)}
+        />
+      )}
     </>
   );
 };

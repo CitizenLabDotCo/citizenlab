@@ -271,7 +271,7 @@ export default defineMessages({
   noExampleYet: {
     id: 'app.containers.Admin.emails.noExampleYet',
     defaultMessage:
-      'We can’t show you an example email as no email of this type has been sent yet. As soon as one is sent you’ll be able to view it here.',
+      "We can't show you an example email as no email of this type has been sent yet. As soon as one is sent you'll be able to view it here.",
   },
   supportButtonLabel: {
     id: 'app.containers.Admin.emails.supportButtonLabel',

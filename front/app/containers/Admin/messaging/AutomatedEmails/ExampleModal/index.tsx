@@ -14,6 +14,7 @@ import { Button, Box, Text } from '@citizenlab/cl2-component-library';
 // Hooks
 import useCampaignExamples from 'api/campaign_examples/useCampaignExamples';
 import useCampaign from 'api/campaigns/useCampaign';
+import { isNilOrError } from 'utils/helperUtils';
 
 /** Modulo function, since JS's native `%` remainder function works differently for negative numbers */
 const mod = (n: number, m: number) => ((n % m) + m) % m;
@@ -22,7 +23,7 @@ const ExampleModal = ({
   campaignId,
   onClose,
 }: {
-  campaignId: string | null;
+  campaignId: string;
   onClose: () => void;
 }) => {
   const { data: examples, isLoading } = useCampaignExamples({ campaignId });
@@ -43,24 +44,26 @@ const ExampleModal = ({
     );
   };
 
+  if (isNilOrError(examples)) return null;
+
   const selectedExample =
-    selectedExampleIdx !== null && examples?.data[selectedExampleIdx];
+    selectedExampleIdx === null ? null : examples?.data[selectedExampleIdx];
 
   return (
     <Modal
-      opened={!!campaignId}
+      opened={true}
       close={() => onClose()}
       header={
         <T value={campaign?.data.attributes.campaign_description_multiloc} />
       }
     >
       <Box mx="30px" mt="30px">
-        {!isLoading && examples?.data.length === 0 && <EmptyState />}
+        {!isLoading && examples.data.length === 0 && <EmptyState />}
         {!isLoading &&
-          examples?.data.length !== 0 &&
+          examples.data.length !== 0 &&
           selectedExampleIdx !== null && (
             <Box>
-              {selectedExample && (
+              {selectedExample && campaign && (
                 <ExampleFrame example={selectedExample} campaign={campaign} />
               )}
               <Box display="flex" justifyContent="center" alignItems="center">
@@ -74,7 +77,7 @@ const ExampleModal = ({
                 />
                 <Box mx="24px" w="30px" display="flex" justifyContent="center">
                   <Text color="blue500" fontSize="m">
-                    {selectedExampleIdx + 1}/{examples?.data.length}
+                    {selectedExampleIdx + 1}/{examples.data.length}
                   </Text>
                 </Box>
                 <Button

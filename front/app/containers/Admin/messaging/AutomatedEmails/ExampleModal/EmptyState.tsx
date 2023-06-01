@@ -1,7 +1,8 @@
 import React from 'react';
 
 // Components
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -15,15 +16,12 @@ const EmptyState = () => {
         <FormattedMessage {...messages.noExampleYet} />
       </Text>
       <Box display="flex" justifyContent="center" mt="32px">
-        <a
-          href={formatMessage(messages.supportButtonLink)}
-          target="_blank"
-          rel="noreferrer"
+        <Button
+          linkTo={formatMessage(messages.supportButtonLink)}
+          openLinkInNewTab
         >
-          <Button>
-            <FormattedMessage {...messages.supportButtonLabel} />
-          </Button>
-        </a>
+          <FormattedMessage {...messages.supportButtonLabel} />
+        </Button>
       </Box>
     </Box>
   );
