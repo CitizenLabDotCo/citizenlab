@@ -207,6 +207,7 @@
       status: 'Status'
       assignee_fullname: 'Anvist til'
       assignee_email: 'Oppdragstakerens e-postadresse'
+    anonymous: 'Anonym'
   form_builder:
     default_select_field:
       title: 'Ditt spørsmål'

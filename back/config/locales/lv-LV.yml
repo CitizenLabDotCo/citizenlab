@@ -207,6 +207,7 @@ lv:
       status: 'Statuss'
       assignee_fullname: 'Izpildītājs'
       assignee_email: 'Izpildītāja e-pasts'
+    anonymous: 'Anonīms'
   form_builder:
     default_select_field:
       title: 'Jūsu jautājums'

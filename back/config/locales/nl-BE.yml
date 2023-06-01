@@ -207,6 +207,7 @@ nl-BE:
       status: 'Status'
       assignee_fullname: 'Toegewezen aan'
       assignee_email: 'E-mailadres toegewezen persoon'
+    anonymous: 'Anoniem'
   form_builder:
     default_select_field:
       title: 'Jouw vraag'
