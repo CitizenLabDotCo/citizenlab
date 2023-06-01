@@ -4,7 +4,12 @@ import { isNilOrError, isPage } from 'utils/helperUtils';
 import { get } from 'lodash-es';
 
 // components
-import { Icon, Box, Text } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  Box,
+  Text,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import MenuItem from './MenuItem';
 import Link from 'utils/cl-router/Link';
 import { SupportMenu } from './SupportMenu';
@@ -94,6 +99,7 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
   const { pathname } = useLocation();
   const [navItems, setNavItems] = useState<NavItem[]>(defaultNavItems);
   const isPagesAndMenuPage = isPage('pages_menu', pathname);
+  const isSmallerThanPhone = useBreakpoint('tablet');
 
   useEffect(() => {
     setNavItems((prevNavItems) => {
@@ -145,6 +151,7 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
               display="flex"
               alignItems="center"
               pl="5px"
+              justifyContent={isSmallerThanPhone ? 'center' : undefined}
             >
               <Box
                 display="flex"
@@ -156,9 +163,11 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
               >
                 <Icon name="arrow-left-circle" fill={colors.white} />
               </Box>
-              <Text color="white" fontSize="s" ml="10px">
-                {formatMessage({ ...messages.toPlatform })}
-              </Text>
+              {!isSmallerThanPhone && (
+                <Text color="white" fontSize="s" ml="10px">
+                  {formatMessage({ ...messages.toPlatform })}
+                </Text>
+              )}
             </Box>
           </Link>
         </Box>
