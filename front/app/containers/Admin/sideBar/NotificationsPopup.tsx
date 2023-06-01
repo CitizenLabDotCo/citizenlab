@@ -1,38 +1,82 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 
 // components
-import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
 import Notifications from 'containers/MainHeader/NotificationMenu/components/Notifications';
+import { NewNotificationsIndicator } from 'containers/MainHeader/NotificationMenu/components/NotificationCount';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-interface Props {
-  setIsOpen: (open: boolean) => void;
-  isOpen: boolean;
-}
+// style
+import { StyledBox } from './styles';
 
-export const NotificationsPopup = ({ setIsOpen, isOpen }: Props) => {
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+
+export const NotificationsPopup = () => {
   const { formatMessage } = useIntl();
+  const iconDivRef = useRef<HTMLDivElement | null>(null);
+  const authUser = useAuthUser();
+  const [isNotificationsPopupOpen, setIsNotificationsPopupOpen] =
+    useState(false);
+
+  if (isNilOrError(authUser)) {
+    return null;
+  }
+
+  const unreadNotificationsCount = authUser.attributes.unread_notifications;
 
   return (
     <Popup
       trigger={
-        <Box display="flex" justifyContent="space-between" w="100%">
-          {formatMessage({ ...messages.notifications })}
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <Icon name="chevron-right" fill={colors.grey600} />
+        <StyledBox
+          as="button"
+          width="100%"
+          display="flex"
+          justifyContent="flex-start"
+          onClick={() => setIsNotificationsPopupOpen(!isNotificationsPopupOpen)}
+        >
+          <Box display="flex" alignItems="center" w="100%" pr="6px">
+            <Box
+              display="flex"
+              flex="0 0 auto"
+              w="45px"
+              h="45px"
+              alignItems="center"
+              justifyContent="center"
+            >
+              {unreadNotificationsCount > 0 && (
+                <Box position="relative">
+                  <Box position="absolute" top="-22px" left="10px">
+                    <NewNotificationsIndicator>6</NewNotificationsIndicator>
+                  </Box>
+                </Box>
+              )}
+              <Icon name="notification" fill={colors.green400} />
+            </Box>
+
+            <Box display="flex" flex="1" flexDirection="column" opacity={0.7}>
+              <Text color="white" ml="10px" fontSize="base" textAlign="left">
+                {formatMessage({ ...messages.notifications })}
+              </Text>
+            </Box>
+            <Box ref={iconDivRef} />
           </Box>
-        </Box>
+        </StyledBox>
       }
-      open={isOpen}
-      onClose={() => setIsOpen(false)}
+      open={isNotificationsPopupOpen}
+      onClose={() => setIsNotificationsPopupOpen(false)}
       on="click"
-      position="right center"
+      position="top right"
+      context={iconDivRef}
       positionFixed
-      offset={[0, 30]}
+      offset={[0, -60]}
       basic
       wide
     >

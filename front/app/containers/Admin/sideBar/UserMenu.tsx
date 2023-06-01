@@ -3,9 +3,7 @@ import React, { useState, useRef } from 'react';
 // components
 import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
-import NotificationsPopup from './NotificationsPopup';
 import LanguageSelectorPopup from './LanguageSelectorPopup';
-import { NewNotificationsIndicator } from 'containers/MainHeader/NotificationMenu/components/NotificationCount';
 
 // i18n
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -38,13 +36,11 @@ export const UserMenu = () => {
   const iconDivRef = useRef<HTMLDivElement | null>(null);
   const authUser = useAuthUser();
   const [isUserMenuPopupOpen, setIsUserMenuPopupOpen] = useState(false);
-  const [isNotificationsPopupOpen, setIsNotificationsPopupOpen] =
-    useState(false);
   const [isLanguagePopupOpen, setIsLanguagePopupOpen] = useState(false);
 
   const handleUserMenuPopupClose = () => {
     // We only close the user menu popup if no other popup is open
-    if (!isLanguagePopupOpen && !isNotificationsPopupOpen) {
+    if (!isLanguagePopupOpen) {
       setIsUserMenuPopupOpen(false);
     }
   };
@@ -52,8 +48,6 @@ export const UserMenu = () => {
   if (isNilOrError(authUser)) {
     return null;
   }
-
-  const unreadNotificationsCount = authUser.attributes.unread_notifications;
 
   const getRole = (user: IUserData): MessageDescriptor => {
     const highestRole = user.attributes.highest_role;
@@ -130,22 +124,6 @@ export const UserMenu = () => {
       wide
     >
       <Box width="224px">
-        <ItemMenu
-          buttonStyle="text"
-          onClick={() => setIsNotificationsPopupOpen(!isNotificationsPopupOpen)}
-        >
-          <Box display="flex" justifyContent="space-between" width="100%">
-            <NotificationsPopup
-              setIsOpen={setIsNotificationsPopupOpen}
-              isOpen={isNotificationsPopupOpen}
-            />
-            {unreadNotificationsCount > 0 && (
-              <NewNotificationsIndicator>
-                {unreadNotificationsCount}
-              </NewNotificationsIndicator>
-            )}
-          </Box>
-        </ItemMenu>
         {tenantLocales.length > 1 && locale && (
           <ItemMenu
             buttonStyle="text"

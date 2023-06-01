@@ -14,6 +14,7 @@ import MenuItem from './MenuItem';
 import Link from 'utils/cl-router/Link';
 import { SupportMenu } from './SupportMenu';
 import { UserMenu } from './UserMenu';
+import NotificationsPopup from './NotificationsPopup';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -183,6 +184,7 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
         ))}
 
         <SupportMenu />
+        <NotificationsPopup />
         <UserMenu />
       </MenuInner>
     </Menu>
