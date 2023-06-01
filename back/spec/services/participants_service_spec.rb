@@ -75,6 +75,45 @@ describe ParticipantsService do
       expect(service.projects_participants([project]).map(&:id)).to match_array participants.map(&:id)
     end
 
+    it 'returns correctly cached total project participant count including anonymous posts & everyone surveys' do
+      project = create(:project)
+      pp1, pp2, pp3, pp4, pp5 = create_list(:user, 5)
+
+      # Normal participation - +3
+      idea1 = create(:idea, project: project, author: pp1)
+      idea2 = create(:idea, project: project, author: pp2)
+      create(:idea, project: project, author: pp3)
+      create(:comment, post: idea1, author: pp3)
+      create(:comment, post: idea2, author: pp3)
+      create(:comment, post: idea2, author: pp2)
+      expect(service.project_participants_count(project)).to eq 3
+
+      # Anonymous & participated already +0
+      create(:idea, project: project, author: pp2, anonymous: true)
+      create(:comment, post: idea1, author: pp3, anonymous: true)
+      expect(service.project_participants_count(project)).to eq 3
+      travel_to Time.now + 1.day do
+        expect(service.project_participants_count(project)).to eq 3
+      end
+
+      # Only participated anonymously +2
+      create(:idea, project: project, author: pp4, anonymous: true)
+      create(:comment, post: idea1, author: pp4, anonymous: true)
+      create(:comment, post: idea1, author: pp5, anonymous: true)
+      expect(service.project_participants_count(project)).to eq 3
+      travel_to Time.now + 2.days do
+        expect(service.project_participants_count(project)).to eq 5
+      end
+
+      # 'everyone' surveys +2
+      create(:native_survey_response, project: project, author: nil, title_multiloc: { 'en' => 'title' }, body_multiloc: { 'en' => 'body' })
+      create(:native_survey_response, project: project, author: nil, title_multiloc: { 'en' => 'title' }, body_multiloc: { 'en' => 'body' })
+      expect(service.project_participants_count(project)).to eq 5
+      travel_to Time.now + 3.days do
+        expect(service.project_participants_count(project)).to eq 7
+      end
+    end
+
     it 'returns participants of a poll' do
       poll = create(:continuous_poll_project)
       responses = create_list(:poll_response, 2, participation_context: poll)

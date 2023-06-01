@@ -56,17 +56,19 @@ interface Props {
   authorId: string | null | undefined;
   className?: string;
   showAboutInitiatives: boolean;
+  anonymous?: boolean;
 }
 
 const PostedBy = memo<Props>(
-  ({ authorId, className, showAboutInitiatives }) => {
-    if (authorId) {
+  ({ authorId, className, showAboutInitiatives, anonymous }) => {
+    if (authorId || anonymous) {
       const authorName = (
         <UserName
-          userId={authorId}
+          userId={authorId || null}
           fontWeight={500}
           isLinkToProfile={true}
           hideLastName={true}
+          anonymous={anonymous}
         />
       );
 
