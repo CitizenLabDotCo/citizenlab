@@ -1132,7 +1132,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Mínim",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Exigir als participants que compleixin un pressupost mínim per enviar la seva cistella (introduïu \"0\" si no voleu establir un mínim).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visit our Help Center",
-  "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Activity",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Més detalls",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink": "https://support.citizenlab.co/articles/2672884",
   "app.containers.AdminPage.ProjectEdit.newProject": "Nou Projecte",

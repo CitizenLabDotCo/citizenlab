@@ -169,12 +169,19 @@ resource 'Comments' do
   end
 
   get 'web_api/v1/comments/:id' do
-    let(:id) { create(:comment, post: create(:initiative)).id }
+    let(:comment) { create(:comment, post: create(:initiative)) }
+    let(:id) { comment.id }
 
     example_request 'Get one comment by id' do
       expect(status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :id)).to eq id
+      expect(response_data[:id]).to eq id
+      expect(response_data[:attributes]).to include(
+        downvotes_count: 0,
+        publication_status: 'published',
+        is_admin_comment: false,
+        anonymous: false,
+        author_hash: comment.author_hash
+      )
     end
   end
 
@@ -202,6 +209,7 @@ resource 'Comments' do
         parameter :author_id, 'The user id of the user owning the comment. Signed in user by default', required: false
         parameter :body_multiloc, 'Multi-locale field with the comment body', required: true
         parameter :parent_id, 'The id of the comment this comment is a response to', required: false
+        parameter :anonymous, 'Post this comment anonymously - true/false', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Comment)
       response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::COMMENTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
@@ -218,6 +226,38 @@ resource 'Comments' do
         expect(json_response.dig(:data, :relationships, :parent, :data)).to be_nil
         expect(json_response.dig(:data, :relationships, :post, :data, :id)).to eq initiative_id
         expect(@initiative.reload.comments_count).to eq 1
+      end
+
+      describe 'anomymous commenting' do
+        let(:allow_anonymous_participation) { true }
+        let(:anonymous) { true }
+
+        before do
+          config = AppConfiguration.instance
+          config.settings['initiatives']['allow_anonymous_participation'] = allow_anonymous_participation
+          config.save!
+        end
+
+        example_request 'Create an anonymous comment on an initiative' do
+          assert_status 201
+          expect(response_data.dig(:relationships, :author, :data, :id)).to be_nil
+          expect(response_data.dig(:attributes, :anonymous)).to be true
+          expect(response_data.dig(:attributes, :author_name)).to be_nil
+        end
+
+        example 'Does not log activities for the author', document: false do
+          expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything)
+        end
+
+        describe 'when anonymous posting is not allowed' do
+          let(:allow_anonymous_participation) { false }
+
+          example_request 'Rejects the anonymous parameter' do
+            assert_status 422
+            json_response = json_parse response_body
+            expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+          end
+        end
       end
     end
 
@@ -241,6 +281,7 @@ resource 'Comments' do
         parameter :author_id, 'The user id of the user owning the comment. Signed in user by default'
         parameter :body_multiloc, 'Multi-locale field with the comment body'
         parameter :parent_id, 'The id of the comment this comment is a response to'
+        parameter :anonymous, 'Change this comment to anonymous - true/false'
       end
       ValidationErrorHelper.new.error_fields(self, Comment)
       response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::COMMENTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
@@ -260,6 +301,53 @@ resource 'Comments' do
         admin_header_token
         do_request
         expect(comment.reload.body_multiloc).not_to eq body_multiloc
+      end
+
+      describe 'anomymous commenting' do
+        let(:allow_anonymous_participation) { true }
+        let(:anonymous) { true }
+
+        before do
+          config = AppConfiguration.instance
+          config.settings['initiatives']['allow_anonymous_participation'] = allow_anonymous_participation
+          config.save!
+        end
+
+        example_request 'Change an comment on an initiative to anonymous' do
+          assert_status 200
+          expect(response_data.dig(:relationships, :author, :data, :id)).to be_nil
+          expect(response_data.dig(:attributes, :anonymous)).to be true
+          expect(response_data.dig(:attributes, :author_name)).to be_nil
+        end
+
+        example '[Error] Cannot update an anonymous comment' do
+          comment.update!(anonymous: true)
+          do_request
+          assert_status 401
+          expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
+        end
+
+        example 'Does not log activities for the author and clears the author from past activities', document: false do
+          clear_activity = create(:activity, item: comment, user: @user)
+          other_item_activity = create(:activity, item: comment, user: create(:user))
+          other_user_activity = create(:activity, user: @user)
+
+          expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything)
+          expect(clear_activity.reload.user_id).to be_nil
+          expect(other_item_activity.reload.user_id).to be_present
+          expect(other_user_activity.reload.user_id).to eq @user.id
+        end
+
+        describe 'when anonymous posting is not allowed' do
+          let(:allow_anonymous_participation) { false }
+
+          example 'Rejects the anonymous parameter' do
+            do_request comment: { anonymous: true }
+            assert_status 422
+            json_response = json_parse response_body
+            expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+          end
+        end
       end
     end
   end

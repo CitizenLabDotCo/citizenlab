@@ -19,7 +19,7 @@ const ProjectPhaseStartedNotification = memo<Props>((props) => {
   return (
     <NotificationWrapper
       linkTo={`/projects/${notification.attributes.project_slug}`}
-      timing={notification.attributes.phase_start_at}
+      timing={notification.attributes.created_at}
       icon="timeline"
       isRead={!!notification.attributes.read_at}
     >

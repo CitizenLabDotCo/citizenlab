@@ -70,6 +70,7 @@ import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSche
 import { useSearchParams } from 'react-router-dom';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useLocalize from 'hooks/useLocalize';
+import { getCurrentPhase } from 'api/phases/utils';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -265,6 +266,9 @@ export const IdeasShow = ({
       locale
     );
 
+    const anonymous = idea.data.attributes.anonymous;
+    const currentPhase = getCurrentPhase(phases?.data);
+
     content = (
       <>
         <IdeaMeta ideaId={ideaId} />
@@ -351,6 +355,7 @@ export const IdeasShow = ({
                   statusId={statusId}
                   authorId={authorId}
                   compact={isCompactView}
+                  anonymous={anonymous}
                 />
               </Box>
             )}
@@ -370,7 +375,14 @@ export const IdeasShow = ({
             </Box>
             <Box mb="100px">
               <Suspense fallback={<LoadingComments />}>
-                <LazyComments postId={ideaId} postType="idea" />
+                <LazyComments
+                  allowAnonymousParticipation={
+                    project.attributes.allow_anonymous_participation ||
+                    currentPhase?.attributes.allow_anonymous_participation
+                  }
+                  postId={ideaId}
+                  postType="idea"
+                />
               </Suspense>
             </Box>
           </Box>
@@ -382,6 +394,7 @@ export const IdeasShow = ({
               statusId={statusId}
               authorId={authorId}
               insideModal={insideModal}
+              anonymous={anonymous}
             />
           )}
         </Box>

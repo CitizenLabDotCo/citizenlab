@@ -8,7 +8,7 @@ export type PhasePermissionsProps = {
   phaseId: string | undefined;
 };
 
-const fetchEvents = ({ phaseId }: PhasePermissionsProps) => {
+export const fetchPhasePermissions = ({ phaseId }: PhasePermissionsProps) => {
   return fetcher<IPCPermissions>({
     path: `/phases/${phaseId}/permissions`,
     action: 'get',
@@ -23,7 +23,7 @@ const usePhasePermissions = ({ phaseId }: PhasePermissionsProps) => {
     PhasePermissionKeys
   >({
     queryKey: phasePermissionKeys.list({ phaseId }),
-    queryFn: () => fetchEvents({ phaseId }),
+    queryFn: () => fetchPhasePermissions({ phaseId }),
   });
 };
 

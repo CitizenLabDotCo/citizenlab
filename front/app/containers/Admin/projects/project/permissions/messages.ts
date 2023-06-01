@@ -57,14 +57,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle',
     defaultMessage: 'You can set the project to be invisible to certain users.',
   },
-  moderationRightsTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.moderationRightsTitle',
-    defaultMessage: 'Moderation',
-  },
-  participationAccessRightsTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle2',
-    defaultMessage: 'Participation',
-  },
   betaLabel: {
     id: 'app.containers.AdminPage.permissions.betaLabel',
     defaultMessage: 'Beta',

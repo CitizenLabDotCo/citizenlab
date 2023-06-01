@@ -90,15 +90,33 @@ class ParticipantsService
     participants
   end
 
-  # Returns the participants of a project.
+  # Returns all the known participants of a single project - cached.
   # @param project[Project]
-  # @param options[Hash]
   # @return[ActiveRecord::Relation] List of users that participated in the project
-  def project_participants(project, options = {})
+  def project_participants(project)
     participant_ids = Rails.cache.fetch("#{project.cache_key}/participant_ids", expires_in: 1.day) do
-      projects_participants([project], options).pluck(:id)
+      projects_participants([project]).pluck(:id)
     end
     User.where(id: participant_ids)
+  end
+
+  # Returns the total count of all project participants including anonymous posts - cached
+  def project_participants_count(project)
+    Rails.cache.fetch("#{project.cache_key}/participant_count", expires_in: 1.day) do
+      participant_ids = projects_participants([project]).pluck(:id)
+      participant_author_hashes = participant_ids.map { |id| Idea.create_author_hash(id, project.id, true) }
+      anonymous_idea_hashes = Idea.where(project: project, anonymous: true)
+        .where.not(author_hash: participant_author_hashes)
+        .distinct.pluck(:author_hash)
+      anonymous_comment_hashes = Comment.joins(:idea)
+        .where(anonymous: true)
+        .where(idea: { project: project })
+        .where.not(author_hash: participant_author_hashes + anonymous_idea_hashes)
+        .distinct.pluck(:author_hash)
+      everyone_survey_count = Idea.where(project: project, author: nil, anonymous: false).count
+
+      participant_ids.size + anonymous_idea_hashes.size + anonymous_comment_hashes.size + everyone_survey_count
+    end
   end
 
   def projects_participants(projects, options = {})
