@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 import invitesKeys from './keys';
 import { IInvitesNewSeats, INewBulkInviteEmails, IInviteError } from './types';
-import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 
 const bulkInviteCountNewSeatsEmails = async (
   requestBody: INewBulkInviteEmails
@@ -21,7 +20,6 @@ const useBulkInviteCountNewSeatsEmails = () => {
       queryClient.invalidateQueries({
         queryKey: invitesKeys.lists(),
       });
-      invalidateSeatsCache();
     },
   });
 };

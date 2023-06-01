@@ -31,15 +31,15 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // services
 import {
-  bulkInviteXLSX,
-  bulkInviteCountNewSeatsXLSX,
   IInviteError,
   INewBulkInvite,
   IInvitesNewSeats,
-} from 'services/invites';
+} from 'api/invites/types';
 
 import useBulkInviteEmails from 'api/invites/useBulkInviteEmails';
 import useBulkInviteCountNewSeatsEmails from 'api/invites/useBulkInviteCountNewSeatsEmails';
+import useBulkInviteXLSX from 'api/invites/useBulkInviteSLSX';
+import useBulkInviteCountNewSeatsXLSX from 'api/invites/useBulkInviteCountNewSeatsXLSX';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -63,6 +63,9 @@ const Invitations = () => {
   const { mutateAsync: bulkInviteEmails } = useBulkInviteEmails();
   const { mutateAsync: bulkInviteCountNewSeatsEmails } =
     useBulkInviteCountNewSeatsEmails();
+  const { mutateAsync: bulkInviteXLSX } = useBulkInviteXLSX();
+  const { mutateAsync: bulkInviteCountNewSeatsXLSX } =
+    useBulkInviteCountNewSeatsXLSX();
 
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
