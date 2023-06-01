@@ -38,11 +38,13 @@ const ReportTab = memo(() => {
 
         return (
           (processType === 'continuous' &&
-            participationMethod !== 'information' &&
-            participationMethod !== 'survey' &&
-            participationMethod !== 'volunteering' &&
-            participationMethod !== 'document_annotation' &&
-            participationMethod !== null) ||
+            ![
+              'information',
+              'survey',
+              'volunteering',
+              'document_annotation',
+              null,
+            ].includes(participationMethod)) ||
           processType === 'timeline'
         );
       })
