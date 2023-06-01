@@ -1,17 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished'; // TODO: Remove when we have a better system
+import { ClickableTextStyles } from './TextLink';
 
 export const StyledButton = styled.button`
-  font-size: ${fontSizes.base}px;
-  color: ${({ theme }) => theme.colors.tenantText};
-  text-decoration: underline;
-
-  &:hover {
-    color: ${({ theme }) => darken(0.2, theme.colors.tenantText)};
-    text-decoration: underline;
-  }
+  ${ClickableTextStyles}
 
   cursor: pointer;
   padding: 0px;

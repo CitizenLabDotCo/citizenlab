@@ -44,6 +44,8 @@ const IdeasPage = () => {
       <NavigationTabs>
         {tabs.map(({ url, label }) => (
           <Tab
+            label={label}
+            url={url}
             key={url}
             active={isTopBarNavActive('/admin/ideas', pathname, url)}
           >
