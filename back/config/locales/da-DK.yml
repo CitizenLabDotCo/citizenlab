@@ -207,6 +207,7 @@ da:
       status: 'Status'
       assignee_fullname: 'Modtager'
       assignee_email: 'E-mail til modtageren'
+    anonymous: 'Anonym'
   form_builder:
     default_select_field:
       title: 'Dit spørgsmål'
