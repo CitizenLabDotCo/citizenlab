@@ -19,6 +19,8 @@
 #  body_updated_at    :datetime
 #  children_count     :integer          default(0), not null
 #  post_type          :string
+#  author_hash        :string
+#  anonymous          :boolean          default(FALSE), not null
 #
 # Indexes
 #

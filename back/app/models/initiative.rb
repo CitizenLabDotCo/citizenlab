@@ -22,6 +22,8 @@
 #  assignee_id              :uuid
 #  official_feedbacks_count :integer          default(0), not null
 #  assigned_at              :datetime
+#  author_hash              :string
+#  anonymous                :boolean          default(FALSE), not null
 #
 # Indexes
 #
