@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState, MouseEvent } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isNumber } from 'lodash-es';
 
