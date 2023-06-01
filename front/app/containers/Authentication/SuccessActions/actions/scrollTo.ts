@@ -15,12 +15,11 @@ export const scrollTo =
   () => {
     const isOnProjectPage = pathname.endsWith(`/projects/${projectSlug}`);
 
-    const id = elementId;
     currentPhase && selectPhase(currentPhase);
 
     if (isOnProjectPage) {
-      scrollToElement({ id, shouldFocus: true });
+      scrollToElement({ id: elementId, shouldFocus: true });
     } else {
-      clHistory.push(`/projects/${projectSlug}#${id}`);
+      clHistory.push(`/projects/${projectSlug}#${elementId}`);
     }
   };
