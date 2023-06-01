@@ -1,13 +1,13 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useBulkInviteCountNewSeatsEmail from './useBulkInviteCountNewSeatsEmails';
+import useBulkInviteCountNewSeatsXLSX from './useBulkInviteCountNewSeatsXLSX';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*/invites/count_new_seats';
+const apiPath = '*/invites/count_new_seats_xlsx';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
@@ -15,13 +15,13 @@ const server = setupServer(
   })
 );
 
-describe('useBulkInviteCountNewSeatsEmail', () => {
+describe('useBulkInviteCountNewSeatsXLSX', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
     const { result, waitFor } = renderHook(
-      () => useBulkInviteCountNewSeatsEmail(),
+      () => useBulkInviteCountNewSeatsXLSX(),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -29,7 +29,7 @@ describe('useBulkInviteCountNewSeatsEmail', () => {
 
     act(() => {
       result.current.mutate({
-        emails: ['email@example.com'],
+        xlsx: 'xlsx string',
       });
     });
 
@@ -44,7 +44,7 @@ describe('useBulkInviteCountNewSeatsEmail', () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useBulkInviteCountNewSeatsEmail(),
+      () => useBulkInviteCountNewSeatsXLSX(),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -52,7 +52,7 @@ describe('useBulkInviteCountNewSeatsEmail', () => {
 
     act(() => {
       result.current.mutate({
-        emails: ['email@example.com'],
+        xlsx: 'xlsx string',
       });
     });
 
