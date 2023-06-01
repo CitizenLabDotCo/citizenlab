@@ -54,5 +54,12 @@ RSpec.describe Permission do
       expect(permissions.size).to eq(2)
       expect(permissions).not_to include(permission_voting)
     end
+
+    it 'Returns all permissions for native surveys even if survey is not open to responses' do
+      project.update!(participation_method: 'native_survey', posting_enabled: false)
+      permissions = described_class.filter_enabled_actions(project)
+      expect(permissions.size).to eq(1)
+      expect(permissions).to include(permission_posting)
+    end
   end
 end

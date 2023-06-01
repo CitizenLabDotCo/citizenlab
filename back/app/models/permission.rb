@@ -60,7 +60,7 @@ class Permission < ApplicationRecord
     # Remove any actions that are not enabled on the project
     available_actions(permission_scope).filter_map do |action|
       next if
-        (action == 'posting_idea' && !permission_scope&.posting_enabled?) ||
+        (action == 'posting_idea' && !permission_scope&.posting_enabled? && !permission_scope&.native_survey?) ||
         (action == 'voting_idea' && !permission_scope&.voting_enabled?) ||
         (action == 'commenting_idea' && !permission_scope&.commenting_enabled?)
 
