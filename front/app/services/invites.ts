@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 
 export interface IInviteData {
@@ -83,14 +83,6 @@ export interface INewBulkXLSXInviteXLSX extends INewBulkInvite {
   xlsx: string;
 }
 
-export function invitesStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IInvites>({
-    apiEndpoint: `${API_PATH}/invites`,
-    ...streamParams,
-    cacheStream: false,
-  });
-}
-
 export async function bulkInviteEmails(object: INewBulkInviteEmails) {
   const response = await streams.add(`${API_PATH}/invites/bulk_create`, {
     invites: object,
@@ -129,8 +121,4 @@ export async function bulkInviteCountNewSeatsXLSX(
   );
   await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/invites`] });
   return response;
-}
-
-export function deleteInvite(inviteId: string) {
-  return streams.delete(`${API_PATH}/invites/${inviteId}`, inviteId);
 }

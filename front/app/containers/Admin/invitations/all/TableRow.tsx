@@ -1,9 +1,8 @@
 import React from 'react';
 
-// services
-import { IInviteData, deleteInvite } from 'services/invites';
-
-// hooks
+// api
+import { IInviteData } from 'api/invites/types';
+import useDeleteInvite from 'api/invites/useDeleteInvite';
 import useUserById from 'api/users/useUserById';
 
 // components
@@ -23,12 +22,13 @@ interface InputProps {
 }
 
 const TableRow = (inputProps: InputProps) => {
+  const { mutate: deleteInvite } = useDeleteInvite();
   const userId = inputProps.invite.relationships.invitee.data.id;
   const { data: user } = useUserById(userId);
 
   const handleOnDeleteInvite = () => {
     const inviteId = inputProps.invite.id;
-    deleteInvite(inviteId);
+    deleteInvite({ inviteId });
   };
 
   if (!user) return null;
