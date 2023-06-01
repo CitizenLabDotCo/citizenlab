@@ -48,55 +48,6 @@ fr:
       "assignee_digest": Aperçu hebdomadaire des idées attribuées
       "user_digest": Aperçu hebdomadaire
       "your_proposed_initiatives_digest": Aperçu hebdomadaire de vos propositions
-    admin_campaign_type_description:
-      "manual": Message officiel (tous les utilisateurs)
-      "admin_rights_received": Droits d'administrateur reçus (administrateurs)
-      "comment_deleted_by_admin": Suppression de votre commentaire (tous les utilisateurs)
-      "comment_marked_as_spam": Rapport de spam de commentaires - administrateurs et administrateurs projet
-      "comment_on_your_comment": Répondre à votre commentaire (tous les utilisateurs)
-      "comment_on_your_idea": Commentez votre idée (tous les utilisateurs)
-      "comment_on_your_initiative": Commentez votre proposition - tous les utilisateurs
-      "first_idea_published": Publication de votre première idée (tous les utilisateurs)
-      "idea_marked_as_spam": Rapport de spam d'idées - administrateurs et administrateurs projet
-      "idea_published": Publication de votre idée (tous les utilisateurs)
-      "initiative_assigned_to_you": Attribution d'une proposition - admins
-      "initiative_marked_as_spam": Rapport de spam de proposition - admins
-      "initiative_published": Publication de votre proposition - tous les utilisateurs
-      "invite_received": Invitation (tous les utilisateurs)
-      "invite_reminder": Rappel d'invitation (tous les utilisateurs)
-      "mention_in_comment": Mention dans un commentaire (tous les utilisateurs)
-      "mention_in_official_feedback": Mention dans une mise à jour (tous les utilisateurs)
-      "new_comment_for_admin": Nouveau commentaire - administrateurs et administrateurs projet
-      "new_comment_on_commented_idea": Nouveau commentaire sur une idée que vous avez commentée (tous les utilisateurs)
-      "new_comment_on_commented_initiative": Nouveau commentaire sur une proposition que vous avez commentée - tous les utilisateurs
-      "new_comment_on_voted_idea": Nouveau commentaire sur une idée pour laquelle vous avez voté (tous les utilisateurs)
-      "new_comment_on_voted_initiative": Nouveau commentaire sur une proposition que vous avez votée - tous les utilisateurs
-      "new_idea_for_admin": Nouvelle idée - administrateurs et administrateurs projet
-      "new_initiative_for_admin": Nouvelle proposition - admins
-      "official_feedback_on_commented_idea": Mise à jour sur une idée que vous avez commentée (tous les utilisateurs)
-      "official_feedback_on_commented_initiative": Mise à jour sur une proposition que vous avez commentée - tous les utilisateurs
-      "official_feedback_on_voted_idea": Mise à jour d'une idée pour laquelle vous avez voté (tous les utilisateurs)
-      "official_feedback_on_voted_initiative": Mise à jour d'une proposition sur laquelle vous avez voté - tous les utilisateurs
-      "official_feedback_on_your_idea": Mise à jour de votre idée (tous les utilisateurs)
-      "official_feedback_on_your_initiative": Mise à jour de votre proposition - tous les utilisateurs
-      "password_reset": Réinitialisation du mot de passe (tous les utilisateurs)
-      "project_moderation_rights_received": Droits de modération de projet reçus - administrateurs projet
-      "project_folder_moderation_rights_received": Droits d'administrateur de dossiers reçus
-      "project_phase_started": Nouvelle phase de projet - participants au projet
-      "project_phase_upcoming": Nouvelle phase de projet à venir - administrateurs et administrateurs projet
-      "status_change_of_commented_idea": Changement de statut d'une idée que vous avez commentée (tous les utilisateurs)
-      "status_change_of_commented_initiative": Changement de statut d'une proposition que vous avez commentée - tous les utilisateurs
-      "status_change_of_voted_idea": Changement de statut d'une idée pour laquelle vous avez voté (tous les utilisateurs)
-      "status_change_of_voted_initiative": Changement de statut d'une proposition sur laquelle vous avez voté - tous les utilisateurs
-      "status_change_of_your_idea": Changement de statut de votre idée (tous les utilisateurs)
-      "status_change_of_your_initiative": Changement de statut de votre proposition - tous les utilisateurs
-      "threshold_reached_for_admin": La proposition a atteint le seuil de vote - admins
-      "welcome": Courriel de bienvenue aux nouveaux utilisateurs (tous les utilisateurs)
-      "admin_digest": Vue d'ensemble hebdomadaire - administrateurs
-      "moderator_digest": Aperçu hebdomadaire - administrateurs projet
-      "assignee_digest": Aperçu hebdomadaire des idées attribuées - administrateurs et administrateurs projet
-      "user_digest": Aperçu hebdomadaire (tous les utilisateurs)
-      "your_proposed_initiatives_digest": Aperçu hebdomadaire de vos propres propositions - tous les utilisateurs
     schedules:
       weekly:
         "0": "Chaque semaine, le dimanche à %{hourOfDay}"
@@ -565,9 +516,7 @@ fr:
       remaining_days: 'Jours restants'
     admin_labels:
       recipient_role:
-        admins: 'Aux administrateurs'
         admins_and_managers: 'Aux administrateurs et aux gestionnaires'
-        managers: 'Aux gestionnaires'
         registered_users: 'Aux utilisateurs enregistrés'
       recipient_segment:
         admins: 'Administrateurs'
@@ -577,19 +526,19 @@ fr:
         all_users_who_uploaded_proposals: 'Tous les utilisateurs qui ont soumis des propositions'
         managers: 'Gestionnaires'
         admins_assigned_to_a_proposal: 'Administrateurs assignés à une proposition'
-        admins_and_managers_assigned_to_the_input: 'Admins & managers assignés à l''entrée'
-        user_receiving_admin_rights: 'Utilisateur qui reçoit les droits d''administrateur'
-        user_receiving_folder_moderator_rights: 'Utilisateur qui reçoit les droits de gestionnaire de dossier'
-        user_receiving_project_moderator_rights: 'Utilisateur qui reçoit les droits de gestionnaire de projet'
+        admins_and_managers_assigned_to_the_input: 'Les administrateurs et les gestionnaires assignés à la contribution'
+        user_who_is_receiving_admin_rights: 'Utilisateur qui reçoit les droits d''administrateur'
+        user_who_is_receiving_folder_moderator_rights: 'Utilisateur qui reçoit les droits de modérateur de dossier'
+        user_who_is_receiving_project_moderator_rights: 'Utilisateur qui reçoit les droits de modérateur de projet'
         user_who_commented: 'Utilisateur qui a commenté'
         user_who_is_mentioned: 'Utilisateur mentionné'
         user_who_published_the_proposal: 'L''utilisateur qui a posté la proposition'
         user_who_published_the_input: 'L''utilisateur qui a posté la contribution'
         user_who_registers: 'Utilisateur qui s''inscrit'
         user_who_was_invited: 'Utilisateur invité'
-        users_engaged_with_the_input: 'Les utilisateurs qui ont interagi avec la contribution'
-        users_engaged_with_the_project: 'Utilisateurs qui ont participé au projet'
-        users_engaged_with_the_proposal: 'Utilisateurs qui ont interagi avec la proposition'
+        users_who_engaged_with_the_input: 'Utilisateurs qui ont participé à l''apport'
+        users_who_engaged_with_the_project: 'Les utilisateurs qui se sont engagés dans le projet'
+        users_who_engaged_with_the_proposal: 'Utilisateurs qui ont participé à la proposition'
       content_type:
         comments: 'Commentaires'
         content_moderation: 'Modération du contenu'
@@ -606,15 +555,15 @@ fr:
         input_is_assigned: 'Une contribution est assignée'
         input_is_flagged_as_spam: 'Une contribution est signalée comme spam'
         input_is_updated: 'Une contribution est mise à jour'
-        input_status_is_changed: 'Le statut de la contribution a été modifié'
+        input_status_changes: 'Changements d''état des entrées'
         new_input_is_published: 'Une nouvelle contribution a été postée'
-        new_proposal_is_published: 'Une nouvelle proposition a été postée'
-        project_changes_phase: 'Changement de phase d''un projet'
+        new_proposal_is_posted: 'Publication d''une nouvelle proposition'
+        project_phase_changes: 'Changements de phase du projet'
         proposal_gets_reported_as_spam: 'Proposition marquée comme spam'
         proposal_is_assigned_to_admin: 'Une proposition est assignée à un administrateur'
         proposal_is_updated: 'Mise à jour d''une proposition'
         proposal_is_upvoted_above_threshold: 'Une proposition dépasse le seuil de votes requis '
-        proposal_status_is_changed: 'Modification du statut d''une proposition'
+        proposal_status_changes: 'Changement de statut de la proposition'
         user_comments: 'Nouveaux commentaires d''utilisateurs'
         user_comments_on_input: 'L''utilisateur commente une contribution'
         user_comments_on_proposal: 'Commentaires sur une proposition'
@@ -622,8 +571,8 @@ fr:
         user_is_given_folder_moderator_rights: 'L''utilisateur se voit attribuer des droits de gestionnaire de dossier'
         user_is_given_project_moderator_rights: 'L''utilisateur se voit attribuer des droits de gestionnaire de projet'
         user_is_mentioned: 'L''utilisateur est mentionné'
-        user_publishes_an_input: 'Un utilisateur poste une contribution'
-        user_publishes_a_proposal: 'Un utilisateur poste une proposition'
+        input_is_published: 'Les données sont publiées'
+        proposal_is_published: 'La proposition est publiée'
         user_registers_for_the_first_time: 'L''utilisateur s''inscrit pour la première fois'
         user_replies_to_comment: 'Réponse à un commentaire'
         7_days_after_invite_is_sent: '7 jours après l''envoi de l''invitation'
