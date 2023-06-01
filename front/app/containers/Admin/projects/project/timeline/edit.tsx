@@ -263,7 +263,7 @@ const AdminProjectTimelineEdit = () => {
     // If this is a new phase
     if (!phase) {
       const previousPhase =
-        !isNilOrError(phases) && phases[phases.data.length - 1];
+        !isNilOrError(phases) && phases.data[phases.data.length - 1];
       const previousPhaseEndDate = previousPhase
         ? moment(previousPhase.attributes.end_at)
         : null;
