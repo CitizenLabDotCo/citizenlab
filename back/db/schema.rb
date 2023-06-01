@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_24_151508) do
+ActiveRecord::Schema.define(version: 2023_06_01_085753) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1109,7 +1109,7 @@ ActiveRecord::Schema.define(version: 2023_05_24_151508) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "ordering"
     t.index ["project_id"], name: "index_projects_allowed_input_topics_on_project_id"
-    t.index ["topic_id"], name: "index_projects_allowed_input_topics_on_topic_id"
+    t.index ["topic_id", "project_id"], name: "index_projects_allowed_input_topics_on_topic_id_and_project_id", unique: true
   end
 
   create_table "projects_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
