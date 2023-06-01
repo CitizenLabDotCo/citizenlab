@@ -15,6 +15,8 @@ export interface ICampaignData {
   attributes: {
     campaign_name: string;
     campaign_description_multiloc: Multiloc;
+    // At the time of writing, this is undefined
+    // for the invitation email
     enabled?: boolean;
     subject_multiloc: Multiloc;
     body_multiloc: Multiloc;
