@@ -69,23 +69,33 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     return null;
   }
 
-  const handleTakeSurveyClick = () => {
+  const scrollToElementWithId = (elementId: string) => {
     const scrollParams = {
-      elementId: 'project-survey',
+      elementId,
       pathname,
       projectSlug: project.data.attributes.slug,
       currentPhase,
     };
 
+    scrollTo(scrollParams)();
+  };
+
+  const handleTakeSurveyClick = () => {
     const { enabled, disabled_reason } =
       project.data.attributes.action_descriptor.taking_survey;
 
     if (enabled) {
-      scrollTo(scrollParams)();
+      scrollToElementWithId('project-survey');
       return;
     }
 
     if (isFixableByAuthentication(disabled_reason)) {
+      const scrollParams = {
+        elementId: 'project-survey',
+        pathname,
+        projectSlug: project.data.attributes.slug,
+        currentPhase,
+      };
       const successAction: SuccessAction = {
         name: 'scrollTo',
         params: scrollParams,
@@ -104,22 +114,21 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   };
 
   const handleReviewDocumentClick = () => {
-    const scrollParams = {
-      elementId: 'document-annotation',
-      pathname,
-      projectSlug: project.data.attributes.slug,
-      currentPhase,
-    };
-
     const { enabled, disabled_reason } =
       project.data.attributes.action_descriptor.annotating_document;
 
     if (enabled) {
-      scrollTo(scrollParams)();
+      scrollToElementWithId('document-annotation');
       return;
     }
 
     if (isFixableByAuthentication(disabled_reason)) {
+      const scrollParams = {
+        elementId: 'document-annotation',
+        pathname,
+        projectSlug: project.data.attributes.slug,
+        currentPhase,
+      };
       const successAction: SuccessAction = {
         name: 'scrollTo',
         params: scrollParams,
@@ -195,14 +204,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         <SeeIdeasButton
           id="e2e-project-see-ideas-button"
           buttonStyle="secondary"
-          onClick={(e: MouseEvent) => {
-            e.preventDefault();
-            scrollTo({
-              elementId: 'project-ideas',
-              pathname,
-              projectSlug: project.data.attributes.slug,
-              currentPhase,
-            })();
+          onClick={() => {
+            scrollToElementWithId('project-ideas');
           }}
           fontWeight="500"
         >
@@ -250,14 +253,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       )}
       {showTakePollButton && (
         <Button
-          onClick={(e: MouseEvent) => {
-            e.preventDefault();
-            scrollTo({
-              elementId: 'project-poll',
-              pathname,
-              projectSlug: project.data.attributes.slug,
-              currentPhase,
-            })();
+          onClick={() => {
+            scrollToElementWithId('project-poll');
           }}
           fontWeight="500"
         >
