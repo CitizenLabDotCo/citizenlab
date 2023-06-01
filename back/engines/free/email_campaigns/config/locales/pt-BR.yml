@@ -48,55 +48,6 @@ pt:
       "assignee_digest": Resumo semanal das ideas atribuídas
       "user_digest": Resumo semanal
       "your_proposed_initiatives_digest": Resumo semanal das suas propostas
-    admin_campaign_type_description:
-      "manual": Mensagem oficial - todos os usuários
-      "admin_rights_received": Direitos de administração recebidos
-      "comment_deleted_by_admin": Exclusão do seu comentário - todos os usuários
-      "comment_marked_as_spam": Comente o relatório de spam - administradores e gestores de projeto
-      "comment_on_your_comment": Respostas ao seu comentário - todos os usuários
-      "comment_on_your_idea": Comente a sua ideia - todos os usuários
-      "comment_on_your_initiative": Comente a sua ideia - todos os usuários
-      "first_idea_published": Publicação da sua primeira ideia - todos os usuários
-      "idea_marked_as_spam": Comente o relatório de spam - administradores e gestores de projeto
-      "idea_published": Publicação da sua ideia - todos os usuários
-      "initiative_assigned_to_you": Atribuição de uma ideia - administradores
-      "initiative_marked_as_spam": Relatório de spam - admins
-      "initiative_published": Publicação da sua ideia - todos os usuários
-      "invite_received": Convite - todos os usuários
-      "invite_reminder": Lembrete de convite - todos os usuários
-      "mention_in_comment": Menção em um comentário - todos os usuários
-      "mention_in_official_feedback": Menção em uma atualização - todos os usuários
-      "new_comment_for_admin": Novo comentário - administradores e gestores de projeto
-      "new_comment_on_commented_idea": Novo comentário sobre uma ideia que você comentou - todos os usuários
-      "new_comment_on_commented_initiative": Novo comentário sobre uma proposta que você comentou - todos os usuários
-      "new_comment_on_voted_idea": Novo comentário sobre uma ideia que você votou - todos os usuários
-      "new_comment_on_voted_initiative": Novo comentário sobre uma proposta que você votou - todos os usuários
-      "new_idea_for_admin": Novo comentário - administradores e gestores de projeto
-      "new_initiative_for_admin": Nova proposta - administradores
-      "official_feedback_on_commented_idea": Atualização sobre uma ideia que você comentou - todos os usuários
-      "official_feedback_on_commented_initiative": Atualização sobre uma ideia que você comentou - todos os usuários
-      "official_feedback_on_voted_idea": Atualização sobre uma ideia que você votou - todos os usuários
-      "official_feedback_on_voted_initiative": Atualização sobre uma proposta que você votou - todos os usuários
-      "official_feedback_on_your_idea": Atualização da sua ideia - todos os utilizadores
-      "official_feedback_on_your_initiative": Mudança de status da sua proposta - todos os usuários
-      "password_reset": Redefinição de senha - todos os usuários
-      "project_moderation_rights_received": Direitos de moderação de projeto recebidos - gerentes de projeto
-      "project_folder_moderation_rights_received": Direitos de moderação da pasta de projetos recebidos
-      "project_phase_started": Nova fase do projeto - participantes do projeto
-      "project_phase_upcoming": Próxima nova fase do projeto - administradores e gerentes de projeto
-      "status_change_of_commented_idea": Mudança de status de uma ideia que você comentou - todos os usuários
-      "status_change_of_commented_initiative": Mudança de status de uma proposta que você comentou - todos os usuários
-      "status_change_of_voted_idea": Mudança de status de uma ideia que você votou - todos os usuários
-      "status_change_of_voted_initiative": Mudança de status de uma proposta que você votou - todos os usuários
-      "status_change_of_your_idea": Mudança de status da sua ideia - todos os usuários
-      "status_change_of_your_initiative": Mudança de status da sua proposta - todos os usuários
-      "threshold_reached_for_admin": Proposta atingiu o limite de votação - administradores
-      "welcome": Novo usuário - administrador
-      "admin_digest": Resumo semanal - administradores
-      "moderator_digest": Resumo semanal - gestores de projeto
-      "assignee_digest": Visão geral semanal das ideias atribuídas - administradores e gestores de projeto
-      "user_digest": Visão geral semanal - todos os usuários
-      "your_proposed_initiatives_digest": Visão semanal das suas propostas - todos os usuários
     schedules:
       weekly:
         "0": "Semanalmente, aos domingos às %{hourOfDay}"
@@ -565,9 +516,7 @@ pt:
       remaining_days: 'Dias restantes'
     admin_labels:
       recipient_role:
-        admins: 'Aos administradores'
         admins_and_managers: 'Aos administradores e gestores'
-        managers: 'Aos gestores'
         registered_users: 'Aos usuários registrados'
       recipient_segment:
         admins: 'Administradores'
@@ -578,18 +527,18 @@ pt:
         managers: 'Gestores'
         admins_assigned_to_a_proposal: 'Administradores atribuídos a uma proposta'
         admins_and_managers_assigned_to_the_input: 'Administradores e gestores atribuídos à entrada'
-        user_receiving_admin_rights: 'Usuário recebendo direitos de administrador'
-        user_receiving_folder_moderator_rights: 'Usuário recebendo direitos de moderador de pasta'
-        user_receiving_project_moderator_rights: 'Usuário recebendo direitos de moderador de projeto'
+        user_who_is_receiving_admin_rights: 'User who is receiving admin rights'
+        user_who_is_receiving_folder_moderator_rights: 'User who is receiving folder moderator rights'
+        user_who_is_receiving_project_moderator_rights: 'User who is receiving project moderator rights'
         user_who_commented: 'Usuário que comentou'
         user_who_is_mentioned: 'Usuário mencionado'
         user_who_published_the_proposal: 'Usuário que publicou a proposta'
         user_who_published_the_input: 'Usuário que publicou a ideia'
         user_who_registers: 'Usuário que se cadastra'
         user_who_was_invited: 'Usuário que foi convidado'
-        users_engaged_with_the_input: 'Usuários engajados com a entrada'
-        users_engaged_with_the_project: 'Usuários engajados com o projeto'
-        users_engaged_with_the_proposal: 'Usuários engajados com a proposta'
+        users_who_engaged_with_the_input: 'Users who engaged with the input'
+        users_who_engaged_with_the_project: 'Users who engaged with the project'
+        users_who_engaged_with_the_proposal: 'Users who engaged with the proposal'
       content_type:
         comments: 'Comentários'
         content_moderation: 'Moderação de conteúdo'
@@ -606,15 +555,15 @@ pt:
         input_is_assigned: 'A entrada é atribuída'
         input_is_flagged_as_spam: 'A entrada é sinalizada como spam'
         input_is_updated: 'A entrada é atualizada'
-        input_status_is_changed: 'O status da entrada é alterado'
+        input_status_changes: 'Input status changes'
         new_input_is_published: 'Nova entrada é publicada'
-        new_proposal_is_published: 'Nova proposta é publicada'
-        project_changes_phase: 'Fase de alterações do projeto'
+        new_proposal_is_posted: 'Nova proposta foi postada'
+        project_phase_changes: 'Project phase changes'
         proposal_gets_reported_as_spam: 'A proposta foi denunciada como spam'
         proposal_is_assigned_to_admin: 'A proposta está atribuída ao administrador'
         proposal_is_updated: 'A proposta está atualizada'
         proposal_is_upvoted_above_threshold: 'A proposta foi votada positivamente acima do limiar'
-        proposal_status_is_changed: 'O status da proposta foi alterado'
+        proposal_status_changes: 'Proposal status changes'
         user_comments: 'Comentários do usuário'
         user_comments_on_input: 'Comentários dos usuários na entrada'
         user_comments_on_proposal: 'Comentários do usuário sobre a proposta'
@@ -622,8 +571,8 @@ pt:
         user_is_given_folder_moderator_rights: 'Usuário recebendo direitos de moderador de pasta'
         user_is_given_project_moderator_rights: 'Usuário recebendo direitos de moderador de projeto'
         user_is_mentioned: 'Usuário mencionado'
-        user_publishes_an_input: 'O usuário publica uma entrada'
-        user_publishes_a_proposal: 'O usuário publica uma proposta'
+        input_is_published: 'Input is published'
+        proposal_is_published: 'Proposal is published'
         user_registers_for_the_first_time: 'Usuário se cadastra pela primeira vez'
         user_replies_to_comment: 'Usuário responde ao comentário'
         7_days_after_invite_is_sent: '7 dias após o envio do convite'
