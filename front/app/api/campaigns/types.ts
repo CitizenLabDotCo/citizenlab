@@ -25,14 +25,14 @@ export interface ICampaignData {
     created_at: string;
     updated_at: string;
     deliveries_count: number;
-    schedule: any;
-    schedule_multiloc: Multiloc;
     content_type_multiloc: Multiloc;
     content_type_ordering: number;
     recipient_role_multiloc: Multiloc;
     recipient_role_ordering: number;
     recipient_segment_multiloc?: Multiloc;
     trigger_multiloc?: Multiloc;
+    schedule: any;
+    schedule_multiloc: Multiloc;
   };
   relationships: {
     author: {
