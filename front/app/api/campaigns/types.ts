@@ -31,7 +31,7 @@ export interface ICampaignData {
     // Seems to be always defined, null for invite_received
     recipient_segment_multiloc?: Multiloc | null;
     // Seems to be always defined, null for e.g. invite_received, admin_digest
-    trigger_multiloc?: Multiloc;
+    trigger_multiloc?: Multiloc | null;
     schedule: any;
     // Undefined for campaigns that are not scheduled
     schedule_multiloc?: Multiloc;
