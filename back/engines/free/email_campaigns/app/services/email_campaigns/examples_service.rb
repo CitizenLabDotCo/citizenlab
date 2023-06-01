@@ -24,7 +24,7 @@ module EmailCampaigns
         total_examples = Example.where(campaign: campaign).count
 
         new_campaign_commands =
-          filter_n_campaigns_with_command_for_campaign(campaigns_with_command, campaign, n_lacking)
+          filter_n_campaigns_with_command_for_campaign(campaigns_with_command, campaign, [n_lacking, 0].max)
 
         Example
           .where(campaign: campaign)
