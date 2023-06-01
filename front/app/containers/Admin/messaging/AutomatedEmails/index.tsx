@@ -15,7 +15,7 @@ import CampaignRow from './CampaignRow';
 
 const AutomatedEmails = () => {
   const { data: campaigns } = useCampaigns({
-    withoutCampaignNames: ['manual'],
+    withoutCampaignNames: ['manual', 'invite_received'],
     pageSize: 250,
   });
 
