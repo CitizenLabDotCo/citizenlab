@@ -130,6 +130,10 @@ module ParticipationContext
     participation_method == 'native_survey'
   end
 
+  def hide_disabled_permissions?
+    !native_survey?
+  end
+
   private
 
   def timeline_project?
