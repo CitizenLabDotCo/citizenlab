@@ -2,32 +2,6 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 
-export interface IInviteData {
-  id: string;
-  type: 'invite';
-  attributes: {
-    token: 'string';
-    accepted_at: string;
-    updated_at: string;
-    created_at: string;
-    activate_invite_url: string;
-  };
-  relationships: {
-    invitee: {
-      data: {
-        id: string;
-        type: 'votable';
-      };
-    };
-    inviter: {
-      data: {
-        id: string;
-        type: 'user';
-      };
-    };
-  };
-}
-
 export interface IInvitesNewSeats {
   data: {
     attributes: {
@@ -37,16 +11,6 @@ export interface IInvitesNewSeats {
   };
 }
 
-export interface IInvites {
-  data: IInviteData[];
-  links: {
-    self: string;
-    first: string;
-    prev: string;
-    next: string;
-    last: string;
-  };
-}
 export interface IInviteError {
   error: string;
   raw_error: string;
@@ -81,15 +45,6 @@ export interface INewBulkInviteEmails extends INewBulkInvite {
 
 export interface INewBulkXLSXInviteXLSX extends INewBulkInvite {
   xlsx: string;
-}
-
-export async function bulkInviteEmails(object: INewBulkInviteEmails) {
-  const response = await streams.add(`${API_PATH}/invites/bulk_create`, {
-    invites: object,
-  });
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/invites`] });
-  invalidateSeatsCache();
-  return response;
 }
 
 export async function bulkInviteXLSX(object: INewBulkXLSXInviteXLSX) {

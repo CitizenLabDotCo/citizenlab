@@ -58,6 +58,7 @@ export interface IInviteData {
 
 export interface IInvitesNewSeats {
   data: {
+    type: 'invite_new_seats';
     attributes: {
       newly_added_admins_number: number;
       newly_added_moderators_number: number;
