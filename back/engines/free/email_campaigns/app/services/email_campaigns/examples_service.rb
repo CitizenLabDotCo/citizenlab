@@ -2,7 +2,7 @@
 
 # ExamplesService is responsible for maintaining an adequate and relevant sample
 # of email campaign examples in the database. It's called by the email campaigns
-# send pipeline on every email. It decided whether the email's html is worth
+# send pipeline on every email. It decides whether the email's html is worth
 # storing, and if so stores it and cleans up less relevant examples.
 module EmailCampaigns
   class ExamplesService
