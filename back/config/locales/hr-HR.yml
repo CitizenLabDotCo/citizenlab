@@ -207,6 +207,7 @@ hr:
       status: 'Stanje'
       assignee_fullname: 'Opunomoćenik'
       assignee_email: 'E-pošta opunomoćenika'
+    anonymous: 'Anonimno'
   form_builder:
     default_select_field:
       title: 'Vaše pitanje'
