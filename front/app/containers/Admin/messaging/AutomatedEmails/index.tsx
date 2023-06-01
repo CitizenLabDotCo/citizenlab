@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { colors } from 'utils/styleUtils';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import useLocalize from 'hooks/useLocalize';
+import ExampleModal from './ExampleModal';
 import { groupBy, sortBy } from './utils';
 import {
   CampaignData,
@@ -20,6 +21,9 @@ const AutomatedEmails = () => {
   });
 
   const localize = useLocalize();
+  const [exampleModalCampaignId, setExampleModalCampaignId] = useState<
+    string | null
+  >(null);
 
   const groupedCampaigns = useMemo(
     () =>
@@ -58,6 +62,10 @@ const AutomatedEmails = () => {
 
   if (!groupedCampaigns) return null;
 
+  const handleOnClickViewExample = (campaignId: string) => () => {
+    setExampleModalCampaignId(campaignId);
+  };
+
   return (
     <>
       <Box mb="28px">
@@ -74,19 +82,28 @@ const AutomatedEmails = () => {
             <CampaignsGroup
               key={subGroupedCampaignsEntry[0]}
               subGroupedCampaignsEntry={subGroupedCampaignsEntry}
+              onClickViewExample={handleOnClickViewExample}
             />
           )
         )}
       </Box>
+      {exampleModalCampaignId && (
+        <ExampleModal
+          campaignId={exampleModalCampaignId}
+          onClose={() => setExampleModalCampaignId(null)}
+        />
+      )}
     </>
   );
 };
 
 type CampaignsGroupProps = {
   subGroupedCampaignsEntry: SubGroupedCampaignsEntry;
+  onClickViewExample: (campaignId: string) => () => void;
 };
 const CampaignsGroup = ({
   subGroupedCampaignsEntry: [recipient_role, group],
+  onClickViewExample,
 }: CampaignsGroupProps) => (
   <Box mb="30px">
     <Title color="primary" variant="h3" mt="20px">
@@ -96,6 +113,7 @@ const CampaignsGroup = ({
       <CampaignsSubGroup
         key={groupedCampaignsEntry[0]}
         groupedCampaignsEntry={groupedCampaignsEntry}
+        onClickViewExample={onClickViewExample}
       />
     ))}
   </Box>
@@ -103,16 +121,22 @@ const CampaignsGroup = ({
 
 type CampaignsSubGroupProps = {
   groupedCampaignsEntry: GroupedCampaignsEntry;
+  onClickViewExample: (campaignId: string) => () => void;
 };
 const CampaignsSubGroup = ({
   groupedCampaignsEntry: [content_type, campaigns],
+  onClickViewExample,
 }: CampaignsSubGroupProps) => (
   <Box>
     <Title color="primary" variant="h4" mt="24px" fontWeight="normal">
       {content_type}
     </Title>
     {campaigns.map((campaign: CampaignData) => (
-      <CampaignRow campaign={campaign} key={campaign.id} />
+      <CampaignRow
+        campaign={campaign}
+        key={campaign.id}
+        onClickViewExample={onClickViewExample(campaign.id)}
+      />
     ))}
   </Box>
 );

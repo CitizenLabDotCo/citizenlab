@@ -8,17 +8,19 @@ import {
   ListItem,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { colors } from 'utils/styleUtils';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 import { CampaignData } from './types';
+import Button from 'components/UI/Button';
 
 type Props = {
   campaign: CampaignData;
+  onClickViewExample: () => void;
 };
 
-const CampaignRow = ({ campaign }: Props) => {
+const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: updateCampaign } = useUpdateCampaign();
   const handleOnEnabledToggle = (campaign: CampaignData) => () => {
@@ -86,6 +88,15 @@ const CampaignRow = ({ campaign }: Props) => {
                 )}
               </Box>
             )}
+        </Box>
+        <Box display="flex" justifyContent="flex-end" flexGrow={1}>
+          <Button
+            icon="eye"
+            onClick={onClickViewExample}
+            buttonStyle="secondary"
+          >
+            <FormattedMessage {...messages.viewExample} />
+          </Button>
         </Box>
       </Box>
     </ListItem>
