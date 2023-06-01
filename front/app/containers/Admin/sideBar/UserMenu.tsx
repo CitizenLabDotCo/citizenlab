@@ -115,9 +115,7 @@ export const UserMenu = () => {
                 {formatMessage({ ...getRole(authUser) })}
               </Text>
             </Box>
-            <Box ref={iconDivRef}>
-              <Icon name="chevron-right" fill={colors.white} />
-            </Box>
+            <Box ref={iconDivRef} />
           </Box>
         </StyledBox>
       }
@@ -125,7 +123,7 @@ export const UserMenu = () => {
       onClose={handleUserMenuPopupClose}
       on="click"
       position="top right"
-      offset={[40, -60]}
+      offset={[0, -60]}
       positionFixed
       context={iconDivRef}
       basic

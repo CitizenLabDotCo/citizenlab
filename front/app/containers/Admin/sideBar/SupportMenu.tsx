@@ -41,9 +41,7 @@ export const SupportMenu = () => {
                 {formatMessage({ ...messages.support })}
               </Text>
             </Box>
-            <Box ref={iconDivRef}>
-              <Icon name="chevron-right" fill={colors.white} />
-            </Box>
+            <Box ref={iconDivRef} />
           </Box>
         </StyledBox>
       }
@@ -51,7 +49,7 @@ export const SupportMenu = () => {
       position="top right"
       context={iconDivRef}
       positionFixed
-      offset={[40, -60]}
+      offset={[0, -60]}
       basic
       wide
     >
