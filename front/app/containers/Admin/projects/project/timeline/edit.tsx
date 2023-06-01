@@ -38,7 +38,7 @@ import usePhases from 'api/phases/usePhases';
 import usePhase from 'api/phases/usePhase';
 import useAddPhase from 'api/phases/useAddPhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
-import { IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
+import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
 
 import { isNilOrError } from 'utils/helperUtils';
 import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
@@ -87,7 +87,6 @@ const AdminProjectTimelineEdit = () => {
   const [attributeDiff, setAttributeDiff] = useState<IUpdatedPhaseProperties>(
     {}
   );
-  const [redirectAfterSave, setRedirectAfterSave] = useState<boolean>(false);
 
   useEffect(() => {
     if (phaseFiles) {
@@ -191,7 +190,10 @@ const AdminProjectTimelineEdit = () => {
     setSubmitState('error');
   };
 
-  const handleSaveResponse = async (response) => {
+  const handleSaveResponse = async (
+    response: IPhase,
+    redirectAfterSave: boolean
+  ) => {
     const phaseResponse = response.data;
     const phaseId = phaseResponse.id;
     const filesToAddPromises = inStatePhaseFiles
@@ -228,20 +230,22 @@ const AdminProjectTimelineEdit = () => {
       setProcessing(true);
       if (!isEmpty(attributeDiff)) {
         if (phase) {
-          setRedirectAfterSave(false);
           updatePhase(
             { phaseId: phase.id, ...attributeDiff },
             {
-              onSuccess: handleSaveResponse,
+              onSuccess: (response) => {
+                handleSaveResponse(response, false);
+              },
               onError: handleError,
             }
           );
         } else if (projectId) {
-          setRedirectAfterSave(true);
           addPhase(
             { projectId, ...attributeDiff },
             {
-              onSuccess: handleSaveResponse,
+              onSuccess: (response) => {
+                handleSaveResponse(response, true);
+              },
               onError: handleError,
             }
           );
@@ -263,7 +267,7 @@ const AdminProjectTimelineEdit = () => {
     // If this is a new phase
     if (!phase) {
       const previousPhase =
-        !isNilOrError(phases) && phases[phases.data.length - 1];
+        !isNilOrError(phases) && phases.data[phases.data.length - 1];
       const previousPhaseEndDate = previousPhase
         ? moment(previousPhase.attributes.end_at)
         : null;
