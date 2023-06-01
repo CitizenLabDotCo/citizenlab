@@ -48,55 +48,6 @@ nl-BE:
       "assignee_digest": Weekoverzicht van toegewezen ideeën
       "user_digest": Weekoverzicht
       "your_proposed_initiatives_digest": Weekoverzicht van je voorstellen
-    admin_campaign_type_description:
-      "manual": Officieel bericht - alle gebruikers
-      "admin_rights_received": Administratierechten ontvangen - admins
-      "comment_deleted_by_admin": Verwijderen van je reactie - alle gebruikers
-      "comment_marked_as_spam": Spammeldinig reactie - admins en projectbeheerders
-      "comment_on_your_comment": Antwoord op je reactie - alle gebruikers
-      "comment_on_your_idea": Reactie op jouw idee - alle gebruikers
-      "comment_on_your_initiative": Reactie op jouw voorstel - alle gebruikers
-      "first_idea_published": Posten van je eerste idee - alle gebruikers
-      "idea_marked_as_spam": Spammeldinig idee - admins en projectbeheerders
-      "idea_published": Posten van je idee - alle gebruikers
-      "initiative_assigned_to_you": Toewijzing van een voorstel - admins
-      "initiative_marked_as_spam": Voorstel spammelding - admins
-      "initiative_published": Posten van je voorstel - alle gebruikers
-      "invite_received": Uitnodiging - alle gebruikers
-      "invite_reminder": Herinnering uitnodiging - alle gebruikers
-      "mention_in_comment": Vermelding in een reactie - alle gebruikers
-      "mention_in_official_feedback": Vermelding in een update - alle gebruikers
-      "new_comment_for_admin": Nieuwe reactie - admins en projectbeheerders
-      "new_comment_on_commented_idea": Nieuwe reactie op een idee waar je op reageerde - alle gebruikers
-      "new_comment_on_commented_initiative": Nieuwe reactie op een voorstel waar je op reageerde - alle gebruikers
-      "new_comment_on_voted_idea": Nieuwe reactie op een idee waar je op stemde - alle gebruikers
-      "new_comment_on_voted_initiative": Nieuwe reactie op een voorstel waar je op stemde - alle gebruikers
-      "new_idea_for_admin": Nieuw idee - admins en projectbeheerders
-      "new_initiative_for_admin": Nieuw voorstel - admins
-      "official_feedback_on_commented_idea": Update op een idee waar je op reageerde - alle gebruikers
-      "official_feedback_on_commented_initiative": Update op een voorstel waar je op reageerde - alle gebruikers
-      "official_feedback_on_voted_idea": Update op een idee waar je op stemde - alle gebruikers
-      "official_feedback_on_voted_initiative": Update op een voorstel waar je op stemde - alle gebruikers
-      "official_feedback_on_your_idea": Update op jouw idee - alle gebruikers
-      "official_feedback_on_your_initiative": Update op jouw voorstel - alle gebruikers
-      "password_reset": Wachtwoord resetten - alle gebruikers
-      "project_moderation_rights_received": Projectmoderatorrechten ontvangen - projectbeheerders
-      "project_folder_moderation_rights_received": Mapbeheerdersrechten ontvangen
-      "project_phase_started": Nieuwe projectfase - deelnemers aan project
-      "project_phase_upcoming": Opkomende nieuwe projectfase - admins en projectbeheerders
-      "status_change_of_commented_idea": Statuswijziging van een idee waar je op reageerde - alle gebruikers
-      "status_change_of_commented_initiative": Statuswijziging van een voorstel waar je op reageerde - alle gebruikers
-      "status_change_of_voted_idea": Statuswijziging van een idee waar je op stemde - alle gebruikers
-      "status_change_of_voted_initiative": Statuswijziging van een voorstel waar je op stemde - alle gebruikers
-      "status_change_of_your_idea": Statuswijziging van je idee - alle gebruikers
-      "status_change_of_your_initiative": Statuswijziging van je voorstel - alle gebruikers
-      "threshold_reached_for_admin": Een voorstel bereikte het benodigd aantal stemmen - admins
-      "welcome": Nieuwe gebruiker - admins
-      "admin_digest": Weekoverzicht - admins
-      "moderator_digest": Weekoverzicht - projectbeheerders
-      "assignee_digest": Wekelijks overzicht van toegewezen ideeën - admins en projectbeheerders
-      "user_digest": Weekoverzicht - alle gebruikers
-      "your_proposed_initiatives_digest": Weekoverzicht van je eigen voorstellen - alle gebruikers
     schedules:
       weekly:
         "0": "Wekelijks, op zondag om %{hourOfDay}"
@@ -565,31 +516,29 @@ nl-BE:
       remaining_days: 'Resterende dagen'
     admin_labels:
       recipient_role:
-        admins: 'Aan admins'
         admins_and_managers: 'Aan admins & beheerders'
-        managers: 'Aan beheerders'
         registered_users: 'Aan geregistreerde gebruikers'
       recipient_segment:
         admins: 'Admins'
         admins_and_managers: 'Admins en beheerders'
         admins_and_managers_managing_the_project: 'Admins & beheerders die het project beheren'
         all_users: 'Alle gebruikers'
-        all_users_who_uploaded_proposals: 'Alle gebruikers die initiatieven hebben geüpload'
+        all_users_who_uploaded_proposals: 'Alle gebruikers die voorstellen hebben geüpload'
         managers: 'Beheerders'
         admins_assigned_to_a_proposal: 'Aan een voorstel toegewezen admins'
         admins_and_managers_assigned_to_the_input: 'Aan de bijdrage toegewezen admins en beheerders'
-        user_receiving_admin_rights: 'Gebruiker die admin-rechten krijgt'
-        user_receiving_folder_moderator_rights: 'Gebruiker die mapbeheerdersrechten krijgt'
-        user_receiving_project_moderator_rights: 'Gebruiker die projectbeheerdersrechten krijgt'
+        user_who_is_receiving_admin_rights: 'Gebruiker die admin-rechten krijgt'
+        user_who_is_receiving_folder_moderator_rights: 'Gebruiker die mapmoderatorrechten krijgt'
+        user_who_is_receiving_project_moderator_rights: 'Gebruiker die projectmoderatorrechten krijgt'
         user_who_commented: 'Gebruiker die een reactie gaf'
         user_who_is_mentioned: 'Gebruiker die genoemd wordt'
         user_who_published_the_proposal: 'Gebruiker die het voorstel heeft gepubliceerd'
         user_who_published_the_input: 'Gebruiker die de bijdrage heeft gepubliceerd'
         user_who_registers: 'Gebruiker die zich registreert'
         user_who_was_invited: 'Gebruiker die werd uitgenodigd'
-        users_engaged_with_the_input: 'Gebruikers betrokken bij de bijdrage'
-        users_engaged_with_the_project: 'Gebruikers betrokken bij het project'
-        users_engaged_with_the_proposal: 'Gebruikers betrokken bij het initiatief'
+        users_who_engaged_with_the_input: 'Gebruikers die zich met de input bezighielden'
+        users_who_engaged_with_the_project: 'Gebruikers die zich met het project bezighielden'
+        users_who_engaged_with_the_proposal: 'Gebruikers die zich met het voorstel bezighielden'
       content_type:
         comments: 'Reacties'
         content_moderation: 'Inhoudelijke moderatie'
@@ -597,7 +546,7 @@ nl-BE:
         inputs: 'Bijdragen'
         permissions: 'Machtigingen'
         projects: 'Projecten'
-        proposals: 'Initiatieven'
+        proposals: 'Voorstellen'
         votes: 'Stemmen'
       trigger:
         comment_is_deleted: 'Reactie is verwijderd'
@@ -606,24 +555,24 @@ nl-BE:
         input_is_assigned: 'De bijdrage is toegewezen'
         input_is_flagged_as_spam: 'Bijdrage is gemarkeerd als spam'
         input_is_updated: 'De bijdrage is bijgewerkt'
-        input_status_is_changed: 'De status van de bijdrage is gewijzigd'
+        input_status_changes: 'Ingangsstatus verandert'
         new_input_is_published: 'Nieuwe bijdrage is gepubliceerd'
-        new_proposal_is_published: 'Nieuw voorstel is gepubliceerd'
-        project_changes_phase: 'Fase van project wijzigt'
-        proposal_gets_reported_as_spam: 'Initiatief wordt gerapporteerd als spam'
+        new_proposal_is_posted: 'Nieuw voorstel is geplaatst'
+        project_phase_changes: 'Wijzigingen in projectfase'
+        proposal_gets_reported_as_spam: 'Voorstel wordt gerapporteerd als spam'
         proposal_is_assigned_to_admin: 'Voorstel is toegewezen aan admin'
-        proposal_is_updated: 'Het initiatief wordt bijgewerkt'
-        proposal_is_upvoted_above_threshold: 'Initiatief wordt boven de drempel gestemd'
-        proposal_status_is_changed: 'De status van het initiatief is gewijzigd'
+        proposal_is_updated: 'Het voorstel wordt bijgewerkt'
+        proposal_is_upvoted_above_threshold: 'Voorstel wordt boven de drempel gestemd'
+        proposal_status_changes: 'Wijzigingen in de status van het voorstel'
         user_comments: 'Reacties van de gebruiker'
         user_comments_on_input: 'Gebruiker reageert op bijdrage'
-        user_comments_on_proposal: 'Gebruiker reageert op het initiatief'
+        user_comments_on_proposal: 'Gebruiker reageert op het voorstel'
         user_is_given_admin_rights: 'Gebruiker krijgt admin-rechten'
         user_is_given_folder_moderator_rights: 'Gebruiker krijgt mapbeheerdersrechten'
         user_is_given_project_moderator_rights: 'Gebruiker krijgt projectbeheerdersrechten'
         user_is_mentioned: 'Gebruiker wordt genoemd'
-        user_publishes_an_input: 'Gebruiker publiceert een bijdrage'
-        user_publishes_a_proposal: 'Gebruiker publiceert een voorstel'
+        input_is_published: 'Input wordt gepubliceerd'
+        proposal_is_published: 'Het voorstel wordt gepubliceerd'
         user_registers_for_the_first_time: 'Gebruiker registreert zich voor het eerst'
         user_replies_to_comment: 'Gebruiker reageert op reactie'
         7_days_after_invite_is_sent: '7 dagen na verzending van de uitnodiging'
