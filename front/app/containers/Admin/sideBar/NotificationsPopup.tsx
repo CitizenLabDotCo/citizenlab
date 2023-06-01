@@ -54,7 +54,9 @@ export const NotificationsPopup = () => {
               {unreadNotificationsCount > 0 && (
                 <Box position="relative">
                   <Box position="absolute" top="-22px" left="10px">
-                    <NewNotificationsIndicator>6</NewNotificationsIndicator>
+                    <NewNotificationsIndicator>
+                      {unreadNotificationsCount}
+                    </NewNotificationsIndicator>
                   </Box>
                 </Box>
               )}
