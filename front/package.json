@@ -187,7 +187,7 @@
     "@typescript-eslint/parser": "^5.14.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^29.4.1",
-    "babel-loader": "8.2.5",
+    "babel-loader": "8.3.0",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "babel-plugin-react-intl": "2.4.0",
     "babel-plugin-styled-components": "^2.0.7",
