@@ -15,6 +15,7 @@ export interface ICampaignData {
   attributes: {
     campaign_name: string;
     campaign_description_multiloc: Multiloc;
+    // Only undefined for invite_received?
     enabled?: boolean;
     subject_multiloc: Multiloc;
     body_multiloc: Multiloc;
@@ -27,10 +28,13 @@ export interface ICampaignData {
     content_type_ordering: number;
     recipient_role_multiloc: Multiloc;
     recipient_role_ordering: number;
-    recipient_segment_multiloc?: Multiloc;
+    // Seems to be always defined, null for invite_received
+    recipient_segment_multiloc?: Multiloc | null;
+    // Seems to be always defined, null for e.g. invite_received, admin_digest
     trigger_multiloc?: Multiloc;
     schedule: any;
-    schedule_multiloc: Multiloc;
+    // Undefined for campaigns that are not scheduled
+    schedule_multiloc?: Multiloc;
   };
   relationships: {
     author: {
