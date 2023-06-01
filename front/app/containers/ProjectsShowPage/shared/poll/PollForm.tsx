@@ -68,7 +68,7 @@ interface Answers {
   [questionId: string]: string[];
 }
 
-const PollForm = ({ questions, id, type, disabled }: Props) => {
+const PollForm = ({ questions, id, type, disabled, projectId }: Props) => {
   const [answers, setAnswers] = useState<Answers>({});
   const { mutate: addPollResponse } = useAddPollResponse();
 
@@ -90,6 +90,7 @@ const PollForm = ({ questions, id, type, disabled }: Props) => {
         participationContextId: id,
         participationContextType: type,
         optionIds: Object.values(answers).flat(),
+        projectId,
       });
     }
   };

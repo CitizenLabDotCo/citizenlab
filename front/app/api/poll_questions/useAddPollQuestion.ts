@@ -5,6 +5,7 @@ import pollQuestionsKeys from './keys';
 import { IPollQuestion, IPollQuestionParameters } from './types';
 import { capitalizeParticipationContextType } from 'utils/helperUtils';
 import projectsKeys from 'api/projects/keys';
+import phasesKeys from 'api/phases/keys';
 
 type AddPollQuestion = {
   title_multiloc: Multiloc;
@@ -38,9 +39,17 @@ const useAddPollQuestion = () => {
           participationContextType: variables.participationContextType,
         }),
       });
-      queryClient.invalidateQueries({
-        queryKey: projectsKeys.item({ id: variables.participationContextId }),
-      });
+      if (variables.participationContextType === 'project') {
+        queryClient.invalidateQueries({
+          queryKey: projectsKeys.item({ id: variables.participationContextId }),
+        });
+      } else if (variables.participationContextType === 'phase') {
+        queryClient.invalidateQueries({
+          queryKey: phasesKeys.item({
+            phaseId: variables.participationContextId,
+          }),
+        });
+      }
     },
   });
 };

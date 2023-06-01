@@ -7,6 +7,8 @@ import {
   IPollQuestionAttributes,
   IPollQuestionParameters,
 } from './types';
+import projectsKeys from 'api/projects/keys';
+import phasesKeys from 'api/phases/keys';
 
 type UpdatePollQuestion = {
   questionId: string;
@@ -36,6 +38,18 @@ const useUpdatePollQuestion = () => {
           participationContextType: variables.participationContextType,
         }),
       });
+
+      if (variables.participationContextType === 'project') {
+        queryClient.invalidateQueries({
+          queryKey: projectsKeys.item({ id: variables.participationContextId }),
+        });
+      } else if (variables.participationContextType === 'phase') {
+        queryClient.invalidateQueries({
+          queryKey: phasesKeys.item({
+            phaseId: variables.participationContextId,
+          }),
+        });
+      }
     },
   });
 };

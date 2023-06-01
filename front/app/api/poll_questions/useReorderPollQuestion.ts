@@ -3,6 +3,8 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import pollQuestionsKeys from './keys';
 import { IPollQuestion, IPollQuestionParameters } from './types';
+import projectsKeys from 'api/projects/keys';
+import phasesKeys from 'api/phases/keys';
 
 type UpdatePollQuestion = {
   questionId: string;
@@ -32,6 +34,18 @@ const useReorderPollQuestion = () => {
           participationContextType: variables.participationContextType,
         }),
       });
+
+      if (variables.participationContextType === 'project') {
+        queryClient.invalidateQueries({
+          queryKey: projectsKeys.item({ id: variables.participationContextId }),
+        });
+      } else if (variables.participationContextType === 'phase') {
+        queryClient.invalidateQueries({
+          queryKey: phasesKeys.item({
+            phaseId: variables.participationContextId,
+          }),
+        });
+      }
     },
   });
 };

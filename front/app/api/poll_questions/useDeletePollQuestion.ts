@@ -3,6 +3,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import questionKeys from './keys';
 import { IPollQuestionParameters } from './types';
 import projectsKeys from 'api/projects/keys';
+import phasesKeys from 'api/phases/keys';
 
 const deleteQuestion = async ({
   questionId,
@@ -25,9 +26,17 @@ const useDeletePollQuestion = () => {
           participationContextType: variables.participationContextType,
         }),
       });
-      queryClient.invalidateQueries({
-        queryKey: projectsKeys.item({ id: variables.participationContextId }),
-      });
+      if (variables.participationContextType === 'project') {
+        queryClient.invalidateQueries({
+          queryKey: projectsKeys.item({ id: variables.participationContextId }),
+        });
+      } else if (variables.participationContextType === 'phase') {
+        queryClient.invalidateQueries({
+          queryKey: phasesKeys.item({
+            phaseId: variables.participationContextId,
+          }),
+        });
+      }
     },
   });
 };

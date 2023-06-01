@@ -7,12 +7,14 @@ import projectsKeys from 'api/projects/keys';
 
 type AddPollResponse = {
   optionIds: string[];
+  projectId?: string;
 } & IPollResponseParameters;
 
 const addPollResponse = async ({
   participationContextId,
   participationContextType,
   optionIds,
+  projectId: _id,
 }: AddPollResponse) =>
   fetcher<IPollResponses>({
     path: `/${participationContextType}s/${participationContextId}/poll_responses`,
@@ -37,8 +39,9 @@ const useAddPollResponse = () => {
           participationContextType: variables.participationContextType,
         }),
       });
+
       queryClient.invalidateQueries({
-        queryKey: projectsKeys.item({ id: variables.participationContextId }),
+        queryKey: projectsKeys.item({ id: variables.projectId }),
       });
     },
   });
