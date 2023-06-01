@@ -4,6 +4,7 @@ module EmailCampaigns
   module GroupOrderingHelper
     RECIPIENT_ROLE_ORDER = %w[registered_users admins_and_managers admins managers]
     CONTENT_TYPES_ORDER = %w[general permissions inputs comments votes proposals projects content_moderation]
+
     def group_ordering(group_type, key)
       if group_type == 'recipient_role'
         RECIPIENT_ROLE_ORDER.index(key)

@@ -1,7 +1,7 @@
 import 'cypress-file-upload';
 import './dnd';
 import { ParticipationMethod } from '../../app/services/participationContexts';
-import { IUserUpdate } from '../../app/services/users';
+import { IUserUpdate } from '../../app/api/users/types';
 import jwtDecode from 'jwt-decode';
 
 declare global {

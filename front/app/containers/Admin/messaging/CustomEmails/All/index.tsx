@@ -48,9 +48,10 @@ const CustomEmails = () => {
     pageSize: 10,
   });
 
-  if (!campaigns?.pages) return null;
-
   const campaignsList = campaigns?.pages[currentPage - 1];
+
+  if (!campaignsList) return null;
+
   const lastPage = getPageNumberFromUrl(campaigns?.pages[0].links.last) || 1;
 
   const goToPage = (page: number) => {

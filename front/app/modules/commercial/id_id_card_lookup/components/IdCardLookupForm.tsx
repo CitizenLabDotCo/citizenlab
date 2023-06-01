@@ -35,6 +35,8 @@ import T from 'components/T';
 
 // typings
 import { IDLookupMethod } from 'services/verificationMethods';
+import usersKeys from 'api/users/keys';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Props {
   onCancel: () => void;
@@ -46,7 +48,7 @@ interface Props {
 const VerificationFormLookup = memo<Props & WrappedComponentProps>(
   ({ onCancel, onVerified, className, method, intl }) => {
     const authUser = useAuthUser();
-
+    const queryClient = useQueryClient();
     const [cardId, setCardId] = useState<string>('');
     const [cardIdError, setCardIdError] = useState<string | null>(null);
     const [formError, setFormError] = useState<string | null>(null);
@@ -80,7 +82,9 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
             const endpointsToRefetch = [`${API_PATH}/users/me`];
 
             if (!isNilOrError(authUser)) {
-              endpointsToRefetch.push(`${API_PATH}/users/${authUser.id}`);
+              queryClient.invalidateQueries(
+                usersKeys.item({ id: authUser.id })
+              );
             }
 
             await streams.fetchAllWith({
