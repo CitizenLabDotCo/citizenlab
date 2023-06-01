@@ -52,7 +52,7 @@ module Polls
             .order('polls_response_options.option_id')
             .count
 
-          render json: { series: { options: @counts } }
+          render json: raw_json({ series: { options: @counts } })
         end
 
         private
