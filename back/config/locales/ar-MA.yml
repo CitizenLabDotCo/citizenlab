@@ -207,6 +207,7 @@ ar-MA:
       status: 'الحالة'
       assignee_fullname: 'المعيّن إليه'
       assignee_email: 'البريد الإلكتروني للمعيَّن إليه'
+    anonymous: 'مجهول'
   form_builder:
     default_select_field:
       title: 'سؤالك'
