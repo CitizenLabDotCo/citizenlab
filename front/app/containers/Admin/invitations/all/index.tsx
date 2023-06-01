@@ -8,12 +8,6 @@ import TableHeader from './TableHeader';
 import TableRow from './TableRow';
 import SearchInput from 'components/UI/SearchInput';
 
-// resources
-import GetInvites, {
-  GetInvitesChildProps,
-  SortAttribute,
-} from 'resources/GetInvites';
-
 // i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -25,9 +19,15 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 // utils
 import { API_PATH } from 'containers/App/constants';
 import { requestBlob } from 'utils/request';
-import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
 import { saveAs } from 'file-saver';
+import { Sort, SortAttribute } from 'api/invites/types';
+import useInvites from 'api/invites/useInvites';
+import {
+  getPageNumberFromUrl,
+  getSortAttribute,
+  getSortDirection,
+} from 'utils/paginationUtils';
 
 const Container = styled.div`
   th::after {
@@ -54,20 +54,22 @@ const EmptyStateContainer = styled.div`
   justify-content: center;
 `;
 
-const InvitesTable = ({
-  invitesList,
-  sortAttribute,
-  sortDirection,
-  currentPage,
-  lastPage,
-  onChangeSorting,
-  onChangePage,
-  onChangeSearchTerm,
-}: GetInvitesChildProps) => {
+const InvitesTable = () => {
   const [searchValue, setSearchValue] = useState('');
   const [exporting, setExporting] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [sort, setSort] = useState<Sort>('-created_at');
 
-  if (isNilOrError(invitesList)) return null;
+  const { data: invites } = useInvites({
+    sort,
+    pageNumber,
+    search: searchValue,
+  });
+
+  if (!invites) return null;
+
+  const currentPage = getPageNumberFromUrl(invites.links.self);
+  const lastPage = getPageNumberFromUrl(invites.links.last);
 
   const handleInvitesExport = async () => {
     try {
@@ -87,20 +89,30 @@ const InvitesTable = ({
   };
 
   const handleSortHeaderClick = (sortAttribute: SortAttribute) => () => {
-    onChangeSorting(sortAttribute);
+    const oldSortAttribute = getSortAttribute<Sort, SortAttribute>(sort);
+    const oldSortDirection = getSortDirection<Sort>(sort);
+    const newSortDirection =
+      sortAttribute === oldSortAttribute && oldSortDirection === 'descending'
+        ? 'ascending'
+        : 'descending';
+    const newSortDirectionSymbol = newSortDirection === 'descending' ? '-' : '';
+    const newSort = `${newSortDirectionSymbol}${sortAttribute}` as Sort;
+    setSort(newSort);
   };
 
   const handleChangeSearchTerm = (searchValue: string) => {
     setSearchValue(searchValue);
-    onChangeSearchTerm(searchValue);
   };
+
+  const sortAttribute = getSortAttribute<Sort, SortAttribute>(sort);
+  const sortDirection = getSortDirection<Sort>(sort);
 
   return (
     <Container>
       <HeaderContainer>
         <SearchInput
           onChange={handleChangeSearchTerm}
-          a11y_numberOfSearchResults={invitesList.length}
+          a11y_numberOfSearchResults={invites.data.length}
         />
         <Button
           buttonStyle="cl-blue"
@@ -112,7 +124,7 @@ const InvitesTable = ({
         </Button>
       </HeaderContainer>
 
-      {invitesList.length > 0 && (
+      {invites.data.length > 0 && (
         <Table
           border={`1px solid ${colors.grey300}`}
           borderRadius={stylingConsts.borderRadius}
@@ -128,7 +140,7 @@ const InvitesTable = ({
           />
 
           <Tbody>
-            {invitesList.map((invite) => (
+            {invites.data.map((invite) => (
               <TableRow key={invite.id} invite={invite} />
             ))}
           </Tbody>
@@ -140,7 +152,7 @@ const InvitesTable = ({
                   <Pagination
                     currentPage={currentPage}
                     totalPages={lastPage}
-                    loadPage={onChangePage}
+                    loadPage={setPageNumber}
                   />
                 </Td>
               </Tr>
@@ -149,7 +161,7 @@ const InvitesTable = ({
         </Table>
       )}
 
-      {isEmpty(invitesList) && !isEmpty(searchValue) && (
+      {isEmpty(invites.data) && !isEmpty(searchValue) && (
         <EmptyStateContainer>
           <FormattedMessage {...messages.currentlyNoInvitesThatMatchSearch} />
         </EmptyStateContainer>
@@ -158,6 +170,4 @@ const InvitesTable = ({
   );
 };
 
-export default () => (
-  <GetInvites>{(invites) => <InvitesTable {...invites} />}</GetInvites>
-);
+export default InvitesTable;
