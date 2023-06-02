@@ -58,6 +58,10 @@ FactoryBot.define do
         user_confirmation: {
           enabled: false,
           allowed: false
+        },
+        verification: {
+          enabled: false,
+          allowed: false
         }
       })
     end
