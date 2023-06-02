@@ -613,7 +613,7 @@
   "app.containers.Admin.Users.setAsAdmin": "Admin-Zugang gewähren",
   "app.containers.Admin.Users.setAsNormalUser": "Als normale*n Nutzer*in einstellen",
   "app.containers.Admin.Users.since": "Registriert am",
-  "app.containers.Admin.Users.status": "Status",
+  "app.containers.Admin.Users.status": "Rolle",
   "app.containers.Admin.Users.userBlockModal.allDone": "Alles erledigt",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Nutzer*in sperren",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Die veröffentlichten Inhalte dieses/dieser Nutzers*in werden dadurch nicht entfernt. Vergessen Sie nicht, die Inhalte bei Bedarf zu moderieren.",
