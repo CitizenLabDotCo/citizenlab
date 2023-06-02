@@ -37,7 +37,7 @@ export const StyledAuthProviderButton = styled(AuthProviderButton)`
   margin-bottom: 18px;
 `;
 
-export const StyledExpandedAuthProviderButton = styled(
+export const StyledClaveUnicaExpandedAuthProviderButton = styled(
   ClaveUnicaExpandedAuthProviderButton
 )`
   margin-bottom: 18px;
@@ -123,7 +123,7 @@ const AuthProviders = memo<Props>(
         {showMainAuthMethods && franceconnectLoginEnabled && <Or />}
 
         {claveUnicaLoginEnabled && (
-          <StyledExpandedAuthProviderButton
+          <StyledClaveUnicaExpandedAuthProviderButton
             flow={flow}
             onSelectAuthProvider={onSelectAuthProvider}
           />
