@@ -30,9 +30,12 @@ import {
 } from 'services/participationContexts';
 import { ApiErrors } from '..';
 import { AnonymousPostingToggle } from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
+import { VotingMethodType } from 'utils/votingMethodUtils';
 
 // api
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { useParams } from 'react-router-dom';
+import VotingMethodSelector from './voting/VotingMethodSelector';
 
 interface Props {
   isCustomInputTermEnabled: boolean;
@@ -40,6 +43,7 @@ interface Props {
   handleInputTermChange: (option: IOption) => void;
   inputTermOptions: IOption[];
   allow_anonymous_participation: boolean | null | undefined;
+  voting_method: VotingMethodType | null | undefined;
   min_budget: number | null | undefined;
   max_budget: number | null | undefined;
   commenting_enabled: boolean | null | undefined;
@@ -58,6 +62,7 @@ interface Props {
   handleAllowAnonymousParticipationOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
+  handleVotingMethodOnChange: (voting_method: VotingMethodType) => void;
 }
 
 export default ({
@@ -66,6 +71,7 @@ export default ({
   handleInputTermChange,
   inputTermOptions,
   allow_anonymous_participation,
+  voting_method,
   min_budget,
   max_budget,
   commenting_enabled,
@@ -80,7 +86,11 @@ export default ({
   ideas_order,
   handleIdeaDefaultSortMethodChange,
   handleAllowAnonymousParticipationOnChange,
+  handleVotingMethodOnChange,
 }: Props) => {
+  const { projectId } = useParams() as {
+    projectId: string;
+  };
   const hasAnonymousParticipationEnabled = useFeatureFlag({
     name: 'anonymous_participation',
   });
@@ -103,6 +113,36 @@ export default ({
           }
         />
       )}
+      <VotingMethodSelector
+        voting_method={voting_method}
+        handleVotingMethodOnChange={handleVotingMethodOnChange}
+      />
+      <SectionField>
+        <SubSectionTitle>
+          <FormattedMessage {...messages.optionsToVoteOn} />
+          <IconTooltip
+            content={<FormattedMessage {...messages.optionsToVoteOnTooltip} />}
+          />
+        </SubSectionTitle>
+        <FormattedMessage
+          {...messages.optionsToVoteOnExplanation}
+          values={{
+            link: (
+              <a
+                href={`/admin/projects/${projectId}/ideas`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <FormattedMessage
+                  {...messages.optionsToVoteOnExplanationLinkText}
+                />
+              </a>
+            ),
+          }}
+        />
+      </SectionField>
+      {/* Following fields need to be moved into VotingMethodConfig under "budgeting".
+      We can then render the fields specific for each VotingMethodConfig here, as all other fields are shared between the methods.*/}
       {isCustomInputTermEnabled && (
         <CustomFieldPicker
           input_term={input_term}
@@ -110,7 +150,6 @@ export default ({
           inputTermOptions={inputTermOptions}
         />
       )}
-
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...messages.totalBudget} />
@@ -147,9 +186,11 @@ export default ({
           apiErrors={apiErrors && apiErrors.max_budget}
         />
       </SectionField>
+      {/*  ^^^^ These fields need to be moved into VotingMethodConfig under "budgeting" */}
+
       <SectionField>
         <SubSectionTitle>
-          <FormattedMessage {...messages.phasePermissions} />
+          <FormattedMessage {...messages.actionsForResidents} />
         </SubSectionTitle>
 
         <ToggleRow>

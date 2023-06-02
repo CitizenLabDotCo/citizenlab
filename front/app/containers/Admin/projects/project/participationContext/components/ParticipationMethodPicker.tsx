@@ -111,14 +111,10 @@ export const ParticipationMethodPicker = ({
               id={'participationmethod-budgeting'}
               label={
                 <LabelHeaderDescription
-                  header={
-                    <FormattedMessage
-                      {...messages.conductParticipatoryBudgetingText}
-                    />
-                  }
+                  header={<FormattedMessage {...messages.conductVotingText} />}
                   description={
                     <FormattedMessage
-                      {...messages.conductParticipatoryBudgetingDescriptionText}
+                      {...messages.conductVotingDescriptionText}
                     />
                   }
                 />
