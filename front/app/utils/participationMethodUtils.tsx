@@ -218,6 +218,7 @@ const surveyConfig: ParticipationMethodConfig = {
 };
 
 const documentAnnotationConfig: ParticipationMethodConfig = {
+  showInputCount: false,
   formEditor: null,
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.createDocumentAnnotation} />;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import Konveio from './Konveio';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 const mockAuthUserData: IUserData = {
   id: 'userId',
