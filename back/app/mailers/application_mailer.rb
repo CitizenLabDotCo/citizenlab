@@ -115,7 +115,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def from_email
-    email = custom_from_email || ENV.fetch('DEFAULT_FROM_EMAIL')
+    email = custom_from_email.presence || ENV.fetch('DEFAULT_FROM_EMAIL')
 
     email_address_with_name(email, organization_name)
   end
