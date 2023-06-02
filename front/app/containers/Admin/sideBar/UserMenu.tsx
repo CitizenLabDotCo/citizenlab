@@ -11,7 +11,7 @@ import messages from './messages';
 
 // style
 import { colors } from 'utils/styleUtils';
-import { ItemMenu, StyledBox } from './styles';
+import { ItemMenu, StyledBox, StyleIconBox } from './styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -129,12 +129,16 @@ export const UserMenu = () => {
             buttonStyle="text"
             onClick={() => setIsLanguagePopupOpen(!isLanguagePopupOpen)}
           >
-            <Box display="flex" justifyContent="space-between" w="100%">
+            <StyleIconBox
+              display="flex"
+              justifyContent="space-between"
+              w="100%"
+            >
               <LanguageSelectorPopup
                 setIsOpen={setIsLanguagePopupOpen}
                 isOpen={isLanguagePopupOpen}
               />
-            </Box>
+            </StyleIconBox>
           </ItemMenu>
         )}
         <ItemMenu
@@ -146,10 +150,10 @@ export const UserMenu = () => {
           </Box>
         </ItemMenu>
         <ItemMenu buttonStyle="text" onClick={signOut}>
-          <Box display="flex" justifyContent="space-between" w="100%">
+          <StyleIconBox display="flex" justifyContent="space-between" w="100%">
             {formatMessage({ ...messages.signOut })}
             <Icon name="power" fill={colors.grey300} />
-          </Box>
+          </StyleIconBox>
         </ItemMenu>
       </Box>
     </Popup>

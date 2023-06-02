@@ -9,22 +9,8 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { ItemMenu, StyledBox } from './styles';
-
-const StyleIconBox = styled(Box)`
-  cursor: pointer;
-  svg {
-    fill: ${colors.coolGrey300};
-  }
-
-  &:hover {
-    svg {
-      fill: ${colors.teal200};
-    }
-  }
-`;
+import { ItemMenu, StyledBox, StyleIconBox } from './styles';
 
 export const SupportMenu = () => {
   const { formatMessage } = useIntl();
