@@ -17,5 +17,13 @@ module IdClaveUnica
     def self.feature_description
       'Allow users to authenticate and verify with a ClaveUnica account.'
     end
+
+    def self.allowed_by_default
+      false
+    end
+
+    def self.enabled_by_default
+      false
+    end
   end
 end
