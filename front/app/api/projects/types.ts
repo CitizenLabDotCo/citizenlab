@@ -18,7 +18,7 @@ import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Locale } from '@citizenlab/cl2-component-library';
 import { IAreaData } from 'api/areas/types';
 import { IAppConfiguration } from 'api/app_configuration/types';
-import { VotingMethodType } from 'utils/votingMethodUtils';
+import { VotingMethodType } from 'containers/Admin/projects/project/participationContext/utils/votingMethodUtils';
 
 // Keys
 export type ProjectsKeys = Keys<typeof projectsKeys>;

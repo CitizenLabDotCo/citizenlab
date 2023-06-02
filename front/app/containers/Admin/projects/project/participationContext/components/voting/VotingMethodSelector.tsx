@@ -15,7 +15,7 @@ import {
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 // types
-import { VotingMethodType } from 'utils/votingMethodUtils';
+import { VotingMethodType } from 'containers/Admin/projects/project/participationContext/utils/votingMethodUtils';
 
 type VotingMethodSelectorProps = {
   voting_method?: VotingMethodType | null;

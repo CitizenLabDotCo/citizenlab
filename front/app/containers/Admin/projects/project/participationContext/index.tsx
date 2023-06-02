@@ -5,7 +5,7 @@ import { isEqual } from 'lodash-es';
 
 // components
 import { ParticipationMethodPicker } from './components/ParticipationMethodPicker';
-import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInputs';
+import VotingInputs from './components/VotingInputs';
 import PollInputs from './components/PollInputs';
 import SurveyInputs from './components/SurveyInputs';
 import { Container, StyledSection } from './components/styling';
@@ -44,7 +44,7 @@ import { IOption } from '@citizenlab/cl2-component-library';
 import getOutput from './utils/getOutput';
 import validate from './utils/validate';
 import { anyIsDefined } from 'utils/helperUtils';
-import { VotingMethodType } from 'utils/votingMethodUtils';
+import { VotingMethodType } from 'containers/Admin/projects/project/participationContext/utils/votingMethodUtils';
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
@@ -464,7 +464,7 @@ class ParticipationContext extends PureComponent<
             />
 
             {participation_method === 'budgeting' && (
-              <ParticipatoryBudgetingInputs
+              <VotingInputs
                 isCustomInputTermEnabled={isCustomInputTermEnabled}
                 input_term={input_term}
                 handleInputTermChange={this.handleInputTermChange}
