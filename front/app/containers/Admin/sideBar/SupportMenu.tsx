@@ -9,8 +9,22 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
+import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { ItemMenu, StyledBox } from './styles';
+
+const StyleIconBox = styled(Box)`
+  cursor: pointer;
+  svg {
+    fill: ${colors.coolGrey300};
+  }
+
+  &:hover {
+    svg {
+      fill: ${colors.teal200};
+    }
+  }
+`;
 
 export const SupportMenu = () => {
   const { formatMessage } = useIntl();
@@ -59,29 +73,34 @@ export const SupportMenu = () => {
           buttonStyle="text"
           openLinkInNewTab
         >
-          <Box display="flex" justifyContent="space-between" width="100%">
+          <StyleIconBox
+            display="flex"
+            justifyContent="space-between"
+            width="100%"
+          >
             {formatMessage({ ...messages.knowledgeBase })}
-            <Icon name="sidebar-guide" />
-          </Box>
+            <Icon name="book" />
+          </StyleIconBox>
         </ItemMenu>
         <ItemMenu
           linkTo={formatMessage(messages.linkToAcademy)}
           buttonStyle="text"
           openLinkInNewTab
         >
-          <Box display="flex" justifyContent="space-between" w="100%">
+          <StyleIconBox display="flex" justifyContent="space-between" w="100%">
             {formatMessage({ ...messages.academy })}
-            <Icon name="sidebar-academy" />
-          </Box>
+            <Icon name="academy" />
+          </StyleIconBox>
         </ItemMenu>
         <ItemMenu
           linkTo={formatMessage(messages.linkToCommunityPlatform)}
           buttonStyle="text"
           openLinkInNewTab
         >
-          <Box display="flex" justifyContent="space-between" w="100%">
+          <StyleIconBox display="flex" justifyContent="space-between" w="100%">
             {formatMessage({ ...messages.communityPlatform })}
-          </Box>
+            <Icon name="community" />
+          </StyleIconBox>
         </ItemMenu>
       </Box>
     </Popup>
