@@ -7,7 +7,6 @@ import messages from './messages';
 import { TAuthUser } from 'hooks/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // components
 import {
@@ -29,6 +28,7 @@ import Input from 'components/HookForm/Input';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import useUpdateUser from 'api/users/useUpdateUser';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type UpdateEmailFormProps = {
   updateSuccessful: boolean;
@@ -46,9 +46,9 @@ const UpdateEmailForm = ({
   user,
 }: UpdateEmailFormProps) => {
   const { formatMessage } = useIntl();
-  const { data: appConfiguration } = useAppConfiguration();
   const { mutateAsync: updateUser } = useUpdateUser();
   const [error, setError] = useState<'taken' | undefined>(undefined);
+  const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
 
   if (isNilOrError(user)) {
     return null;
@@ -57,7 +57,7 @@ const UpdateEmailForm = ({
   const onFormSubmit = async (formValues: FormValues) => {
     try {
       // If confirmation required, launch modal
-      if (appConfiguration?.data?.attributes.settings.user_confirmation) {
+      if (userConfirmationEnabled) {
         resendEmailConfirmationCode(formValues.email)
           .then(() => {
             setOpenConfirmationModal(true);
