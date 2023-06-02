@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { authUserStream } from 'services/auth';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 export type TAuthUser = IUserData | undefined | null | Error;
 

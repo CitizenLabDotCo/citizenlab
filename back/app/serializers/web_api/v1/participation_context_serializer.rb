@@ -21,6 +21,7 @@ module WebApi::V1::ParticipationContextSerializer
       attribute :downvoting_enabled
       attribute :downvoting_method
       attribute :downvoting_limited_max
+      attribute :allow_anonymous_participation
       attribute :presentation_mode
       attribute :min_budget
       attribute :max_budget

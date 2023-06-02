@@ -19,7 +19,7 @@ describe PhasePolicy do
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.not_to permit(:survey_results) }
-      it { is_expected.not_to permit(:submission_count) }
+      it { is_expected.to     permit(:submission_count) }
       it { is_expected.not_to permit(:index_xlsx) }
       it { is_expected.not_to permit(:delete_inputs) }
 
@@ -36,7 +36,7 @@ describe PhasePolicy do
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.not_to permit(:survey_results) }
-      it { is_expected.not_to permit(:submission_count) }
+      it { is_expected.to     permit(:submission_count) }
       it { is_expected.not_to permit(:index_xlsx) }
       it { is_expected.not_to permit(:delete_inputs) }
 
@@ -125,7 +125,7 @@ describe PhasePolicy do
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
     it { is_expected.not_to permit(:survey_results) }
-    it { is_expected.not_to permit(:submission_count) }
+    it { is_expected.to     permit(:submission_count) }
     it { is_expected.not_to permit(:index_xlsx) }
     it { is_expected.not_to permit(:delete_inputs) }
 

@@ -74,9 +74,11 @@ export type ParticipationMethodConfig = {
   postType: 'defaultInput' | 'nativeSurvey';
   renderCTABar: (props: CTABarProps) => ReactNode | JSX.Element | null;
   postSortingOptions?: PostSortingOptionType[];
+  showInputCount: boolean;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
+  showInputCount: true,
   formEditor: 'simpleFormEditor',
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.inputAndFeedback} />;
@@ -138,6 +140,7 @@ const ideationConfig: ParticipationMethodConfig = {
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
+  showInputCount: true,
   formEditor: 'surveyEditor',
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.createNativeSurvey} />;
@@ -173,6 +176,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
 };
 
 const informationConfig: ParticipationMethodConfig = {
+  showInputCount: false,
   formEditor: null,
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.shareInformation} />;
@@ -192,6 +196,7 @@ const informationConfig: ParticipationMethodConfig = {
 };
 
 const surveyConfig: ParticipationMethodConfig = {
+  showInputCount: false,
   formEditor: null,
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.createSurveyText} />;
@@ -234,6 +239,7 @@ const documentAnnotationConfig: ParticipationMethodConfig = {
 };
 
 const budgetingConfig: ParticipationMethodConfig = {
+  showInputCount: false,
   formEditor: 'simpleFormEditor',
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.conductParticipatoryBudgetingText} />;
@@ -287,6 +293,7 @@ const budgetingConfig: ParticipationMethodConfig = {
 };
 
 const pollConfig: ParticipationMethodConfig = {
+  showInputCount: false,
   formEditor: null,
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.createPoll} />;
@@ -306,6 +313,7 @@ const pollConfig: ParticipationMethodConfig = {
 };
 
 const volunteeringConfig: ParticipationMethodConfig = {
+  showInputCount: false,
   formEditor: null,
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.findVolunteers} />;

@@ -2,7 +2,7 @@
 
 # ExamplesService is responsible for maintaining an adequate and relevant sample
 # of email campaign examples in the database. It's called by the email campaigns
-# send pipeline on every email. It decided whether the email's html is worth
+# send pipeline on every email. It decides whether the email's html is worth
 # storing, and if so stores it and cleans up less relevant examples.
 module EmailCampaigns
   class ExamplesService
@@ -13,30 +13,24 @@ module EmailCampaigns
       campaigns = campaigns_with_command.map { |(_command, campaign)| campaign }.uniq
 
       campaigns.each do |campaign|
-        recent_examples_n = Example
-          .where(campaign: campaign)
-          .where('created_at > ?', RECENCY_THRESHOLD.ago)
-          .count
+        base_scope = Example.where(campaign: campaign)
+        recent_examples_n = base_scope.where('created_at > ?', RECENCY_THRESHOLD.ago).count
         n_lacking = EXAMPLES_PER_CAMPAIGN - recent_examples_n
 
-        next if n_lacking == 0
+        if n_lacking.positive?
+          new_campaign_commands =
+            filter_n_campaigns_with_command_for_campaign(campaigns_with_command, campaign, n_lacking)
 
-        total_examples = Example.where(campaign: campaign).count
-
-        new_campaign_commands =
-          filter_n_campaigns_with_command_for_campaign(campaigns_with_command, campaign, n_lacking)
-
-        Example
-          .where(campaign: campaign)
-          .order(created_at: :asc)
-          .limit([new_campaign_commands.size, n_lacking].min + [0, (total_examples - EXAMPLES_PER_CAMPAIGN)].max)
-          .destroy_all
-
-        next if n_lacking < 0
-
-        new_campaign_commands.each do |(command, camp)|
-          save_example(command, camp)
+          new_campaign_commands.each do |(command, camp)|
+            save_example(command, camp)
+          end
         end
+
+        valid_examples = base_scope
+          .order(created_at: :desc)
+          .limit(EXAMPLES_PER_CAMPAIGN)
+
+        base_scope.where.not(id: valid_examples).destroy_all
       end
     end
 

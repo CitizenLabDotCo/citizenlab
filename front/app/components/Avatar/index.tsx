@@ -4,20 +4,21 @@
  */
 
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Link from 'utils/cl-router/Link';
 
 // hooks
-import useUser from 'hooks/useUser';
+import useUserById from 'api/users/useUserById';
 
 // styles
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { lighten } from 'polished';
 import { colors } from 'utils/styleUtils';
+import BoringAvatar from 'boring-avatars';
+import { isNilOrError } from 'utils/helperUtils';
 
 export const Container = styled.div<{ size: number }>`
   flex: 0 0 ${({ size }) => size}px;
@@ -118,32 +119,48 @@ export interface Props {
   addVerificationBadge?: boolean | null;
   padding?: number;
   hideIfNoAvatar?: boolean;
+  authorHash?: string;
 }
 
-const Avatar = memo(({ isLinkToProfile, userId, ...props }: Props) => {
-  const user = useUser({ userId });
-  if (isNilOrError(user)) return null;
-
-  const { slug } = user.attributes;
-  const profileLink = `/profile/${slug}`;
-  const hasValidProfileLink = profileLink !== '/profile/undefined';
-
-  if (isLinkToProfile && hasValidProfileLink) {
-    return (
-      <Link to={profileLink}>
+const Avatar = memo(
+  ({ isLinkToProfile, userId, authorHash, ...props }: Props) => {
+    const { data: user } = useUserById(userId);
+    if (isNilOrError(user)) {
+      return (
         <AvatarInner
           userId={userId}
           isLinkToProfile={isLinkToProfile}
+          authorHash={authorHash}
           {...props}
         />
-      </Link>
+      );
+    }
+
+    const slug = user?.data.attributes.slug;
+    const profileLink = `/profile/${slug}`;
+    const hasValidProfileLink = profileLink !== '/profile/undefined';
+
+    if (isLinkToProfile && hasValidProfileLink) {
+      return (
+        <Link to={profileLink}>
+          <AvatarInner
+            userId={userId}
+            isLinkToProfile={isLinkToProfile}
+            {...props}
+          />
+        </Link>
+      );
+    }
+
+    return (
+      <AvatarInner
+        userId={userId}
+        isLinkToProfile={isLinkToProfile}
+        {...props}
+      />
     );
   }
-
-  return (
-    <AvatarInner userId={userId} isLinkToProfile={isLinkToProfile} {...props} />
-  );
-});
+);
 
 const AvatarInner = ({
   isLinkToProfile,
@@ -152,22 +169,16 @@ const AvatarInner = ({
   addVerificationBadge,
   userId,
   hideIfNoAvatar,
+  authorHash,
   ...props
 }: Props) => {
-  const user = useUser({ userId });
-  if (isNilOrError(user)) return null;
+  const { data: user } = useUserById(userId);
+  const theme = useTheme();
 
-  const { slug, avatar, verified } = user.attributes;
-  const profileLink = `/profile/${slug}`;
-  // In dev mode, slug is sometimes undefined,
-  // while !isNilOrError(user) passes... To be solved properly
-  const hasValidProfileLink = profileLink !== '/profile/undefined';
   const avatarSize = props.size;
   const paddingValue = props.padding || 3;
   const borderThickness = props.borderThickness || 1;
-  const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
   const imageSizeLabel = avatarSize > 160 ? 'large' : 'medium';
-  const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
   const containerSize = avatarSize + paddingValue * 2 + borderThickness * 2;
   const badgeSize = avatarSize / (avatarSize < 40 ? 1.8 : 2.3);
   const fillColor = props.fillColor || lighten(0.2, colors.textSecondary);
@@ -175,6 +186,39 @@ const AvatarInner = ({
   const borderHoverColor = colors.textSecondary;
   const borderColor = props.borderColor || 'transparent';
   const bgColor = props.bgColor || 'transparent';
+
+  if (isNilOrError(user)) {
+    if (authorHash === null) {
+      return null;
+    } else {
+      return (
+        <Container aria-hidden className={className} size={containerSize}>
+          <Box padding={paddingValue.toString()}>
+            <BoringAvatar
+              size={avatarSize}
+              name={authorHash}
+              variant="bauhaus"
+              colors={[
+                theme.colors.tenantPrimary,
+                theme.colors.tenantSecondary,
+                colors.grey300,
+                lighten(0.3, theme.colors.tenantPrimary),
+                lighten(0.3, theme.colors.tenantSecondary),
+              ]}
+            />
+          </Box>
+        </Container>
+      );
+    }
+  }
+
+  // In dev mode, slug is sometimes undefined,
+  // while !isNilOrError(user) passes... To be solved properly
+  const { slug, avatar, verified } = user.data.attributes;
+  const profileLink = `/profile/${slug}`;
+  const hasValidProfileLink = profileLink !== '/profile/undefined';
+  const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
+  const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
 
   return (
     <Container aria-hidden className={className} size={containerSize}>

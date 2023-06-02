@@ -207,6 +207,7 @@ sv:
       status: 'Status'
       assignee_fullname: 'Tilldelad person'
       assignee_email: 'Mottagarens e-postadress'
+    anonymous: 'Anonymt'
   form_builder:
     default_select_field:
       title: 'Din fråga'

@@ -12,6 +12,8 @@ module MultiTenancy
           location_point_geojson
           publication_status
           title_multiloc
+          author_hash
+          anonymous
         ]
 
         attribute(:published_at) { |initiative| serialize_timestamp(initiative.published_at) }

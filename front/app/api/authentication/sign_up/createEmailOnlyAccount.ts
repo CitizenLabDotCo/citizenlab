@@ -3,7 +3,7 @@ import { Locale } from 'typings';
 import streams from 'utils/streams';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import fetcher from 'utils/cl-react-query/fetcher';
-import { IUser } from 'services/users';
+import { IUser } from 'api/users/types';
 import { CreateEmailOnlyAccountProperties } from './types';
 
 const triggerCreateEmailOnlyAccount = (

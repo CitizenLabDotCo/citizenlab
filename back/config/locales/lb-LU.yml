@@ -207,6 +207,7 @@ lb:
       status: 'Status'
       assignee_fullname: 'Mandataire'
       assignee_email: 'E-Mail vum Beoptragten'
+    anonymous: 'Anonym'
   form_builder:
     default_select_field:
       title: 'Är Fro'

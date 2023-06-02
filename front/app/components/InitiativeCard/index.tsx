@@ -26,7 +26,7 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useUser from 'hooks/useUser';
+import useUserById from 'api/users/useUserById';
 import useInitiativeImage from 'api/initiative_images/useInitiativeImage';
 
 const StyledAuthor = styled(Author)`
@@ -78,7 +78,7 @@ const InitiativeCard = ({
 }: Props & InjectedLocalized) => {
   const { data: initiative } = useInitiativeById(initiativeId);
   const authorId = get(initiative, 'data.relationships.author.data.id');
-  const initiativeAuthor = useUser({ userId: authorId });
+  const { data: initiativeAuthor } = useUserById(authorId);
   const initiativeImageId = get(
     initiative,
     'data.relationships.initiative_images.data[0].id'
@@ -88,7 +88,7 @@ const InitiativeCard = ({
     initiativeImageId
   );
 
-  if (!initiative || isNilOrError(initiativeAuthor)) return null;
+  if (!initiative) return null;
 
   const onCardClick = (event: FormEvent) => {
     event.preventDefault();
@@ -103,9 +103,7 @@ const InitiativeCard = ({
   };
 
   const initiativeTitle = localize(initiative.data.attributes.title_multiloc);
-  const initiativeAuthorId = !isNilOrError(initiativeAuthor)
-    ? initiativeAuthor.id
-    : null;
+  const initiativeAuthorId = initiativeAuthor ? initiativeAuthor.data.id : null;
   const initiativeImageUrl: string | null = get(
     initiativeImage,
     'data.attributes.versions.medium',
@@ -120,7 +118,6 @@ const InitiativeCard = ({
   ]
     .filter((item) => isString(item) && item !== '')
     .join(' ');
-
   return (
     <Card
       className={cardClassNames}
@@ -133,6 +130,7 @@ const InitiativeCard = ({
           authorId={initiativeAuthorId}
           createdAt={initiative.data.attributes.published_at}
           size={34}
+          anonymous={initiative.data.attributes.anonymous}
         />
       }
       footer={

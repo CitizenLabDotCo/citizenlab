@@ -1,4 +1,4 @@
-import { IUser } from 'services/users';
+import { IUser } from 'api/users/types';
 import { isNilOrError } from 'utils/helperUtils';
 
 export interface IProjectModeratorRole {

@@ -25,4 +25,12 @@ module SideFxHelper
     class_name, id = r.split('/')
     [class_name.constantize, id]
   end
+
+  def user_for_activity_on_anonymizable_item(item, user)
+    item.anonymous? ? nil : user
+  end
+
+  def remove_user_from_past_activities_with_item(item, user)
+    user.activities.where(item: item).update_all(user_id: nil)
+  end
 end

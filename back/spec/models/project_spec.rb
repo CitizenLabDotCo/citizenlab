@@ -150,4 +150,11 @@ RSpec.describe Project do
       create(:continuous_project)
     end
   end
+
+  describe 'allowed_input_topics' do
+    it 'cannot have duplicate topics' do
+      project = create(:project_with_allowed_input_topics)
+      expect(project.projects_allowed_input_topics.create(topic: project.allowed_input_topics.first)).not_to be_valid
+    end
+  end
 end

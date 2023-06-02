@@ -13,22 +13,28 @@ import moment from 'moment';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useEvents from 'api/events/useEvents';
+import useAuthUser from 'hooks/useAuthUser';
+import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
+import usePhasesPermissions from 'api/phase_permissions/usePhasesPermissions';
+import useProjectPermissions from 'api/project_permissions/useProjectPermissions';
+import { isAdmin } from 'services/permissions/roles';
 
 // services
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
 import ProjectSharingModal from '../ProjectSharingModal';
 import ProjectActionButtons from '../ProjectActionButtons';
+import { Box, Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { scrollToElement } from 'utils/scroll';
+import { hasEmbeddedSurvey, hasSurveyWithAnyonePermissions } from '../utils';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 import { getInputTermMessage } from 'utils/i18n';
 import FormattedBudget from 'utils/currency/FormattedBudget';
@@ -125,12 +131,22 @@ interface Props {
 const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
+  const { data: projectPermissions } = useProjectPermissions({ projectId });
+  const phasesPermissions = usePhasesPermissions(
+    phases?.data.map((phase) => phase.id)
+  );
   const { data: events } = useEvents({
     projectIds: [projectId],
     sort: '-start_at',
   });
+  const authUser = useAuthUser();
+  const { formatMessage } = useIntl();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const [shareModalOpened, setShareModalOpened] = useState(false);
+  const surveySubmissionCount = useFormSubmissionCount({ projectId });
+  const isAdminUser = !isNilOrError(authUser)
+    ? isAdmin({ data: authUser })
+    : false;
 
   useEffect(() => {
     setCurrentPhase(
@@ -229,6 +245,24 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     {...messages.xParticipants}
                     values={{ participantsCount: projectParticipantsCount }}
                   />
+                  {
+                    <Box mb="4px" ml="4px">
+                      {hasSurveyWithAnyonePermissions(
+                        projectPermissions,
+                        phasesPermissions
+                      ) &&
+                        isAdminUser && (
+                          <IconTooltip
+                            placement="top-start"
+                            maxTooltipWidth={200}
+                            iconColor={colors.coolGrey300}
+                            content={formatMessage(
+                              messages.participantsTooltip
+                            )}
+                          />
+                        )}
+                    </Box>
+                  }
                 </ListItem>
               )}
             {projectType === 'timeline' && phases && phases.data.length > 1 && (
@@ -317,6 +351,33 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     <FormattedMessage {...messages.nothingPosted} />
                   )}
                 </ListItem>
+              )}
+            {((projectType === 'continuous' &&
+              projectParticipationMethod === 'native_survey') ||
+              currentPhase?.attributes.participation_method ===
+                'native_survey') &&
+              surveySubmissionCount && (
+                <Box>
+                  <ListItem>
+                    <ListItemIcon ariaHidden name="chart-bar" />
+                    {!isNilOrError(surveySubmissionCount) &&
+                      surveySubmissionCount.totalSubmissions}
+                    <Box ml="4px">
+                      <FormattedMessage {...messages.surveySubmissions} />
+                    </Box>
+                    {hasEmbeddedSurvey(project.data, phases?.data) && (
+                      <Box mb="4px" ml="4px">
+                        <IconTooltip
+                          placement="top-start"
+                          iconColor={colors.coolGrey300}
+                          content={formatMessage(
+                            messages.surveySubmissionsTooltip
+                          )}
+                        />
+                      </Box>
+                    )}
+                  </ListItem>
+                </Box>
               )}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'budgeting') ||

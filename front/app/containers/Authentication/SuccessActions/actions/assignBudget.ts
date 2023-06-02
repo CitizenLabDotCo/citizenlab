@@ -10,7 +10,7 @@ import { isNil, capitalizeParticipationContextType } from 'utils/helperUtils';
 import streams from 'utils/streams';
 
 // typings
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 import { IParticipationContextType } from 'typings';
 
 export interface AssignBudgetParams {

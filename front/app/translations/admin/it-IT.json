@@ -1132,7 +1132,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimo",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Richiedi ai partecipanti di soddisfare un budget minimo per presentare il loro cestino (inserisci '0' se non vuoi impostare un minimo).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visit our Help Center",
-  "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Activity",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "More details",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink": "https://support.citizenlab.co/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.newProject": "New Project",

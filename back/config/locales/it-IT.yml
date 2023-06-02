@@ -207,6 +207,7 @@ it:
       status: 'Stato'
       assignee_fullname: 'Assegnatario'
       assignee_email: 'Email del destinatario'
+    anonymous: 'Anonimo'
   form_builder:
     default_select_field:
       title: 'La vostra domanda'

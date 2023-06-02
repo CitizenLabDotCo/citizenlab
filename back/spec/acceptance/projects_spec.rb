@@ -126,8 +126,10 @@ resource 'Projects' do
     get 'web_api/v1/projects/:id' do
       let(:id) { @projects.first.id }
 
-      example_request 'Get one project by id' do
-        expect(status).to eq 200
+      example 'Get one project by id' do
+        PermissionsService.new.update_all_permissions
+        do_request
+        assert_status 200
 
         expect(json_response.dig(:data, :id)).to eq @projects.first.id
         expect(json_response.dig(:data, :type)).to eq 'project'
@@ -159,6 +161,9 @@ resource 'Projects' do
           areas: { data: [] },
           user_basket: { data: nil }
         )
+        expect(json_response.dig(:data, :relationships, :permissions, :data).size)
+          .to eq Permission.available_actions(@projects.first).length
+        expect(json_response[:included].pluck(:type)).to include 'admin_publication', 'permission'
       end
 
       example 'Get a project with a basket', document: false do
@@ -228,6 +233,7 @@ resource 'Projects' do
         parameter :downvoting_enabled, 'Only for continuous projects. Can citizens downvote in this project? Defaults to true', required: false
         parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
         parameter :downvoting_limited_max, 'Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :allow_anonymous_participation, 'Only for continuous ideation and budgeting projects. Allow users to post inputs and comments anonymously. Default to false.', required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
         parameter :document_annotation_embed_url, 'The URL of the document_annotation external API, if participation_method is set to document_annotation', required: false
@@ -332,6 +338,7 @@ resource 'Projects' do
         let(:upvoting_method) { project.upvoting_method }
         let(:upvoting_limited_max) { project.upvoting_limited_max }
         let(:ideas_order) { 'new' }
+        let(:allow_anonymous_participation) { true }
 
         example_request 'Create a continuous project' do
           assert_status 201
@@ -361,6 +368,7 @@ resource 'Projects' do
           expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
           expect(json_response.dig(:data, :attributes, :input_term)).to be_present
           expect(json_response.dig(:data, :attributes, :input_term)).to eq 'idea'
+          expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
         end
 
         context 'when not admin' do
@@ -497,6 +505,7 @@ resource 'Projects' do
         parameter :downvoting_enabled, 'Only for continuous projects. Can citizens downvote in this project?', required: false
         parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}.", required: false
         parameter :downvoting_limited_max, 'Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project.', required: false
+        parameter :allow_anonymous_participation, 'Only for continuous ideation and budgeting projects. Allow users to post inputs and comments anonymously.', required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
         parameter :document_annotation_embed_url, 'The URL to link with the external provider, if participation_method is set to document_annotation', required: false
@@ -1316,6 +1325,7 @@ resource 'Projects' do
         parameter :downvoting_enabled, 'Only for continuous projects. Can citizens downvote in this project? Defaults to true', required: false
         parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
         parameter :downvoting_limited_max, 'Only for continuous projects with limited voting. Number of downvotes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :allow_anonymous_participation, 'Only for continuous ideation and budgeting projects. Allow users to post inputs and comments anonymously. Default to false.', required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
         parameter :document_annotation_embed_url, 'The URL of the document_annotation external API, if participation_method is set to document_annotation', required: false

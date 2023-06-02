@@ -4,7 +4,7 @@ import React from 'react';
 import { IInviteData, deleteInvite } from 'services/invites';
 
 // hooks
-import useUser from 'hooks/useUser';
+import useUserById from 'api/users/useUserById';
 
 // components
 import { Button as SemanticButton, Popup } from 'semantic-ui-react';
@@ -18,23 +18,20 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedDate } from 'react-intl';
 import messages from '../messages';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 interface InputProps {
   invite: IInviteData;
 }
 
 const TableRow = (inputProps: InputProps) => {
   const userId = inputProps.invite.relationships.invitee.data.id;
-  const user = useUser({ userId });
+  const { data: user } = useUserById(userId);
 
   const handleOnDeleteInvite = () => {
     const inviteId = inputProps.invite.id;
     deleteInvite(inviteId);
   };
 
-  if (isNilOrError(user)) return null;
+  if (!user) return null;
 
   return (
     // To test invitation flow, we need the token, hence this className
@@ -42,17 +39,17 @@ const TableRow = (inputProps: InputProps) => {
       key={inputProps.invite.id}
       className={inputProps.invite.attributes.token}
     >
-      <Td>{user.attributes.email}</Td>
+      <Td>{user.data.attributes.email}</Td>
       <Td>
         <span>
-          {user.attributes.first_name} {user.attributes.last_name}
+          {user.data.attributes.first_name} {user.data.attributes.last_name}
         </span>
       </Td>
       <Td>
         <FormattedDate value={inputProps.invite.attributes.created_at} />
       </Td>
       <Td style={{ textAlign: 'center' }}>
-        {user.attributes.invite_status === 'pending' ? (
+        {user.data.attributes.invite_status === 'pending' ? (
           <Badge>
             <FormattedMessage {...messages.inviteStatusPending} />
           </Badge>

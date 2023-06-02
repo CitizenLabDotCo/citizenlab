@@ -46,6 +46,7 @@ export interface IPhaseAttributes {
   upvoting_method: VotingMethod;
   upvoting_limited_max: number;
   downvoting_method: VotingMethod;
+  allow_anonymous_participation: boolean;
   downvoting_enabled: boolean;
   downvoting_limited_max: number;
   presentation_mode: PresentationMode;

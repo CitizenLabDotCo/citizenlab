@@ -52,7 +52,7 @@ module XlsxExport
     end
 
     def author_name_report_field
-      ComputedFieldForReport.new(column_header_for('author_fullname'), ->(input) { input.author_name })
+      ComputedFieldForReport.new(column_header_for('author_fullname'), ->(input) { format_author_name input })
     end
 
     def author_email_report_field
@@ -207,6 +207,12 @@ module XlsxExport
 
     def column_header_for(translation_key)
       I18n.t translation_key, scope: 'xlsx_export.column_headers'
+    end
+
+    def format_author_name(input)
+      return input.author_name unless input.anonymous?
+
+      I18n.t 'xlsx_export.anonymous'
     end
   end
 end

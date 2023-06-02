@@ -17,7 +17,7 @@ import useExceedsSeats from 'hooks/useExceedsSeats';
 // Utils
 import { isRegularUser, isAdmin } from 'services/permissions/roles';
 
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';
 
 const getInfoText = (

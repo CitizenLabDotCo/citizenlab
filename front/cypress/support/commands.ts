@@ -1,7 +1,7 @@
 import 'cypress-file-upload';
 import './dnd';
 import { ParticipationMethod } from '../../app/services/participationContexts';
-import { IUserUpdate } from '../../app/services/users';
+import { IUserUpdate } from '../../app/api/users/types';
 import jwtDecode from 'jwt-decode';
 
 declare global {
@@ -508,7 +508,8 @@ export function apiCreateIdea(
   locationGeoJSON?: { type: string; coordinates: number[] },
   locationDescription?: string,
   jwt?: string,
-  budget?: number
+  budget?: number,
+  anonymous?: boolean
 ) {
   let headers: { 'Content-Type': string; Authorization: string } | null = null;
 
@@ -544,6 +545,7 @@ export function apiCreateIdea(
           location_point_geojson: locationGeoJSON,
           location_description: locationDescription,
           budget,
+          anonymous,
         },
       },
     });
@@ -822,6 +824,7 @@ export function apiCreateProject({
   surveyService,
   maxBudget,
   postingEnabled,
+  allow_anonymous_participation,
 }: {
   type: 'timeline' | 'continuous';
   title: string;
@@ -834,6 +837,7 @@ export function apiCreateProject({
   maxBudget?: number;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
   postingEnabled?: boolean;
+  allow_anonymous_participation?: boolean;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -874,6 +878,7 @@ export function apiCreateProject({
           survey_service: surveyService,
           max_budget: maxBudget,
           posting_enabled: postingEnabled,
+          allow_anonymous_participation: allow_anonymous_participation,
         },
       },
     });
@@ -1114,7 +1119,8 @@ export function apiCreatePhase(
   description?: string,
   surveyUrl?: string,
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms',
-  maxBudget?: number
+  maxBudget?: number,
+  allow_anonymous_participation?: boolean
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1142,6 +1148,7 @@ export function apiCreatePhase(
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
           max_budget: maxBudget,
+          allow_anonymous_participation: allow_anonymous_participation,
         },
       },
     });

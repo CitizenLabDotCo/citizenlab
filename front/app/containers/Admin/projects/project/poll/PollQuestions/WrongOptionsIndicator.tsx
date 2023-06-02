@@ -1,12 +1,11 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { TextCell } from 'components/admin/ResourceList';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { colors } from 'utils/styleUtils';
-import usePollOptions from 'hooks/usePollOptions';
+import usePollOptions from 'api/poll_options/usePollOptions';
 
 const Indicator = styled(TextCell)`
   display: flex;
@@ -22,17 +21,17 @@ interface Props {
 }
 
 const WrongOptionsIndicator = ({ questionId }: Props) => {
-  const options = usePollOptions(questionId);
+  const { data: options } = usePollOptions(questionId);
 
-  return !isNilOrError(options) ? (
-    options.length === 0 ? (
+  return options ? (
+    options.data.length === 0 ? (
       <Indicator>
         <StyledIconTooltip
           content={<FormattedMessage {...messages.noOptionsTooltip} />}
         />
         <FormattedMessage {...messages.noOptions} />
       </Indicator>
-    ) : options.length === 1 ? (
+    ) : options.data.length === 1 ? (
       <Indicator>
         <StyledIconTooltip
           content={<FormattedMessage {...messages.oneOptionsTooltip} />}

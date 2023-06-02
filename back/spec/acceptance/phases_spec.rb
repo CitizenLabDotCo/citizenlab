@@ -22,9 +22,12 @@ resource 'Phases' do
     end
     let(:project_id) { @project.id }
 
-    example_request 'List all phases of a project' do
+    example 'List all phases of a project' do
+      PermissionsService.new.update_all_permissions
+      do_request
       assert_status 200
       expect(json_response[:data].size).to eq 2
+      expect(json_response[:included].pluck(:type)).to include 'permission'
     end
   end
 
@@ -50,6 +53,8 @@ resource 'Phases' do
 
       expect(json_response.dig(:data, :relationships, :permissions, :data).size)
         .to eq(Permission.available_actions(@phases.first).length)
+
+      expect(json_response[:included].pluck(:type)).to include 'permission'
     end
   end
 
@@ -106,6 +111,7 @@ resource 'Phases' do
         parameter :downvoting_enabled, 'Can citizens downvote in this phase? Defaults to true', required: false
         parameter :downvoting_method, "How does downvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
         parameter :downvoting_limited_max, 'Number of downvotes a citizen can perform in this phase, only if the downvoting_method is limited. Defaults to 10', required: false
+        parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously. Defaults to false', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
@@ -330,6 +336,7 @@ resource 'Phases' do
         parameter :downvoting_enabled, 'Can citizens vote in this phase?', required: false
         parameter :downvoting_method, "How does downvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
         parameter :downvoting_limited_max, 'Number of downvotes a citizen can perform in this phase, only if the downvoting_method is limited', required: false
+        parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously.', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
@@ -354,6 +361,7 @@ resource 'Phases' do
       let(:upvoting_method) { 'limited' }
       let(:upvoting_limited_max) { 6 }
       let(:presentation_mode) { 'map' }
+      let(:allow_anonymous_participation) { true }
 
       example_request 'Update a phase' do
         expect(response_status).to eq 200
@@ -367,6 +375,7 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq upvoting_method
         expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq upvoting_limited_max
         expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
+        expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
       end
 
       describe do

@@ -418,4 +418,16 @@ export default defineMessages({
     id: 'app.containers.Projects.document',
     defaultMessage: 'Document',
   },
+  participantsTooltip: {
+    id: 'app.containers.Projects.participantsTooltip2',
+    defaultMessage: 'This number also reflects anonymous survey submissions.',
+  },
+  surveySubmissionsTooltip: {
+    id: 'app.containers.Projects.surveySubmissionsTooltip3',
+    defaultMessage: 'External survey submissions are not counted.',
+  },
+  surveySubmissions: {
+    id: 'app.containers.Projects.surveySubmissions',
+    defaultMessage: 'survey submissions',
+  },
 });

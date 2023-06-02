@@ -22,6 +22,7 @@ export type HandlePermissionChangeProps = {
   permittedBy?: IPermissionData['attributes']['permitted_by'];
   globalCustomFields?: IPermissionData['attributes']['global_custom_fields'];
   groupIds: string[];
+  phaseId?: string | null;
 };
 
 export const getPermissionActionSectionSubtitle = ({

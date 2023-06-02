@@ -6,7 +6,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import TextButton from '../_components/TextButton';
 import PoliciesMarkup from '../Policies/PoliciesMarkup';
@@ -171,7 +171,7 @@ const EmailAndPasswordSignUp = ({
             </Button>
           </Box>
         </form>
-        <Box mt="24px">
+        <Text mt="24px">
           {anySSOEnabled ? (
             <TextButton onClick={onGoBack} className="link">
               {formatMessage(messages.backToSignUpOptions)}
@@ -181,18 +181,18 @@ const EmailAndPasswordSignUp = ({
               {...messages.goToLogIn}
               values={{
                 goToOtherFlowLink: (
-                  <button
+                  <TextButton
                     id="e2e-goto-signup"
                     onClick={onSwitchFlow}
                     className="link"
                   >
                     {formatMessage(containerMessages.logIn)}
-                  </button>
+                  </TextButton>
                 ),
               }}
             />
           )}
-        </Box>
+        </Text>
       </FormProvider>
     </Box>
   );

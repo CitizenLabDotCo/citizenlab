@@ -74,6 +74,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import useUpdateProject from 'api/projects/useUpdateProject';
+import projectsKeys from 'api/projects/keys';
 
 export const TIMEOUT = 350;
 
@@ -387,6 +388,9 @@ const AdminProjectsProjectGeneral = () => {
         }
         queryClient.invalidateQueries({
           queryKey: projectPermissionKeys.list({ projectId: latestProjectId }),
+        });
+        queryClient.invalidateQueries({
+          queryKey: projectsKeys.item({ slug: project?.data.attributes.slug }),
         });
       } catch (errors) {
         setSubmitState('error');
