@@ -1065,8 +1065,6 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Selecció",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "El projecte es mostrarà als filtres d'àrea seleccionats.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Targetes",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText": "Assigneu un pressupost als projectes i demaneu als participants que seleccionin els seus projectes preferits que s'ajustin al pressupost total.",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Feu un exercici d'assignació pressupostària",
   "app.containers.AdminPage.ProjectEdit.continuous": "Without a timeline",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Creeu un projecte",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Creeu un projecte a partir d'una plantilla",

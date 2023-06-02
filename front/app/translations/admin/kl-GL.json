@@ -1065,8 +1065,6 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Toqqaaneq",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Suliniut suliassaqarfinni toqqakkani immikkoortitani nuissaaq.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Nunap assinga",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText": "Suliniutinut missingersuummik ilanngussigit peqataasullu suliniutit missingersuutip tamakkiisup iluaniittut arlaannik toqqaaqqullugit qinnuigalugit.",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Missingersuutinik agguataarinermik ingerlatsigit",
   "app.containers.AdminPage.ProjectEdit.continuous": "Without a timeline",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Suliniummik pilersitsigit",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Suliniummik skabelonimeersumik pilersitsigit",
