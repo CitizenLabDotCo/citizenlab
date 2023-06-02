@@ -83,8 +83,8 @@ module MultiTenancy
         return if Apartment::Tenant.current == 'public'
 
         MultiTenancy::Seeds::UnsubscriptionTokens.new(runner: self).run
-        MultiTenancy::TenantService.new.finalize_creation(Tenant.current)
         MultiTenancy::Seeds::EmailCampaignExamples.new(runner: self).run
+        MultiTenancy::TenantService.new.finalize_creation(Tenant.current)
       end
 
       # Seeds an empty localhost tenant. It contains only the absolute minimum of records
