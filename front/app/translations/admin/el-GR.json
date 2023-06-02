@@ -1065,8 +1065,6 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Επιλογή",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Το έργο θα εμφανιστεί στο(α) επιλεγμένο(α) φίλτρο(α) περιοχής.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Κάρτες",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText": "Αναθέστε έναν προϋπολογισμό στα έργα και ζητήστε από τους συμμετέχοντες να επιλέξουν τα έργα της προτίμησής τους που εντάσσονται στο πλαίσιο ενός συνολικού προϋπολογισμού.",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Διεξαγωγή άσκησης κατανομής του προϋπολογισμού",
   "app.containers.AdminPage.ProjectEdit.continuous": "Without a timeline",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Δημιουργία έργου",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Δημιουργία έργου από πρότυπο",

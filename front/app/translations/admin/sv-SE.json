@@ -1145,8 +1145,6 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Urval",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Projektet kommer att visas i valda områdesfilter.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Kort",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText": "Tilldela en budget till projekt och be deltagare att välja sina önskade projekt som ryms inom en totalbudget.",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Genomför en övning för budgettilldelning",
   "app.containers.AdminPage.ProjectEdit.continuous": "Utan tidslinje",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Skapa ett projekt",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Skapa ett projekt från en mall",

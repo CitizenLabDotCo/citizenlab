@@ -1145,8 +1145,6 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Избор",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Пројекат ће се приказати на одабраним филтерима подручја.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Картице",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText": "Додијелите буџет пројектима и замолите учеснике да одаберу своје жељене пројекте који се уклапају у укупни буџет.",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Спроведите вежбу расподеле буџета",
   "app.containers.AdminPage.ProjectEdit.continuous": "Без временске линије",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Креирајте пројекат",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Креирајте пројекат из шаблона",

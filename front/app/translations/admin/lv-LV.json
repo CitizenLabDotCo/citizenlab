@@ -1145,8 +1145,6 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Atlase",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Projekts būs redzams izvēlētajā(-os) zonas(-u) filtrā(-os).",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Kartes",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText": "Piešķirt projektiem budžetu un aicināt dalībniekus atlasīt vēlamos projektus, kas iekļaujas kopējā budžetā.",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Veikt budžeta sadali",
   "app.containers.AdminPage.ProjectEdit.continuous": "Bez laika grafika",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Izveidot projektu",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Izveidot projektu no veidnes",

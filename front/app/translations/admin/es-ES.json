@@ -1145,8 +1145,6 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Selección",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "El proyecto se mostrará en el(los) filtro(s) de área seleccionado(s).",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "En una lista",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText": "Asignar un presupuesto a los proyectos y pedir a los participantes que seleccionen sus proyectos preferidos que sean parte de un presupuesto total.",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Realizar un ejercicio de asignación presupuestaria",
   "app.containers.AdminPage.ProjectEdit.continuous": "Sin una línea de tiempo",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Crear un proyecto",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Crear un proyecto a partir de una plantilla",
