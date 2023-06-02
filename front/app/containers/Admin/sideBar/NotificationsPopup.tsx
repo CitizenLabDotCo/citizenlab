@@ -60,7 +60,7 @@ export const NotificationsPopup = () => {
                   </Box>
                 </Box>
               )}
-              <Icon name="notification" fill={colors.green400} />
+              <Icon name="notification-outline" fill={colors.blue400} />
             </Box>
 
             <Box display="flex" flex="1" flexDirection="column" opacity={0.7}>

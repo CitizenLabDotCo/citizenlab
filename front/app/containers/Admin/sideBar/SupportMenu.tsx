@@ -34,7 +34,7 @@ export const SupportMenu = () => {
               alignItems="center"
               justifyContent="center"
             >
-              <Icon name="question-circle" fill={colors.green400} />
+              <Icon name="help" fill={colors.green400} />
             </Box>
             <Box display="flex" flex="1" flexDirection="column" opacity={0.7}>
               <Text color="white" ml="10px" fontSize="base" textAlign="left">
