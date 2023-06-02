@@ -28,6 +28,24 @@ const disabledMessages: {
   not_document_annotation: messages.documentAnnotationDisabledNotActivePhase,
 };
 
+const isEnabled = (disabledReason: DocumentAnnotationDisabledReason | null) => {
+  const reasonsToHideDocument: DocumentAnnotationDisabledReason[] = [
+    'project_inactive',
+    'not_in_group',
+    'not_permitted',
+    'not_document_annotation',
+  ];
+
+  if (
+    disabledReason !== null &&
+    reasonsToHideDocument.includes(disabledReason)
+  ) {
+    return false;
+  }
+
+  return true;
+};
+
 const DocumentAnnotation = ({ project, phaseId, documentUrl }: Props) => {
   const { enabled: _enabled, disabled_reason } =
     project.attributes.action_descriptor.annotating_document;
@@ -41,7 +59,7 @@ const DocumentAnnotation = ({ project, phaseId, documentUrl }: Props) => {
         // We want to always show the document.
         // Konveio itself show a popup requesting
         // a sign up/in before commenting is possible.
-        enabled={true}
+        enabled={isEnabled(disabled_reason)}
         phaseId={phaseId}
         disabledMessage={
           disabled_reason ? disabledMessages[disabled_reason] : null
