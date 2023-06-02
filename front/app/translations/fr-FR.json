@@ -132,7 +132,7 @@
   "app.components.HookForm.Feedback.errorTitle": "Il y a un problème",
   "app.components.HookForm.Feedback.submissionError": "Essayez à nouveau. Si le problème persiste, contactez-nous",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Il y a eu un problème de notre côté, désolé",
-  "app.components.HookForm.Feedback.successMessage": "Formulaire soumis avec succès",
+  "app.components.HookForm.Feedback.successMessage": "Modifications sauvegardées avec succès",
   "app.components.IdeaCards.showMore": "Afficher plus d'idées",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Cachez la carte des idées.",
   "app.components.IdeasMap.a11y_mapTitle": "Aperçu cartographique",
