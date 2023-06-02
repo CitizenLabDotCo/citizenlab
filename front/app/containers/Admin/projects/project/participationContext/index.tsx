@@ -9,6 +9,8 @@ import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInp
 import PollInputs from './components/PollInputs';
 import SurveyInputs from './components/SurveyInputs';
 import { Container, StyledSection } from './components/styling';
+import NativeSurveyInputs from './components/NativeSurveyInputs';
+import IdeationInputs from './components/IdeationInputs';
 
 // services
 import { IProject } from 'api/projects/types';
@@ -42,7 +44,6 @@ import { IOption } from '@citizenlab/cl2-component-library';
 import getOutput from './utils/getOutput';
 import validate from './utils/validate';
 import { anyIsDefined } from 'utils/helperUtils';
-import IdeationInputs from './components/IdeationInputs';
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
@@ -52,6 +53,7 @@ export interface IParticipationContextConfig {
   upvoting_method?: 'unlimited' | 'limited' | null;
   upvoting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
+  allow_anonymous_participation?: boolean | null;
   downvoting_method?: 'unlimited' | 'limited' | null;
   downvoting_limited_max?: number | null;
   presentation_mode?: 'map' | 'card' | null;
@@ -115,6 +117,7 @@ class ParticipationContext extends PureComponent<
       upvoting_method: 'unlimited',
       upvoting_limited_max: null,
       downvoting_enabled: true,
+      allow_anonymous_participation: false,
       downvoting_method: 'unlimited',
       downvoting_limited_max: null,
       presentation_mode: 'card',
@@ -151,6 +154,7 @@ class ParticipationContext extends PureComponent<
           upvoting_limited_max: newData.upvoting_limited_max,
           downvoting_limited_max: newData.downvoting_limited_max,
           downvoting_enabled: newData.downvoting_enabled,
+          allow_anonymous_participation: newData.allow_anonymous_participation,
           presentation_mode: newData.presentation_mode,
           min_budget: newData.min_budget,
           max_budget: newData.max_budget,
@@ -216,6 +220,7 @@ class ParticipationContext extends PureComponent<
       voting_enabled: ideation ? true : null,
       upvoting_method: ideation ? 'unlimited' : null,
       downvoting_enabled: ideation ? true : null,
+      allow_anonymous_participation: ideationOrBudgeting ? false : null,
       downvoting_method: ideation ? 'unlimited' : null,
       presentation_mode: ideationOrBudgeting ? 'card' : null,
       survey_embed_url: null,
@@ -266,6 +271,12 @@ class ParticipationContext extends PureComponent<
 
   handleDownvotingEnabledOnChange = (downvoting_enabled: boolean) => {
     this.setState({ downvoting_enabled });
+  };
+
+  handleAllowAnonymousParticipationOnChange = (
+    allow_anonymous_participation: boolean
+  ) => {
+    this.setState({ allow_anonymous_participation });
   };
 
   handleDownvotingMethodOnChange = (
@@ -393,6 +404,7 @@ class ParticipationContext extends PureComponent<
       upvoting_limited_max,
       downvoting_limited_max,
       downvoting_enabled,
+      allow_anonymous_participation,
       min_budget,
       max_budget,
       survey_embed_url,
@@ -445,6 +457,7 @@ class ParticipationContext extends PureComponent<
                 input_term={input_term}
                 handleInputTermChange={this.handleInputTermChange}
                 inputTermOptions={this.getInputTermOptions()}
+                allow_anonymous_participation={allow_anonymous_participation}
                 min_budget={min_budget}
                 max_budget={max_budget}
                 commenting_enabled={commenting_enabled}
@@ -463,6 +476,9 @@ class ParticipationContext extends PureComponent<
                 ideas_order={ideas_order}
                 handleIdeaDefaultSortMethodChange={
                   this.handleIdeaDefaultSortMethodChange
+                }
+                handleAllowAnonymousParticipationOnChange={
+                  this.handleAllowAnonymousParticipationOnChange
                 }
               />
             )}
@@ -487,6 +503,7 @@ class ParticipationContext extends PureComponent<
                   downvoting_enabled={downvoting_enabled}
                   noUpvotingLimitError={noUpvotingLimitError}
                   noDownvotingLimitError={noDownvotingLimitError}
+                  allow_anonymous_participation={allow_anonymous_participation}
                   apiErrors={apiErrors}
                   togglePostingEnabled={this.togglePostingEnabled}
                   toggleCommentingEnabled={this.toggleCommentingEnabled}
@@ -504,6 +521,9 @@ class ParticipationContext extends PureComponent<
                   handleDownvotingEnabledOnChange={
                     this.handleDownvotingEnabledOnChange
                   }
+                  handleAllowAnonymousParticipationOnChange={
+                    this.handleAllowAnonymousParticipationOnChange
+                  }
                   presentation_mode={presentation_mode}
                   handleIdeasDisplayChange={this.handleIdeasDisplayChange}
                   ideas_order={ideas_order}
@@ -520,7 +540,14 @@ class ParticipationContext extends PureComponent<
                 togglePollAnonymous={this.togglePollAnonymous}
               />
             )}
-
+            {participation_method === 'native_survey' && (
+              <NativeSurveyInputs
+                allow_anonymous_participation={allow_anonymous_participation}
+                handleAllowAnonymousParticipationOnChange={
+                  this.handleAllowAnonymousParticipationOnChange
+                }
+              />
+            )}
             {participation_method === 'survey' && (
               <SurveyInputs
                 survey_service={survey_service}

@@ -1,8 +1,5 @@
 // Libraries
-import React, { PureComponent } from 'react';
-
-// Services / Data loading
-import { IPollQuestion, updatePollQuestion } from 'services/pollQuestions';
+import React, { useState } from 'react';
 
 // Components
 import Button from 'components/UI/Button';
@@ -14,12 +11,13 @@ import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 import { IOption } from 'typings';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // Style
 import styled from 'styled-components';
-import { WrappedComponentProps } from 'react-intl';
+import { IPollQuestionData } from 'api/poll_questions/types';
+import useUpdatePollQuestion from 'api/poll_questions/useUpdatePollQuestion';
 
 const FormContainer = styled.div`
   display: flex;
@@ -36,67 +34,40 @@ const StyledInput = styled(Input)`
   margin-left: 5px;
 `;
 
-interface InputProps {
-  question: IPollQuestion;
+interface Props {
+  question: IPollQuestionData;
   onCancelOptionEditing: () => void;
 }
 
-interface DataProps {}
+const QuestionDetailsFormRow = ({ question, onCancelOptionEditing }: Props) => {
+  const { mutate: updatePollQuestion } = useUpdatePollQuestion();
+  const [maxAnswers, setMaxAnswers] = useState(question.attributes.max_options);
+  const [questionType, setQuestionType] = useState(
+    question.attributes.question_type
+  );
+  const { formatMessage } = useIntl();
+  const typeOptions = [
+    {
+      label: formatMessage(messages.singleOption),
+      value: 'single_option',
+    },
+    {
+      label: formatMessage(messages.multipleOption),
+      value: 'multiple_options',
+    },
+  ];
 
-interface Props extends InputProps, DataProps {}
-
-interface State {
-  maxAnswers: number | null;
-  questionType: 'single_option' | 'multiple_options';
-  typeOptions: IOption[];
-}
-
-class QuestionDetailsFormRow extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  typeOptions: IOption[];
-
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      maxAnswers: props.question.attributes.max_options,
-      questionType: props.question.attributes.question_type,
-      typeOptions: [],
-    };
-  }
-
-  componentDidMount() {
-    const { formatMessage } = this.props.intl;
-    this.setState({
-      typeOptions: [
-        {
-          label: formatMessage(messages.singleOption),
-          value: 'single_option',
-        },
-        {
-          label: formatMessage(messages.multipleOption),
-          value: 'multiple_options',
-        },
-      ],
-    });
-  }
-
-  changeMaxAnswers = (maxAnswers: string) => {
-    this.setState({ maxAnswers: Number(maxAnswers) });
+  const changeMaxAnswers = (maxAnswers: string) => {
+    setMaxAnswers(Number(maxAnswers));
   };
 
-  changeQuestionType = (option: IOption) => {
+  const changeQuestionType = (option: IOption) => {
     const newType = option.value;
-    this.setState({
-      questionType: newType,
-      maxAnswers: newType === 'single_option' ? null : 2,
-    });
+    setQuestionType(newType);
+    setMaxAnswers(newType === 'single_option' ? null : 2);
   };
 
-  validate = () => {
-    const { question } = this.props;
-    const { questionType, maxAnswers } = this.state;
+  const validate = () => {
     const diff = {
       ...(questionType !== question.attributes.question_type
         ? { question_type: questionType }
@@ -116,63 +87,65 @@ class QuestionDetailsFormRow extends PureComponent<
     };
   };
 
-  onSave = () => {
-    const { question } = this.props;
-    const { diff, isValid } = this.validate();
+  const onSave = () => {
+    const { diff, isValid } = validate();
     if (isValid) {
-      updatePollQuestion(question.id, diff);
+      updatePollQuestion({
+        questionId: question.id,
+        ...diff,
+        participationContextId:
+          question.relationships.participation_context.data.id,
+        participationContextType:
+          question.relationships.participation_context.data.type,
+      });
     }
   };
 
-  render() {
-    const { question, onCancelOptionEditing } = this.props;
-    const { maxAnswers, questionType, typeOptions } = this.state;
-    const { isValid } = this.validate();
-    return (
-      <Row>
-        <FormContainer>
-          <Box minWidth="200px">
-            <Select
-              options={typeOptions}
-              value={questionType}
-              onChange={this.changeQuestionType}
-            />
-          </Box>
-          {questionType === 'multiple_options' && (
-            <StyledInput
-              type="number"
-              onChange={this.changeMaxAnswers}
-              value={String(maxAnswers)}
-              // A multiple answer question should have at least two answer options
-              min="2"
-            />
-          )}
-        </FormContainer>
-        <FormContainer>
-          <WrongMaxChoiceIndicator
-            questionId={question.id}
-            maxAnswers={maxAnswers}
+  const { isValid } = validate();
+  return (
+    <Row>
+      <FormContainer>
+        <Box minWidth="200px">
+          <Select
+            options={typeOptions}
+            value={questionType}
+            onChange={changeQuestionType}
           />
-          <Button
-            className="e2e-form-question-settings-save"
-            buttonStyle="admin-dark"
-            onClick={this.onSave}
-            disabled={!isValid}
-            mr="8px"
-          >
-            <FormattedMessage {...messages.saveQuestionSettings} />
-          </Button>
-          <Button
-            className="e2e-collapse-option-form"
-            onClick={onCancelOptionEditing}
-            buttonStyle="secondary"
-          >
-            <FormattedMessage {...messages.cancelEditAnswerOptions} />
-          </Button>
-        </FormContainer>
-      </Row>
-    );
-  }
-}
+        </Box>
+        {questionType === 'multiple_options' && (
+          <StyledInput
+            type="number"
+            onChange={changeMaxAnswers}
+            value={String(maxAnswers)}
+            // A multiple answer question should have at least two answer options
+            min="2"
+          />
+        )}
+      </FormContainer>
+      <FormContainer>
+        <WrongMaxChoiceIndicator
+          questionId={question.id}
+          maxAnswers={maxAnswers}
+        />
+        <Button
+          className="e2e-form-question-settings-save"
+          buttonStyle="admin-dark"
+          onClick={onSave}
+          disabled={!isValid}
+          mr="8px"
+        >
+          <FormattedMessage {...messages.saveQuestionSettings} />
+        </Button>
+        <Button
+          className="e2e-collapse-option-form"
+          onClick={onCancelOptionEditing}
+          buttonStyle="secondary"
+        >
+          <FormattedMessage {...messages.cancelEditAnswerOptions} />
+        </Button>
+      </FormContainer>
+    </Row>
+  );
+};
 
-export default injectIntl(QuestionDetailsFormRow);
+export default QuestionDetailsFormRow;

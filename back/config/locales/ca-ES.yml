@@ -207,6 +207,7 @@ ca:
       status: 'Estat'
       assignee_fullname: 'Cesionari'
       assignee_email: 'Correu electrònic del cessionari'
+    anonymous: 'Anònim'
   form_builder:
     default_select_field:
       title: 'La teva pregunta'

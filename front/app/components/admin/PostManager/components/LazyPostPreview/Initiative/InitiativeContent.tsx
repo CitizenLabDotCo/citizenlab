@@ -38,6 +38,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 30px;
@@ -123,6 +124,7 @@ const InitiativeContent = ({
   initiativeId,
 }: Props & InjectedLocalized & WrappedComponentProps) => {
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
+  const { data: appConfiguration } = useAppConfiguration();
   const { mutate: deleteInitiative } = useDeleteInitiative();
   const { data: initiative } = useInitiativeById(initiativeId);
   const handleClickDelete = () => {
@@ -228,8 +230,14 @@ const InitiativeContent = ({
                 // it means they are in the admin and therefore have permission
                 permissionToPost
               />
-
-              <StyledComments postId={initiativeId} postType="initiative" />
+              <StyledComments
+                allowAnonymousParticipation={
+                  appConfiguration?.data.attributes.settings.initiatives
+                    ?.allow_anonymous_participation
+                }
+                postId={initiativeId}
+                postType="initiative"
+              />
             </Left>
             <Right>
               <VotePreview>

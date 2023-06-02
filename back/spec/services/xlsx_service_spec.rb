@@ -86,6 +86,8 @@ describe XlsxService do
       create_list(:idea, 5).tap do |ideas|
         ideas.first.author.destroy! # should be able to handle ideas without author
         ideas.first.reload
+        ideas.last.update!(anonymous: true) # should be able to handle anonymous authors
+        ideas.last.reload
       end
     end
     let(:xlsx) { service.generate_ideas_xlsx(ideas, view_private_attributes: true) }
@@ -98,6 +100,11 @@ describe XlsxService do
 
     it 'contains a row for every idea' do
       expect(worksheet.sheet_data.size).to eq(ideas.size + 1)
+    end
+
+    it 'contains "Anonymous" as the author name for anonymously posted ideas' do
+      I18n.load_path += Dir[Rails.root.join('spec/fixtures/locales/*.yml')]
+      expect(worksheet[5].cells.map(&:value)[3]).to eq('Anonymous')
     end
 
     describe do

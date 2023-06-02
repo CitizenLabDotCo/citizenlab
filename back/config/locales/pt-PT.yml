@@ -207,6 +207,7 @@ pt:
       status: 'Estado'
       assignee_fullname: 'Cessionário'
       assignee_email: 'Cessionário e-mail'
+    anonymous: 'Anónimo'
   form_builder:
     default_select_field:
       title: 'A sua pergunta'
