@@ -78,7 +78,7 @@ export const NotificationsPopup = () => {
       position="top right"
       context={iconDivRef}
       positionFixed
-      offset={[0, -60]}
+      offset={[16, -60]}
       basic
       wide
     >
