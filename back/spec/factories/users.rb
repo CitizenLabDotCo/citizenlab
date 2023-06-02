@@ -19,6 +19,10 @@ FactoryBot.define do
     avatar { Rails.root.join('spec/fixtures/robot.jpg').open }
     invite_status { 'accepted' }
 
+    after(:build) do |user, _evaluator|
+      user.send(:confirmation_required=, false)
+    end
+
     factory :admin do
       roles { [{ type: 'admin' }] }
       factory :super_admin do
