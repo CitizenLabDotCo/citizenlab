@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # Regression tests
 describe 'WebApi::V1::External::TenantSerializer' do
-  let(:serialized_tenant) do
+  let(:tenant_attrs) do
     { id: Tenant.current.id,
       name: 'test-tenant',
       host: 'example.org',
@@ -36,17 +36,28 @@ describe 'WebApi::V1::External::TenantSerializer' do
       logo: { 'small' => nil, 'medium' => nil, 'large' => nil } }
   end
 
-  it 'serializes Tenant correctly' do
-    expect(
-      WebApi::V1::External::TenantSerializer.new(Tenant.current).serializable_hash
-    ).to match(serialized_tenant)
-  end
+  describe '#serializable_hash' do
+    subject(:result) { WebApi::V1::External::TenantSerializer.new(Tenant.current).serializable_hash }
 
-  context 'when the app configuration is passed explicitly' do
     it 'serializes Tenant correctly' do
-      tenant = Tenant.current
-      tenant_serializer = WebApi::V1::External::TenantSerializer.new(tenant, app_configuration: tenant.configuration)
-      expect(tenant_serializer.serializable_hash).to match(serialized_tenant)
+      expect(result).to include(**tenant_attrs.except(:settings))
+      expect(result[:settings]).to include(**tenant_attrs[:settings])
+    end
+
+    it 'includes features beyond minimal required settings' do
+      expect(result[:settings]).to include('user_confirmation' => { 'enabled' => true, 'allowed' => true })
+    end
+
+    context 'when the app configuration is passed explicitly' do
+      subject(:result) do
+        tenant = Tenant.current
+        WebApi::V1::External::TenantSerializer.new(tenant, app_configuration: tenant.configuration).serializable_hash
+      end
+
+      it 'serializes Tenant correctly' do
+        expect(result).to include(**tenant_attrs.except(:settings))
+        expect(result[:settings]).to include(**tenant_attrs[:settings])
+      end
     end
   end
 end
