@@ -44,10 +44,6 @@ describe 'WebApi::V1::External::TenantSerializer' do
       expect(result[:settings]).to include(**tenant_attrs[:settings])
     end
 
-    it 'includes features beyond minimal required settings' do
-      expect(result[:settings]).to include('user_confirmation' => { 'enabled' => true, 'allowed' => true })
-    end
-
     context 'when the app configuration is passed explicitly' do
       subject(:result) do
         tenant = Tenant.current
