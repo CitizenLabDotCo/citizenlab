@@ -5,7 +5,8 @@ require 'rails_helper'
 RSpec.describe AppConfiguration::Settings do
   before do
     @initial_features_hash = described_class.send(:extension_features_hash)
-    described_class.send(:reset)
+    described_class.send(:reset) # removes all extension features from the class instance var config
+    AppConfiguration.instance.tap(&:cleanup_settings).save! # removes all extension features from the DB
   end
 
   # Restore the initial state of the extension features hash.
@@ -59,7 +60,10 @@ RSpec.describe AppConfiguration::Settings do
       let(:json_schema) { described_class.json_schema }
 
       it 'includes core json schema settings in schema' do
-        expect(json_schema).to include(described_class.core_settings_json_schema)
+        expect(json_schema.except('properties')).to eq(described_class.core_settings_json_schema.except('properties'))
+        # json_schema['properties'] has `dummy_feature` which is not included in core_settings_json_schema['properties']
+        expect(json_schema['properties'].except(feature_spec.feature_name))
+          .to eq(described_class.core_settings_json_schema['properties'])
       end
 
       it 'includes feature json schema in properties' do
