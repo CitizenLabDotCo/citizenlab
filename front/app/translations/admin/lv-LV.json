@@ -1293,7 +1293,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Ja loģika nav pievienota, apsekojums norisināsies saskaņā ar parasto gaitu. Lai iegūtu vairāk informācijas, apmeklējiet {supportPageLink}.",
   "app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText2": "Ja atbildei nav pievienota loģika, apsekojums norisināsies saskaņā ar parasto gaitu. Ja jautājumam pievienosiet loģiku, tas būs obligāts pēc noklusējuma. Lai iegūtu vairāk informācijas, apmeklējiet vietni {supportPageLink}.",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Vai esat pārliecināts, ka vēlaties doties prom?",
-  "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo1": "Pašreizējās izmaiņas netiks saglabātas.",
+  "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Pašreizējās izmaiņas netiks saglabātas.",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Nepieciešams",
   "app.containers.AdminPage.ProjectEdit.survey.selectText2": "Vairākas izvēles - izvēlieties vienu",
   "app.containers.AdminPage.ProjectEdit.survey.successMessage2": "Aptauja veiksmīgi saglabāta",
