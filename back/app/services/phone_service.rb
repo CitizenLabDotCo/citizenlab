@@ -1,19 +1,6 @@
 # frozen_string_literal: true
 
 class PhoneService
-  def phone_or_email(str)
-    # If any of these validations change, sync with front-end people.
-    # We use the same ones there for form validation.
-    # See front/app/utils/validate.ts
-    if str.blank?
-      nil
-    elsif /^.*@.*..*$/.match?(str)
-      :email
-    elsif normalize_phone(str).size > 5 && (str =~ /^\+?[0-9.x\-\s()]+$/)
-      :phone
-    end
-  end
-
   def encoded_phone_or_email?(str)
     return if str.blank?
 
@@ -44,6 +31,8 @@ class PhoneService
     phone_to_email_pattern.gsub('__PHONE__', normalize_phone(str))
   end
 
+  private
+
   def normalize_phone(str)
     str.tr('^0-9', '')
   end
@@ -60,5 +49,18 @@ class PhoneService
 
   def app_config
     @app_config ||= AppConfiguration.instance
+  end
+
+  def phone_or_email(str)
+    # If any of these validations change, sync with front-end people.
+    # We use the same ones there for form validation.
+    # See front/app/utils/validate.ts
+    if str.blank?
+      nil
+    elsif /^.*@.*..*$/.match?(str)
+      :email
+    elsif normalize_phone(str).size > 5 && (str =~ /^\+?[0-9.x\-\s()]+$/)
+      :phone
+    end
   end
 end
