@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useBulkInviteEmail from './useBulkInviteEmails';
+import useBulkInviteEmails from './useBulkInviteEmails';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
@@ -16,12 +16,12 @@ const server = setupServer(
   })
 );
 
-describe('useBulkInviteEmail', () => {
+describe('useBulkInviteEmails', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useBulkInviteEmail(), {
+    const { result, waitFor } = renderHook(() => useBulkInviteEmails(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -42,7 +42,7 @@ describe('useBulkInviteEmail', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useBulkInviteEmail(), {
+    const { result, waitFor } = renderHook(() => useBulkInviteEmails(), {
       wrapper: createQueryClientWrapper(),
     });
 
