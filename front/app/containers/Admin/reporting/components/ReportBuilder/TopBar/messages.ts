@@ -10,8 +10,8 @@ export default defineMessages({
     defaultMessage: 'Are you sure you want to leave?',
   },
   quitReportInfo: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.quitReportInfo1',
-    defaultMessage: "Your current change won't be saved.",
+    id: 'app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2',
+    defaultMessage: "Your current changes won't be saved.",
   },
   confirmQuitButtonText: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.confirmQuitButtonText1',
