@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { stopPropagation } from 'utils/helperUtils';
-import { IThresholdReachedForAdminNotificationData } from 'services/notifications';
+import { IThresholdReachedForAdminNotificationData } from 'api/notifications/types';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';

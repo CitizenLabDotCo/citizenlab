@@ -18,6 +18,14 @@ module IdViennaSaml
       'Allow vienna city employees to authenticate via Single sign-on.'
     end
 
+    def self.allowed_by_default
+      false
+    end
+
+    def self.enabled_by_default
+      false
+    end
+
     add_setting 'environment', required: true, schema: {
       type: 'string',
       title: 'Environment',

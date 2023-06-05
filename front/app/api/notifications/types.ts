@@ -1,14 +1,26 @@
-import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
-
-import { authUserStream } from './auth';
 import { Multiloc } from 'typings';
+import notificationsKeys from './keys';
 
-const apiEndpoint = `${API_PATH}/notifications`;
+import { Keys } from 'utils/cl-react-query/types';
+
+export type NotificationsKeys = Keys<typeof notificationsKeys>;
+
+export type IQueryParameters = {
+  pageSize?: number;
+  pageNumber?: number;
+};
 
 export interface IBaseNotificationData {
   id: string;
   type: string;
+  relationships: {
+    recipient: {
+      data: {
+        id: string;
+        type: string;
+      };
+    };
+  };
 }
 
 export interface IAdminRightsReceivedNotificationData
@@ -445,14 +457,4 @@ export interface INotifications {
 
 export interface INotification {
   data: TNotificationData;
-}
-
-export function notificationsStream(streamParams: IStreamParams | null = null) {
-  return streams.get<INotifications>({ apiEndpoint, ...streamParams });
-}
-
-export async function markAllAsRead() {
-  const response = await streams.add(`${apiEndpoint}/mark_all_read`, null);
-  await authUserStream().fetch();
-  return response;
 }
