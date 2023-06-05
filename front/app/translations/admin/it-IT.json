@@ -1293,7 +1293,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "If no logic is added, the survey will follow its normal flow. For more information, visit {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText2": "If no logic is added to an answer, the survey will follow its normal flow. Adding logic to a question will make it required by default. For more information, visit {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Are you sure you want to leave?",
-  "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo1": "La tua modifica attuale non verrà salvata.",
+  "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Le tue modifiche attuali non verranno salvate.",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Required",
   "app.containers.AdminPage.ProjectEdit.survey.selectText2": "Multiple choice - choose one",
   "app.containers.AdminPage.ProjectEdit.survey.successMessage2": "Survey successfully saved",
