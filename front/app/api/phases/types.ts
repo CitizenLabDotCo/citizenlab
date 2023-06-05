@@ -9,6 +9,7 @@ import {
 } from 'services/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
 import phasesKeys from './keys';
+import { VotingMethodType } from 'containers/Admin/projects/project/participationContext/utils/votingMethodUtils';
 
 export type PhasesKeys = Keys<typeof phasesKeys>;
 
@@ -57,6 +58,7 @@ export interface IPhaseAttributes {
   poll_anonymous?: boolean;
   ideas_count: number;
   ideas_order?: IdeaDefaultSortMethod;
+  voting_method?: VotingMethodType | null;
 }
 
 export interface IPhases {

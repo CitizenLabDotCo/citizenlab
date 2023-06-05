@@ -1145,8 +1145,6 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Selecteer een gebied",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Het project wordt getoond bij geselecteerde gebiedsfilters.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "In een lijst",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText": "Vraag deelnemers om hun favoriete projecten te selecteren en aan een boodschappenmandje met een totaalbudget toe te wijzen.",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Een budgetspel opzetten",
   "app.containers.AdminPage.ProjectEdit.continuous": "Zonder een tijdslijn",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Maak een project aan",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Maak een project aan met een sjabloon",

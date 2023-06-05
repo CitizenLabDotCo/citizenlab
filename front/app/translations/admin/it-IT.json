@@ -1065,8 +1065,6 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Selection",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "The project will show on selected area filter(s).",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Cards",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText": "Assign a budget to projects and ask participants to select their preferred projects that fit within a total budget.",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Conduct a budget allocation exercise",
   "app.containers.AdminPage.ProjectEdit.continuous": "Without a timeline",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Create a project",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Create a project from a template",

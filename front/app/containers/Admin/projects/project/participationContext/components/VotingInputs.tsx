@@ -8,16 +8,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-import { LabelBudgetingInput } from './labels';
-import CustomFieldPicker from './CustomFieldPicker';
 import DefaultViewPicker from './DefaultViewPicker';
 import SortingPicker from './SortingPicker';
-import {
-  ToggleRow,
-  ToggleLabel,
-  BudgetingAmountInput,
-  BudgetingAmountInputError,
-} from './styling';
+import { ToggleRow, ToggleLabel } from './styling';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -30,16 +23,23 @@ import {
 } from 'services/participationContexts';
 import { ApiErrors } from '..';
 import { AnonymousPostingToggle } from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
+import {
+  VotingMethodType,
+  getVotingMethodConfig,
+} from 'containers/Admin/projects/project/participationContext/utils/votingMethodUtils';
 
 // api
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { useParams } from 'react-router-dom';
+import VotingMethodSelector from './voting/VotingMethodSelector';
 
-interface Props {
+export interface VotingInputsProps {
   isCustomInputTermEnabled: boolean;
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
   inputTermOptions: IOption[];
   allow_anonymous_participation: boolean | null | undefined;
+  voting_method: VotingMethodType | null | undefined;
   min_budget: number | null | undefined;
   max_budget: number | null | undefined;
   commenting_enabled: boolean | null | undefined;
@@ -58,6 +58,7 @@ interface Props {
   handleAllowAnonymousParticipationOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
+  handleVotingMethodOnChange: (voting_method: VotingMethodType) => void;
 }
 
 export default ({
@@ -66,6 +67,7 @@ export default ({
   handleInputTermChange,
   inputTermOptions,
   allow_anonymous_participation,
+  voting_method,
   min_budget,
   max_budget,
   commenting_enabled,
@@ -80,18 +82,40 @@ export default ({
   ideas_order,
   handleIdeaDefaultSortMethodChange,
   handleAllowAnonymousParticipationOnChange,
-}: Props) => {
+  handleVotingMethodOnChange,
+}: VotingInputsProps) => {
+  const { projectId } = useParams() as {
+    projectId: string;
+  };
+  const props = {
+    isCustomInputTermEnabled,
+    input_term,
+    handleInputTermChange,
+    inputTermOptions,
+    allow_anonymous_participation,
+    voting_method,
+    min_budget,
+    max_budget,
+    commenting_enabled,
+    minBudgetError,
+    maxBudgetError,
+    handleMinBudgetingAmountChange,
+    handleMaxBudgetingAmountChange,
+    toggleCommentingEnabled,
+    apiErrors,
+    presentation_mode,
+    handleIdeasDisplayChange,
+    ideas_order,
+    handleIdeaDefaultSortMethodChange,
+    handleAllowAnonymousParticipationOnChange,
+    handleVotingMethodOnChange,
+  };
+
   const hasAnonymousParticipationEnabled = useFeatureFlag({
     name: 'anonymous_participation',
   });
-  const minBudgetInputValue =
-    // need to check the type because if min_budget is 0,
-    // it'll evaluate to null
-    typeof min_budget === 'number' ? min_budget.toString() : null;
-  const maxBudgetInputValue =
-    // maxBudget can't be lower than 1, but it's still a good practice
-    // to check for type instead of relying on JS type coercion
-    typeof max_budget === 'number' ? max_budget.toString() : null;
+
+  const votingMethodConfig = getVotingMethodConfig(voting_method);
 
   return (
     <>
@@ -103,53 +127,40 @@ export default ({
           }
         />
       )}
-      {isCustomInputTermEnabled && (
-        <CustomFieldPicker
-          input_term={input_term}
-          handleInputTermChange={handleInputTermChange}
-          inputTermOptions={inputTermOptions}
-        />
-      )}
-
+      <VotingMethodSelector
+        voting_method={voting_method}
+        handleVotingMethodOnChange={handleVotingMethodOnChange}
+      />
       <SectionField>
         <SubSectionTitle>
-          <FormattedMessage {...messages.totalBudget} />
+          <FormattedMessage {...messages.optionsToVoteOn} />
           <IconTooltip
-            content={<FormattedMessage {...messages.totalBudgetExplanation} />}
+            content={<FormattedMessage {...messages.optionsToVoteOnTooltip} />}
           />
         </SubSectionTitle>
-        <BudgetingAmountInput
-          onChange={handleMinBudgetingAmountChange}
-          type="number"
-          min="0"
-          value={minBudgetInputValue}
-          label={
-            <LabelBudgetingInput header="minimum" tooltip="minimumTooltip" />
-          }
-        />
-        <BudgetingAmountInputError text={minBudgetError} />
-        <BudgetingAmountInputError
-          apiErrors={apiErrors && apiErrors.min_budget}
-        />
-      </SectionField>
-      <SectionField>
-        <BudgetingAmountInput
-          onChange={handleMaxBudgetingAmountChange}
-          type="number"
-          min="1"
-          value={maxBudgetInputValue}
-          label={
-            <LabelBudgetingInput header="maximum" tooltip="maximumTooltip" />
-          }
-        />
-        <BudgetingAmountInputError text={maxBudgetError} />
-        <BudgetingAmountInputError
-          apiErrors={apiErrors && apiErrors.max_budget}
+        <FormattedMessage
+          {...messages.optionsToVoteOnExplanation}
+          values={{
+            link: (
+              <a
+                href={`/admin/projects/${projectId}/ideas`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <FormattedMessage
+                  {...messages.optionsToVoteOnExplanationLinkText}
+                />
+              </a>
+            ),
+          }}
         />
       </SectionField>
+      {/* Render any voting method specific inputs from configuration */}
+      {votingMethodConfig?.getVotingMethodInputs &&
+        votingMethodConfig.getVotingMethodInputs(props)}
       <SectionField>
         <SubSectionTitle>
-          <FormattedMessage {...messages.phasePermissions} />
+          <FormattedMessage {...messages.actionsForResidents} />
         </SubSectionTitle>
 
         <ToggleRow>

@@ -13,6 +13,7 @@ export default ({
   downvoting_limited_max,
   downvoting_enabled,
   presentation_mode,
+  voting_method,
   min_budget,
   max_budget,
   survey_embed_url,
@@ -74,6 +75,7 @@ export default ({
         presentation_mode,
         ideas_order,
         input_term,
+        voting_method,
       },
       isNil
     ) as IParticipationContextConfig;

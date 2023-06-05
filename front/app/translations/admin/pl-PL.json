@@ -1145,8 +1145,6 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Wybrane",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Projekt zostanie wyświetlony na wybranym filtrze (filtrach) obszaru.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Na liście",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText": "Przydziel budżet dla projektów i poproś uczestników o wybranie preferowanych projektów, które mieszczą się w przydzielonym budżecie.",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Przydzielanie środków",
   "app.containers.AdminPage.ProjectEdit.continuous": "Bez linii czasu",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Utwórz projekt",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Utwórz projekt na podstawie szablonu",

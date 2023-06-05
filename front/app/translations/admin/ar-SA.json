@@ -1145,8 +1145,6 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "المجموعة المُختارة",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "سيظهر المشروع في عامل أو عوامل تصفية المناطق المحددة.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "في قائمة",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText": "عيِّن ميزانية لمشاريع واطلب من المشاركين تحديد مشاريعهم المفضلة المناسبة لميزانية إجمالية.",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "إجراء تمرين على تخصيص ميزانية",
   "app.containers.AdminPage.ProjectEdit.continuous": "دون جدول زمني",
   "app.containers.AdminPage.ProjectEdit.createAProject": "أنشئ مشروعًا",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "أنشئ مشروعًا من قالب",

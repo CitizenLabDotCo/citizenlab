@@ -1145,8 +1145,6 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Valg",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Projektet vises på de(t) valgte områdefilter(e).",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Liste",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText": "Tildel et budget til projekterne, og bed deltagerne om at udvalgt deres foretrukne projekter, der passer inden for et samlet budget.",
-  "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Gennemfør en øvelse i budgettildeling",
   "app.containers.AdminPage.ProjectEdit.continuous": "Uden en tidslinje",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Opret et projekt",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Opret et projekt ud fra en skabelon",
