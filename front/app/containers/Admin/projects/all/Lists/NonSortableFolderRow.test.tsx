@@ -91,7 +91,7 @@ const mockFolderChildAdminPublications = {
   hasNextPage: false,
   isLoadingInitial: false,
   isFetchingNextPage: false,
-  data: { pages: mockFolderChildAdminPublicationsList },
+  data: { pages: [{ data: mockFolderChildAdminPublicationsList }] },
 };
 // Needed to render folder with project inside
 jest.mock('api/admin_publications/useAdminPublications', () => {
