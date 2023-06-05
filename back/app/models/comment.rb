@@ -43,10 +43,10 @@ class Comment < ApplicationRecord
 
   belongs_to :author, class_name: 'User', optional: true
   belongs_to :post, polymorphic: true
-  has_many :votes, as: :reactable, dependent: :destroy
-  has_many :upvotes, -> { where(mode: 'up') }, as: :reactable, class_name: 'Reaction'
-  has_many :downvotes, -> { where(mode: 'down') }, as: :reactable, class_name: 'Reaction'
-  has_one :user_vote, ->(user_id) { where(user_id: user_id) }, as: :reactable, class_name: 'Reaction'
+  has_many :reactions, as: :reactable, dependent: :destroy
+  has_many :up_reactions, -> { where(mode: 'up') }, as: :reactable, class_name: 'Reaction'
+  has_many :down_reactions, -> { where(mode: 'down') }, as: :reactable, class_name: 'Reaction'
+  has_one :user_reaction, ->(user_id) { where(user_id: user_id) }, as: :reactable, class_name: 'Reaction'
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 
   before_validation :set_publication_status, on: :create

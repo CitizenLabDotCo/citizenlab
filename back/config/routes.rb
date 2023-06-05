@@ -26,8 +26,8 @@ Rails.application.routes.draw do
       concern :post do
         resources :activities, only: [:index]
         resources :comments, shallow: true,
-          concerns: %i[votable spam_reportable],
-          defaults: { votable: 'Comment', spam_reportable: 'Comment' } do
+          concerns: %i[reactable spam_reportable],
+          defaults: { reactable: 'Comment', spam_reportable: 'Comment' } do
           get :children, on: :member
           post :mark_as_deleted, on: :member
         end
@@ -39,8 +39,8 @@ Rails.application.routes.draw do
       end
 
       resources :ideas,
-        concerns: %i[votable spam_reportable post],
-        defaults: { votable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
+        concerns: %i[reactable spam_reportable post],
+        defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
 
@@ -53,8 +53,8 @@ Rails.application.routes.draw do
       end
 
       resources :initiatives,
-        concerns: %i[votable spam_reportable post],
-        defaults: { votable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
+        concerns: %i[reactable spam_reportable post],
+        defaults: { reactable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
         resources :images, defaults: { container_type: 'Initiative' }
         resources :files, defaults: { container_type: 'Initiative' }
 

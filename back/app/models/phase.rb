@@ -49,7 +49,7 @@ class Phase < ApplicationRecord
 
   has_many :ideas_phases, dependent: :destroy
   has_many :ideas, through: :ideas_phases
-  has_many :votes, through: :ideas
+  has_many :reactions, through: :ideas
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
   has_many :phase_files, -> { order(:ordering) }, dependent: :destroy

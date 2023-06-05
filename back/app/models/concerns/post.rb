@@ -34,10 +34,10 @@ module Post
     has_many :comments, as: :post, dependent: :destroy
     has_many :official_feedbacks, as: :post, dependent: :destroy
 
-    has_many :votes, as: :reactable, dependent: :destroy
-    has_many :upvotes, -> { where(mode: 'up') }, as: :reactable, class_name: 'Vote'
-    has_many :downvotes, -> { where(mode: 'down') }, as: :reactable, class_name: 'Vote'
-    has_one :user_vote, ->(user_id) { where(user_id: user_id) }, as: :reactable, class_name: 'Vote'
+    has_many :reactions, as: :reactable, dependent: :destroy
+    has_many :up_reactions, -> { where(mode: 'up') }, as: :reactable, class_name: 'Reaction'
+    has_many :down_reactions, -> { where(mode: 'down') }, as: :reactable, class_name: 'Reaction'
+    has_one :user_reaction, ->(user_id) { where(user_id: user_id) }, as: :reactable, class_name: 'Reaction'
 
     has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 

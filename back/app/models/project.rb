@@ -57,7 +57,7 @@ class Project < ApplicationRecord
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
   has_many :ideas, dependent: :destroy
-  has_many :votes, through: :ideas
+  has_many :reactions, through: :ideas
 
   has_many :projects_topics, dependent: :destroy
   has_many :topics, -> { order(:ordering) }, through: :projects_topics
