@@ -7,11 +7,11 @@ import { ILinks, IRelationship, Multiloc } from 'typings';
 export type AdminPublicationsKeys = Keys<typeof adminPublicationsKeys>;
 
 export interface IQueryParameters {
-  topicIds?: string[];
-  areaIds?: string[];
+  topicIds?: string[] | null;
+  areaIds?: string[] | null;
   publicationStatusFilter?: PublicationStatus[];
   childrenOfId?: string;
-  search?: string;
+  search?: string | null;
   pageNumber?: number;
   pageSize?: number;
   rootLevelOnly?: boolean;

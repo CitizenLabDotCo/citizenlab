@@ -25,13 +25,14 @@ export default function useAdminPublicationsStatusCounts({
   rootLevelOnly = false,
   removeNotAllowedParents = false,
   onlyProjects = false,
+  search = '',
 }: BaseProps) {
   const [counts, setCounts] = useState<
     IStatusCounts | undefined | null | Error
   >(undefined);
   const [topics, setTopics] = useState<string[] | null>(null);
   const [areas, setAreas] = useState<string[] | null>(null);
-  const [search, setSearch] = useState<string | null>(null);
+
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
   >(publicationStatusFilter);
@@ -61,10 +62,6 @@ export default function useAdminPublicationsStatusCounts({
 
   const onChangeAreas = useCallback((areas: string[]) => {
     areas.length === 0 ? setAreas(null) : setAreas(areas);
-  }, []);
-
-  const onChangeSearch = useCallback((search: string | null) => {
-    search && search.length === 0 ? setSearch(null) : setSearch(search);
   }, []);
 
   useEffect(() => {
@@ -104,7 +101,6 @@ export default function useAdminPublicationsStatusCounts({
     onChangeTopics,
     onChangeAreas,
     onChangePublicationStatus: setPublicationStatuses,
-    onChangeSearch,
   };
 }
 

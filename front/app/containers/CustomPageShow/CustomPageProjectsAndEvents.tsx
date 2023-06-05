@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
-import useAdminPublications from 'hooks/useAdminPublications';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import { ICustomPageData } from 'services/customPages';
 import ContentContainer from 'components/ContentContainer';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -37,7 +37,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
     'archived',
   ];
 
-  const adminPublications = useAdminPublications({
+  const { data } = useAdminPublications({
     pageSize: 6,
     topicIds,
     areaIds,
@@ -46,6 +46,8 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
     removeNotAllowedParents: true,
     onlyProjects: true,
   });
+
+  const adminPublications = data?.pages.map((page) => page.data).flat();
 
   const { counts: statusCountsWithoutFilters } =
     useAdminPublicationsStatusCounts({
@@ -79,7 +81,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
             showTitle={false}
             showFilters={false}
             showSearch={false}
-            adminPublications={adminPublications}
+            adminPublications={adminPublications || []}
             statusCountsWithoutFilters={statusCountsWithoutFilters}
             layout="dynamic"
           />

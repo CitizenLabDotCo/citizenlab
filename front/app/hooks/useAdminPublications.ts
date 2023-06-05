@@ -35,6 +35,7 @@ export interface BaseProps {
   */
   removeNotAllowedParents?: boolean;
   onlyProjects?: boolean;
+  search?: string | null;
 }
 
 export interface InputProps extends BaseProps {
