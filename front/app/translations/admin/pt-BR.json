@@ -1293,7 +1293,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Se nenhuma lógica for adicionada, a pesquisa seguirá o seu fluxo normal. Para mais informações, visite {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText2": "Se nenhuma lógica for adicionada a uma resposta, a pesquisa seguirá o seu fluxo normal. A adição de lógica a uma pergunta torná-la-á necessária por defeito. Para mais informações, visite {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Tem a certeza de que quer sair?",
-  "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo1": "Your current change won't be saved.",
+  "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Your current changes won't be saved.",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Obrigatório",
   "app.containers.AdminPage.ProjectEdit.survey.selectText2": "Escolha múltipla - escolha uma",
   "app.containers.AdminPage.ProjectEdit.survey.successMessage2": "Pesquisa salva com sucesso",
