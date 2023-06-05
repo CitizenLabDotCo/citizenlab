@@ -152,21 +152,26 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
               mb="10px"
               display="flex"
               alignItems="center"
-              pl="5px"
+              pr="8px"
+              pl="16px"
+              py="10px"
               justifyContent={isSmallerThanPhone ? 'center' : undefined}
             >
               <Box
                 display="flex"
                 flex="0 0 auto"
-                w="45px"
-                h="45px"
                 alignItems="center"
                 justifyContent="center"
               >
-                <Icon name="arrow-left-circle" fill={colors.white} />
+                <Icon
+                  name="arrow-left-circle"
+                  fill={colors.white}
+                  width="20px"
+                  height="20px"
+                />
               </Box>
               {!isSmallerThanPhone && (
-                <Text color="white" fontSize="s" ml="10px">
+                <Text color="white" fontSize="s" ml="17.5px">
                   {formatMessage({ ...messages.toPlatform })}
                 </Text>
               )}
