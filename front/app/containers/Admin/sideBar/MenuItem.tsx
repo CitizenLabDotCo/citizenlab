@@ -32,10 +32,7 @@ const MenuItemLink = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 16px;
-  padding-right: 8px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 10px 8px 10px 16px;
   cursor: pointer;
   border-radius: ${(props) => props.theme.borderRadius};
   transition: background-color 80ms ease-out;

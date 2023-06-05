@@ -27,16 +27,3 @@ export const StyledBox = styled(Box)`
     background: rgba(0, 0, 0, 0.36);
   }
 `;
-
-export const StyleIconBox = styled(Box)`
-  cursor: pointer;
-  svg {
-    fill: ${colors.coolGrey300};
-  }
-
-  &:hover {
-    svg {
-      fill: ${colors.teal200};
-    }
-  }
-`;

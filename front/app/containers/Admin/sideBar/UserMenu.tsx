@@ -16,7 +16,7 @@ import messages from './messages';
 
 // style
 import { colors } from 'utils/styleUtils';
-import { ItemMenu, StyledBox, StyleIconBox } from './styles';
+import { ItemMenu, StyledBox } from './styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -148,16 +148,12 @@ export const UserMenu = () => {
             buttonStyle="text"
             onClick={() => setIsLanguagePopupOpen(!isLanguagePopupOpen)}
           >
-            <StyleIconBox
-              display="flex"
-              justifyContent="space-between"
-              w="100%"
-            >
+            <Box display="flex" justifyContent="space-between" w="100%">
               <LanguageSelectorPopup
                 setIsOpen={setIsLanguagePopupOpen}
                 isOpen={isLanguagePopupOpen}
               />
-            </StyleIconBox>
+            </Box>
           </ItemMenu>
         )}
         <ItemMenu
@@ -165,14 +161,18 @@ export const UserMenu = () => {
           buttonStyle="text"
         >
           <Box display="flex" justifyContent="space-between" w="100%">
-            {formatMessage({ ...messages.myProfile })}
+            <Text my="0px" color="coolGrey600">
+              {formatMessage({ ...messages.myProfile })}
+            </Text>
           </Box>
         </ItemMenu>
         <ItemMenu buttonStyle="text" onClick={signOut}>
-          <StyleIconBox display="flex" justifyContent="space-between" w="100%">
-            {formatMessage({ ...messages.signOut })}
-            <Icon name="power" fill={colors.grey300} />
-          </StyleIconBox>
+          <Box display="flex" justifyContent="space-between" w="100%">
+            <Text my="0px" color="coolGrey600">
+              {formatMessage({ ...messages.signOut })}
+            </Text>
+            <Icon name="power" fill={colors.grey600} />
+          </Box>
         </ItemMenu>
       </Box>
     </Popup>

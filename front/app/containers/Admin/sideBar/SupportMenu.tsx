@@ -15,7 +15,7 @@ import messages from './messages';
 
 // style
 import { colors } from 'utils/styleUtils';
-import { ItemMenu, StyledBox, StyleIconBox } from './styles';
+import { ItemMenu, StyledBox } from './styles';
 
 export const SupportMenu = () => {
   const { formatMessage } = useIntl();
@@ -81,34 +81,36 @@ export const SupportMenu = () => {
           buttonStyle="text"
           openLinkInNewTab
         >
-          <StyleIconBox
-            display="flex"
-            justifyContent="space-between"
-            width="100%"
-          >
-            {formatMessage({ ...messages.knowledgeBase })}
-            <Icon name="book" />
-          </StyleIconBox>
+          <Box display="flex" justifyContent="space-between" width="100%">
+            <Text my="0px" color="coolGrey600">
+              {formatMessage({ ...messages.knowledgeBase })}
+            </Text>
+            <Icon name="book" fill={colors.grey600} />
+          </Box>
         </ItemMenu>
         <ItemMenu
           linkTo={formatMessage(messages.linkToAcademy)}
           buttonStyle="text"
           openLinkInNewTab
         >
-          <StyleIconBox display="flex" justifyContent="space-between" w="100%">
-            {formatMessage({ ...messages.academy })}
-            <Icon name="academy" />
-          </StyleIconBox>
+          <Box display="flex" justifyContent="space-between" w="100%">
+            <Text my="0px" color="coolGrey600">
+              {formatMessage({ ...messages.academy })}
+            </Text>
+            <Icon name="academy" fill={colors.grey600} />
+          </Box>
         </ItemMenu>
         <ItemMenu
           linkTo={formatMessage(messages.linkToCommunityPlatform)}
           buttonStyle="text"
           openLinkInNewTab
         >
-          <StyleIconBox display="flex" justifyContent="space-between" w="100%">
-            {formatMessage({ ...messages.communityPlatform })}
-            <Icon name="community" />
-          </StyleIconBox>
+          <Box display="flex" justifyContent="space-between" w="100%">
+            <Text my="0px" color="coolGrey600">
+              {formatMessage({ ...messages.communityPlatform })}
+            </Text>
+            <Icon name="community" fill={colors.grey600} />
+          </Box>
         </ItemMenu>
       </Box>
     </Popup>
