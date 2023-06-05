@@ -1,6 +1,6 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { IIdeaAssignedToYouNotificationData } from 'services/notifications';
+import { IIdeaAssignedToYouNotificationData } from 'api/notifications/types';
 
 // i18n
 import messages from '../../messages';
