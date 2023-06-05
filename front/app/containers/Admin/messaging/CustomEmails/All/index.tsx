@@ -107,13 +107,15 @@ const CustomEmails = () => {
               )
             )}
           </List>
-          <Box pb="42px" pt="5px">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={lastPage}
-              loadPage={goToPage}
-            />
-          </Box>
+          {lastPage > 1 && (
+            <Box pb="42px" pt="5px">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={lastPage}
+                loadPage={goToPage}
+              />
+            </Box>
+          )}
         </Box>
       </>
     );
