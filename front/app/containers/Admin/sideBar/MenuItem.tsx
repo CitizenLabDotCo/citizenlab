@@ -27,16 +27,6 @@ const Text = styled.div`
   `}
 `;
 
-const ArrowIcon = styled(Icon)`
-  fill: #fff;
-  opacity: 0;
-  transition: all 80ms ease-out;
-
-  ${media.tablet`
-    display: none;
-  `}
-`;
-
 const MenuItemLink = styled(Link)`
   flex: 0 0 auto;
   width: 210px;
@@ -71,10 +61,6 @@ const MenuItemLink = styled(Link)`
   }
 
   &.active {
-    ${ArrowIcon} {
-      opacity: 1;
-    }
-
     .cl-icon {
       .cl-icon-primary {
         fill: ${colors.teal400};
@@ -132,7 +118,6 @@ const MenuItem = ({ navItem }: Props) => {
           <FormattedMessage {...messages[navItem.message]} />
           {!!navItem.count && <CountBadge count={navItem.count} />}
         </Text>
-        <ArrowIcon name="arrow-right" />
       </MenuItemLink>
     </HasPermission>
   ) : null;
