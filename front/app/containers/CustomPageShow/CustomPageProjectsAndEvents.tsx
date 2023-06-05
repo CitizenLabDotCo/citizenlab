@@ -6,9 +6,10 @@ import { ICustomPageData } from 'services/customPages';
 import ContentContainer from 'components/ContentContainer';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { PublicationStatus } from 'api/projects/types';
-import useAdminPublicationsStatusCounts from 'hooks/useAdminPublicationsStatusCounts';
+import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
 import ProjectAndFolderCardsInner from 'components/ProjectAndFolderCards/ProjectAndFolderCardsInner';
 import { colors } from 'utils/styleUtils';
+import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminPublicationsStatusCount';
 
 const ProjectCardsContentContainer = styled(ContentContainer)`
   padding-top: 50px;
@@ -55,15 +56,16 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
-  const { counts: statusCountsWithoutFilters } =
-    useAdminPublicationsStatusCounts({
+  const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
+    {
       topicIds,
       areaIds,
       publicationStatusFilter,
       rootLevelOnly: false,
       removeNotAllowedParents: true,
       onlyProjects: true,
-    });
+    }
+  );
 
   const advancedCustomPagesEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',
@@ -82,13 +84,15 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
       {page.attributes.projects_enabled && (
         <ProjectCardsContentContainer mode="page">
           <ProjectAndFolderCardsInner
-            statusCounts={statusCountsWithoutFilters}
+            statusCounts={getStatusCounts(statusCountsWithoutFilters)}
             publicationStatusFilter={publicationStatusFilter}
             showTitle={false}
             showFilters={false}
             showSearch={false}
             adminPublications={adminPublications || []}
-            statusCountsWithoutFilters={statusCountsWithoutFilters}
+            statusCountsWithoutFilters={getStatusCounts(
+              statusCountsWithoutFilters
+            )}
             layout="dynamic"
             loadingInitial={isInitialLoading}
             loadingMore={isFetchingNextPage}
