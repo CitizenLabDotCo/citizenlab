@@ -67,26 +67,6 @@ interface IQueryParametersBase {
   folder?: string;
 }
 
-export interface IQueryParameters extends IQueryParametersBase {
-  'page[number]': number;
-  'page[size]': number;
-}
-
-export async function reorderAdminPublication(
-  orderingId: string,
-  newOrder: number
-) {
-  return streams.update<IAdminPublications>(
-    `${apiEndpoint}/${orderingId}/reorder`,
-    orderingId,
-    {
-      admin_publication: {
-        ordering: newOrder,
-      },
-    }
-  );
-}
-
 interface IStreamParamsStatusCounts extends IStreamParams {
   queryParameters: IQueryParametersBase;
 }
@@ -98,9 +78,12 @@ export interface IStatusCountsBase {
 }
 
 interface IStatusCountsResponse {
-  status_counts: IStatusCountsBase;
+  data: {
+    attributes: {
+      status_counts: IStatusCountsBase;
+    };
+  };
 }
-
 export function adminPublicationsStatusCounts(
   streamParams: IStreamParamsStatusCounts
 ) {

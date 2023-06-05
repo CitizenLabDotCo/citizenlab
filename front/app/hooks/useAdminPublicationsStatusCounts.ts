@@ -82,7 +82,11 @@ export default function useAdminPublicationsStatusCounts({
       .subscribe((statusCounts) => {
         isNilOrError(statusCounts)
           ? setCounts(statusCounts)
-          : setCounts(computeTotalStatusCounts(statusCounts.status_counts));
+          : setCounts(
+              computeTotalStatusCounts(
+                statusCounts.data.attributes.status_counts
+              )
+            );
       });
 
     return () => subscription.unsubscribe();
