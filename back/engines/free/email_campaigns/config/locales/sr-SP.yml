@@ -48,55 +48,6 @@ sr-Cyrl:
       "assignee_digest": Недељни преглед додељених идеја
       "user_digest": Недељни преглед
       "your_proposed_initiatives_digest": Недељни преглед ваших предлога
-    admin_campaign_type_description:
-      "manual": Званична порука - сви корисници
-      "admin_rights_received": Добијена администраторска права - админи
-      "comment_deleted_by_admin": Брисање вашег коментара - сви корисници
-      "comment_marked_as_spam": Извештај о нежељеној пошти коментара – администратори и менаџери пројекта
-      "comment_on_your_comment": Одговорите на свој коментар - сви корисници
-      "comment_on_your_idea": Коментаришите своју идеју – сви корисници
-      "comment_on_your_initiative": Коментаришите свој предлог - сви корисници
-      "first_idea_published": Објава ваше прве идеје - сви корисници
-      "idea_marked_as_spam": Извештај о нежељеној пошти идеја - администратори и менаџери пројекта
-      "idea_published": Објава ваше идеје - сви корисници
-      "initiative_assigned_to_you": Додељивање предлога - админи
-      "initiative_marked_as_spam": Извештај о нежељеној пошти предлога - администратори
-      "initiative_published": Објава вашег предлога - сви корисници
-      "invite_received": Позив - сви корисници
-      "invite_reminder": Подсетник за позив - сви корисници
-      "mention_in_comment": Поменути у коментару - све кориснике
-      "mention_in_official_feedback": Поменути у ажурирању - све кориснике
-      "new_comment_for_admin": Нови коментар - администратори и пројектни менаџери
-      "new_comment_on_commented_idea": Нови коментар на идеју коју сте коментарисали - сви корисници
-      "new_comment_on_commented_initiative": Нови коментар на предлог који сте коментарисали - сви корисници
-      "new_comment_on_voted_idea": Нови коментар на идеју за коју сте гласали - сви корисници
-      "new_comment_on_voted_initiative": Нови коментар на предлог за који сте гласали - сви корисници
-      "new_idea_for_admin": Нова идеја - администратори и менаџери пројеката
-      "new_initiative_for_admin": Нови предлог - админи
-      "official_feedback_on_commented_idea": Ажурирање идеје коју сте коментарисали - сви корисници
-      "official_feedback_on_commented_initiative": Ажурирање предлога који сте коментарисали - сви корисници
-      "official_feedback_on_voted_idea": Ажурирање идеје за коју сте гласали – сви корисници
-      "official_feedback_on_voted_initiative": Ажурирање предлога за који сте гласали – сви корисници
-      "official_feedback_on_your_idea": Ажурирајте своју идеју - сви корисници
-      "official_feedback_on_your_initiative": Ажурирајте свој предлог - сви корисници
-      "password_reset": Ресетовање лозинке - сви корисници
-      "project_moderation_rights_received": Добијена права модерирања пројекта - менаџери пројекта
-      "project_folder_moderation_rights_received": Примљена права менаџера фолдера
-      "project_phase_started": Нова фаза пројекта – учесници пројекта
-      "project_phase_upcoming": Предстојећа нова фаза пројекта - администратори и пројект менаџери
-      "status_change_of_commented_idea": Промена статуса идеје коју сте коментарисали - сви корисници
-      "status_change_of_commented_initiative": Промена статуса предлога који сте коментарисали - сви корисници
-      "status_change_of_voted_idea": Промена статуса идеје за коју сте гласали - сви корисници
-      "status_change_of_voted_initiative": Промена статуса предлога за који сте гласали - сви корисници
-      "status_change_of_your_idea": Статусна промена ваше идеје - сви корисници
-      "status_change_of_your_initiative": Промена статуса вашег предлога - сви корисници
-      "threshold_reached_for_admin": Предлог је достигао цензус за гласање - админи
-      "welcome": Е-порука добродошлице новим корисницима - свим корисницима
-      "admin_digest": Недељни преглед - админи
-      "moderator_digest": Недељни преглед - менаџери пројеката
-      "assignee_digest": Недељни преглед додељених идеја - администратори и пројектни менаџери
-      "user_digest": Недељни преглед - сви корисници
-      "your_proposed_initiatives_digest": Недељни преглед сопствених предлога - сви корисници
     schedules:
       weekly:
         "0": "Weekly, on Sundays at %{hourOfDay}"
@@ -565,9 +516,7 @@ sr-Cyrl:
       remaining_days: 'Преостали дана'
     admin_labels:
       recipient_role:
-        admins: 'To admins'
         admins_and_managers: 'To admins & managers'
-        managers: 'To managers'
         registered_users: 'To registered users'
       recipient_segment:
         admins: 'Admins'
@@ -578,18 +527,18 @@ sr-Cyrl:
         managers: 'Managers'
         admins_assigned_to_a_proposal: 'Admins assigned to a proposal'
         admins_and_managers_assigned_to_the_input: 'Admins & managers assigned to the input'
-        user_receiving_admin_rights: 'User receiving admin rights'
-        user_receiving_folder_moderator_rights: 'User receiving folder moderator rights'
-        user_receiving_project_moderator_rights: 'User receiving project moderator rights'
+        user_who_is_receiving_admin_rights: 'User who is receiving admin rights'
+        user_who_is_receiving_folder_moderator_rights: 'User who is receiving folder moderator rights'
+        user_who_is_receiving_project_moderator_rights: 'User who is receiving project moderator rights'
         user_who_commented: 'User who commented'
         user_who_is_mentioned: 'User who is mentioned'
         user_who_published_the_proposal: 'User who published the proposal'
         user_who_published_the_input: 'User who published the input'
         user_who_registers: 'User who registers'
         user_who_was_invited: 'User who was invited'
-        users_engaged_with_the_input: 'Users engaged with the input'
-        users_engaged_with_the_project: 'Users engaged with the project'
-        users_engaged_with_the_proposal: 'Users engaged with the proposal'
+        users_who_engaged_with_the_input: 'Users who engaged with the input'
+        users_who_engaged_with_the_project: 'Users who engaged with the project'
+        users_who_engaged_with_the_proposal: 'Users who engaged with the proposal'
       content_type:
         comments: 'Comments'
         content_moderation: 'Content moderation'
@@ -606,15 +555,15 @@ sr-Cyrl:
         input_is_assigned: 'Input is assigned'
         input_is_flagged_as_spam: 'Input is flagged as spam'
         input_is_updated: 'Input is updated'
-        input_status_is_changed: 'Input status is changed'
+        input_status_changes: 'Input status changes'
         new_input_is_published: 'New input is published'
-        new_proposal_is_published: 'New proposal is published'
-        project_changes_phase: 'Project changes phase'
+        new_proposal_is_posted: 'New proposal is posted'
+        project_phase_changes: 'Project phase changes'
         proposal_gets_reported_as_spam: 'Proposal gets reported as spam'
         proposal_is_assigned_to_admin: 'Proposal is assigned to admin'
         proposal_is_updated: 'Proposal is updated'
         proposal_is_upvoted_above_threshold: 'Proposal is upvoted above threshold'
-        proposal_status_is_changed: 'Proposal status is changed'
+        proposal_status_changes: 'Proposal status changes'
         user_comments: 'User comments'
         user_comments_on_input: 'User comments on input'
         user_comments_on_proposal: 'User comments on proposal'
@@ -622,8 +571,8 @@ sr-Cyrl:
         user_is_given_folder_moderator_rights: 'User is given folder moderator rights'
         user_is_given_project_moderator_rights: 'User is given project moderator rights'
         user_is_mentioned: 'User is mentioned'
-        user_publishes_an_input: 'User publishes an input'
-        user_publishes_a_proposal: 'User publishes a proposal'
+        input_is_published: 'Input is published'
+        proposal_is_published: 'Proposal is published'
         user_registers_for_the_first_time: 'User registers for the first time'
         user_replies_to_comment: 'User replies to comment'
         7_days_after_invite_is_sent: '7 days after invite is sent'
