@@ -23,7 +23,7 @@ const fetchAdminPublications = (filters: IQueryParameters) => {
     ...queryParameters
   } = filters;
   return fetcher<IAdminPublications>({
-    path: '/areas',
+    path: '/admin_publications',
     action: 'get',
     queryParams: {
       'page[number]': pageNumber || 1,

@@ -43,7 +43,7 @@ const ProjectAndFolderCards = ({
   const rootLevelOnly = !search || search.length === 0;
 
   const { counts } = useAdminPublicationsStatusCounts({
-    publicationStatusFilter,
+    publicationStatusFilter: publicationStatus,
     rootLevelOnly,
     removeNotAllowedParents: true,
     topicIds,
@@ -70,11 +70,12 @@ const ProjectAndFolderCards = ({
     setAreasIds(areas);
   };
 
-  const onChangePublicationStatus = (
-    publicationStatus: PublicationStatus[]
-  ) => {
-    setPublicationStatus(publicationStatus);
-  };
+  const onChangePublicationStatus = React.useCallback(
+    (publicationStatus: PublicationStatus[]) => {
+      setPublicationStatus(publicationStatus);
+    },
+    []
+  );
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
