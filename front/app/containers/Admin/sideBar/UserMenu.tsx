@@ -85,7 +85,6 @@ export const UserMenu = () => {
               display="flex"
               flex="1"
               flexDirection="column"
-              opacity={0.7}
               w="100%"
               ml="7px"
               overflow="hidden"
@@ -103,18 +102,20 @@ export const UserMenu = () => {
               >
                 {`${authUser.attributes.first_name} ${authUser.attributes.last_name}`}
               </Text>
-              <Text
-                color="white"
-                my="0px"
-                fontSize="xs"
-                textOverflow="ellipsis"
-                whiteSpace="nowrap"
-                overflow="hidden"
-                w="100%"
-                textAlign="left"
-              >
-                {formatMessage({ ...getRole(authUser) })}
-              </Text>
+              <Box opacity={0.5}>
+                <Text
+                  color="white"
+                  my="0px"
+                  fontSize="xs"
+                  textOverflow="ellipsis"
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  w="100%"
+                  textAlign="left"
+                >
+                  {formatMessage({ ...getRole(authUser) })}
+                </Text>
+              </Box>
             </Box>
             <Box ref={iconDivRef}>
               <Icon name="chevron-right" fill={colors.white} />

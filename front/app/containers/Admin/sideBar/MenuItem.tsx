@@ -13,7 +13,6 @@ import useFeatureFlags from 'hooks/useFeatureFlags';
 const Text = styled.div`
   flex: 1;
   color: #fff;
-  opacity: 0.7;
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 19px;
@@ -45,10 +44,6 @@ const MenuItemLink = styled(Link)`
   &.active,
   &.focus-visible {
     background: rgba(0, 0, 0, 0.3);
-
-    ${Text} {
-      opacity: 1;
-    }
   }
 
   &:not(.active) {

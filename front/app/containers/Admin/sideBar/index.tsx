@@ -65,7 +65,7 @@ const MenuInner = styled.nav`
   top: 0;
   bottom: 0;
   padding-bottom: 35px;
-  background: ${colors.blue700};
+  background: #003349;
 
   ${media.tablet`
     width: 80px;

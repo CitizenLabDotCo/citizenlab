@@ -42,7 +42,7 @@ export const SupportMenu = () => {
             >
               <Icon name="help" fill={colors.green400} width="24px" />
             </Box>
-            <Box display="flex" flex="1" flexDirection="column" opacity={0.7}>
+            <Box display="flex" flex="1" flexDirection="column">
               <Text
                 color="white"
                 ml="15px"

@@ -63,7 +63,7 @@ export const NotificationsPopup = () => {
               />
             </Box>
 
-            <Box display="flex" flex="1" flexDirection="column" opacity={0.7}>
+            <Box display="flex" flex="1" flexDirection="column">
               <Text
                 color="white"
                 ml="15px"
