@@ -1,7 +1,12 @@
 import React, { useState, useRef } from 'react';
 
 // components
-import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  Text,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
 import LanguageSelectorPopup from './LanguageSelectorPopup';
 
@@ -29,6 +34,7 @@ import { IUserData } from 'api/users/types';
 export const UserMenu = () => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
+  const isSmallerThanPhone = useBreakpoint('tablet');
   const locale = useLocale();
   const tenantLocales = !isNilOrError(appConfig)
     ? appConfig.data.attributes.settings.core.locales
@@ -66,7 +72,7 @@ export const UserMenu = () => {
       trigger={
         <StyledBox
           as="button"
-          width="100%"
+          width={isSmallerThanPhone ? '56px' : '100%'}
           display="flex"
           justifyContent="flex-start"
           onClick={() => setIsUserMenuPopupOpen(true)}
@@ -76,49 +82,52 @@ export const UserMenu = () => {
             display="flex"
             alignItems="center"
             w="100%"
-            pr="8px"
-            pl="16px"
-            py="10px"
+            p={isSmallerThanPhone ? '10px 0' : '10px 8px 10px 16px'}
+            justifyContent={isSmallerThanPhone ? 'center' : undefined}
           >
             <Avatar userId={authUser.id} size={24} addVerificationBadge />
-            <Box
-              display="flex"
-              flex="1"
-              flexDirection="column"
-              w="100%"
-              ml="7px"
-              overflow="hidden"
-            >
-              <Text
-                color="white"
-                my="0px"
-                fontSize="m"
-                textOverflow="ellipsis"
-                whiteSpace="nowrap"
-                overflow="hidden"
+            {!isSmallerThanPhone && (
+              <Box
+                display="flex"
+                flex="1"
+                flexDirection="column"
                 w="100%"
-                textAlign="left"
-                fontWeight="bold"
+                ml="7px"
+                overflow="hidden"
               >
-                {`${authUser.attributes.first_name} ${authUser.attributes.last_name}`}
-              </Text>
-              <Box opacity={0.5}>
                 <Text
                   color="white"
                   my="0px"
-                  fontSize="xs"
+                  fontSize="m"
                   textOverflow="ellipsis"
                   whiteSpace="nowrap"
                   overflow="hidden"
                   w="100%"
                   textAlign="left"
+                  fontWeight="bold"
                 >
-                  {formatMessage({ ...getRole(authUser) })}
+                  {`${authUser.attributes.first_name} ${authUser.attributes.last_name}`}
                 </Text>
+                <Box opacity={0.5}>
+                  <Text
+                    color="white"
+                    my="0px"
+                    fontSize="xs"
+                    textOverflow="ellipsis"
+                    whiteSpace="nowrap"
+                    overflow="hidden"
+                    w="100%"
+                    textAlign="left"
+                  >
+                    {formatMessage({ ...getRole(authUser) })}
+                  </Text>
+                </Box>
               </Box>
-            </Box>
+            )}
             <Box ref={iconDivRef}>
-              <Icon name="chevron-right" fill={colors.white} />
+              {!isSmallerThanPhone && (
+                <Icon name="chevron-right" fill={colors.white} />
+              )}
             </Box>
           </Box>
         </StyledBox>

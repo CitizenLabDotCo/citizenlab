@@ -1,7 +1,13 @@
 import React, { useState, useRef } from 'react';
 
 // components
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  Text,
+  colors,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
 import Notifications from 'containers/MainHeader/NotificationMenu/components/Notifications';
 
@@ -20,6 +26,7 @@ import useAuthUser from 'hooks/useAuthUser';
 
 export const NotificationsPopup = () => {
   const { formatMessage } = useIntl();
+  const isSmallerThanPhone = useBreakpoint('tablet');
   const iconDivRef = useRef<HTMLDivElement | null>(null);
   const authUser = useAuthUser();
   const [isNotificationsPopupOpen, setIsNotificationsPopupOpen] =
@@ -36,7 +43,7 @@ export const NotificationsPopup = () => {
       trigger={
         <StyledBox
           as="button"
-          width="100%"
+          width={isSmallerThanPhone ? '56px' : '100%'}
           display="flex"
           justifyContent="flex-start"
           onClick={() => setIsNotificationsPopupOpen(!isNotificationsPopupOpen)}
@@ -46,9 +53,8 @@ export const NotificationsPopup = () => {
             display="flex"
             alignItems="center"
             w="100%"
-            pr="8px"
-            pl="16px"
-            py="10px"
+            p={isSmallerThanPhone ? '10px 0' : '10px 8px 10px 16px'}
+            justifyContent={isSmallerThanPhone ? 'center' : undefined}
           >
             <Box
               display="flex"
@@ -62,19 +68,25 @@ export const NotificationsPopup = () => {
                 width="24px"
               />
             </Box>
-
-            <Box display="flex" flex="1" flexDirection="column">
-              <Text
-                color="white"
-                ml="15px"
-                fontSize="base"
-                textAlign="left"
-                my="0px"
-              >
-                {formatMessage({ ...messages.notifications })}
-              </Text>
-            </Box>
-            <Box ref={iconDivRef} w="16px" h="18px">
+            {!isSmallerThanPhone && (
+              <>
+                <Text
+                  color="white"
+                  ml="15px"
+                  fontSize="base"
+                  textAlign="left"
+                  my="0px"
+                  w="100%"
+                >
+                  {formatMessage({ ...messages.notifications })}
+                </Text>
+              </>
+            )}
+            <Box
+              ref={iconDivRef}
+              w={isSmallerThanPhone ? '0px' : '16px'}
+              h={isSmallerThanPhone ? '0px' : '18px'}
+            >
               {unreadNotificationsCount > 0 && (
                 <Box
                   background={colors.red500}
@@ -99,7 +111,7 @@ export const NotificationsPopup = () => {
       position="top right"
       context={iconDivRef}
       positionFixed
-      offset={[32, -60]}
+      offset={[28, -60]}
       basic
       wide
     >

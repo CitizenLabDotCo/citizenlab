@@ -1,7 +1,12 @@
 import React, { useRef } from 'react';
 
 // components
-import { Icon, Box, Text } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  Box,
+  Text,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
 
 // i18n
@@ -14,6 +19,7 @@ import { ItemMenu, StyledBox, StyleIconBox } from './styles';
 
 export const SupportMenu = () => {
   const { formatMessage } = useIntl();
+  const isSmallerThanPhone = useBreakpoint('tablet');
   const iconDivRef = useRef<HTMLDivElement | null>(null);
 
   return (
@@ -21,7 +27,7 @@ export const SupportMenu = () => {
       trigger={
         <StyledBox
           as="button"
-          width="100%"
+          width={isSmallerThanPhone ? '56px' : '100%'}
           display="flex"
           justifyContent="flex-start"
           p="0px"
@@ -30,9 +36,8 @@ export const SupportMenu = () => {
             display="flex"
             alignItems="center"
             w="100%"
-            pr="8px"
-            pl="16px"
-            py="10px"
+            p={isSmallerThanPhone ? '10px 0' : '10px 8px 10px 16px'}
+            justifyContent={isSmallerThanPhone ? 'center' : undefined}
           >
             <Box
               display="flex"
@@ -42,20 +47,23 @@ export const SupportMenu = () => {
             >
               <Icon name="help" fill={colors.green400} width="24px" />
             </Box>
-            <Box display="flex" flex="1" flexDirection="column">
-              <Text
-                color="white"
-                ml="15px"
-                fontSize="base"
-                textAlign="left"
-                my="0px"
-              >
-                {formatMessage({ ...messages.support })}
-              </Text>
-            </Box>
-            <Box ref={iconDivRef}>
-              <Icon name="chevron-right" fill={colors.white} />
-            </Box>
+            {!isSmallerThanPhone && (
+              <>
+                <Text
+                  color="white"
+                  ml="15px"
+                  fontSize="base"
+                  textAlign="left"
+                  my="0px"
+                  w="100%"
+                >
+                  {formatMessage({ ...messages.support })}
+                </Text>
+                <Box ref={iconDivRef}>
+                  <Icon name="chevron-right" fill={colors.white} />
+                </Box>
+              </>
+            )}
           </Box>
         </StyledBox>
       }
