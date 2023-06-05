@@ -12,7 +12,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentOnVotedIdea do
   describe '#generate_commands' do
     let(:campaign) { create(:new_comment_on_voted_idea_campaign) }
     let(:idea) { create(:idea) }
-    let!(:vote) { create(:vote, votable: idea) }
+    let!(:reaction) { create(:reaction, reactable: idea) }
     let(:comment) { create(:comment, post: idea) }
     let(:activity) { create(:activity, item: comment, action: 'created', user: comment.author) }
 

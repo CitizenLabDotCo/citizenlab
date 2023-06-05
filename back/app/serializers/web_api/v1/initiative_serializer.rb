@@ -28,7 +28,7 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
 
   has_one :user_vote, if: proc { |object, params|
     signed_in? object, params
-  }, record_type: :vote, serializer: WebApi::V1::VoteSerializer do |object, params|
+  }, record_type: :vote, serializer: WebApi::V1::ReactionSerializer do |object, params|
     cached_user_vote object, params
   end
 

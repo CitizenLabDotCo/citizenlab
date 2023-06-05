@@ -25,8 +25,8 @@ describe Analytics::QueryRunnerService do
     it 'return groups with aggregations' do
       idea = create(:idea)
       initiative = create(:initiative)
-      create_list(:vote, 2, votable: idea)
-      create_list(:vote, 1, votable: initiative)
+      create_list(:reaction, 2, reactable: idea)
+      create_list(:reaction, 1, reactable: initiative)
 
       query_param = ActionController::Parameters.new(
         fact: 'post',

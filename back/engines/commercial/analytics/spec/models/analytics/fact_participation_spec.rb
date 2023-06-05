@@ -56,7 +56,7 @@ RSpec.describe Analytics::FactParticipation do
     end
 
     context 'when a vote is added' do
-      let!(:vote) { create(:vote) }
+      let!(:reaction) { create(:reaction) }
 
       it 'is also available as a participation fact' do
         described_class.find(vote.id)

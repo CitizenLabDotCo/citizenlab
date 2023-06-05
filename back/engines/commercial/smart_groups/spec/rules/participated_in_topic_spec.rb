@@ -59,7 +59,7 @@ describe SmartGroups::Rules::ParticipatedInTopic do
       @user4 = create(:user)
       @idea1 = create(:idea, topics: [@topic1], author: @user1, project: @project)
       @comment = create(:comment, post: @idea1, author: @user3)
-      @vote = create(:vote, votable: @comment, user: @user2)
+      @vote = create(:reaction, reactable: @comment, user: @user2)
       @idea2 = create(:idea, topics: [@topic2], author: @user3, project: @project)
     end
 

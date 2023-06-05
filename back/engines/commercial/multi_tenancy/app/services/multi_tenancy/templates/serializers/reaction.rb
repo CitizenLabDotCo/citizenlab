@@ -3,8 +3,8 @@
 module MultiTenancy
   module Templates
     module Serializers
-      class Vote < Base
-        ref_attributes %i[user votable]
+      class Reaction < Base
+        ref_attributes %i[user reactable]
         attribute :mode
       end
     end

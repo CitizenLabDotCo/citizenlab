@@ -17,8 +17,8 @@ Rails.application.routes.draw do
 
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
-      concern :votable do
-        resources :votes, except: [:update], shallow: true do
+      concern :reactable do
+        resources :reactions, except: [:update], shallow: true do
           post :up, on: :collection
           post :down, on: :collection
         end

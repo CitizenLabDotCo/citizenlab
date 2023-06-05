@@ -12,7 +12,7 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
     let!(:admin) { create(:admin) }
     let!(:old_ideas) { create_list(:idea, 2, published_at: 20.days.ago) }
     let!(:new_ideas) { create_list(:idea, 3, published_at: 1.day.ago) }
-    let!(:vote) { create(:vote, mode: 'up', votable: new_ideas.first) }
+    let!(:reaction) { create(:reaction, mode: 'up', reactable: new_ideas.first) }
     let!(:draft) { create(:idea, publication_status: 'draft') }
 
     it 'generates a command with the desired payload and tracked content' do

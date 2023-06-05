@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::VotesController < ApplicationController
+class WebApi::V1::ReactionsController < ApplicationController
   before_action :set_vote, only: %i[show destroy]
   before_action :set_reactable_type_and_id, only: %i[index create up down]
   skip_before_action :authenticate_user
@@ -12,11 +12,11 @@ class WebApi::V1::VotesController < ApplicationController
       .where(reactable_type: @reactable_type, reactable_id: @reactable_id)
     @votes = paginate @votes
 
-    render json: linked_json(@votes, WebApi::V1::VoteSerializer, params: jsonapi_serializer_params)
+    render json: linked_json(@votes, WebApi::V1::ReactionSerializer, params: jsonapi_serializer_params)
   end
 
   def show
-    render json: WebApi::V1::VoteSerializer.new(@vote, params: jsonapi_serializer_params).serializable_hash
+    render json: WebApi::V1::ReactionSerializer.new(@vote, params: jsonapi_serializer_params).serializable_hash
   end
 
   def create
@@ -38,7 +38,7 @@ class WebApi::V1::VotesController < ApplicationController
 
     if saved
       SideFxVoteService.new.after_create(@vote, current_user)
-      render json: WebApi::V1::VoteSerializer.new(
+      render json: WebApi::V1::ReactionSerializer.new(
         @vote,
         params: jsonapi_serializer_params
       ).serializable_hash, status: :created
@@ -97,7 +97,7 @@ class WebApi::V1::VotesController < ApplicationController
 
         if @new_vote.save
           SideFxVoteService.new.after_create(@new_vote, current_user)
-          render json: WebApi::V1::VoteSerializer.new(
+          render json: WebApi::V1::ReactionSerializer.new(
             @vote,
             params: jsonapi_serializer_params
           ).serializable_hash, status: :created

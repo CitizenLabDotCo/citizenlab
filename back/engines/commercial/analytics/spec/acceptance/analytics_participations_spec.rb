@@ -32,7 +32,7 @@ resource 'Analytics - FactParticipations' do
       # Create participations (3 by citizens, 1 by admin)
       idea = create(:idea, created_at: dates[0])
       create(:comment, created_at: dates[2], post: idea)
-      create(:vote, created_at: dates[3], user: create(:admin), votable: idea)
+      create(:reaction, created_at: dates[3], user: create(:admin), reactable: idea)
       create(:initiative, created_at: dates[1])
     end
 

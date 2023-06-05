@@ -13,7 +13,7 @@ RSpec.describe EmailCampaigns::Campaigns::StatusChangeOfVotedIdea do
     let(:campaign) { create(:status_change_of_voted_idea_campaign) }
     let(:old_status) { create(:idea_status) }
     let(:idea) { create(:idea, idea_status: create(:idea_status)) }
-    let!(:vote) { create(:vote, votable: idea) }
+    let!(:reaction) { create(:reaction, reactable: idea) }
     let(:initiator) { create(:admin) }
     let(:activity) do
       create(
