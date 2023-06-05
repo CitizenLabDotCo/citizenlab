@@ -143,4 +143,75 @@ describe 'clave_unica verification' do
 
     expect(response).to redirect_to('/en/complete-signup?pathname=%2Fwhatever-page')
   end
+
+  context 'when phone registration enabled' do
+    before do
+      configuration = AppConfiguration.instance
+      configuration.settings['password_login'] = {
+        'phone' => true,
+        'allowed' => true,
+        'enabled' => true,
+        'enable_signup' => true,
+        'minimum_length' => 8,
+        'phone_email_pattern' => 'phone+__PHONE__@test.com'
+      }
+      configuration.save!
+    end
+
+    context 'email confirmation enabled' do
+      before do
+        configuration = AppConfiguration.instance
+        configuration.settings['user_confirmation'] = {
+          'enabled' => true,
+          'allowed' => true
+        }
+        configuration.save!
+      end
+
+      it 'creates user that can confirm her email' do
+        get '/auth/clave_unica?pathname=/whatever-page'
+        follow_redirect!
+
+        user = User.order(created_at: :asc).last
+        expect_to_create_verified_user(user)
+
+        token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
+        headers = { 'Authorization' => "Bearer #{token}" }
+        post '/web_api/v1/user/resend_code', params: { new_email: 'newcoolemail@example.org' }, headers: headers
+        expect(response).to have_http_status(:ok)
+        expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
+        expect(user.confirmation_required?).to be(true)
+
+        post '/web_api/v1/user/confirm', params: { confirmation: { code: user.email_confirmation_code } }, headers: headers
+        expect(response).to have_http_status(:ok)
+        expect(user.reload.confirmation_required?).to be(false)
+      end
+    end
+
+    context 'email confirmation disabled' do
+      before do
+        configuration = AppConfiguration.instance
+        configuration.settings['user_confirmation'] = {
+          'enabled' => false,
+          'allowed' => false
+        }
+        configuration.save!
+      end
+
+      it 'creates user that can update her email' do
+        get '/auth/clave_unica?pathname=/whatever-page'
+        follow_redirect!
+
+        user = User.order(created_at: :asc).last
+        expect_to_create_verified_user(user)
+
+        token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
+        headers = { 'Authorization' => "Bearer #{token}" }
+        patch "/web_api/v1/users/#{user.id}", params: { user: { email: 'newcoolemail@example.org' } }, headers: headers
+        expect(response).to have_http_status(:ok)
+        expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
+        expect(user.confirmation_required?).to be(false)
+      end
+    end
+  end
 end
