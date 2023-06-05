@@ -8,7 +8,7 @@ import {
 } from 'services/adminPublications';
 
 // typings
-import { BaseProps } from 'hooks/useAdminPublications';
+import { IQueryParameters } from 'api/admin_publications/types';
 import { PublicationStatus } from 'api/projects/types';
 
 // utils
@@ -26,7 +26,7 @@ export default function useAdminPublicationsStatusCounts({
   removeNotAllowedParents = false,
   onlyProjects = false,
   search = '',
-}: BaseProps) {
+}: IQueryParameters) {
   const [counts, setCounts] = useState<
     IStatusCounts | undefined | null | Error
   >(undefined);
@@ -35,7 +35,7 @@ export default function useAdminPublicationsStatusCounts({
 
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
-  >(publicationStatusFilter);
+  >(publicationStatusFilter || []);
 
   // topicIds and areaIds are usually based off other
   // requests, and will initially be null/undefined.

@@ -1,14 +1,14 @@
 import React from 'react';
 import ProjectFolderRow, { Props } from '.';
 import { render, screen } from 'utils/testUtils/rtl';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IUserData } from 'api/users/types';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
 const folderId = 'folderId';
-const folderPublication: IAdminPublicationContent = {
+
+const folderPublication: IAdminPublicationData = {
   id: '1',
-  publicationType: 'folder' as const,
-  publicationId: folderId,
+  type: 'admin_publication',
   attributes: {
     ordering: 0,
     depth: 0,
@@ -84,7 +84,8 @@ describe('ProjectFolderRow', () => {
       mockUserData.attributes.roles = [
         {
           type: 'project_folder_moderator',
-          project_folder_id: folderPublication.publicationId,
+          project_folder_id:
+            folderPublication.relationships.publication.data.id,
         },
       ];
 
@@ -116,7 +117,8 @@ describe('ProjectFolderRow', () => {
       mockUserData.attributes.roles = [
         {
           type: 'project_folder_moderator',
-          project_folder_id: folderPublication.publicationId,
+          project_folder_id:
+            folderPublication.relationships.publication.data.id,
         },
       ];
       render(<ProjectFolderRow {...props} />);

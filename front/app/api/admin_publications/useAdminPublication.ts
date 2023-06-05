@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import adminPublicationsKeys from './keys';
@@ -11,7 +11,7 @@ const fetchAdminPublication = ({ id }: { id: string | null }) =>
   });
 
 const useAdminPublication = (id: string | null) => {
-  return useInfiniteQuery<
+  return useQuery<
     IAdminPublication,
     CLErrors,
     IAdminPublication,

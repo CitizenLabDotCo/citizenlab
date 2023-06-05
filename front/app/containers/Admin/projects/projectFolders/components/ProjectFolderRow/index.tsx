@@ -122,12 +122,15 @@ const ProjectFolderRow = memo<Props>(
                       'en-GB'
                     ] || ''
                   }`}
-                  linkTo={`/admin/projects/folders/${publication.publicationId}`}
+                  linkTo={`/admin/projects/folders/${publication.relationships.publication.data.id}`}
                   buttonStyle="secondary"
                   icon="edit"
                   disabled={
                     isBeingDeleted ||
-                    !userModeratesFolder(authUser, publication.publicationId)
+                    !userModeratesFolder(
+                      authUser,
+                      publication.relationships.publication.data.id
+                    )
                   }
                   data-testid="folder-row-edit-button"
                 >
@@ -135,7 +138,7 @@ const ProjectFolderRow = memo<Props>(
                 </RowButton>
               </FolderRowContent>
               <FolderMoreActionsMenu
-                folderId={publication.publicationId}
+                folderId={publication.relationships.publication.data.id}
                 setError={setFolderDeletionError}
                 setIsRunningAction={setIsBeingDeleted}
               />
