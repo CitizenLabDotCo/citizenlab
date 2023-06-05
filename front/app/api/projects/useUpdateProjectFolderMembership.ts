@@ -3,9 +3,8 @@ import projectsKeys from './keys';
 import { IProject } from './types';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { CLErrors } from 'typings';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
 import projectFoldersKeys from 'api/project_folders/keys';
+import adminPublicationsKeys from 'api/admin_publications/keys';
 
 interface Params {
   projectId: string;
@@ -41,9 +40,8 @@ const useUpdateProjectFolderMembership = () => {
           queryKey: projectFoldersKeys.item({ id: oldProjectFolderId }),
         });
       }
-
-      await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/admin_publications`],
+      queryClient.invalidateQueries({
+        queryKey: adminPublicationsKeys.lists(),
       });
     },
   });

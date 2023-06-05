@@ -7,6 +7,7 @@ import { API_PATH } from 'containers/App/constants';
 import projectsKeys from './keys';
 import topicsKeys from 'api/topics/keys';
 import areasKeys from 'api/areas/keys';
+import adminPublicationsKeys from 'api/admin_publications/keys';
 
 export const updateProject = async ({
   projectId,
@@ -27,9 +28,12 @@ const useUpdateProject = () => {
       queryClient.invalidateQueries({ queryKey: topicsKeys.lists() });
       queryClient.invalidateQueries({ queryKey: areasKeys.lists() });
 
+      queryClient.invalidateQueries({
+        queryKey: adminPublicationsKeys.lists(),
+      });
+
       await streams.fetchAllWith({
         apiEndpoint: [
-          `${API_PATH}/admin_publications`,
           `${API_PATH}/admin_publications/status_counts`,
           `${API_PATH}/users/me`,
         ],
