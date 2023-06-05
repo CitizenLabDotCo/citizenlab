@@ -19,3 +19,7 @@ export interface IStatusCounts {
     };
   };
 }
+
+export interface IStatusCountsAll extends IStatusCountsBase {
+  all: number;
+}

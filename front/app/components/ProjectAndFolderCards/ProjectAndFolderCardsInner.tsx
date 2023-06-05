@@ -24,7 +24,7 @@ import { getAvailableTabs, getCurrentTab } from './utils';
 // typings
 import { PublicationTab, Props as BaseProps } from '.';
 import { IAdminPublicationData } from 'api/admin_publications/types';
-import { IStatusCountsBase } from 'api/admin_publications_status_counts/types';
+import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 
 const Container = styled.div`
   display: flex;
@@ -36,13 +36,13 @@ const StyledTopbar = styled(Topbar)`
 `;
 
 interface Props extends BaseProps {
-  statusCounts: IStatusCountsBase & { all: number };
+  statusCounts: IStatusCountsAll;
   onChangeTopics?: (topics: string[]) => void;
   onChangeAreas?: (areas: string[]) => void;
   onChangeSearch?: (search: string | null) => void;
   showFilters: boolean;
   adminPublications: IAdminPublicationData[];
-  statusCountsWithoutFilters: IStatusCountsBase & { all: number };
+  statusCountsWithoutFilters: IStatusCountsAll;
   onChangePublicationStatus?: (publicationStatus: PublicationTab[]) => void;
   onLoadMore?: () => void;
   loadingInitial?: boolean;
