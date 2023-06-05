@@ -1293,7 +1293,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Ako se ne doda nikakva logika, upitnik će slijediti svoj uobičajeni tijek. Za više informacija posjetite {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText2": "Ako se odgovoru ne doda nikakva logika, upitnik će slijediti svoj uobičajeni tijek. Dodavanjem logike pitanju ono će biti obavezno prema zadanim postavkama. Za više informacija posjetite {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Sigurno želite napustiti?",
-  "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo1": "Vaša trenutna promjena neće biti spremljena.",
+  "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Vaše trenutne promjene neće biti spremljene.",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Neophodno",
   "app.containers.AdminPage.ProjectEdit.survey.selectText2": "Višestruki izbor – odaberite jedan",
   "app.containers.AdminPage.ProjectEdit.survey.successMessage2": "Upitnik je uspješno spremljen",
