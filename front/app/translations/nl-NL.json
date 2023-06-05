@@ -6,7 +6,7 @@
   "UI.FormComponents.buttonEnabled": "Verzendknop ingeschakeld",
   "UI.FormComponents.optional": "optioneel",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "Geen voorstellen gevonden",
-  "app.closeIconButton.a11y_buttonActionMessage": "Sluiten",
+  "app.closeIconButton.a11y_buttonActionMessage": "Test",
   "app.components.AssignBudgetControl.a11y_price": "Prijs:",
   "app.components.AssignBudgetControl.add": "Toevoegen",
   "app.components.AssignBudgetControl.addToMyBasket": "Voeg toe aan mijn mandje",
