@@ -51,15 +51,6 @@ export const NotificationsPopup = () => {
               alignItems="center"
               justifyContent="center"
             >
-              {unreadNotificationsCount > 0 && (
-                <Box position="relative">
-                  <Box position="absolute" top="-22px" left="10px">
-                    <NewNotificationsIndicator>
-                      {unreadNotificationsCount}
-                    </NewNotificationsIndicator>
-                  </Box>
-                </Box>
-              )}
               <Icon name="notification-outline" fill={colors.blue400} />
             </Box>
 
@@ -68,7 +59,22 @@ export const NotificationsPopup = () => {
                 {formatMessage({ ...messages.notifications })}
               </Text>
             </Box>
-            <Box ref={iconDivRef} />
+            <Box ref={iconDivRef} w="16px" h="18px">
+              {unreadNotificationsCount > 0 && (
+                <Box
+                  background={colors.red500}
+                  p="0px 4px"
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="flex-start"
+                  borderRadius="2px"
+                >
+                  <Text color="white" my="0px" fontSize="xs">
+                    {unreadNotificationsCount}
+                  </Text>
+                </Box>
+              )}
+            </Box>
           </Box>
         </StyledBox>
       }
@@ -78,7 +84,7 @@ export const NotificationsPopup = () => {
       position="top right"
       context={iconDivRef}
       positionFixed
-      offset={[16, -60]}
+      offset={[32, -60]}
       basic
       wide
     >
