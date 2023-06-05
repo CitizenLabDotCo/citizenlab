@@ -34,8 +34,9 @@ export interface IInviteData {
   id: string;
   type: 'invite';
   attributes: {
-    token: 'string';
-    accepted_at: string;
+    token: string;
+    accepted_at: string | null;
+    invite_text: string | null;
     updated_at: string;
     created_at: string;
     activate_invite_url: string;
@@ -44,14 +45,14 @@ export interface IInviteData {
     invitee: {
       data: {
         id: string;
-        type: 'votable';
+        type: 'votable' | 'user';
       };
     };
     inviter: {
       data: {
         id: string;
         type: 'user';
-      };
+      } | null;
     };
   };
 }

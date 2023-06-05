@@ -1,4 +1,6 @@
-export const invitesData = [
+import { IInviteData } from '../types';
+
+export const invitesData: IInviteData[] = [
   {
     id: 'ce2bdc6a-eaf1-463a-9fef-8b69e9add0e6',
     type: 'invite',
