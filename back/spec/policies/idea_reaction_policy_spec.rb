@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe IdeaVotePolicy do
+describe IdeaReactionPolicy do
   subject(:policy) { described_class.new(user, vote) }
 
-  let(:scope) { IdeaVotePolicy::Scope.new(user, Reaction) }
+  let(:scope) { IdeaReactionPolicy::Scope.new(user, Reaction) }
   let(:project) { create(:continuous_project) }
   let(:reactable) { create(:idea, project: project) }
   let!(:reaction) { create(:reaction, reactable: reactable) }

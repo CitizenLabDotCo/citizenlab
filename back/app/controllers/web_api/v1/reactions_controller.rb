@@ -112,7 +112,7 @@ class WebApi::V1::ReactionsController < ApplicationController
     @reactable_type = params[:reactable]
     @reactable_id = params[:"#{@reactable_type.underscore}_id"]
     @policy_class = case @reactable_type
-    when 'Idea' then IdeaVotePolicy
+    when 'Idea' then IdeaReactionPolicy
     when 'Comment' then CommentVotePolicy
     when 'Initiative' then InitiativeVotePolicy
     else raise "#{@reactable_type} has no voting policy defined"
@@ -123,7 +123,7 @@ class WebApi::V1::ReactionsController < ApplicationController
   def derive_policy_class(reactable)
     case reactable
     when Idea
-      IdeaVotePolicy
+      IdeaReactionPolicy
     when Comment
       CommentVotePolicy
     when Initiative
