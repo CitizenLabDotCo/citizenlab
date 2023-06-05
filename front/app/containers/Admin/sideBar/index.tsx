@@ -64,6 +64,7 @@ const MenuInner = styled.nav`
   position: fixed;
   top: 0;
   bottom: 0;
+  padding-bottom: 35px;
   background: ${colors.blue700};
 
   ${media.tablet`
