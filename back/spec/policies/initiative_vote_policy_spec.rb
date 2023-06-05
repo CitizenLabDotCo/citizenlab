@@ -5,9 +5,9 @@ require 'rails_helper'
 describe InitiativeVotePolicy do
   subject(:policy) { described_class.new(user, vote) }
 
-  let(:scope) { InitiativeVotePolicy::Scope.new(user, Vote) }
-  let(:votable) { create(:initiative) }
-  let!(:vote) { create(:vote, votable: votable) }
+  let(:scope) { InitiativeVotePolicy::Scope.new(user, Reaction) }
+  let(:reactable) { create(:initiative) }
+  let!(:reaction) { create(:reaction, reactable: reactable) }
 
   context 'for a visitor' do
     let(:user) { nil }
@@ -53,7 +53,7 @@ describe InitiativeVotePolicy do
 
   context 'for blocked vote owner' do
     let(:user) { create(:user, block_end_at: 5.days.from_now) }
-    let(:vote) { create(:vote, user: user, votable: votable) }
+    let(:reaction) { create(:reaction, user: user, reactable: reactable) }
 
     it_behaves_like 'policy for blocked user vote', down_authorized: false
   end

@@ -41,8 +41,8 @@ module MultiTenancy
           User.all.each do |u|
             r = rand(5)
             if r < 2
-              Vote.create!(votable: initiative, user: u, mode: 'up',
-                created_at: Faker::Date.between(from: initiative.published_at, to: Time.zone.now))
+              Reaction.create!(reactable: initiative, user: u, mode: 'up',
+                               created_at: Faker::Date.between(from: initiative.published_at, to: Time.zone.now))
             end
           end
 

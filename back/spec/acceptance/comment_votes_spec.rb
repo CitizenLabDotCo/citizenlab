@@ -13,7 +13,7 @@ resource 'Comment Votes' do
     @project = create(:continuous_project)
     @idea = create(:idea, project: @project)
     @comment = create(:comment, post: @idea)
-    @votes = create_list(:vote, 2, votable: @comment)
+    @votes = create_list(:reaction, 2, reactable: @comment)
   end
 
   get 'web_api/v1/comments/:comment_id/votes' do
@@ -44,7 +44,7 @@ resource 'Comment Votes' do
       @user = create(:user)
       header_token_for @user
 
-      @votes.first.votable.idea.update!(project: create(:project_with_current_phase))
+      @votes.first.reactable.idea.update!(project: create(:project_with_current_phase))
       do_request
 
       assert_status 401
@@ -52,11 +52,11 @@ resource 'Comment Votes' do
   end
 
   post 'web_api/v1/comments/:comment_id/votes' do
-    with_options scope: :vote do
+    with_options scope: :reaction do
       parameter :user_id, 'The user id of the user owning the vote. Signed in user by default', required: false
       parameter :mode, 'one of [up, down]', required: true
     end
-    ValidationErrorHelper.new.error_fields(self, Vote)
+    ValidationErrorHelper.new.error_fields(self, Reaction)
 
     let(:comment_id) { @comment.id }
     let(:mode) { 'up' }
@@ -144,12 +144,12 @@ resource 'Comment Votes' do
   end
 
   delete 'web_api/v1/votes/:id' do
-    let(:vote) { create(:vote, user: @user, votable: @comment) }
+    let(:reaction) { create(:reaction, user: @user, reactable: @comment) }
     let(:id) { vote.id }
 
     example_request 'Delete a vote from a comment' do
       expect(response_status).to eq 200
-      expect { Vote.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Reaction.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

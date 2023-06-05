@@ -4,11 +4,11 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   @@multiloc_service = MultilocService.new
 
   def votes_count
-    count = StatVotePolicy::Scope.new(current_user, Vote).resolve
-      .where(votable_type: 'Idea')
-      .where(created_at: @start_at..@end_at)
-      .group(:mode)
-      .count
+    count = StatVotePolicy::Scope.new(current_user, Reaction).resolve
+                                 .where(reactable_type: 'Idea')
+                                 .where(created_at: @start_at..@end_at)
+                                 .group(:mode)
+                                 .count
     render json: {
       up: count['up'],
       down: count['down'],
@@ -17,9 +17,9 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   end
 
   def votes_by_topic_serie
-    votes = StatVotePolicy::Scope.new(current_user, Vote).resolve
-      .where(votable_type: 'Idea')
-      .joins('JOIN ideas ON ideas.id = votes.votable_id')
+    votes = StatVotePolicy::Scope.new(current_user, Reaction).resolve
+                                 .where(reactable_type: 'Idea')
+                                 .joins('JOIN ideas ON ideas.id = votes.reactable_id')
 
     votes = apply_group_filter(votes)
     votes = apply_project_filter(votes)
@@ -55,9 +55,9 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   end
 
   def votes_by_project_serie
-    votes = StatVotePolicy::Scope.new(current_user, Vote).resolve
-      .where(votable_type: 'Idea')
-      .joins('JOIN ideas ON ideas.id = votes.votable_id')
+    votes = StatVotePolicy::Scope.new(current_user, Reaction).resolve
+                                 .where(reactable_type: 'Idea')
+                                 .joins('JOIN ideas ON ideas.id = votes.reactable_id')
 
     votes = apply_group_filter(votes)
     votes = apply_topic_filter(votes)

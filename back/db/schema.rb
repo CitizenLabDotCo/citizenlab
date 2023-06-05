@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_01_085753) do
+ActiveRecord::Schema.define(version: 2023_06_05_133845) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1163,6 +1163,18 @@ ActiveRecord::Schema.define(version: 2023_06_01_085753) do
     t.jsonb "value", default: {}, null: false
   end
 
+  create_table "reactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "reactable_id"
+    t.string "reactable_type"
+    t.uuid "user_id"
+    t.string "mode", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reactable_type", "reactable_id", "user_id"], name: "index_reactions_on_reactable_type_and_reactable_id_and_user_id", unique: true
+    t.index ["reactable_type", "reactable_id"], name: "index_reactions_on_reactable_type_and_reactable_id"
+    t.index ["user_id"], name: "index_reactions_on_user_id"
+  end
+
   create_table "report_builder_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.uuid "owner_id", null: false
@@ -1371,18 +1383,6 @@ ActiveRecord::Schema.define(version: 2023_06_01_085753) do
     t.index ["user_id"], name: "index_volunteering_volunteers_on_user_id"
   end
 
-  create_table "votes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "votable_id"
-    t.string "votable_type"
-    t.uuid "user_id"
-    t.string "mode", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_votes_on_user_id"
-    t.index ["votable_type", "votable_id", "user_id"], name: "index_votes_on_votable_type_and_votable_id_and_user_id", unique: true
-    t.index ["votable_type", "votable_id"], name: "index_votes_on_votable_type_and_votable_id"
-  end
-
   add_foreign_key "activities", "users"
   add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_dimension_locales", column: "dimension_locale_id"
   add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_fact_visits", column: "fact_visit_id"
@@ -1477,6 +1477,7 @@ ActiveRecord::Schema.define(version: 2023_06_01_085753) do
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
+  add_foreign_key "reactions", "users"
   add_foreign_key "report_builder_reports", "users", column: "owner_id"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "static_page_files", "static_pages"
@@ -1484,7 +1485,6 @@ ActiveRecord::Schema.define(version: 2023_06_01_085753) do
   add_foreign_key "static_pages_topics", "topics"
   add_foreign_key "user_custom_fields_representativeness_ref_distributions", "custom_fields"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
-  add_foreign_key "votes", "users"
 
   create_view "idea_trending_infos", sql_definition: <<-SQL
       SELECT ideas.id AS idea_id,
@@ -1497,13 +1497,13 @@ ActiveRecord::Schema.define(version: 2023_06_01_085753) do
               count(comments.post_id) AS comments_count
              FROM comments
             GROUP BY comments.post_id) comments_at ON ((ideas.id = comments_at.idea_id)))
-       FULL JOIN ( SELECT votes.votable_id,
-              max(votes.created_at) AS last_upvoted_at,
-              avg(date_part('epoch'::text, votes.created_at)) AS mean_upvoted_at,
-              count(votes.votable_id) AS upvotes_count
-             FROM votes
-            WHERE (((votes.mode)::text = 'up'::text) AND ((votes.votable_type)::text = 'Idea'::text))
-            GROUP BY votes.votable_id) upvotes_at ON ((ideas.id = upvotes_at.votable_id)));
+       FULL JOIN ( SELECT reactions.reactable_id AS votable_id,
+              max(reactions.created_at) AS last_upvoted_at,
+              avg(date_part('epoch'::text, reactions.created_at)) AS mean_upvoted_at,
+              count(reactions.reactable_id) AS upvotes_count
+             FROM reactions
+            WHERE (((reactions.mode)::text = 'up'::text) AND ((reactions.reactable_type)::text = 'Idea'::text))
+            GROUP BY reactions.reactable_id) upvotes_at ON ((ideas.id = upvotes_at.votable_id)));
   SQL
   create_view "initiative_initiative_statuses", sql_definition: <<-SQL
       SELECT initiative_status_changes.initiative_id,
@@ -1815,10 +1815,10 @@ ActiveRecord::Schema.define(version: 2023_06_01_085753) do
               WHEN ((v.mode)::text = 'down'::text) THEN 1
               ELSE 0
           END AS downvotes_count
-     FROM ((((votes v
-       JOIN analytics_dimension_types adt ON ((((adt.name)::text = 'vote'::text) AND ((adt.parent)::text = lower((v.votable_type)::text)))))
-       LEFT JOIN ideas i ON ((i.id = v.votable_id)))
-       LEFT JOIN comments c ON ((c.id = v.votable_id)))
+     FROM ((((reactions v
+       JOIN analytics_dimension_types adt ON ((((adt.name)::text = 'vote'::text) AND ((adt.parent)::text = lower((v.reactable_type)::text)))))
+       LEFT JOIN ideas i ON ((i.id = v.reactable_id)))
+       LEFT JOIN comments c ON ((c.id = v.reactable_id)))
        LEFT JOIN ideas ic ON ((ic.id = c.post_id)))
   UNION ALL
    SELECT pr.id,

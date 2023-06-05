@@ -119,7 +119,7 @@ module ParticipationContext
   end
 
   def votes
-    Vote.where(votable: ideas)
+    Reaction.where(reactable: ideas)
   end
 
   def participation_context?

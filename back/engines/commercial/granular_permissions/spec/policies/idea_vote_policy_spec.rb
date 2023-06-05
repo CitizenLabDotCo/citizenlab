@@ -5,15 +5,15 @@ require 'rails_helper'
 describe IdeaVotePolicy do
   subject(:policy) { described_class.new(user, vote) }
 
-  let(:scope) { IdeaVotePolicy::Scope.new(user, Vote) }
+  let(:scope) { IdeaVotePolicy::Scope.new(user, Reaction) }
   let(:project) { create(:continuous_project) }
-  let(:votable) { create(:idea, project: project) }
-  let!(:vote) { create(:vote, votable: votable) }
+  let(:reactable) { create(:idea, project: project) }
+  let!(:reaction) { create(:reaction, reactable: reactable) }
 
   context 'for a mortal user who owns the vote on an idea in a project where voting is not permitted' do
     let!(:user) { create(:user) }
     let!(:idea) { create(:idea, project: project) }
-    let!(:vote) { create(:vote, votable: idea, user: user) }
+    let!(:reaction) { create(:reaction, reactable: idea, user: user) }
     let!(:project) do
       create(:continuous_project, with_permissions: true).tap do |project|
         project.permissions.find_by(action: 'voting_idea')

@@ -253,7 +253,7 @@ describe ParticipationContextService do
       it 'returns nil when voting is enabled in the current phase' do
         project = create(:project_with_current_phase, current_phase_attrs: { voting_enabled: true })
         idea = create(:idea, project: project, phases: project.phases)
-        vote = build(:vote, user: user, votable: idea)
+        vote = build(:reaction, user: user, reactable: idea)
 
         expect(service.idea_voting_disabled_reason_for(vote, user)).to be_nil
       end
@@ -261,7 +261,7 @@ describe ParticipationContextService do
       it "returns `project_inactive` when the timeline hasn't started yet" do
         project = create(:project_with_future_phases)
         idea = create(:idea, project: project, phases: project.phases)
-        vote = build(:vote, user: user, votable: idea)
+        vote = build(:reaction, user: user, reactable: idea)
 
         expect(service.idea_voting_disabled_reason_for(vote, user)).to eq 'project_inactive'
       end
@@ -274,7 +274,7 @@ describe ParticipationContextService do
         )
         idea_phases = project.phases.order(:start_at).take(2) + [project.phases.order(:start_at).last]
         idea = create(:idea, project: project, phases: idea_phases)
-        vote = build(:vote, user: user, votable: idea)
+        vote = build(:reaction, user: user, reactable: idea)
 
         expect(service.idea_voting_disabled_reason_for(vote, user)).to eq 'idea_not_in_current_phase'
       end
@@ -282,7 +282,7 @@ describe ParticipationContextService do
       it 'returns `voting_disabled` if voting is disabled' do
         project = create(:continuous_project, voting_enabled: false)
         idea = create(:idea, project: project)
-        vote = build(:vote, user: user, votable: idea)
+        vote = build(:reaction, user: user, reactable: idea)
 
         expect(service.idea_voting_disabled_reason_for(vote, user)).to eq 'voting_disabled'
       end
@@ -290,7 +290,7 @@ describe ParticipationContextService do
       it 'returns `downvoting_disabled` for a downvote if downvoting is disabled' do
         project = create(:continuous_project, voting_enabled: true, downvoting_enabled: false)
         idea = create(:idea, project: project)
-        vote = build(:vote, mode: 'down', user: user, votable: idea)
+        vote = build(:reaction, mode: 'down', user: user, reactable: idea)
 
         expect(service.idea_voting_disabled_reason_for(vote, user)).to eq 'downvoting_disabled'
       end
@@ -298,7 +298,7 @@ describe ParticipationContextService do
       it 'returns nil for an upvote if downvoting is disabled' do
         project = create(:continuous_project, voting_enabled: true, downvoting_enabled: false)
         idea = create(:idea, project: project)
-        vote = build(:vote, mode: 'up', user: user, votable: idea)
+        vote = build(:reaction, mode: 'up', user: user, reactable: idea)
 
         expect(service.idea_voting_disabled_reason_for(vote, user)).to be_nil
       end
@@ -306,7 +306,7 @@ describe ParticipationContextService do
       it "returns nil for a downvote, but while the mode is explicitely specified as 'up', even though downvoting is disabled" do
         project = create(:continuous_project, voting_enabled: true, downvoting_enabled: false)
         idea = create(:idea, project: project)
-        vote = build(:vote, mode: 'down', user: user, votable: idea)
+        vote = build(:reaction, mode: 'down', user: user, reactable: idea)
 
         expect(service.idea_voting_disabled_reason_for(vote, user, mode: 'up')).to be_nil
       end
@@ -314,8 +314,8 @@ describe ParticipationContextService do
       it 'returns `upvoting_limited_max_reached` if the upvoting limit was reached' do
         project = create(:continuous_project, voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 1)
         idea = create(:idea, project: project)
-        create(:vote, mode: 'up', user: user, votable: idea)
-        vote = build(:vote, mode: 'up', user: user, votable: idea)
+        create(:reaction, mode: 'up', user: user, reactable: idea)
+        vote = build(:reaction, mode: 'up', user: user, reactable: idea)
 
         expect(service.idea_voting_disabled_reason_for(vote, user)).to eq 'upvoting_limited_max_reached'
       end
@@ -323,8 +323,8 @@ describe ParticipationContextService do
       it 'returns nil if the upvoting limit was not reached' do
         project = create(:continuous_project, voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 1)
         idea = create(:idea, project: project)
-        create(:vote, mode: 'down', user: user, votable: idea)
-        vote = build(:vote, mode: 'up', user: user, votable: idea)
+        create(:reaction, mode: 'down', user: user, reactable: idea)
+        vote = build(:reaction, mode: 'up', user: user, reactable: idea)
 
         expect(service.idea_voting_disabled_reason_for(vote, user)).to be_nil
       end
@@ -333,8 +333,8 @@ describe ParticipationContextService do
         project = create(:continuous_project, voting_enabled: true,
           downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
         idea = create(:idea, project: project)
-        create(:vote, mode: 'down', user: user, votable: idea)
-        vote = build(:vote, mode: 'down', user: user, votable: idea)
+        create(:reaction, mode: 'down', user: user, reactable: idea)
+        vote = build(:reaction, mode: 'down', user: user, reactable: idea)
 
         expect(service.idea_voting_disabled_reason_for(vote, user)).to eq 'downvoting_limited_max_reached'
       end
@@ -343,8 +343,8 @@ describe ParticipationContextService do
         project = create(:continuous_project, voting_enabled: true,
           downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
         idea = create(:idea, project: project)
-        create(:vote, mode: 'up', user: user, votable: idea)
-        vote = build(:vote, mode: 'down', user: user, votable: idea)
+        create(:reaction, mode: 'up', user: user, reactable: idea)
+        vote = build(:reaction, mode: 'down', user: user, reactable: idea)
 
         expect(service.idea_voting_disabled_reason_for(vote, user)).to be_nil
       end
@@ -392,7 +392,7 @@ describe ParticipationContextService do
         project = create(:continuous_project, voting_enabled: true,
           downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
         idea = create(:idea, project: project)
-        create(:vote, mode: 'down', user: user, votable: idea)
+        create(:reaction, mode: 'down', user: user, reactable: idea)
 
         expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to be_nil
         expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'downvoting_limited_max_reached'
@@ -490,7 +490,7 @@ describe ParticipationContextService do
       it 'returns `upvoting_limited_max_reached` if the upvoting limit was reached' do
         project = create(:project_with_current_phase,
           current_phase_attrs: { voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 1 })
-        create(:vote, mode: 'up', user: user, votable: create(:idea, project: project, phases: project.phases))
+        create(:reaction, mode: 'up', user: user, reactable: create(:idea, project: project, phases: project.phases))
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'upvoting_limited_max_reached'
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to be_nil
@@ -529,7 +529,7 @@ describe ParticipationContextService do
         phase = project.phases.order(:start_at).first
         ideas = create_list(:idea, 2, project: project, phases: project.phases)
         ideas.each do |idea|
-          create(:vote, mode: 'up', votable: idea, user: user)
+          create(:reaction, mode: 'up', reactable: idea, user: user)
         end
 
         expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'up')).to eq 'upvoting_limited_max_reached'

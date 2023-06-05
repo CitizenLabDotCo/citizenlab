@@ -70,7 +70,7 @@ namespace :setup_and_support do
   desc 'Delete inactive non-participating users'
   task :delete_inactive_nonparticipating_users, [:host] => [:environment] do |_t, args|
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
-      participant_ids = Activity.pluck(:user_id) + Idea.pluck(:author_id) + Initiative.pluck(:author_id) + Comment.pluck(:author_id) + Vote.pluck(:user_id) + SpamReport.pluck(:user_id) + Basket.pluck(:user_id)
+      participant_ids = Activity.pluck(:user_id) + Idea.pluck(:author_id) + Initiative.pluck(:author_id) + Comment.pluck(:author_id) + Reaction.pluck(:user_id) + SpamReport.pluck(:user_id) + Basket.pluck(:user_id)
       participant_ids.uniq!
       users = User.normal_user.where.not(id: participant_ids)
       count = users.size
@@ -268,7 +268,7 @@ namespace :setup_and_support do
     emails = open(args[:url]).readlines.map(&:strip)
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       users = User.where email: emails
-      Vote.where(user: users).destroy_all
+      Reaction.where(user: users).destroy_all
       users.destroy_all
     end
   end
@@ -384,7 +384,7 @@ namespace :setup_and_support do
     attrs = AnonymizeUserService.new.anonymized_attributes AppConfiguration.instance.settings('core', 'locales')
     attrs.delete 'custom_field_values'
     user = User.create! attrs
-    Vote.create!(votable: votable, mode: mode, user: user)
+    Reaction.create!(votable: votable, mode: mode, user: user)
     user.destroy!
   end
 end

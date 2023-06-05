@@ -6,9 +6,9 @@ RSpec.describe Notifications::OfficialFeedbackOnVotedInitiative do
   describe 'make_notifications_on' do
     it 'generates exactly one notification for each user that voted on the initiative' do
       initiative = create(:initiative)
-      vote1 = create(:vote, votable: initiative)
-      vote2 = create(:vote, votable: initiative)
-      create(:vote)
+      vote1 = create(:reaction, reactable: initiative)
+      vote2 = create(:reaction, reactable: initiative)
+      create(:reaction)
 
       official_feedback = create(:official_feedback, post: initiative)
       activity = create(:activity, item: official_feedback, action: :created)

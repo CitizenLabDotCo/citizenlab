@@ -2,14 +2,14 @@
 
 class WebApi::V1::VotesController < ApplicationController
   before_action :set_vote, only: %i[show destroy]
-  before_action :set_votable_type_and_id, only: %i[index create up down]
+  before_action :set_reactable_type_and_id, only: %i[index create up down]
   skip_before_action :authenticate_user
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
-    @votes = policy_scope(Vote, policy_scope_class: @policy_class::Scope)
-      .where(votable_type: @votable_type, votable_id: @votable_id)
+    @votes = policy_scope(Reaction, policy_scope_class: @policy_class::Scope)
+      .where(reactable_type: @reactable_type, reactable_id: @reactable_id)
     @votes = paginate @votes
 
     render json: linked_json(@votes, WebApi::V1::VoteSerializer, params: jsonapi_serializer_params)
@@ -20,9 +20,9 @@ class WebApi::V1::VotesController < ApplicationController
   end
 
   def create
-    @vote = Vote.new(vote_params)
-    @vote.votable_type = @votable_type
-    @vote.votable_id = @votable_id
+    @vote = Reaction.new(vote_params)
+    @vote.reactable_type = @reactable_type
+    @vote.reactable_id = @reactable_id
     @vote.user ||= current_user
     authorize @vote, policy_class: @policy_class
 
@@ -69,10 +69,10 @@ class WebApi::V1::VotesController < ApplicationController
   private
 
   def upsert_vote(mode)
-    @old_vote = Vote.find_by(
+    @old_vote = Reaction.find_by(
       user: current_user,
-      votable_type: @votable_type,
-      votable_id: @votable_id
+      reactable_type: @reactable_type,
+      reactable_id: @reactable_id
     )
 
     if @old_vote && @old_vote.mode == mode
@@ -80,15 +80,15 @@ class WebApi::V1::VotesController < ApplicationController
       @old_vote.errors.add(:base, "already_#{mode}voted")
       render json: { errors: @old_vote.errors.details }, status: :unprocessable_entity
     else
-      Vote.transaction do
+      Reaction.transaction do
         if @old_vote
           old_vote_frozen = @old_vote.destroy
           SideFxVoteService.new.after_destroy(old_vote_frozen, current_user)
         end
-        @new_vote = Vote.new(
+        @new_vote = Reaction.new(
           user: current_user,
-          votable_type: @votable_type,
-          votable_id: @votable_id,
+          reactable_type: @reactable_type,
+          reactable_id: @reactable_id,
           mode: mode
         )
         authorize @new_vote, policy_class: @policy_class
@@ -108,20 +108,20 @@ class WebApi::V1::VotesController < ApplicationController
     end
   end
 
-  def set_votable_type_and_id
-    @votable_type = params[:votable]
-    @votable_id = params[:"#{@votable_type.underscore}_id"]
-    @policy_class = case @votable_type
+  def set_reactable_type_and_id
+    @reactable_type = params[:reactable]
+    @reactable_id = params[:"#{@reactable_type.underscore}_id"]
+    @policy_class = case @reactable_type
     when 'Idea' then IdeaVotePolicy
     when 'Comment' then CommentVotePolicy
     when 'Initiative' then InitiativeVotePolicy
-    else raise "#{@votable_type} has no voting policy defined"
+    else raise "#{@reactable_type} has no voting policy defined"
     end
-    raise 'must not be blank' if @votable_type.blank? || @votable_id.blank?
+    raise 'must not be blank' if @reactable_type.blank? || @reactable_id.blank?
   end
 
-  def derive_policy_class(votable)
-    case votable
+  def derive_policy_class(reactable)
+    case reactable
     when Idea
       IdeaVotePolicy
     when Comment
@@ -129,13 +129,13 @@ class WebApi::V1::VotesController < ApplicationController
     when Initiative
       InitiativeVotePolicy
     else
-      raise "Votable #{votable.class} has no voting policy defined"
+      raise "reactable #{reactable.class} has no voting policy defined"
     end
   end
 
   def set_vote
-    @vote = Vote.find(params[:id])
-    @policy_class = derive_policy_class(@vote.votable)
+    @vote = Reaction.find(params[:id])
+    @policy_class = derive_policy_class(@vote.reactable)
     authorize @vote, policy_class: @policy_class
   end
 

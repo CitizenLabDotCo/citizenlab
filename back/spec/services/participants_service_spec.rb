@@ -65,7 +65,7 @@ describe ParticipantsService do
         other_idea = create(:idea, project: other_project, author: others.first)
       end
       travel_to Time.now - 2.days do
-        create(:vote, votable: idea, mode: 'up', user: pp3)
+        create(:reaction, reactable: idea, mode: 'up', user: pp3)
         create(:comment, post: idea, author: pp2)
         create(:comment, post: other_idea, author: others.last)
         create(:basket, ideas: [idea], participation_context: project, user: pp5)
@@ -149,7 +149,7 @@ describe ParticipantsService do
         create(:idea, project: project, author: others.first)
       end
       travel_to Time.now - 2.days do
-        create(:vote, votable: idea, mode: 'up', user: pp3)
+        create(:reaction, reactable: idea, mode: 'up', user: pp3)
         create(:comment, post: idea, author: pp2)
         create(:comment, author: others.last)
       end
@@ -167,7 +167,7 @@ describe ParticipantsService do
 
       i = create(:idea, project: project, author: pp1)
       create(:comment, post: i, author: pp2)
-      create(:vote, votable: i, user: pp3)
+      create(:reaction, reactable: i, user: pp3)
       create(:basket, ideas: [i], participation_context: project, user: pp4)
       create(:idea, author: other)
 
@@ -200,8 +200,8 @@ describe ParticipantsService do
 
       i = create(:idea, project: project, author: pp1)
       c = create(:comment, post: i, author: pp2)
-      create(:vote, votable: i, user: pp3)
-      create(:vote, votable: c, user: pp4)
+      create(:reaction, reactable: i, user: pp3)
+      create(:reaction, reactable: c, user: pp4)
       create(:idea, author: other)
 
       expect(service.projects_participants([project], actions: [:comment_voting]).map(&:id)).to match_array [pp4.id]
@@ -231,7 +231,7 @@ describe ParticipantsService do
 
       i = create(:idea, project: project, author: pp1)
       create(:comment, post: i, author: pp2)
-      create(:vote, votable: i, user: pp3)
+      create(:reaction, reactable: i, user: pp3)
       create(:basket, ideas: [i], participation_context: project, user: pp4)
       create(:idea, author: other)
 

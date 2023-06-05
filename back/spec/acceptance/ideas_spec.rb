@@ -262,7 +262,7 @@ resource 'Ideas' do
         end
 
         example 'List all ideas includes the user_vote', document: false do
-          vote = create(:vote, user: @user)
+          vote = create(:reaction, user: @user)
 
           do_request
           json_response = json_parse(response_body)
@@ -521,7 +521,7 @@ resource 'Ideas' do
       let(:idea) { create(:idea) }
       let!(:baskets) { create_list(:basket, 2, ideas: [idea]) }
       let!(:topic) { create(:topic, ideas: [idea], projects: [idea.project]) }
-      let!(:user_vote) { create(:vote, user: @user, votable: idea) }
+      let!(:user_vote) { create(:reaction, user: @user, reactable: idea) }
       let(:id) { idea.id }
 
       example_request 'Get one idea by id' do

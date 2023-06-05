@@ -72,7 +72,7 @@ module Notifications
           .distinct
           .ids
         voter_ids = User.active
-          .joins(:votes).where(votes: { votable: official_feedback.post })
+          .joins(:votes).where(votes: { reactable: official_feedback.post })
           .distinct
           .ids
 

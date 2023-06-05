@@ -23,13 +23,13 @@ class CommentVotePolicy < ApplicationPolicy
   def create?
     return unless active? && owner?
 
-    reason = case record.votable&.post_type
+    reason = case record.reactable&.post_type
     when 'Idea'
-      ParticipationContextService.new.voting_disabled_reason_for_idea_comment(record.votable, user)
+      ParticipationContextService.new.voting_disabled_reason_for_idea_comment(record.reactable, user)
     when 'Initiative'
       denied_for_initiative_reason user
     else
-      raise ArgumentError, "Comment voting policy not implemented for #{record.votable&.post_type}"
+      raise ArgumentError, "Comment voting policy not implemented for #{record.reactable&.post_type}"
     end
 
     reason ? raise_not_authorized(reason) : true

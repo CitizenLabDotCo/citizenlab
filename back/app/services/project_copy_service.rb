@@ -418,8 +418,8 @@ class ProjectCopyService < TemplateService
     user_ids += Idea.where(id: idea_ids).pluck(:author_id)
     comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea').ids
     user_ids += Comment.where(id: comment_ids).pluck(:author_id)
-    vote_ids = Vote.where(votable_id: [idea_ids + comment_ids]).ids
-    user_ids += Vote.where(id: vote_ids).pluck(:user_id)
+    vote_ids = Reaction.where(reactable_id: [idea_ids + comment_ids]).ids
+    user_ids += Reaction.where(id: vote_ids).pluck(:user_id)
     participation_context_ids = [@project.id] + @project.phases.ids
     user_ids += Basket.where(participation_context_id: participation_context_ids).pluck(:user_id)
     user_ids += OfficialFeedback.where(post_id: idea_ids, post_type: 'Idea').pluck(:user_id)
@@ -649,9 +649,9 @@ class ProjectCopyService < TemplateService
   def yml_votes(shift_timestamps: 0)
     idea_ids = @project.ideas.published.where.not(author_id: nil).ids
     comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea')
-    Vote.where.not(user_id: nil).where(votable_id: idea_ids + comment_ids).map do |v|
+    Reaction.where.not(user_id: nil).where(reactable_id: idea_ids + comment_ids).map do |v|
       yml_vote = {
-        'votable_ref' => lookup_ref(v.votable_id, %i[idea comment]),
+        'reactable_ref' => lookup_ref(v.reactable_id, %i[idea comment]),
         'user_ref' => lookup_ref(v.user_id, :user),
         'mode' => v.mode,
         'created_at' => shift_timestamp(v.created_at, shift_timestamps)&.iso8601,

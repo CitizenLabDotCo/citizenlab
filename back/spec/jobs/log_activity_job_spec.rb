@@ -206,7 +206,7 @@ RSpec.describe LogActivityJob do
         Surveys::Response,
         Volunteering::Cause,
         Volunteering::Volunteer,
-        Vote
+        Reaction
       ]
     end
 

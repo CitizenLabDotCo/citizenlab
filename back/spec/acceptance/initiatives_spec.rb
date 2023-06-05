@@ -150,7 +150,7 @@ resource 'Initiatives' do
 
     example 'List all initiatives includes the user_vote', document: false do
       initiative = create(:initiative)
-      vote = create(:vote, votable: initiative, user: @user)
+      vote = create(:reaction, reactable: initiative, user: @user)
 
       do_request
       json_response = json_parse(response_body)

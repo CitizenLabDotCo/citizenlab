@@ -12,7 +12,7 @@ resource 'Votes' do
     header 'Content-Type', 'application/json'
     @project = create(:continuous_project)
     @idea = create(:idea, project: @project)
-    @votes = create_list(:vote, 2, votable: @idea)
+    @votes = create_list(:reaction, 2, reactable: @idea)
   end
 
   get 'web_api/v1/ideas/:idea_id/votes' do
@@ -41,11 +41,11 @@ resource 'Votes' do
   end
 
   post 'web_api/v1/ideas/:idea_id/votes' do
-    with_options scope: :vote do
+    with_options scope: :reaction do
       parameter :user_id, 'The user id of the user owning the vote. Signed in user by default', required: false
       parameter :mode, 'one of [up, down]', required: true
     end
-    ValidationErrorHelper.new.error_fields(self, Vote)
+    ValidationErrorHelper.new.error_fields(self, Reaction)
 
     disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
@@ -63,7 +63,7 @@ resource 'Votes' do
 
     describe 'When the user already voted' do
       before do
-        @vote = create(:vote, votable: @idea, user: @user, mode: 'up')
+        @vote = create(:reaction, reactable: @idea, user: @user, mode: 'up')
       end
 
       example '[error] Upvote the same idea', document: false do
@@ -79,7 +79,7 @@ resource 'Votes' do
   end
 
   post 'web_api/v1/ideas/:idea_id/votes/up' do
-    ValidationErrorHelper.new.error_fields(self, Vote)
+    ValidationErrorHelper.new.error_fields(self, Reaction)
 
     disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
@@ -146,7 +146,7 @@ resource 'Votes' do
       before do
         project = @idea.project
         project.update(upvoting_method: 'limited', upvoting_limited_max: 1)
-        create(:vote, mode: 'up', votable: create(:idea, project: project), user: @user)
+        create(:reaction, mode: 'up', reactable: create(:idea, project: project), user: @user)
       end
 
       example_request '[error] Upvote an idea in a project where you can upvote only once' do
@@ -160,7 +160,7 @@ resource 'Votes' do
   end
 
   post 'web_api/v1/ideas/:idea_id/votes/down' do
-    ValidationErrorHelper.new.error_fields(self, Vote)
+    ValidationErrorHelper.new.error_fields(self, Reaction)
 
     disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
@@ -204,12 +204,12 @@ resource 'Votes' do
   end
 
   delete 'web_api/v1/votes/:id' do
-    let(:vote) { create(:vote, user: @user, votable: @idea) }
+    let(:reaction) { create(:reaction, user: @user, reactable: @idea) }
     let(:id) { vote.id }
 
     example_request 'Delete a vote from an idea' do
       expect(response_status).to eq 200
-      expect { Vote.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Reaction.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

@@ -68,10 +68,10 @@ resource 'Comments' do
 
       before do
         @c1, @c2, @c3 = create_list(:comment, 3, post: @idea)
-        create_list(:vote, 2, votable: @c3)
-        create_list(:vote, 3, votable: @c2)
+        create_list(:reaction, 2, reactable: @c3)
+        create_list(:reaction, 3, reactable: @c2)
         @c3sub1, @c3sub2 = create_list(:comment, 2, parent: @c3, post: @idea)
-        create(:vote, votable: @c3sub2)
+        create(:reaction, reactable: @c3sub2)
       end
 
       example_request 'List the top-level comments of an idea sorted by descending upvotes_count' do
@@ -283,7 +283,7 @@ resource 'Comments' do
 
       example 'List all comments of an idea includes the user_vote when authenticated' do
         comment = create(:comment, post: @idea)
-        vote = create(:vote, user: @user, votable: comment)
+        vote = create(:reaction, user: @user, reactable: comment)
         do_request
         json_response = json_parse(response_body)
         expect(json_response[:data].filter_map { |d| d[:relationships][:user_vote][:data] }.first[:id]).to eq vote.id

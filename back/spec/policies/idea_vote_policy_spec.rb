@@ -5,10 +5,10 @@ require 'rails_helper'
 describe IdeaVotePolicy do
   subject(:policy) { described_class.new(user, vote) }
 
-  let(:scope) { IdeaVotePolicy::Scope.new(user, Vote) }
+  let(:scope) { IdeaVotePolicy::Scope.new(user, Reaction) }
   let(:project) { create(:continuous_project) }
-  let(:votable) { create(:idea, project: project) }
-  let!(:vote) { create(:vote, votable: votable) }
+  let(:reactable) { create(:idea, project: project) }
+  let!(:reaction) { create(:reaction, reactable: reactable) }
 
   context 'for a visitor' do
     let(:user) { nil }
@@ -54,7 +54,7 @@ describe IdeaVotePolicy do
 
   context 'for blocked vote owner' do
     let(:user) { create(:user, block_end_at: 5.days.from_now) }
-    let(:vote) { create(:vote, user: user, votable: votable) }
+    let(:reaction) { create(:reaction, user: user, reactable: reactable) }
 
     it_behaves_like 'policy for blocked user vote'
   end
@@ -77,7 +77,7 @@ describe IdeaVotePolicy do
     let!(:user) { create(:user) }
     let!(:project) { create(:private_groups_project) }
     let!(:idea) { create(:idea, project: project) }
-    let!(:vote) { create(:vote, votable: idea, user: user) }
+    let!(:reaction) { create(:reaction, reactable: idea, user: user) }
 
     it { is_expected.to permit(:show) }
     it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
@@ -94,7 +94,7 @@ describe IdeaVotePolicy do
     let!(:user) { create(:user) }
     let!(:project) { create(:continuous_project, voting_enabled: false) }
     let!(:idea) { create(:idea, project: project) }
-    let!(:vote) { create(:vote, votable: idea, user: user) }
+    let!(:reaction) { create(:reaction, reactable: idea, user: user) }
 
     it { is_expected.to permit(:show) }
     it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }

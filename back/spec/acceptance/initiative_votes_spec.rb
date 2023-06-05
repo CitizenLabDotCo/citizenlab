@@ -22,7 +22,7 @@ resource 'Votes' do
     @initiative.initiative_status_changes.create!(
       initiative_status: @status_proposed
     )
-    @votes = create_list(:vote, 2, votable: @initiative, mode: 'up')
+    @votes = create_list(:reaction, 2, reactable: @initiative, mode: 'up')
   end
 
   get 'web_api/v1/initiatives/:initiative_id/votes' do
@@ -46,11 +46,11 @@ resource 'Votes' do
   end
 
   post 'web_api/v1/initiatives/:initiative_id/votes' do
-    with_options scope: :vote do
+    with_options scope: :reaction do
       parameter :user_id, 'The user id of the user owning the vote. Signed in user by default', required: false
       parameter :mode, 'one of [up, down]', required: true
     end
-    ValidationErrorHelper.new.error_fields(self, Vote)
+    ValidationErrorHelper.new.error_fields(self, Reaction)
 
     disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
@@ -78,7 +78,7 @@ resource 'Votes' do
   end
 
   post 'web_api/v1/initiatives/:initiative_id/votes/up' do
-    ValidationErrorHelper.new.error_fields(self, Vote)
+    ValidationErrorHelper.new.error_fields(self, Reaction)
 
     disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
@@ -111,7 +111,7 @@ resource 'Votes' do
   end
 
   post 'web_api/v1/initiatives/:initiative_id/votes/down' do
-    ValidationErrorHelper.new.error_fields(self, Vote)
+    ValidationErrorHelper.new.error_fields(self, Reaction)
 
     disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
@@ -128,12 +128,12 @@ resource 'Votes' do
   end
 
   delete 'web_api/v1/votes/:id' do
-    let(:vote) { create(:vote, user: @user, votable: @initiative) }
+    let(:reaction) { create(:reaction, user: @user, reactable: @initiative) }
     let(:id) { vote.id }
 
     example_request 'Delete a vote from an initiative' do
       assert_status 200
-      expect { Vote.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Reaction.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

@@ -5,12 +5,12 @@ require 'rails_helper'
 describe CommentVotePolicy do
   subject(:policy) { described_class.new(user, vote) }
 
-  let(:scope) { CommentVotePolicy::Scope.new(user, Vote) }
+  let(:scope) { CommentVotePolicy::Scope.new(user, Reaction) }
   let(:project) { create(:continuous_project, with_permissions: true) }
   let(:comment) { create(:comment, post: create(:idea, project: project)) }
 
   context 'for a mortal user who owns the vote on a project where commenting is only allowed by admins' do
-    let!(:vote) { create(:vote, votable: comment) }
+    let!(:reaction) { create(:reaction, reactable: comment) }
     let(:user) { vote.user }
 
     before do

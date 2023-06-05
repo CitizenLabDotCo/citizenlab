@@ -132,9 +132,9 @@ class ParticipationContextService
     context = nil
     idea = nil
     case object.class.name
-    when Vote.name
+    when Reaction.name
       mode ||= object.mode
-      idea = object.votable
+      idea = object.reactable
       context = get_participation_context idea.project
     when Idea.name
       idea = object
@@ -317,11 +317,11 @@ class ParticipationContextService
   end
 
   def upvoting_limit_reached?(context, user)
-    context.upvoting_limited? && user.votes.up.where(votable: context.ideas).size >= context.upvoting_limited_max
+    context.upvoting_limited? && user.votes.up.where(reactable: context.ideas).size >= context.upvoting_limited_max
   end
 
   def downvoting_limit_reached?(context, user)
-    context.downvoting_limited? && user.votes.down.where(votable: context.ideas).size >= context.downvoting_limited_max
+    context.downvoting_limited? && user.votes.down.where(reactable: context.ideas).size >= context.downvoting_limited_max
   end
 
   def permission_denied_reason(user, _action, _context)

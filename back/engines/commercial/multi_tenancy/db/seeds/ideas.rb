@@ -46,11 +46,11 @@ module MultiTenancy
           User.all.each do |u|
             r = rand(5)
             if r == 0
-              Vote.create!(votable: idea, user: u, mode: 'down',
-                created_at: Faker::Date.between(from: idea.published_at, to: Time.zone.now))
+              Reaction.create!(reactable: idea, user: u, mode: 'down',
+                               created_at: Faker::Date.between(from: idea.published_at, to: Time.zone.now))
             elsif r > 0 && r < 3
-              Vote.create!(votable: idea, user: u, mode: 'up',
-                created_at: Faker::Date.between(from: idea.published_at, to: Time.zone.now))
+              Reaction.create!(reactable: idea, user: u, mode: 'up',
+                               created_at: Faker::Date.between(from: idea.published_at, to: Time.zone.now))
             end
           end
 

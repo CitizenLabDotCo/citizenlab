@@ -6,9 +6,9 @@ RSpec.describe Notifications::OfficialFeedbackOnVotedIdea do
   describe 'make_notifications_on' do
     it 'generates exactly one notification for each user that voted on the idea' do
       idea = create(:idea)
-      vote1 = create(:vote, votable: idea)
-      vote2 = create(:vote, votable: idea)
-      create(:vote)
+      vote1 = create(:reaction, reactable: idea)
+      vote2 = create(:reaction, reactable: idea)
+      create(:reaction)
 
       official_feedback = create(:official_feedback, post: idea)
       activity = create(:activity, item: official_feedback, action: :created)
@@ -19,7 +19,7 @@ RSpec.describe Notifications::OfficialFeedbackOnVotedIdea do
 
     it "doesn't generate (invalid) notifications for votes attributed to a deleted user" do
       idea = create(:idea)
-      vote = create(:vote, votable: idea)
+      vote = create(:reaction, reactable: idea)
       vote.user.destroy!
 
       official_feedback = create(:official_feedback, post: idea)
@@ -31,7 +31,7 @@ RSpec.describe Notifications::OfficialFeedbackOnVotedIdea do
 
     it "doesn't generate notifications for the idea author" do
       idea = create(:idea)
-      create(:vote, votable: idea, user: idea.author)
+      create(:reaction, reactable: idea, user: idea.author)
 
       official_feedback = create(:official_feedback, post: idea)
       activity = create(:activity, item: official_feedback, action: :created)
@@ -43,7 +43,7 @@ RSpec.describe Notifications::OfficialFeedbackOnVotedIdea do
     it "doesn't generate notifications for commenters" do
       idea = create(:idea)
       comment = create(:comment, post: idea)
-      create(:vote, votable: idea, user: comment.author)
+      create(:reaction, reactable: idea, user: comment.author)
 
       official_feedback = create(:official_feedback, post: idea)
       activity = create(:activity, item: official_feedback, action: :created)

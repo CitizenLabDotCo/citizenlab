@@ -344,9 +344,9 @@ class WebApi::V1::IdeasController < ApplicationController
     if current_user
       # I have no idea why but the trending query part
       # breaks if you don't fetch the ids in this way.
-      votes = Vote.where(user: current_user, votable_id: ideas.map(&:id), votable_type: 'Idea')
+      votes = Reaction.where(user: current_user, reactable_id: ideas.map(&:id), reactable_type: 'Idea')
       {
-        params: jsonapi_serializer_params(vbii: votes.index_by(&:votable_id), pcs: ParticipationContextService.new),
+        params: jsonapi_serializer_params(vbii: votes.index_by(&:reactable_id), pcs: ParticipationContextService.new),
         include: %i[author user_vote idea_images]
       }
     else

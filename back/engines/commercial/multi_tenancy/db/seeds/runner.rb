@@ -189,8 +189,8 @@ module MultiTenancy
           })
           User.all.each do |u|
             if rand(5) < 2
-              Vote.create!(votable: c, user: u, mode: 'up',
-                created_at: Faker::Date.between(from: c.created_at, to: Time.zone.now))
+              Reaction.create!(reactable: c, user: u, mode: 'up',
+                               created_at: Faker::Date.between(from: c.created_at, to: Time.zone.now))
             end
           end
           create_comment_tree(post, c, depth + 1)

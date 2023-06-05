@@ -193,9 +193,9 @@ class WebApi::V1::InitiativesController < ApplicationController
 
     if current_user
       votes = current_user.votes.where(
-        votable_id: initiatives.pluck(:id),
-        votable_type: 'Initiative'
-      ).index_by(&:votable_id)
+        reactable_id: initiatives.pluck(:id),
+        reactable_type: 'Initiative'
+      ).index_by(&:reactable_id)
       { params: default_params.merge(vbii: votes), include: %i[author user_vote initiative_images assignee] }
     else
       { params: default_params, include: %i[author initiative_images] }

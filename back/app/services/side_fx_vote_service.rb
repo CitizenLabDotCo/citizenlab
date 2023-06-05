@@ -6,25 +6,25 @@ class SideFxVoteService
   def before_create(vote, current_user); end
 
   def after_create(vote, current_user)
-    if vote.votable_type == 'Initiative'
+    if vote.reactable_type == 'Initiative'
       AutomatedTransitionJob.perform_now
     end
 
-    action = "#{votable_type(vote)}_#{vote.mode}voted"
+    action = "#{reactable_type(vote)}_#{vote.mode}voted"
     log_activity_job(vote, action, current_user)
   end
 
   def before_destroy(vote, current_user); end
 
   def after_destroy(vote, current_user)
-    action = "canceled_#{votable_type(vote)}_#{vote.mode}vote"
+    action = "canceled_#{reactable_type(vote)}_#{vote.mode}vote"
     log_activity_job(vote, action, current_user)
   end
 
   private
 
-  def votable_type(vote)
-    vote.votable_type.underscore
+  def reactable_type(vote)
+    vote.reactable_type.underscore
   end
 
   def log_activity_job(vote, action, current_user)

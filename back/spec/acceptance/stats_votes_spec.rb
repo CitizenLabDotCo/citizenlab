@@ -43,8 +43,8 @@ resource 'Stats - Votes' do
 
     before do
       i1, i2 = create_list(:idea, 2, idea_status: @idea_status, project: create(:project), author: create(:user))
-      create_list(:vote, 3, votable: i1)
-      create_list(:vote, 2, mode: 'down', votable: i2)
+      create_list(:reaction, 3, reactable: i1)
+      create_list(:reaction, 2, mode: 'down', reactable: i2)
     end
 
     example 'Count all votes' do
@@ -74,10 +74,10 @@ resource 'Stats - Votes' do
       let!(:idea2) { create(:idea, idea_status: @idea_status, topics: [topic2], project: project1) }
       let!(:idea3) { create(:idea, idea_status: @idea_status, topics: [topic1, topic2], project: project1) }
       let!(:idea4) { create(:idea, idea_status: @idea_status) }
-      let!(:vote1) { create(:vote, votable: idea1) }
-      let!(:vote2) { create(:vote, votable: idea1, mode: 'down') }
-      let!(:vote3) { create(:vote, votable: idea2) }
-      let!(:vote4) { create(:vote, votable: idea3) }
+      let!(:reaction1) { create(:reaction, reactable: idea1) }
+      let!(:reaction2) { create(:reaction, reactable: idea1, mode: 'down') }
+      let!(:reaction3) { create(:reaction, reactable: idea2) }
+      let!(:reaction4) { create(:reaction, reactable: idea3) }
 
       example_request 'Votes by topic' do
         assert_status 200
@@ -96,8 +96,8 @@ resource 'Stats - Votes' do
       before do
         @project = create(:project)
         idea = create(:idea_with_topics, idea_status: @idea_status, topics_count: 2, project: @project)
-        create(:vote, votable: idea)
-        create(:vote, votable: create(:idea_with_topics, idea_status: @idea_status))
+        create(:reaction, reactable: idea)
+        create(:reaction, reactable: create(:idea_with_topics, idea_status: @idea_status))
       end
 
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
@@ -117,8 +117,8 @@ resource 'Stats - Votes' do
       before do
         @group = create(:group)
         idea = create(:idea_with_topics, idea_status: @idea_status, topics_count: 2)
-        create(:vote, votable: idea, user: create(:user, manual_groups: [@group]))
-        create(:vote, votable: create(:idea_with_topics, idea_status: @idea_status))
+        create(:reaction, reactable: idea, user: create(:user, manual_groups: [@group]))
+        create(:reaction, reactable: create(:idea_with_topics, idea_status: @idea_status))
       end
 
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
@@ -152,10 +152,10 @@ resource 'Stats - Votes' do
       let!(:idea2) { create(:idea, idea_status: @idea_status, topics: [topic2], project: project1) }
       let!(:idea3) { create(:idea, idea_status: @idea_status, topics: [topic1, topic2], project: project1) }
       let!(:idea4) { create(:idea, idea_status: @idea_status) }
-      let!(:vote1) { create(:vote, votable: idea1) }
-      let!(:vote2) { create(:vote, votable: idea1, mode: 'down') }
-      let!(:vote3) { create(:vote, votable: idea2) }
-      let!(:vote4) { create(:vote, votable: idea3) }
+      let!(:reaction1) { create(:reaction, reactable: idea1) }
+      let!(:reaction2) { create(:reaction, reactable: idea1, mode: 'down') }
+      let!(:reaction3) { create(:reaction, reactable: idea2) }
+      let!(:reaction4) { create(:reaction, reactable: idea3) }
 
       example_request 'Votes by topic' do
         assert_status 200
@@ -176,8 +176,8 @@ resource 'Stats - Votes' do
       before do
         @project = create(:project)
         idea = create(:idea_with_topics, idea_status: @idea_status, topics_count: 2, project: @project)
-        create(:vote, votable: idea)
-        create(:vote, votable: create(:idea_with_topics, idea_status: @idea_status))
+        create(:reaction, reactable: idea)
+        create(:reaction, reactable: create(:idea_with_topics, idea_status: @idea_status))
       end
 
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
@@ -199,8 +199,8 @@ resource 'Stats - Votes' do
       before do
         @group = create(:group)
         idea = create(:idea_with_topics, idea_status: @idea_status, topics_count: 2)
-        create(:vote, votable: idea, user: create(:user, manual_groups: [@group]))
-        create(:vote, votable: create(:idea_with_topics, idea_status: @idea_status))
+        create(:reaction, reactable: idea, user: create(:user, manual_groups: [@group]))
+        create(:reaction, reactable: create(:idea_with_topics, idea_status: @idea_status))
       end
 
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
@@ -234,10 +234,10 @@ resource 'Stats - Votes' do
       let!(:idea2) { create(:idea, idea_status: @idea_status, project: project1) }
       let!(:idea3) { create(:idea, idea_status: @idea_status, project: project2) }
       let!(:idea4) { create(:idea, idea_status: @idea_status) }
-      let!(:vote1) { create(:vote, votable: idea1) }
-      let!(:vote2) { create(:vote, votable: idea1, mode: 'down') }
-      let!(:vote3) { create(:vote, votable: idea2) }
-      let!(:vote4) { create(:vote, votable: idea3) }
+      let!(:reaction1) { create(:reaction, reactable: idea1) }
+      let!(:reaction2) { create(:reaction, reactable: idea1, mode: 'down') }
+      let!(:reaction3) { create(:reaction, reactable: idea2) }
+      let!(:reaction4) { create(:reaction, reactable: idea3) }
 
       example_request 'Votes by project' do
         assert_status 200
@@ -258,8 +258,8 @@ resource 'Stats - Votes' do
         project = create(:project, allowed_input_topics: [@topic])
         idea1 = create(:idea, idea_status: @idea_status, topics: [@topic], project: project)
         idea2 = create(:idea_with_topics, idea_status: @idea_status)
-        create(:vote, votable: idea1)
-        create(:vote, votable: idea2)
+        create(:reaction, reactable: idea1)
+        create(:reaction, reactable: idea2)
       end
 
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
@@ -280,8 +280,8 @@ resource 'Stats - Votes' do
         @group = create(:group)
         project = create(:project)
         idea = create(:idea, idea_status: @idea_status, project: project)
-        create(:vote, votable: idea, user: create(:user, manual_groups: [@group]))
-        create(:vote, votable: idea)
+        create(:reaction, reactable: idea, user: create(:user, manual_groups: [@group]))
+        create(:reaction, reactable: idea)
       end
 
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
@@ -313,10 +313,10 @@ resource 'Stats - Votes' do
       let!(:idea2) { create(:idea, idea_status: @idea_status, project: project1) }
       let!(:idea3) { create(:idea, idea_status: @idea_status, project: project2) }
       let!(:idea4) { create(:idea, idea_status: @idea_status) }
-      let!(:vote1) { create(:vote, votable: idea1) }
-      let!(:vote2) { create(:vote, votable: idea1, mode: 'down') }
-      let!(:vote3) { create(:vote, votable: idea2) }
-      let!(:vote4) { create(:vote, votable: idea3) }
+      let!(:reaction1) { create(:reaction, reactable: idea1) }
+      let!(:reaction2) { create(:reaction, reactable: idea1, mode: 'down') }
+      let!(:reaction3) { create(:reaction, reactable: idea2) }
+      let!(:reaction4) { create(:reaction, reactable: idea3) }
 
       example_request 'Votes by project' do
         assert_status 200
@@ -339,8 +339,8 @@ resource 'Stats - Votes' do
         project = create(:project, allowed_input_topics: [@topic])
         idea1 = create(:idea, idea_status: @idea_status, topics: [@topic], project: project)
         idea2 = create(:idea_with_topics, idea_status: @idea_status)
-        create(:vote, votable: idea1)
-        create(:vote, votable: idea2)
+        create(:reaction, reactable: idea1)
+        create(:reaction, reactable: idea2)
       end
 
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
@@ -363,8 +363,8 @@ resource 'Stats - Votes' do
         @group = create(:group)
         project = create(:project)
         idea = create(:idea, idea_status: @idea_status, project: project)
-        create(:vote, votable: idea, user: create(:user, manual_groups: [@group]))
-        create(:vote, votable: idea)
+        create(:reaction, reactable: idea, user: create(:user, manual_groups: [@group]))
+        create(:reaction, reactable: idea)
       end
 
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }

@@ -3,14 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe StatVotePolicy do
-  let(:scope) { described_class::Scope.new(user, Vote) }
+  let(:scope) { described_class::Scope.new(user, Reaction) }
 
   let_it_be(:upvoted_idea) { create(:idea) }
-  let_it_be(:votes) do
+  let_it_be(:reactions) do
     [
-      create_list(:vote, 2, votable: upvoted_idea),
-      create(:downvote),
-      create(:comment_vote)
+      create_list(:reaction, 2, reactable: upvoted_idea),
+      create(:reaction_down),
+      create(:comment_reaction)
     ].flatten
   end
 

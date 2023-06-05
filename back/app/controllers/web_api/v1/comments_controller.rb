@@ -57,8 +57,8 @@ class WebApi::V1::CommentsController < ApplicationController
     @comments = merge_comments(root_comments.to_a, child_comments.to_a)
 
     serialization_options = if current_user
-      votes = Vote.where(user: current_user, votable: @comments)
-      votes_by_comment_id = votes.index_by(&:votable_id)
+      votes = Reaction.where(user: current_user, reactable: @comments)
+      votes_by_comment_id = votes.index_by(&:reactable_id)
       {
         params: jsonapi_serializer_params(vbci: votes_by_comment_id),
         include: %i[author user_vote]
@@ -118,8 +118,8 @@ class WebApi::V1::CommentsController < ApplicationController
     @comments = paginate @comments
 
     serialization_options = if current_user
-      votes = Vote.where(user: current_user, votable: @comments.all)
-      votes_by_comment_id = votes.index_by(&:votable_id)
+      votes = Reaction.where(user: current_user, reactable: @comments.all)
+      votes_by_comment_id = votes.index_by(&:reactable_id)
       {
         params: jsonapi_serializer_params(vbci: votes_by_comment_id),
         include: %i[author user_vote]

@@ -45,10 +45,10 @@ class ParticipantsService
     comments = Comment.where(post: initiatives)
     participants = participants.or(User.where(id: comments.select(:author_id)))
     # Initiative voting
-    votes = Vote.where(votable: initiatives)
+    votes = Reaction.where(reactable: initiatives)
     participants = participants.or(User.where(id: votes.select(:user_id)))
     # Comment voting
-    votes = Vote.where(votable: comments)
+    votes = Reaction.where(reactable: comments)
     participants.or(User.where(id: votes.select(:user_id)))
   end
 
@@ -77,13 +77,13 @@ class ParticipantsService
     end
     # Idea voting
     if actions.include? :idea_voting
-      votes = Vote.where(votable_id: ideas)
+      votes = Reaction.where(reactable_id: ideas)
       votes = votes.where('created_at::date >= (?)::date', since) if since
       participants = participants.or(User.where(id: votes.select(:user_id)))
     end
     # Comment voting
     if actions.include? :comment_voting
-      votes = Vote.where(votable_id: comments)
+      votes = Reaction.where(reactable_id: comments)
       votes = votes.where('created_at::date >= (?)::date', since) if since
       participants = participants.or(User.where(id: votes.select(:user_id)))
     end

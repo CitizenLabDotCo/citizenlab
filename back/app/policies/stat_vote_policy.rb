@@ -25,7 +25,7 @@ class StatVotePolicy < ApplicationPolicy
       return scope.none unless user.project_moderator?
 
       moderated_ideas = Idea.where(project_id: user.moderatable_project_ids)
-      scope.where(votable: moderated_ideas)
+      scope.where(reactable: moderated_ideas)
     end
   end
 

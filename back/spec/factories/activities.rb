@@ -54,17 +54,17 @@ FactoryBot.define do
     end
 
     factory :idea_upvoted_activity do
-      association :item, factory: :vote
+      association :item, factory: :reaction
       action { 'idea_upvoted' }
     end
 
     factory :idea_downvoted_activity do
-      association :item, factory: :downvote
+      association :item, factory: :reaction_down
       action { 'idea_downvoted' }
     end
 
     factory :comment_upvoted_activity do
-      association :item, factory: :comment_vote
+      association :item, factory: :comment_reaction
       action { 'comment_upvoted' }
     end
 
