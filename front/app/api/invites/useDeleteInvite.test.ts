@@ -24,9 +24,7 @@ describe('useDeleteInvite', () => {
     });
 
     act(() => {
-      result.current.mutate({
-        inviteId: 'inviteId',
-      });
+      result.current.mutate('inviteId');
     });
 
     await waitFor(() => expect(result.current.data).not.toBe(undefined));
@@ -44,9 +42,7 @@ describe('useDeleteInvite', () => {
     });
 
     act(() => {
-      result.current.mutate({
-        inviteId: 'inviteId',
-      });
+      result.current.mutate('inviteId');
     });
 
     await waitFor(() => expect(result.current.isError).toBe(true));

@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 import invitesKeys from './keys';
 
-const deleteInvite = ({ inviteId }: { inviteId: string }) =>
+const deleteInvite = (inviteId: string) =>
   fetcher({
     path: `/invites/${inviteId}`,
     action: 'delete',

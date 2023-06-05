@@ -28,7 +28,7 @@ const TableRow = (inputProps: InputProps) => {
 
   const handleOnDeleteInvite = () => {
     const inviteId = inputProps.invite.id;
-    deleteInvite({ inviteId });
+    deleteInvite(inviteId);
   };
 
   if (!user) return null;
