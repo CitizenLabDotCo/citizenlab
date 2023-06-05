@@ -1275,7 +1275,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.cancelQuitButtonText": "Cancelar",
   "app.containers.AdminPage.ProjectEdit.survey.choiceCount2": "{percentage}({choiceCount, plural, no {# escolhas} one {# escolha} other {# escolhas}})",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText2": "Sim, eliminar os resultados da pesquisa",
-  "app.containers.AdminPage.ProjectEdit.survey.confirmQuitButtonText1": "Yes, I want to leave",
+  "app.containers.AdminPage.ProjectEdit.survey.confirmQuitButtonText1": "Sim, eu quero sair",
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsInfo2": "Isto não pode ser desfeito",
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2": "Eliminar os resultados se for necessário fazer alterações.",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2": "Eliminar os resultados da pesquisa",
