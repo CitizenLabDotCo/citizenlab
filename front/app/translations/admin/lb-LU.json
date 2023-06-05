@@ -1293,7 +1293,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Wa keng Logik bäigefüügt ass, gëllt deen normalen Oflaf fir de Formulaire. Weider Informatioune fannd Dir op {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText2": "Wann der Äntwert keng Logik bäigefüügt ass, gëllt deen normalen Oflaf fir de Formulaire. Duerch d’Bäifüge vun enger Logik, gëtt se standardméisseg erfuerderlech. Weider Informatioune fannt Dir op {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Sidd Dir sécher, datt Dir goe wëllt?",
-  "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo1": "Är aktuell Ännerung gëtt net gespäichert.",
+  "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Är aktuell Ännerungen ginn net gespäichert.",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Erfuerderlech",
   "app.containers.AdminPage.ProjectEdit.survey.selectText2": "Multiple Choice – eng auswielen",
   "app.containers.AdminPage.ProjectEdit.survey.successMessage2": "Ëmfro erfollegräich gespäichert",
