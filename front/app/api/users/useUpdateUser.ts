@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { CLErrorsJSON } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { IUser, IUserUpdate } from './types';
@@ -9,6 +9,7 @@ import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 import groupsKeys from 'api/groups/keys';
 import userCountKeys from 'api/users_count/keys';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 export const updateUser = async ({ userId, ...requestBody }: IUserUpdate) =>
   fetcher<IUser>({
@@ -17,8 +18,21 @@ export const updateUser = async ({ userId, ...requestBody }: IUserUpdate) =>
     body: { user: { ...requestBody } },
   });
 
+export const invalidateUpdateUserCache = (variables: IUserUpdate) => {
+  // Invalidate seats if the user's roles have changed
+  if (variables.roles) {
+    invalidateSeatsCache();
+  }
+
+  queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
+  queryClient.invalidateQueries({ queryKey: groupsKeys.all() });
+  queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
+  queryClient.invalidateQueries({
+    queryKey: userCountKeys.items(),
+  });
+};
+
 const useUpdateUser = () => {
-  const queryClient = useQueryClient();
   return useMutation<IUser, CLErrorsJSON, IUserUpdate>({
     mutationFn: updateUser,
     onSuccess: async (_data, variables) => {
@@ -26,17 +40,7 @@ const useUpdateUser = () => {
         apiEndpoint: [`${API_PATH}/users/me`],
       });
 
-      // Invalidate seats if the user's roles have changed
-      if (variables.roles) {
-        invalidateSeatsCache();
-      }
-
-      queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: groupsKeys.all() });
-      queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
-      queryClient.invalidateQueries({
-        queryKey: userCountKeys.items(),
-      });
+      invalidateUpdateUserCache(variables);
     },
   });
 };
