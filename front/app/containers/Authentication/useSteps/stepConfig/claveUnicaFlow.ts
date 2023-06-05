@@ -3,6 +3,7 @@ import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import { GetRequirements } from 'containers/Authentication/typings';
 import { askCustomFields } from './utils';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
+import { updateUser } from 'api/users/useUpdateUser';
 
 export const claveUnicaFlow = (
   getRequirements: GetRequirements,
@@ -10,13 +11,19 @@ export const claveUnicaFlow = (
 ) => {
   return {
     'clave-unica:email': {
-      SUBMIT_EMAIL: async (email: string) => {
-        await resendEmailConfirmationCode(email);
-
+      SUBMIT_EMAIL: async ({
+        email,
+        userId,
+      }: {
+        email: string;
+        userId: string;
+      }) => {
         const { requirements } = await getRequirements();
         if (requirements.special.confirmation === 'require') {
+          await resendEmailConfirmationCode(email);
           setCurrentStep('clave-unica:email-confirmation');
         } else {
+          await updateUser({ userId, email });
           setCurrentStep('success');
         }
       },
