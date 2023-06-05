@@ -72,16 +72,6 @@ export interface IQueryParameters extends IQueryParametersBase {
   'page[size]': number;
 }
 
-interface IStreamParamsAdminPublications extends IStreamParams {
-  queryParameters: IQueryParameters;
-}
-
-export function listAdminPublications(
-  streamParams: IStreamParamsAdminPublications
-) {
-  return streams.get<IAdminPublications>({ apiEndpoint, ...streamParams });
-}
-
 export async function reorderAdminPublication(
   orderingId: string,
   newOrder: number

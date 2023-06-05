@@ -51,16 +51,21 @@ const ProjectAndFolderCards = ({
     search,
   });
 
-  const { data, isInitialLoading, hasNextPage, fetchNextPage } =
-    useAdminPublications({
-      pageSize: 6,
-      publicationStatusFilter: publicationStatus,
-      rootLevelOnly,
-      removeNotAllowedParents: true,
-      topicIds,
-      areaIds,
-      search,
-    });
+  const {
+    data,
+    isInitialLoading,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useAdminPublications({
+    pageSize: 6,
+    publicationStatusFilter: publicationStatus,
+    rootLevelOnly,
+    removeNotAllowedParents: true,
+    topicIds,
+    areaIds,
+    search,
+  });
 
   const onChangeTopics = (topics: string[]) => {
     setTopicsIds(topics);
@@ -110,6 +115,7 @@ const ProjectAndFolderCards = ({
       hasMore={hasNextPage}
       onLoadMore={fetchNextPage}
       onChangePublicationStatus={onChangePublicationStatus}
+      loadingMore={isFetchingNextPage}
       {...otherProps}
     />
   );

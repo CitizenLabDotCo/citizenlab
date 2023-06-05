@@ -37,7 +37,13 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
     'archived',
   ];
 
-  const { data } = useAdminPublications({
+  const {
+    data,
+    isInitialLoading,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useAdminPublications({
     pageSize: 6,
     topicIds,
     areaIds,
@@ -84,6 +90,10 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
             adminPublications={adminPublications || []}
             statusCountsWithoutFilters={statusCountsWithoutFilters}
             layout="dynamic"
+            loadingInitial={isInitialLoading}
+            loadingMore={isFetchingNextPage}
+            onLoadMore={fetchNextPage}
+            hasMore={hasNextPage}
           />
         </ProjectCardsContentContainer>
       )}

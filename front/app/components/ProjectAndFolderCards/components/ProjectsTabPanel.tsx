@@ -51,9 +51,7 @@ const ProjectsTabPanel = ({
         setCardSizes(newCardSizes);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [list.length, layout]);
-
+  }, [list.length, layout, cardSizes, isLargerThanTablet]);
   return (
     // The id, aria-labelledby, hidden and hide are necessary
     // for the tab system to work well with screen readers.
