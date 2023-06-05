@@ -1293,7 +1293,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Ako nije dodata logika, anketa će pratiti svoj normalni tok. Za više informacija, posetite {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText2": "Ako odgovoru nije odata logika, anketa će pratiti svoj normalni tok. Dodavanje logike pitanju učiniće da ona podrazumevano bude obavezna. Za više informacija, posetite {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Želite li zaista da napustite?",
-  "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo1": "Ваша тренутна промена неће бити сачувана.",
+  "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Ваше тренутне промене неће бити сачуване.",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Obavezno",
   "app.containers.AdminPage.ProjectEdit.survey.selectText2": "Višestruki izbor - izaberi jedan",
   "app.containers.AdminPage.ProjectEdit.survey.successMessage2": "Anketa je uspešno sačuvana",
