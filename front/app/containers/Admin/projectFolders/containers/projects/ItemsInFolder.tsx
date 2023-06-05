@@ -19,12 +19,8 @@ import messages from '../messages';
 // components
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
-
-// style
-import {
-  IAdminPublicationData,
-  reorderAdminPublication,
-} from 'services/adminPublications';
+import useReorderAdminPublication from 'api/admin_publications/useReorderAdminPublication';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
 const publicationStatuses: PublicationStatus[] = [
   'draft',
@@ -38,7 +34,7 @@ interface Props {
 
 const ItemsInFolder = ({ projectFolderId }: Props) => {
   const authUser = useAuthUser();
-
+  const { mutate: reorderAdminPublication } = useReorderAdminPublication();
   const { data } = useAdminPublications({
     childrenOfId: projectFolderId,
     publicationStatusFilter: publicationStatuses,
@@ -52,7 +48,7 @@ const ItemsInFolder = ({ projectFolderId }: Props) => {
   const [processing, setProcessing] = useState<string[]>([]);
 
   const handleReorder = (itemId: string, newOrder: number) => {
-    reorderAdminPublication(itemId, newOrder);
+    reorderAdminPublication({ id: itemId, ordering: newOrder });
   };
 
   const removeProjectFromFolder =

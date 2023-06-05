@@ -17,10 +17,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // services
-import { reorderAdminPublication } from 'services/adminPublications';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { IAdminPublicationData } from 'api/admin_publications/types';
+import useReorderAdminPublication from 'api/admin_publications/useReorderAdminPublication';
 
 const StyledSortableRow = styled(SortableRow)`
   & .sortablerow-draghandle {
@@ -38,11 +38,8 @@ const Spacer = styled.div`
 
 interface Props {}
 
-function handleReorderAdminPublication(itemId, newOrder) {
-  reorderAdminPublication(itemId, newOrder);
-}
-
 const AdminProjectList = memo<Props>((_props) => {
+  const { mutate: reorderAdminPublication } = useReorderAdminPublication();
   const { data } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
     rootLevelOnly: true,
@@ -53,6 +50,10 @@ const AdminProjectList = memo<Props>((_props) => {
     .flat();
 
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
+
+  function handleReorderAdminPublication(itemId: string, newOrder: number) {
+    reorderAdminPublication({ id: itemId, ordering: newOrder });
+  }
 
   if (
     !isNilOrError(rootLevelAdminPublications) &&
