@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 
 // components
 import {
@@ -27,10 +27,7 @@ import useAuthUser from 'hooks/useAuthUser';
 export const NotificationsPopup = () => {
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('tablet');
-  const iconDivRef = useRef<HTMLDivElement | null>(null);
   const authUser = useAuthUser();
-  const [isNotificationsPopupOpen, setIsNotificationsPopupOpen] =
-    useState(false);
 
   if (isNilOrError(authUser)) {
     return null;
@@ -46,7 +43,6 @@ export const NotificationsPopup = () => {
           width={isSmallerThanPhone ? '56px' : '100%'}
           display="flex"
           justifyContent="flex-start"
-          onClick={() => setIsNotificationsPopupOpen(!isNotificationsPopupOpen)}
           p="0px"
         >
           <Box
@@ -83,7 +79,6 @@ export const NotificationsPopup = () => {
               </>
             )}
             <Box
-              ref={iconDivRef}
               w={isSmallerThanPhone ? '0px' : '16px'}
               h={isSmallerThanPhone ? '0px' : '18px'}
             >
@@ -103,15 +98,11 @@ export const NotificationsPopup = () => {
               )}
             </Box>
           </Box>
+          <Box display="flex" alignSelf="flex-end" />
         </StyledBox>
       }
-      open={isNotificationsPopupOpen}
-      onClose={() => setIsNotificationsPopupOpen(false)}
       on="click"
-      position="top right"
-      context={iconDivRef}
-      positionFixed
-      offset={[28, -60]}
+      position="right center"
       basic
       wide
     >
