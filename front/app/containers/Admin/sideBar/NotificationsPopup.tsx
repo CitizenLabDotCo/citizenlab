@@ -4,7 +4,6 @@ import React, { useState, useRef } from 'react';
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
 import Notifications from 'containers/MainHeader/NotificationMenu/components/Notifications';
-import { NewNotificationsIndicator } from 'containers/MainHeader/NotificationMenu/components/NotificationCount';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -41,21 +40,37 @@ export const NotificationsPopup = () => {
           display="flex"
           justifyContent="flex-start"
           onClick={() => setIsNotificationsPopupOpen(!isNotificationsPopupOpen)}
+          p="0px"
         >
-          <Box display="flex" alignItems="center" w="100%" pr="6px">
+          <Box
+            display="flex"
+            alignItems="center"
+            w="100%"
+            pr="8px"
+            pl="16px"
+            py="10px"
+          >
             <Box
               display="flex"
               flex="0 0 auto"
-              w="45px"
-              h="45px"
               alignItems="center"
               justifyContent="center"
             >
-              <Icon name="notification-outline" fill={colors.blue400} />
+              <Icon
+                name="notification-outline"
+                fill={colors.blue400}
+                width="24px"
+              />
             </Box>
 
             <Box display="flex" flex="1" flexDirection="column" opacity={0.7}>
-              <Text color="white" ml="10px" fontSize="base" textAlign="left">
+              <Text
+                color="white"
+                ml="15px"
+                fontSize="base"
+                textAlign="left"
+                my="0px"
+              >
                 {formatMessage({ ...messages.notifications })}
               </Text>
             </Box>

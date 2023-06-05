@@ -69,24 +69,31 @@ export const UserMenu = () => {
           width="100%"
           display="flex"
           justifyContent="flex-start"
-          mb="25px"
           onClick={() => setIsUserMenuPopupOpen(true)}
+          p="0px"
         >
-          <Box display="flex" alignItems="center" w="100%" pr="6px">
-            <Avatar userId={authUser.id} size={30} addVerificationBadge />
+          <Box
+            display="flex"
+            alignItems="center"
+            w="100%"
+            pr="8px"
+            pl="16px"
+            py="10px"
+          >
+            <Avatar userId={authUser.id} size={24} addVerificationBadge />
             <Box
               display="flex"
               flex="1"
               flexDirection="column"
               opacity={0.7}
               w="100%"
-              ml="17px"
+              ml="7px"
               overflow="hidden"
             >
               <Text
                 color="white"
                 my="0px"
-                fontSize="s"
+                fontSize="m"
                 textOverflow="ellipsis"
                 whiteSpace="nowrap"
                 overflow="hidden"
