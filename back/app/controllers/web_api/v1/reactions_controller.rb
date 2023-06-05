@@ -26,7 +26,7 @@ class WebApi::V1::ReactionsController < ApplicationController
     @vote.user ||= current_user
     authorize @vote, policy_class: @policy_class
 
-    SideFxVoteService.new.before_create(@vote, current_user)
+    SideFxReactionService.new.before_create(@vote, current_user)
 
     begin
       saved = @vote.save
@@ -37,7 +37,7 @@ class WebApi::V1::ReactionsController < ApplicationController
     end
 
     if saved
-      SideFxVoteService.new.after_create(@vote, current_user)
+      SideFxReactionService.new.after_create(@vote, current_user)
       render json: WebApi::V1::ReactionSerializer.new(
         @vote,
         params: jsonapi_serializer_params
@@ -56,10 +56,10 @@ class WebApi::V1::ReactionsController < ApplicationController
   end
 
   def destroy
-    SideFxVoteService.new.before_destroy(@vote, current_user)
+    SideFxReactionService.new.before_destroy(@vote, current_user)
     frozen_vote = @vote.destroy
     if frozen_vote
-      SideFxVoteService.new.after_destroy(frozen_vote, current_user)
+      SideFxReactionService.new.after_destroy(frozen_vote, current_user)
       head :ok
     else
       head :internal_server_error
@@ -83,7 +83,7 @@ class WebApi::V1::ReactionsController < ApplicationController
       Reaction.transaction do
         if @old_vote
           old_vote_frozen = @old_vote.destroy
-          SideFxVoteService.new.after_destroy(old_vote_frozen, current_user)
+          SideFxReactionService.new.after_destroy(old_vote_frozen, current_user)
         end
         @new_vote = Reaction.new(
           user: current_user,
@@ -93,10 +93,10 @@ class WebApi::V1::ReactionsController < ApplicationController
         )
         authorize @new_vote, policy_class: @policy_class
 
-        SideFxVoteService.new.before_create(@new_vote, current_user)
+        SideFxReactionService.new.before_create(@new_vote, current_user)
 
         if @new_vote.save
-          SideFxVoteService.new.after_create(@new_vote, current_user)
+          SideFxReactionService.new.after_create(@new_vote, current_user)
           render json: WebApi::V1::ReactionSerializer.new(
             @vote,
             params: jsonapi_serializer_params
@@ -113,8 +113,8 @@ class WebApi::V1::ReactionsController < ApplicationController
     @reactable_id = params[:"#{@reactable_type.underscore}_id"]
     @policy_class = case @reactable_type
     when 'Idea' then IdeaReactionPolicy
-    when 'Comment' then CommentVotePolicy
-    when 'Initiative' then InitiativeVotePolicy
+    when 'Comment' then CommentReactionPolicy
+    when 'Initiative' then InitiativeReactionPolicy
     else raise "#{@reactable_type} has no voting policy defined"
     end
     raise 'must not be blank' if @reactable_type.blank? || @reactable_id.blank?
@@ -125,9 +125,9 @@ class WebApi::V1::ReactionsController < ApplicationController
     when Idea
       IdeaReactionPolicy
     when Comment
-      CommentVotePolicy
+      CommentReactionPolicy
     when Initiative
-      InitiativeVotePolicy
+      InitiativeReactionPolicy
     else
       raise "reactable #{reactable.class} has no voting policy defined"
     end

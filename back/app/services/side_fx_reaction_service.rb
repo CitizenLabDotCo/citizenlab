@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SideFxVoteService
+class SideFxReactionService
   include SideFxHelper
 
   def before_create(vote, current_user); end

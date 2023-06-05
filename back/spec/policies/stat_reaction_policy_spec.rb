@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe StatVotePolicy do
+RSpec.describe StatReactionPolicy do
   let(:scope) { described_class::Scope.new(user, Reaction) }
 
   let_it_be(:upvoted_idea) { create(:idea) }

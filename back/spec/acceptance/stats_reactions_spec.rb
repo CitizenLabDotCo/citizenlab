@@ -14,19 +14,19 @@ def time_series_parameters(s)
 end
 
 def project_filter_parameter(s)
-  s.parameter :project, 'Project ID. Only count votes on ideas in the given project', required: false
+  s.parameter :project, 'Project ID. Only count reactions on ideas in the given project', required: false
 end
 
 def group_filter_parameter(s)
-  s.parameter :group, 'Group ID. Only count votes by users in the given group', required: false
+  s.parameter :group, 'Group ID. Only count reactions by users in the given group', required: false
 end
 
 def topic_filter_parameter(s)
-  s.parameter :topic, 'Topic ID. Only count votes on ideas that have the given topic assigned', required: false
+  s.parameter :topic, 'Topic ID. Only count reactions on ideas that have the given topic assigned', required: false
 end
 
-resource 'Stats - Votes' do
-  explanation 'The various stats endpoints can be used to show how certain properties of votes.'
+resource 'Stats - Reactions' do
+  explanation 'The various stats endpoints can be used to show how certain properties of reactions.'
 
   let!(:now) { Time.now.in_time_zone(@timezone) }
 
@@ -38,7 +38,7 @@ resource 'Stats - Votes' do
     @idea_status = create(:idea_status)
   end
 
-  get 'web_api/v1/stats/votes_count' do
+  get 'web_api/v1/stats/reactions_count' do
     time_boundary_parameters self
 
     before do
@@ -47,7 +47,7 @@ resource 'Stats - Votes' do
       create_list(:reaction, 2, mode: 'down', reactable: i2)
     end
 
-    example 'Count all votes' do
+    example 'Count all reactions' do
       do_request
       assert_status 200
       json_response = json_parse(response_body)
@@ -57,7 +57,7 @@ resource 'Stats - Votes' do
     end
   end
 
-  get 'web_api/v1/stats/votes_by_topic' do
+  get 'web_api/v1/stats/reactions_by_topic' do
     time_boundary_parameters self
     project_filter_parameter self
     group_filter_parameter self
@@ -79,10 +79,10 @@ resource 'Stats - Votes' do
       let!(:reaction3) { create(:reaction, reactable: idea2) }
       let!(:reaction4) { create(:reaction, reactable: idea3) }
 
-      example_request 'Votes by topic' do
+      example_request 'Reactions by topic' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :type)).to eq 'votes_by_topic'
+        expect(json_response.dig(:data, :type)).to eq 'reactions_by_topic'
         json_attributes = json_response.dig(:data, :attributes)
         expect(json_attributes[:series][:total].stringify_keys).to match({
           topic1.id => 3,
@@ -104,10 +104,10 @@ resource 'Stats - Votes' do
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:project) { @project.id }
 
-      example_request 'Votes by topic filtered by project' do
+      example_request 'Reactions by topic filtered by project' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :type)).to eq 'votes_by_topic'
+        expect(json_response.dig(:data, :type)).to eq 'reactions_by_topic'
         json_attributes = json_response.dig(:data, :attributes)
         expect(json_attributes[:series][:total].values.sum).to eq 2
       end
@@ -125,17 +125,17 @@ resource 'Stats - Votes' do
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:group) { @group.id }
 
-      example_request 'Votes by topic filtered by group' do
+      example_request 'Reactions by topic filtered by group' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :type)).to eq 'votes_by_topic'
+        expect(json_response.dig(:data, :type)).to eq 'reactions_by_topic'
         json_attributes = json_response.dig(:data, :attributes)
         expect(json_attributes[:series][:total].values.sum).to eq 2
       end
     end
   end
 
-  get 'web_api/v1/stats/votes_by_topic_as_xlsx' do
+  get 'web_api/v1/stats/reactions_by_topic_as_xlsx' do
     time_boundary_parameters self
     project_filter_parameter self
     group_filter_parameter self
@@ -157,10 +157,10 @@ resource 'Stats - Votes' do
       let!(:reaction3) { create(:reaction, reactable: idea2) }
       let!(:reaction4) { create(:reaction, reactable: idea3) }
 
-      example_request 'Votes by topic' do
+      example_request 'Reactions by topic' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id votes]
+        expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id reactions]
 
         topic_ids_col = worksheet.map { |col| col.cells[1].value }
         _header, *topic_ids = topic_ids_col
@@ -184,10 +184,10 @@ resource 'Stats - Votes' do
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:project) { @project.id }
 
-      example_request 'Votes by topic filtered by project' do
+      example_request 'Reactions by topic filtered by project' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id votes]
+        expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id reactions]
 
         amount_col = worksheet.map { |col| col.cells[2].value }
         _header, *amounts = amount_col
@@ -207,10 +207,10 @@ resource 'Stats - Votes' do
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:group) { @group.id }
 
-      example_request 'Votes by topic filtered by group' do
+      example_request 'Reactions by topic filtered by group' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id votes]
+        expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id reactions]
 
         amount_col = worksheet.map { |col| col.cells[2].value }
         _header, *amounts = amount_col
@@ -219,7 +219,7 @@ resource 'Stats - Votes' do
     end
   end
 
-  get 'web_api/v1/stats/votes_by_project' do
+  get 'web_api/v1/stats/reactions_by_project' do
     time_boundary_parameters self
     topic_filter_parameter self
     group_filter_parameter self
@@ -239,10 +239,10 @@ resource 'Stats - Votes' do
       let!(:reaction3) { create(:reaction, reactable: idea2) }
       let!(:reaction4) { create(:reaction, reactable: idea3) }
 
-      example_request 'Votes by project' do
+      example_request 'Reactions by project' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :type)).to eq 'votes_by_project'
+        expect(json_response.dig(:data, :type)).to eq 'reactions_by_project'
         json_attributes = json_response.dig(:data, :attributes)
         expect(json_attributes[:series][:total].stringify_keys).to match({
           project1.id => 3,
@@ -266,10 +266,10 @@ resource 'Stats - Votes' do
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:topic) { @topic.id }
 
-      example_request 'Votes by project filtered by topic' do
+      example_request 'Reactions by project filtered by topic' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :type)).to eq 'votes_by_project'
+        expect(json_response.dig(:data, :type)).to eq 'reactions_by_project'
         json_attributes = json_response.dig(:data, :attributes)
         expect(json_attributes[:series][:total].values.sum).to eq 1
       end
@@ -288,17 +288,17 @@ resource 'Stats - Votes' do
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:group) { @group.id }
 
-      example_request 'Votes by project filtered by group' do
+      example_request 'Reactions by project filtered by group' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :type)).to eq 'votes_by_project'
+        expect(json_response.dig(:data, :type)).to eq 'reactions_by_project'
         json_attributes = json_response.dig(:data, :attributes)
         expect(json_attributes[:series][:total].values.sum).to eq 1
       end
     end
   end
 
-  get 'web_api/v1/stats/votes_by_project_as_xlsx' do
+  get 'web_api/v1/stats/reactions_by_project_as_xlsx' do
     time_boundary_parameters self
     topic_filter_parameter self
     group_filter_parameter self
@@ -318,10 +318,10 @@ resource 'Stats - Votes' do
       let!(:reaction3) { create(:reaction, reactable: idea2) }
       let!(:reaction4) { create(:reaction, reactable: idea3) }
 
-      example_request 'Votes by project' do
+      example_request 'Reactions by project' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match %w[project project_id votes]
+        expect(worksheet[0].cells.map(&:value)).to match %w[project project_id reactions]
 
         project_ids_col = worksheet.map { |col| col.cells[1].value }
         _header, *project_ids = project_ids_col
@@ -347,10 +347,10 @@ resource 'Stats - Votes' do
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:topic) { @topic.id }
 
-      example_request 'Votes by project filtered by topic' do
+      example_request 'Reactions by project filtered by topic' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match %w[project project_id votes]
+        expect(worksheet[0].cells.map(&:value)).to match %w[project project_id reactions]
 
         amount_col = worksheet.map { |col| col.cells[2].value }
         _header, *amounts = amount_col
@@ -371,10 +371,10 @@ resource 'Stats - Votes' do
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:group) { @group.id }
 
-      example_request 'Votes by project filtered by group' do
+      example_request 'Reactions by project filtered by group' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match %w[project project_id votes]
+        expect(worksheet[0].cells.map(&:value)).to match %w[project project_id reactions]
 
         amount_col = worksheet.map { |col| col.cells[2].value }
         _header, *amounts = amount_col

@@ -3,8 +3,8 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'Votes' do
-  explanation 'Votes are used to express agreement on content (i.e. ideas). Ideally, the city would accept the most voted initiatives.'
+resource 'Reactions' do
+  explanation 'Reactions are used to express agreement on content (i.e. ideas). Ideally, the city would accept the most reactiond initiatives.'
 
   before do
     @user = create(:admin)
@@ -22,32 +22,32 @@ resource 'Votes' do
     @initiative.initiative_status_changes.create!(
       initiative_status: @status_proposed
     )
-    @votes = create_list(:reaction, 2, reactable: @initiative, mode: 'up')
+    @reactions = create_list(:reaction, 2, reactable: @initiative, mode: 'up')
   end
 
-  get 'web_api/v1/initiatives/:initiative_id/votes' do
+  get 'web_api/v1/initiatives/:initiative_id/reactions' do
     let(:initiative_id) { @initiative.id }
 
-    example_request 'List all votes of an initiative' do
+    example_request 'List all reactions of an initiative' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
   end
 
-  get 'web_api/v1/votes/:id' do
-    let(:id) { @votes.first.id }
+  get 'web_api/v1/reactions/:id' do
+    let(:id) { @reactions.first.id }
 
-    example_request 'Get one vote on an initiative by id' do
+    example_request 'Get one reaction on an initiative by id' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :id)).to eq @votes.first.id
+      expect(json_response.dig(:data, :id)).to eq @reactions.first.id
     end
   end
 
-  post 'web_api/v1/initiatives/:initiative_id/votes' do
+  post 'web_api/v1/initiatives/:initiative_id/reactions' do
     with_options scope: :reaction do
-      parameter :user_id, 'The user id of the user owning the vote. Signed in user by default', required: false
+      parameter :user_id, 'The user id of the user owning the reaction. Signed in user by default', required: false
       parameter :mode, 'one of [up, down]', required: true
     end
     ValidationErrorHelper.new.error_fields(self, Reaction)
@@ -58,7 +58,7 @@ resource 'Votes' do
     let(:initiative_id) { @initiative.id }
     let(:mode) { 'up' }
 
-    example_request 'Create a vote to an initiative' do
+    example_request 'Create a reaction to an initiative' do
       assert_status 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :relationships, :user, :data, :id)).to be_nil
@@ -77,7 +77,7 @@ resource 'Votes' do
     end
   end
 
-  post 'web_api/v1/initiatives/:initiative_id/votes/up' do
+  post 'web_api/v1/initiatives/:initiative_id/reactions/up' do
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
     disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
@@ -85,7 +85,7 @@ resource 'Votes' do
 
     let(:initiative_id) { @initiative.id }
 
-    example_request "Upvote an initiative that doesn't have your vote yet" do
+    example_request "Upvote an initiative that doesn't have your reaction yet" do
       assert_status 201
       expect(@initiative.reload.upvotes_count).to eq 3
       expect(@initiative.reload.downvotes_count).to eq 0
@@ -110,7 +110,7 @@ resource 'Votes' do
     end
   end
 
-  post 'web_api/v1/initiatives/:initiative_id/votes/down' do
+  post 'web_api/v1/initiatives/:initiative_id/reactions/down' do
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
     disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
@@ -127,11 +127,11 @@ resource 'Votes' do
     end
   end
 
-  delete 'web_api/v1/votes/:id' do
+  delete 'web_api/v1/reactions/:id' do
     let(:reaction) { create(:reaction, user: @user, reactable: @initiative) }
-    let(:id) { vote.id }
+    let(:id) { reaction.id }
 
-    example_request 'Delete a vote from an initiative' do
+    example_request 'Delete a reaction from an initiative' do
       assert_status 200
       expect { Reaction.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
     end

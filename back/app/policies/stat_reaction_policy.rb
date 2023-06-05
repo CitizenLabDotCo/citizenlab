@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class StatVotePolicy < ApplicationPolicy
+class StatReactionPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 

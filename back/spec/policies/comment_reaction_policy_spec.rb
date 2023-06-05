@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe CommentVotePolicy do
+describe CommentReactionPolicy do
   subject(:policy) { described_class.new(user, vote) }
 
-  let(:scope) { CommentVotePolicy::Scope.new(user, Reaction) }
+  let(:scope) { CommentReactionPolicy::Scope.new(user, Reaction) }
   let(:project) { create(:continuous_project) }
   let(:idea) { create(:idea, project: project) }
   let(:comment) { create(:comment, post: idea) }

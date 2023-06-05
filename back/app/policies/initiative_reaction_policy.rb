@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class InitiativeVotePolicy < ApplicationPolicy
+class InitiativeReactionPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -50,4 +50,4 @@ class InitiativeVotePolicy < ApplicationPolicy
   end
 end
 
-InitiativeVotePolicy.prepend(GranularPermissions::Patches::InitiativeVotePolicy)
+InitiativeReactionPolicy.prepend(GranularPermissions::Patches::InitiativeReactionPolicy)

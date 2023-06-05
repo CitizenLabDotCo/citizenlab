@@ -2,7 +2,7 @@
 
 module GranularPermissions
   module Patches
-    module CommentVotePolicy
+    module CommentReactionPolicy
       def denied_for_initiative_reason(user)
         PermissionsService.new.denied_reason_for_resource user, 'commenting_initiative'
       end

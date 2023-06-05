@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CommentVotePolicy < ApplicationPolicy
+class CommentReactionPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -58,4 +58,4 @@ class CommentVotePolicy < ApplicationPolicy
   end
 end
 
-CommentVotePolicy.prepend(GranularPermissions::Patches::CommentVotePolicy)
+CommentReactionPolicy.prepend(GranularPermissions::Patches::CommentReactionPolicy)
