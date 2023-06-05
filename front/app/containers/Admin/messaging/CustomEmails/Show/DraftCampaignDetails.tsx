@@ -1,5 +1,6 @@
 import React from 'react';
-import { ICampaignData, deleteCampaign } from 'services/campaigns';
+import { deleteCampaign } from 'services/campaigns';
+import { ICampaignData } from 'api/campaigns/types';
 import clHistory from 'utils/cl-router/history';
 
 import { useIntl } from 'utils/cl-intl';
