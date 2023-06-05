@@ -76,12 +76,6 @@ interface IStreamParamsAdminPublications extends IStreamParams {
   queryParameters: IQueryParameters;
 }
 
-export function adminPublicationByIdStream(id: string) {
-  return streams.get<{ data: IAdminPublicationData }>({
-    apiEndpoint: `${apiEndpoint}/${id}`,
-  });
-}
-
 export function listAdminPublications(
   streamParams: IStreamParamsAdminPublications
 ) {
