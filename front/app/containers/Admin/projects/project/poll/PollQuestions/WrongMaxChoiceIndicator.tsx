@@ -1,10 +1,9 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { TextCell } from 'components/admin/ResourceList';
 import styled from 'styled-components';
-import usePollOptions from 'hooks/usePollOptions';
+import usePollOptions from 'api/poll_options/usePollOptions';
 import { colors, IconTooltip } from '@citizenlab/cl2-component-library';
 
 const StyledIconTooltip = styled(IconTooltip)`
@@ -23,13 +22,13 @@ interface Props {
 }
 
 const WrongMaxChoiceIndicator = ({ maxAnswers, questionId }: Props) => {
-  const options = usePollOptions(questionId);
+  const { data: options } = usePollOptions(questionId);
 
-  if (isNilOrError(options) || typeof maxAnswers !== 'number') {
+  if (!options || typeof maxAnswers !== 'number') {
     return null;
   }
 
-  return options.length < maxAnswers ? (
+  return options.data.length < maxAnswers ? (
     <Indicator isWarning data-testid="wrongMaxChoiceIndicator">
       <StyledIconTooltip
         content={<FormattedMessage {...messages.maxOverTheMaxTooltip} />}

@@ -10,7 +10,7 @@ import { IParticipationContextType } from 'typings';
 
 // components
 import Button from 'components/UI/Button';
-import { exportPollResponses } from 'services/pollResponses';
+import exportPollResponses from 'api/poll_responses/exportPollResponses';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';

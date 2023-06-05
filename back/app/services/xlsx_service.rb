@@ -135,7 +135,7 @@ class XlsxService
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
       { header: 'description',          f: ->(i) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
-      { header: 'author_name',          f: ->(i) { i.author_name } },
+      { header: 'author_name',          f: ->(i) { format_author_name i } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'author_id',            f: ->(i) { i.author_id } },
       { header: 'proposed_budget',      f: ->(i) { i.proposed_budget },                                                    skip_sanitization: true },
@@ -171,7 +171,7 @@ class XlsxService
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
       { header: 'description',          f: ->(i) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
-      { header: 'author_name',          f: ->(i) { i.author_name } },
+      { header: 'author_name',          f: ->(i) { format_author_name i } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'author_id',            f: ->(i) { i.author_id } },
       { header: 'published_at',         f: ->(i) { i.published_at },                                    skip_sanitization: true },
@@ -199,7 +199,7 @@ class XlsxService
       { header: 'input_id',           f: ->(c) { c.post.id } },
       { header: 'comment',            f: ->(c) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
       { header: 'upvotes_count',      f: ->(c) { c.upvotes_count }, skip_sanitization: true },
-      { header: 'author_name',        f: ->(c) { c.author_name } },
+      { header: 'author_name',        f: ->(c) { format_author_name c } },
       { header: 'author_email',       f: ->(c) { c.author&.email } },
       { header: 'author_id',          f: ->(i) { i.author_id } },
       { header: 'created_at',         f: ->(c) { c.created_at },    skip_sanitization: true },
@@ -218,7 +218,7 @@ class XlsxService
       { header: 'proposal_id',         f: ->(c) { c.post.id } },
       { header: 'comment',          f: ->(c) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
       { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
-      { header: 'author_name',   f: ->(c) { c.author_name } },
+      { header: 'author_name',   f: ->(c) { format_author_name c } },
       { header: 'author_email',  f: ->(c) { c.author&.email } },
       { header: 'author_id', f: ->(i) { i.author_id } },
       { header: 'created_at', f: ->(c) { c.created_at }, skip_sanitization: true },
@@ -300,6 +300,12 @@ class XlsxService
 
   def namespace(field_id, option_key)
     "#{field_id}/#{option_key}"
+  end
+
+  def format_author_name(input)
+    return input.author_name unless input.anonymous?
+
+    I18n.t 'xlsx_export.anonymous'
   end
 end
 

@@ -41,6 +41,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        anonymous_participation: {
+          enabled: true,
+          allowed: true
+        },
         representativeness: {
           enabled: true,
           allowed: true

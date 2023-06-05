@@ -52,6 +52,7 @@ export default ({
 }: Props) => (
   <ButtonContainer>
     <Button
+      id="e2e-initiative-settings-submit-button"
       buttonStyle="admin-dark"
       onClick={handleSubmit}
       disabled={disabled}

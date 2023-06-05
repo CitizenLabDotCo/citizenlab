@@ -6,15 +6,16 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def index
     @phases = policy_scope(Phase)
+      .includes(:permissions)
       .where(project_id: params[:project_id])
       .order(:start_at)
     @phases = paginate @phases
 
-    render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: jsonapi_serializer_params)
+    render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: jsonapi_serializer_params, include: %i[permissions])
   end
 
   def show
-    render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params, include: %i[permissions]).serializable_hash
   end
 
   def create
@@ -109,6 +110,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :voting_enabled,
       :upvoting_method,
       :upvoting_limited_max,
+      :allow_anonymous_participation,
       :presentation_mode,
       :survey_embed_url,
       :survey_service,

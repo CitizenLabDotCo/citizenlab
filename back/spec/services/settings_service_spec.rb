@@ -9,13 +9,18 @@ describe SettingsService do
       'properties' => {
         'a' => {},
         'b' => {},
-        'c' => {}
+        'c' => {
+          properties: {
+            allowed: { type: 'boolean', default: true },
+            enabled: { type: 'boolean', default: false }
+          }
+        }
       },
       'dependencies' => {
         'b' => ['a'],
         'c' => %w[a b]
       }
-    }
+    }.deep_stringify_keys
   end
 
   describe 'add_missing_features' do
@@ -29,10 +34,18 @@ describe SettingsService do
       expect(settings).to include('a', 'b', 'c')
     end
 
-    it 'makes missing features to unallowed and unenabled' do
+    it 'sets missing features to unallowed and unenabled' do
       settings = ss.add_missing_features({}, schema1)
       expect(settings['a']).to include({
         'allowed' => false,
+        'enabled' => false
+      })
+    end
+
+    it 'sets missing feature allowed/enabled to their default values' do
+      settings = ss.add_missing_features({}, schema1)
+      expect(settings['c']).to include({
+        'allowed' => true,
         'enabled' => false
       })
     end

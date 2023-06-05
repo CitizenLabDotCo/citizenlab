@@ -36,7 +36,7 @@ class PhasePolicy < ApplicationPolicy
   end
 
   def submission_count?
-    survey_results?
+    show?
   end
 
   def index_xlsx?

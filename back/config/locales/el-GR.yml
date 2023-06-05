@@ -207,6 +207,7 @@ el:
       status: 'Κατάσταση'
       assignee_fullname: 'Αποδέκτης'
       assignee_email: 'Email παραλήπτη'
+    anonymous: 'Ανώνυμος'
   form_builder:
     default_select_field:
       title: 'Ερώτηση δημοσκόπησης'

@@ -2,15 +2,9 @@ import React from 'react';
 
 import PollAdminForm from './PollAdminForm';
 
-import { mockQuestion } from 'services/__mocks__/pollQuestions';
+import { pollQuestionsData } from 'api/poll_questions/__mocks__/usePollQuestions';
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 import dragAndDrop from 'utils/testUtils/dragAndDrop';
-
-const pollQuestions = [
-  'How are you today?',
-  'What is on the menu for dinner tonight?',
-  "What's your favourite ice cream flavor?",
-].map((item, index) => mockQuestion(index.toString(), item));
 
 describe('<PollAdminForm/>', () => {
   it('Shows the right number of question rows', () => {
@@ -18,12 +12,12 @@ describe('<PollAdminForm/>', () => {
       <PollAdminForm
         participationContextId="projectId"
         participationContextType="project"
-        pollQuestions={pollQuestions}
+        pollQuestions={pollQuestionsData}
       />
     );
 
     const questionRows = screen.getAllByTestId('question-row');
-    expect(questionRows.length).toEqual(3);
+    expect(questionRows.length).toEqual(2);
   });
 
   describe('Add a question button', () => {
@@ -47,7 +41,7 @@ describe('<PollAdminForm/>', () => {
         <PollAdminForm
           participationContextId="projectId"
           participationContextType="project"
-          pollQuestions={pollQuestions}
+          pollQuestions={pollQuestionsData}
         />
       );
 
@@ -63,7 +57,7 @@ describe('<PollAdminForm/>', () => {
         <PollAdminForm
           participationContextId="projectId"
           participationContextType="project"
-          pollQuestions={pollQuestions}
+          pollQuestions={pollQuestionsData}
         />
       );
 
@@ -83,7 +77,7 @@ describe('<PollAdminForm/>', () => {
         <PollAdminForm
           participationContextId="projectId"
           participationContextType="project"
-          pollQuestions={pollQuestions}
+          pollQuestions={pollQuestionsData}
         />
       );
 
@@ -100,7 +94,7 @@ describe('<PollAdminForm/>', () => {
         <PollAdminForm
           participationContextId="projectId"
           participationContextType="project"
-          pollQuestions={pollQuestions}
+          pollQuestions={pollQuestionsData}
         />
       );
 
@@ -121,7 +115,7 @@ describe('<PollAdminForm/>', () => {
       <PollAdminForm
         participationContextId="projectId"
         participationContextType="project"
-        pollQuestions={pollQuestions}
+        pollQuestions={pollQuestionsData}
       />
     );
 
