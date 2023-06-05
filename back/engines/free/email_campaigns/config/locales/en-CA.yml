@@ -48,55 +48,6 @@ en-CA:
       "assignee_digest": Weekly overview of assigned ideas
       "user_digest": Weekly overview
       "your_proposed_initiatives_digest": Weekly overview of your proposals
-    admin_campaign_type_description:
-      "manual": Official message - all users
-      "admin_rights_received": Admin rights received - admins
-      "comment_deleted_by_admin": Deletion of your comment - all users
-      "comment_marked_as_spam": Comment spam report - admins and project managers
-      "comment_on_your_comment": Reply on your comment - all users
-      "comment_on_your_idea": Comment on your idea - all users
-      "comment_on_your_initiative": Comment on your proposal - all users
-      "first_idea_published": Publication of your first idea - all users
-      "idea_marked_as_spam": Idea spam report - admins and project managers
-      "idea_published": Publication of your idea - all users
-      "initiative_assigned_to_you": Assignment of a proposal - admins
-      "initiative_marked_as_spam": Proposal spam report - admins
-      "initiative_published": Publication of your proposal - all users
-      "invite_received": Invitation - all users
-      "invite_reminder": Invitation reminder - all users
-      "mention_in_comment": Mention in a comment - all users
-      "mention_in_official_feedback": Mention in an update - all users
-      "new_comment_for_admin": New comment - admins and project managers
-      "new_comment_on_commented_idea": New comment on an idea you commented on - all users
-      "new_comment_on_commented_initiative": New comment on a proposal you commented on - all users
-      "new_comment_on_voted_idea": New comment on an idea you voted for - all users
-      "new_comment_on_voted_initiative": New comment on a proposal you voted for - all users
-      "new_idea_for_admin": New idea - admins and project managers
-      "new_initiative_for_admin": New proposal - admins
-      "official_feedback_on_commented_idea": Update on an idea you commented on - all users
-      "official_feedback_on_commented_initiative": Update on a proposal you commented on - all users
-      "official_feedback_on_voted_idea": Update on an idea you voted on - all users
-      "official_feedback_on_voted_initiative": Update on a proposal you voted on - all users
-      "official_feedback_on_your_idea": Update on your idea - all users
-      "official_feedback_on_your_initiative": Update on your proposal - all users
-      "password_reset": Password reset - all users
-      "project_moderation_rights_received": Project moderation rights received - project managers
-      "project_folder_moderation_rights_received": Folder manager rights received
-      "project_phase_started": New project phase - project participants
-      "project_phase_upcoming": Upcoming new project phase - admins and project managers
-      "status_change_of_commented_idea": Status change of an idea you commented on - all users
-      "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
-      "status_change_of_voted_idea": Status change of an idea you voted on - all users
-      "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
-      "status_change_of_your_idea": Status change of your idea - all users
-      "status_change_of_your_initiative": Status change of your proposal - all users
-      "threshold_reached_for_admin": Proposal reached the voting threshold - admins
-      "welcome": Welcome email to new users - all users
-      "admin_digest": Weekly overview - admins
-      "moderator_digest": Weekly overview - project managers
-      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
-      "user_digest": Weekly overview - all users
-      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
     schedules:
       weekly:
         "0": "Weekly, on Sundays at %{hourOfDay}"
@@ -565,9 +516,7 @@ en-CA:
       remaining_days: 'Days remaining'
     admin_labels:
       recipient_role:
-        admins: 'To admins'
         admins_and_managers: 'To admins & managers'
-        managers: 'To managers'
         registered_users: 'To registered users'
       recipient_segment:
         admins: 'Admins'
@@ -578,18 +527,18 @@ en-CA:
         managers: 'Managers'
         admins_assigned_to_a_proposal: 'Admins assigned to a proposal'
         admins_and_managers_assigned_to_the_input: 'Admins & managers assigned to the input'
-        user_receiving_admin_rights: 'User receiving admin rights'
-        user_receiving_folder_moderator_rights: 'User receiving folder moderator rights'
-        user_receiving_project_moderator_rights: 'User receiving project moderator rights'
+        user_who_is_receiving_admin_rights: 'User who is receiving admin rights'
+        user_who_is_receiving_folder_moderator_rights: 'User who is receiving folder moderator rights'
+        user_who_is_receiving_project_moderator_rights: 'User who is receiving project moderator rights'
         user_who_commented: 'User who commented'
         user_who_is_mentioned: 'User who is mentioned'
         user_who_published_the_proposal: 'User who published the proposal'
         user_who_published_the_input: 'User who published the input'
         user_who_registers: 'User who registers'
         user_who_was_invited: 'User who was invited'
-        users_engaged_with_the_input: 'Users engaged with the input'
-        users_engaged_with_the_project: 'Users engaged with the project'
-        users_engaged_with_the_proposal: 'Users engaged with the proposal'
+        users_who_engaged_with_the_input: 'Users who engaged with the input'
+        users_who_engaged_with_the_project: 'Users who engaged with the project'
+        users_who_engaged_with_the_proposal: 'Users who engaged with the proposal'
       content_type:
         comments: 'Comments'
         content_moderation: 'Content moderation'
@@ -606,15 +555,15 @@ en-CA:
         input_is_assigned: 'Input is assigned'
         input_is_flagged_as_spam: 'Input is flagged as spam'
         input_is_updated: 'Input is updated'
-        input_status_is_changed: 'Input status is changed'
+        input_status_changes: 'Input status changes'
         new_input_is_published: 'New input is published'
-        new_proposal_is_published: 'New proposal is published'
-        project_changes_phase: 'Project changes phase'
+        new_proposal_is_posted: 'New proposal is posted'
+        project_phase_changes: 'Project phase changes'
         proposal_gets_reported_as_spam: 'Proposal gets reported as spam'
         proposal_is_assigned_to_admin: 'Proposal is assigned to admin'
         proposal_is_updated: 'Proposal is updated'
         proposal_is_upvoted_above_threshold: 'Proposal is upvoted above threshold'
-        proposal_status_is_changed: 'Proposal status is changed'
+        proposal_status_changes: 'Proposal status changes'
         user_comments: 'User comments'
         user_comments_on_input: 'User comments on input'
         user_comments_on_proposal: 'User comments on proposal'
@@ -622,8 +571,8 @@ en-CA:
         user_is_given_folder_moderator_rights: 'User is given folder moderator rights'
         user_is_given_project_moderator_rights: 'User is given project moderator rights'
         user_is_mentioned: 'User is mentioned'
-        user_publishes_an_input: 'User publishes an input'
-        user_publishes_a_proposal: 'User publishes a proposal'
+        input_is_published: 'Input is published'
+        proposal_is_published: 'Proposal is published'
         user_registers_for_the_first_time: 'User registers for the first time'
         user_replies_to_comment: 'User replies to comment'
         7_days_after_invite_is_sent: '7 days after invite is sent'
