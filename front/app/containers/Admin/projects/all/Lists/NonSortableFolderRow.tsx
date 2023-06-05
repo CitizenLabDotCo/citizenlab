@@ -8,7 +8,7 @@ import { PublicationStatus } from 'api/projects/types';
 import { Row } from 'components/admin/ResourceList';
 import useAuthUser from 'hooks/useAuthUser';
 import FolderChildProjects from './FolderChildProjects';
-import { IAdminPublicationData } from 'services/adminPublications';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
 export interface Props {
   id: string;

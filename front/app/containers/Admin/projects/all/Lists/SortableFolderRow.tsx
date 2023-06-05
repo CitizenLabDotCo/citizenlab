@@ -9,7 +9,7 @@ import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
 import { PublicationStatus } from 'api/projects/types';
 import useAuthUser from 'hooks/useAuthUser';
 import FolderChildProjects from './FolderChildProjects';
-import { IAdminPublicationData } from 'services/adminPublications';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
 const StyledSortableRow = styled(SortableRow)`
   & .sortablerow-draghandle {
