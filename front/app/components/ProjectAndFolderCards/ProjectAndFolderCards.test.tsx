@@ -4,6 +4,7 @@ import { getTheme } from '@citizenlab/cl2-component-library';
 import * as styledComponents from 'styled-components';
 
 import ProjectAndFolderCards from '.';
+import { IStatusCounts } from 'api/admin_publications_status_counts/types';
 
 // Mock external libraries
 let mockSmallerThanMinTablet = false;
@@ -18,11 +19,26 @@ jest.spyOn(styledComponents, 'useTheme').mockReturnValue(getTheme());
 
 // Mock hooks
 const DEFAULT_ADMIN_PUBLICATIONS = [
-  { publicationId: '1', publicationType: 'project' },
-  { publicationId: '2', publicationType: 'project' },
-  { publicationId: '3', publicationType: 'project' },
-  { publicationId: '4', publicationType: 'project' },
-  { publicationId: '5', publicationType: 'project' },
+  {
+    id: '1',
+    relationships: { publication: { data: { id: '1', type: 'project' } } },
+  },
+  {
+    id: '2',
+    relationships: { publication: { data: { id: '2', type: 'project' } } },
+  },
+  {
+    id: '3',
+    relationships: { publication: { data: { id: '3', type: 'project' } } },
+  },
+  {
+    id: '4',
+    relationships: { publication: { data: { id: '4', type: 'project' } } },
+  },
+  {
+    id: '5',
+    relationships: { publication: { data: { id: '5', type: 'project' } } },
+  },
 ];
 
 let mockAdminPublications = DEFAULT_ADMIN_PUBLICATIONS;
@@ -31,42 +47,38 @@ let mockHasMore = false;
 let mockLoadingInitial = true;
 const mockLoadingMore = false;
 const mockLoadMore = jest.fn();
-const mockChangeTopics = jest.fn();
-const mockChangeAreas = jest.fn();
-const mockChangePublicationStatus = jest.fn();
 
-jest.mock('hooks/useAdminPublications', () =>
-  jest.fn(() => ({
-    list: mockAdminPublications,
-    hasMore: mockHasMore,
-    loadingInitial: mockLoadingInitial,
-    loadingMore: mockLoadingMore,
-    onLoadMore: mockLoadMore,
-    onChangeTopics: mockChangeTopics,
-    onChangeAreas: mockChangeAreas,
-    onChangePublicationStatus: mockChangePublicationStatus,
-  }))
-);
+// Needed to render folder with project inside
+jest.mock('api/admin_publications/useAdminPublications', () => {
+  return () => ({
+    hasNextPage: mockHasMore,
+    isInitialLoading: mockLoadingInitial,
+    isFetchingNextPage: mockLoadingMore,
+    fetchNextPage: mockLoadMore,
+    data: { pages: [{ data: mockAdminPublications }] },
+  });
+});
 
-const DEFAULT_STATUS_COUNTS = {
-  published: 3,
-  archived: 2,
-  all: 5,
+const DEFAULT_STATUS_COUNTS: IStatusCounts = {
+  data: {
+    type: 'status_counts',
+    attributes: {
+      status_counts: {
+        published: 3,
+        archived: 2,
+      },
+    },
+  },
 };
 
-let mockStatusCounts: any = DEFAULT_STATUS_COUNTS;
+let mockStatusCounts = DEFAULT_STATUS_COUNTS;
 
-const mockChangeTopics2 = jest.fn();
-const mockChangeAreas2 = jest.fn();
-const mockChangePublicationStatus2 = jest.fn();
-
-jest.mock('hooks/useAdminPublicationsStatusCounts', () =>
-  jest.fn(() => ({
-    counts: mockStatusCounts,
-    onChangeTopics: mockChangeTopics2,
-    onChangeAreas: mockChangeAreas2,
-    onChangePublicationStatus: mockChangePublicationStatus2,
-  }))
+jest.mock(
+  'api/admin_publications_status_counts/useAdminPublicationsStatusCounts',
+  () =>
+    jest.fn(() => ({
+      data: mockStatusCounts,
+    }))
 );
 
 jest.mock('api/app_configuration/useAppConfiguration', () =>
@@ -274,37 +286,6 @@ describe('<ProjectAndFolderCards />', () => {
     expect(searchInput.value).toBe('dog');
   });
 
-  it('calls onChangePublicationStatus of useAdminPublications on click tab', () => {
-    render(
-      <ProjectAndFolderCards
-        publicationStatusFilter={['published', 'archived']}
-        showTitle={true}
-        layout={'dynamic'}
-      />
-    );
-
-    expect(mockChangePublicationStatus).toHaveBeenCalledWith(['published']);
-
-    const tabs = screen.getAllByTestId('tab');
-
-    // Published tab: currently selected
-    fireEvent.click(tabs[0]);
-    expect(mockChangePublicationStatus).toHaveBeenCalledTimes(1);
-
-    // Archived tab
-    fireEvent.click(tabs[1]);
-    expect(mockChangePublicationStatus).toHaveBeenCalledWith(['archived']);
-    expect(mockChangePublicationStatus).toHaveBeenCalledTimes(2);
-
-    // All tab
-    fireEvent.click(tabs[2]);
-    expect(mockChangePublicationStatus).toHaveBeenCalledWith([
-      'published',
-      'archived',
-    ]);
-    expect(mockChangePublicationStatus).toHaveBeenCalledTimes(3);
-  });
-
   it('does not render area filter if no areas', () => {
     mockAdminPublications = DEFAULT_ADMIN_PUBLICATIONS;
     mockStatusCounts = DEFAULT_STATUS_COUNTS;
@@ -341,42 +322,6 @@ describe('<ProjectAndFolderCards />', () => {
     expect(filterSelector).toBeInTheDocument();
   });
 
-  it('calls onChangeAreas on change areas', () => {
-    const { container } = render(
-      <ProjectAndFolderCards
-        publicationStatusFilter={['published', 'archived']}
-        showTitle={true}
-        layout={'dynamic'}
-      />
-    );
-
-    const filterSelectorButton = container.querySelector(
-      '.e2e-filter-selector-areas > .e2e-filter-selector-button'
-    );
-
-    // Open filter selector
-    fireEvent.click(filterSelectorButton);
-
-    // Get areas
-    const areas = container.querySelectorAll('.e2e-checkbox');
-
-    fireEvent.click(areas[0]);
-    expect(mockChangeAreas).toHaveBeenCalledWith(['1']);
-    expect(mockChangeAreas2).toHaveBeenCalledWith(['1']);
-
-    fireEvent.click(areas[1]);
-    expect(mockChangeAreas).toHaveBeenCalledWith(['1', '2']);
-    expect(mockChangeAreas2).toHaveBeenCalledWith(['1', '2']);
-
-    fireEvent.click(areas[0]);
-    expect(mockChangeAreas).toHaveBeenCalledWith(['2']);
-    expect(mockChangeAreas2).toHaveBeenCalledWith(['2']);
-
-    fireEvent.click(areas[1]);
-    expect(mockChangeAreas).toHaveBeenCalledWith([]);
-    expect(mockChangeAreas2).toHaveBeenCalledWith([]);
-  });
-
   it('does not render topic filter if no topics', () => {
     mockTopicData = [];
 
@@ -411,42 +356,6 @@ describe('<ProjectAndFolderCards />', () => {
     expect(filterSelector).toBeInTheDocument();
   });
 
-  it('calls onChangeTopics on change topics', () => {
-    const { container } = render(
-      <ProjectAndFolderCards
-        publicationStatusFilter={['published', 'archived']}
-        showTitle={true}
-        layout={'dynamic'}
-      />
-    );
-
-    const filterSelector = container.querySelector(
-      '.e2e-filter-selector-topics > .e2e-filter-selector-button'
-    );
-
-    // Open filter selector
-    fireEvent.click(filterSelector);
-
-    // Get topics
-    const topics = container.querySelectorAll('.e2e-checkbox');
-
-    fireEvent.click(topics[0]);
-    expect(mockChangeTopics).toHaveBeenCalledWith(['1']);
-    expect(mockChangeTopics2).toHaveBeenCalledWith(['1']);
-
-    fireEvent.click(topics[1]);
-    expect(mockChangeTopics).toHaveBeenCalledWith(['1', '2']);
-    expect(mockChangeTopics2).toHaveBeenCalledWith(['1', '2']);
-
-    fireEvent.click(topics[0]);
-    expect(mockChangeTopics).toHaveBeenCalledWith(['2']);
-    expect(mockChangeTopics2).toHaveBeenCalledWith(['2']);
-
-    fireEvent.click(topics[1]);
-    expect(mockChangeTopics).toHaveBeenCalledWith([]);
-    expect(mockChangeTopics2).toHaveBeenCalledWith([]);
-  });
-
   it('renders filter label if topics and/or areas', () => {
     render(
       <ProjectAndFolderCards
@@ -476,14 +385,29 @@ describe('<ProjectAndFolderCards />', () => {
 
   it('if only published admin pubs: renders only Active tab', () => {
     mockAdminPublications = [
-      { publicationId: '1', publicationType: 'project' },
-      { publicationId: '2', publicationType: 'project' },
-      { publicationId: '3', publicationType: 'project' },
+      {
+        id: '1',
+        relationships: { publication: { data: { id: '1', type: 'project' } } },
+      },
+      {
+        id: '2',
+        relationships: { publication: { data: { id: '2', type: 'project' } } },
+      },
+      {
+        id: '3',
+        relationships: { publication: { data: { id: '3', type: 'project' } } },
+      },
     ];
 
     mockStatusCounts = {
-      published: 3,
-      all: 3,
+      data: {
+        type: 'status_counts',
+        attributes: {
+          status_counts: {
+            published: 3,
+          },
+        },
+      },
     };
 
     render(
@@ -501,13 +425,25 @@ describe('<ProjectAndFolderCards />', () => {
 
   it('if only archived admin pubs: renders only All tab', () => {
     mockAdminPublications = [
-      { publicationId: '4', publicationType: 'project' },
-      { publicationId: '5', publicationType: 'project' },
+      {
+        id: '4',
+        relationships: { publication: { data: { id: '4', type: 'project' } } },
+      },
+      {
+        id: '5',
+        relationships: { publication: { data: { id: '5', type: 'project' } } },
+      },
     ];
 
     mockStatusCounts = {
-      archived: 2,
-      all: 2,
+      data: {
+        type: 'status_counts',
+        attributes: {
+          status_counts: {
+            archived: 2,
+          },
+        },
+      },
     };
 
     render(
@@ -528,10 +464,18 @@ describe('<ProjectAndFolderCards />', () => {
       mockLoadingInitial = false;
       mockSmallerThanMinTablet = false;
       mockAdminPublications = [];
+
       mockStatusCounts = {
-        archived: 2,
-        all: 2,
+        data: {
+          type: 'status_counts',
+          attributes: {
+            status_counts: {
+              archived: 2,
+            },
+          },
+        },
       };
+
       mockTopicData = DEFAULT_TOPIC_DATA;
       mockAreaData = DEFAULT_AREA_DATA;
 
@@ -562,8 +506,14 @@ describe('<ProjectAndFolderCards />', () => {
 
     it('if no admin pubs at all: does not render tabs and filters, renders empty container', () => {
       mockAdminPublications = [];
+
       mockStatusCounts = {
-        all: 0,
+        data: {
+          type: 'status_counts',
+          attributes: {
+            status_counts: {},
+          },
+        },
       };
 
       const { container } = render(
@@ -597,9 +547,16 @@ describe('<ProjectAndFolderCards />', () => {
       mockLoadingInitial = false;
       mockSmallerThanMinTablet = true;
       mockAdminPublications = [];
+
       mockStatusCounts = {
-        archived: 2,
-        all: 2,
+        data: {
+          type: 'status_counts',
+          attributes: {
+            status_counts: {
+              archived: 2,
+            },
+          },
+        },
       };
 
       const { container } = render(
@@ -629,8 +586,14 @@ describe('<ProjectAndFolderCards />', () => {
 
     it('if no admin pubs at all: does not render tabs and filters, renders empty container', () => {
       mockAdminPublications = [];
+
       mockStatusCounts = {
-        all: 0,
+        data: {
+          type: 'status_counts',
+          attributes: {
+            status_counts: {},
+          },
+        },
       };
 
       const { container } = render(

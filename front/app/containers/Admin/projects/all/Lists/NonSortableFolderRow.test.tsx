@@ -63,12 +63,6 @@ const mockFolderChildAdminPublicationsList: IAdminPublicationData[] = [
     },
   },
 ];
-const mockFolderChildAdminPublications = {
-  hasNextPage: false,
-  isLoadingInitial: false,
-  isFetchingNextPage: false,
-  data: { pages: mockFolderChildAdminPublicationsList },
-};
 
 const mockUserData: IUserData = {
   id: 'userId',
@@ -93,6 +87,12 @@ jest.mock('hooks/useAuthUser', () => {
   return () => mockUserData;
 });
 
+const mockFolderChildAdminPublications = {
+  hasNextPage: false,
+  isLoadingInitial: false,
+  isFetchingNextPage: false,
+  data: { pages: mockFolderChildAdminPublicationsList },
+};
 // Needed to render folder with project inside
 jest.mock('api/admin_publications/useAdminPublications', () => {
   return () => mockFolderChildAdminPublications;
