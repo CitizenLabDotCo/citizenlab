@@ -3,7 +3,8 @@ import { isString } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { ICampaignData, campaignByIdStream } from 'services/campaigns';
+import { campaignByIdStream } from 'services/campaigns';
+import { ICampaignData } from 'api/campaigns/types';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
