@@ -142,7 +142,8 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       idea.data.id,
       idea.data.relationships.idea_images.data?.[0]?.id
     );
-    const authorId = idea.data.relationships.author.data?.id;
+    const authorId = idea.data.relationships?.author?.data?.id || null;
+    const authorHash = idea.data.attributes.author_hash;
     const ideaTitle = localize(idea.data.attributes.title_multiloc);
     // remove html tags from wysiwyg output
     const bodyText = localize(idea.data.attributes.body_multiloc)
@@ -220,16 +221,17 @@ const CompactIdeaCard = memo<IdeaCardProps>(
         hideImagePlaceholder={hideImagePlaceholder}
         body={
           <BodyWrapper>
-            {authorId && (
-              <StyledAvatar
-                size={36}
-                userId={authorId}
-                hideIfNoAvatar={true}
-                fillColor={transparentize(0.6, colors.textSecondary)}
-              />
-            )}
+            <StyledAvatar
+              size={36}
+              userId={authorId}
+              fillColor={transparentize(0.6, colors.textSecondary)}
+              authorHash={authorHash}
+            />
             <Body>
-              <StyledUserName userId={authorId || null} />
+              <StyledUserName
+                userId={authorId || null}
+                anonymous={idea.data.attributes.anonymous}
+              />
               <Separator aria-hidden>&bull;</Separator>
               {!isNilOrError(locale) && (
                 <TimeAgo>

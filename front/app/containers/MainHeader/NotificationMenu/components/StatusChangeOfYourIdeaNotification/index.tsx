@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { IStatusChangeOfYourIdeaNotificationData } from 'services/notifications';
+import { IStatusChangeOfYourIdeaNotificationData } from 'api/notifications/types';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';

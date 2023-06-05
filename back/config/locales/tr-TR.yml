@@ -207,6 +207,7 @@ tr:
       status: 'Durum'
       assignee_fullname: 'Atanan'
       assignee_email: 'Atanan e-posta'
+    anonymous: 'Anonim'
   form_builder:
     default_select_field:
       title: 'Sizin sorunuz'

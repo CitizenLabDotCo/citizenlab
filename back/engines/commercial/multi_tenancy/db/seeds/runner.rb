@@ -11,6 +11,7 @@ require_relative 'common_passwords'
 require_relative 'custom_fields'
 require_relative 'custom_forms'
 require_relative 'custom_maps'
+require_relative 'email_campaign_examples'
 require_relative 'groups'
 require_relative 'home_pages'
 require_relative 'ideas'
@@ -82,6 +83,7 @@ module MultiTenancy
         return if Apartment::Tenant.current == 'public'
 
         MultiTenancy::Seeds::UnsubscriptionTokens.new(runner: self).run
+        MultiTenancy::Seeds::EmailCampaignExamples.new(runner: self).run
         MultiTenancy::TenantService.new.finalize_creation(Tenant.current)
       end
 

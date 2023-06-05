@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { IStatusChangeOnVotedInitiativeNotificationData } from 'services/notifications';
+import { IStatusChangeOnVotedInitiativeNotificationData } from 'api/notifications/types';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';

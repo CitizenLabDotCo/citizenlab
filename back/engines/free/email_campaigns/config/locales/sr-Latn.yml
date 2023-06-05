@@ -48,55 +48,6 @@ sr-Latn:
       "assignee_digest": Nedeljni pregled dodeljenih ideja
       "user_digest": Nedeljni pregled
       "your_proposed_initiatives_digest": Nedeljni pregled vaših predloga
-    admin_campaign_type_description:
-      "manual": Zvanična poruka - svi korisnici
-      "admin_rights_received": Dodeljena administratorska prava - administratori
-      "comment_deleted_by_admin": Brisanje vašeg komentara - svi korisnici
-      "comment_marked_as_spam": Izveštaj o spam komentarima - administratori i menadžeri projekata
-      "comment_on_your_comment": Odgovorite na svoj komentar - svi korisnici
-      "comment_on_your_idea": Komentarišite svoju ideju - svi korisnici
-      "comment_on_your_initiative": Komentarišite svoj predlog - svi korisnici
-      "first_idea_published": Objava vaše prve ideje - svi korisnici
-      "idea_marked_as_spam": Izveštaj o neželjenoj pošti - administratori i menadžeri projekata
-      "idea_published": Objava vaše ideje - svi korisnici
-      "initiative_assigned_to_you": Dodeljivanje predloga - administratori
-      "initiative_marked_as_spam": Izveštaj o neželjenoj pošti - administratori
-      "initiative_published": Objava vašeg predloga - svi korisnici
-      "invite_received": Pozivnica - svi korisnici
-      "invite_reminder": Podsetnik o pozivnici - svi korisnici
-      "mention_in_comment": Pominjanje u komentaru - svi korisnici
-      "mention_in_official_feedback": Pominjanje u objavi - svi korisnici
-      "new_comment_for_admin": Novi komentar - administratori i rukovodioci projekata
-      "new_comment_on_commented_idea": Novi komentar na ideju koju ste komentarisali - svi korisnici
-      "new_comment_on_commented_initiative": Novi komentar na predlog koji ste komentarisali - svi korisnici
-      "new_comment_on_voted_idea": Novi komentar na ideju za koju ste glasali - svi korisnici
-      "new_comment_on_voted_initiative": Novi komentar na predlog za koji ste glasali - svi korisnici
-      "new_idea_for_admin": Nova ideja - administratori i menadžeri projekata
-      "new_initiative_for_admin": Novi predlog - administratori
-      "official_feedback_on_commented_idea": Nove informacije o ideji koju ste komentarisali - svi korisnici
-      "official_feedback_on_commented_initiative": Nove informacije o predlogu koji ste komentarisali - svi korisnici
-      "official_feedback_on_voted_idea": Nove informacije o ideji za koju ste glasali - svi korisnici
-      "official_feedback_on_voted_initiative": Nove informacije o predlogu za koji ste glasali - svi korisnici
-      "official_feedback_on_your_idea": Ažurirajte svoju ideju - svi korisnici
-      "official_feedback_on_your_initiative": Ažurirajte svoj predlog - svi korisnici
-      "password_reset": Resetovanje lozinke - svi korisnici
-      "project_moderation_rights_received": Dodeljena prava za moderaciju projekta - menadžeri projekata
-      "project_folder_moderation_rights_received": Stečena su prava menadžera projekta
-      "project_phase_started": Nova faza projekta - učesnici projekta
-      "project_phase_upcoming": Buduće faze projekta - administratori i menadžeri projekata
-      "status_change_of_commented_idea": Promena statusa ideje koju ste komentarisali - svi korisnici
-      "status_change_of_commented_initiative": Promena statusa predloga koji ste komentarisali - svi korisnici
-      "status_change_of_voted_idea": Promena statusa ideje za koju ste glasali - svi korisnici
-      "status_change_of_voted_initiative": Promena statusa predloga za koji ste glasali - svi korisnici
-      "status_change_of_your_idea": Promena statusa vaše ideje - svi korisnici
-      "status_change_of_your_initiative": Promena statusa vašeg predloga - svi korisnici
-      "threshold_reached_for_admin": Predlog je dostigao neophodan broj glasova - administratori
-      "welcome": Novi korisnik - administratori
-      "admin_digest": Nedeljni pregled - administratori
-      "moderator_digest": Nedeljni pregled - menadžeri projekata
-      "assignee_digest": Nedeljni pregled dodeljenih ideja - administratori i menadžeri projekata
-      "user_digest": Nedeljni pregled - svi korisnici
-      "your_proposed_initiatives_digest": Nedeljni pregled sopstvenih predloga - svi korisnici
     schedules:
       weekly:
         "0": "Седмично, недељом у %{hourOfDay}"
@@ -565,9 +516,7 @@ sr-Latn:
       remaining_days: 'Preostalih dana'
     admin_labels:
       recipient_role:
-        admins: 'За администраторе'
         admins_and_managers: 'За администраторе и менаџере'
-        managers: 'Менаџерима'
         registered_users: 'За регистроване кориснике'
       recipient_segment:
         admins: 'Админс'
@@ -578,18 +527,18 @@ sr-Latn:
         managers: 'Менаџери'
         admins_assigned_to_a_proposal: 'Администратори додељени предлогу'
         admins_and_managers_assigned_to_the_input: 'Администратори и менаџери додељени улазу'
-        user_receiving_admin_rights: 'Корисник који добија администраторска права'
-        user_receiving_folder_moderator_rights: 'Корисник који прима права модератора фолдера'
-        user_receiving_project_moderator_rights: 'Корисник добија права модератора пројекта'
+        user_who_is_receiving_admin_rights: 'Корисник који добија администраторска права'
+        user_who_is_receiving_folder_moderator_rights: 'Корисник који добија права модератора фолдера'
+        user_who_is_receiving_project_moderator_rights: 'Корисник који добија права модератора пројекта'
         user_who_commented: 'Корисник који је коментарисао'
         user_who_is_mentioned: 'Корисник који се помиње'
         user_who_published_the_proposal: 'Корисник који је објавио предлог'
         user_who_published_the_input: 'Корисник који је објавио унос'
         user_who_registers: 'Корисник који се региструје'
         user_who_was_invited: 'Корисник који је позван'
-        users_engaged_with_the_input: 'Корисници ангажовани на уносу'
-        users_engaged_with_the_project: 'Корисници ангажовани на пројекту'
-        users_engaged_with_the_proposal: 'Корисници ангажовани на предлогу'
+        users_who_engaged_with_the_input: 'Корисници који су се бавили уносом'
+        users_who_engaged_with_the_project: 'Корисници који су били ангажовани на пројекту'
+        users_who_engaged_with_the_proposal: 'Корисници који су се бавили предлогом'
       content_type:
         comments: 'Коментари'
         content_moderation: 'Модерирање садржаја'
@@ -606,15 +555,15 @@ sr-Latn:
         input_is_assigned: 'Улаз је додељен'
         input_is_flagged_as_spam: 'Унос је означен као нежељена пошта'
         input_is_updated: 'Унос је ажуриран'
-        input_status_is_changed: 'Статус уноса је промењен'
+        input_status_changes: 'Статус уноса се мења'
         new_input_is_published: 'Нови унос је објављен'
-        new_proposal_is_published: 'Нови предлог је објављен'
-        project_changes_phase: 'Фаза промена пројекта'
+        new_proposal_is_posted: 'Нови предлог је објављен'
+        project_phase_changes: 'Промене фазе пројекта'
         proposal_gets_reported_as_spam: 'Предлог се пријављује као нежељена пошта'
         proposal_is_assigned_to_admin: 'Предлог се додељује администратору'
         proposal_is_updated: 'Предлог је ажуриран'
         proposal_is_upvoted_above_threshold: 'За предлог се гласа изнад прага'
-        proposal_status_is_changed: 'Статус предлога је промењен'
+        proposal_status_changes: 'Промене статуса предлога'
         user_comments: 'Коментари корисника'
         user_comments_on_input: 'Коментари корисника на унос'
         user_comments_on_proposal: 'Коментари корисника на предлог'
@@ -622,8 +571,8 @@ sr-Latn:
         user_is_given_folder_moderator_rights: 'Корисник добија права модератора фолдера'
         user_is_given_project_moderator_rights: 'Корисник добија права модератора пројекта'
         user_is_mentioned: 'Корисник се помиње'
-        user_publishes_an_input: 'Корисник објављује унос'
-        user_publishes_a_proposal: 'Корисник објављује предлог'
+        input_is_published: 'Улаз је објављен'
+        proposal_is_published: 'Предлог је објављен'
         user_registers_for_the_first_time: 'Корисник се региструје по први пут'
         user_replies_to_comment: 'Корисник одговара на коментар'
         7_days_after_invite_is_sent: '7 дана након слања позивнице'

@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // services
-import { IMentionInOfficialFeedbackNotificationData } from 'services/notifications';
+import { IMentionInOfficialFeedbackNotificationData } from 'api/notifications/types';
 
 // i18n
 import messages from '../../messages';

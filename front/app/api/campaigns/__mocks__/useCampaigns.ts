@@ -17,14 +17,20 @@ export const campaignsData: ICampaignData[] = [
       created_at: '2021-03-03T09:00:00.000Z',
       updated_at: '2021-03-03T09:00:00.000Z',
       campaign_name: 'campaign_name',
-      admin_campaign_description_multiloc: {
-        en: 'Weekly overview of your own proposals - all users',
+      campaign_description_multiloc: {
+        en: 'Weekly overview of your own proposals',
       },
       deliveries_count: 0,
       schedule: null,
       schedule_multiloc: {
         en: 'Weekly, on Wednesdays at 2 PM',
       },
+      content_type_multiloc: {},
+      content_type_ordering: 1,
+      recipient_role_multiloc: {},
+      recipient_role_ordering: 1,
+      recipient_segment_multiloc: {},
+      trigger_multiloc: {},
     },
     relationships: {
       author: {
@@ -51,14 +57,20 @@ export const campaignsData: ICampaignData[] = [
       created_at: '2021-03-03T09:00:00.000Z',
       updated_at: '2021-03-03T09:00:00.000Z',
       campaign_name: 'campaign_name',
-      admin_campaign_description_multiloc: {
-        en: 'Weekly overview of your own proposals - all users',
+      campaign_description_multiloc: {
+        en: 'Weekly overview of your own proposals',
       },
       deliveries_count: 0,
       schedule: null,
       schedule_multiloc: {
         en: 'Weekly, on Wednesdays at 2 PM',
       },
+      content_type_multiloc: {},
+      content_type_ordering: 1,
+      recipient_role_multiloc: {},
+      recipient_role_ordering: 1,
+      recipient_segment_multiloc: {},
+      trigger_multiloc: {},
     },
     relationships: {
       author: {

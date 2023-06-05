@@ -5,7 +5,7 @@ import usePhases from 'api/phases/usePhases';
 import { isNilOrError } from 'utils/helperUtils';
 import { getInputTerm } from 'services/participationContexts';
 
-import { IOfficialFeedbackOnVotedIdeaNotificationData } from 'services/notifications';
+import { IOfficialFeedbackOnVotedIdeaNotificationData } from 'api/notifications/types';
 
 // i18n
 import messages from '../../messages';

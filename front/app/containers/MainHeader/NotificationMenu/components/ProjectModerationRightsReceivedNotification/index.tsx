@@ -3,7 +3,7 @@ import { stopPropagation } from 'utils/helperUtils';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 // resources
-import { IProjectModerationRightsReceivedNotificationData } from 'services/notifications';
+import { IProjectModerationRightsReceivedNotificationData } from 'api/notifications/types';
 
 // i18n
 import messages from '../../messages';

@@ -207,6 +207,7 @@ fr-BE:
       status: 'Statut'
       assignee_fullname: 'Attribué'
       assignee_email: 'E-mails du destinataire'
+    anonymous: 'Anonyme'
   form_builder:
     default_select_field:
       title: 'Votre question'

@@ -207,6 +207,7 @@ pl:
       status: 'Status'
       assignee_fullname: 'Moderator'
       assignee_email: 'E-mail osoby przypisanej'
+    anonymous: 'Anonimowy'
   form_builder:
     default_select_field:
       title: 'Twoje pytanie'

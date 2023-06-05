@@ -87,5 +87,19 @@ describe EmailCampaigns::ExamplesService do
       expect { service.save_examples([[command, campaign]]) }.to change(EmailCampaigns::Example, :count).from(6).to(5)
       expect(old_examples.map(&:id) & EmailCampaigns::Example.ids).to be_empty
     end
+
+    # Specifically testing for regression after a recent bugfix: CL-3712
+    it 'reduces the number of stored campaigns if there are more recent examples than EXAMPLES_PER_CAMPAIGN (5)' do
+      campaign = create(:admin_rights_received_campaign)
+      create_list(:campaign_example, 10, campaign: campaign)
+
+      recipient = create(:admin)
+      command = {
+        recipient: recipient,
+        event_payload: {}
+      }
+
+      expect { service.save_examples([[command, campaign]]) }.to change(EmailCampaigns::Example, :count).from(10).to(5)
+    end
   end
 end

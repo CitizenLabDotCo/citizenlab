@@ -120,11 +120,13 @@ const Comment = ({
               <CommentHeader
                 projectId={projectId}
                 authorId={authorId}
+                authorHash={comment.data.attributes.author_hash}
                 commentId={commentId}
                 commentType={commentType}
                 commentCreatedAt={comment.data.attributes.created_at}
                 moderator={moderator}
                 className={commentType === 'parent' ? 'marginBottom' : ''}
+                anonymous={comment.data.attributes.anonymous}
               />
 
               <Content>
@@ -162,7 +164,6 @@ const Comment = ({
       </Container>
     );
   }
-
   return null;
 };
 
