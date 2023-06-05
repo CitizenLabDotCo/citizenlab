@@ -63,7 +63,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.input_status_is_changed'
+      'email_campaigns.admin_labels.trigger.input_status_changes'
     end
 
     def generate_commands(recipient:, activity:)
