@@ -48,6 +48,7 @@ interface Props {
   statusId: string;
   authorId: string | null;
   insideModal: boolean;
+  anonymous?: boolean;
   className?: string;
 }
 
@@ -57,6 +58,7 @@ const RightColumnDesktop = ({
   statusId,
   authorId,
   insideModal,
+  anonymous,
   className,
 }: Props) => {
   return (
@@ -87,6 +89,7 @@ const RightColumnDesktop = ({
           projectId={projectId}
           statusId={statusId}
           authorId={authorId}
+          anonymous={anonymous}
         />
       </InnerContainer>
     </Container>

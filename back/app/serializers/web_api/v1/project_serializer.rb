@@ -87,7 +87,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 
   attribute :participants_count do |object, _params|
     @participants_service ||= ParticipantsService.new
-    @participants_service.project_participants(object).size
+    @participants_service.project_participants_count(object)
   end
 
   attribute :allocated_budget do |object, params|
@@ -116,6 +116,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   has_many :avatars, serializer: WebApi::V1::AvatarSerializer do |object, params|
     avatars_for_project(object, params)[:users]
   end
+  has_many :permissions
 
   has_one :user_basket, record_type: :basket, if: proc { |object, params|
     signed_in? object, params

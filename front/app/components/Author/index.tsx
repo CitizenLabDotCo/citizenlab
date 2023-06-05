@@ -110,11 +110,14 @@ export interface Props {
   horizontalLayout?: boolean;
   underline?: boolean;
   color?: string;
+  authorHash?: string;
+  anonymous?: boolean;
 }
 
 const Author = memo(
   ({
     authorId,
+    authorHash,
     createdAt,
     size,
     isLinkToProfile,
@@ -128,6 +131,7 @@ const Author = memo(
     horizontalLayout,
     color,
     underline,
+    anonymous,
   }: Props) => {
     const locale = useLocale();
     const { data: author } = useUserById(authorId);
@@ -143,6 +147,7 @@ const Author = memo(
             {showAvatar && (
               <StyledAvatar
                 userId={authorId}
+                authorHash={authorHash}
                 size={size}
                 isLinkToProfile={isLinkToProfile}
                 moderator={authorCanModerate}
@@ -165,6 +170,7 @@ const Author = memo(
                   fontSize={fontSize}
                   color={color}
                   underline={underline}
+                  anonymous={anonymous}
                 />
               </AuthorNameContainer>
               <TimeAgo className={horizontalLayout ? 'horizontalLayout' : ''}>

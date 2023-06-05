@@ -15,7 +15,6 @@ const useAuthUser = () => {
   return useQuery<IUser, CLErrors, IUser, MeKeys>({
     queryKey: meKeys.all(),
     queryFn: () => fetchMe(),
-    retry: false,
   });
 };
 

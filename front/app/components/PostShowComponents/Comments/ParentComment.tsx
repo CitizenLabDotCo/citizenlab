@@ -49,6 +49,7 @@ interface Props {
   commentId: string;
   childCommentIds: string[] | false;
   className?: string;
+  allowAnonymousParticipation?: boolean;
 }
 
 const ParentComment = ({
@@ -57,6 +58,7 @@ const ParentComment = ({
   postType,
   className,
   childCommentIds,
+  allowAnonymousParticipation,
 }: Props) => {
   const commentingPermissionInitiative = useInitiativesPermissions(
     'commenting_initiative'
@@ -164,6 +166,7 @@ const ParentComment = ({
             postType={postType}
             projectId={projectId}
             parentId={commentId}
+            allowAnonymousParticipation={allowAnonymousParticipation}
           />
         )}
       </Container>

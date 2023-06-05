@@ -17,8 +17,7 @@ import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
-import Link from 'utils/cl-router/Link';
-import { matchPathToUrl } from 'utils/helperUtils';
+import { isTopBarNavActive } from 'utils/helperUtils';
 
 interface DataProps {
   canManageAutomatedCampaigns: GetPermissionChildProps;
@@ -87,10 +86,14 @@ const MessagingDashboard = ({
   return (
     <>
       <NavigationTabs>
-        {tabs.map(({ url, label }) => (
-          <Tab key={url} active={matchPathToUrl(url).test(pathname)}>
-            <Link to={url}>{label}</Link>
-          </Tab>
+        {tabs.map(({ url, label, statusLabel }) => (
+          <Tab
+            label={label}
+            url={url}
+            key={url}
+            active={isTopBarNavActive('/admin/messaging', pathname, url)}
+            statusLabel={statusLabel}
+          />
         ))}
       </NavigationTabs>
 

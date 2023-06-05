@@ -1,4 +1,4 @@
 import { Keys } from 'utils/cl-react-query/types';
-import mesKeys from './keys';
+import meKeys from './keys';
 
-export type MeKeys = Keys<typeof mesKeys>;
+export type MeKeys = Keys<typeof meKeys>;
