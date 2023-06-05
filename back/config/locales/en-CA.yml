@@ -207,6 +207,7 @@ en-CA:
       status: 'Status'
       assignee_fullname: 'Assignee'
       assignee_email: 'Assignee email'
+    anonymous: 'Anonymous'
   form_builder:
     default_select_field:
       title: 'Your question'
