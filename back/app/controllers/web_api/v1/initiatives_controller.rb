@@ -192,7 +192,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     default_params = jsonapi_serializer_params(pcs: ParticipationContextService.new)
 
     if current_user
-      votes = current_user.votes.where(
+      votes = current_user.reactions.where(
         reactable_id: initiatives.pluck(:id),
         reactable_type: 'Initiative'
       ).index_by(&:reactable_id)

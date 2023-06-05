@@ -40,7 +40,7 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
     if params[:vbii]
       params.dig(:vbii, object.id)
     else
-      object.votes.where(user_id: current_user(params)&.id).first
+      object.reactions.where(user_id: current_user(params)&.id).first
     end
   end
 end

@@ -92,7 +92,7 @@ resource 'Votes' do
     end
 
     example 'Upvote an initiative that you downvoted before' do
-      @initiative.votes.create(user: @user, mode: 'down')
+      @initiative.reactions.create(user: @user, mode: 'down')
       do_request
       assert_status 201
       expect(@initiative.reload.upvotes_count).to eq 3
@@ -100,7 +100,7 @@ resource 'Votes' do
     end
 
     example '[error] Upvote an initiative that you upvoted before' do
-      @initiative.votes.create(user: @user, mode: 'up')
+      @initiative.reactions.create(user: @user, mode: 'up')
       do_request
       assert_status 422
       json_response = json_parse response_body

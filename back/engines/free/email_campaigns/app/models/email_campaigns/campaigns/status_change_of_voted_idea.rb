@@ -48,7 +48,7 @@ module EmailCampaigns
 
     def filter_recipient(users_scope, activity:, time: nil)
       users_scope
-        .where(id: activity.item.votes.pluck(:user_id))
+        .where(id: activity.item.reactions.pluck(:user_id))
         .where.not(id: activity.item.author_id)
         .where.not(id: activity.item.comments.pluck(:author_id))
     end

@@ -25,6 +25,6 @@ class WebApi::V1::CommentSerializer < WebApi::V1::BaseSerializer
   has_one :user_vote, record_type: :vote, serializer: WebApi::V1::ReactionSerializer, if: proc { |object, params|
     signed_in? object, params
   } do |object, params|
-    params.dig(:vbci, object.id) || object.votes.where(user: current_user(params)).first
+    params.dig(:vbci, object.id) || object.reactions.where(user: current_user(params)).first
   end
 end

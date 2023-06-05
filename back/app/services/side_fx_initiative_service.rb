@@ -76,7 +76,7 @@ class SideFxInitiativeService
   end
 
   def add_autovote(initiative)
-    initiative.votes.create!(mode: 'up', user: initiative.author)
+    initiative.reactions.create!(mode: 'up', user: initiative.author)
     initiative.reload
   end
 

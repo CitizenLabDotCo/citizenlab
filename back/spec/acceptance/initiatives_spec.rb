@@ -365,7 +365,7 @@ resource 'Initiatives' do
         do_request
         json_response = json_parse(response_body)
         new_initiative = Initiative.find(json_response.dig(:data, :id))
-        expect(new_initiative.votes.size).to eq 1
+        expect(new_initiative.reactions.size).to eq 1
         expect(new_initiative.votes[0].mode).to eq 'up'
         expect(new_initiative.votes[0].user.id).to eq @user.id
         expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
@@ -493,7 +493,7 @@ resource 'Initiatives' do
           do_request initiative: { publication_status: 'published' }
           json_response = json_parse(response_body)
           new_initiative = Initiative.find(json_response.dig(:data, :id))
-          expect(new_initiative.votes.size).to eq 1
+          expect(new_initiative.reactions.size).to eq 1
           expect(new_initiative.votes[0].mode).to eq 'up'
           expect(new_initiative.votes[0].user.id).to eq @user.id
           expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1

@@ -89,7 +89,7 @@ resource 'Comment Votes' do
     end
 
     example 'Upvote a comment that you downvoted before' do
-      @comment.votes.create(user: @user, mode: 'down')
+      @comment.reactions.create(user: @user, mode: 'down')
       do_request
       assert_status 201
       expect(@comment.reload.upvotes_count).to eq 3
@@ -97,7 +97,7 @@ resource 'Comment Votes' do
     end
 
     example '[error] Upvote a comment that you upvoted before' do
-      @comment.votes.create(user: @user, mode: 'up')
+      @comment.reactions.create(user: @user, mode: 'up')
       do_request
       assert_status 422
       json_response = json_parse response_body
@@ -111,7 +111,7 @@ resource 'Comment Votes' do
     let(:comment_id) { @comment.id }
 
     example '[error] Downvote a comment that you upvoted before' do
-      @comment.votes.create(user: @user, mode: 'up')
+      @comment.reactions.create(user: @user, mode: 'up')
       do_request
       assert_status 401
       expect(@comment.reload.upvotes_count).to eq 3
@@ -125,7 +125,7 @@ resource 'Comment Votes' do
     # end
 
     # example "Downvote a comment that you upvoted before" do
-    #   @comment.votes.create(user: @user, mode: 'up')
+    #   @comment.reactions.create(user: @user, mode: 'up')
     #   do_request
     #   assert_status 201
     #   expect(@comment.reload.upvotes_count).to eq 2
@@ -133,7 +133,7 @@ resource 'Comment Votes' do
     # end
 
     # example "[error] Downvote a comment that you downvoted before" do
-    #   @comment.votes.create(user: @user, mode: 'down')
+    #   @comment.reactions.create(user: @user, mode: 'down')
     #   do_request
     #   assert_status 422
     #   json_response = json_parse(response_body)

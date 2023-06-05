@@ -40,7 +40,7 @@ RSpec.describe EmailCampaigns::ModeratorDigestMailer do
           },
           top_ideas: top_ideas.map do |idea|
             days_ago = campaign.send(:days_ago)
-            new_votes = idea.votes.where('created_at > ?', Time.now - days_ago)
+            new_votes = idea.reactions.where('created_at > ?', Time.now - days_ago)
             {
               id: idea.id,
               title_multiloc: idea.title_multiloc,

@@ -317,11 +317,11 @@ class ParticipationContextService
   end
 
   def upvoting_limit_reached?(context, user)
-    context.upvoting_limited? && user.votes.up.where(reactable: context.ideas).size >= context.upvoting_limited_max
+    context.upvoting_limited? && user.reactions.up.where(reactable: context.ideas).size >= context.upvoting_limited_max
   end
 
   def downvoting_limit_reached?(context, user)
-    context.downvoting_limited? && user.votes.down.where(reactable: context.ideas).size >= context.downvoting_limited_max
+    context.downvoting_limited? && user.reactions.down.where(reactable: context.ideas).size >= context.downvoting_limited_max
   end
 
   def permission_denied_reason(user, _action, _context)

@@ -84,7 +84,7 @@ class SideFxIdeaService
     pcs = ParticipationContextService.new
     return if pcs.idea_voting_disabled_reason_for idea, idea.author, mode: 'up'
 
-    idea.votes.create!(mode: 'up', user: idea.author)
+    idea.reactions.create!(mode: 'up', user: idea.author)
     idea.reload
   end
 

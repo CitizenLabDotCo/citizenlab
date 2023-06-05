@@ -43,7 +43,7 @@ module EmailCampaigns
             }
           },
           top_ideas: top_ideas.map do |idea|
-            new_votes = idea.votes.where('created_at > ?', Time.now - 7)
+            new_votes = idea.reactions.where('created_at > ?', Time.now - 7)
             {
               id: idea.id,
               title_multiloc: idea.title_multiloc,

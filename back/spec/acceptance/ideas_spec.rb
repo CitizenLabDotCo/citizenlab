@@ -676,7 +676,7 @@ resource 'Ideas' do
             do_request
             json_response = json_parse(response_body)
             new_idea = Idea.find(json_response.dig(:data, :id))
-            expect(new_idea.votes.size).to eq 1
+            expect(new_idea.reactions.size).to eq 1
             expect(new_idea.votes[0].mode).to eq 'up'
             expect(new_idea.votes[0].user.id).to eq @user.id
             expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
@@ -1038,7 +1038,7 @@ resource 'Ideas' do
             do_request idea: { publication_status: 'published' }
             json_response = json_parse response_body
             new_idea = Idea.find json_response.dig(:data, :id)
-            expect(new_idea.votes.size).to eq 1
+            expect(new_idea.reactions.size).to eq 1
             expect(new_idea.votes[0].mode).to eq 'up'
             expect(new_idea.votes[0].user.id).to eq @user.id
             expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1

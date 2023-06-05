@@ -182,7 +182,7 @@ module EmailCampaigns
       end.reverse.take N_TOP_IDEAS
       # payload
       top_ideas.map do |idea|
-        new_votes = idea.votes.where('created_at > ?', Time.now - days_ago)
+        new_votes = idea.reactions.where('created_at > ?', Time.now - days_ago)
         {
           id: idea.id,
           title_multiloc: idea.title_multiloc,
@@ -200,7 +200,7 @@ module EmailCampaigns
     end
 
     def idea_activity_count(idea)
-      new_vote_count = idea.votes.where('created_at > ?', Time.now - days_ago).count
+      new_vote_count = idea.reactions.where('created_at > ?', Time.now - days_ago).count
       new_comments_count = idea.comments.where('created_at > ?', Time.now - days_ago).count
       new_vote_count + new_comments_count
     end
