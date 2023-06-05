@@ -8,7 +8,7 @@ import useUpdateProjectFolderMembership from 'api/projects/useUpdateProjectFolde
 import { PublicationStatus } from 'api/projects/types';
 
 // hooks
-import useAdminPublications from 'hooks/useAdminPublications';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useAuthUser from 'hooks/useAuthUser';
 
 // localisation
@@ -31,9 +31,13 @@ interface Props {
 
 const ItemsNotInFolder = ({ projectFolderId }: Props) => {
   const authUser = useAuthUser();
-  const { list: adminPublications } = useAdminPublications({
+
+  const { data } = useAdminPublications({
     publicationStatusFilter: publicationStatuses,
   });
+
+  const adminPublications = data?.pages.map((page) => page.data).flat();
+
   const { mutate: updateProjectFolderMembership } =
     useUpdateProjectFolderMembership();
   const [processing, setProcessing] = useState<string[]>([]);
@@ -62,7 +66,8 @@ const ItemsNotInFolder = ({ projectFolderId }: Props) => {
   const adminPublicationsThatCanBeAdded = !isNilOrError(adminPublications)
     ? adminPublications.filter(
         (item) =>
-          item.publicationType === 'project' && item.attributes.depth === 0
+          item.relationships.publication.data.type === 'project' &&
+          item.attributes.depth === 0
       )
     : null;
 
@@ -93,7 +98,7 @@ const ItemsNotInFolder = ({ projectFolderId }: Props) => {
                       ),
                       handler: addProjectToFolder(projectFolderId),
                       processing: processing.includes(
-                        adminPublication.publicationId
+                        adminPublication.relationships.publication.data.id
                       ),
                       icon: 'plus-circle',
                     },

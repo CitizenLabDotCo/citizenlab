@@ -15,6 +15,11 @@ const fetchAdminPublications = (filters: IQueryParameters) => {
     pageSize,
     rootLevelOnly,
     removeNotAllowedParents,
+    publicationStatusFilter,
+    childrenOfId,
+    topicIds,
+    areaIds,
+    onlyProjects,
     ...queryParameters
   } = filters;
   return fetcher<IAdminPublications>({
@@ -22,9 +27,14 @@ const fetchAdminPublications = (filters: IQueryParameters) => {
     action: 'get',
     queryParams: {
       'page[number]': pageNumber || 1,
-      'page[size]': pageSize || 50,
+      'page[size]': pageSize || 1000,
       depth: rootLevelOnly ? 0 : undefined,
       remove_not_allowed_parents: removeNotAllowedParents,
+      publication_statuses: publicationStatusFilter,
+      folder: childrenOfId,
+      topics: topicIds,
+      areas: areaIds,
+      only_projects: onlyProjects,
       ...queryParameters,
     },
   });

@@ -22,10 +22,10 @@ import messages from './messages';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 // services
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
 const FolderIcon = styled(Icon)`
   margin-right: 10px;
@@ -57,7 +57,7 @@ const FolderRowContent = styled(RowContent)<{
 `;
 
 export interface Props {
-  publication: IAdminPublicationContent;
+  publication: IAdminPublicationData;
   toggleFolder: () => void;
   isFolderOpen: boolean;
   hasProjects: boolean;
