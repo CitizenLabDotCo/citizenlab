@@ -13,8 +13,8 @@
 #
 # Indexes
 #
-#  index_projects_allowed_input_topics_on_project_id  (project_id)
-#  index_projects_allowed_input_topics_on_topic_id    (topic_id)
+#  index_projects_allowed_input_topics_on_project_id               (project_id)
+#  index_projects_allowed_input_topics_on_topic_id_and_project_id  (topic_id,project_id) UNIQUE
 #
 # Foreign Keys
 #
@@ -28,4 +28,5 @@ class ProjectsAllowedInputTopic < ApplicationRecord
   belongs_to :topic
 
   validates :project, :topic, presence: true
+  validates :topic_id, uniqueness: { scope: :project_id }
 end

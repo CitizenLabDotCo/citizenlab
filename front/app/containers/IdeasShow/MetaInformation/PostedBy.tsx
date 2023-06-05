@@ -7,8 +7,8 @@ import UserName from 'components/UI/UserName';
 import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, FormattedDate } from 'react-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedDate } from 'react-intl';
 import messages from './messages';
 
 // hooks
@@ -46,14 +46,18 @@ export interface Props {
   ideaId: string;
   compact?: boolean;
   className?: string;
+  anonymous?: boolean;
 }
 
-const PostedBy = memo<Props & WrappedComponentProps>(
-  ({ authorId, ideaId, compact, className, intl: { formatMessage } }) => {
+const PostedBy = memo<Props>(
+  ({ authorId, ideaId, compact, className, anonymous }) => {
+    const { formatMessage } = useIntl();
     const { data: idea } = useIdeaById(ideaId);
 
     if (!isNilOrError(idea)) {
       const ideaPublishedAtDate = idea.data.attributes.published_at;
+      const authorHash = idea.data.attributes.author_hash;
+
       const userName = (
         <UserName
           userId={authorId}
@@ -61,6 +65,7 @@ const PostedBy = memo<Props & WrappedComponentProps>(
           underline={true}
           color={colors.textSecondary}
           fontSize={fontSizes.s}
+          anonymous={anonymous}
         />
       );
       const date = (
@@ -80,6 +85,7 @@ const PostedBy = memo<Props & WrappedComponentProps>(
               userId={authorId}
               size={30}
               isLinkToProfile={!!authorId}
+              authorHash={authorHash}
             />
             <FormattedMessage
               {...messages.byUserOnDate}
@@ -94,4 +100,4 @@ const PostedBy = memo<Props & WrappedComponentProps>(
   }
 );
 
-export default injectIntl(PostedBy);
+export default PostedBy;

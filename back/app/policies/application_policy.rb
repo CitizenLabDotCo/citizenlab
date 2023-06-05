@@ -51,6 +51,10 @@ class ApplicationPolicy
 
   private
 
+  def can_moderate?
+    user && UserRoleService.new.can_moderate?(record, user)
+  end
+
   def admin?
     user&.admin?
   end
