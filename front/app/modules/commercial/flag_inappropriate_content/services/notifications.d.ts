@@ -1,6 +1,6 @@
-import 'services/notifications';
+import 'api/notifications/types';
 
-declare module 'services/notifications' {
+declare module 'api/notifications/types' {
   export interface INLPFlagNotificationData extends IBaseNotificationData {
     attributes: {
       type: 'inappropriate_content_flagged';
