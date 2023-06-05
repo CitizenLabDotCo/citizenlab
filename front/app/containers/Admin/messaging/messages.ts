@@ -256,6 +256,18 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.automatedEmails',
     defaultMessage: 'Automated emails',
   },
+  automatedEmailsRecipients: {
+    id: 'app.containers.Admin.emails.automatedEmailsRecipients',
+    defaultMessage: 'Users who will receive this email',
+  },
+  automatedEmailsTriggers: {
+    id: 'app.containers.Admin.emails.automatedEmailsTriggers',
+    defaultMessage: 'Event that triggers this email',
+  },
+  automatedEmailsDigest: {
+    id: 'app.containers.Admin.emails.automatedEmailsDigest',
+    defaultMessage: 'The email will only be sent if there is content',
+  },
   allUsers: {
     id: 'app.containers.Admin.emails.allUsers',
     defaultMessage: 'All users',
@@ -263,6 +275,40 @@ export default defineMessages({
   groups: {
     id: 'app.containers.Admin.emails.groups',
     defaultMessage: 'Groups',
+  },
+  viewExample: {
+    id: 'app.containers.Admin.emails.viewExample',
+    defaultMessage: 'View',
+  },
+  noExampleYet: {
+    id: 'app.containers.Admin.emails.noExampleYet',
+    defaultMessage:
+      "We can't show you an example email as no email of this type has been sent yet. As soon as one is sent you'll be able to view it here.",
+  },
+  supportButtonLabel: {
+    id: 'app.containers.Admin.emails.supportButtonLabel',
+    defaultMessage: 'See examples on our support page',
+  },
+  supportButtonLink: {
+    id: 'app.containers.Admin.emails.supportButtonLink',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/2762939-what-are-automated-emails',
+  },
+  sentToUsers: {
+    id: 'app.containers.Admin.emails.sentToUsers',
+    defaultMessage: 'These are emails sent to users',
+  },
+  subject: {
+    id: 'app.containers.Admin.emails.subject',
+    defaultMessage: 'Subject:',
+  },
+  from: {
+    id: 'app.containers.Admin.emails.from',
+    defaultMessage: 'From:',
+  },
+  to: {
+    id: 'app.containers.Admin.emails.to',
+    defaultMessage: 'To:',
   },
   nameVariablesInfo: {
     id: 'app.containers.Admin.emails.nameVariablesInfo',

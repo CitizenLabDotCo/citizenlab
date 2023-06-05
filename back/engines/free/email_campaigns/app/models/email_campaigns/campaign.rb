@@ -109,13 +109,6 @@ module EmailCampaigns
       )
     end
 
-    def self.admin_campaign_description_multiloc
-      @multiloc_service ||= MultilocService.new
-      @multiloc_service.i18n_to_multiloc(
-        "email_campaigns.admin_campaign_type_description.#{campaign_name}"
-      )
-    end
-
     def self.policy_class
       CampaignPolicy
     end
