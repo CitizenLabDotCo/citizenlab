@@ -7,7 +7,7 @@ import { ParticipationCTAContent } from 'components/ParticipationCTABars/Partici
 
 // hooks
 import { useTheme } from 'styled-components';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // services
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
@@ -27,7 +27,7 @@ import messages from '../messages';
 
 export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const isSmallerThanPhone = useBreakpoint('phone');
 
@@ -45,7 +45,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
   const { enabled, disabledReason } = getIdeaPostingRules({
     project,
     phase: currentPhase,
-    authUser,
+    authUser: authUser?.data,
   });
   const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
 

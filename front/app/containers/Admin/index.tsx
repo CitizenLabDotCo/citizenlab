@@ -3,7 +3,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // permissions
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import { usePermission } from 'services/permissions';
 import HasPermission from 'components/HasPermission';
 
@@ -89,7 +89,7 @@ type Props = {
 
 const AdminPage = memo<Props & WithRouterProps>(
   ({ className, location: { pathname } }) => {
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
 
     // The check in front/app/containers/Admin/routes.tsx already should do the same.
     // TODO: double check it and remove `userCanViewAdmin`

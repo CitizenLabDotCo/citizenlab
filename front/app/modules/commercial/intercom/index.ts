@@ -1,5 +1,5 @@
 import { combineLatest } from 'rxjs';
-import { authUserStream } from 'services/auth';
+import authUserStream from 'api/me/authUserStream';
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import {
   bufferUntilInitialized,
@@ -42,7 +42,7 @@ const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     combineLatest([
       appConfigurationStream,
-      authUserStream().observable,
+      authUserStream,
       initializeFor('intercom'),
     ]).subscribe(([tenant, user, _]) => {
       if (!INTERCOM_APP_ID) return;

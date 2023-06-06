@@ -22,7 +22,7 @@ import { StyledBox } from './styles';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useMarkAllAsRead from 'api/notifications/useMarkAllAsRead';
 
 // analytics
@@ -32,7 +32,7 @@ import tracks from 'containers/MainHeader/NotificationMenu/tracks';
 export const NotificationsPopup = () => {
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('tablet');
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { mutate: markAllAsRead } = useMarkAllAsRead();
   const iconDivRef = useRef<HTMLDivElement | null>(null);
   const [isNotificationsPopupOpen, setIsNotificationsPopupOpen] =
@@ -42,7 +42,8 @@ export const NotificationsPopup = () => {
     return null;
   }
 
-  const unreadNotificationsCount = authUser.attributes.unread_notifications;
+  const unreadNotificationsCount =
+    authUser.data.attributes.unread_notifications;
 
   const handleCloseNotifications = () => {
     markAllAsRead();

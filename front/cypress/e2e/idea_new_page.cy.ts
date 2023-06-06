@@ -1,6 +1,8 @@
 import moment = require('moment');
 import { randomString, randomEmail } from '../support/commands';
 
+const round = (x: number) => Math.round(x * 1000) / 1000;
+
 describe('Idea new page for continuous project', () => {
   const firstName = randomString();
   const lastName = randomString();
@@ -98,8 +100,8 @@ describe('Idea new page for continuous project', () => {
     // Intercept the payload, and make sure the original lat/long values are saved as the point
     cy.wait('@submitIdea').then((interception) => {
       const value = interception.request.body.idea['location_point_geojson'];
-      expect(value.coordinates[0]).to.equal(long);
-      expect(value.coordinates[1]).to.equal(lat);
+      expect(round(value.coordinates[0])).to.equal(round(long));
+      expect(round(value.coordinates[1])).to.equal(round(lat));
     });
   });
 

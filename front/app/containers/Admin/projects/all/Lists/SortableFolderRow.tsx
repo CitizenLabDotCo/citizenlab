@@ -9,7 +9,7 @@ import useAdminPublications, {
 } from 'hooks/useAdminPublications';
 import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
 import { PublicationStatus } from 'api/projects/types';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import FolderChildProjects from './FolderChildProjects';
 
 const StyledSortableRow = styled(SortableRow)`
@@ -41,7 +41,7 @@ const SortableFolderRow = ({
   publication,
   isLastItem,
 }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { list: folderChildAdminPublications } = useAdminPublications({
     childrenOfId: publication.relationships.publication.data.id,
     publicationStatusFilter: publicationStatuses,

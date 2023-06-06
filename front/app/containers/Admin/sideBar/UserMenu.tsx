@@ -19,7 +19,7 @@ import { colors } from 'utils/styleUtils';
 import { ItemMenu, StyledBox } from './styles';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 
@@ -40,7 +40,7 @@ export const UserMenu = () => {
     ? appConfig.data.attributes.settings.core.locales
     : [];
   const iconDivRef = useRef<HTMLDivElement | null>(null);
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const [isUserMenuPopupOpen, setIsUserMenuPopupOpen] = useState(false);
   const [isLanguagePopupOpen, setIsLanguagePopupOpen] = useState(false);
 
@@ -85,7 +85,7 @@ export const UserMenu = () => {
             p={isSmallerThanPhone ? '10px 0' : '10px 8px 10px 16px'}
             justifyContent={isSmallerThanPhone ? 'center' : undefined}
           >
-            <Avatar userId={authUser.id} size={24} addVerificationBadge />
+            <Avatar userId={authUser.data.id} size={24} addVerificationBadge />
             {!isSmallerThanPhone && (
               <Box
                 display="flex"
@@ -106,7 +106,7 @@ export const UserMenu = () => {
                   textAlign="left"
                   fontWeight="bold"
                 >
-                  {`${authUser.attributes.first_name} ${authUser.attributes.last_name}`}
+                  {`${authUser.data.attributes.first_name} ${authUser.data.attributes.last_name}`}
                 </Text>
                 <Box opacity={0.5}>
                   <Text
@@ -119,7 +119,7 @@ export const UserMenu = () => {
                     w="100%"
                     textAlign="left"
                   >
-                    {formatMessage({ ...getRole(authUser) })}
+                    {formatMessage({ ...getRole(authUser.data) })}
                   </Text>
                 </Box>
               </Box>
@@ -157,7 +157,7 @@ export const UserMenu = () => {
           </ItemMenu>
         )}
         <ItemMenu
-          linkTo={`/profile/${authUser.attributes.slug}`}
+          linkTo={`/profile/${authUser.data.attributes.slug}`}
           buttonStyle="text"
         >
           <Box display="flex" justifyContent="space-between" w="100%">

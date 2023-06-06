@@ -35,14 +35,14 @@ jest.mock('hooks/useAppConfigurationLocales', () =>
   jest.fn(() => ['en', 'nl-NL'])
 );
 
+jest.mock('api/me/useAuthUser', () => () => ({
+  data: { data: mockUserData },
+}));
+
 const mockChangePassword = jest.fn();
 jest.mock('api/users/useChangePassword', () =>
   jest.fn(() => ({ mutateAsync: mockChangePassword }))
 );
-
-jest.mock('hooks/useAuthUser', () => {
-  return () => mockUserData;
-});
 
 describe('ChangePassword', () => {
   it('submits correct data', async () => {
