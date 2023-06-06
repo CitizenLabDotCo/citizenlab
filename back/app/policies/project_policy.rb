@@ -135,6 +135,7 @@ class ProjectPolicy < ApplicationPolicy
       :allow_anonymous_participation,
       :survey_embed_url,
       :survey_service,
+      :document_annotation_embed_url,
       :min_budget,
       :max_budget,
       :presentation_mode,
