@@ -19,7 +19,7 @@ RSpec.describe Comment do
   end
 
   describe 'counters' do
-    it 'increments the comments_count in project and idea for a new published comment' do
+    it 'increments the internal_comments_count in project and idea for a new published internal_comment' do
       project = create(:project)
       idea = create(:idea, project: project)
 
@@ -32,7 +32,7 @@ RSpec.describe Comment do
       expect(idea.reload.internal_comments_count).to eq 1
     end
 
-    it 'decrements the comments_count in project and idea for a deleted comment' do
+    it 'decrements the internal_comments_count in project and idea for a deleted internal_comment' do
       project = create(:project)
       idea = create(:idea, project: project)
       comment = create(:internal_comment, post: idea)
@@ -46,7 +46,7 @@ RSpec.describe Comment do
       expect(idea.reload.internal_comments_count).to eq 0
     end
 
-    it 'decrements the comments_count in project and idea for a destroyed comment' do
+    it 'decrements the internal_comments_count in project and idea for a destroyed internal_comment' do
       project = create(:project)
       idea = create(:idea, project: project)
       comment = create(:internal_comment, post: idea)
