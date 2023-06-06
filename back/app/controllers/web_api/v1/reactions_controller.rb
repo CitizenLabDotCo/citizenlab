@@ -77,7 +77,7 @@ class WebApi::V1::ReactionsController < ApplicationController
 
     if @old_reaction && @old_reaction.mode == mode
       authorize @old_reaction, policy_class: @policy_class
-      @old_reaction.errors.add(:base, "already_#{mode}reacted")
+      @old_reaction.errors.add(:base, "already_#{mode}voted")
       render json: { errors: @old_reaction.errors.details }, status: :unprocessable_entity
     else
       Reaction.transaction do

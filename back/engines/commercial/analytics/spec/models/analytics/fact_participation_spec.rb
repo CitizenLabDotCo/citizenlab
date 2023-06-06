@@ -60,7 +60,7 @@ RSpec.describe Analytics::FactParticipation do
 
       it 'is also available as a participation fact' do
         described_class.find(vote.id)
-        expect(described_class.find(vote.id).dimension_type.name).to eq('vote')
+        expect(described_class.find(reaction.id).dimension_type.name).to eq('vote')
       end
     end
 

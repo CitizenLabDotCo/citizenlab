@@ -86,11 +86,11 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :new_comment_on_voted_idea_campaign, class: EmailCampaigns::Campaigns::NewCommentOnVotedIdea do
+  factory :new_comment_on_reacted_idea_campaign, class: EmailCampaigns::Campaigns::NewCommentOnVotedIdea do
     enabled { true }
   end
 
-  factory :new_comment_on_voted_initiative_campaign, class: EmailCampaigns::Campaigns::NewCommentOnVotedInitiative do
+  factory :new_comment_on_reacted_initiative_campaign, class: EmailCampaigns::Campaigns::NewCommentOnVotedInitiative do
     enabled { true }
   end
 

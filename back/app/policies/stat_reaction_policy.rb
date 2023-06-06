@@ -29,23 +29,23 @@ class StatReactionPolicy < ApplicationPolicy
     end
   end
 
-  def votes_count?
+  def reactions_count?
     show_stats?
   end
 
-  def votes_by_topic?
+  def reactions_by_topic?
     show_stats?
   end
 
-  def votes_by_project?
+  def reactions_by_project?
     show_stats?
   end
 
-  def votes_by_topic_as_xlsx?
+  def reactions_by_topic_as_xlsx?
     show_stats?
   end
 
-  def votes_by_project_as_xlsx?
+  def reactions_by_project_as_xlsx?
     show_stats?
   end
 
