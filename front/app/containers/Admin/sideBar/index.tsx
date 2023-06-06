@@ -152,8 +152,8 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
               mb="10px"
               display="flex"
               alignItems="center"
-              pr="8px"
-              pl="16px"
+              pr={isSmallerThanPhone ? '0px' : '8px'}
+              pl={isSmallerThanPhone ? '0px' : '16px'}
               py="10px"
               justifyContent={isSmallerThanPhone ? 'center' : undefined}
             >
