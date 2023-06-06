@@ -439,8 +439,6 @@ class ParticipationContext extends PureComponent<
       input_term,
     } = this.state;
 
-    console.log({ voting_method });
-
     if (loaded) {
       const surveyProviders = {
         typeform: typeform_enabled,
