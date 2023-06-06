@@ -212,7 +212,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Idee",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Hoe moet een bijdrage worden genoemd?",
   "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "{tenantName, select, gent {Verhaal} other {Reactie}}",
-  "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Geef hier de link naar je Konveio-document. Lees onze {supportArticleLink} voor meer informatie over het instellen van Konveio.",
+  "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Geef hier de link naar je Konveio-document. Lees ons {supportArticleLink} voor meer informatie over het instellen van Konveio.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "support-artikel",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL": "https://support.citizenlab.co/en/articles/7946532-embedding-konveio-pdf-documents-for-collecting-feedback",
   "app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired": "Er is een maximumbudget nodig",
