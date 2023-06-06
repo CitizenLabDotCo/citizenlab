@@ -8,11 +8,8 @@ import {
   Toggle,
   colors,
   Title,
-  // CardButton,
+  CardButton,
 } from '@citizenlab/cl2-component-library';
-
-// TODO remove
-import { PermissionCardButton as CardButton } from 'components/admin/GranularPermissions/PermissionCardButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -64,7 +61,8 @@ const ActionForm = ({
   };
 
   const handlePermittedByUpdate =
-    (value: IPermissionData['attributes']['permitted_by']) => () => {
+    (value: IPermissionData['attributes']['permitted_by']) => (e) => {
+      e.preventDefault();
       onChange(value, groupIds);
     };
 
@@ -114,16 +112,12 @@ const ActionForm = ({
             If separate, we will need to update code where we check for attributes.posting_idea */}
             {(action === 'taking_survey' || projectType === 'nativeSurvey') && (
               <CardButton
-                title={
-                  <FormattedMessage
-                    {...permissionsMessages.permissionsAnyoneLabel}
-                  />
-                }
-                subtitle={
-                  <FormattedMessage
-                    {...permissionsMessages.permissionsAnyoneLabelDescription}
-                  />
-                }
+                title={formatMessage(
+                  permissionsMessages.permissionsAnyoneLabel
+                )}
+                subtitle={formatMessage(
+                  permissionsMessages.permissionsAnyoneLabelDescription
+                )}
                 onClick={handlePermittedByUpdate('everyone')}
                 selected={permittedBy === 'everyone'}
               />
@@ -132,16 +126,12 @@ const ActionForm = ({
               <CardButton
                 id="e2e-permission-email-confirmed-users"
                 iconName="email"
-                title={
-                  <FormattedMessage
-                    {...permissionsMessages.permissionsEmailConfirmLabel}
-                  />
-                }
-                subtitle={
-                  <FormattedMessage
-                    {...permissionsMessages.permissionsEmailConfirmLabelDescription}
-                  />
-                }
+                title={formatMessage(
+                  permissionsMessages.permissionsEmailConfirmLabel
+                )}
+                subtitle={formatMessage(
+                  permissionsMessages.permissionsEmailConfirmLabelDescription
+                )}
                 onClick={handlePermittedByUpdate('everyone_confirmed_email')}
                 selected={permittedBy === 'everyone_confirmed_email'}
               />
@@ -149,27 +139,21 @@ const ActionForm = ({
             <CardButton
               id="e2e-permission-registered-users"
               iconName="user-circle"
-              title={<FormattedMessage {...messages.permissionsUsersLabel} />}
-              subtitle={
-                <FormattedMessage
-                  {...messages.permissionsUsersLabelDescription}
-                />
-              }
+              title={formatMessage(messages.permissionsUsersLabel)}
+              subtitle={formatMessage(
+                messages.permissionsUsersLabelDescription
+              )}
               onClick={handlePermittedByUpdate('users')}
               selected={permittedBy === 'users'}
             />
             <CardButton
               iconName="group"
-              title={
-                <FormattedMessage
-                  {...permissionsMessages.permissionsSelectionLabel}
-                />
-              }
-              subtitle={
-                <FormattedMessage
-                  {...permissionsMessages.permissionsSelectionLabelDescription}
-                />
-              }
+              title={formatMessage(
+                permissionsMessages.permissionsSelectionLabel
+              )}
+              subtitle={formatMessage(
+                permissionsMessages.permissionsSelectionLabelDescription
+              )}
               onClick={handlePermittedByUpdate('groups')}
               selected={permittedBy === 'groups'}
             />
