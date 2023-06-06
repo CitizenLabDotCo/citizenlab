@@ -10,7 +10,7 @@ import { getInputTermMessage } from 'utils/i18n';
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 import useLocalize from 'hooks/useLocalize';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import SharingButtons from 'components/Sharing/SharingButtons';
@@ -29,7 +29,7 @@ const Component = ({ ideaId }: Props) => {
     : null;
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const localize = useLocalize();
 
   if (!isNilOrError(idea) && !isNilOrError(project)) {
@@ -46,7 +46,7 @@ const Component = ({ ideaId }: Props) => {
       ? {
           source: 'share_idea',
           campaign: 'share_content',
-          content: authUser.id,
+          content: authUser.data.id,
         }
       : {
           source: 'share_idea',

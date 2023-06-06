@@ -15,7 +15,7 @@ const Footer = lazy(() => import('./Footer'));
 import { canAccessRoute } from 'services/permissions/rules/routePermissions';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import useKeyPress from 'hooks/useKeyPress';
 
@@ -26,14 +26,14 @@ export const adminRedirectPath = '/admin/dashboard';
 
 const HomePage = () => {
   const homepageSettings = useHomepageSettings();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
   const pressedLetterAKey = useKeyPress('a');
   const userHasAdminAccess =
     !isNilOrError(authUser) && !isNilOrError(appConfiguration)
       ? canAccessRoute(
           { type: 'route', path: '/admin' },
-          { data: authUser },
+          authUser,
           appConfiguration.data
         )
       : false;

@@ -4,7 +4,7 @@ import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 let mockUser: any = null;
-jest.mock('hooks/useAuthUser', () => () => mockUser);
+jest.mock('api/me/useAuthUser', () => () => ({ data: mockUser }));
 
 jest.mock('containers/Authentication/events', () => ({
   triggerAuthenticationFlow: jest.fn(),

@@ -4,7 +4,10 @@ import { endsWith } from 'utils/helperUtils';
 import streams from 'utils/streams';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import {
+  invalidateQueryCache,
+  resetMeQuery,
+} from 'utils/cl-react-query/resetQueryCache';
 
 export default async function signOut() {
   const jwt = getJwt();
@@ -19,8 +22,9 @@ export default async function signOut() {
       const url = `${AUTH_PATH}/${provider}/logout?user_id=${sub}`;
       window.location.href = url;
     } else {
+      await resetMeQuery();
+      invalidateQueryCache();
       await streams.reset();
-      await resetQueryCache();
       const { pathname } = removeLocale(location.pathname);
 
       if (

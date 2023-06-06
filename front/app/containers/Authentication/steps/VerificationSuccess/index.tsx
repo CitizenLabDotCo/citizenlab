@@ -11,7 +11,7 @@ import Button from 'components/UI/Button';
 import { Title } from 'containers/Authentication/steps/AuthProviders/styles';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // style
 import styled from 'styled-components';
@@ -64,7 +64,7 @@ interface Props {
 }
 
 export default memo<Props>(({ onClose, className }) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   const handleOnClose = useCallback(() => {
     onClose();
@@ -75,7 +75,11 @@ export default memo<Props>(({ onClose, className }) => {
       <Container id="e2e-verification-success" className={className}>
         <ImageAvatarContainer aria-hidden>
           <img src={illustration} alt="" role="presentation" />
-          <StyledAvatar userId={authUser.id} size={96} addVerificationBadge />
+          <StyledAvatar
+            userId={authUser.data.id}
+            size={96}
+            addVerificationBadge
+          />
         </ImageAvatarContainer>
         <Title className="e2e-user-verified-success-modal-content">
           <strong>

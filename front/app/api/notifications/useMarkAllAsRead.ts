@@ -1,8 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { INotifications } from './types';
-import { authUserStream } from 'services/auth';
+import meKeys from 'api/me/keys';
 
 const markAppAsRead = async () =>
   fetcher<INotifications>({
@@ -12,10 +12,11 @@ const markAppAsRead = async () =>
   });
 
 const useMarkAllAsRead = () => {
+  const queryClient = useQueryClient();
   return useMutation<INotifications, CLErrors>({
     mutationFn: markAppAsRead,
     onSuccess: async () => {
-      await authUserStream().fetch();
+      queryClient.invalidateQueries({ queryKey: meKeys.all() });
     },
   });
 };

@@ -37,7 +37,7 @@ import { hideVisually } from 'polished';
 import { colors, defaultStyles } from 'utils/styleUtils';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
@@ -111,7 +111,7 @@ const ChildCommentForm = ({
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const { data: appConfiguration } = useAppConfiguration();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const smallerThanTablet = useBreakpoint('tablet');
 
   const {
@@ -222,7 +222,7 @@ const ChildCommentForm = ({
           addCommentToIdeaComment(
             {
               ideaId: postId,
-              author_id: authUser.id,
+              author_id: authUser.data.id,
               parent_id: parentId,
               body_multiloc: commentBodyMultiloc,
               anonymous: postAnonymously,
@@ -249,7 +249,7 @@ const ChildCommentForm = ({
                     projectId,
                     profaneMessage: commentBodyMultiloc[locale],
                     location: 'InitiativesNewFormWrapper (citizen side)',
-                    userId: authUser.id,
+                    userId: authUser.data.id,
                     host: !isNilOrError(appConfiguration)
                       ? appConfiguration.data.attributes.host
                       : null,
@@ -266,7 +266,7 @@ const ChildCommentForm = ({
           addCommentToInitiativeComment(
             {
               initiativeId: postId,
-              author_id: authUser.id,
+              author_id: authUser.data.id,
               parent_id: parentId,
               body_multiloc: commentBodyMultiloc,
               anonymous: postAnonymously,
@@ -296,7 +296,7 @@ const ChildCommentForm = ({
             projectId,
             profaneMessage: commentBodyMultiloc[locale],
             location: 'InitiativesNewFormWrapper (citizen side)',
-            userId: authUser.id,
+            userId: authUser.data.id,
             host: !isNilOrError(appConfiguration)
               ? appConfiguration.data.attributes.host
               : null,
@@ -358,14 +358,14 @@ const ChildCommentForm = ({
 
   if (!isNilOrError(authUser) && focused) {
     const isModerator =
-      !isNilOrError(authUser) && canModerateProject(postId, { data: authUser });
+      !isNilOrError(authUser) && canModerateProject(postId, authUser);
 
     return (
       <Container className={`${className || ''} e2e-childcomment-form`}>
         <StyledAvatar
-          userId={authUser?.id}
+          userId={authUser?.data.id}
           size={30}
-          isLinkToProfile={!!authUser?.id}
+          isLinkToProfile={!!authUser?.data.id}
           moderator={isModerator}
         />
         <FormContainer

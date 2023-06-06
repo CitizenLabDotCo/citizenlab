@@ -24,7 +24,7 @@ import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../tracks';
 import useLocalize from 'hooks/useLocalize';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -53,12 +53,12 @@ interface Props extends InputProps, DataProps {}
 const FeedbackSettings = ({ ideaId, className, prospectAssignees }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
   const { data: appConfig } = useAppConfiguration();
   const { data: statuses } = useIdeaStatuses();
   const { mutate: updateIdea } = useUpdateIdea();
-  const adminAtWorkId = !isNilOrError(authUser) ? authUser.id : null;
+  const adminAtWorkId = authUser ? authUser.data.id : null;
 
   const getIdeaStatusOption = (idea: IIdea, statuses: IIdeaStatuses) => {
     const ideaStatus = statuses.data.find(
