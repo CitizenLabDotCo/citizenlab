@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import { IVerifiedResponse } from 'services/verify';
+import { IVerifiedResponse } from 'api/verification_methods/types';
 import streams from 'utils/streams';
 
 export function verifyGentRrn(rrn: string) {

@@ -26,3 +26,10 @@ export type TVerificationMethod =
 export interface IVerificationMethods {
   data: TVerificationMethod[];
 }
+
+export interface IVerifiedResponse {
+  verification: {
+    run: string;
+    id_serial: string;
+  };
+}
