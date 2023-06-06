@@ -1,10 +1,10 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import './services/verificationMethods';
+
 const VerificationFranceConnectButton = React.lazy(
   () => import('./components/VerificationFranceConnectButton')
 );
-import { TVerificationMethodName } from 'services/verificationMethods';
+import { TVerificationMethodName } from 'api/verification_methods/types';
 
 const verificationMethodName: TVerificationMethodName = 'franceconnect';
 const configuration: ModuleConfiguration = {

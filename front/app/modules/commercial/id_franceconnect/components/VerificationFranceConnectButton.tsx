@@ -4,7 +4,7 @@ import { removeUrlLocale } from 'services/locale';
 import { getJwt } from 'utils/auth/jwt';
 
 // typings
-import { TVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'api/verification_methods/types';
 
 // components
 import FranceConnectButton from 'components/UI/FranceConnectButton';

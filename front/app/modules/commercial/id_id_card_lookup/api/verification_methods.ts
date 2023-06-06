@@ -1,7 +1,7 @@
-import 'services/verificationMethods';
+import 'api/verification_methods/types';
 import { Multiloc } from 'typings';
 
-declare module 'services/verificationMethods' {
+declare module 'api/verification_methods/types' {
   export interface IVerificationMethodNamesMap {
     id_card_lookup: 'id_card_lookup';
   }

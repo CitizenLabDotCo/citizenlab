@@ -20,7 +20,7 @@ import {
 import useAuthUser from 'api/me/useAuthUser';
 
 // services
-import { verifyBogus } from '../services/verify';
+import { verifyBogus } from '../api/verify';
 
 import meKeys from 'api/me/keys';
 import { useQueryClient } from '@tanstack/react-query';

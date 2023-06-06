@@ -5,7 +5,7 @@ import { getJwt } from 'utils/auth/jwt';
 import {
   TVerificationMethod,
   IDAuth0Method,
-} from 'services/verificationMethods';
+} from 'api/verification_methods/types';
 // components
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 

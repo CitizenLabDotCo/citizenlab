@@ -15,7 +15,7 @@ import ClaveUnicaButton from 'components/UI/ClaveUnicaButton';
 import {
   TVerificationMethod,
   TVerificationMethodName,
-} from 'services/verificationMethods';
+} from 'api/verification_methods/types';
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 import useVerificationMethods from 'api/verification_methods/useVerificationMethods';

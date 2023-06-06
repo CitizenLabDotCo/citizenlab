@@ -3,9 +3,9 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import {
   IDAuth0Method,
   TVerificationMethodName,
-  isLastVerificationMethod,
-} from 'services/verificationMethods';
+} from 'api/verification_methods/types';
 import Auth0Button from './components/Auth0Button';
+import { isLastVerificationMethod } from 'api/verification_methods/util';
 
 const verificationMethodName: TVerificationMethodName = 'auth0';
 const configuration: ModuleConfiguration = {

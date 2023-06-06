@@ -21,7 +21,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // typings
-import { TVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'api/verification_methods/types';
 import Outlet from 'components/Outlet';
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 

@@ -24,7 +24,7 @@ import {
 import useAuthUser from 'api/me/useAuthUser';
 
 // services
-import { verifyGentRrn } from '../services/verify';
+import { verifyGentRrn } from '../api/verify';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -32,7 +32,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // images
-import { TVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'api/verification_methods/types';
 import meKeys from 'api/me/keys';
 import usersKeys from 'api/users/keys';
 import { useQueryClient } from '@tanstack/react-query';

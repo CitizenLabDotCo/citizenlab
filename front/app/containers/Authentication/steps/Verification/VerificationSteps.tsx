@@ -13,7 +13,7 @@ import useVerificationMethods from 'api/verification_methods/useVerificationMeth
 import styled from 'styled-components';
 
 // typings
-import { TVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'api/verification_methods/types';
 import { isNilOrError } from 'utils/helperUtils';
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';

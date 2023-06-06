@@ -23,7 +23,7 @@ import {
 import useAuthUser from 'api/me/useAuthUser';
 
 // services
-import { verifyCOW } from '../services/verify';
+import { verifyCOW } from '../api/verify';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';

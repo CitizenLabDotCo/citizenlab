@@ -23,7 +23,7 @@ import {
 import useAuthUser from 'api/me/useAuthUser';
 
 // services
-import { verifyIDLookup } from '../services/verify';
+import { verifyIDLookup } from '../api/verify';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -32,7 +32,7 @@ import messages from '../messages';
 import T from 'components/T';
 
 // typings
-import { IDLookupMethod } from 'services/verificationMethods';
+import { IDLookupMethod } from 'api/verification_methods/types';
 import meKeys from 'api/me/keys';
 import usersKeys from 'api/users/keys';
 import { useQueryClient } from '@tanstack/react-query';

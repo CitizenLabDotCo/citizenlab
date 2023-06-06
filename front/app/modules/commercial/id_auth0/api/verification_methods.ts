@@ -1,7 +1,7 @@
-import 'services/verificationMethods';
+import 'api/verification_methods/types';
 import { Multiloc } from 'typings';
 
-declare module 'services/verificationMethods' {
+declare module 'api/verification_methods/types' {
   export interface IVerificationMethodNamesMap {
     auth0: 'auth0';
   }
