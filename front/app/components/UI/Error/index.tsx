@@ -3,7 +3,7 @@ import { isArray, isEmpty, uniqBy } from 'lodash-es';
 import { darken } from 'polished';
 import React, { useEffect, useRef } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { IInviteError } from 'services/invites';
+import { IInviteError } from 'api/invites/types';
 import styled from 'styled-components';
 import { CLError, Message } from 'typings';
 import { FormattedMessage } from 'utils/cl-intl';
