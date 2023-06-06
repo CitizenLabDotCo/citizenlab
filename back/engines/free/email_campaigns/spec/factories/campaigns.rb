@@ -110,11 +110,11 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :official_feedback_on_voted_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnVotedIdea do
+  factory :official_feedback_on_reacted_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnVotedIdea do
     enabled { true }
   end
 
-  factory :official_feedback_on_voted_initiative_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnVotedInitiative do
+  factory :official_feedback_on_reacted_initiative_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnVotedInitiative do
     enabled { true }
   end
 
@@ -150,11 +150,11 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :status_change_of_voted_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfVotedIdea do
+  factory :status_change_of_reacted_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfVotedIdea do
     enabled { true }
   end
 
-  factory :status_change_of_voted_initiative_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfVotedInitiative do
+  factory :status_change_of_reacted_initiative_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfVotedInitiative do
     enabled { true }
   end
 

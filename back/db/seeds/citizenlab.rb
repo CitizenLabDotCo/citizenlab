@@ -539,7 +539,7 @@ open_idea_project = Project.create!({
   participation_method: 'ideation',
   posting_enabled: true,
   commenting_enabled: true,
-  voting_enabled: true,
+  reacting_enabled: true,
   upvoting_method: 'unlimited',
   remote_header_bg_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg'
 })

@@ -105,12 +105,12 @@ resource 'Phases' do
         parameter :posting_method, "How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
         parameter :posting_limited_max, 'Number of posts a citizen can perform in this phase. Defaults to 1', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase? Defaults to true', required: false
-        parameter :reacting_enabled, 'Can citizens vote in this phase? Defaults to true', required: false
+        parameter :reacting_enabled, 'Can citizens react in this phase? Defaults to true', required: false
         parameter :reacting_like_method, "How does upvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
-        parameter :reacting_like_limited_max, 'Number of upvotes a citizen can perform in this phase, only if the reacting_like_method is limited. Defaults to 10', required: false
-        parameter :reacting_dislike_enabled, 'Can citizens downvote in this phase? Defaults to true', required: false
-        parameter :reacting_dislike_method, "How does downvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
-        parameter :reacting_dislike_limited_max, 'Number of downvotes a citizen can perform in this phase, only if the reacting_dislike_method is limited. Defaults to 10', required: false
+        parameter :reacting_like_limited_max, 'Number of likes a citizen can perform in this phase, only if the reacting_like_method is limited. Defaults to 10', required: false
+        parameter :reacting_dislike_enabled, 'Can citizens dislikes in this phase? Defaults to true', required: false
+        parameter :reacting_dislike_method, "How does disliking work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :reacting_dislike_limited_max, 'Number of dislikes a citizen can perform in this phase, only if the reacting_dislike_method is limited. Defaults to 10', required: false
         parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously. Defaults to false', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
@@ -328,12 +328,12 @@ resource 'Phases' do
         parameter :posting_method, "How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
         parameter :posting_limited_max, 'Number of posts a citizen can perform in this phase. Defaults to 1', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase?', required: false
-        parameter :reacting_enabled, 'Can citizens vote in this phase?', required: false
-        parameter :reacting_like_method, "How does upvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
-        parameter :reacting_like_limited_max, 'Number of upvotes a citizen can perform in this phase, only if the reacting_like_method is limited', required: false
-        parameter :reacting_dislike_enabled, 'Can citizens vote in this phase?', required: false
-        parameter :reacting_dislike_method, "How does downvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
-        parameter :reacting_dislike_limited_max, 'Number of downvotes a citizen can perform in this phase, only if the reacting_dislike_method is limited', required: false
+        parameter :reacting_enabled, 'Can citizens react in this phase?', required: false
+        parameter :reacting_like_method, "How does liking work? Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
+        parameter :reacting_like_limited_max, 'Number of likes a citizen can perform in this phase, only if the reacting_like_method is limited', required: false
+        parameter :reacting_dislike_enabled, 'Can citizens react in this phase?', required: false
+        parameter :reacting_dislike_method, "How does disliking work? Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
+        parameter :reacting_dislike_limited_max, 'Number of dislikes a citizen can perform in this phase, only if the reacting_dislike_method is limited', required: false
         parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously.', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
@@ -613,8 +613,8 @@ resource 'Phases' do
                 'Submitted at',
                 'Published at',
                 'Comments',
-                'Upvotes',
-                'Downvotes',
+                'Likes',
+                'Dislikes',
                 'Baskets',
                 'Budget',
                 'URL',
@@ -675,8 +675,8 @@ resource 'Phases' do
                   'Submitted at',
                   'Published at',
                   'Comments',
-                  'Upvotes',
-                  'Downvotes',
+                  'Likes',
+                  'Dislikes',
                   'Baskets',
                   'Budget',
                   'URL',
@@ -739,8 +739,8 @@ resource 'Phases' do
                   'Submitted at',
                   'Published at',
                   'Comments',
-                  'Upvotes',
-                  'Downvotes',
+                  'Likes',
+                  'Dislikes',
                   'Baskets',
                   'Budget',
                   'URL',
@@ -1020,8 +1020,8 @@ resource 'Phases' do
                 'Submitted at',
                 'Published at',
                 'Comments',
-                'Upvotes',
-                'Downvotes',
+                'Likes',
+                'Dislikes',
                 'Baskets',
                 'Budget',
                 'URL',
