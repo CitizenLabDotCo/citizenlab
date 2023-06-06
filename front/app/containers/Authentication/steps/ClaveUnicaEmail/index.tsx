@@ -43,7 +43,7 @@ const ClaveUnicaEmail = ({ loading, setError, onSubmit }: Props) => {
 
   const handleSubmit = async ({ email }: FormValues) => {
     try {
-      await onSubmit({ email, userId: authUser.id });
+      await onSubmit({ email, userId: authUser.data.id });
     } catch (e) {
       if (isCLErrorsIsh(e)) {
         handleCLErrorsIsh(e, methods.setError);
