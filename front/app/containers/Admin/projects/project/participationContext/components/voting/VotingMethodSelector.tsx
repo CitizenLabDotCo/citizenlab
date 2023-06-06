@@ -6,13 +6,12 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
 import {
-  Box,
   // CardButton,
   IconTooltip,
   Text,
-  colors,
 } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import BudgetingIcon from './BudgetingIcon';
 
 // TODO remove
 import { PermissionCardButton as CardButton } from 'components/admin/GranularPermissions/PermissionCardButton';
@@ -46,11 +45,7 @@ const VotingMethodSelector = ({
       </Text>
       <CardButton
         selected={voting_method === 'budgeting'}
-        customIconSection={
-          <Box borderRadius="3px" background={colors.teal200} p="4px">
-            Vote Icon/Image: To Do
-          </Box>
-        }
+        customIconSection={<BudgetingIcon />}
         onClick={() => {
           handleVotingMethodOnChange('budgeting');
         }}
