@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // components
 import {
@@ -23,17 +23,37 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
+import useMarkAllAsRead from 'api/notifications/useMarkAllAsRead';
+
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'containers/MainHeader/NotificationMenu/tracks';
 
 export const NotificationsPopup = () => {
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('tablet');
   const authUser = useAuthUser();
+  const { mutate: markAllAsRead } = useMarkAllAsRead();
+  const [isNotificationsPopupOpen, setIsNotificationsPopupOpen] =
+    useState(false);
 
   if (isNilOrError(authUser)) {
     return null;
   }
 
   const unreadNotificationsCount = authUser.attributes.unread_notifications;
+
+  const handleCloseNotifications = () => {
+    markAllAsRead();
+    trackEventByName(tracks.clickCloseNotifications.name);
+    setIsNotificationsPopupOpen(false);
+    console.log('Closed and marking as read');
+  };
+
+  const handleOpenNotifications = () => {
+    trackEventByName(tracks.clickOpenNotifications.name);
+    console.log('Opened notifications');
+  };
 
   return (
     <Popup
@@ -43,6 +63,7 @@ export const NotificationsPopup = () => {
           width={isSmallerThanPhone ? '56px' : '100%'}
           display="flex"
           justifyContent="flex-start"
+          onClick={() => setIsNotificationsPopupOpen(true)}
           p="0px"
         >
           <Box
@@ -103,6 +124,9 @@ export const NotificationsPopup = () => {
       }
       on="click"
       position="right center"
+      open={isNotificationsPopupOpen}
+      onClose={handleCloseNotifications}
+      onOpen={handleOpenNotifications}
       basic
       wide
     >
