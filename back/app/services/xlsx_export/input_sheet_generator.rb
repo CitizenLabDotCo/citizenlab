@@ -160,7 +160,7 @@ module XlsxExport
         meta_fields << created_at_report_field
         meta_fields << published_at_report_field if participation_method.supports_publication?
         meta_fields << comments_count_report_field if participation_method.supports_commenting?
-        if participation_method.supports_voting?
+        if participation_method.supports_reacting?
           meta_fields << likes_count_report_field
           meta_fields << dislikes_count_report_field
         end

@@ -115,7 +115,7 @@ class WebApi::V1::ReactionsController < ApplicationController
     when 'Idea' then IdeaReactionPolicy
     when 'Comment' then CommentReactionPolicy
     when 'Initiative' then InitiativeReactionPolicy
-    else raise "#{@reactable_type} has no voting policy defined"
+    else raise "#{@reactable_type} has no reaction policy defined"
     end
     raise 'must not be blank' if @reactable_type.blank? || @reactable_id.blank?
   end
@@ -129,7 +129,7 @@ class WebApi::V1::ReactionsController < ApplicationController
     when Initiative
       InitiativeReactionPolicy
     else
-      raise "reactable #{reactable.class} has no voting policy defined"
+      raise "reactable #{reactable.class} has no reaction policy defined"
     end
   end
 
