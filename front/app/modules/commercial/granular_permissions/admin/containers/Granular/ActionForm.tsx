@@ -8,8 +8,11 @@ import {
   Toggle,
   colors,
   Title,
-  CardButton,
+  // CardButton,
 } from '@citizenlab/cl2-component-library';
+
+// TODO remove
+import { PermissionCardButton as CardButton } from 'components/admin/GranularPermissions/PermissionCardButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';

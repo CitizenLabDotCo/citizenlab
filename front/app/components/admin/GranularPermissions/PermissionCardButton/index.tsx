@@ -7,17 +7,16 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import React, { useState } from 'react';
-import { MessageDescriptor } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
 import { lighten } from 'polished';
 
 type PermissionCardButtonProps = {
   onClick: () => void;
   selected: boolean;
   iconName?: IconNames;
-  title: MessageDescriptor;
-  subtitle: MessageDescriptor;
+  title: React.ReactNode;
+  subtitle: React.ReactNode;
   id?: string;
+  customIconSection?: React.ReactNode | null;
 };
 export const PermissionCardButton = ({
   onClick,
@@ -26,6 +25,7 @@ export const PermissionCardButton = ({
   title,
   subtitle,
   id,
+  customIconSection,
 }: PermissionCardButtonProps) => {
   const [isHover, setIsHover] = useState(false);
 
@@ -59,11 +59,12 @@ export const PermissionCardButton = ({
           fill={selected ? colors.teal200 : colors.grey300}
         />
       )}
+      {customIconSection && customIconSection}
       <Title variant="h5" color={selected ? 'primary' : 'coolGrey500'}>
-        <FormattedMessage {...title} />
+        {title}
       </Title>
       <Text fontSize="s" color={selected ? 'primary' : 'coolGrey500'}>
-        <FormattedMessage {...subtitle} />
+        {subtitle}
       </Text>
     </Box>
   );

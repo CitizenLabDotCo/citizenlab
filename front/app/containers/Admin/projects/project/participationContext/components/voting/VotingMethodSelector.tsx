@@ -7,12 +7,15 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 // components
 import {
   Box,
-  CardButton,
+  // CardButton,
   IconTooltip,
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+
+// TODO remove
+import { PermissionCardButton as CardButton } from 'components/admin/GranularPermissions/PermissionCardButton';
 
 // types
 import { VotingMethodType } from 'containers/Admin/projects/project/participationContext/utils/votingMethodUtils';
