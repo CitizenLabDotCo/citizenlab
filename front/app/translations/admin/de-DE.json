@@ -704,7 +704,7 @@
   "app.containers.Admin.emails.supportButtonLink": "https://support.citizenlab.co/de/articles/2762939-was-sind-automatisierte-e-mails",
   "app.containers.Admin.emails.to": "An:",
   "app.containers.Admin.emails.toAllUsers": "Möchten Sie diese E-Mail an alle registrierten Nutzer*innen senden?",
-  "app.containers.Admin.emails.viewExample": "Anzeigen",
+  "app.containers.Admin.emails.viewExample": "Vorschau",
   "app.containers.Admin.ideas.import": "Importieren",
   "app.containers.Admin.ideas.tabInputStatuses": "Beitragsstatus",
   "app.containers.Admin.initiatives.addNewProposal": "Einen Vorschlag hinzufügen",
