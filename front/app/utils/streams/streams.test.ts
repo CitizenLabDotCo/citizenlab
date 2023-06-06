@@ -177,7 +177,6 @@ describe('streams.reset', () => {
       await streams.reset();
 
       expect(request.mock.calls).toEqual([
-        ['/web_api/v1/users/me', null, { method: 'GET' }, null],
         ['/web_api/v1/test', null, { method: 'GET' }, null],
       ]);
     });
@@ -194,9 +193,7 @@ describe('streams.reset', () => {
       jest.clearAllMocks();
       await streams.reset();
 
-      expect(request.mock.calls).toEqual([
-        ['/web_api/v1/users/me', null, { method: 'GET' }, null],
-      ]);
+      expect(request.mock.calls).toEqual([]);
     });
   });
 
