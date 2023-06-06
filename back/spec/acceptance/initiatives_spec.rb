@@ -150,12 +150,12 @@ resource 'Initiatives' do
 
     example 'List all initiatives includes the user_vote', document: false do
       initiative = create(:initiative)
-      vote = create(:reaction, reactable: initiative, user: @user)
+      reaction = create(:reaction, reactable: initiative, user: @user)
 
       do_request
       json_response = json_parse(response_body)
-      expect(json_response[:data].filter_map { |d| d[:relationships][:user_vote][:data] }.first[:id]).to eq vote.id
-      expect(json_response[:included].pluck(:id)).to include vote.id
+      expect(json_response[:data].filter_map { |d| d[:relationships][:user_reaction][:data] }.first[:id]).to eq reaction.id
+      expect(json_response[:included].pluck(:id)).to include reaction.id
     end
   end
 
@@ -366,8 +366,8 @@ resource 'Initiatives' do
         json_response = json_parse(response_body)
         new_initiative = Initiative.find(json_response.dig(:data, :id))
         expect(new_initiative.reactions.size).to eq 1
-        expect(new_initiative.votes[0].mode).to eq 'up'
-        expect(new_initiative.votes[0].user.id).to eq @user.id
+        expect(new_initiative.reactions[0].mode).to eq 'up'
+        expect(new_initiative.reactions[0].user.id).to eq @user.id
         expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
       end
 
@@ -494,8 +494,8 @@ resource 'Initiatives' do
           json_response = json_parse(response_body)
           new_initiative = Initiative.find(json_response.dig(:data, :id))
           expect(new_initiative.reactions.size).to eq 1
-          expect(new_initiative.votes[0].mode).to eq 'up'
-          expect(new_initiative.votes[0].user.id).to eq @user.id
+          expect(new_initiative.reactions[0].mode).to eq 'up'
+          expect(new_initiative.reactions[0].user.id).to eq @user.id
           expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
         end
       end

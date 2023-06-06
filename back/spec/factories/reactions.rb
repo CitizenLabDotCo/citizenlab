@@ -6,7 +6,7 @@ FactoryBot.define do
     mode { 'up' }
     user
 
-    factory :reaction_down do
+    factory :down_reaction do
       mode { 'down' }
     end
 

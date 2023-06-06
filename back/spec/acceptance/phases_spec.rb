@@ -712,8 +712,8 @@ resource 'Phases' do
             )
           end
           let!(:comments) { create_list(:comment, 1, post: ideation_response1) }
-          let!(:upvotes) { create_list(:reaction, 2, reactable: ideation_response1) }
-          let!(:reaction_downs) { create_list(:reaction_down, 1, reactable: ideation_response1) }
+          let!(:up_reactions) { create_list(:reaction, 2, reactable: ideation_response1) }
+          let!(:down_reactions) { create_list(:down_reaction, 1, reactable: ideation_response1) }
           let!(:baskets) { [] }
 
           example 'Download ideation phase inputs in one sheet' do
