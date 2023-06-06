@@ -5,6 +5,7 @@ import projectFoldersKeys from 'api/project_folders/keys';
 import { IProjectFolder, IUpdatedProjectFolder } from './types';
 import projectsKeys from 'api/projects/keys';
 import adminPublicationsKeys from 'api/admin_publications/keys';
+import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
 
 export const updateProjectFolder = async ({
   projectFolderId,
@@ -29,6 +30,9 @@ const useUpdateProjectFolder = () => {
       });
       queryClient.invalidateQueries({
         queryKey: adminPublicationsKeys.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: adminPublicationsStatusCountsKeys.items(),
       });
     },
   });

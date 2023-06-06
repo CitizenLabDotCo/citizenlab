@@ -7,6 +7,7 @@ import topicsKeys from 'api/topics/keys';
 import areasKeys from 'api/areas/keys';
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import meKeys from 'api/me/keys';
+import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
 
 const addProject = async (project: IUpdatedProjectProperties) =>
   fetcher<IProject>({
@@ -26,6 +27,9 @@ const useAddProject = () => {
       queryClient.invalidateQueries({ queryKey: areasKeys.lists() });
       queryClient.invalidateQueries({
         queryKey: adminPublicationsKeys.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: adminPublicationsStatusCountsKeys.items(),
       });
       queryClient.invalidateQueries({ queryKey: meKeys.all() });
     },
