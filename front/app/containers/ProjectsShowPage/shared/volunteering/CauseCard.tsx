@@ -7,7 +7,7 @@ import getAuthenticationRequirements from 'api/authentication/authentication_req
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -184,7 +184,7 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
   const { mutate: addVolunteer } = useAddVolunteer();
   const { mutate: deleteVolunteer } = useDeleteVolunteer();
   const theme = useTheme();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { windowWidth } = useWindowSize();
 
   const volunteer = useCallback(() => {

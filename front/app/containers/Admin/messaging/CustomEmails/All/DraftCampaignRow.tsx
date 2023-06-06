@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, TextCell } from 'components/admin/ResourceList';
-import { ICampaignData } from 'services/campaigns';
+import { ICampaignData } from 'api/campaigns/types';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Box, StatusLabel } from '@citizenlab/cl2-component-library';

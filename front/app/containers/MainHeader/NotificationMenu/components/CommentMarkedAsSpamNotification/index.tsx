@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // data
-import { ICommentMarkedAsSpamNotificationData } from 'services/notifications';
+import { ICommentMarkedAsSpamNotificationData } from 'api/notifications/types';
 
 // i18n
 import messages from '../../messages';

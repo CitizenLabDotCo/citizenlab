@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // style
 import { colors, media, fontSizes } from 'utils/styleUtils';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import VerificationBadge from './VerificationBadge';
 
 const UserNameContainer = styled.div`
@@ -35,15 +35,15 @@ interface Props {
 
 const User = ({ userId }: Props) => {
   const theme = useTheme();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   if (isNilOrError(authUser)) {
     return null;
   }
 
   const isVerified =
-    typeof authUser.attributes.verified === 'boolean'
-      ? authUser.attributes.verified
+    typeof authUser.data.attributes.verified === 'boolean'
+      ? authUser.data.attributes.verified
       : false;
 
   return (

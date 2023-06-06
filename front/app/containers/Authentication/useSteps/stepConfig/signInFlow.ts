@@ -99,6 +99,7 @@ export const signInFlow = (
           }
 
           const { successAction } = getAuthenticationData();
+
           if (successAction) {
             triggerSuccessAction(successAction);
           }

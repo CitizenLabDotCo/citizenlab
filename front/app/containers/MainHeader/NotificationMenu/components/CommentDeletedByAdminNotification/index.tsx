@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICommentDeletedByAdminNotificationData } from 'services/notifications';
+import { ICommentDeletedByAdminNotificationData } from 'api/notifications/types';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';

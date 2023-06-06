@@ -6,7 +6,7 @@ import useDeleteProject from 'api/projects/useDeleteProject';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'services/permissions/roles';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import useProjectById from 'api/projects/useProjectById';
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
@@ -27,7 +27,7 @@ const ProjectMoreActionsMenu = ({
   const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
   const folderId = project?.data.attributes.folder_id;
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   const { mutate: deleteProject } = useDeleteProject();
   const { mutate: copyProject } = useCopyProject();
@@ -39,11 +39,12 @@ const ProjectMoreActionsMenu = ({
     return null;
   }
 
-  const userCanDeleteProject = isAdmin({ data: authUser });
+  const userCanDeleteProject = isAdmin(authUser);
   const userCanCopyProject =
-    isAdmin({ data: authUser }) ||
+    isAdmin(authUser) ||
     // If folderId is string, it means project is in a folder
-    (typeof folderId === 'string' && userModeratesFolder(authUser, folderId));
+    (typeof folderId === 'string' &&
+      userModeratesFolder(authUser.data, folderId));
 
   const setLoadingState = (
     type: 'deleting' | 'copying',

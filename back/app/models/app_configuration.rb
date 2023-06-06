@@ -43,7 +43,7 @@ class AppConfiguration < ApplicationRecord
     extend CitizenLab::Mixins::SettingsSpecification
 
     def self.json_schema
-      settings_schema = core_settings_json_schema
+      settings_schema = core_settings_json_schema.deep_dup # deep_dup to avoid modifying core schema
 
       extension_features_specs.each do |spec|
         settings_schema['properties'][spec.feature_name] = spec.json_schema

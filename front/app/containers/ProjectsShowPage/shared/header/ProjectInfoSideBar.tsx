@@ -13,7 +13,7 @@ import moment from 'moment';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useEvents from 'api/events/useEvents';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 import usePhasesPermissions from 'api/phase_permissions/usePhasesPermissions';
 import useProjectPermissions from 'api/project_permissions/useProjectPermissions';
@@ -143,13 +143,14 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     projectIds: [projectId],
     sort: '-start_at',
   });
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
+
   const { formatMessage } = useIntl();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const [shareModalOpened, setShareModalOpened] = useState(false);
   const surveySubmissionCount = useFormSubmissionCount({ projectId });
   const isAdminUser = !isNilOrError(authUser)
-    ? isAdmin({ data: authUser })
+    ? isAdmin({ data: authUser.data })
     : false;
 
   useEffect(() => {
@@ -211,7 +212,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     const { disabledReason } = getIdeaPostingRules({
       project: project.data,
       phase: currentPhase,
-      authUser,
+      authUser: authUser?.data,
     });
     const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
 
