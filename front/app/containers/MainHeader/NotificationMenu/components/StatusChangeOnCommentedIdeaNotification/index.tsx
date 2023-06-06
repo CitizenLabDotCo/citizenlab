@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { IStatusChangeOnCommentedIdeaNotificationData } from 'services/notifications';
+import { IStatusChangeOnCommentedIdeaNotificationData } from 'api/notifications/types';
 import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';

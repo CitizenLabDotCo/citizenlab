@@ -1,5 +1,4 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 
 // components
 import {
@@ -16,16 +15,9 @@ import EmptyStateImg from '../assets/no_notification_image.svg';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
-// resources
-import GetNotifications, {
-  GetNotificationsChildProps,
-} from 'resources/GetNotifications';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // styles
 import styled from 'styled-components';
+import useNotifications from 'api/notifications/useNotifications';
 
 const EmptyStateText = styled.div`
   color: ${colors.textSecondary};
@@ -40,22 +32,30 @@ const EmptyStateText = styled.div`
   margin-right: 15px;
 `;
 
-interface DataProps {
-  notifications: GetNotificationsChildProps;
-}
-
-interface Props extends DataProps {}
-
-export const Notifications = ({ notifications }: Props) => {
+export const Notifications = () => {
   const { formatMessage } = useIntl();
+  const {
+    data: notifications,
+    hasNextPage,
+    fetchNextPage,
+    isLoading,
+  } = useNotifications({});
+
+  const flattenNotifications = notifications?.pages.flatMap(
+    (page) => page.data
+  );
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <Box data-testid="notifications-dropdown">
       <InfiniteScroll
         pageStart={0}
-        loadMore={notifications.onLoadMore}
+        loadMore={() => fetchNextPage()}
         useWindow={false}
-        hasMore={notifications.hasMore}
+        hasMore={hasNextPage}
         threshold={50}
         loader={
           <Box
@@ -69,19 +69,14 @@ export const Notifications = ({ notifications }: Props) => {
           </Box>
         }
       >
-        {!isNilOrError(notifications?.list) &&
-          notifications.list.length > 0 && (
-            <>
-              {notifications.list.map((notification) => (
-                <Notification
-                  key={notification.id}
-                  notification={notification}
-                />
-              ))}
-            </>
-          )}
-        {(notifications?.list === null ||
-          notifications?.list?.length === 0) && (
+        {flattenNotifications && flattenNotifications.length > 0 && (
+          <>
+            {flattenNotifications.map((notification) => (
+              <Notification key={notification.id} notification={notification} />
+            ))}
+          </>
+        )}
+        {(!flattenNotifications || flattenNotifications.length === 0) && (
           <Box
             height="200px"
             display="flex"
@@ -102,10 +97,4 @@ export const Notifications = ({ notifications }: Props) => {
   );
 };
 
-const Data = adopt<DataProps>({
-  notifications: <GetNotifications />,
-});
-
-export default () => (
-  <Data>{(dataProps: DataProps) => <Notifications {...dataProps} />}</Data>
-);
+export default Notifications;
