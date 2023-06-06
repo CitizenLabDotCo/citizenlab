@@ -36,6 +36,7 @@ import { TVerificationMethod } from 'api/verification_methods/types';
 import meKeys from 'api/me/keys';
 import usersKeys from 'api/users/keys';
 import { useQueryClient } from '@tanstack/react-query';
+import userLockedAttributesKeys from 'api/user_locked_attributes/keys';
 
 interface Props {
   onCancel: () => void;
@@ -82,9 +83,10 @@ const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
             await verifyOostendeRrn(rrn);
 
             const endpointsToRefetch = [
-              `${API_PATH}/users/me/locked_attributes`,
               `${API_PATH}/users/custom_fields/schema`,
             ];
+
+            queryClient.invalidateQueries(userLockedAttributesKeys.all());
 
             if (!isNilOrError(authUser)) {
               queryClient.invalidateQueries(
