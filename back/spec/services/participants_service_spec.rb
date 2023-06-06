@@ -204,7 +204,7 @@ describe ParticipantsService do
       create(:reaction, reactable: c, user: pp4)
       create(:idea, author: other)
 
-      expect(service.projects_participants([project], actions: [:comment_voting]).map(&:id)).to match_array [pp4.id]
+      expect(service.projects_participants([project], actions: [:comment_reacting]).map(&:id)).to match_array [pp4.id]
     end
   end
 
@@ -240,7 +240,7 @@ describe ParticipantsService do
   end
 
   describe 'filter_engaging_activities' do
-    it 'does not filter out an upvote' do
+    it 'does not filter out a like' do
       activity = create(:published_activity)
       expect(service.filter_engaging_activities(Activity.all)).to eq [activity]
     end
@@ -262,16 +262,16 @@ describe ParticipantsService do
       expect(service.with_engagement_scores(Activity.where(id: activity.id)).first.score).to eq 3
     end
 
-    it 'gives idea voting a score of 1' do
-      upvote_activity = create(:idea_upvoted_activity)
-      downvote_activity = create(:idea_downvoted_activity)
-      expect(service.with_engagement_scores(Activity.where(id: upvote_activity.id)).first.score).to eq 1
-      expect(service.with_engagement_scores(Activity.where(id: downvote_activity.id)).first.score).to eq 1
+    it 'gives idea reacting a score of 1' do
+      like_activity = create(:idea_liked_activity)
+      dislike_activity = create(:idea_disliked_activity)
+      expect(service.with_engagement_scores(Activity.where(id: like_activity.id)).first.score).to eq 1
+      expect(service.with_engagement_scores(Activity.where(id: dislike_activity.id)).first.score).to eq 1
     end
 
-    it 'gives comment voting a score of 1' do
-      upvote_activity = create(:comment_upvoted_activity)
-      expect(service.with_engagement_scores(Activity.where(id: upvote_activity.id)).first.score).to eq 1
+    it 'gives comment reactions a score of 1' do
+      like_activity = create(:comment_liked_activity)
+      expect(service.with_engagement_scores(Activity.where(id: like_activity.id)).first.score).to eq 1
     end
 
     it 'returns 0 for non-engaging activities' do

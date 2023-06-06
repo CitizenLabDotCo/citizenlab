@@ -80,7 +80,7 @@ describe ParticipationContextService do
     end
   end
 
-  describe 'idea_voting_disabled_reason_for' do
+  describe 'idea_reacting_disabled_reason_for' do
     let(:user) { create(:user) }
     let(:reasons) { ParticipationContextService::REACTING_DISABLED_REASONS }
 
@@ -89,7 +89,7 @@ describe ParticipationContextService do
       let(:idea) { create(:idea, project: project, phases: [project.phases[2]]) }
       let(:permission) do
         service.get_participation_context(project).permissions
-          .find_by(action: 'voting_idea')
+          .find_by(action: 'reacting_idea')
       end
 
       it 'returns `not_signed_in` when user needs to be signed in' do
@@ -100,7 +100,7 @@ describe ParticipationContextService do
         expect(service.idea_reacting_disabled_reason_for(idea, nil, mode: 'down')).to eq 'not_signed_in'
       end
 
-      it "returns 'not_in_group' if it's in the current phase and voting is not permitted" do
+      it "returns 'not_in_group' if it's in the current phase and reacting is not permitted" do
         permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
         expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_in_group'
         expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_in_group'
@@ -113,10 +113,10 @@ describe ParticipationContextService do
       context 'for a normal user' do
         let(:user) { create(:user) }
 
-        it "returns 'not_in_group' if voting is not permitted" do
+        it "returns 'not_in_group' if reacting is not permitted" do
           project = create(:continuous_project, with_permissions: true)
           idea = create(:idea, project: project)
-          permission = project.permissions.find_by(action: 'voting_idea')
+          permission = project.permissions.find_by(action: 'reacting_idea')
           permission.update!(
             permitted_by: 'groups',
             group_ids: create_list(:group, 2).map(&:id)
@@ -131,10 +131,10 @@ describe ParticipationContextService do
       context 'for an unauthenticated visitor' do
         let(:user) { nil }
 
-        it "returns 'not_signed_in' if voting is not permitted and verification is not involved" do
+        it "returns 'not_signed_in' if reacting is not permitted and verification is not involved" do
           project = create(:continuous_project, with_permissions: true)
           idea = create(:idea, project: project)
-          permission = project.permissions.find_by(action: 'voting_idea')
+          permission = project.permissions.find_by(action: 'reacting_idea')
           permission.update!(
             permitted_by: 'groups',
             group_ids: create_list(:group, 2).map(&:id)
@@ -148,32 +148,32 @@ describe ParticipationContextService do
     end
   end
 
-  describe 'cancelling_votes_disabled_reasons' do
+  describe 'cancelling_reactions_disabled_reasons' do
     let(:user) { create(:user) }
     let(:reasons) { ParticipationContextService::REACTING_DISABLED_REASONS }
 
     context 'timeline project' do
       let(:project) do
-        create(:project_with_current_phase, current_phase_attrs: { with_permissions: true, permissions_config: { voting_idea: false } })
+        create(:project_with_current_phase, current_phase_attrs: { with_permissions: true, permissions_config: { reacting_idea: false } })
       end
       let(:idea) { create(:idea, project: project, phases: [project.phases[2]]) }
 
       it "returns `not_signed_in` if it's in the current phase and user needs to be signed in" do
-        service.get_participation_context(project).permissions.find_by(action: 'voting_idea')
+        service.get_participation_context(project).permissions.find_by(action: 'reacting_idea')
           .update!(permitted_by: 'users')
         expect(service.cancelling_reactions_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
       end
 
-      it "returns 'not_permitted' if it's in the current phase and voting is not permitted" do
+      it "returns 'not_permitted' if it's in the current phase and reacting is not permitted" do
         expect(service.cancelling_reactions_disabled_reason_for_idea(idea, idea.author)).to eq 'not_permitted'
       end
     end
 
     context 'continuous project' do
-      it "returns 'not_in_group' if voting is not permitted" do
+      it "returns 'not_in_group' if reacting is not permitted" do
         project = create(:continuous_project, with_permissions: true)
         idea = create(:idea, project: project)
-        permission = project.permissions.find_by(action: 'voting_idea')
+        permission = project.permissions.find_by(action: 'reacting_idea')
         permission.update!(
           permitted_by: 'groups',
           group_ids: create_list(:group, 2).map(&:id)
@@ -322,26 +322,26 @@ describe ParticipationContextService do
   end
 
   describe 'future_reacting_enabled_phase' do
-    it 'returns the first upcoming phase that has voting enabled' do
+    it 'returns the first upcoming phase that has reacting enabled' do
       project = create(
         :project_with_current_phase,
         phases_config: {
           sequence: 'xcxxxxxy',
-          x: { permissions_config: { voting_idea: false } },
-          y: { permissions_config: { voting_idea: true } },
-          c: { permissions_config: { voting_idea: false } }
+          x: { permissions_config: { reacting_idea: false } },
+          y: { permissions_config: { reacting_idea: true } },
+          c: { permissions_config: { reacting_idea: false } }
         }
       )
       expect(service.future_liking_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
       expect(service.future_disliking_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
     end
 
-    it 'returns nil if no next phase has voting enabled' do
+    it 'returns nil if no next phase has reacting enabled' do
       project = create(
         :project_with_current_phase,
         phases_config: {
           sequence: 'xcyyy',
-          y: { permissions_config: { voting_idea: false } }
+          y: { permissions_config: { reacting_idea: false } }
         }
       )
       expect(service.future_liking_idea_enabled_phase(project, create(:user))).to be_nil
