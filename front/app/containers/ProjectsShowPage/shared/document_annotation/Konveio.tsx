@@ -4,7 +4,7 @@ import { parse, stringify } from 'qs';
 import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 const StyledIframe = styled.iframe`
   display: block;
@@ -18,11 +18,11 @@ type Props = {
 };
 
 const Konveio = ({ documentUrl, className }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   const email =
-    !isNilOrError(authUser) && authUser.attributes.email
-      ? authUser.attributes.email
+    !isNilOrError(authUser) && authUser.data.attributes.email
+      ? authUser.data.attributes.email
       : null;
 
   // Parse survey URL

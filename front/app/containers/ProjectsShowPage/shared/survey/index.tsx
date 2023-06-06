@@ -70,7 +70,7 @@ const Survey = ({
     !isNilOrError(authUser) && authUser.data.attributes.email
       ? authUser.data.attributes.email
       : null;
-  const userId = !isNilOrError(authUser) ? authUser.id : null;
+  const userId = !isNilOrError(authUser) ? authUser.data.id : null;
 
   return (
     <ParticipationPermission
