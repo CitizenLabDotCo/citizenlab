@@ -1,7 +1,7 @@
 import React, { useEffect, FormEvent } from 'react';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
 
 // components
@@ -46,7 +46,7 @@ const CustomFields = ({
   onSubmit,
   onSkip,
 }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const locale = useLocale();
   const { data: userCustomFieldsSchema } = useCustomFieldsSchema(
     authenticationData.context
@@ -68,7 +68,7 @@ const CustomFields = ({
     formData: Record<string, any>;
   }) => {
     try {
-      await onSubmit(authUser.id, formData);
+      await onSubmit(authUser.data.id, formData);
     } catch (e) {
       setError('unknown');
     }
@@ -88,7 +88,7 @@ const CustomFields = ({
       id="e2e-signup-custom-fields-container"
     >
       <UserCustomFieldsForm
-        authUser={authUser}
+        authUser={authUser.data}
         authenticationContext={authenticationData.context}
         onSubmit={handleSubmit}
       />

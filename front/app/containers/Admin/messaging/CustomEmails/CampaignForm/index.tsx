@@ -32,7 +32,7 @@ import MultipleSelect from 'components/HookForm/MultipleSelect';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IGroupData } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';
@@ -75,7 +75,7 @@ const CampaignForm = ({
   defaultValues,
   intl: { formatMessage },
 }: CampaignFormProps) => {
-  const user = useAuthUser();
+  const { data: user } = useAuthUser();
   const { data: groups } = useGroups({});
   const { data: appConfig } = useAppConfiguration();
   const localize = useLocalize();
@@ -119,7 +119,7 @@ const CampaignForm = ({
       {
         value: 'author',
         label: !isNilOrError(user)
-          ? `${user.attributes.first_name} ${user.attributes.last_name}`
+          ? `${user.data.attributes.first_name} ${user.data.attributes.last_name}`
           : '',
       },
       {

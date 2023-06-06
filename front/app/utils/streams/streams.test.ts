@@ -6,7 +6,6 @@ import { authApiEndpoint } from 'services/auth';
 const request = _request as jest.MockedFunction<any>;
 
 jest.mock('utils/request');
-jest.mock('services/auth');
 
 let streams: Streams;
 

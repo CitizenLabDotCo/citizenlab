@@ -9,7 +9,7 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 import useDeleteCommentVote from 'api/comment_votes/useDeleteCommentVote';
 import useAddCommentVote from 'api/comment_votes/useAddCommentVote';
@@ -48,7 +48,7 @@ const CommentVote = ({
 
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   const { mutate: deleteCommentVote } = useDeleteCommentVote();
   const { mutate: addCommentVote } = useAddCommentVote();
@@ -68,7 +68,7 @@ const CommentVote = ({
         addCommentVote(
           {
             commentId: comment.id,
-            userId: authUser.id,
+            userId: authUser.data.id,
             mode: 'up',
           },
           {

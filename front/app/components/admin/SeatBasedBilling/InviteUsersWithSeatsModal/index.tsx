@@ -19,7 +19,7 @@ import useExceedsSeats from 'hooks/useExceedsSeats';
 import { TSeatNumber } from 'api/app_configuration/types';
 import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';
 
-import { IInvitesNewSeats } from 'services/invites';
+import { IInvitesNewSeats } from 'api/invites/types';
 
 export type SeatTypeTSeatNumber = {
   [key in TSeatType]: TSeatNumber;

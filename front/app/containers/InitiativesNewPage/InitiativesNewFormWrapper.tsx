@@ -34,7 +34,7 @@ import { IInitiativeAdd } from 'api/initiatives/types';
 import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
@@ -61,7 +61,7 @@ const InitiativesNewFormWrapper = ({
 }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { mutate: addInitiative } = useAddInitiative();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { mutateAsync: addInitiativeImage, isLoading: isAdding } =
     useAddInitiativeImage();
   const { mutateAsync: deleteInitiativeImage, isLoading: isDeleting } =
@@ -282,7 +282,7 @@ const InitiativesNewFormWrapper = ({
             profaneMessage: changedValues.title_multiloc?.[locale],
             proposalId: initiativeId,
             location: 'InitiativesNewFormWrapper (citizen side)',
-            userId: !isNilOrError(authUser) ? authUser.id : null,
+            userId: !isNilOrError(authUser) ? authUser.data.id : null,
             host: !isNilOrError(appConfiguration)
               ? appConfiguration.data.attributes.host
               : null,
@@ -297,7 +297,7 @@ const InitiativesNewFormWrapper = ({
             profaneMessage: changedValues.body_multiloc?.[locale],
             proposalId: initiativeId,
             location: 'InitiativesNewFormWrapper (citizen side)',
-            userId: !isNilOrError(authUser) ? authUser.id : null,
+            userId: !isNilOrError(authUser) ? authUser.data.id : null,
             host: !isNilOrError(appConfiguration)
               ? appConfiguration.data.attributes.host
               : null,

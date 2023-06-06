@@ -18,7 +18,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 
@@ -255,7 +255,7 @@ const MainHeader = ({
 }: Props & WrappedComponentProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { data: appConfiguration } = useAppConfiguration();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const locale = useLocale();
   const theme = useTheme();
   const windowSize = useWindowSize();

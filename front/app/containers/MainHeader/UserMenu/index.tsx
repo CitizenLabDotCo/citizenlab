@@ -7,7 +7,7 @@ const UserMenuDropdown = lazy(() => import('./UserMenuDropdown'));
 
 // style
 import styled from 'styled-components';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 const Container = styled.div`
   height: 100%;
@@ -27,7 +27,7 @@ const DropdownButton = styled.button`
 
 const UserMenu = () => {
   const [opened, setOpened] = useState(false);
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   const toggleDropdown = () => {
     setOpened((opened) => !opened);
@@ -38,13 +38,15 @@ const UserMenu = () => {
   };
 
   if (!isNilOrError(authUser)) {
-    const userId = authUser.id;
+    const userId = authUser.data.id;
 
     return (
       <Container
         id="e2e-user-menu-container"
         className={
-          authUser.attributes.verified ? 'e2e-verified' : 'e2e-not-verified'
+          authUser.data.attributes.verified
+            ? 'e2e-verified'
+            : 'e2e-not-verified'
         }
       >
         <DropdownButton
