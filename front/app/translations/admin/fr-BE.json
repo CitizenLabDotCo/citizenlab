@@ -1275,7 +1275,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.cancelQuitButtonText": "Annuler",
   "app.containers.AdminPage.ProjectEdit.survey.choiceCount2": "{percentage}% ({choiceCount, plural, no {# choix} one {# choix} other {# choix}})",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText2": "Oui, supprimer les résultats de l'enquête",
-  "app.containers.AdminPage.ProjectEdit.survey.confirmQuitButtonText1": "Oui, je veux partir",
+  "app.containers.AdminPage.ProjectEdit.survey.confirmQuitButtonText1": "Oui, je veux quitter",
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsInfo2": "Cela ne peut pas être annulé",
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2": "Supprimez les résultats si vous devez les modifier.",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2": "Supprimer les résultats de l'enquête",
