@@ -9,7 +9,7 @@ class SendConfirmationCode < ApplicationOrganizer
   delegate :user, to: :context
 
   before do
-    next if user.registered_with_email?
+    next if user.registered_with_email? || (user.email.blank? && context.new_email.present?)
 
     fail_with_error! :registration_method, :invalid, message: 'Confirmation is currently working for emails only.'
   end
