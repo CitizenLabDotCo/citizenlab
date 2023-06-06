@@ -135,8 +135,8 @@ export const UserMenu = () => {
       open={isUserMenuPopupOpen}
       onClose={handleUserMenuPopupClose}
       on="click"
-      position="top right"
-      offset={[12, -60]}
+      position="right center"
+      offset={[-40, 0]}
       positionFixed
       context={iconDivRef}
       basic

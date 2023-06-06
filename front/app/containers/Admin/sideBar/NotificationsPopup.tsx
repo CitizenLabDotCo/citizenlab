@@ -125,9 +125,10 @@ export const NotificationsPopup = () => {
       open={isNotificationsPopupOpen}
       onClose={handleCloseNotifications}
       onOpen={handleOpenNotifications}
-      position="top right"
-      offset={[0, -50]}
+      position="right center"
+      offset={[-40, 0]}
       context={iconDivRef}
+      positionFixed
       basic
       wide
     >

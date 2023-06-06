@@ -68,10 +68,10 @@ export const SupportMenu = () => {
         </StyledBox>
       }
       on="click"
-      position="top right"
+      position="right center"
       context={iconDivRef}
       positionFixed
-      offset={[12, -60]}
+      offset={[-40, 0]}
       basic
       wide
     >
