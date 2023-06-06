@@ -96,7 +96,7 @@ const InvitesTable = () => {
         ? 'ascending'
         : 'descending';
     const newSortDirectionSymbol = newSortDirection === 'descending' ? '-' : '';
-    const newSort = `${newSortDirectionSymbol}${sortAttribute}` as Sort;
+    const newSort = `${newSortDirectionSymbol}${sortAttribute}` as const;
     setSort(newSort);
   };
 
