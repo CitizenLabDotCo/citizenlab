@@ -62,6 +62,7 @@ describe('InviteUsersWithSeatsModal', () => {
         closeModal={closeModal}
         newSeatsResponse={{
           data: {
+            type: 'invite_new_seats',
             attributes: {
               newly_added_admins_number: 1,
               newly_added_moderators_number: 0,
@@ -95,6 +96,7 @@ describe('InviteUsersWithSeatsModal', () => {
         closeModal={closeModal}
         newSeatsResponse={{
           data: {
+            type: 'invite_new_seats',
             attributes: {
               newly_added_admins_number: 0,
               newly_added_moderators_number: 2,
