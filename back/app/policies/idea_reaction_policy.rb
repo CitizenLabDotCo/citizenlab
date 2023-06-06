@@ -27,7 +27,7 @@ class IdeaReactionPolicy < ApplicationPolicy
   def create?
     return false unless could_modify?
 
-    reason = participation_context_service.idea_voting_disabled_reason_for record, user
+    reason = participation_context_service.idea_reacting_disabled_reason_for record, user
 
     reason ? raise_not_authorized(reason) : true
   end
@@ -57,7 +57,7 @@ class IdeaReactionPolicy < ApplicationPolicy
   def upsert_reaction?(mode)
     return false unless could_modify?
 
-    reason = participation_context_service.idea_voting_disabled_reason_for record, user, mode: mode
+    reason = participation_context_service.idea_reacting_disabled_reason_for record, user, mode: mode
     reason ||= participation_context_service.cancelling_reactions_disabled_reason_for_idea record.reactable, user
 
     reason ? raise_not_authorized(reason) : true

@@ -82,7 +82,7 @@ describe ParticipationContextService do
 
   describe 'idea_voting_disabled_reason_for' do
     let(:user) { create(:user) }
-    let(:reasons) { ParticipationContextService::VOTING_DISABLED_REASONS }
+    let(:reasons) { ParticipationContextService::REACTING_DISABLED_REASONS }
 
     context 'timeline project' do
       let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
@@ -94,18 +94,18 @@ describe ParticipationContextService do
 
       it 'returns `not_signed_in` when user needs to be signed in' do
         permission.update!(permitted_by: 'users')
-        expect(service.idea_voting_disabled_reason_for(project, nil, mode: 'up')).to eq 'not_signed_in'
-        expect(service.idea_voting_disabled_reason_for(project, nil, mode: 'down')).to eq 'not_signed_in'
-        expect(service.idea_voting_disabled_reason_for(idea, nil, mode: 'up')).to eq 'not_signed_in'
-        expect(service.idea_voting_disabled_reason_for(idea, nil, mode: 'down')).to eq 'not_signed_in'
+        expect(service.idea_reacting_disabled_reason_for(project, nil, mode: 'up')).to eq 'not_signed_in'
+        expect(service.idea_reacting_disabled_reason_for(project, nil, mode: 'down')).to eq 'not_signed_in'
+        expect(service.idea_reacting_disabled_reason_for(idea, nil, mode: 'up')).to eq 'not_signed_in'
+        expect(service.idea_reacting_disabled_reason_for(idea, nil, mode: 'down')).to eq 'not_signed_in'
       end
 
       it "returns 'not_in_group' if it's in the current phase and voting is not permitted" do
         permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_in_group'
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_in_group'
-        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_in_group'
-        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_in_group'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_in_group'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_in_group'
+        expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_in_group'
+        expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_in_group'
       end
     end
 
@@ -121,10 +121,10 @@ describe ParticipationContextService do
             permitted_by: 'groups',
             group_ids: create_list(:group, 2).map(&:id)
           )
-          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_in_group'
-          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_in_group'
-          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_in_group'
-          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_in_group'
+          expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_in_group'
+          expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_in_group'
+          expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_in_group'
+          expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_in_group'
         end
       end
 
@@ -139,10 +139,10 @@ describe ParticipationContextService do
             permitted_by: 'groups',
             group_ids: create_list(:group, 2).map(&:id)
           )
-          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_signed_in'
-          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_signed_in'
-          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_signed_in'
-          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_signed_in'
+          expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_signed_in'
+          expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_signed_in'
+          expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_signed_in'
+          expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_signed_in'
         end
       end
     end
@@ -150,7 +150,7 @@ describe ParticipationContextService do
 
   describe 'cancelling_votes_disabled_reasons' do
     let(:user) { create(:user) }
-    let(:reasons) { ParticipationContextService::VOTING_DISABLED_REASONS }
+    let(:reasons) { ParticipationContextService::REACTING_DISABLED_REASONS }
 
     context 'timeline project' do
       let(:project) do
@@ -332,8 +332,8 @@ describe ParticipationContextService do
           c: { permissions_config: { voting_idea: false } }
         }
       )
-      expect(service.future_upvoting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
-      expect(service.future_downvoting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
+      expect(service.future_liking_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
+      expect(service.future_disliking_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
     end
 
     it 'returns nil if no next phase has voting enabled' do
@@ -344,8 +344,8 @@ describe ParticipationContextService do
           y: { permissions_config: { voting_idea: false } }
         }
       )
-      expect(service.future_upvoting_idea_enabled_phase(project, create(:user))).to be_nil
-      expect(service.future_downvoting_idea_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_liking_idea_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_disliking_idea_enabled_phase(project, create(:user))).to be_nil
     end
   end
 

@@ -47,7 +47,7 @@ resource 'Reactions' do
     end
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
-    disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
+    disabled_reasons = ParticipationContextService::REACTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }
@@ -81,7 +81,7 @@ resource 'Reactions' do
   post 'web_api/v1/ideas/:idea_id/reactions/up' do
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
-    disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
+    disabled_reasons = ParticipationContextService::REACTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }
@@ -119,7 +119,7 @@ resource 'Reactions' do
       example_request '[error] Upvote an idea in a project where reactions are disabled' do
         expect(status).to eq 401
         json_response = json_parse(response_body)
-        expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::VOTING_DISABLED_REASONS[:voting_disabled]
+        expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::REACTING_DISABLED_REASONS[:voting_disabled]
         expect(@idea.reload.likes_count).to eq 2
         expect(@idea.reload.dislikes_count).to eq 0
       end
@@ -152,7 +152,7 @@ resource 'Reactions' do
       example_request '[error] Upvote an idea in a project where you can upvote only once' do
         expect(status).to eq 401
         json_response = json_parse(response_body)
-        expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::VOTING_DISABLED_REASONS[:reacting_like_limited_max_reached]
+        expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::REACTING_DISABLED_REASONS[:reacting_like_limited_max_reached]
         expect(@idea.reload.likes_count).to eq 2
         expect(@idea.reload.dislikes_count).to eq 0
       end
@@ -162,7 +162,7 @@ resource 'Reactions' do
   post 'web_api/v1/ideas/:idea_id/reactions/down' do
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
-    disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
+    disabled_reasons = ParticipationContextService::REACTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }
@@ -197,7 +197,7 @@ resource 'Reactions' do
       do_request
       expect(status).to eq 401
       json_response = json_parse(response_body)
-      expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::VOTING_DISABLED_REASONS[:downvoting_disabled]
+      expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::REACTING_DISABLED_REASONS[:downvoting_disabled]
       expect(@idea.reload.likes_count).to eq 2
       expect(@idea.reload.dislikes_count).to eq 1
     end

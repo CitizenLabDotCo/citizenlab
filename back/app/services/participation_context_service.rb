@@ -15,11 +15,11 @@ class ParticipationContextService
     commenting_disabled: 'commenting_disabled'
   }.freeze
 
-  VOTING_DISABLED_REASONS = {
+  REACTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_ideation: 'not_ideation',
-    voting_disabled: 'voting_disabled',
-    downvoting_disabled: 'downvoting_disabled',
+    reacting_disabled: 'reacting_disabled',
+    reacting_dislike_disabled: 'reacting_dislike_disabled',
     reacting_like_limited_max_reached: 'reacting_like_limited_max_reached',
     reacting_dislike_limited_max_reached: 'reacting_dislike_limited_max_reached',
     idea_not_in_current_phase: 'idea_not_in_current_phase'
@@ -71,7 +71,7 @@ class ParticipationContextService
 
     !(posting_idea_disabled_reason_for_context(context, user) \
     && commenting_idea_disabled_reason_for_context(context, user) \
-    && idea_voting_disabled_reason_for(context, user) \
+    && idea_reacting_disabled_reason_for(context, user) \
     && taking_survey_disabled_reason_for_context(context, user) \
     && taking_poll_disabled_reason_for_context(context, user) \
     && budgeting_disabled_reason_for_context(context, user))
@@ -124,11 +124,11 @@ class ParticipationContextService
     end
   end
 
-  def voting_disabled_reason_for_idea_comment(comment, user)
+  def reacting_disabled_reason_for_idea_comment(comment, user)
     commenting_disabled_reason_for_idea comment.post, user
   end
 
-  def idea_voting_disabled_reason_for(object, user, mode: nil)
+  def idea_reacting_disabled_reason_for(object, user, mode: nil)
     context = nil
     idea = nil
     case object.class.name
@@ -154,32 +154,32 @@ class ParticipationContextService
     # to either return multiple reasons or have
     # a predefined ranking of reasons to return
     # the reason with the highest rank.
-    return VOTING_DISABLED_REASONS[:project_inactive] unless context
+    return REACTING_DISABLED_REASONS[:project_inactive] unless context
 
-    reason = general_idea_voting_disabled_reason(context, user)
+    reason = general_idea_reacting_disabled_reason(context, user)
     return reason if reason
-    return VOTING_DISABLED_REASONS[:idea_not_in_current_phase] if idea && !in_current_context?(idea, context)
+    return REACTING_DISABLED_REASONS[:idea_not_in_current_phase] if idea && !in_current_context?(idea, context)
 
     if mode
-      reason = mode_specific_idea_voting_disabled_reason(mode, context, user)
+      reason = mode_specific_idea_reacting_disabled_reason(mode, context, user)
       return reason if reason
     end
 
-    permission_denied_reason user, 'voting_idea', context
+    permission_denied_reason user, 'reacting_idea', context
   end
 
   def cancelling_votes_disabled_reason_for_idea(idea, user)
     context = get_participation_context idea.project
     if !context
-      VOTING_DISABLED_REASONS[:project_inactive]
+      REACTING_DISABLED_REASONS[:project_inactive]
     elsif !context.ideation?
-      VOTING_DISABLED_REASONS[:not_ideation]
+      REACTING_DISABLED_REASONS[:not_ideation]
     elsif !in_current_context? idea, context
-      VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
+      REACTING_DISABLED_REASONS[:idea_not_in_current_phase]
     elsif !context.reacting_enabled
-      VOTING_DISABLED_REASONS[:voting_disabled]
+      REACTING_DISABLED_REASONS[:reacting_disabled]
     else
-      permission_denied_reason user, 'voting_idea', get_participation_context(idea.project)
+      permission_denied_reason user, 'reacting_idea', get_participation_context(idea.project)
     end
   end
 
@@ -242,15 +242,15 @@ class ParticipationContextService
     future_phases(project, time).find { |phase| !commenting_idea_disabled_reason_for_context(phase, user) }
   end
 
-  def future_upvoting_idea_enabled_phase(project, user, time = Time.zone.now)
-    future_phases(project, time).find { |phase| !idea_voting_disabled_reason_for(phase, user, mode: 'up') }
+  def future_liking_idea_enabled_phase(project, user, time = Time.zone.now)
+    future_phases(project, time).find { |phase| !idea_reacting_disabled_reason_for(phase, user, mode: 'up') }
   end
 
-  def future_downvoting_idea_enabled_phase(project, user, time = Time.zone.now)
-    future_phases(project, time).find { |phase| !idea_voting_disabled_reason_for(phase, user, mode: 'down') }
+  def future_disliking_idea_enabled_phase(project, user, time = Time.zone.now)
+    future_phases(project, time).find { |phase| !idea_reacting_disabled_reason_for(phase, user, mode: 'down') }
   end
 
-  def future_comment_voting_idea_enabled_phase(project, user, time = Time.zone.now)
+  def future_comment_reacting_idea_enabled_phase(project, user, time = Time.zone.now)
     future_commenting_idea_enabled_phase(project, user, time)
   end
 
@@ -279,25 +279,25 @@ class ParticipationContextService
   end
 
   # Common reason regardless of the vote type.
-  def general_idea_voting_disabled_reason(context, _user)
+  def general_idea_reacting_disabled_reason(context, _user)
     if !context.ideation?
-      VOTING_DISABLED_REASONS[:not_ideation]
+      REACTING_DISABLED_REASONS[:not_ideation]
     elsif !context.reacting_enabled
-      VOTING_DISABLED_REASONS[:voting_disabled]
+      REACTING_DISABLED_REASONS[:reacting_disabled]
     end
   end
 
-  def mode_specific_idea_voting_disabled_reason(mode, context, user)
+  def mode_specific_idea_reacting_disabled_reason(mode, context, user)
     case mode
     when 'up'
-      if user && upvoting_limit_reached?(context, user)
-        VOTING_DISABLED_REASONS[:reacting_like_limited_max_reached]
+      if user && liking_limit_reached?(context, user)
+        REACTING_DISABLED_REASONS[:reacting_like_limited_max_reached]
       end
     when 'down'
       if !context.reacting_dislike_enabled
-        VOTING_DISABLED_REASONS[:downvoting_disabled]
-      elsif user && downvoting_limit_reached?(context, user)
-        VOTING_DISABLED_REASONS[:reacting_dislike_limited_max_reached]
+        REACTING_DISABLED_REASONS[:reacting_dislike_disabled]
+      elsif user && disliking_limit_reached?(context, user)
+        REACTING_DISABLED_REASONS[:reacting_dislike_limited_max_reached]
       end
     else
       ErrorReporter.report_msg("Unsupported vote type #{mode}")
@@ -316,12 +316,12 @@ class ParticipationContextService
     false
   end
 
-  def upvoting_limit_reached?(context, user)
-    context.upvoting_limited? && user.reactions.up.where(reactable: context.ideas).size >= context.reacting_like_limited_max
+  def liking_limit_reached?(context, user)
+    context.liking_limited? && user.reactions.up.where(reactable: context.ideas).size >= context.reacting_like_limited_max
   end
 
-  def downvoting_limit_reached?(context, user)
-    context.downvoting_limited? && user.reactions.down.where(reactable: context.ideas).size >= context.reacting_dislike_limited_max
+  def disliking_limit_reached?(context, user)
+    context.disliking_limited? && user.reactions.down.where(reactable: context.ideas).size >= context.reacting_dislike_limited_max
   end
 
   def permission_denied_reason(user, _action, _context)

@@ -23,7 +23,7 @@ class InitiativeReactionPolicy < ApplicationPolicy
   def create?
     return if !user&.active? || !owner?
 
-    reason = voting_denied_reason user
+    reason = reacting_denied_reason user
     reason ? raise_not_authorized(reason) : true
   end
 
@@ -36,7 +36,7 @@ class InitiativeReactionPolicy < ApplicationPolicy
   end
 
   def down?
-    raise_not_authorized('downvoting_not_supported')
+    raise_not_authorized('dislikes_not_supported')
   end
 
   def show?
@@ -45,7 +45,7 @@ class InitiativeReactionPolicy < ApplicationPolicy
 
   private
 
-  def voting_denied_reason(user)
+  def reacting_denied_reason(user)
     :not_signed_in unless user
   end
 end

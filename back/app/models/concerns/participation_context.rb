@@ -17,7 +17,7 @@ module ParticipationContext
   PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering native_survey].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   POSTING_METHODS       = %w[unlimited limited].freeze
-  VOTING_METHODS        = %w[unlimited limited].freeze
+  REACTING_METHODS        = %w[unlimited limited].freeze
   IDEAS_ORDERS          = %w[trending random popular -new new].freeze
   IDEAS_ORDERS_BUDGETING_EXCLUDE = %w[trending popular].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option].freeze
@@ -46,9 +46,9 @@ module ParticipationContext
         validates :posting_method, presence: true, inclusion: { in: POSTING_METHODS }
         validates :commenting_enabled, inclusion: { in: [true, false] }
         validates :reacting_enabled, inclusion: { in: [true, false] }
-        validates :reacting_like_method, presence: true, inclusion: { in: VOTING_METHODS }
+        validates :reacting_like_method, presence: true, inclusion: { in: REACTING_METHODS }
         validates :reacting_dislike_enabled, inclusion: { in: [true, false] }
-        validates :reacting_dislike_method, presence: true, inclusion: { in: VOTING_METHODS }
+        validates :reacting_dislike_method, presence: true, inclusion: { in: REACTING_METHODS }
         validates :ideas_order, inclusion: { in: IDEAS_ORDERS }, allow_nil: true
         validates :input_term, inclusion: { in: INPUT_TERMS }
 
@@ -60,10 +60,10 @@ module ParticipationContext
         if: %i[can_contain_input? posting_limited?]
       validates :reacting_like_limited_max, presence: true,
         numericality: { only_integer: true, greater_than: 0 },
-        if: %i[can_contain_ideas? upvoting_limited?]
+        if: %i[can_contain_ideas? reacting_like_limited?]
       validates :reacting_dislike_limited_max, presence: true,
         numericality: { only_integer: true, greater_than: 0 },
-        if: %i[can_contain_ideas? downvoting_limited?]
+        if: %i[can_contain_ideas? reacting_dislike_limited?]
       validates :allow_anonymous_participation, inclusion: { in: [true, false] }
 
       # ideation?
@@ -110,11 +110,11 @@ module ParticipationContext
     posting_method == 'limited'
   end
 
-  def upvoting_limited?
+  def liking_limited?
     reacting_like_method == 'limited'
   end
 
-  def downvoting_limited?
+  def disliking_limited?
     reacting_dislike_method == 'limited'
   end
 
