@@ -128,7 +128,6 @@ const ProjectAndFolderCardsInner = ({
   const hasPublications =
     !isNilOrError(adminPublications) && adminPublications.length > 0;
 
-  console.log(currentTab);
   return (
     <Container id="e2e-projects-container">
       <StyledTopbar
