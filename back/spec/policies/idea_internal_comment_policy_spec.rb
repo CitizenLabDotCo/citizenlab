@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe IdeaInternalCommentPolicy do
-  subject { described_class.new(user, comment) }
+  subject { described_class.new(user, internal_comment) }
 
   let(:scope) { IdeaInternalCommentPolicy::Scope.new(user, idea.internal_comments) }
 
@@ -11,7 +11,7 @@ describe IdeaInternalCommentPolicy do
     let(:project) { create(:continuous_project) }
     let(:idea) { create(:idea, project: project) }
     let(:author) { create(:admin) }
-    let!(:comment) { create(:internal_comment, post: idea, author: author) }
+    let!(:internal_comment) { create(:internal_comment, post: idea, author: author) }
 
     context 'for a visitor' do
       let(:user) { nil }
@@ -85,7 +85,7 @@ describe IdeaInternalCommentPolicy do
     let(:project) { create(:continuous_project) }
     let(:idea) { create(:idea, project: project) }
     let(:author) { create(:project_moderator, projects: [project]) }
-    let!(:comment) { create(:internal_comment, post: idea, author: author) }
+    let!(:internal_comment) { create(:internal_comment, post: idea, author: author) }
 
     context 'for a moderator who is the author of the internal_comment' do
       let(:user) { author }

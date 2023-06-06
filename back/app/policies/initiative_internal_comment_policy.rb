@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class InitiativeCommentPolicy < ApplicationPolicy
+class InitiativeInternalCommentPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -15,18 +15,15 @@ class InitiativeCommentPolicy < ApplicationPolicy
   end
 
   def create?
-    return unless active?
-    return true if admin?
-
-    owner? && commenting_allowed?(user)
+    user&.active? && user&.admin?
   end
 
   def children?
-    show?
+    create?
   end
 
   def show?
-    InitiativePolicy.new(user, record.post).show?
+    create?
   end
 
   def update?
@@ -34,7 +31,7 @@ class InitiativeCommentPolicy < ApplicationPolicy
   end
 
   def mark_as_deleted?
-    update?
+    create?
   end
 
   def destroy?
@@ -52,10 +49,6 @@ class InitiativeCommentPolicy < ApplicationPolicy
   private
 
   def commenting_allowed?(user)
-    user # signed-in users can comment
-  end
-
-  def owner?
-    user && (record.author_id == user.id)
+    user&.active? && user&.admin?
   end
 end
