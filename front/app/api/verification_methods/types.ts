@@ -28,6 +28,7 @@ export interface IVerificationMethods {
 }
 
 export interface IVerifiedResponse {
+  type: 'verification';
   verification: {
     run: string;
     id_serial: string;

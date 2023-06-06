@@ -23,7 +23,7 @@ import {
 import useAuthUser from 'api/me/useAuthUser';
 
 // services
-import { verifyCOW } from '../api/verify';
+import { verifyCOW } from '../api/verification_methods/verify';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -104,19 +104,15 @@ const VerificationFormCOW = memo<Props & WrappedComponentProps>(
           } catch (error) {
             setProcessing(false);
 
-            if (get(error, 'json.errors.base[0].error') === 'taken') {
+            if (get(error, 'errors.base[0].error') === 'taken') {
               setFormError(formatMessage(messages.takenFormError));
-            } else if (get(error, 'json.errors.base[0].error') === 'no_match') {
+            } else if (get(error, 'errors.base[0].error') === 'no_match') {
               setFormError(formatMessage(messages.noMatchFormError));
-            } else if (
-              get(error, 'json.errors.base[0].error') === 'not_entitled'
-            ) {
+            } else if (get(error, 'errors.base[0].error') === 'not_entitled') {
               setFormError(formatMessage(messages.notEntitledFormError));
-            } else if (get(error, 'json.errors.run[0].error') === 'invalid') {
+            } else if (get(error, 'errors.run[0].error') === 'invalid') {
               setRunError(formatMessage(messages.invalidRunError));
-            } else if (
-              get(error, 'json.errors.id_serial[0].error') === 'invalid'
-            ) {
+            } else if (get(error, 'errors.id_serial[0].error') === 'invalid') {
               setIdError(formatMessage(messages.invalidIdSerialError));
             } else {
               reportError(error);

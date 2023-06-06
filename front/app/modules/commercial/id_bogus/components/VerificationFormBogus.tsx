@@ -20,7 +20,7 @@ import {
 import useAuthUser from 'api/me/useAuthUser';
 
 // services
-import { verifyBogus } from '../api/verify';
+import { verifyBogus } from '../api/verification_methods/verify';
 
 import meKeys from 'api/me/keys';
 import { useQueryClient } from '@tanstack/react-query';
@@ -68,16 +68,14 @@ const VerificationFormBogus = memo<Props>(
 
           onVerified();
         } catch (error) {
-          if (get(error, 'json.errors.base[0].error') === 'taken') {
+          if (get(error, 'errors.base[0].error') === 'taken') {
             setFormError('takenFormError');
-          } else if (get(error, 'json.errors.base[0].error') === 'no_match') {
+          } else if (get(error, 'errors.base[0].error') === 'no_match') {
             setFormError('noMatchFormError');
-          } else if (
-            get(error, 'json.errors.base[0].error') === 'not_entitled'
-          ) {
+          } else if (get(error, 'errors.base[0].error') === 'not_entitled') {
             setFormError('notEntitledFormError');
           } else if (
-            get(error, 'json.errors.desired_error[0].error') === 'invalid'
+            get(error, 'errors.desired_error[0].error') === 'invalid'
           ) {
             setDesiredErrorError('Unkown desired error');
           }

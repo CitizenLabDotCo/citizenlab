@@ -24,7 +24,7 @@ import {
 import useAuthUser from 'api/me/useAuthUser';
 
 // services
-import { verifyGentRrn } from '../api/verify';
+import { verifyGentRrn } from '../api/verification_methods/verify';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -102,25 +102,25 @@ const VerificationFormGentRrn = memo<Props & WrappedComponentProps>(
           } catch (error) {
             setProcessing(false);
 
-            if (get(error, 'json.errors.base[0].error') === 'taken') {
+            if (get(error, 'errors.base[0].error') === 'taken') {
               setFormError(formatMessage(messages.takenFormError));
-            } else if (get(error, 'json.errors.base[0].error') === 'no_match') {
+            } else if (get(error, 'errors.base[0].error') === 'no_match') {
               setFormError(formatMessage(messages.noMatchFormError));
             } else if (
-              get(error, 'json.errors.base[0].error') === 'not_entitled' &&
-              get(error, 'json.errors.base[0].why') === 'too_young'
+              get(error, 'errors.base[0].error') === 'not_entitled' &&
+              get(error, 'errors.base[0].why') === 'too_young'
             ) {
               setFormError(
                 formatMessage(messages.notEntitledTooYoungFormError)
               );
             } else if (
-              get(error, 'json.errors.base[0].error') === 'not_entitled' &&
-              get(error, 'json.errors.base[0].why') === 'lives_outside'
+              get(error, 'errors.base[0].error') === 'not_entitled' &&
+              get(error, 'errors.base[0].why') === 'lives_outside'
             ) {
               setFormError(
                 formatMessage(messages.notEntitledLivesOutsideFormError)
               );
-            } else if (get(error, 'json.errors.rrn[0].error') === 'invalid') {
+            } else if (get(error, 'errors.rrn[0].error') === 'invalid') {
               setRrnError(formatMessage(messages.invalidRrnError));
             } else {
               reportError(error);
