@@ -652,7 +652,7 @@
   "app.containers.Admin.emails.addCampaignTitle": "Erstellen Sie eine neue E-Mail",
   "app.containers.Admin.emails.addTextButton": "Erstellen Sie eine neue SMS",
   "app.containers.Admin.emails.allUsers": "Registrierte NutzerInnen",
-  "app.containers.Admin.emails.automatedEmailCampaignsInfo1": "Automatisierte E-Mails werden automatisch verschickt und durch die Aktionen von Nutzer*innen ausgelöst. Sie können einige von ihnen für alle Nutzer*innen Ihrer Plattform ausschalten. Die anderen automatisierten E-Mails können nicht abgeschaltet werden, da sie für das ordnungsgemäße Funktionieren Ihrer Plattform erforderlich sind.",
+  "app.containers.Admin.emails.automatedEmailCampaignsInfo1": "Automatisierte E-Mails werden automatisch verschickt und durch die Aktionen von Nutzer*innen ausgelöst. Sie können einige von ihnen für alle Nutzer*innen Ihrer Plattform ausschalten. Andere automatisierte E-Mails können nicht deaktiviert werden, da sie für das ordnungsgemäße Funktionieren Ihrer Plattform erforderlich sind.",
   "app.containers.Admin.emails.automatedEmails": "Automatisierte E-Mails",
   "app.containers.Admin.emails.campaignDeletionConfirmation": "Sind Sie sicher?",
   "app.containers.Admin.emails.changeRecipientsButton": "EmpfängerIn ändern",
