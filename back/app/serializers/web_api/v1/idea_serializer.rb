@@ -80,17 +80,17 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   belongs_to :project
   belongs_to :idea_status
 
-  has_one :user_vote, if: proc { |object, params|
+  has_one :user_reaction, if: proc { |object, params|
     signed_in? object, params
-  }, record_type: :vote, serializer: WebApi::V1::ReactionSerializer do |object, params|
-    cached_user_vote object, params
+  }, record_type: :reaction, serializer: WebApi::V1::ReactionSerializer do |object, params|
+    cached_user_reaction object, params
   end
 
   def self.can_moderate?(object, params)
     current_user(params) && UserRoleService.new.can_moderate_project?(object.project, current_user(params))
   end
 
-  def self.cached_user_vote(object, params)
+  def self.cached_user_reaction(object, params)
     if params[:vbii]
       params.dig(:vbii, object.id)
     else

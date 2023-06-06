@@ -767,8 +767,8 @@ resource 'Phases' do
                     an_instance_of(DateTime), # created_at
                     an_instance_of(DateTime), # published_at
                     comments.size,
-                    upvotes.size,
-                    downvotes.size,
+                    up_reactions.size,
+                    down_reactions.size,
                     baskets.size,
                     ideation_response1.budget,
                     "http://example.org/ideas/#{ideation_response1.slug}",

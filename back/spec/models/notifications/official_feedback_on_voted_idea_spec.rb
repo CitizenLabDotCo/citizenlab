@@ -4,23 +4,23 @@ require 'rails_helper'
 
 RSpec.describe Notifications::OfficialFeedbackOnVotedIdea do
   describe 'make_notifications_on' do
-    it 'generates exactly one notification for each user that voted on the idea' do
+    it 'generates exactly one notification for each user that reacted to the idea' do
       idea = create(:idea)
-      vote1 = create(:reaction, reactable: idea)
-      vote2 = create(:reaction, reactable: idea)
+      reaction1 = create(:reaction, reactable: idea)
+      reaction2 = create(:reaction, reactable: idea)
       create(:reaction)
 
       official_feedback = create(:official_feedback, post: idea)
       activity = create(:activity, item: official_feedback, action: :created)
 
       notifications = subject.class.make_notifications_on(activity)
-      expect(notifications.map(&:recipient)).to match_array [vote1.user, vote2.user]
+      expect(notifications.map(&:recipient)).to match_array [reaction1.user, reaction2.user]
     end
 
-    it "doesn't generate (invalid) notifications for votes attributed to a deleted user" do
+    it "doesn't generate (invalid) notifications for reactions attributed to a deleted user" do
       idea = create(:idea)
-      vote = create(:reaction, reactable: idea)
-      vote.user.destroy!
+      reaction = create(:reaction, reactable: idea)
+      reaction.user.destroy!
 
       official_feedback = create(:official_feedback, post: idea)
       activity = create(:activity, item: official_feedback, action: :created)
