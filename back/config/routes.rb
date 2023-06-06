@@ -240,13 +240,13 @@ Rails.application.routes.draw do
         get 'comments_by_topic_as_xlsx', **route_params
         get 'comments_by_project_as_xlsx', **route_params
 
-        route_params = { controller: 'stats_votes' }
-        get 'votes_count', **route_params
-        get 'votes_by_topic', **route_params
-        get 'votes_by_project', **route_params
+        route_params = { controller: 'stats_reactions' }
+        get 'reactions_count', **route_params
+        get 'reactions_by_topic', **route_params
+        get 'reactions_by_project', **route_params
 
-        get 'votes_by_topic_as_xlsx', **route_params
-        get 'votes_by_project_as_xlsx', **route_params
+        get 'reactions_by_topic_as_xlsx', **route_params
+        get 'reactions_by_project_as_xlsx', **route_params
       end
 
       scope 'mentions', controller: 'mentions' do

@@ -1,35 +1,35 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ReactionsController < ApplicationController
-  before_action :set_vote, only: %i[show destroy]
+  before_action :set_reaction, only: %i[show destroy]
   before_action :set_reactable_type_and_id, only: %i[index create up down]
   skip_before_action :authenticate_user
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
-    @votes = policy_scope(Reaction, policy_scope_class: @policy_class::Scope)
+    @reactions = policy_scope(Reaction, policy_scope_class: @policy_class::Scope)
       .where(reactable_type: @reactable_type, reactable_id: @reactable_id)
-    @votes = paginate @votes
+    @reactions = paginate @reactions
 
-    render json: linked_json(@votes, WebApi::V1::ReactionSerializer, params: jsonapi_serializer_params)
+    render json: linked_json(@reactions, WebApi::V1::ReactionSerializer, params: jsonapi_serializer_params)
   end
 
   def show
-    render json: WebApi::V1::ReactionSerializer.new(@vote, params: jsonapi_serializer_params).serializable_hash
+    render json: WebApi::V1::ReactionSerializer.new(@reaction, params: jsonapi_serializer_params).serializable_hash
   end
 
   def create
-    @vote = Reaction.new(vote_params)
-    @vote.reactable_type = @reactable_type
-    @vote.reactable_id = @reactable_id
-    @vote.user ||= current_user
-    authorize @vote, policy_class: @policy_class
+    @reaction = Reaction.new(reaction_params)
+    @reaction.reactable_type = @reactable_type
+    @reaction.reactable_id = @reactable_id
+    @reaction.user ||= current_user
+    authorize @reaction, policy_class: @policy_class
 
-    SideFxReactionService.new.before_create(@vote, current_user)
+    SideFxReactionService.new.before_create(@reaction, current_user)
 
     begin
-      saved = @vote.save
+      saved = @reaction.save
     rescue ActiveRecord::RecordNotUnique => e
       # Case when uniqueness DB constraint is violated
       render json: { errors: { base: [{ error: e.message }] } }, status: :unprocessable_entity
@@ -37,29 +37,29 @@ class WebApi::V1::ReactionsController < ApplicationController
     end
 
     if saved
-      SideFxReactionService.new.after_create(@vote, current_user)
+      SideFxReactionService.new.after_create(@reaction, current_user)
       render json: WebApi::V1::ReactionSerializer.new(
-        @vote,
+        @reaction,
         params: jsonapi_serializer_params
       ).serializable_hash, status: :created
     else
-      render json: { errors: @vote.errors.details }, status: :unprocessable_entity
+      render json: { errors: @reaction.errors.details }, status: :unprocessable_entity
     end
   end
 
   def up
-    upsert_vote 'up'
+    upsert_reaction 'up'
   end
 
   def down
-    upsert_vote 'down'
+    upsert_reaction 'down'
   end
 
   def destroy
-    SideFxReactionService.new.before_destroy(@vote, current_user)
-    frozen_vote = @vote.destroy
-    if frozen_vote
-      SideFxReactionService.new.after_destroy(frozen_vote, current_user)
+    SideFxReactionService.new.before_destroy(@reaction, current_user)
+    frozen_reaction = @reaction.destroy
+    if frozen_reaction
+      SideFxReactionService.new.after_destroy(frozen_reaction, current_user)
       head :ok
     else
       head :internal_server_error
@@ -68,41 +68,41 @@ class WebApi::V1::ReactionsController < ApplicationController
 
   private
 
-  def upsert_vote(mode)
-    @old_vote = Reaction.find_by(
+  def upsert_reaction(mode)
+    @old_reaction = Reaction.find_by(
       user: current_user,
       reactable_type: @reactable_type,
       reactable_id: @reactable_id
     )
 
-    if @old_vote && @old_vote.mode == mode
-      authorize @old_vote, policy_class: @policy_class
-      @old_vote.errors.add(:base, "already_#{mode}voted")
-      render json: { errors: @old_vote.errors.details }, status: :unprocessable_entity
+    if @old_reaction && @old_reaction.mode == mode
+      authorize @old_reaction, policy_class: @policy_class
+      @old_reaction.errors.add(:base, "already_#{mode}reacted")
+      render json: { errors: @old_reaction.errors.details }, status: :unprocessable_entity
     else
       Reaction.transaction do
-        if @old_vote
-          old_vote_frozen = @old_vote.destroy
-          SideFxReactionService.new.after_destroy(old_vote_frozen, current_user)
+        if @old_reaction
+          old_reaction_frozen = @old_reaction.destroy
+          SideFxReactionService.new.after_destroy(old_reaction_frozen, current_user)
         end
-        @new_vote = Reaction.new(
+        @new_reaction = Reaction.new(
           user: current_user,
           reactable_type: @reactable_type,
           reactable_id: @reactable_id,
           mode: mode
         )
-        authorize @new_vote, policy_class: @policy_class
+        authorize @new_reaction, policy_class: @policy_class
 
-        SideFxReactionService.new.before_create(@new_vote, current_user)
+        SideFxReactionService.new.before_create(@new_reaction, current_user)
 
-        if @new_vote.save
-          SideFxReactionService.new.after_create(@new_vote, current_user)
+        if @new_reaction.save
+          SideFxReactionService.new.after_create(@new_reaction, current_user)
           render json: WebApi::V1::ReactionSerializer.new(
-            @vote,
+            @reaction,
             params: jsonapi_serializer_params
           ).serializable_hash, status: :created
         else
-          render json: { errors: @new_vote.errors.details }, status: :unprocessable_entity
+          render json: { errors: @new_reaction.errors.details }, status: :unprocessable_entity
         end
       end
     end
@@ -133,13 +133,13 @@ class WebApi::V1::ReactionsController < ApplicationController
     end
   end
 
-  def set_vote
-    @vote = Reaction.find(params[:id])
-    @policy_class = derive_policy_class(@vote.reactable)
-    authorize @vote, policy_class: @policy_class
+  def set_reaction
+    @reaction = Reaction.find(params[:id])
+    @policy_class = derive_policy_class(@reaction.reactable)
+    authorize @reaction, policy_class: @policy_class
   end
 
-  def vote_params
-    params.require(:vote).permit(:user_id, :mode)
+  def reaction_params
+    params.require(:reaction).permit(:user_id, :mode)
   end
 end

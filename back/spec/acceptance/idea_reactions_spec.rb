@@ -58,12 +58,12 @@ resource 'Reactions' do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :relationships, :user, :data, :id)).to be_nil
       expect(json_response.dig(:data, :attributes, :mode)).to eq 'up'
-      expect(@idea.reload.upvotes_count).to eq 3
+      expect(@idea.reload.upreactions_count).to eq 3
     end
 
     describe 'When the user already reacted' do
       before do
-        @vote = create(:reaction, reactable: @idea, user: @user, mode: 'up')
+        @reaction = create(:reaction, reactable: @idea, user: @user, mode: 'up')
       end
 
       example '[error] Upvote the same idea', document: false do
