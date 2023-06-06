@@ -18,26 +18,26 @@ de:
       "invite_reminder": Einladungserinnerung
       "mention_in_official_feedback": Erwähnung in einem Update
       "new_comment_for_admin": Neuer Kommentar zu einem Projekt, das ich moderiere
-      "new_comment_on_commented_idea": Neuer Kommentar zu einer Idee, die ich kommentiert habe
+      "new_comment_on_commented_idea": Neuer Kommentar zu einem Beitrag, der kommentiert wurde
       "new_comment_on_commented_initiative": Neuer Kommentar zu einem Vorschlag, den ich kommentiert habe
-      "new_comment_on_voted_idea": Neuer Kommentar zu einer Idee, für die ich gestimmt habe
+      "new_comment_on_voted_idea": Neuer Kommentar zu einem Beitrag über den abgestimmt wurde
       "new_comment_on_voted_initiative": Neuer Kommentar zu einem Vorschlag, für den ich gestimmt habe
       "new_idea_for_admin": Neue Idee zu einem Projekt, das ich moderiere
       "new_initiative_for_admin": Neuer Vorschlag
-      "official_feedback_on_commented_idea": Update zu einer Idee, die ich kommentiert habe
+      "official_feedback_on_commented_idea": Offizielles Update zu einem Beitrag, der kommentiert wurde
       "official_feedback_on_commented_initiative": Update zu einem Vorschlag, den ich kommentiert habe
-      "official_feedback_on_voted_idea": Update zu einer Idee, für die ich gestimmt habe
+      "official_feedback_on_voted_idea": Offizielles Update zu einem Beitrag für den abgestimmt wurde
       "official_feedback_on_voted_initiative": Update zu einem Vorschlag, für den ich gestimmt habe
-      "official_feedback_on_your_idea": Update zu meiner Idee
+      "official_feedback_on_your_idea": Offizielles Update zu einem Beitrag
       "official_feedback_on_your_initiative": Update zu meinem Vorschlag
       "password_reset": Zurücksetzen des Passworts
       "project_moderation_rights_received": Projektmanagementrechte erhalten
       "project_folder_moderation_rights_received": Ordnermanagementrechte erhalten
       "project_phase_started": Neue Projektphase
       "project_phase_upcoming": Bevorstehende neue Projektphase
-      "status_change_of_commented_idea": Statusänderung einer Idee, die ich kommentiert habe
+      "status_change_of_commented_idea": Statusänderung eines Beitrags, der durch Nutzer*in kommentiert wurde
       "status_change_of_commented_initiative": Statusänderung eines Vorschlags, den ich kommentiert habe
-      "status_change_of_voted_idea": Statusänderung einer Idee, für die ich gestimmt habe
+      "status_change_of_voted_idea": Statusänderung eines Beitrags für den abgestimmt wurde
       "status_change_of_voted_initiative": Statusänderung eines Vorschlags, für den ich gestimmt habe
       "status_change_of_your_idea": Statusänderung eines Beitrags
       "status_change_of_your_initiative": Statusänderung meines Vorschlags
@@ -69,7 +69,7 @@ de:
       "new_comment_for_admin": Neuer Kommentar - Admins und Projektmanager*innen
       "new_comment_on_commented_idea": Neuer Kommentar zu einer Idee, die Sie kommentiert haben - alle Nutzer*innen
       "new_comment_on_commented_initiative": Neuer Kommentar zu einem kommentierten Vorschlag - alle Nutzer*innen
-      "new_comment_on_voted_idea": Neuer Kommentar zu einer Idee, für die gestimmt wurde - alle Nutzer*innen
+      "new_comment_on_voted_idea": Neuer Kommentar zu einer Idee, für die abgestimmt wurde - alle Nutzer*innen
       "new_comment_on_voted_initiative": Neuer Kommentar zu einem Vorschlag, für den Sie gestimmt haben - alle Nutzer*innen
       "new_idea_for_admin": Neue Idee - Admins und Projektmanager*innen
       "new_initiative_for_admin": Neuer Vorschlag - Admins
@@ -370,7 +370,7 @@ de:
       event_description: '%{officialName} gab ein Update auf die Idee ''%{ideaTitle}''.... Klicke auf den Button unten, um auf %{officialName} zu reagieren.'
       main_header: 'Es gibt ein Update zu einer Idee, die Sie kommentiert haben'
       subject: 'Eine Idee, die Sie kommentiert haben, hat eine offizielle Aktualisierung auf der Plattform von %{organizationName} erhalten'
-      preheader: '%{officialName} eine offizielle Aktualisierung zu einer Idee, die Sie kommentiert haben, hinterlassen'
+      preheader: '%{officialName} ein offizielles Update zu einem Beitrag, den Sie kommentiert haben, hinterlassen'
     official_feedback_on_your_idea:
       by_author: 'von %{authorName}'
       updated: '%{officialName} schrieb:'
@@ -581,7 +581,7 @@ de:
         user_receiving_admin_rights: 'Nutzer*in erhält Admin-Rechte'
         user_receiving_folder_moderator_rights: 'Nutzer*in, die*der Ordner-Moderatorenrechte erhält'
         user_receiving_project_moderator_rights: 'Nutzer*in, die*der Projektmoderatorenrechte erhält'
-        user_who_commented: 'Nutzer*in, die*der kommentiert hat'
+        user_who_commented: 'Nutzer*in kommentiert'
         user_who_is_mentioned: 'Nutzer*in, die*der erwähnt wird'
         user_who_published_proposal: 'Nutzer*in, die*der den Vorschlag veröffentlicht hat'
         user_who_published_the_idea: 'Nutzer*in, die*der die Idee veröffentlicht hat'
@@ -615,7 +615,7 @@ de:
         proposal_is_updated: 'Vorschlag wird aktualisiert'
         proposal_is_upvoted_above_threshold: 'Vorschlag erreicht Schwellenwert'
         proposal_status_is_changed: 'Der Status des Vorschlags wird geändert'
-        user_comments: 'Nutzer*in kommentiert'
+        user_comments: 'Kommentar wird veröffentlicht'
         user_comments_on_idea: 'Nutzer*in kommentiert Idee'
         user_comments_on_proposal: 'Nutzer*in kommentiert Vorschlag'
         user_is_given_admin_rights: 'Nutzer*in erhält Admin-Rechte'
