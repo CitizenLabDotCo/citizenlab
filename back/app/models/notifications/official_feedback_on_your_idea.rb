@@ -25,6 +25,7 @@
 #  post_status_type              :string
 #  project_folder_id             :uuid
 #  inappropriate_content_flag_id :uuid
+#  internal_comment_id           :uuid
 #
 # Indexes
 #
@@ -46,6 +47,7 @@
 #  fk_rails_...  (comment_id => comments.id)
 #  fk_rails_...  (inappropriate_content_flag_id => flag_inappropriate_content_inappropriate_content_flags.id)
 #  fk_rails_...  (initiating_user_id => users.id)
+#  fk_rails_...  (internal_comment_id => internal_comments.id)
 #  fk_rails_...  (invite_id => invites.id)
 #  fk_rails_...  (official_feedback_id => official_feedbacks.id)
 #  fk_rails_...  (phase_id => phases.id)

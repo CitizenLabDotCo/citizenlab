@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_06_084504) do
+ActiveRecord::Schema.define(version: 2023_06_06_095154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -887,6 +887,7 @@ ActiveRecord::Schema.define(version: 2023_06_06_084504) do
     t.string "post_status_type"
     t.uuid "project_folder_id"
     t.uuid "inappropriate_content_flag_id"
+    t.uuid "internal_comment_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["inappropriate_content_flag_id"], name: "index_notifications_on_inappropriate_content_flag_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
@@ -1477,6 +1478,7 @@ ActiveRecord::Schema.define(version: 2023_06_06_084504) do
   add_foreign_key "nav_bar_items", "static_pages"
   add_foreign_key "notifications", "comments"
   add_foreign_key "notifications", "flag_inappropriate_content_inappropriate_content_flags", column: "inappropriate_content_flag_id"
+  add_foreign_key "notifications", "internal_comments"
   add_foreign_key "notifications", "invites"
   add_foreign_key "notifications", "official_feedbacks"
   add_foreign_key "notifications", "phases"

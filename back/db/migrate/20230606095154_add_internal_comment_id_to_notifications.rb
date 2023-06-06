@@ -1,0 +1,10 @@
+# frozen_string_literal: true
+
+class AddInternalCommentIdToNotifications < ActiveRecord::Migration[6.1]
+  def change
+    return if column_exists? :notifications, :internal_comment_id
+
+    add_column :notifications, :internal_comment_id, :uuid, null: true
+    add_foreign_key :notifications, :internal_comments, column: :internal_comment_id
+  end
+end
