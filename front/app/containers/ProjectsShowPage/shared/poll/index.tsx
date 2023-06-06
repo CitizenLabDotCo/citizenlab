@@ -27,6 +27,7 @@ import globalMessages from 'utils/messages';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { PollDisabledReason } from 'api/projects/types';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -60,14 +61,17 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const disabledMessages = {
+const disabledMessages: { [key in PollDisabledReason] } = {
   project_inactive: messages.pollDisabledProjectInactive,
   not_active: messages.pollDisabledNotActiveUser,
   not_verified: messages.pollDisabledNotVerified,
   missing_data: messages.pollDisabledNotActiveUser,
   not_signed_in: messages.pollDisabledMaybeNotPermitted,
   not_in_group: globalMessages.notInGroup,
-} as const;
+  not_poll: messages.pollDisabledNotActivePhase,
+  already_responded: messages.pollDisabledAlreadyResponded,
+  not_permitted: messages.pollDisabledNotPermitted,
+};
 
 export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
   const { data: project } = useProjectById(projectId);

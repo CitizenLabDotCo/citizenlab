@@ -13,18 +13,19 @@ import messages from 'containers/ProjectsShowPage/messages';
 // styling
 import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { IProjectData } from 'api/projects/types';
 
 const Container = styled.div`
   position: relative;
 `;
 
 interface Props {
-  projectId: string;
+  project: IProjectData;
   phaseId: string | null;
   className?: string;
 }
 
-const SurveyContainer = memo<Props>(({ projectId, phaseId, className }) => {
+const SurveyContainer = memo<Props>(({ project, phaseId, className }) => {
   const { data: phase } = usePhase(phaseId);
 
   if (
@@ -40,7 +41,7 @@ const SurveyContainer = memo<Props>(({ projectId, phaseId, className }) => {
         </ScreenReaderOnly>
         <Survey
           className={className}
-          projectId={projectId}
+          project={project}
           phaseId={phase.data.id}
           surveyEmbedUrl={phase.data.attributes.survey_embed_url}
           surveyService={phase.data.attributes.survey_service}

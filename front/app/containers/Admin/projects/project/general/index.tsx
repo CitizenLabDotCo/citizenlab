@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Multiloc, UploadFile } from 'typings';
-import { isEmpty, get, isString } from 'lodash-es';
+import { Multiloc, UploadFile, CLErrors } from 'typings';
+import { isEmpty, isString } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
 
@@ -103,7 +103,7 @@ const AdminProjectsProjectGeneral = () => {
 
   const [processing, setProcessing] =
     useState<IProjectFormState['processing']>(false);
-  const [apiErrors, setApiErrors] = useState({});
+  const [apiErrors, setApiErrors] = useState<CLErrors>({});
   const [projectAttributesDiff, setProjectAttributesDiff] = useState<
     IProjectFormState['projectAttributesDiff']
   >({});
@@ -393,13 +393,8 @@ const AdminProjectsProjectGeneral = () => {
           queryKey: projectsKeys.item({ slug: project?.data.attributes.slug }),
         });
       } catch (errors) {
-        const apiErrors = get(
-          errors,
-          'json.errors',
-          formatMessage(messages.saveErrorMessage)
-        );
         setSubmitState('error');
-        setApiErrors(apiErrors);
+        setApiErrors(errors.errors);
         setProcessing(false);
       }
     }

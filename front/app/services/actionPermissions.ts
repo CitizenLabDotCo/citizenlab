@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { IPCPermissionAction, IRelationship } from 'typings';
+import { IRelationship } from 'typings';
 
 export type IGlobalPermissionAction =
   | 'voting_initiative'
@@ -26,11 +26,21 @@ export interface IGlobalPermissionData {
     };
   };
 }
-export interface IPCPermissionData {
+
+export type IParticipationContextPermissionAction =
+  | 'posting_idea'
+  | 'voting_idea'
+  | 'commenting_idea'
+  | 'taking_survey'
+  | 'taking_poll'
+  | 'budgeting'
+  | 'annotating_document';
+
+interface IParticipationContextPermissionData {
   id: string;
   type: string;
   attributes: {
-    action: IPCPermissionAction;
+    action: IParticipationContextPermissionAction;
     permitted_by:
       | 'everyone'
       | 'users'
@@ -51,17 +61,19 @@ export interface IPCPermissionData {
   };
 }
 
-export type IPermissionData = IPCPermissionData | IGlobalPermissionData;
+export type IPermissionData =
+  | IParticipationContextPermissionData
+  | IGlobalPermissionData;
 
-export interface IPCPermission {
-  data: IPCPermissionData;
+interface IParticipationContextPermission {
+  data: IParticipationContextPermissionData;
 }
 
-export interface IGlobalPermissions {
+interface IGlobalPermissions {
   data: IGlobalPermissionData[];
 }
 
-export interface IPermissionUpdate {
+interface IPermissionUpdate {
   group_ids: string[];
   permitted_by: IPermissionData['attributes']['permitted_by'];
   global_custom_fields: boolean;
@@ -79,7 +91,7 @@ export function updateGlobalPermission(
   action: string,
   permission: Partial<IPermissionUpdate>
 ) {
-  return streams.update<IPCPermission>(
+  return streams.update<IParticipationContextPermission>(
     `${API_PATH}/permissions/${action}`,
     permissionId,
     { permission }

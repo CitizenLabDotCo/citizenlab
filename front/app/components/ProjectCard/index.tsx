@@ -605,6 +605,8 @@ const ProjectCard = memo<Props>(
         participationMethod === 'native_survey'
       ) {
         ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
+      } else if (participationMethod === 'document_annotation') {
+        ctaMessage = <FormattedMessage {...messages.reviewDocument} />;
       } else if (participationMethod === 'poll') {
         ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
       } else if (participationMethod === 'ideation' && canPost) {

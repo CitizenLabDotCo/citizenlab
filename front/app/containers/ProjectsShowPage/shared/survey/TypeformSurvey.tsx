@@ -1,6 +1,8 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
+import useAuthUser from 'api/me/useAuthUser';
 
 // components
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
@@ -25,27 +27,26 @@ interface Props {
   email: string | null;
   user_id: string | null;
   className?: string;
-  language?: string;
 }
 
-const TypeformSurvey = memo<Props>(
-  ({ typeformUrl, email, user_id, className, language }) => {
-    const isSmallerThanTablet = useBreakpoint('tablet');
-    const queryString = stringify(omitBy({ email, user_id, language }, isNil));
-    const surveyUrl = `${typeformUrl}?${queryString}&disable-auto-focus=true`;
+const TypeformSurvey = ({ typeformUrl, email, user_id, className }: Props) => {
+  const { data: authUser } = useAuthUser();
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const language = !isNilOrError(authUser)
+    ? authUser.data.attributes.locale
+    : null;
+  const queryString = stringify(omitBy({ email, user_id, language }, isNil));
+  const surveyUrl = `${typeformUrl}?${queryString}&disable-auto-focus=true`;
 
-    return (
-      <Container className={className || ''}>
-        <iframe
-          src={surveyUrl}
-          width="100%"
-          height={
-            isSmallerThanTablet ? surveyHeightMobile : surveyHeightDesktop
-          }
-        />
-      </Container>
-    );
-  }
-);
+  return (
+    <Container className={className || ''}>
+      <iframe
+        src={surveyUrl}
+        width="100%"
+        height={isSmallerThanTablet ? surveyHeightMobile : surveyHeightDesktop}
+      />
+    </Container>
+  );
+};
 
 export default TypeformSurvey;

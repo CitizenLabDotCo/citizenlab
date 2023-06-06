@@ -159,6 +159,16 @@ describe ParticipationContextService do
     end
   end
 
+  describe 'annotating_document_disabled_reason' do
+    it 'returns `not_verified` when annotating the document not permitted and permitted group requires verification' do
+      project = create(:continuous_document_annotation_project, with_permissions: true)
+      permission = service.get_participation_context(project).permissions.find_by(action: 'annotating_document')
+      verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
+      permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
+      expect(service.annotating_document_disabled_reason_for_project(project, create(:user))).to eq 'not_verified'
+    end
+  end
+
   describe 'taking_survey_disabled_reason' do
     it 'returns `not_verified` when taking the survey is not permitted and a permitted group requires verification' do
       project = create(:continuous_survey_project, with_permissions: true)
