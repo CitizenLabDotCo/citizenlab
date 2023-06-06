@@ -5,18 +5,18 @@ de:
       "admin_rights_received": Admin-Zugang erhalten
       "comment_deleted_by_admin": Löschung meines Kommentars
       "comment_marked_as_spam": Spambericht kommentieren
-      "comment_on_your_comment": Eine Antwort auf meinen Kommentar
-      "comment_on_your_idea": Ein Kommentar zu meiner Idee
+      "comment_on_your_comment": Antwort auf einen Kommentar
+      "comment_on_your_idea": Kommentar zu einem Beitrag
       "comment_on_your_initiative": Ein Kommentar zu meinem Vorschlag
-      "first_idea_published": Veröffentlichung meiner ersten Idee
+      "first_idea_published": Veröffentlichung des ersten Beitrags
       "idea_marked_as_spam": Spambericht Ideen
-      "idea_published": Veröffentlichung meiner Idee
+      "idea_published": Veröffentlichung des Beitrags
       "initiative_assigned_to_you": Zuweisung eines Vorschlags an mich
       "initiative_marked_as_spam": Vorschlag eines Spamberichts
       "initiative_published": Veröffentlichung meines Vorschlags
       "invite_received": Einladung
       "invite_reminder": Einladungserinnerung
-      "mention_in_official_feedback": Erwähnung in einem Update
+      "mention_in_official_feedback": Erwähnung in einem offiziellen Update
       "new_comment_for_admin": Neuer Kommentar zu einem Projekt, das ich moderiere
       "new_comment_on_commented_idea": Neuer Kommentar zu einem Beitrag, der kommentiert wurde
       "new_comment_on_commented_initiative": Neuer Kommentar zu einem Vorschlag, den ich kommentiert habe
@@ -531,7 +531,7 @@ de:
         user_who_is_receiving_folder_moderator_rights: 'Nutzer*in erhält Ordner-Moderatorenrechte'
         user_who_is_receiving_project_moderator_rights: 'Nutzer*in erhält Projektmanagementrechte'
         user_who_commented: 'Nutzer*in kommentiert'
-        user_who_is_mentioned: 'Nutzer*in, die*der erwähnt wird'
+        user_who_is_mentioned: 'Erwähnte*r Nutzer*in'
         user_who_published_the_proposal: 'Nutzer*in veröffentlicht Vorschlag'
         user_who_published_the_input: 'Nutzer*in veröffentlicht Beitrag'
         user_who_registers: 'Nutzer*in registriert sich '
@@ -565,7 +565,7 @@ de:
         proposal_is_upvoted_above_threshold: 'Vorschlag erreicht Schwellenwert'
         proposal_status_changes: 'Status des Vorschlags wird geändert'
         user_comments: 'Kommentar wird veröffentlicht'
-        user_comments_on_input: 'Nutzer*in kommentiert Beitrag'
+        user_comments_on_input: 'Kommentar wird veröffentlicht'
         user_comments_on_proposal: 'Nutzer*in kommentiert Vorschlag'
         user_is_given_admin_rights: 'Nutzer*in erhält Admin-Rechte'
         user_is_given_folder_moderator_rights: 'Nutzer*in erhält Ordner-Moderatorenrechte'
@@ -574,6 +574,6 @@ de:
         input_is_published: 'Beitrag wird veröffentlicht'
         proposal_is_published: 'Vorschlag wird veröffentlicht'
         user_registers_for_the_first_time: 'Direkt nach der 1. Registrierung'
-        user_replies_to_comment: 'Nutzer*in antwortet auf Kommentar'
+        user_replies_to_comment: 'Antwort wird veröffentlicht'
         7_days_after_invite_is_sent: '7 Tage nach Versand der 1. Einladung'
         7_days_before_the_project_changes_phase: '7 Tage bevor das Projekt die Phase wechselt'
