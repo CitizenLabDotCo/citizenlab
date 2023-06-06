@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_01_085753) do
+ActiveRecord::Schema.define(version: 2023_06_06_084504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -515,6 +515,7 @@ ActiveRecord::Schema.define(version: 2023_06_01_085753) do
     t.uuid "creation_phase_id"
     t.string "author_hash"
     t.boolean "anonymous", default: false, null: false
+    t.integer "internal_comments_count", default: 0, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
     t.index ["author_hash"], name: "index_ideas_on_author_hash"
     t.index ["author_id"], name: "index_ideas_on_author_id"
@@ -629,6 +630,7 @@ ActiveRecord::Schema.define(version: 2023_06_01_085753) do
     t.datetime "assigned_at"
     t.string "author_hash"
     t.boolean "anonymous", default: false, null: false
+    t.integer "internal_comments_count", default: 0, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_initiatives_search", using: :gin
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
@@ -1121,6 +1123,7 @@ ActiveRecord::Schema.define(version: 2023_06_01_085753) do
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
     t.boolean "allow_anonymous_participation", default: false, null: false
+    t.integer "internal_comments_count", default: 0, null: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
