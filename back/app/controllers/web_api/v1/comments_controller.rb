@@ -57,11 +57,11 @@ class WebApi::V1::CommentsController < ApplicationController
     @comments = merge_comments(root_comments.to_a, child_comments.to_a)
 
     serialization_options = if current_user
-      votes = Reaction.where(user: current_user, reactable: @comments)
-      votes_by_comment_id = votes.index_by(&:reactable_id)
+      reactions = Reaction.where(user: current_user, reactable: @comments)
+      reactions_by_comment_id = reactions.index_by(&:reactable_id)
       {
-        params: jsonapi_serializer_params(vbci: votes_by_comment_id),
-        include: %i[author user_vote]
+        params: jsonapi_serializer_params(vbci: reactions_by_comment_id),
+        include: %i[author user_reaction]
       }
     else
       { params: jsonapi_serializer_params, include: [:author] }
@@ -118,11 +118,11 @@ class WebApi::V1::CommentsController < ApplicationController
     @comments = paginate @comments
 
     serialization_options = if current_user
-      votes = Reaction.where(user: current_user, reactable: @comments.all)
-      votes_by_comment_id = votes.index_by(&:reactable_id)
+      reactions = Reaction.where(user: current_user, reactable: @comments.all)
+      reactions_by_comment_id = reactions.index_by(&:reactable_id)
       {
-        params: jsonapi_serializer_params(vbci: votes_by_comment_id),
-        include: %i[author user_vote]
+        params: jsonapi_serializer_params(vbci: reactions_by_comment_id),
+        include: %i[author user_reaction]
       }
     else
       { params: jsonapi_serializer_params, include: [:author] }

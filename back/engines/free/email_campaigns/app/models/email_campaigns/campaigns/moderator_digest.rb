@@ -118,14 +118,14 @@ module EmailCampaigns
       participants_past_increase = ps.projects_participants([project], since: (Time.now - (days_ago * 2))).size - participants_increase
       ideas = Idea.published.where(project_id: project.id).load
       comments = Comment.where(post_id: ideas.map(&:id))
-      votes = Reaction.where(reactable_id: (ideas.map(&:id) + comments.map(&:id)))
+      reactions = Reaction.where(reactable_id: (ideas.map(&:id) + comments.map(&:id)))
       {
         activities: {
           new_ideas: stat_increase(
             ideas.filter_map(&:published_at)
           ),
-          new_votes: stat_increase(
-            votes.filter_map(&:created_at)
+          new_reactions: stat_increase(
+            reactions.filter_map(&:created_at)
           ),
           new_comments: stat_increase(
             comments.filter_map(&:created_at)
@@ -182,7 +182,7 @@ module EmailCampaigns
       end.reverse.take N_TOP_IDEAS
       # payload
       top_ideas.map do |idea|
-        new_votes = idea.reactions.where('created_at > ?', Time.now - days_ago)
+        new_reactions = idea.reactions.where('created_at > ?', Time.now - days_ago)
         {
           id: idea.id,
           title_multiloc: idea.title_multiloc,
@@ -190,9 +190,9 @@ module EmailCampaigns
           published_at: idea.published_at.iso8601,
           author_name: name_service.display_name!(idea.author),
           likes_count: idea.likes_count,
-          upvotes_increment: new_votes.where(mode: 'up').count,
+          dislikes_increment: new_reactions.where(mode: 'up').count,
           dislikes_count: idea.dislikes_count,
-          downvotes_increment: new_votes.where(mode: 'down').count,
+          dislikes_increment: new_reactions.where(mode: 'down').count,
           comments_count: idea.comments_count,
           comments_increment: idea.comments.where('created_at > ?', Time.now - days_ago).count
         }
@@ -200,9 +200,9 @@ module EmailCampaigns
     end
 
     def idea_activity_count(idea)
-      new_vote_count = idea.reactions.where('created_at > ?', Time.now - days_ago).count
+      new_reactions_count = idea.reactions.where('created_at > ?', Time.now - days_ago).count
       new_comments_count = idea.comments.where('created_at > ?', Time.now - days_ago).count
-      new_vote_count + new_comments_count
+      new_reactions_count + new_comments_count
     end
 
     protected

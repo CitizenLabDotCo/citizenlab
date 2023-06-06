@@ -30,8 +30,8 @@ class Reaction < ApplicationRecord
     :reactable,
     column_name: proc { |model| model.mode == 'up' ? 'likes_count' : 'dislikes_count' },
     column_names: {
-      ['votes.mode = ?', 'up'] => 'likes_count',
-      ['votes.mode = ?', 'down'] => 'dislikes_count'
+      ['reactions.mode = ?', 'up'] => 'likes_count',
+      ['reactions.mode = ?', 'down'] => 'dislikes_count'
     }
   )
   belongs_to :user, optional: true

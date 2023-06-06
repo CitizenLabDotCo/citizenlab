@@ -33,17 +33,17 @@ class IdeaReactionPolicy < ApplicationPolicy
   end
 
   def up?
-    upsert_vote? 'up'
+    upsert_reaction? 'up'
   end
 
   def down?
-    upsert_vote? 'down'
+    upsert_reaction? 'down'
   end
 
   def destroy?
     return false unless could_modify?
 
-    reason = participation_context_service.cancelling_votes_disabled_reason_for_idea record.reactable, user
+    reason = participation_context_service.cancelling_reactions_disabled_reason_for_idea record.reactable, user
 
     reason ? raise_not_authorized(reason) : true
   end
@@ -54,11 +54,11 @@ class IdeaReactionPolicy < ApplicationPolicy
     active? && owner? && record.reactable.present?
   end
 
-  def upsert_vote?(mode)
+  def upsert_reaction?(mode)
     return false unless could_modify?
 
     reason = participation_context_service.idea_voting_disabled_reason_for record, user, mode: mode
-    reason ||= participation_context_service.cancelling_votes_disabled_reason_for_idea record.reactable, user
+    reason ||= participation_context_service.cancelling_reactions_disabled_reason_for_idea record.reactable, user
 
     reason ? raise_not_authorized(reason) : true
   end
