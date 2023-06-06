@@ -640,7 +640,7 @@
       "surveys": {
         "type": "object",
         "title": "Surveys",
-        "description":  "Allow Typeform surveys to be embedded.",
+        "description":  "Allow external surveys to be embedded.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -764,15 +764,15 @@
         }
       },
 
-      "konveio_surveys": {
+      "konveio_document_annotation": {
         "type": "object",
-        "title": "Konveio Surveys",
-        "description":  "Allow Konveio surveys to be embedded.",
+        "title": "Konveio Document Annotation",
+        "description":  "Allow Konveio document annotation to be embedded.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": false }
         }
       },
 
@@ -1203,7 +1203,6 @@
     "snap_survey_surveys": ["surveys"],
     "microsoft_forms_surveys": ["surveys"],
     "smart_survey_surveys": ["surveys"],
-    "konveio_surveys": ["surveys"],
 
     "id_auth0": ["verification"],
     "id_bogus": ["verification"],
