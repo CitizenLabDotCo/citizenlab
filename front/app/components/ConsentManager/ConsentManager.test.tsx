@@ -22,7 +22,7 @@ jest.mock('utils/cl-router/Link', () => ({ children }) => (
 ));
 
 let mockAuthUser: IUserData | null = null;
-jest.mock('hooks/useAuthUser', () => () => mockAuthUser);
+jest.mock('api/me/useAuthUser', () => () => ({ data: { data: mockAuthUser } }));
 
 const mockAppConfiguration = {
   data: {

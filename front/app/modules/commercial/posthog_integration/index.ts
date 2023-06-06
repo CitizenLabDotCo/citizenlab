@@ -7,7 +7,7 @@
  */
 
 import { combineLatest, pairwise, startWith, Subscription } from 'rxjs';
-import { authUserStream } from 'services/auth';
+import authUserStream from 'api/me/authUserStream';
 import { events$, pageChanges$ } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -95,7 +95,7 @@ const configuration: ModuleConfiguration = {
 
     combineLatest([
       appConfigurationStream,
-      authUserStream().observable.pipe(startWith(null), pairwise()),
+      authUserStream.pipe(startWith(null), pairwise()),
     ]).subscribe(async ([appConfig, [prevUser, user]]) => {
       if (appConfig) {
         // Check the feature flag

@@ -21,7 +21,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // services
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
@@ -65,7 +65,7 @@ export interface Props {
 
 const ProjectFolderRow = memo<Props>(
   ({ publication, toggleFolder, isFolderOpen, hasProjects }) => {
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
 
     const [folderDeletionError, setFolderDeletionError] = useState<
       string | null
@@ -128,7 +128,7 @@ const ProjectFolderRow = memo<Props>(
                   disabled={
                     isBeingDeleted ||
                     !userModeratesFolder(
-                      authUser,
+                      authUser.data,
                       publication.relationships.publication.data.id
                     )
                   }

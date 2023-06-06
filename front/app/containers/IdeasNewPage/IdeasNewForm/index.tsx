@@ -3,7 +3,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 // api
 import { isRegularUser } from 'services/permissions/roles';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-import useAuthUser from 'hooks/useAuthUser';
+
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 import usePhases from 'api/phases/usePhases';
 import usePhase from 'api/phases/usePhase';
@@ -85,7 +86,7 @@ const IdeasNewPageWithJSONForm = () => {
   const { mutateAsync: addIdea } = useAddIdea();
   const { formatMessage } = useIntl();
   const params = useParams<{ slug: string }>();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: project } = useProjectBySlug(params.slug);
   const [queryParams] = useSearchParams();
   const phaseId = queryParams.get('phase_id');
@@ -173,7 +174,9 @@ const IdeasNewPageWithJSONForm = () => {
       project_id: project.data.id,
       publication_status: 'published',
       phase_ids:
-        phaseId && !isNilOrError(authUser) && !isRegularUser({ data: authUser })
+        phaseId &&
+        !isNilOrError(authUser) &&
+        !isRegularUser({ data: authUser.data })
           ? [phaseId]
           : null,
       anonymous: postAnonymously ? true : undefined,
@@ -246,7 +249,7 @@ const IdeasNewPageWithJSONForm = () => {
 
   const canUserEditProject =
     !isNilOrError(authUser) &&
-    canModerateProject(project.data.id, { data: authUser });
+    canModerateProject(project.data.id, { data: authUser.data });
 
   const isSurvey = config.postType === 'nativeSurvey';
   const isAnonymousSurvey =

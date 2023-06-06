@@ -7,7 +7,7 @@ import { IBasketData, updateBasket } from 'services/baskets';
 import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
 import useBasket from 'hooks/useBasket';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useIdeas from 'api/ideas/useIdeas';
 
 // styles
@@ -137,7 +137,7 @@ const PBBasket = ({
   phase,
   className,
 }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
 
   const { data: ideas } = useIdeas({
@@ -165,7 +165,7 @@ const PBBasket = ({
 
         try {
           await updateBasket(basket.id, {
-            user_id: authUser.id,
+            user_id: authUser.data.id,
             participation_context_id: participationContextId,
             participation_context_type: capitalizeParticipationContextType(
               participationContextType

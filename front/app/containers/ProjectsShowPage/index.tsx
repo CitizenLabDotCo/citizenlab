@@ -25,7 +25,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 import usePhases from 'api/phases/usePhases';
 import useEvents from 'api/events/useEvents';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
 
 // i18n

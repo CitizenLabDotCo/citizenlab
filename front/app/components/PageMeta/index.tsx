@@ -8,7 +8,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // utils
@@ -22,7 +22,7 @@ interface Props {
 
 const PageMeta = React.memo<Props & WrappedComponentProps>(
   ({ intl, titleMessage, descriptionMessage }) => {
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
     const tenantLocales = useAppConfigurationLocales();
 
     const { formatMessage } = intl;
@@ -37,8 +37,8 @@ const PageMeta = React.memo<Props & WrappedComponentProps>(
           ${
             authUser &&
             !isError(authUser) &&
-            authUser.attributes.unread_notifications
-              ? `(${authUser.attributes.unread_notifications}) `
+            authUser.data.attributes.unread_notifications
+              ? `(${authUser.data.attributes.unread_notifications}) `
               : ''
           }
           ${ideasIndexTitle}`}

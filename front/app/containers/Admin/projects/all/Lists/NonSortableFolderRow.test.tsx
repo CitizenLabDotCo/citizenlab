@@ -83,9 +83,8 @@ const mockUserData: IUserData = {
     confirmation_required: false,
   },
 };
-jest.mock('hooks/useAuthUser', () => {
-  return () => mockUserData;
-});
+
+jest.mock('api/me/useAuthUser', () => () => ({ data: { data: mockUserData } }));
 
 const mockFolderChildAdminPublications = {
   hasNextPage: false,
@@ -93,6 +92,7 @@ const mockFolderChildAdminPublications = {
   isFetchingNextPage: false,
   data: { pages: [{ data: mockFolderChildAdminPublicationsList }] },
 };
+
 // Needed to render folder with project inside
 jest.mock('api/admin_publications/useAdminPublications', () => {
   return () => mockFolderChildAdminPublications;

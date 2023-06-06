@@ -3,9 +3,8 @@ import projectsKeys from './keys';
 import { IProject } from './types';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { CLErrors } from 'typings';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
 import adminPublicationsKeys from 'api/admin_publications/keys';
+import meKeys from 'api/me/keys';
 
 const copyProject = async (projectId: string) =>
   fetcher<IProject>({
@@ -24,9 +23,7 @@ const useCopyProject = () => {
       queryClient.invalidateQueries({
         queryKey: adminPublicationsKeys.lists(),
       });
-      streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/users/me`],
-      });
+      queryClient.invalidateQueries({ queryKey: meKeys.all() });
     },
   });
 };

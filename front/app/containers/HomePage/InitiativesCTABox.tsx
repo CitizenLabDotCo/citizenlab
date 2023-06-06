@@ -1,7 +1,7 @@
 import React, { memo, useCallback } from 'react';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -132,7 +132,7 @@ interface Props extends InputProps {
 }
 
 const InitiativesCTABox = memo<Props>(({ theme, className }) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { windowWidth } = useWindowSize();
 
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;

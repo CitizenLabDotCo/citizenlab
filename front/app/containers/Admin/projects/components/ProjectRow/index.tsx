@@ -25,7 +25,7 @@ import ManageButton from './ManageButton';
 
 // resources
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
@@ -71,7 +71,7 @@ const ProjectRow = ({
   const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isBeingCopyied, setIsBeingCopyied] = useState(false);
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const projectId = publication.relationships.publication.data.id;
   const { data: project } = useProjectById(projectId);
   const publicationStatus = publication.attributes.publication_status;
@@ -82,9 +82,10 @@ const ProjectRow = ({
   }
   const userCanModerateProject =
     // This means project is in a folder
-    (typeof folderId === 'string' && userModeratesFolder(authUser, folderId)) ||
+    (typeof folderId === 'string' &&
+      userModeratesFolder(authUser.data, folderId)) ||
     canModerateProject(publication.relationships.publication.data.id, {
-      data: authUser,
+      data: authUser.data,
     });
 
   const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {

@@ -8,7 +8,7 @@ import { getLatestRelevantPhase } from 'api/phases/utils';
 import { addBasket, updateBasket } from 'services/baskets';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'hooks/useBasket';
 import useProjectById from 'api/projects/useProjectById';
@@ -96,7 +96,7 @@ interface Props {
 
 const AssignBudgetControl = memo(
   ({ view, ideaId, className, projectId }: Props) => {
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
     const { data: idea } = useIdeaById(ideaId);
     const { data: project } = useProjectById(projectId);
     const { data: phases } = usePhases(projectId);
@@ -181,7 +181,7 @@ const AssignBudgetControl = memo(
 
         try {
           await updateBasket(basket.id, {
-            user_id: authUser.id,
+            user_id: authUser.data.id,
             participation_context_id: participationContextId,
             participation_context_type: capitalizeParticipationContextType(
               participationContextType
@@ -198,7 +198,7 @@ const AssignBudgetControl = memo(
       } else {
         try {
           await addBasket({
-            user_id: authUser.id,
+            user_id: authUser.data.id,
             participation_context_id: participationContextId,
             participation_context_type: capitalizeParticipationContextType(
               participationContextType

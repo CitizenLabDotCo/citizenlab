@@ -22,7 +22,7 @@ import messages from './messages';
 
 // Styles
 import styled from 'styled-components';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import Warning from 'components/UI/Warning';
 import { IQueryParameters, IUserData } from 'api/users/types';
 import useUpdateUser from 'api/users/useUpdateUser';
@@ -77,7 +77,7 @@ const UsersTable = ({
   onChangeSorting,
   notCitizenlabMember,
 }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { mutate: updateUser } = useUpdateUser();
 
   if (isNilOrError(authUser)) {
@@ -87,7 +87,7 @@ const UsersTable = ({
   const handleChangeRoles = (user: IUserData, changeToNormalUser: boolean) => {
     trackEventByName(tracks.adminChangeRole.name);
 
-    if (authUser.id === user.id) {
+    if (authUser.data.id === user.id) {
       eventEmitter.emit<JSX.Element>(
         events.userRoleChangeFailed,
         <FormattedMessage {...messages.youCantUnadminYourself} />
@@ -199,7 +199,7 @@ const UsersTable = ({
                 }
                 toggleSelect={handleUserToggle(user.id)}
                 changeRoles={handleChangeRoles}
-                authUser={authUser}
+                authUser={authUser.data}
               />
             ))}
           </Tbody>

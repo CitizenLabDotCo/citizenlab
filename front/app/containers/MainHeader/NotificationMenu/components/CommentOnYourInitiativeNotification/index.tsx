@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // data
-import { ICommentOnYourInitiativeNotificationData } from 'services/notifications';
+import { ICommentOnYourInitiativeNotificationData } from 'api/notifications/types';
 
 // i18n
 import messages from '../../messages';
