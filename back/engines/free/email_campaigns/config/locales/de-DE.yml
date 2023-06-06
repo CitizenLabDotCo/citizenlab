@@ -4,15 +4,15 @@ de:
       "manual": Offizielle Mitteilungen
       "admin_rights_received": Admin-Rechte erhalten
       "comment_deleted_by_admin": Löschung eines Kommentars
-      "comment_marked_as_spam": Spambericht kommentieren
+      "comment_marked_as_spam": Kommentar wird als Spam markiert
       "comment_on_your_comment": Antwort auf einen Kommentar
       "comment_on_your_idea": Kommentar zu einem Beitrag
       "comment_on_your_initiative": Kommentar zu einem Vorschlag
       "first_idea_published": Veröffentlichung des ersten Beitrags
-      "idea_marked_as_spam": Spambericht Ideen
+      "idea_marked_as_spam": Beitrag wird als Spam gekennzeichnet
       "idea_published": Veröffentlichung des Beitrags
       "initiative_assigned_to_you": Zuweisung eines Vorschlags an mich
-      "initiative_marked_as_spam": Vorschlag eines Spamberichts
+      "initiative_marked_as_spam": Vorschlag wird als Spam markiert
       "initiative_published": Veröffentlichung eines Vorschlags
       "invite_received": Einladung
       "invite_reminder": Einladungserinnerung
@@ -22,7 +22,7 @@ de:
       "new_comment_on_commented_initiative": Neuer Kommentar zu einem Vorschlag, der kommentiert wurde
       "new_comment_on_voted_idea": Neuer Kommentar zu einem Beitrag über den abgestimmt wurde
       "new_comment_on_voted_initiative": Neuer Kommentar zu einem Vorschlag, für den abgestimmt wurde
-      "new_idea_for_admin": Neue Idee zu einem Projekt, das ich moderiere
+      "new_idea_for_admin": Neuer Beitrag zu einem Projekt, das moderiert wird
       "new_initiative_for_admin": Neuer Vorschlag
       "official_feedback_on_commented_idea": Offizielles Update zu einem Beitrag, der kommentiert wurde
       "official_feedback_on_commented_initiative": Offizielles Update zu einem Vorschlag, der kommentiert wurde
@@ -45,7 +45,7 @@ de:
       "welcome": Nach der Registrierung
       "admin_digest": Wöchentliche Übersicht für Admins
       "moderator_digest": Wöchentliche Übersicht für Ordner- und Projektmanager*innen
-      "assignee_digest": Wöchentliche Übersicht zugeteilter Ideen
+      "assignee_digest": Wöchentliche Übersicht über die zugewiesenen Beiträge
       "user_digest": Wöchentliche Übersicht
       "your_proposed_initiatives_digest": Wöchentliche Übersicht eigener Vorschläge
     admin_campaign_type_description:
@@ -610,7 +610,7 @@ de:
         new_input_is_published: 'Neuer Beitrag wird veröffentlicht'
         new_proposal_is_published: 'Neuer Vorschlag wird veröffentlicht'
         project_changes_phase: 'Projekt wechselt in neue Phase'
-        proposal_gets_reported_as_spam: 'Vorschlag wird als Spam gemeldet'
+        proposal_gets_reported_as_spam: 'Vorschlag wird als Spam markiert'
         proposal_is_assigned_to_admin: 'Vorschlag wird Admin zugewiesen'
         proposal_is_updated: 'Vorschlag wird aktualisiert'
         proposal_is_upvoted_above_threshold: 'Vorschlag erreicht Schwellenwert'
