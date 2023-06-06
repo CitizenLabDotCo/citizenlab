@@ -168,7 +168,7 @@ class ParticipationContextService
     permission_denied_reason user, 'reacting_idea', context
   end
 
-  def cancelling_votes_disabled_reason_for_idea(idea, user)
+  def cancelling_reactions_disabled_reason_for_idea(idea, user)
     context = get_participation_context idea.project
     if !context
       REACTING_DISABLED_REASONS[:project_inactive]
@@ -278,7 +278,7 @@ class ParticipationContextService
     project.timeline? ? @timeline_service.future_phases(project, time) : []
   end
 
-  # Common reason regardless of the vote type.
+  # Common reason regardless of the reaction type.
   def general_idea_reacting_disabled_reason(context, _user)
     if !context.ideation?
       REACTING_DISABLED_REASONS[:not_ideation]
@@ -300,8 +300,8 @@ class ParticipationContextService
         REACTING_DISABLED_REASONS[:reacting_dislike_limited_max_reached]
       end
     else
-      ErrorReporter.report_msg("Unsupported vote type #{mode}")
-      'unsupported_vote_type'
+      ErrorReporter.report_msg("Unsupported reaction type #{mode}")
+      'unsupported_reaction_type'
     end
   end
 

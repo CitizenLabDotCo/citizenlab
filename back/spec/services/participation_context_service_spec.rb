@@ -546,25 +546,25 @@ describe ParticipationContextService do
       it 'returns nil when voting is enabled in the current phase' do
         project = create(:project_with_current_phase)
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to be_nil
+        expect(service.cancelling_reactions_disabled_reason_for_idea(idea, idea.author)).to be_nil
       end
 
       it "returns `idea_not_in_current_phase` when it's not in the current phase" do
         project = create(:project_with_current_phase)
         idea = create(:idea, project: project, phases: [project.phases[1]])
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:idea_not_in_current_phase]
+        expect(service.cancelling_reactions_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:idea_not_in_current_phase]
       end
 
       it "returns 'voting_disabled' if it's in the current phase and voting is disabled" do
         project = create(:project_with_current_phase, current_phase_attrs: { reacting_enabled: false })
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:voting_disabled]
+        expect(service.cancelling_reactions_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:voting_disabled]
       end
 
       it "returns 'project_inactive' when the timeline has past" do
         project = create(:project_with_past_phases)
         idea = create(:idea, project: project, phases: project.phases)
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
+        expect(service.cancelling_reactions_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
       end
 
       it "returns `not_ideation` when we're in a participatory budgeting context" do
@@ -573,7 +573,7 @@ describe ParticipationContextService do
           current_phase_attrs: { participation_method: 'budgeting', max_budget: 1200 }
         )
         idea = create(:idea, project: project, phases: project.phases)
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq 'not_ideation'
+        expect(service.cancelling_reactions_disabled_reason_for_idea(idea, idea.author)).to eq 'not_ideation'
       end
     end
 
@@ -581,25 +581,25 @@ describe ParticipationContextService do
       it 'returns nil when voting is enabled' do
         project = create(:continuous_project)
         idea = create(:idea, project: project)
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to be_nil
+        expect(service.cancelling_reactions_disabled_reason_for_idea(idea, idea.author)).to be_nil
       end
 
       it "returns 'project_inactive' when the project is archived" do
         project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
         idea = create(:idea, project: project, phases: project.phases)
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
+        expect(service.cancelling_reactions_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
       end
 
       it "returns 'voting_disabled' if voting is disabled" do
         project = create(:continuous_project, reacting_enabled: false)
         idea = create(:idea, project: project)
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:voting_disabled]
+        expect(service.cancelling_reactions_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:voting_disabled]
       end
 
       it 'returns nil when downvoting is disabled but voting is enabled' do
         project = create(:continuous_project, reacting_enabled: true, reacting_dislike_enabled: false)
         idea = create(:idea, project: project)
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to be_nil
+        expect(service.cancelling_reactions_disabled_reason_for_idea(idea, idea.author)).to be_nil
       end
     end
   end
