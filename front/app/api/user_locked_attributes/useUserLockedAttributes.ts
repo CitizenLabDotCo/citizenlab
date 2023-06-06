@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import userIdeasCountKeys from './keys';
+import userLockedAttributesKeys from './keys';
 import { UserLockedAttributesKeys, ILockedAttributes } from './types';
 
 const fetchLockedAttributes = () =>
@@ -17,7 +17,7 @@ const useUserLockedAttributes = () => {
     ILockedAttributes,
     UserLockedAttributesKeys
   >({
-    queryKey: userIdeasCountKeys.all(),
+    queryKey: userLockedAttributesKeys.all(),
     queryFn: () => fetchLockedAttributes(),
   });
 };

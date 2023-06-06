@@ -7,7 +7,7 @@ import Outlet from 'components/Outlet';
 
 // resource hooks
 import useAuthUser from 'api/me/useAuthUser';
-import useVerificationMethods from 'hooks/useVerificationMethods';
+import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
 // style
 import styled from 'styled-components';
@@ -38,7 +38,7 @@ const VerificationSteps = memo<Props>(({ context, onCompleted, onError }) => {
   const [method, setMethod] = useState<TVerificationMethod | null>(null);
 
   const { data: authUser } = useAuthUser();
-  const verificationMethods = useVerificationMethods();
+  const { data: verificationMethods } = useVerificationMethods();
 
   useEffect(() => {
     if (activeStep === 'success' && onCompleted) {
@@ -74,7 +74,7 @@ const VerificationSteps = memo<Props>(({ context, onCompleted, onError }) => {
     goToSuccessStep();
   }, [goToSuccessStep]);
 
-  if (!isNilOrError(verificationMethods)) {
+  if (!verificationMethods) {
     return (
       <Container id="e2e-verification-wizard-root">
         {activeStep === 'method-selection' && (

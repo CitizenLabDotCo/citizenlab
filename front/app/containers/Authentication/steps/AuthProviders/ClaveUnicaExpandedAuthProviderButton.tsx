@@ -18,7 +18,7 @@ import {
 } from 'services/verificationMethods';
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
-import useVerificationMethods from 'hooks/useVerificationMethods';
+import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 import { isNilOrError } from 'utils/helperUtils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -67,7 +67,7 @@ const ClaveUnicaExpandedAuthProviderButton = memo<Props>(
     const showConsent =
       showConsentOnFlow === flow && isShowClaveUnicaConsentsEnabled;
     const { formatMessage } = useIntl();
-    const verificationMethods = useVerificationMethods();
+    const { data: verificationMethods } = useVerificationMethods();
 
     const handleTacAcceptedChange = useCallback((tacAccepted: boolean) => {
       setTacAccepted(tacAccepted);
@@ -92,7 +92,7 @@ const ClaveUnicaExpandedAuthProviderButton = memo<Props>(
     if (isNilOrError(verificationMethods)) return null;
 
     const verificationMethodName: TVerificationMethodName = 'clave_unica';
-    const claveUnicaMethod = verificationMethods.find(
+    const claveUnicaMethod = verificationMethods.data.find(
       (vm) => vm.attributes.name === verificationMethodName
     );
     if (!claveUnicaMethod) return null;

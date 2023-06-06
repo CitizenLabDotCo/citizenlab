@@ -10,7 +10,7 @@ import Centerer from 'components/UI/Centerer';
 
 // hooks
 import useParticipationConditions from 'hooks/useParticipationConditions';
-import useVerificationMethods from 'hooks/useVerificationMethods';
+import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
 // i18n
 import messages from './messages';
@@ -118,7 +118,7 @@ interface Props {
 
 const VerificationMethods = memo<Props>(({ context, onMethodSelected }) => {
   const participationConditions = useParticipationConditions(context);
-  const verificationMethods = useVerificationMethods();
+  const { data: verificationMethods } = useVerificationMethods();
 
   const withContext =
     !isNilOrError(participationConditions) &&
@@ -184,7 +184,7 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected }) => {
             <Outlet
               id="app.components.VerificationModal.buttons"
               onClick={handleOnMethodSelected}
-              verificationMethods={verificationMethods}
+              verificationMethods={verificationMethods.data}
             />
           </ButtonsContainer>
         </Content>
