@@ -317,11 +317,11 @@ class ParticipationContextService
   end
 
   def liking_limit_reached?(context, user)
-    context.liking_limited? && user.reactions.up.where(reactable: context.ideas).size >= context.reacting_like_limited_max
+    context.reacting_like_limited? && user.reactions.up.where(reactable: context.ideas).size >= context.reacting_like_limited_max
   end
 
   def disliking_limit_reached?(context, user)
-    context.disliking_limited? && user.reactions.down.where(reactable: context.ideas).size >= context.reacting_dislike_limited_max
+    context.reacting_dislike_limited? && user.reactions.down.where(reactable: context.ideas).size >= context.reacting_dislike_limited_max
   end
 
   def permission_denied_reason(user, _action, _context)

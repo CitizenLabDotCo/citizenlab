@@ -110,11 +110,11 @@ module ParticipationContext
     posting_method == 'limited'
   end
 
-  def liking_limited?
+  def reacting_like_limited?
     reacting_like_method == 'limited'
   end
 
-  def disliking_limited?
+  def reacting_dislike_limited?
     reacting_dislike_method == 'limited'
   end
 
