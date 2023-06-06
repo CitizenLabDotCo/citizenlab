@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe IdeaReactionPolicy do
-  subject(:policy) { described_class.new(user, vote) }
+  subject(:policy) { described_class.new(user, reaction) }
 
   let(:scope) { IdeaReactionPolicy::Scope.new(user, Reaction) }
   let(:project) { create(:continuous_project) }
@@ -19,12 +19,12 @@ describe IdeaReactionPolicy do
     it { is_expected.not_to permit(:down) }
     it { is_expected.not_to permit(:destroy) }
 
-    it 'does not index the vote' do
+    it 'does not index the reaction' do
       expect(scope.resolve.size).to eq 0
     end
   end
 
-  context 'for a mortal user on a vote of another user' do
+  context 'for a mortal user on a reaction of another user' do
     let(:user) { create(:user) }
 
     it { is_expected.not_to permit(:show) }
@@ -33,13 +33,13 @@ describe IdeaReactionPolicy do
     it { is_expected.not_to permit(:down) }
     it { is_expected.not_to permit(:destroy) }
 
-    it 'does not index the vote' do
+    it 'does not index the reaction' do
       expect(scope.resolve.size).to eq 0
     end
   end
 
-  context 'for a mortal user who owns the vote' do
-    let(:user) { vote.user }
+  context 'for a mortal user who owns the reaction' do
+    let(:user) { reaction.user }
 
     it { is_expected.to permit(:show) }
     it { is_expected.to permit(:create) }
@@ -47,16 +47,16 @@ describe IdeaReactionPolicy do
     it { is_expected.to permit(:down) }
     it { is_expected.to permit(:destroy) }
 
-    it 'indexes the vote' do
+    it 'indexes the reaction' do
       expect(scope.resolve.size).to eq 1
     end
   end
 
-  context 'for blocked vote owner' do
+  context 'for blocked reaction owner' do
     let(:user) { create(:user, block_end_at: 5.days.from_now) }
     let(:reaction) { create(:reaction, user: user, reactable: reactable) }
 
-    it_behaves_like 'policy for blocked user vote'
+    it_behaves_like 'policy for blocked user reaction'
   end
 
   context 'for an admin' do
@@ -68,12 +68,12 @@ describe IdeaReactionPolicy do
     it { is_expected.not_to permit(:down) }
     it { is_expected.not_to permit(:destroy) }
 
-    it 'indexes the vote' do
+    it 'indexes the reaction' do
       expect(scope.resolve.size).to eq 1
     end
   end
 
-  context "for a mortal user who owns the vote on an idea in a private groups project where she's not member of a manual group with access" do
+  context "for a mortal user who owns the reaction on an idea in a private groups project where she's not member of a manual group with access" do
     let!(:user) { create(:user) }
     let!(:project) { create(:private_groups_project) }
     let!(:idea) { create(:idea, project: project) }
@@ -85,12 +85,12 @@ describe IdeaReactionPolicy do
     it { expect { policy.down? }.to raise_error(Pundit::NotAuthorizedError) }
     it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
 
-    it 'indexes the vote' do
+    it 'indexes the reaction' do
       expect(scope.resolve.size).to eq 1
     end
   end
 
-  context 'for a mortal user who owns the vote on an idea in a project where voting is disabled' do
+  context 'for a mortal user who owns the reaction on an idea in a project where voting is disabled' do
     let!(:user) { create(:user) }
     let!(:project) { create(:continuous_project, voting_enabled: false) }
     let!(:idea) { create(:idea, project: project) }
@@ -102,7 +102,7 @@ describe IdeaReactionPolicy do
     it { expect { policy.down? }.to raise_error(Pundit::NotAuthorizedError) }
     it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
 
-    it 'indexes the vote' do
+    it 'indexes the reaction' do
       expect(scope.resolve.size).to eq 1
     end
   end

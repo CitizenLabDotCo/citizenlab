@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe IdeaReactionPolicy do
-  subject(:policy) { described_class.new(user, vote) }
+  subject(:policy) { described_class.new(user, reaction) }
 
   let(:scope) { IdeaReactionPolicy::Scope.new(user, Reaction) }
   let(:project) { create(:continuous_project) }
