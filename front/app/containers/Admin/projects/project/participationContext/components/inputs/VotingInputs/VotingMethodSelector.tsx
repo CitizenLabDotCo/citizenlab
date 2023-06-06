@@ -6,15 +6,12 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
 import {
-  // CardButton,
+  CardButton,
   IconTooltip,
   Text,
 } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import BudgetingIcon from './BudgetingIcon';
-
-// TODO remove
-import { PermissionCardButton as CardButton } from 'components/admin/GranularPermissions/PermissionCardButton';
 
 // types
 import { VotingMethodType } from 'containers/Admin/projects/project/participationContext/utils/votingMethodUtils';
@@ -45,8 +42,9 @@ const VotingMethodSelector = ({
       </Text>
       <CardButton
         selected={voting_method === 'budgeting'}
-        customIconSection={<BudgetingIcon />}
-        onClick={() => {
+        icon={<BudgetingIcon />}
+        onClick={(e) => {
+          e.preventDefault();
           handleVotingMethodOnChange('budgeting');
         }}
         title={formatMessage(messages.budgetingVotingMethodTitle)}
