@@ -8,20 +8,21 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-import DefaultViewPicker from './DefaultViewPicker';
-import SortingPicker from './SortingPicker';
-import { ToggleRow, ToggleLabel } from './styling';
+import DefaultViewPicker from '../../shared/DefaultViewPicker';
+import SortingPicker from '../../shared/SortingPicker';
+import { ToggleRow, ToggleLabel } from '../../shared/styling';
+import VotingMethodSelector from './VotingMethodSelector';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../../../../messages';
 
 // typings
 import {
   IdeaDefaultSortMethod,
   InputTerm,
 } from 'services/participationContexts';
-import { ApiErrors } from '..';
+import { ApiErrors } from '../../../';
 import { AnonymousPostingToggle } from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 import {
   VotingMethodType,
@@ -31,7 +32,6 @@ import {
 // api
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useParams } from 'react-router-dom';
-import VotingMethodSelector from './voting/VotingMethodSelector';
 
 export interface VotingInputsProps {
   isCustomInputTermEnabled: boolean;

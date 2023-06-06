@@ -2,12 +2,15 @@ import React from 'react';
 
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import CustomFieldPicker from '../../CustomFieldPicker';
-import { LabelBudgetingInput } from '../../labels';
-import { BudgetingAmountInput, BudgetingAmountInputError } from '../../styling';
-import { VotingInputsProps } from '../../VotingInputs';
+import CustomFieldPicker from '../../../shared/CustomFieldPicker';
+import { LabelBudgetingInput } from '../../../labels';
+import {
+  BudgetingAmountInput,
+  BudgetingAmountInputError,
+} from '../../../shared/styling';
+import { VotingInputsProps } from '..';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../../messages';
+import messages from '../../../../../messages';
 
 type BudgetingInputsProps = {
   props: VotingInputsProps;

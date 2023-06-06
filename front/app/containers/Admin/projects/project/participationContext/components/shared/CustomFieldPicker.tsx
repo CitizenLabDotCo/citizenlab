@@ -6,7 +6,7 @@ import { StyledSelect } from './styling';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../../../messages';
 
 // typings
 import { InputTerm } from 'services/participationContexts';

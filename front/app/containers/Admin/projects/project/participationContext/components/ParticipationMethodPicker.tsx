@@ -14,7 +14,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import { LabelHeaderDescription } from './labels';
-import { ParticipationMethodRadio } from './styling';
+import { ParticipationMethodRadio } from './shared/styling';
 
 // i18n
 import messages from '../../messages';

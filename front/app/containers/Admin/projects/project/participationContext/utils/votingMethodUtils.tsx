@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
-import BudgetingInputs from '../components/voting/votingMethodInputs/BudgetingInputs';
-import { VotingInputsProps } from '../components/VotingInputs';
+import BudgetingInputs from '../components/inputs/VotingInputs/votingMethodInputs/BudgetingInputs';
+import { VotingInputsProps } from '../components/inputs/VotingInputs';
 
 /*
   Configuration Descriptions:

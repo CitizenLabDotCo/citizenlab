@@ -5,12 +5,12 @@ import { isEqual } from 'lodash-es';
 
 // components
 import { ParticipationMethodPicker } from './components/ParticipationMethodPicker';
-import VotingInputs from './components/VotingInputs';
-import PollInputs from './components/PollInputs';
-import SurveyInputs from './components/SurveyInputs';
-import { Container, StyledSection } from './components/styling';
-import NativeSurveyInputs from './components/NativeSurveyInputs';
-import IdeationInputs from './components/IdeationInputs';
+import VotingInputs from './components/inputs/VotingInputs';
+import PollInputs from './components/inputs/PollInputs';
+import SurveyInputs from './components/inputs/SurveyInputs';
+import NativeSurveyInputs from './components/inputs/NativeSurveyInputs';
+import IdeationInputs from './components/inputs/IdeationInputs';
+import { Container, StyledSection } from './components/shared/styling';
 
 // services
 import { IProject } from 'api/projects/types';
