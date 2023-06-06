@@ -261,13 +261,13 @@ resource 'Ideas' do
           expect(json_response[:data].size).to eq 6
         end
 
-        example 'List all ideas includes the user_vote', document: false do
-          vote = create(:reaction, user: @user)
+        example 'List all ideas includes the user_reaction', document: false do
+          reaction = create(:reaction, user: @user)
 
           do_request
           json_response = json_parse(response_body)
-          expect(json_response[:data].filter_map { |d| d[:relationships][:user_vote][:data] }.first[:id]).to eq vote.id
-          expect(json_response[:included].pluck(:id)).to include vote.id
+          expect(json_response[:data].filter_map { |d| d[:relationships][:user_reaction][:data] }.first[:id]).to eq reaction.id
+          expect(json_response[:included].pluck(:id)).to include reaction.id
         end
 
         example 'Search for ideas should work with trending ordering', document: false do
@@ -521,7 +521,7 @@ resource 'Ideas' do
       let(:idea) { create(:idea) }
       let!(:baskets) { create_list(:basket, 2, ideas: [idea]) }
       let!(:topic) { create(:topic, ideas: [idea], projects: [idea.project]) }
-      let!(:user_vote) { create(:reaction, user: @user, reactable: idea) }
+      let!(:user_reaction) { create(:reaction, user: @user, reactable: idea) }
       let(:id) { idea.id }
 
       example_request 'Get one idea by id' do
@@ -572,7 +572,7 @@ resource 'Ideas' do
           },
           author: { data: { id: idea.author_id, type: 'user' } },
           idea_status: { data: { id: idea.idea_status_id, type: 'idea_status' } },
-          user_vote: { data: { id: user_vote.id, type: 'vote' } }
+          user_reaction: { data: { id: user_reaction.id, type: 'reaction' } }
         )
       end
     end
@@ -677,8 +677,8 @@ resource 'Ideas' do
             json_response = json_parse(response_body)
             new_idea = Idea.find(json_response.dig(:data, :id))
             expect(new_idea.reactions.size).to eq 1
-            expect(new_idea.votes[0].mode).to eq 'up'
-            expect(new_idea.votes[0].user.id).to eq @user.id
+            expect(new_idea.reactions[0].mode).to eq 'up'
+            expect(new_idea.reactions[0].user.id).to eq @user.id
             expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
           end
 
@@ -1039,8 +1039,8 @@ resource 'Ideas' do
             json_response = json_parse response_body
             new_idea = Idea.find json_response.dig(:data, :id)
             expect(new_idea.reactions.size).to eq 1
-            expect(new_idea.votes[0].mode).to eq 'up'
-            expect(new_idea.votes[0].user.id).to eq @user.id
+            expect(new_idea.reactions[0].mode).to eq 'up'
+            expect(new_idea.reactions[0].user.id).to eq @user.id
             expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
           end
 
