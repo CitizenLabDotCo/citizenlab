@@ -1293,7 +1293,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Si no se añade ninguna lógica, la encuesta seguirá su flujo normal. Para más información, visite {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText2": "Si no se añade lógica a una respuesta, la encuesta seguirá su flujo normal. Si se añade lógica a una pregunta, esta será obligatoria por defecto. Para obtener más información, visite  {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "¿Está seguro de que quiere salir?",
-  "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Tus cambios actuales no se guardarán.",
+  "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Los cambios no se guardarán.",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Obligatorio",
   "app.containers.AdminPage.ProjectEdit.survey.selectText2": "Opción múltiple - elija una",
   "app.containers.AdminPage.ProjectEdit.survey.successMessage2": "Encuesta guardada correctamente",
