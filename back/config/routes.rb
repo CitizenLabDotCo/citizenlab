@@ -31,6 +31,10 @@ Rails.application.routes.draw do
           get :children, on: :member
           post :mark_as_deleted, on: :member
         end
+        resources :internal_comments, shallow: true do
+          get :children, on: :member
+          post :mark_as_deleted, on: :member
+        end
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
         resources :official_feedback, shallow: true
       end
