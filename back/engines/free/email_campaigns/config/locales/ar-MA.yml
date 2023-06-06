@@ -48,55 +48,6 @@ ar-MA:
       "assignee_digest": نظرة عامة أسبوعية على الأفكار المعيّنة
       "user_digest": نظرة عامة أسبوعية
       "your_proposed_initiatives_digest": نظرة عامة أسبوعية على مُقترحاتك
-    admin_campaign_type_description:
-      "manual": رسالة رسمية - جميع المستخدمين
-      "admin_rights_received": تم استلام حقوق المسؤول - المسؤولين
-      "comment_deleted_by_admin": حذف تعليقك - جميع المستخدمين
-      "comment_marked_as_spam": الإبلاغ عن التعليق كـإزعاج- المسؤولين ومديري المشاريع
-      "comment_on_your_comment": الرد على تعليقك - جميع المستخدمين
-      "comment_on_your_idea": التعليق على فكرتك - جميع المستخدمين
-      "comment_on_your_initiative": التعليق على مُقترحك - جميع المستخدمين
-      "first_idea_published": نشر فكرتك الأولى - جميع المستخدمين
-      "idea_marked_as_spam": الإبلاغ عن الفكرة كـإزعاج - المسؤولين ومديري المشاريع
-      "idea_published": نشر فكرتك - جميع المستخدمين
-      "initiative_assigned_to_you": تعيين المُقترح - المسؤولين
-      "initiative_marked_as_spam": الإبلاغ عن المُقترح كـ مزعج - المسؤولين
-      "initiative_published": نشر مُقترحك - جميع المستخدمين
-      "invite_received": الدعوة - جميع المستخدمين
-      "invite_reminder": تذكير بالدعوة - جميع المستخدمين
-      "mention_in_comment": الذكر في تعليق - جميع المستخدمين
-      "mention_in_official_feedback": الذكر في تحديث - جميع المستخدمين
-      "new_comment_for_admin": تعليق جديد - المسؤولين ومديري المشاريع
-      "new_comment_on_commented_idea": تعليق جديد على فكرة كنتَ علّقتَ عليها - جميع المستخدمين
-      "new_comment_on_commented_initiative": تعليق جديد على مُقترح كنت قد علّقتَ عليه - جميع المستخدمين
-      "new_comment_on_voted_idea": تعليق جديد على فكرة صوتَّ لها - جميع المستخدمين
-      "new_comment_on_voted_initiative": تعليق جديد على مُقترح صوتَّ له - جميع المستخدمين
-      "new_idea_for_admin": فكرة جديدة - المسؤولين ومديري المشاريع
-      "new_initiative_for_admin": مُقترح جديد - المسؤولين
-      "official_feedback_on_commented_idea": تحديث على فكرة علقتَ عليها - جميع المستخدمين
-      "official_feedback_on_commented_initiative": تحديث على مُقترح علقتَ عليه - جميع المستخدمين
-      "official_feedback_on_voted_idea": تحديث على فكرة قد صوتّ لها - جميع المستخدمين
-      "official_feedback_on_voted_initiative": تحديث على مُقترح قد صوتّ له - جميع المستخدمين
-      "official_feedback_on_your_idea": تحديث على فكرتك - جميع المستخدمين
-      "official_feedback_on_your_initiative": تحديث على مُقترحك - جميع المستخدمين
-      "password_reset": تمت إعادة تعيين كلمة المرور - جميع المستخدمين
-      "project_moderation_rights_received": تم استلام حقوق الإشراف على المشروع - مديري المشاريع
-      "project_folder_moderation_rights_received": تم استلام حقوق الإشراف على مجلد المشروع
-      "project_phase_started": مرحلة مشروع جديدة - جميع المستخدمين
-      "project_phase_upcoming": مرحلة مشروع جديدة قائمة - المسؤولين ومديري المشاريع
-      "status_change_of_commented_idea": تغيرت حالة فكرة كنت قد علقتَ عليها - جميع المستخدمين
-      "status_change_of_commented_initiative": تغيرت حالة مُقترح كنت قد علقتَ عليه - جميع المستخدمين
-      "status_change_of_voted_idea": تغيرت حالة فكرة كنت قد صوتَّ لها - جميع المستخدمين
-      "status_change_of_voted_initiative": تغيرت حالة مُقترح كنت قد صوتَّ له - جميع المستخدمين
-      "status_change_of_your_idea": تغيرت حالة فكرتك - جميع المستخدمين
-      "status_change_of_your_initiative": تغيرت حالة مُقترحك - جميع المستخدمين
-      "threshold_reached_for_admin": بلغ المُقترح حد التصويت المطلوب - المسؤولين
-      "welcome": مستخدم جديد - المسؤولين
-      "admin_digest": نظرة عامة أسبوعية - المسؤولين
-      "moderator_digest": نظرة عامة أسبوعية - مديري المشاريع
-      "assignee_digest": نظرة عامة أسبوعية على الأفكار المعيّنة - المسؤولين ومديري المشاريع
-      "user_digest": نظرة عامة أسبوعية - جميع المستخدمين
-      "your_proposed_initiatives_digest": نظرة عامة أسبوعية على مقترحاتك الخاصة - جميع المستخدمين
     schedules:
       weekly:
         "0": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
@@ -565,9 +516,7 @@ ar-MA:
       remaining_days: 'الأيام المتبقية'
     admin_labels:
       recipient_role:
-        admins: 'للمسؤولين'
         admins_and_managers: 'للمسؤولين والمديرين'
-        managers: 'للمديرين'
         registered_users: 'للمستخدمين المسجلين'
       recipient_segment:
         admins: 'المشرفون'
@@ -578,18 +527,18 @@ ar-MA:
         managers: 'المديرين'
         admins_assigned_to_a_proposal: 'المسؤولون المعينون لاقتراح'
         admins_and_managers_assigned_to_the_input: 'المسؤولون والمديرون المعينون للإدخال'
-        user_receiving_admin_rights: 'يتلقى المستخدم حقوق المسؤول'
-        user_receiving_folder_moderator_rights: 'يتلقى المستخدم حقوق وسيط المجلد'
-        user_receiving_project_moderator_rights: 'يتلقى المستخدم حقوق مشرف المشروع'
+        user_who_is_receiving_admin_rights: 'المستخدم الذي يتلقى حقوق المسؤول'
+        user_who_is_receiving_folder_moderator_rights: 'المستخدم الذي يتلقى حقوق وسيط المجلد'
+        user_who_is_receiving_project_moderator_rights: 'المستخدم الذي يتلقى حقوق مشرف المشروع'
         user_who_commented: 'المستخدم الذي علق'
         user_who_is_mentioned: 'المستخدم الذي تم ذكره'
         user_who_published_the_proposal: 'المستخدم الذي نشر الاقتراح'
         user_who_published_the_input: 'المستخدم الذي نشر المدخلات'
         user_who_registers: 'المستخدم الذي يقوم بالتسجيل'
         user_who_was_invited: 'المستخدم الذي تمت دعوته'
-        users_engaged_with_the_input: 'تفاعل المستخدمون مع المدخلات'
-        users_engaged_with_the_project: 'تفاعل المستخدمون مع المشروع'
-        users_engaged_with_the_proposal: 'تفاعل المستخدمون مع الاقتراح'
+        users_who_engaged_with_the_input: 'المستخدمون الذين تفاعلوا مع المدخلات'
+        users_who_engaged_with_the_project: 'المستخدمون الذين شاركوا في المشروع'
+        users_who_engaged_with_the_proposal: 'المستخدمون الذين تفاعلوا مع الاقتراح'
       content_type:
         comments: 'تعليقات'
         content_moderation: 'تعديل المحتوى'
@@ -606,15 +555,15 @@ ar-MA:
         input_is_assigned: 'تم تعيين المدخلات'
         input_is_flagged_as_spam: 'تم وضع علامة على الإدخال على أنه بريد عشوائي'
         input_is_updated: 'تم تحديث الإدخال'
-        input_status_is_changed: 'تم تغيير حالة الإدخال'
+        input_status_changes: 'تغييرات حالة الإدخال'
         new_input_is_published: 'تم نشر مدخلات جديدة'
-        new_proposal_is_published: 'تم نشر اقتراح جديد'
-        project_changes_phase: 'مرحلة تغييرات المشروع'
+        new_proposal_is_posted: 'تم نشر اقتراح جديد'
+        project_phase_changes: 'تغييرات مرحلة المشروع'
         proposal_gets_reported_as_spam: 'تم الإبلاغ عن الاقتراح باعتباره بريدًا عشوائيًا'
         proposal_is_assigned_to_admin: 'يتم تعيين الاقتراح إلى المسؤول'
         proposal_is_updated: 'تم تحديث الاقتراح'
         proposal_is_upvoted_above_threshold: 'تم التصويت لصالح الاقتراح فوق الحد الأدنى'
-        proposal_status_is_changed: 'تم تغيير حالة الاقتراح'
+        proposal_status_changes: 'تغييرات حالة الاقتراح'
         user_comments: 'تعليقات المستخدم'
         user_comments_on_input: 'تعليقات المستخدم على المدخلات'
         user_comments_on_proposal: 'تعليقات المستخدم على الاقتراح'
@@ -622,8 +571,8 @@ ar-MA:
         user_is_given_folder_moderator_rights: 'يتم منح المستخدم حقوق وسيط المجلد'
         user_is_given_project_moderator_rights: 'يتم منح المستخدم حقوق مشرف المشروع'
         user_is_mentioned: 'المستخدم مذكور'
-        user_publishes_an_input: 'ينشر المستخدم إدخالاً'
-        user_publishes_a_proposal: 'ينشر المستخدم اقتراحًا'
+        input_is_published: 'تم نشر الإدخال'
+        proposal_is_published: 'تم نشر الاقتراح'
         user_registers_for_the_first_time: 'يسجل المستخدم لأول مرة'
         user_replies_to_comment: 'يرد المستخدم على التعليق'
         7_days_after_invite_is_sent: '7 أيام بعد إرسال الدعوة'
