@@ -44,7 +44,6 @@ const ProjectAndFolderCards = ({
   const rootLevelOnly = !search || search.length === 0;
 
   const { data: counts } = useAdminPublicationsStatusCounts({
-    publicationStatusFilter: publicationStatus,
     rootLevelOnly,
     removeNotAllowedParents: true,
     topicIds,
