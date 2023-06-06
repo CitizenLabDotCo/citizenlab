@@ -14,6 +14,10 @@ class InitiativeCommentPolicy < ApplicationPolicy
     end
   end
 
+  def index_xlsx?
+    user&.admin?
+  end
+
   def create?
     return unless active?
     return true if admin?
