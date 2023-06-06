@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
-import { IOfficialFeedbackOnCommentedIdeaNotificationData } from 'services/notifications';
+import { IOfficialFeedbackOnCommentedIdeaNotificationData } from 'api/notifications/types';
 import { isNilOrError } from 'utils/helperUtils';
 import { getInputTerm } from 'services/participationContexts';
 

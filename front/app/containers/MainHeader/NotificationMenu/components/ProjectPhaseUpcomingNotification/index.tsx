@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { IProjectPhaseUpcomingNotificationData } from 'services/notifications';
+import { IProjectPhaseUpcomingNotificationData } from 'api/notifications/types';
 
 // i18n
 import messages from '../../messages';
