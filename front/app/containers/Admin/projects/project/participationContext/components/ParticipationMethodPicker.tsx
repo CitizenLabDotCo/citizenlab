@@ -1,5 +1,8 @@
 import React from 'react';
 
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 // components
 import {
   IconTooltip,
@@ -8,7 +11,6 @@ import {
   Box,
 } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
-import FeatureFlag from 'components/FeatureFlag';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import { LabelHeaderDescription } from './labels';
@@ -45,6 +47,13 @@ export const ParticipationMethodPicker = ({
   project,
   handleParticipationMethodOnChange,
 }: Props) => {
+  const participatoryBudgetingEnabled = useFeatureFlag({
+    name: 'participatory_budgeting',
+  });
+  const pollsEnabled = useFeatureFlag({ name: 'polls' });
+  const nativeSurveysEnabled = useFeatureFlag({ name: 'native_surveys' });
+  const volunteeringEnabled = useFeatureFlag({ name: 'volunteering' });
+
   const chooseParticipationMethod = () => {
     if (!isNilOrError(phase) && phase.data) {
       return phase.data.attributes.participation_method;
@@ -102,7 +111,7 @@ export const ParticipationMethodPicker = ({
               />
             }
           />
-          <FeatureFlag name="participatory_budgeting">
+          {participatoryBudgetingEnabled && (
             <ParticipationMethodRadio
               onChange={handleParticipationMethodOnChange}
               currentValue={participation_method}
@@ -120,8 +129,8 @@ export const ParticipationMethodPicker = ({
                 />
               }
             />
-          </FeatureFlag>
-          <FeatureFlag name="polls">
+          )}
+          {pollsEnabled && (
             <ParticipationMethodRadio
               onChange={handleParticipationMethodOnChange}
               currentValue={participation_method}
@@ -137,8 +146,8 @@ export const ParticipationMethodPicker = ({
                 />
               }
             />
-          </FeatureFlag>
-          <FeatureFlag name="native_surveys">
+          )}
+          {nativeSurveysEnabled && (
             <ParticipationMethodRadio
               onChange={handleParticipationMethodOnChange}
               currentValue={participation_method}
@@ -158,7 +167,7 @@ export const ParticipationMethodPicker = ({
                 />
               }
             />
-          </FeatureFlag>
+          )}
           {showSurveys && (
             <ParticipationMethodRadio
               onChange={handleParticipationMethodOnChange}
@@ -178,7 +187,7 @@ export const ParticipationMethodPicker = ({
               }
             />
           )}
-          <FeatureFlag name="volunteering">
+          {volunteeringEnabled && (
             <ParticipationMethodRadio
               onChange={handleParticipationMethodOnChange}
               currentValue={participation_method}
@@ -196,7 +205,7 @@ export const ParticipationMethodPicker = ({
                 />
               }
             />
-          </FeatureFlag>
+          )}
           <Radio
             onChange={handleParticipationMethodOnChange}
             currentValue={participation_method}
