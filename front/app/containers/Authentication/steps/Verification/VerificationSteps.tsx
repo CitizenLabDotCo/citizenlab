@@ -74,7 +74,7 @@ const VerificationSteps = memo<Props>(({ context, onCompleted, onError }) => {
     goToSuccessStep();
   }, [goToSuccessStep]);
 
-  if (!verificationMethods) {
+  if (verificationMethods) {
     return (
       <Container id="e2e-verification-wizard-root">
         {activeStep === 'method-selection' && (
