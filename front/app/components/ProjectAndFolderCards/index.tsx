@@ -44,12 +44,21 @@ const ProjectAndFolderCards = ({
   const rootLevelOnly = !search || search.length === 0;
 
   const { data: counts } = useAdminPublicationsStatusCounts({
+    publicationStatusFilter,
     rootLevelOnly,
     removeNotAllowedParents: true,
     topicIds,
     areaIds,
     search,
   });
+
+  const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
+    {
+      publicationStatusFilter,
+      rootLevelOnly: true,
+      removeNotAllowedParents: true,
+    }
+  );
 
   const {
     data,
@@ -83,14 +92,6 @@ const ProjectAndFolderCards = ({
   );
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
-
-  const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
-    {
-      publicationStatusFilter,
-      rootLevelOnly: true,
-      removeNotAllowedParents: true,
-    }
-  );
 
   const handleSearchChange = React.useCallback((search: string | null) => {
     // set search term locally to calculate depth
