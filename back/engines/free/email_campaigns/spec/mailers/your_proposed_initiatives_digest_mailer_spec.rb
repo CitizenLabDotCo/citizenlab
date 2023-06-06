@@ -19,7 +19,7 @@ RSpec.describe EmailCampaigns::YourProposedInitiativesDigestMailer do
               published_at: initiative.published_at&.iso8601,
               upvotes_count: initiative.upvotes_count,
               votes_needed: initiative.votes_needed,
-              votes_this_week: initiative.upvotes.where('created_at > ?', 1.week.ago).count,
+              votes_this_week: initiative.up_reactions.where('created_at > ?', 1.week.ago).count,
               comments_count: initiative.comments_count,
               expires_at: initiative.expires_at.iso8601,
               status_code: initiative.initiative_status.code,

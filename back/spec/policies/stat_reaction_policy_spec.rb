@@ -17,7 +17,7 @@ RSpec.describe StatReactionPolicy do
   context 'for an admin' do
     let(:user) { create(:admin) }
 
-    it { expect(scope.resolve.count).to eq(votes.count) }
+    it { expect(scope.resolve.count).to eq(reactions.count) }
   end
 
   context 'for a resident' do
@@ -40,7 +40,7 @@ RSpec.describe StatReactionPolicy do
       end
     end
 
-    it { expect(scope.resolve.count).to eq(votes.count) }
+    it { expect(scope.resolve.count).to eq(reactions.count) }
   end
 
   context 'for a project moderator' do

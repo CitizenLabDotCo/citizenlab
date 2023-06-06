@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe CommentReactionPolicy do
-  subject(:policy) { described_class.new(user, vote) }
+  subject(:policy) { described_class.new(user, reaction) }
 
   let(:scope) { CommentReactionPolicy::Scope.new(user, Reaction) }
   let(:project) { create(:continuous_project, with_permissions: true) }
@@ -11,7 +11,7 @@ describe CommentReactionPolicy do
 
   context 'for a mortal user who owns the vote on a project where commenting is only allowed by admins' do
     let!(:reaction) { create(:reaction, reactable: comment) }
-    let(:user) { vote.user }
+    let(:user) { reaction.user }
 
     before do
       project.permissions

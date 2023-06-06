@@ -39,9 +39,9 @@ class TrendingIdeaService
 
   def trending_score(idea)
     # used for testing purposes
-    upvotes_ago = activity_ago idea.upvotes # .select { |v| v.user&.id != idea.author&.id }
+    up_reactions_ago = activity_ago idea.up_reactions # .select { |v| v.user&.id != idea.author&.id }
     comments_ago = activity_ago idea.comments # .select { |c| c.author&.id != idea.author&.id }
-    mean_activity_at = mean(upvotes_ago + comments_ago + [(Time.now.to_i - idea.published_at.to_i)])
+    mean_activity_at = mean(up_reactions_ago + comments_ago + [(Time.now.to_i - idea.published_at.to_i)])
     score = trending_score_formula (idea.upvotes_count - idea.downvotes_count), mean_activity_at
     if (idea.upvotes_count - idea.downvotes_count) < 0
       return -1 / score
@@ -63,8 +63,8 @@ class TrendingIdeaService
 
   private
 
-  def trending_score_formula(votes_diff, mean_activity_at)
-    [(1 + votes_diff), 1].max / [mean_activity_at, 1].max
+  def trending_score_formula(reactions_diff, mean_activity_at)
+    [(1 + reactions_diff), 1].max / [mean_activity_at, 1].max
   end
 
   def activity_ago(iteratables)
