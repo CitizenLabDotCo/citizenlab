@@ -48,12 +48,10 @@ export const NotificationsPopup = () => {
     markAllAsRead();
     trackEventByName(tracks.clickCloseNotifications.name);
     setIsNotificationsPopupOpen(false);
-    console.log('Closed and marking as read');
   };
 
   const handleOpenNotifications = () => {
     trackEventByName(tracks.clickOpenNotifications.name);
-    console.log('Opened notifications');
   };
 
   return (
