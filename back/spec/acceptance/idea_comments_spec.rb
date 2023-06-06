@@ -17,7 +17,7 @@ resource 'Comments' do
       parameter :number, 'Page number'
       parameter :size, 'Number of top-level comments per page. The response will include 2 to 5 child comments per top-level comment, so expect to receive more'
     end
-    parameter :sort, 'Either new, -new, upvotes_count or -upvotes_count. Defaults to -new. Only applies to the top-level comments, children are always returned chronologically.'
+    parameter :sort, 'Either new, -new, likes_count or -likes_count. Defaults to -new. Only applies to the top-level comments, children are always returned chronologically.'
 
     describe do
       before do
@@ -64,7 +64,7 @@ resource 'Comments' do
 
     describe do
       let(:idea_id) { @idea.id }
-      let(:sort) { '-upvotes_count' }
+      let(:sort) { '-likes_count' }
 
       before do
         @c1, @c2, @c3 = create_list(:comment, 3, post: @idea)
@@ -74,7 +74,7 @@ resource 'Comments' do
         create(:reaction, reactable: @c3sub2)
       end
 
-      example_request 'List the top-level comments of an idea sorted by descending upvotes_count' do
+      example_request 'List the top-level comments of an idea sorted by descending likes_count' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
@@ -248,7 +248,7 @@ resource 'Comments' do
       expect(json_response.dig(:data, :id)).to eq id
       expect(json_response.dig(:data, :type)).to eq 'comment'
       expect(json_response.dig(:data, :attributes)).to include(
-        downvotes_count: 0,
+        dislikes_count: 0,
         publication_status: 'published',
         is_admin_comment: false,
         anonymous: false,

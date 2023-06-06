@@ -159,8 +159,8 @@ module EmailCampaigns
         title_multiloc: idea.title_multiloc,
         body_multiloc: idea.body_multiloc,
         author_name: name_service.display_name!(idea.author),
-        upvotes_count: idea.upvotes_count,
-        downvotes_count: idea.downvotes_count,
+        likes_count: idea.likes_count,
+        dislikes_count: idea.dislikes_count,
         comments_count: idea.comments_count,
         published_at: idea.published_at&.iso8601,
         url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
@@ -210,7 +210,7 @@ module EmailCampaigns
           url: Frontend::UrlService.new.model_to_url(initiative),
           published_at: initiative.published_at.iso8601,
           author_name: name_service.display_name!(initiative.author),
-          upvotes_count: initiative.upvotes_count,
+          likes_count: initiative.likes_count,
           comments_count: initiative.comments_count,
           images: initiative.initiative_images.map do |image|
             {
@@ -242,7 +242,7 @@ module EmailCampaigns
           url: Frontend::UrlService.new.model_to_url(initiative),
           published_at: initiative.published_at.iso8601,
           author_name: name_service.display_name!(initiative.author),
-          upvotes_count: initiative.upvotes_count,
+          likes_count: initiative.likes_count,
           comments_count: initiative.comments_count,
           threshold_reached_at: initiative.threshold_reached_at.iso8601,
           images: initiative.initiative_images.map do |image|

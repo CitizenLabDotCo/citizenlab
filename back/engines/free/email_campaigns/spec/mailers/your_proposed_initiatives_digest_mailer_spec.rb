@@ -17,7 +17,7 @@ RSpec.describe EmailCampaigns::YourProposedInitiativesDigestMailer do
               body_multiloc: initiative.body_multiloc,
               url: Frontend::UrlService.new.model_to_url(initiative),
               published_at: initiative.published_at&.iso8601,
-              upvotes_count: initiative.upvotes_count,
+              likes_count: initiative.likes_count,
               votes_needed: initiative.votes_needed,
               votes_this_week: initiative.up_reactions.where('created_at > ?', 1.week.ago).count,
               comments_count: initiative.comments_count,

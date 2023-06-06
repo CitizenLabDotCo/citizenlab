@@ -31,7 +31,7 @@ resource 'Permissions' do
       end
 
       example 'List all permissions of a project when voting has been disabled' do
-        @project.update!(voting_enabled: false)
+        @project.update!(reacting_enabled: false)
 
         do_request
         assert_status 200

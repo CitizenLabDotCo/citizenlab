@@ -76,7 +76,7 @@ module Post
     end
 
     def score
-      upvotes_count - downvotes_count
+      likes_count - dislikes_count
     end
 
     def author_name

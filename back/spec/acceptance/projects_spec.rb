@@ -226,12 +226,12 @@ resource 'Projects' do
         parameter :posting_method, "Only for continuous projects with posting enabled. How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
         parameter :posting_limited_max, 'Only for continuous projects with limited posting. Number of posts a citizen can perform in this project. Defaults to 1', required: false
         parameter :commenting_enabled, 'Only for continuous projects. Can citizens post comment in this project? Defaults to true', required: false
-        parameter :voting_enabled, 'Only for continuous projects. Can citizens vote in this project? Defaults to true', required: false
-        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
-        parameter :upvoting_limited_max, 'Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project. Defaults to 10', required: false
-        parameter :downvoting_enabled, 'Only for continuous projects. Can citizens downvote in this project? Defaults to true', required: false
-        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
-        parameter :downvoting_limited_max, 'Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :reacting_enabled, 'Only for continuous projects. Can citizens vote in this project? Defaults to true', required: false
+        parameter :reacting_like_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :reacting_like_limited_max, 'Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :downreacting_enabled, 'Only for continuous projects. Can citizens downvote in this project? Defaults to true', required: false
+        parameter :reacting_dislike_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :reacting_dislike_limited_max, 'Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project. Defaults to 10', required: false
         parameter :allow_anonymous_participation, 'Only for continuous ideation and budgeting projects. Allow users to post inputs and comments anonymously. Default to false.', required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
@@ -332,9 +332,9 @@ resource 'Projects' do
         let(:posting_method) { 'limited' }
         let(:posting_limited_max) { 5 }
         let(:commenting_enabled) { project.commenting_enabled }
-        let(:voting_enabled) { project.voting_enabled }
-        let(:upvoting_method) { project.upvoting_method }
-        let(:upvoting_limited_max) { project.upvoting_limited_max }
+        let(:reacting_enabled) { project.reacting_enabled }
+        let(:reacting_like_method) { project.reacting_like_method }
+        let(:reacting_like_limited_max) { project.reacting_like_limited_max }
         let(:ideas_order) { 'new' }
         let(:allow_anonymous_participation) { true }
 
@@ -358,10 +358,10 @@ resource 'Projects' do
           expect(json_response.dig(:data, :attributes, :posting_method)).to eq posting_method
           expect(json_response.dig(:data, :attributes, :posting_limited_max)).to eq posting_limited_max
           expect(json_response.dig(:data, :attributes, :commenting_enabled)).to eq commenting_enabled
-          expect(json_response.dig(:data, :attributes, :voting_enabled)).to eq voting_enabled
-          expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to be true
-          expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq upvoting_method
-          expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq upvoting_limited_max
+          expect(json_response.dig(:data, :attributes, :reacting_enabled)).to eq reacting_enabled
+          expect(json_response.dig(:data, :attributes, :downreacting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq reacting_like_method
+          expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq reacting_like_limited_max
           expect(json_response.dig(:data, :attributes, :ideas_order)).to be_present
           expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
           expect(json_response.dig(:data, :attributes, :input_term)).to be_present
@@ -470,10 +470,10 @@ resource 'Projects' do
           expect(project_in_db.presentation_mode).to eq 'card'
           expect(json_response.dig(:data, :attributes, :posting_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
-          expect(json_response.dig(:data, :attributes, :voting_enabled)).to be true
-          expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to be true
-          expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq 'unlimited'
-          expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq 10
+          expect(json_response.dig(:data, :attributes, :reacting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :downreacting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq 'unlimited'
+          expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
         end
       end
     end
@@ -497,12 +497,12 @@ resource 'Projects' do
         parameter :posting_method, "Only for continuous projects with posting enabled. How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
         parameter :posting_limited_max, 'Only for continuous projects with limited posting. Number of posts a citizen can perform in this project. Defaults to 1', required: false
         parameter :commenting_enabled, 'Only for continuous projects. Can citizens post comment in this project?', required: false
-        parameter :voting_enabled, 'Only for continuous projects. Can citizens vote in this project?', required: false
-        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}.", required: false
-        parameter :upvoting_limited_max, 'Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project.', required: false
-        parameter :downvoting_enabled, 'Only for continuous projects. Can citizens downvote in this project?', required: false
-        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}.", required: false
-        parameter :downvoting_limited_max, 'Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project.', required: false
+        parameter :reacting_enabled, 'Only for continuous projects. Can citizens vote in this project?', required: false
+        parameter :reacting_like_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}.", required: false
+        parameter :reacting_like_limited_max, 'Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project.', required: false
+        parameter :downreacting_enabled, 'Only for continuous projects. Can citizens downvote in this project?', required: false
+        parameter :reacting_dislike_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}.", required: false
+        parameter :reacting_dislike_limited_max, 'Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project.', required: false
         parameter :allow_anonymous_participation, 'Only for continuous ideation and budgeting projects. Allow users to post inputs and comments anonymously.', required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
@@ -649,14 +649,14 @@ resource 'Projects' do
 
       example 'Disable downvoting', document: false do
         SettingsService.new.activate_feature! 'disable_downvoting'
-        do_request(project: { downvoting_enabled: false })
-        expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to be false
+        do_request(project: { downreacting_enabled: false })
+        expect(json_response.dig(:data, :attributes, :downreacting_enabled)).to be false
       end
 
       example 'Disable downvoting when feature is not enabled', document: false do
         SettingsService.new.deactivate_feature! 'disable_downvoting'
-        do_request(project: { downvoting_enabled: false })
-        expect(@project.reload.downvoting_enabled).to be true
+        do_request(project: { downreacting_enabled: false })
+        expect(@project.reload.downreacting_enabled).to be true
       end
 
       describe do
@@ -1316,12 +1316,12 @@ resource 'Projects' do
         parameter :posting_method, "Only for continuous projects with posting enabled. How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
         parameter :posting_limited_max, 'Only for continuous projects with limited posting. Number of posts a citizen can perform in this project. Defaults to 1', required: false
         parameter :commenting_enabled, 'Only for continuous projects. Can citizens post comment in this project? Defaults to true', required: false
-        parameter :voting_enabled, 'Only for continuous projects. Can citizens vote in this project? Defaults to true', required: false
-        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
-        parameter :upvoting_limited_max, 'Only for continuous projects with limited voting. Number of upvotes a citizen can perform in this project. Defaults to 10', required: false
-        parameter :downvoting_enabled, 'Only for continuous projects. Can citizens downvote in this project? Defaults to true', required: false
-        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
-        parameter :downvoting_limited_max, 'Only for continuous projects with limited voting. Number of downvotes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :reacting_enabled, 'Only for continuous projects. Can citizens vote in this project? Defaults to true', required: false
+        parameter :reacting_like_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :reacting_like_limited_max, 'Only for continuous projects with limited voting. Number of upvotes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :downreacting_enabled, 'Only for continuous projects. Can citizens downvote in this project? Defaults to true', required: false
+        parameter :reacting_dislike_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :reacting_dislike_limited_max, 'Only for continuous projects with limited voting. Number of downvotes a citizen can perform in this project. Defaults to 10', required: false
         parameter :allow_anonymous_participation, 'Only for continuous ideation and budgeting projects. Allow users to post inputs and comments anonymously. Default to false.', required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false

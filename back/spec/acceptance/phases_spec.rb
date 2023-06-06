@@ -43,7 +43,7 @@ resource 'Phases' do
       expect(json_response.dig(:data, :id)).to eq @phases.first.id
       expect(json_response.dig(:data, :type)).to eq 'phase'
       expect(json_response.dig(:data, :attributes)).to include(
-        upvoting_method: 'unlimited',
+        reacting_like_method: 'unlimited',
         ideas_count: 2
       )
 
@@ -105,12 +105,12 @@ resource 'Phases' do
         parameter :posting_method, "How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
         parameter :posting_limited_max, 'Number of posts a citizen can perform in this phase. Defaults to 1', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase? Defaults to true', required: false
-        parameter :voting_enabled, 'Can citizens vote in this phase? Defaults to true', required: false
-        parameter :upvoting_method, "How does upvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
-        parameter :upvoting_limited_max, 'Number of upvotes a citizen can perform in this phase, only if the upvoting_method is limited. Defaults to 10', required: false
-        parameter :downvoting_enabled, 'Can citizens downvote in this phase? Defaults to true', required: false
-        parameter :downvoting_method, "How does downvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
-        parameter :downvoting_limited_max, 'Number of downvotes a citizen can perform in this phase, only if the downvoting_method is limited. Defaults to 10', required: false
+        parameter :reacting_enabled, 'Can citizens vote in this phase? Defaults to true', required: false
+        parameter :reacting_like_method, "How does upvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :reacting_like_limited_max, 'Number of upvotes a citizen can perform in this phase, only if the reacting_like_method is limited. Defaults to 10', required: false
+        parameter :downreacting_enabled, 'Can citizens downvote in this phase? Defaults to true', required: false
+        parameter :reacting_dislike_method, "How does downvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :reacting_dislike_limited_max, 'Number of downvotes a citizen can perform in this phase, only if the reacting_dislike_method is limited. Defaults to 10', required: false
         parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously. Defaults to false', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
@@ -151,10 +151,10 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
         expect(json_response.dig(:data, :attributes, :posting_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
-        expect(json_response.dig(:data, :attributes, :voting_enabled)).to be true
-        expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to be true
-        expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq 'unlimited'
-        expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq 10
+        expect(json_response.dig(:data, :attributes, :reacting_enabled)).to be true
+        expect(json_response.dig(:data, :attributes, :downreacting_enabled)).to be true
+        expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq 'unlimited'
+        expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
         expect(json_response.dig(:data, :attributes, :min_budget)).to eq 100
         expect(json_response.dig(:data, :attributes, :max_budget)).to eq 1000
         expect(json_response.dig(:data, :attributes, :start_at)).to eq start_at.to_s
@@ -214,10 +214,10 @@ resource 'Phases' do
           expect(phase_in_db.presentation_mode).to eq 'card'
           expect(json_response.dig(:data, :attributes, :posting_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
-          expect(json_response.dig(:data, :attributes, :voting_enabled)).to be true
-          expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to be true
-          expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq 'unlimited'
-          expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq 10
+          expect(json_response.dig(:data, :attributes, :reacting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :downreacting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq 'unlimited'
+          expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
         end
       end
 
@@ -328,12 +328,12 @@ resource 'Phases' do
         parameter :posting_method, "How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
         parameter :posting_limited_max, 'Number of posts a citizen can perform in this phase. Defaults to 1', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase?', required: false
-        parameter :voting_enabled, 'Can citizens vote in this phase?', required: false
-        parameter :upvoting_method, "How does upvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
-        parameter :upvoting_limited_max, 'Number of upvotes a citizen can perform in this phase, only if the upvoting_method is limited', required: false
-        parameter :downvoting_enabled, 'Can citizens vote in this phase?', required: false
-        parameter :downvoting_method, "How does downvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
-        parameter :downvoting_limited_max, 'Number of downvotes a citizen can perform in this phase, only if the downvoting_method is limited', required: false
+        parameter :reacting_enabled, 'Can citizens vote in this phase?', required: false
+        parameter :reacting_like_method, "How does upvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
+        parameter :reacting_like_limited_max, 'Number of upvotes a citizen can perform in this phase, only if the reacting_like_method is limited', required: false
+        parameter :downreacting_enabled, 'Can citizens vote in this phase?', required: false
+        parameter :reacting_dislike_method, "How does downvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
+        parameter :reacting_dislike_limited_max, 'Number of downvotes a citizen can perform in this phase, only if the reacting_dislike_method is limited', required: false
         parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously.', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
@@ -355,9 +355,9 @@ resource 'Phases' do
       let(:posting_method) { 'limited' }
       let(:posting_limited_max) { 5 }
       let(:commenting_enabled) { false }
-      let(:voting_enabled) { true }
-      let(:upvoting_method) { 'limited' }
-      let(:upvoting_limited_max) { 6 }
+      let(:reacting_enabled) { true }
+      let(:reacting_like_method) { 'limited' }
+      let(:reacting_like_limited_max) { 6 }
       let(:presentation_mode) { 'map' }
       let(:allow_anonymous_participation) { true }
 
@@ -369,9 +369,9 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :posting_method)).to eq posting_method
         expect(json_response.dig(:data, :attributes, :posting_limited_max)).to eq posting_limited_max
         expect(json_response.dig(:data, :attributes, :commenting_enabled)).to eq commenting_enabled
-        expect(json_response.dig(:data, :attributes, :voting_enabled)).to eq voting_enabled
-        expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq upvoting_method
-        expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq upvoting_limited_max
+        expect(json_response.dig(:data, :attributes, :reacting_enabled)).to eq reacting_enabled
+        expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq reacting_like_method
+        expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq reacting_like_limited_max
         expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
         expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
       end

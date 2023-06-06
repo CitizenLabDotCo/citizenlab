@@ -321,7 +321,7 @@ describe ParticipationContextService do
     end
   end
 
-  describe 'future_voting_enabled_phase' do
+  describe 'future_reacting_enabled_phase' do
     it 'returns the first upcoming phase that has voting enabled' do
       project = create(
         :project_with_current_phase,

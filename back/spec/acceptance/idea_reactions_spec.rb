@@ -58,7 +58,7 @@ resource 'Reactions' do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :relationships, :user, :data, :id)).to be_nil
       expect(json_response.dig(:data, :attributes, :mode)).to eq 'up'
-      expect(@idea.reload.upvotes_count).to eq 3
+      expect(@idea.reload.likes_count).to eq 3
     end
 
     describe 'When the user already reacted' do
@@ -88,16 +88,16 @@ resource 'Reactions' do
 
     example_request "Upvote an idea that doesn't have your reaction yet" do
       expect(status).to eq 201
-      expect(@idea.reload.upvotes_count).to eq 3
-      expect(@idea.reload.downvotes_count).to eq 0
+      expect(@idea.reload.likes_count).to eq 3
+      expect(@idea.reload.dislikes_count).to eq 0
     end
 
     example 'Upvote an idea that you downvoted before' do
       @idea.reactions.create(user: @user, mode: 'down')
       do_request
       expect(status).to eq 201
-      expect(@idea.reload.upvotes_count).to eq 3
-      expect(@idea.reload.downvotes_count).to eq 0
+      expect(@idea.reload.likes_count).to eq 3
+      expect(@idea.reload.dislikes_count).to eq 0
     end
 
     example '[error] Upvote an idea that you upvoted before' do
@@ -106,22 +106,22 @@ resource 'Reactions' do
       assert_status 422
       json_response = json_parse response_body
       expect(json_response).to include_response_error(:base, 'already_upvoted')
-      expect(@idea.reload.upvotes_count).to eq 3
-      expect(@idea.reload.downvotes_count).to eq 0
+      expect(@idea.reload.likes_count).to eq 3
+      expect(@idea.reload.dislikes_count).to eq 0
     end
 
     describe do
       before do
         project = @idea.project
-        project.update(voting_enabled: false)
+        project.update(reacting_enabled: false)
       end
 
       example_request '[error] Upvote an idea in a project where reactions are disabled' do
         expect(status).to eq 401
         json_response = json_parse(response_body)
         expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::VOTING_DISABLED_REASONS[:voting_disabled]
-        expect(@idea.reload.upvotes_count).to eq 2
-        expect(@idea.reload.downvotes_count).to eq 0
+        expect(@idea.reload.likes_count).to eq 2
+        expect(@idea.reload.dislikes_count).to eq 0
       end
     end
 
@@ -137,24 +137,24 @@ resource 'Reactions' do
         expect(status).to eq 401
         json_response = json_parse(response_body)
         expect(json_response[:errors][:base][0][:error]).to eq 'not_permitted'
-        expect(@idea.reload.upvotes_count).to eq 2
-        expect(@idea.reload.downvotes_count).to eq 0
+        expect(@idea.reload.likes_count).to eq 2
+        expect(@idea.reload.dislikes_count).to eq 0
       end
     end
 
     describe do
       before do
         project = @idea.project
-        project.update(upvoting_method: 'limited', upvoting_limited_max: 1)
+        project.update(reacting_like_method: 'limited', reacting_like_limited_max: 1)
         create(:reaction, mode: 'up', reactable: create(:idea, project: project), user: @user)
       end
 
       example_request '[error] Upvote an idea in a project where you can upvote only once' do
         expect(status).to eq 401
         json_response = json_parse(response_body)
-        expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::VOTING_DISABLED_REASONS[:upvoting_limited_max_reached]
-        expect(@idea.reload.upvotes_count).to eq 2
-        expect(@idea.reload.downvotes_count).to eq 0
+        expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::VOTING_DISABLED_REASONS[:reacting_like_limited_max_reached]
+        expect(@idea.reload.likes_count).to eq 2
+        expect(@idea.reload.dislikes_count).to eq 0
       end
     end
   end
@@ -169,16 +169,16 @@ resource 'Reactions' do
 
     example_request "Downvote an idea that doesn't have your reaction yet" do
       expect(status).to eq 201
-      expect(@idea.reload.upvotes_count).to eq 2
-      expect(@idea.reload.downvotes_count).to eq 1
+      expect(@idea.reload.likes_count).to eq 2
+      expect(@idea.reload.dislikes_count).to eq 1
     end
 
     example 'Downvote an idea that you upvoted before' do
       @idea.reactions.create(user: @user, mode: 'up')
       do_request
       expect(status).to eq 201
-      expect(@idea.reload.upvotes_count).to eq 2
-      expect(@idea.reload.downvotes_count).to eq 1
+      expect(@idea.reload.likes_count).to eq 2
+      expect(@idea.reload.dislikes_count).to eq 1
     end
 
     example '[error] Downvote an idea that you downvoted before' do
@@ -187,19 +187,19 @@ resource 'Reactions' do
       assert_status 422
       json_response = json_parse response_body
       expect(json_response).to include_response_error(:base, 'already_downvoted')
-      expect(@idea.reload.upvotes_count).to eq 2
-      expect(@idea.reload.downvotes_count).to eq 1
+      expect(@idea.reload.likes_count).to eq 2
+      expect(@idea.reload.dislikes_count).to eq 1
     end
 
     example '[error] Downvote in a project where downvoting is disabled', document: false do
-      @project.update! downvoting_enabled: false
+      @project.update! downreacting_enabled: false
       @idea.reactions.create(user: @user, mode: 'down')
       do_request
       expect(status).to eq 401
       json_response = json_parse(response_body)
       expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::VOTING_DISABLED_REASONS[:downvoting_disabled]
-      expect(@idea.reload.upvotes_count).to eq 2
-      expect(@idea.reload.downvotes_count).to eq 1
+      expect(@idea.reload.likes_count).to eq 2
+      expect(@idea.reload.dislikes_count).to eq 1
     end
   end
 

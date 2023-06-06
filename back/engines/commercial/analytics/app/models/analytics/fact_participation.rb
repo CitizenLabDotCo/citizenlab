@@ -10,8 +10,8 @@
 #  dimension_type_id         :uuid
 #  dimension_date_created_id :date
 #  votes_count               :integer
-#  upvotes_count             :integer
-#  downvotes_count           :integer
+#  likes_count             :integer
+#  dislikes_count           :integer
 #
 module Analytics
   class FactParticipation < Analytics::ApplicationRecordView

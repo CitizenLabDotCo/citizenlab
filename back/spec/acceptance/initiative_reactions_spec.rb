@@ -63,7 +63,7 @@ resource 'Reactions' do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :relationships, :user, :data, :id)).to be_nil
       expect(json_response.dig(:data, :attributes, :mode)).to eq 'up'
-      expect(@initiative.reload.upvotes_count).to eq 3
+      expect(@initiative.reload.likes_count).to eq 3
     end
 
     example 'Reaching the voting threshold immediately triggers status change', document: false do
@@ -87,16 +87,16 @@ resource 'Reactions' do
 
     example_request "Upvote an initiative that doesn't have your reaction yet" do
       assert_status 201
-      expect(@initiative.reload.upvotes_count).to eq 3
-      expect(@initiative.reload.downvotes_count).to eq 0
+      expect(@initiative.reload.likes_count).to eq 3
+      expect(@initiative.reload.dislikes_count).to eq 0
     end
 
     example 'Upvote an initiative that you downvoted before' do
       @initiative.reactions.create(user: @user, mode: 'down')
       do_request
       assert_status 201
-      expect(@initiative.reload.upvotes_count).to eq 3
-      expect(@initiative.reload.downvotes_count).to eq 0
+      expect(@initiative.reload.likes_count).to eq 3
+      expect(@initiative.reload.dislikes_count).to eq 0
     end
 
     example '[error] Upvote an initiative that you upvoted before' do
@@ -105,8 +105,8 @@ resource 'Reactions' do
       assert_status 422
       json_response = json_parse response_body
       expect(json_response).to include_response_error(:base, 'already_upvoted')
-      expect(@initiative.reload.upvotes_count).to eq 3
-      expect(@initiative.reload.downvotes_count).to eq 0
+      expect(@initiative.reload.likes_count).to eq 3
+      expect(@initiative.reload.dislikes_count).to eq 0
     end
   end
 
@@ -122,8 +122,8 @@ resource 'Reactions' do
       assert_status 401
       json_response = json_parse(response_body)
       expect(json_response.dig(:errors, :base)).to include({ error: 'downvoting_not_supported' })
-      expect(@initiative.reload.upvotes_count).to eq 2
-      expect(@initiative.reload.downvotes_count).to eq 0
+      expect(@initiative.reload.likes_count).to eq 2
+      expect(@initiative.reload.dislikes_count).to eq 0
     end
   end
 

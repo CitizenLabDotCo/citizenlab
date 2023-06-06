@@ -13,20 +13,22 @@ class RenameVoteToReaction < ActiveRecord::Migration[6.1]
     rename_table :votes, :reactions
 
     # Refactor model and controller now
-
+    #
     # comments.upvotes_count
     # comments.downvotes_count
-    # rename_column :comments, :upvotes_count, :reactions_up_count
-    # rename_column :comments, :downvotes_count, :reactions_down_count
+    rename_column :comments, :upvotes_count, :likes_count
+    rename_column :comments, :downvotes_count, :dislikes_count
 
     # ideas.upvotes_count
     # ideas.downvotes_count
-    # rename_column :ideas, :upvotes_count, :reactions_up_count
-    # rename_column :ideas, :downvotes_count, :reactions_down_count
+    rename_column :ideas, :upvotes_count, :likes_count
+    rename_column :ideas, :downvotes_count, :dislikes_count
 
     # initiatives.upvotes_count?
     # initiatives.downvotes_count?
-    # NOTE: Probably don't want to do initiatives? Or should we for consistency?
+    # NOTE: Done for consistency even though initiatives will continue to use 'votes' in interface
+    rename_column :initiatives, :upvotes_count, :likes_count
+    rename_column :initiatives, :downvotes_count, :dislikes_count
 
     # phases.voting_enabled
     # phases.upvoting_method
@@ -34,12 +36,12 @@ class RenameVoteToReaction < ActiveRecord::Migration[6.1]
     # phases.downvoting_enabled
     # phases.downvoting_method
     # phases.downvoting_limited_max
-    # rename_column :phases, :voting_enabled, :reactions_up_enabled
-    # rename_column :phases, :upvoting_method, :reactions_up_method
-    # rename_column :phases, :upvoting_limited_max, :reactions_up_limited_max
-    # rename_column :phases, :downvoting_enabled, :reactions_down_enabled
-    # rename_column :phases, :downvoting_method, :reactions_down_method
-    # rename_column :phases, :downvoting_limited_max, :reactions_down_limited_max
+    rename_column :phases, :voting_enabled, :reacting_enabled
+    rename_column :phases, :upvoting_method, :reacting_like_method
+    rename_column :phases, :upvoting_limited_max, :reacting_like_limited_max
+    rename_column :phases, :downvoting_enabled, :reacting_dislike_enabled
+    rename_column :phases, :downvoting_method, :reacting_dislike_method
+    rename_column :phases, :downvoting_limited_max, :reacting_dislike_limited_max
 
     # projects.voting_enabled
     # projects.upvoting_method
@@ -47,12 +49,12 @@ class RenameVoteToReaction < ActiveRecord::Migration[6.1]
     # projects.downvoting_enabled
     # projects.downvoting_method
     # projects.downvoting_limited_ma
-    # rename_column :projects, :voting_enabled, :reactions_up_enabled
-    # rename_column :projects, :upvoting_method, :reactions_up_method
-    # rename_column :projects, :upvoting_limited_max, :reactions_up_limited_max
-    # rename_column :projects, :downvoting_enabled, :reactions_down_enabled
-    # rename_column :projects, :downvoting_method, :reactions_down_method
-    # rename_column :projects, :downvoting_limited_max, :reactions_down_limited_max
+    rename_column :projects, :voting_enabled, :reacting_enabled
+    rename_column :projects, :upvoting_method, :reacting_like_method
+    rename_column :projects, :upvoting_limited_max, :reacting_like_limited_max
+    rename_column :projects, :downvoting_enabled, :reacting_dislike_enabled
+    rename_column :projects, :downvoting_method, :reacting_dislike_method
+    rename_column :projects, :downvoting_limited_max, :reacting_dislike_limited_max
 
     # TODO: views:
     # idea_trending_infos

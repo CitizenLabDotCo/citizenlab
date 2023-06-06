@@ -27,13 +27,13 @@ module MultiTenancy
           if project.continuous?
             project.update({
               posting_enabled: rand(4) != 0,
-              voting_enabled: rand(4) != 0,
-              downvoting_enabled: rand(3) != 0,
+              reacting_enabled: rand(4) != 0,
+              downreacting_enabled: rand(3) != 0,
               commenting_enabled: rand(4) != 0,
-              upvoting_method: %w[unlimited unlimited unlimited limited][rand(4)],
-              upvoting_limited_max: rand(1..15),
-              downvoting_method: %w[unlimited unlimited unlimited limited][rand(4)],
-              downvoting_limited_max: rand(1..15)
+              reacting_like_method: %w[unlimited unlimited unlimited limited][rand(4)],
+              reacting_like_limited_max: rand(1..15),
+              reacting_dislike_method: %w[unlimited unlimited unlimited limited][rand(4)],
+              reacting_dislike_limited_max: rand(1..15)
             })
           end
 
@@ -88,13 +88,13 @@ module MultiTenancy
           if phase.ideation?
             phase.assign_attributes({
               posting_enabled: rand(4) != 0,
-              voting_enabled: rand(4) != 0,
-              downvoting_enabled: rand(3) != 0,
+              reacting_enabled: rand(4) != 0,
+              downreacting_enabled: rand(3) != 0,
               commenting_enabled: rand(4) != 0,
-              upvoting_method: %w[unlimited unlimited unlimited limited][rand(4)],
-              upvoting_limited_max: rand(1..15),
-              downvoting_method: %w[unlimited unlimited unlimited limited][rand(4)],
-              downvoting_limited_max: rand(1..15)
+              reacting_like_method: %w[unlimited unlimited unlimited limited][rand(4)],
+              reacting_like_limited_max: rand(1..15),
+              reacting_dislike_method: %w[unlimited unlimited unlimited limited][rand(4)],
+              reacting_dislike_limited_max: rand(1..15)
             })
           end
           if phase.budgeting?

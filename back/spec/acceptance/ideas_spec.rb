@@ -69,7 +69,7 @@ resource 'Ideas' do
       parameter :author, 'Filter by author (user id)', required: false
       parameter :idea_status, 'Filter by status (idea status id)', required: false
       parameter :search, 'Filter by searching in title and body', required: false
-      parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'random'", required: false
+      parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'likes_count', '-likes_count', 'dislikes_count', '-dislikes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'random'", required: false
       parameter :publication_status, 'Filter by publication status; returns all published ideas by default', required: false
       parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
       parameter :feedback_needed, 'Filter out ideas that need feedback', required: false
@@ -679,7 +679,7 @@ resource 'Ideas' do
             expect(new_idea.reactions.size).to eq 1
             expect(new_idea.reactions[0].mode).to eq 'up'
             expect(new_idea.reactions[0].user.id).to eq @user.id
-            expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
+            expect(json_response[:data][:attributes][:likes_count]).to eq 1
           end
 
           describe 'Values for disabled fields are ignored' do
@@ -1041,7 +1041,7 @@ resource 'Ideas' do
             expect(new_idea.reactions.size).to eq 1
             expect(new_idea.reactions[0].mode).to eq 'up'
             expect(new_idea.reactions[0].user.id).to eq @user.id
-            expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
+            expect(json_response.dig(:data, :attributes, :likes_count)).to eq 1
           end
 
           example '[error] Update an idea when there is a posting disabled reason' do

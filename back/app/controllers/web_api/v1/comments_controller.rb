@@ -23,10 +23,10 @@ class WebApi::V1::CommentsController < ApplicationController
       root_comments.order(created_at: :desc)
     when '-new'
       root_comments.order(created_at: :asc)
-    when 'upvotes_count'
-      root_comments.order(upvotes_count: :asc, lft: :asc)
-    when '-upvotes_count'
-      root_comments.order(upvotes_count: :desc, lft: :asc)
+    when 'likes_count'
+      root_comments.order(likes_count: :asc, lft: :asc)
+    when '-likes_count'
+      root_comments.order(likes_count: :desc, lft: :asc)
     when nil
       root_comments.order(lft: :asc)
     else

@@ -10,7 +10,7 @@ describe ParticipationContextService do
       {
         participation_method: 'ideation',
         posting_enabled: false,
-        voting_enabled: false,
+        reacting_enabled: false,
         commenting_enabled: false
       }
     end
@@ -251,7 +251,7 @@ describe ParticipationContextService do
 
     context 'a vote' do
       it 'returns nil when voting is enabled in the current phase' do
-        project = create(:project_with_current_phase, current_phase_attrs: { voting_enabled: true })
+        project = create(:project_with_current_phase, current_phase_attrs: { reacting_enabled: true })
         idea = create(:idea, project: project, phases: project.phases)
         vote = build(:reaction, user: user, reactable: idea)
 
@@ -270,7 +270,7 @@ describe ParticipationContextService do
         project = create(
           :project_with_current_phase,
           phases_config: { sequence: 'xxcxx' },
-          current_phase_attrs: { voting_enabled: true }
+          current_phase_attrs: { reacting_enabled: true }
         )
         idea_phases = project.phases.order(:start_at).take(2) + [project.phases.order(:start_at).last]
         idea = create(:idea, project: project, phases: idea_phases)
@@ -280,7 +280,7 @@ describe ParticipationContextService do
       end
 
       it 'returns `voting_disabled` if voting is disabled' do
-        project = create(:continuous_project, voting_enabled: false)
+        project = create(:continuous_project, reacting_enabled: false)
         idea = create(:idea, project: project)
         vote = build(:reaction, user: user, reactable: idea)
 
@@ -288,7 +288,7 @@ describe ParticipationContextService do
       end
 
       it 'returns `downvoting_disabled` for a downvote if downvoting is disabled' do
-        project = create(:continuous_project, voting_enabled: true, downvoting_enabled: false)
+        project = create(:continuous_project, reacting_enabled: true, downreacting_enabled: false)
         idea = create(:idea, project: project)
         vote = build(:reaction, mode: 'down', user: user, reactable: idea)
 
@@ -296,7 +296,7 @@ describe ParticipationContextService do
       end
 
       it 'returns nil for an upvote if downvoting is disabled' do
-        project = create(:continuous_project, voting_enabled: true, downvoting_enabled: false)
+        project = create(:continuous_project, reacting_enabled: true, downreacting_enabled: false)
         idea = create(:idea, project: project)
         vote = build(:reaction, mode: 'up', user: user, reactable: idea)
 
@@ -304,24 +304,24 @@ describe ParticipationContextService do
       end
 
       it "returns nil for a downvote, but while the mode is explicitely specified as 'up', even though downvoting is disabled" do
-        project = create(:continuous_project, voting_enabled: true, downvoting_enabled: false)
+        project = create(:continuous_project, reacting_enabled: true, downreacting_enabled: false)
         idea = create(:idea, project: project)
         vote = build(:reaction, mode: 'down', user: user, reactable: idea)
 
         expect(service.idea_voting_disabled_reason_for(vote, user, mode: 'up')).to be_nil
       end
 
-      it 'returns `upvoting_limited_max_reached` if the upvoting limit was reached' do
-        project = create(:continuous_project, voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 1)
+      it 'returns `reacting_like_limited_max_reached` if the upvoting limit was reached' do
+        project = create(:continuous_project, reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1)
         idea = create(:idea, project: project)
         create(:reaction, mode: 'up', user: user, reactable: idea)
         vote = build(:reaction, mode: 'up', user: user, reactable: idea)
 
-        expect(service.idea_voting_disabled_reason_for(vote, user)).to eq 'upvoting_limited_max_reached'
+        expect(service.idea_voting_disabled_reason_for(vote, user)).to eq 'reacting_like_limited_max_reached'
       end
 
       it 'returns nil if the upvoting limit was not reached' do
-        project = create(:continuous_project, voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 1)
+        project = create(:continuous_project, reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1)
         idea = create(:idea, project: project)
         create(:reaction, mode: 'down', user: user, reactable: idea)
         vote = build(:reaction, mode: 'up', user: user, reactable: idea)
@@ -329,19 +329,19 @@ describe ParticipationContextService do
         expect(service.idea_voting_disabled_reason_for(vote, user)).to be_nil
       end
 
-      it 'returns `downvoting_limited_max_reached` if the downvoting limit was reached' do
-        project = create(:continuous_project, voting_enabled: true,
-          downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
+      it 'returns `reacting_dislike_limited_max_reached` if the downvoting limit was reached' do
+        project = create(:continuous_project, reacting_enabled: true,
+          downreacting_enabled: true, reacting_dislike_method: 'limited', reacting_dislike_limited_max: 1)
         idea = create(:idea, project: project)
         create(:reaction, mode: 'down', user: user, reactable: idea)
         vote = build(:reaction, mode: 'down', user: user, reactable: idea)
 
-        expect(service.idea_voting_disabled_reason_for(vote, user)).to eq 'downvoting_limited_max_reached'
+        expect(service.idea_voting_disabled_reason_for(vote, user)).to eq 'reacting_dislike_limited_max_reached'
       end
 
       it 'returns nil if the downvoting limit was not reached' do
-        project = create(:continuous_project, voting_enabled: true,
-          downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
+        project = create(:continuous_project, reacting_enabled: true,
+          downreacting_enabled: true, reacting_dislike_method: 'limited', reacting_dislike_limited_max: 1)
         idea = create(:idea, project: project)
         create(:reaction, mode: 'up', user: user, reactable: idea)
         vote = build(:reaction, mode: 'down', user: user, reactable: idea)
@@ -352,7 +352,7 @@ describe ParticipationContextService do
 
     context 'an idea' do
       it 'returns nil when voting is enabled' do
-        project = create(:continuous_project, voting_enabled: true)
+        project = create(:continuous_project, reacting_enabled: true)
         idea = create(:idea, project: project)
 
         expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to be_nil
@@ -379,7 +379,7 @@ describe ParticipationContextService do
         project = create(
           :project_with_current_phase,
           phases_config: { sequence: 'xxcxx' },
-          current_phase_attrs: { voting_enabled: true }
+          current_phase_attrs: { reacting_enabled: true }
         )
         idea_phases = [project.phases.order(:start_at).first, project.phases.order(:start_at).last]
         idea = create(:idea, project: project, phases: idea_phases)
@@ -388,20 +388,20 @@ describe ParticipationContextService do
         expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'idea_not_in_current_phase'
       end
 
-      it 'returns `downvoting_limited_max_reached` if the downvoting limit was reached' do
-        project = create(:continuous_project, voting_enabled: true,
-          downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
+      it 'returns `reacting_dislike_limited_max_reached` if the downvoting limit was reached' do
+        project = create(:continuous_project, reacting_enabled: true,
+          downreacting_enabled: true, reacting_dislike_method: 'limited', reacting_dislike_limited_max: 1)
         idea = create(:idea, project: project)
         create(:reaction, mode: 'down', user: user, reactable: idea)
 
         expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to be_nil
-        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'downvoting_limited_max_reached'
+        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'reacting_dislike_limited_max_reached'
       end
     end
 
     context 'a continuous project' do
       it 'returns nil when voting is enabled' do
-        project = create(:continuous_project, voting_enabled: true)
+        project = create(:continuous_project, reacting_enabled: true)
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to be_nil
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to be_nil
@@ -422,20 +422,20 @@ describe ParticipationContextService do
       end
 
       it 'returns `voting_disabled` if voting is disabled' do
-        project = create(:continuous_project, voting_enabled: false)
+        project = create(:continuous_project, reacting_enabled: false)
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'voting_disabled'
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'voting_disabled'
       end
 
       it 'returns nil for upvoting if downvoting is disabled' do
-        project = create(:continuous_project, voting_enabled: true, downvoting_enabled: false)
+        project = create(:continuous_project, reacting_enabled: true, downreacting_enabled: false)
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to be_nil
       end
 
       it 'returns `downvoting_disabled` for downvoting if downvoting is disabled' do
-        project = create(:continuous_project, voting_enabled: true, downvoting_enabled: false)
+        project = create(:continuous_project, reacting_enabled: true, downreacting_enabled: false)
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'downvoting_disabled'
       end
@@ -443,7 +443,7 @@ describe ParticipationContextService do
 
     context 'a timeline project' do
       it 'returns nil when voting is enabled in the current phase' do
-        project = create(:project_with_current_phase, current_phase_attrs: { voting_enabled: true })
+        project = create(:project_with_current_phase, current_phase_attrs: { reacting_enabled: true })
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to be_nil
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to be_nil
@@ -452,7 +452,7 @@ describe ParticipationContextService do
       it 'returns `project_inactive` when the project is archived' do
         project = create(
           :project_with_current_phase,
-          admin_publication_attributes: { publication_status: 'archived' }, current_phase_attrs: { voting_enabled: true }
+          admin_publication_attributes: { publication_status: 'archived' }, current_phase_attrs: { reacting_enabled: true }
         )
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'project_inactive'
@@ -481,18 +481,18 @@ describe ParticipationContextService do
       end
 
       it 'returns `voting_disabled` if voting is disabled' do
-        project = create(:project_with_current_phase, current_phase_attrs: { voting_enabled: false })
+        project = create(:project_with_current_phase, current_phase_attrs: { reacting_enabled: false })
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'voting_disabled'
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'voting_disabled'
       end
 
-      it 'returns `upvoting_limited_max_reached` if the upvoting limit was reached' do
+      it 'returns `reacting_like_limited_max_reached` if the upvoting limit was reached' do
         project = create(:project_with_current_phase,
-          current_phase_attrs: { voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 1 })
+          current_phase_attrs: { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1 })
         create(:reaction, mode: 'up', user: user, reactable: create(:idea, project: project, phases: project.phases))
 
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'upvoting_limited_max_reached'
+        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'reacting_like_limited_max_reached'
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to be_nil
       end
     end
@@ -501,7 +501,7 @@ describe ParticipationContextService do
       it 'returns nil when voting is enabled' do
         project = create(
           :project_with_current_phase,
-          phases_config: { sequence: 'xcx', c: { voting_enabled: true }, x: { voting_enabled: false } }
+          phases_config: { sequence: 'xcx', c: { reacting_enabled: true }, x: { reacting_enabled: false } }
         )
         phase = project.phases.order(:start_at)[1]
 
@@ -512,7 +512,7 @@ describe ParticipationContextService do
       it 'returns nil when voting is enabled for that phase, but disabled for the current phase' do
         project = create(
           :project_with_current_phase,
-          phases_config: { sequence: 'xxcxx', c: { voting_enabled: false }, x: { voting_enabled: true } }
+          phases_config: { sequence: 'xxcxx', c: { reacting_enabled: false }, x: { reacting_enabled: true } }
         )
         phase = project.phases.order(:start_at).first
 
@@ -520,11 +520,11 @@ describe ParticipationContextService do
         expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'down')).to be_nil
       end
 
-      it 'returns `upvoting_limited_max_reached` if the upvoting limit was reached for that phase' do
+      it 'returns `reacting_like_limited_max_reached` if the upvoting limit was reached for that phase' do
         project = create(
           :project_with_current_phase,
-          phases_config: { sequence: 'xxcxx', c: { voting_enabled: true },
-                           x: { voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 2 } }
+          phases_config: { sequence: 'xxcxx', c: { reacting_enabled: true },
+                           x: { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 2 } }
         )
         phase = project.phases.order(:start_at).first
         ideas = create_list(:idea, 2, project: project, phases: project.phases)
@@ -532,7 +532,7 @@ describe ParticipationContextService do
           create(:reaction, mode: 'up', reactable: idea, user: user)
         end
 
-        expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'up')).to eq 'upvoting_limited_max_reached'
+        expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'up')).to eq 'reacting_like_limited_max_reached'
         expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'down')).to be_nil
       end
     end
@@ -556,7 +556,7 @@ describe ParticipationContextService do
       end
 
       it "returns 'voting_disabled' if it's in the current phase and voting is disabled" do
-        project = create(:project_with_current_phase, current_phase_attrs: { voting_enabled: false })
+        project = create(:project_with_current_phase, current_phase_attrs: { reacting_enabled: false })
         idea = create(:idea, project: project, phases: [project.phases[2]])
         expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:voting_disabled]
       end
@@ -591,13 +591,13 @@ describe ParticipationContextService do
       end
 
       it "returns 'voting_disabled' if voting is disabled" do
-        project = create(:continuous_project, voting_enabled: false)
+        project = create(:continuous_project, reacting_enabled: false)
         idea = create(:idea, project: project)
         expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:voting_disabled]
       end
 
       it 'returns nil when downvoting is disabled but voting is enabled' do
-        project = create(:continuous_project, voting_enabled: true, downvoting_enabled: false)
+        project = create(:continuous_project, reacting_enabled: true, downreacting_enabled: false)
         idea = create(:idea, project: project)
         expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to be_nil
       end
@@ -736,15 +736,15 @@ describe ParticipationContextService do
     end
   end
 
-  describe 'future_voting_enabled_phase' do
+  describe 'future_reacting_enabled_phase' do
     it 'returns the first upcoming phase that has voting enabled' do
       project = create(
         :project_with_current_phase,
         phases_config: {
           sequence: 'xcxxy',
-          x: { voting_enabled: true, downvoting_enabled: false },
-          c: { voting_enabled: false },
-          y: { voting_enabled: true, downvoting_enabled: true }
+          x: { reacting_enabled: true, downreacting_enabled: false },
+          c: { reacting_enabled: false },
+          y: { reacting_enabled: true, downreacting_enabled: true }
         }
       )
       expect(service.future_upvoting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[2]
@@ -756,7 +756,7 @@ describe ParticipationContextService do
         :project_with_current_phase,
         phases_config: {
           sequence: 'xcyy',
-          y: { voting_enabled: false }
+          y: { reacting_enabled: false }
         }
       )
       expect(service.future_upvoting_idea_enabled_phase(project, create(:user))).to be_nil

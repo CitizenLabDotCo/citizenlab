@@ -16,8 +16,8 @@
 #  feedback_status_change           :integer
 #  feedback_none                    :integer
 #  votes_count                      :integer
-#  upvotes_count                    :integer
-#  downvotes_count                  :integer
+#  likes_count                    :integer
+#  dislikes_count                  :integer
 #  publication_status               :string
 #
 module Analytics

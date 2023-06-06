@@ -13,8 +13,8 @@
 #  body_multiloc      :jsonb
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  upvotes_count      :integer          default(0), not null
-#  downvotes_count    :integer          default(0), not null
+#  likes_count        :integer          default(0), not null
+#  dislikes_count     :integer          default(0), not null
 #  publication_status :string           default("published"), not null
 #  body_updated_at    :datetime
 #  children_count     :integer          default(0), not null

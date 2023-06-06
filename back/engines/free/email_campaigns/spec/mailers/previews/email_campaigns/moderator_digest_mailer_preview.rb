@@ -50,9 +50,9 @@ module EmailCampaigns
               url: Frontend::UrlService.new.model_to_url(idea),
               published_at: idea.published_at.iso8601,
               author_name: name_service.display_name!(idea.author),
-              upvotes_count: idea.upvotes_count,
+              likes_count: idea.likes_count,
               upvotes_increment: new_votes.where(mode: 'up').count,
-              downvotes_count: idea.downvotes_count,
+              dislikes_count: idea.dislikes_count,
               downvotes_increment: new_votes.where(mode: 'down').count,
               comments_count: idea.comments_count,
               comments_increment: idea.comments.where('created_at > ?', Time.now - 7).count

@@ -231,13 +231,13 @@ module EmailCampaigns
     def ideas_activity_counts(ideas)
       idea_ids = ideas.pluck(:id)
       new_votes = Reaction.where(reactable_id: idea_ids).where('created_at > ?', Time.now - days_ago)
-      new_upvotes_counts = new_votes.where(mode: 'up').group(:reactable_id).count
-      new_downvotes_counts = new_votes.where(mode: 'down').group(:reactable_id).count
+      new_likes_counts = new_votes.where(mode: 'up').group(:reactable_id).count
+      new_dislikes_counts = new_votes.where(mode: 'down').group(:reactable_id).count
       new_comments_counts = Comment.where(post_id: idea_ids).where('created_at > ?', Time.now - days_ago).group(:post_id).count
 
       idea_ids.each_with_object({}) do |idea_id, object|
-        upvotes         = (new_upvotes_counts[idea_id] || 0)
-        downvotes       = (new_downvotes_counts[idea_id] || 0)
+        upvotes         = (new_likes_counts[idea_id] || 0)
+        downvotes       = (new_dislikes_counts[idea_id] || 0)
         comments        = (new_comments_counts[idea_id] || 0)
         total           = (upvotes + downvotes + comments)
         object[idea_id] = { upvotes: upvotes, downvotes: downvotes, comments: comments, total: total }
@@ -271,9 +271,9 @@ module EmailCampaigns
         url: Frontend::UrlService.new.model_to_url(idea),
         published_at: idea.published_at.iso8601,
         author_name: idea.author_name,
-        upvotes_count: idea.upvotes_count,
+        likes_count: idea.likes_count,
         upvotes_increment: idea_activity(idea, :upvotes),
-        downvotes_count: idea.downvotes_count,
+        dislikes_count: idea.dislikes_count,
         downvotes_increment: idea_activity(idea, :downvotes),
         comments_count: idea.comments_count,
         comments_increment: idea_activity(idea, :comments)
@@ -287,7 +287,7 @@ module EmailCampaigns
         url: Frontend::UrlService.new.model_to_url(initiative),
         published_at: initiative.published_at&.iso8601,
         author_name: initiative.author_name,
-        upvotes_count: initiative.upvotes_count,
+        likes_count: initiative.likes_count,
         comments_count: initiative.comments_count,
         threshold_reached_at: initiative.threshold_reached_at&.iso8601,
         images: initiative.initiative_images.map { |image| serialize_image(image) },

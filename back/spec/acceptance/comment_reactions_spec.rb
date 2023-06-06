@@ -66,7 +66,7 @@ resource 'Comment Votes' do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :relationships, :user, :data, :id)).to be_nil
       expect(json_response.dig(:data, :attributes, :mode)).to eq 'up'
-      expect(@comment.reload.upvotes_count).to eq 3
+      expect(@comment.reload.likes_count).to eq 3
     end
 
     describe do
@@ -84,16 +84,16 @@ resource 'Comment Votes' do
 
     example_request "Upvote a comment that doesn't have your reaction yet" do
       assert_status 201
-      expect(@comment.reload.upvotes_count).to eq 3
-      expect(@comment.reload.downvotes_count).to eq 0
+      expect(@comment.reload.likes_count).to eq 3
+      expect(@comment.reload.dislikes_count).to eq 0
     end
 
     example 'Upvote a comment that you downvoted before' do
       @comment.reactions.create(user: @user, mode: 'down')
       do_request
       assert_status 201
-      expect(@comment.reload.upvotes_count).to eq 3
-      expect(@comment.reload.downvotes_count).to eq 0
+      expect(@comment.reload.likes_count).to eq 3
+      expect(@comment.reload.dislikes_count).to eq 0
     end
 
     example '[error] Upvote a comment that you upvoted before' do
@@ -102,8 +102,8 @@ resource 'Comment Votes' do
       assert_status 422
       json_response = json_parse response_body
       expect(json_response).to include_response_error(:base, 'already_upvoted')
-      expect(@comment.reload.upvotes_count).to eq 3
-      expect(@comment.reload.downvotes_count).to eq 0
+      expect(@comment.reload.likes_count).to eq 3
+      expect(@comment.reload.dislikes_count).to eq 0
     end
   end
 
@@ -114,22 +114,22 @@ resource 'Comment Votes' do
       @comment.reactions.create(user: @user, mode: 'up')
       do_request
       assert_status 401
-      expect(@comment.reload.upvotes_count).to eq 3
-      expect(@comment.reload.downvotes_count).to eq 0
+      expect(@comment.reload.likes_count).to eq 3
+      expect(@comment.reload.dislikes_count).to eq 0
     end
 
     # example_request "Downvote a comment that doesn't have your vote yet" do
     #   assert_status 201
-    #   expect(@comment.reload.upvotes_count).to eq 2
-    #   expect(@comment.reload.downvotes_count).to eq 1
+    #   expect(@comment.reload.likes_count).to eq 2
+    #   expect(@comment.reload.dislikes_count).to eq 1
     # end
 
     # example "Downvote a comment that you upvoted before" do
     #   @comment.reactions.create(user: @user, mode: 'up')
     #   do_request
     #   assert_status 201
-    #   expect(@comment.reload.upvotes_count).to eq 2
-    #   expect(@comment.reload.downvotes_count).to eq 1
+    #   expect(@comment.reload.likes_count).to eq 2
+    #   expect(@comment.reload.dislikes_count).to eq 1
     # end
 
     # example "[error] Downvote a comment that you downvoted before" do
@@ -138,8 +138,8 @@ resource 'Comment Votes' do
     #   assert_status 422
     #   json_response = json_parse(response_body)
     #   expect(json_response[:errors][:base][0][:error]).to eq "already_downvoted"
-    #   expect(@comment.reload.upvotes_count).to eq 2
-    #   expect(@comment.reload.downvotes_count).to eq 1
+    #   expect(@comment.reload.likes_count).to eq 2
+    #   expect(@comment.reload.dislikes_count).to eq 1
     # end
   end
 

@@ -49,7 +49,7 @@ RSpec.describe Permission do
     end
 
     it 'Only returns permissions that are enabled in a project' do
-      project.update!(voting_enabled: false)
+      project.update!(reacting_enabled: false)
       permissions = described_class.filter_enabled_actions(project)
       expect(permissions.size).to eq(2)
       expect(permissions).not_to include(permission_voting)

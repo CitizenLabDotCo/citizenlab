@@ -20,8 +20,8 @@ class ParticipationContextService
     not_ideation: 'not_ideation',
     voting_disabled: 'voting_disabled',
     downvoting_disabled: 'downvoting_disabled',
-    upvoting_limited_max_reached: 'upvoting_limited_max_reached',
-    downvoting_limited_max_reached: 'downvoting_limited_max_reached',
+    reacting_like_limited_max_reached: 'reacting_like_limited_max_reached',
+    reacting_dislike_limited_max_reached: 'reacting_dislike_limited_max_reached',
     idea_not_in_current_phase: 'idea_not_in_current_phase'
   }.freeze
 
@@ -176,7 +176,7 @@ class ParticipationContextService
       VOTING_DISABLED_REASONS[:not_ideation]
     elsif !in_current_context? idea, context
       VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
-    elsif !context.voting_enabled
+    elsif !context.reacting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
     else
       permission_denied_reason user, 'voting_idea', get_participation_context(idea.project)
@@ -282,7 +282,7 @@ class ParticipationContextService
   def general_idea_voting_disabled_reason(context, _user)
     if !context.ideation?
       VOTING_DISABLED_REASONS[:not_ideation]
-    elsif !context.voting_enabled
+    elsif !context.reacting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
     end
   end
@@ -291,13 +291,13 @@ class ParticipationContextService
     case mode
     when 'up'
       if user && upvoting_limit_reached?(context, user)
-        VOTING_DISABLED_REASONS[:upvoting_limited_max_reached]
+        VOTING_DISABLED_REASONS[:reacting_like_limited_max_reached]
       end
     when 'down'
-      if !context.downvoting_enabled
+      if !context.downreacting_enabled
         VOTING_DISABLED_REASONS[:downvoting_disabled]
       elsif user && downvoting_limit_reached?(context, user)
-        VOTING_DISABLED_REASONS[:downvoting_limited_max_reached]
+        VOTING_DISABLED_REASONS[:reacting_dislike_limited_max_reached]
       end
     else
       ErrorReporter.report_msg("Unsupported vote type #{mode}")
@@ -317,11 +317,11 @@ class ParticipationContextService
   end
 
   def upvoting_limit_reached?(context, user)
-    context.upvoting_limited? && user.reactions.up.where(reactable: context.ideas).size >= context.upvoting_limited_max
+    context.upvoting_limited? && user.reactions.up.where(reactable: context.ideas).size >= context.reacting_like_limited_max
   end
 
   def downvoting_limit_reached?(context, user)
-    context.downvoting_limited? && user.reactions.down.where(reactable: context.ideas).size >= context.downvoting_limited_max
+    context.downvoting_limited? && user.reactions.down.where(reactable: context.ideas).size >= context.reacting_dislike_limited_max
   end
 
   def permission_denied_reason(user, _action, _context)

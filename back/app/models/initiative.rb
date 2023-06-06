@@ -10,8 +10,8 @@
 #  publication_status       :string
 #  published_at             :datetime
 #  author_id                :uuid
-#  upvotes_count            :integer          default(0), not null
-#  downvotes_count          :integer          default(0), not null
+#  likes_count              :integer          default(0), not null
+#  dislikes_count           :integer          default(0), not null
 #  location_point           :geography        point, 4326
 #  location_description     :string
 #  slug                     :string

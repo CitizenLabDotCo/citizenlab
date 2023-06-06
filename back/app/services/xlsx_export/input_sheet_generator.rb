@@ -87,12 +87,12 @@ module XlsxExport
       ComputedFieldForReport.new(column_header_for('comments_count'), ->(input) { input.comments_count })
     end
 
-    def upvotes_count_report_field
-      ComputedFieldForReport.new(column_header_for('upvotes_count'), ->(input) { input.upvotes_count })
+    def likes_count_report_field
+      ComputedFieldForReport.new(column_header_for('likes_count'), ->(input) { input.likes_count })
     end
 
-    def downvotes_count_report_field
-      ComputedFieldForReport.new(column_header_for('downvotes_count'), ->(input) { input.downvotes_count })
+    def dislikes_count_report_field
+      ComputedFieldForReport.new(column_header_for('dislikes_count'), ->(input) { input.dislikes_count })
     end
 
     def baskets_count_report_field
@@ -161,8 +161,8 @@ module XlsxExport
         meta_fields << published_at_report_field if participation_method.supports_publication?
         meta_fields << comments_count_report_field if participation_method.supports_commenting?
         if participation_method.supports_voting?
-          meta_fields << upvotes_count_report_field
-          meta_fields << downvotes_count_report_field
+          meta_fields << likes_count_report_field
+          meta_fields << dislikes_count_report_field
         end
         meta_fields << baskets_count_report_field if participation_method.supports_baskets?
         meta_fields << budget_report_field if participation_method.supports_budget?

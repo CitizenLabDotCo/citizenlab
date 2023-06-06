@@ -92,7 +92,7 @@ describe IdeaReactionPolicy do
 
   context 'for a mortal user who owns the reaction on an idea in a project where voting is disabled' do
     let!(:user) { create(:user) }
-    let!(:project) { create(:continuous_project, voting_enabled: false) }
+    let!(:project) { create(:continuous_project, reacting_enabled: false) }
     let!(:idea) { create(:idea, project: project) }
     let!(:reaction) { create(:reaction, reactable: idea, user: user) }
 

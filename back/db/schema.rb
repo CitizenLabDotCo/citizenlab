@@ -196,8 +196,8 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
     t.jsonb "body_multiloc", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "upvotes_count", default: 0, null: false
-    t.integer "downvotes_count", default: 0, null: false
+    t.integer "likes_count", default: 0, null: false
+    t.integer "dislikes_count", default: 0, null: false
     t.string "publication_status", default: "published", null: false
     t.datetime "body_updated_at"
     t.integer "children_count", default: 0, null: false
@@ -498,8 +498,8 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
     t.uuid "author_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "upvotes_count", default: 0, null: false
-    t.integer "downvotes_count", default: 0, null: false
+    t.integer "likes_count", default: 0, null: false
+    t.integer "dislikes_count", default: 0, null: false
     t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "location_description"
     t.integer "comments_count", default: 0, null: false
@@ -615,8 +615,8 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
     t.string "publication_status"
     t.datetime "published_at"
     t.uuid "author_id"
-    t.integer "upvotes_count", default: 0, null: false
-    t.integer "downvotes_count", default: 0, null: false
+    t.integer "likes_count", default: 0, null: false
+    t.integer "dislikes_count", default: 0, null: false
     t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "location_description"
     t.string "slug"
@@ -943,21 +943,21 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
     t.string "participation_method", default: "ideation", null: false
     t.boolean "posting_enabled", default: true
     t.boolean "commenting_enabled", default: true
-    t.boolean "voting_enabled", default: true, null: false
-    t.string "upvoting_method", default: "unlimited", null: false
-    t.integer "upvoting_limited_max", default: 10
+    t.boolean "reacting_enabled", default: true, null: false
+    t.string "reacting_like_method", default: "unlimited", null: false
+    t.integer "reacting_like_limited_max", default: 10
     t.string "survey_embed_url"
     t.string "survey_service"
     t.string "presentation_mode", default: "card"
     t.integer "max_budget"
     t.boolean "poll_anonymous", default: false, null: false
-    t.boolean "downvoting_enabled", default: true, null: false
+    t.boolean "reacting_dislike_enabled", default: true, null: false
     t.integer "ideas_count", default: 0, null: false
     t.string "ideas_order"
     t.string "input_term", default: "idea"
     t.integer "min_budget", default: 0
-    t.string "downvoting_method", default: "unlimited", null: false
-    t.integer "downvoting_limited_max", default: 10
+    t.string "reacting_dislike_method", default: "unlimited", null: false
+    t.integer "reacting_dislike_limited_max", default: 10
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
     t.boolean "allow_anonymous_participation", default: false, null: false
@@ -1078,9 +1078,9 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
     t.string "participation_method", default: "ideation"
     t.boolean "posting_enabled", default: true
     t.boolean "commenting_enabled", default: true
-    t.boolean "voting_enabled", default: true, null: false
-    t.string "upvoting_method", default: "unlimited", null: false
-    t.integer "upvoting_limited_max", default: 10
+    t.boolean "reacting_enabled", default: true, null: false
+    t.string "reacting_like_method", default: "unlimited", null: false
+    t.integer "reacting_like_limited_max", default: 10
     t.string "process_type", default: "timeline", null: false
     t.string "internal_role"
     t.string "survey_embed_url"
@@ -1089,12 +1089,12 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
     t.integer "comments_count", default: 0, null: false
     t.uuid "default_assignee_id"
     t.boolean "poll_anonymous", default: false, null: false
-    t.boolean "downvoting_enabled", default: true, null: false
+    t.boolean "reacting_dislike_enabled", default: true, null: false
     t.string "ideas_order"
     t.string "input_term", default: "idea"
     t.integer "min_budget", default: 0
-    t.string "downvoting_method", default: "unlimited", null: false
-    t.integer "downvoting_limited_max", default: 10
+    t.string "reacting_dislike_method", default: "unlimited", null: false
+    t.integer "reacting_dislike_limited_max", default: 10
     t.boolean "include_all_areas", default: false, null: false
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
@@ -1525,7 +1525,7 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
       ideas.author_id,
       ideas.created_at,
       ideas.updated_at,
-      ideas.upvotes_count,
+      ideas.likes_count AS upvotes_count,
       ideas.location_point,
       ideas.location_description,
       ideas.comments_count,
@@ -1541,7 +1541,7 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
       initiatives.author_id,
       initiatives.created_at,
       initiatives.updated_at,
-      initiatives.upvotes_count,
+      initiatives.likes_count AS upvotes_count,
       initiatives.location_point,
       initiatives.location_description,
       initiatives.comments_count,
@@ -1727,9 +1727,9 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
               WHEN (abf.feedback_first_date IS NULL) THEN 1
               ELSE 0
           END AS feedback_none,
-      (i.upvotes_count + i.downvotes_count) AS votes_count,
-      i.upvotes_count,
-      i.downvotes_count,
+      (i.likes_count + i.dislikes_count) AS votes_count,
+      i.likes_count AS upvotes_count,
+      i.dislikes_count AS downvotes_count,
       i.publication_status
      FROM ((ideas i
        JOIN analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
@@ -1749,9 +1749,9 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
               WHEN (abf.feedback_first_date IS NULL) THEN 1
               ELSE 0
           END AS feedback_none,
-      (i.upvotes_count + i.downvotes_count) AS votes_count,
-      i.upvotes_count,
-      i.downvotes_count,
+      (i.likes_count + i.dislikes_count) AS votes_count,
+      i.likes_count AS upvotes_count,
+      i.dislikes_count AS downvotes_count,
       i.publication_status
      FROM (((initiatives i
        JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
@@ -1769,9 +1769,9 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
               ELSE idea.id
           END AS dimension_type_id,
       (i.created_at)::date AS dimension_date_created_id,
-      (i.upvotes_count + i.downvotes_count) AS votes_count,
-      i.upvotes_count,
-      i.downvotes_count
+      (i.likes_count + i.dislikes_count) AS votes_count,
+      i.likes_count AS upvotes_count,
+      i.dislikes_count AS downvotes_count
      FROM ((((ideas i
        LEFT JOIN projects pr ON ((pr.id = i.project_id)))
        LEFT JOIN phases ph ON ((ph.id = i.creation_phase_id)))
@@ -1783,9 +1783,9 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
       NULL::uuid AS dimension_project_id,
       adt.id AS dimension_type_id,
       (i.created_at)::date AS dimension_date_created_id,
-      (i.upvotes_count + i.downvotes_count) AS votes_count,
-      i.upvotes_count,
-      i.downvotes_count
+      (i.likes_count + i.dislikes_count) AS votes_count,
+      i.likes_count AS upvotes_count,
+      i.dislikes_count AS downvotes_count
      FROM (initiatives i
        JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
   UNION ALL
@@ -1794,9 +1794,9 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
       i.project_id AS dimension_project_id,
       adt.id AS dimension_type_id,
       (c.created_at)::date AS dimension_date_created_id,
-      (c.upvotes_count + c.downvotes_count) AS votes_count,
-      c.upvotes_count,
-      c.downvotes_count
+      (c.likes_count + c.dislikes_count) AS votes_count,
+      c.likes_count AS upvotes_count,
+      c.dislikes_count AS downvotes_count
      FROM ((comments c
        JOIN analytics_dimension_types adt ON ((((adt.name)::text = 'comment'::text) AND ((adt.parent)::text = lower((c.post_type)::text)))))
        LEFT JOIN ideas i ON ((c.post_id = i.id)))

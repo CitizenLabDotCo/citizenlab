@@ -27,7 +27,7 @@ resource 'Initiatives' do
     parameter :assignee, 'Filter by assignee (user id)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :feedback_needed, 'Filter out initiatives that need feedback', required: false
-    parameter :sort, "Either 'new', '-new', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'status', '-status', 'random'", required: false
+    parameter :sort, "Either 'new', '-new', 'author_name', '-author_name', 'likes_count', '-likes_count', 'status', '-status', 'random'", required: false
 
     example_request 'List all published initiatives (default behaviour)' do
       expect(status).to eq(200)
@@ -368,7 +368,7 @@ resource 'Initiatives' do
         expect(new_initiative.reactions.size).to eq 1
         expect(new_initiative.reactions[0].mode).to eq 'up'
         expect(new_initiative.reactions[0].user.id).to eq @user.id
-        expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
+        expect(json_response[:data][:attributes][:likes_count]).to eq 1
       end
 
       example 'Check for the automatic assignement of the default assignee', document: false do
@@ -496,7 +496,7 @@ resource 'Initiatives' do
           expect(new_initiative.reactions.size).to eq 1
           expect(new_initiative.reactions[0].mode).to eq 'up'
           expect(new_initiative.reactions[0].user.id).to eq @user.id
-          expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
+          expect(json_response.dig(:data, :attributes, :likes_count)).to eq 1
         end
       end
 
