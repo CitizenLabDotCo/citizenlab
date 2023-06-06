@@ -6,7 +6,7 @@ import Modal from 'components/UI/Modal';
 import SharingButtons from 'components/Sharing/SharingButtons';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolderbById from 'api/project_folders/useProjectFolderById';
 import { useIntl } from 'utils/cl-intl';
 
@@ -26,7 +26,7 @@ interface Props {
 
 const ProjectFolderSharingModal = memo<Props>(
   ({ projectFolderId, className, opened, close }) => {
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
     const { data: projectFolder } = useProjectFolderbById(projectFolderId);
     const { formatMessage } = useIntl();
 
@@ -35,7 +35,7 @@ const ProjectFolderSharingModal = memo<Props>(
       ? {
           source: 'share_folder',
           campaign: 'share_content',
-          content: authUser.id,
+          content: authUser.data.id,
         }
       : {
           source: 'share_folder',

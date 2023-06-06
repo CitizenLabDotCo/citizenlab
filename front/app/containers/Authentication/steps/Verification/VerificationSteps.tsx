@@ -6,7 +6,7 @@ import VerificationMethods from './VerificationMethods';
 import Outlet from 'components/Outlet';
 
 // resource hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useVerificationMethods from 'hooks/useVerificationMethods';
 
 // style
@@ -18,7 +18,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 
-import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 const Container = styled.div`
   display: flex;
@@ -37,7 +37,7 @@ const VerificationSteps = memo<Props>(({ context, onCompleted, onError }) => {
     useState<TVerificationStep>('method-selection');
   const [method, setMethod] = useState<TVerificationMethod | null>(null);
 
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const verificationMethods = useVerificationMethods();
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const VerificationSteps = memo<Props>(({ context, onCompleted, onError }) => {
   const goToSuccessStep = useCallback(() => {
     if (!isNilOrError(authUser)) {
       streams.reset().then(async () => {
-        await resetQueryCache();
+        invalidateQueryCache();
         setActiveStep('success');
         setMethod(null);
       });

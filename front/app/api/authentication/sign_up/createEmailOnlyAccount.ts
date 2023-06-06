@@ -1,7 +1,7 @@
 import { getAndSetToken } from '../sign_in_out/signIn';
 import { Locale } from 'typings';
 import streams from 'utils/streams';
-import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { IUser } from 'api/users/types';
 import { CreateEmailOnlyAccountProperties } from './types';
@@ -38,7 +38,7 @@ export default async function createEmailOnlyAccount({
 
   if (response.data) {
     await getAndSetToken({ email });
-    await Promise.all([streams.reset(), resetQueryCache()]);
+    await Promise.all([streams.reset(), invalidateQueryCache()]);
     return 'account_created_successfully';
   }
 

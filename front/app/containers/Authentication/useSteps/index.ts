@@ -10,7 +10,7 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 // hooks
 import useAnySSOEnabled from '../useAnySSOEnabled';
 import { useLocation } from 'react-router-dom';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // utils
 import { getStepConfig } from './stepConfig';
@@ -43,7 +43,7 @@ let initialized = false;
 export default function useSteps() {
   const anySSOEnabled = useAnySSOEnabled();
   const { pathname, search } = useLocation();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { mutate: updateUser } = useUpdateUser();
 
   // The authentication data will be initialized with the global sign up flow.
@@ -253,7 +253,7 @@ export default function useSteps() {
       }
 
       const enterClaveUnicaEmail =
-        !isNilOrError(authUser) && isNil(authUser.attributes.email);
+        !isNilOrError(authUser) && isNil(authUser.data.attributes.email);
 
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(enterClaveUnicaEmail);
     }
@@ -263,7 +263,7 @@ export default function useSteps() {
   useEffect(() => {
     if (isNilOrError(authUser)) return;
     if (currentStep !== 'closed') return;
-    if (isNil(authUser.attributes.email)) {
+    if (isNil(authUser.data.attributes.email)) {
       transition(currentStep, 'REOPEN_CLAVE_UNICA')();
     }
   }, [authUser, currentStep, transition]);

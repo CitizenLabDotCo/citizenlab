@@ -1,7 +1,7 @@
 import { combineLatest } from 'rxjs';
 
 // services
-import { authUserStream } from 'services/auth';
+import authUserStream from 'api/me/authUserStream';
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 
 // utils
@@ -45,11 +45,11 @@ const configuration: ModuleConfiguration = {
     // and matomo enabled state
     combineLatest([
       appConfigurationStream,
-      authUserStream().observable,
+      authUserStream,
       initializeFor('matomo'),
     ]).subscribe(([appConfiguration, user, _]) => {
       if (appConfiguration) {
-        setupMatomo(appConfiguration, user);
+        setupMatomo(appConfiguration, user || null);
       }
     });
 

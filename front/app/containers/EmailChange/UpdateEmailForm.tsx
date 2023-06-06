@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import messages from './messages';
 
 // services & hooks
-import { TAuthUser } from 'hooks/useAuthUser';
+
 import { useIntl } from 'utils/cl-intl';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 
@@ -28,6 +28,7 @@ import Input from 'components/HookForm/Input';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import useUpdateUser from 'api/users/useUpdateUser';
+import { IUserData } from 'api/users/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type UpdateEmailFormProps = {
@@ -35,7 +36,7 @@ type UpdateEmailFormProps = {
   setUpdateSuccessful: (updateSuccessful: boolean) => void;
   setOpenConfirmationModal: (openConfirmationModal: boolean) => void;
   methods: UseFormReturn<FormValues, any>;
-  user: TAuthUser;
+  user: IUserData | undefined;
 };
 
 const UpdateEmailForm = ({

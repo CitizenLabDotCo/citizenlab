@@ -6,7 +6,8 @@ import { Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 
 // hooks
-import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
+import { IUserData } from 'api/users/types';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 // i18n
@@ -17,7 +18,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 const calculateMessageDescriptor = (
-  authUser: TAuthUser,
+  authUser: IUserData | undefined,
   commentingPermissions: ReturnType<typeof useInitiativesPermissions>
 ) => {
   const isLoggedIn = !isNilOrError(authUser);
@@ -52,13 +53,13 @@ const calculateMessageDescriptor = (
 };
 
 const CommentingInitiativesDisabled = () => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const commentingPermissions = useInitiativesPermissions(
     'commenting_initiative'
   );
 
   const messageDescriptor = calculateMessageDescriptor(
-    authUser,
+    authUser?.data,
     commentingPermissions
   );
 

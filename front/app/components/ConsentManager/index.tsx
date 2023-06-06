@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo, useEffect } from 'react';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // components
 import Container from './Container';
@@ -41,7 +41,7 @@ const ConsentManager = () => {
   );
 
   const { data: appConfiguration } = useAppConfiguration();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   useEffect(() => {
     const cookieConsent = getConsent();
@@ -55,7 +55,11 @@ const ConsentManager = () => {
 
   const resetPreferences = useCallback(() => {
     setPreferences(
-      getCurrentPreferences(appConfiguration?.data, authUser, cookieConsent)
+      getCurrentPreferences(
+        appConfiguration?.data,
+        authUser?.data,
+        cookieConsent
+      )
     );
   }, [appConfiguration, authUser, cookieConsent]);
 
@@ -74,7 +78,7 @@ const ConsentManager = () => {
       if (isNilOrError(appConfiguration)) return;
       const newChoices: ISavedDestinations = {};
 
-      getActiveDestinations(appConfiguration.data, authUser).forEach(
+      getActiveDestinations(appConfiguration.data, authUser?.data).forEach(
         (config) => {
           newChoices[config.key] =
             newPreferences[getCategory(appConfiguration.data, config)];
@@ -151,7 +155,7 @@ const ConsentManager = () => {
   );
 
   const activeDestinations = useMemo(
-    () => getActiveDestinations(appConfiguration?.data, authUser),
+    () => getActiveDestinations(appConfiguration?.data, authUser?.data),
     [appConfiguration, authUser]
   );
 
