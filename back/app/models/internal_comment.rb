@@ -45,28 +45,28 @@ class InternalComment < ApplicationRecord
 
   counter_culture(
     :post,
-    column_name: proc { |model| model.published? ? 'comments_count' : nil },
+    column_name: proc { |model| model.published? ? 'internal_comments_count' : nil },
     column_names: {
-      ['comments.publication_status = ?', 'published'] => 'comments_count'
+      ['internal_comments.publication_status = ?', 'published'] => 'internal_comments_count'
     },
     touch: true
   )
   counter_culture(
     %i[idea project],
-    column_name: proc { |model| model.published? ? 'comments_count' : nil },
+    column_name: proc { |model| model.published? ? 'internal_comments_count' : nil },
     column_names: {
-      ['comments.publication_status = ?', 'published'] => 'comments_count'
+      ['internal_comments.publication_status = ?', 'published'] => 'internal_comments_count'
     },
     touch: true
   )
 
+  # rubocop:disable Rails/InverseOf
   # This code allows us to do something like comments.include(:idea)
   # After https://stackoverflow.com/a/16124295/3585671
-  belongs_to :idea, -> { joins(:comments).where(comments: { post_type: 'Idea' }) },
+  belongs_to :idea, -> { joins(:internal_comments).where(internal_comments: { post_type: 'Idea' }) },
     foreign_key: 'post_id',
     optional: true,
-    class_name: 'Idea',
-    inverse_of: :internal_comments
+    class_name: 'Idea'
 
   def idea
     return unless post_type == 'Idea'
@@ -74,17 +74,17 @@ class InternalComment < ApplicationRecord
     super
   end
 
-  belongs_to :initiative, -> { joins(:comments).where(comments: { post_type: 'Initiative' }) },
+  belongs_to :initiative, -> { joins(:internal_comments).where(internal_comments: { post_type: 'Initiative' }) },
     foreign_key: 'post_id',
     optional: true,
-    class_name: 'Initiative',
-    inverse_of: :internal_comments
+    class_name: 'Initiative'
 
   def initiative
     return unless post_type == 'Initiative'
 
     super
   end
+  # rubocop:enable Rails/InverseOf
 
   PUBLICATION_STATUSES = %w[published deleted]
 
@@ -120,7 +120,7 @@ class InternalComment < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      unless notification.update comment: nil
+      unless notification.update internal_comment: nil
         notification.destroy!
       end
     end

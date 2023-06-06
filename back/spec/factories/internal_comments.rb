@@ -17,12 +17,12 @@ FactoryBot.define do
       transient do
         mentioned_users { create_list(:user, 2) }
       end
-      after(:create) do |comment, evaluator|
+      after(:create) do |internal_comment, evaluator|
         service = MentionService.new
         mentions = evaluator.mentioned_users.map do |u|
           service.add_span_around service.user_to_mention(u), u
         end
-        comment.update(body_multiloc: {
+        internal_comment.update(body_multiloc: {
           'en' => "#{mentions.join ', '} are sitting in a tree"
         })
       end

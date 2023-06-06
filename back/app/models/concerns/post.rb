@@ -32,6 +32,7 @@ module Post
     has_many :activities, as: :item
 
     has_many :comments, as: :post, dependent: :destroy
+    has_many :internal_comments, as: :post, dependent: :destroy
     has_many :official_feedbacks, as: :post, dependent: :destroy
 
     has_many :votes, as: :votable, dependent: :destroy
