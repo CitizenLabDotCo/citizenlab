@@ -47,7 +47,7 @@ module ParticipationContext
         validates :commenting_enabled, inclusion: { in: [true, false] }
         validates :reacting_enabled, inclusion: { in: [true, false] }
         validates :reacting_like_method, presence: true, inclusion: { in: VOTING_METHODS }
-        validates :downreacting_enabled, inclusion: { in: [true, false] }
+        validates :reacting_dislike_enabled, inclusion: { in: [true, false] }
         validates :reacting_dislike_method, presence: true, inclusion: { in: VOTING_METHODS }
         validates :ideas_order, inclusion: { in: IDEAS_ORDERS }, allow_nil: true
         validates :input_term, inclusion: { in: INPUT_TERMS }

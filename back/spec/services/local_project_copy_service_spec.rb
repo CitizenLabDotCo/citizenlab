@@ -31,7 +31,7 @@ describe LocalProjectCopyService do
         reacting_enabled: true,
         reacting_like_method: 'unlimited',
         reacting_like_limited_max: 10,
-        downreacting_enabled: true,
+        reacting_dislike_enabled: true,
         reacting_dislike_method: 'limited',
         reacting_dislike_limited_max: 3,
         presentation_mode: 'card',

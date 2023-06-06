@@ -28,7 +28,7 @@ module MultiTenancy
             project.update({
               posting_enabled: rand(4) != 0,
               reacting_enabled: rand(4) != 0,
-              downreacting_enabled: rand(3) != 0,
+              reacting_dislike_enabled: rand(3) != 0,
               commenting_enabled: rand(4) != 0,
               reacting_like_method: %w[unlimited unlimited unlimited limited][rand(4)],
               reacting_like_limited_max: rand(1..15),
@@ -89,7 +89,7 @@ module MultiTenancy
             phase.assign_attributes({
               posting_enabled: rand(4) != 0,
               reacting_enabled: rand(4) != 0,
-              downreacting_enabled: rand(3) != 0,
+              reacting_dislike_enabled: rand(3) != 0,
               commenting_enabled: rand(4) != 0,
               reacting_like_method: %w[unlimited unlimited unlimited limited][rand(4)],
               reacting_like_limited_max: rand(1..15),

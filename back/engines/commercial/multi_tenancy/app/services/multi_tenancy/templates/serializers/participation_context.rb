@@ -6,7 +6,7 @@ module MultiTenancy
       class ParticipationContext < Base
         attributes %i[
           commenting_enabled
-          downreacting_enabled
+          reacting_dislike_enabled
           reacting_dislike_limited_max
           reacting_dislike_method
           ideas_order

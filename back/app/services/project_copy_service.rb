@@ -207,7 +207,7 @@ class ProjectCopyService < TemplateService
       'reacting_enabled' => pc.reacting_enabled,
       'reacting_like_method' => pc.reacting_like_method,
       'reacting_like_limited_max' => pc.reacting_like_limited_max,
-      'downreacting_enabled' => pc.downreacting_enabled,
+      'reacting_dislike_enabled' => pc.reacting_dislike_enabled,
       'reacting_dislike_method' => pc.reacting_dislike_method,
       'reacting_dislike_limited_max' => pc.reacting_dislike_limited_max,
       'max_budget' => pc.max_budget,

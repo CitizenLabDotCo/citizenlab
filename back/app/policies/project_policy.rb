@@ -153,7 +153,7 @@ class ProjectPolicy < ApplicationPolicy
     ]
 
     if AppConfiguration.instance.feature_activated? 'disable_downvoting'
-      shared += %i[downreacting_enabled reacting_dislike_method reacting_dislike_limited_max]
+      shared += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
     shared
   end

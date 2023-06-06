@@ -35,8 +35,8 @@ module Post
     has_many :official_feedbacks, as: :post, dependent: :destroy
 
     has_many :reactions, as: :reactable, dependent: :destroy
-    has_many :up_reactions, -> { where(mode: 'up') }, as: :reactable, class_name: 'Reaction'
-    has_many :down_reactions, -> { where(mode: 'down') }, as: :reactable, class_name: 'Reaction'
+    has_many :likes, -> { where(mode: 'up') }, as: :reactable, class_name: 'Reaction'
+    has_many :dislikes, -> { where(mode: 'down') }, as: :reactable, class_name: 'Reaction'
     has_one :user_reaction, ->(user_id) { where(user_id: user_id) }, as: :reactable, class_name: 'Reaction'
 
     has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy

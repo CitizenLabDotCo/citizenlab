@@ -108,7 +108,7 @@ resource 'Phases' do
         parameter :reacting_enabled, 'Can citizens vote in this phase? Defaults to true', required: false
         parameter :reacting_like_method, "How does upvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
         parameter :reacting_like_limited_max, 'Number of upvotes a citizen can perform in this phase, only if the reacting_like_method is limited. Defaults to 10', required: false
-        parameter :downreacting_enabled, 'Can citizens downvote in this phase? Defaults to true', required: false
+        parameter :reacting_dislike_enabled, 'Can citizens downvote in this phase? Defaults to true', required: false
         parameter :reacting_dislike_method, "How does downvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
         parameter :reacting_dislike_limited_max, 'Number of downvotes a citizen can perform in this phase, only if the reacting_dislike_method is limited. Defaults to 10', required: false
         parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously. Defaults to false', required: false
@@ -152,7 +152,7 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :posting_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :reacting_enabled)).to be true
-        expect(json_response.dig(:data, :attributes, :downreacting_enabled)).to be true
+        expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq 'unlimited'
         expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
         expect(json_response.dig(:data, :attributes, :min_budget)).to eq 100
@@ -215,7 +215,7 @@ resource 'Phases' do
           expect(json_response.dig(:data, :attributes, :posting_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :reacting_enabled)).to be true
-          expect(json_response.dig(:data, :attributes, :downreacting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq 'unlimited'
           expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
         end
@@ -331,7 +331,7 @@ resource 'Phases' do
         parameter :reacting_enabled, 'Can citizens vote in this phase?', required: false
         parameter :reacting_like_method, "How does upvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
         parameter :reacting_like_limited_max, 'Number of upvotes a citizen can perform in this phase, only if the reacting_like_method is limited', required: false
-        parameter :downreacting_enabled, 'Can citizens vote in this phase?', required: false
+        parameter :reacting_dislike_enabled, 'Can citizens vote in this phase?', required: false
         parameter :reacting_dislike_method, "How does downvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
         parameter :reacting_dislike_limited_max, 'Number of downvotes a citizen can perform in this phase, only if the reacting_dislike_method is limited', required: false
         parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously.', required: false
@@ -712,8 +712,8 @@ resource 'Phases' do
             )
           end
           let!(:comments) { create_list(:comment, 1, post: ideation_response1) }
-          let!(:up_reactions) { create_list(:reaction, 2, reactable: ideation_response1) }
-          let!(:down_reactions) { create_list(:down_reaction, 1, reactable: ideation_response1) }
+          let!(:likes) { create_list(:reaction, 2, reactable: ideation_response1) }
+          let!(:dislikes) { create_list(:dislike, 1, reactable: ideation_response1) }
           let!(:baskets) { [] }
 
           example 'Download ideation phase inputs in one sheet' do
@@ -767,8 +767,8 @@ resource 'Phases' do
                     an_instance_of(DateTime), # created_at
                     an_instance_of(DateTime), # published_at
                     comments.size,
-                    up_reactions.size,
-                    down_reactions.size,
+                    likes.size,
+                    dislikes.size,
                     baskets.size,
                     ideation_response1.budget,
                     "http://example.org/ideas/#{ideation_response1.slug}",

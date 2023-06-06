@@ -6,7 +6,7 @@ FactoryBot.define do
     mode { 'up' }
     user
 
-    factory :down_reaction do
+    factory :dislike do
       mode { 'down' }
     end
 

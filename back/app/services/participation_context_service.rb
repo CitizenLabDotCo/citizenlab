@@ -294,7 +294,7 @@ class ParticipationContextService
         VOTING_DISABLED_REASONS[:reacting_like_limited_max_reached]
       end
     when 'down'
-      if !context.downreacting_enabled
+      if !context.reacting_dislike_enabled
         VOTING_DISABLED_REASONS[:downvoting_disabled]
       elsif user && downvoting_limit_reached?(context, user)
         VOTING_DISABLED_REASONS[:reacting_dislike_limited_max_reached]

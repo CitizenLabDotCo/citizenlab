@@ -59,7 +59,7 @@ FactoryBot.define do
     end
 
     factory :idea_downvoted_activity do
-      association :item, factory: :down_reaction
+      association :item, factory: :dislike
       action { 'idea_downvoted' }
     end
 

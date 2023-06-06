@@ -17,7 +17,7 @@ module WebApi::V1::ParticipationContextSerializer
       attribute :reacting_enabled
       attribute :reacting_like_method
       attribute :reacting_like_limited_max
-      attribute :downreacting_enabled
+      attribute :reacting_dislike_enabled
       attribute :reacting_dislike_method
       attribute :reacting_dislike_limited_max
       attribute :allow_anonymous_participation

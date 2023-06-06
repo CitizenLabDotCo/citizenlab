@@ -192,7 +192,7 @@ resource 'Reactions' do
     end
 
     example '[error] Downvote in a project where downvoting is disabled', document: false do
-      @project.update! downreacting_enabled: false
+      @project.update! reacting_dislike_enabled: false
       @idea.reactions.create(user: @user, mode: 'down')
       do_request
       expect(status).to eq 401

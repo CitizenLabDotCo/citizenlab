@@ -39,9 +39,9 @@ class TrendingIdeaService
 
   def trending_score(idea)
     # used for testing purposes
-    up_reactions_ago = activity_ago idea.up_reactions # .select { |v| v.user&.id != idea.author&.id }
+    likes_ago = activity_ago idea.likes # .select { |v| v.user&.id != idea.author&.id }
     comments_ago = activity_ago idea.comments # .select { |c| c.author&.id != idea.author&.id }
-    mean_activity_at = mean(up_reactions_ago + comments_ago + [(Time.now.to_i - idea.published_at.to_i)])
+    mean_activity_at = mean(likes_ago + comments_ago + [(Time.now.to_i - idea.published_at.to_i)])
     score = trending_score_formula (idea.likes_count - idea.dislikes_count), mean_activity_at
     if (idea.likes_count - idea.dislikes_count) < 0
       return -1 / score

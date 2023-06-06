@@ -9,7 +9,7 @@ RSpec.describe StatReactionPolicy do
   let_it_be(:reactions) do
     [
       create_list(:reaction, 2, reactable: upvoted_idea),
-      create(:down_reaction),
+      create(:dislike),
       create(:comment_reaction)
     ].flatten
   end
