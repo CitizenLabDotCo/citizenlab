@@ -819,8 +819,8 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
     max_budget:
     title_multiloc:
@@ -1082,8 +1082,8 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
     max_budget:
     title_multiloc:
@@ -1112,8 +1112,8 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
     max_budget:
     title_multiloc:
@@ -1142,8 +1142,8 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: false
-    upvoting_method: unlimited
+    reacting_enabled: false
+    reacting_like_method: unlimited
     upvoting_limited_max: 5
     max_budget:
     title_multiloc:
@@ -1172,8 +1172,8 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
     max_budget:
     title_multiloc:
@@ -1202,8 +1202,8 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
     max_budget:
     title_multiloc:
@@ -1234,8 +1234,8 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: false
-    upvoting_method: unlimited
+    reacting_enabled: false
+    reacting_like_method: unlimited
     upvoting_limited_max: 13
     max_budget:
     project_ref: *5
@@ -1257,8 +1257,8 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 13
     max_budget:
     project_ref: *5
@@ -1280,8 +1280,8 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: false
-    upvoting_method: unlimited
+    reacting_enabled: false
+    reacting_like_method: unlimited
     upvoting_limited_max: 13
     max_budget:
     project_ref: *5
@@ -1303,8 +1303,8 @@ models:
     participation_method: information
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
     max_budget:
     project_ref: *5
@@ -1327,8 +1327,8 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: limited
+    reacting_enabled: true
+    reacting_like_method: limited
     upvoting_limited_max: 13
     max_budget:
     project_ref: *6
@@ -1351,8 +1351,8 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: limited
+    reacting_enabled: true
+    reacting_like_method: limited
     upvoting_limited_max: 14
     max_budget:
     project_ref: *6
@@ -1374,8 +1374,8 @@ models:
     participation_method: information
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
     max_budget:
     project_ref: *6
@@ -1399,8 +1399,8 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 6
     max_budget:
     project_ref: *6
@@ -1423,8 +1423,8 @@ models:
     participation_method: ideation
     posting_enabled: false
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 2
     max_budget:
     project_ref: *6
@@ -1446,8 +1446,8 @@ models:
     participation_method: information
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
     max_budget:
     project_ref: *6
@@ -1470,8 +1470,8 @@ models:
     participation_method: information
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
     max_budget:
     project_ref: *6
@@ -1493,8 +1493,8 @@ models:
     participation_method: information
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
     max_budget:
     project_ref: *7
@@ -1517,8 +1517,8 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: false
-    voting_enabled: false
-    upvoting_method: unlimited
+    reacting_enabled: false
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
     max_budget:
     project_ref: *7
@@ -1540,8 +1540,8 @@ models:
     participation_method: information
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
     max_budget:
     project_ref: *7
@@ -1564,8 +1564,8 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 7
     max_budget:
     project_ref: *7
@@ -1587,8 +1587,8 @@ models:
     participation_method: ideation
     posting_enabled: false
     commenting_enabled: false
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 8
     max_budget:
     project_ref: *8

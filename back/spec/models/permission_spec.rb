@@ -41,18 +41,18 @@ RSpec.describe Permission do
     let(:project) { create(:project) }
     let!(:permission_commenting) { create(:permission, action: 'commenting_idea', permission_scope: project) }
     let!(:permission_posting) { create(:permission, action: 'posting_idea', permission_scope: project) }
-    let!(:permission_voting) { create(:permission, action: 'voting_idea', permission_scope: project) }
+    let!(:permission_reacting) { create(:permission, action: 'reacting_idea', permission_scope: project) }
 
     it 'Returns permissions in the correct order' do
       permissions = described_class.order_by_action(project)
-      expect(permissions).to eq([permission_posting, permission_commenting, permission_voting])
+      expect(permissions).to eq([permission_posting, permission_commenting, permission_reacting])
     end
 
     it 'Only returns permissions that are enabled in a project' do
       project.update!(reacting_enabled: false)
       permissions = described_class.filter_enabled_actions(project)
       expect(permissions.size).to eq(2)
-      expect(permissions).not_to include(permission_voting)
+      expect(permissions).not_to include(permission_reacting)
     end
   end
 end

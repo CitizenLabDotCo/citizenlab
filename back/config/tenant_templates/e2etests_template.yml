@@ -688,8 +688,8 @@ models:
     updated_at: '2018-03-28 13:35:04'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
   - &Pb
     title_multiloc:
@@ -713,8 +713,8 @@ models:
     updated_at: '2018-03-28 13:35:04'
     posting_enabled: false
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
     max_budget: 100000
   - &charliesPb
@@ -739,8 +739,8 @@ models:
     updated_at: '2018-03-28 13:35:04'
     posting_enabled: false
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
     max_budget: 100000
   - &verifiedPb
@@ -765,8 +765,8 @@ models:
     updated_at: '2018-03-28 13:35:04'
     posting_enabled: false
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
     max_budget: 100000
   - &project2
@@ -792,8 +792,8 @@ models:
     updated_at: '2018-03-28 13:35:04'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
   - &76
     title_multiloc: projects.open_idea_project_title
@@ -805,8 +805,8 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     admin_publication_attributes: {}
   - &121
@@ -832,8 +832,8 @@ models:
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 7
   - &charliesVerifiedPPlproject
     title_multiloc:
@@ -857,8 +857,8 @@ models:
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 7
   - &verifiedIdeation
     title_multiloc:
@@ -881,8 +881,8 @@ models:
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
   - &charliesIdeation
     title_multiloc:
       en: Charlie Crew Ideation
@@ -904,8 +904,8 @@ models:
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
   - &contsurv
     title_multiloc:
       en: Continuous survey
@@ -929,8 +929,8 @@ models:
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 7
     survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
     survey_service: typeform
@@ -956,8 +956,8 @@ models:
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 7
     survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
     survey_service: typeform
@@ -1021,8 +1021,8 @@ models:
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 7
     survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
     survey_service: typeform
@@ -1048,8 +1048,8 @@ models:
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
   - &90
     title_multiloc:
       en: Timeline ideation map
@@ -1072,8 +1072,8 @@ models:
     updated_at: '2018-03-28 13:35:07'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
   - &85
     title_multiloc:
@@ -1097,8 +1097,8 @@ models:
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
   - &66
     title_multiloc:
@@ -1122,8 +1122,8 @@ models:
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
   - &custom_idea_fields_project
     title_multiloc:
@@ -1146,8 +1146,8 @@ models:
       publication_status: published
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
   project_file:
   - project_ref: *project1
     created_at: 2019-01-14 13:46:54 UTC
@@ -7176,8 +7176,8 @@ models:
     updated_at: '2018-03-28 13:35:05'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: limited
+    reacting_enabled: true
+    reacting_like_method: limited
     upvoting_limited_max: 12
   - &project1pastIdeation
     title_multiloc:
@@ -7206,8 +7206,8 @@ models:
     updated_at: '2018-03-28 13:35:05'
     posting_enabled: false
     commenting_enabled: true
-    voting_enabled: false
-    upvoting_method: unlimited
+    reacting_enabled: false
+    reacting_like_method: unlimited
     upvoting_limited_max: 3
   - &project1pastSurvey
     title_multiloc:
@@ -7235,8 +7235,8 @@ models:
     updated_at: '2018-03-28 13:35:05'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 1
     survey_service: google_forms
     survey_embed_url: https://docs.google.com/forms/d/e/1FAIpQLSc4y8oV05wjBtr_Vanvk1PERxRd5wUFLMdgufi9wfTBigORbQ/viewform?embedded=true
@@ -7268,8 +7268,8 @@ models:
     updated_at: '2018-03-28 13:35:05'
     posting_enabled: false
     commenting_enabled: true
-    voting_enabled: false
-    upvoting_method: unlimited
+    reacting_enabled: false
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
     max_budget: 100000
   - &project1futureIdeation
@@ -7296,8 +7296,8 @@ models:
     updated_at: '2018-03-28 13:35:05'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 13
   - &pastPolling
     title_multiloc:
@@ -7339,8 +7339,8 @@ models:
     updated_at: '2018-03-28 13:35:07'
     posting_enabled: false
     commenting_enabled: true
-    voting_enabled: false
-    upvoting_method: unlimited
+    reacting_enabled: false
+    reacting_like_method: unlimited
     upvoting_limited_max: 2
     presentation_mode: map
   - &55
@@ -7370,8 +7370,8 @@ models:
     updated_at: '2018-03-28 13:35:07'
     posting_enabled: true
     commenting_enabled: false
-    voting_enabled: false
-    upvoting_method: unlimited
+    reacting_enabled: false
+    reacting_like_method: unlimited
     upvoting_limited_max: 0
     presentation_mode: map
   - title_multiloc:
@@ -7396,8 +7396,8 @@ models:
     updated_at: '2018-03-28 13:35:07'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
   - title_multiloc:
       en: Dolorum minima labore corrupti.
@@ -7424,8 +7424,8 @@ models:
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 6
   - title_multiloc:
       en: Voluptatem vitae quia velit voluptate dolor.
@@ -7456,8 +7456,8 @@ models:
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
   - title_multiloc:
       en: A molestiae magnam quo dolor ut.
@@ -7483,8 +7483,8 @@ models:
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
   - title_multiloc:
       en: Quia quo similique aut quaerat molestiae dolores mollitia.
@@ -7511,8 +7511,8 @@ models:
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: true
     commenting_enabled: false
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 1
   - title_multiloc:
       en: Rerum minima ea dicta sit.
@@ -7536,8 +7536,8 @@ models:
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 9
   - title_multiloc:
       en: Ratione temporibus totam molestias quae amet consectetur.
@@ -7564,8 +7564,8 @@ models:
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: false
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: limited
+    reacting_enabled: true
+    reacting_like_method: limited
     upvoting_limited_max: 9
   - title_multiloc:
       en: Quaerat odio adipisci aspernatur amet nihil provident consectetur nostrum.
@@ -7591,8 +7591,8 @@ models:
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: false
-    upvoting_method: limited
+    reacting_enabled: false
+    reacting_like_method: limited
     upvoting_limited_max: 13
   - title_multiloc:
       en: Sed quibusdam odio qui beatae doloremque.
@@ -7618,8 +7618,8 @@ models:
     updated_at: '2018-03-28 13:35:09'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
   - title_multiloc:
       en: Quod illo sunt nostrum ullam sit sint fugiat odit.
@@ -7648,8 +7648,8 @@ models:
     updated_at: '2018-03-28 13:35:09'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
+    reacting_enabled: true
+    reacting_like_method: unlimited
     upvoting_limited_max: 10
   - &001
     title_multiloc:
@@ -7677,8 +7677,8 @@ models:
     updated_at: '2018-03-28 13:35:09'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: false
-    upvoting_method: unlimited
+    reacting_enabled: false
+    reacting_like_method: unlimited
     upvoting_limited_max: 7
   event:
   - project_ref: *76
