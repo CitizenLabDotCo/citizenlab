@@ -71,7 +71,7 @@ export const SupportMenu = () => {
       position="top right"
       context={iconDivRef}
       positionFixed
-      offset={[42, -60]}
+      offset={[12, -60]}
       basic
       wide
     >
