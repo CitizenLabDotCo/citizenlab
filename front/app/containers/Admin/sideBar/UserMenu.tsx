@@ -1,11 +1,14 @@
 import React, { useState, useRef } from 'react';
 
 // components
-import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  Text,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
-import NotificationsPopup from './NotificationsPopup';
 import LanguageSelectorPopup from './LanguageSelectorPopup';
-import { NewNotificationsIndicator } from 'containers/MainHeader/NotificationMenu/components/NotificationCount';
 
 // i18n
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -31,6 +34,7 @@ import { IUserData } from 'api/users/types';
 export const UserMenu = () => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
+  const isSmallerThanPhone = useBreakpoint('tablet');
   const locale = useLocale();
   const tenantLocales = !isNilOrError(appConfig)
     ? appConfig.data.attributes.settings.core.locales
@@ -38,13 +42,11 @@ export const UserMenu = () => {
   const iconDivRef = useRef<HTMLDivElement | null>(null);
   const authUser = useAuthUser();
   const [isUserMenuPopupOpen, setIsUserMenuPopupOpen] = useState(false);
-  const [isNotificationsPopupOpen, setIsNotificationsPopupOpen] =
-    useState(false);
   const [isLanguagePopupOpen, setIsLanguagePopupOpen] = useState(false);
 
   const handleUserMenuPopupClose = () => {
     // We only close the user menu popup if no other popup is open
-    if (!isLanguagePopupOpen && !isNotificationsPopupOpen) {
+    if (!isLanguagePopupOpen) {
       setIsUserMenuPopupOpen(false);
     }
   };
@@ -52,8 +54,6 @@ export const UserMenu = () => {
   if (isNilOrError(authUser)) {
     return null;
   }
-
-  const unreadNotificationsCount = authUser.attributes.unread_notifications;
 
   const getRole = (user: IUserData): MessageDescriptor => {
     const highestRole = user.attributes.highest_role;
@@ -72,51 +72,62 @@ export const UserMenu = () => {
       trigger={
         <StyledBox
           as="button"
-          width="100%"
+          width={isSmallerThanPhone ? '56px' : '100%'}
           display="flex"
           justifyContent="flex-start"
-          mb="25px"
           onClick={() => setIsUserMenuPopupOpen(true)}
+          p="0px"
         >
-          <Box display="flex" alignItems="center" w="100%" pr="6px">
-            <Avatar userId={authUser.id} size={30} addVerificationBadge />
-            <Box
-              display="flex"
-              flex="1"
-              flexDirection="column"
-              opacity={0.7}
-              w="100%"
-              ml="17px"
-              overflow="hidden"
-            >
-              <Text
-                color="white"
-                my="0px"
-                fontSize="s"
-                textOverflow="ellipsis"
-                whiteSpace="nowrap"
-                overflow="hidden"
+          <Box
+            display="flex"
+            alignItems="center"
+            w="100%"
+            p={isSmallerThanPhone ? '10px 0' : '10px 8px 10px 16px'}
+            justifyContent={isSmallerThanPhone ? 'center' : undefined}
+          >
+            <Avatar userId={authUser.id} size={24} addVerificationBadge />
+            {!isSmallerThanPhone && (
+              <Box
+                display="flex"
+                flex="1"
+                flexDirection="column"
                 w="100%"
-                textAlign="left"
-                fontWeight="bold"
-              >
-                {`${authUser.attributes.first_name} ${authUser.attributes.last_name}`}
-              </Text>
-              <Text
-                color="white"
-                my="0px"
-                fontSize="xs"
-                textOverflow="ellipsis"
-                whiteSpace="nowrap"
+                ml="7px"
                 overflow="hidden"
-                w="100%"
-                textAlign="left"
               >
-                {formatMessage({ ...getRole(authUser) })}
-              </Text>
-            </Box>
+                <Text
+                  color="white"
+                  my="0px"
+                  fontSize="m"
+                  textOverflow="ellipsis"
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  w="100%"
+                  textAlign="left"
+                  fontWeight="bold"
+                >
+                  {`${authUser.attributes.first_name} ${authUser.attributes.last_name}`}
+                </Text>
+                <Box opacity={0.5}>
+                  <Text
+                    color="white"
+                    my="0px"
+                    fontSize="xs"
+                    textOverflow="ellipsis"
+                    whiteSpace="nowrap"
+                    overflow="hidden"
+                    w="100%"
+                    textAlign="left"
+                  >
+                    {formatMessage({ ...getRole(authUser) })}
+                  </Text>
+                </Box>
+              </Box>
+            )}
             <Box ref={iconDivRef}>
-              <Icon name="chevron-right" fill={colors.white} />
+              {!isSmallerThanPhone && (
+                <Icon name="chevron-right" fill={colors.white} />
+              )}
             </Box>
           </Box>
         </StyledBox>
@@ -124,30 +135,14 @@ export const UserMenu = () => {
       open={isUserMenuPopupOpen}
       onClose={handleUserMenuPopupClose}
       on="click"
-      position="top right"
-      offset={[40, -60]}
+      position="right center"
+      offset={[-40, 0]}
       positionFixed
       context={iconDivRef}
       basic
       wide
     >
       <Box width="224px">
-        <ItemMenu
-          buttonStyle="text"
-          onClick={() => setIsNotificationsPopupOpen(!isNotificationsPopupOpen)}
-        >
-          <Box display="flex" justifyContent="space-between" width="100%">
-            <NotificationsPopup
-              setIsOpen={setIsNotificationsPopupOpen}
-              isOpen={isNotificationsPopupOpen}
-            />
-            {unreadNotificationsCount > 0 && (
-              <NewNotificationsIndicator>
-                {unreadNotificationsCount}
-              </NewNotificationsIndicator>
-            )}
-          </Box>
-        </ItemMenu>
         {tenantLocales.length > 1 && locale && (
           <ItemMenu
             buttonStyle="text"
@@ -166,13 +161,17 @@ export const UserMenu = () => {
           buttonStyle="text"
         >
           <Box display="flex" justifyContent="space-between" w="100%">
-            {formatMessage({ ...messages.myProfile })}
+            <Text my="0px" color="coolGrey600">
+              {formatMessage({ ...messages.myProfile })}
+            </Text>
           </Box>
         </ItemMenu>
         <ItemMenu buttonStyle="text" onClick={signOut}>
           <Box display="flex" justifyContent="space-between" w="100%">
-            {formatMessage({ ...messages.signOut })}
-            <Icon name="power" fill={colors.grey300} />
+            <Text my="0px" color="coolGrey600">
+              {formatMessage({ ...messages.signOut })}
+            </Text>
+            <Icon name="power" fill={colors.grey600} />
           </Box>
         </ItemMenu>
       </Box>

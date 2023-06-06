@@ -18,7 +18,7 @@ const Container = styled.div`
   position: relative;
 `;
 
-export const NewNotificationsIndicator = styled.div`
+const NewNotificationsIndicator = styled.div`
   color: #fff;
   font-size: ${fontSizes.xs}px;
   line-height: ${fontSizes.xs}px;
