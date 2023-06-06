@@ -1,7 +1,6 @@
 import { Streams } from '.';
 // @ts-ignore
 import _request, { __setResponseFor } from 'utils/request';
-import { authApiEndpoint } from 'services/auth';
 
 const request = _request as jest.MockedFunction<any>;
 
@@ -10,10 +9,6 @@ jest.mock('utils/request');
 let streams: Streams;
 
 // Dummy responses
-const dummyAuth = {
-  data: { id: 'auth-id', type: 'user', attributes: {} },
-};
-__setResponseFor(authApiEndpoint, null, null, dummyAuth);
 
 const dummyTest = {
   data: { id: 'test-id', type: 'test', attributes: {} },
@@ -51,9 +46,6 @@ __setResponseFor(
 beforeEach(async () => {
   streams = new Streams();
 
-  // fetch app config and auth, always need to be available
-  // (see .reset method)
-  await streams.get({ apiEndpoint: authApiEndpoint });
   jest.clearAllMocks();
 });
 
