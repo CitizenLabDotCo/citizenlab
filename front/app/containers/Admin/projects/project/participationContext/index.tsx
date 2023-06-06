@@ -81,6 +81,7 @@ interface DataProps {
   snap_survey_enabled: GetFeatureFlagChildProps;
   konveio_enabled: GetFeatureFlagChildProps;
   isCustomInputTermEnabled: GetFeatureFlagChildProps;
+  isParticipatoryBudgetingEnabled: GetFeatureFlagChildProps;
 }
 
 export type ApiErrors = CLErrors | null | undefined;
@@ -111,6 +112,7 @@ class ParticipationContext extends PureComponent<
 
   constructor(props: Props & WrappedComponentProps) {
     super(props);
+
     this.state = {
       participation_method: 'ideation',
       posting_enabled: true,
@@ -143,8 +145,10 @@ class ParticipationContext extends PureComponent<
   componentDidMount() {
     const { project, phase } = this.props;
     const participationContext = project ?? phase;
+
     if (participationContext && participationContext.data) {
       const newData = participationContext.data.attributes;
+
       this.setState((prevState) => {
         return {
           ...prevState,
@@ -217,6 +221,8 @@ class ParticipationContext extends PureComponent<
     const survey = participation_method === 'survey';
     const ideationOrBudgeting = ideation || budgeting;
 
+    const { isParticipatoryBudgetingEnabled } = this.props;
+
     this.setState({
       participation_method,
       posting_enabled: ideation ? true : null,
@@ -225,7 +231,8 @@ class ParticipationContext extends PureComponent<
       upvoting_method: ideation ? 'unlimited' : null,
       downvoting_enabled: ideation ? true : null,
       allow_anonymous_participation: ideationOrBudgeting ? false : null,
-      voting_method: null,
+      voting_method:
+        budgeting && isParticipatoryBudgetingEnabled ? 'budgeting' : null,
       downvoting_method: ideation ? 'unlimited' : null,
       presentation_mode: ideationOrBudgeting ? 'card' : null,
       survey_embed_url: null,
@@ -432,6 +439,8 @@ class ParticipationContext extends PureComponent<
       input_term,
     } = this.state;
 
+    console.log({ voting_method });
+
     if (loaded) {
       const surveyProviders = {
         typeform: typeform_enabled,
@@ -593,6 +602,9 @@ const Data = adopt<DataProps>({
   microsoft_forms_enabled: <GetFeatureFlag name="microsoft_forms_surveys" />,
   konveio_enabled: <GetFeatureFlag name="konveio_surveys" />,
   isCustomInputTermEnabled: <GetFeatureFlag name="idea_custom_copy" />,
+  isParticipatoryBudgetingEnabled: (
+    <GetFeatureFlag name="participatory_budgeting" />
+  ),
 });
 
 const ParticipationContextWithIntl = injectIntl(ParticipationContext);
