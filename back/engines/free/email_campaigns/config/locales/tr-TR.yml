@@ -48,55 +48,6 @@ tr:
       "assignee_digest": Atanmış fikirlere haftalık genel bakış
       "user_digest": Haftalık genel bakış
       "your_proposed_initiatives_digest": Önerilerinize haftalık genel bakış
-    admin_campaign_type_description:
-      "manual": Resmi mesaj - tüm kullanıcılar
-      "admin_rights_received": Yönetici hakları alındı - yöneticiler
-      "comment_deleted_by_admin": Yorumunuzun silinmesi - tüm kullanıcılar
-      "comment_marked_as_spam": Yorumun spam olarak bildirilmesi - yöneticiler ve proje yöneticileri
-      "comment_on_your_comment": Yorumunuza yanıt - tüm kullanıcılar
-      "comment_on_your_idea": Fikriniz hakkında yorum - tüm kullanıcılar
-      "comment_on_your_initiative": Öneriniz hakkında yorum - tüm kullanıcılar
-      "first_idea_published": İlk fikrinizin yayımlanması - tüm kullanıcılar
-      "idea_marked_as_spam": Fikrin spam olarak bildirilmesi - yöneticiler ve proje yöneticileri
-      "idea_published": Fikrinizin yayımlanması - tüm kullanıcılar
-      "initiative_assigned_to_you": Bir önerinin atanması - yöneticiler
-      "initiative_marked_as_spam": Önerinin spam olarak bildirilmesi - yöneticiler
-      "initiative_published": Önerinizin yayımlanması - tüm kullanıcılar
-      "invite_received": Davetiye - tüm kullanıcılar
-      "invite_reminder": Davetiye anımsatıcısı - tüm kullanıcılar
-      "mention_in_comment": Bir yorumda bahis - tüm kullanıcılar
-      "mention_in_official_feedback": Bir bildirimde bahis - tüm kullanıcılar
-      "new_comment_for_admin": Yeni yorum - yöneticiler ve proje yöneticileri
-      "new_comment_on_commented_idea": Yorum yaptığınız bir fikir hakkında yeni yorum - tüm kullanıcılar
-      "new_comment_on_commented_initiative": Yorum yaptığınız bir öneri hakkında yeni yorum - tüm kullanıcılar
-      "new_comment_on_voted_idea": Oy verdiğiniz bir fikir hakkında yeni yorum - tüm kullanıcılar
-      "new_comment_on_voted_initiative": Oy verdiğiniz bir öneri hakkında yeni yorum - tüm kullanıcılar
-      "new_idea_for_admin": Yeni fikir - yöneticiler ve proje yöneticileri
-      "new_initiative_for_admin": Yeni öneri - yöneticiler
-      "official_feedback_on_commented_idea": Yorum yaptığınız bir fikir hakkında bilgilendirme - tüm kullanıcılar
-      "official_feedback_on_commented_initiative": Yorum yaptığınız bir öneri hakkında bilgilendirme - tüm kullanıcılar
-      "official_feedback_on_voted_idea": Oy verdiğiniz bir fikir hakkında bilgilendirme - tüm kullanıcılar
-      "official_feedback_on_voted_initiative": Oy verdiğiniz bir öneri hakkında bilgilendirme - tüm kullanıcılar
-      "official_feedback_on_your_idea": Fikriniz hakkında bilgilendirme - tüm kullanıcılar
-      "official_feedback_on_your_initiative": Öneriniz hakkında bilgilendirme - tüm kullanıcılar
-      "password_reset": Parola sıfırlama - tüm kullanıcılar
-      "project_moderation_rights_received": Proje moderasyon hakları alındı - proje yöneticileri
-      "project_folder_moderation_rights_received": Klasör yöneticisi hakları alındı
-      "project_phase_started": Yeni proje aşaması - proje katılımcıları
-      "project_phase_upcoming": Yaklaşan yeni proje aşaması - yöneticiler ve proje yöneticileri
-      "status_change_of_commented_idea": Yorum yaptığınız bir fikrin durum değişikliği - tüm kullanıcılar
-      "status_change_of_commented_initiative": Yorum yaptığınız bir önerinin durum değişikliği - tüm kullanıcılar
-      "status_change_of_voted_idea": Oy verdiğiniz bir fikrin durum değişikliği - tüm kullanıcılar
-      "status_change_of_voted_initiative": Oy verdiğiniz bir önerinin durum değişikliği - tüm kullanıcılar
-      "status_change_of_your_idea": Fikrinizin durum değişikliği - tüm kullanıcılar
-      "status_change_of_your_initiative": Önerinizin durum değişikliği - tüm kullanıcılar
-      "threshold_reached_for_admin": Öneri oylama eşiğine ulaştı - yöneticiler
-      "welcome": Yeni kullanıcılar için karşılama e-postası - tüm kullanıcılar
-      "admin_digest": Haftalık genel bakış - yöneticiler
-      "moderator_digest": Haftalık genel bakış - proje yöneticileri
-      "assignee_digest": Atanmış fikirlere haftalık genel bakış - yöneticiler ve proje yöneticileri
-      "user_digest": Haftalık genel bakış - tüm kullanıcılar
-      "your_proposed_initiatives_digest": Kendi önerilerinize haftalık genel bakış - tüm kullanıcılar
     schedules:
       weekly:
         "0": "Haftalık, Pazar günleri %{hourOfDay}adresinde"
@@ -565,9 +516,7 @@ tr:
       remaining_days: 'Kalan gün sayısı'
     admin_labels:
       recipient_role:
-        admins: 'Yöneticilere'
         admins_and_managers: 'Yöneticilere ve müdürlere'
-        managers: 'Yöneticilere'
         registered_users: 'Kayıtlı kullanıcılara'
       recipient_segment:
         admins: 'Yöneticiler'
@@ -578,18 +527,18 @@ tr:
         managers: 'Yöneticiler'
         admins_assigned_to_a_proposal: 'Bir teklife atanan yöneticiler'
         admins_and_managers_assigned_to_the_input: 'Girişe atanan yöneticiler ve müdürler'
-        user_receiving_admin_rights: 'Yönetici hakları alan kullanıcı'
-        user_receiving_folder_moderator_rights: 'Klasör moderatör haklarını alan kullanıcı'
-        user_receiving_project_moderator_rights: 'Proje moderatörü haklarını alan kullanıcı'
+        user_who_is_receiving_admin_rights: 'Yönetici haklarını alan kullanıcı'
+        user_who_is_receiving_folder_moderator_rights: 'Klasör moderatörü haklarını alan kullanıcı'
+        user_who_is_receiving_project_moderator_rights: 'Proje moderatörü haklarını alan kullanıcı'
         user_who_commented: 'Yorum yapan kullanıcı'
         user_who_is_mentioned: 'Bahsi geçen kullanıcı'
         user_who_published_the_proposal: 'Teklifi yayınlayan kullanıcı'
         user_who_published_the_input: 'Girdiyi yayınlayan kullanıcı'
         user_who_registers: 'Kayıt olan kullanıcı'
         user_who_was_invited: 'Davet edilen kullanıcı'
-        users_engaged_with_the_input: 'Kullanıcılar girdiyle etkileşime geçti'
-        users_engaged_with_the_project: 'Kullanıcıların projeye katılımı'
-        users_engaged_with_the_proposal: 'Kullanıcılar teklifle etkileşime geçti'
+        users_who_engaged_with_the_input: 'Girdi ile etkileşime geçen kullanıcılar'
+        users_who_engaged_with_the_project: 'Proje ile etkileşime geçen kullanıcılar'
+        users_who_engaged_with_the_proposal: 'Teklifle etkileşime geçen kullanıcılar'
       content_type:
         comments: 'Yorumlar'
         content_moderation: 'İçerik moderasyonu'
@@ -606,15 +555,15 @@ tr:
         input_is_assigned: 'Giriş atanmıştır'
         input_is_flagged_as_spam: 'Girdi spam olarak işaretlendi'
         input_is_updated: 'Girdi güncellenir'
-        input_status_is_changed: 'Giriş durumu değiştirildi'
+        input_status_changes: 'Giriş durumu değişiklikleri'
         new_input_is_published: 'Yeni girdi yayınlandı'
-        new_proposal_is_published: 'Yeni teklif yayınlandı'
-        project_changes_phase: 'Proje değişiklikleri aşaması'
+        new_proposal_is_posted: 'Yeni teklif yayınlandı'
+        project_phase_changes: 'Proje aşaması değişiklikleri'
         proposal_gets_reported_as_spam: 'Teklif spam olarak bildiriliyor'
         proposal_is_assigned_to_admin: 'Teklif yöneticiye atanır'
         proposal_is_updated: 'Teklif güncellendi'
         proposal_is_upvoted_above_threshold: 'Teklif eşik değerin üzerinde oylandı'
-        proposal_status_is_changed: 'Teklif durumu değiştirildi'
+        proposal_status_changes: 'Teklif durumu değişiklikleri'
         user_comments: 'Kullanıcı yorumları'
         user_comments_on_input: 'Giriş hakkında kullanıcı yorumları'
         user_comments_on_proposal: 'Teklifle ilgili kullanıcı yorumları'
@@ -622,8 +571,8 @@ tr:
         user_is_given_folder_moderator_rights: 'Kullanıcıya klasör moderatörü hakları verilir'
         user_is_given_project_moderator_rights: 'Kullanıcıya proje moderatörü hakları verilir'
         user_is_mentioned: 'Kullanıcıdan bahsedilir'
-        user_publishes_an_input: 'Kullanıcı bir girdi yayınlar'
-        user_publishes_a_proposal: 'Kullanıcı bir teklif yayınlar'
+        input_is_published: 'Girdi yayınlandı'
+        proposal_is_published: 'Teklif yayınlandı'
         user_registers_for_the_first_time: 'Kullanıcı ilk kez kaydolur'
         user_replies_to_comment: 'Kullanıcı yoruma yanıt veriyor'
         7_days_after_invite_is_sent: 'Davetiye gönderildikten 7 gün sonra'

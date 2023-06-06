@@ -10,8 +10,6 @@ import {
   IUsersByAge,
 } from 'services/userCustomFieldStats';
 
-jest.mock('services/auth');
-
 describe('regFieldToReferenceData', () => {
   it('works if users and reference_population have same keys', () => {
     const usersByField: IUsersByRegistrationField = {

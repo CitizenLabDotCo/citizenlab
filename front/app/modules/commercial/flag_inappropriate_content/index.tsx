@@ -4,7 +4,7 @@ import {
   TNotificationData,
   TNotificationType,
   INLPFlagNotificationData,
-} from 'services/notifications';
+} from 'api/notifications/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Setting = React.lazy(() => import('./admin/containers/Setting'));

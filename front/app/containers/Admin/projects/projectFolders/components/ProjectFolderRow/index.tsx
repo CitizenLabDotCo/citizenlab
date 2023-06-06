@@ -21,7 +21,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 // services
@@ -65,7 +65,7 @@ export interface Props {
 
 const ProjectFolderRow = memo<Props>(
   ({ publication, toggleFolder, isFolderOpen, hasProjects }) => {
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
 
     const [folderDeletionError, setFolderDeletionError] = useState<
       string | null
@@ -127,7 +127,10 @@ const ProjectFolderRow = memo<Props>(
                   icon="edit"
                   disabled={
                     isBeingDeleted ||
-                    !userModeratesFolder(authUser, publication.publicationId)
+                    !userModeratesFolder(
+                      authUser.data,
+                      publication.publicationId
+                    )
                   }
                   data-testid="folder-row-edit-button"
                 >

@@ -1,6 +1,6 @@
 import Button from 'components/UI/Button';
 import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { isAdmin } from 'services/permissions/roles';
@@ -16,10 +16,9 @@ const AdminCustomPageEditButton = ({
   pageId,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
-  const userCanEditPage =
-    !isNilOrError(authUser) && isAdmin({ data: authUser });
+  const userCanEditPage = !isNilOrError(authUser) && isAdmin(authUser);
 
   return userCanEditPage ? (
     <Button

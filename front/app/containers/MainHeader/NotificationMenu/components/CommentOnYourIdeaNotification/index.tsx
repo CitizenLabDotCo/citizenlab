@@ -3,7 +3,7 @@ import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 import { DeletedUser } from '../Notification';
 
 // data
-import { ICommentOnYourIdeaNotificationData } from 'services/notifications';
+import { ICommentOnYourIdeaNotificationData } from 'api/notifications/types';
 
 // i18n
 import messages from '../../messages';
