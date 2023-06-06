@@ -175,7 +175,7 @@ class WebApi::V1::IdeasController < ApplicationController
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
-          include: %i[author topics phases user_vote idea_images]
+          include: %i[author topics phases user_reaction idea_images]
         ).serializable_hash, status: :created
       else
         render json: { errors: input.errors.details }, status: :unprocessable_entity
@@ -228,7 +228,7 @@ class WebApi::V1::IdeasController < ApplicationController
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
-          include: %i[author topics user_vote idea_images]
+          include: %i[author topics user_reaction idea_images]
         ).serializable_hash, status: :ok
       else
         render json: { errors: input.errors.details }, status: :unprocessable_entity
@@ -256,7 +256,7 @@ class WebApi::V1::IdeasController < ApplicationController
     render json: WebApi::V1::IdeaSerializer.new(
       input,
       params: jsonapi_serializer_params,
-      include: %i[author topics user_vote idea_images]
+      include: %i[author topics user_reaction idea_images]
     ).serializable_hash
   end
 
@@ -344,10 +344,10 @@ class WebApi::V1::IdeasController < ApplicationController
     if current_user
       # I have no idea why but the trending query part
       # breaks if you don't fetch the ids in this way.
-      votes = Reaction.where(user: current_user, reactable_id: ideas.map(&:id), reactable_type: 'Idea')
+      reactions = Reaction.where(user: current_user, reactable_id: ideas.map(&:id), reactable_type: 'Idea')
       {
-        params: jsonapi_serializer_params(vbii: votes.index_by(&:reactable_id), pcs: ParticipationContextService.new),
-        include: %i[author user_vote idea_images]
+        params: jsonapi_serializer_params(vbii: reactions.index_by(&:reactable_id), pcs: ParticipationContextService.new),
+        include: %i[author user_reaction idea_images]
       }
     else
       {
