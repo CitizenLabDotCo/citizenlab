@@ -102,6 +102,10 @@ const ProjectAndFolderCards = ({
     trackEventByName(tracks.searchTermChanged, { searchTerm: search });
   }, []);
 
+  if (!counts || !statusCountsWithoutFilters) {
+    return null;
+  }
+
   return (
     <ProjectAndFolderCardsInner
       statusCounts={getStatusCounts(counts)}

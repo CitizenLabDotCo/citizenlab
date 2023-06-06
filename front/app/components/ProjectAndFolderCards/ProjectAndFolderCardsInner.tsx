@@ -71,7 +71,7 @@ const ProjectAndFolderCardsInner = ({
   const [currentTab, setCurrentTab] = useState<PublicationTab | null>(null);
 
   useEffect(() => {
-    if (isNilOrError(statusCounts) || currentTab) return;
+    if (currentTab) return;
     setCurrentTab((currentTab) => getCurrentTab(statusCounts, currentTab));
   }, [statusCounts, currentTab]);
 
@@ -105,11 +105,7 @@ const ProjectAndFolderCardsInner = ({
     [onChangeSearch]
   );
 
-  if (
-    isNilOrError(statusCounts) ||
-    !currentTab ||
-    isNilOrError(statusCountsWithoutFilters)
-  ) {
+  if (!currentTab) {
     return null;
   }
 
@@ -132,6 +128,7 @@ const ProjectAndFolderCardsInner = ({
   const hasPublications =
     !isNilOrError(adminPublications) && adminPublications.length > 0;
 
+  console.log(currentTab);
   return (
     <Container id="e2e-projects-container">
       <StyledTopbar

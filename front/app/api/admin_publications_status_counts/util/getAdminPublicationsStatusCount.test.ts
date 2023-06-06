@@ -1,13 +1,6 @@
 import getStatusCounts from './getAdminPublicationsStatusCount';
 
 describe('getStatusCounts', () => {
-  getStatusCounts();
-  it('returns the correct status when no data', () => {
-    const result = getStatusCounts();
-    expect(result).toEqual({
-      all: 0,
-    });
-  });
   it('returns the correct status count when data is present', () => {
     const result = getStatusCounts({
       data: {

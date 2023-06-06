@@ -75,7 +75,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
     !advancedCustomPagesEnabled ||
     page.attributes.projects_filter_type === 'no_filter';
 
-  if (hideProjects) {
+  if (hideProjects || !statusCountsWithoutFilters) {
     return null;
   }
 
