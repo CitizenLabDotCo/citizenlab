@@ -39,7 +39,7 @@ de:
       "status_change_of_commented_initiative": Statusänderung eines Vorschlags, den ich kommentiert habe
       "status_change_of_voted_idea": Statusänderung einer Idee, für die ich gestimmt habe
       "status_change_of_voted_initiative": Statusänderung eines Vorschlags, für den ich gestimmt habe
-      "status_change_of_your_idea": Statusänderung meiner Idee
+      "status_change_of_your_idea": Statusänderung eines Beitrags
       "status_change_of_your_initiative": Statusänderung meines Vorschlags
       "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht
       "welcome": Nach der Registrierung
@@ -585,8 +585,8 @@ de:
         user_who_is_mentioned: 'Nutzer*in, die*der erwähnt wird'
         user_who_published_proposal: 'Nutzer*in, die*der den Vorschlag veröffentlicht hat'
         user_who_published_the_idea: 'Nutzer*in, die*der die Idee veröffentlicht hat'
-        user_who_registers: 'Nutzer*in, die*der sich registriert'
-        user_who_was_invited: 'Nutzer*in, die*der eingeladen wurde'
+        user_who_registers: 'Nutzer*in registriert sich '
+        user_who_was_invited: 'Eingeladene*r Nutzer*in'
         users_engaged_with_the_idea: 'Nutzer*innen, die mit der Idee interagiert haben'
         users_engaged_with_the_project: 'Nutzer*innen, die mit dem Projekt interagiert haben'
         users_engaged_with_the_proposal: 'Nutzer*innen, die mit dem Vorschlag interagiert haben'
@@ -624,6 +624,6 @@ de:
         user_is_mentioned: 'Nutzer*in wird erwähnt'
         user_publishes_an_idea: 'Nutzer*in veröffentlicht eine Idee'
         user_publishes_proposal: 'Nutzer*in veröffentlicht Vorschlag'
-        user_registers_for_the_first_time: 'Nutzer*in registriert sich zum ersten Mal'
+        user_registers_for_the_first_time: 'Direkt nach der 1. Registrierung'
         user_replies_to_comment: 'Nutzer*in antwortet auf Kommentar'
-        7_days_after_invite_is_sent: '7 Tage nach Versand der Einladung'
+        7_days_after_invite_is_sent: '7 Tage nach Versand der 1. Einladung'
