@@ -690,7 +690,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
   - &Pb
     title_multiloc:
       en: Participatory Budgeting
@@ -715,7 +715,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
     max_budget: 100000
   - &charliesPb
     title_multiloc:
@@ -741,7 +741,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
     max_budget: 100000
   - &verifiedPb
     title_multiloc:
@@ -767,7 +767,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
     max_budget: 100000
   - &project2
     title_multiloc:
@@ -794,7 +794,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
   - &76
     title_multiloc: projects.open_idea_project_title
     description_multiloc: projects.open_idea_project_description
@@ -834,7 +834,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 7
+    reacting_like_limited_max: 7
   - &charliesVerifiedPPlproject
     title_multiloc:
       en: Verified Charlie poeple project
@@ -859,7 +859,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 7
+    reacting_like_limited_max: 7
   - &verifiedIdeation
     title_multiloc:
       en: Verified Ideation
@@ -931,7 +931,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 7
+    reacting_like_limited_max: 7
     survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
     survey_service: typeform
   - &verifiedSurvey
@@ -958,7 +958,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 7
+    reacting_like_limited_max: 7
     survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
     survey_service: typeform
   - &polling
@@ -1023,7 +1023,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 7
+    reacting_like_limited_max: 7
     survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
     survey_service: typeform
   - &charliesPoll
@@ -1074,7 +1074,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
   - &85
     title_multiloc:
       en: Timeline ideation card
@@ -1099,7 +1099,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
   - &66
     title_multiloc:
       en: Archived project
@@ -1124,7 +1124,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
   - &custom_idea_fields_project
     title_multiloc:
       en: Custom idea fields project
@@ -7178,7 +7178,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: limited
-    upvoting_limited_max: 12
+    reacting_like_limited_max: 12
   - &project1pastIdeation
     title_multiloc:
       en: Past ideation
@@ -7208,7 +7208,7 @@ models:
     commenting_enabled: true
     reacting_enabled: false
     reacting_like_method: unlimited
-    upvoting_limited_max: 3
+    reacting_like_limited_max: 3
   - &project1pastSurvey
     title_multiloc:
       en: Past survey
@@ -7237,7 +7237,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 1
+    reacting_like_limited_max: 1
     survey_service: google_forms
     survey_embed_url: https://docs.google.com/forms/d/e/1FAIpQLSc4y8oV05wjBtr_Vanvk1PERxRd5wUFLMdgufi9wfTBigORbQ/viewform?embedded=true
   - &project1pastPB
@@ -7270,7 +7270,7 @@ models:
     commenting_enabled: true
     reacting_enabled: false
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
     max_budget: 100000
   - &project1futureIdeation
     title_multiloc:
@@ -7298,7 +7298,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 13
+    reacting_like_limited_max: 13
   - &pastPolling
     title_multiloc:
       en: The big polling past
@@ -7341,7 +7341,7 @@ models:
     commenting_enabled: true
     reacting_enabled: false
     reacting_like_method: unlimited
-    upvoting_limited_max: 2
+    reacting_like_limited_max: 2
     presentation_mode: map
   - &55
     title_multiloc:
@@ -7372,7 +7372,7 @@ models:
     commenting_enabled: false
     reacting_enabled: false
     reacting_like_method: unlimited
-    upvoting_limited_max: 0
+    reacting_like_limited_max: 0
     presentation_mode: map
   - title_multiloc:
       en: Nobis saepe illo soluta.
@@ -7398,7 +7398,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
   - title_multiloc:
       en: Dolorum minima labore corrupti.
       nl-BE: Vel consequatur odio quia voluptatem suscipit magnam.
@@ -7426,7 +7426,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 6
+    reacting_like_limited_max: 6
   - title_multiloc:
       en: Voluptatem vitae quia velit voluptate dolor.
       nl-BE: Error deleniti cumque a.
@@ -7458,7 +7458,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
   - title_multiloc:
       en: A molestiae magnam quo dolor ut.
       nl-BE: Veritatis quis assumenda tempora.
@@ -7485,7 +7485,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
   - title_multiloc:
       en: Quia quo similique aut quaerat molestiae dolores mollitia.
       nl-BE: Perferendis accusantium corporis et.
@@ -7513,7 +7513,7 @@ models:
     commenting_enabled: false
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 1
+    reacting_like_limited_max: 1
   - title_multiloc:
       en: Rerum minima ea dicta sit.
       nl-BE: Rerum autem esse molestiae omnis assumenda et.
@@ -7538,7 +7538,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 9
+    reacting_like_limited_max: 9
   - title_multiloc:
       en: Ratione temporibus totam molestias quae amet consectetur.
       nl-BE: Minima tenetur neque modi quidem.
@@ -7566,7 +7566,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: limited
-    upvoting_limited_max: 9
+    reacting_like_limited_max: 9
   - title_multiloc:
       en: Quaerat odio adipisci aspernatur amet nihil provident consectetur nostrum.
       nl-BE: Officiis quia velit est molestias aspernatur soluta.
@@ -7593,7 +7593,7 @@ models:
     commenting_enabled: true
     reacting_enabled: false
     reacting_like_method: limited
-    upvoting_limited_max: 13
+    reacting_like_limited_max: 13
   - title_multiloc:
       en: Sed quibusdam odio qui beatae doloremque.
       nl-BE: Quia nam qui eligendi.
@@ -7620,7 +7620,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
   - title_multiloc:
       en: Quod illo sunt nostrum ullam sit sint fugiat odit.
       nl-BE: Adipisci sunt rerum maiores eaque.
@@ -7650,7 +7650,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
   - &001
     title_multiloc:
       en: Consequatur sed aut consequatur et similique.
@@ -7679,7 +7679,7 @@ models:
     commenting_enabled: true
     reacting_enabled: false
     reacting_like_method: unlimited
-    upvoting_limited_max: 7
+    reacting_like_limited_max: 7
   event:
   - project_ref: *76
     title_multiloc: events.council_meeting_title

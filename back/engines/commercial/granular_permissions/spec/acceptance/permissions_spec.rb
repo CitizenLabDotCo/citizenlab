@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Permissions' do
-  explanation 'These determine who (e.g. groups) can take which actions (e.g. posting, voting) in a participation context'
+  explanation 'These determine who (e.g. groups) can take which actions (e.g. posting, reacting) in a participation context'
 
   before do
     header 'Content-Type', 'application/json'
@@ -30,7 +30,7 @@ resource 'Permissions' do
         expect(response_data.size).to eq Permission.enabled_actions(@project).size
       end
 
-      example 'List all permissions of a project when voting has been disabled' do
+      example 'List all permissions of a project when reacting has been disabled' do
         @project.update!(reacting_enabled: false)
 
         do_request
@@ -188,7 +188,7 @@ resource 'Permissions' do
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
 
-      let(:action) { 'voting_initiative' }
+      let(:action) { 'reacting_initiative' }
       let(:permitted_by) { 'groups' }
       let(:group_ids) { create_list(:group, 3).map(&:id) }
 

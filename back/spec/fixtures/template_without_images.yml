@@ -821,7 +821,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
     max_budget:
     title_multiloc:
       en: An idea? Bring it to your council!
@@ -1084,7 +1084,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
     max_budget:
     title_multiloc:
       en: Quas et alias animi.
@@ -1114,7 +1114,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
     max_budget:
     title_multiloc:
       en: Ut optio facilis est.
@@ -1144,7 +1144,7 @@ models:
     commenting_enabled: true
     reacting_enabled: false
     reacting_like_method: unlimited
-    upvoting_limited_max: 5
+    reacting_like_limited_max: 5
     max_budget:
     title_multiloc:
       en: Aut cum ipsam enim.
@@ -1174,7 +1174,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
     max_budget:
     title_multiloc:
       en: Blanditiis facere voluptatem libero.
@@ -1204,7 +1204,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
     max_budget:
     title_multiloc:
       en: Quaerat ut molestiae numquam.
@@ -1236,7 +1236,7 @@ models:
     commenting_enabled: true
     reacting_enabled: false
     reacting_like_method: unlimited
-    upvoting_limited_max: 13
+    reacting_like_limited_max: 13
     max_budget:
     project_ref: *5
     title_multiloc:
@@ -1259,7 +1259,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 13
+    reacting_like_limited_max: 13
     max_budget:
     project_ref: *5
     title_multiloc:
@@ -1282,7 +1282,7 @@ models:
     commenting_enabled: true
     reacting_enabled: false
     reacting_like_method: unlimited
-    upvoting_limited_max: 13
+    reacting_like_limited_max: 13
     max_budget:
     project_ref: *5
     title_multiloc:
@@ -1305,7 +1305,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
     max_budget:
     project_ref: *5
     title_multiloc:
@@ -1329,7 +1329,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: limited
-    upvoting_limited_max: 13
+    reacting_like_limited_max: 13
     max_budget:
     project_ref: *6
     title_multiloc:
@@ -1353,7 +1353,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: limited
-    upvoting_limited_max: 14
+    reacting_like_limited_max: 14
     max_budget:
     project_ref: *6
     title_multiloc:
@@ -1376,7 +1376,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
     max_budget:
     project_ref: *6
     title_multiloc:
@@ -1401,7 +1401,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 6
+    reacting_like_limited_max: 6
     max_budget:
     project_ref: *6
     title_multiloc:
@@ -1425,7 +1425,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 2
+    reacting_like_limited_max: 2
     max_budget:
     project_ref: *6
     title_multiloc:
@@ -1448,7 +1448,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
     max_budget:
     project_ref: *6
     title_multiloc:
@@ -1472,7 +1472,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
     max_budget:
     project_ref: *6
     title_multiloc:
@@ -1495,7 +1495,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
     max_budget:
     project_ref: *7
     title_multiloc:
@@ -1519,7 +1519,7 @@ models:
     commenting_enabled: false
     reacting_enabled: false
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
     max_budget:
     project_ref: *7
     title_multiloc:
@@ -1542,7 +1542,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 10
+    reacting_like_limited_max: 10
     max_budget:
     project_ref: *7
     title_multiloc:
@@ -1566,7 +1566,7 @@ models:
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 7
+    reacting_like_limited_max: 7
     max_budget:
     project_ref: *7
     title_multiloc:
@@ -1589,7 +1589,7 @@ models:
     commenting_enabled: false
     reacting_enabled: true
     reacting_like_method: unlimited
-    upvoting_limited_max: 8
+    reacting_like_limited_max: 8
     max_budget:
     project_ref: *8
     title_multiloc:
