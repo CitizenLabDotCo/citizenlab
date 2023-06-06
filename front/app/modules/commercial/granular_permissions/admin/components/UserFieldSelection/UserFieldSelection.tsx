@@ -38,7 +38,7 @@ import { isAdmin } from 'services/permissions/roles';
 // hooks
 import useUserCustomFields from 'hooks/useUserCustomFields';
 import useLocale from 'hooks/useLocale';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type UserFieldSelectionProps = {
@@ -61,7 +61,7 @@ const UserFieldSelection = ({
   initiativeContext,
   onChange,
 }: UserFieldSelectionProps) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const permissionsCustomFieldsEnabled = useFeatureFlag({
     name: 'permissions_custom_fields',
@@ -130,7 +130,7 @@ const UserFieldSelection = ({
     return null;
   }
 
-  const userIsAdmin = authUser && isAdmin({ data: authUser });
+  const userIsAdmin = authUser && isAdmin(authUser);
 
   const showQuestionToggle =
     permission.attributes.permitted_by !== 'everyone_confirmed_email';

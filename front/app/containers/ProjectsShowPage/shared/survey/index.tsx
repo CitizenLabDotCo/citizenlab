@@ -14,7 +14,7 @@ import SnapSurvey from './SnapSurvey';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // i18n
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
@@ -63,12 +63,12 @@ const Survey = ({
   surveyService,
   className,
 }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { enabled, disabled_reason } =
     project.attributes.action_descriptor.taking_survey;
   const email =
-    !isNilOrError(authUser) && authUser.attributes.email
-      ? authUser.attributes.email
+    !isNilOrError(authUser) && authUser.data.attributes.email
+      ? authUser.data.attributes.email
       : null;
   const userId = !isNilOrError(authUser) ? authUser.id : null;
 

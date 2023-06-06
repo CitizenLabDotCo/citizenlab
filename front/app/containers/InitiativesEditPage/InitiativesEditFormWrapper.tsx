@@ -25,7 +25,7 @@ import { trackEventByName } from 'utils/analytics';
 import { IInitiativeImageData } from 'api/initiative_images/types';
 import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
@@ -55,7 +55,7 @@ const InitiativesEditFormWrapper = ({
   initiativeFiles,
 }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { mutate: addInitiativeImage } = useAddInitiativeImage();
   const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
@@ -306,7 +306,7 @@ const InitiativesEditFormWrapper = ({
             profaneMessage: changedValues.title_multiloc?.[locale],
             proposalId: initiative.id,
             location: 'InitiativesEditFormWrapper (citizen side)',
-            userId: !isNilOrError(authUser) ? authUser.id : null,
+            userId: !isNilOrError(authUser) ? authUser.data.id : null,
             host: !isNilOrError(appConfiguration)
               ? appConfiguration.data.attributes.host
               : null,
@@ -321,7 +321,7 @@ const InitiativesEditFormWrapper = ({
             profaneMessage: changedValues.body_multiloc?.[locale],
             proposalId: initiative.id,
             location: 'InitiativesEditFormWrapper (citizen side)',
-            userId: !isNilOrError(authUser) ? authUser.id : null,
+            userId: !isNilOrError(authUser) ? authUser.data.id : null,
             host: !isNilOrError(appConfiguration)
               ? appConfiguration.data.attributes.host
               : null,

@@ -18,7 +18,7 @@ import { darken, rgba } from 'polished';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import useComments from 'api/comments/useComments';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 const Container = styled.div`
   display: flex;
@@ -57,7 +57,7 @@ interface Props {
 
 export const UserComments = ({ userId }: Props) => {
   const theme = useTheme();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const {
     data: comments,
     hasNextPage,
@@ -78,7 +78,7 @@ export const UserComments = ({ userId }: Props) => {
     commentsList === null ||
     (!isNilOrError(commentsList) && commentsList.length === 0)
   ) {
-    if (!isNilOrError(authUser) && userId === authUser.id) {
+    if (!isNilOrError(authUser) && userId === authUser.data.id) {
       return (
         <MessageContainer>
           <FormattedMessage {...messages.noCommentsForYou} />

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ICampaignData } from 'services/campaigns';
+import { ICampaignData } from 'api/campaigns/types';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 import clHistory from 'utils/cl-router/history';
 

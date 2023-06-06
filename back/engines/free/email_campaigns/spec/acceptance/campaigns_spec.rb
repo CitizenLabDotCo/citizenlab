@@ -138,7 +138,7 @@ resource 'Campaigns' do
       expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
       expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
       expect(json_response.dig(:data, :attributes, :sender)).to match sender
-      expect(json_response.dig(:data, :attributes, :admin_campaign_description_multiloc).stringify_keys).to eq campaign.class.admin_campaign_description_multiloc
+      expect(json_response.dig(:data, :attributes, :campaign_description_multiloc).stringify_keys).to eq campaign.class.campaign_description_multiloc
       expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
       expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq campaign.author_id
       expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids

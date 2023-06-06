@@ -8,7 +8,7 @@ import useAdminPublications, {
 import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
 import { PublicationStatus } from 'api/projects/types';
 import { Row } from 'components/admin/ResourceList';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import FolderChildProjects from './FolderChildProjects';
 
 export interface Props {
@@ -24,7 +24,7 @@ const publicationStatuses: PublicationStatus[] = [
 ];
 
 const NonSortableFolderRow = ({ id, isLastItem, publication }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { list: folderChildAdminPublications } = useAdminPublications({
     childrenOfId: publication.relationships.publication.data.id,
     publicationStatusFilter: publicationStatuses,

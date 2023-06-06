@@ -52,9 +52,7 @@ const mockUserData: IUserData = {
 };
 
 // Needed to render moreActionsMenu
-jest.mock('hooks/useAuthUser', () => {
-  return () => mockUserData;
-});
+jest.mock('api/me/useAuthUser', () => () => ({ data: { data: mockUserData } }));
 
 const props: Props = {
   actions: ['manage' as const],

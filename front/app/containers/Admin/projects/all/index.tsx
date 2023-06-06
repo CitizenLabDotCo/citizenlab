@@ -2,7 +2,7 @@ import React, { memo, Suspense, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -61,12 +61,10 @@ export interface Props {
 }
 
 const AdminProjectsList = memo(({ className }: Props) => {
-  const authUser = useAuthUser();
-  const userIsAdmin = !isNilOrError(authUser)
-    ? isAdmin({ data: authUser })
-    : false;
+  const { data: authUser } = useAuthUser();
+  const userIsAdmin = !isNilOrError(authUser) ? isAdmin(authUser) : false;
   const userIsFolderModerator = !isNilOrError(authUser)
-    ? isProjectFolderModerator(authUser)
+    ? isProjectFolderModerator(authUser.data)
     : false;
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
 
