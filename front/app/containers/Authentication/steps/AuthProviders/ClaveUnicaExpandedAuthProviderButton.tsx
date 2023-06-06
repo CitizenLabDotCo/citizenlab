@@ -44,23 +44,16 @@ export interface Props {
   id?: string;
   flow: SignUpInFlow;
   className?: string;
-  showConsentOnFlow?: SignUpInFlow;
   onSelectAuthProvider: TOnContinueFunction;
 }
 
 const ClaveUnicaExpandedAuthProviderButton = memo<Props>(
-  ({
-    flow,
-    className,
-    id,
-    onSelectAuthProvider,
-    showConsentOnFlow = 'signup',
-  }) => {
+  ({ flow, className, id, onSelectAuthProvider }) => {
     const [tacAccepted, setTacAccepted] = useState(false);
     const [tacError, setTacError] = useState(false);
     const [privacyAccepted, setPrivacyAccepted] = useState(false);
     const [privacyError, setPrivacyError] = useState(false);
-    const showConsent = showConsentOnFlow === flow;
+    const showConsent = flow === 'signup';
     const { formatMessage } = useIntl();
     const verificationMethods = useVerificationMethods();
 
