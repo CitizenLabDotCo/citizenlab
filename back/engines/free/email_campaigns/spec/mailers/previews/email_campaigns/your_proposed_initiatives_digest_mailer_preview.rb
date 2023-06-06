@@ -17,7 +17,7 @@ module EmailCampaigns
               published_at: initiative.published_at&.iso8601,
               likes_count: initiative.likes_count,
               votes_needed: initiative.votes_needed,
-              votes_this_week: initiative.upvotes.where('created_at > ?', Time.now - 1.week).count,
+              votes_this_week: initiative.likes.where('created_at > ?', Time.now - 1.week).count,
               comments_count: initiative.comments_count,
               expires_at: initiative.expires_at&.iso8601,
               status_code: initiative.initiative_status.code,

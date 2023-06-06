@@ -124,7 +124,7 @@ class Initiative < ApplicationRecord
   }
 
   def votes_needed(configuration = AppConfiguration.instance)
-    [configuration.settings('initiatives', 'voting_threshold') - upvotes_count, 0].max
+    [configuration.settings('initiatives', 'voting_threshold') - likes_count, 0].max
   end
 
   def expires_at(configuration = AppConfiguration.instance)

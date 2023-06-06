@@ -236,11 +236,11 @@ module EmailCampaigns
       new_comments_counts = Comment.where(post_id: idea_ids).where('created_at > ?', Time.now - days_ago).group(:post_id).count
 
       idea_ids.each_with_object({}) do |idea_id, object|
-        upvotes         = (new_likes_counts[idea_id] || 0)
-        downvotes       = (new_dislikes_counts[idea_id] || 0)
+        likes         = (new_likes_counts[idea_id] || 0)
+        dislikes       = (new_dislikes_counts[idea_id] || 0)
         comments        = (new_comments_counts[idea_id] || 0)
-        total           = (upvotes + downvotes + comments)
-        object[idea_id] = { upvotes: upvotes, downvotes: downvotes, comments: comments, total: total }
+        total           = (likes + dislikes + comments)
+        object[idea_id] = { likes: likes, dislikes: dislikes, comments: comments, total: total }
       end
     end
 
@@ -272,9 +272,9 @@ module EmailCampaigns
         published_at: idea.published_at.iso8601,
         author_name: idea.author_name,
         likes_count: idea.likes_count,
-        upvotes_increment: idea_activity(idea, :upvotes),
+        likes_increment: idea_activity(idea, :likes),
         dislikes_count: idea.dislikes_count,
-        downvotes_increment: idea_activity(idea, :downvotes),
+        dislikes_increment: idea_activity(idea, :dislikes),
         comments_count: idea.comments_count,
         comments_increment: idea_activity(idea, :comments)
       }

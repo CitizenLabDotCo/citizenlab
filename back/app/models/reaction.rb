@@ -28,7 +28,7 @@ class Reaction < ApplicationRecord
   belongs_to :reactable, polymorphic: true
   counter_culture(
     :reactable,
-    column_name: proc { |model| "#{model.mode}votes_count" },
+    column_name: proc { |model| model.mode == 'up' ? 'likes_count' : 'dislikes_count' },
     column_names: {
       ['votes.mode = ?', 'up'] => 'likes_count',
       ['votes.mode = ?', 'down'] => 'dislikes_count'
