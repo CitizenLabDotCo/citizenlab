@@ -23,7 +23,10 @@ const mockAuthUserData: IUserData = {
     email: 'test@mail.com',
   },
 };
-jest.mock('hooks/useAuthUser', () => () => mockAuthUserData);
+
+jest.mock('api/me/useAuthUser', () => () => ({
+  data: { data: mockAuthUserData },
+}));
 
 describe('Konveio', () => {
   it('should render', () => {
