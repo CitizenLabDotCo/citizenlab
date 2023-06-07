@@ -88,7 +88,7 @@ const RulesGroupForm = ({
     try {
       await onSubmit(formValues);
     } catch (error) {
-      if (error.errors.rules) {
+      if (error?.errors?.rules) {
         methods.setError('rules', {
           type: 'custom',
           message: formatMessage(messages.rulesError),
