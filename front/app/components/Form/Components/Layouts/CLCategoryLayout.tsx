@@ -46,11 +46,14 @@ const CLCategoryLayout = memo(
         padding="0 20px 30px 20px"
         margin="auto"
       >
-        {(uischema as Categorization).elements.map((e, index) => (
+        {/* TODO fix properly */}
+        {(uischema as Categorization)?.elements?.map((e, index) => (
           <StyledFormSection key={index}>
-            <FormSectionTitleStyled>{e.label}</FormSectionTitleStyled>
-            {e.options && e.options.description && (
-              <Box mb={e.elements.length >= 1 ? '48px' : '28px'}>
+            {/* TODO fix properly */}
+            <FormSectionTitleStyled>{e?.label}</FormSectionTitleStyled>
+            {/* TODO fix properly */}
+            {e?.options && e?.options?.description && (
+              <Box mb={e?.elements?.length >= 1 ? '48px' : '28px'}>
                 <QuillEditedContent
                   fontWeight={400}
                   textColor={theme.colors.tenantText}
@@ -63,7 +66,8 @@ const CLCategoryLayout = memo(
                 </QuillEditedContent>
               </Box>
             )}
-            {e.elements.map((e, index) => (
+            {/* TODO fix properly */}
+            {e?.elements?.map((e, index) => (
               <Box w="100%" mb="40px" key={index}>
                 <JsonFormsDispatch
                   renderers={renderers}
