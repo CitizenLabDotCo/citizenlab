@@ -241,9 +241,9 @@ export default defineMessages({
     defaultMessage: 'Enabled actions for residents',
   },
   enabledActionsTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip',
+    id: 'app.containers.AdminPage.ProjectEdit.enabledActionsTooltip',
     defaultMessage:
-      'Select what participative action users can take during this ideation phase.',
+      'Select what participative actions users can take during this phase.',
   },
   unlimited: {
     id: 'app.containers.AdminPage.ProjectEdit.unlimited',
