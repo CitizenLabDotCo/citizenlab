@@ -122,7 +122,7 @@ module EmailCampaigns
         activities: {
           new_ideas: stat_increase(Idea.pluck(:published_at).compact),
           new_initiatives: stat_increase(Initiative.pluck(:published_at).compact),
-          new_votes: stat_increase(Reaction.pluck(:created_at)),
+          new_reactions: stat_increase(Reaction.pluck(:created_at)),
           new_comments: stat_increase(Comment.pluck(:created_at)),
           total_ideas: Idea.count,
           total_initiatives: Initiative.count,
@@ -230,9 +230,9 @@ module EmailCampaigns
 
     def ideas_activity_counts(ideas)
       idea_ids = ideas.pluck(:id)
-      new_votes = Reaction.where(reactable_id: idea_ids).where('created_at > ?', Time.now - days_ago)
-      new_likes_counts = new_votes.where(mode: 'up').group(:reactable_id).count
-      new_dislikes_counts = new_votes.where(mode: 'down').group(:reactable_id).count
+      new_reactions = Reaction.where(reactable_id: idea_ids).where('created_at > ?', Time.now - days_ago)
+      new_likes_counts = new_reactions.where(mode: 'up').group(:reactable_id).count
+      new_dislikes_counts = new_reactions.where(mode: 'down').group(:reactable_id).count
       new_comments_counts = Comment.where(post_id: idea_ids).where('created_at > ?', Time.now - days_ago).group(:post_id).count
 
       idea_ids.each_with_object({}) do |idea_id, object|

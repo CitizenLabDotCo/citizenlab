@@ -176,7 +176,7 @@ class XlsxService
       { header: 'author_id',            f: ->(i) { i.author_id } },
       { header: 'published_at',         f: ->(i) { i.published_at },                                    skip_sanitization: true },
       { header: 'comments',             f: ->(i) { i.comments_count },                                  skip_sanitization: true },
-      { header: 'upvotes',              f: ->(i) { i.likes_count },                                   skip_sanitization: true },
+      { header: 'likes',              f: ->(i) { i.likes_count },                                   skip_sanitization: true },
       { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) },          skip_sanitization: true, hyperlink: true },
       { header: 'topics',               f: ->(i) { i.topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
       { header: 'initiative_status',    f: ->(i) { multiloc_service.t(i&.initiative_status&.title_multiloc) } },

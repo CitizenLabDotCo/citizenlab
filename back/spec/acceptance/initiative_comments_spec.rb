@@ -194,13 +194,13 @@ resource 'Comments' do
     get 'web_api/v1/initiatives/:initiative_id/comments' do
       let(:initiative_id) { @initiative.id }
 
-      example 'List all comments of an initiative includes the user_vote when authenticated' do
+      example 'List all comments of an initiative includes the user_reaction when authenticated' do
         comment = create(:comment, post: @initiative)
-        vote = create(:reaction, user: @user, reactable: comment)
+        reaction = create(:reaction, user: @user, reactable: comment)
         do_request
         json_response = json_parse(response_body)
-        expect(json_response[:data].filter_map { |d| d[:relationships][:user_vote][:data] }.first[:id]).to eq vote.id
-        expect(json_response[:included].pluck(:id)).to include vote.id
+        expect(json_response[:data].filter_map { |d| d[:relationships][:user_reaction][:data] }.first[:id]).to eq reaction.id
+        expect(json_response[:included].pluck(:id)).to include reaction.id
       end
     end
 
