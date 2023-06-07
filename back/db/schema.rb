@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_05_133845) do
+ActiveRecord::Schema.define(version: 2023_06_07_142901) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1727,9 +1727,9 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
               WHEN (abf.feedback_first_date IS NULL) THEN 1
               ELSE 0
           END AS feedback_none,
-      (i.likes_count + i.dislikes_count) AS votes_count,
-      i.likes_count AS upvotes_count,
-      i.dislikes_count AS downvotes_count,
+      (i.likes_count + i.dislikes_count) AS reactions_count,
+      i.likes_count,
+      i.dislikes_count,
       i.publication_status
      FROM ((ideas i
        JOIN analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
@@ -1749,9 +1749,9 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
               WHEN (abf.feedback_first_date IS NULL) THEN 1
               ELSE 0
           END AS feedback_none,
-      (i.likes_count + i.dislikes_count) AS votes_count,
-      i.likes_count AS upvotes_count,
-      i.dislikes_count AS downvotes_count,
+      (i.likes_count + i.dislikes_count) AS reactions_count,
+      i.likes_count,
+      i.dislikes_count,
       i.publication_status
      FROM (((initiatives i
        JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
@@ -1769,9 +1769,9 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
               ELSE idea.id
           END AS dimension_type_id,
       (i.created_at)::date AS dimension_date_created_id,
-      (i.likes_count + i.dislikes_count) AS votes_count,
-      i.likes_count AS upvotes_count,
-      i.dislikes_count AS downvotes_count
+      (i.likes_count + i.dislikes_count) AS reactions_count,
+      i.likes_count,
+      i.dislikes_count
      FROM ((((ideas i
        LEFT JOIN projects pr ON ((pr.id = i.project_id)))
        LEFT JOIN phases ph ON ((ph.id = i.creation_phase_id)))
@@ -1783,9 +1783,9 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
       NULL::uuid AS dimension_project_id,
       adt.id AS dimension_type_id,
       (i.created_at)::date AS dimension_date_created_id,
-      (i.likes_count + i.dislikes_count) AS votes_count,
-      i.likes_count AS upvotes_count,
-      i.dislikes_count AS downvotes_count
+      (i.likes_count + i.dislikes_count) AS reactions_count,
+      i.likes_count,
+      i.dislikes_count
      FROM (initiatives i
        JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
   UNION ALL
@@ -1794,31 +1794,31 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
       i.project_id AS dimension_project_id,
       adt.id AS dimension_type_id,
       (c.created_at)::date AS dimension_date_created_id,
-      (c.likes_count + c.dislikes_count) AS votes_count,
-      c.likes_count AS upvotes_count,
-      c.dislikes_count AS downvotes_count
+      (c.likes_count + c.dislikes_count) AS reactions_count,
+      c.likes_count,
+      c.dislikes_count
      FROM ((comments c
        JOIN analytics_dimension_types adt ON ((((adt.name)::text = 'comment'::text) AND ((adt.parent)::text = lower((c.post_type)::text)))))
        LEFT JOIN ideas i ON ((c.post_id = i.id)))
   UNION ALL
-   SELECT v.id,
-      v.user_id AS dimension_user_id,
+   SELECT r.id,
+      r.user_id AS dimension_user_id,
       COALESCE(i.project_id, ic.project_id) AS dimension_project_id,
       adt.id AS dimension_type_id,
-      (v.created_at)::date AS dimension_date_created_id,
-      1 AS votes_count,
+      (r.created_at)::date AS dimension_date_created_id,
+      1 AS reactions_count,
           CASE
-              WHEN ((v.mode)::text = 'up'::text) THEN 1
+              WHEN ((r.mode)::text = 'up'::text) THEN 1
               ELSE 0
-          END AS upvotes_count,
+          END AS likes_count,
           CASE
-              WHEN ((v.mode)::text = 'down'::text) THEN 1
+              WHEN ((r.mode)::text = 'down'::text) THEN 1
               ELSE 0
-          END AS downvotes_count
-     FROM ((((reactions v
-       JOIN analytics_dimension_types adt ON ((((adt.name)::text = 'vote'::text) AND ((adt.parent)::text = lower((v.reactable_type)::text)))))
-       LEFT JOIN ideas i ON ((i.id = v.reactable_id)))
-       LEFT JOIN comments c ON ((c.id = v.reactable_id)))
+          END AS dislikes_count
+     FROM ((((reactions r
+       JOIN analytics_dimension_types adt ON ((((adt.name)::text = 'reaction'::text) AND ((adt.parent)::text = lower((r.reactable_type)::text)))))
+       LEFT JOIN ideas i ON ((i.id = r.reactable_id)))
+       LEFT JOIN comments c ON ((c.id = r.reactable_id)))
        LEFT JOIN ideas ic ON ((ic.id = c.post_id)))
   UNION ALL
    SELECT pr.id,
@@ -1826,9 +1826,9 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
       COALESCE(p.project_id, pr.participation_context_id) AS dimension_project_id,
       adt.id AS dimension_type_id,
       (pr.created_at)::date AS dimension_date_created_id,
-      0 AS votes_count,
-      0 AS upvotes_count,
-      0 AS downvotes_count
+      0 AS reactions_count,
+      0 AS likes_count,
+      0 AS dislikes_count
      FROM ((polls_responses pr
        LEFT JOIN phases p ON ((p.id = pr.participation_context_id)))
        JOIN analytics_dimension_types adt ON (((adt.name)::text = 'poll'::text)))
@@ -1838,9 +1838,9 @@ ActiveRecord::Schema.define(version: 2023_06_05_133845) do
       COALESCE(p.project_id, vc.participation_context_id) AS dimension_project_id,
       adt.id AS dimension_type_id,
       (vv.created_at)::date AS dimension_date_created_id,
-      0 AS votes_count,
-      0 AS upvotes_count,
-      0 AS downvotes_count
+      0 AS reactions_count,
+      0 AS likes_count,
+      0 AS dislikes_count
      FROM (((volunteering_volunteers vv
        LEFT JOIN volunteering_causes vc ON ((vc.id = vv.cause_id)))
        LEFT JOIN phases p ON ((p.id = vc.participation_context_id)))

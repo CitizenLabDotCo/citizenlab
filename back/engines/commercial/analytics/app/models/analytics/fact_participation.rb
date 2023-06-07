@@ -9,9 +9,9 @@
 #  dimension_project_id      :uuid
 #  dimension_type_id         :uuid
 #  dimension_date_created_id :date
-#  reactions_count               :integer
-#  likes_count             :integer
-#  dislikes_count           :integer
+#  reactions_count           :integer
+#  likes_count               :integer
+#  dislikes_count            :integer
 #
 module Analytics
   class FactParticipation < Analytics::ApplicationRecordView

@@ -5,8 +5,8 @@ module SmartGroups::Rules
     include ActiveModel::Validations
     include DescribableRule
 
-    PREDICATE_VALUES = %w[in not_in posted_in not_posted_in commented_in not_commented_in voted_idea_in not_voted_idea_in voted_comment_in not_voted_comment_in]
-    MULTIVALUE_PREDICATES = %w[in posted_in commented_in voted_idea_in voted_comment_in]
+    PREDICATE_VALUES = %w[in not_in posted_in not_posted_in commented_in not_commented_in reacted_idea_in not_reacted_idea_in reacted_comment_in not_reacted_comment_in]
+    MULTIVALUE_PREDICATES = %w[in posted_in commented_in reacted_idea_in reacted_comment_in]
     VALUELESS_PREDICATES = []
 
     attr_accessor :predicate, :value
@@ -108,16 +108,16 @@ module SmartGroups::Rules
       when 'not_commented_in'
         participants = participants_service.idea_statuses_participants(IdeaStatus.where(id: value), actions: [:commenting])
         users_scope.where.not(id: participants)
-      when 'voted_idea_in'
+      when 'reacted_idea_in'
         participants = participants_service.idea_statuses_participants(IdeaStatus.where(id: value), actions: [:idea_reacting])
         users_scope.where(id: participants)
-      when 'not_voted_idea_in'
+      when 'not_reacted_idea_in'
         participants = participants_service.idea_statuses_participants(IdeaStatus.where(id: value), actions: [:idea_reacting])
         users_scope.where.not(id: participants)
-      when 'voted_comment_in'
+      when 'reacted_comment_in'
         participants = participants_service.idea_statuses_participants(IdeaStatus.where(id: value), actions: [:comment_reacting])
         users_scope.where(id: participants)
-      when 'not_voted_comment_in'
+      when 'not_reacted_comment_in'
         participants = participants_service.idea_statuses_participants(IdeaStatus.where(id: value), actions: [:comment_reacting])
         users_scope.where.not(id: participants)
       else
