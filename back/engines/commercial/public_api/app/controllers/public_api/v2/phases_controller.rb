@@ -17,17 +17,18 @@ module PublicApi
     private
 
     def list_phases(base_query)
-      @phases = base_query
+      phases = base_query
         .order(created_at: :desc)
         .page(params[:page_number])
         .per(num_per_page)
-      @phases = common_date_filters @phases
-      @phases = phase_date_filters @phases
 
-      render json: @phases,
+      phases = common_date_filters(phases)
+      phases = phase_date_filters(phases)
+
+      render json: phases,
         each_serializer: V2::PhaseSerializer,
         adapter: :json,
-        meta: meta_properties(@phases)
+        meta: meta_properties(phases)
     end
 
     def phase_date_filters(base_query)
