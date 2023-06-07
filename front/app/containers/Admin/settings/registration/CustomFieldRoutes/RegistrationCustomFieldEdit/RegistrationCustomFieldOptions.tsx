@@ -3,17 +3,13 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // utils
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// services
-import {
-  IUserCustomFieldOptionData,
-  reorderUserCustomFieldOption,
-} from 'services/userCustomFieldOptions';
+import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
 
 // hooks
 import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 import useDeleteUserCustomFieldsOption from 'api/user_custom_fields_options/useDeleteUserCustomFieldsOption';
 import useLocalize from 'hooks/useLocalize';
+import useReorderUserCustomFieldOption from 'api/user_custom_fields_options/useReorderUserCustomFieldsOption';
 
 // components
 import {
@@ -38,13 +34,17 @@ const RegistrationCustomFieldOptions = memo(
       useUserCustomFieldOptions(userCustomFieldId);
     const { mutate: deleteUserCustomFieldOption } =
       useDeleteUserCustomFieldsOption();
+    const { mutate: reorderUserCustomFieldOption } =
+      useReorderUserCustomFieldOption();
     const localize = useLocalize();
 
     const handleReorderCustomFieldOption = (
       customFieldOptionId: string,
       ordering: number
     ) => {
-      reorderUserCustomFieldOption(userCustomFieldId, customFieldOptionId, {
+      reorderUserCustomFieldOption({
+        customFieldId: userCustomFieldId,
+        optionId: customFieldOptionId,
         ordering,
       });
     };
