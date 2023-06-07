@@ -5,18 +5,19 @@ module PublicApi
     before_action :set_user, only: [:show]
 
     def index
-      @users = User.all
+      users = User
         .order(created_at: :desc)
         .page(params[:page_number])
         .per(num_per_page)
-      @users = common_date_filters @users
+
+      users = common_date_filters(users)
 
       # TODO: Filter by first_partcipated, status
 
-      render json: @users,
+      render json: users,
         each_serializer: V2::UserSerializer,
         adapter: :json,
-        meta: meta_properties(@users)
+        meta: meta_properties(users)
     end
 
     def show
