@@ -11,8 +11,6 @@ module MultiTenancy
           downvoting_method
           ideas_order
           input_term
-          max_budget
-          min_budget
           participation_method
           poll_anonymous
           posting_enabled

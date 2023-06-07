@@ -135,8 +135,10 @@ class ProjectPolicy < ApplicationPolicy
       :allow_anonymous_participation,
       :survey_embed_url,
       :survey_service,
-      :min_budget,
-      :max_budget,
+      :voting_method,
+      :voting_max_total,
+      :voting_min_total,
+      :voting_max_votes_per_idea,
       :presentation_mode,
       :poll_anonymous,
       :ideas_order,
@@ -147,6 +149,7 @@ class ProjectPolicy < ApplicationPolicy
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
         description_preview_multiloc: CL2_SUPPORTED_LOCALES,
+        voting_term: CL2_SUPPORTED_LOCALES,
         area_ids: [],
         topic_ids: []
       }

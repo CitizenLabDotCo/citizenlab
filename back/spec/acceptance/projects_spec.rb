@@ -235,8 +235,11 @@ resource 'Projects' do
         parameter :allow_anonymous_participation, 'Only for continuous ideation and budgeting projects. Allow users to post inputs and comments anonymously. Default to false.', required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
-        parameter :min_budget, 'The minimum budget amount. Participatory budget should be greater or equal to input.', required: false
-        parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
+        parameter :voting_method, "Either #{ParticipationContext::VOTING_METHODS.join(',')}. Required when the participation method is voting.", required: false
+        parameter :voting_min_total, 'The minimum value a basket can have.', required: false
+        parameter :voting_max_total, 'The maximal value a basket can have during voting. Required when the voting method is budgeting.', required: false
+        parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
+        parameter :voting_term, 'A multiloc term that is used to refer to the voting', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}. Defaults to card.", required: false
         parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned', required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
@@ -367,6 +370,26 @@ resource 'Projects' do
           expect(json_response.dig(:data, :attributes, :input_term)).to be_present
           expect(json_response.dig(:data, :attributes, :input_term)).to eq 'idea'
           expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
+        end
+
+        describe do
+          let(:participation_method) { 'voting' }
+          let(:voting_method) { 'budgeting' }
+          let(:voting_max_total) { 100 }
+          let(:voting_min_total) { 10 }
+          let(:voting_max_votes_per_idea) { 5 }
+          let(:voting_term) { { 'en' => 'Grocery shopping' } }
+
+          example_request 'Create a voting project' do
+            assert_status 201
+
+            expect(json_response.dig(:data, :attributes, :participation_method)).to eq 'voting'
+            expect(json_response.dig(:data, :attributes, :voting_method)).to eq 'budgeting'
+            expect(json_response.dig(:data, :attributes, :voting_max_total)).to eq 100
+            expect(json_response.dig(:data, :attributes, :voting_min_total)).to eq 10
+            expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to eq 5
+            expect(json_response.dig(:data, :attributes, :voting_term)).to eq({ en: 'Grocery shopping' })
+          end
         end
 
         context 'when not admin' do
@@ -506,8 +529,11 @@ resource 'Projects' do
         parameter :allow_anonymous_participation, 'Only for continuous ideation and budgeting projects. Allow users to post inputs and comments anonymously.', required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
-        parameter :min_budget, 'The minimum budget amount. Participatory budget should be greater or equal to input.', required: false
-        parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
+        parameter :voting_method, "Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
+        parameter :voting_min_total, 'The minimum value a basket can have.', required: false
+        parameter :voting_max_total, 'The maximal value a basket can have during voting', required: false
+        parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
+        parameter :voting_term, 'A multiloc term that is used to refer to the voting', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(',')}.", required: false
         parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
@@ -533,15 +559,13 @@ resource 'Projects' do
       let(:presentation_mode) { 'card' }
       let(:publication_status) { 'archived' }
       let(:ideas_order) { 'new' }
-      let(:min_budget) { 100 }
-      let(:max_budget) { 1000 }
       let(:default_assignee_id) { create(:admin).id }
 
       example 'Update a project' do
         old_publcation_ids = AdminPublication.ids
         do_request
 
-        expect(response_status).to eq 200
+        assert_status 200
         # admin publications should not be replaced, but rather should be updated
         expect(AdminPublication.ids).to match_array old_publcation_ids
         expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
@@ -555,11 +579,26 @@ resource 'Projects' do
         expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
         expect(json_response.dig(:data, :attributes, :input_term)).to be_present
         expect(json_response.dig(:data, :attributes, :input_term)).to eq 'idea'
-        expect(json_response.dig(:data, :attributes, :min_budget)).to eq 100
-        expect(json_response.dig(:data, :attributes, :max_budget)).to eq 1000
         expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq 'card'
         expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
         expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
+      end
+
+      describe do
+        let(:id) { create(:continuous_budgeting_project).id }
+        let(:voting_min_total) { 3 }
+        let(:voting_max_total) { 15 }
+        let(:voting_max_votes_per_idea) { 1 }
+        let(:voting_term) { { 'en' => 'Grocery shopping' } }
+
+        example_request 'Update a voting project' do
+          assert_status 200
+
+          expect(json_response.dig(:data, :attributes, :voting_min_total)).to eq 3
+          expect(json_response.dig(:data, :attributes, :voting_max_total)).to eq 15
+          expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to eq 1
+          expect(json_response.dig(:data, :attributes, :voting_term)).to eq({ en: 'Grocery shopping' })
+        end
       end
 
       example 'Log activities', document: false do
@@ -1325,7 +1364,12 @@ resource 'Projects' do
         parameter :allow_anonymous_participation, 'Only for continuous ideation and budgeting projects. Allow users to post inputs and comments anonymously. Default to false.', required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
-        parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
+        parameter :voting_method, "Either #{ParticipationContext::VOTING_METHODS.join(',')}. Required when the participation method is voting.", required: false
+        parameter :voting_method, "Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
+        parameter :voting_min_total, 'The minimum value a basket can have.', required: false
+        parameter :voting_max_total, 'The maximal value a basket can have during voting', required: false
+        parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
+        parameter :voting_term, 'A multiloc term that is used to refer to the voting', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}. Defaults to card.", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false

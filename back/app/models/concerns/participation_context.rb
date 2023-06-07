@@ -75,19 +75,21 @@ module ParticipationContext
       # voting?
       with_options if: :voting? do
         validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
-        validates :voting_min_total, presence: true
-        validates :voting_max_total, presence: true
+        # TODO: budgeting: validates :voting_max_total, presence: true
         # validates :ideas_order, exclusion: { in: IDEAS_ORDERS_BUDGETING_EXCLUDE }, allow_nil: true
       end
       validates :voting_min_total,
         numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :voting_max_total,
-                        if: %i[voting? voting_max_total] }
+                        if: %i[voting? voting_max_total],
+                        allow_nil: true }
       validates :voting_max_total,
         numericality: { greater_than_or_equal_to: :voting_min_total,
-                        if: %i[voting? voting_min_total] }
+                        if: %i[voting? voting_min_total],
+                        allow_nil: true }
       validates :voting_max_votes_per_idea,
         numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: :voting_max_total,
-                        if: %i[voting? voting_max_total] }
+                        if: %i[voting? voting_max_total],
+                        allow_nil: true }
     end
   end
 
