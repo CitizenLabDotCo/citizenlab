@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::OfficialFeedbackOnVotedIdeaMailer do
+RSpec.describe EmailCampaigns::OfficialFeedbackOnReactedInitiativeMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnVotedIdea.create! }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnVotedInitiative.create! }
     let_it_be(:command) do
       {
         recipient: recipient,
@@ -25,7 +25,7 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnVotedIdeaMailer do
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('An idea you voted on has received an update')
+      expect(mail.subject).to start_with('A proposal you voted on has received an official update')
     end
 
     it 'renders the sender email' do

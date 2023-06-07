@@ -2,13 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::NewCommentOnVotedInitiativeMailer do
+RSpec.describe EmailCampaigns::NewCommentOnReactedIdeaMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:campaign) { EmailCampaigns::Campaigns::NewCommentOnVotedInitiative.create! }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::NewCommentOnVotedIdea.create! }
     let_it_be(:command) do
-      initiative = create(:initiative)
-      comment = create(:comment, post: initiative)
+      idea = create(:idea)
+      comment = create(:comment, post: idea)
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
 
       {
@@ -29,7 +29,7 @@ RSpec.describe EmailCampaigns::NewCommentOnVotedInitiativeMailer do
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('There\'s a new comment on the proposal you\'ve voted on')
+      expect(mail.subject).to start_with('There\'s a new comment on the idea you\'ve voted on')
     end
 
     it 'renders the sender email' do

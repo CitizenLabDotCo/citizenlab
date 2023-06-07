@@ -118,7 +118,7 @@ module ParticipationContext
     reacting_dislike_method == 'limited'
   end
 
-  def votes
+  def reactions
     Reaction.where(reactable: ideas)
   end
 

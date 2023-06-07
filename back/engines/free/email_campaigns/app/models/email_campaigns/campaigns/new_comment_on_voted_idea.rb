@@ -39,7 +39,7 @@ module EmailCampaigns
     recipient_filter :filter_recipient
 
     def mailer_class
-      NewCommentOnVotedIdeaMailer
+      NewCommentOnReactedIdeaMailer
     end
 
     def activity_triggers

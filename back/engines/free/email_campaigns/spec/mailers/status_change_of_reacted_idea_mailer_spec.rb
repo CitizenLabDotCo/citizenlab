@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::StatusChangeOfVotedIdeaMailer do
+RSpec.describe EmailCampaigns::StatusChangeOfReactedIdeaMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::StatusChangeOfVotedIdea.create! }

@@ -54,34 +54,27 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class OfficialFeedbackOnVotedInitiative < Notification
-    validates :initiating_user, :official_feedback, :post, presence: true
-    validates :post_type, inclusion: { in: ['Initiative'] }
+  class StatusChangeOnReactedIdea < Notification
+    validates :post_status, :post, :project, presence: true
+    validates :post_type, inclusion: { in: ['Idea'] }
 
-    ACTIVITY_TRIGGERS = { 'OfficialFeedback' => { 'created' => true } }
-    EVENT_NAME = 'Official feedback on voted initiative'
+    ACTIVITY_TRIGGERS = { 'Idea' => { 'changed_status' => true } }
+    EVENT_NAME = 'Status change on reacted idea'
 
     def self.make_notifications_on(activity)
-      official_feedback = activity.item
-      initiator_id = official_feedback.user_id
+      idea = activity.item
 
-      if official_feedback.post_type == 'Initiative' && initiator_id && !InitiativeStatusChange.exists?(official_feedback: official_feedback)
-        comment_author_ids = User.active
-          .joins(:comments).merge(Comment.published)
-          .where(comments: { post: official_feedback.post })
-          .distinct
-          .ids
-        voter_ids = User.active
-          .joins(:votes).where(votes: { reactable: official_feedback.post })
-          .distinct
-          .ids
+      if idea.present?
+        comment_author_ids = User.joins(:comments).where(comments: { post: idea }).distinct.ids
+        User.joins(:reactions).where(reactions: { reactable: idea }).distinct.ids.map do |recipient_id|
+          next if (comment_author_ids + [idea.author_id]).include?(recipient_id)
 
-        (voter_ids - [initiator_id, *comment_author_ids, official_feedback.post.author_id]).map do |recipient_id|
           new(
             recipient_id: recipient_id,
-            initiating_user_id: initiator_id,
-            post: official_feedback.post,
-            official_feedback: official_feedback
+            initiating_user_id: activity.user_id,
+            post: idea,
+            project_id: idea.project_id,
+            post_status: idea.idea_status
           )
         end
       else

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::Notifications::StatusChangeOnVotedIdeaSerializer < WebApi::V1::Notifications::NotificationSerializer
+class WebApi::V1::Notifications::StatusChangeOnReactedInitiativeSerializer < WebApi::V1::Notifications::NotificationSerializer
   attribute :post_title_multiloc do |object|
     object.post&.title_multiloc
   end
@@ -9,7 +9,7 @@ class WebApi::V1::Notifications::StatusChangeOnVotedIdeaSerializer < WebApi::V1:
     object.post&.slug
   end
 
-  attribute :idea_status_title_multiloc do |object|
+  attribute :initiative_status_title_multiloc do |object|
     object.post_status&.title_multiloc
   end
 end

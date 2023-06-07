@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class StatusChangeOfVotedIdeaMailer < ApplicationMailer
+  class StatusChangeOfReactedIdeaMailer < ApplicationMailer
     private
 
     def subject

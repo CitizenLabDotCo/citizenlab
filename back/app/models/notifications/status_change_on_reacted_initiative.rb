@@ -54,19 +54,19 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class StatusChangeOnVotedInitiative < Notification
+  class StatusChangeOnReactedInitiative < Notification
     validates :post_status, :post, presence: true
     validates :post_type, inclusion: { in: ['Initiative'] }
 
     ACTIVITY_TRIGGERS = { 'Initiative' => { 'changed_status' => true } }
-    EVENT_NAME = 'Status change on voted initiative'
+    EVENT_NAME = 'Status change on reacted initiative'
 
     def self.make_notifications_on(activity)
       initiative = activity.item
 
       if initiative.present?
         comment_author_ids = User.joins(:comments).where(comments: { post: initiative }).distinct.ids
-        User.joins(:votes).where(votes: { reactable: initiative }).distinct.ids.map do |recipient_id|
+        User.joins(:reactions).where(reactions: { reactable: initiative }).distinct.ids.map do |recipient_id|
           next if (comment_author_ids + [initiative.author_id]).include?(recipient_id)
 
           new(

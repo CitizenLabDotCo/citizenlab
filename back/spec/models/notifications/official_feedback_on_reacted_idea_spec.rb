@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Notifications::OfficialFeedbackOnVotedIdea do
+RSpec.describe Notifications::OfficialFeedbackOnReactedIdea do
   describe 'make_notifications_on' do
     it 'generates exactly one notification for each user that reacted to the idea' do
       idea = create(:idea)

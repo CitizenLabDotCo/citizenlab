@@ -54,7 +54,7 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class OfficialFeedbackOnVotedIdea < Notification
+  class OfficialFeedbackOnReactedIdea < Notification
     validates :initiating_user, :official_feedback, :post, :project, presence: true
     validates :post_type, inclusion: { in: ['Idea'] }
 

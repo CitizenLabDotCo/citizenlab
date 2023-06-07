@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class NewCommentOnVotedInitiativeMailer < ApplicationMailer
+  class NewCommentOnReactedIdeaMailer < ApplicationMailer
     private
 
     helper_method :comment_author
@@ -22,7 +22,7 @@ module EmailCampaigns
       format_message(
         'event_description',
         values: {
-          initiativeTitle: localize_for_recipient(event.post_title_multiloc),
+          ideaTitle: localize_for_recipient(event.post_title_multiloc),
           organizationName: organization_name,
           commentAuthor: comment_author
         }

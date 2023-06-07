@@ -81,7 +81,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     render json: WebApi::V1::InitiativeSerializer.new(
       @initiative,
       params: jsonapi_serializer_params,
-      include: %i[author topics areas user_vote initiative_images]
+      include: %i[author topics areas user_reaction initiative_images]
     ).serializable_hash
   end
 
@@ -114,7 +114,7 @@ class WebApi::V1::InitiativesController < ApplicationController
         render json: WebApi::V1::InitiativeSerializer.new(
           @initiative.reload,
           params: jsonapi_serializer_params,
-          include: %i[author topics areas user_vote initiative_images]
+          include: %i[author topics areas user_reaction initiative_images]
         ).serializable_hash, status: :created
       else
         render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
@@ -156,7 +156,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       render json: WebApi::V1::InitiativeSerializer.new(
         @initiative.reload,
         params: jsonapi_serializer_params,
-        include: %i[author topics areas user_vote initiative_images]
+        include: %i[author topics areas user_reaction initiative_images]
       ).serializable_hash, status: :ok
     else
       render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
@@ -192,11 +192,11 @@ class WebApi::V1::InitiativesController < ApplicationController
     default_params = jsonapi_serializer_params(pcs: ParticipationContextService.new)
 
     if current_user
-      votes = current_user.reactions.where(
+      reactions = current_user.reactions.where(
         reactable_id: initiatives.pluck(:id),
         reactable_type: 'Initiative'
       ).index_by(&:reactable_id)
-      { params: default_params.merge(vbii: votes), include: %i[author user_vote initiative_images assignee] }
+      { params: default_params.merge(vbii: reactions), include: %i[author user_reaction initiative_images assignee] }
     else
       { params: default_params, include: %i[author initiative_images] }
     end
