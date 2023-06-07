@@ -1687,6 +1687,7 @@
   "app.utils.errors.default.api_error_too_long": "Takivallaarpoq",
   "app.utils.errors.default.api_error_too_short": "Naappallaarpoq",
   "app.utils.errors.default.api_error_wrong_length": "Kukkusumik takissuseqarpoq",
+  "app.utils.errors.default.test": "Testing Crowdin. No need to translate this string.",
   "app.utils.errors.defaultapi_error_.odd": "Akunnattuussaaq",
   "app.utils.notInGroup": "You do not meet the requirements to participate.",
   "app.utils.participationMethod.onSurveySubmission": "Thank you. Your response has been received.",
