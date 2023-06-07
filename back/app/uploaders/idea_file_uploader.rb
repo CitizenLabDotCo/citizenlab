@@ -7,7 +7,7 @@ class IdeaFileUploader < BaseFileUploader
 
   def store_dir
     # In case IdeaFileUploader is used for FileUpload,
-    # still use the "idea_file" directory.binding.pry
+    # still use the "idea_file" directory.
     super.sub('/file_upload/', '/idea_file/')
   end
 end
