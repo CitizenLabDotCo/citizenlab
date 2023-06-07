@@ -10,14 +10,14 @@ class SideFxReactionService
       AutomatedTransitionJob.perform_now
     end
 
-    action = "#{reactable_type(reaction)}_#{reaction.mode}voted" # TODO: Action name
+    action = "#{reactable_type(reaction)}_#{reaction.mode == 'up' ? 'liked' : 'disliked'}" # TODO: Action name
     log_activity_job(reaction, action, current_user)
   end
 
   def before_destroy(reaction, current_user); end
 
   def after_destroy(reaction, current_user)
-    action = "canceled_#{reactable_type(reaction)}_#{reaction.mode}vote" # TODO: Action name
+    action = "canceled_#{reactable_type(reaction)}_#{reaction.mode == 'up' ? 'liked' : 'disliked'}" # TODO: Action name
     log_activity_job(reaction, action, current_user)
   end
 

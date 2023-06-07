@@ -106,7 +106,7 @@ module MultiTenancy
           InitiativesTopic => serialize_records(InitiativesTopic.where(initiative: initiatives)),
 
           Comment => serialize_comments(ideas, initiatives),
-          Reaction => serialize_votes(ideas).merge!(serialize_votes(initiatives)),
+          Reaction => serialize_reactions(ideas).merge!(serialize_reactions(initiatives)),
           OfficialFeedback => serialize_records(OfficialFeedback.where(post: [ideas, initiatives])),
 
           # Groups
@@ -239,11 +239,11 @@ module MultiTenancy
         comments.slice(*ordered_ids)
       end
 
-      def serialize_votes(post_scope)
-        post_votes = Reaction.where.not(user_id: nil).where(reactable: post_scope)
-        comment_votes = Reaction.where.not(user_id: nil).where(reactable: Comment.where(post: post_scope))
-        votes = post_votes.chain(comment_votes)
-        serialize_records(votes)
+      def serialize_reactions(post_scope)
+        post_reactions = Reaction.where.not(user_id: nil).where(reactable: post_scope)
+        comment_reactions = Reaction.where.not(user_id: nil).where(reactable: Comment.where(post: post_scope))
+        reactions = post_reactions.chain(comment_reactions)
+        serialize_records(reactions)
       end
     end
   end

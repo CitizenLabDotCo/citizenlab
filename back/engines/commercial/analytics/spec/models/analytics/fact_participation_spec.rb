@@ -19,7 +19,7 @@ RSpec.describe Analytics::FactParticipation do
         { name: 'idea', parent: 'post' },
         { name: 'initiative', parent: 'post' },
         { name: 'comment', parent: 'idea' },
-        { name: 'vote', parent: 'idea' },
+        { name: 'reaction', parent: 'idea' },
         { name: 'poll', parent: nil },
         { name: 'volunteer', parent: nil },
         { name: 'survey', parent: nil }
@@ -59,8 +59,8 @@ RSpec.describe Analytics::FactParticipation do
       let!(:reaction) { create(:reaction) }
 
       it 'is also available as a participation fact' do
-        described_class.find(vote.id)
-        expect(described_class.find(reaction.id).dimension_type.name).to eq('vote')
+        described_class.find(reaction.id)
+        expect(described_class.find(reaction.id).dimension_type.name).to eq('reaction')
       end
     end
 

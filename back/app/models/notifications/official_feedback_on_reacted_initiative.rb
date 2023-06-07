@@ -59,7 +59,7 @@ module Notifications
     validates :post_type, inclusion: { in: ['Initiative'] }
 
     ACTIVITY_TRIGGERS = { 'OfficialFeedback' => { 'created' => true } }
-    EVENT_NAME = 'Official feedback on voted initiative'
+    EVENT_NAME = 'Official feedback on reacted initiative'
 
     def self.make_notifications_on(activity)
       official_feedback = activity.item
@@ -71,12 +71,12 @@ module Notifications
           .where(comments: { post: official_feedback.post })
           .distinct
           .ids
-        voter_ids = User.active
+        reactor_ids = User.active
                         .joins(:reactions).where(reactions: { reactable: official_feedback.post })
           .distinct
           .ids
 
-        (voter_ids - [initiator_id, *comment_author_ids, official_feedback.post.author_id]).map do |recipient_id|
+        (reactor_ids - [initiator_id, *comment_author_ids, official_feedback.post.author_id]).map do |recipient_id|
           new(
             recipient_id: recipient_id,
             initiating_user_id: initiator_id,

@@ -76,11 +76,11 @@ class SideFxIdeaService
   def before_publish(idea, _user); end
 
   def after_publish(idea, user)
-    add_autovote idea
+    add_autoreaction idea
     log_activity_jobs_after_published idea, user
   end
 
-  def add_autovote(idea)
+  def add_autoreaction(idea)
     pcs = ParticipationContextService.new
     return if pcs.idea_reacting_disabled_reason_for idea, idea.author, mode: 'up'
 

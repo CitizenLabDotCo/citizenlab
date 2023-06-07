@@ -25,7 +25,7 @@ describe CommentReactionPolicy do
     it { is_expected.not_to permit(:down) }
     it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
 
-    it 'indexes the vote' do
+    it 'indexes the reaction' do
       expect(scope.resolve.size).to eq 1
     end
   end

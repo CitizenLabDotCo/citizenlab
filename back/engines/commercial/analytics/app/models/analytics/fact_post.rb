@@ -15,7 +15,7 @@
 #  feedback_official                :integer
 #  feedback_status_change           :integer
 #  feedback_none                    :integer
-#  votes_count                      :integer
+#  reactions_count                      :integer
 #  likes_count                    :integer
 #  dislikes_count                  :integer
 #  publication_status               :string

@@ -9,7 +9,7 @@
 #  dimension_project_id      :uuid
 #  dimension_type_id         :uuid
 #  dimension_date_created_id :date
-#  votes_count               :integer
+#  reactions_count               :integer
 #  likes_count             :integer
 #  dislikes_count           :integer
 #

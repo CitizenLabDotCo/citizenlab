@@ -12,7 +12,7 @@ resource 'Project', admin_api: true do
   get 'admin_api/projects/:id/template_export' do
     parameter :tenant_id, 'The tenant id from which to export the project', required: true
     with_options scope: :project do
-      parameter :include_ideas, "Whether to also include the project's ideas, comments, votes and participants", required: false
+      parameter :include_ideas, "Whether to also include the project's ideas, comments, reactions and participants", required: false
       parameter :anonymize_users, 'Generate new first and last name, email etc.', required: false
       parameter :translate_content, 'Translate the content to other languages', required: false
       parameter :shift_timestamps, 'Change the timestamps by the specified number of days', required: false

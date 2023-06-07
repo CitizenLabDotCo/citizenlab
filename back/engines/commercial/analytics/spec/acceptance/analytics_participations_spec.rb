@@ -24,7 +24,7 @@ resource 'Analytics - FactParticipations' do
         { name: 'idea', parent: 'post' },
         { name: 'initiative', parent: 'post' },
         { name: 'comment', parent: 'idea' },
-        { name: 'vote', parent: 'idea' }
+        { name: 'reaction', parent: 'idea' }
       ].each do |type|
         create(:dimension_type, name: type[:name], parent: type[:parent])
       end

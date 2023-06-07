@@ -129,7 +129,7 @@ resource 'Reactions' do
       before do
         PermissionsService.new.update_all_permissions
         project = @idea.project
-        project.permissions.find_by(action: 'voting_idea').update!(permitted_by: 'admins_moderators')
+        project.permissions.find_by(action: 'reacting_idea').update!(permitted_by: 'admins_moderators')
         @user.update!(roles: [])
       end
 
