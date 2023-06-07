@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class PublicApi::V2::CommentSerializer < ActiveModel::Serializer
-  @@multiloc_service = MultilocService.new
-
   attributes :id,
     :body,
     :author_id,
@@ -17,6 +15,12 @@ class PublicApi::V2::CommentSerializer < ActiveModel::Serializer
     :publication_status
 
   def body
-    @@multiloc_service.t(object.body_multiloc)
+    multiloc_service.t(object.body_multiloc)
+  end
+
+  private
+
+  def multiloc_service
+    @multiloc_service ||= MultilocService.new
   end
 end
