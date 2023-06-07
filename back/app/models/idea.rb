@@ -256,7 +256,7 @@ class Idea < ApplicationRecord
   def fix_internal_comments_count_on_projects
     return unless project_id_previously_changed?
 
-    Comment.counter_culture_fix_counts only: [%i[idea project]]
+    InternalComment.counter_culture_fix_counts only: [%i[idea project]]
   end
 
   def update_phase_ideas_count(_)
