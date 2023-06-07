@@ -7,7 +7,8 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*/poll_options/:optionId';
+const apiPath =
+  '*/users/custom_fields/:customFieldId/custom_field_options/:optionId';
 
 const server = setupServer(
   rest.delete(apiPath, (_req, res, ctx) => {

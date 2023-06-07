@@ -16,7 +16,7 @@ const fetchOption = ({
     action: 'get',
   });
 
-const useUserCustomFieldOption = ({
+const useUserCustomFieldsOption = ({
   customFieldId,
   optionId,
 }: {
@@ -34,4 +34,4 @@ const useUserCustomFieldOption = ({
   });
 };
 
-export default useUserCustomFieldOption;
+export default useUserCustomFieldsOption;

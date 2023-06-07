@@ -7,7 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // hooks
-import useUserCustomFieldOption from 'api/user_custom_fields_options/useUserCustomFieldOption';
+import useUserCustomFieldsOption from 'api/user_custom_fields_options/useUserCustomFieldsOption';
 import useUpdateUserCustomFieldsOption from 'api/user_custom_fields_options/useUpdateUserCustomFieldsOption';
 
 // components
@@ -24,7 +24,7 @@ const RegistrationCustomFieldOptionsEdit = () => {
 
   const { mutate: updateUserCustomFieldOption } =
     useUpdateUserCustomFieldsOption();
-  const { data: userCustomFieldOption } = useUserCustomFieldOption({
+  const { data: userCustomFieldOption } = useUserCustomFieldsOption({
     customFieldId: userCustomFieldId,
     optionId: userCustomFieldOptionId,
   });
