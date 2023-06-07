@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::InternalCommentSerializer < WebApi::V1::BaseSerializer
-  attributes :publication_status, :children_count, :created_at, :updated_at, :anonymous, :author_hash # Remove anonymous?
+  attributes :publication_status, :children_count, :created_at, :updated_at # , :author_hash
 
   attribute :body_multiloc do |object|
     if object.publication_status != 'deleted'
@@ -9,9 +9,9 @@ class WebApi::V1::InternalCommentSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  # attribute :is_admin_comment do |object|
-  #   object.author&.admin?
-  # end
+  attribute :is_admin_comment do |object|
+    object.author&.admin?
+  end
 
   belongs_to :post, polymorphic: true
   belongs_to :parent, record_type: :internal_comment, serializer: WebApi::V1::InternalCommentSerializer

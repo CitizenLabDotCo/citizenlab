@@ -22,10 +22,6 @@ class WebApi::V1::InternalCommentsController < ApplicationController
       root_comments.order(created_at: :desc)
     when '-new'
       root_comments.order(created_at: :asc)
-    when 'upvotes_count'
-      root_comments.order(upvotes_count: :asc, lft: :asc)
-    when '-upvotes_count'
-      root_comments.order(upvotes_count: :desc, lft: :asc)
     when nil
       root_comments.order(lft: :asc)
     else
@@ -42,7 +38,7 @@ class WebApi::V1::InternalCommentsController < ApplicationController
     partially_expanded_child_comments = InternalComment
       .where(parent_id: partially_expanded_root_comments)
       .joins(:parent)
-      .where('comments.lft >= parents_comments.rgt - ?', MINIMAL_SUBCOMMENTS * 2) # Dow we need internal_... here?
+      .where('internal_comments.lft >= parents_internal_comments.rgt - ?', MINIMAL_SUBCOMMENTS * 2) # Dow we need internal_... here?
 
     child_comments = InternalComment
       .where(parent: fully_expanded_root_comments)
@@ -122,8 +118,9 @@ class WebApi::V1::InternalCommentsController < ApplicationController
   end
 
   def mark_as_deleted
-    reason_code = params.dig(:comment, :reason_code)
-    other_reason = params.dig(:comment, :other_reason)
+    reason_code = params.dig(:internal_comment, :reason_code)
+    other_reason = params.dig(:internal_comment, :other_reason)
+    # Currenly hijacking the reason_code from CommentDeletedByAdmin - need t change this, etc
     if (@comment.author_id == current_user&.id) ||
        ((Notifications::CommentDeletedByAdmin::REASON_CODES.include? reason_code) && # Need to update to new notification.
         (reason_code != 'other' || other_reason.present?))

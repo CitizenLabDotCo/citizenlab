@@ -7,7 +7,7 @@ describe InitiativeInternalCommentPolicy do
 
   let(:scope) { InitiativeInternalCommentPolicy::Scope.new(user, initiave.internal_comments) }
 
-  context 'on comment on initiave' do
+  context 'on internal comment on initiave' do
     let(:initiave) { create(:initiative) }
     let(:author) { create(:admin) }
     let!(:internal_comment) { create(:internal_comment, post: initiave, author: author) }
@@ -20,12 +20,12 @@ describe InitiativeInternalCommentPolicy do
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
-      it 'indexes the internal_comment' do
+      it 'indexes the internal comment' do
         expect(scope.resolve.size).to eq 1
       end
     end
 
-    context 'for an admin who is not the author of the internal_comment' do
+    context 'for an admin who is not the author of the internal comment' do
       let(:user) { create(:admin) }
 
       it { is_expected.to     permit(:show)    }
@@ -33,12 +33,12 @@ describe InitiativeInternalCommentPolicy do
       it { is_expected.to     permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
-      it 'indexes the comment' do
+      it 'indexes the internal comment' do
         expect(scope.resolve.size).to eq 1
       end
     end
 
-    context 'for a user who is not the author of the internal_comment' do
+    context 'for a user who is not the author of the internal comment' do
       let(:user) { create(:user) }
 
       it { is_expected.not_to permit(:show)    }
@@ -46,7 +46,7 @@ describe InitiativeInternalCommentPolicy do
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
-      it 'indexes the internal_comment' do
+      it 'indexes the internal comment' do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -59,7 +59,7 @@ describe InitiativeInternalCommentPolicy do
       it { is_expected.to     permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
-      it 'indexes the internal_comment' do
+      it 'indexes the internal comment' do
         expect(scope.resolve.size).to eq 1
       end
     end
