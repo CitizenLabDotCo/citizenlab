@@ -76,7 +76,7 @@ module MultiTenancy
             description_multiloc: runner.create_for_tenant_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
             start_at: start_at,
             end_at: (start_at += rand(150).days),
-            participation_method: %w[ideation budgeting poll information ideation ideation][rand(6)]
+            participation_method: %w[ideation voting poll information ideation ideation][rand(6)]
           })
           if phase.voting?
             if has_budgeting

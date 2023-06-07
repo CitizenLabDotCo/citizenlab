@@ -41,14 +41,16 @@ RSpec.describe Phase do
       expect(p.save).to be false
     end
 
-    it 'can be budgeting' do
-      p = create(:phase, participation_method: 'budgeting')
+    it 'can be voting' do
+      p = create(:phase, participation_method: 'voting', voting_method: 'budgeting', voting_max_budget: 200)
       expect(p.save).to be true
     end
 
     it 'can be changed from a transitive method to another one' do
       phase = create(:phase, participation_method: 'ideation')
-      phase.participation_method = 'budgeting'
+      phase.participation_method = 'voting'
+      phase.voting_method = 'budgeting'
+      phase.voting_max_budget = 200
       expect(phase.save).to be true
     end
 
@@ -61,7 +63,9 @@ RSpec.describe Phase do
 
     it 'cannot be changed from a non-transitive method to a transitive one' do
       phase = create(:phase, participation_method: 'native_survey')
-      phase.participation_method = 'budgeting'
+      phase.participation_method = 'voting'
+      phase.voting_method = 'budgeting'
+      phase.voting_max_budget = 200
       expect(phase.save).to be false
       expect(phase.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
     end
@@ -114,16 +118,16 @@ RSpec.describe Phase do
     end
   end
 
-  describe 'max_budget' do
+  describe 'voting_max_budget' do
     it 'can be updated in a project with just one phase' do
       project = create(
         :project_with_current_phase,
         phases_config: { sequence: 'xc' },
-        current_phase_attrs: { participation_method: 'budgeting', max_budget: 1234 }
+        current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_budget: 1234 }
       )
-      phase = project.phases.find_by participation_method: 'budgeting'
+      phase = project.phases.find_by voting_method: 'budgeting'
 
-      phase.max_budget = 9876
+      phase.voting_max_budget = 9876
       expect(phase).to be_valid
     end
   end
@@ -194,7 +198,7 @@ RSpec.describe Phase do
       'information' => false,
       'ideation' => true,
       'survey' => false,
-      'budgeting' => true,
+      'voting' => true,
       'poll' => false,
       'volunteering' => false,
       'native_survey' => true
