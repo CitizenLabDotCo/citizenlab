@@ -5,7 +5,7 @@ import meKeys from 'api/me/keys';
 
 const resendEmailCode = (requestBody: ResendEmailCodeProperties) => {
   return fetcher({
-    path: `/user/resend_code`,
+    path: `/user/resend_cod`,
     body: requestBody,
     action: 'post',
   });
