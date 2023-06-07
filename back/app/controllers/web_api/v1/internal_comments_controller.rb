@@ -36,7 +36,7 @@ class WebApi::V1::InternalCommentsController < ApplicationController
     partially_expanded_child_comments = InternalComment
       .where(parent_id: partially_expanded_root_comments)
       .joins(:parent)
-      .where('internal_comments.lft >= parents_internal_comments.rgt - ?', MINIMAL_SUBCOMMENTS * 2) # Dow we need internal_... here?
+      .where('internal_comments.lft >= parents_internal_comments.rgt - ?', MINIMAL_SUBCOMMENTS * 2)
 
     child_comments = InternalComment
       .where(parent: fully_expanded_root_comments)
@@ -163,9 +163,6 @@ class WebApi::V1::InternalCommentsController < ApplicationController
   end
 
   def comment_create_params
-    # no one is allowed to modify someone else's comment,
-    # so no one is allowed to write a comment in someone
-    # else's name
     params.require(:internal_comment).permit(
       :parent_id,
       body_multiloc: CL2_SUPPORTED_LOCALES

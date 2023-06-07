@@ -6,12 +6,10 @@ class SideFxInternalCommentService
   @@mention_service = MentionService.new # rubocop:disable Style/ClassVars
 
   def before_create(comment, _user)
-    # check_participation_context(comment, user)
     process_mentions(comment)
   end
 
   def after_create(comment, user)
-    # Do these LogActivityJobs work 'as are'?
     LogActivityJob.perform_later(comment, 'created', user, comment.created_at.to_i)
     notify_mentioned_users(comment, user)
   end
@@ -24,13 +22,17 @@ class SideFxInternalCommentService
   end
 
   def after_update(comment, user)
-    # remove_user_from_past_activities_with_item(comment, user) if comment.anonymous_previously_changed?(to: true)
-
     LogActivityJob.perform_later(comment, 'changed', user, comment.updated_at.to_i)
 
     return unless comment.body_multiloc_previously_changed?
 
-    LogActivityJob.perform_later(comment, 'changed_body', user, comment.body_updated_at.to_i, payload: { change: comment.body_multiloc_previous_change })
+    LogActivityJob.perform_later(
+      comment,
+      'changed_body',
+      user,
+      comment.body_updated_at.to_i,
+      payload: { change: comment.body_multiloc_previous_change }
+    )
     notify_updated_mentioned_users(comment, user)
   end
 
@@ -47,21 +49,15 @@ class SideFxInternalCommentService
 
   def after_destroy(frozen_comment, user)
     serialized_comment = clean_time_attributes(frozen_comment.attributes)
-    LogActivityJob.perform_later(encode_frozen_resource(frozen_comment), 'deleted', user, Time.now.to_i, payload: { comment: serialized_comment })
+    LogActivityJob.perform_later(
+      encode_frozen_resource(frozen_comment),
+      'deleted',
+      user, Time.now.to_i,
+      payload: { comment: serialized_comment }
+    )
   end
 
   private
-
-  # def check_participation_context(comment, user)
-  #   pcs = ParticipationContextService.new
-  #   idea = comment.post if comment.post_type == 'Idea'
-  #   return unless idea
-
-  #   disallowed_reason = pcs.commenting_disabled_reason_for_idea(idea, user)
-  #   return unless disallowed_reason
-
-  #   raise ClErrors::TransactionError.new(error_key: disallowed_reason)
-  # end
 
   def process_mentions(comment)
     comment.body_multiloc = comment.body_multiloc.to_h do |locale, body|
@@ -76,7 +72,13 @@ class SideFxInternalCommentService
     end
 
     mentioned_users.uniq.each do |mentioned_user|
-      LogActivityJob.perform_later(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: mentioned_user.id })
+      LogActivityJob.perform_later(
+        comment,
+        'mentioned',
+        user,
+        comment.created_at.to_i,
+        payload: { mentioned_user: mentioned_user.id }
+      )
     end
   end
 
@@ -88,7 +90,13 @@ class SideFxInternalCommentService
     end
 
     mentioned_users.uniq.each do |mentioned_user|
-      LogActivityJob.perform_later(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: mentioned_user.id })
+      LogActivityJob.perform_later(
+        comment,
+        'mentioned',
+        user,
+        comment.created_at.to_i,
+        payload: { mentioned_user: mentioned_user.id }
+      )
     end
   end
 end
