@@ -4,7 +4,7 @@ import React from 'react';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import CustomFieldPicker from '../../../shared/CustomFieldPicker';
-import { LabelBudgetingInput } from '../../../labels';
+import { LabelBudgetingInput } from '../../../shared/labels';
 import {
   BudgetingAmountInput,
   BudgetingAmountInputError,

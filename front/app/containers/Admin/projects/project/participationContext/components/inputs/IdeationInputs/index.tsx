@@ -10,22 +10,22 @@ import {
 import FeatureFlag from 'components/FeatureFlag';
 import Error from 'components/UI/Error';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import CustomFieldPicker from '../shared/CustomFieldPicker';
-import DefaultViewPicker from '../shared/DefaultViewPicker';
-import SortingPicker from '../shared/SortingPicker';
+import CustomFieldPicker from '../../shared/CustomFieldPicker';
+import DefaultViewPicker from '../../shared/DefaultViewPicker';
+import SortingPicker from './SortingPicker';
 import {
   StyledSectionField,
   ToggleRow,
   ToggleLabel,
   VotingLimitInput,
-} from '../shared/styling';
+} from '../../shared/styling';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../messages';
+import messages from '../../../../messages';
 
 // typings
-import { ApiErrors } from '../..';
+import { ApiErrors } from '../../..';
 import {
   IdeaDefaultSortMethod,
   InputTerm,

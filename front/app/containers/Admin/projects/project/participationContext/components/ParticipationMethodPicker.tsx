@@ -12,7 +12,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-import { LabelHeaderDescription } from './labels';
+import { LabelHeaderDescription } from './shared/labels';
 import { ParticipationMethodRadio } from './shared/styling';
 import Warning from 'components/UI/Warning';
 import Tippy from '@tippyjs/react';
