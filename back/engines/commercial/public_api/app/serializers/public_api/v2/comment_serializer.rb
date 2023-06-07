@@ -14,6 +14,10 @@ class PublicApi::V2::CommentSerializer < ActiveModel::Serializer
     :children_count,
     :publication_status
 
+  attribute :post_type do
+    object.post_type.underscore.dasherize
+  end
+
   def body
     multiloc_service.t(object.body_multiloc)
   end
