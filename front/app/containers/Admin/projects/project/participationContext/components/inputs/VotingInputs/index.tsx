@@ -1,11 +1,7 @@
 import React from 'react';
 
 // components
-import {
-  Toggle,
-  IconTooltip,
-  IOption,
-} from '@citizenlab/cl2-component-library';
+import { Toggle, IOption } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
@@ -31,7 +27,6 @@ import {
 
 // api
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import { useParams } from 'react-router-dom';
 
 export interface VotingInputsProps {
   isCustomInputTermEnabled: boolean;
@@ -84,9 +79,6 @@ export default ({
   handleAllowAnonymousParticipationOnChange,
   handleVotingMethodOnChange,
 }: VotingInputsProps) => {
-  const { projectId } = useParams() as {
-    projectId: string;
-  };
   const props = {
     isCustomInputTermEnabled,
     input_term,
@@ -131,30 +123,6 @@ export default ({
           }
         />
       )}
-      <SectionField>
-        <SubSectionTitle>
-          <FormattedMessage {...messages.optionsToVoteOn} />
-          <IconTooltip
-            content={<FormattedMessage {...messages.optionsToVoteOnTooltip} />}
-          />
-        </SubSectionTitle>
-        <FormattedMessage
-          {...messages.optionsToVoteOnExplanation}
-          values={{
-            link: (
-              <a
-                href={`/admin/projects/${projectId}/ideas`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <FormattedMessage
-                  {...messages.optionsToVoteOnExplanationLinkText}
-                />
-              </a>
-            ),
-          }}
-        />
-      </SectionField>
       {/* Render any voting method specific inputs from configuration */}
       {votingMethodConfig?.getVotingMethodInputs &&
         votingMethodConfig.getVotingMethodInputs(props)}

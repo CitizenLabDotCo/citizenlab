@@ -10,9 +10,9 @@ import {
   CardButton,
   IconTooltip,
   Text,
-  Title,
 } from '@citizenlab/cl2-component-library';
 import BudgetingIcon from './BudgetingIcon';
+import { SubSectionTitle } from 'components/admin/Section';
 
 // types
 import { VotingMethodType } from 'containers/Admin/projects/project/participationContext/utils/votingMethodUtils';
@@ -30,21 +30,15 @@ const VotingMethodSelector = ({
   const selected = voting_method === 'budgeting';
 
   return (
-    <Box mb="20px">
-      <Title
-        mt="0px"
-        fontSize="l"
-        color="primary"
-        fontWeight="normal"
-        display="flex"
-      >
+    <Box mb="35px">
+      <SubSectionTitle>
         {formatMessage(messages.votingMethodSelectorTitle)}
         <IconTooltip
           content={formatMessage(messages.votingMethodSelectorTooltip)}
           ml="6px"
           mt="-1px"
         />
-      </Title>
+      </SubSectionTitle>
       <Text mt="0px" mb="23px" color="textSecondary">
         {formatMessage(messages.votingMethodSelectorSubtitle)}
       </Text>
