@@ -152,7 +152,7 @@ da:
         project:
           title: Hvad er dit projekt?
         issue:
-          title: Hvad er dit problem?
+          title: Hvad er dit input?
         option:
           title: Hvad er din mulighed?
       details:
