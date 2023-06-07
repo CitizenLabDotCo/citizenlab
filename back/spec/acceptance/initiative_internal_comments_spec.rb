@@ -4,12 +4,11 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'InternalComments' do
-  explanation 'Internal comments permit admins & moderators to have discussions about content (i.e. ideas).'
+  explanation 'Internal comments permit admins & moderators to have discussions about content (i.e. initatives).'
 
   before do
     header 'Content-Type', 'application/json'
-    @project = create(:continuous_project)
-    @idea = create(:idea, project: @project)
+    @initiative = create(:initiative)
   end
 
   context 'when an authenticated user' do
@@ -18,22 +17,22 @@ resource 'InternalComments' do
       header_token_for @user
     end
 
-    post 'web_api/v1/ideas/:idea_id/internal_comments' do
+    post 'web_api/v1/initiatives/:initiative_id/internal_comments' do
       with_options scope: :internal_comment do
         parameter :body_multiloc, 'Multi-locale field with the comment body', required: true
         parameter :parent_id, 'The id of the comment this comment is a response to', required: false
       end
 
-      let(:idea_id) { @idea.id }
+      let(:initiative_id) { @initiative.id }
       let(:internal_comment) { build(:internal_comment) }
       let(:body_multiloc) { internal_comment.body_multiloc }
 
-      example_request '[Unauthorized] Create an internal comment on an idea' do
+      example_request '[Unauthorized] Create an internal comment on an initiative' do
         assert_status 401
         json_response = json_parse(response_body)
 
         expect(json_response.dig(:errors, :base)[0][:error]).to eq 'Unauthorized!'
-        expect(@idea.reload.internal_comments_count).to eq 0
+        expect(@initiative.reload.internal_comments_count).to eq 0
       end
     end
   end
@@ -45,12 +44,12 @@ resource 'InternalComments' do
     end
 
     get 'web_api/v1/internal_comments/:id' do
-      let(:idea) { create(:idea) }
-      let(:parent) { create(:internal_comment, post: idea) }
-      let(:internal_comment) { create(:internal_comment, parent: parent, post: idea) }
+      let(:initiative) { create(:initiative) }
+      let(:parent) { create(:internal_comment, post: initiative) }
+      let(:internal_comment) { create(:internal_comment, parent: parent, post: initiative) }
       let(:id) { internal_comment.id }
 
-      example_request 'Get one comment by id' do
+      example_request 'Get one internal comment by id' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
 
@@ -59,10 +58,11 @@ resource 'InternalComments' do
         expect(json_response.dig(:data, :attributes)).to include(
           publication_status: 'published',
           is_admin_comment: false
+          # author_hash: comment.author_hash
         )
         expect(json_response.dig(:data, :relationships)).to include(
           post: {
-            data: { id: internal_comment.post_id, type: 'idea' }
+            data: { id: internal_comment.post_id, type: 'initiative' }
           },
           author: {
             data: { id: internal_comment.author_id, type: 'user' }
@@ -78,7 +78,7 @@ resource 'InternalComments' do
       end
     end
 
-    get 'web_api/v1/ideas/:idea_id/internal_comments' do
+    get 'web_api/v1/initiatives/:initiative_id/internal_comments' do
       with_options scope: :page do
         parameter :number, 'Page number'
         parameter :size, 'Number of top-level comments per page. The response will include 2 to 5 child comments per top-level comment, so expect to receive more'
@@ -87,28 +87,28 @@ resource 'InternalComments' do
 
       describe do
         before do
-          @c1 = create(:internal_comment, post: @idea)
-          @c2 = create(:internal_comment, post: @idea)
-          @c1sub1 = create(:internal_comment, parent: @c2, post: @idea)
-          @c1sub2 = create(:internal_comment, parent: @c2, post: @idea)
-          @c1sub3 = create(:internal_comment, parent: @c2, post: @idea)
-          @c1sub4 = create(:internal_comment, parent: @c2, post: @idea)
-          @c1sub5 = create(:internal_comment, parent: @c2, post: @idea)
-          @c3 = create(:internal_comment, post: @idea)
-          @c3sub1 = create(:internal_comment, parent: @c3, post: @idea)
-          @c3sub2 = create(:internal_comment, parent: @c3, post: @idea)
-          @c3sub3 = create(:internal_comment, parent: @c3, post: @idea)
-          @c3sub4 = create(:internal_comment, parent: @c3, post: @idea)
-          @c3sub5 = create(:internal_comment, parent: @c3, post: @idea)
-          @c3sub6 = create(:internal_comment, parent: @c3, post: @idea)
-          @c4 = create(:internal_comment, post: @idea)
-          @c4sub1 = create(:internal_comment, parent: @c4, post: @idea)
+          @c1 = create(:internal_comment, post: @initiative)
+          @c2 = create(:internal_comment, post: @initiative)
+          @c1sub1 = create(:internal_comment, parent: @c2, post: @initiative)
+          @c1sub2 = create(:internal_comment, parent: @c2, post: @initiative)
+          @c1sub3 = create(:internal_comment, parent: @c2, post: @initiative)
+          @c1sub4 = create(:internal_comment, parent: @c2, post: @initiative)
+          @c1sub5 = create(:internal_comment, parent: @c2, post: @initiative)
+          @c3 = create(:internal_comment, post: @initiative)
+          @c3sub1 = create(:internal_comment, parent: @c3, post: @initiative)
+          @c3sub2 = create(:internal_comment, parent: @c3, post: @initiative)
+          @c3sub3 = create(:internal_comment, parent: @c3, post: @initiative)
+          @c3sub4 = create(:internal_comment, parent: @c3, post: @initiative)
+          @c3sub5 = create(:internal_comment, parent: @c3, post: @initiative)
+          @c3sub6 = create(:internal_comment, parent: @c3, post: @initiative)
+          @c4 = create(:internal_comment, post: @initiative)
+          @c4sub1 = create(:internal_comment, parent: @c4, post: @initiative)
         end
 
-        let(:idea_id) { @idea.id }
+        let(:initiative_id) { @initiative.id }
         let(:size) { 3 }
 
-        example_request 'List the top-level internal comments of an idea' do
+        example_request 'List the top-level internal comments of an initiative' do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 10
@@ -129,17 +129,17 @@ resource 'InternalComments' do
       end
 
       describe do
-        let(:idea_id) { @idea.id }
+        let(:initiative_id) { @initiative.id }
         let(:sort) { '-new' }
 
         before do
-          @c1 = create(:internal_comment, post: @idea, created_at: 1.day.ago)
-          @c2 = create(:internal_comment, post: @idea, created_at: 2.days.ago)
-          @c3 = create(:internal_comment, post: @idea, created_at: 3.days.ago)
-          @c2sub1, @c2sub2 = create_list(:internal_comment, 2, parent: @c2, post: @idea)
+          @c1 = create(:internal_comment, post: @initiative, created_at: 1.day.ago)
+          @c2 = create(:internal_comment, post: @initiative, created_at: 2.days.ago)
+          @c3 = create(:internal_comment, post: @initiative, created_at: 3.days.ago)
+          @c2sub1, @c2sub2 = create_list(:internal_comment, 2, parent: @c2, post: @initiative)
         end
 
-        example_request 'List the top-level internal comments of an idea sorted by age, with oldest first' do
+        example_request 'List the top-level internal comments of an initiative sorted by age, with oldest first' do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 5
@@ -163,19 +163,19 @@ resource 'InternalComments' do
 
       describe do
         before do
-          @c = create(:internal_comment, post: @idea)
-          @csub1 = create(:internal_comment, parent: @c, post: @idea)
-          @csub2 = create(:internal_comment, parent: @c, post: @idea)
-          @csub3 = create(:internal_comment, parent: @c, post: @idea)
-          @csub4 = create(:internal_comment, parent: @c, post: @idea)
-          @csub5 = create(:internal_comment, parent: @c, post: @idea)
-          @csub6 = create(:internal_comment, parent: @c, post: @idea)
-          @c2 = create(:internal_comment, post: @idea)
+          @c = create(:internal_comment, post: @initiative)
+          @csub1 = create(:internal_comment, parent: @c, post: @initiative)
+          @csub2 = create(:internal_comment, parent: @c, post: @initiative)
+          @csub3 = create(:internal_comment, parent: @c, post: @initiative)
+          @csub4 = create(:internal_comment, parent: @c, post: @initiative)
+          @csub5 = create(:internal_comment, parent: @c, post: @initiative)
+          @csub6 = create(:internal_comment, parent: @c, post: @initiative)
+          @c2 = create(:internal_comment, post: @initiative)
         end
 
         let(:internal_comment_id) { @c.id }
 
-        example_request 'List the direct child internal comments of am internal comment on an idea' do
+        example_request 'List the direct child internal comments of am internal comment on an initiative' do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 6
@@ -191,29 +191,29 @@ resource 'InternalComments' do
       end
     end
 
-    post 'web_api/v1/ideas/:idea_id/internal_comments' do
+    post 'web_api/v1/initiatives/:initiative_id/internal_comments' do
       with_options scope: :internal_comment do
         parameter :body_multiloc, 'Multi-locale field with the comment body', required: true
-        parameter :parent_id, 'The id of the internal comment this internal comment is a response to', required: false
+        parameter :parent_id, 'The id of the comment this comment is a response to', required: false
       end
 
-      let(:idea_id) { @idea.id }
+      let(:initiative_id) { @initiative.id }
       let(:internal_comment) { build(:internal_comment) }
       let(:body_multiloc) { internal_comment.body_multiloc }
 
-      example_request 'Create an internal comment on an idea' do
+      example_request 'Create an internal comment on an initiative' do
         assert_status 201
         json_response = json_parse(response_body)
 
         expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
         expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
         expect(json_response.dig(:data, :relationships, :parent, :data)).to be_nil
-        expect(json_response.dig(:data, :relationships, :post, :data, :id)).to eq idea_id
-        expect(@idea.reload.internal_comments_count).to eq 1
+        expect(json_response.dig(:data, :relationships, :post, :data, :id)).to eq initiative_id
+        expect(@initiative.reload.internal_comments_count).to eq 1
       end
 
       describe do
-        let(:parent_id) { create(:internal_comment, post: @idea).id }
+        let(:parent_id) { create(:internal_comment, post: @initiative).id }
 
         example_request 'Create an internal comment on an internal comment' do
           assert_status 201
@@ -222,8 +222,8 @@ resource 'InternalComments' do
           expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
           expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
           expect(json_response.dig(:data, :relationships, :parent, :data, :id)).to eq parent_id
-          expect(json_response.dig(:data, :relationships, :post, :data, :id)).to eq idea_id
-          expect(@idea.reload.internal_comments_count).to eq 2
+          expect(json_response.dig(:data, :relationships, :post, :data, :id)).to eq initiative_id
+          expect(@initiative.reload.internal_comments_count).to eq 2
         end
       end
 
@@ -236,18 +236,6 @@ resource 'InternalComments' do
           expect(json_response).to include_response_error(:body_multiloc, 'blank')
         end
       end
-
-      describe do
-        before do
-          project = create(:project_with_past_phases)
-          @idea.project = project
-          @idea.save!
-        end
-
-        example_request 'Create an internal comment on an idea in an inactive project' do
-          assert_status 201
-        end
-      end
     end
 
     patch 'web_api/v1/internal_comments/:id' do
@@ -256,15 +244,15 @@ resource 'InternalComments' do
         parameter :parent_id, 'The id of the internal comment this internal comment is a response to'
       end
 
-      let(:internal_comment) { create(:internal_comment, author: @user, post: @idea) }
+      let(:internal_comment) { create(:internal_comment, author: @user, post: @initiative) }
       let(:id) { internal_comment.id }
       let(:body_multiloc) { { 'en' => "His hair is not blond, it's orange. Get your facts straight!" } }
 
-      example_request 'Update an internal comment on an idea' do
+      example_request 'Update an internal comment on an initiative' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
-        expect(@idea.reload.internal_comments_count).to eq 1
+        expect(@initiative.reload.internal_comments_count).to eq 1
       end
     end
 
@@ -274,10 +262,10 @@ resource 'InternalComments' do
         parameter :other_reason, "the reason for deleting the comment, if none of the reason codes is applicable, in which case 'other' must be chosen", required: false
       end
 
-      let(:internal_comment) { create(:internal_comment, author: @user, post: @idea) }
+      let(:internal_comment) { create(:internal_comment, author: @user, post: @initiative) }
       let(:id) { internal_comment.id }
 
-      example_request 'Mark an internal comment on an idea as deleted' do
+      example_request 'Mark an internal comment on an initiative as deleted' do
         expect(response_status).to eq 202
         expect(internal_comment.reload.publication_status).to eq('deleted')
       end
