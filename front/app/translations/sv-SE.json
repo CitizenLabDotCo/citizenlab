@@ -1687,6 +1687,7 @@
   "app.utils.errors.default.api_error_too_long": "Är för långt",
   "app.utils.errors.default.api_error_too_short": "Är för kort",
   "app.utils.errors.default.api_error_wrong_length": "Är fel längd",
+  "app.utils.errors.default.test": "Testar Crowdin. Du behöver inte översätta denna sträng.",
   "app.utils.errors.defaultapi_error_.odd": "Måste vara udda",
   "app.utils.notInGroup": "Du uppfyller inte kraven för att delta.",
   "app.utils.participationMethod.onSurveySubmission": "Tack. Ditt svar har mottagits.",
