@@ -121,7 +121,7 @@ resource 'Reactions' do
     example_request "[error] Dislike an initiative that doesn't have your reaction yet" do
       assert_status 401
       json_response = json_parse(response_body)
-      expect(json_response.dig(:errors, :base)).to include({ error: 'downvoting_not_supported' })
+      expect(json_response.dig(:errors, :base)).to include({ error: 'disliking_not_supported' })
       expect(@initiative.reload.likes_count).to eq 2
       expect(@initiative.reload.dislikes_count).to eq 0
     end

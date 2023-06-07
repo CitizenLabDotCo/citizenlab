@@ -148,7 +148,7 @@ resource 'Initiatives' do
       expect(json_response[:data].size).to eq 6
     end
 
-    example 'List all initiatives includes the user_vote', document: false do
+    example 'List all initiatives includes the user_reaction', document: false do
       initiative = create(:initiative)
       reaction = create(:reaction, reactable: initiative, user: @user)
 

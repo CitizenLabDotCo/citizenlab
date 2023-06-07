@@ -5,10 +5,10 @@ require 'rails_helper'
 RSpec.describe StatReactionPolicy do
   let(:scope) { described_class::Scope.new(user, Reaction) }
 
-  let_it_be(:upvoted_idea) { create(:idea) }
+  let_it_be(:liked_idea) { create(:idea) }
   let_it_be(:reactions) do
     [
-      create_list(:reaction, 2, reactable: upvoted_idea),
+      create_list(:reaction, 2, reactable: liked_idea),
       create(:dislike),
       create(:comment_reaction)
     ].flatten
@@ -44,7 +44,7 @@ RSpec.describe StatReactionPolicy do
   end
 
   context 'for a project moderator' do
-    let(:user) { create(:project_moderator, project_ids: [upvoted_idea.project_id]) }
+    let(:user) { create(:project_moderator, project_ids: [liked_idea.project_id]) }
 
     it { expect(scope.resolve.count).to eq(2) }
   end

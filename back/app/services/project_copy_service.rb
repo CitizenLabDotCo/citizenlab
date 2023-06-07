@@ -68,7 +68,7 @@ class ProjectCopyService < TemplateService
       @template['models']['ideas_phase']         = yml_ideas_phases shift_timestamps: shift_timestamps
       @template['models']['comment']             = yml_comments shift_timestamps: shift_timestamps
       @template['models']['official_feedback']   = yml_official_feedback shift_timestamps: shift_timestamps
-      @template['models']['vote']                = yml_votes shift_timestamps: shift_timestamps
+      @template['models']['vote']                = yml_reactions shift_timestamps: shift_timestamps
     end
 
     @template
@@ -646,19 +646,19 @@ class ProjectCopyService < TemplateService
     end
   end
 
-  def yml_votes(shift_timestamps: 0)
+  def yml_reactions(shift_timestamps: 0)
     idea_ids = @project.ideas.published.where.not(author_id: nil).ids
     comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea')
     Reaction.where.not(user_id: nil).where(reactable_id: idea_ids + comment_ids).map do |v|
-      yml_vote = {
+      yml_reaction = {
         'reactable_ref' => lookup_ref(v.reactable_id, %i[idea comment]),
         'user_ref' => lookup_ref(v.user_id, :user),
         'mode' => v.mode,
         'created_at' => shift_timestamp(v.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(v.updated_at, shift_timestamps)&.iso8601
       }
-      store_ref yml_vote, v.id, :vote
-      yml_vote
+      store_ref yml_reaction, v.id, :vote
+      yml_reaction
     end
   end
 

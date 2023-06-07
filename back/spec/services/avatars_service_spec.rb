@@ -57,7 +57,7 @@ describe AvatarsService do
       expect(result[:users].map(&:id)).to match_array [idea.author.id]
     end
 
-    it 'does not return the voters' do
+    it 'does not return the reactors' do
       idea = create(:idea)
       create(:reaction, reactable: idea)
       comment = create(:comment, post: idea)

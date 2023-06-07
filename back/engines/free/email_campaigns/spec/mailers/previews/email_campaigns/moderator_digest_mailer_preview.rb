@@ -23,7 +23,7 @@ module EmailCampaigns
                 increase: 3,
                 past_increase: 4
               },
-              new_votes: {
+              new_reactions: {
                 increase: 2,
                 past_increase: 4
               },
@@ -43,7 +43,7 @@ module EmailCampaigns
             }
           },
           top_ideas: top_ideas.map do |idea|
-            new_votes = idea.reactions.where('created_at > ?', Time.now - 7)
+            new_reactions = idea.reactions.where('created_at > ?', Time.now - 7)
             {
               id: idea.id,
               title_multiloc: idea.title_multiloc,
@@ -51,9 +51,9 @@ module EmailCampaigns
               published_at: idea.published_at.iso8601,
               author_name: name_service.display_name!(idea.author),
               likes_count: idea.likes_count,
-              upvotes_increment: new_votes.where(mode: 'up').count,
+              likes_increment: new_reactions.where(mode: 'up').count,
               dislikes_count: idea.dislikes_count,
-              downvotes_increment: new_votes.where(mode: 'down').count,
+              dislikes_increment: new_reactions.where(mode: 'down').count,
               comments_count: idea.comments_count,
               comments_increment: idea.comments.where('created_at > ?', Time.now - 7).count
             }

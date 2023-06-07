@@ -63,7 +63,7 @@ class SideFxInitiativeService
   end
 
   def after_publish(initiative, user)
-    add_autovote initiative
+    add_autoreaction initiative
     log_activity_jobs_after_published initiative, user
   end
 
@@ -75,7 +75,7 @@ class SideFxInitiativeService
     @automatic_assignment = true
   end
 
-  def add_autovote(initiative)
+  def add_autoreaction(initiative)
     initiative.reactions.create!(mode: 'up', user: initiative.author)
     initiative.reload
   end

@@ -15,7 +15,7 @@ RSpec.describe Reaction do
   end
 
   context 'uniquness' do
-    it "can't create 2 votes for the same reactable and user" do
+    it "can't create 2 reactions for the same reactable and user" do
       idea = create(:idea)
       user = create(:user)
       create(:reaction, reactable: idea, user: user)
@@ -25,7 +25,7 @@ RSpec.describe Reaction do
       expect { create(:reaction, mode: 'down', reactable: idea, user: user) }.to raise_error(ActiveRecord::RecordNotUnique)
     end
 
-    it 'two votes of deleted users are allowed' do
+    it 'two reactions of deleted users are allowed' do
       idea = create(:idea)
       u1 = create(:user)
       v1 = create(:reaction, reactable: idea, user: u1)

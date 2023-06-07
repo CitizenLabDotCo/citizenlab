@@ -28,7 +28,7 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
         command.dig(:event_payload, :statistics, :activities, :new_ideas, :increase)
       ).to eq(new_ideas.size)
       expect(
-        command.dig(:event_payload, :statistics, :activities, :new_votes, :increase)
+        command.dig(:event_payload, :statistics, :activities, :new_reactions, :increase)
       ).to eq(1)
       expect(
         command.dig(:event_payload, :top_ideas).pluck(:id)
