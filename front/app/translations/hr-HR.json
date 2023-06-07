@@ -1687,6 +1687,7 @@
   "app.utils.errors.default.api_error_too_long": "Je predugo",
   "app.utils.errors.default.api_error_too_short": "Je prekratko",
   "app.utils.errors.default.api_error_wrong_length": "Je pogrešne duljine",
+  "app.utils.errors.default.test": "Testiranje Crowdina. Nema potrebe prevoditi ovaj niz.",
   "app.utils.errors.defaultapi_error_.odd": "Mora biti neparno",
   "app.utils.notInGroup": "Ne ispunjavate uvjete za sudjelovanje.",
   "app.utils.participationMethod.onSurveySubmission": "Hvala vam. Primili smo vaš odgovor.",
