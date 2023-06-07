@@ -25,20 +25,23 @@
 #  internal_role                 :string
 #  survey_embed_url              :string
 #  survey_service                :string
-#  max_budget                    :integer
+#  voting_max_total              :integer
 #  comments_count                :integer          default(0), not null
 #  default_assignee_id           :uuid
 #  poll_anonymous                :boolean          default(FALSE), not null
 #  downvoting_enabled            :boolean          default(TRUE), not null
 #  ideas_order                   :string
 #  input_term                    :string           default("idea")
-#  min_budget                    :integer          default(0)
+#  voting_min_total              :integer          default(0)
 #  downvoting_method             :string           default("unlimited"), not null
 #  downvoting_limited_max        :integer          default(10)
 #  include_all_areas             :boolean          default(FALSE), not null
 #  posting_method                :string           default("unlimited"), not null
 #  posting_limited_max           :integer          default(1)
 #  allow_anonymous_participation :boolean          default(FALSE), not null
+#  voting_method                 :string
+#  voting_max_votes_per_idea     :integer
+#  voting_term                   :jsonb
 #
 # Indexes
 #

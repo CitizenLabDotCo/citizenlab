@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_24_151508) do
+ActiveRecord::Schema.define(version: 2023_06_06_132255) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -949,18 +949,21 @@ ActiveRecord::Schema.define(version: 2023_05_24_151508) do
     t.string "survey_embed_url"
     t.string "survey_service"
     t.string "presentation_mode", default: "card"
-    t.integer "max_budget"
+    t.integer "voting_max_total"
     t.boolean "poll_anonymous", default: false, null: false
     t.boolean "downvoting_enabled", default: true, null: false
     t.integer "ideas_count", default: 0, null: false
     t.string "ideas_order"
     t.string "input_term", default: "idea"
-    t.integer "min_budget", default: 0
+    t.integer "voting_min_total", default: 0
     t.string "downvoting_method", default: "unlimited", null: false
     t.integer "downvoting_limited_max", default: 10
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
     t.boolean "allow_anonymous_participation", default: false, null: false
+    t.string "voting_method"
+    t.integer "voting_max_votes_per_idea"
+    t.jsonb "voting_term", default: {}
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -1085,20 +1088,23 @@ ActiveRecord::Schema.define(version: 2023_05_24_151508) do
     t.string "internal_role"
     t.string "survey_embed_url"
     t.string "survey_service"
-    t.integer "max_budget"
+    t.integer "voting_max_total"
     t.integer "comments_count", default: 0, null: false
     t.uuid "default_assignee_id"
     t.boolean "poll_anonymous", default: false, null: false
     t.boolean "downvoting_enabled", default: true, null: false
     t.string "ideas_order"
     t.string "input_term", default: "idea"
-    t.integer "min_budget", default: 0
+    t.integer "voting_min_total", default: 0
     t.string "downvoting_method", default: "unlimited", null: false
     t.integer "downvoting_limited_max", default: 10
     t.boolean "include_all_areas", default: false, null: false
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
     t.boolean "allow_anonymous_participation", default: false, null: false
+    t.string "voting_method"
+    t.integer "voting_max_votes_per_idea"
+    t.jsonb "voting_term", default: {}
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -1109,7 +1115,7 @@ ActiveRecord::Schema.define(version: 2023_05_24_151508) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "ordering"
     t.index ["project_id"], name: "index_projects_allowed_input_topics_on_project_id"
-    t.index ["topic_id"], name: "index_projects_allowed_input_topics_on_topic_id"
+    t.index ["topic_id", "project_id"], name: "index_projects_allowed_input_topics_on_topic_id_and_project_id", unique: true
   end
 
   create_table "projects_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
