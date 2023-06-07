@@ -8,7 +8,7 @@ import { Toggle, IOption } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
-import { ToggleRow, ToggleLabel } from '../../shared/styling';
+import { ToggleRow } from '../../shared/styling';
 import VotingMethodSelector from './VotingMethodSelector';
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
 
@@ -103,12 +103,10 @@ export default ({
         </SubSectionTitle>
 
         <ToggleRow>
-          <ToggleLabel>
-            <FormattedMessage {...sharedMessages.inputCommentingEnabled} />
-          </ToggleLabel>
           <Toggle
             checked={commenting_enabled as boolean}
             onChange={toggleCommentingEnabled}
+            label={FormattedMessage(sharedMessages.inputCommentingEnabled)}
           />
         </ToggleRow>
         <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
