@@ -14,7 +14,8 @@ import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../../messages';
+import messages from './messages';
+import sharedMessages from '../../../../messages';
 
 // typings
 import { InputTerm, VotingMethod } from 'services/participationContexts';
@@ -98,12 +99,12 @@ export default ({
       )}
       <SectionField>
         <SubSectionTitle>
-          <FormattedMessage {...messages.actionsForResidents} />
+          <FormattedMessage {...messages.enabledActionsForResidents} />
         </SubSectionTitle>
 
         <ToggleRow>
           <ToggleLabel>
-            <FormattedMessage {...messages.inputCommentingEnabled} />
+            <FormattedMessage {...sharedMessages.inputCommentingEnabled} />
           </ToggleLabel>
           <Toggle
             checked={commenting_enabled as boolean}

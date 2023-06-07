@@ -485,26 +485,6 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText',
     defaultMessage: 'this support article',
   },
-  optionsToVoteOn: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOn',
-    defaultMessage: 'Options to vote on',
-  },
-  optionsToVoteOnExplanation: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnExplanation',
-    defaultMessage: 'Configure the voting options in the {link}.',
-  },
-  optionsToVoteOnExplanationLinkText: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnExplanationLinkText',
-    defaultMessage: 'Input Manager tab',
-  },
-  optionsToVoteOnTooltip: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnTooltip',
-    defaultMessage: 'tooltip content TBD',
-  },
-  actionsForResidents: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.actionsForResidents',
-    defaultMessage: 'Actions for residents',
-  },
   contactGovSuccessToAccess: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess',
     defaultMessage:
