@@ -1138,7 +1138,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.subtitleVolunteeringTab": "Aquí, puedes establecer las causas para las que los usuarios pueden ser voluntarios y exportar los voluntarios.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.titleVolunteeringTab": "Voluntariado",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {ningún voluntario} one {# voluntario} other {# voluntarios}}",
-  "app.containers.AdminPage.ProjectEdit.addNewContribution": "Agregar una contribución",
+  "app.containers.AdminPage.ProjectEdit.addNewContribution": "Enviar un aporte",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Añadir una idea",
   "app.containers.AdminPage.ProjectEdit.addNewInput": "Añadir una entrada",
   "app.containers.AdminPage.ProjectEdit.addNewIssue": "Agregar una respuesta",
