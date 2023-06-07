@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::StatusChangeOfVotedIdea do
-  describe 'StatusChangeOfVotedIdea Campaign default factory' do
+RSpec.describe EmailCampaigns::Campaigns::StatusChangeOfReactedIdea do
+  describe 'StatusChangeOfReactedIdea Campaign default factory' do
     it 'is valid' do
       expect(build(:status_change_of_reacted_idea_campaign)).to be_valid
     end

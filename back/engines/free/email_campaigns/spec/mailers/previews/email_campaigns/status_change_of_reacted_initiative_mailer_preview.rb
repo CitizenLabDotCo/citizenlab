@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class StatusChangeOfVotedInitiativeMailerPreview < ActionMailer::Preview
+  class StatusChangeOfReactedInitiativeMailerPreview < ActionMailer::Preview
     include EmailCampaigns::MailerPreviewRecipient
 
     def campaign_mail
-      campaign = EmailCampaigns::Campaigns::StatusChangeOfVotedInitiative.first
+      campaign = EmailCampaigns::Campaigns::StatusChangeOfReactedInitiative.first
       initiative = Initiative.first
       status = initiative.initiative_status
 

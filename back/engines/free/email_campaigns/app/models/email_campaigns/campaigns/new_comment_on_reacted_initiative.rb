@@ -27,30 +27,31 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  class Campaigns::StatusChangeOfVotedInitiative < Campaign
+  class Campaigns::NewCommentOnReactedInitiative < Campaign
     include ActivityTriggerable
     include Consentable
     include RecipientConfigurable
     include Disableable
-    include Trackable
     include LifecycleStageRestrictable
+    include Trackable
     allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_recipient
 
     def mailer_class
-      StatusChangeOfVotedInitiativeMailer
+      NewCommentOnReactedInitiativeMailer
     end
 
     def activity_triggers
-      { 'Initiative' => { 'changed_status' => true } }
+      { 'Comment' => { 'created' => true } }
     end
 
     def filter_recipient(users_scope, activity:, time: nil)
       users_scope
-        .where(id: activity.item.reactions.pluck(:user_id))
+        .where(id: activity.item.post.reactions.pluck(:user_id))
         .where.not(id: activity.item.author_id)
-        .where.not(id: activity.item.comments.pluck(:author_id))
+        .where.not(id: activity.item.post.author_id)
+        .where.not(id: activity.item.post.comments.pluck(:author_id))
     end
 
     def self.recipient_role_multiloc_key
@@ -66,28 +67,22 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.proposal_status_is_changed'
+      'email_campaigns.admin_labels.trigger.user_comments'
     end
 
-    def generate_commands(recipient:, activity:)
-      initiative = activity.item
-      status = initiative.initiative_status
+    def generate_commands(recipient:, activity:, time: nil)
+      comment = activity.item
+      return [] if comment.post_type != 'Initiative'
+
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       [{
         event_payload: {
-          post_id: initiative.id,
-          post_title_multiloc: initiative.title_multiloc,
-          post_body_multiloc: initiative.body_multiloc,
-          post_url: Frontend::UrlService.new.model_to_url(initiative, locale: recipient.locale),
-          post_images: initiative.initiative_images.map do |image|
-            {
-              ordering: image.ordering,
-              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-            }
-          end,
-          initiative_status_id: status.id,
-          initiative_status_title_multiloc: status.title_multiloc,
-          initiative_status_code: status.code,
-          initiative_status_color: status.color
+          initiating_user_first_name: comment.author&.first_name,
+          initiating_user_last_name: name_service.last_name!(comment.author),
+          post_published_at: comment.post.published_at.iso8601,
+          post_title_multiloc: comment.post.title_multiloc,
+          comment_body_multiloc: comment.body_multiloc,
+          comment_url: Frontend::UrlService.new.model_to_url(comment, locale: recipient.locale)
         }
       }]
     end

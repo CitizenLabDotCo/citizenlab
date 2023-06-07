@@ -3,8 +3,8 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'Comment Votes' do
-  explanation 'Votes are used to express agreement on content (i.e. comments).'
+resource 'Comment Reactions' do
+  explanation 'Reactions are used to express agreement on content (i.e. comments).'
 
   before do
     @user = create(:admin)

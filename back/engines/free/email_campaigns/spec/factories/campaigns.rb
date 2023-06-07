@@ -86,11 +86,11 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :new_comment_on_reacted_idea_campaign, class: EmailCampaigns::Campaigns::NewCommentOnVotedIdea do
+  factory :new_comment_on_reacted_idea_campaign, class: EmailCampaigns::Campaigns::NewCommentOnReactedIdea do
     enabled { true }
   end
 
-  factory :new_comment_on_reacted_initiative_campaign, class: EmailCampaigns::Campaigns::NewCommentOnVotedInitiative do
+  factory :new_comment_on_reacted_initiative_campaign, class: EmailCampaigns::Campaigns::NewCommentOnReactedInitiative do
     enabled { true }
   end
 
@@ -110,11 +110,11 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :official_feedback_on_reacted_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnVotedIdea do
+  factory :official_feedback_on_reacted_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnReactedIdea do
     enabled { true }
   end
 
-  factory :official_feedback_on_reacted_initiative_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnVotedInitiative do
+  factory :official_feedback_on_reacted_initiative_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnReactedInitiative do
     enabled { true }
   end
 
@@ -150,11 +150,11 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :status_change_of_reacted_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfVotedIdea do
+  factory :status_change_of_reacted_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfReactedIdea do
     enabled { true }
   end
 
-  factory :status_change_of_reacted_initiative_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfVotedInitiative do
+  factory :status_change_of_reacted_initiative_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfReactedInitiative do
     enabled { true }
   end
 

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class NewCommentOnVotedInitiativeMailerPreview < ActionMailer::Preview
+  class NewCommentOnReactedInitiativeMailerPreview < ActionMailer::Preview
     include EmailCampaigns::MailerPreviewRecipient
 
     def campaign_mail
-      campaign = EmailCampaigns::Campaigns::NewCommentOnVotedInitiative.first
+      campaign = EmailCampaigns::Campaigns::NewCommentOnReactedInitiative.first
       comment = Comment.find_by(post_type: 'Initiative')
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient_user)
 

@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::NewCommentOnReactedInitiativeMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:campaign) { EmailCampaigns::Campaigns::NewCommentOnVotedInitiative.create! }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::NewCommentOnReactedInitiative.create! }
     let_it_be(:command) do
       initiative = create(:initiative)
       comment = create(:comment, post: initiative)

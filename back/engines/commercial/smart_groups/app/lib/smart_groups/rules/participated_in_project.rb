@@ -109,16 +109,16 @@ module SmartGroups::Rules
         participants = participants_service.projects_participants(Project.where(id: value), actions: [:commenting])
         users_scope.where.not(id: participants)
       when 'voted_idea_in'
-        participants = participants_service.projects_participants(Project.where(id: value), actions: [:idea_voting])
+        participants = participants_service.projects_participants(Project.where(id: value), actions: [:idea_reacting])
         users_scope.where(id: participants)
       when 'not_voted_idea_in'
-        participants = participants_service.projects_participants(Project.where(id: value), actions: [:idea_voting])
+        participants = participants_service.projects_participants(Project.where(id: value), actions: [:idea_reacting])
         users_scope.where.not(id: participants)
       when 'voted_comment_in'
-        participants = participants_service.projects_participants(Project.where(id: value), actions: [:comment_voting])
+        participants = participants_service.projects_participants(Project.where(id: value), actions: [:comment_reacting])
         users_scope.where(id: participants)
       when 'not_voted_comment_in'
-        participants = participants_service.projects_participants(Project.where(id: value), actions: [:comment_voting])
+        participants = participants_service.projects_participants(Project.where(id: value), actions: [:comment_reacting])
         users_scope.where.not(id: participants)
       when 'budgeted_in'
         participants = participants_service.projects_participants(Project.where(id: value), actions: [:budgeting])

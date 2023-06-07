@@ -27,30 +27,27 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  class Campaigns::StatusChangeOfVotedIdea < Campaign
-    include ActivityTriggerable
+  class Campaigns::OfficialFeedbackOnReactedIdea < Campaign
     include Consentable
+    include ActivityTriggerable
     include RecipientConfigurable
     include Disableable
     include Trackable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: %w[trial active]
 
-    recipient_filter :filter_recipient
+    recipient_filter :filter_notification_recipient
 
     def mailer_class
-      StatusChangeOfReactedIdeaMailer
+      OfficialFeedbackOnReactedIdeaMailer
     end
 
     def activity_triggers
-      { 'Idea' => { 'changed_status' => true } }
+      { 'Notifications::OfficialFeedbackOnReactedIdea' => { 'created' => true } }
     end
 
-    def filter_recipient(users_scope, activity:, time: nil)
-      users_scope
-        .where(id: activity.item.reactions.pluck(:user_id))
-        .where.not(id: activity.item.author_id)
-        .where.not(id: activity.item.comments.pluck(:author_id))
+    def filter_notification_recipient(users_scope, activity:, time: nil)
+      users_scope.where(id: activity.item.recipient.id)
     end
 
     def self.recipient_role_multiloc_key
@@ -66,34 +63,22 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.input_status_is_changed'
+      'email_campaigns.admin_labels.trigger.input_is_updated'
     end
 
-    def generate_commands(recipient:, activity:)
-      idea = activity.item
-      status = idea.idea_status
+    def generate_commands(recipient:, activity:, time: nil)
+      notification = activity.item
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       [{
         event_payload: {
-          post_id: idea.id,
-          post_title_multiloc: idea.title_multiloc,
-          post_body_multiloc: idea.body_multiloc,
-          post_url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
-          post_images: idea.idea_images.map do |image|
-            {
-              ordering: image.ordering,
-              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-            }
-          end,
-          idea_status_id: status.id,
-          idea_status_title_multiloc: status.title_multiloc,
-          idea_status_code: status.code,
-          idea_status_color: status.color
+          official_feedback_author_multiloc: notification.official_feedback.author_multiloc,
+          official_feedback_body_multiloc: notification.official_feedback.body_multiloc,
+          official_feedback_url: Frontend::UrlService.new.model_to_url(notification.official_feedback, locale: recipient.locale),
+          post_published_at: notification.post.published_at.iso8601,
+          post_title_multiloc: notification.post.title_multiloc,
+          post_author_name: name_service.display_name!(notification.post.author)
         }
       }]
-    end
-
-    def set_enabled
-      self.enabled = false if enabled.nil?
     end
   end
 end

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class OfficialFeedbackOnVotedInitiativeMailerPreview < ActionMailer::Preview
+  class OfficialFeedbackOnReactedInitiativeMailerPreview < ActionMailer::Preview
     include EmailCampaigns::MailerPreviewRecipient
 
     def campaign_mail
-      campaign = EmailCampaigns::Campaigns::OfficialFeedbackOnVotedInitiative.first
+      campaign = EmailCampaigns::Campaigns::OfficialFeedbackOnReactedInitiative.first
 
       command = {
         recipient: recipient_user,

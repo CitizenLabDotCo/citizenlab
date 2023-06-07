@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::StatusChangeOfVotedInitiativeMailer do
+RSpec.describe EmailCampaigns::StatusChangeOfReactedInitiativeMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:campaign) { EmailCampaigns::Campaigns::StatusChangeOfVotedInitiative.create! }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::StatusChangeOfReactedInitiative.create! }
     let_it_be(:initiative) { create(:initiative) }
     let_it_be(:status) { initiative.initiative_status }
     let_it_be(:command) do

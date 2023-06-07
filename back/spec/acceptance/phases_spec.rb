@@ -106,7 +106,7 @@ resource 'Phases' do
         parameter :posting_limited_max, 'Number of posts a citizen can perform in this phase. Defaults to 1', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase? Defaults to true', required: false
         parameter :reacting_enabled, 'Can citizens react in this phase? Defaults to true', required: false
-        parameter :reacting_like_method, "How does upvoting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :reacting_like_method, "How does reacting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
         parameter :reacting_like_limited_max, 'Number of likes a citizen can perform in this phase, only if the reacting_like_method is limited. Defaults to 10', required: false
         parameter :reacting_dislike_enabled, 'Can citizens dislikes in this phase? Defaults to true', required: false
         parameter :reacting_dislike_method, "How does disliking work? Either #{ParticipationContext::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false

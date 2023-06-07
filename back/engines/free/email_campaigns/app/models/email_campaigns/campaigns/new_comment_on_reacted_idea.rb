@@ -27,27 +27,31 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  class Campaigns::OfficialFeedbackOnVotedIdea < Campaign
-    include Consentable
+  class Campaigns::NewCommentOnReactedIdea < Campaign
     include ActivityTriggerable
+    include Consentable
     include RecipientConfigurable
     include Disableable
-    include Trackable
     include LifecycleStageRestrictable
+    include Trackable
     allow_lifecycle_stages only: %w[trial active]
 
-    recipient_filter :filter_notification_recipient
+    recipient_filter :filter_recipient
 
     def mailer_class
-      OfficialFeedbackOnReactedIdeaMailer
+      NewCommentOnReactedIdeaMailer
     end
 
     def activity_triggers
-      { 'Notifications::OfficialFeedbackOnVotedIdea' => { 'created' => true } }
+      { 'Comment' => { 'created' => true } }
     end
 
-    def filter_notification_recipient(users_scope, activity:, time: nil)
-      users_scope.where(id: activity.item.recipient.id)
+    def filter_recipient(users_scope, activity:, time: nil)
+      users_scope
+        .where(id: activity.item.post.reactions.pluck(:user_id))
+        .where.not(id: activity.item.author_id)
+        .where.not(id: activity.item.post.author_id)
+        .where.not(id: activity.item.post.comments.pluck(:author_id))
     end
 
     def self.recipient_role_multiloc_key
@@ -63,22 +67,29 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.input_is_updated'
+      'email_campaigns.admin_labels.trigger.user_comments'
     end
 
     def generate_commands(recipient:, activity:, time: nil)
-      notification = activity.item
+      comment = activity.item
+      return [] if comment.post_type != 'Idea'
+
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       [{
         event_payload: {
-          official_feedback_author_multiloc: notification.official_feedback.author_multiloc,
-          official_feedback_body_multiloc: notification.official_feedback.body_multiloc,
-          official_feedback_url: Frontend::UrlService.new.model_to_url(notification.official_feedback, locale: recipient.locale),
-          post_published_at: notification.post.published_at.iso8601,
-          post_title_multiloc: notification.post.title_multiloc,
-          post_author_name: name_service.display_name!(notification.post.author)
+          initiating_user_first_name: comment.author&.first_name,
+          initiating_user_last_name: name_service.last_name!(comment.author),
+          post_published_at: comment.post.published_at.iso8601,
+          post_title_multiloc: comment.post.title_multiloc,
+          post_body_multiloc: comment.post.body_multiloc,
+          comment_body_multiloc: comment.body_multiloc,
+          comment_url: Frontend::UrlService.new.model_to_url(comment, locale: recipient.locale)
         }
       }]
+    end
+
+    def set_enabled
+      self.enabled = false if enabled.nil?
     end
   end
 end

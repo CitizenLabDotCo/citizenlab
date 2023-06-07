@@ -27,7 +27,7 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  class Campaigns::OfficialFeedbackOnVotedInitiative < Campaign
+  class Campaigns::OfficialFeedbackOnReactedInitiative < Campaign
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable
@@ -43,7 +43,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      { 'Notifications::OfficialFeedbackOnVotedInitiative' => { 'created' => true } }
+      { 'Notifications::OfficialFeedbackOnReactedInitiative' => { 'created' => true } }
     end
 
     def filter_notification_recipient(users_scope, activity:, time: nil)

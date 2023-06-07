@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::OfficialFeedbackOnReactedInitiativeMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnVotedInitiative.create! }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnReactedInitiative.create! }
     let_it_be(:command) do
       {
         recipient: recipient,
