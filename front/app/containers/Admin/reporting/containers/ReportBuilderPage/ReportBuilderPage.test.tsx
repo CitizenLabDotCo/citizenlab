@@ -18,8 +18,12 @@ jest.mock('services/reports', () => ({
 
 const mockUser1 = { attributes: { first_name: 'User 1' } };
 const mockUser2 = { attributes: { first_name: 'User 2' } };
-jest.mock('hooks/useUser', () =>
-  jest.fn(({ userId }) => (userId === '_1' ? mockUser1 : mockUser2))
+jest.mock('api/users/useUserById', () =>
+  jest.fn((userId) =>
+    userId === '_1'
+      ? { data: { data: mockUser1 } }
+      : { data: { data: mockUser2 } }
+  )
 );
 
 const reports = [

@@ -4,11 +4,9 @@ import React, { useState } from 'react';
 import messages from './messages';
 
 // services & hooks
-import { TAuthUser } from 'hooks/useAuthUser';
+
 import { useIntl } from 'utils/cl-intl';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { updateUser } from 'services/users';
 
 // components
 import {
@@ -29,13 +27,16 @@ import Input from 'components/HookForm/Input';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import useUpdateUser from 'api/users/useUpdateUser';
+import { IUserData } from 'api/users/types';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type UpdateEmailFormProps = {
   updateSuccessful: boolean;
   setUpdateSuccessful: (updateSuccessful: boolean) => void;
   setOpenConfirmationModal: (openConfirmationModal: boolean) => void;
   methods: UseFormReturn<FormValues, any>;
-  user: TAuthUser;
+  user: IUserData | undefined;
 };
 
 const UpdateEmailForm = ({
@@ -46,8 +47,9 @@ const UpdateEmailForm = ({
   user,
 }: UpdateEmailFormProps) => {
   const { formatMessage } = useIntl();
-  const appConfiguration = useAppConfiguration();
+  const { mutateAsync: updateUser } = useUpdateUser();
   const [error, setError] = useState<'taken' | undefined>(undefined);
+  const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
 
   if (isNilOrError(user)) {
     return null;
@@ -56,7 +58,7 @@ const UpdateEmailForm = ({
   const onFormSubmit = async (formValues: FormValues) => {
     try {
       // If confirmation required, launch modal
-      if (appConfiguration.data?.data.attributes.settings.user_confirmation) {
+      if (userConfirmationEnabled) {
         resendEmailConfirmationCode(formValues.email)
           .then(() => {
             setOpenConfirmationModal(true);
@@ -67,7 +69,7 @@ const UpdateEmailForm = ({
           });
       } else {
         // Otherwise, update the user's email
-        await updateUser(user.id, { ...formValues });
+        await updateUser({ userId: user.id, ...formValues });
         setUpdateSuccessful(true);
       }
     } catch (error) {

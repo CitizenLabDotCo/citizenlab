@@ -11,12 +11,17 @@ export default function useAnySSOEnabled() {
     name: 'vienna_citizen_login',
   });
 
+  const claveUnicaLoginEnabled = useFeatureFlag({
+    name: 'clave_unica_login',
+  });
+
   const anySSOEnabled =
     googleLoginEnabled ||
     facebookLoginEnabled ||
     azureAdLoginEnabled ||
     franceconnectLoginEnabled ||
-    viennaCitizenLoginEnabled;
+    viennaCitizenLoginEnabled ||
+    claveUnicaLoginEnabled;
 
   return anySSOEnabled;
 }

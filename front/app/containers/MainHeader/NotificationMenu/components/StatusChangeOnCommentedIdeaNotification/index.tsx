@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
-import { IStatusChangeOnCommentedIdeaNotificationData } from 'services/notifications';
+import { IStatusChangeOnCommentedIdeaNotificationData } from 'api/notifications/types';
 import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 import { isNilOrError } from 'utils/helperUtils';
 import { getInputTerm } from 'services/participationContexts';
 
@@ -24,13 +24,13 @@ const StatusChangeOnCommentedIdeaNotification = memo<Props>((props) => {
     ? idea.data.relationships.project.data.id
     : null;
   const { data: project } = useProjectById(projectId);
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
 
   if (project) {
     const inputTerm = getInputTerm(
       project.data.attributes.process_type,
       project.data,
-      phases
+      phases?.data
     );
     return (
       <NotificationWrapper

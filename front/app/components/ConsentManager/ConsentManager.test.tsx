@@ -10,7 +10,7 @@ import { registerDestination } from './destinations';
 import { isAdmin, isRegularUser } from 'services/permissions/roles';
 
 // typings
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 // mocked functions
 import { setConsent, IConsentCookie } from './consent';
@@ -22,7 +22,7 @@ jest.mock('utils/cl-router/Link', () => ({ children }) => (
 ));
 
 let mockAuthUser: IUserData | null = null;
-jest.mock('hooks/useAuthUser', () => () => mockAuthUser);
+jest.mock('api/me/useAuthUser', () => () => ({ data: { data: mockAuthUser } }));
 
 const mockAppConfiguration = {
   data: {

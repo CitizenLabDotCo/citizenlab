@@ -63,8 +63,8 @@ module MachineTranslations
 
           render json: ::WebApi::V1::MachineTranslationSerializer.new(
             @translation,
-            params: fastjson_params
-          ).serialized_json
+            params: jsonapi_serializer_params
+          ).serializable_hash
         end
 
         private

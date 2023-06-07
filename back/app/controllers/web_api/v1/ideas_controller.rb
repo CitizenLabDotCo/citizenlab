@@ -43,7 +43,7 @@ class WebApi::V1::IdeasController < ApplicationController
       includes: %i[idea_trending_info]
     ).find_records
 
-    render json: linked_json(ideas, WebApi::V1::IdeaMiniSerializer, params: fastjson_params(pcs: ParticipationContextService.new))
+    render json: linked_json(ideas, WebApi::V1::IdeaMiniSerializer, params: jsonapi_serializer_params(pcs: ParticipationContextService.new))
   end
 
   def index_idea_markers
@@ -54,7 +54,7 @@ class WebApi::V1::IdeasController < ApplicationController
       includes: %i[author topics project idea_status idea_files]
     ).find_records
 
-    render json: linked_json(ideas, WebApi::V1::PostMarkerSerializer, params: fastjson_params)
+    render json: linked_json(ideas, WebApi::V1::PostMarkerSerializer, params: jsonapi_serializer_params)
   end
 
   def index_xlsx
@@ -142,10 +142,18 @@ class WebApi::V1::IdeasController < ApplicationController
       input.creation_phase = (participation_context if participation_method.form_in_phase?)
       input.phase_ids = [participation_context.id] if phase_ids.empty?
     end
+    # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
+    if participation_context.native_survey? && participation_context.allow_anonymous_participation?
+      input.anonymous = true
+    end
     input.author ||= current_user
     service.before_create(input, current_user)
 
     authorize input
+    if anonymous_not_allowed?(participation_context)
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
+      return
+    end
     verify_profanity input
 
     save_options = {}
@@ -166,9 +174,9 @@ class WebApi::V1::IdeasController < ApplicationController
         service.after_create(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
-          params: fastjson_params,
+          params: jsonapi_serializer_params,
           include: %i[author topics phases user_vote idea_images]
-        ).serialized_json, status: :created
+        ).serializable_hash, status: :created
       else
         render json: { errors: input.errors.details }, status: :unprocessable_entity
       end
@@ -185,6 +193,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def update
     input = Idea.find params[:id]
     project = input.project
+    participation_context = ParticipationContextService.new.get_participation_context project
     authorize input
 
     if invalid_blank_author_for_update? input, params
@@ -203,6 +212,10 @@ class WebApi::V1::IdeasController < ApplicationController
     CustomFieldService.new.cleanup_custom_field_values! update_params[:custom_field_values]
     input.assign_attributes update_params
     authorize input
+    if anonymous_not_allowed?(participation_context)
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
+      return
+    end
     verify_profanity input
 
     service.before_update(input, current_user)
@@ -211,13 +224,12 @@ class WebApi::V1::IdeasController < ApplicationController
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save save_options
-        authorize input
         service.after_update(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
-          params: fastjson_params,
+          params: jsonapi_serializer_params,
           include: %i[author topics user_vote idea_images]
-        ).serialized_json, status: :ok
+        ).serializable_hash, status: :ok
       else
         render json: { errors: input.errors.details }, status: :unprocessable_entity
       end
@@ -243,9 +255,9 @@ class WebApi::V1::IdeasController < ApplicationController
     authorize input
     render json: WebApi::V1::IdeaSerializer.new(
       input,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: %i[author topics user_vote idea_images]
-    ).serialized_json
+    ).serializable_hash
   end
 
   def extract_custom_field_values_from_params!(custom_form)
@@ -275,14 +287,14 @@ class WebApi::V1::IdeasController < ApplicationController
     complex_attributes = idea_complex_attributes(custom_form, submittable_field_keys)
     attributes << complex_attributes if complex_attributes.any?
     if user_can_moderate_project
-      attributes.concat %i[idea_status_id budget] + [phase_ids: []]
+      attributes.concat %i[author_id idea_status_id budget] + [phase_ids: []]
     end
     attributes
   end
 
   def idea_simple_attributes(submittable_field_keys)
     simple_attributes = %i[location_description proposed_budget] & submittable_field_keys
-    simple_attributes.push(:publication_status, :project_id, :author_id)
+    simple_attributes.push(:publication_status, :project_id, :anonymous)
     if submittable_field_keys.include?(:idea_images_attributes)
       simple_attributes << [idea_images_attributes: [:image]]
     end
@@ -324,18 +336,22 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
+  def anonymous_not_allowed?(participation_context)
+    params.dig('idea', 'anonymous') && !participation_context.allow_anonymous_participation
+  end
+
   def serialization_options_for(ideas)
     if current_user
       # I have no idea why but the trending query part
       # breaks if you don't fetch the ids in this way.
       votes = Vote.where(user: current_user, votable_id: ideas.map(&:id), votable_type: 'Idea')
       {
-        params: fastjson_params(vbii: votes.index_by(&:votable_id), pcs: ParticipationContextService.new),
+        params: jsonapi_serializer_params(vbii: votes.index_by(&:votable_id), pcs: ParticipationContextService.new),
         include: %i[author user_vote idea_images]
       }
     else
       {
-        params: fastjson_params(pcs: ParticipationContextService.new),
+        params: jsonapi_serializer_params(pcs: ParticipationContextService.new),
         include: %i[author idea_images]
       }
     end
@@ -356,7 +372,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def invalid_blank_author_for_update?(input, params)
     author_removal = params[:idea].key?(:author_id) && params[:idea][:author_id].nil?
-    publishing = params[:idea][:publication_status] == 'published'
+    publishing = params[:idea][:publication_status] == 'published' && input.publication_status != 'published'
 
     return false unless author_removal || (publishing && !input.author_id)
 

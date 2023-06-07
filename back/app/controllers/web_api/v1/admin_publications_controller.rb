@@ -16,7 +16,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     render json: linked_json(
       @publications,
       WebApi::V1::AdminPublicationSerializer,
-      params: fastjson_params(
+      params: jsonapi_serializer_params(
         visible_children_count_by_parent_id: publication_filterer.visible_children_counts_by_parent_id
       )
     )
@@ -27,8 +27,8 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       SideFxAdminPublicationService.new.after_update(@publication, current_user)
       render json: WebApi::V1::AdminPublicationSerializer.new(
         @publication,
-        params: fastjson_params
-      ).serialized_json, status: :ok
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :ok
     else
       render json: { errors: @publication.errors.details }, status: :unprocessable_entity
     end
@@ -49,8 +49,8 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   def show
     render json: WebApi::V1::AdminPublicationSerializer.new(
       @publication,
-      params: fastjson_params
-    ).serialized_json, status: :ok
+      params: jsonapi_serializer_params
+    ).serializable_hash, status: :ok
   end
 
   private

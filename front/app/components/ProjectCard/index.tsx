@@ -21,9 +21,9 @@ import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // resources
 import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'hooks/usePhase';
-import usePhases from 'hooks/usePhases';
-import useAuthUser from 'hooks/useAuthUser';
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO,
 } from 'api/project_images/useProjectImages';
@@ -52,6 +52,7 @@ import {
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
 import { getInputTermMessage } from 'utils/i18n';
+import { getMethodConfig } from 'utils/participationMethodUtils';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
@@ -464,12 +465,12 @@ const ProjectCard = memo<Props>(
     intl: { formatMessage },
   }) => {
     const { data: project } = useProjectById(projectId);
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
     const { data: projectImages } = useProjectImages(projectId);
     const currentPhaseId =
       project?.data?.relationships?.current_phase?.data?.id ?? null;
-    const phase = usePhase(currentPhaseId);
-    const phases = usePhases(projectId);
+    const { data: phase } = usePhase(currentPhaseId);
+    const { data: phases } = usePhases(projectId);
     const theme = useTheme();
 
     const [visible, setVisible] = useState(false);
@@ -497,13 +498,16 @@ const ProjectCard = memo<Props>(
     };
 
     if (project) {
+      const methodConfig = getMethodConfig(
+        project.data.attributes.participation_method
+      );
       const postingPermission = getIdeaPostingRules({
         project: project?.data,
-        phase: !isNilOrError(phase) ? phase : null,
-        authUser: !isNilOrError(authUser) ? authUser : null,
+        phase: phase?.data,
+        authUser: !isNilOrError(authUser) ? authUser.data : null,
       });
-      const participationMethod = !isNilOrError(phase)
-        ? phase.attributes.participation_method
+      const participationMethod = phase
+        ? phase.data.attributes.participation_method
         : project.data.attributes.participation_method;
       const canPost = !!postingPermission.enabled;
       const canVote =
@@ -528,7 +532,7 @@ const ProjectCard = memo<Props>(
       const showIdeasCount =
         !(
           project.data.attributes.process_type === 'continuous' &&
-          project.data.attributes.participation_method !== 'ideation'
+          !methodConfig.showInputCount
         ) && ideasCount > 0;
       const showCommentsCount = commentsCount > 0;
       const showFooter = hasAvatars || showIdeasCount || showCommentsCount;
@@ -537,15 +541,15 @@ const ProjectCard = memo<Props>(
         project.data.relationships.avatars.data
           ? project.data.relationships.avatars.data.map((avatar) => avatar.id)
           : [];
-      const startAt = get(phase, 'attributes.start_at');
-      const endAt = get(phase, 'attributes.end_at');
+      const startAt = get(phase?.data, 'attributes.start_at');
+      const endAt = get(phase?.data, 'attributes.end_at');
       const timeRemaining = endAt
         ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize()
         : null;
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
       const processType = project.data.attributes.process_type;
-      const inputTerm = getInputTerm(processType, project.data, phases);
+      const inputTerm = getInputTerm(processType, project.data, phases?.data);
 
       if (isArchived) {
         countdown = (
@@ -601,6 +605,8 @@ const ProjectCard = memo<Props>(
         participationMethod === 'native_survey'
       ) {
         ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
+      } else if (participationMethod === 'document_annotation') {
+        ctaMessage = <FormattedMessage {...messages.reviewDocument} />;
       } else if (participationMethod === 'poll') {
         ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
       } else if (participationMethod === 'ideation' && canPost) {

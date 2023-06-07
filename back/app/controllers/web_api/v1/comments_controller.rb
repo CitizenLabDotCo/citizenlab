@@ -60,11 +60,11 @@ class WebApi::V1::CommentsController < ApplicationController
       votes = Vote.where(user: current_user, votable: @comments)
       votes_by_comment_id = votes.index_by(&:votable_id)
       {
-        params: fastjson_params(vbci: votes_by_comment_id),
+        params: jsonapi_serializer_params(vbci: votes_by_comment_id),
         include: %i[author user_vote]
       }
     else
-      { params: fastjson_params, include: [:author] }
+      { params: jsonapi_serializer_params, include: [:author] }
     end
 
     render json: {
@@ -89,8 +89,11 @@ class WebApi::V1::CommentsController < ApplicationController
       .where(post_type: @post_type)
       .includes(:author, :"#{@post_type.underscore}")
       .order(:lft)
-    if (@post_type == 'Idea') && params[:project].present?
-      @comments = @comments.where(ideas: { project_id: params[:project] })
+    if @post_type == 'Idea'
+      @comments = @comments.where(ideas: { project_id: UserRoleService.new.moderatable_projects(current_user) })
+      if params[:project].present?
+        @comments = @comments.where(ideas: { project_id: params[:project] })
+      end
     end
     @comments = @comments.where(post_id: post_ids) if post_ids.present?
 
@@ -118,11 +121,11 @@ class WebApi::V1::CommentsController < ApplicationController
       votes = Vote.where(user: current_user, votable: @comments.all)
       votes_by_comment_id = votes.index_by(&:votable_id)
       {
-        params: fastjson_params(vbci: votes_by_comment_id),
+        params: jsonapi_serializer_params(vbci: votes_by_comment_id),
         include: %i[author user_vote]
       }
     else
-      { params: fastjson_params, include: [:author] }
+      { params: jsonapi_serializer_params, include: [:author] }
     end
 
     render json: linked_json(@comments, WebApi::V1::CommentSerializer, serialization_options)
@@ -131,9 +134,9 @@ class WebApi::V1::CommentsController < ApplicationController
   def show
     render json: WebApi::V1::CommentSerializer.new(
       @comment,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: [:author]
-    ).serialized_json
+    ).serializable_hash
   end
 
   def create
@@ -142,15 +145,19 @@ class WebApi::V1::CommentsController < ApplicationController
     @comment.post_id = @post_id
     @comment.author ||= current_user
     authorize @comment, policy_class: @policy_class
+    if anonymous_not_allowed?
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
+      return
+    end
     verify_profanity @comment
     SideFxCommentService.new.before_create @comment, current_user
     if @comment.save
       SideFxCommentService.new.after_create @comment, current_user
       render json: WebApi::V1::CommentSerializer.new(
         @comment,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: [:author]
-      ).serialized_json, status: :created
+      ).serializable_hash, status: :created
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
     end
@@ -161,15 +168,19 @@ class WebApi::V1::CommentsController < ApplicationController
     # We cannot pass policy class to permitted_attributes
     # @comment.attributes = pundit_params_for(@comment).permit(@policy_class.new(current_user, @comment).permitted_attributes_for_update)
     authorize @comment, policy_class: @policy_class
+    if anonymous_not_allowed?
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
+      return
+    end
     verify_profanity @comment
     SideFxCommentService.new.before_update @comment, current_user
     if @comment.save
       SideFxCommentService.new.after_update @comment, current_user
       render json: WebApi::V1::CommentSerializer.new(
         @comment,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: [:author]
-      ).serialized_json, status: :ok
+      ).serializable_hash, status: :ok
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
     end
@@ -234,6 +245,7 @@ class WebApi::V1::CommentsController < ApplicationController
     # else's name
     params.require(:comment).permit(
       :parent_id,
+      :anonymous,
       body_multiloc: CL2_SUPPORTED_LOCALES
     )
   end
@@ -241,7 +253,7 @@ class WebApi::V1::CommentsController < ApplicationController
   def comment_update_params
     attrs = []
     if @comment.author_id == current_user&.id
-      attrs += [body_multiloc: CL2_SUPPORTED_LOCALES]
+      attrs += [:anonymous, { body_multiloc: CL2_SUPPORTED_LOCALES }]
     end
     params.require(:comment).permit(attrs)
   end
@@ -252,6 +264,18 @@ class WebApi::V1::CommentsController < ApplicationController
     children_by_parent = child_comments.group_by(&:parent_id)
     root_comments.flat_map do |root_comment|
       [root_comment, *children_by_parent[root_comment.id]]
+    end
+  end
+
+  def anonymous_not_allowed?
+    return false if !params.dig('comment', 'anonymous')
+
+    case @post_type
+    when 'Idea'
+      !ParticipationContextService.new.get_participation_context(@comment.post.project).allow_anonymous_participation
+    when 'Initiative'
+      !AppConfiguration.instance.settings.dig('initiatives', 'allow_anonymous_participation')
+    else raise "Unsupported post type #{@post_type}"
     end
   end
 end

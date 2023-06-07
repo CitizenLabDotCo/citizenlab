@@ -1,9 +1,5 @@
 import React from 'react';
-import GetPollOptions, {
-  GetPollOptionsChildProps,
-} from 'resources/GetPollOptions';
-import { adopt } from 'react-adopt';
-import { IPollQuestion } from 'services/pollQuestions';
+import { IPollQuestionData } from 'api/poll_questions/types';
 import styled from 'styled-components';
 import { Radio } from '@citizenlab/cl2-component-library';
 import {
@@ -14,6 +10,7 @@ import {
 } from './PollForm';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
+import usePollOptions from 'api/poll_options/usePollOptions';
 
 const StyledFieldSet = styled.fieldset`
   width: 100%;
@@ -27,31 +24,25 @@ const StyledRadio = styled(Radio)`
   margin-left: 35px;
 `;
 
-interface InputProps {
-  question: IPollQuestion;
+interface Props {
+  question: IPollQuestionData;
   index: number;
   value: string | undefined;
   disabled: boolean;
   onChange: (questionId: string, optionId: string) => () => void;
 }
 
-interface DataProps {
-  options: GetPollOptionsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
 const PollSingleChoice = ({
   question,
   index,
-  options,
   value,
   disabled,
   onChange,
 }: Props) => {
+  const { data: options } = usePollOptions(question.id);
   return (
     <StyledFieldSet key={question.id}>
-      {isNilOrError(options) || options.length === 0 ? null : (
+      {isNilOrError(options) || options.data.length === 0 ? null : (
         <QuestionContainer className="e2e-poll-question">
           <Question>
             <QuestionNumber>{index + 1}</QuestionNumber>
@@ -59,7 +50,7 @@ const PollSingleChoice = ({
               <T value={question.attributes.title_multiloc} />
             </QuestionText>
           </Question>
-          {options.map((option) => (
+          {options.data.map((option) => (
             <StyledRadio
               className="e2e-poll-option"
               key={option.id}
@@ -78,14 +69,4 @@ const PollSingleChoice = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  options: ({ question, render }) => (
-    <GetPollOptions questionId={question.id}>{render}</GetPollOptions>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataprops) => <PollSingleChoice {...inputProps} {...dataprops} />}
-  </Data>
-);
+export default PollSingleChoice;

@@ -5,7 +5,7 @@ import {
   IAdminPublicationData,
   AdminPublicationType,
 } from 'services/adminPublications';
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
 import { IRelationship } from 'typings';

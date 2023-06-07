@@ -23,6 +23,9 @@ import styled from 'styled-components';
 import { SSOProvider } from 'services/singleSignOn';
 import { ErrorCode } from 'containers/Authentication/typings';
 
+// utils
+import ClaveUnicaExpandedAuthProviderButton from './ClaveUnicaExpandedAuthProviderButton';
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -31,6 +34,12 @@ const Container = styled.div`
 `;
 
 export const StyledAuthProviderButton = styled(AuthProviderButton)`
+  margin-bottom: 18px;
+`;
+
+export const StyledClaveUnicaExpandedAuthProviderButton = styled(
+  ClaveUnicaExpandedAuthProviderButton
+)`
   margin-bottom: 18px;
 `;
 
@@ -59,6 +68,9 @@ const AuthProviders = memo<Props>(
     });
     const viennaCitizenLoginEnabled = useFeatureFlag({
       name: 'vienna_citizen_login',
+    });
+    const claveUnicaLoginEnabled = useFeatureFlag({
+      name: 'clave_unica_login',
     });
 
     const azureProviderName =
@@ -90,6 +102,13 @@ const AuthProviders = memo<Props>(
     const showFCButton =
       franceconnectLoginEnabled && error !== 'franceconnect_merging_failed';
 
+    const showMainAuthMethods =
+      isPasswordSigninOrSignupAllowed ||
+      facebookLoginEnabled ||
+      azureAdLoginEnabled ||
+      viennaCitizenLoginEnabled ||
+      claveUnicaLoginEnabled;
+
     return (
       <Container id="e2e-sign-up-container" className={className}>
         {showFCButton && (
@@ -101,11 +120,14 @@ const AuthProviders = memo<Props>(
           />
         )}
 
-        {(isPasswordSigninOrSignupAllowed ||
-          facebookLoginEnabled ||
-          azureAdLoginEnabled ||
-          viennaCitizenLoginEnabled) &&
-          franceconnectLoginEnabled && <Or />}
+        {showMainAuthMethods && franceconnectLoginEnabled && <Or />}
+
+        {claveUnicaLoginEnabled && (
+          <StyledClaveUnicaExpandedAuthProviderButton
+            flow={flow}
+            onSelectAuthProvider={onSelectAuthProvider}
+          />
+        )}
 
         <Outlet
           id="app.components.SignUpIn.AuthProviders.ContainerStart"

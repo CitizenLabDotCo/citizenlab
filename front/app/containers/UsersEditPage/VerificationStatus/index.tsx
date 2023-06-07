@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
@@ -112,10 +112,10 @@ const ReverifyButton = styled.button`
 `;
 
 const VerificationStatus = memo(({ className }: { className?: string }) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   if (isNilOrError(authUser)) return null;
 
-  const authUserIsVerified = authUser.attributes.verified;
+  const authUserIsVerified = authUser.data.attributes.verified;
 
   const reverifyButton = (
     <ReverifyButton
@@ -137,7 +137,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
         {authUserIsVerified ? (
           <>
             <StyledAvatar
-              userId={authUser.id}
+              userId={authUser.data.id}
               size={52}
               addVerificationBadge
               aria-hidden
@@ -161,7 +161,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
           <>
             <AvatarAndShield aria-hidden>
               <StyledAvatar
-                userId={authUser?.id}
+                userId={authUser?.data.id}
                 size={52}
                 bgColor="transparent"
                 padding={0}

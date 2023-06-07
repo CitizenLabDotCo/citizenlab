@@ -29,9 +29,7 @@ const mockUser = {
   },
 };
 
-jest.mock('hooks/useAuthUser', () => {
-  return () => mockUser;
-});
+jest.mock('api/me/useAuthUser', () => () => ({ data: mockUser }));
 
 describe('ProjectFolderSelect', () => {
   it('should render', () => {

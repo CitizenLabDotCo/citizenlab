@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'hooks/usePhases';
-import { IOfficialFeedbackOnCommentedIdeaNotificationData } from 'services/notifications';
+import usePhases from 'api/phases/usePhases';
+import { IOfficialFeedbackOnCommentedIdeaNotificationData } from 'api/notifications/types';
 import { isNilOrError } from 'utils/helperUtils';
 import { getInputTerm } from 'services/participationContexts';
 
@@ -26,13 +26,13 @@ const OfficialFeedbackOnCommentedIdeaNotification = memo(
       ? idea.data.relationships.project.data.id
       : null;
     const { data: project } = useProjectById(projectId);
-    const phases = usePhases(projectId);
+    const { data: phases } = usePhases(projectId);
 
     if (project) {
       const inputTerm = getInputTerm(
         project.data.attributes.process_type,
         project.data,
-        phases
+        phases?.data
       );
 
       return (

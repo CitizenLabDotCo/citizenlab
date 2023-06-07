@@ -5,12 +5,8 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { adopt } from 'react-adopt';
 
 // services & resources
-import {
-  sendCampaign,
-  sendCampaignPreview,
-  ICampaignData,
-  isDraft,
-} from 'services/campaigns';
+import { sendCampaign, sendCampaignPreview, isDraft } from 'services/campaigns';
+import { ICampaignData } from 'api/campaigns/types';
 import GetCampaign from 'resources/GetCampaign';
 import GetGroup from 'resources/GetGroup';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -31,6 +27,7 @@ import {
   IconTooltip,
   colors,
   Title,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import DraftCampaignDetails from './DraftCampaignDetails';
 import SentCampaignDetails from './SentCampaignDetails';
@@ -43,8 +40,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styling
 import { fontSizes } from 'utils/styleUtils';
-
-const Container = styled.div``;
 
 const PageHeader = styled.div`
   display: flex;
@@ -230,7 +225,7 @@ class Show extends React.Component<
       const noGroupsSelected = groupIds.length === 0;
 
       return (
-        <Container id="e2e-custom-email-container">
+        <Box background={colors.white} p="40px" id="e2e-custom-email-container">
           <PageHeader>
             <PageTitleWrapper>
               <Title mr="12px">
@@ -368,7 +363,7 @@ class Show extends React.Component<
               </ButtonsWrapper>
             </ModalContainer>
           </Modal>
-        </Container>
+        </Box>
       );
     }
 

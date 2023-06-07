@@ -1,7 +1,8 @@
 import { isNilOrError } from 'utils/helperUtils';
 import { getProjectInputTerm } from 'api/projects/utils';
 import { IProjectData, ProcessType } from 'api/projects/types';
-import { getPhaseInputTerm, IPhaseData } from 'services/phases';
+import { getPhaseInputTerm } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
 
 export type TSurveyService =
   | 'typeform'
@@ -12,8 +13,7 @@ export type TSurveyService =
   | 'qualtrics'
   | 'smart_survey'
   | 'microsoft_forms'
-  | 'snap_survey'
-  | 'konveio';
+  | 'snap_survey';
 
 export type ParticipationMethod =
   | 'ideation'
@@ -22,7 +22,8 @@ export type ParticipationMethod =
   | 'survey'
   | 'budgeting'
   | 'poll'
-  | 'volunteering';
+  | 'volunteering'
+  | 'document_annotation';
 
 export type IdeaDefaultSortMethod =
   | 'trending'
@@ -55,7 +56,7 @@ export type PresentationMode = 'card' | 'map';
 export function getInputTerm(
   processType: ProcessType,
   project: IProjectData | undefined | null | Error,
-  phases: IPhaseData[] | undefined | null | Error,
+  phases: IPhaseData[] | undefined,
   phase?: IPhaseData | undefined | null | Error
 ) {
   if (processType === 'continuous') {
@@ -69,7 +70,7 @@ export function getInputTerm(
     // we have the fallback to idea here in that case.
     if (!isNilOrError(phase)) {
       return getPhaseInputTerm([phase]);
-    } else if (!isNilOrError(phases) && phases.length > 0) {
+    } else if (phases && phases.length > 0) {
       return getPhaseInputTerm(phases);
     }
   }

@@ -126,7 +126,8 @@ RSpec.describe Project do
       'budgeting' => true,
       'poll' => false,
       'volunteering' => false,
-      'native_survey' => true
+      'native_survey' => true,
+      'document_annotation' => false
     }
     # Written this way so that additional participation methods will make this spec fail.
     ParticipationContext::PARTICIPATION_METHODS.each do |participation_method|
@@ -147,6 +148,13 @@ RSpec.describe Project do
       # posting_method and posting_limited_max to custom values.
       expect_any_instance_of(ParticipationMethod::Base).to receive(:assign_defaults_for_participation_context).once
       create(:continuous_project)
+    end
+  end
+
+  describe 'allowed_input_topics' do
+    it 'cannot have duplicate topics' do
+      project = create(:project_with_allowed_input_topics)
+      expect(project.projects_allowed_input_topics.create(topic: project.allowed_input_topics.first)).not_to be_valid
     end
   end
 end

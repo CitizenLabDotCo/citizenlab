@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // components
 import VoteControl from 'components/VoteControl';
@@ -16,6 +16,9 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
+
+// utils
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // typings
 import { IdeaVotingDisabledReason } from 'api/ideas/types';
@@ -65,14 +68,14 @@ const IdeaShowPageTopBar = ({
   className,
   deselectIdeaOnMap,
 }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
 
   const onDisabledVoteClick = (disabled_reason: IdeaVotingDisabledReason) => {
     if (
       !isNilOrError(authUser) &&
       project &&
-      disabled_reason === 'not_verified'
+      isFixableByAuthentication(disabled_reason)
     ) {
       const pcType =
         project.data.attributes.process_type === 'continuous'

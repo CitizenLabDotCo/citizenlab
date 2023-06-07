@@ -166,7 +166,8 @@ class User < ApplicationRecord
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
-  validates :email, :locale, presence: true, unless: :invite_pending?
+  validates :email, presence: true, unless: -> { invite_pending? || (sso? && identities.none?(&:email_always_present?)) }
+  validates :locale, presence: true, unless: :invite_pending?
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
   validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
@@ -183,8 +184,7 @@ class User < ApplicationRecord
 
   # NOTE: All validation except for required
   validates :custom_field_values, json: {
-    schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.with_resource_type('User')) },
-    message: ->(errors) { errors }
+    schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.with_resource_type('User')) }
   }, on: :form_submission
 
   validates :password, length: { maximum: 72 }, allow_nil: true
@@ -193,7 +193,7 @@ class User < ApplicationRecord
   validate :validate_minimum_password_length
   validate :validate_password_not_common
 
-  validates :roles, json: { schema: -> { User.roles_json_schema }, message: ->(errors) { errors } }
+  validates :roles, json: { schema: -> { User.roles_json_schema } }
 
   validate :validate_not_duplicate_email
   validate :validate_not_duplicate_new_email
@@ -438,7 +438,6 @@ class User < ApplicationRecord
     manual_groups.merge(groups).exists?
   end
 
-  # Used to check upon update or create, if a user should have to confirm their account
   def should_require_confirmation?
     !(registered_with_phone? || highest_role != :user || sso? || invited? || active?)
   end
@@ -546,10 +545,13 @@ class User < ApplicationRecord
   def validate_can_update_email
     return unless persisted? && (new_email_changed? || email_changed?)
 
-    if no_password? && confirmation_required?
+    # no_password? - here it's only for light registration
+    # confirmation_required? - it's always false for SSO providers that return email (all except ClaveUnica)
+    # !sso? - exclude ClaveUnica registrations (no email)
+    if no_password? && confirmation_required? && !sso?
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
-    elsif user_confirmation_enabled? && active? && email_changed? && !email_changed?(to: new_email_was)
+    elsif user_confirmation_enabled? && active? && email_changed? && !email_changed?(to: new_email_was) && email_was.present?
       # When new_email is used, email can only be updated from the value in that column
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - email not matching new email'
     end

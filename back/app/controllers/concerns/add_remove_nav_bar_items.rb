@@ -19,8 +19,8 @@ module AddRemoveNavBarItems
       SideFxNavBarItemService.new.after_create @item, current_user
       render json: ::WebApi::V1::NavBarItemSerializer.new(
         @item,
-        params: fastjson_params
-      ).serialized_json, status: :created
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :created
     else
       render json: { errors: @item.errors.details }, status: :unprocessable_entity
     end

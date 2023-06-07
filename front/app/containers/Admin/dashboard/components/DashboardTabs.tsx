@@ -1,7 +1,6 @@
 import React, { memo, useMemo } from 'react';
 
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import Link from 'utils/cl-router/Link';
 
 // typings
 import { ITab } from 'typings';
@@ -14,7 +13,7 @@ import NavigationTabs, {
 } from 'components/admin/NavigationTabs';
 
 // utils
-import { matchPathToUrl } from 'utils/helperUtils';
+import { isTopBarNavActive } from 'utils/helperUtils';
 
 interface Props {
   children?: React.ReactNode;
@@ -36,34 +35,34 @@ const DashboardTabs = memo<Props & WithRouterProps>(
             () => (
               <NavigationTabs className="e2e-resource-tabs">
                 {tabs.map((tab) => {
-                  const active = Boolean(
-                    location?.pathname &&
-                      matchPathToUrl(tab.url).test(location.pathname)
+                  const active = isTopBarNavActive(
+                    '/admin/dashboard',
+                    location?.pathname,
+                    tab.url
                   );
-
                   const classes = [tab.name, active ? 'active' : ''].join(' ');
 
                   if (tab.feature) {
                     return (
                       <FeatureFlag key={tab.url} name={tab.feature}>
                         <Tab
+                          label={tab.label}
+                          url={tab.url}
                           key={tab.url}
                           active={active}
                           className={`${classes} intercom-admin-dashboard-tab-${tab.name}`}
-                        >
-                          <Link to={tab.url}>{tab.label}</Link>
-                        </Tab>
+                        />
                       </FeatureFlag>
                     );
                   } else {
                     return (
                       <Tab
+                        label={tab.label}
+                        url={tab.url}
                         key={tab.url}
                         active={active}
                         className={`${classes} intercom-admin-dashboard-tab-${tab.name}`}
-                      >
-                        <Link to={tab.url}>{tab.label}</Link>
-                      </Tab>
+                      />
                     );
                   }
                 })}

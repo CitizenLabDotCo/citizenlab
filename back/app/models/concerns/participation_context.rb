@@ -10,11 +10,12 @@
 # rubocop:disable Metrics/ModuleLength
 module ParticipationContext
   extend ActiveSupport::Concern
-  include Surveys::SurveyParticipationContext
+  include DocumentAnnotation::DocumentAnnotationParticipationContext
   include Polls::PollParticipationContext
+  include Surveys::SurveyParticipationContext
   include Volunteering::VolunteeringParticipationContext
 
-  PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering native_survey].freeze
+  PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering native_survey document_annotation].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   POSTING_METHODS       = %w[unlimited limited].freeze
   VOTING_METHODS        = %w[unlimited limited].freeze
@@ -64,6 +65,7 @@ module ParticipationContext
       validates :downvoting_limited_max, presence: true,
         numericality: { only_integer: true, greater_than: 0 },
         if: %i[can_contain_ideas? downvoting_limited?]
+      validates :allow_anonymous_participation, inclusion: { in: [true, false] }
 
       # ideation?
       with_options if: :ideation? do

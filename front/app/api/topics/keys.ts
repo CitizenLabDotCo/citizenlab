@@ -1,7 +1,7 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 import { ITopicsQueryParams } from './types';
 
-const baseKey = { type: 'topics' };
+const baseKey = { type: 'topic' };
 
 const topicsKeys = {
   all: () => [baseKey],

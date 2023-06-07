@@ -20,7 +20,7 @@ describe('profile edition', () => {
   it('lets user edit their profile', () => {
     cy.intercept(`**/users/${userId}`).as('saveUser');
     cy.get('input[type="file"]').attachFile('icon.png');
-    cy.get('#first_name').clear();
+    cy.get('#first_name').clear().type('John');
     cy.get('#last_name').clear().type('Doe');
     cy.get('button[type="submit"]').contains('Save changes').click();
     cy.wait('@saveUser');

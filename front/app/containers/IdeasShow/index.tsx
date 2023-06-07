@@ -64,12 +64,13 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import { useSearchParams } from 'react-router-dom';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useLocalize from 'hooks/useLocalize';
+import { getCurrentPhase } from 'api/phases/utils';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -197,7 +198,7 @@ export const IdeasShow = ({
     }
   }, [ideaIdParameter]);
 
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
   const locale = useLocale();
 
@@ -264,6 +265,9 @@ export const IdeasShow = ({
       ideaCustomFieldsSchema.data.attributes,
       locale
     );
+
+    const anonymous = idea.data.attributes.anonymous;
+    const currentPhase = getCurrentPhase(phases?.data);
 
     content = (
       <>
@@ -351,6 +355,7 @@ export const IdeasShow = ({
                   statusId={statusId}
                   authorId={authorId}
                   compact={isCompactView}
+                  anonymous={anonymous}
                 />
               </Box>
             )}
@@ -370,7 +375,14 @@ export const IdeasShow = ({
             </Box>
             <Box mb="100px">
               <Suspense fallback={<LoadingComments />}>
-                <LazyComments postId={ideaId} postType="idea" />
+                <LazyComments
+                  allowAnonymousParticipation={
+                    project.attributes.allow_anonymous_participation ||
+                    currentPhase?.attributes.allow_anonymous_participation
+                  }
+                  postId={ideaId}
+                  postType="idea"
+                />
               </Suspense>
             </Box>
           </Box>
@@ -382,6 +394,7 @@ export const IdeasShow = ({
               statusId={statusId}
               authorId={authorId}
               insideModal={insideModal}
+              anonymous={anonymous}
             />
           )}
         </Box>
@@ -393,7 +406,7 @@ export const IdeasShow = ({
     const inputTerm = getInputTerm(
       project.attributes.process_type,
       project,
-      phases
+      phases?.data
     );
 
     return (

@@ -9,7 +9,7 @@ import {
 
 // typings
 import { BaseProps } from 'hooks/useAdminPublications';
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 
 // utils
 import { isNilOrError, keys } from 'utils/helperUtils';

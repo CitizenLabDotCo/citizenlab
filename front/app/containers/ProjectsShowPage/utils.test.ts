@@ -13,6 +13,6 @@ describe('isReady', () => {
   });
 
   it('returns true if timeline project and phases', () => {
-    expect(isReady(timelineProject, [])).toBe(true);
+    expect(isReady(timelineProject, { data: [] })).toBe(true);
   });
 });

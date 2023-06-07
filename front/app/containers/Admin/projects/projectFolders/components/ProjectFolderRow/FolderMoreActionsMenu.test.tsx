@@ -1,7 +1,7 @@
 import React from 'react';
 import FolderMoreActionsMenu, { Props } from './FolderMoreActionsMenu';
 import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
@@ -31,9 +31,9 @@ const mockUserData: IUserData = {
     confirmation_required: false,
   },
 };
-jest.mock('hooks/useAuthUser', () => {
-  return () => mockUserData;
-});
+jest.mock('api/me/useAuthUser', () => () => ({
+  data: { data: mockUserData },
+}));
 
 const projectFolders = {
   data: [

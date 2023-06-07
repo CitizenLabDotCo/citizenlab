@@ -11,7 +11,7 @@ import {
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // components
 import { Title } from '@citizenlab/cl2-component-library';
@@ -39,7 +39,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
 // typings
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { isNilOrError } from 'utils/helperUtils';
 

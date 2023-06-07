@@ -9,8 +9,9 @@ import {
   ParticipationMethod,
   getInputTerm,
 } from 'services/participationContexts';
-import { getCurrentPhase, IPhaseData } from 'services/phases';
+import { getCurrentPhase } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
 
 // components
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
@@ -20,6 +21,7 @@ import { EmbeddedSurveyCTABar } from 'components/ParticipationCTABars/EmbeddedSu
 import { BudgetingCTABar } from 'components/ParticipationCTABars/BudgetingCTABar';
 import { VolunteeringCTABar } from 'components/ParticipationCTABars/VolunteeringCTABar';
 import { PollCTABar } from 'components/ParticipationCTABars/PollCTABar';
+import { DocumentAnnotationCTABar } from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
 
 import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
@@ -51,7 +53,7 @@ type ModalContentMethodProps = {
 
 type FormTitleMethodProps = {
   project: IProjectData;
-  phases: IPhaseData[] | NilOrError;
+  phases: IPhaseData[] | undefined;
   phaseFromUrl?: IPhaseData | NilOrError;
 };
 
@@ -72,9 +74,11 @@ export type ParticipationMethodConfig = {
   postType: 'defaultInput' | 'nativeSurvey';
   renderCTABar: (props: CTABarProps) => ReactNode | JSX.Element | null;
   postSortingOptions?: PostSortingOptionType[];
+  showInputCount: boolean;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
+  showInputCount: true,
   formEditor: 'simpleFormEditor',
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.inputAndFeedback} />;
@@ -136,6 +140,7 @@ const ideationConfig: ParticipationMethodConfig = {
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
+  showInputCount: true,
   formEditor: 'surveyEditor',
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.createNativeSurvey} />;
@@ -171,6 +176,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
 };
 
 const informationConfig: ParticipationMethodConfig = {
+  showInputCount: false,
   formEditor: null,
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.shareInformation} />;
@@ -190,6 +196,7 @@ const informationConfig: ParticipationMethodConfig = {
 };
 
 const surveyConfig: ParticipationMethodConfig = {
+  showInputCount: false,
   formEditor: null,
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.createSurveyText} />;
@@ -210,7 +217,30 @@ const surveyConfig: ParticipationMethodConfig = {
   },
 };
 
+const documentAnnotationConfig: ParticipationMethodConfig = {
+  showInputCount: false,
+  formEditor: null,
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.createDocumentAnnotation} />;
+  },
+  getModalContent: () => {
+    return null;
+  },
+  onFormSubmission: () => {
+    return;
+  },
+  postType: 'defaultInput',
+  showInputManager: false,
+  isMethodLocked: false,
+  renderCTABar: (props: CTABarProps) => {
+    return (
+      <DocumentAnnotationCTABar project={props.project} phases={props.phases} />
+    );
+  },
+};
+
 const budgetingConfig: ParticipationMethodConfig = {
+  showInputCount: false,
   formEditor: 'simpleFormEditor',
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.conductParticipatoryBudgetingText} />;
@@ -264,6 +294,7 @@ const budgetingConfig: ParticipationMethodConfig = {
 };
 
 const pollConfig: ParticipationMethodConfig = {
+  showInputCount: false,
   formEditor: null,
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.createPoll} />;
@@ -283,6 +314,7 @@ const pollConfig: ParticipationMethodConfig = {
 };
 
 const volunteeringConfig: ParticipationMethodConfig = {
+  showInputCount: false,
   formEditor: null,
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.findVolunteers} />;
@@ -311,6 +343,7 @@ const methodToConfig: {
   budgeting: budgetingConfig,
   poll: pollConfig,
   volunteering: volunteeringConfig,
+  document_annotation: documentAnnotationConfig,
 };
 
 /** Get the configuration object for the given participation method
@@ -347,7 +380,7 @@ export function getAllParticipationMethods(
  */
 export const getParticipationMethod = (
   project: IProjectData | null | undefined,
-  phases: Error | IPhaseData[] | null | undefined | null,
+  phases: IPhaseData[] | undefined,
   phaseId?: string
 ): ParticipationMethod | undefined => {
   if (isNilOrError(project)) {
@@ -372,7 +405,7 @@ export const getParticipationMethod = (
 export function getPhase(
   phaseId: string,
   phases: IPhaseData[]
-): IPhaseData | null {
+): IPhaseData | undefined {
   return phases.filter((phase) => phase.id === phaseId)[0];
 }
 

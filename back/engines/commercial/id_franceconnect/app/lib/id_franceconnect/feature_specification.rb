@@ -18,6 +18,14 @@ module IdFranceconnect
       'Allow users to authenticate and verify with a FranceConnect account.'
     end
 
+    def self.allowed_by_default
+      false
+    end
+
+    def self.enabled_by_default
+      false
+    end
+
     add_setting 'environment', required: true, schema: {
       type: 'string',
       title: 'Environment',

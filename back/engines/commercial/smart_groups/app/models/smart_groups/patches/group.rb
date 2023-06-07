@@ -7,15 +7,7 @@ module SmartGroups
         base.singleton_class.prepend(ClassMethods)
         base.class_eval do
           validates :rules, if: :rules?, json: {
-            schema: -> { SmartGroups::RulesService.new.generate_rules_json_schema },
-            message: lambda { |errors|
-              errors.map do |e|
-                { fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message] }
-              end
-            },
-            options: {
-              errors_as_objects: true
-            }
+            schema: -> { SmartGroups::RulesService.new.generate_rules_json_schema }
           }
 
           scope :using_custom_field, lambda { |custom_field|

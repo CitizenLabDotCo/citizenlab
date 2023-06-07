@@ -20,6 +20,7 @@ import { shortenedAppLocalePairs } from 'containers/App/constants';
 
 // typings
 import { Locale } from 'typings';
+import { getSelectedLocale } from './utils';
 
 const DropdownButtonText = styled.div`
   color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
@@ -118,14 +119,6 @@ const LanguageSelector = ({ className }: Props) => {
       updateLocale(selectedLocale, appConfig);
     }
     setDropdownOpened(false);
-  };
-
-  const getSelectedLocale = (locale: Locale) => {
-    if (locale === 'sr-SP') {
-      return 'CP';
-    } else {
-      return locale.substr(0, 2).toUpperCase();
-    }
   };
 
   if (!isNilOrError(appConfig) && !isNilOrError(locale)) {

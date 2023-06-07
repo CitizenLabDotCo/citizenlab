@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
+// api
+import useUpdateProjectFolderMembership from 'api/projects/useUpdateProjectFolderMembership';
+
 // services
-import {
-  PublicationStatus,
-  updateProjectFolderMembership,
-} from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -30,10 +30,12 @@ interface Props {
 }
 
 const ItemsNotInFolder = ({ projectFolderId }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { list: adminPublications } = useAdminPublications({
     publicationStatusFilter: publicationStatuses,
   });
+  const { mutate: updateProjectFolderMembership } =
+    useUpdateProjectFolderMembership();
   const [processing, setProcessing] = useState<string[]>([]);
 
   if (isNilOrError(authUser)) {
@@ -43,8 +45,18 @@ const ItemsNotInFolder = ({ projectFolderId }: Props) => {
   const addProjectToFolder =
     (projectFolderId: string) => (projectId: string) => async () => {
       setProcessing([...processing, projectId]);
-      await updateProjectFolderMembership(projectId, projectFolderId);
-      setProcessing(processing.filter((item) => projectId !== item));
+
+      updateProjectFolderMembership(
+        {
+          projectId,
+          newProjectFolderId: projectFolderId,
+        },
+        {
+          onSuccess: () => {
+            setProcessing(processing.filter((item) => projectId !== item));
+          },
+        }
+      );
     };
 
   const adminPublicationsThatCanBeAdded = !isNilOrError(adminPublications)

@@ -5,8 +5,8 @@ import { geocode } from 'utils/locationTools';
 export const getLocationGeojson = async (
   initialFormData: { [k: string]: any } | null,
   data: {
-    location_description: string | null | undefined;
-    location_point_geojson: any;
+    location_description?: string | null;
+    location_point_geojson?: any;
   }
 ) => {
   let location_point_geojson: Point | null = null;

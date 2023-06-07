@@ -58,20 +58,16 @@ module EmailCampaigns
       users_scope
     end
 
-    def self.category
-      'commented'
-    end
-
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.registered_users'
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.users_engaged_with_the_idea'
+      'email_campaigns.admin_labels.recipient_segment.users_who_engaged_with_the_input'
     end
 
     def self.content_type_multiloc_key
-      'email_campaigns.admin_labels.content_type.comments'
+      'email_campaigns.admin_labels.content_type.inputs'
     end
 
     def self.trigger_multiloc_key

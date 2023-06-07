@@ -1,10 +1,11 @@
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import React from 'react';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 import { isNilOrError } from 'utils/helperUtils';
 import ActionsForm from '../containers/Granular/ActionsForm';
 import { Box } from '@citizenlab/cl2-component-library';
 import { HandlePermissionChangeProps } from '../containers/Granular/utils';
+import { getMethodConfig } from 'utils/participationMethodUtils';
 
 type PhaseActionFormProps = {
   phase: IPhaseData;
@@ -14,14 +15,12 @@ type PhaseActionFormProps = {
     groupIds,
     globalCustomFields,
   }: HandlePermissionChangeProps) => void;
-  postType: 'defaultInput' | 'nativeSurvey';
   projectId: string;
 };
 
 export const PhaseActionForm = ({
   phase,
   onChange,
-  postType,
   projectId,
 }: PhaseActionFormProps) => {
   const { data: permissions } = usePhasePermissions({ phaseId: phase.id });
@@ -29,12 +28,14 @@ export const PhaseActionForm = ({
     return null;
   }
 
+  const config = getMethodConfig(phase.attributes.participation_method);
+
   return (
     <Box mb="40px">
       <ActionsForm
         permissions={permissions.data}
         onChange={onChange}
-        postType={postType}
+        postType={config.postType}
         projectId={projectId}
         phaseId={phase.id}
       />

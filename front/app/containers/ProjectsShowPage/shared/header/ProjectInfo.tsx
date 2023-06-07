@@ -1,5 +1,4 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Fragment from 'components/Fragment';
@@ -10,7 +9,7 @@ import ReadMoreWrapper from 'containers/ProjectsShowPage/shared/header/ReadMoreW
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import useProjectFiles from 'hooks/useProjectFiles';
+import useProjectFiles from 'api/project_files/useProjectFiles';
 import { Title, Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
@@ -72,7 +71,7 @@ interface Props {
 
 const ProjectInfo = ({ projectId, className }: Props) => {
   const { data: project } = useProjectById(projectId);
-  const projectFiles = useProjectFiles(projectId);
+  const { data: projectFiles } = useProjectFiles(projectId);
   const isSmallerThanTablet = useBreakpoint('tablet');
 
   if (project) {
@@ -96,13 +95,11 @@ const ProjectInfo = ({ projectId, className }: Props) => {
               />
             </Box>
 
-            {!isNilOrError(projectFiles) &&
-              projectFiles &&
-              projectFiles.data.length > 0 && (
-                <Box mb="24px">
-                  <FileAttachments files={projectFiles.data} />
-                </Box>
-              )}
+            {projectFiles && projectFiles.data.length > 0 && (
+              <Box mb="24px">
+                <FileAttachments files={projectFiles.data} />
+              </Box>
+            )}
           </Left>
           <Right>
             <ProjectInfoSideBar projectId={project.data.id} />

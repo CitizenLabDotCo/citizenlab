@@ -1,56 +1,84 @@
 import React from 'react';
-import { screen, render, fireEvent, waitFor } from 'utils/testUtils/rtl';
+import { screen, render, waitFor, userEvent } from 'utils/testUtils/rtl';
 import EditCustomPageSettings from './';
+import { ICustomPageData } from 'services/customPages';
 
 jest.mock('api/topics/useTopics');
 jest.mock('api/areas/useAreas');
 
-jest.mock('hooks/useCustomPage', () =>
-  jest.fn(() => ({
-    relationships: {
-      nav_bar_item: { data: { id: '123' } },
-      topics: { data: [] },
-      areas: { data: [] },
-    },
-    attributes: {
-      title_multiloc: { en: 'title' },
-      nav_bar_item_title_multiloc: { en: 'user generated content' },
-      slug: 'my-custom-page',
-    },
-  }))
-);
-
-jest.mock('services/customPages', () => ({
-  // `async` simulates the original `updateCustomPage` which is also `async`.
-  // It's important for testing it properly.
-  updateCustomPage: jest.fn(async () => {
-    // copied from
-    // https://github.com/CitizenLabDotCo/citizenlab/blob/e437c601eeb606bb5e9c46bde9a5b46c1642b65f/front/app/utils/request.ts#L57
-    const error = new Error('error');
-    Object.assign(error, {
-      json: {
-        errors: {
-          slug: [{ error: 'taken', value: 'existing-slug' }],
-        },
-      },
-    });
-    throw error;
-  }),
-}));
+const mockCustomPage: ICustomPageData = {
+  id: 'customPageId',
+  attributes: {
+    top_info_section_multiloc: {},
+    title_multiloc: { en: 'title' },
+    nav_bar_item_title_multiloc: { en: 'user generated content' },
+    slug: 'my-custom-page',
+    banner_layout: 'fixed_ratio_layout',
+    banner_overlay_color: '#fff',
+    banner_overlay_opacity: 80,
+    banner_cta_button_multiloc: {},
+    banner_cta_button_type: 'no_button',
+    banner_cta_button_url: 'https://www.website.coms',
+    banner_header_multiloc: {},
+    banner_subheader_multiloc: {},
+    bottom_info_section_multiloc: {},
+    header_bg: null,
+    code: 'custom',
+    projects_filter_type: 'no_filter',
+    created_at: 'date',
+    updated_at: 'date',
+    banner_enabled: true,
+    bottom_info_section_enabled: true,
+    top_info_section_enabled: true,
+    events_widget_enabled: true,
+    files_section_enabled: true,
+    projects_enabled: true,
+  },
+  relationships: {
+    nav_bar_item: { data: { id: '123', type: 'nav_bar_item' } },
+    topics: { data: [] },
+    areas: { data: [] },
+  },
+};
+jest.mock('hooks/useCustomPage', () => jest.fn(() => mockCustomPage));
 
 describe('EditCustomPageSettings', () => {
-  describe('Edit custom page', () => {
-    it('renders error in case of invalid slug', async () => {
-      const { container } = render(<EditCustomPageSettings />);
-      fireEvent.change(screen.getByRole('textbox', { name: 'Slug' }), {
-        target: {
-          value: 'existing-slug',
-        },
-      });
-      fireEvent.click(container.querySelector('button[type="submit"]'));
-      await waitFor(() => {
-        expect(screen.getByTestId('feedbackErrorMessage')).toBeInTheDocument();
-      });
+  it('renders error in case of invalid slug', async () => {
+    const user = userEvent.setup();
+
+    render(<EditCustomPageSettings />);
+
+    const slugInput = screen.getByLabelText('Slug');
+    const submitButton = screen.getByRole('button', {
+      name: 'Save custom page',
+    });
+
+    user.type(slugInput, '-');
+    user.click(submitButton);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('feedbackErrorMessage')).toBeInTheDocument();
+    });
+  });
+
+  describe('Slug input', () => {
+    it('does show the slug input field for "regular" custom pages', () => {
+      // mockCustomPage.attributes.code is 'custom' by default in this test file
+      render(<EditCustomPageSettings />);
+      const slugInput = screen.queryByRole('textbox', { name: 'Slug' });
+
+      expect(slugInput).toBeInTheDocument();
+    });
+
+    it('does not show the slug input field for FAQ page (and other "fixed" custom pages)', () => {
+      // We link to this page internally (search front for /pages/faq), so editing this slug can
+      // break links. The same goes for other "fixed" custom pages, such as 'proposals'.
+      mockCustomPage.attributes.code = 'faq';
+
+      render(<EditCustomPageSettings />);
+      const slugInput = screen.queryByRole('textbox', { name: 'Slug' });
+
+      expect(slugInput).not.toBeInTheDocument();
     });
   });
 });

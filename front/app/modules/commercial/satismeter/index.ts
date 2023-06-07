@@ -1,4 +1,4 @@
-import { authUserStream } from 'services/auth';
+import authUserStream from 'api/me/authUserStream';
 import {
   bufferUntilInitialized,
   events$,
@@ -43,7 +43,7 @@ const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     combineLatest([
       appConfigurationStream,
-      authUserStream().observable,
+      authUserStream,
       initializeFor('satismeter'),
     ]).subscribe(([tenant, user, _]) => {
       (function () {

@@ -1,15 +1,18 @@
 import {
   IGlobalPermissionAction,
   IPermissionData,
+  IParticipationContextPermissionAction,
 } from 'services/actionPermissions';
 import { IProjectData } from 'api/projects/types';
 import { isNilOrError } from 'utils/helperUtils';
 import messages from './messages';
-import { IPCPermissionAction } from 'typings';
 import { FieldType } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
+import { MessageDescriptor } from 'react-intl';
 
 type GetPermissionActionMessageProps = {
-  permissionAction: IPCPermissionAction | IGlobalPermissionAction;
+  permissionAction:
+    | IParticipationContextPermissionAction
+    | IGlobalPermissionAction;
   postType: 'defaultInput' | 'nativeSurvey' | 'initiative';
   project: IProjectData | null | undefined;
 };
@@ -19,6 +22,7 @@ export type HandlePermissionChangeProps = {
   permittedBy?: IPermissionData['attributes']['permitted_by'];
   globalCustomFields?: IPermissionData['attributes']['global_custom_fields'];
   groupIds: string[];
+  phaseId?: string | null;
 };
 
 export const getPermissionActionSectionSubtitle = ({
@@ -27,7 +31,9 @@ export const getPermissionActionSectionSubtitle = ({
   project,
 }: GetPermissionActionMessageProps) => {
   if (postType !== 'initiative' && !isNilOrError(project)) {
-    return {
+    const participationContextPermissionActionMessages: {
+      [key in IParticipationContextPermissionAction]: MessageDescriptor;
+    } = {
       posting_idea:
         postType === 'nativeSurvey'
           ? messages.permissionAction_take_survey_subtitle
@@ -37,20 +43,27 @@ export const getPermissionActionSectionSubtitle = ({
       taking_survey: messages.permissionAction_take_survey_subtitle,
       taking_poll: messages.permissionAction_take_poll_subtitle,
       budgeting: messages.permissionAction_budgeting_subtitle,
-    }[permissionAction];
+      annotating_document:
+        messages.permissionAction_annotating_document_subtitle,
+    };
+    return participationContextPermissionActionMessages[permissionAction];
   }
   if (postType === 'initiative') {
-    return {
+    const globalPermissionActionMessages: {
+      [key in IGlobalPermissionAction]: MessageDescriptor;
+    } = {
       voting_initiative: messages.permissionAction_vote_proposals_subtitle,
       commenting_initiative:
         messages.permissionAction_comment_proposals_subtitle,
       posting_initiative: messages.permissionAction_post_proposal_subtitle,
-    }[permissionAction];
+    };
+
+    return globalPermissionActionMessages[permissionAction];
   }
 };
 
 export const getLabelForInputType = (inputType: FieldType) => {
-  return {
+  const inputTypeMessages: { [key in FieldType]: MessageDescriptor } = {
     text: messages.fieldType_text,
     number: messages.fieldType_number,
     multiline_text: messages.fieldType_multiline_text,
@@ -58,5 +71,7 @@ export const getLabelForInputType = (inputType: FieldType) => {
     multiselect: messages.fieldType_multiselect,
     checkbox: messages.fieldType_checkbox,
     date: messages.fieldType_date,
-  }[inputType];
+  };
+
+  return inputTypeMessages[inputType];
 };

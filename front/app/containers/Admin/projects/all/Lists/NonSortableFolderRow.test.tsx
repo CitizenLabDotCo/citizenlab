@@ -5,7 +5,7 @@ import {
   IAdminPublicationContent,
   IUseAdminPublicationsOutput,
 } from 'hooks/useAdminPublications';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 const folderId = 'folderId';
 const folderPublication: IAdminPublicationContent = {
@@ -98,10 +98,7 @@ const mockUserData: IUserData = {
     confirmation_required: false,
   },
 };
-jest.mock('hooks/useAuthUser', () => {
-  return () => mockUserData;
-});
-
+jest.mock('api/me/useAuthUser', () => () => ({ data: { data: mockUserData } }));
 // Needed to render folder with project inside
 jest.mock('hooks/useAdminPublications', () => {
   return () => mockFolderChildAdminPublications;

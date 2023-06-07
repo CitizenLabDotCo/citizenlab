@@ -7,15 +7,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  titleMessaging: {
-    id: 'app.containers.Admin.emails.titleMessaging',
-    defaultMessage: 'Messaging',
-  },
-  subtitleMessaging: {
-    id: 'app.containers.Admin.emails.subtitleMessaging',
-    defaultMessage:
-      'Send out your own messages and control what automated messages your users receive.',
-  },
   helmetTitle: {
     id: 'app.containers.Admin.messaging.helmetTitle',
     defaultMessage: 'Messaging',
@@ -194,17 +185,21 @@ export default defineMessages({
     defaultMessage:
       'When you added one or more links to your email, the number of users who clicked a link will be shown here.',
   },
-  tabCustomEmail: {
-    id: 'app.containers.Admin.Campaigns.tabCustomEmail',
-    defaultMessage: 'Send email',
+  customEmails: {
+    id: 'app.containers.Admin.Campaigns.customEmails',
+    defaultMessage: 'Custom emails',
+  },
+  customEmailsDescription: {
+    id: 'app.containers.Admin.Campaigns.customEmailsDescription',
+    defaultMessage: 'Send out custom emails and check statistics.',
   },
   tabAutomatedEmails: {
     id: 'app.containers.Admin.Campaigns.tabAutomatedEmails',
     defaultMessage: 'Automated emails',
   },
   tabTexting: {
-    id: 'app.containers.Admin.Campaigns.tabTexting',
-    defaultMessage: 'Send SMS',
+    id: 'app.containers.Admin.Campaigns.tabTexting1',
+    defaultMessage: 'Texting',
   },
   campaignFrom: {
     id: 'app.containers.Admin.Campaigns.campaignFrom',
@@ -231,15 +226,47 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.noTextingCampaignsHeader',
     defaultMessage: 'No SMS has been drafted or sent yet',
   },
+  message: {
+    id: 'app.containers.Admin.emails.message',
+    defaultMessage: 'Message',
+  },
+  dateSent: {
+    id: 'app.containers.Admin.emails.dateSent',
+    defaultMessage: 'Date sent',
+  },
+  recipients: {
+    id: 'app.containers.Admin.emails.recipients',
+    defaultMessage: 'Recipients',
+  },
+  status: {
+    id: 'app.containers.Admin.emails.status',
+    defaultMessage: 'Status',
+  },
   noCampaignsDescription: {
     id: 'app.containers.Admin.emails.noCampaignsDescription',
     defaultMessage:
       'Custom email campaigns are emails created from scratch. Their content and recipients can be chosen and you can follow up on their results through statistics.',
   },
   automatedEmailCampaignsInfo: {
-    id: 'app.containers.Admin.emails.automatedEmailCampaignsInfo',
+    id: 'app.containers.Admin.emails.automatedEmailCampaignsInfo1',
     defaultMessage:
-      'Automated email campaigns are sent out by default and are triggered by a user’s actions. Some of them can be turned off. Others are an inherent part of user interactions with the platform and therefore can’t be turned off.',
+      "Automated emails are automatically sent out and are triggered by a user's actions. You can turn some of them off for all users of your platform. The other automated emails can not be turned off because they are required for the proper functioning of your platform.",
+  },
+  automatedEmails: {
+    id: 'app.containers.Admin.emails.automatedEmails',
+    defaultMessage: 'Automated emails',
+  },
+  automatedEmailsRecipients: {
+    id: 'app.containers.Admin.emails.automatedEmailsRecipients',
+    defaultMessage: 'Users who will receive this email',
+  },
+  automatedEmailsTriggers: {
+    id: 'app.containers.Admin.emails.automatedEmailsTriggers',
+    defaultMessage: 'Event that triggers this email',
+  },
+  automatedEmailsDigest: {
+    id: 'app.containers.Admin.emails.automatedEmailsDigest',
+    defaultMessage: 'The email will only be sent if there is content',
   },
   allUsers: {
     id: 'app.containers.Admin.emails.allUsers',
@@ -248,6 +275,40 @@ export default defineMessages({
   groups: {
     id: 'app.containers.Admin.emails.groups',
     defaultMessage: 'Groups',
+  },
+  viewExample: {
+    id: 'app.containers.Admin.emails.viewExample',
+    defaultMessage: 'View',
+  },
+  noExampleYet: {
+    id: 'app.containers.Admin.emails.noExampleYet',
+    defaultMessage:
+      "We can't show you an example email as no email of this type has been sent yet. As soon as one is sent you'll be able to view it here.",
+  },
+  supportButtonLabel: {
+    id: 'app.containers.Admin.emails.supportButtonLabel',
+    defaultMessage: 'See examples on our support page',
+  },
+  supportButtonLink: {
+    id: 'app.containers.Admin.emails.supportButtonLink',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/2762939-what-are-automated-emails',
+  },
+  sentToUsers: {
+    id: 'app.containers.Admin.emails.sentToUsers',
+    defaultMessage: 'These are emails sent to users',
+  },
+  subject: {
+    id: 'app.containers.Admin.emails.subject',
+    defaultMessage: 'Subject:',
+  },
+  from: {
+    id: 'app.containers.Admin.emails.from',
+    defaultMessage: 'From:',
+  },
+  to: {
+    id: 'app.containers.Admin.emails.to',
+    defaultMessage: 'To:',
   },
   nameVariablesInfo: {
     id: 'app.containers.Admin.emails.nameVariablesInfo',

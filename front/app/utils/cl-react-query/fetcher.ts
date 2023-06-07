@@ -93,13 +93,18 @@ async function fetcher({ path, action, body, queryParams }) {
 
   try {
     data = await response.json();
-  } catch {
+  } catch (e) {
     if (
       action === 'post' &&
       (response.status === 201 || response.status === 200)
     ) {
       return; // TODO temporary workaround
     }
+
+    if (path === '/users/me') {
+      return null;
+    }
+
     reportError('Unsupported case. No valid JSON.');
     throw new Error('Unsupported case. No valid JSON.');
   }

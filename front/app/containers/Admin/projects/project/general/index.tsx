@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Multiloc, UploadFile } from 'typings';
-import { isEmpty, get, isString } from 'lodash-es';
+import { Multiloc, UploadFile, CLErrors } from 'typings';
+import { isEmpty, isString } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
 
@@ -40,19 +40,19 @@ import { Box } from '@citizenlab/cl2-component-library';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useProjectFiles from 'hooks/useProjectFiles';
+import useProjectFiles from 'api/project_files/useProjectFiles';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAddProject from 'api/projects/useAddProject';
 
 import {
   IUpdatedProjectProperties,
-  addProject,
-  updateProject,
   IProjectFormState,
-} from 'services/projects';
-import { IProjectData } from 'api/projects/types';
-import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
+  IProjectData,
+} from 'api/projects/types';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import useAddProjectFile from 'api/project_files/useAddProjectFile';
+import useDeleteProjectFile from 'api/project_files/useDeleteProjectFile';
 
 // api
 import useProjectImages, {
@@ -73,6 +73,8 @@ import validateTitle from './utils/validateTitle';
 import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
+import useUpdateProject from 'api/projects/useUpdateProject';
+import projectsKeys from 'api/projects/keys';
 
 export const TIMEOUT = 350;
 
@@ -87,14 +89,21 @@ const AdminProjectsProjectGeneral = () => {
   const { data: project } = useProjectById(projectId);
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const appConfigLocales = useAppConfigurationLocales();
-  const remoteProjectFiles = useProjectFiles(projectId);
+
   const { data: remoteProjectImages } = useProjectImages(projectId || null);
   const { mutateAsync: addProjectImage } = useAddProjectImage();
   const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
+  const { mutateAsync: updateProject } = useUpdateProject();
+  const { mutateAsync: addProject } = useAddProject();
+
+  const { data: remoteProjectFiles } = useProjectFiles(projectId || null);
+  const { mutateAsync: addProjectFile } = useAddProjectFile();
+  const { mutateAsync: deleteProjectFile } = useDeleteProjectFile();
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
+
   const [processing, setProcessing] =
     useState<IProjectFormState['processing']>(false);
-  const [apiErrors, setApiErrors] = useState({});
+  const [apiErrors, setApiErrors] = useState<CLErrors>({});
   const [projectAttributesDiff, setProjectAttributesDiff] = useState<
     IProjectFormState['projectAttributesDiff']
   >({});
@@ -140,7 +149,7 @@ const AdminProjectsProjectGeneral = () => {
 
   useEffect(() => {
     (async () => {
-      if (!isNilOrError(remoteProjectFiles)) {
+      if (remoteProjectFiles) {
         const nextProjectFilesPromises = remoteProjectFiles.data.map(
           (projectFile) => {
             const url = projectFile.attributes.file.url;
@@ -308,10 +317,13 @@ const AdminProjectsProjectGeneral = () => {
         setProcessing(true);
         if (!isEmpty(nextProjectAttributesDiff)) {
           if (latestProjectId) {
-            await updateProject(latestProjectId, nextProjectAttributesDiff);
+            await updateProject({
+              projectId: latestProjectId,
+              ...nextProjectAttributesDiff,
+            });
           } else {
-            const project = await addProject(nextProjectAttributesDiff);
-            latestProjectId = project.data.id;
+            const response = await addProject(nextProjectAttributesDiff);
+            latestProjectId = response.data.id;
             isNewProject = true;
           }
         }
@@ -320,7 +332,7 @@ const AdminProjectsProjectGeneral = () => {
           croppedProjectCardBase64 && latestProjectId
             ? addProjectImage({
                 projectId: latestProjectId,
-                image: croppedProjectCardBase64,
+                image: { image: croppedProjectCardBase64 },
               })
             : null;
 
@@ -336,7 +348,10 @@ const AdminProjectsProjectGeneral = () => {
           .filter((file) => !file.remote)
           .map((file) => {
             if (latestProjectId) {
-              return addProjectFile(latestProjectId, file.base64, file.name);
+              return addProjectFile({
+                projectId: latestProjectId,
+                file: { file: file.base64, name: file.name },
+              });
             }
 
             return;
@@ -345,7 +360,10 @@ const AdminProjectsProjectGeneral = () => {
           .filter((file) => file.remote === true && isString(file.id))
           .map((file) => {
             if (latestProjectId && file.id) {
-              return deleteProjectFile(latestProjectId, file.id);
+              return deleteProjectFile({
+                projectId: latestProjectId,
+                fileId: file.id,
+              });
             }
 
             return;
@@ -371,14 +389,12 @@ const AdminProjectsProjectGeneral = () => {
         queryClient.invalidateQueries({
           queryKey: projectPermissionKeys.list({ projectId: latestProjectId }),
         });
+        queryClient.invalidateQueries({
+          queryKey: projectsKeys.item({ slug: project?.data.attributes.slug }),
+        });
       } catch (errors) {
-        const apiErrors = get(
-          errors,
-          'json.errors',
-          formatMessage(messages.saveErrorMessage)
-        );
         setSubmitState('error');
-        setApiErrors(apiErrors);
+        setApiErrors(errors.errors);
         setProcessing(false);
       }
     }

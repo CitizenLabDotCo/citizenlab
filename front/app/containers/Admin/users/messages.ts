@@ -250,4 +250,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.BlockedUsers.blockedUsersSubtitle',
     defaultMessage: 'Manage blocked users.',
   },
+  inviteUsers: {
+    id: 'app.containers.Admin.Users.inviteUsers',
+    defaultMessage: 'Invite users',
+  },
 });

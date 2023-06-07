@@ -11,7 +11,7 @@ import {
   ideaDefaultSortMethodFallback,
 } from 'services/participationContexts';
 import { IProjectData } from 'api/projects/types';
-import { TPhase } from 'hooks/usePhase';
+import { IPhaseData } from 'api/phases/types';
 import { getMethodConfig } from 'utils/participationMethodUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -20,7 +20,7 @@ type Props = {
   alignment: 'left' | 'right';
   onChange: (value: string) => void;
   defaultSortingMethod?: IdeaDefaultSortMethod;
-  phase?: TPhase | null;
+  phase?: IPhaseData;
   project?: Error | IProjectData | null;
 };
 
@@ -58,7 +58,7 @@ const SortFilterDropdown = ({
 
   if (!isNilOrError(project)) {
     const config = getMethodConfig(
-      !isNilOrError(phase)
+      phase
         ? phase.attributes.participation_method
         : project.attributes.participation_method
     );

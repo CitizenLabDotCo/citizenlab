@@ -50,16 +50,12 @@ module EmailCampaigns
       users_scope.where(id: activity.item.recipient.id)
     end
 
-    def self.category
-      'own'
-    end
-
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.registered_users'
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.user_who_published_proposal'
+      'email_campaigns.admin_labels.recipient_segment.user_who_published_the_proposal'
     end
 
     def self.content_type_multiloc_key
@@ -67,7 +63,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.proposal_status_is_changed'
+      'email_campaigns.admin_labels.trigger.proposal_status_changes'
     end
 
     def generate_commands(recipient:, activity:)

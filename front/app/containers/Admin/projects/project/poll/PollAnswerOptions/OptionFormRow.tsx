@@ -12,15 +12,14 @@ import Button from 'components/UI/Button';
 // Typings
 import { Multiloc, Locale } from 'typings';
 
-// Services
-import { addPollOption, updatePollOption } from 'services/pollOptions';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import useLocale from 'hooks/useLocale';
 import usePrevious from 'hooks/usePrevious';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAddPollOption from 'api/poll_options/useAddPollOption';
+import useUpdatePollOption from 'api/poll_options/useUpdatePollOption';
 
 /*
  * edit mode : titleMultiloc and optionId defined, question Id not used
@@ -29,7 +28,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 interface Props {
   titleMultiloc?: Multiloc;
   mode: 'new' | 'edit';
-  questionId?: string;
+  questionId: string;
   closeRow: () => void;
   optionId?: string;
 }
@@ -41,6 +40,8 @@ const OptionFormRow = ({
   questionId,
   closeRow,
 }: Props) => {
+  const { mutate: addPollOption } = useAddPollOption();
+  const { mutate: updatePollOption } = useUpdatePollOption();
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
@@ -78,15 +79,21 @@ const OptionFormRow = ({
 
   const onSave = () => {
     if (mode === 'new' && questionId) {
-      addPollOption(questionId, newTitleMultiloc).then(() => {
-        closeRow();
-      });
+      addPollOption(
+        { questionId, title_multiloc: newTitleMultiloc },
+        {
+          onSuccess: () => closeRow(),
+        }
+      );
     }
 
     if (mode === 'edit' && optionId) {
-      updatePollOption(optionId, newTitleMultiloc).then(() => {
-        closeRow();
-      });
+      updatePollOption(
+        { optionId, title_multiloc: newTitleMultiloc, questionId },
+        {
+          onSuccess: () => closeRow(),
+        }
+      );
     }
   };
 

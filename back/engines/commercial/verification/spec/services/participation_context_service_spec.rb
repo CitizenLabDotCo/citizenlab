@@ -30,7 +30,7 @@ describe ParticipationContextService do
       expect(service.posting_idea_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
     end
 
-    it 'returns `not_permitted` when not permitted and a permitted group requires verification, while the user is verified' do
+    it 'returns `not_in_group` when not permitted and a permitted group requires verification, while the user is verified' do
       project = create(:continuous_project, with_permissions: true)
       permission = project.permissions.find_by(action: 'posting_idea')
       birthyear = create(:custom_field_birthyear)
@@ -42,7 +42,7 @@ describe ParticipationContextService do
         ]
       )
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-      expect(service.posting_idea_disabled_reason_for_project(project, create(:user, verified: true, birthyear: 2008))).to eq 'not_permitted'
+      expect(service.posting_idea_disabled_reason_for_project(project, create(:user, verified: true, birthyear: 2008))).to eq 'not_in_group'
     end
 
     it 'returns `not_permitted` when only permitted to admins but a group requires verification' do
@@ -156,6 +156,16 @@ describe ParticipationContextService do
         permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
         expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq 'not_verified'
       end
+    end
+  end
+
+  describe 'annotating_document_disabled_reason' do
+    it 'returns `not_verified` when annotating the document not permitted and permitted group requires verification' do
+      project = create(:continuous_document_annotation_project, with_permissions: true)
+      permission = service.get_participation_context(project).permissions.find_by(action: 'annotating_document')
+      verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
+      permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
+      expect(service.annotating_document_disabled_reason_for_project(project, create(:user))).to eq 'not_verified'
     end
   end
 

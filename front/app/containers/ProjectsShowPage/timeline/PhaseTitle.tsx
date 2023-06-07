@@ -1,9 +1,8 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 
 // hooks
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 
@@ -23,7 +22,7 @@ import {
   viewportWidths,
   isRtl,
 } from 'utils/styleUtils';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 
 const Container = styled.div<{ descriptionHasContent: boolean }>`
   display: flex;
@@ -123,18 +122,18 @@ const PhaseTitle = ({
   className,
   descriptionHasContent,
 }: Props) => {
-  const phase = usePhase(phaseId);
+  const { data: phase } = usePhase(phaseId);
   const { windowWidth } = useWindowSize();
   const localize = useLocalize();
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
-  if (!isNilOrError(phase)) {
-    let phaseTitle = localize(phase.attributes.title_multiloc);
+  if (phase) {
+    let phaseTitle = localize(phase.data.attributes.title_multiloc);
     const phaseStatus = pastPresentOrFuture([
-      phase.attributes.start_at,
-      phase.attributes.end_at,
+      phase.data.attributes.start_at,
+      phase.data.attributes.end_at,
     ]);
-    const { startDate, endDate } = getPhaseDates(phase);
+    const { startDate, endDate } = getPhaseDates(phase.data);
 
     if (smallerThanSmallTablet && phaseTitle && phaseNumber) {
       phaseTitle = `${phaseNumber}. ${phaseTitle}`;

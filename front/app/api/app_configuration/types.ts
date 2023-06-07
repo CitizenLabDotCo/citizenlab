@@ -59,6 +59,7 @@ export type ProposalsSettings = {
   allowed: boolean;
   enabled: boolean;
   days_limit: number;
+  allow_anonymous_participation: boolean;
   eligibility_criteria: Multiloc;
   threshold_reached_message: Multiloc;
   voting_threshold: number;
@@ -107,9 +108,10 @@ export interface IAppConfigurationSettings {
   franceconnect_login?: {
     allowed: boolean;
     enabled: boolean;
-    environment: string;
-    identifier: string;
-    secret: string;
+  };
+  clave_unica_login?: {
+    allowed: boolean;
+    enabled: boolean;
   };
   custom_accessibility_statement_link: {
     allowed: boolean;
@@ -155,7 +157,6 @@ export interface IAppConfigurationSettings {
   microsoft_forms_surveys?: AppConfigurationFeature;
   survey_xact_surveys?: AppConfigurationFeature;
   snap_survey_surveys?: AppConfigurationFeature;
-  konveio_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
   bulk_import_ideas?: AppConfigurationFeature;
   widgets?: AppConfigurationFeature;
@@ -173,6 +174,7 @@ export interface IAppConfigurationSettings {
   project_management?: AppConfigurationFeature;
   idea_assignment?: AppConfigurationFeature;
   blocking_profanity?: AppConfigurationFeature;
+  anonymous_participation?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
   idea_author_change?: AppConfigurationFeature;
   idea_custom_copy?: AppConfigurationFeature;
@@ -219,6 +221,7 @@ export interface IAppConfigurationSettings {
     duration: boolean;
   };
   seat_based_billing?: AppConfigurationFeature;
+  konveio_document_annotation?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

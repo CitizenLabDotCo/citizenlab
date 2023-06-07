@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 import { isNilOrError } from 'utils/helperUtils';
 import { getInputTerm } from 'services/participationContexts';
 
-import { IOfficialFeedbackOnVotedIdeaNotificationData } from 'services/notifications';
+import { IOfficialFeedbackOnVotedIdeaNotificationData } from 'api/notifications/types';
 
 // i18n
 import messages from '../../messages';
@@ -27,13 +27,13 @@ const OfficialFeedbackOnVotedIdeaNotification = memo<Props>((props) => {
     ? idea.data.relationships.project.data.id
     : null;
   const { data: project } = useProjectById(projectId);
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
 
   if (project) {
     const inputTerm = getInputTerm(
       project.data.attributes.process_type,
       project.data,
-      phases
+      phases?.data
     );
     return (
       <NotificationWrapper

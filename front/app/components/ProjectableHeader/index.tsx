@@ -1,4 +1,4 @@
-import { PROJECTABLE_HEADER_BG_ASPECT_RATIO } from 'services/projects';
+import { PROJECTABLE_HEADER_BG_ASPECT_RATIO } from 'api/projects/constants';
 import Image from 'components/UI/Image';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';

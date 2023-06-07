@@ -94,7 +94,7 @@ resource 'Poll Responses' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
 
-        expect(json_response[:series][:options][@q1.options.first.id.to_sym]).to eq 1
+        expect(json_response[:data][:attributes][:series][:options][@q1.options.first.id.to_sym]).to eq 1
       end
     end
   end

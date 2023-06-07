@@ -38,6 +38,10 @@ export default defineMessages({
     id: 'app.components.form.ErrorDisplay.submitSurvey',
     defaultMessage: 'Submit survey',
   },
+  anonymousSurveyMessage: {
+    id: 'app.components.form.anonymousSurveyMessage',
+    defaultMessage: 'All responses to this survey are anonymized',
+  },
   or: {
     id: 'app.containers.IdeasNewPage.or',
     defaultMessage: 'Or',

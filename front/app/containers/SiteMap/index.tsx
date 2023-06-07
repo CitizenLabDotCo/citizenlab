@@ -27,8 +27,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // services
 import { DEFAULT_PAGE_SLUGS } from 'services/navbar';
-import { TPageCode } from 'services/customPages';
-import useAuthUser from 'hooks/useAuthUser';
+import { TCustomPageCode } from 'services/customPages';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjects from 'api/projects/useProjects';
 
 const Container = styled.div`
@@ -123,7 +123,7 @@ const SiteMap = () => {
   const navBarItems = useNavbarItems();
   const localize = useLocalize();
   const pages = useCustomPages();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   const scrollTo =
     (component: RefObject<HTMLHeadingElement | null>) =>
@@ -152,7 +152,7 @@ const SiteMap = () => {
 
   if (!isNilOrError(pages)) {
     const nonCustomStaticPages = pages.filter((page) => {
-      const showPageConditions: Record<TPageCode, boolean> = {
+      const showPageConditions: Record<TCustomPageCode, boolean> = {
         proposals: proposalsEnabled,
         about: true,
         faq: true,
@@ -316,7 +316,9 @@ const SiteMap = () => {
                       <ul>
                         <>
                           <li>
-                            <Link to={`/profile/${authUser.attributes.slug}`}>
+                            <Link
+                              to={`/profile/${authUser.data.attributes.slug}`}
+                            >
                               <FormattedMessage {...messages.profilePage} />
                             </Link>
                           </li>

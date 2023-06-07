@@ -28,19 +28,19 @@ import { stylingConsts } from 'utils/styleUtils';
 import { useIntl } from 'utils/cl-intl';
 
 // services
-import { changePassword } from 'services/users';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import GoBackButton from 'components/UI/GoBackButton';
 import clHistory from 'utils/cl-router/history';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import meKeys from 'api/me/keys';
+import useChangePassword from 'api/users/useChangePassword';
+import { handleCLErrorsIsh } from 'utils/errorUtils';
 
 type FormValues = {
   current_password: string;
@@ -52,11 +52,12 @@ type Props = {
 };
 
 const ChangePassword = ({ tenant }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
+  const { mutateAsync: changePassword } = useChangePassword();
   const { formatMessage } = useIntl();
   const [success, setSuccess] = useState(false);
   const userHasPreviousPassword =
-    !isNilOrError(authUser) && !authUser.attributes?.no_password;
+    !isNilOrError(authUser) && !authUser.data.attributes?.no_password;
   const pageTitle = userHasPreviousPassword
     ? messages.titleChangePassword
     : messages.titleAddPassword;
@@ -104,21 +105,19 @@ const ChangePassword = ({ tenant }: Props) => {
     resolver: yupResolver(schema),
   });
 
+  if (isNilOrError(authUser)) {
+    return null;
+  }
+
   const onFormSubmit = async ({ ...formValues }: FormValues) => {
     try {
       await changePassword(formValues);
       setSuccess(true);
-      await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/users/me`],
-      });
+      queryClient.invalidateQueries({ queryKey: meKeys.all() });
     } catch (error) {
-      handleHookFormSubmissionError(error, methods.setError);
+      handleCLErrorsIsh(error, methods.setError);
     }
   };
-
-  if (isNilOrError(authUser)) {
-    return null;
-  }
 
   if (success) return <ChangePasswordSuccess />;
   return (

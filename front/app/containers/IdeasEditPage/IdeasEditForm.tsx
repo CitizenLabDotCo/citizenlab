@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useState, useCallback, useContext, useEffect } from 'react';
 
 // components
 import PageContainer from 'components/UI/PageContainer';
@@ -8,6 +8,7 @@ import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
 import IdeasEditMeta from './IdeasEditMeta';
+import ProfileVisiblity from 'components/ProfileVisibility';
 
 // services
 import { usePermission } from 'services/permissions';
@@ -16,7 +17,7 @@ import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 import useInputSchema from 'hooks/useInputSchema';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
@@ -35,9 +36,27 @@ import clHistory from 'utils/cl-router/history';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { PreviousPathnameContext } from 'context';
 
+// typings
+import { IIdeaUpdate } from 'api/ideas/types';
+import { Multiloc } from 'typings';
+
+interface FormValues {
+  title_multiloc: Multiloc;
+  body_multiloc: Multiloc;
+  author_id?: string;
+  idea_images_attributes?: { image: string }[];
+  idea_files_attributes?: {
+    file_by_content: { content: string };
+    name: string;
+  };
+  location_description?: string;
+  location_point_geojson?: GeoJSON.Point;
+  topic_ids?: string[];
+}
+
 const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
   const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
   const granted = usePermission({
@@ -46,13 +65,14 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
     context: idea?.data || null,
   });
 
-  const { mutate: updateIdea } = useUpdateIdea();
+  const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: project } = useProjectById(
     isNilOrError(idea) ? null : idea.data.relationships.project.data.id
   );
   const { data: remoteImages } = useIdeaImages(ideaId);
   const { data: remoteFiles } = useIdeaFiles(ideaId);
 
+  const [postAnonymously, setPostAnonymously] = useState(false);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
     projectId: project?.data.id,
     inputId: ideaId,
@@ -107,7 +127,7 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
       idea.data.attributes.location_point_geojson;
   }
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: FormValues) => {
     const { idea_images_attributes, ...ideaWithoutImages } = data;
 
     const location_point_geojson = await getLocationGeojson(
@@ -126,29 +146,25 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
       });
     }
 
-    const payload = {
+    const payload: IIdeaUpdate = {
       ...ideaWithoutImages,
       idea_images_attributes,
       location_point_geojson,
       project_id: project?.data.id,
       publication_status: 'published',
+      anonymous: postAnonymously ? true : undefined,
     };
 
-    updateIdea(
-      {
-        id: ideaId,
-        requestBody: isImageNew
-          ? omit(payload, 'idea_files_attributes')
-          : omit(payload, ['idea_images_attributes', 'idea_files_attributes']),
-      },
-      {
-        onSuccess: (idea) => {
-          clHistory.push({
-            pathname: `/ideas/${idea.data.attributes.slug}`,
-          });
-        },
-      }
-    );
+    const idea = await updateIdea({
+      id: ideaId,
+      requestBody: isImageNew
+        ? omit(payload, 'idea_files_attributes')
+        : omit(payload, ['idea_images_attributes', 'idea_files_attributes']),
+    });
+
+    clHistory.push({
+      pathname: `/ideas/${idea.data.attributes.slug}`,
+    });
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
@@ -233,6 +249,25 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
             getApiErrorMessage={getApiErrorMessage}
             config={'input'}
             title={TitleComponent}
+            footer={
+              idea.data.attributes.anonymous ? undefined : (
+                <Box
+                  p="40px"
+                  mb="20px"
+                  boxShadow="0px 2px 4px -1px rgba(0,0,0,0.06)"
+                  borderRadius="3px"
+                  width="100%"
+                  background="white"
+                >
+                  <Box mt="-20px">
+                    <ProfileVisiblity
+                      postAnonymously={postAnonymously}
+                      setPostAnonymously={setPostAnonymously}
+                    />
+                  </Box>
+                </Box>
+              )
+            }
           />
         </>
       ) : isError(project) || inputSchemaError ? null : (

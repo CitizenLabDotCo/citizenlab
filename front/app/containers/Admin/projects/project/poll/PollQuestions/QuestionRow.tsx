@@ -2,7 +2,7 @@
 import React from 'react';
 
 // Services & Resources
-import { IPollQuestion } from 'services/pollQuestions';
+import { IPollQuestionData } from 'api/poll_questions/types';
 
 // Components
 import Button from 'components/UI/Button';
@@ -24,7 +24,7 @@ import WrongOptionsIndicator from './WrongOptionsIndicator';
 import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
-  question: IPollQuestion;
+  question: IPollQuestionData;
   isLastItem: boolean;
   index: number;
   onDelete: () => void;

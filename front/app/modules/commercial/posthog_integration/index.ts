@@ -7,13 +7,13 @@
  */
 
 import { combineLatest, pairwise, startWith, Subscription } from 'rxjs';
-import { authUserStream } from 'services/auth';
+import authUserStream from 'api/me/authUserStream';
 import { events$, pageChanges$ } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { isAdmin, isRegularUser } from 'services/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import { IUser } from 'services/users';
+import { IUser } from 'api/users/types';
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import { IAppConfiguration } from 'api/app_configuration/types';
 
@@ -95,7 +95,7 @@ const configuration: ModuleConfiguration = {
 
     combineLatest([
       appConfigurationStream,
-      authUserStream().observable.pipe(startWith(null), pairwise()),
+      authUserStream.pipe(startWith(null), pairwise()),
     ]).subscribe(async ([appConfig, [prevUser, user]]) => {
       if (appConfig) {
         // Check the feature flag

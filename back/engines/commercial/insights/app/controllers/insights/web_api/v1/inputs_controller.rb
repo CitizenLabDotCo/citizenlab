@@ -73,7 +73,7 @@ module Insights
       def serialize_options
         {
           include: %i[categories suggested_categories source],
-          params: fastjson_params({ view: view })
+          params: jsonapi_serializer_params({ view: view })
         }
       end
     end

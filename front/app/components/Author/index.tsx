@@ -9,7 +9,7 @@ import UserName from 'components/UI/UserName';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // hooks
-import useUser from 'hooks/useUser';
+import useUserById from 'api/users/useUserById';
 import useLocale from 'hooks/useLocale';
 
 // style
@@ -110,11 +110,14 @@ export interface Props {
   horizontalLayout?: boolean;
   underline?: boolean;
   color?: string;
+  authorHash?: string;
+  anonymous?: boolean;
 }
 
 const Author = memo(
   ({
     authorId,
+    authorHash,
     createdAt,
     size,
     isLinkToProfile,
@@ -128,13 +131,14 @@ const Author = memo(
     horizontalLayout,
     color,
     underline,
+    anonymous,
   }: Props) => {
     const locale = useLocale();
-    const author = useUser({ userId: authorId });
+    const { data: author } = useUserById(authorId);
     const authorCanModerate =
       !isNilOrError(author) &&
       showModeration &&
-      canModerateProject(projectId, { data: author });
+      canModerateProject(projectId, { data: author.data });
 
     if (!isNilOrError(locale)) {
       return (
@@ -143,6 +147,7 @@ const Author = memo(
             {showAvatar && (
               <StyledAvatar
                 userId={authorId}
+                authorHash={authorHash}
                 size={size}
                 isLinkToProfile={isLinkToProfile}
                 moderator={authorCanModerate}
@@ -165,6 +170,7 @@ const Author = memo(
                   fontSize={fontSize}
                   color={color}
                   underline={underline}
+                  anonymous={anonymous}
                 />
               </AuthorNameContainer>
               <TimeAgo className={horizontalLayout ? 'horizontalLayout' : ''}>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_05_162820) do
+ActiveRecord::Schema.define(version: 2023_06_01_085753) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -202,6 +202,8 @@ ActiveRecord::Schema.define(version: 2023_04_05_162820) do
     t.datetime "body_updated_at"
     t.integer "children_count", default: 0, null: false
     t.string "post_type"
+    t.string "author_hash"
+    t.boolean "anonymous", default: false, null: false
     t.index ["author_id"], name: "index_comments_on_author_id"
     t.index ["created_at"], name: "index_comments_on_created_at"
     t.index ["lft"], name: "index_comments_on_lft"
@@ -333,6 +335,18 @@ ActiveRecord::Schema.define(version: 2023_04_05_162820) do
     t.index ["campaign_id"], name: "index_email_campaigns_deliveries_on_campaign_id"
     t.index ["sent_at"], name: "index_email_campaigns_deliveries_on_sent_at"
     t.index ["user_id"], name: "index_email_campaigns_deliveries_on_user_id"
+  end
+
+  create_table "email_campaigns_examples", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "mail_body_html", null: false
+    t.string "locale", null: false
+    t.string "subject", null: false
+    t.uuid "recipient_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.uuid "campaign_id"
+    t.index ["campaign_id"], name: "index_email_campaigns_examples_on_campaign_id"
+    t.index ["recipient_id"], name: "index_email_campaigns_examples_on_recipient_id"
   end
 
   create_table "email_campaigns_unsubscription_tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -499,7 +513,10 @@ ActiveRecord::Schema.define(version: 2023_04_05_162820) do
     t.integer "proposed_budget"
     t.jsonb "custom_field_values", default: {}, null: false
     t.uuid "creation_phase_id"
+    t.string "author_hash"
+    t.boolean "anonymous", default: false, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
+    t.index ["author_hash"], name: "index_ideas_on_author_hash"
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist
@@ -610,6 +627,8 @@ ActiveRecord::Schema.define(version: 2023_04_05_162820) do
     t.uuid "assignee_id"
     t.integer "official_feedbacks_count", default: 0, null: false
     t.datetime "assigned_at"
+    t.string "author_hash"
+    t.boolean "anonymous", default: false, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_initiatives_search", using: :gin
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
@@ -941,6 +960,8 @@ ActiveRecord::Schema.define(version: 2023_04_05_162820) do
     t.integer "downvoting_limited_max", default: 10
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
+    t.string "document_annotation_embed_url"
+    t.boolean "allow_anonymous_participation", default: false, null: false
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -1078,6 +1099,8 @@ ActiveRecord::Schema.define(version: 2023_04_05_162820) do
     t.boolean "include_all_areas", default: false, null: false
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
+    t.string "document_annotation_embed_url"
+    t.boolean "allow_anonymous_participation", default: false, null: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -1088,7 +1111,7 @@ ActiveRecord::Schema.define(version: 2023_04_05_162820) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "ordering"
     t.index ["project_id"], name: "index_projects_allowed_input_topics_on_project_id"
-    t.index ["topic_id"], name: "index_projects_allowed_input_topics_on_topic_id"
+    t.index ["topic_id", "project_id"], name: "index_projects_allowed_input_topics_on_topic_id_and_project_id", unique: true
   end
 
   create_table "projects_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1121,8 +1144,10 @@ ActiveRecord::Schema.define(version: 2023_04_05_162820) do
     t.datetime "expired_at"
     t.jsonb "args", default: [], null: false
     t.jsonb "data", default: {}, null: false
+    t.integer "job_schema_version", default: 1
     t.index ["args"], name: "que_jobs_args_gin_idx", opclass: :jsonb_path_ops, using: :gin
     t.index ["data"], name: "que_jobs_data_gin_idx", opclass: :jsonb_path_ops, using: :gin
+    t.index ["job_schema_version", "queue", "priority", "run_at", "id"], name: "que_poll_idx_with_job_schema_version", where: "((finished_at IS NULL) AND (expired_at IS NULL))"
     t.index ["queue", "priority", "run_at", "id"], name: "que_poll_idx", where: "((finished_at IS NULL) AND (expired_at IS NULL))"
   end
 
@@ -1133,6 +1158,7 @@ ActiveRecord::Schema.define(version: 2023_04_05_162820) do
     t.text "ruby_hostname", null: false
     t.text "queues", null: false, array: true
     t.boolean "listening", null: false
+    t.integer "job_schema_version", default: 1
   end
 
   create_table "que_values", primary_key: "key", id: :text, force: :cascade do |t|
@@ -1305,8 +1331,8 @@ ActiveRecord::Schema.define(version: 2023_04_05_162820) do
     t.boolean "confirmation_required", default: true, null: false
     t.datetime "block_start_at"
     t.string "block_reason"
-    t.string "new_email"
     t.datetime "block_end_at"
+    t.string "new_email"
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["registration_completed_at"], name: "index_users_on_registration_completed_at"
@@ -1384,6 +1410,7 @@ ActiveRecord::Schema.define(version: 2023_04_05_162820) do
   add_foreign_key "email_campaigns_campaigns", "users", column: "author_id"
   add_foreign_key "email_campaigns_campaigns_groups", "email_campaigns_campaigns", column: "campaign_id"
   add_foreign_key "email_campaigns_deliveries", "email_campaigns_campaigns", column: "campaign_id"
+  add_foreign_key "email_campaigns_examples", "users", column: "recipient_id"
   add_foreign_key "event_files", "events"
   add_foreign_key "events", "projects"
   add_foreign_key "groups_permissions", "groups"

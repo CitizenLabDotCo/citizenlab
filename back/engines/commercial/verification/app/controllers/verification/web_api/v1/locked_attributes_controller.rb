@@ -20,7 +20,7 @@ module Verification
           render json: linked_json(
             @locked_attributes,
             WebApi::V1::LockedAttributeSerializer,
-            params: fastjson_params
+            params: jsonapi_serializer_params
           )
         end
       end

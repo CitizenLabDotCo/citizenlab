@@ -58,12 +58,8 @@ module EmailCampaigns
       ['project_moderator']
     end
 
-    def self.category
-      'admin'
-    end
-
     def self.recipient_role_multiloc_key
-      'email_campaigns.admin_labels.recipient_role.managers'
+      'email_campaigns.admin_labels.recipient_role.admins_and_managers'
     end
 
     def self.recipient_segment_multiloc_key
@@ -72,10 +68,6 @@ module EmailCampaigns
 
     def self.content_type_multiloc_key
       'email_campaigns.admin_labels.content_type.general'
-    end
-
-    def self.trigger_multiloc_key
-      'scheduled'
     end
 
     def generate_commands(recipient:, time: nil)
@@ -148,7 +140,7 @@ module EmailCampaigns
             increase: participants_increase,
             past_increase: participants_past_increase
           },
-          total_participants: ps.project_participants(project).size
+          total_participants: ps.projects_participants([project]).size
         }
       }
     end

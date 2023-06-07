@@ -2,14 +2,15 @@
 
 module EmailCampaigns
   class WebApi::V1::CampaignSerializer < ::WebApi::V1::BaseSerializer
+    extend GroupOrderingHelper
     attributes :created_at, :updated_at
 
     attribute :campaign_name do |object|
       object.class.campaign_name
     end
 
-    attribute :admin_campaign_description_multiloc do |object|
-      object.class.admin_campaign_description_multiloc
+    attribute :campaign_description_multiloc do |object|
+      object.class.campaign_description_multiloc
     end
 
     attribute :recipient_role_multiloc do |object|
@@ -34,9 +35,21 @@ module EmailCampaigns
     end
 
     attribute :trigger_multiloc do |object|
-      if object.class.trigger_multiloc_key.present? && object.class.trigger_multiloc_key != 'scheduled'
+      if object.class.trigger_multiloc_key.present?
         @multiloc_service ||= MultilocService.new
         @multiloc_service.i18n_to_multiloc(object.class.trigger_multiloc_key)
+      end
+    end
+
+    attribute :recipient_role_ordering do |object|
+      if object.class.recipient_role_multiloc_key.present?
+        group_ordering('recipient_role', object.class.recipient_role_multiloc_key&.split('.')&.last)
+      end
+    end
+
+    attribute :content_type_ordering do |object|
+      if object.class.content_type_multiloc_key.present?
+        group_ordering('content_type', object.class.content_type_multiloc_key&.split('.')&.last)
       end
     end
 
@@ -77,7 +90,7 @@ module EmailCampaigns
 
     belongs_to :author, record_type: :user, serializer: ::WebApi::V1::UserSerializer
 
-    has_many :groups, if: proc { |object|
+    has_many :groups, serializer: ::WebApi::V1::GroupSerializer, if: proc { |object|
       recipient_configurable? object
     }
 

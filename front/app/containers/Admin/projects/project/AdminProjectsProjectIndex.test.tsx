@@ -11,7 +11,7 @@ import {
   mockPhaseSurveyGoogleFormData,
   mockPhaseInformationData,
 } from 'services/__mocks__/phases';
-import { getProject } from 'services/__mocks__/projects';
+import { getProject } from 'api/projects/__mocks__/getProject';
 import { localizeProps } from 'utils/testUtils/localizeProps';
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { WithRouterProps } from 'utils/cl-router/withRouter';

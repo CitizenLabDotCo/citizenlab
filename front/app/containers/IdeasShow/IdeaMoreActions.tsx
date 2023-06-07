@@ -11,7 +11,7 @@ import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
 // i18n
@@ -19,7 +19,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { ProcessType } from 'services/projects';
+import { ProcessType } from 'api/projects/types';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
 // styling
@@ -45,7 +45,7 @@ interface Props {
 const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   const { formatMessage } = useIntl();
   const [isSpamModalVisible, setIsSpamModalVisible] = useState<boolean>(false);
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
   const { mutate: deleteIdea } = useDeleteIdea();
 

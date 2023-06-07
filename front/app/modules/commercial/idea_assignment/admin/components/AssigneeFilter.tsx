@@ -15,7 +15,7 @@ import postManagerMessages from 'components/admin/PostManager/messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import { ManagerType } from 'components/admin/PostManager';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 interface DataProps {
   prospectAssignees: GetUsersChildProps;
@@ -45,7 +45,7 @@ const AssigneeFilter = ({
   handleAssigneeFilterChange,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   if (isNilOrError(authUser)) {
     return null;
@@ -61,7 +61,7 @@ const AssigneeFilter = ({
         id: 'e2e-assignee-filter-all-posts',
       },
       {
-        value: authUser.id,
+        value: authUser.data.id,
         text: formatMessage(postManagerMessages.assignedToMe),
         id: 'e2e-assignee-filter-assigned-to-user',
       },
@@ -74,7 +74,7 @@ const AssigneeFilter = ({
 
     const dynamicOptions = !isNilOrError(prospectAssignees.usersList)
       ? prospectAssignees.usersList
-          .filter((assignee) => assignee.id !== authUser.id)
+          .filter((assignee) => assignee.id !== authUser.data.id)
           .map((assignee) => ({
             value: assignee.id,
             text: formatMessage(postManagerMessages.assignedTo, {
@@ -96,7 +96,7 @@ const AssigneeFilter = ({
 
     trackEventByName(tracks.assigneeFilterUsed, {
       assignee: realFiterParam,
-      adminAtWork: authUser.id,
+      adminAtWork: authUser.data.id,
     });
 
     handleAssigneeFilterChange(realFiterParam);
@@ -119,15 +119,15 @@ const AssigneeFilter = ({
 const Data = adopt<DataProps, InputProps>({
   prospectAssignees: ({ type, projectId, render }) =>
     type === 'ProjectIdeas' && projectId ? (
-      <GetUsers canModerateProject={projectId} pageSize={250}>
+      <GetUsers can_moderate_project={projectId} pageSize={250}>
         {render}
       </GetUsers>
     ) : type === 'AllIdeas' ? (
-      <GetUsers canModerate pageSize={250}>
+      <GetUsers can_moderate pageSize={250}>
         {render}
       </GetUsers>
     ) : (
-      <GetUsers canAdmin pageSize={250}>
+      <GetUsers can_admin pageSize={250}>
         {render}
       </GetUsers>
     ),

@@ -12,6 +12,8 @@ class Factory
       ::ParticipationMethod::Information.new(participation_context)
     when 'ideation'
       ::ParticipationMethod::Ideation.new(participation_context)
+    when 'document_annotation'
+      ::ParticipationMethod::DocumentAnnotation.new(participation_context)
     when 'survey'
       ::ParticipationMethod::Survey.new(participation_context)
     when 'budgeting'

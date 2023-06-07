@@ -3,6 +3,12 @@ import { randomString } from '../../support/commands';
 describe('Project description builder language switch', () => {
   let projectId = '';
   let projectSlug = '';
+
+  const switchLocale = (locale: string) => {
+    cy.apiUpdateCurrentUser({ locale: locale });
+    cy.reload();
+  };
+
   before(() => {
     cy.setAdminLoginCookie();
     cy.getAuthUser().then((user) => {
@@ -32,13 +38,13 @@ describe('Project description builder language switch', () => {
   });
 
   beforeEach(() => {
+    switchLocale('en');
     cy.setAdminLoginCookie();
   });
 
   after(() => {
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('.e2e-language-dropdown-toggle').click({ force: true });
-    cy.contains('English').click({ force: true });
+    switchLocale('en');
     cy.apiRemoveProject(projectId);
   });
 
@@ -58,8 +64,7 @@ describe('Project description builder language switch', () => {
     cy.wait('@saveProjectDescriptionBuilder');
 
     // NL-BE
-    cy.get('.e2e-language-dropdown-toggle').click({ force: true });
-    cy.get('.nl-BE').click({ force: true });
+    switchLocale('nl-BE');
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
@@ -71,12 +76,10 @@ describe('Project description builder language switch', () => {
 
     // Confirm correct content on live page
     cy.visit(`/projects/${projectSlug}`);
+    switchLocale('en');
     cy.contains('Language 1 text.').should('exist');
-    cy.get('.e2e-language-dropdown-toggle').click({ force: true });
-    cy.contains('Nederlands').click({ force: true });
+    switchLocale('nl-BE');
     cy.contains('Language 2 text.').should('exist');
-    cy.get('.e2e-language-dropdown-toggle').click({ force: true });
-    cy.contains('English').click({ force: true });
   });
 
   it('deletes language specific content correctly', () => {
@@ -89,10 +92,13 @@ describe('Project description builder language switch', () => {
     );
 
     // Delete content from languages
+    // EN
+    cy.get('.en').click();
     cy.get('#e2e-text-box').click({ force: true });
     cy.get('#e2e-delete-button').click({ force: true });
 
     // NL-BE
+    cy.reload(); // without it, #e2e-text-box cannot be found. Cannot be reproduced manually.
     cy.get('.nl-BE').click();
     cy.get('#e2e-text-box').click({ force: true });
     cy.get('#e2e-delete-button').click({ force: true });
@@ -101,9 +107,9 @@ describe('Project description builder language switch', () => {
 
     // Confirm correct content on live page
     cy.visit(`/projects/${projectSlug}`);
+    switchLocale('en');
     cy.contains('Language 1 text.').should('not.exist');
-    cy.get('.e2e-language-dropdown-toggle').click({ force: true });
-    cy.contains('Nederlands').click({ force: true });
+    switchLocale('nl-BE');
     cy.contains('Language 2 text.').should('not.exist');
   });
 });

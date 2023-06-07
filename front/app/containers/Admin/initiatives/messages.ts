@@ -17,22 +17,14 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.settingsTab',
     defaultMessage: 'Settings',
   },
-  manageTab: {
-    id: 'app.containers.Admin.initiatives.manageTab',
-    defaultMessage: 'Manage',
-  },
   settingsTabTitle: {
     id: 'app.containers.Admin.initiatives.settingsTabTitle',
     defaultMessage: 'Configure your proposals',
   },
-  titleManageTab: {
-    id: 'app.containers.Admin.initiatives.titleManageTab',
-    defaultMessage: 'Manage the initiatives on the platform.',
-  },
-  subtitleManageTab: {
-    id: 'app.containers.Admin.initiatives.subtitleManageTab',
+  subtitleDescription: {
+    id: 'app.containers.Admin.initiatives.subtitleDescription',
     defaultMessage:
-      'Add topics to initiatives, consult or change their statuses, officially update the citizens. Contact us if you want to use custom topics or statuses.',
+      'View the submitted proposals, change their status and add tags for easier filtering and categorization.',
   },
   warningTresholdSettings: {
     id: 'app.containers.Admin.initiatives.warningTresholdSettings',
@@ -116,5 +108,9 @@ export default defineMessages({
   enableProposals: {
     id: 'app.containers.Admin.initiatives.enableProposals',
     defaultMessage: 'Enable proposals',
+  },
+  proposals: {
+    id: 'app.containers.Admin.initiatives.proposals',
+    defaultMessage: 'Proposals',
   },
 });

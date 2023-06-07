@@ -13,7 +13,7 @@ module Insights
             inputs: inputs
           ).execute
 
-          render json: ZeroshotClassificationTaskSerializer.new(tasks, params: fastjson_params), status: :ok
+          render json: ZeroshotClassificationTaskSerializer.new(tasks, params: jsonapi_serializer_params), status: :ok
         end
 
         def count

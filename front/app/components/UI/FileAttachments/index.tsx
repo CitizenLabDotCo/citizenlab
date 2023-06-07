@@ -1,7 +1,7 @@
 import React from 'react';
 import FileDisplay from './FileDisplay';
-import { IProjectFileData } from 'services/projectFiles';
-import { IPhaseFileData } from 'services/phaseFiles';
+import { IProjectFileData } from 'api/project_files/types';
+import { IPhaseFileData } from 'api/phase_files/types';
 import { IEventFileData } from 'api/event_files/types';
 import { ICustomPageFileData } from 'services/pageFiles';
 import { IIdeaFileData } from 'api/idea_files/types';

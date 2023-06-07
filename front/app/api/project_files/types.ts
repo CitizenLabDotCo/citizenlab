@@ -1,0 +1,35 @@
+import { Keys } from 'utils/cl-react-query/types';
+import projectFilesKeys from './keys';
+
+export type ProjectFilesKeys = Keys<typeof projectFilesKeys>;
+
+export interface IProjectFileData {
+  id: string;
+  type: string;
+  attributes: {
+    file: {
+      url: string;
+    };
+    ordering: string | null;
+    name: string;
+    size: number;
+    created_at: string;
+    updated_at: string;
+  };
+}
+
+export interface IProjectFile {
+  data: IProjectFileData;
+}
+
+export interface IProjectFiles {
+  data: IProjectFileData[];
+}
+
+export interface AddProjectFileObject {
+  projectId: string;
+  file: {
+    name: string;
+    file: string;
+  };
+}

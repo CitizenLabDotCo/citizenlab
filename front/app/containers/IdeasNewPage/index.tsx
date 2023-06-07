@@ -15,21 +15,19 @@ import { colors } from 'utils/styleUtils';
 
 // hooks
 import useProjectBySlug from 'api/projects/useProjectBySlug';
-import usePhases from 'hooks/usePhases';
+import usePhases from 'api/phases/usePhases';
 import { getParticipationMethod } from 'utils/participationMethodUtils';
 
 // utils
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { useParams } from 'react-router-dom';
 
-interface InputProps {}
-
-const NewIdeaPage = (inputProps: InputProps) => {
+const NewIdeaPage = () => {
   const { slug } = useParams();
 
   const isSmallerThanPhone = useBreakpoint('phone');
   const { data: project, status, error } = useProjectBySlug(slug);
-  const phases = usePhases(project?.data.id);
+  const { data: phases } = usePhases(project?.data.id);
   const { phase_id } = parse(location.search, {
     ignoreQueryPrefix: true,
   }) as { [key: string]: string };
@@ -52,7 +50,7 @@ const NewIdeaPage = (inputProps: InputProps) => {
 
   const participationMethod = getParticipationMethod(
     project?.data,
-    phases,
+    phases?.data,
     phase_id
   );
   const portalElement = document?.getElementById('modal-portal');
@@ -70,13 +68,13 @@ const NewIdeaPage = (inputProps: InputProps) => {
         h="100vh"
         overflowY="scroll"
       >
-        <IdeasNewForm {...inputProps} />
+        <IdeasNewForm />
       </Box>,
       portalElement
     );
   }
 
-  return <IdeasNewForm {...inputProps} />;
+  return <IdeasNewForm />;
 };
 
 export default NewIdeaPage;

@@ -5,7 +5,7 @@ import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 
 // cache
 import streams from 'utils/streams';
-import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 // tracks
 import tracks from '../../tracks';
@@ -68,7 +68,12 @@ export const sharedSteps = (
       },
 
       // When the user returns from SSO
-      RESUME_FLOW_AFTER_SSO: async () => {
+      RESUME_FLOW_AFTER_SSO: async (enterClaveUnicaEmail: boolean) => {
+        if (enterClaveUnicaEmail) {
+          setCurrentStep('clave-unica:email');
+          return;
+        }
+
         const { flow } = getAuthenticationData();
         const { requirements } = await getRequirements();
 
@@ -170,6 +175,10 @@ export const sharedSteps = (
         setCurrentStep('verification-only');
       },
 
+      REOPEN_CLAVE_UNICA: () => {
+        setCurrentStep('clave-unica:email');
+      },
+
       TRIGGER_AUTH_ERROR: (error_code?: SignUpInError) => {
         if (error_code === 'franceconnect_merging_failed') {
           setCurrentStep('sign-up:auth-providers');
@@ -183,7 +192,7 @@ export const sharedSteps = (
 
     success: {
       CONTINUE: async () => {
-        await Promise.all([streams.reset(), resetQueryCache()]);
+        await Promise.all([streams.reset(), invalidateQueryCache()]);
         setCurrentStep('closed');
 
         trackEventByName(tracks.signUpFlowCompleted);

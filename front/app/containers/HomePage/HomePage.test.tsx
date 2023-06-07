@@ -1,5 +1,5 @@
 import React from 'react';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 import clHistory from 'utils/cl-router/history';
 import { render, userEvent } from 'utils/testUtils/rtl';
 import HomePage, { adminRedirectPath } from '.';
@@ -24,9 +24,9 @@ const mockUserData: IUserData = {
   },
 };
 jest.mock('hooks/useHomepageSettings');
-jest.mock('hooks/useAuthUser', () => {
-  return () => mockUserData;
-});
+jest.mock('api/me/useAuthUser', () => () => ({
+  data: { data: mockUserData },
+}));
 
 describe('HomePage', () => {
   it('Tries to redirect on hitting the A key if you have admin access', async () => {
