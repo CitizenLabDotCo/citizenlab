@@ -433,16 +433,16 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   },
                 },
                 {
-                  onError: async (result) => {
-                    if (isNilOrError(result)) {
-                      setSubmitState('apiError');
-                    }
+                  onError: async () => {
+                    setSubmitState('apiError');
+                  },
+                  onSuccess: async () => {
+                    setSubmitState('success');
                   },
                 }
               );
             }
             setProjectFolderFilesToRemove([]);
-            setSubmitState('success');
           } else {
             setSubmitState('apiError');
           }
