@@ -10,8 +10,8 @@ export default defineMessages({
     defaultMessage: 'Each voting method has different pre-configurations',
   },
   votingMethodSelectorTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTooltip',
-    defaultMessage: 'Tooltip content',
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTooltip2',
+    defaultMessage: 'The voting method determines the rules of how users vote',
   },
   budgetingVotingMethodTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodTitle2',
