@@ -10,23 +10,26 @@ import {
   Text,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import { LabelHeaderDescription } from './labels';
 import { ParticipationMethodRadio } from './shared/styling';
+import Warning from 'components/UI/Warning';
+import Tippy from '@tippyjs/react';
 
 // i18n
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
+
+// utils
+import { getMethodConfig } from 'utils/participationMethodUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
 import { ApiErrors } from '..';
-import { getMethodConfig } from 'utils/participationMethodUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { IPhase } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
-import Warning from 'components/UI/Warning';
 
 interface Props {
   participation_method: ParticipationMethod;
@@ -39,7 +42,7 @@ interface Props {
   ) => void;
 }
 
-export const ParticipationMethodPicker = ({
+const ParticipationMethodPicker = ({
   participation_method,
   showSurveys,
   apiErrors,
@@ -47,12 +50,26 @@ export const ParticipationMethodPicker = ({
   project,
   handleParticipationMethodOnChange,
 }: Props) => {
+  const { formatMessage } = useIntl();
+  const documentAnnotationAllowed = useFeatureFlag({
+    name: 'konveio_document_annotation',
+    onlyCheckAllowed: true,
+  });
+  const documentAnnotationEnabled = useFeatureFlag({
+    name: 'konveio_document_annotation',
+  });
   const participatoryBudgetingEnabled = useFeatureFlag({
     name: 'participatory_budgeting',
   });
-  const pollsEnabled = useFeatureFlag({ name: 'polls' });
-  const nativeSurveysEnabled = useFeatureFlag({ name: 'native_surveys' });
-  const volunteeringEnabled = useFeatureFlag({ name: 'volunteering' });
+  const pollsEnabled = useFeatureFlag({
+    name: 'polls',
+  });
+  const nativeSurveysEnabled = useFeatureFlag({
+    name: 'native_surveys',
+  });
+  const volunteeringEnabled = useFeatureFlag({
+    name: 'volunteering',
+  });
 
   const chooseParticipationMethod = () => {
     if (!isNilOrError(phase) && phase.data) {
@@ -117,7 +134,7 @@ export const ParticipationMethodPicker = ({
               currentValue={participation_method}
               value="budgeting"
               name="participationmethod"
-              id={'participationmethod-budgeting'}
+              id="participationmethod-budgeting"
               label={
                 <LabelHeaderDescription
                   header={<FormattedMessage {...messages.conductVotingText} />}
@@ -136,7 +153,7 @@ export const ParticipationMethodPicker = ({
               currentValue={participation_method}
               value="poll"
               name="participationmethod"
-              id={'participationmethod-poll'}
+              id="participationmethod-poll"
               label={
                 <LabelHeaderDescription
                   header={<FormattedMessage {...messages.createPoll} />}
@@ -153,7 +170,7 @@ export const ParticipationMethodPicker = ({
               currentValue={participation_method}
               value="native_survey"
               name="participationmethod"
-              id={'participationmethod-native_survey'}
+              id="participationmethod-native_survey"
               disabled={isExistingProjectOrPhase}
               label={
                 <LabelHeaderDescription
@@ -174,7 +191,7 @@ export const ParticipationMethodPicker = ({
               currentValue={participation_method}
               value="survey"
               name="participationmethod"
-              id={'participationmethod-survey'}
+              id="participationmethod-survey"
               label={
                 <LabelHeaderDescription
                   header={
@@ -187,13 +204,49 @@ export const ParticipationMethodPicker = ({
               }
             />
           )}
+          {documentAnnotationAllowed && (
+            <Tippy
+              maxWidth="250px"
+              placement="right-end"
+              content={formatMessage(messages.contactGovSuccessToAccess)}
+              // Don't show Tippy tooltip if the feature is enabled
+              disabled={documentAnnotationEnabled}
+              hideOnClick={false}
+            >
+              <div>
+                <ParticipationMethodRadio
+                  disabled={!documentAnnotationEnabled}
+                  onChange={handleParticipationMethodOnChange}
+                  currentValue={participation_method}
+                  value="document_annotation"
+                  name="participationmethod"
+                  id="participationmethod-document_annotation"
+                  label={
+                    <LabelHeaderDescription
+                      disabled={!documentAnnotationEnabled}
+                      header={
+                        <FormattedMessage
+                          {...messages.documentAnnotationMethod}
+                        />
+                      }
+                      description={
+                        <FormattedMessage
+                          {...messages.documentAnnotationMethodDescription}
+                        />
+                      }
+                    />
+                  }
+                />
+              </div>
+            </Tippy>
+          )}
           {volunteeringEnabled && (
             <ParticipationMethodRadio
               onChange={handleParticipationMethodOnChange}
               currentValue={participation_method}
               value="volunteering"
               name="participationmethod"
-              id={'participationmethod-volunteering'}
+              id="participationmethod-volunteering"
               label={
                 <LabelHeaderDescription
                   header={<FormattedMessage {...messages.findVolunteers} />}
@@ -231,3 +284,5 @@ export const ParticipationMethodPicker = ({
     </SectionField>
   );
 };
+
+export default ParticipationMethodPicker;

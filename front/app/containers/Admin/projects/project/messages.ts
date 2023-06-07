@@ -127,9 +127,9 @@ export default defineMessages({
     defaultMessage: 'Create an external survey',
   },
   createSurveyDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription1',
+    id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription',
     defaultMessage:
-      'Embed a Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey, Microsoft Forms or Konveio survey.',
+      'Embed a Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey or Microsoft Forms survey.',
   },
   conductVotingText: {
     id: 'app.containers.AdminPage.ProjectEdit.conductVotingText',
@@ -370,13 +370,22 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.google_forms',
     defaultMessage: 'Google Forms',
   },
-  konveio: {
-    id: 'app.containers.AdminPage.ProjectEdit.konveio',
-    defaultMessage: 'Konveio',
+  documentAnnotationMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.documentAnnotationMethod1',
+    defaultMessage: 'Collect feedback on a document',
+  },
+  documentAnnotationMethodDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.documentAnnotationMethodDescription1',
+    defaultMessage:
+      'Embed an interactive PDF and collect comments and feedback with Konveio.',
   },
   surveyEmbedUrl: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyEmbedUrl',
     defaultMessage: 'Survey Embed URL',
+  },
+  konveioDocumentAnnotationEmbedUrl: {
+    id: 'app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl',
+    defaultMessage: 'Embed Konveio URL',
   },
   titleSurveyResults: {
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.titleSurveyResults',
@@ -495,5 +504,24 @@ export default defineMessages({
   actionsForResidents: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.actionsForResidents',
     defaultMessage: 'Actions for residents',
+  },
+  contactGovSuccessToAccess: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess',
+    defaultMessage:
+      'Collecting feedback on a document is a custom feature, and is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
+  },
+  konveioSupport: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupport',
+    defaultMessage:
+      'Provide the link to your Konveio document here. Read our {supportArticleLink} for more information on setting up Konveio.',
+  },
+  konveioSupportPageURL: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/7946532-embedding-konveio-pdf-documents-for-collecting-feedback',
+  },
+  konveioSupportArticle: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle',
+    defaultMessage: 'support article',
   },
 });

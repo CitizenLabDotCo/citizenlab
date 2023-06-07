@@ -170,6 +170,7 @@ export interface IProjectAttributes {
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   voting_method?: VotingMethodType | null;
+  document_annotation_embed_url?: string | null;
   // MISMATCH: ordering doesn't seem to exist on real response
   // ordering: number;
   poll_anonymous?: boolean;
@@ -186,6 +187,7 @@ export interface IProjectAttributes {
     };
     taking_survey: ActionDescriptor<SurveyDisabledReason>;
     taking_poll: ActionDescriptor<PollDisabledReason>;
+    annotating_document: ActionDescriptor<DocumentAnnotationDisabledReason>;
   };
 }
 
@@ -225,21 +227,13 @@ type Visibility = 'public' | 'groups' | 'admins';
 export type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 
-// keys in project.attributes.action_descriptor
-export type IProjectAction =
-  | 'commenting_idea'
-  | 'voting_idea'
-  | 'posting_idea'
-  | 'taking_survey'
-  | 'taking_poll';
-
 export type CommentingDisabledReason =
   | 'project_inactive'
   | 'not_supported'
   | 'commenting_disabled'
   | PermissionsDisabledReason;
 
-export type ProjectVotingDisabledReason =
+type ProjectVotingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
   | 'voting_disabled'
@@ -264,6 +258,11 @@ export type PollDisabledReason =
   | 'project_inactive'
   | 'not_poll'
   | 'already_responded'
+  | PermissionsDisabledReason;
+
+export type DocumentAnnotationDisabledReason =
+  | 'project_inactive'
+  | 'not_document_annotation'
   | PermissionsDisabledReason;
 
 interface ProjectHeaderBgImageSizes {
@@ -306,6 +305,7 @@ export interface IUpdatedProjectProperties {
   max_budget?: number | null;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
+  document_annotation_embed_url?: string | null;
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;

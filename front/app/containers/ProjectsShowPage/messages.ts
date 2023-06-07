@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.containers.Projects.invisibleTitleSurvey',
     defaultMessage: 'Take the survey',
   },
+  invisbleTitleDocumentAnnotation: {
+    id: 'app.containers.Projects.invisbleTitleDocumentAnnotation1',
+    defaultMessage: 'Review the document',
+  },
   invisibleTitlePoll: {
     id: 'app.containers.Projects.invisibleTitlePoll',
     defaultMessage: 'Take the poll',
@@ -246,15 +250,21 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {# questions} one {# question} other {# questions}} in the final phase',
   },
-  xSurveys: {
-    id: 'app.containers.Projects.xSurveys',
-    defaultMessage:
-      '{surveysCount, plural, no {# surveys} one {# survey} other {# surveys}}',
+  oneSurvey: {
+    id: 'app.containers.Projects.oneSurvey',
+    defaultMessage: '1 survey',
   },
-  xSurveysInCurrentPhase: {
-    id: 'app.containers.Projects.xSurveysInCurrentPhase',
-    defaultMessage:
-      '{surveysCount, plural, no {# surveys} one {# survey} other {# surveys}} in the current phase',
+  oneSurveyInCurrentPhase: {
+    id: 'app.containers.Projects.oneSurveyInCurrentPhase',
+    defaultMessage: '1 survey in the current phase',
+  },
+  oneDocToReview: {
+    id: 'app.containers.Projects.oneDocToReview',
+    defaultMessage: '1 document to review',
+  },
+  oneDocToReviewInCurrentPhase: {
+    id: 'app.containers.Projects.oneDocToReviewInCurrentPhase',
+    defaultMessage: '1 document to review in the current phase',
   },
   poll: {
     id: 'app.containers.Projects.poll',
@@ -294,6 +304,10 @@ export default defineMessages({
   takeTheSurvey: {
     id: 'app.containers.Projects.takeTheSurvey',
     defaultMessage: 'Take the survey',
+  },
+  reviewDocument: {
+    id: 'app.containers.Projects.reviewDocument',
+    defaultMessage: 'Review the document',
   },
   takeThePoll: {
     id: 'app.containers.Projects.takeThePoll',
@@ -399,6 +413,10 @@ export default defineMessages({
     id: 'app.containers.Projects.emailSharingBody',
     defaultMessage:
       'What do you think of this project? Join the discussion at {projectUrl} to make your voice heard!',
+  },
+  document: {
+    id: 'app.containers.Projects.document',
+    defaultMessage: 'Document',
   },
   participantsTooltip: {
     id: 'app.containers.Projects.participantsTooltip2',
