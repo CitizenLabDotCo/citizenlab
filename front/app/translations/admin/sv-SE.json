@@ -1251,7 +1251,6 @@
   "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Deltagarnas krav och frågor",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Åtkomsträttigheter",
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "Vissa deltagandemetoder är inte tillgängliga för befintliga faser. En ny fas måste skapas i sådana fall.",
-  "app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip": "Välj vilka deltagandeåtgärder användare kan vidta under den här idéfasen.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Tidslinje",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Omröstning",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "De flesta röstade",

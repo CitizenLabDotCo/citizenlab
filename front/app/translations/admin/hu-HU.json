@@ -781,7 +781,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "What do you want to do?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Choose how users can participate.",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Access rights",
-  "app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip": "Select what participative action users can take during this ideation phase.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Timeline",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Poll",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "Most voted",

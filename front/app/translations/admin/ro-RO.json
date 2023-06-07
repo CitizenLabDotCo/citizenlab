@@ -1104,7 +1104,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Choose how users can participate.",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Access rights",
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "Unele metode de participare nu sunt disponibile pentru proiectele existente. În aceste cazuri, va trebui creat un nou proiect.",
-  "app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip": "Select what participative action users can take during this ideation phase.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Cronologie",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Sondaj de tip poll",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "Cea mai votată",
