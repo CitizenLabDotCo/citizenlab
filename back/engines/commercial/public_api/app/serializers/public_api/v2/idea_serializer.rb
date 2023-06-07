@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class PublicApi::V2::IdeaSerializer < ActiveModel::Serializer
-  @@multiloc_service = MultilocService.new
-
   attributes :id,
     :title,
     :body,
@@ -32,11 +30,11 @@ class PublicApi::V2::IdeaSerializer < ActiveModel::Serializer
     :custom_field_values # Not nested in spec
 
   def title
-    @@multiloc_service.t(object.title_multiloc)
+    multiloc_service.t(object.title_multiloc)
   end
 
   def body
-    @@multiloc_service.t(object.body_multiloc)
+    multiloc_service.t(object.body_multiloc)
   end
 
   def images
@@ -46,14 +44,20 @@ class PublicApi::V2::IdeaSerializer < ActiveModel::Serializer
   end
 
   def project_title
-    @@multiloc_service.t(object.project&.title_multiloc)
+    multiloc_service.t(object.project&.title_multiloc)
   end
 
   def status
-    @@multiloc_service.t(object.idea_status&.title_multiloc)
+    multiloc_service.t(object.idea_status&.title_multiloc)
   end
 
   def href
     Frontend::UrlService.new.model_to_url object
+  end
+
+  private
+
+  def multiloc_service
+    @multiloc_service ||= MultilocService.new
   end
 end
