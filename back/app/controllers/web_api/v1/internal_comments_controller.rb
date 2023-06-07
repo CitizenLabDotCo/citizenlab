@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
 class WebApi::V1::InternalCommentsController < ApplicationController
-  # include BlockingProfanity
-
   before_action :set_post_type_id_and_policy, only: %i[index create]
-  before_action :set_comment, only: %i[children show update mark_as_deleted destroy] # change name to set_internal_comment?
+  before_action :set_comment, only: %i[children show update mark_as_deleted destroy]
   skip_before_action :authenticate_user
 
   FULLY_EXPAND_THRESHOLD = 5
@@ -177,16 +175,13 @@ class WebApi::V1::InternalCommentsController < ApplicationController
     # else's name
     params.require(:internal_comment).permit(
       :parent_id,
-      :anonymous, # Remove this?
       body_multiloc: CL2_SUPPORTED_LOCALES
     )
   end
 
   def comment_update_params
     attrs = []
-    if @comment.author_id == current_user&.id
-      attrs += [:anonymous, { body_multiloc: CL2_SUPPORTED_LOCALES }] # Remove anonymous?
-    end
+    attrs = [{ body_multiloc: CL2_SUPPORTED_LOCALES }] if @comment.author_id == current_user&.id
     params.require(:internal_comment).permit(attrs)
   end
 
