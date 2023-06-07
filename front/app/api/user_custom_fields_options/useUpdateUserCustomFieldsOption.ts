@@ -35,6 +35,12 @@ const useUpdateUserCustomFieldsOption = () => {
           customFieldId: variables.customFieldId,
         }),
       });
+      queryClient.invalidateQueries({
+        queryKey: userCustomFieldsOptionsKeys.item({
+          customFieldId: variables.customFieldId,
+          optionId: variables.optionId,
+        }),
+      });
     },
   });
 };
