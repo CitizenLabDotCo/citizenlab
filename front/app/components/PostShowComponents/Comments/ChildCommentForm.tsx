@@ -217,93 +217,92 @@ const ChildCommentForm = ({
         },
       });
 
-      try {
-        if (postType === 'idea' && projectId) {
-          addCommentToIdeaComment(
-            {
-              ideaId: postId,
-              author_id: authUser.data.id,
-              parent_id: parentId,
-              body_multiloc: commentBodyMultiloc,
-              anonymous: postAnonymously,
+      if (postType === 'idea' && projectId) {
+        addCommentToIdeaComment(
+          {
+            ideaId: postId,
+            author_id: authUser.data.id,
+            parent_id: parentId,
+            body_multiloc: commentBodyMultiloc,
+            anonymous: postAnonymously,
+          },
+          {
+            onSuccess: () => {
+              commentAdded();
+              setInputValue('');
+              setFocused(false);
             },
-            {
-              onSuccess: () => {
-                commentAdded();
-                setInputValue('');
-                setFocused(false);
-              },
-              onError: (error) => {
-                const apiErrors = error.errors;
-                const profanityApiError = apiErrors.base.find(
-                  (apiError) => apiError.error === 'includes_banned_words'
-                );
+            onError: (error) => {
+              const apiErrors = error.errors;
+              const profanityApiError = apiErrors.base.find(
+                (apiError) => apiError.error === 'includes_banned_words'
+              );
 
-                setHasApiError(true);
+              setHasApiError(true);
 
-                if (profanityApiError) {
-                  trackEventByName(tracks.childCommentProfanityError.name, {
-                    locale,
-                    postId,
-                    postType,
-                    projectId,
-                    profaneMessage: commentBodyMultiloc[locale],
-                    location: 'InitiativesNewFormWrapper (citizen side)',
-                    userId: authUser.data.id,
-                    host: !isNilOrError(appConfiguration)
-                      ? appConfiguration.data.attributes.host
-                      : null,
-                  });
+              if (profanityApiError) {
+                trackEventByName(tracks.childCommentProfanityError.name, {
+                  locale,
+                  postId,
+                  postType,
+                  projectId,
+                  profaneMessage: commentBodyMultiloc[locale],
+                  location: 'Idea Child Comment Form (citizen side)',
+                  userId: authUser.data.id,
+                  host: !isNilOrError(appConfiguration)
+                    ? appConfiguration.data.attributes.host
+                    : null,
+                });
 
-                  setProfanityApiError(true);
-                }
-              },
-            }
-          );
-        }
-
-        if (postType === 'initiative') {
-          addCommentToInitiativeComment(
-            {
-              initiativeId: postId,
-              author_id: authUser.data.id,
-              parent_id: parentId,
-              body_multiloc: commentBodyMultiloc,
-              anonymous: postAnonymously,
+                setProfanityApiError(true);
+              }
             },
-            {
-              onSuccess: () => {
-                commentAdded();
-                setInputValue('');
-                setFocused(false);
-              },
-            }
-          );
-        }
-      } catch (error) {
-        const apiErrors = error.errors;
-        const profanityApiError = apiErrors.base.find(
-          (apiError) => apiError.error === 'includes_banned_words'
+          }
         );
+      }
 
-        setHasApiError(true);
+      if (postType === 'initiative') {
+        addCommentToInitiativeComment(
+          {
+            initiativeId: postId,
+            author_id: authUser.data.id,
+            parent_id: parentId,
+            body_multiloc: commentBodyMultiloc,
+            anonymous: postAnonymously,
+          },
+          {
+            onSuccess: () => {
+              commentAdded();
+              setInputValue('');
+              setFocused(false);
+            },
+            onError: (error) => {
+              const apiErrors = error.errors;
+              const profanityApiError = apiErrors.base.find(
+                (apiError) => apiError.error === 'includes_banned_words'
+              );
 
-        if (profanityApiError) {
-          trackEventByName(tracks.childCommentProfanityError.name, {
-            locale,
-            postId,
-            postType,
-            projectId,
-            profaneMessage: commentBodyMultiloc[locale],
-            location: 'InitiativesNewFormWrapper (citizen side)',
-            userId: authUser.data.id,
-            host: !isNilOrError(appConfiguration)
-              ? appConfiguration.data.attributes.host
-              : null,
-          });
+              setHasApiError(true);
 
-          setProfanityApiError(true);
-        }
+              if (profanityApiError) {
+                trackEventByName(tracks.childCommentProfanityError.name, {
+                  locale,
+                  postId,
+                  postType,
+                  projectId,
+                  profaneMessage: commentBodyMultiloc[locale],
+                  location: 'Initiative Child Comment Form (citizen side)',
+                  userId: authUser.data.id,
+                  host: !isNilOrError(appConfiguration)
+                    ? appConfiguration.data.attributes.host
+                    : null,
+                });
+
+                setProfanityApiError(true);
+              }
+            },
+          }
+        );
       }
     }
   };
