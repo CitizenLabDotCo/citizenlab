@@ -55,7 +55,7 @@ RSpec.describe Analytics::FactParticipation do
       end
     end
 
-    context 'when a vote is added' do
+    context 'when a reaction is added' do
       let!(:reaction) { create(:reaction) }
 
       it 'is also available as a participation fact' do

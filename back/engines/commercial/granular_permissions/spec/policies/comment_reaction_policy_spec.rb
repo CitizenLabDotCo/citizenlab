@@ -9,7 +9,7 @@ describe CommentReactionPolicy do
   let(:project) { create(:continuous_project, with_permissions: true) }
   let(:comment) { create(:comment, post: create(:idea, project: project)) }
 
-  context 'for a mortal user who owns the vote on a project where commenting is only allowed by admins' do
+  context 'for a mortal user who owns the reaction on a project where commenting is only allowed by admins' do
     let!(:reaction) { create(:reaction, reactable: comment) }
     let(:user) { reaction.user }
 

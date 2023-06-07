@@ -56,7 +56,7 @@ describe SmartGroups::Rules::ParticipatedInProject do
       @user2 = create(:user)
       @user3 = create(:user)
       @idea1 = create(:idea, project: @project1, author: @user1)
-      @vote = create(:reaction, reactable: @idea1, user: @user2)
+      @reaction = create(:reaction, reactable: @idea1, user: @user2)
       @comment = create(:comment, post: @idea1, author: @user3)
       @idea2 = create(:idea, project: @project2, author: @user3)
     end

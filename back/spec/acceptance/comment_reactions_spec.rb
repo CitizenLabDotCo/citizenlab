@@ -118,7 +118,7 @@ resource 'Comment Reactions' do
       expect(@comment.reload.dislikes_count).to eq 0
     end
 
-    # example_request "Dislike a comment that doesn't have your vote yet" do
+    # example_request "Dislike a comment that doesn't have your reaction yet" do
     #   assert_status 201
     #   expect(@comment.reload.likes_count).to eq 2
     #   expect(@comment.reload.dislikes_count).to eq 1

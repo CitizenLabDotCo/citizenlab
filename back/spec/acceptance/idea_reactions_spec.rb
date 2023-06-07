@@ -66,12 +66,12 @@ resource 'Reactions' do
         @reaction = create(:reaction, reactable: @idea, user: @user, mode: 'up')
       end
 
-      example '[error] Upvote the same idea', document: false do
+      example '[error] Like the same idea', document: false do
         do_request mode: 'up'
         assert_status 422
       end
 
-      example '[error] Downvote the same idea', document: false do
+      example '[error] Dislike the same idea', document: false do
         do_request mode: 'down'
         assert_status 422
       end

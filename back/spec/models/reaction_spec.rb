@@ -20,7 +20,7 @@ RSpec.describe Reaction do
       user = create(:user)
       create(:reaction, reactable: idea, user: user)
       expect(build(:reaction, mode: 'up', reactable: idea, user: user)).not_to be_valid
-      # Must be valid to be able to turn upvote into downvote in transaction
+      # Must be valid to be able to turn like into dislike in transaction
       expect(build(:reaction, mode: 'down', reactable: idea, user: user)).to be_valid
       expect { create(:reaction, mode: 'down', reactable: idea, user: user) }.to raise_error(ActiveRecord::RecordNotUnique)
     end
