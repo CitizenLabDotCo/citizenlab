@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 
 export interface IUserCustomFieldOptionData {
@@ -25,17 +25,6 @@ export interface IUserCustomFieldOptions {
 
 export interface IUserCustomFieldOption {
   data: IUserCustomFieldOptionData;
-}
-
-export function userCustomFieldOptionStream(
-  customFieldId: string,
-  customFieldOptionId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IUserCustomFieldOption>({
-    apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${customFieldOptionId}`,
-    ...streamParams,
-  });
 }
 
 export async function reorderUserCustomFieldOption(

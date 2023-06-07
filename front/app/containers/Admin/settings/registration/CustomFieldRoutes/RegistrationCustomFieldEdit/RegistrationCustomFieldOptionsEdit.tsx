@@ -1,5 +1,4 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 
@@ -8,7 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // hooks
-import useUserCustomFieldOption from 'hooks/useUserCustomFieldOption';
+import useUserCustomFieldOption from 'api/user_custom_fields_options/useUserCustomFieldOption';
 import useUpdateUserCustomFieldsOption from 'api/user_custom_fields_options/useUpdateUserCustomFieldsOption';
 
 // components
@@ -25,10 +24,10 @@ const RegistrationCustomFieldOptionsEdit = () => {
 
   const { mutate: updateUserCustomFieldOption } =
     useUpdateUserCustomFieldsOption();
-  const userCustomFieldOption = useUserCustomFieldOption(
-    userCustomFieldId,
-    userCustomFieldOptionId
-  );
+  const { data: userCustomFieldOption } = useUserCustomFieldOption({
+    customFieldId: userCustomFieldId,
+    optionId: userCustomFieldOptionId,
+  });
 
   const handleSubmit = (values: FormValues) => {
     updateUserCustomFieldOption(
@@ -47,7 +46,7 @@ const RegistrationCustomFieldOptionsEdit = () => {
     );
   };
 
-  if (!isNilOrError(userCustomFieldOption)) {
+  if (userCustomFieldOption) {
     return (
       <Section>
         <SectionTitle>
@@ -58,7 +57,8 @@ const RegistrationCustomFieldOptionsEdit = () => {
         <RegistrationCustomFieldOptionsForm
           onSubmit={handleSubmit}
           defaultValues={{
-            title_multiloc: userCustomFieldOption.attributes.title_multiloc,
+            title_multiloc:
+              userCustomFieldOption.data.attributes.title_multiloc,
           }}
         />
       </Section>
