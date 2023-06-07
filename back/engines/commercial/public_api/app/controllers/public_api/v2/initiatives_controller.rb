@@ -3,16 +3,17 @@
 module PublicApi
   class V2::InitiativesController < PublicApiController
     def index
-      @initiatives = Initiative.all
+      initiatives = Initiative
         .order(created_at: :desc)
         .page(params[:page_number])
         .per(num_per_page)
-      @initiatives = common_date_filters @initiatives
 
-      render json: @initiatives,
+      initiatives = common_date_filters(initiatives)
+
+      render json: initiatives,
         each_serializer: V2::InitiativeSerializer,
         adapter: :json,
-        meta: meta_properties(@initiatives)
+        meta: meta_properties(initiatives)
     end
 
     def show
