@@ -15,11 +15,11 @@ import BudgetingIcon from './BudgetingIcon';
 import { SubSectionTitle } from 'components/admin/Section';
 
 // types
-import { VotingMethodType } from 'containers/Admin/projects/project/participationContext/utils/votingMethodUtils';
+import { VotingMethod } from 'services/participationContexts';
 
 type VotingMethodSelectorProps = {
-  voting_method?: VotingMethodType | null;
-  handleVotingMethodOnChange: (voting_method: VotingMethodType) => void;
+  voting_method?: VotingMethod | null;
+  handleVotingMethodOnChange: (voting_method: VotingMethod) => void;
 };
 
 const VotingMethodSelector = ({

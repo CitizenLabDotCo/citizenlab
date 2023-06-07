@@ -39,7 +39,6 @@ interface Props {
   isCustomInputTermEnabled: boolean;
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
-  inputTermOptions: IOption[];
   posting_enabled: boolean;
   commenting_enabled: boolean;
   voting_enabled: boolean;
@@ -79,7 +78,6 @@ export default ({
   isCustomInputTermEnabled,
   input_term,
   handleInputTermChange,
-  inputTermOptions,
   posting_enabled,
   commenting_enabled,
   voting_enabled,
@@ -124,7 +122,6 @@ export default ({
         <CustomFieldPicker
           input_term={input_term}
           handleInputTermChange={handleInputTermChange}
-          inputTermOptions={inputTermOptions}
         />
       )}
       <StyledSectionField>

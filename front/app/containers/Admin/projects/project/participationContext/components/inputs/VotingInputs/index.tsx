@@ -1,5 +1,8 @@
 import React from 'react';
 
+// api
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 // components
 import { Toggle, IOption } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
@@ -8,6 +11,7 @@ import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import SortingPicker from '../../shared/SortingPicker';
 import { ToggleRow, ToggleLabel } from '../../shared/styling';
 import VotingMethodSelector from './VotingMethodSelector';
+import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -17,24 +21,17 @@ import messages from '../../../../messages';
 import {
   IdeaDefaultSortMethod,
   InputTerm,
+  VotingMethod,
 } from 'services/participationContexts';
 import { ApiErrors } from '../../../';
 import { AnonymousPostingToggle } from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
-import {
-  VotingMethodType,
-  getVotingMethodConfig,
-} from 'containers/Admin/projects/project/participationContext/utils/votingMethodUtils';
-
-// api
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export interface VotingInputsProps {
   isCustomInputTermEnabled: boolean;
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
-  inputTermOptions: IOption[];
   allow_anonymous_participation: boolean | null | undefined;
-  voting_method: VotingMethodType | null | undefined;
+  voting_method: VotingMethod | null | undefined;
   min_budget: number | null | undefined;
   max_budget: number | null | undefined;
   commenting_enabled: boolean | null | undefined;
@@ -53,14 +50,13 @@ export interface VotingInputsProps {
   handleAllowAnonymousParticipationOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
-  handleVotingMethodOnChange: (voting_method: VotingMethodType) => void;
+  handleVotingMethodOnChange: (voting_method: VotingMethod) => void;
 }
 
 export default ({
   isCustomInputTermEnabled,
   input_term,
   handleInputTermChange,
-  inputTermOptions,
   allow_anonymous_participation,
   voting_method,
   min_budget,
@@ -79,35 +75,9 @@ export default ({
   handleAllowAnonymousParticipationOnChange,
   handleVotingMethodOnChange,
 }: VotingInputsProps) => {
-  const props = {
-    isCustomInputTermEnabled,
-    input_term,
-    handleInputTermChange,
-    inputTermOptions,
-    allow_anonymous_participation,
-    voting_method,
-    min_budget,
-    max_budget,
-    commenting_enabled,
-    minBudgetError,
-    maxBudgetError,
-    handleMinBudgetingAmountChange,
-    handleMaxBudgetingAmountChange,
-    toggleCommentingEnabled,
-    apiErrors,
-    presentation_mode,
-    handleIdeasDisplayChange,
-    ideas_order,
-    handleIdeaDefaultSortMethodChange,
-    handleAllowAnonymousParticipationOnChange,
-    handleVotingMethodOnChange,
-  };
-
   const hasAnonymousParticipationEnabled = useFeatureFlag({
     name: 'anonymous_participation',
   });
-
-  const votingMethodConfig = getVotingMethodConfig(voting_method);
 
   return (
     <>
@@ -123,9 +93,20 @@ export default ({
           }
         />
       )}
-      {/* Render any voting method specific inputs from configuration */}
-      {votingMethodConfig?.getVotingMethodInputs &&
-        votingMethodConfig.getVotingMethodInputs(props)}
+      {voting_method === 'budgeting' && (
+        <BudgetingInputs
+          min_budget={min_budget}
+          max_budget={max_budget}
+          input_term={input_term}
+          isCustomInputTermEnabled={isCustomInputTermEnabled}
+          minBudgetError={minBudgetError}
+          maxBudgetError={maxBudgetError}
+          apiErrors={apiErrors}
+          handleInputTermChange={handleInputTermChange}
+          handleMinBudgetingAmountChange={handleMinBudgetingAmountChange}
+          handleMaxBudgetingAmountChange={handleMaxBudgetingAmountChange}
+        />
+      )}
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...messages.actionsForResidents} />

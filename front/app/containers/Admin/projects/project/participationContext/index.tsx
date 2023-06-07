@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { isEqual } from 'lodash-es';
+import { adopt } from 'react-adopt';
 
 // components
 import ParticipationMethodPicker from './components/ParticipationMethodPicker';
@@ -29,7 +30,7 @@ import {
   IdeaDefaultSortMethod,
   getDefaultSortMethodFallback,
   InputTerm,
-  INPUT_TERMS,
+  VotingMethod,
 } from 'services/participationContexts';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -40,18 +41,16 @@ import GetFeatureFlag, {
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
-
-// typings
-import { CLErrors } from 'typings';
-import { adopt } from 'react-adopt';
 
 // utils
 import getOutput from './utils/getOutput';
 import validate from './utils/validate';
 import { anyIsDefined } from 'utils/helperUtils';
-import { VotingMethodType } from 'containers/Admin/projects/project/participationContext/utils/votingMethodUtils';
+
+// typings
+import { CLErrors } from 'typings';
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
@@ -62,7 +61,7 @@ export interface IParticipationContextConfig {
   upvoting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
   allow_anonymous_participation?: boolean | null;
-  voting_method?: VotingMethodType | null;
+  voting_method?: VotingMethod | null;
   downvoting_method?: 'unlimited' | 'limited' | null;
   downvoting_limited_max?: number | null;
   presentation_mode?: 'map' | 'card' | null;
@@ -309,7 +308,7 @@ class ParticipationContext extends PureComponent<
   };
 
   handleVotingMethodOnChange = (
-    voting_method: VotingMethodType | null | undefined
+    voting_method: VotingMethod | null | undefined
   ) => {
     this.setState({ voting_method });
   };
@@ -388,27 +387,6 @@ class ParticipationContext extends PureComponent<
 
     return isValidated;
   }
-
-  getInputTermOptions = () => {
-    return INPUT_TERMS.map((inputTerm: InputTerm) => {
-      const labelMessages: {
-        [key in InputTerm]: MessageDescriptor;
-      } = {
-        idea: messages.ideaTerm,
-        contribution: messages.contributionTerm,
-        question: messages.questionTerm,
-        option: messages.optionTerm,
-        issue: messages.issueTerm,
-        project: messages.projectTerm,
-      };
-      const labelMessage = labelMessages[inputTerm];
-
-      return {
-        value: inputTerm,
-        label: this.props.intl.formatMessage(labelMessage),
-      } as IOption;
-    });
-  };
 
   render() {
     const {
@@ -491,7 +469,6 @@ class ParticipationContext extends PureComponent<
                 isCustomInputTermEnabled={isCustomInputTermEnabled}
                 input_term={input_term}
                 handleInputTermChange={this.handleInputTermChange}
-                inputTermOptions={this.getInputTermOptions()}
                 allow_anonymous_participation={allow_anonymous_participation}
                 voting_method={voting_method}
                 min_budget={min_budget}
@@ -529,7 +506,6 @@ class ParticipationContext extends PureComponent<
                   isCustomInputTermEnabled={isCustomInputTermEnabled}
                   input_term={input_term}
                   handleInputTermChange={this.handleInputTermChange}
-                  inputTermOptions={this.getInputTermOptions()}
                   posting_enabled={posting_enabled}
                   commenting_enabled={commenting_enabled}
                   voting_enabled={voting_enabled}

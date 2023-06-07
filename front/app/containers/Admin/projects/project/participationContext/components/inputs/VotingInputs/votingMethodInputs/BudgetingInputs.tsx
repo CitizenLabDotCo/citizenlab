@@ -1,5 +1,6 @@
 import React from 'react';
 
+// components
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import CustomFieldPicker from '../../../shared/CustomFieldPicker';
@@ -8,31 +9,57 @@ import {
   BudgetingAmountInput,
   BudgetingAmountInputError,
 } from '../../../shared/styling';
-import { VotingInputsProps } from '..';
+
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../../../messages';
 
-type BudgetingInputsProps = {
-  props: VotingInputsProps;
-};
+// typings
+import { InputTerm } from 'services/participationContexts';
+import { ApiErrors } from '../../../..';
+import { IOption } from 'typings';
 
-const BudgetingInputs = ({ props }: BudgetingInputsProps) => {
+interface Props {
+  min_budget?: number | null;
+  max_budget?: number | null;
+  input_term?: InputTerm;
+  isCustomInputTermEnabled: boolean;
+  minBudgetError: string | null;
+  maxBudgetError: string | null;
+  apiErrors: ApiErrors;
+  handleInputTermChange: (option: IOption) => void;
+  handleMinBudgetingAmountChange: (newMinBudget: string) => void;
+  handleMaxBudgetingAmountChange: (newMaxBudget: string) => void;
+}
+
+const BudgetingInputs = ({
+  min_budget,
+  max_budget,
+  input_term,
+  isCustomInputTermEnabled,
+  minBudgetError,
+  maxBudgetError,
+  apiErrors,
+  handleInputTermChange,
+  handleMinBudgetingAmountChange,
+  handleMaxBudgetingAmountChange,
+}: Props) => {
   const minBudgetInputValue =
     // need to check the type because if min_budget is 0,
     // it'll evaluate to null
-    typeof props.min_budget === 'number' ? props.min_budget.toString() : null;
+    typeof min_budget === 'number' ? min_budget.toString() : null;
+
   const maxBudgetInputValue =
     // maxBudget can't be lower than 1, but it's still a good practice
     // to check for type instead of relying on JS type coercion
-    typeof props.max_budget === 'number' ? props.max_budget.toString() : null;
+    typeof max_budget === 'number' ? max_budget.toString() : null;
 
   return (
     <>
-      {props.isCustomInputTermEnabled && (
+      {isCustomInputTermEnabled && (
         <CustomFieldPicker
-          input_term={props.input_term}
-          handleInputTermChange={props.handleInputTermChange}
-          inputTermOptions={props.inputTermOptions}
+          input_term={input_term}
+          handleInputTermChange={handleInputTermChange}
         />
       )}
       <SectionField>
@@ -43,7 +70,7 @@ const BudgetingInputs = ({ props }: BudgetingInputsProps) => {
           />
         </SubSectionTitle>
         <BudgetingAmountInput
-          onChange={props.handleMinBudgetingAmountChange}
+          onChange={handleMinBudgetingAmountChange}
           type="number"
           min="0"
           value={minBudgetInputValue}
@@ -51,14 +78,14 @@ const BudgetingInputs = ({ props }: BudgetingInputsProps) => {
             <LabelBudgetingInput header="minimum" tooltip="minimumTooltip" />
           }
         />
-        <BudgetingAmountInputError text={props.minBudgetError} />
+        <BudgetingAmountInputError text={minBudgetError} />
         <BudgetingAmountInputError
-          apiErrors={props.apiErrors && props.apiErrors.min_budget}
+          apiErrors={apiErrors && apiErrors.min_budget}
         />
       </SectionField>
       <SectionField>
         <BudgetingAmountInput
-          onChange={props.handleMaxBudgetingAmountChange}
+          onChange={handleMaxBudgetingAmountChange}
           type="number"
           min="1"
           value={maxBudgetInputValue}
@@ -66,9 +93,9 @@ const BudgetingInputs = ({ props }: BudgetingInputsProps) => {
             <LabelBudgetingInput header="maximum" tooltip="maximumTooltip" />
           }
         />
-        <BudgetingAmountInputError text={props.maxBudgetError} />
+        <BudgetingAmountInputError text={maxBudgetError} />
         <BudgetingAmountInputError
-          apiErrors={props.apiErrors && props.apiErrors.max_budget}
+          apiErrors={apiErrors && apiErrors.max_budget}
         />
       </SectionField>
     </>

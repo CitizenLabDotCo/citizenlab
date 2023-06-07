@@ -12,13 +12,13 @@ import {
   ParticipationMethod,
   IdeaDefaultSortMethod,
   InputTerm,
+  VotingMethod,
 } from 'services/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Locale } from '@citizenlab/cl2-component-library';
 import { IAreaData } from 'api/areas/types';
 import { IAppConfiguration } from 'api/app_configuration/types';
-import { VotingMethodType } from 'containers/Admin/projects/project/participationContext/utils/votingMethodUtils';
 
 // Keys
 export type ProjectsKeys = Keys<typeof projectsKeys>;
@@ -169,7 +169,7 @@ export interface IProjectAttributes {
   max_budget?: number | null;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
-  voting_method?: VotingMethodType | null;
+  voting_method?: VotingMethod | null;
   document_annotation_embed_url?: string | null;
   // MISMATCH: ordering doesn't seem to exist on real response
   // ordering: number;
