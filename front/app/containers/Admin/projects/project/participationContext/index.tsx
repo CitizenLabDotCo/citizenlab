@@ -249,9 +249,7 @@ class ParticipationContext extends PureComponent<
       document_annotation_embed_url: null,
       min_budget: budgeting ? 0 : null,
       max_budget: budgeting ? 1000 : null,
-      ideas_order: ideationOrBudgeting
-        ? getDefaultSortMethodFallback(ideation)
-        : null,
+      ideas_order: ideation ? getDefaultSortMethodFallback(ideation) : null,
     });
   };
 
@@ -486,10 +484,6 @@ class ParticipationContext extends PureComponent<
                 apiErrors={apiErrors}
                 presentation_mode={presentation_mode}
                 handleIdeasDisplayChange={this.handleIdeasDisplayChange}
-                ideas_order={ideas_order}
-                handleIdeaDefaultSortMethodChange={
-                  this.handleIdeaDefaultSortMethodChange
-                }
                 handleAllowAnonymousParticipationOnChange={
                   this.handleAllowAnonymousParticipationOnChange
                 }

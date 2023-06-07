@@ -8,7 +8,6 @@ import { Toggle, IOption } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
-import SortingPicker from '../../shared/SortingPicker';
 import { ToggleRow, ToggleLabel } from '../../shared/styling';
 import VotingMethodSelector from './VotingMethodSelector';
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
@@ -18,11 +17,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../../messages';
 
 // typings
-import {
-  IdeaDefaultSortMethod,
-  InputTerm,
-  VotingMethod,
-} from 'services/participationContexts';
+import { InputTerm, VotingMethod } from 'services/participationContexts';
 import { ApiErrors } from '../../../';
 import { AnonymousPostingToggle } from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 
@@ -43,10 +38,6 @@ export interface VotingInputsProps {
   apiErrors: ApiErrors;
   presentation_mode: 'card' | 'map' | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
-  ideas_order: IdeaDefaultSortMethod | undefined;
-  handleIdeaDefaultSortMethodChange: (
-    ideas_order: IdeaDefaultSortMethod
-  ) => void;
   handleAllowAnonymousParticipationOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
@@ -70,8 +61,6 @@ export default ({
   apiErrors,
   presentation_mode,
   handleIdeasDisplayChange,
-  ideas_order,
-  handleIdeaDefaultSortMethodChange,
   handleAllowAnonymousParticipationOnChange,
   handleVotingMethodOnChange,
 }: VotingInputsProps) => {
@@ -128,17 +117,6 @@ export default ({
         presentation_mode={presentation_mode}
         apiErrors={apiErrors}
         handleIdeasDisplayChange={handleIdeasDisplayChange}
-      />
-
-      <SortingPicker
-        options={[
-          { key: 'random', value: 'random' },
-          { key: 'newest', value: 'new' },
-          { key: 'oldest', value: '-new' },
-        ]}
-        ideas_order={ideas_order}
-        apiErrors={apiErrors}
-        handleIdeaDefaultSortMethodChange={handleIdeaDefaultSortMethodChange}
       />
     </>
   );
