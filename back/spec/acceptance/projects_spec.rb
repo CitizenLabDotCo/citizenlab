@@ -152,6 +152,7 @@ resource 'Projects' do
               }
             },
             comment_voting_idea: { enabled: false, disabled_reason: 'project_inactive' },
+            annotating_document: { enabled: false, disabled_reason: 'project_inactive' },
             taking_survey: { enabled: false, disabled_reason: 'project_inactive' },
             taking_poll: { enabled: false, disabled_reason: 'project_inactive' }
           }
@@ -235,6 +236,7 @@ resource 'Projects' do
         parameter :allow_anonymous_participation, 'Only for continuous ideation and budgeting projects. Allow users to post inputs and comments anonymously. Default to false.', required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
+        parameter :document_annotation_embed_url, 'The URL of the document_annotation external API, if participation_method is set to document_annotation', required: false
         parameter :min_budget, 'The minimum budget amount. Participatory budget should be greater or equal to input.', required: false
         parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}. Defaults to card.", required: false
@@ -506,6 +508,7 @@ resource 'Projects' do
         parameter :allow_anonymous_participation, 'Only for continuous ideation and budgeting projects. Allow users to post inputs and comments anonymously.', required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
+        parameter :document_annotation_embed_url, 'The URL to link with the external provider, if participation_method is set to document_annotation', required: false
         parameter :min_budget, 'The minimum budget amount. Participatory budget should be greater or equal to input.', required: false
         parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(',')}.", required: false
@@ -1325,6 +1328,7 @@ resource 'Projects' do
         parameter :allow_anonymous_participation, 'Only for continuous ideation and budgeting projects. Allow users to post inputs and comments anonymously. Default to false.', required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
+        parameter :document_annotation_embed_url, 'The URL of the document_annotation external API, if participation_method is set to document_annotation', required: false
         parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}. Defaults to card.", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false

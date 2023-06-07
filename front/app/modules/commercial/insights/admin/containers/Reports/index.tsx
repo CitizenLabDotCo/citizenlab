@@ -35,11 +35,16 @@ const ReportTab = memo(() => {
     ? projects.data.filter((project) => {
         const processType = project?.attributes.process_type;
         const participationMethod = project.attributes.participation_method;
+
         return (
           (processType === 'continuous' &&
-            !['information', 'survey', 'volunteering', null].includes(
-              participationMethod
-            )) ||
+            ![
+              'information',
+              'survey',
+              'volunteering',
+              'document_annotation',
+              null,
+            ].includes(participationMethod)) ||
           processType === 'timeline'
         );
       })
