@@ -26,6 +26,7 @@ const VotingMethodSelector = ({
   handleVotingMethodOnChange,
 }: VotingMethodSelectorProps) => {
   const { formatMessage } = useIntl();
+  const selected = voting_method === 'budgeting';
 
   return (
     <SectionField>
@@ -41,8 +42,8 @@ const VotingMethodSelector = ({
         {formatMessage(messages.votingMethodSelectorSubtitle)}
       </Text>
       <CardButton
-        selected={voting_method === 'budgeting'}
-        icon={<BudgetingIcon />}
+        selected={selected}
+        icon={<BudgetingIcon selected={selected} />}
         onClick={(e) => {
           e.preventDefault();
           handleVotingMethodOnChange('budgeting');
