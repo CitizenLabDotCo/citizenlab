@@ -1687,6 +1687,7 @@
   "app.utils.errors.default.api_error_too_long": "Είναι πολύ μεγάλο",
   "app.utils.errors.default.api_error_too_short": "Είναι πολύ μικρός",
   "app.utils.errors.default.api_error_wrong_length": "Έχει λάθος μήκος",
+  "app.utils.errors.default.test": "Δοκιμή Crowdin. Δεν χρειάζεται να μεταφράσετε αυτή τη συμβολοσειρά.",
   "app.utils.errors.defaultapi_error_.odd": "Πρέπει να είναι περιττό",
   "app.utils.notInGroup": "Δεν πληροίτε τις προϋποθέσεις συμμετοχής.",
   "app.utils.participationMethod.onSurveySubmission": "Σας ευχαριστούμε. Η απάντησή σας λήφθηκε.",
