@@ -234,7 +234,7 @@ const ChildCommentForm = ({
                 setFocused(false);
               },
               onError: (error) => {
-                const apiErrors = error.json.errors;
+                const apiErrors = error.errors;
                 const profanityApiError = apiErrors.base.find(
                   (apiError) => apiError.error === 'includes_banned_words'
                 );
@@ -281,7 +281,7 @@ const ChildCommentForm = ({
           );
         }
       } catch (error) {
-        const apiErrors = error.json.errors;
+        const apiErrors = error.errors;
         const profanityApiError = apiErrors.base.find(
           (apiError) => apiError.error === 'includes_banned_words'
         );

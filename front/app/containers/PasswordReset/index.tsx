@@ -152,7 +152,7 @@ class PasswordReset extends React.PureComponent<
         await resetPassword({ password, token });
         this.setState({ password: null, processing: false, success: true });
       } catch (errors) {
-        const apiErrors = errors.json.errors;
+        const apiErrors = errors.errors;
         const tokenErrors: CLError[] = apiErrors.token;
 
         if (tokenErrors && tokenErrors.length > 0) {
