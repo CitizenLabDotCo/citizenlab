@@ -131,14 +131,14 @@ export default defineMessages({
     defaultMessage:
       'Embed a Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey or Microsoft Forms survey.',
   },
-  conductVotingText: {
-    id: 'app.containers.AdminPage.ProjectEdit.conductVotingText',
-    defaultMessage: 'Voting & option analysis',
+  conductVotingOrPrioritizationText: {
+    id: 'app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText',
+    defaultMessage: 'Conduct a voting or prioritization exercise',
   },
-  conductVotingDescriptionText: {
-    id: 'app.containers.AdminPage.ProjectEdit.conductVotingDescriptionText',
+  conductVotingOrPrioritizationDescriptionText: {
+    id: 'app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText',
     defaultMessage:
-      'Ask participants to prioritise options through different voting methods.',
+      'Assign a budget to projects and ask participants to select their preferred projects that fit within a total budget.',
   },
   createNativeSurvey: {
     id: 'app.containers.AdminPage.ProjectEdit.createNativeSurvey',
