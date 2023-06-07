@@ -1251,7 +1251,6 @@
   "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Vereisten & vragen voor deelname",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Toegangsrechten",
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "Sommige participatiemethoden zijn niet beschikbaar voor bestaande fasen. In deze gevallen zal een nieuwe fase moeten worden gecreëerd.",
-  "app.containers.AdminPage.ProjectEdit.phasePermissions": "Acties",
   "app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip": "Bepaal welke participatieve acties gebruikers kunnen nemen tijdens deze fase.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Tijdslijn",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Peiling",

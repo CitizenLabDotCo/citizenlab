@@ -1259,7 +1259,6 @@
   "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Participant requirements & questions",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Access rights",
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "Some participation methods aren’t available for existing phases. A new phase will have to be created in these cases.",
-  "app.containers.AdminPage.ProjectEdit.phasePermissions": "Enabled actions",
   "app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip": "Select what participative action users can take during this ideation phase.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Timeline",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Poll",

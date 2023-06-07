@@ -1251,7 +1251,6 @@
   "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Participant requirements & questions",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Direitos de acesso",
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "Alguns métodos de participação não estão disponíveis para as fases existentes. Nestes casos, terá de ser criada uma nova fase.",
-  "app.containers.AdminPage.ProjectEdit.phasePermissions": "Ações",
   "app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip": "Defina quais ações os usuários podem realizar.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Linha do tempo",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Pesquisa",
