@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class PublicApi::V2::UserSerializer < ActiveModel::Serializer
-  @@multiloc_service = MultilocService.new
-
   attributes :id,
     :email,
     :slug,
@@ -32,6 +30,12 @@ class PublicApi::V2::UserSerializer < ActiveModel::Serializer
   end
 
   def bio
-    @@multiloc_service.t(object.bio_multiloc)
+    multiloc_service.t(object.bio_multiloc)
+  end
+
+  private
+
+  def multiloc_service
+    @multiloc_service ||= MultilocService.new
   end
 end
