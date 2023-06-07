@@ -190,7 +190,7 @@ module EmailCampaigns
           published_at: idea.published_at.iso8601,
           author_name: name_service.display_name!(idea.author),
           likes_count: idea.likes_count,
-          dislikes_increment: new_reactions.where(mode: 'up').count,
+          likes_increment: new_reactions.where(mode: 'up').count,
           dislikes_count: idea.dislikes_count,
           dislikes_increment: new_reactions.where(mode: 'down').count,
           comments_count: idea.comments_count,
