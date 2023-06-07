@@ -91,7 +91,7 @@ resource 'Reactions' do
       expect(@initiative.reload.dislikes_count).to eq 0
     end
 
-    example 'Upvote an initiative that you downvoted before' do
+    example 'Like an initiative that you disliked before' do
       @initiative.reactions.create(user: @user, mode: 'down')
       do_request
       assert_status 201
@@ -99,12 +99,12 @@ resource 'Reactions' do
       expect(@initiative.reload.dislikes_count).to eq 0
     end
 
-    example '[error] Upvote an initiative that you upvoted before' do
+    example '[error] Like an initiative that you liked before' do
       @initiative.reactions.create(user: @user, mode: 'up')
       do_request
       assert_status 422
       json_response = json_parse response_body
-      expect(json_response).to include_response_error(:base, 'already_upvoted')
+      expect(json_response).to include_response_error(:base, 'already_liked')
       expect(@initiative.reload.likes_count).to eq 3
       expect(@initiative.reload.dislikes_count).to eq 0
     end
@@ -118,7 +118,7 @@ resource 'Reactions' do
 
     let(:initiative_id) { @initiative.id }
 
-    example_request "[error] Downvote an initiative that doesn't have your vote yet" do
+    example_request "[error] Dislike an initiative that doesn't have your vote yet" do
       assert_status 401
       json_response = json_parse(response_body)
       expect(json_response.dig(:errors, :base)).to include({ error: 'downvoting_not_supported' })
