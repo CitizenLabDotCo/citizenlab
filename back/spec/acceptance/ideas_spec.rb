@@ -539,7 +539,7 @@ resource 'Ideas' do
               disabled_reason: nil,
               future_enabled: nil
             },
-            voting_idea: {
+            reacting_idea: {
               enabled: true,
               disabled_reason: nil,
               cancelling_enabled: true,
@@ -554,7 +554,7 @@ resource 'Ideas' do
                 future_enabled: nil
               }
             },
-            comment_voting_idea: {
+            comment_reacting_idea: {
               enabled: true,
               disabled_reason: nil,
               future_enabled: nil
@@ -672,7 +672,7 @@ resource 'Ideas' do
             expect(project.reload.ideas_count).to eq 1
           end
 
-          example 'Check for the automatic creation of an upvote by the author when an idea is created', document: false do
+          example 'Check for the automatic creation of a like by the author when an idea is created', document: false do
             do_request
             json_response = json_parse(response_body)
             new_idea = Idea.find(json_response.dig(:data, :id))
@@ -1033,7 +1033,7 @@ resource 'Ideas' do
             expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
           end
 
-          example 'Check for the automatic creation of an upvote by the author when the publication status of an idea is updated from draft to published', document: false do
+          example 'Check for the automatic creation of a like by the author when the publication status of an idea is updated from draft to published', document: false do
             @idea.update! publication_status: 'draft'
             do_request idea: { publication_status: 'published' }
             json_response = json_parse response_body

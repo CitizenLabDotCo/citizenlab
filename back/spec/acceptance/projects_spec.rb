@@ -139,7 +139,7 @@ resource 'Projects' do
           action_descriptor: {
             posting_idea: { enabled: false, disabled_reason: 'project_inactive', future_enabled: nil },
             commenting_idea: { enabled: false, disabled_reason: 'project_inactive' },
-            voting_idea: {
+            reacting_idea: {
               enabled: false,
               disabled_reason: 'project_inactive',
               up: {
@@ -151,7 +151,7 @@ resource 'Projects' do
                 disabled_reason: 'project_inactive'
               }
             },
-            comment_voting_idea: { enabled: false, disabled_reason: 'project_inactive' },
+            comment_reacting_idea: { enabled: false, disabled_reason: 'project_inactive' },
             taking_survey: { enabled: false, disabled_reason: 'project_inactive' },
             taking_poll: { enabled: false, disabled_reason: 'project_inactive' }
           }
@@ -226,12 +226,12 @@ resource 'Projects' do
         parameter :posting_method, "Only for continuous projects with posting enabled. How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
         parameter :posting_limited_max, 'Only for continuous projects with limited posting. Number of posts a citizen can perform in this project. Defaults to 1', required: false
         parameter :commenting_enabled, 'Only for continuous projects. Can citizens post comment in this project? Defaults to true', required: false
-        parameter :reacting_enabled, 'Only for continuous projects. Can citizens vote in this project? Defaults to true', required: false
-        parameter :reacting_like_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
-        parameter :reacting_like_limited_max, 'Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project. Defaults to 10', required: false
-        parameter :reacting_dislike_enabled, 'Only for continuous projects. Can citizens downvote in this project? Defaults to true', required: false
-        parameter :reacting_dislike_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
-        parameter :reacting_dislike_limited_max, 'Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :reacting_enabled, 'Only for continuous projects. Can citizens react in this project? Defaults to true', required: false
+        parameter :reacting_like_method, "Only for continuous projects with reacting enabled. How does reacting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :reacting_like_limited_max, 'Only for continuous projects with limited like reactions. Number of likes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :reacting_dislike_enabled, 'Only for continuous projects. Can citizens dislike in this project? Defaults to true', required: false
+        parameter :reacting_dislike_method, "Only for continuous projects with disliking enabled. How does reacting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :reacting_dislike_limited_max, 'Only for continuous projects with limited dislike reactions. Number of dislikes a citizen can perform in this project. Defaults to 10', required: false
         parameter :allow_anonymous_participation, 'Only for continuous ideation and budgeting projects. Allow users to post inputs and comments anonymously. Default to false.', required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
@@ -497,12 +497,12 @@ resource 'Projects' do
         parameter :posting_method, "Only for continuous projects with posting enabled. How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
         parameter :posting_limited_max, 'Only for continuous projects with limited posting. Number of posts a citizen can perform in this project. Defaults to 1', required: false
         parameter :commenting_enabled, 'Only for continuous projects. Can citizens post comment in this project?', required: false
-        parameter :reacting_enabled, 'Only for continuous projects. Can citizens vote in this project?', required: false
-        parameter :reacting_like_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}.", required: false
-        parameter :reacting_like_limited_max, 'Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project.', required: false
-        parameter :reacting_dislike_enabled, 'Only for continuous projects. Can citizens downvote in this project?', required: false
-        parameter :reacting_dislike_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}.", required: false
-        parameter :reacting_dislike_limited_max, 'Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project.', required: false
+        parameter :reacting_enabled, 'Only for continuous projects. Can citizens react in this project?', required: false
+        parameter :reacting_like_method, "Only for continuous projects with reacting enabled. How does reacting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}.", required: false
+        parameter :reacting_like_limited_max, 'Only for continuous projects with limited like reactions. Number of likes a citizen can perform in this project.', required: false
+        parameter :reacting_dislike_enabled, 'Only for continuous projects. Can citizens dislike in this project?', required: false
+        parameter :reacting_dislike_method, "Only for continuous projects with dislike reactions enabled. How does reacting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}.", required: false
+        parameter :reacting_dislike_limited_max, 'Only for continuous projects with limited dislike reactions. Number of dislikes a citizen can perform in this project.', required: false
         parameter :allow_anonymous_participation, 'Only for continuous ideation and budgeting projects. Allow users to post inputs and comments anonymously.', required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
@@ -1316,12 +1316,12 @@ resource 'Projects' do
         parameter :posting_method, "Only for continuous projects with posting enabled. How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
         parameter :posting_limited_max, 'Only for continuous projects with limited posting. Number of posts a citizen can perform in this project. Defaults to 1', required: false
         parameter :commenting_enabled, 'Only for continuous projects. Can citizens post comment in this project? Defaults to true', required: false
-        parameter :reacting_enabled, 'Only for continuous projects. Can citizens vote in this project? Defaults to true', required: false
-        parameter :reacting_like_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
-        parameter :reacting_like_limited_max, 'Only for continuous projects with limited voting. Number of upvotes a citizen can perform in this project. Defaults to 10', required: false
-        parameter :reacting_dislike_enabled, 'Only for continuous projects. Can citizens downvote in this project? Defaults to true', required: false
-        parameter :reacting_dislike_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
-        parameter :reacting_dislike_limited_max, 'Only for continuous projects with limited voting. Number of downvotes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :reacting_enabled, 'Only for continuous projects. Can citizens react in this project? Defaults to true', required: false
+        parameter :reacting_like_method, "Only for continuous projects with reacting enabled. How does reacting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :reacting_like_limited_max, 'Only for continuous projects with limited like reactions. Number of likes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :reacting_dislike_enabled, 'Only for continuous projects. Can citizens dislike in this project? Defaults to true', required: false
+        parameter :reacting_dislike_method, "Only for continuous projects with dislike reactions enabled. How does reacting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :reacting_dislike_limited_max, 'Only for continuous projects with limited dislike reactions. Number of dislikes a citizen can perform in this project. Defaults to 10', required: false
         parameter :allow_anonymous_participation, 'Only for continuous ideation and budgeting projects. Allow users to post inputs and comments anonymously. Default to false.', required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
