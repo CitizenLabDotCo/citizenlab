@@ -119,6 +119,10 @@ export default ({
 
   return (
     <>
+      <VotingMethodSelector
+        voting_method={voting_method}
+        handleVotingMethodOnChange={handleVotingMethodOnChange}
+      />
       {hasAnonymousParticipationEnabled && (
         <AnonymousPostingToggle
           allow_anonymous_participation={allow_anonymous_participation}
@@ -127,10 +131,6 @@ export default ({
           }
         />
       )}
-      <VotingMethodSelector
-        voting_method={voting_method}
-        handleVotingMethodOnChange={handleVotingMethodOnChange}
-      />
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...messages.optionsToVoteOn} />
