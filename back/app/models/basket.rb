@@ -39,13 +39,13 @@ class Basket < ApplicationRecord
   end
 
   def budget_exceeds_limit?
-    total_budget > participation_context.max_budget
+    total_budget > participation_context.voting_max_total
   end
 
   private
 
   def less_than_min_budget?
-    total_budget < participation_context.min_budget
+    total_budget < participation_context.voting_min_total
   end
 
   def basket_submission

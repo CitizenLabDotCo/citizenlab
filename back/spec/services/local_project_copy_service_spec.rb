@@ -35,8 +35,6 @@ describe LocalProjectCopyService do
         downvoting_method: 'limited',
         downvoting_limited_max: 3,
         presentation_mode: 'card',
-        min_budget: 1000,
-        max_budget: 5000,
         ideas_order: 'trending',
         input_term: 'idea',
         description_preview_multiloc: { en: 'Description preview text' },

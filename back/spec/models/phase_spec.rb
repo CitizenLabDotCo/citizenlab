@@ -42,7 +42,7 @@ RSpec.describe Phase do
     end
 
     it 'can be voting' do
-      p = create(:phase, participation_method: 'voting', voting_method: 'budgeting', voting_max_budget: 200)
+      p = create(:phase, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 200)
       expect(p.save).to be true
     end
 
@@ -50,7 +50,7 @@ RSpec.describe Phase do
       phase = create(:phase, participation_method: 'ideation')
       phase.participation_method = 'voting'
       phase.voting_method = 'budgeting'
-      phase.voting_max_budget = 200
+      phase.voting_max_total = 200
       expect(phase.save).to be true
     end
 
@@ -65,7 +65,7 @@ RSpec.describe Phase do
       phase = create(:phase, participation_method: 'native_survey')
       phase.participation_method = 'voting'
       phase.voting_method = 'budgeting'
-      phase.voting_max_budget = 200
+      phase.voting_max_total = 200
       expect(phase.save).to be false
       expect(phase.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
     end
@@ -118,16 +118,16 @@ RSpec.describe Phase do
     end
   end
 
-  describe 'voting_max_budget' do
+  describe 'voting_max_total' do
     it 'can be updated in a project with just one phase' do
       project = create(
         :project_with_current_phase,
         phases_config: { sequence: 'xc' },
-        current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_budget: 1234 }
+        current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1234 }
       )
       phase = project.phases.find_by voting_method: 'budgeting'
 
-      phase.voting_max_budget = 9876
+      phase.voting_max_total = 9876
       expect(phase).to be_valid
     end
   end

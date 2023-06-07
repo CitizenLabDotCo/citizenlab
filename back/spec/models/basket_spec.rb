@@ -28,7 +28,7 @@ RSpec.describe Basket do
 
   context 'when a basket exceeding the maximum budget' do
     before do
-      project = create(:continuous_budgeting_project, max_budget: 1000)
+      project = create(:continuous_budgeting_project, voting_max_total: 1000)
       ideas = create_list(:idea, 11, budget: 100, project: project)
       @basket = create(:basket, ideas: ideas, participation_context: project)
     end

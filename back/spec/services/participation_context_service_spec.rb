@@ -118,7 +118,7 @@ describe ParticipationContextService do
     it "returns `not_ideation` when we're in a participatory budgeting context" do
       project = create(
         :project_with_current_phase,
-        current_phase_attrs: { participation_method: 'budgeting', max_budget: 1200 }
+        current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1200 }
       )
       expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'not_ideation'
     end
@@ -203,7 +203,7 @@ describe ParticipationContextService do
       it "returns nil when we're in a participatory budgeting context" do
         project = create(
           :project_with_current_phase,
-          current_phase_attrs: { participation_method: 'budgeting', max_budget: 1200 }
+          current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1200 }
         )
         expect(service.commenting_idea_disabled_reason_for_project(project, user)).to be_nil
         idea = create(:idea, project: project, phases: [project.phases[2]])
@@ -570,7 +570,7 @@ describe ParticipationContextService do
       it "returns `not_ideation` when we're in a participatory budgeting context" do
         project = create(
           :project_with_current_phase,
-          current_phase_attrs: { participation_method: 'budgeting', max_budget: 1200 }
+          current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1200 }
         )
         idea = create(:idea, project: project, phases: project.phases)
         expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq 'not_ideation'
@@ -650,7 +650,7 @@ describe ParticipationContextService do
       it 'returns nil when the idea is in the current phase and budgeting is allowed' do
         project = create(:project_with_current_phase, phases_config: {
           sequence: 'xxcxx'
-        }, current_phase_attrs: { participation_method: 'budgeting', max_budget: 10_000 })
+        }, current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 })
         idea = create(:idea, project: project, phases: [project.phases[2]])
         expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to be_nil
       end
@@ -658,7 +658,7 @@ describe ParticipationContextService do
       it 'returns `idea_not_in_current_phase` when the idea is not in the current phase, budgeting is allowed in the current phase and was allowed in the last phase the idea was part of' do
         project = create(:project_with_current_phase, phases_config: {
           sequence: 'xxcxx'
-        }, current_phase_attrs: { participation_method: 'budgeting', max_budget: 10_000 })
+        }, current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 })
         idea = create(:idea, project: project, phases: [project.phases[1]])
         expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'idea_not_in_current_phase'
       end
@@ -666,7 +666,7 @@ describe ParticipationContextService do
       it "returns 'idea_not_in_current_phase' when the idea is not in the current phase, budgeting is permitted but was not permitted in the last phase the idea was part of" do
         project = create(
           :project_with_current_phase,
-          current_phase_attrs: { participation_method: 'budgeting', max_budget: 10_000 }
+          current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 }
         )
         phase = project.phases[1]
         permission = phase.permissions.find_by(action: 'budgeting')
