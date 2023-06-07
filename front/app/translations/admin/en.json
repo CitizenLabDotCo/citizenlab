@@ -1142,7 +1142,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForResidents": "Enabled actions for residents",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorSubtitle": "Each voting method has different pre-configurations",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTitle": "Voting method",
-  "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTooltip": "Tooltip content",
+  "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTooltip2": "The voting method determines the rules of how users vote",
   "app.containers.AdminPage.ProjectEdit.addNewContribution": "Add a contribution",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Add an idea",
   "app.containers.AdminPage.ProjectEdit.addNewInput": "Add an input",
