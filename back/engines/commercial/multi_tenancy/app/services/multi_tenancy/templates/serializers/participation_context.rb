@@ -24,6 +24,12 @@ module MultiTenancy
           voting_enabled
         ]
 
+        attribute(:voting_method, if: :voting?)
+        attribute(:voting_max_total, if: :voting?)
+        attribute(:voting_min_total, if: :voting?)
+        attribute(:voting_max_votes_per_idea, if: :voting?)
+        attribute(:voting_term, if: :voting?)
+
         attribute(:survey_embed_url, if: :survey?)
         attribute(:survey_service, if: :survey?)
       end

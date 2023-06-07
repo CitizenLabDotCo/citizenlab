@@ -18,7 +18,7 @@ module ParticipationContext
   VOTING_METHODS        = %w[budgeting].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   POSTING_METHODS       = %w[unlimited limited].freeze
-  REACTION_METHODS      = %w[unlimited limited].freeze
+  REACTING_METHODS      = %w[unlimited limited].freeze
   IDEAS_ORDERS          = %w[trending random popular -new new].freeze
   IDEAS_ORDERS_BUDGETING_EXCLUDE = %w[trending popular].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option].freeze
@@ -47,9 +47,9 @@ module ParticipationContext
         validates :posting_method, presence: true, inclusion: { in: POSTING_METHODS }
         validates :commenting_enabled, inclusion: { in: [true, false] }
         validates :voting_enabled, inclusion: { in: [true, false] }
-        validates :upvoting_method, presence: true, inclusion: { in: REACTION_METHODS }
+        validates :upvoting_method, presence: true, inclusion: { in: REACTING_METHODS }
         validates :downvoting_enabled, inclusion: { in: [true, false] }
-        validates :downvoting_method, presence: true, inclusion: { in: REACTION_METHODS }
+        validates :downvoting_method, presence: true, inclusion: { in: REACTING_METHODS }
         validates :ideas_order, inclusion: { in: IDEAS_ORDERS }, allow_nil: true
         validates :input_term, inclusion: { in: INPUT_TERMS }
 
