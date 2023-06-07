@@ -4,7 +4,7 @@ import React from 'react';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
-import { Toggle, IOption } from '@citizenlab/cl2-component-library';
+import { Toggle, IconTooltip } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
@@ -14,13 +14,13 @@ import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import sharedMessages from '../../../../messages';
+import messages from '../../../../messages';
 
 // typings
 import { InputTerm, VotingMethod } from 'services/participationContexts';
 import { ApiErrors } from '../../../';
 import { AnonymousPostingToggle } from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
+import { IOption } from 'typings';
 
 export interface VotingInputsProps {
   isCustomInputTermEnabled: boolean;
@@ -100,13 +100,16 @@ export default ({
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...messages.enabledActionsForResidents} />
+          <IconTooltip
+            content={<FormattedMessage {...messages.enabledActionsTooltip} />}
+          />
         </SubSectionTitle>
 
         <ToggleRow>
           <Toggle
             checked={commenting_enabled as boolean}
             onChange={toggleCommentingEnabled}
-            label={FormattedMessage(sharedMessages.inputCommentingEnabled)}
+            label={FormattedMessage(messages.inputCommentingEnabled)}
           />
         </ToggleRow>
         <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />

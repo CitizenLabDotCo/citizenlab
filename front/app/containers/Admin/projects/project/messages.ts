@@ -236,11 +236,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.downvotingEnabled',
     defaultMessage: 'Enabled',
   },
-  phasePermissions: {
-    id: 'app.containers.AdminPage.ProjectEdit.phasePermissions',
-    defaultMessage: 'Enabled actions',
+  enabledActionsForResidents: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForResidents',
+    defaultMessage: 'Enabled actions for residents',
   },
-  phasePermissionsTooltip: {
+  enabledActionsTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip',
     defaultMessage:
       'Select what participative action users can take during this ideation phase.',

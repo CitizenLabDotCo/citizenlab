@@ -22,8 +22,4 @@ export default defineMessages({
     defaultMessage:
       'Assign a budget to options and ask participants to select their preferred options that fit within a total budget.',
   },
-  enabledActionsForResidents: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForResidents',
-    defaultMessage: 'Enabled actions for residents',
-  },
 });

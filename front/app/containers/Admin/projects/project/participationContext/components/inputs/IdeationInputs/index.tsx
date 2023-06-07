@@ -16,12 +16,11 @@ import SortingPicker from './SortingPicker';
 import {
   StyledSectionField,
   ToggleRow,
-  ToggleLabel,
   VotingLimitInput,
 } from '../../shared/styling';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../../messages';
 
 // typings
@@ -104,6 +103,8 @@ export default ({
   ideas_order,
   handleIdeaDefaultSortMethodChange,
 }: Props) => {
+  const { formatMessage } = useIntl();
+
   const hasAnonymousParticipationEnabled = useFeatureFlag({
     name: 'anonymous_participation',
   });
@@ -126,36 +127,36 @@ export default ({
       )}
       <StyledSectionField>
         <SubSectionTitle>
-          <FormattedMessage {...messages.phasePermissions} />
+          <FormattedMessage {...messages.enabledActionsForResidents} />
           <IconTooltip
-            content={<FormattedMessage {...messages.phasePermissionsTooltip} />}
+            content={<FormattedMessage {...messages.enabledActionsTooltip} />}
           />
         </SubSectionTitle>
 
         <ToggleRow>
-          <ToggleLabel>
-            <FormattedMessage {...messages.inputPostingEnabled} />
-          </ToggleLabel>
-          <Toggle checked={posting_enabled} onChange={togglePostingEnabled} />
+          <Toggle
+            checked={posting_enabled}
+            onChange={togglePostingEnabled}
+            label={formatMessage(messages.inputPostingEnabled)}
+          />
           <Error apiErrors={apiErrors && apiErrors.posting_enabled} />
         </ToggleRow>
 
         <ToggleRow>
-          <ToggleLabel>
-            <FormattedMessage {...messages.inputCommentingEnabled} />
-          </ToggleLabel>
           <Toggle
             checked={commenting_enabled}
             onChange={toggleCommentingEnabled}
+            label={formatMessage(messages.inputCommentingEnabled)}
           />
           <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
         </ToggleRow>
 
         <ToggleRow className="last">
-          <ToggleLabel>
-            <FormattedMessage {...messages.inputVotingEnabled} />
-          </ToggleLabel>
-          <Toggle checked={voting_enabled} onChange={toggleVotingEnabled} />
+          <Toggle
+            checked={voting_enabled}
+            onChange={toggleVotingEnabled}
+            label={formatMessage(messages.inputVotingEnabled)}
+          />
           <Error apiErrors={apiErrors && apiErrors.voting_enabled} />
         </ToggleRow>
       </StyledSectionField>

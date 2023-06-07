@@ -1,5 +1,5 @@
 // components
-import { Input, Radio, Label, Select } from '@citizenlab/cl2-component-library';
+import { Input, Radio, Select } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 import { Section, SectionField } from 'components/admin/Section';
@@ -33,14 +33,6 @@ export const ToggleRow = styled(Row)`
   &.last {
     margin-bottom: 0px;
   }
-`;
-
-export const ToggleLabel = styled(Label)`
-  flex: 1;
-  color: #333;
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  margin-right: 15px;
 `;
 
 export const VotingLimitInput = styled(Input)`
