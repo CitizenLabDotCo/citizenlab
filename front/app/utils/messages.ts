@@ -2,6 +2,10 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   // Defaults
+  test: {
+    id: 'app.utils.errors.default.test',
+    defaultMessage: 'Testing Crowdin. No need to translate this string.',
+  },
   api_error_confirmation: {
     id: 'app.utils.errors.default.api_error_confirmation',
     defaultMessage: "Doesn't match",
