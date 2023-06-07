@@ -1143,7 +1143,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.titleVolunteeringTab": "Volunteering",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {no participants} one {# participant} other {# participants}}",
   "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodSubtitle": "Assign a budget to options and ask participants to select their preferred options that fit within a total budget.",
-  "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodTitle": "Budgeting",
+  "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodTitle2": "Budget allocation",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorSubtitle": "Each voting method has different pre-configurations",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTitle": "Voting method",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTooltip": "Tooltip content",
