@@ -3,20 +3,21 @@
 module PublicApi
   class V2::IdeasController < PublicApiController
     def index
-      @ideas = Idea.all
+      ideas = Idea
         .order(created_at: :desc)
         .includes(:idea_images, :project, :idea_status)
         .page(params[:page_number])
         .per(num_per_page)
-      @ideas = common_date_filters @ideas
+
+      ideas = common_date_filters(ideas)
 
       # TODO: Add filter by project_id, user_id, topic_name
       # TODO: Only return ideas, separate endpoint for survey responses
 
-      render json: @ideas,
+      render json: ideas,
         each_serializer: V2::IdeaSerializer,
         adapter: :json,
-        meta: meta_properties(@ideas)
+        meta: meta_properties(ideas)
     end
 
     def show
