@@ -104,7 +104,6 @@ export const UserMenu = () => {
                   overflow="hidden"
                   w="100%"
                   textAlign="left"
-                  fontWeight="bold"
                 >
                   {`${authUser.data.attributes.first_name} ${authUser.data.attributes.last_name}`}
                 </Text>
