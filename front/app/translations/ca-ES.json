@@ -1687,6 +1687,7 @@
   "app.utils.errors.default.api_error_too_long": "És massa llarg",
   "app.utils.errors.default.api_error_too_short": "És massa curt",
   "app.utils.errors.default.api_error_wrong_length": "Té una longitud incorrecta",
+  "app.utils.errors.default.test": "Prova Crowdin. No cal traduir aquesta cadena.",
   "app.utils.errors.defaultapi_error_.odd": "Deu ser estrany",
   "app.utils.notInGroup": "No compleixes els requisits per participar.",
   "app.utils.participationMethod.onSurveySubmission": "Gràcies. S'ha rebut la vostra resposta.",
