@@ -125,16 +125,18 @@ class JsonFormsService
   end
 
   def budget_field_allowed?(project, current_user)
+    # TODO: Deal with generic voting
     return false unless AppConfiguration.instance.feature_activated?('participatory_budgeting')
     return false unless current_user
     return false unless UserRoleService.new.can_moderate_project?(project, current_user)
 
     (
       project&.process_type == 'continuous' &&
-      project&.participation_method == 'budgeting'
+      project&.participation_method == 'voting' &&
+      project&.voting_method == 'budgeting'
     ) || (
       project&.process_type == 'timeline' &&
-      project&.phases&.any? { |p| p.participation_method == 'budgeting' }
+      project&.phases&.any? { |p| p.participation_method == 'voting' && p.voting_method == 'budgeting' }
     )
   end
 end
