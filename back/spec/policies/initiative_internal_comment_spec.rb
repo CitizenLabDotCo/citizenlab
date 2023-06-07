@@ -25,19 +25,6 @@ describe InitiativeInternalCommentPolicy do
       end
     end
 
-    context 'for an admin who is not the author of the internal comment' do
-      let(:user) { create(:admin) }
-
-      it { is_expected.to     permit(:show)    }
-      it { is_expected.to     permit(:create)  }
-      it { is_expected.to     permit(:update)  }
-      it { is_expected.not_to permit(:destroy) }
-
-      it 'indexes the internal comment' do
-        expect(scope.resolve.size).to eq 1
-      end
-    end
-
     context 'for a user who is not the author of the internal comment' do
       let(:user) { create(:user) }
 
@@ -51,8 +38,22 @@ describe InitiativeInternalCommentPolicy do
       end
     end
 
-    context 'for an admin' do
+    # Currently, no difference to admin who is author - TBD
+    context 'for an admin who is not the author of the internal comment' do
       let(:user) { create(:admin) }
+
+      it { is_expected.to     permit(:show)    }
+      it { is_expected.to     permit(:create)  }
+      it { is_expected.to     permit(:update)  }
+      it { is_expected.not_to permit(:destroy) }
+
+      it 'indexes the internal comment' do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for an admin who is the author of the internal comment' do
+      let(:user) { author }
 
       it { is_expected.to     permit(:show)    }
       it { is_expected.to     permit(:create)  }
