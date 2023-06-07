@@ -25,7 +25,7 @@ describe InitiativeInternalCommentPolicy do
       end
     end
 
-    context 'for a user who is not the author of the internal comment' do
+    context 'for a regular user who is not the author of the internal comment' do
       let(:user) { create(:user) }
 
       it { is_expected.not_to permit(:show)    }
@@ -38,13 +38,12 @@ describe InitiativeInternalCommentPolicy do
       end
     end
 
-    # Currently, no difference to admin who is author - TBD
     context 'for an admin who is not the author of the internal comment' do
       let(:user) { create(:admin) }
 
       it { is_expected.to     permit(:show)    }
       it { is_expected.to     permit(:create)  }
-      it { is_expected.to     permit(:update)  }
+      it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
       it 'indexes the internal comment' do

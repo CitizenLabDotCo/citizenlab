@@ -15,31 +15,19 @@ class IdeaInternalCommentPolicy < ApplicationPolicy
   end
 
   def create?
-    (
-      user&.active? && user&.admin?
-    ) || (
-      user&.active? && UserRoleService.new.can_moderate?(record.post, user)
-    )
+    active_admin_or_moderator?
   end
 
   def children?
-    show?
+    active_admin_or_moderator?
   end
 
   def show?
-    (
-      user&.active? && user&.admin?
-    ) || (
-      user&.active? && UserRoleService.new.can_moderate?(record.post, user)
-    )
+    active_admin_or_moderator?
   end
 
   def update?
-    (
-      user&.active? && user&.admin?
-    ) || (
-      user&.active? && (record.author_id == user.id) && UserRoleService.new.can_moderate?(record.post, user)
-    )
+    active_admin_or_moderator? && internal_comment_author?
   end
 
   def mark_as_deleted?
@@ -48,5 +36,17 @@ class IdeaInternalCommentPolicy < ApplicationPolicy
 
   def destroy?
     false
+  end
+
+  def active_admin_or_moderator?
+    (
+      user&.active? && user&.admin?
+    ) || (
+      user&.active? && UserRoleService.new.can_moderate?(record.post, user)
+    )
+  end
+
+  def internal_comment_author?
+    record.author_id == user.id
   end
 end

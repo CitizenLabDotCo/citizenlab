@@ -116,21 +116,14 @@ class WebApi::V1::InternalCommentsController < ApplicationController
   end
 
   def mark_as_deleted
-    reason_code = params.dig(:internal_comment, :reason_code)
-    other_reason = params.dig(:internal_comment, :other_reason)
-    # Currenly hijacking the reason_code from CommentDeletedByAdmin - need t change this, etc
-    if (@comment.author_id == current_user&.id) ||
-       ((Notifications::CommentDeletedByAdmin::REASON_CODES.include? reason_code) && # Need to update to new notification.
-        (reason_code != 'other' || other_reason.present?))
-      @comment.publication_status = 'deleted'
-      if @comment.save
-        SideFxInternalCommentService.new.after_mark_as_deleted(@comment, current_user, reason_code, other_reason)
-        head :accepted
-      else
-        render json: { errors: @comment.errors.details }, status: :unprocessable_entity
-      end
+    return unless @comment.author_id == current_user&.id
+
+    @comment.publication_status = 'deleted'
+    if @comment.save
+      SideFxInternalCommentService.new.after_mark_as_deleted(@comment, current_user)
+      head :accepted
     else
-      raise ClErrors::TransactionError.new(error_key: :invalid_reason)
+      render json: { errors: @comment.errors.details }, status: :unprocessable_entity
     end
   end
 

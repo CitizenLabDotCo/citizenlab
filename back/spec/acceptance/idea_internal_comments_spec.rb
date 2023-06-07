@@ -260,7 +260,7 @@ resource 'InternalComments' do
       let(:id) { internal_comment.id }
       let(:body_multiloc) { { 'en' => "His hair is not blond, it's orange. Get your facts straight!" } }
 
-      example_request 'Update an internal comment on an idea' do
+      example_request "Update author's own an internal comment on an idea" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
@@ -268,24 +268,39 @@ resource 'InternalComments' do
       end
     end
 
-    post 'web_api/v1/internal_comments/:id/mark_as_deleted' do
+    patch 'web_api/v1/internal_comments/:id' do
       with_options scope: :internal_comment do
-        parameter :reason_code, "one of #{Notifications::CommentDeletedByAdmin::REASON_CODES}; only required for admins", required: false
-        parameter :other_reason, "the reason for deleting the comment, if none of the reason codes is applicable, in which case 'other' must be chosen", required: false
+        parameter :body_multiloc, 'Multi-locale field with the comment body'
+        parameter :parent_id, 'The id of the internal comment this internal comment is a response to'
       end
 
+      let(:internal_comment) { create(:internal_comment, author: create(:admin), post: @idea) }
+      let(:id) { internal_comment.id }
+      let(:body_multiloc) { { 'en' => "His hair is not blond, it's orange. Get your facts straight!" } }
+
+      example_request "Update other admin's internal comment on an idea" do
+        expect(response_status).to eq 401
+        expect(@idea.reload.internal_comments_count).to eq 1
+      end
+    end
+
+    post 'web_api/v1/internal_comments/:id/mark_as_deleted' do
       let(:internal_comment) { create(:internal_comment, author: @user, post: @idea) }
       let(:id) { internal_comment.id }
 
-      example_request 'Mark an internal comment on an idea as deleted' do
+      example_request 'Author marks an internal comment on an idea as deleted' do
         expect(response_status).to eq 202
         expect(internal_comment.reload.publication_status).to eq('deleted')
       end
+    end
 
-      example 'Admins cannot mark an internal comment as deleted without a reason', document: false do
-        admin_header_token
-        do_request
-        assert_status 422
+    post 'web_api/v1/internal_comments/:id/mark_as_deleted' do
+      let(:internal_comment) { create(:internal_comment, author: create(:admin), post: @idea) }
+      let(:id) { internal_comment.id }
+
+      example_request '[Unauthorized] Admin (not author) marks an internal comment on an idea as deleted' do
+        expect(response_status).to eq 401
+        expect(internal_comment.reload.publication_status).to eq('published')
       end
     end
   end

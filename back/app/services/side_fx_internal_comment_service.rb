@@ -34,13 +34,12 @@ class SideFxInternalCommentService
     notify_updated_mentioned_users(comment, user)
   end
 
-  def after_mark_as_deleted(comment, user, reason_code, other_reason)
+  def after_mark_as_deleted(comment, user)
     LogActivityJob.perform_later(
       comment,
       'marked_as_deleted',
       user,
-      comment.updated_at.to_i,
-      payload: { reason_code: reason_code, other_reason: other_reason }
+      comment.updated_at.to_i
     )
   end
 

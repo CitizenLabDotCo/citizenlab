@@ -15,23 +15,23 @@ class InitiativeInternalCommentPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.active? && user&.admin?
+    active_admin?
   end
 
   def children?
-    create?
+    active_admin?
   end
 
   def show?
-    create?
+    active_admin?
   end
 
   def update?
-    create?
+    active_admin? && internal_comment_author?
   end
 
   def mark_as_deleted?
-    create?
+    update?
   end
 
   def destroy?
@@ -47,6 +47,14 @@ class InitiativeInternalCommentPolicy < ApplicationPolicy
   end
 
   private
+
+  def active_admin?
+    user&.active? && user&.admin?
+  end
+
+  def internal_comment_author?
+    record.author_id == user.id
+  end
 
   def commenting_allowed?(user)
     user&.active? && user&.admin?
