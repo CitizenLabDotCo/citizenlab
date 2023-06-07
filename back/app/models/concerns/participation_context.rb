@@ -14,10 +14,11 @@ module ParticipationContext
   include Polls::PollParticipationContext
   include Volunteering::VolunteeringParticipationContext
 
-  PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering native_survey].freeze
+  PARTICIPATION_METHODS = %w[information ideation survey voting poll volunteering native_survey].freeze
+  VOTING_METHODS        = %w[budgeting].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   POSTING_METHODS       = %w[unlimited limited].freeze
-  VOTING_METHODS        = %w[unlimited limited].freeze
+  REACTION_METHODS      = %w[unlimited limited].freeze
   IDEAS_ORDERS          = %w[trending random popular -new new].freeze
   IDEAS_ORDERS_BUDGETING_EXCLUDE = %w[trending popular].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option].freeze
@@ -46,9 +47,9 @@ module ParticipationContext
         validates :posting_method, presence: true, inclusion: { in: POSTING_METHODS }
         validates :commenting_enabled, inclusion: { in: [true, false] }
         validates :voting_enabled, inclusion: { in: [true, false] }
-        validates :upvoting_method, presence: true, inclusion: { in: VOTING_METHODS }
+        validates :upvoting_method, presence: true, inclusion: { in: REACTION_METHODS }
         validates :downvoting_enabled, inclusion: { in: [true, false] }
-        validates :downvoting_method, presence: true, inclusion: { in: VOTING_METHODS }
+        validates :downvoting_method, presence: true, inclusion: { in: REACTION_METHODS }
         validates :ideas_order, inclusion: { in: IDEAS_ORDERS }, allow_nil: true
         validates :input_term, inclusion: { in: INPUT_TERMS }
 
@@ -71,18 +72,22 @@ module ParticipationContext
         validates :presentation_mode, presence: true
       end
 
-      # budgeting?
-      with_options if: :budgeting? do
-        validates :min_budget, presence: true
-        validates :max_budget, presence: true
+      # voting?
+      with_options if: :voting? do
+        validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
+        validates :voting_min_total, presence: true
+        validates :voting_max_total, presence: true
         # validates :ideas_order, exclusion: { in: IDEAS_ORDERS_BUDGETING_EXCLUDE }, allow_nil: true
       end
-      validates :min_budget,
-        numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :max_budget,
-                        if: %i[budgeting? max_budget] }
-      validates :max_budget,
-        numericality: { greater_than_or_equal_to: :min_budget,
-                        if: %i[budgeting? min_budget] }
+      validates :voting_min_total,
+        numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :voting_max_total,
+                        if: %i[voting? voting_max_total] }
+      validates :voting_max_total,
+        numericality: { greater_than_or_equal_to: :voting_min_total,
+                        if: %i[voting? voting_min_total] }
+      validates :voting_max_votes_per_idea,
+        numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: :voting_max_total,
+                        if: %i[voting? voting_max_total] }
     end
   end
 
@@ -94,12 +99,12 @@ module ParticipationContext
     participation_method == 'information'
   end
 
-  def budgeting?
-    participation_method == 'budgeting'
+  def voting?
+    participation_method == 'voting'
   end
 
   def can_contain_ideas?
-    ideation? || budgeting?
+    ideation? || voting?
   end
 
   def can_contain_input?
@@ -149,7 +154,7 @@ module ParticipationContext
   end
 
   def set_ideas_order
-    self.ideas_order ||= budgeting? ? 'random' : 'trending'
+    self.ideas_order ||= voting? ? 'random' : 'trending'
   end
 
   def set_input_term
