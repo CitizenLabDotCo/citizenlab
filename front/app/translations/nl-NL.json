@@ -1200,7 +1200,7 @@
   "app.containers.Projects.meetMinSelectionRequirement": "Je moet aan de vereiste selectie voldoen om je mandje te kunnen indienen.",
   "app.containers.Projects.metaTitle": "Project  • {projectTitle}",
   "app.containers.Projects.minBudgetRequired": "Minimumbudget vereist",
-  "app.containers.Projects.myBasket": "Basket",
+  "app.containers.Projects.myBasket": "Mand",
   "app.containers.Projects.navPoll": "Peiling",
   "app.containers.Projects.navSurvey": "Vragenlijst",
   "app.containers.Projects.nextPhase": "Volgende fase",
