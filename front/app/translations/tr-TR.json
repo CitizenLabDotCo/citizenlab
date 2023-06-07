@@ -1687,6 +1687,7 @@
   "app.utils.errors.default.api_error_too_long": "Çok uzun",
   "app.utils.errors.default.api_error_too_short": "Çok kısa",
   "app.utils.errors.default.api_error_wrong_length": "Yanlış uzunlukta",
+  "app.utils.errors.default.test": "Crowdin test ediliyor. Bu dizeyi çevirmeye gerek yok.",
   "app.utils.errors.defaultapi_error_.odd": "Tek olmalı",
   "app.utils.notInGroup": "Katılmak için gereken şartları karşılamıyorsunuz.",
   "app.utils.participationMethod.onSurveySubmission": "Teşekkür ederim. Yanıtınız alınmıştır.",
