@@ -75,7 +75,7 @@ module IdCow
     # <type:IndVigencia>S</type:IndVigencia>
     #
     # 2:
-    # If IndVigencia is not in 'S', check other rules.  Here are the exceptions that allow you to vote:
+    # If IndVigencia is not in 'S', check other rules.  Here are the exceptions that allow you to react:
     #     2.1
     #     <type:IndVigencia>N</type:IndVigencia>
     #     +
