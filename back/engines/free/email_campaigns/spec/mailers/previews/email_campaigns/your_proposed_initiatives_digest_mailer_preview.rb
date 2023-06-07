@@ -16,7 +16,7 @@ module EmailCampaigns
               url: Frontend::UrlService.new.model_to_url(initiative),
               published_at: initiative.published_at&.iso8601,
               likes_count: initiative.likes_count,
-              votes_needed: initiative.votes_needed,
+              reactions_needed: initiative.reactions_needed,
               votes_this_week: initiative.likes.where('created_at > ?', Time.now - 1.week).count,
               comments_count: initiative.comments_count,
               expires_at: initiative.expires_at&.iso8601,

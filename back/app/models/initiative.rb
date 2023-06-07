@@ -123,7 +123,7 @@ class Initiative < ApplicationRecord
       .where(initiative_statuses: { code: 'proposed' })
   }
 
-  def votes_needed(configuration = AppConfiguration.instance)
+  def reactions_needed(configuration = AppConfiguration.instance)
     [configuration.settings('initiatives', 'voting_threshold') - likes_count, 0].max
   end
 
