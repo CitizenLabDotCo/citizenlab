@@ -227,8 +227,8 @@ class ParticipationContextService
   def budgeting_disabled_reason_for_context(context, user)
     if !context
       BUDGETING_DISABLED_REASONS[:project_inactive]
-    elsif !context.budgeting?
-      BUDGETING_DISABLED_REASONS[:not_budgeting]
+    elsif !context.voting?
+      BUDGETING_DISABLED_REASONS[:not_budgeting] # TODO: rename to not_voting
     else
       permission_denied_reason(user, 'budgeting', context)
     end
