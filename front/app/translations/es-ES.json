@@ -1687,6 +1687,7 @@
   "app.utils.errors.default.api_error_too_long": "Es demasiado largo",
   "app.utils.errors.default.api_error_too_short": "Es demasiado corto",
   "app.utils.errors.default.api_error_wrong_length": "Tiene una longitud incorrecta",
+  "app.utils.errors.default.test": "Probando Crowdin. No es necesario traducir esta cadena.",
   "app.utils.errors.defaultapi_error_.odd": "Debe ser impar",
   "app.utils.notInGroup": "No cumples los requisitos para participar.",
   "app.utils.participationMethod.onSurveySubmission": "Gracias. Su respuesta ha sido recibida.",
