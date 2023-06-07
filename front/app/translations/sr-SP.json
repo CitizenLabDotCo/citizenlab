@@ -1687,6 +1687,7 @@
   "app.utils.errors.default.api_error_too_long": "Је предугачак",
   "app.utils.errors.default.api_error_too_short": "Прекратко је",
   "app.utils.errors.default.api_error_wrong_length": "Да ли је погрешна дужина",
+  "app.utils.errors.default.test": "Testing Crowdin. No need to translate this string.",
   "app.utils.errors.defaultapi_error_.odd": "Мора да је чудно",
   "app.utils.notInGroup": "You do not meet the requirements to participate.",
   "app.utils.participationMethod.onSurveySubmission": "Хвала вам. Ваш одговор је примљен.",
