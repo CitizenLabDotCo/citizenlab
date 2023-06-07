@@ -14,8 +14,8 @@ export default defineMessages({
     defaultMessage: 'Tooltip content',
   },
   budgetingVotingMethodTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodTitle',
-    defaultMessage: 'Budgeting',
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodTitle2',
+    defaultMessage: 'Budget allocation',
   },
   budgetingVotingMethodSubtitle: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodSubtitle',
