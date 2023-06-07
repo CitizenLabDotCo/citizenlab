@@ -213,7 +213,7 @@ export const handleCLErrorsIsh = (
 };
 
 export const handleHookFormSubmissionError = (
-  error: Error | CLErrorsJSON | string,
+  error: Error | CLErrorsJSON,
   handleError: (error: string, options: Record<string, any>) => void,
   fieldArrayKey?: string
 ) => {
