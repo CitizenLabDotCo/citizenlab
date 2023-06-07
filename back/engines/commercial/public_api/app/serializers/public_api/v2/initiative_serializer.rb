@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class PublicApi::V2::InitiativeSerializer < ActiveModel::Serializer
-  @@multiloc_service = MultilocService.new
-
   attributes :id,
     :title,
     :body,
@@ -22,14 +20,20 @@ class PublicApi::V2::InitiativeSerializer < ActiveModel::Serializer
     :assigned_at,
     :href,
     def title
-      @@multiloc_service.t(object.title_multiloc)
+      multiloc_service.t(object.title_multiloc)
     end
 
   def body
-    @@multiloc_service.t(object.body_multiloc)
+    multiloc_service.t(object.body_multiloc)
   end
 
   def href
     Frontend::UrlService.new.model_to_url object
+  end
+
+  private
+
+  def multiloc_service
+    @multiloc_service ||= MultilocService.new
   end
 end
