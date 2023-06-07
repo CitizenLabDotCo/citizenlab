@@ -1251,7 +1251,6 @@
   "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "متطلبات وأسئلة المشاركين",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "حقوق الوصول",
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "لا تتوفر بعض طرق المشاركة للمراحل الحالية. سيلزم إنشاء مرحلة جديدة في هذه الحالات.",
-  "app.containers.AdminPage.ProjectEdit.phasePermissions": "الإجراءات",
   "app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip": "حدّد الإجراءات التي يُسمح للمستخدمين باتخاذها.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "الجدول الزمني",
   "app.containers.AdminPage.ProjectEdit.pollTab": "الاستطلاع",

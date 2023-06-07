@@ -1251,7 +1251,6 @@
   "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Deltakerkrav og spørsmål",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Tilgangsrettigheter",
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "Enkelte deltakelsesmetoder er ikke tilgjengelige for eksisterende faser. I slike tilfeller må det opprettes en ny fase.",
-  "app.containers.AdminPage.ProjectEdit.phasePermissions": "Aktiverte handlinger",
   "app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip": "Velg hvilke deltakende handling brukere kan gjøre i løpet av denne idéfasen.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Tidslinje",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Avstemning",

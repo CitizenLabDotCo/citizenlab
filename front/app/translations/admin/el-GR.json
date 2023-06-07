@@ -1148,7 +1148,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Επιλέξτε τον τρόπο με τον οποίο μπορούν να συμμετέχουν οι χρήστες.",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Δικαιώματα πρόσβασης",
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "Ορισμένες μέθοδοι συμμετοχής δεν είναι διαθέσιμες για τις υπάρχουσες φάσεις. Σε αυτές τις περιπτώσεις θα πρέπει να δημιουργηθεί μια νέα φάση.",
-  "app.containers.AdminPage.ProjectEdit.phasePermissions": "Ενεργές ενέργειες",
   "app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip": "Επιλέξτε ποιες συμμετοχικές ενέργειες μπορούν να κάνουν οι χρήστες κατά τη διάρκεια αυτής της φάσης ιδεοληψίας.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Timeline",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Poll",

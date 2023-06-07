@@ -1251,7 +1251,6 @@
   "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Захтеви и питања за учеснике",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Prava pristupa",
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "Neke metode učešća nisu dostupne za postojeće faze. U ovakvim slučajevima biće potrebno kreirati novu fazu.",
-  "app.containers.AdminPage.ProjectEdit.phasePermissions": "Akcije",
   "app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip": "Odredite akcije koje korisnici mogu preduzeti.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Vremenski okviri",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Anketa",

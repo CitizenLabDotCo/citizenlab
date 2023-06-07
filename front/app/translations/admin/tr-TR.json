@@ -1251,7 +1251,6 @@
   "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Katılımcı gereksinimleri & sorular",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Erişim hakları",
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "Bazı katılım yöntemleri mevcut aşamalar için mevcut değildir. Bu durumlarda yeni bir aşama oluşturulması gerekecektir.",
-  "app.containers.AdminPage.ProjectEdit.phasePermissions": "İzin verilen eylemler",
   "app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip": "Bu fikir oluşturma aşamasında kullanıcıların hangi katılımcı eylemleri gerçekleştirebileceğini seçin.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Zaman Çizelgesi",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Oylama",
