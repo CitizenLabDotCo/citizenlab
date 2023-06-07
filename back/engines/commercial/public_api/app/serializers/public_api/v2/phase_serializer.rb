@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class PublicApi::V2::PhaseSerializer < ActiveModel::Serializer
-  @@multiloc_service = MultilocService.new
-
   attributes :id,
     :title,
     :description,
@@ -26,14 +24,20 @@ class PublicApi::V2::PhaseSerializer < ActiveModel::Serializer
     :min_budget
 
   def title
-    @@multiloc_service.t(object.title_multiloc)
+    multiloc_service.t(object.title_multiloc)
   end
 
   def description
-    @@multiloc_service.t(object.description_multiloc)
+    multiloc_service.t(object.description_multiloc)
   end
 
   def project_title
-    @@multiloc_service.t(object.project.title_multiloc)
+    multiloc_service.t(object.project.title_multiloc)
+  end
+
+  private
+
+  def multiloc_service
+    @multiloc_service ||= MultilocService.new
   end
 end
