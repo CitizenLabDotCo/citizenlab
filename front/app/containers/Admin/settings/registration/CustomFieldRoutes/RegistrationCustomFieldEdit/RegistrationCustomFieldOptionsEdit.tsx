@@ -9,9 +9,7 @@ import messages from '../messages';
 
 // hooks
 import useUserCustomFieldOption from 'hooks/useUserCustomFieldOption';
-
-// services
-import { updateUserCustomFieldOption } from 'services/userCustomFieldOptions';
+import useUpdateUserCustomFieldsOption from 'api/user_custom_fields_options/useUpdateUserCustomFieldsOption';
 
 // components
 import { Section, SectionTitle } from 'components/admin/Section';
@@ -25,22 +23,27 @@ const RegistrationCustomFieldOptionsEdit = () => {
     userCustomFieldOptionId: string;
   };
 
+  const { mutate: updateUserCustomFieldOption } =
+    useUpdateUserCustomFieldsOption();
   const userCustomFieldOption = useUserCustomFieldOption(
     userCustomFieldId,
     userCustomFieldOptionId
   );
 
-  const handleSubmit = async (values: FormValues) => {
-    await updateUserCustomFieldOption(
-      userCustomFieldId,
-      userCustomFieldOptionId,
+  const handleSubmit = (values: FormValues) => {
+    updateUserCustomFieldOption(
       {
+        customFieldId: userCustomFieldId,
+        optionId: userCustomFieldOptionId,
         title_multiloc: values.title_multiloc,
+      },
+      {
+        onSuccess: () => {
+          clHistory.push(
+            `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
+          );
+        },
       }
-    );
-
-    clHistory.push(
-      `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
     );
   };
 

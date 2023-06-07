@@ -11,7 +11,7 @@ import {
 } from '../../services/referenceDistribution';
 
 // hooks
-import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
+import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 import useReferenceDistribution, {
   RemoteFormValues,
 } from '../../hooks/useReferenceDistribution';
@@ -34,7 +34,7 @@ import {
 import { isSupported } from '../../containers/Dashboard/utils';
 
 // typings
-import { IUserCustomFieldOptionData } from 'services/userCustomFieldOptions';
+import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
 interface Props {
   userCustomFieldId: string;
 }
@@ -211,7 +211,8 @@ const Field = ({
 };
 
 const FieldWrapper = ({ userCustomFieldId }: Props) => {
-  const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
+  const { data: userCustomFieldOptions } =
+    useUserCustomFieldOptions(userCustomFieldId);
   const { referenceDistribution, referenceDataUploaded, remoteFormValues } =
     useReferenceDistribution(userCustomFieldId);
 
@@ -225,7 +226,7 @@ const FieldWrapper = ({ userCustomFieldId }: Props) => {
   return (
     <Field
       userCustomFieldId={userCustomFieldId}
-      userCustomFieldOptions={userCustomFieldOptions}
+      userCustomFieldOptions={userCustomFieldOptions?.data}
       referenceDistribution={referenceDistribution}
       referenceDataUploaded={referenceDataUploaded}
       remoteFormValues={remoteFormValues}

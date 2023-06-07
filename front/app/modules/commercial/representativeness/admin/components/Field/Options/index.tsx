@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // hooks
 import useUserCustomField from 'hooks/useUserCustomField';
-import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
+import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 import useLocalize from 'hooks/useLocalize';
 
 // components
@@ -49,7 +49,8 @@ const Options = injectIntl(
   }: Props & WrappedComponentProps) => {
     const [seeMore, setSeeMore] = useState(false);
     const userCustomField = useUserCustomField(userCustomFieldId);
-    const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
+    const { data: userCustomFieldOptions } =
+      useUserCustomFieldOptions(userCustomFieldId);
     const localize = useLocalize();
 
     if (isNilOrError(userCustomFieldOptions) || isNilOrError(userCustomField)) {
@@ -59,14 +60,14 @@ const Options = injectIntl(
     const options =
       userCustomField.attributes.key === 'birthyear' && bins
         ? formatBinOptions(bins, formatMessage(binMessages.andOver))
-        : formatUserCustomFieldOptions(userCustomFieldOptions, localize);
+        : formatUserCustomFieldOptions(userCustomFieldOptions.data, localize);
 
     const visibleOptions = options.slice(
       0,
-      seeMore ? userCustomFieldOptions.length : 12
+      seeMore ? userCustomFieldOptions.data.length : 12
     );
 
-    const showSeeMoreButton = userCustomFieldOptions.length > 12;
+    const showSeeMoreButton = userCustomFieldOptions.data.length > 12;
     const showEditAgeGroupsButton =
       userCustomField.attributes.key === 'birthyear' && bins;
 

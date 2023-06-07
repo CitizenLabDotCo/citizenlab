@@ -4,7 +4,7 @@ import { FormValues } from './form';
 import { forEachBin } from './bins';
 
 // typings
-import { IUserCustomFieldOptionData } from 'services/userCustomFieldOptions';
+import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
 import { Localize } from 'hooks/useLocalize';
 import { Bins } from '../services/referenceDistribution';
 

@@ -11,7 +11,9 @@ const generateOptions = (n: number) =>
 
 let mockOptions;
 
-jest.mock('hooks/useUserCustomFieldOptions', () => () => mockOptions);
+jest.mock('hooks/useUserCustomFieldOptions', () => () => ({
+  data: { data: mockOptions },
+}));
 
 let mockField;
 
