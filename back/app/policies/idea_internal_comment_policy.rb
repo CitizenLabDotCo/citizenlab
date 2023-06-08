@@ -38,6 +38,8 @@ class IdeaInternalCommentPolicy < ApplicationPolicy
     false
   end
 
+  private
+
   def active_admin_or_moderator?
     active? && (admin? || UserRoleService.new.can_moderate?(record.post, user))
   end
