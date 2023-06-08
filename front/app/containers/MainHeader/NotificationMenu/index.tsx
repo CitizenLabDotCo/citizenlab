@@ -3,10 +3,12 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import NotificationCount from './components/NotificationCount';
 const NotificationsDropdown = lazy(() => import('./NotificationsDropdown'));
-import { markAllAsRead } from 'services/notifications';
+
 import { Box } from '@citizenlab/cl2-component-library';
+import useMarkAllAsRead from 'api/notifications/useMarkAllAsRead';
 
 const NotificationMenu = () => {
+  const { mutate: markAllAsRead } = useMarkAllAsRead();
   const [dropdownOpened, setDropdownOpened] = useState(false);
 
   const toggleDropdown = () => {

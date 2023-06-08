@@ -1,7 +1,7 @@
-import { API_PATH } from 'containers/App/constants';
 import fetcher from 'utils/cl-react-query/fetcher';
-import streams from 'utils/streams';
 import { ResendEmailCodeProperties } from './types';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import meKeys from 'api/me/keys';
 
 const resendEmailCode = (requestBody: ResendEmailCodeProperties) => {
   return fetcher({
@@ -22,13 +22,11 @@ export default async function resendEmailConfirmationCode(newEmail?: string) {
     await resendEmailCode(bodyData);
 
     if (bodyData?.new_email) {
-      await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/users/me`],
-      });
+      queryClient.invalidateQueries({ queryKey: meKeys.all() });
     }
 
     return true;
   } catch (errors) {
-    throw errors.json.errors;
+    throw errors.errors;
   }
 }

@@ -12,7 +12,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'services/permissions/roles';
 
 // resources
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -109,14 +109,14 @@ export interface Props {
 
 const ProjectTemplatePreviewCitizen = memo<Props & WithRouterProps>(
   ({ params, className }) => {
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
     const projectTemplateId: string | undefined = get(
       params,
       'projectTemplateId'
     );
 
     if (projectTemplateId) {
-      if (!isNilOrError(authUser) && isAdmin({ data: authUser })) {
+      if (!isNilOrError(authUser) && isAdmin(authUser)) {
         clHistory.push(`/admin/projects/templates/${projectTemplateId}`);
       } else {
         const link = (

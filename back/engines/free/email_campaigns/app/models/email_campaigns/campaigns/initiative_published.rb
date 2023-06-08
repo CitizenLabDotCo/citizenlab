@@ -63,7 +63,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.user_publishes_a_proposal'
+      'email_campaigns.admin_labels.trigger.proposal_is_published'
     end
 
     def generate_commands(recipient:, activity:)

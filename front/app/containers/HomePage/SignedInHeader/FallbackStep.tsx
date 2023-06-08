@@ -7,7 +7,7 @@ import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import T from 'components/T';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import { media, isRtl, fontSizes } from 'utils/styleUtils';
 import OnboardingStep from './OnboardingStep';
 import CTA from './CTA';
@@ -55,7 +55,7 @@ interface Props {
 
 const FallbackStep = ({ currentOnboardingCampaignName }: Props) => {
   const homepageSettings = useHomepageSettings();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   if (!isNilOrError(homepageSettings) && !isNilOrError(authUser)) {
     const defaultMessage =
@@ -73,7 +73,7 @@ const FallbackStep = ({ currentOnboardingCampaignName }: Props) => {
               <FormattedMessage
                 {...messages.defaultSignedInMessage}
                 tagName="h2"
-                values={{ firstName: authUser.attributes.first_name }}
+                values={{ firstName: authUser.data.attributes.first_name }}
               />
             )}
           </Left>

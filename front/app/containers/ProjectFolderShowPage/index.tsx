@@ -12,7 +12,7 @@ import ContentContainer from 'components/ContentContainer';
 import Centerer from 'components/UI/Centerer';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolderBySlug from 'api/project_folders/useProjectFolderBySlug';
 import { useParams } from 'react-router-dom';
 
@@ -129,14 +129,15 @@ const CardsWrapper = styled.div`
 const ProjectFolderShowPage = memo<{
   projectFolder: IProjectFolderData | null | undefined;
 }>(({ projectFolder }) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { windowWidth } = useWindowSize();
   const smallerThan1280px = windowWidth ? windowWidth <= 1280 : false;
 
   const loading = projectFolder === undefined;
 
   const userCanEditFolder = projectFolder
-    ? !isNilOrError(authUser) && userModeratesFolder(authUser, projectFolder.id)
+    ? !isNilOrError(authUser) &&
+      userModeratesFolder(authUser.data, projectFolder.id)
     : undefined;
 
   return (

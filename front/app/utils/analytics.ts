@@ -18,7 +18,7 @@ import {
   isDestinationActive,
 } from 'components/ConsentManager/destinations';
 import { ISavedDestinations } from 'components/ConsentManager/consent';
-import { authUserStream } from 'services/auth';
+import authUserStream from 'api/me/authUserStream';
 import { IAppConfigurationData } from 'api/app_configuration/types';
 
 export interface IEvent {
@@ -50,7 +50,7 @@ export const initializeFor = (destination: IDestination) => {
   return combineLatest([
     destinationConsentChanged$,
     appConfigurationStream,
-    authUserStream().observable,
+    authUserStream,
   ]).pipe(
     filter(([consent, tenant, user]) => {
       if (tenant) {
@@ -83,7 +83,7 @@ export const shutdownFor = (destination: IDestination) => {
   return combineLatest([
     destinationConsentChanged$,
     appConfigurationStream,
-    authUserStream().observable,
+    authUserStream,
   ]).pipe(
     map(([consent, tenant, user]) => {
       const config = getDestinationConfig(destination);

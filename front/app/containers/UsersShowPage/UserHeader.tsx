@@ -31,7 +31,7 @@ import { colors } from 'utils/styleUtils';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useUserBySlug from 'api/users/useUserBySlug';
 
 const BlockUser = React.lazy(
@@ -56,7 +56,7 @@ interface Props {
 }
 
 const UserHeader = ({ userSlug }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: user } = useUserBySlug(userSlug);
   const isSmallerThanTablet = useBreakpoint('tablet');
   const hideBio = useFeatureFlag({ name: 'disable_user_bios' });
@@ -83,8 +83,8 @@ const UserHeader = ({ userSlug }: Props) => {
 
   const isBlocked = user.data.attributes?.blocked;
   const isCurrentUserAdmin =
-    !isNilOrError(authUser) && isAdmin({ data: authUser });
-  const canBlock = isCurrentUserAdmin && user.data.id !== authUser?.id;
+    !isNilOrError(authUser) && isAdmin({ data: authUser.data });
+  const canBlock = isCurrentUserAdmin && user.data.id !== authUser?.data.id;
 
   const userBlockingRelatedActions: IAction[] = isUserBlockingEnabled
     ? [
@@ -163,7 +163,7 @@ const UserHeader = ({ userSlug }: Props) => {
               </QuillEditedContent>
             </Bio>
           )}
-        {!isNilOrError(authUser) && authUser.id === user.data.id && (
+        {!isNilOrError(authUser) && authUser.data.id === user.data.id && (
           <Button
             linkTo="/profile/edit"
             buttonStyle="text"

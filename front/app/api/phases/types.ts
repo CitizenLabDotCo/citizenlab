@@ -57,6 +57,7 @@ export interface IPhaseAttributes {
   poll_anonymous?: boolean;
   ideas_count: number;
   ideas_order?: IdeaDefaultSortMethod;
+  document_annotation_embed_url?: string;
 }
 
 export interface IPhases {
@@ -90,6 +91,7 @@ export interface IUpdatedPhaseProperties {
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
+  document_annotation_embed_url?: string | null;
 }
 export interface AddPhaseObject extends IUpdatedPhaseProperties {
   projectId: string;

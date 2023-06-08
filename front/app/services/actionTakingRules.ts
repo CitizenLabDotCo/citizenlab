@@ -3,7 +3,7 @@ import { IProjectData, PostingDisabledReason } from 'api/projects/types';
 import { isNilOrError } from 'utils/helperUtils';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';
-import { TAuthUser } from 'hooks/useAuthUser';
+import { IUserData } from 'api/users/types';
 import { IPhaseData } from 'api/phases/types';
 
 interface ActionPermissionHide {
@@ -130,6 +130,7 @@ const ideaPostingDisabledReason = (
  *  phase: The phase context in which the button is rendered. NOT necessarily the active phase. Optional.
  *  authUser: The currently authenticated user
  */
+
 export const getIdeaPostingRules = ({
   project,
   phase,
@@ -137,7 +138,7 @@ export const getIdeaPostingRules = ({
 }: {
   project: IProjectData | null | undefined;
   phase: IPhaseData | undefined;
-  authUser: GetAuthUserChildProps | TAuthUser;
+  authUser: GetAuthUserChildProps | IUserData | undefined;
 }): ActionPermission<IIdeaPostingDisabledReason> => {
   const signedIn = !isNilOrError(authUser);
   if (!isNilOrError(project)) {

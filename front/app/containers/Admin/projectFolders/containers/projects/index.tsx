@@ -6,7 +6,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isAdmin } from 'services/permissions/roles';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -52,13 +52,13 @@ const Spacer = styled.div`
 const AdminFolderProjectsList = ({
   params: { projectFolderId },
 }: WithRouterProps) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   if (isNilOrError(authUser)) {
     return null;
   }
 
-  const userIsAdmin = authUser && isAdmin({ data: authUser });
+  const userIsAdmin = authUser && isAdmin(authUser);
 
   return (
     <Container>

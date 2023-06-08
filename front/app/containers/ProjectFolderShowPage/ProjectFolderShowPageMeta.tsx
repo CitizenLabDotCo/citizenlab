@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // utils
@@ -31,7 +31,7 @@ interface Props {
 const Meta = memo<Props & WrappedComponentProps>(({ projectFolder, intl }) => {
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   if (
     !isNilOrError(locale) &&
@@ -63,8 +63,9 @@ const Meta = memo<Props & WrappedComponentProps>(({ projectFolder, intl }) => {
       <Helmet>
         <title>
           {`${
-            !isNilOrError(authUser) && authUser.attributes.unread_notifications
-              ? `(${authUser.attributes.unread_notifications}) `
+            !isNilOrError(authUser) &&
+            authUser.data.attributes.unread_notifications
+              ? `(${authUser.data.attributes.unread_notifications}) `
               : ''
           }
             ${metaTitle}`}

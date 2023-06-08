@@ -1,6 +1,6 @@
 import { setJwt } from 'utils/auth/jwt';
 import streams from 'utils/streams';
-import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import signOut from './signOut';
 import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
@@ -25,7 +25,7 @@ export default async function signIn(parameters: Parameters) {
     const authUser = await getAuthUserAsync();
 
     await streams.reset();
-    await resetQueryCache();
+    invalidateQueryCache();
 
     return authUser;
   } catch (error) {

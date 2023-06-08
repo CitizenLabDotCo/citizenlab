@@ -20,10 +20,10 @@ const Granular = ({ project }: Props) => {
 
   return (
     <StyledSection id="e2e-granular-permissions">
-      {project && project.attributes.process_type === 'timeline' && (
+      {project.attributes.process_type === 'timeline' && (
         <Timeline projectId={projectId} />
       )}
-      {project && project.attributes.process_type === 'continuous' && (
+      {project.attributes.process_type === 'continuous' && (
         <Continuous projectId={projectId} />
       )}
     </StyledSection>
