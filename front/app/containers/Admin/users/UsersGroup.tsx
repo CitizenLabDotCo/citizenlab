@@ -42,7 +42,7 @@ const UsersGroup = () => {
   const { groupId } = useParams() as { groupId: string };
   const { data: group } = useGroup(groupId);
   const { mutateAsync: deleteMembershipByUserId } = useDeleteMembership();
-  const { mutate: updateGroup } = useUpdateGroup();
+  const { mutateAsync: updateGroup } = useUpdateGroup();
   const { mutate: deleteGroup } = useDeleteGroup();
   const [groupEditionModal, setGroupEditionModal] = useState<
     false | MembershipType
@@ -67,14 +67,8 @@ const UsersGroup = () => {
 
   const handleSubmitForm =
     (groupId: string) => async (values: NormalFormValues) => {
-      updateGroup(
-        { id: groupId, ...values },
-        {
-          onSuccess: () => {
-            closeGroupEditionModal();
-          },
-        }
-      );
+      await updateGroup({ id: groupId, ...values });
+      closeGroupEditionModal();
     };
 
   const handleDeleteGroup = (groupId: string) => () => {
