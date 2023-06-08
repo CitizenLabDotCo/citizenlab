@@ -182,7 +182,7 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        konveio_surveys: {
+        konveio_document_annotation: {
           enabled: true,
           allowed: true
         },

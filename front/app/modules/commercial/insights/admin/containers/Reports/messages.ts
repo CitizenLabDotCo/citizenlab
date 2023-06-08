@@ -65,6 +65,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Reports.volunteering',
     defaultMessage: 'volunteering',
   },
+  document_annotation: {
+    id: 'app.containers.Admin.Insights.Reports.document_annotation',
+    defaultMessage: 'document annotation',
+  },
   customFieldTitleExport: {
     id: 'app.containers.Admin.Insights.Reports.customFieldTitleExport',
     defaultMessage: '{fieldName}_repartition',

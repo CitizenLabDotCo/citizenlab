@@ -1,6 +1,9 @@
 import { Keys } from 'utils/cl-react-query/types';
 import eventsKeys from './keys';
-import { IGlobalPermissionAction } from 'services/actionPermissions';
+import {
+  IGlobalPermissionAction,
+  IParticipationContextPermissionAction,
+} from 'services/actionPermissions';
 
 export type EventsKeys = Keys<typeof eventsKeys>;
 
@@ -16,7 +19,7 @@ export type IListParameters = {
   phaseId?: string | null;
   initiativeContext?: boolean | null;
   projectId?: string | null;
-  action: IGlobalPermissionAction | IPCPermissionAction;
+  action: IGlobalPermissionAction | IParticipationContextPermissionAction;
 };
 
 export interface IPermissionsCustomField {
@@ -36,15 +39,6 @@ export interface IPermissionCustomFieldUpdate {
   id: string;
   required: boolean;
 }
-
-export type IPCPermissionAction =
-  | 'posting_idea'
-  | 'voting_idea'
-  | 'commenting_idea'
-  | 'commenting_idea'
-  | 'taking_survey'
-  | 'taking_poll'
-  | 'budgeting';
 
 export interface IPermissionsCustomFieldData {
   id: string;
