@@ -1706,7 +1706,7 @@ ActiveRecord::Schema.define(version: 2023_06_07_142901) do
             GROUP BY comments.post_id) comments_at ON ((ideas.id = comments_at.idea_id)))
        FULL JOIN ( SELECT reactions.reactable_id AS votable_id,
               max(reactions.created_at) AS last_upvoted_at,
-              avg(date_part('epoc®h'::text, reactions.created_at)) AS mean_upvoted_at,
+              avg(date_part('epoch'::text, reactions.created_at)) AS mean_upvoted_at,
               count(reactions.reactable_id) AS upvotes_count
              FROM reactions
             WHERE (((reactions.mode)::text = 'up'::text) AND ((reactions.reactable_type)::text = 'Idea'::text))
