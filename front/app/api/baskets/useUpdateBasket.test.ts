@@ -8,7 +8,7 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*basket/:id';
+const apiPath = '*baskets/:id';
 const server = setupServer(
   rest.patch(apiPath, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: basketData }));
