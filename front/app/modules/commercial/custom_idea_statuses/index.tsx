@@ -9,7 +9,7 @@ const StatusShowComponent = React.lazy(() => import('./admin/containers/edit'));
 
 const configuration: ModuleConfiguration = {
   routes: {
-    'admin.ideas': [
+    'admin.settings': [
       {
         path: 'statuses',
         element: <StatusesComponent />,
@@ -25,7 +25,7 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
-    'app.containers.Admin.ideas.tabs': (props) => {
+    'app.containers.Admin.settings.tabs': (props) => {
       return (
         <FeatureFlag name="custom_idea_statuses">
           <Tab {...props} />
