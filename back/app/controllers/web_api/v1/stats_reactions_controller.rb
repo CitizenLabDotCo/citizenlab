@@ -5,10 +5,10 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
 
   def reactions_count
     count = StatReactionPolicy::Scope.new(current_user, Reaction).resolve
-                                     .where(reactable_type: 'Idea')
-                                     .where(created_at: @start_at..@end_at)
-                                     .group(:mode)
-                                     .count
+      .where(reactable_type: 'Idea')
+      .where(created_at: @start_at..@end_at)
+      .group(:mode)
+      .count
     render json: {
       up: count['up'],
       down: count['down'],
@@ -18,8 +18,8 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
 
   def reactions_by_topic_serie
     reactions = StatReactionPolicy::Scope.new(current_user, Reaction).resolve
-                                     .where(reactable_type: 'Idea')
-                                     .joins('JOIN ideas ON ideas.id = reactions.reactable_id')
+      .where(reactable_type: 'Idea')
+      .joins('JOIN ideas ON ideas.id = reactions.reactable_id')
 
     reactions = apply_group_filter(reactions)
     reactions = apply_project_filter(reactions)
@@ -56,8 +56,8 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
 
   def reactions_by_project_serie
     reactions = StatReactionPolicy::Scope.new(current_user, Reaction).resolve
-                                     .where(reactable_type: 'Idea')
-                                     .joins('JOIN ideas ON ideas.id = reactions.reactable_id')
+      .where(reactable_type: 'Idea')
+      .joins('JOIN ideas ON ideas.id = reactions.reactable_id')
 
     reactions = apply_group_filter(reactions)
     reactions = apply_topic_filter(reactions)

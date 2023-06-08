@@ -72,7 +72,7 @@ module Notifications
           .distinct
           .ids
         reactor_ids = User.active
-                        .joins(:reactions).where(reactions: { reactable: official_feedback.post })
+          .joins(:reactions).where(reactions: { reactable: official_feedback.post })
           .distinct
           .ids
 

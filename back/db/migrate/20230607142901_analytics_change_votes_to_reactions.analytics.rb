@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from analytics (originally 202300607151713)
 
 # Change the views to use reactions instead of votes

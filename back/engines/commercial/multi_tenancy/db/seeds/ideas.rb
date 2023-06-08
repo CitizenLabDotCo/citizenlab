@@ -47,10 +47,10 @@ module MultiTenancy
             r = rand(5)
             if r == 0
               Reaction.create!(reactable: idea, user: u, mode: 'down',
-                               created_at: Faker::Date.between(from: idea.published_at, to: Time.zone.now))
+                created_at: Faker::Date.between(from: idea.published_at, to: Time.zone.now))
             elsif r > 0 && r < 3
               Reaction.create!(reactable: idea, user: u, mode: 'up',
-                               created_at: Faker::Date.between(from: idea.published_at, to: Time.zone.now))
+                created_at: Faker::Date.between(from: idea.published_at, to: Time.zone.now))
             end
           end
 

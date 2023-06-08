@@ -42,7 +42,7 @@ module MultiTenancy
             r = rand(5)
             if r < 2
               Reaction.create!(reactable: initiative, user: u, mode: 'up',
-                               created_at: Faker::Date.between(from: initiative.published_at, to: Time.zone.now))
+                created_at: Faker::Date.between(from: initiative.published_at, to: Time.zone.now))
             end
           end
 

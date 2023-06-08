@@ -68,7 +68,7 @@ class ProjectCopyService < TemplateService
       @template['models']['ideas_phase']         = yml_ideas_phases shift_timestamps: shift_timestamps
       @template['models']['comment']             = yml_comments shift_timestamps: shift_timestamps
       @template['models']['official_feedback']   = yml_official_feedback shift_timestamps: shift_timestamps
-      @template['models']['reaction']                = yml_reactions shift_timestamps: shift_timestamps
+      @template['models']['reaction'] = yml_reactions shift_timestamps: shift_timestamps
     end
 
     @template

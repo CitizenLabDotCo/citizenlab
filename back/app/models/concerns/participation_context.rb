@@ -17,8 +17,8 @@ module ParticipationContext
   PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering native_survey].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   POSTING_METHODS       = %w[unlimited limited].freeze
-  REACTING_METHODS        = %w[unlimited limited].freeze
-  IDEAS_ORDERS          = %w[trending random popular -new new].freeze
+  REACTING_METHODS = %w[unlimited limited].freeze
+  IDEAS_ORDERS = %w[trending random popular -new new].freeze
   IDEAS_ORDERS_BUDGETING_EXCLUDE = %w[trending popular].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option].freeze
   DEFAULT_INPUT_TERM    = 'idea'
