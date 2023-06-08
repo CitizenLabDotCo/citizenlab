@@ -474,7 +474,7 @@ describe ParticipationContextService do
       end
 
       it "returns `not_ideation` when we're in a participatory budgeting context dsofifopwefwe" do
-        project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'budgeting' })
+        project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1000 })
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_ideation'
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_ideation'

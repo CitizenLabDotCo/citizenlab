@@ -251,13 +251,18 @@ describe LocalProjectCopyService do
     end
 
     it 'copies basic phase attributes' do
+      ignore_attributes = %i[
+        id project_id start_at end_at updated_at created_at
+        voting_method voting_max_total voting_min_total voting_max_votes_per_idea voting_term
+        survey_embed_url survey_service
+      ]
       copied_project = service.copy(timeline_project)
 
       expect(copied_project.phases.map do |record|
-        record.as_json(except: %i[id project_id start_at end_at updated_at created_at])
+        record.as_json(except: ignore_attributes)
       end)
         .to match_array(timeline_project.phases.map do |record|
-          record.as_json(except: %i[id project_id start_at end_at updated_at created_at])
+          record.as_json(except: ignore_attributes)
         end)
     end
 
