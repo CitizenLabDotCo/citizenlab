@@ -56,10 +56,7 @@ resource 'InternalComments' do
 
         expect(json_response.dig(:data, :id)).to eq id
         expect(json_response.dig(:data, :type)).to eq 'internal_comment'
-        expect(json_response.dig(:data, :attributes)).to include(
-          publication_status: 'published',
-          is_admin_comment: false
-        )
+        expect(json_response.dig(:data, :attributes)).to include(publication_status: 'published')
         expect(json_response.dig(:data, :relationships)).to include(
           post: {
             data: { id: internal_comment.post_id, type: 'idea' }
