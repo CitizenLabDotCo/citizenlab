@@ -45,5 +45,15 @@ resource 'Mentions' do
       expect(json_response[:data].pluck(:id)).to match_array idea_related.map(&:id)
       expect(json_response[:data].all? { |u| u[:attributes][:first_name][0..(first_name.size)] == first_name }).to be true
     end
+
+    example 'Does not return invited user by (partial) mention', document: false do
+      users.first.update(invite_status: 'pending')
+
+      do_request
+
+      expect(response_status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response[:data].pluck(:id)).not_to include users.first.id
+    end
   end
 end
