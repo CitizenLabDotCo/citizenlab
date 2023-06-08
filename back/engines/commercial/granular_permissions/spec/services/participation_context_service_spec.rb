@@ -161,11 +161,11 @@ describe ParticipationContextService do
       it "returns `not_signed_in` if it's in the current phase and user needs to be signed in" do
         service.get_participation_context(project).permissions.find_by(action: 'reacting_idea')
           .update!(permitted_by: 'users')
-        expect(service.cancelling_reactions_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
+        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
       end
 
       it "returns 'not_permitted' if it's in the current phase and reacting is not permitted" do
-        expect(service.cancelling_reactions_disabled_reason_for_idea(idea, idea.author)).to eq 'not_permitted'
+        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq 'not_permitted'
       end
     end
 
@@ -178,7 +178,7 @@ describe ParticipationContextService do
           permitted_by: 'groups',
           group_ids: create_list(:group, 2).map(&:id)
         )
-        expect(service.cancelling_reactions_disabled_reason_for_idea(idea, idea.author)).to eq 'not_in_group'
+        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq 'not_in_group'
       end
     end
   end

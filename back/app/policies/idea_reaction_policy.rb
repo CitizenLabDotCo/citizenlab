@@ -43,7 +43,7 @@ class IdeaReactionPolicy < ApplicationPolicy
   def destroy?
     return false unless could_modify?
 
-    reason = participation_context_service.cancelling_reactions_disabled_reason_for_idea record.reactable, user
+    reason = participation_context_service.cancelling_reacting_disabled_reason_for_idea record.reactable, user
 
     reason ? raise_not_authorized(reason) : true
   end
@@ -58,7 +58,7 @@ class IdeaReactionPolicy < ApplicationPolicy
     return false unless could_modify?
 
     reason = participation_context_service.idea_reacting_disabled_reason_for record, user, mode: mode
-    reason ||= participation_context_service.cancelling_reactions_disabled_reason_for_idea record.reactable, user
+    reason ||= participation_context_service.cancelling_reacting_disabled_reason_for_idea record.reactable, user
 
     reason ? raise_not_authorized(reason) : true
   end

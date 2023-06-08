@@ -168,7 +168,7 @@ class ParticipationContextService
     permission_denied_reason user, 'reacting_idea', context
   end
 
-  def cancelling_reactions_disabled_reason_for_idea(idea, user)
+  def cancelling_reacting_disabled_reason_for_idea(idea, user)
     context = get_participation_context idea.project
     if !context
       REACTING_DISABLED_REASONS[:project_inactive]

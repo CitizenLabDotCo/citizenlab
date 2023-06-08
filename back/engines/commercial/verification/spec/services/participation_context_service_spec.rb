@@ -143,7 +143,7 @@ describe ParticipationContextService do
         verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
         permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.cancelling_reactions_disabled_reason_for_idea(idea, idea.author)).to eq 'not_verified'
+        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq 'not_verified'
       end
     end
 
@@ -154,7 +154,7 @@ describe ParticipationContextService do
         permission = project.permissions.find_by(action: 'reacting_idea')
         verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
         permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-        expect(service.cancelling_reactions_disabled_reason_for_idea(idea, idea.author)).to eq 'not_verified'
+        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq 'not_verified'
       end
     end
   end

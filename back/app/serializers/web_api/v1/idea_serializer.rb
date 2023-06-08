@@ -34,7 +34,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     commenting_disabled_reason = @participation_context_service.commenting_disabled_reason_for_idea(object, current_user(params))
     liking_disabled_reason = @participation_context_service.idea_reacting_disabled_reason_for(object, current_user(params), mode: 'up')
     disliking_disabled_reason = @participation_context_service.idea_reacting_disabled_reason_for(object, current_user(params), mode: 'down')
-    cancelling_reactions_disabled_reason = @participation_context_service.cancelling_reactions_disabled_reason_for_idea(object, current_user(params))
+    cancelling_reactions_disabled_reason = @participation_context_service.cancelling_reacting_disabled_reason_for_idea(object, current_user(params))
     budgeting_disabled_reason = @participation_context_service.budgeting_disabled_reason_for_idea(object, current_user(params))
     comment_reacting_disabled_reason = @participation_context_service.reacting_disabled_reason_for_idea_comment(Comment.new(post: object), current_user(params))
 
