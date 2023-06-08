@@ -38,7 +38,7 @@ module ParticipationContext
       before_validation :set_participation_method_defaults, on: :create
       before_validation :set_presentation_mode, on: :create
 
-      # ideation? or budgeting?
+      # ideation? or voting?
       with_options if: :can_contain_ideas? do
         validates :presentation_mode,
           inclusion: { in: PRESENTATION_MODES }, allow_nil: true
