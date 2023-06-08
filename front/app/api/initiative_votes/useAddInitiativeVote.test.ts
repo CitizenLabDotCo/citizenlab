@@ -1,26 +1,26 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useAddInitiativesVote from './useAddInitiativeVote';
+import useAddInitiativesReaction from './useAddInitiativeReaction';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { IInitiativeVoteData } from 'api/initiative_votes/types';
+import { IInitiativeReactionData } from 'api/initiative_reactions/types';
 
-const apiPath = '*initiatives/:initiativeId/votes';
+const apiPath = '*initiatives/:initiativeId/reactions';
 
-const voteData: IInitiativeVoteData = {
-  id: 'voteId',
-  type: 'vote',
+const reactionData: IInitiativeReactionData = {
+  id: 'reactionId',
+  type: 'reaction',
   attributes: {
     mode: 'up',
   },
   relationships: {
-    votable: {
+    reactable: {
       data: {
         id: 'initiativeId',
-        type: 'votable',
+        type: 'reactable',
       },
     },
     user: {
@@ -34,16 +34,16 @@ const voteData: IInitiativeVoteData = {
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: voteData }));
+    return res(ctx.status(200), ctx.json({ data: reactionData }));
   })
 );
 
-describe('useAddInitiativesVote', () => {
+describe('useAddInitiativesReaction', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddInitiativesVote(), {
+    const { result, waitFor } = renderHook(() => useAddInitiativesReaction(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -55,7 +55,7 @@ describe('useAddInitiativesVote', () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(voteData);
+    expect(result.current.data?.data).toEqual(reactionData);
   });
 
   it('returns error correctly', async () => {
@@ -65,7 +65,7 @@ describe('useAddInitiativesVote', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddInitiativesVote(), {
+    const { result, waitFor } = renderHook(() => useAddInitiativesReaction(), {
       wrapper: createQueryClientWrapper(),
     });
 

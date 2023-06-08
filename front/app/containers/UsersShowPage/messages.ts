@@ -84,9 +84,9 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.a11y_initiativePostedIn',
     defaultMessage: 'Initiative in which this comment was posted: ',
   },
-  a11y_upvotesCount: {
-    id: 'app.containers.UsersShowPage.a11y_upvotesCount',
+  a11y_likesCount: {
+    id: 'app.containers.UsersShowPage.a11y_likesCount',
     defaultMessage:
-      '{upvotesCount, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}',
+      '{likesCount, plural, =0 {no likes} one {1 upvote} other {# likes}}',
   },
 });

@@ -8,8 +8,8 @@ describe('Idea show page actions', () => {
       cy.acceptCookies();
     });
 
-    it('asks unauthorised users to log in or sign up before they vote', () => {
-      cy.get('.e2e-vote-controls .e2e-ideacard-upvote-button').click();
+    it('asks unauthorised users to log in or sign up before they reaction', () => {
+      cy.get('.e2e-reaction-controls .e2e-ideacard-like-button').click();
       cy.get('#e2e-authentication-modal');
     });
   });
@@ -44,7 +44,7 @@ describe('Idea show page actions', () => {
   });
 
   describe('logged in as normal user', () => {
-    describe('Vote', () => {
+    describe('Reaction', () => {
       const ideaTitle = randomString();
       let ideaId: string;
       let projectId: string;
@@ -74,46 +74,46 @@ describe('Idea show page actions', () => {
         }
       });
 
-      it('has working up and downvote buttons', () => {
+      it('has working up and dislike buttons', () => {
         cy.visit(`/ideas/${ideaTitle}`);
         cy.intercept(`**/ideas/by_slug/${ideaTitle}`).as('ideaRequest');
 
         cy.wait('@ideaRequest');
         cy.get('#e2e-idea-show').should('exist');
 
-        cy.get('.e2e-vote-controls').should('exist');
-        cy.get('.e2e-ideacard-upvote-button').should('exist');
-        cy.get('.e2e-ideacard-downvote-button').should('exist');
+        cy.get('.e2e-reaction-controls').should('exist');
+        cy.get('.e2e-ideacard-like-button').should('exist');
+        cy.get('.e2e-ideacard-dislike-button').should('exist');
 
-        cy.get('.e2e-vote-controls')
-          .find('.e2e-ideacard-upvote-button')
-          .as('upvoteBtn');
-        cy.get('.e2e-vote-controls')
-          .find('.e2e-ideacard-downvote-button')
-          .as('downvoteBtn');
+        cy.get('.e2e-reaction-controls')
+          .find('.e2e-ideacard-like-button')
+          .as('likeBtn');
+        cy.get('.e2e-reaction-controls')
+          .find('.e2e-ideacard-dislike-button')
+          .as('dislikeBtn');
 
-        // initial upvote & downvote values
-        cy.get('@upvoteBtn').contains('1');
-        cy.get('@downvoteBtn').contains('0');
+        // initial like & dislike values
+        cy.get('@likeBtn').contains('1');
+        cy.get('@dislikeBtn').contains('0');
 
-        // add upvote
-        cy.get('@upvoteBtn').click().wait(1000).contains('2');
+        // add like
+        cy.get('@likeBtn').click().wait(1000).contains('2');
 
-        // remove upvote
-        cy.get('@upvoteBtn').click().wait(1000).contains('1');
+        // remove like
+        cy.get('@likeBtn').click().wait(1000).contains('1');
 
-        // add downvote
-        cy.get('@downvoteBtn').click().wait(1000).contains('1');
+        // add dislike
+        cy.get('@dislikeBtn').click().wait(1000).contains('1');
 
-        // remove downvote
-        cy.get('@downvoteBtn').click().wait(1000).contains('0');
+        // remove dislike
+        cy.get('@dislikeBtn').click().wait(1000).contains('0');
 
-        // add downvote, then upvote
-        cy.get('@downvoteBtn').click().wait(1000);
-        cy.get('@upvoteBtn').click().wait(1000);
-        cy.get('@downvoteBtn').contains('0');
-        cy.get('@upvoteBtn').contains('2');
-        cy.get('@upvoteBtn').click().wait(1000);
+        // add dislike, then like
+        cy.get('@dislikeBtn').click().wait(1000);
+        cy.get('@likeBtn').click().wait(1000);
+        cy.get('@dislikeBtn').contains('0');
+        cy.get('@likeBtn').contains('2');
+        cy.get('@likeBtn').click().wait(1000);
       });
     });
 

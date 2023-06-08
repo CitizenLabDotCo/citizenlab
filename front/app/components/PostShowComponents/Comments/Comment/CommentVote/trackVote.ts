@@ -1,24 +1,24 @@
 import tracks from '../../tracks';
 import { trackEventByName } from 'utils/analytics';
 
-export const trackUpvote = (commentType: 'parent' | 'child' | undefined) => {
+export const trackLike = (commentType: 'parent' | 'child' | undefined) => {
   if (commentType === 'parent') {
-    trackEventByName(tracks.clickParentCommentUpvoteButton);
+    trackEventByName(tracks.clickParentCommentLikeButton);
   } else if (commentType === 'child') {
-    trackEventByName(tracks.clickChildCommentUpvoteButton);
+    trackEventByName(tracks.clickChildCommentLikeButton);
   } else {
-    trackEventByName(tracks.clickCommentUpvoteButton);
+    trackEventByName(tracks.clickCommentLikeButton);
   }
 };
 
-export const trackCancelUpvote = (
+export const trackCancelLike = (
   commentType: 'parent' | 'child' | undefined
 ) => {
   if (commentType === 'parent') {
-    trackEventByName(tracks.clickParentCommentCancelUpvoteButton);
+    trackEventByName(tracks.clickParentCommentCancelLikeButton);
   } else if (commentType === 'child') {
-    trackEventByName(tracks.clickChildCommentCancelUpvoteButton);
+    trackEventByName(tracks.clickChildCommentCancelLikeButton);
   } else {
-    trackEventByName(tracks.clickCommentCancelUpvoteButton);
+    trackEventByName(tracks.clickCommentCancelLikeButton);
   }
 };

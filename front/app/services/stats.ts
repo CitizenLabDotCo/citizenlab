@@ -171,13 +171,13 @@ export function commentsByProjectStream(
   });
 }
 
-// Votes
-export interface IVotesByTopic {
+// Reactions
+export interface IReactionsByTopic {
   data: {
-    type: 'votes_by_topic';
+    type: 'reactions_by_topic';
     attributes: {
       series: {
-        votes: {
+        reactions: {
           [key: string]: number;
         };
       };
@@ -190,9 +190,9 @@ export interface IVotesByTopic {
   };
 }
 
-export interface IVotesByProject {
+export interface IReactionsByProject {
   data: {
-    type: 'votes_by_project';
+    type: 'reactions_by_project';
     attributes: {
       series: {
         total: {
@@ -208,22 +208,24 @@ export interface IVotesByProject {
   };
 }
 
-export const votesByTopicXlsxEndpoint = `${apiEndpoint}/votes_by_topic_as_xlsx`;
+export const reactionsByTopicXlsxEndpoint = `${apiEndpoint}/reactions_by_topic_as_xlsx`;
 
-export function votesByTopicStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IVotesByTopic>({
-    apiEndpoint: `${apiEndpoint}/votes_by_topic`,
+export function reactionsByTopicStream(
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IReactionsByTopic>({
+    apiEndpoint: `${apiEndpoint}/reactions_by_topic`,
     ...streamParams,
   });
 }
 
-export const votesByProjectXlsxEndpoint = `${apiEndpoint}/votes_by_project_as_xlsx`;
+export const reactionsByProjectXlsxEndpoint = `${apiEndpoint}/reactions_by_project_as_xlsx`;
 
-export function votesByProjectStream(
+export function reactionsByProjectStream(
   streamParams: IStreamParams | null = null
 ) {
-  return streams.get<IVotesByProject>({
-    apiEndpoint: `${apiEndpoint}/votes_by_project`,
+  return streams.get<IReactionsByProject>({
+    apiEndpoint: `${apiEndpoint}/reactions_by_project`,
     ...streamParams,
   });
 }

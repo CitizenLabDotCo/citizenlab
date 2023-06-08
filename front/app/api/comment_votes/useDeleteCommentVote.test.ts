@@ -1,12 +1,12 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useDeleteCommentVote from './useDeleteCommentVote';
+import useDeleteCommentReaction from './useDeleteCommentReaction';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-const apiPath = '*votes/:voteId';
+const apiPath = '*reactions/:reactionId';
 
 const server = setupServer(
   rest.delete(apiPath, (_req, res, ctx) => {
@@ -14,19 +14,19 @@ const server = setupServer(
   })
 );
 
-describe('useDeleteCommentVote', () => {
+describe('useDeleteCommentReaction', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteCommentVote(), {
+    const { result, waitFor } = renderHook(() => useDeleteCommentReaction(), {
       wrapper: createQueryClientWrapper(),
     });
 
     act(() => {
       result.current.mutate({
         commentId: 'commentId',
-        voteId: 'voteId',
+        reactionId: 'reactionId',
       });
     });
 
@@ -40,14 +40,14 @@ describe('useDeleteCommentVote', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteCommentVote(), {
+    const { result, waitFor } = renderHook(() => useDeleteCommentReaction(), {
       wrapper: createQueryClientWrapper(),
     });
 
     act(() => {
       result.current.mutate({
         commentId: 'commentId',
-        voteId: 'voteId',
+        reactionId: 'reactionId',
       });
     });
 

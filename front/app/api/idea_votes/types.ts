@@ -1,21 +1,21 @@
 import { Keys } from 'utils/cl-react-query/types';
-import ideaVotesKeys from './keys';
+import ideaReactionsKeys from './keys';
 
-export type IdeaVotesKeys = Keys<typeof ideaVotesKeys>;
+export type IdeaReactionsKeys = Keys<typeof ideaReactionsKeys>;
 
-export type TVoteMode = 'up' | 'down';
+export type TReactionMode = 'up' | 'down';
 
-interface IIdeaVoteData {
+interface IIdeaReactionData {
   id: string;
-  type: 'vote';
+  type: 'reaction';
   attributes: {
-    mode: TVoteMode;
+    mode: TReactionMode;
   };
   relationships: {
-    votable: {
+    reactable: {
       data: {
         id: string;
-        type: 'votable';
+        type: 'reactable';
       };
     };
     user: {
@@ -27,11 +27,11 @@ interface IIdeaVoteData {
   };
 }
 
-export interface IIdeaVote {
-  data: IIdeaVoteData;
+export interface IIdeaReaction {
+  data: IIdeaReactionData;
 }
 
-export interface INewVoteProperties {
+export interface INewReactionProperties {
   ideaId: string;
   userId: string;
   mode: 'up' | 'down';

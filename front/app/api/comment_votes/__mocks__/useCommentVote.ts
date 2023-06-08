@@ -1,17 +1,17 @@
-import { ICommentVote } from '../types';
+import { ICommentReaction } from '../types';
 
-export const voteData: ICommentVote = {
+export const reactionData: ICommentReaction = {
   data: {
-    id: 'voteId',
-    type: 'vote',
+    id: 'reactionId',
+    type: 'reaction',
     attributes: {
       mode: 'up',
     },
     relationships: {
-      votable: {
+      reactable: {
         data: {
           id: 'ideaId',
-          type: 'votable',
+          type: 'reactable',
         },
       },
       user: {
@@ -25,5 +25,5 @@ export const voteData: ICommentVote = {
 };
 
 export default jest.fn(() => {
-  return { data: { data: voteData } };
+  return { data: { data: reactionData } };
 });

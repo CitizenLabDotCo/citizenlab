@@ -80,7 +80,7 @@ const VotePreview = ({ ideaId, className }: Props) => {
 
   if (!isNilOrError(idea)) {
     const upvotesCount = idea.data.attributes.upvotes_count;
-    const downvotesCount = idea.data.attributes.downvotes_count;
+    const downvotesCount = idea.data.attributes.dislikes_count;
 
     return (
       <Container className={className}>

@@ -1,22 +1,27 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import voteKeys from './keys';
-import { CommentVotesKeys, ICommentVote } from './types';
+import reactionKeys from './keys';
+import { CommentReactionsKeys, ICommentReaction } from './types';
 
-const fetchVote = ({ id }: { id?: string }) =>
-  fetcher<ICommentVote>({
-    path: `/votes/${id}`,
+const fetchReaction = ({ id }: { id?: string }) =>
+  fetcher<ICommentReaction>({
+    path: `/reactions/${id}`,
     action: 'get',
   });
 
-const useCommentVote = (id?: string) => {
-  return useQuery<ICommentVote, CLErrors, ICommentVote, CommentVotesKeys>({
-    queryKey: voteKeys.item({ id }),
-    queryFn: async () => await fetchVote({ id }),
+const useCommentReaction = (id?: string) => {
+  return useQuery<
+    ICommentReaction,
+    CLErrors,
+    ICommentReaction,
+    CommentReactionsKeys
+  >({
+    queryKey: reactionKeys.item({ id }),
+    queryFn: async () => await fetchReaction({ id }),
     enabled: !!id,
     keepPreviousData: false,
   });
 };
 
-export default useCommentVote;
+export default useCommentReaction;

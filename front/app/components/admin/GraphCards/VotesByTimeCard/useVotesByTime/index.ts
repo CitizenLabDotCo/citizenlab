@@ -82,7 +82,7 @@ export default function usePostsByTime({
 
         const firstSerieBar =
           timeSeries && timeSeries.length > 0
-            ? timeSeries[0].upvotes + timeSeries[0].downvotes
+            ? timeSeries[0].likes + timeSeries[0].dislikes
             : 0;
         setFormattedNumbers(getFormattedNumbers(timeSeries, firstSerieBar));
       }

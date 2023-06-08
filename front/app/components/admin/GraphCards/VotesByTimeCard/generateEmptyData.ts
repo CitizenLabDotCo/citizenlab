@@ -1,5 +1,5 @@
 // utils
-import { getEmptyRow } from './useVotesByTime/parse';
+import { getEmptyRow } from './useReactionsByTime/parse';
 import { emptyDateRange } from 'components/admin/GraphCards/_utils/timeSeries';
 
 // typings

@@ -141,7 +141,7 @@ const IdeaRow = ({
         return (
           <>
             <Icon name="thumbs down" />
-            {idea.attributes.downvotes_count}
+            {idea.attributes.dislikes_count}
           </>
         );
       },

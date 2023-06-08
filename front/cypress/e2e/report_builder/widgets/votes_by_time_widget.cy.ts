@@ -1,6 +1,6 @@
 import { randomString, randomEmail } from '../../../support/commands';
 
-describe('Report builder Votes By Time widget', () => {
+describe('Report builder Reactions By Time widget', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
 
@@ -21,7 +21,7 @@ describe('Report builder Votes By Time widget', () => {
           cy.apiSignup(randomString(), randomString(), email, password).then(
             (user) => {
               cy.wrap((user as any).body.data.id).as('userId');
-              cy.apiDownvoteIdea(email, password, idea.body.data.id);
+              cy.apiDislikeIdea(email, password, idea.body.data.id);
             }
           );
         }
@@ -50,8 +50,8 @@ describe('Report builder Votes By Time widget', () => {
     });
   });
 
-  it('handles Votes By Time widget correctly', function () {
-    cy.get('#e2e-draggable-votes-by-time-widget').dragAndDrop(
+  it('handles Reactions By Time widget correctly', function () {
+    cy.get('#e2e-draggable-reactions-by-time-widget').dragAndDrop(
       '#e2e-content-builder-frame',
       {
         position: 'inside',
@@ -75,11 +75,11 @@ describe('Report builder Votes By Time widget', () => {
     cy.get('.recharts-surface:first').trigger('mouseover');
 
     cy.contains('New Widget Title').should('exist');
-    cy.contains('Downvotes : 1').should('be.visible');
+    cy.contains('Dislikes : 1').should('be.visible');
   });
 
-  it('deletes Votes By Time widget correctly', function () {
-    cy.get('#e2e-draggable-votes-by-time-widget').dragAndDrop(
+  it('deletes Reactions By Time widget correctly', function () {
+    cy.get('#e2e-draggable-reactions-by-time-widget').dragAndDrop(
       '#e2e-content-builder-frame',
       {
         position: 'inside',
@@ -87,8 +87,8 @@ describe('Report builder Votes By Time widget', () => {
     );
     cy.get('#e2e-content-builder-topbar-save').click();
 
-    cy.get('#e2e-draggable-votes-by-time-widget').should('exist');
-    cy.get('#e2e-draggable-votes-by-time-widget')
+    cy.get('#e2e-draggable-reactions-by-time-widget').should('exist');
+    cy.get('#e2e-draggable-reactions-by-time-widget')
       .parent()
       .click({ force: true });
     cy.get('#e2e-delete-button').click();
@@ -96,6 +96,6 @@ describe('Report builder Votes By Time widget', () => {
     cy.wait('@saveReportLayout');
 
     cy.visit(`/admin/reporting/report-builder/${this.reportId}/viewer`);
-    cy.get('#e2e-votes-by-time-widget').should('not.exist');
+    cy.get('#e2e-reactions-by-time-widget').should('not.exist');
   });
 });

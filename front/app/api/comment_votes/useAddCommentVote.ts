@@ -2,23 +2,23 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import commentKeys from 'api/comments/keys';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import { ICommentVote, INewVoteProperties } from './types';
+import { ICommentReaction, INewReactionProperties } from './types';
 
-export const addCommentVote = async ({
+export const addCommentReaction = async ({
   commentId,
   userId,
   ...requestBody
-}: INewVoteProperties) =>
-  fetcher<ICommentVote>({
-    path: `/comments/${commentId}/votes`,
+}: INewReactionProperties) =>
+  fetcher<ICommentReaction>({
+    path: `/comments/${commentId}/reactions`,
     action: 'post',
     body: { user_id: userId, ...requestBody },
   });
 
-const useAddCommentVote = () => {
+const useAddCommentReaction = () => {
   const queryClient = useQueryClient();
-  return useMutation<ICommentVote, CLErrors, INewVoteProperties>({
-    mutationFn: addCommentVote,
+  return useMutation<ICommentReaction, CLErrors, INewReactionProperties>({
+    mutationFn: addCommentReaction,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: commentKeys.item({ id: variables.commentId }),
@@ -27,4 +27,4 @@ const useAddCommentVote = () => {
   });
 };
 
-export default useAddCommentVote;
+export default useAddCommentReaction;

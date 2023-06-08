@@ -12,8 +12,8 @@ export type ICommentParameters = {
 };
 
 interface CommentAttributes {
-  upvotes_count: number;
-  downvotes_count: number;
+  likes_count: number;
+  dislikes_count: number;
   created_at: string;
   updated_at: string;
   children_count: number;
@@ -45,7 +45,7 @@ export interface ICommentData {
     parent: {
       data: IRelationship | null;
     };
-    user_vote?: {
+    user_reaction?: {
       data: IRelationship | null;
     };
   };
@@ -87,7 +87,7 @@ export interface DeleteReason {
   other_reason: string | null;
 }
 
-export type CommentsSort = '-new' | 'upvotes_count' | 'new' | '-upvotes_count';
+export type CommentsSort = '-new' | 'likes_count' | 'new' | '-likes_count';
 
 export type ICommentQueryParameters = {
   sort?: CommentsSort;

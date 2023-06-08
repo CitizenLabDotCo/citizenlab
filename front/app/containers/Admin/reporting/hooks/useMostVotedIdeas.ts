@@ -7,16 +7,16 @@ interface Props {
   numberOfIdeas: number;
 }
 
-function useMostVotedIdeas({ projectId, phaseId, numberOfIdeas }: Props) {
+function useMostReactedIdeas({ projectId, phaseId, numberOfIdeas }: Props) {
   const { data } = useIdeas({
     'page[number]': 1,
     'page[size]': numberOfIdeas,
     projects: [projectId],
     phase: phaseId,
-    sort: '-upvotes_count',
+    sort: '-likes_count',
   });
 
   return data?.data;
 }
 
-export default useMostVotedIdeas;
+export default useMostReactedIdeas;

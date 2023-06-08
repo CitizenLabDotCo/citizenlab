@@ -1,24 +1,24 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
-import { IInitiativeVote } from './types';
+import { IInitiativeReaction } from './types';
 import initiativesKeys from 'api/initiatives/keys';
 
-const deleteInitiativeVote = async ({
+const deleteInitiativeReaction = async ({
   initiativeId: _initiativeId,
-  voteId,
+  reactionId,
 }: {
   initiativeId: string;
-  voteId: string;
+  reactionId: string;
 }) =>
-  fetcher<IInitiativeVote>({
-    path: `/votes/${voteId}`,
+  fetcher<IInitiativeReaction>({
+    path: `/reactions/${reactionId}`,
     action: 'delete',
   });
 
-const useDeleteInitiativeVote = () => {
+const useDeleteInitiativeReaction = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: deleteInitiativeVote,
+    mutationFn: deleteInitiativeReaction,
     onSuccess: (_data, { initiativeId }) => {
       queryClient.invalidateQueries({
         queryKey: initiativesKeys.item({ id: initiativeId }),
@@ -27,4 +27,4 @@ const useDeleteInitiativeVote = () => {
   });
 };
 
-export default useDeleteInitiativeVote;
+export default useDeleteInitiativeReaction;

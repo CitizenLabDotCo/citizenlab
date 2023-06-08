@@ -24,14 +24,14 @@ export const query = ({
     filters: {
       ...getDateFilter('dimension_date_created', startAt, endAt),
       ...getProjectFilter('dimension_project', projectId),
-      'dimension_type.name': 'vote',
+      'dimension_type.name': 'reaction',
       'dimension_type.parent': 'idea',
     },
     groups: `dimension_date_created.${getInterval(resolution)}`,
     aggregations: {
       'dimension_date_created.date': 'first',
-      upvotes_count: 'sum',
-      downvotes_count: 'sum',
+      likes_count: 'sum',
+      dislikes_count: 'sum',
     },
   };
 
@@ -40,11 +40,11 @@ export const query = ({
     filters: {
       ...getDateFilter('dimension_date_created', null, endAt),
       ...getProjectFilter('dimension_project', projectId),
-      'dimension_type.name': 'vote',
+      'dimension_type.name': 'reaction',
       'dimension_type.parent': 'idea',
     },
     aggregations: {
-      votes_count: 'sum',
+      reactions_count: 'sum',
     },
   };
 

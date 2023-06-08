@@ -1,40 +1,45 @@
 import { IUserData } from 'api/users/types';
-import { addIdeaVote } from 'api/idea_votes/useAddIdeaVote';
-import { deleteIdeaVote } from 'api/idea_votes/useDeleteIdeaVote';
+import { addIdeaReaction } from 'api/idea_reactions/useAddIdeaReaction';
+import { deleteIdeaReaction } from 'api/idea_reactions/useDeleteIdeaReaction';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import ideasKeys from 'api/ideas/keys';
 
-export interface VoteOnIdeaParams {
+export interface ReactionOnIdeaParams {
   ideaId: string;
-  voteId?: string | null;
-  voteMode: 'up' | 'down';
-  myVoteMode?: 'up' | 'down' | null;
+  reactionId?: string | null;
+  reactionMode: 'up' | 'down';
+  myReactionMode?: 'up' | 'down' | null;
 }
 
-export const voteOnIdea =
-  ({ ideaId, voteId, myVoteMode, voteMode }: VoteOnIdeaParams) =>
+export const reactionOnIdea =
+  ({
+    ideaId,
+    reactionId,
+    myReactionMode,
+    reactionMode,
+  }: ReactionOnIdeaParams) =>
   async (authUser: IUserData) => {
-    // Change vote (up -> down or down -> up)
-    if (voteId && myVoteMode !== voteMode) {
-      await deleteIdeaVote({ ideaId, voteId });
-      await addIdeaVote({
+    // Change reaction (up -> down or down -> up)
+    if (reactionId && myReactionMode !== reactionMode) {
+      await deleteIdeaReaction({ ideaId, reactionId });
+      await addIdeaReaction({
         ideaId,
         userId: authUser.id,
-        mode: voteMode,
+        mode: reactionMode,
       });
     }
 
-    // Cancel vote
-    if (voteId && myVoteMode === voteMode) {
-      await deleteIdeaVote({ ideaId, voteId });
+    // Cancel reaction
+    if (reactionId && myReactionMode === reactionMode) {
+      await deleteIdeaReaction({ ideaId, reactionId });
     }
 
-    // Add vote
-    if (!voteId) {
-      await addIdeaVote({
+    // Add reaction
+    if (!reactionId) {
+      await addIdeaReaction({
         ideaId,
         userId: authUser.id,
-        mode: voteMode,
+        mode: reactionMode,
       });
     }
 

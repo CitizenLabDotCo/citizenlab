@@ -205,7 +205,7 @@ export default defineMessages({
   },
   upvotingMethodTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.upvotingMethodTitle',
-    defaultMessage: 'Number of upvotes per participant',
+    defaultMessage: 'Number of likes per participant',
   },
   downvotingMethodTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.downvotingMethodTitle',
@@ -213,7 +213,7 @@ export default defineMessages({
   },
   maxUpvotes: {
     id: 'app.containers.AdminPage.ProjectEdit.maxUpvotes',
-    defaultMessage: 'Maximum upvotes',
+    defaultMessage: 'Maximum likes',
   },
   maxDownvotes: {
     id: 'app.containers.AdminPage.ProjectEdit.maxDownvotes',

@@ -1,27 +1,27 @@
 import { renderHook } from '@testing-library/react-hooks';
 
-import useCommentVote from './useCommentVote';
+import useCommentReaction from './useCommentReaction';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { voteData } from './__mocks__/useCommentVote';
+import { reactionData } from './__mocks__/useCommentReaction';
 
-const apiPath = '*/votes/:id';
+const apiPath = '*/reactions/:id';
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: voteData }));
+    return res(ctx.status(200), ctx.json({ data: reactionData }));
   })
 );
 
-describe('useCommentVote', () => {
+describe('useCommentReaction', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useCommentVote('ideaId'), {
+    const { result, waitFor } = renderHook(() => useCommentReaction('ideaId'), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -30,7 +30,7 @@ describe('useCommentVote', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(voteData);
+    expect(result.current.data?.data).toEqual(reactionData);
   });
 
   it('returns error correctly', async () => {
@@ -40,7 +40,7 @@ describe('useCommentVote', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useCommentVote('ideaId'), {
+    const { result, waitFor } = renderHook(() => useCommentReaction('ideaId'), {
       wrapper: createQueryClientWrapper(),
     });
 

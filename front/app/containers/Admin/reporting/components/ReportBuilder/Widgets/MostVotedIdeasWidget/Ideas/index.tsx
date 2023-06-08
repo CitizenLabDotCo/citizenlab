@@ -50,7 +50,7 @@ const Ideas = ({
               body_multiloc,
               slug,
               upvotes_count,
-              downvotes_count,
+              dislikes_count,
               comments_count,
             },
           },
@@ -64,7 +64,7 @@ const Ideas = ({
             url={`/ideas/${slug}`}
             id={id}
             upvotes={upvotes_count}
-            downvotes={downvotes_count}
+            downvotes={dislikes_count}
             comments={comments_count}
             collapseLongText={collapseLongText}
           />

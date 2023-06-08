@@ -56,13 +56,13 @@ export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
-  voting_enabled?: boolean | null;
+  reacting_enabled?: boolean | null;
   upvoting_method?: 'unlimited' | 'limited' | null;
-  upvoting_limited_max?: number | null;
-  downvoting_enabled?: boolean | null;
+  reacting_like_limited_max?: number | null;
+  reacting_dislike_enabled?: boolean | null;
   allow_anonymous_participation?: boolean | null;
   downvoting_method?: 'unlimited' | 'limited' | null;
-  downvoting_limited_max?: number | null;
+  reacting_dislike_limited_max?: number | null;
   presentation_mode?: 'map' | 'card' | null;
   ideas_order?: IdeaDefaultSortMethod;
   input_term?: InputTerm;
@@ -121,13 +121,13 @@ class ParticipationContext extends PureComponent<
       participation_method: 'ideation',
       posting_enabled: true,
       commenting_enabled: true,
-      voting_enabled: true,
+      reacting_enabled: true,
       upvoting_method: 'unlimited',
-      upvoting_limited_max: null,
-      downvoting_enabled: true,
+      reacting_like_limited_max: null,
+      reacting_dislike_enabled: true,
       allow_anonymous_participation: false,
       downvoting_method: 'unlimited',
-      downvoting_limited_max: null,
+      reacting_dislike_limited_max: null,
       presentation_mode: 'card',
       min_budget: null,
       max_budget: null,
@@ -157,12 +157,12 @@ class ParticipationContext extends PureComponent<
           participation_method: newData.participation_method,
           posting_enabled: newData.posting_enabled,
           commenting_enabled: newData.commenting_enabled,
-          voting_enabled: newData.voting_enabled,
+          reacting_enabled: newData.reacting_enabled,
           upvoting_method: newData.upvoting_method,
           downvoting_method: newData.downvoting_method,
-          upvoting_limited_max: newData.upvoting_limited_max,
-          downvoting_limited_max: newData.downvoting_limited_max,
-          downvoting_enabled: newData.downvoting_enabled,
+          reacting_like_limited_max: newData.reacting_like_limited_max,
+          reacting_dislike_limited_max: newData.reacting_dislike_limited_max,
+          reacting_dislike_enabled: newData.reacting_dislike_enabled,
           allow_anonymous_participation: newData.allow_anonymous_participation,
           presentation_mode: newData.presentation_mode,
           min_budget: newData.min_budget,
@@ -227,9 +227,9 @@ class ParticipationContext extends PureComponent<
       participation_method,
       posting_enabled: ideation ? true : null,
       commenting_enabled: ideationOrBudgeting ? true : null,
-      voting_enabled: ideation ? true : null,
+      reacting_enabled: ideation ? true : null,
       upvoting_method: ideation ? 'unlimited' : null,
-      downvoting_enabled: ideation ? true : null,
+      reacting_dislike_enabled: ideation ? true : null,
       allow_anonymous_participation: ideationOrBudgeting ? false : null,
       downvoting_method: ideation ? 'unlimited' : null,
       presentation_mode: ideationOrBudgeting ? 'card' : null,
@@ -268,26 +268,28 @@ class ParticipationContext extends PureComponent<
     }));
   };
 
-  toggleVotingEnabled = () => {
-    this.setState((state) => ({ voting_enabled: !state.voting_enabled }));
+  toggleReactingEnabled = () => {
+    this.setState((state) => ({ reacting_enabled: !state.reacting_enabled }));
   };
 
   handleUpvotingMethodOnChange = (upvoting_method: 'unlimited' | 'limited') => {
     this.setState({
       upvoting_method,
-      upvoting_limited_max: upvoting_method === 'unlimited' ? null : 5,
+      reacting_like_limited_max: upvoting_method === 'unlimited' ? null : 5,
     });
   };
 
-  handleUpvotingLimitOnChange = (upvoting_limited_max: string) => {
+  handleUpvotingLimitOnChange = (reacting_like_limited_max: string) => {
     this.setState({
-      upvoting_limited_max: parseInt(upvoting_limited_max, 10),
+      reacting_like_limited_max: parseInt(reacting_like_limited_max, 10),
       noUpvotingLimitError: null,
     });
   };
 
-  handleDownvotingEnabledOnChange = (downvoting_enabled: boolean) => {
-    this.setState({ downvoting_enabled });
+  handleReactingDislikeEnabledOnChange = (
+    reacting_dislike_enabled: boolean
+  ) => {
+    this.setState({ reacting_dislike_enabled });
   };
 
   handleAllowAnonymousParticipationOnChange = (
@@ -301,13 +303,14 @@ class ParticipationContext extends PureComponent<
   ) => {
     this.setState({
       downvoting_method,
-      downvoting_limited_max: downvoting_method === 'unlimited' ? null : 5,
+      reacting_dislike_limited_max:
+        downvoting_method === 'unlimited' ? null : 5,
     });
   };
 
-  handleDownvotingLimitOnChange = (downvoting_limited_max: string) => {
+  handleDownvotingLimitOnChange = (reacting_dislike_limited_max: string) => {
     this.setState({
-      downvoting_limited_max: parseInt(downvoting_limited_max, 10),
+      reacting_dislike_limited_max: parseInt(reacting_dislike_limited_max, 10),
       noDownvotingLimitError: null,
     });
   };
@@ -414,12 +417,12 @@ class ParticipationContext extends PureComponent<
       participation_method,
       posting_enabled,
       commenting_enabled,
-      voting_enabled,
+      reacting_enabled,
       upvoting_method,
       downvoting_method,
-      upvoting_limited_max,
-      downvoting_limited_max,
-      downvoting_enabled,
+      reacting_like_limited_max,
+      reacting_dislike_limited_max,
+      reacting_dislike_enabled,
       allow_anonymous_participation,
       min_budget,
       max_budget,
@@ -501,7 +504,7 @@ class ParticipationContext extends PureComponent<
 
             {participation_method === 'ideation' &&
               input_term &&
-              typeof voting_enabled === 'boolean' &&
+              typeof reacting_enabled === 'boolean' &&
               typeof posting_enabled === 'boolean' &&
               typeof commenting_enabled === 'boolean' && (
                 <IdeationInputs
@@ -511,19 +514,19 @@ class ParticipationContext extends PureComponent<
                   inputTermOptions={this.getInputTermOptions()}
                   posting_enabled={posting_enabled}
                   commenting_enabled={commenting_enabled}
-                  voting_enabled={voting_enabled}
+                  reacting_enabled={reacting_enabled}
                   upvoting_method={upvoting_method}
                   downvoting_method={downvoting_method}
-                  upvoting_limited_max={upvoting_limited_max}
-                  downvoting_limited_max={downvoting_limited_max}
-                  downvoting_enabled={downvoting_enabled}
+                  reacting_like_limited_max={reacting_like_limited_max}
+                  reacting_dislike_limited_max={reacting_dislike_limited_max}
+                  reacting_dislike_enabled={reacting_dislike_enabled}
                   noUpvotingLimitError={noUpvotingLimitError}
                   noDownvotingLimitError={noDownvotingLimitError}
                   allow_anonymous_participation={allow_anonymous_participation}
                   apiErrors={apiErrors}
                   togglePostingEnabled={this.togglePostingEnabled}
                   toggleCommentingEnabled={this.toggleCommentingEnabled}
-                  toggleVotingEnabled={this.toggleVotingEnabled}
+                  toggleReactingEnabled={this.toggleReactingEnabled}
                   handleUpvotingMethodOnChange={
                     this.handleUpvotingMethodOnChange
                   }
@@ -534,8 +537,8 @@ class ParticipationContext extends PureComponent<
                   handleDownvotingLimitOnChange={
                     this.handleDownvotingLimitOnChange
                   }
-                  handleDownvotingEnabledOnChange={
-                    this.handleDownvotingEnabledOnChange
+                  handleReactingDislikeEnabledOnChange={
+                    this.handleReactingDislikeEnabledOnChange
                   }
                   handleAllowAnonymousParticipationOnChange={
                     this.handleAllowAnonymousParticipationOnChange

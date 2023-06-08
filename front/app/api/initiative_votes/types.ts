@@ -1,14 +1,14 @@
-export interface IInitiativeVoteData {
+export interface IInitiativeReactionData {
   id: string;
-  type: 'vote';
+  type: 'reaction';
   attributes: {
     mode: 'up' | 'down';
   };
   relationships: {
-    votable: {
+    reactable: {
       data: {
         id: string;
-        type: 'votable';
+        type: 'reactable';
       };
     };
     user: {
@@ -19,11 +19,11 @@ export interface IInitiativeVoteData {
     };
   };
 }
-export interface IInitiativeVote {
-  data: IInitiativeVoteData;
+export interface IInitiativeReaction {
+  data: IInitiativeReactionData;
 }
 
-export interface INewVoteProperties {
+export interface INewReactionProperties {
   initiativeId: string;
   user_id?: string;
   mode: 'up' | 'down';

@@ -1,27 +1,27 @@
 import { renderHook } from '@testing-library/react-hooks';
 
-import useIdeaVote from './useIdeaVote';
+import useIdeaReaction from './useIdeaReaction';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { IIdeaVote } from './types';
+import { IIdeaReaction } from './types';
 
-const apiPath = '*/votes/:id';
+const apiPath = '*/reactions/:id';
 
-export const voteData: IIdeaVote = {
+export const reactionData: IIdeaReaction = {
   data: {
-    id: 'voteId',
-    type: 'vote',
+    id: 'reactionId',
+    type: 'reaction',
     attributes: {
       mode: 'up',
     },
     relationships: {
-      votable: {
+      reactable: {
         data: {
           id: 'ideaId',
-          type: 'votable',
+          type: 'reactable',
         },
       },
       user: {
@@ -36,16 +36,16 @@ export const voteData: IIdeaVote = {
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: voteData }));
+    return res(ctx.status(200), ctx.json({ data: reactionData }));
   })
 );
 
-describe('useIdeaVote', () => {
+describe('useIdeaReaction', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useIdeaVote('ideaId'), {
+    const { result, waitFor } = renderHook(() => useIdeaReaction('ideaId'), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -54,7 +54,7 @@ describe('useIdeaVote', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(voteData);
+    expect(result.current.data?.data).toEqual(reactionData);
   });
 
   it('returns error correctly', async () => {
@@ -64,7 +64,7 @@ describe('useIdeaVote', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useIdeaVote('ideaId'), {
+    const { result, waitFor } = renderHook(() => useIdeaReaction('ideaId'), {
       wrapper: createQueryClientWrapper(),
     });
 

@@ -14,17 +14,16 @@ export default {
     'Clicked on the reply button of a parent comment',
   clickChildCommentReplyButton:
     'Clicked on the reply button of a child comment',
-  clickParentCommentUpvoteButton:
-    'Clicked on the upvote button of a parent comment',
-  clickParentCommentCancelUpvoteButton:
-    'Clicked on the cancel upvote button of a parent comment',
-  clickChildCommentUpvoteButton:
-    'Clicked on the upvote button of a child comment',
-  clickChildCommentCancelUpvoteButton:
-    'Clicked on the cancel upvote button of a child comment',
-  clickCommentUpvoteButton: 'Clicked on the upvote button of a comment',
-  clickCommentCancelUpvoteButton:
-    'Clicked on the cancel upvote button of a comment',
+  clickParentCommentLikeButton:
+    'Clicked on the like button of a parent comment',
+  clickParentCommentCancelLikeButton:
+    'Clicked on the cancel like button of a parent comment',
+  clickChildCommentLikeButton: 'Clicked on the like button of a child comment',
+  clickChildCommentCancelLikeButton:
+    'Clicked on the cancel like button of a child comment',
+  clickCommentLikeButton: 'Clicked on the like button of a comment',
+  clickCommentCancelLikeButton:
+    'Clicked on the cancel like button of a comment',
   childCommentProfanityError: {
     name: 'Profane child comment blocked',
   },

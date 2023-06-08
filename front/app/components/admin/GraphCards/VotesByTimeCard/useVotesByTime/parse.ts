@@ -19,8 +19,8 @@ import { IResolution } from 'components/admin/ResolutionControl';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),
-  upvotes: 0,
-  downvotes: 0,
+  likes: 0,
+  dislikes: 0,
   total: 0,
 });
 
@@ -29,8 +29,8 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
 
   return {
     total: 0,
-    upvotes: row.sum_upvotes_count,
-    downvotes: row.sum_downvotes_count,
+    likes: row.sum_likes_count,
+    dislikes: row.sum_dislikes_count,
     date: date.format('YYYY-MM-DD'),
   };
 };
@@ -58,15 +58,15 @@ export const parseTimeSeries = (
   if (
     !timeSeries ||
     timeSeries.length === 0 ||
-    typeof total[0]?.sum_votes_count !== 'number'
+    typeof total[0]?.sum_reactions_count !== 'number'
   ) {
     return null;
   }
 
   return calculateCumulativeSerie(
     timeSeries,
-    total[0]?.sum_votes_count,
-    (row: TimeSeriesRow) => row.upvotes + row.downvotes
+    total[0]?.sum_reactions_count,
+    (row: TimeSeriesRow) => row.likes + row.dislikes
   );
 };
 
@@ -76,8 +76,8 @@ export const parseExcelData = (
 ) => {
   const timeSeriesData = timeSeries?.map((row) => ({
     [translations.date]: row.date,
-    [translations.upvotes]: row.upvotes,
-    [translations.downvotes]: row.downvotes,
+    [translations.likes]: row.likes,
+    [translations.dislikes]: row.dislikes,
   }));
 
   return {

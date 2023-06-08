@@ -1,21 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import voteKeys from './keys';
-import { IdeaVotesKeys, IIdeaVote } from './types';
+import reactionKeys from './keys';
+import { IdeaReactionsKeys, IIdeaReaction } from './types';
 
-const fetchVote = ({ id }: { id?: string }) =>
-  fetcher<IIdeaVote>({
-    path: `/votes/${id}`,
+const fetchReaction = ({ id }: { id?: string }) =>
+  fetcher<IIdeaReaction>({
+    path: `/reactions/${id}`,
     action: 'get',
   });
 
-const useIdeaVote = (id?: string) => {
-  return useQuery<IIdeaVote, CLErrors, IIdeaVote, IdeaVotesKeys>({
-    queryKey: voteKeys.item({ id }),
-    queryFn: () => fetchVote({ id }),
+const useIdeaReaction = (id?: string) => {
+  return useQuery<IIdeaReaction, CLErrors, IIdeaReaction, IdeaReactionsKeys>({
+    queryKey: reactionKeys.item({ id }),
+    queryFn: () => fetchReaction({ id }),
     enabled: !!id,
   });
 };
 
-export default useIdeaVote;
+export default useIdeaReaction;

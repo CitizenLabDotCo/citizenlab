@@ -1,15 +1,15 @@
-import { addInitiativeVote } from 'api/initiative_votes/useAddInitiativeVote';
+import { addInitiativeReaction } from 'api/initiative_reactions/useAddInitiativeReaction';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import initiativesKeys from 'api/initiatives/keys';
 
-export interface VoteOnInitiativeParams {
+export interface ReactionOnInitiativeParams {
   initiativeId: string;
 }
 
-export const voteOnInitiative =
-  ({ initiativeId }: VoteOnInitiativeParams) =>
+export const reactionOnInitiative =
+  ({ initiativeId }: ReactionOnInitiativeParams) =>
   async () => {
-    await addInitiativeVote({ initiativeId, mode: 'up' });
+    await addInitiativeReaction({ initiativeId, mode: 'up' });
     queryClient.invalidateQueries({
       queryKey: initiativesKeys.item({ id: initiativeId }),
     });

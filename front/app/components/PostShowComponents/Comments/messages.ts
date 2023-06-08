@@ -242,7 +242,7 @@ export default defineMessages({
   a11y_upvoteCount: {
     id: 'app.containers.Comments.a11y_upvoteCount',
     defaultMessage:
-      '{upvoteCount, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}',
+      '{upvoteCount, plural, =0 {no likes} one {1 upvote} other {# likes}}',
   },
   a11y_undoUpvote: {
     id: 'app.containers.Comments.a11y_undoUpvote',

@@ -9,8 +9,8 @@ export default (state: State, formatMessage: FormatMessage) => {
   const {
     upvoting_method,
     downvoting_method,
-    upvoting_limited_max,
-    downvoting_limited_max,
+    reacting_like_limited_max,
+    reacting_dislike_limited_max,
     participation_method,
     min_budget,
     max_budget,
@@ -24,9 +24,9 @@ export default (state: State, formatMessage: FormatMessage) => {
 
   if (
     upvoting_method === 'limited' &&
-    (!upvoting_limited_max ||
-      !isFinite(upvoting_limited_max) ||
-      upvoting_limited_max < 1)
+    (!reacting_like_limited_max ||
+      !isFinite(reacting_like_limited_max) ||
+      reacting_like_limited_max < 1)
   ) {
     noUpvotingLimitError = (
       <FormattedMessage {...messages.noVotingLimitErrorMessage} />
@@ -36,9 +36,9 @@ export default (state: State, formatMessage: FormatMessage) => {
 
   if (
     downvoting_method === 'limited' &&
-    (!downvoting_limited_max ||
-      !isFinite(downvoting_limited_max) ||
-      downvoting_limited_max < 1)
+    (!reacting_dislike_limited_max ||
+      !isFinite(reacting_dislike_limited_max) ||
+      reacting_dislike_limited_max < 1)
   ) {
     noDownvotingLimitError = (
       <FormattedMessage {...messages.noVotingLimitErrorMessage} />

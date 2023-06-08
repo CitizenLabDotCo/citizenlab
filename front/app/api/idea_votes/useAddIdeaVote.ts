@@ -1,24 +1,24 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import { IIdeaVote, INewVoteProperties } from './types';
+import { IIdeaReaction, INewReactionProperties } from './types';
 import ideasKeys from 'api/ideas/keys';
 
-export const addIdeaVote = async ({
+export const addIdeaReaction = async ({
   ideaId,
   userId,
   ...requestBody
-}: INewVoteProperties) =>
-  fetcher<IIdeaVote>({
-    path: `/ideas/${ideaId}/votes`,
+}: INewReactionProperties) =>
+  fetcher<IIdeaReaction>({
+    path: `/ideas/${ideaId}/reactions`,
     action: 'post',
     body: { user_id: userId, ...requestBody },
   });
 
-const useAddIdeaVote = () => {
+const useAddIdeaReaction = () => {
   const queryClient = useQueryClient();
-  return useMutation<IIdeaVote, CLErrors, INewVoteProperties>({
-    mutationFn: addIdeaVote,
+  return useMutation<IIdeaReaction, CLErrors, INewReactionProperties>({
+    mutationFn: addIdeaReaction,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: ideasKeys.item({ id: variables.ideaId }),
@@ -27,4 +27,4 @@ const useAddIdeaVote = () => {
   });
 };
 
-export default useAddIdeaVote;
+export default useAddIdeaReaction;

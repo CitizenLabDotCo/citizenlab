@@ -28,7 +28,7 @@ export default defineMessages({
   upvotingDisabledMaxReached: {
     id: 'app.components.VoteControl.upvotingDisabledMaxReached',
     defaultMessage:
-      "You've reached your maximum number of upvotes in {projectName}",
+      "You've reached your maximum number of likes in {projectName}",
   },
   downvotingDisabledMaxReached: {
     id: 'app.components.VoteControl.downvotingDisabledMaxReached',
@@ -55,10 +55,10 @@ export default defineMessages({
     id: 'app.components.VoteControl.downvote',
     defaultMessage: 'Downvote',
   },
-  a11y_upvotesDownvotes: {
-    id: 'app.containers.VoteControl.a11y_upvotesDownvotes',
+  a11y_likesDownvotes: {
+    id: 'app.containers.VoteControl.a11y_likesDownvotes',
     defaultMessage:
-      'Total upvotes: {upvotesCount}, total downvotes: {downvotesCount}',
+      'Total likes: {likesCount}, total downvotes: {downvotesCount}',
   },
   voteSuccessTitle: {
     id: 'app.containers.VoteControl.voteSuccessTitle',

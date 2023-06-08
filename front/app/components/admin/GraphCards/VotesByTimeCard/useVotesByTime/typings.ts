@@ -8,27 +8,27 @@ export type QueryParameters = ProjectId & Dates & Resolution;
 
 // Response
 export type Response = {
-  data: [TimeSeriesResponse | [], [VotesCountRow] | []];
+  data: [TimeSeriesResponse | [], [ReactionsCountRow] | []];
 };
 
 type TimeSeriesResponse = TimeSeriesResponseRow[];
 
 export interface TimeSeriesResponseRow {
   first_dimension_date_created_date: string;
-  sum_downvotes_count: number;
-  sum_upvotes_count: number;
+  sum_dislikes_count: number;
+  sum_likes_count: number;
 }
 
-interface VotesCountRow {
-  sum_votes_count: number;
+interface ReactionsCountRow {
+  sum_reactions_count: number;
 }
 
 // Hook return value
 export interface TimeSeriesRow {
   /* Date format: YYYY-MM-DD */
   date: string;
-  upvotes: number;
-  downvotes: number;
+  likes: number;
+  dislikes: number;
   total: number;
 }
 

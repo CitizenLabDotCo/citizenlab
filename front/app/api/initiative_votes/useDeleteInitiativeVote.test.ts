@@ -1,12 +1,12 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useDeleteInitiativeVote from './useDeleteInitiativeVote';
+import useDeleteInitiativeReaction from './useDeleteInitiativeReaction';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-const apiPath = '*votes/:voteId';
+const apiPath = '*reactions/:reactionId';
 
 const server = setupServer(
   rest.delete(apiPath, (_req, res, ctx) => {
@@ -14,19 +14,22 @@ const server = setupServer(
   })
 );
 
-describe('useDeleteInitiativeVote', () => {
+describe('useDeleteInitiativeReaction', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteInitiativeVote(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () => useDeleteInitiativeReaction(),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     act(() => {
       result.current.mutate({
         initiativeId: 'initiativeId',
-        voteId: 'voteId',
+        reactionId: 'reactionId',
       });
     });
 
@@ -40,14 +43,17 @@ describe('useDeleteInitiativeVote', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteInitiativeVote(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () => useDeleteInitiativeReaction(),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     act(() => {
       result.current.mutate({
         initiativeId: 'initiativeId',
-        voteId: 'voteId',
+        reactionId: 'reactionId',
       });
     });
 

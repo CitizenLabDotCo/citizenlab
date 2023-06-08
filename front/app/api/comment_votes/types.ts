@@ -1,21 +1,21 @@
 import { Keys } from 'utils/cl-react-query/types';
-import commentVotesKeys from './keys';
+import commentReactionsKeys from './keys';
 
-export type CommentVotesKeys = Keys<typeof commentVotesKeys>;
+export type CommentReactionsKeys = Keys<typeof commentReactionsKeys>;
 
-export type TVoteMode = 'up' | 'down';
+export type TReactionMode = 'up' | 'down';
 
-interface ICommentVoteData {
+interface ICommentReactionData {
   id: string;
-  type: 'vote';
+  type: 'reaction';
   attributes: {
-    mode: TVoteMode;
+    mode: TReactionMode;
   };
   relationships: {
-    votable: {
+    reactable: {
       data: {
         id: string;
-        type: 'votable';
+        type: 'reactable';
       };
     };
     user: {
@@ -27,11 +27,11 @@ interface ICommentVoteData {
   };
 }
 
-export interface ICommentVote {
-  data: ICommentVoteData;
+export interface ICommentReaction {
+  data: ICommentReactionData;
 }
 
-export interface INewVoteProperties {
+export interface INewReactionProperties {
   commentId: string;
   userId: string;
   mode: 'up' | 'down';

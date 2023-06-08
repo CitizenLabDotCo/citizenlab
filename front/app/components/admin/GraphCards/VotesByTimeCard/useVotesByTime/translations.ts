@@ -12,8 +12,8 @@ import { FormatMessage } from 'typings';
 
 export interface Translations extends TimePeriodTranslations {
   date: string;
-  upvotes: string;
-  downvotes: string;
+  likes: string;
+  dislikes: string;
   timeSeries: string;
 }
 
@@ -21,8 +21,8 @@ export const getTranslations = (
   formatMessage: FormatMessage
 ): Translations => ({
   date: formatMessage(moduleMessages.date),
-  upvotes: formatMessage(dashboardMessages.numberOfVotesUp),
-  downvotes: formatMessage(dashboardMessages.numberOfVotesDown),
+  likes: formatMessage(dashboardMessages.numberOfReactionsUp),
+  dislikes: formatMessage(dashboardMessages.numberOfReactionsDown),
   timeSeries: formatMessage(messages.timeSeries),
   ...getTimePeriodTranslations(formatMessage),
 });

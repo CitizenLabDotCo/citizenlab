@@ -1,11 +1,11 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
 const baseKey = {
-  type: 'vote',
+  type: 'reaction',
   variant: 'comment',
 };
 
-const commentVotesKeys = {
+const commentReactionsKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({ id }: { id?: string }) => [
@@ -13,4 +13,4 @@ const commentVotesKeys = {
   ],
 } satisfies QueryKeys;
 
-export default commentVotesKeys;
+export default commentReactionsKeys;

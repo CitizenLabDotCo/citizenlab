@@ -25,10 +25,10 @@ describe('Initiative show page actions', () => {
       cy.apiRemoveInitiative(initiativeId);
     });
 
-    it('asks unauthorised users to log in or sign up before they vote', () => {
-      cy.get('#e2e-initiative-upvote-button').should('exist');
+    it('asks unauthorised users to log in or sign up before they reaction', () => {
+      cy.get('#e2e-initiative-like-button').should('exist');
       cy.wait(2000);
-      cy.get('#e2e-initiative-upvote-button').click();
+      cy.get('#e2e-initiative-like-button').click();
       cy.get('#e2e-authentication-modal').should('exist');
     });
   });
@@ -78,7 +78,7 @@ describe('Initiative show page actions', () => {
   });
 
   describe('logged in as normal user', () => {
-    describe('Vote', () => {
+    describe('Reaction', () => {
       const initiativeTitle = randomString();
       const initiativeContent = randomString();
       const firstName = randomString();
@@ -109,34 +109,42 @@ describe('Initiative show page actions', () => {
         cy.apiRemoveInitiative(initiativeId);
       });
 
-      it('adds and removes vote when vote buttons clicked', () => {
-        // get upvote button
-        cy.get('#e2e-initiative-vote-control')
-          .find('#e2e-initiative-upvote-button')
-          .as('voteButton');
+      it('adds and removes reaction when reaction buttons clicked', () => {
+        // get like button
+        cy.get('#e2e-initiative-reaction-control')
+          .find('#e2e-initiative-like-button')
+          .as('reactionButton');
 
-        // get initial vote count
-        cy.get('#e2e-initiative-not-voted-vote-count').contains('1 vote');
-        // upvote initiative
-        cy.get('@voteButton').click({ force: true });
-        cy.get('#e2e-initiative-voted-vote-count').contains('2 votes');
+        // get initial reaction count
+        cy.get('#e2e-initiative-not-reacted-reaction-count').contains(
+          '1 reaction'
+        );
+        // like initiative
+        cy.get('@reactionButton').click({ force: true });
+        cy.get('#e2e-initiative-reacted-reaction-count').contains(
+          '2 reactions'
+        );
 
-        // get cancel vote button
-        cy.get('#e2e-initiative-vote-control')
-          .find('#e2e-initiative-cancel-upvote-button')
-          .as('cancelVoteButton');
+        // get cancel reaction button
+        cy.get('#e2e-initiative-reaction-control')
+          .find('#e2e-initiative-cancel-like-button')
+          .as('cancelReactionButton');
 
-        // current vote count
-        cy.get('#e2e-initiative-voted-vote-count').contains('2 votes');
+        // current reaction count
+        cy.get('#e2e-initiative-reacted-reaction-count').contains(
+          '2 reactions'
+        );
 
-        cy.get('#e2e-initiative-vote-control')
-          .find('#e2e-initiative-cancel-upvote-button')
-          .as('cancelVoteButton');
-        cy.get('@cancelVoteButton').click();
+        cy.get('#e2e-initiative-reaction-control')
+          .find('#e2e-initiative-cancel-like-button')
+          .as('cancelReactionButton');
+        cy.get('@cancelReactionButton').click();
 
-        // confirm vote count went down
-        cy.get('#e2e-initiative-not-voted-vote-count').should('exist');
-        cy.get('#e2e-initiative-not-voted-vote-count').contains('1 vote');
+        // confirm reaction count went down
+        cy.get('#e2e-initiative-not-reacted-reaction-count').should('exist');
+        cy.get('#e2e-initiative-not-reacted-reaction-count').contains(
+          '1 reaction'
+        );
       });
     });
 

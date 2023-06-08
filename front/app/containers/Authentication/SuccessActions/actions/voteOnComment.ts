@@ -1,45 +1,45 @@
 import { IUserData } from 'api/users/types';
-import { addCommentVote } from 'api/comment_votes/useAddCommentVote';
-import { deleteCommentVote } from 'api/comment_votes/useDeleteCommentVote';
+import { addCommentReaction } from 'api/comment_reactions/useAddCommentReaction';
+import { deleteCommentReaction } from 'api/comment_reactions/useDeleteCommentReaction';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 import {
-  trackUpvote,
-  trackCancelUpvote,
-} from 'components/PostShowComponents/Comments/Comment/CommentVote/trackVote';
+  trackLike,
+  trackCancelLike,
+} from 'components/PostShowComponents/Comments/Comment/CommentReaction/trackReaction';
 
-export interface VoteOnCommentParams {
-  alreadyVoted: boolean;
+export interface ReactionOnCommentParams {
+  alreadyReacted: boolean;
   commentId: string;
   commentType?: 'parent' | 'child';
-  commentVoteId?: string;
+  commentReactionId?: string;
 }
 
-export const voteOnComment =
+export const reactionOnComment =
   ({
-    alreadyVoted,
+    alreadyReacted,
     commentId,
     commentType,
-    commentVoteId,
-  }: VoteOnCommentParams) =>
+    commentReactionId,
+  }: ReactionOnCommentParams) =>
   async (authUser: IUserData) => {
-    if (!alreadyVoted) {
-      await addCommentVote({
+    if (!alreadyReacted) {
+      await addCommentReaction({
         commentId,
         userId: authUser.id,
         mode: 'up',
       });
 
-      trackUpvote(commentType);
+      trackLike(commentType);
     }
 
-    if (alreadyVoted && commentVoteId) {
-      await deleteCommentVote({
+    if (alreadyReacted && commentReactionId) {
+      await deleteCommentReaction({
         commentId,
-        voteId: commentVoteId,
+        reactionId: commentReactionId,
       });
 
-      trackCancelUpvote(commentType);
+      trackCancelLike(commentType);
     }
 
     streams.fetchAllWith({

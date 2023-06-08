@@ -171,7 +171,7 @@ const VoteControl = ({
 
   // Votes count
   const upvotesCount = ideaAttributes.upvotes_count;
-  const downvotesCount = ideaAttributes.downvotes_count;
+  const downvotesCount = ideaAttributes.dislikes_count;
 
   const showVoteControl = !!(
     !isPBContext &&
@@ -198,7 +198,7 @@ const VoteControl = ({
   const onVote = async (voteMode: 'up' | 'down') => {
     setVotingAnimation(voteMode);
 
-    const { enabled: votingEnabled, disabled_reason: votingDisabledReason } =
+    const { enabled: reactingEnabled, disabled_reason: votingDisabledReason } =
       votingActionDescriptor[voteMode];
 
     const isTryingToUndoVote = !!(myVoteMode && voteMode === myVoteMode);
@@ -223,11 +223,11 @@ const VoteControl = ({
     if (!addVoteIsLoading && !deleteVoteIsLoading) {
       if (
         !isNilOrError(authUser) &&
-        (votingEnabled || (cancellingEnabled && isTryingToUndoVote))
+        (reactingEnabled || (cancellingEnabled && isTryingToUndoVote))
       ) {
         castVote(voteMode);
       } else if (
-        !votingEnabled &&
+        !reactingEnabled &&
         isFixableByAuthentication(votingDisabledReason)
       ) {
         triggerAuthenticationFlow({ context, successAction });

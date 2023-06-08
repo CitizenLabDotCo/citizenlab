@@ -159,9 +159,9 @@ const ProjectReport = memo(
 
     const mostVotedIdeasSerie = mostVotedIdeas?.list?.map((idea) => ({
       code: idea.id,
-      value: idea.attributes.upvotes_count + idea.attributes.downvotes_count,
+      value: idea.attributes.upvotes_count + idea.attributes.dislikes_count,
       up: idea.attributes.upvotes_count,
-      down: idea.attributes.downvotes_count,
+      down: idea.attributes.dislikes_count,
       name: localize(idea.attributes.title_multiloc),
       slug: idea.attributes.slug,
     }));
