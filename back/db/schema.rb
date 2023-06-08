@@ -1486,25 +1486,6 @@ ActiveRecord::Schema.define(version: 2023_06_07_142901) do
   add_foreign_key "user_custom_fields_representativeness_ref_distributions", "custom_fields"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
 
-  create_view "idea_trending_infos", sql_definition: <<-SQL
-      SELECT ideas.id AS idea_id,
-      GREATEST(comments_at.last_comment_at, upvotes_at.last_upvoted_at, ideas.published_at) AS last_activity_at,
-      to_timestamp(round((((GREATEST(((comments_at.comments_count)::double precision * comments_at.mean_comment_at), (0)::double precision) + GREATEST(((upvotes_at.upvotes_count)::double precision * upvotes_at.mean_upvoted_at), (0)::double precision)) + date_part('epoch'::text, ideas.published_at)) / (((GREATEST((comments_at.comments_count)::numeric, 0.0) + GREATEST((upvotes_at.upvotes_count)::numeric, 0.0)) + 1.0))::double precision))) AS mean_activity_at
-     FROM ((ideas
-       FULL JOIN ( SELECT comments.post_id AS idea_id,
-              max(comments.created_at) AS last_comment_at,
-              avg(date_part('epoch'::text, comments.created_at)) AS mean_comment_at,
-              count(comments.post_id) AS comments_count
-             FROM comments
-            GROUP BY comments.post_id) comments_at ON ((ideas.id = comments_at.idea_id)))
-       FULL JOIN ( SELECT reactions.reactable_id AS votable_id,
-              max(reactions.created_at) AS last_upvoted_at,
-              avg(date_part('epoch'::text, reactions.created_at)) AS mean_upvoted_at,
-              count(reactions.reactable_id) AS upvotes_count
-             FROM reactions
-            WHERE (((reactions.mode)::text = 'up'::text) AND ((reactions.reactable_type)::text = 'Idea'::text))
-            GROUP BY reactions.reactable_id) upvotes_at ON ((ideas.id = upvotes_at.votable_id)));
-  SQL
   create_view "initiative_initiative_statuses", sql_definition: <<-SQL
       SELECT initiative_status_changes.initiative_id,
       initiative_status_changes.initiative_status_id
@@ -1515,39 +1496,6 @@ ActiveRecord::Schema.define(version: 2023_06_07_142901) do
             GROUP BY initiative_status_changes_1.initiative_id) initiatives_with_last_status_change ON ((initiatives.id = initiatives_with_last_status_change.initiative_id)))
        JOIN initiative_status_changes ON (((initiatives.id = initiative_status_changes.initiative_id) AND (initiatives_with_last_status_change.last_status_changed_at = initiative_status_changes.created_at))))
        JOIN initiative_statuses ON ((initiative_statuses.id = initiative_status_changes.initiative_status_id)));
-  SQL
-  create_view "union_posts", sql_definition: <<-SQL
-      SELECT ideas.id,
-      ideas.title_multiloc,
-      ideas.body_multiloc,
-      ideas.publication_status,
-      ideas.published_at,
-      ideas.author_id,
-      ideas.created_at,
-      ideas.updated_at,
-      ideas.likes_count AS upvotes_count,
-      ideas.location_point,
-      ideas.location_description,
-      ideas.comments_count,
-      ideas.slug,
-      ideas.official_feedbacks_count
-     FROM ideas
-  UNION ALL
-   SELECT initiatives.id,
-      initiatives.title_multiloc,
-      initiatives.body_multiloc,
-      initiatives.publication_status,
-      initiatives.published_at,
-      initiatives.author_id,
-      initiatives.created_at,
-      initiatives.updated_at,
-      initiatives.likes_count AS upvotes_count,
-      initiatives.location_point,
-      initiatives.location_description,
-      initiatives.comments_count,
-      initiatives.slug,
-      initiatives.official_feedbacks_count
-     FROM initiatives;
   SQL
   create_view "moderation_moderations", sql_definition: <<-SQL
       SELECT ideas.id,
@@ -1711,6 +1659,58 @@ ActiveRecord::Schema.define(version: 2023_06_07_142901) do
        LEFT JOIN projects p ON ((ap.publication_id = p.id)))
        LEFT JOIN finished_statuses_for_timeline_projects fsftp ON ((fsftp.project_id = ap.publication_id)))
     WHERE ((ap.publication_type)::text = 'Project'::text);
+  SQL
+  create_view "union_posts", sql_definition: <<-SQL
+      SELECT ideas.id,
+      ideas.title_multiloc,
+      ideas.body_multiloc,
+      ideas.publication_status,
+      ideas.published_at,
+      ideas.author_id,
+      ideas.created_at,
+      ideas.updated_at,
+      ideas.likes_count,
+      ideas.location_point,
+      ideas.location_description,
+      ideas.comments_count,
+      ideas.slug,
+      ideas.official_feedbacks_count
+     FROM ideas
+  UNION ALL
+   SELECT initiatives.id,
+      initiatives.title_multiloc,
+      initiatives.body_multiloc,
+      initiatives.publication_status,
+      initiatives.published_at,
+      initiatives.author_id,
+      initiatives.created_at,
+      initiatives.updated_at,
+      initiatives.likes_count,
+      initiatives.location_point,
+      initiatives.location_description,
+      initiatives.comments_count,
+      initiatives.slug,
+      initiatives.official_feedbacks_count
+     FROM initiatives;
+  SQL
+  create_view "idea_trending_infos", sql_definition: <<-SQL
+      SELECT ideas.id AS idea_id,
+      GREATEST(comments_at.last_comment_at, upvotes_at.last_upvoted_at, ideas.published_at) AS last_activity_at,
+      to_timestamp(round((((GREATEST(((comments_at.comments_count)::double precision * comments_at.mean_comment_at), (0)::double precision) + GREATEST(((upvotes_at.upvotes_count)::double precision * upvotes_at.mean_upvoted_at), (0)::double precision)) + date_part('epoch'::text, ideas.published_at)) / (((GREATEST((comments_at.comments_count)::numeric, 0.0) + GREATEST((upvotes_at.upvotes_count)::numeric, 0.0)) + 1.0))::double precision))) AS mean_activity_at
+     FROM ((ideas
+       FULL JOIN ( SELECT comments.post_id AS idea_id,
+              max(comments.created_at) AS last_comment_at,
+              avg(date_part('epoch'::text, comments.created_at)) AS mean_comment_at,
+              count(comments.post_id) AS comments_count
+             FROM comments
+            GROUP BY comments.post_id) comments_at ON ((ideas.id = comments_at.idea_id)))
+       FULL JOIN ( SELECT reactions.reactable_id AS votable_id,
+              max(reactions.created_at) AS last_upvoted_at,
+              avg(date_part('epoc®h'::text, reactions.created_at)) AS mean_upvoted_at,
+              count(reactions.reactable_id) AS upvotes_count
+             FROM reactions
+            WHERE (((reactions.mode)::text = 'up'::text) AND ((reactions.reactable_type)::text = 'Idea'::text))
+            GROUP BY reactions.reactable_id) upvotes_at ON ((ideas.id = upvotes_at.votable_id)));
   SQL
   create_view "analytics_fact_posts", sql_definition: <<-SQL
       SELECT i.id,
