@@ -1302,7 +1302,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Hvis der ikke tilføjes nogen logik, vil undersøgelsen følge sit normale forløb. Du kan få flere oplysninger på {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText2": "Hvis der ikke er tilføjet nogen logik til et svar, følger undersøgelsen sit normale forløb. Hvis der tilføjes logik til et spørgsmål, vil det som standard være påkrævet. Du kan få flere oplysninger på {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Er du sikker på, at du vil rejse?",
-  "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo": "Den aktuelle ændring vil ikke blive gemt",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Krævet",
   "app.containers.AdminPage.ProjectEdit.survey.selectText2": "Flere valg - vælg et",
   "app.containers.AdminPage.ProjectEdit.survey.successMessage2": "Undersøgelsen er gemt med succes",
