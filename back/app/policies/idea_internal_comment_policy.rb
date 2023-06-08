@@ -39,11 +39,7 @@ class IdeaInternalCommentPolicy < ApplicationPolicy
   end
 
   def active_admin_or_moderator?
-    (
-      user&.active? && user&.admin?
-    ) || (
-      user&.active? && UserRoleService.new.can_moderate?(record.post, user)
-    )
+    active? && (admin? || UserRoleService.new.can_moderate?(record.post, user))
   end
 
   def internal_comment_author?
