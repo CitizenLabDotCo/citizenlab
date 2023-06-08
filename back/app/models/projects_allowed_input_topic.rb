@@ -28,4 +28,5 @@ class ProjectsAllowedInputTopic < ApplicationRecord
   belongs_to :topic
 
   validates :project, :topic, presence: true
+  validates :topic_id, uniqueness: { scope: :project_id }
 end

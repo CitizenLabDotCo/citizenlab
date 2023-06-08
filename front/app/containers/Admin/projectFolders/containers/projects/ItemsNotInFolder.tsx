@@ -9,7 +9,7 @@ import { PublicationStatus } from 'api/projects/types';
 
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -30,7 +30,7 @@ interface Props {
 }
 
 const ItemsNotInFolder = ({ projectFolderId }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { list: adminPublications } = useAdminPublications({
     publicationStatusFilter: publicationStatuses,
   });

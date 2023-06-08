@@ -21,6 +21,7 @@ import { EmbeddedSurveyCTABar } from 'components/ParticipationCTABars/EmbeddedSu
 import { BudgetingCTABar } from 'components/ParticipationCTABars/BudgetingCTABar';
 import { VolunteeringCTABar } from 'components/ParticipationCTABars/VolunteeringCTABar';
 import { PollCTABar } from 'components/ParticipationCTABars/PollCTABar';
+import { DocumentAnnotationCTABar } from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
 
 import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
@@ -216,6 +217,28 @@ const surveyConfig: ParticipationMethodConfig = {
   },
 };
 
+const documentAnnotationConfig: ParticipationMethodConfig = {
+  showInputCount: false,
+  formEditor: null,
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.createDocumentAnnotation} />;
+  },
+  getModalContent: () => {
+    return null;
+  },
+  onFormSubmission: () => {
+    return;
+  },
+  postType: 'defaultInput',
+  showInputManager: false,
+  isMethodLocked: false,
+  renderCTABar: (props: CTABarProps) => {
+    return (
+      <DocumentAnnotationCTABar project={props.project} phases={props.phases} />
+    );
+  },
+};
+
 const budgetingConfig: ParticipationMethodConfig = {
   showInputCount: false,
   formEditor: 'simpleFormEditor',
@@ -320,6 +343,7 @@ const methodToConfig: {
   budgeting: budgetingConfig,
   poll: pollConfig,
   volunteering: volunteeringConfig,
+  document_annotation: documentAnnotationConfig,
 };
 
 /** Get the configuration object for the given participation method

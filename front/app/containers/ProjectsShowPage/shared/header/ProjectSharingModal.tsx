@@ -6,7 +6,7 @@ import Modal from 'components/UI/Modal';
 import SharingButtons from 'components/Sharing/SharingButtons';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
 // i18n
@@ -27,7 +27,7 @@ interface Props {
 
 const ProjectSharingModal = memo<Props & WrappedComponentProps>(
   ({ projectId, className, opened, close, intl: { formatMessage } }) => {
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
     const { data: project } = useProjectById(projectId);
 
     const projectUrl = location.href;
@@ -35,7 +35,7 @@ const ProjectSharingModal = memo<Props & WrappedComponentProps>(
       ? {
           source: 'share_project',
           campaign: 'share_content',
-          content: authUser.id,
+          content: authUser.data.id,
         }
       : {
           source: 'share_project',

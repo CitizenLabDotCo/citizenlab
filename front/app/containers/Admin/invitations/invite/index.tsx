@@ -6,7 +6,7 @@ import React, {
   Suspense,
   ChangeEvent,
 } from 'react';
-import { isString, isEmpty, get } from 'lodash-es';
+import { isString, isEmpty } from 'lodash-es';
 import { getBase64FromFile } from 'utils/fileUtils';
 
 // components
@@ -31,14 +31,15 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // services
 import {
-  bulkInviteXLSX,
-  bulkInviteEmails,
-  bulkInviteCountNewSeatsXLSX,
-  bulkInviteCountNewSeatsEmails,
   IInviteError,
   INewBulkInvite,
   IInvitesNewSeats,
-} from 'services/invites';
+} from 'api/invites/types';
+
+import useBulkInviteEmails from 'api/invites/useBulkInviteEmails';
+import useBulkInviteCountNewSeatsEmails from 'api/invites/useBulkInviteCountNewSeatsEmails';
+import useBulkInviteXLSX from 'api/invites/useBulkInviteXLSX';
+import useBulkInviteCountNewSeatsXLSX from 'api/invites/useBulkInviteCountNewSeatsXLSX';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -59,6 +60,12 @@ export type TInviteTabName = 'template' | 'manual';
 
 const Invitations = () => {
   const { formatMessage } = useIntl();
+  const { mutateAsync: bulkInviteEmails } = useBulkInviteEmails();
+  const { mutateAsync: bulkInviteCountNewSeatsEmails } =
+    useBulkInviteCountNewSeatsEmails();
+  const { mutateAsync: bulkInviteXLSX } = useBulkInviteXLSX();
+  const { mutateAsync: bulkInviteCountNewSeatsXLSX } =
+    useBulkInviteCountNewSeatsXLSX();
 
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
@@ -313,7 +320,7 @@ const Invitations = () => {
           setSelectedFileBase64(null);
         }
       } catch (errors) {
-        const apiErrors = get(errors, 'json.errors', null);
+        const apiErrors = errors.errors;
 
         setApiErrors(apiErrors);
         setUnknownError(
@@ -364,8 +371,7 @@ const Invitations = () => {
           setSelectedEmails(null);
         }
       } catch (errors) {
-        const apiErrors = get(errors, 'json.errors', null);
-
+        const apiErrors = errors.errors;
         setApiErrors(apiErrors);
         setUnknownError(
           !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null

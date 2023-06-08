@@ -139,6 +139,7 @@ class ProjectPolicy < ApplicationPolicy
       :voting_max_total,
       :voting_min_total,
       :voting_max_votes_per_idea,
+      :document_annotation_embed_url,
       :presentation_mode,
       :poll_anonymous,
       :ideas_order,

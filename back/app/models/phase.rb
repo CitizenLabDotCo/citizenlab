@@ -32,6 +32,7 @@
 #  downvoting_limited_max        :integer          default(10)
 #  posting_method                :string           default("unlimited"), not null
 #  posting_limited_max           :integer          default(1)
+#  document_annotation_embed_url :string
 #  allow_anonymous_participation :boolean          default(FALSE), not null
 #  voting_method                 :string
 #  voting_max_votes_per_idea     :integer

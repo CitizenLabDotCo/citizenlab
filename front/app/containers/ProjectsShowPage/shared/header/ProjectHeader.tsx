@@ -18,7 +18,7 @@ import {
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // i18n
@@ -85,7 +85,7 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
     const [moduleActive, setModuleActive] = useState(false);
     const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
     const { data: project } = useProjectById(projectId);
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
     const projectFolderId = project?.data.attributes.folder_id;
 
     if (project) {
@@ -93,7 +93,7 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
         project.data.attributes?.header_bg?.large;
       const userCanEditProject =
         !isNilOrError(authUser) &&
-        canModerateProject(project.data.id, { data: authUser });
+        canModerateProject(project.data.id, authUser);
 
       const setModuleToActive = () => setModuleActive(true);
 

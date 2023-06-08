@@ -7,7 +7,7 @@ import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // hooks
 import { useTheme } from 'styled-components';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // services
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
@@ -23,7 +23,7 @@ import usePhases from 'api/phases/usePhases';
 
 export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
   const theme = useTheme();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(project.id);
   const isSmallerThanPhone = useBreakpoint('phone');
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
@@ -39,7 +39,7 @@ export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
   const { disabledReason } = getIdeaPostingRules({
     project,
     phase: currentPhase,
-    authUser,
+    authUser: authUser?.data,
   });
   const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
 

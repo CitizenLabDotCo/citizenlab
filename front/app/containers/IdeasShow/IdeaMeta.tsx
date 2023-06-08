@@ -20,7 +20,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useProjectById from 'api/projects/useProjectById';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 interface Props {
   ideaId: string;
@@ -28,7 +28,7 @@ interface Props {
 
 const IdeaMeta = ({ ideaId }: Props) => {
   const locale = useLocale();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: idea } = useIdeaById(ideaId);
   const { data: ideaImages } = useIdeaImages(ideaId);
@@ -120,8 +120,8 @@ const IdeaMeta = ({ ideaId }: Props) => {
           {`
             ${
               !isNilOrError(authUser) &&
-              authUser.attributes.unread_notifications
-                ? `(${authUser.attributes.unread_notifications}) `
+              authUser.data.attributes.unread_notifications
+                ? `(${authUser.data.attributes.unread_notifications}) `
                 : ''
             }
             ${localizedTitle}`}

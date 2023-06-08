@@ -30,7 +30,7 @@ import { IOption } from 'typings';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 const StyledSectionField = styled(SectionField)`
   max-width: 100%;
@@ -47,7 +47,7 @@ const ProjectFolderSelect = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const { data: projectFolders } = useProjectFolders({});
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   const userCanCreateProjectInFolderOnly = usePermission({
     item: 'project_folder',
@@ -103,7 +103,7 @@ const ProjectFolderSelect = ({
             label: '',
           },
           ...projectFolders.data
-            .filter((folder) => userModeratesFolder(authUser, folder.id))
+            .filter((folder) => userModeratesFolder(authUser.data, folder.id))
             .map((folder) => {
               return {
                 value: folder.id,

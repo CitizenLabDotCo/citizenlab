@@ -1,49 +1,18 @@
-import React from 'react';
-import { Subscription } from 'rxjs';
-import { authUserStream } from 'services/auth';
+import useAuthUser from 'api/me/useAuthUser';
 import { IUserData } from 'api/users/types';
-
-interface InputProps {}
 
 type children = (renderProps: GetAuthUserChildProps) => JSX.Element | null;
 
-interface Props extends InputProps {
+interface Props {
   children?: children;
-}
-
-interface State {
-  authUser: GetAuthUserChildProps;
 }
 
 export type GetAuthUserChildProps = IUserData | undefined | null;
 
-export default class GetAuthUser extends React.Component<Props, State> {
-  private subscriptions: Subscription[];
+const GetAuthUser = ({ children }: Props) => {
+  const { data: authUser } = useAuthUser();
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      authUser: undefined,
-    };
-  }
+  return (children as children)(authUser ? authUser.data : null);
+};
 
-  componentDidMount() {
-    const authUser$ = authUserStream().observable;
-
-    this.subscriptions = [
-      authUser$.subscribe((authUser) => {
-        this.setState({ authUser: authUser ? authUser.data : null });
-      }),
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  render() {
-    const { children } = this.props;
-    const { authUser } = this.state;
-    return (children as children)(authUser);
-  }
-}
+export default GetAuthUser;

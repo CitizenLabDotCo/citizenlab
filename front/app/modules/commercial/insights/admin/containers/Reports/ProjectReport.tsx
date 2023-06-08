@@ -93,6 +93,7 @@ const PARTICIPATION_METHOD_MESSAGES: Record<
   budgeting: messages.budgeting,
   poll: messages.poll,
   volunteering: messages.volunteering,
+  document_annotation: messages.document_annotation,
 };
 
 const getResolution = (start: moment.Moment, end: moment.Moment) => {

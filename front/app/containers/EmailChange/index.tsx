@@ -13,7 +13,7 @@ import UpdateEmailForm from './UpdateEmailForm';
 
 // api
 import clHistory from 'utils/cl-router/history';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 
 // hook form
@@ -38,7 +38,7 @@ export type FormValues = {
 
 const EmailChange = () => {
   const { formatMessage } = useIntl();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [confirmationError, setConfirmationError] = useState<ErrorCode | null>(
@@ -63,9 +63,9 @@ const EmailChange = () => {
 
   // Once auth user is fetched, set the email field to the user's email
   useEffect(() => {
-    if (!isNilOrError(authUser) && authUser.attributes.email) {
+    if (!isNilOrError(authUser) && authUser.data.attributes.email) {
       if (!methods.watch('email')) {
-        methods.setValue('email', authUser.attributes.email);
+        methods.setValue('email', authUser.data.attributes.email);
       }
     }
   }, [authUser, methods]);
@@ -119,7 +119,7 @@ const EmailChange = () => {
             setOpenConfirmationModal={setOpenConfirmationModal}
             setUpdateSuccessful={setUpdateSuccessful}
             methods={methods}
-            user={authUser}
+            user={authUser.data}
           />
         )}
       </StyledContentContainer>

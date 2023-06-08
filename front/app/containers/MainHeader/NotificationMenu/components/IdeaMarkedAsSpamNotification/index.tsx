@@ -12,7 +12,7 @@ import { DeletedUser } from '../Notification';
 import T from 'components/T';
 
 // services
-import { IIdeaMarkedAsSpamNotificationData } from 'services/notifications';
+import { IIdeaMarkedAsSpamNotificationData } from 'api/notifications/types';
 
 interface Props {
   notification: IIdeaMarkedAsSpamNotificationData;

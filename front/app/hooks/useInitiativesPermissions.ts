@@ -4,7 +4,7 @@ import useInitativeActionDescriptors from 'api/initiative_action_descriptors/use
 import { isNilOrError } from 'utils/helperUtils';
 import { ActionPermission } from 'services/actionTakingRules';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from './useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 export type IInitiativeDisabledReason = 'notPermitted';
 
@@ -16,7 +16,7 @@ export default function useInitiativesPermissions(
   >(undefined);
   const { data: appConfiguration } = useAppConfiguration();
   const { data: actionDescriptors } = useInitativeActionDescriptors();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const actionDescriptor =
     actionDescriptors?.data.attributes[actionDescriptorName];
 

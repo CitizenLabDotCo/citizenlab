@@ -8,7 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import NotificationWrapper from 'containers/MainHeader/NotificationMenu/components/NotificationWrapper';
 
 // services
-import { INLPFlagNotificationData } from 'services/notifications';
+import { INLPFlagNotificationData } from 'api/notifications/types';
 
 interface Props {
   notification: INLPFlagNotificationData;

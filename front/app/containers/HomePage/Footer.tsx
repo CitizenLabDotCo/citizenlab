@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useLocalize from 'hooks/useLocalize';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 
@@ -58,7 +58,7 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
 `;
 
 const Footer = () => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const localize = useLocalize();
   const homepageSettings = useHomepageSettings();
 

@@ -277,6 +277,8 @@ resource 'Phases' do
         end
       end
 
+      # ?
+
       describe do
         before { create(:budgeting_phase, project: @project, start_at: '2000-01-01', end_at: '2000-01-05') }
 

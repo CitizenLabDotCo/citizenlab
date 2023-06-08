@@ -2,101 +2,52 @@ de:
   email_campaigns:
     campaign_type_description:
       "manual": Offizielle Mitteilungen
-      "admin_rights_received": Admin-Zugang erhalten
-      "comment_deleted_by_admin": Löschung meines Kommentars
-      "comment_marked_as_spam": Spambericht kommentieren
-      "comment_on_your_comment": Eine Antwort auf meinen Kommentar
-      "comment_on_your_idea": Ein Kommentar zu meiner Idee
-      "comment_on_your_initiative": Ein Kommentar zu meinem Vorschlag
-      "first_idea_published": Veröffentlichung meiner ersten Idee
-      "idea_marked_as_spam": Spambericht Ideen
-      "idea_published": Veröffentlichung meiner Idee
+      "admin_rights_received": Admin-Rechte erhalten
+      "comment_deleted_by_admin": Löschung eines Kommentars
+      "comment_marked_as_spam": Kommentar wird als Spam markiert
+      "comment_on_your_comment": Antwort auf einen Kommentar
+      "comment_on_your_idea": Kommentar zu einem Beitrag
+      "comment_on_your_initiative": Kommentar zu einem Vorschlag
+      "first_idea_published": Veröffentlichung des ersten Beitrags
+      "idea_marked_as_spam": Beitrag wird als Spam gekennzeichnet
+      "idea_published": Veröffentlichung des Beitrags
       "initiative_assigned_to_you": Zuweisung eines Vorschlags an mich
-      "initiative_marked_as_spam": Vorschlag eines Spamberichts
-      "initiative_published": Veröffentlichung meines Vorschlags
+      "initiative_marked_as_spam": Vorschlag wird als Spam markiert
+      "initiative_published": Veröffentlichung eines Vorschlags
       "invite_received": Einladung
       "invite_reminder": Einladungserinnerung
-      "mention_in_official_feedback": Erwähnung in einem Update
+      "mention_in_official_feedback": Erwähnung in einem offiziellen Update
       "new_comment_for_admin": Neuer Kommentar zu einem Projekt, das ich moderiere
-      "new_comment_on_commented_idea": Neuer Kommentar zu einer Idee, die ich kommentiert habe
-      "new_comment_on_commented_initiative": Neuer Kommentar zu einem Vorschlag, den ich kommentiert habe
-      "new_comment_on_voted_idea": Neuer Kommentar zu einer Idee, für die ich gestimmt habe
-      "new_comment_on_voted_initiative": Neuer Kommentar zu einem Vorschlag, für den ich gestimmt habe
-      "new_idea_for_admin": Neue Idee zu einem Projekt, das ich moderiere
+      "new_comment_on_commented_idea": Neuer Kommentar zu einem Beitrag, der kommentiert wurde
+      "new_comment_on_commented_initiative": Neuer Kommentar zu einem Vorschlag, der kommentiert wurde
+      "new_comment_on_voted_idea": Neuer Kommentar zu einem Beitrag über den abgestimmt wurde
+      "new_comment_on_voted_initiative": Neuer Kommentar zu einem Vorschlag, für den abgestimmt wurde
+      "new_idea_for_admin": Neuer Beitrag zu einem Projekt, das moderiert wird
       "new_initiative_for_admin": Neuer Vorschlag
-      "official_feedback_on_commented_idea": Update zu einer Idee, die ich kommentiert habe
-      "official_feedback_on_commented_initiative": Update zu einem Vorschlag, den ich kommentiert habe
-      "official_feedback_on_voted_idea": Update zu einer Idee, für die ich gestimmt habe
-      "official_feedback_on_voted_initiative": Update zu einem Vorschlag, für den ich gestimmt habe
-      "official_feedback_on_your_idea": Update zu meiner Idee
-      "official_feedback_on_your_initiative": Update zu meinem Vorschlag
+      "official_feedback_on_commented_idea": Offizielles Update zu einem Beitrag, der kommentiert wurde
+      "official_feedback_on_commented_initiative": Offizielles Update zu einem Vorschlag, der kommentiert wurde
+      "official_feedback_on_voted_idea": Offizielles Update zu einem Beitrag für den abgestimmt wurde
+      "official_feedback_on_voted_initiative": Offizielles Update zu einem Vorschlag, für den abgestimmt wurde
+      "official_feedback_on_your_idea": Offizielles Update zu einem Beitrag
+      "official_feedback_on_your_initiative": Update zu einem Vorschlag
       "password_reset": Zurücksetzen des Passworts
       "project_moderation_rights_received": Projektmanagementrechte erhalten
       "project_folder_moderation_rights_received": Ordnermanagementrechte erhalten
       "project_phase_started": Neue Projektphase
       "project_phase_upcoming": Bevorstehende neue Projektphase
-      "status_change_of_commented_idea": Statusänderung einer Idee, die ich kommentiert habe
-      "status_change_of_commented_initiative": Statusänderung eines Vorschlags, den ich kommentiert habe
-      "status_change_of_voted_idea": Statusänderung einer Idee, für die ich gestimmt habe
-      "status_change_of_voted_initiative": Statusänderung eines Vorschlags, für den ich gestimmt habe
-      "status_change_of_your_idea": Statusänderung meiner Idee
-      "status_change_of_your_initiative": Statusänderung meines Vorschlags
+      "status_change_of_commented_idea": Statusänderung eines Beitrags, der durch Nutzer*in kommentiert wurde
+      "status_change_of_commented_initiative": Statusänderung eines Vorschlags, der kommentiert wurde
+      "status_change_of_voted_idea": Statusänderung eines Beitrags für den abgestimmt wurde
+      "status_change_of_voted_initiative": Statusänderung eines Vorschlags, für den abgestimmt wurde
+      "status_change_of_your_idea": Statusänderung eines Beitrags
+      "status_change_of_your_initiative": Statusänderung eines Vorschlags
       "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht
       "welcome": Nach der Registrierung
       "admin_digest": Wöchentliche Übersicht für Admins
-      "moderator_digest": Wöchentliche Übersicht für Projektmanager*innen
-      "assignee_digest": Wöchentliche Übersicht zugeteilter Ideen
+      "moderator_digest": Wöchentliche Übersicht für Ordner- und Projektmanager*innen
+      "assignee_digest": Wöchentliche Übersicht über die zugewiesenen Beiträge
       "user_digest": Wöchentliche Übersicht
-      "your_proposed_initiatives_digest": Wöchentliche Übersicht über Ihre Vorschläge
-    admin_campaign_type_description:
-      "manual": Offizielle Nachricht - alle Nutzer*innen
-      "admin_rights_received": Admin-Zugang erhalten - Admins
-      "comment_deleted_by_admin": Löschung eines Kommentars - alle Nutzer*innen
-      "comment_marked_as_spam": Kommentar als Spam markiert - Admins und Projektmanager*innen
-      "comment_on_your_comment": Antworten auf einen Kommentar - alle Nutzer*innen
-      "comment_on_your_idea": Kommentierte Idee - alle Nutzer*innen
-      "comment_on_your_initiative": Kommentierter Vorschlag - alle Nutzer*innen
-      "first_idea_published": Veröffentlichung der ersten Idee - alle Nutzer*innen
-      "idea_marked_as_spam": Spambericht Ideen - Admins und Projektmanager*innen
-      "idea_published": Veröffentlichung einer Idee - alle Nutzer*innen
-      "initiative_assigned_to_you": Zuweisung eines Vorschlags - Admins
-      "initiative_marked_as_spam": Vorschlag Spam-Bericht - Admins
-      "initiative_published": Veröffentlichung des Vorschlags - alle Nutzer*innen
-      "invite_received": Einladung - alle Nutzer*innen
-      "invite_reminder": Einladungserinnerung - alle Nutzer*innen
-      "mention_in_comment": Erwähnung in einem Kommentar - alle NutzerInnen
-      "mention_in_official_feedback": Erwähnung in einem Update - alle Nutzer*innen
-      "new_comment_for_admin": Neuer Kommentar - Admins und Projektmanager*innen
-      "new_comment_on_commented_idea": Neuer Kommentar zu einer Idee, die Sie kommentiert haben - alle Nutzer*innen
-      "new_comment_on_commented_initiative": Neuer Kommentar zu einem kommentierten Vorschlag - alle Nutzer*innen
-      "new_comment_on_voted_idea": Neuer Kommentar zu einer Idee, für die gestimmt wurde - alle Nutzer*innen
-      "new_comment_on_voted_initiative": Neuer Kommentar zu einem Vorschlag, für den Sie gestimmt haben - alle Nutzer*innen
-      "new_idea_for_admin": Neue Idee - Admins und Projektmanager*innen
-      "new_initiative_for_admin": Neuer Vorschlag - Admins
-      "official_feedback_on_commented_idea": Update zu einer kommentierten Idee - alle Nutzer*innen
-      "official_feedback_on_commented_initiative": Update zu einem kommentierten Vorschlag - alle Nutzer*innen
-      "official_feedback_on_voted_idea": Update zu einer Idee, über die abgestimmt wurde - alle Nutzer*innen
-      "official_feedback_on_voted_initiative": Update zu einem Vorschlag, über den abgestimmt wurde - alle Nutzer*innen
-      "official_feedback_on_your_idea": Update zu Ihrer Idee - alle Nutzer*innen
-      "official_feedback_on_your_initiative": Aktualisierung Ihres Vorschlags - alle Nutzer*innen
-      "password_reset": Passwort zurücksetzen - alle Nutzer*innen
-      "project_moderation_rights_received": Projektmanagementrechte erhalten - Projektmanager*innen
-      "project_folder_moderation_rights_received": Moderationsrechte für Projektordner erhalten
-      "project_phase_started": Neue Projektphase - Projektteilnehmende
-      "project_phase_upcoming": Bevorstehende neue Projektphase - Admins und Projektmanager*innen
-      "status_change_of_commented_idea": Statusänderung einer kommentierten Idee - alle Nutzer*innen
-      "status_change_of_commented_initiative": Statusänderung eines kommentierten Vorschlags - alle Nutzer*innen
-      "status_change_of_voted_idea": Statusänderung einer Idee, über die abgestimmt wurde - alle Nutzer*innen
-      "status_change_of_voted_initiative": Statusänderung eines Vorschlags, über den abgestimmt wurde - alle Nutzer*innen
-      "status_change_of_your_idea": Statusänderung Idee - alle Nutzer*innen
-      "status_change_of_your_initiative": Statusänderung Vorschlag - alle Nutzer*innen
-      "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht - Admins
-      "welcome": Willkommens-E-Mail an neue Nutzer*innen - alle Nutzer*innen
-      "admin_digest": Wöchentlicher Überblick - Admins
-      "moderator_digest": Wöchentlicher Überblick - Projektmanager*innen
-      "assignee_digest": Wöchentlicher Überblick über die zugewiesenen Ideen - Admins und Projektmanager*innen
-      "user_digest": Wochenübersicht - alle Nutzer*innen
-      "your_proposed_initiatives_digest": Wöchentlicher Überblick über eigenen Vorschläge - alle Nutzer*innen
+      "your_proposed_initiatives_digest": Wöchentliche Übersicht eigener Vorschläge
     schedules:
       weekly:
         "0": "Wöchentlich, sonntags um %{hourOfDay}"
@@ -370,14 +321,14 @@ de:
       event_description: '%{officialName} gab ein Update auf die Idee ''%{ideaTitle}''.... Klicke auf den Button unten, um auf %{officialName} zu reagieren.'
       main_header: 'Es gibt ein Update zu einer Idee, die Sie kommentiert haben'
       subject: 'Eine Idee, die Sie kommentiert haben, hat eine offizielle Aktualisierung auf der Plattform von %{organizationName} erhalten'
-      preheader: '%{officialName} eine offizielle Aktualisierung zu einer Idee, die Sie kommentiert haben, hinterlassen'
+      preheader: '%{officialName} ein offizielles Update zu einem Beitrag, den Sie kommentiert haben, hinterlassen'
     official_feedback_on_your_idea:
       by_author: 'von %{authorName}'
       updated: '%{officialName} schrieb:'
       cta_view: 'Zur Idee'
       event_description: '%{officialName} hat ein Update zu Ihrer Idee ''%{ideaTitle}'' gegeben. Klicken Sie auf den Button unten, um auf %{officialName} zu reagieren.'
       main_header: 'Sie haben eine Aktualisierung von %{organizationName} erhalten'
-      subject: 'Du hast ein Update von %{organizationName} erhalten'
+      subject: 'Du hast ein offizielles Update von %{organizationName} erhalten'
       preheader: '%{officialName} hat eine offizielle Mitteilung zu Ihrer Idee hinterlassen'
     official_feedback_on_voted_initiative:
       by_author: 'von %{authorName}'
@@ -457,7 +408,7 @@ de:
     status_change_of_voted_idea:
       status_change: 'Der neue Status dieser Idee ist ''%{ideaStatus}'''
       cta_view_idea: 'Zur Idee'
-      event_description: '%{organizationName} aktualisierte den Status der Idee ''%{ideaTitle}'' auf ihrer digitalen Beteiligungsplattform.'
+      event_description: '%{organizationName} hat den Status des Beitrags ''%{ideaTitle}'' auf Ihrer digitalen Beteiligungsplattform aktualisiert.'
       main_header: 'Eine Idee, über die Sie abgestimmt haben, hat einen neuen Status'
       subject: 'Der Status einer Idee, über die Sie abgestimmt haben, wurde geändert'
       preheader: '%{organizationName} hat den Status einer Idee geändert, für die du abgestimmt hast'
@@ -554,7 +505,7 @@ de:
       subject: 'Deine Idee auf der Plattform von %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Wöchentliche Übersicht Ihrer Vorschläge'
+      subject: 'Wöchentliche Übersicht eigener Vorschläge'
       preheader: 'Was ist in der vergangenen Woche mit Ihren Vorschlägen geschehen?'
       title_your_weekly_report: 'Wie haben sich Ihre Vorschläge entwickelt?'
       text_introduction: 'Unten finden Sie die wichtige Zahlen zu Ihrem Vorschlag. Gehen Sie auf die Plattform, um rechtzeitig zu handeln und genügend Unterstützung zu sammeln.'
@@ -565,31 +516,29 @@ de:
       remaining_days: 'Verbleibende Tage'
     admin_labels:
       recipient_role:
-        admins: 'An Admins'
         admins_and_managers: 'An Admins & Manager*innen'
-        managers: 'An Manager*innen'
         registered_users: 'An registrierte Nutzer*innen'
       recipient_segment:
         admins: 'Admins'
         admins_and_managers: 'Admins und Manager*innen'
         admins_and_managers_managing_the_project: 'Admins & Manager*innen, die das Projekt verwalten'
         all_users: 'Alle Nutzer*innen'
-        all_users_who_uploaded_proposals: 'Alle Nutzer*innen, die Vorschläge hochgeladen haben'
+        all_users_who_uploaded_proposals: 'Nutzer*in veröffentlicht Vorschläge'
         managers: 'Manager*innen'
         admins_assigned_to_a_proposal: 'Einem Vorschlag zugewiesene Admins'
         admins_and_managers_assigned_to_the_input: 'Admins & Manager*innen, die dem Beitrag zugewiesen sind'
-        user_receiving_admin_rights: 'Nutzer*in erhält Admin-Rechte'
-        user_receiving_folder_moderator_rights: 'Nutzer*in, die*der Ordner-Moderatorenrechte erhält'
-        user_receiving_project_moderator_rights: 'Nutzer*in, die*der Projektmoderatorenrechte erhält'
-        user_who_commented: 'Nutzer*in, die*der kommentiert hat'
-        user_who_is_mentioned: 'Nutzer*in, die*der erwähnt wird'
+        user_who_is_receiving_admin_rights: 'Nutzer*in erhält Admin-Rechte'
+        user_who_is_receiving_folder_moderator_rights: 'Nutzer*in erhält Ordner-Moderationsrechte'
+        user_who_is_receiving_project_moderator_rights: 'Nutzer*in erhält Projektmanagementrechte'
+        user_who_commented: 'Nutzer*in kommentiert'
+        user_who_is_mentioned: 'Erwähnte*r Nutzer*in'
         user_who_published_the_proposal: 'Nutzer*in veröffentlicht Vorschlag'
         user_who_published_the_input: 'Nutzer*in veröffentlicht Beitrag'
-        user_who_registers: 'Nutzer*in, die*der sich registriert'
-        user_who_was_invited: 'Nutzer*in, die*der eingeladen wurde'
-        users_engaged_with_the_input: 'Nutzer*in interagiert mit Beitrag'
-        users_engaged_with_the_project: 'Nutzer*innen, die mit dem Projekt interagiert haben'
-        users_engaged_with_the_proposal: 'Nutzer*innen, die mit dem Vorschlag interagiert haben'
+        user_who_registers: 'Nutzer*in registriert sich '
+        user_who_was_invited: 'Eingeladene*r Nutzer*in'
+        users_who_engaged_with_the_input: 'Nutzer*in interagiert mit Beitrag'
+        users_who_engaged_with_the_project: 'Nutzer*in interagiert mit Beitrag'
+        users_who_engaged_with_the_proposal: 'Nutzer*in interagiert mit Vorschlag'
       content_type:
         comments: 'Kommentare'
         content_moderation: 'Inhaltsmoderation'
@@ -605,26 +554,26 @@ de:
         content_gets_flagged_as_innapropiate: 'Inhalte werden als unangemessen gekennzeichnet'
         input_is_assigned: 'Beitrag wird zugewiesen'
         input_is_flagged_as_spam: 'Beitrag wird als Spam gekennzeichnet'
-        input_is_updated: 'Beitrag wird aktualisiert'
-        input_status_is_changed: 'Status eines Beitrags wird geändert'
+        input_is_updated: 'Beitrag erhält ein offizielles Update'
+        input_status_changes: 'Status eines Beitrags wird geändert'
         new_input_is_published: 'Neuer Beitrag wird veröffentlicht'
-        new_proposal_is_published: 'Neuer Vorschlag wird veröffentlicht'
-        project_changes_phase: 'Projekt wechselt in neue Phase'
-        proposal_gets_reported_as_spam: 'Vorschlag wird als Spam gemeldet'
+        new_proposal_is_posted: 'Neuer Vorschlag wird veröffentlicht'
+        project_phase_changes: 'Neue Projektphase beginnt'
+        proposal_gets_reported_as_spam: 'Vorschlag wird als Spam markiert'
         proposal_is_assigned_to_admin: 'Vorschlag wird Admin zugewiesen'
         proposal_is_updated: 'Vorschlag wird aktualisiert'
         proposal_is_upvoted_above_threshold: 'Vorschlag erreicht Schwellenwert'
-        proposal_status_is_changed: 'Der Status des Vorschlags wird geändert'
-        user_comments: 'Nutzer*in kommentiert'
-        user_comments_on_input: 'Nutzer*in kommentiert Beitrag'
+        proposal_status_changes: 'Status des Vorschlags wird geändert'
+        user_comments: 'Kommentar wird veröffentlicht'
+        user_comments_on_input: 'Kommentar wird veröffentlicht'
         user_comments_on_proposal: 'Nutzer*in kommentiert Vorschlag'
         user_is_given_admin_rights: 'Nutzer*in erhält Admin-Rechte'
-        user_is_given_folder_moderator_rights: 'Nutzer*in erhält Ordner-Moderatorenrechte'
+        user_is_given_folder_moderator_rights: 'Nutzer*in erhält Ordner-Moderationsrechte'
         user_is_given_project_moderator_rights: 'Nutzer*in erhält Projektmanagementrechte'
         user_is_mentioned: 'Nutzer*in wird erwähnt'
-        user_publishes_an_input: 'Nutzer*in veröffentlicht Beitrag'
-        user_publishes_a_proposal: 'Nutzer*in veröffentlicht Vorschlag'
-        user_registers_for_the_first_time: 'Nutzer*in registriert sich zum ersten Mal'
-        user_replies_to_comment: 'Nutzer*in antwortet auf Kommentar'
-        7_days_after_invite_is_sent: '7 Tage nach Versand der Einladung'
+        input_is_published: 'Beitrag wird veröffentlicht'
+        proposal_is_published: 'Vorschlag wird veröffentlicht'
+        user_registers_for_the_first_time: 'Direkt nach der 1. Registrierung'
+        user_replies_to_comment: 'Antwort wird veröffentlicht'
+        7_days_after_invite_is_sent: '7 Tage nach Versand der 1. Einladung'
         7_days_before_the_project_changes_phase: '7 Tage bevor das Projekt die Phase wechselt'

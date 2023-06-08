@@ -960,6 +960,7 @@ ActiveRecord::Schema.define(version: 2023_06_06_132255) do
     t.integer "downvoting_limited_max", default: 10
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
+    t.string "document_annotation_embed_url"
     t.boolean "allow_anonymous_participation", default: false, null: false
     t.string "voting_method"
     t.integer "voting_max_votes_per_idea"
@@ -1101,6 +1102,7 @@ ActiveRecord::Schema.define(version: 2023_06_06_132255) do
     t.boolean "include_all_areas", default: false, null: false
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
+    t.string "document_annotation_embed_url"
     t.boolean "allow_anonymous_participation", default: false, null: false
     t.string "voting_method"
     t.integer "voting_max_votes_per_idea"

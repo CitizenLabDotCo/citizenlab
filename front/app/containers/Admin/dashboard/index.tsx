@@ -8,7 +8,7 @@ import DashboardTabs from './components/DashboardTabs';
 import Outlet from 'components/Outlet';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // permissions
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';
@@ -26,7 +26,7 @@ import { InsertConfigurationOptions, ITab } from 'typings';
 
 export const DashboardsPage = memo(
   ({ intl: { formatMessage } }: WrappedComponentProps) => {
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
     const [tabs, setTabs] = useState<ITab[]>([
       {
         label: formatMessage(messages.tabOverview),
@@ -51,8 +51,8 @@ export const DashboardsPage = memo(
     useEffect(() => {
       if (
         !isNilOrError(authUser) &&
-        !isAdmin({ data: authUser }) &&
-        isProjectModerator({ data: authUser })
+        !isAdmin(authUser) &&
+        isProjectModerator(authUser)
       ) {
         setTabs(moderatorTabs);
       }
@@ -70,9 +70,7 @@ export const DashboardsPage = memo(
 
     if (
       isNilOrError(authUser) ||
-      (authUser &&
-        !isAdmin({ data: authUser }) &&
-        !isProjectModerator({ data: authUser }))
+      (authUser && !isAdmin(authUser) && !isProjectModerator(authUser))
     ) {
       return null;
     }

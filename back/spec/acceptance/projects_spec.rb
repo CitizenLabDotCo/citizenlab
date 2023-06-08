@@ -152,6 +152,7 @@ resource 'Projects' do
               }
             },
             comment_voting_idea: { enabled: false, disabled_reason: 'project_inactive' },
+            annotating_document: { enabled: false, disabled_reason: 'project_inactive' },
             taking_survey: { enabled: false, disabled_reason: 'project_inactive' },
             taking_poll: { enabled: false, disabled_reason: 'project_inactive' }
           }
@@ -240,6 +241,7 @@ resource 'Projects' do
         parameter :voting_max_total, 'The maximal value a basket can have during voting. Required when the voting method is budgeting.', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
         parameter :voting_term, 'A multiloc term that is used to refer to the voting', required: false
+        parameter :document_annotation_embed_url, 'The URL of the document_annotation external API, if participation_method is set to document_annotation', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}. Defaults to card.", required: false
         parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned', required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
@@ -534,6 +536,7 @@ resource 'Projects' do
         parameter :voting_max_total, 'The maximal value a basket can have during voting', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
         parameter :voting_term, 'A multiloc term that is used to refer to the voting', required: false
+        parameter :document_annotation_embed_url, 'The URL to link with the external provider, if participation_method is set to document_annotation', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(',')}.", required: false
         parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
@@ -1370,6 +1373,7 @@ resource 'Projects' do
         parameter :voting_max_total, 'The maximal value a basket can have during voting', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
         parameter :voting_term, 'A multiloc term that is used to refer to the voting', required: false
+        parameter :document_annotation_embed_url, 'The URL of the document_annotation external API, if participation_method is set to document_annotation', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}. Defaults to card.", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false

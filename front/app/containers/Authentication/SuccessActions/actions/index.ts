@@ -8,7 +8,7 @@ import {
   RedirectToInitiativeFormParams,
 } from './redirectToInitiativeForm';
 import { replyToComment, ReplyToCommentParams } from './replyToComment';
-import { scrollToSurvey, ScrollToSurveyParams } from './scrollToSurvey';
+import { scrollTo, ScrollToParams } from './scrollTo';
 import { volunteer, VolunteerParams } from './volunteer';
 import { voteOnComment, VoteOnCommentParams } from './voteOnComment';
 import { voteOnIdea, VoteOnIdeaParams } from './voteOnIdea';
@@ -34,9 +34,9 @@ interface ReplyToCommentAction {
   params: ReplyToCommentParams;
 }
 
-interface ScrollToSurveyAction {
-  name: 'scrollToSurvey';
-  params: ScrollToSurveyParams;
+interface ScrollToAction {
+  name: 'scrollTo';
+  params: ScrollToParams;
 }
 
 interface VolunteerAction {
@@ -64,7 +64,7 @@ export type SuccessAction =
   | RedirectToIdeaFormAction
   | RedirectToInitiativeFormAction
   | ReplyToCommentAction
-  | ScrollToSurveyAction
+  | ScrollToAction
   | VolunteerAction
   | VoteOnCommentAction
   | VoteOnIdeaAction
@@ -77,7 +77,7 @@ export const getAction = ({ name, params }: SuccessAction) => {
     return redirectToInitiativeForm(params);
   }
   if (name === 'replyToComment') return replyToComment(params);
-  if (name === 'scrollToSurvey') return scrollToSurvey(params);
+  if (name === 'scrollTo') return scrollTo(params);
   if (name === 'volunteer') return volunteer(params);
   if (name === 'voteOnComment') return voteOnComment(params);
   if (name === 'voteOnIdea') return voteOnIdea(params);

@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { IOfficialFeedbackOnVotedInitiativeNotificationData } from 'services/notifications';
+import { IOfficialFeedbackOnVotedInitiativeNotificationData } from 'api/notifications/types';
 
 // i18n
 import messages from '../../messages';

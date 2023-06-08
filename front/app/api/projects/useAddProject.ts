@@ -7,6 +7,7 @@ import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 import topicsKeys from 'api/topics/keys';
 import areasKeys from 'api/areas/keys';
+import meKeys from 'api/me/keys';
 
 const addProject = async (project: IUpdatedProjectProperties) =>
   fetcher<IProject>({
@@ -24,8 +25,9 @@ const useAddProject = () => {
       queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
       queryClient.invalidateQueries({ queryKey: topicsKeys.lists() });
       queryClient.invalidateQueries({ queryKey: areasKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: meKeys.all() });
       streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/admin_publications`, `${API_PATH}/users/me`],
+        apiEndpoint: [`${API_PATH}/admin_publications`],
       });
     },
   });
