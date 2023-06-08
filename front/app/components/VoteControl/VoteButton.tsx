@@ -8,7 +8,7 @@ import globalMessages from 'utils/messages';
 import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
-import { IdeaVotingDisabledReason } from 'api/ideas/types';
+import { IdeaReactingDisabledReason } from 'api/ideas/types';
 import useAuthUser from 'api/me/useAuthUser';
 import useIdeaById from 'api/ideas/useIdeaById';
 import { FormattedDate } from 'react-intl';
@@ -41,7 +41,7 @@ const VoteIconContainer = styled.div<{
   styleType: TStyleType;
   buttonVoteModeIsActive: boolean;
   buttonVoteMode: TVoteMode;
-  disabledReason: IdeaVotingDisabledReason | null;
+  disabledReason: IdeaReactingDisabledReason | null;
 }>`
   display: flex;
   align-items: center;
@@ -68,19 +68,19 @@ const VoteIconContainer = styled.div<{
     reactingEnabled,
   }) => {
     if (!reactingEnabled) {
-      const downvoteCondition =
+      const dislikeCondition =
         (buttonVoteMode === 'down' &&
           disabledReason !== 'reacting_dislike_limited_max_reached') ||
         (buttonVoteMode === 'down' &&
           disabledReason === 'reacting_dislike_limited_max_reached' &&
           buttonVoteModeIsActive === false);
-      const upvoteCondition =
+      const likeCondition =
         (buttonVoteMode === 'up' &&
           disabledReason !== 'reacting_like_limited_max_reached') ||
         (buttonVoteMode === 'up' &&
           disabledReason === 'reacting_like_limited_max_reached' &&
           buttonVoteModeIsActive === false);
-      if (downvoteCondition || upvoteCondition) {
+      if (dislikeCondition || likeCondition) {
         return `
           width: auto;
           border: none;
@@ -139,19 +139,19 @@ const VoteIconContainer = styled.div<{
     buttonVoteModeIsActive,
     disabledReason,
   }) => {
-    const activeDownvoteButMaxReached =
+    const activeDislikeButMaxReached =
       buttonVoteModeIsActive &&
       buttonVoteMode === 'down' &&
       disabledReason === 'reacting_dislike_limited_max_reached';
-    const activeUpvoteButMaxReached =
+    const activeLikeButMaxReached =
       buttonVoteModeIsActive &&
       buttonVoteMode === 'up' &&
       disabledReason === 'reacting_like_limited_max_reached';
 
     if (
       reactingEnabled ||
-      activeDownvoteButMaxReached ||
-      activeUpvoteButMaxReached
+      activeDislikeButMaxReached ||
+      activeLikeButMaxReached
     ) {
       return {
         1: `
@@ -213,7 +213,7 @@ const VoteIcon = styled(Icon)<{
   reactingEnabled: boolean | null;
   buttonVoteModeIsActive: boolean;
   buttonVoteMode: TVoteMode;
-  disabledReason: IdeaVotingDisabledReason | null;
+  disabledReason: IdeaReactingDisabledReason | null;
 }>`
   fill: ${colors.textSecondary};
   transition: all 100ms ease-out;
@@ -234,14 +234,14 @@ const VoteIcon = styled(Icon)<{
     disabledReason,
   }) => {
     if (buttonVoteModeIsActive) {
-      const downvoteCondition =
+      const dislikeCondition =
         !reactingEnabled &&
         disabledReason === 'reacting_dislike_limited_max_reached';
-      const upvoteCondition =
+      const likeCondition =
         !reactingEnabled &&
         disabledReason === 'reacting_like_limited_max_reached';
 
-      if (reactingEnabled || downvoteCondition || upvoteCondition) {
+      if (reactingEnabled || dislikeCondition || likeCondition) {
         return `
           fill: #fff;
         `;
@@ -339,7 +339,7 @@ const VoteButton = ({
   const localize = useLocalize();
 
   const getDisabledReasonMessage = (
-    disabledReason: IdeaVotingDisabledReason | null,
+    disabledReason: IdeaReactingDisabledReason | null,
     futureEnabled: string | null
   ) => {
     if (disabledReason === 'project_inactive') {
@@ -348,7 +348,7 @@ const VoteButton = ({
         : messages.votingDisabledProjectInactive;
     } else if (disabledReason === 'not_in_group') {
       return globalMessages.notInGroup;
-    } else if (disabledReason === 'voting_disabled' && futureEnabled) {
+    } else if (disabledReason === 'reacting_disabled' && futureEnabled) {
       return messages.votingPossibleLater;
     } else if (disabledReason === 'reacting_like_limited_max_reached') {
       return messages.upvotingDisabledMaxReached;
@@ -375,21 +375,22 @@ const VoteButton = ({
   };
 
   if (!isNilOrError(idea) && !isNilOrError(project)) {
-    const votingDescriptor = idea.data.attributes.action_descriptor.voting_idea;
-    const buttonVoteModeEnabled = votingDescriptor[buttonVoteMode].enabled;
+    const reactingDescriptor =
+      idea.data.attributes.action_descriptor.reacting_idea;
+    const buttonVoteModeEnabled = reactingDescriptor[buttonVoteMode].enabled;
     const disabledReason =
-      idea.data.attributes.action_descriptor.voting_idea[buttonVoteMode]
+      idea.data.attributes.action_descriptor.reacting_idea[buttonVoteMode]
         .disabled_reason;
     const futureEnabled =
-      idea.data.attributes.action_descriptor.voting_idea[buttonVoteMode]
+      idea.data.attributes.action_descriptor.reacting_idea[buttonVoteMode]
         .future_enabled;
-    const cancellingEnabled = votingDescriptor.cancelling_enabled;
-    const notYetVoted = userVoteMode !== buttonVoteMode;
-    const alreadyVoted = userVoteMode === buttonVoteMode;
+    const cancellingEnabled = reactingDescriptor.cancelling_enabled;
+    const notYetreacted = userVoteMode !== buttonVoteMode;
+    const alreadyreacted = userVoteMode === buttonVoteMode;
     const buttonEnabled =
       buttonVoteModeEnabled &&
-      (notYetVoted ||
-        (alreadyVoted && cancellingEnabled) ||
+      (notYetreacted ||
+        (alreadyreacted && cancellingEnabled) ||
         (disabledReason && isFixableByAuthentication(disabledReason)));
 
     const disabledReasonMessage = getDisabledReasonMessage(
@@ -433,8 +434,8 @@ const VoteButton = ({
           className={[
             className,
             {
-              up: 'e2e-ideacard-upvote-button',
-              down: 'e2e-ideacard-downvote-button',
+              up: 'e2e-ideacard-like-button',
+              down: 'e2e-ideacard-dislike-button',
             }[buttonVoteMode],
             buttonVoteModeEnabled ? 'enabled' : '',
           ].join(' ')}
@@ -457,7 +458,7 @@ const VoteButton = ({
             />
             <ScreenReaderOnly>
               <FormattedMessage
-                {...{ up: messages.upvote, down: messages.downvote }[
+                {...{ up: messages.like, down: messages.dislike }[
                   buttonVoteMode
                 ]}
               />

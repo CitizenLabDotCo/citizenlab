@@ -13,7 +13,7 @@ import messages from './messages';
 // typings
 import { Props } from './typings';
 
-const MostVotedIdeasWidget = ({
+const MostreactedIdeasWidget = ({
   title,
   projectId,
   phaseId,
@@ -37,7 +37,7 @@ const MostVotedIdeasWidget = ({
   );
 };
 
-MostVotedIdeasWidget.craft = {
+MostreactedIdeasWidget.craft = {
   props: {
     title: undefined,
     projectId: undefined,
@@ -49,8 +49,8 @@ MostVotedIdeasWidget.craft = {
     settings: Settings,
   },
   custom: {
-    title: messages.mostVotedIdeas,
+    title: messages.mostreactedIdeas,
   },
 };
 
-export default MostVotedIdeasWidget;
+export default MostreactedIdeasWidget;

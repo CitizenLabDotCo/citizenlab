@@ -44,7 +44,7 @@ interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
-  userVoted: boolean;
+  userreacted: boolean;
   onVote: () => void;
 }
 interface DataProps {}
@@ -63,10 +63,10 @@ class ThresholdReached extends PureComponent<Props & { theme: any }, State> {
       initiative,
       initiativeSettings: { voting_threshold, threshold_reached_message },
       initiativeStatus,
-      userVoted,
+      userreacted,
     } = this.props;
 
-    const voteCount = initiative.attributes.upvotes_count;
+    const voteCount = initiative.attributes.likes_count;
     const voteLimit = voting_threshold;
 
     return (
@@ -116,7 +116,7 @@ class ThresholdReached extends PureComponent<Props & { theme: any }, State> {
             }}
           />
         </VoteText>
-        {!userVoted && (
+        {!userreacted && (
           <StyledButton icon="vote-up" onClick={this.handleOnVote}>
             <FormattedMessage {...messages.vote} />
           </StyledButton>

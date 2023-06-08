@@ -41,7 +41,7 @@ const StyledIcon = styled(Icon)`
   animation: ${scaleIn} 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 `;
 
-const VotedTitle = styled.h4`
+const reactedTitle = styled.h4`
   color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 600;
@@ -52,7 +52,7 @@ const VotedTitle = styled.h4`
   width: 100%;
 `;
 
-const VotedText = styled.p`
+const reactedText = styled.p`
   color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
@@ -103,14 +103,14 @@ interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
-  userVoted: boolean;
+  userreacted: boolean;
   onCancelVote: () => void;
 }
 interface DataProps {}
 
 interface Props extends InputProps, DataProps {}
 
-class ProposedVoted extends PureComponent<Props & { theme: any }> {
+class Proposedreacted extends PureComponent<Props & { theme: any }> {
   handleOnCancelVote = () => {
     this.props.onCancelVote();
   };
@@ -120,17 +120,17 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
       initiative,
       initiativeSettings: { voting_threshold },
     } = this.props;
-    const voteCount = initiative.attributes.upvotes_count;
+    const voteCount = initiative.attributes.likes_count;
     const voteLimit = voting_threshold;
     const daysLeft = getPeriodRemainingUntil(initiative.attributes.expires_at);
 
     return (
       <Container>
         <StyledIcon ariaHidden name="check-circle" />
-        <VotedTitle>
+        <reactedTitle>
           <FormattedMessage {...messages.votedTitle} />
-        </VotedTitle>
-        <VotedText>
+        </reactedTitle>
+        <reactedText>
           <FormattedMessage
             {...messages.votedText}
             values={{
@@ -145,16 +145,16 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
               ),
             }}
           />
-        </VotedText>
+        </reactedText>
         <UnvoteButton
-          id="e2e-initiative-cancel-upvote-button"
+          id="e2e-initiative-cancel-like-button"
           onClick={this.handleOnCancelVote}
         >
           <FormattedMessage {...messages.unvoteLink} />
         </UnvoteButton>
         <VoteCounter>
           <VoteText aria-hidden={true}>
-            <VoteTextLeft id="e2e-initiative-voted-vote-count">
+            <VoteTextLeft id="e2e-initiative-reacted-vote-count">
               <FormattedMessage
                 {...messages.xVotes}
                 values={{ count: voteCount }}
@@ -169,4 +169,4 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
   }
 }
 
-export default ProposedVoted;
+export default Proposedreacted;

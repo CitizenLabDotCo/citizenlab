@@ -16,13 +16,13 @@ interface Props {
   onChange: (value: number) => void;
 }
 
-const VotingLimit = ({ value, onChange }: Props) => {
+const ReactingLimit = ({ value, onChange }: Props) => {
   const { formatMessage } = useIntl();
-  const [votingLimitChanged, setVotingLimitChanged] = useState(false);
+  const [reactingLimitChanged, setReactingLimitChanged] = useState(false);
 
   const handleDaysLimitOnChange = (value: string) => {
     onChange(parseInt(value, 10));
-    setVotingLimitChanged(true);
+    setReactingLimitChanged(true);
   };
 
   return (
@@ -41,7 +41,7 @@ const VotingLimit = ({ value, onChange }: Props) => {
           onChange={handleDaysLimitOnChange}
         />
       </Box>
-      {votingLimitChanged && (
+      {reactingLimitChanged && (
         <StyledWarning>
           {formatMessage(messages.warningTresholdSettings)}
         </StyledWarning>
@@ -51,4 +51,4 @@ const VotingLimit = ({ value, onChange }: Props) => {
   );
 };
 
-export default VotingLimit;
+export default ReactingLimit;

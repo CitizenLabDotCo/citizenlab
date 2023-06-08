@@ -78,7 +78,7 @@ const TimelineSection = styled.div`
 
 interface Props {
   phases: GetPhasesChildProps;
-  mostVotedIdeas: GetIdeasChildProps;
+  mostreactedIdeas: GetIdeasChildProps;
   project: GetProjectChildProps;
 }
 
@@ -111,7 +111,7 @@ const ProjectReport = memo(
   ({
     project,
     phases,
-    mostVotedIdeas,
+    mostreactedIdeas,
     intl: { formatMessage, formatDate },
   }: Props & WrappedComponentProps & WithRouterProps) => {
     const localize = useLocalize();
@@ -157,10 +157,10 @@ const ProjectReport = memo(
         month: 'short',
       });
 
-    const mostVotedIdeasSerie = mostVotedIdeas?.list?.map((idea) => ({
+    const mostreactedIdeasSerie = mostreactedIdeas?.list?.map((idea) => ({
       code: idea.id,
-      value: idea.attributes.upvotes_count + idea.attributes.dislikes_count,
-      up: idea.attributes.upvotes_count,
+      value: idea.attributes.likes_count + idea.attributes.dislikes_count,
+      up: idea.attributes.likes_count,
       down: idea.attributes.dislikes_count,
       name: localize(idea.attributes.title_multiloc),
       slug: idea.attributes.slug,
@@ -277,7 +277,7 @@ const ProjectReport = memo(
                   resolution={resolution}
                 />
                 <HorizontalBarChartWithoutStream
-                  serie={mostVotedIdeasSerie}
+                  serie={mostreactedIdeasSerie}
                   graphTitleString={formatMessage(
                     messages.fiveInputsWithMostVotes
                   )}
@@ -345,7 +345,7 @@ const Data = adopt<Props, WithRouterProps>({
   phases: ({ params, render }) => (
     <GetPhases projectId={params.projectId}>{render}</GetPhases>
   ),
-  mostVotedIdeas: ({ params, render }) => (
+  mostreactedIdeas: ({ params, render }) => (
     <GetIdeas
       {...{
         'page[size]': 5,

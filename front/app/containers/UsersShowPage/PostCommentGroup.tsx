@@ -209,13 +209,13 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
             <VotesContainer>
               <VoteIcon ariaHidden name="vote-up" />
               <VoteCount aria-hidden>
-                {comment.attributes.upvotes_count}
+                {comment.attributes.likes_count}
               </VoteCount>
               <ScreenReaderOnly>
                 <FormattedMessage
-                  {...messages.a11y_upvotesCount}
+                  {...messages.a11y_likesCount}
                   values={{
-                    upvotesCount: comment.attributes.upvotes_count,
+                    likesCount: comment.attributes.likes_count,
                   }}
                 />
               </ScreenReaderOnly>

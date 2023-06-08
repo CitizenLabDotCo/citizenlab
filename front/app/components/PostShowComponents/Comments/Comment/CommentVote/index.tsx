@@ -1,7 +1,7 @@
 import React, { MouseEvent, useState, useEffect } from 'react';
 
 // components
-import UpvoteButton from './UpvoteButton';
+import LikeButton from './LikeButton';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -19,7 +19,7 @@ import useCommentVote from 'api/comment_votes/useCommentVote';
 import { isNilOrError } from 'utils/helperUtils';
 import { postIsIdea, postIsInitiative } from '../utils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
-import { trackUpvote, trackCancelUpvote } from './trackVote';
+import { trackLike, trackCancelLike } from './trackVote';
 
 // typings
 import { ICommentData } from 'api/comments/types';
@@ -40,8 +40,8 @@ const CommentVote = ({
   commentType,
   className,
 }: Props) => {
-  const [voted, setVoted] = useState(false);
-  const [upvoteCount, setUpvoteCount] = useState(0);
+  const [reacted, setreacted] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
 
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
@@ -56,10 +56,10 @@ const CommentVote = ({
     comment.relationships.user_vote?.data?.id
   );
 
-  // Wondering why 'comment_voting_initiative' and not 'commenting_initiative'?
+  // Wondering why 'comment_reacting_initiative' and not 'commenting_initiative'?
   // See app/api/initiative_action_descriptors/types.ts
-  const commentVotingPermissionInitiative = useInitiativesPermissions(
-    'comment_voting_initiative'
+  const commentReactingPermissionInitiative = useInitiativesPermissions(
+    'comment_reacting_initiative'
   );
 
   const vote = async () => {
@@ -73,7 +73,7 @@ const CommentVote = ({
           },
           {
             onSuccess: () => {
-              trackUpvote(commentType);
+              trackLike(commentType);
             },
           }
         );
@@ -87,7 +87,7 @@ const CommentVote = ({
           },
           {
             onSuccess: () => {
-              trackCancelUpvote(commentType);
+              trackCancelLike(commentType);
             },
           }
         );
@@ -98,18 +98,18 @@ const CommentVote = ({
   const post = postType === 'idea' ? idea?.data : initiative?.data;
 
   useEffect(() => {
-    setVoted(!isNilOrError(commentVote));
+    setreacted(!isNilOrError(commentVote));
   }, [commentVote]);
 
   useEffect(() => {
     if (!isNilOrError(comment)) {
-      const backendUpvoteCount = comment.attributes.upvotes_count;
+      const backendLikeCount = comment.attributes.likes_count;
 
-      if (backendUpvoteCount !== upvoteCount) {
-        setUpvoteCount(backendUpvoteCount);
+      if (backendLikeCount !== likeCount) {
+        setLikeCount(backendLikeCount);
       }
     }
-  }, [comment, upvoteCount]);
+  }, [comment, likeCount]);
 
   const handleVoteClick = async (event?: MouseEvent) => {
     event?.preventDefault();
@@ -122,17 +122,17 @@ const CommentVote = ({
         commentVoteId: isNilOrError(commentVote)
           ? undefined
           : commentVote.data.id,
-        alreadyVoted: voted,
+        alreadyreacted: reacted,
       },
     };
 
     if (!post) return;
 
     if (postIsIdea(post)) {
-      // Wondering why 'comment_voting_idea' and not 'commenting_idea'?
+      // Wondering why 'comment_reacting_idea' and not 'commenting_idea'?
       // See app/api/ideas/types.ts
       const actionDescriptor =
-        post.attributes.action_descriptor.comment_voting_idea;
+        post.attributes.action_descriptor.comment_reacting_idea;
 
       if (actionDescriptor.enabled) {
         vote();
@@ -140,7 +140,7 @@ const CommentVote = ({
       }
 
       if (isFixableByAuthentication(actionDescriptor.disabled_reason)) {
-        // Wondering why 'commenting_idea' and not 'comment_voting_idea'?
+        // Wondering why 'commenting_idea' and not 'comment_reacting_idea'?
         // See app/api/ideas/types.ts
         const context = {
           type: 'idea',
@@ -157,10 +157,10 @@ const CommentVote = ({
 
     if (postIsInitiative(post)) {
       const authenticationRequirements =
-        commentVotingPermissionInitiative?.authenticationRequirements;
+        commentReactingPermissionInitiative?.authenticationRequirements;
 
       if (authenticationRequirements) {
-        // Wondering why 'commenting_initiative' and not 'comment_voting_initiative'?
+        // Wondering why 'commenting_initiative' and not 'comment_reacting_initiative'?
         // See app/api/initiative_action_descriptors/types.ts
         const context = {
           action: 'commenting_initiative',
@@ -181,22 +181,22 @@ const CommentVote = ({
     let disabled: boolean;
 
     if (postIsIdea(post)) {
-      // Wondering why 'comment_voting_idea' and not 'commenting_idea'?
+      // Wondering why 'comment_reacting_idea' and not 'commenting_idea'?
       // See app/api/ideas/types.ts
       const { enabled, disabled_reason } =
-        post.attributes.action_descriptor.comment_voting_idea;
+        post.attributes.action_descriptor.comment_reacting_idea;
       disabled = !enabled && !isFixableByAuthentication(disabled_reason);
     } else {
-      disabled = !!commentVotingPermissionInitiative?.enabled;
+      disabled = !!commentReactingPermissionInitiative?.enabled;
     }
 
-    if (!disabled || upvoteCount > 0) {
+    if (!disabled || likeCount > 0) {
       return (
-        <UpvoteButton
+        <LikeButton
           className={className}
           disabled={disabled}
-          voted={voted}
-          upvoteCount={upvoteCount}
+          reacted={reacted}
+          likeCount={likeCount}
           onClick={handleVoteClick}
         />
       );

@@ -57,11 +57,11 @@ export interface IParticipationContextConfig {
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
   reacting_enabled?: boolean | null;
-  upvoting_method?: 'unlimited' | 'limited' | null;
+  reacting_like_method?: 'unlimited' | 'limited' | null;
   reacting_like_limited_max?: number | null;
   reacting_dislike_enabled?: boolean | null;
   allow_anonymous_participation?: boolean | null;
-  downvoting_method?: 'unlimited' | 'limited' | null;
+  reacting_dislike_method?: 'unlimited' | 'limited' | null;
   reacting_dislike_limited_max?: number | null;
   presentation_mode?: 'map' | 'card' | null;
   ideas_order?: IdeaDefaultSortMethod;
@@ -102,8 +102,8 @@ interface InputProps {
 interface Props extends DataProps, InputProps {}
 
 export interface State extends IParticipationContextConfig {
-  noUpvotingLimitError: JSX.Element | null;
-  noDownvotingLimitError: JSX.Element | null;
+  noLikingLimitError: JSX.Element | null;
+  noDislikingLimitError: JSX.Element | null;
   minBudgetError: string | null;
   maxBudgetError: string | null;
   loaded: boolean;
@@ -122,11 +122,11 @@ class ParticipationContext extends PureComponent<
       posting_enabled: true,
       commenting_enabled: true,
       reacting_enabled: true,
-      upvoting_method: 'unlimited',
+      reacting_like_method: 'unlimited',
       reacting_like_limited_max: null,
       reacting_dislike_enabled: true,
       allow_anonymous_participation: false,
-      downvoting_method: 'unlimited',
+      reacting_dislike_method: 'unlimited',
       reacting_dislike_limited_max: null,
       presentation_mode: 'card',
       min_budget: null,
@@ -134,8 +134,8 @@ class ParticipationContext extends PureComponent<
       survey_service: null,
       survey_embed_url: null,
       loaded: false,
-      noUpvotingLimitError: null,
-      noDownvotingLimitError: null,
+      noLikingLimitError: null,
+      noDislikingLimitError: null,
       minBudgetError: null,
       maxBudgetError: null,
       poll_anonymous: false,
@@ -158,8 +158,8 @@ class ParticipationContext extends PureComponent<
           posting_enabled: newData.posting_enabled,
           commenting_enabled: newData.commenting_enabled,
           reacting_enabled: newData.reacting_enabled,
-          upvoting_method: newData.upvoting_method,
-          downvoting_method: newData.downvoting_method,
+          reacting_like_method: newData.reacting_like_method,
+          reacting_dislike_method: newData.reacting_dislike_method,
           reacting_like_limited_max: newData.reacting_like_limited_max,
           reacting_dislike_limited_max: newData.reacting_dislike_limited_max,
           reacting_dislike_enabled: newData.reacting_dislike_enabled,
@@ -193,14 +193,14 @@ class ParticipationContext extends PureComponent<
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
     const {
-      noUpvotingLimitError: _prevNoUpvotingLimit,
-      noDownvotingLimitError: _prevNoDownvotingLimit,
+      noLikingLimitError: _prevNoLikingLimit,
+      noDislikingLimitError: _prevNoDislikingLimit,
       loaded: _prevLoaded,
       ...prevPartialState
     } = prevState;
     const {
-      noUpvotingLimitError: _nextNoUpvotingLimit,
-      noDownvotingLimitError: _nextNoDownvotingLimit,
+      noLikingLimitError: _nextNoLikingLimit,
+      noDislikingLimitError: _nextNoDislikingLimit,
       loaded: _nextLoaded,
       ...nextPartialState
     } = this.state;
@@ -228,10 +228,10 @@ class ParticipationContext extends PureComponent<
       posting_enabled: ideation ? true : null,
       commenting_enabled: ideationOrBudgeting ? true : null,
       reacting_enabled: ideation ? true : null,
-      upvoting_method: ideation ? 'unlimited' : null,
+      reacting_like_method: ideation ? 'unlimited' : null,
       reacting_dislike_enabled: ideation ? true : null,
       allow_anonymous_participation: ideationOrBudgeting ? false : null,
-      downvoting_method: ideation ? 'unlimited' : null,
+      reacting_dislike_method: ideation ? 'unlimited' : null,
       presentation_mode: ideationOrBudgeting ? 'card' : null,
       survey_embed_url: null,
       survey_service: survey ? 'typeform' : null,
@@ -272,17 +272,20 @@ class ParticipationContext extends PureComponent<
     this.setState((state) => ({ reacting_enabled: !state.reacting_enabled }));
   };
 
-  handleUpvotingMethodOnChange = (upvoting_method: 'unlimited' | 'limited') => {
+  handleReactingLikeMethodOnChange = (
+    reacting_like_method: 'unlimited' | 'limited'
+  ) => {
     this.setState({
-      upvoting_method,
-      reacting_like_limited_max: upvoting_method === 'unlimited' ? null : 5,
+      reacting_like_method,
+      reacting_like_limited_max:
+        reacting_like_method === 'unlimited' ? null : 5,
     });
   };
 
-  handleUpvotingLimitOnChange = (reacting_like_limited_max: string) => {
+  handleLikingLimitOnChange = (reacting_like_limited_max: string) => {
     this.setState({
       reacting_like_limited_max: parseInt(reacting_like_limited_max, 10),
-      noUpvotingLimitError: null,
+      noLikingLimitError: null,
     });
   };
 
@@ -298,20 +301,20 @@ class ParticipationContext extends PureComponent<
     this.setState({ allow_anonymous_participation });
   };
 
-  handleDownvotingMethodOnChange = (
-    downvoting_method: 'unlimited' | 'limited'
+  handleReactingDislikeMethodOnChange = (
+    reacting_dislike_method: 'unlimited' | 'limited'
   ) => {
     this.setState({
-      downvoting_method,
+      reacting_dislike_method,
       reacting_dislike_limited_max:
-        downvoting_method === 'unlimited' ? null : 5,
+        reacting_dislike_method === 'unlimited' ? null : 5,
     });
   };
 
-  handleDownvotingLimitOnChange = (reacting_dislike_limited_max: string) => {
+  handleDislikingLimitOnChange = (reacting_dislike_limited_max: string) => {
     this.setState({
       reacting_dislike_limited_max: parseInt(reacting_dislike_limited_max, 10),
-      noDownvotingLimitError: null,
+      noDislikingLimitError: null,
     });
   };
 
@@ -357,16 +360,16 @@ class ParticipationContext extends PureComponent<
     } = this.props;
 
     const {
-      noUpvotingLimitError,
-      noDownvotingLimitError,
+      noLikingLimitError,
+      noDislikingLimitError,
       minBudgetError,
       maxBudgetError,
       isValidated,
     } = validate(this.state, formatMessage);
 
     this.setState({
-      noUpvotingLimitError,
-      noDownvotingLimitError,
+      noLikingLimitError,
+      noDislikingLimitError,
       minBudgetError,
       maxBudgetError,
     });
@@ -418,8 +421,8 @@ class ParticipationContext extends PureComponent<
       posting_enabled,
       commenting_enabled,
       reacting_enabled,
-      upvoting_method,
-      downvoting_method,
+      reacting_like_method,
+      reacting_dislike_method,
       reacting_like_limited_max,
       reacting_dislike_limited_max,
       reacting_dislike_enabled,
@@ -430,8 +433,8 @@ class ParticipationContext extends PureComponent<
       document_annotation_embed_url,
       survey_service,
       loaded,
-      noUpvotingLimitError,
-      noDownvotingLimitError,
+      noLikingLimitError,
+      noDislikingLimitError,
       minBudgetError,
       maxBudgetError,
       poll_anonymous,
@@ -515,27 +518,27 @@ class ParticipationContext extends PureComponent<
                   posting_enabled={posting_enabled}
                   commenting_enabled={commenting_enabled}
                   reacting_enabled={reacting_enabled}
-                  upvoting_method={upvoting_method}
-                  downvoting_method={downvoting_method}
+                  reacting_like_method={reacting_like_method}
+                  reacting_dislike_method={reacting_dislike_method}
                   reacting_like_limited_max={reacting_like_limited_max}
                   reacting_dislike_limited_max={reacting_dislike_limited_max}
                   reacting_dislike_enabled={reacting_dislike_enabled}
-                  noUpvotingLimitError={noUpvotingLimitError}
-                  noDownvotingLimitError={noDownvotingLimitError}
+                  noLikingLimitError={noLikingLimitError}
+                  noDislikingLimitError={noDislikingLimitError}
                   allow_anonymous_participation={allow_anonymous_participation}
                   apiErrors={apiErrors}
                   togglePostingEnabled={this.togglePostingEnabled}
                   toggleCommentingEnabled={this.toggleCommentingEnabled}
                   toggleReactingEnabled={this.toggleReactingEnabled}
-                  handleUpvotingMethodOnChange={
-                    this.handleUpvotingMethodOnChange
+                  handleReactingLikeMethodOnChange={
+                    this.handleReactingLikeMethodOnChange
                   }
-                  handleDownvotingMethodOnChange={
-                    this.handleDownvotingMethodOnChange
+                  handleReactingDislikeMethodOnChange={
+                    this.handleReactingDislikeMethodOnChange
                   }
-                  handleUpvotingLimitOnChange={this.handleUpvotingLimitOnChange}
-                  handleDownvotingLimitOnChange={
-                    this.handleDownvotingLimitOnChange
+                  handleLikingLimitOnChange={this.handleLikingLimitOnChange}
+                  handleDislikingLimitOnChange={
+                    this.handleDislikingLimitOnChange
                   }
                   handleReactingDislikeEnabledOnChange={
                     this.handleReactingDislikeEnabledOnChange

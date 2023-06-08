@@ -37,22 +37,22 @@ const VotesContainer = styled.div`
   align-items: center;
 `;
 
-const UpvotesContainer = styled(VotesContainer)`
+const LikesContainer = styled(VotesContainer)`
   margin-right: 30px;
 `;
 
-const DownvotesContainer = styled(VotesContainer)``;
+const DislikesContainer = styled(VotesContainer)``;
 
 const VoteIcon = styled(Icon)`
   margin-right: 5px;
 `;
 
-const UpvoteIcon = styled(VoteIcon)`
+const LikeIcon = styled(VoteIcon)`
   fill: ${colors.success};
   margin-top: -2px;
 `;
 
-const DownvoteIcon = styled(VoteIcon)`
+const DislikeIcon = styled(VoteIcon)`
   fill: ${colors.error};
   margin-top: 6px;
 `;
@@ -62,11 +62,11 @@ const VotesCount = styled.div`
   font-weight: 600;
 `;
 
-const UpvotesCount = styled(VotesCount)`
+const LikesCount = styled(VotesCount)`
   color: ${colors.success};
 `;
 
-const DownvotesCount = styled(VotesCount)`
+const DislikesCount = styled(VotesCount)`
   color: ${colors.error};
 `;
 
@@ -79,8 +79,8 @@ const VotePreview = ({ ideaId, className }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
 
   if (!isNilOrError(idea)) {
-    const upvotesCount = idea.data.attributes.upvotes_count;
-    const downvotesCount = idea.data.attributes.dislikes_count;
+    const likesCount = idea.data.attributes.likes_count;
+    const dislikesCount = idea.data.attributes.dislikes_count;
 
     return (
       <Container className={className}>
@@ -88,14 +88,14 @@ const VotePreview = ({ ideaId, className }: Props) => {
           <FormattedMessage {...messages.voteCounts} />
         </Label>
         <Block>
-          <UpvotesContainer>
-            <UpvoteIcon name="vote-up" />
-            <UpvotesCount>{upvotesCount}</UpvotesCount>
-          </UpvotesContainer>
-          <DownvotesContainer>
-            <DownvoteIcon name="vote-down" />
-            <DownvotesCount>{downvotesCount}</DownvotesCount>
-          </DownvotesContainer>
+          <LikesContainer>
+            <LikeIcon name="vote-up" />
+            <LikesCount>{likesCount}</LikesCount>
+          </LikesContainer>
+          <DislikesContainer>
+            <DislikeIcon name="vote-down" />
+            <DislikesCount>{dislikesCount}</DislikesCount>
+          </DislikesContainer>
         </Block>
       </Container>
     );

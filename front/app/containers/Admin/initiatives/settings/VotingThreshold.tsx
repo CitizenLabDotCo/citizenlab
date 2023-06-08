@@ -16,13 +16,14 @@ interface Props {
   onChange: (value: number) => void;
 }
 
-const VotingThreshold = ({ value, onChange }: Props) => {
+const ReactingThreshold = ({ value, onChange }: Props) => {
   const { formatMessage } = useIntl();
-  const [votingThresholdChanged, setVotingThresholdChanged] = useState(false);
+  const [reactingThresholdChanged, setReactingThresholdChanged] =
+    useState(false);
 
-  const handleVotingTresholdOnChange = (value: string) => {
+  const handleReactingTresholdOnChange = (value: string) => {
     onChange(parseInt(value, 10));
-    setVotingThresholdChanged(true);
+    setReactingThresholdChanged(true);
   };
 
   return (
@@ -32,16 +33,16 @@ const VotingThreshold = ({ value, onChange }: Props) => {
       </SubSectionTitle>
       <Box mb="10px">
         <Input
-          className="e2e-voting-threshold"
-          name="voting_threshold"
+          className="e2e-reacting-threshold"
+          name="reacting_threshold"
           type="number"
           min="2"
           required={true}
           value={value.toString()}
-          onChange={handleVotingTresholdOnChange}
+          onChange={handleReactingTresholdOnChange}
         />
       </Box>
-      {votingThresholdChanged && (
+      {reactingThresholdChanged && (
         <StyledWarning>
           {formatMessage(messages.warningTresholdSettings)}
         </StyledWarning>
@@ -58,4 +59,4 @@ const VotingThreshold = ({ value, onChange }: Props) => {
   );
 };
 
-export default VotingThreshold;
+export default ReactingThreshold;

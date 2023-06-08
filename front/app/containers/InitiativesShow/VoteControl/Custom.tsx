@@ -56,7 +56,7 @@ interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
-  userVoted: boolean;
+  userreacted: boolean;
   onVote: () => void;
 }
 interface DataProps {}
@@ -73,9 +73,9 @@ class Custom extends PureComponent<Props & { theme: any }> {
       initiative,
       initiativeStatus,
       initiativeSettings: { voting_threshold },
-      userVoted,
+      userreacted,
     } = this.props;
-    const voteCount = initiative.attributes.upvotes_count;
+    const voteCount = initiative.attributes.likes_count;
     const voteLimit = voting_threshold;
 
     return (
@@ -98,7 +98,7 @@ class Custom extends PureComponent<Props & { theme: any }> {
           </VoteText>
           <ProposalProgressBar voteCount={voteCount} voteLimit={voteLimit} />
         </VoteCounter>
-        {!userVoted && (
+        {!userreacted && (
           <StyledButton
             icon="vote-up"
             buttonStyle="primary"

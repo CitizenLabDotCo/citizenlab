@@ -113,7 +113,7 @@ const InitiativeCard = ({
   const cardClassNames = [
     className,
     'e2e-initiative-card',
-    get(initiative, 'relationships.user_vote.data') ? 'voted' : 'not-voted',
+    get(initiative, 'relationships.user_vote.data') ? 'reacted' : 'not-reacted',
     commentsCount > 0 ? 'e2e-has-comments' : null,
   ]
     .filter((item) => isString(item) && item !== '')

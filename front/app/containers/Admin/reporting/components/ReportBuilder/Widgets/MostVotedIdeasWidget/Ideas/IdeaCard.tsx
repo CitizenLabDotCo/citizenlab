@@ -33,8 +33,8 @@ interface Props {
   body: string;
   url: string;
   id: string;
-  upvotes: number;
-  downvotes: number;
+  likes: number;
+  dislikes: number;
   comments: number;
   collapseLongText: boolean;
 }
@@ -51,8 +51,8 @@ const IdeaCard = ({
   body,
   url,
   id,
-  upvotes,
-  downvotes,
+  likes,
+  dislikes,
   comments,
   collapseLongText,
 }: Props) => {
@@ -153,7 +153,7 @@ const IdeaCard = ({
             mr="3px"
             name="vote-up"
           />
-          {upvotes}
+          {likes}
           <Icon
             height="16px"
             fill={colors.coolGrey500}
@@ -161,7 +161,7 @@ const IdeaCard = ({
             mr="3px"
             name="vote-down"
           />
-          {downvotes}
+          {dislikes}
           <Icon
             height="16px"
             fill={colors.coolGrey500}

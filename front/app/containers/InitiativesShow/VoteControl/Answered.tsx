@@ -45,7 +45,7 @@ interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
-  userVoted: boolean;
+  userreacted: boolean;
   onVote: () => void;
   onScrollToOfficialFeedback: () => void;
 }
@@ -65,9 +65,9 @@ class Answered extends PureComponent<Props, State> {
   };
 
   render() {
-    const { initiative, initiativeStatus, userVoted } = this.props;
+    const { initiative, initiativeStatus, userreacted } = this.props;
 
-    const voteCount = initiative.attributes.upvotes_count;
+    const voteCount = initiative.attributes.likes_count;
 
     return (
       <Container>
@@ -91,7 +91,7 @@ class Answered extends PureComponent<Props, State> {
         </StatusExplanation>
         <VoteText>
           <FormattedMessage
-            {...messages.xPeopleVoted}
+            {...messages.xPeoplereacted}
             values={{
               xPeople: (
                 <b>
@@ -108,7 +108,7 @@ class Answered extends PureComponent<Props, State> {
           <Button onClick={this.handleOnReadAnswer}>
             <FormattedMessage {...messages.readAnswer} />
           </Button>
-          {!userVoted && (
+          {!userreacted && (
             <Button buttonStyle="primary-outlined" onClick={this.handleOnVote}>
               <FormattedMessage {...messages.vote} />
             </Button>

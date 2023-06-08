@@ -22,7 +22,7 @@ const Container = styled.li`
   padding: 0;
 `;
 
-const UpvoteIcon = styled(Icon)`
+const LikeIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   flex: 0 0 20px;
   width: 20px;
@@ -46,40 +46,40 @@ const ButtonWrapper = styled.button`
     cursor: auto;
   }
 
-  &.enabled:not(.voted):hover {
+  &.enabled:not(.reacted):hover {
     color: #000;
 
-    ${UpvoteIcon} {
+    ${LikeIcon} {
       fill: #000;
     }
   }
 
-  &.enabled.voted {
+  &.enabled.reacted {
     color: ${colors.success};
 
-    ${UpvoteIcon} {
+    ${LikeIcon} {
       fill: ${colors.success};
     }
   }
 
-  &.disabled:not(.voted) {
+  &.disabled:not(.reacted) {
     color: ${lighten(0.25, colors.textSecondary)};
 
-    ${UpvoteIcon} {
+    ${LikeIcon} {
       fill: ${lighten(0.25, colors.textSecondary)};
     }
   }
 
-  &.disabled.voted {
+  &.disabled.reacted {
     color: ${lighten(0.25, colors.success)};
 
-    ${UpvoteIcon} {
+    ${LikeIcon} {
       fill: ${lighten(0.25, colors.success)};
     }
   }
 `;
 
-const UpvoteCount = styled.div`
+const LikeCount = styled.div`
   margin-left: 6px;
   ${isRtl`
     margin-right: 6px;
@@ -90,23 +90,23 @@ const UpvoteCount = styled.div`
 interface Props {
   className?: string;
   disabled: boolean;
-  voted: boolean;
-  upvoteCount: number;
+  reacted: boolean;
+  likeCount: number;
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const UpvoteButton = ({
+const LikeButton = ({
   className,
   disabled,
-  voted,
-  upvoteCount,
+  reacted,
+  likeCount,
   onClick,
 }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
     <Container
-      id="e2e-comment-upvote-button"
+      id="e2e-comment-like-button"
       className={`vote ${className || ''}`}
     >
       <ButtonWrapper
@@ -114,42 +114,42 @@ const UpvoteButton = ({
         disabled={disabled}
         className={`
           e2e-comment-vote
-          ${voted ? 'voted' : 'notVoted'}
+          ${reacted ? 'reacted' : 'notreacted'}
           ${disabled ? 'disabled' : 'enabled'}
         `}
       >
         <>
-          <UpvoteIcon
+          <LikeIcon
             name="vote-up"
             className={`
-            ${voted ? 'voted' : 'notVoted'}
+            ${reacted ? 'reacted' : 'notreacted'}
             ${disabled ? 'disabled' : 'enabled'}
           `}
           />
           <ScreenReaderOnly>
-            {!voted
-              ? formatMessage(messages.upvoteComment)
-              : formatMessage(messages.a11y_undoUpvote)}
+            {!reacted
+              ? formatMessage(messages.likeComment)
+              : formatMessage(messages.a11y_undoLike)}
           </ScreenReaderOnly>
         </>
-        {upvoteCount > 0 && (
-          <UpvoteCount
+        {likeCount > 0 && (
+          <LikeCount
             className={`
-          ${voted ? 'voted' : 'notVoted'}
+          ${reacted ? 'reacted' : 'notreacted'}
           ${disabled ? 'disabled' : 'enabled'}
         `}
           >
-            {upvoteCount}
-          </UpvoteCount>
+            {likeCount}
+          </LikeCount>
         )}
       </ButtonWrapper>
       <ScreenReaderOnly aria-live="polite">
-        {formatMessage(messages.a11y_upvoteCount, {
-          upvoteCount,
+        {formatMessage(messages.a11y_likeCount, {
+          likeCount,
         })}
       </ScreenReaderOnly>
     </Container>
   );
 };
 
-export default UpvoteButton;
+export default LikeButton;

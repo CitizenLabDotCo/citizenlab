@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useMostVotedIdeas from 'containers/Admin/reporting/hooks/useMostVotedIdeas';
+import useMostreactedIdeas from 'containers/Admin/reporting/hooks/useMostreactedIdeas';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -29,19 +29,19 @@ const Ideas = ({
   collapseLongText,
 }: Props) => {
   const localize = useLocalize();
-  const mostVotedIdeas = useMostVotedIdeas({
+  const mostreactedIdeas = useMostreactedIdeas({
     projectId,
     phaseId,
     numberOfIdeas,
   });
 
-  if (isNilOrError(mostVotedIdeas) || mostVotedIdeas.length === 0) {
+  if (isNilOrError(mostreactedIdeas) || mostreactedIdeas.length === 0) {
     return <NoData message={messages.noIdeasAvailable} />;
   }
 
   return (
     <Box m="16px">
-      {mostVotedIdeas.map(
+      {mostreactedIdeas.map(
         (
           {
             id,
@@ -49,7 +49,7 @@ const Ideas = ({
               title_multiloc,
               body_multiloc,
               slug,
-              upvotes_count,
+              likes_count,
               dislikes_count,
               comments_count,
             },
@@ -63,8 +63,8 @@ const Ideas = ({
             body={localize(body_multiloc)}
             url={`/ideas/${slug}`}
             id={id}
-            upvotes={upvotes_count}
-            downvotes={dislikes_count}
+            likes={likes_count}
+            dislikes={dislikes_count}
             comments={comments_count}
             collapseLongText={collapseLongText}
           />

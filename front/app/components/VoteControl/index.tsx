@@ -5,7 +5,7 @@ import ScreenReaderContent from './ScreenReaderContent';
 import VoteButton from './VoteButton';
 
 // services
-import { IdeaVotingDisabledReason } from 'api/ideas/types';
+import { IdeaReactingDisabledReason } from 'api/ideas/types';
 import { getLatestRelevantPhase } from 'api/phases/utils';
 
 // events
@@ -51,7 +51,7 @@ interface Props {
   ideaId: string;
   size: TSize;
   unauthenticatedVoteClick?: (voteMode: TVoteMode) => void;
-  disabledVoteClick?: (disabled_reason?: IdeaVotingDisabledReason) => void;
+  disabledVoteClick?: (disabled_reason?: IdeaReactingDisabledReason) => void;
   setRef?: (element: HTMLDivElement) => void;
   ariaHidden?: boolean;
   className?: string;
@@ -66,9 +66,9 @@ const VoteControl = ({
   styleType,
   disabledVoteClick,
 }: Props) => {
-  const [votingAnimation, setVotingAnimation] = useState<'up' | 'down' | null>(
-    null
-  );
+  const [reactingAnimation, setReactingAnimation] = useState<
+    'up' | 'down' | null
+  >(null);
   const { data: idea } = useIdeaById(ideaId);
   const { mutate: addVote, isLoading: addVoteIsLoading } = useAddIdeaVote();
   const { mutate: deleteVote, isLoading: deleteVoteIsLoading } =
@@ -99,7 +99,7 @@ const VoteControl = ({
                 { ideaId, userId: authUser.data.id, mode: voteMode },
                 {
                   onSuccess: () => {
-                    setVotingAnimation(null);
+                    setReactingAnimation(null);
                   },
                 }
               );
@@ -114,7 +114,7 @@ const VoteControl = ({
           { ideaId, voteId },
           {
             onSuccess: () => {
-              setVotingAnimation(null);
+              setReactingAnimation(null);
             },
           }
         );
@@ -126,7 +126,7 @@ const VoteControl = ({
           { ideaId, userId: authUser.data.id, mode: voteMode },
           {
             onSuccess: () => {
-              setVotingAnimation(null);
+              setReactingAnimation(null);
             },
           }
         );
@@ -138,12 +138,13 @@ const VoteControl = ({
   if (!idea) return null;
 
   const ideaAttributes = idea.data.attributes;
-  const votingActionDescriptor = ideaAttributes.action_descriptor.voting_idea;
-  const votingFutureEnabled = !!(
-    votingActionDescriptor.up.future_enabled ||
-    votingActionDescriptor.down.future_enabled
+  const reactingActionDescriptor =
+    ideaAttributes.action_descriptor.reacting_idea;
+  const reactingFutureEnabled = !!(
+    reactingActionDescriptor.up.future_enabled ||
+    reactingActionDescriptor.down.future_enabled
   );
-  const cancellingEnabled = votingActionDescriptor.cancelling_enabled;
+  const cancellingEnabled = reactingActionDescriptor.cancelling_enabled;
 
   // participationContext
   const ideaPhaseIds = idea?.data?.relationships?.phases?.data?.map(
@@ -170,43 +171,45 @@ const VoteControl = ({
     participationContext?.attributes.participation_method === 'budgeting';
 
   // Votes count
-  const upvotesCount = ideaAttributes.upvotes_count;
-  const downvotesCount = ideaAttributes.dislikes_count;
+  const likesCount = ideaAttributes.likes_count;
+  const dislikesCount = ideaAttributes.dislikes_count;
 
   const showVoteControl = !!(
     !isPBContext &&
-    (votingActionDescriptor.enabled ||
-      isFixableByAuthentication(votingActionDescriptor.disabled_reason) ||
+    (reactingActionDescriptor.enabled ||
+      isFixableByAuthentication(reactingActionDescriptor.disabled_reason) ||
       cancellingEnabled ||
-      votingFutureEnabled ||
-      upvotesCount > 0 ||
-      downvotesCount > 0)
+      reactingFutureEnabled ||
+      likesCount > 0 ||
+      dislikesCount > 0)
   );
 
-  const onClickUpvote = (event: MouseEvent | KeyboardEvent) => {
+  const onClickLike = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
     event.stopPropagation();
     onVote('up');
   };
 
-  const onClickDownvote = (event: MouseEvent | KeyboardEvent) => {
+  const onClickDislike = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
     event.stopPropagation();
     onVote('down');
   };
 
   const onVote = async (voteMode: 'up' | 'down') => {
-    setVotingAnimation(voteMode);
+    setReactingAnimation(voteMode);
 
-    const { enabled: reactingEnabled, disabled_reason: votingDisabledReason } =
-      votingActionDescriptor[voteMode];
+    const {
+      enabled: reactingEnabled,
+      disabled_reason: reactingDisabledReason,
+    } = reactingActionDescriptor[voteMode];
 
     const isTryingToUndoVote = !!(myVoteMode && voteMode === myVoteMode);
 
     if (!participationContextId || !participationContextType) return;
 
     const context = {
-      action: 'voting_idea',
+      action: 'reacting_idea',
       id: participationContextId,
       type: participationContextType,
     } as const;
@@ -228,11 +231,11 @@ const VoteControl = ({
         castVote(voteMode);
       } else if (
         !reactingEnabled &&
-        isFixableByAuthentication(votingDisabledReason)
+        isFixableByAuthentication(reactingDisabledReason)
       ) {
         triggerAuthenticationFlow({ context, successAction });
-      } else if (votingDisabledReason) {
-        disabledVoteClick?.(votingDisabledReason);
+      } else if (reactingDisabledReason) {
+        disabledVoteClick?.(reactingDisabledReason);
       }
     }
 
@@ -240,18 +243,18 @@ const VoteControl = ({
   };
 
   if (idea && showVoteControl) {
-    // Only when downvoting is explicitly disabled,
-    // we don't show the downvote button
-    const showDownvote =
-      votingActionDescriptor.down.enabled === true ||
-      (votingActionDescriptor.down.enabled === false &&
-        votingActionDescriptor.down.disabled_reason !== 'downvoting_disabled');
+    // Only when disliking is explicitly disabled,
+    // we don't show the dislike button
+    const showDislike =
+      reactingActionDescriptor.down.enabled === true ||
+      (reactingActionDescriptor.down.enabled === false &&
+        reactingActionDescriptor.down.disabled_reason !== 'disliking_disabled');
 
     return (
       <>
         <ScreenReaderContent
-          upvotesCount={upvotesCount}
-          downvotesCount={downvotesCount}
+          likesCount={likesCount}
+          dislikesCount={dislikesCount}
         />
         <Container
           className={[
@@ -266,27 +269,27 @@ const VoteControl = ({
           <VoteButton
             buttonVoteMode="up"
             userVoteMode={myVoteMode}
-            onClick={onClickUpvote}
-            className={votingAnimation === 'up' ? 'voteClick' : ''}
+            onClick={onClickLike}
+            className={reactingAnimation === 'up' ? 'voteClick' : ''}
             ariaHidden={ariaHidden}
             styleType={styleType}
             size={size}
             iconName="vote-up"
-            votesCount={upvotesCount}
+            votesCount={likesCount}
             ideaId={idea.data.id}
           />
 
-          {showDownvote && (
+          {showDislike && (
             <VoteButton
               buttonVoteMode="down"
               userVoteMode={myVoteMode}
-              onClick={onClickDownvote}
-              className={votingAnimation === 'down' ? 'voteClick' : ''}
+              onClick={onClickDislike}
+              className={reactingAnimation === 'down' ? 'voteClick' : ''}
               ariaHidden={ariaHidden}
               styleType={styleType}
               size={size}
               iconName="vote-down"
-              votesCount={downvotesCount}
+              votesCount={dislikesCount}
               ideaId={idea.data.id}
             />
           )}

@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { IStatusChangeOnVotedIdeaNotificationData } from 'api/notifications/types';
+import { IStatusChangeOnreactedIdeaNotificationData } from 'api/notifications/types';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
@@ -12,10 +12,10 @@ import { getInputTerm } from 'services/participationContexts';
 import { getInputTermMessage } from 'utils/i18n';
 
 interface Props {
-  notification: IStatusChangeOnVotedIdeaNotificationData;
+  notification: IStatusChangeOnreactedIdeaNotificationData;
 }
 
-const StatusChangeOnVotedIdeaNotification = memo<Props>((props) => {
+const StatusChangeOnreactedIdeaNotification = memo<Props>((props) => {
   const { notification } = props;
   const { data: idea } = useIdeaBySlug(notification.attributes.post_slug);
   const projectId = !isNilOrError(idea)
@@ -59,4 +59,4 @@ const StatusChangeOnVotedIdeaNotification = memo<Props>((props) => {
   return null;
 });
 
-export default StatusChangeOnVotedIdeaNotification;
+export default StatusChangeOnreactedIdeaNotification;

@@ -2,8 +2,8 @@ import React from 'react';
 import moment from 'moment';
 
 // components
-import ProposedNotVoted from './ProposedNotVoted';
-import ProposedVoted from './ProposedVoted';
+import ProposedNotreacted from './ProposedNotreacted';
+import Proposedreacted from './Proposedreacted';
 import Expired from './Expired';
 import ThresholdReached from './ThresholdReached';
 import Answered from './Answered';
@@ -62,7 +62,7 @@ interface VoteControlComponentProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: IAppConfigurationSettings['initiatives'];
-  userVoted: boolean;
+  userreacted: boolean;
   onVote?: () => void;
   onCancelVote?: () => void;
   onScrollToOfficialFeedback?: () => void;
@@ -72,36 +72,36 @@ interface VoteControlComponentProps {
 type TComponentMap = {
   [key in InitiativeStatusCode]: {
     [key in
-      | 'voted'
-      | 'notVoted']: React.ComponentType<VoteControlComponentProps>;
+      | 'reacted'
+      | 'notreacted']: React.ComponentType<VoteControlComponentProps>;
   };
 };
 
-/** Maps the initiative status and whether the user voted or not to the right component to render */
+/** Maps the initiative status and whether the user reacted or not to the right component to render */
 const componentMap: TComponentMap = {
   proposed: {
-    voted: ProposedVoted,
-    notVoted: ProposedNotVoted,
+    reacted: Proposedreacted,
+    notreacted: ProposedNotreacted,
   },
   expired: {
-    voted: Expired,
-    notVoted: Expired,
+    reacted: Expired,
+    notreacted: Expired,
   },
   threshold_reached: {
-    voted: ThresholdReached,
-    notVoted: ThresholdReached,
+    reacted: ThresholdReached,
+    notreacted: ThresholdReached,
   },
   answered: {
-    voted: Answered,
-    notVoted: Answered,
+    reacted: Answered,
+    notreacted: Answered,
   },
   ineligible: {
-    voted: Ineligible,
-    notVoted: Ineligible,
+    reacted: Ineligible,
+    notreacted: Ineligible,
   },
   custom: {
-    voted: Custom,
-    notVoted: Custom,
+    reacted: Custom,
+    notreacted: Custom,
   },
 };
 
@@ -114,7 +114,7 @@ interface Props {
 
 const context = {
   type: 'initiative',
-  action: 'voting_initiative',
+  action: 'reacting_initiative',
 } as const;
 
 const VoteControl = ({
@@ -137,13 +137,13 @@ const VoteControl = ({
   const { data: initiativeStatus } = useInitiativeStatus(
     initiative?.data.relationships.initiative_status?.data?.id
   );
-  const votingPermission = useInitiativesPermissions('voting_initiative');
+  const reactingPermission = useInitiativesPermissions('reacting_initiative');
 
   if (!initiative) return null;
 
   const handleOnvote = () => {
     const authenticationRequirements =
-      votingPermission?.authenticationRequirements;
+      reactingPermission?.authenticationRequirements;
 
     if (authenticationRequirements) {
       trackEventByName(
@@ -198,12 +198,12 @@ const VoteControl = ({
     initiativeStatus.data.attributes.code === 'proposed' && isExpired
       ? 'expired'
       : initiativeStatus.data.attributes.code;
-  const userVoted = !!(
+  const userreacted = !!(
     initiative.data.relationships.user_vote &&
     initiative.data.relationships.user_vote.data
   );
   const StatusComponent =
-    componentMap[statusCode][userVoted ? 'voted' : 'notVoted'];
+    componentMap[statusCode][userreacted ? 'reacted' : 'notreacted'];
   const initiativeSettings =
     appConfiguration.data.attributes.settings.initiatives;
 
@@ -216,11 +216,11 @@ const VoteControl = ({
         initiative={initiative.data}
         initiativeStatus={initiativeStatus.data}
         initiativeSettings={initiativeSettings}
-        userVoted={userVoted}
+        userreacted={userreacted}
         onVote={handleOnvote}
         onCancelVote={handleOnCancelVote}
         onScrollToOfficialFeedback={onScrollToOfficialFeedback}
-        disabledReason={votingPermission?.disabledReason}
+        disabledReason={reactingPermission?.disabledReason}
       />
     </Container>
   );

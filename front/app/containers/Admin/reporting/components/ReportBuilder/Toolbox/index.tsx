@@ -17,7 +17,7 @@ import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTraffi
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
-import MostVotedIdeasWidget from '../Widgets/MostVotedIdeasWidget';
+import MostreactedIdeasWidget from '../Widgets/MostreactedIdeasWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import VotesByTimeWidget from '../Widgets/ChartWidgets/VotesByTimeWidget';
@@ -146,9 +146,9 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             label={formatMessage(SurveyResultsWidget.craft.custom.title)}
           />
           <DraggableElement
-            id="e2e-most-voted-ideas-widget"
+            id="e2e-most-reacted-ideas-widget"
             component={
-              <MostVotedIdeasWidget
+              <MostreactedIdeasWidget
                 title={formatMessage(MostVotedIdeasWidget.craft.custom.title)}
                 numberOfIdeas={5}
                 collapseLongText={false}

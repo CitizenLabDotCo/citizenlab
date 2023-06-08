@@ -54,12 +54,12 @@ const Chart = ({
     {
       icon: 'rect',
       color: legacyColors.barFillLighter,
-      label: translations.downvotes,
+      label: translations.dislikes,
     },
     {
       icon: 'rect',
       color: legacyColors.barFill,
-      label: translations.upvotes,
+      label: translations.likes,
     },
   ];
 
@@ -81,7 +81,7 @@ const Chart = ({
       data={noData ? emptyData : timeSeries}
       mapping={{
         x: 'date',
-        yBars: ['downvotes', 'upvotes'],
+        yBars: ['dislikes', 'likes'],
         yLine: 'total',
       }}
       margin={MARGINS[layout]}

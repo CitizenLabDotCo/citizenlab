@@ -151,7 +151,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 cursor="pointer"
               />
               <Bar
-                name="Downvotes"
+                name="Dislikes"
                 stackId={'votes'}
                 dataKey="down"
                 fill={legacyColors.barFill}
@@ -189,7 +189,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
               </Bar>
 
               <Bar
-                name="Upvotes"
+                name="Likes"
                 stackId={'votes'}
                 dataKey="up"
                 fill={legacyColors.barFill}

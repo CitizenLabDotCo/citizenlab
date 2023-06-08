@@ -23,7 +23,7 @@ import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTraffi
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
-import MostVotedIdeasWidget from '../Widgets/MostVotedIdeasWidget';
+import MostreactedIdeasWidget from '../Widgets/MostreactedIdeasWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import VotesByTimeWidget from '../Widgets/ChartWidgets/VotesByTimeWidget';
@@ -52,7 +52,7 @@ const resolver = {
   AgeWidget,
   GenderWidget,
   ActiveUsersWidget,
-  MostVotedIdeasWidget,
+  MostreactedIdeasWidget,
   ProjectTemplate,
   PostsByTimeWidget,
   CommentsByTimeWidget,

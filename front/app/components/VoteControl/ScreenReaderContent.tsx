@@ -6,16 +6,16 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
-  upvotesCount: number;
-  downvotesCount: number;
+  likesCount: number;
+  dislikesCount: number;
 }
 
-const ScreenReaderContent = ({ upvotesCount, downvotesCount }: Props) => {
+const ScreenReaderContent = ({ likesCount, dislikesCount }: Props) => {
   return (
     <ScreenReaderOnly>
       <FormattedMessage
-        {...messages.a11y_upvotesDownvotes}
-        values={{ upvotesCount, downvotesCount }}
+        {...messages.a11y_likesDislikes}
+        values={{ likesCount, dislikesCount }}
       />
     </ScreenReaderOnly>
   );

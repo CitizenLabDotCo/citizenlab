@@ -123,10 +123,10 @@ const VoteIndicator = ({ initiativeId }: Props) => {
   if (isNilOrError(initiativeStatus)) return null;
 
   const statusCode = initiativeStatus.data.attributes.code;
-  const voteCount = initiative?.data.attributes.upvotes_count || 0;
+  const voteCount = initiative?.data.attributes.likes_count || 0;
   const voteLimit: number =
     appConfiguration?.data?.attributes?.settings.initiatives
-      ?.voting_threshold || 1;
+      ?.reacting_threshold || 1;
 
   return (
     <Container className="e2e-initiative-card-vote-indicator">
@@ -148,7 +148,7 @@ const VoteIndicator = ({ initiativeId }: Props) => {
           <ScreenReaderOnly>
             <FormattedMessage
               {...messages.xVotesOfY}
-              values={{ xVotes: voteCount, votingThreshold: voteLimit }}
+              values={{ xVotes: voteCount, reactingThreshold: voteLimit }}
             />
           </ScreenReaderOnly>
         </div>

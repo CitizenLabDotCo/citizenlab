@@ -54,7 +54,7 @@ interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
-  userVoted: boolean;
+  userreacted: boolean;
   onScrollToOfficialFeedback: () => void;
 }
 interface DataProps {}
@@ -76,7 +76,7 @@ class Ineligible extends PureComponent<Props, State> {
       initiativeSettings: { eligibility_criteria, voting_threshold },
       initiativeStatus,
     } = this.props;
-    const voteCount = initiative.attributes.upvotes_count;
+    const voteCount = initiative.attributes.likes_count;
     const voteLimit = voting_threshold;
 
     return (

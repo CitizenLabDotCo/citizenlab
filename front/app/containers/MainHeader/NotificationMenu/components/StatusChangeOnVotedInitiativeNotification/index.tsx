@@ -1,15 +1,15 @@
 import React, { memo } from 'react';
-import { IStatusChangeOnVotedInitiativeNotificationData } from 'api/notifications/types';
+import { IStatusChangeOnreactedInitiativeNotificationData } from 'api/notifications/types';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {
-  notification: IStatusChangeOnVotedInitiativeNotificationData;
+  notification: IStatusChangeOnreactedInitiativeNotificationData;
 }
 
-const StatusChangeOnVotedInitiativeNotification = memo<Props>((props) => {
+const StatusChangeOnreactedInitiativeNotification = memo<Props>((props) => {
   const { notification } = props;
 
   return (
@@ -20,7 +20,7 @@ const StatusChangeOnVotedInitiativeNotification = memo<Props>((props) => {
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage
-        {...messages.statusChangeOnVotedInitiative}
+        {...messages.statusChangeOnreactedInitiative}
         values={{
           status: (
             <T
@@ -33,4 +33,4 @@ const StatusChangeOnVotedInitiativeNotification = memo<Props>((props) => {
   );
 });
 
-export default StatusChangeOnVotedInitiativeNotification;
+export default StatusChangeOnreactedInitiativeNotification;

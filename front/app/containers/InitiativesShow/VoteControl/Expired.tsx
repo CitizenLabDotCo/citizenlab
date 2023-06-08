@@ -53,7 +53,7 @@ interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
-  userVoted: boolean;
+  userreacted: boolean;
 }
 interface DataProps {}
 
@@ -67,10 +67,10 @@ class Expired extends PureComponent<Props, State> {
       initiative,
       initiativeSettings: { voting_threshold },
       initiativeStatus,
-      userVoted,
+      userreacted,
     } = this.props;
 
-    const voteCount = initiative.attributes.upvotes_count;
+    const voteCount = initiative.attributes.likes_count;
     const voteLimit = voting_threshold;
 
     return (
@@ -112,7 +112,7 @@ class Expired extends PureComponent<Props, State> {
           />
         </VoteCounter>
         <StyledButton icon="halt" disabled>
-          {userVoted ? (
+          {userreacted ? (
             <FormattedMessage {...messages.cancelVote} />
           ) : (
             <FormattedMessage {...messages.vote} />

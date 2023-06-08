@@ -21,7 +21,7 @@ import { lighten } from 'polished';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // typings
-import { IdeaVotingDisabledReason } from 'api/ideas/types';
+import { IdeaReactingDisabledReason } from 'api/ideas/types';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
@@ -71,7 +71,7 @@ const IdeaShowPageTopBar = ({
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
 
-  const onDisabledVoteClick = (disabled_reason: IdeaVotingDisabledReason) => {
+  const onDisabledVoteClick = (disabled_reason: IdeaReactingDisabledReason) => {
     if (
       !isNilOrError(authUser) &&
       project &&
@@ -87,7 +87,7 @@ const IdeaShowPageTopBar = ({
       if (pcId && pcType) {
         triggerAuthenticationFlow({
           context: {
-            action: 'voting_idea',
+            action: 'reacting_idea',
             id: pcId,
             type: pcType,
           },

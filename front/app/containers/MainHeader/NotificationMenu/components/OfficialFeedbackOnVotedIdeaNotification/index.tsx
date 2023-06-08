@@ -5,7 +5,7 @@ import usePhases from 'api/phases/usePhases';
 import { isNilOrError } from 'utils/helperUtils';
 import { getInputTerm } from 'services/participationContexts';
 
-import { IOfficialFeedbackOnVotedIdeaNotificationData } from 'api/notifications/types';
+import { IOfficialFeedbackOnreactedIdeaNotificationData } from 'api/notifications/types';
 
 // i18n
 import messages from '../../messages';
@@ -17,10 +17,10 @@ import NotificationWrapper from '../NotificationWrapper';
 import T from 'components/T';
 
 interface Props {
-  notification: IOfficialFeedbackOnVotedIdeaNotificationData;
+  notification: IOfficialFeedbackOnreactedIdeaNotificationData;
 }
 
-const OfficialFeedbackOnVotedIdeaNotification = memo<Props>((props) => {
+const OfficialFeedbackOnreactedIdeaNotification = memo<Props>((props) => {
   const { notification } = props;
   const { data: idea } = useIdeaBySlug(notification.attributes.post_slug);
   const projectId = !isNilOrError(idea)
@@ -64,4 +64,4 @@ const OfficialFeedbackOnVotedIdeaNotification = memo<Props>((props) => {
   return null;
 });
 
-export default OfficialFeedbackOnVotedIdeaNotification;
+export default OfficialFeedbackOnreactedIdeaNotification;

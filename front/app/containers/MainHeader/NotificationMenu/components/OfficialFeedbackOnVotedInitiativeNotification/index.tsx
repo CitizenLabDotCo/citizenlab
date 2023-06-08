@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { IOfficialFeedbackOnVotedInitiativeNotificationData } from 'api/notifications/types';
+import { IOfficialFeedbackOnreactedInitiativeNotificationData } from 'api/notifications/types';
 
 // i18n
 import messages from '../../messages';
@@ -11,10 +11,10 @@ import NotificationWrapper from '../NotificationWrapper';
 import T from 'components/T';
 
 interface Props {
-  notification: IOfficialFeedbackOnVotedInitiativeNotificationData;
+  notification: IOfficialFeedbackOnreactedInitiativeNotificationData;
 }
 
-const OfficialFeedbackOnVotedInitiativeNotification = memo<Props>((props) => {
+const OfficialFeedbackOnreactedInitiativeNotification = memo<Props>((props) => {
   const { notification } = props;
 
   return (
@@ -25,7 +25,7 @@ const OfficialFeedbackOnVotedInitiativeNotification = memo<Props>((props) => {
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage
-        {...messages.officialFeedbackOnVotedInitiative}
+        {...messages.officialFeedbackOnreactedInitiative}
         values={{
           officialName: (
             <T value={notification.attributes.official_feedback_author} />
@@ -36,4 +36,4 @@ const OfficialFeedbackOnVotedInitiativeNotification = memo<Props>((props) => {
   );
 });
 
-export default OfficialFeedbackOnVotedInitiativeNotification;
+export default OfficialFeedbackOnreactedInitiativeNotification;

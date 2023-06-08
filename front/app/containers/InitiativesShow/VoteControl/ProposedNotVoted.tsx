@@ -141,7 +141,7 @@ interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
-  userVoted: boolean;
+  userreacted: boolean;
   onVote: () => void;
   disabledReason: IInitiativeDisabledReason;
 }
@@ -154,14 +154,14 @@ const disabledMessages: {
   notPermitted: messages.votingNotPermitted,
 };
 
-const ProposedNotVoted = ({
+const ProposedNotreacted = ({
   onVote,
   initiative,
   initiativeSettings: { voting_threshold, threshold_reached_message },
   disabledReason,
 }: Props) => {
   const theme = useTheme();
-  const voteCount = initiative.attributes.upvotes_count;
+  const voteCount = initiative.attributes.likes_count;
   const voteLimit = voting_threshold;
   const daysLeft = getPeriodRemainingUntil(initiative.attributes.expires_at);
 
@@ -229,7 +229,7 @@ const ProposedNotVoted = ({
       </StatusExplanation>
       <VoteCounter>
         <VoteText aria-hidden={true}>
-          <VoteTextLeft id="e2e-initiative-not-voted-vote-count">
+          <VoteTextLeft id="e2e-initiative-not-reacted-vote-count">
             <FormattedMessage
               {...messages.xVotes}
               values={{ count: voteCount }}
@@ -258,7 +258,7 @@ const ProposedNotVoted = ({
             disabled={!!tippyContent}
             buttonStyle="primary"
             onClick={onVote}
-            id="e2e-initiative-upvote-button"
+            id="e2e-initiative-like-button"
             ariaDisabled={false}
           >
             <FormattedMessage {...messages.vote} />
@@ -269,4 +269,4 @@ const ProposedNotVoted = ({
   );
 };
 
-export default ProposedNotVoted;
+export default ProposedNotreacted;

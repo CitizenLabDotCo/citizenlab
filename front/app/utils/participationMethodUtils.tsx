@@ -33,7 +33,7 @@ import { IIdea } from 'api/ideas/types';
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
   { text: <FormattedMessage {...messages.random} />, value: 'random' },
-  { text: <FormattedMessage {...messages.mostVoted} />, value: 'popular' },
+  { text: <FormattedMessage {...messages.mostreacted} />, value: 'popular' },
   { text: <FormattedMessage {...messages.newest} />, value: 'new' },
   { text: <FormattedMessage {...messages.oldest} />, value: '-new' },
 ];

@@ -511,7 +511,7 @@ const ProjectCard = memo<Props>(
         : project.data.attributes.participation_method;
       const canPost = !!postingPermission.enabled;
       const canVote =
-        project.data.attributes.action_descriptor.voting_idea.enabled;
+        project.data.attributes.action_descriptor.reacting_idea.enabled;
       const canComment =
         project.data.attributes.action_descriptor.commenting_idea.enabled;
 
