@@ -39,7 +39,6 @@ import { rgba } from 'polished';
 
 // Typings
 import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
 import usersKeys from 'api/users/keys';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -282,10 +281,10 @@ const UserTableActions = ({
 
         // if error because users already part of group(s)
         if (
-          isCLErrorJSON(error) &&
-          error.json.errors.user.filter((val) => val.error !== 'taken')
-            .length === 0 &&
-          !error.json.errors.group
+          error?.errors?.user &&
+          error.errors.user.filter((val) => val.error !== 'taken').length ===
+            0 &&
+          !error.errors.group
         ) {
           await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/groups`] });
           success();

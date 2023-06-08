@@ -339,7 +339,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             );
           }
         } catch (errors) {
-          setErrors(errors.json.errors);
+          setErrors(errors.errors);
           setSubmitState('apiError');
         }
       } else {
@@ -433,21 +433,21 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   },
                 },
                 {
-                  onError: async (result) => {
-                    if (isNilOrError(result)) {
-                      setSubmitState('apiError');
-                    }
+                  onError: async () => {
+                    setSubmitState('apiError');
+                  },
+                  onSuccess: async () => {
+                    setSubmitState('success');
                   },
                 }
               );
             }
             setProjectFolderFilesToRemove([]);
-            setSubmitState('success');
           } else {
             setSubmitState('apiError');
           }
         } catch (errors) {
-          setErrors(errors.json.errors);
+          setErrors(errors.errors);
           setSubmitState('apiError');
         }
       }
