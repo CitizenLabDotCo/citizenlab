@@ -14,6 +14,9 @@ class CreateInternalComments < ActiveRecord::Migration[6.1]
       t.integer :children_count, null: false, default: 0
 
       t.timestamps
+
+      t.index :created_at
+      t.index :post_id
     end
   end
 end
