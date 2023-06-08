@@ -754,7 +754,7 @@ ActiveRecord::Schema.define(version: 2023_06_08_120425) do
     t.uuid "parent_id"
     t.integer "lft", null: false
     t.integer "rgt", null: false
-    t.jsonb "body_multiloc", default: {}
+    t.text "body_text", null: false
     t.string "publication_status", default: "published", null: false
     t.datetime "body_updated_at"
     t.integer "children_count", default: 0, null: false

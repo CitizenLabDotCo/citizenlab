@@ -165,13 +165,13 @@ class WebApi::V1::InternalCommentsController < ApplicationController
   def comment_create_params
     params.require(:internal_comment).permit(
       :parent_id,
-      body_multiloc: CL2_SUPPORTED_LOCALES
+      :body_text
     )
   end
 
   def comment_update_params
     attrs = []
-    attrs = [{ body_multiloc: CL2_SUPPORTED_LOCALES }] if @comment.author_id == current_user&.id
+    attrs = [:body_text] if @comment.author_id == current_user&.id
     params.require(:internal_comment).permit(attrs)
   end
 

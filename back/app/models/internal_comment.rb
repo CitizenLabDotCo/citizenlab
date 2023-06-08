@@ -11,7 +11,7 @@
 #  parent_id          :uuid
 #  lft                :integer          not null
 #  rgt                :integer          not null
-#  body_multiloc      :jsonb
+#  body_text          :text             not null
 #  publication_status :string           default("published"), not null
 #  body_updated_at    :datetime
 #  children_count     :integer          default(0), not null
@@ -39,7 +39,7 @@ class InternalComment < ApplicationRecord
   belongs_to :post, polymorphic: true
 
   before_validation :set_publication_status, on: :create
-  before_validation :sanitize_body_multiloc
+  before_validation :sanitize_body_text
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
@@ -88,7 +88,7 @@ class InternalComment < ApplicationRecord
 
   PUBLICATION_STATUSES = %w[published deleted]
 
-  validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
+  validates :body_text, presence: true # html: true ?
   validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
 
   scope :published, -> { where publication_status: 'published' }
@@ -111,11 +111,11 @@ class InternalComment < ApplicationRecord
     self.publication_status ||= 'published'
   end
 
-  def sanitize_body_multiloc
+  def sanitize_body_text
     service = SanitizationService.new
-    self.body_multiloc = service.sanitize_multiloc body_multiloc, %i[mention]
-    self.body_multiloc = service.remove_multiloc_empty_trailing_tags body_multiloc
-    self.body_multiloc = service.linkify_multiloc body_multiloc
+    self.body_text = service.sanitize body_text, %i[mention]
+    self.body_text = service.remove_empty_trailing_tags body_text
+    self.body_text = service.linkify body_text
   end
 
   def remove_notifications
