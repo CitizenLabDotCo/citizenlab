@@ -31,24 +31,22 @@ import {
 } from 'components/admin/Section';
 
 // api
-import {
-  IUserCustomFieldData,
-  deleteUserCustomField,
-  updateCustomFieldForUsers,
-  reorderCustomFieldForUsers,
-  isBuiltInField,
-  isHiddenField,
-} from 'services/userCustomFields';
-import { API_PATH } from 'containers/App/constants';
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
 
 // cache
-import streams from 'utils/streams';
 
 // styling
 import { colors } from 'utils/styleUtils';
-import useUserCustomFields from 'hooks/useUserCustomFields';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
+import useDeleteUserCustomField from 'api/user_custom_fields/useDeleteUserCustomField';
+import useReorderUserCustomField from 'api/user_custom_fields/useReorderUserCustomField';
+import useUpdateUserCustomField, {
+  UpdateField,
+} from 'api/user_custom_fields/useUpdateUserCustomField';
+import { isBuiltInField, isHiddenField } from 'api/user_custom_fields/util';
+import userCustomFieldsKeys from 'api/user_custom_fields/keys';
 
 const Buttons = styled.div`
   display: flex;
@@ -85,6 +83,12 @@ export interface InputProps {}
 
 interface DataProps {
   userCustomFields: IUserCustomFieldData[] | null | undefined;
+  deleteUserCustomField: (customFieldId: string) => Promise<any>;
+  reorderCustomFieldForUsers: (params: {
+    customFieldId: string;
+    ordering: number;
+  }) => Promise<any>;
+  updateCustomFieldForUsers: (params: UpdateField) => Promise<any>;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -124,10 +128,10 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
 
       if (window.confirm(deleteMessage)) {
         this.setState({ itemsWhileDragging: null, isProcessing: true });
-        deleteUserCustomField(customFieldId).then(() => {
+        this.props.deleteUserCustomField(customFieldId).then(() => {
           this.setState({ isProcessing: false });
-          streams.fetchAllWith({
-            partialApiEndpoint: [`${API_PATH}/users/custom_fields`],
+          queryClient.invalidateQueries({
+            queryKey: userCustomFieldsKeys.lists(),
           });
           queryClient.invalidateQueries({
             queryKey: permissionsCustomFieldsKeys.all(),
@@ -140,25 +144,28 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
   handleOnEnabledToggle = (field: IUserCustomFieldData) => () => {
     if (!this.state.isProcessing) {
       this.setState({ isProcessing: true });
-      updateCustomFieldForUsers(field.id, {
-        enabled: !field.attributes.enabled,
-      }).then(() => {
-        const listItems = this.listItems();
+      this.props
+        .updateCustomFieldForUsers({
+          customFieldId: field.id,
+          enabled: !field.attributes.enabled,
+        })
+        .then(() => {
+          const listItems = this.listItems();
 
-        if (!listItems) return;
-        const newListItems = clone(listItems);
-        newListItems.splice(field.attributes.ordering, 1, {
-          ...field,
-          attributes: {
-            ...field.attributes,
-            enabled: !field.attributes.enabled,
-          },
+          if (!listItems) return;
+          const newListItems = clone(listItems);
+          newListItems.splice(field.attributes.ordering, 1, {
+            ...field,
+            attributes: {
+              ...field.attributes,
+              enabled: !field.attributes.enabled,
+            },
+          });
+          this.setState({
+            itemsWhileDragging: newListItems,
+            isProcessing: false,
+          });
         });
-        this.setState({
-          itemsWhileDragging: newListItems,
-          isProcessing: false,
-        });
-      });
     }
   };
 
@@ -184,9 +191,12 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
 
     if (field && field.attributes.ordering !== toIndex) {
       this.setState({ isProcessing: true });
-      reorderCustomFieldForUsers(fieldId, { ordering: toIndex }).then(() =>
-        this.setState({ isProcessing: false })
-      );
+      this.props
+        .reorderCustomFieldForUsers({
+          customFieldId: fieldId,
+          ordering: toIndex,
+        })
+        .then(() => this.setState({ isProcessing: false }));
     } else {
       this.setState({ itemsWhileDragging: null });
     }
@@ -325,13 +335,20 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
 const CustomFieldsListWithHoCs = injectIntl(CustomFields);
 
 export default (inputProps: InputProps) => {
-  const userCustomFields = useUserCustomFields();
+  const { data: userCustomFields } = useUserCustomFields();
+  const { mutateAsync: deleteUserCustomField } = useDeleteUserCustomField();
+  const { mutateAsync: reorderCustomFieldForUsers } =
+    useReorderUserCustomField();
+  const { mutateAsync: updateCustomFieldForUsers } = useUpdateUserCustomField();
 
   return (
     <DndProvider backend={HTML5Backend}>
       <CustomFieldsListWithHoCs
         {...inputProps}
-        userCustomFields={userCustomFields}
+        userCustomFields={userCustomFields?.data}
+        deleteUserCustomField={deleteUserCustomField}
+        reorderCustomFieldForUsers={reorderCustomFieldForUsers}
+        updateCustomFieldForUsers={updateCustomFieldForUsers}
       />
     </DndProvider>
   );

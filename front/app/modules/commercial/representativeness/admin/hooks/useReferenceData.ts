@@ -14,7 +14,7 @@ import {
 } from './createRefDataSubscription';
 
 // typings
-import { IUserCustomFieldData } from 'services/userCustomFields';
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 
 function useReferenceData(
   userCustomField: IUserCustomFieldData,

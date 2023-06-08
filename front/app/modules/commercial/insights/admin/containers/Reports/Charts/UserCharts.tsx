@@ -6,10 +6,9 @@ import { isEqual } from 'lodash-es';
 import CustomFieldGraph from './CustomFieldGraph';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useUserCustomFields from 'hooks/useUserCustomFields';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
@@ -17,7 +16,7 @@ import { IProjectData } from 'api/projects/types';
 import {
   IUserCustomFieldData,
   IUserCustomFieldInputType,
-} from 'services/userCustomFields';
+} from 'api/user_custom_fields/types';
 
 interface Props {
   startAt: string;
@@ -39,20 +38,17 @@ const UserCharts = ({
   endAt,
   project,
 }: Props) => {
-  const userCustomFields = useUserCustomFields({
+  const { data: userCustomFields } = useUserCustomFields({
     inputTypes: INPUT_TYPES,
   });
 
-  if (
-    isEqual(participationMethods, ['information']) ||
-    isNilOrError(userCustomFields)
-  ) {
+  if (isEqual(participationMethods, ['information']) || !userCustomFields) {
     return null;
   }
 
   return (
     <>
-      {userCustomFields.filter(allowedField).map((customField) => (
+      {userCustomFields.data.filter(allowedField).map((customField) => (
         <CustomFieldGraph
           startAt={startAt}
           endAt={endAt}

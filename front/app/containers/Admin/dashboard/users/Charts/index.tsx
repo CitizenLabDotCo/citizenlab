@@ -8,7 +8,7 @@ import {
 } from 'services/userCustomFieldStats';
 
 // hooks
-import useUserCustomFields from 'hooks/useUserCustomFields';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -31,7 +31,7 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import {
   IUserCustomFieldInputType,
   IUserCustomFieldData,
-} from 'services/userCustomFields';
+} from 'api/user_custom_fields/types';
 
 interface InputProps {
   currentGroupFilter: string | undefined;
@@ -202,14 +202,14 @@ const INPUT_TYPES: IUserCustomFieldInputType[] = [
 ];
 
 export default (inputProps: InputProps) => {
-  const userCustomFields = useUserCustomFields({
+  const { data: userCustomFields } = useUserCustomFields({
     inputTypes: INPUT_TYPES,
   });
 
   return (
     <RegistrationFieldsToGraphsWithHoCs
       {...inputProps}
-      customFields={userCustomFields}
+      customFields={userCustomFields?.data}
     />
   );
 };

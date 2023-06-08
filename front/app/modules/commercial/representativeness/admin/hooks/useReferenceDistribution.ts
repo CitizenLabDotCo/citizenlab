@@ -8,14 +8,11 @@ import {
   IBinnedDistribution,
   TCategoricalDistribution,
 } from '../services/referenceDistribution';
-import {
-  userCustomFieldStream,
-  IUserCustomField,
-} from 'services/userCustomFields';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { forEachBin } from '../utils/bins';
+import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 
 /*
  * This is an intermediate data structure that is able to represent
@@ -26,34 +23,16 @@ import { forEachBin } from '../utils/bins';
 export type RemoteFormValues = Record<string, number>;
 
 function useReferenceDistribution(userCustomFieldId: string) {
+  const { data: userCustomField } = useUserCustomField(userCustomFieldId);
   const [referenceDistribution, setReferenceDistribution] = useState<
     TReferenceDistributionData | NilOrError
   >();
-  const [referenceDataUploaded, setReferenceDataUploaded] = useState<
-    boolean | undefined
-  >();
+
+  const referenceDataUploaded =
+    !!userCustomField?.data.relationships?.current_ref_distribution.data;
   const [remoteFormValues, setRemoteFormValues] = useState<
     RemoteFormValues | undefined
   >();
-
-  useEffect(() => {
-    const observable = userCustomFieldStream(userCustomFieldId).observable;
-
-    const subscription = observable.subscribe(
-      (userCustomField: IUserCustomField | NilOrError) => {
-        if (isNilOrError(userCustomField)) {
-          setReferenceDataUploaded(false);
-          return;
-        }
-
-        setReferenceDataUploaded(
-          !!userCustomField.data.relationships?.current_ref_distribution.data
-        );
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, [userCustomFieldId]);
 
   useEffect(() => {
     if (!referenceDataUploaded) {

@@ -5,7 +5,7 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 
 // services
-import { IUserCustomFieldData } from 'services/userCustomFields';
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 
 // intl
 import { SelectionScreen } from './screens/SelectionScreen';

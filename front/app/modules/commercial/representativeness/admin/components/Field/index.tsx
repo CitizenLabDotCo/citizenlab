@@ -15,7 +15,7 @@ import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCus
 import useReferenceDistribution, {
   RemoteFormValues,
 } from '../../hooks/useReferenceDistribution';
-import useUserCustomField from 'hooks/useUserCustomField';
+import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 
 // components
 import { Accordion, ListItem } from '@citizenlab/cl2-component-library';
@@ -74,7 +74,7 @@ const Field = ({
     )
   );
 
-  const userCustomField = useUserCustomField(userCustomFieldId);
+  const { data: userCustomField } = useUserCustomField(userCustomFieldId);
 
   useEffect(() => {
     if (isBinnedDistribution && !bins) {
@@ -99,14 +99,14 @@ const Field = ({
     remoteFormValues,
   ]);
 
-  if (formValues === null || isNilOrError(userCustomField)) {
+  if (formValues === null || !userCustomField) {
     return null;
   }
 
-  const isComingSoon = !isSupported(userCustomField);
-  const isDefault = userCustomField.attributes.code !== null;
-  const isBirthyear = userCustomField.attributes.key === 'birthyear';
-  const titleMultiloc = userCustomField.attributes.title_multiloc;
+  const isComingSoon = !isSupported(userCustomField.data);
+  const isDefault = userCustomField.data.attributes.code !== null;
+  const isBirthyear = userCustomField.data.attributes.key === 'birthyear';
+  const titleMultiloc = userCustomField.data.attributes.title_multiloc;
 
   const binsSet = isBirthyear ? !!bins : undefined;
 
@@ -154,15 +154,15 @@ const Field = ({
     setSubmitting(true);
 
     if (submitAction === 'create') {
-      await createReferenceDistribution(userCustomField, newDistribution);
+      await createReferenceDistribution(userCustomField.data, newDistribution);
     }
 
     if (submitAction === 'replace') {
-      await replaceReferenceDistribution(userCustomField, newDistribution);
+      await replaceReferenceDistribution(userCustomField.data, newDistribution);
     }
 
     if (submitAction === 'delete') {
-      await deleteReferenceDistribution(userCustomField);
+      await deleteReferenceDistribution(userCustomField.data);
     }
 
     setSubmitting(false);

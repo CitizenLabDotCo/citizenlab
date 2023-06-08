@@ -1,38 +1,39 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'react-router-dom';
 
-import {
-  updateCustomFieldForUsers,
-  isBuiltInField,
-} from 'services/userCustomFields';
-import useUserCustomField from 'hooks/useUserCustomField';
+import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 
 import RegistrationCustomFieldForm, {
   FormValues,
 } from '../RegistrationCustomFieldForm';
+import useUpdateUserCustomField from 'api/user_custom_fields/useUpdateUserCustomField';
+import { isBuiltInField } from 'api/user_custom_fields/util';
 
 const RegistrationCustomFieldSettings = () => {
   const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
-  const customField = useUserCustomField(userCustomFieldId);
+  const { data: customField } = useUserCustomField(userCustomFieldId);
+  const { mutate: updateCustomFieldForUsers } = useUpdateUserCustomField();
 
-  if (isNilOrError(customField)) return null;
+  if (!customField) return null;
 
   const initialValues = () => {
     return (
       customField && {
-        input_type: customField.attributes.input_type,
-        title_multiloc: customField.attributes.title_multiloc,
-        description_multiloc: customField.attributes.description_multiloc,
-        required: customField.attributes.required,
-        enabled: customField.attributes.enabled,
+        input_type: customField.data.attributes.input_type,
+        title_multiloc: customField.data.attributes.title_multiloc,
+        description_multiloc: customField.data.attributes.description_multiloc,
+        required: customField.data.attributes.required,
+        enabled: customField.data.attributes.enabled,
       }
     );
   };
 
-  const handleSubmit = async (values: FormValues) => {
+  const handleSubmit = (values: FormValues) => {
     if (!customField) return;
-    await updateCustomFieldForUsers(customField.id, values);
+    updateCustomFieldForUsers({
+      customFieldId: customField.data.id,
+      ...values,
+    });
   };
 
   return (
@@ -40,8 +41,8 @@ const RegistrationCustomFieldSettings = () => {
       defaultValues={initialValues()}
       onSubmit={handleSubmit}
       mode="edit"
-      customFieldId={customField.id}
-      builtInField={isBuiltInField(customField)}
+      customFieldId={customField.data.id}
+      builtInField={isBuiltInField(customField.data)}
     />
   );
 };

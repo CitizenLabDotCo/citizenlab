@@ -35,7 +35,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import {
   IUserCustomFieldData,
   TCustomFieldCode,
-} from 'services/userCustomFields';
+} from 'api/user_custom_fields/types';
 import {
   RepresentativenessRow,
   RepresentativenessRowMultiloc,

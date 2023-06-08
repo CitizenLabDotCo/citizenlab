@@ -10,7 +10,7 @@ import {
 import { fallbackMessages } from 'containers/Admin/dashboard/users/Charts/AreaChart';
 
 // typings
-import { TCustomFieldCode } from 'services/userCustomFields';
+import { TCustomFieldCode } from 'api/user_custom_fields/types';
 import {
   IUsersByRegistrationField,
   IUsersByDomicile,

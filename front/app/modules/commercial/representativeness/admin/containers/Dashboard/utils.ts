@@ -1,5 +1,5 @@
 // typings
-import { IUserCustomFieldData } from 'services/userCustomFields';
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 
 export const isShown = ({
   attributes: { input_type, code, enabled },
