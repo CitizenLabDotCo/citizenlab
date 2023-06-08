@@ -263,8 +263,8 @@ namespace :setup_and_support do
     end
   end
 
-  desc 'Delete users and votes'
-  task :delete_users_votes, %i[host url] => [:environment] do |_t, args|
+  desc 'Delete users and reactions'
+  task :delete_users_reactions, %i[host url] => [:environment] do |_t, args|
     emails = open(args[:url]).readlines.map(&:strip)
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       users = User.where email: emails
@@ -273,19 +273,19 @@ namespace :setup_and_support do
     end
   end
 
-  desc 'Add anonymous up/downvotes to ideas'
-  task :add_idea_votes, %i[host url] => [:environment] do |_t, args|
+  desc 'Add anonymous likes/dislikes to ideas'
+  task :add_idea_reactions, %i[host url] => [:environment] do |_t, args|
     data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       errors = []
       data.each do |d|
         idea = Idea.find_by slug: d['slug'].strip
         if idea
-          d['add_upvotes'].to_i.times do
-            add_anonymous_vote idea, 'up'
+          d['add_likes'].to_i.times do
+            add_anonymous_reaction idea, 'up'
           end
-          d['add_downvotes'].to_i.times do
-            add_anonymous_vote idea, 'down'
+          d['add_dislikes'].to_i.times do
+            add_anonymous_reaction idea, 'down'
           end
         else
           errors += ["Couldn't find idea #{d['slug']}"]
@@ -380,11 +380,11 @@ namespace :setup_and_support do
     end
   end
 
-  def add_anonymous_vote(votable, mode)
+  def add_anonymous_reaction(reactable, mode)
     attrs = AnonymizeUserService.new.anonymized_attributes AppConfiguration.instance.settings('core', 'locales')
     attrs.delete 'custom_field_values'
     user = User.create! attrs
-    Reaction.create!(votable: votable, mode: mode, user: user)
+    Reaction.create!(reactable: reactable, mode: mode, user: user)
     user.destroy!
   end
 end
