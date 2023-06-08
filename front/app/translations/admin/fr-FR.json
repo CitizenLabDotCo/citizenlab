@@ -643,7 +643,7 @@
   "app.containers.Admin.Users.userDeletionConfirmation": "Supprimer définitivement cet utilisateur ?",
   "app.containers.Admin.Users.userDeletionFailed": "Une erreur s'est produite lors de la suppression de cet utilisateur, veuillez réesssayer.",
   "app.containers.Admin.Users.userExportFileName": "utilisateur_export",
-  "app.containers.Admin.Users.userInsights": "Connaissances des utilisateurs",
+  "app.containers.Admin.Users.userInsights": "Statistiques utilisateurs",
   "app.containers.Admin.Users.youCantDeleteYourself": "Vous ne pouvez pas supprimer votre propre compte via le panneau administrateur",
   "app.containers.Admin.Users.youCantUnadminYourself": "Vous ne pouvez pas supprimer votre rôle d'administrateur vous-même",
   "app.containers.Admin.emails.addCampaignButton": "Créer un nouvel email",
