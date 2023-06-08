@@ -9,10 +9,6 @@ class WebApi::V1::InternalCommentSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  attribute :is_admin_comment do |object|
-    object.author&.admin?
-  end
-
   belongs_to :post, polymorphic: true
   belongs_to :parent, record_type: :internal_comment, serializer: WebApi::V1::InternalCommentSerializer
 
