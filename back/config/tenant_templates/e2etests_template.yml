@@ -4702,2448 +4702,2448 @@ models:
     remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/brainstorming_graphic.png
   - project_ref: *project1
     remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/brainstorming_graphic.png
-  votes:
+  reactions:
   - mode: down
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-21 00:00:00'
     updated_at: '2018-03-28 13:35:09'
-    votable_ref: *198
+    reactable_ref: *198
   - mode: up
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-27 00:00:00'
     updated_at: '2018-03-28 13:35:09'
-    votable_ref: *198
+    reactable_ref: *198
   - mode: down
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-14 00:00:00'
     updated_at: '2018-03-28 13:35:09'
-    votable_ref: *198
+    reactable_ref: *198
   - mode: down
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-12 00:00:00'
     updated_at: '2018-03-28 13:35:09'
-    votable_ref: *198
+    reactable_ref: *198
   - mode: up
     user_ref: *143
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-13 00:00:00'
     updated_at: '2018-03-28 13:35:09'
-    votable_ref: *198
+    reactable_ref: *198
   - mode: up
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-12 00:00:00'
     updated_at: '2018-03-28 13:35:09'
-    votable_ref: *198
+    reactable_ref: *198
   - mode: down
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-08 00:00:00'
     updated_at: '2018-03-28 13:35:09'
-    votable_ref: *198
+    reactable_ref: *198
   - mode: up
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-27 00:00:00'
     updated_at: '2018-03-28 13:35:09'
-    votable_ref: *198
+    reactable_ref: *198
   - mode: up
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-11-28 00:00:00'
     updated_at: '2018-03-28 13:35:09'
-    votable_ref: *198
+    reactable_ref: *198
   - mode: down
     user_ref: *114
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-09 00:00:00'
     updated_at: '2018-03-28 13:35:09'
-    votable_ref: *198
+    reactable_ref: *198
   - mode: down
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-11-24 00:00:00'
     updated_at: '2018-03-28 13:35:09'
-    votable_ref: *198
+    reactable_ref: *198
   - mode: down
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-18 00:00:00'
     updated_at: '2018-03-28 13:35:09'
-    votable_ref: *198
+    reactable_ref: *198
   - mode: up
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-16 00:00:00'
     updated_at: '2018-03-28 13:35:09'
-    votable_ref: *198
+    reactable_ref: *198
   - mode: up
     user_ref: *charlie
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-    votable_ref: *206
+    reactable_ref: *206
   - mode: up
     user_ref: *mortal3
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-15 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-    votable_ref: *206
+    reactable_ref: *206
   - mode: up
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-    votable_ref: *206
+    reactable_ref: *206
   - mode: down
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-10 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-    votable_ref: *206
+    reactable_ref: *206
   - mode: up
     user_ref: *143
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-04 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-    votable_ref: *206
+    reactable_ref: *206
   - mode: up
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-06 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-    votable_ref: *206
+    reactable_ref: *206
   - mode: down
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-03 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-    votable_ref: *206
+    reactable_ref: *206
   - mode: down
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-14 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-    votable_ref: *206
+    reactable_ref: *206
   - mode: down
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-16 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-    votable_ref: *206
+    reactable_ref: *206
   - mode: down
     user_ref: *128
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-10 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-    votable_ref: *206
+    reactable_ref: *206
   - mode: up
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-20 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-    votable_ref: *206
+    reactable_ref: *206
   - mode: up
     user_ref: *114
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-27 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-    votable_ref: *206
+    reactable_ref: *206
   - mode: down
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-    votable_ref: *206
+    reactable_ref: *206
   - mode: up
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-    votable_ref: *206
+    reactable_ref: *206
   - mode: down
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-    votable_ref: *206
+    reactable_ref: *206
   - mode: up
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-19 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *234
+    reactable_ref: *234
   - mode: down
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-08 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *234
+    reactable_ref: *234
   - mode: down
     user_ref: *mortal3
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-27 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *234
+    reactable_ref: *234
   - mode: up
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-16 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *234
+    reactable_ref: *234
   - mode: up
     user_ref: *143
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *234
+    reactable_ref: *234
   - mode: up
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-28 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *234
+    reactable_ref: *234
   - mode: down
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-08 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *234
+    reactable_ref: *234
   - mode: up
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-19 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *234
+    reactable_ref: *234
   - mode: up
     user_ref: *128
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-04 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *234
+    reactable_ref: *234
   - mode: up
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-15 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *234
+    reactable_ref: *234
   - mode: up
     user_ref: *114
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-16 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *234
+    reactable_ref: *234
   - mode: down
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-28 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *234
+    reactable_ref: *234
   - mode: up
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-12 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *234
+    reactable_ref: *234
   - mode: up
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-27 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *234
+    reactable_ref: *234
   - mode: up
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-03 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *234
+    reactable_ref: *234
   - mode: down
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-08 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *609
+    reactable_ref: *609
   - mode: up
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-03 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *609
+    reactable_ref: *609
   - mode: down
     user_ref: *mortal3
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-16 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *609
+    reactable_ref: *609
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-20 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *609
+    reactable_ref: *609
   - mode: up
     user_ref: *102
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-19 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *609
+    reactable_ref: *609
   - mode: up
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-13 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *609
+    reactable_ref: *609
   - mode: up
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-18 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *609
+    reactable_ref: *609
   - mode: down
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-02 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *609
+    reactable_ref: *609
   - mode: down
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-25 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *609
+    reactable_ref: *609
   - mode: up
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-24 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *609
+    reactable_ref: *609
   - mode: up
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-10 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *609
+    reactable_ref: *609
   - mode: up
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-19 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *239
+    reactable_ref: *239
   - mode: down
     user_ref: *mortal3
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-02 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *239
+    reactable_ref: *239
   - mode: up
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-15 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *239
+    reactable_ref: *239
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-14 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *239
+    reactable_ref: *239
   - mode: down
     user_ref: *102
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-20 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *239
+    reactable_ref: *239
   - mode: up
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-24 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *239
+    reactable_ref: *239
   - mode: up
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-09 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *239
+    reactable_ref: *239
   - mode: up
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-19 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *239
+    reactable_ref: *239
   - mode: up
     user_ref: *128
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-24 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *239
+    reactable_ref: *239
   - mode: up
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *239
+    reactable_ref: *239
   - mode: down
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-09 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *239
+    reactable_ref: *239
   - mode: up
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-08 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *239
+    reactable_ref: *239
   - mode: down
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-27 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *239
+    reactable_ref: *239
   - mode: down
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-24 00:00:00'
     updated_at: '2018-03-28 13:35:11'
-    votable_ref: *239
+    reactable_ref: *239
   - mode: down
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *254
+    reactable_ref: *254
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *254
+    reactable_ref: *254
   - mode: up
     user_ref: *143
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *254
+    reactable_ref: *254
   - mode: down
     user_ref: *102
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *254
+    reactable_ref: *254
   - mode: down
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-27 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *254
+    reactable_ref: *254
   - mode: up
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-27 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *254
+    reactable_ref: *254
   - mode: up
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *254
+    reactable_ref: *254
   - mode: down
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *254
+    reactable_ref: *254
   - mode: up
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *254
+    reactable_ref: *254
   - mode: up
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *254
+    reactable_ref: *254
   - mode: up
     user_ref: *114
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *254
+    reactable_ref: *254
   - mode: up
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *254
+    reactable_ref: *254
   - mode: down
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-27 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *254
+    reactable_ref: *254
   - mode: up
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *254
+    reactable_ref: *254
   - mode: down
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-08 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *262
+    reactable_ref: *262
   - mode: up
     user_ref: *charlie
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-04 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *262
+    reactable_ref: *262
   - mode: up
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-06 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *262
+    reactable_ref: *262
   - mode: up
     user_ref: *102
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-04 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *262
+    reactable_ref: *262
   - mode: up
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-16 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *262
+    reactable_ref: *262
   - mode: up
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-08 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *262
+    reactable_ref: *262
   - mode: up
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-11 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *262
+    reactable_ref: *262
   - mode: up
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *262
+    reactable_ref: *262
   - mode: down
     user_ref: *114
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-07 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *262
+    reactable_ref: *262
   - mode: up
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *262
+    reactable_ref: *262
   - mode: down
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-05 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *262
+    reactable_ref: *262
   - mode: down
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *262
+    reactable_ref: *262
   - mode: up
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:12'
-    votable_ref: *262
+    reactable_ref: *262
   - mode: up
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-03 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *277
+    reactable_ref: *277
   - mode: up
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-30 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *277
+    reactable_ref: *277
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-06 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *277
+    reactable_ref: *277
   - mode: up
     user_ref: *143
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-17 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *277
+    reactable_ref: *277
   - mode: down
     user_ref: *102
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-02 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *277
+    reactable_ref: *277
   - mode: up
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-26 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *277
+    reactable_ref: *277
   - mode: up
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-16 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *277
+    reactable_ref: *277
   - mode: down
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-11-16 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *277
+    reactable_ref: *277
   - mode: down
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-11-23 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *277
+    reactable_ref: *277
   - mode: up
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-25 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *277
+    reactable_ref: *277
   - mode: up
     user_ref: *114
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *277
+    reactable_ref: *277
   - mode: up
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-08 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *277
+    reactable_ref: *277
   - mode: up
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-03 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *277
+    reactable_ref: *277
   - mode: down
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-10-12 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *290
+    reactable_ref: *290
   - mode: up
     user_ref: *charlie
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-08-25 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *290
+    reactable_ref: *290
   - mode: up
     user_ref: *mortal3
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-11-18 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *290
+    reactable_ref: *290
   - mode: down
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-09-11 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *290
+    reactable_ref: *290
   - mode: up
     user_ref: *143
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-19 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *290
+    reactable_ref: *290
   - mode: up
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-08-22 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *290
+    reactable_ref: *290
   - mode: up
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-07-11 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *290
+    reactable_ref: *290
   - mode: up
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-10-19 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *290
+    reactable_ref: *290
   - mode: down
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-27 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *290
+    reactable_ref: *290
   - mode: down
     user_ref: *128
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-07-05 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *290
+    reactable_ref: *290
   - mode: up
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-12 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *290
+    reactable_ref: *290
   - mode: down
     user_ref: *114
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-01 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *290
+    reactable_ref: *290
   - mode: up
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-06-29 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *290
+    reactable_ref: *290
   - mode: up
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-17 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *290
+    reactable_ref: *290
   - mode: down
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-02 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *290
+    reactable_ref: *290
   - mode: up
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-08 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *290
+    reactable_ref: *290
   - mode: up
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-19 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *297
+    reactable_ref: *297
   - mode: up
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-23 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *297
+    reactable_ref: *297
   - mode: down
     user_ref: *mortal3
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *297
+    reactable_ref: *297
   - mode: up
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-20 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *297
+    reactable_ref: *297
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-20 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *297
+    reactable_ref: *297
   - mode: up
     user_ref: *143
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-18 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *297
+    reactable_ref: *297
   - mode: up
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-16 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *297
+    reactable_ref: *297
   - mode: up
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-15 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *297
+    reactable_ref: *297
   - mode: down
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-16 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *297
+    reactable_ref: *297
   - mode: up
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-15 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *297
+    reactable_ref: *297
   - mode: up
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-17 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *297
+    reactable_ref: *297
   - mode: down
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-14 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *297
+    reactable_ref: *297
   - mode: up
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-17 00:00:00'
     updated_at: '2018-03-28 13:35:13'
-    votable_ref: *297
+    reactable_ref: *297
   - mode: down
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-15 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *303
+    reactable_ref: *303
   - mode: down
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *303
+    reactable_ref: *303
   - mode: up
     user_ref: *charlie
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-24 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *303
+    reactable_ref: *303
   - mode: up
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-22 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *303
+    reactable_ref: *303
   - mode: up
     user_ref: *143
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-17 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *303
+    reactable_ref: *303
   - mode: down
     user_ref: *102
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-23 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *303
+    reactable_ref: *303
   - mode: down
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-15 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *303
+    reactable_ref: *303
   - mode: up
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-24 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *303
+    reactable_ref: *303
   - mode: up
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-16 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *303
+    reactable_ref: *303
   - mode: up
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-22 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *303
+    reactable_ref: *303
   - mode: up
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-23 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *303
+    reactable_ref: *303
   - mode: down
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *303
+    reactable_ref: *303
   - mode: up
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-19 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *303
+    reactable_ref: *303
   - mode: up
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-08 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *313
+    reactable_ref: *313
   - mode: down
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-17 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *313
+    reactable_ref: *313
   - mode: up
     user_ref: *mortal3
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-03 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *313
+    reactable_ref: *313
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-07 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *313
+    reactable_ref: *313
   - mode: up
     user_ref: *102
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-21 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *313
+    reactable_ref: *313
   - mode: up
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-19 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *313
+    reactable_ref: *313
   - mode: up
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-16 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *313
+    reactable_ref: *313
   - mode: down
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-09 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *313
+    reactable_ref: *313
   - mode: up
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-16 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *313
+    reactable_ref: *313
   - mode: up
     user_ref: *128
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-24 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *313
+    reactable_ref: *313
   - mode: up
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-09 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *313
+    reactable_ref: *313
   - mode: down
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-19 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *313
+    reactable_ref: *313
   - mode: down
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-10 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *313
+    reactable_ref: *313
   - mode: up
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-16 00:00:00'
     updated_at: '2018-03-28 13:35:14'
-    votable_ref: *313
+    reactable_ref: *313
   - mode: up
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *313
+    reactable_ref: *313
   - mode: up
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-15 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *854
+    reactable_ref: *854
   - mode: up
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-28 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *854
+    reactable_ref: *854
   - mode: up
     user_ref: *charlie
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-10 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *854
+    reactable_ref: *854
   - mode: up
     user_ref: *mortal3
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-17 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *854
+    reactable_ref: *854
   - mode: up
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-17 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *854
+    reactable_ref: *854
   - mode: down
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-10 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *854
+    reactable_ref: *854
   - mode: up
     user_ref: *102
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-23 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *854
+    reactable_ref: *854
   - mode: down
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-27 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *854
+    reactable_ref: *854
   - mode: up
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *854
+    reactable_ref: *854
   - mode: up
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-12 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *854
+    reactable_ref: *854
   - mode: up
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-16 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *854
+    reactable_ref: *854
   - mode: up
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-23 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *854
+    reactable_ref: *854
   - mode: down
     user_ref: *charlie
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-15 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *328
+    reactable_ref: *328
   - mode: down
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-13 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *328
+    reactable_ref: *328
   - mode: down
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *328
+    reactable_ref: *328
   - mode: down
     user_ref: *102
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-11 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *328
+    reactable_ref: *328
   - mode: up
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-16 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *328
+    reactable_ref: *328
   - mode: up
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-09 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *328
+    reactable_ref: *328
   - mode: up
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *328
+    reactable_ref: *328
   - mode: up
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-16 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *328
+    reactable_ref: *328
   - mode: down
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-16 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *328
+    reactable_ref: *328
   - mode: up
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-06 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *328
+    reactable_ref: *328
   - mode: down
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-08 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *328
+    reactable_ref: *328
   - mode: up
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-04 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *328
+    reactable_ref: *328
   - mode: down
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-14 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *328
+    reactable_ref: *328
   - mode: down
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-12 00:00:00'
     updated_at: '2018-03-28 13:35:15'
-    votable_ref: *328
+    reactable_ref: *328
   - mode: up
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-15 00:00:00'
     updated_at: '2018-03-28 13:35:16'
-    votable_ref: *354
+    reactable_ref: *354
   - mode: up
     user_ref: *charlie
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-11-30 00:00:00'
     updated_at: '2018-03-28 13:35:16'
-    votable_ref: *354
+    reactable_ref: *354
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-15 00:00:00'
     updated_at: '2018-03-28 13:35:16'
-    votable_ref: *354
+    reactable_ref: *354
   - mode: up
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-30 00:00:00'
     updated_at: '2018-03-28 13:35:16'
-    votable_ref: *354
+    reactable_ref: *354
   - mode: up
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-07 00:00:00'
     updated_at: '2018-03-28 13:35:16'
-    votable_ref: *354
+    reactable_ref: *354
   - mode: down
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-19 00:00:00'
     updated_at: '2018-03-28 13:35:16'
-    votable_ref: *354
+    reactable_ref: *354
   - mode: down
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:16'
-    votable_ref: *354
+    reactable_ref: *354
   - mode: up
     user_ref: *128
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-11 00:00:00'
     updated_at: '2018-03-28 13:35:16'
-    votable_ref: *354
+    reactable_ref: *354
   - mode: down
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-08 00:00:00'
     updated_at: '2018-03-28 13:35:16'
-    votable_ref: *354
+    reactable_ref: *354
   - mode: down
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-15 00:00:00'
     updated_at: '2018-03-28 13:35:16'
-    votable_ref: *354
+    reactable_ref: *354
   - mode: up
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-18 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: down
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: up
     user_ref: *charlie
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-20 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: down
     user_ref: *mortal3
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-19 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-18 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: up
     user_ref: *143
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: up
     user_ref: *102
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-18 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: down
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-23 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: down
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-27 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: up
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-23 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: up
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-17 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: up
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-19 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: up
     user_ref: *128
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-17 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: up
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: up
     user_ref: *114
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: down
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-19 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: up
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: up
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-18 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: up
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-20 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *362
+    reactable_ref: *362
   - mode: up
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *375
+    reactable_ref: *375
   - mode: up
     user_ref: *charlie
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *375
+    reactable_ref: *375
   - mode: down
     user_ref: *mortal3
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-06 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *375
+    reactable_ref: *375
   - mode: up
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-24 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *375
+    reactable_ref: *375
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-12 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-    votable_ref: *375
+    reactable_ref: *375
   - mode: up
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-18 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *375
+    reactable_ref: *375
   - mode: up
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-09 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *375
+    reactable_ref: *375
   - mode: up
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-23 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *375
+    reactable_ref: *375
   - mode: up
     user_ref: *128
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-18 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *375
+    reactable_ref: *375
   - mode: up
     user_ref: *114
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-17 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *375
+    reactable_ref: *375
   - mode: up
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-28 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *375
+    reactable_ref: *375
   - mode: down
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-21 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *375
+    reactable_ref: *375
   - mode: down
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-26 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *375
+    reactable_ref: *375
   - mode: up
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *388
+    reactable_ref: *388
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-21 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *388
+    reactable_ref: *388
   - mode: up
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *388
+    reactable_ref: *388
   - mode: down
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-03 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *388
+    reactable_ref: *388
   - mode: down
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-26 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *388
+    reactable_ref: *388
   - mode: down
     user_ref: *128
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-24 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *388
+    reactable_ref: *388
   - mode: up
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-19 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *388
+    reactable_ref: *388
   - mode: down
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-25 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *388
+    reactable_ref: *388
   - mode: down
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-20 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *388
+    reactable_ref: *388
   - mode: up
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-11 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-    votable_ref: *388
+    reactable_ref: *388
   - mode: up
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-18 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *394
+    reactable_ref: *394
   - mode: down
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-23 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *394
+    reactable_ref: *394
   - mode: up
     user_ref: *charlie
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-11-12 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *394
+    reactable_ref: *394
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-10-18 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *394
+    reactable_ref: *394
   - mode: up
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-10-23 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *394
+    reactable_ref: *394
   - mode: up
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-04 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *394
+    reactable_ref: *394
   - mode: up
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-10-29 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *394
+    reactable_ref: *394
   - mode: up
     user_ref: *128
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-09 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *394
+    reactable_ref: *394
   - mode: up
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-08 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *394
+    reactable_ref: *394
   - mode: up
     user_ref: *114
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-07 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *394
+    reactable_ref: *394
   - mode: up
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-11-05 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *394
+    reactable_ref: *394
   - mode: up
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-16 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *394
+    reactable_ref: *394
   - mode: down
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-20 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *405
+    reactable_ref: *405
   - mode: down
     user_ref: *mortal3
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-13 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *405
+    reactable_ref: *405
   - mode: up
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *405
+    reactable_ref: *405
   - mode: up
     user_ref: *102
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-11 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *405
+    reactable_ref: *405
   - mode: down
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *405
+    reactable_ref: *405
   - mode: up
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-11 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *405
+    reactable_ref: *405
   - mode: down
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-13 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *405
+    reactable_ref: *405
   - mode: down
     user_ref: *128
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *405
+    reactable_ref: *405
   - mode: down
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-07 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *405
+    reactable_ref: *405
   - mode: up
     user_ref: *114
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-26 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *405
+    reactable_ref: *405
   - mode: down
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-12 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *405
+    reactable_ref: *405
   - mode: up
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-11 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *405
+    reactable_ref: *405
   - mode: up
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-03 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *405
+    reactable_ref: *405
   - mode: up
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-20 00:00:00'
     updated_at: '2018-03-28 13:35:19'
-    votable_ref: *405
+    reactable_ref: *405
   - mode: up
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-12 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *412
+    reactable_ref: *412
   - mode: up
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-27 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *412
+    reactable_ref: *412
   - mode: up
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-04 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *412
+    reactable_ref: *412
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-17 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *412
+    reactable_ref: *412
   - mode: up
     user_ref: *102
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-03 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *412
+    reactable_ref: *412
   - mode: up
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-31 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *412
+    reactable_ref: *412
   - mode: up
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-31 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *412
+    reactable_ref: *412
   - mode: down
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-25 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *412
+    reactable_ref: *412
   - mode: up
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-15 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *412
+    reactable_ref: *412
   - mode: down
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-24 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *412
+    reactable_ref: *412
   - mode: down
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-24 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *412
+    reactable_ref: *412
   - mode: up
     user_ref: *charlie
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-24 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *1123
+    reactable_ref: *1123
   - mode: down
     user_ref: *mortal3
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-24 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *1123
+    reactable_ref: *1123
   - mode: up
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-22 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *1123
+    reactable_ref: *1123
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *1123
+    reactable_ref: *1123
   - mode: down
     user_ref: *143
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-24 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *1123
+    reactable_ref: *1123
   - mode: up
     user_ref: *102
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *1123
+    reactable_ref: *1123
   - mode: up
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-23 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *1123
+    reactable_ref: *1123
   - mode: up
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *1123
+    reactable_ref: *1123
   - mode: up
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-23 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *1123
+    reactable_ref: *1123
   - mode: up
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-27 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *1123
+    reactable_ref: *1123
   - mode: up
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *1123
+    reactable_ref: *1123
   - mode: up
     user_ref: *128
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-24 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *1123
+    reactable_ref: *1123
   - mode: up
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-23 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *1123
+    reactable_ref: *1123
   - mode: up
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-24 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *1123
+    reactable_ref: *1123
   - mode: up
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *1123
+    reactable_ref: *1123
   - mode: up
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-22 00:00:00'
     updated_at: '2018-03-28 13:35:20'
-    votable_ref: *1123
+    reactable_ref: *1123
   - mode: up
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *1156
+    reactable_ref: *1156
   - mode: down
     user_ref: *mortal3
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-27 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *1156
+    reactable_ref: *1156
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *1156
+    reactable_ref: *1156
   - mode: down
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *1156
+    reactable_ref: *1156
   - mode: down
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *1156
+    reactable_ref: *1156
   - mode: down
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *1156
+    reactable_ref: *1156
   - mode: up
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *1156
+    reactable_ref: *1156
   - mode: down
     user_ref: *128
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *1156
+    reactable_ref: *1156
   - mode: down
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *1156
+    reactable_ref: *1156
   - mode: down
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *1156
+    reactable_ref: *1156
   - mode: down
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *1156
+    reactable_ref: *1156
   - mode: up
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *1156
+    reactable_ref: *1156
   - mode: down
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-08 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *418
+    reactable_ref: *418
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-27 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *418
+    reactable_ref: *418
   - mode: down
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-09 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *418
+    reactable_ref: *418
   - mode: up
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-08-08 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *418
+    reactable_ref: *418
   - mode: down
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-04 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *418
+    reactable_ref: *418
   - mode: up
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-24 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *418
+    reactable_ref: *418
   - mode: up
     user_ref: *114
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-10-23 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *418
+    reactable_ref: *418
   - mode: up
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-09-12 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *418
+    reactable_ref: *418
   - mode: up
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-10-05 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *418
+    reactable_ref: *418
   - mode: up
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-10-13 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *425
+    reactable_ref: *425
   - mode: up
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-11-23 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *425
+    reactable_ref: *425
   - mode: down
     user_ref: *charlie
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-28 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *425
+    reactable_ref: *425
   - mode: up
     user_ref: *mortal3
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-10-29 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *425
+    reactable_ref: *425
   - mode: down
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-20 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *425
+    reactable_ref: *425
   - mode: down
     user_ref: *143
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-04 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *425
+    reactable_ref: *425
   - mode: up
     user_ref: *102
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-10-27 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *425
+    reactable_ref: *425
   - mode: up
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-18 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *425
+    reactable_ref: *425
   - mode: up
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-07 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *425
+    reactable_ref: *425
   - mode: up
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-23 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *425
+    reactable_ref: *425
   - mode: up
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-29 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *425
+    reactable_ref: *425
   - mode: up
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-10-27 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *425
+    reactable_ref: *425
   - mode: up
     user_ref: *128
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-27 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *425
+    reactable_ref: *425
   - mode: up
     user_ref: *114
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-27 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *425
+    reactable_ref: *425
   - mode: up
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-07 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *425
+    reactable_ref: *425
   - mode: up
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-04 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *425
+    reactable_ref: *425
   - mode: up
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-06 00:00:00'
     updated_at: '2018-03-28 13:35:21'
-    votable_ref: *425
+    reactable_ref: *425
   - mode: down
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-01 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *443
+    reactable_ref: *443
   - mode: down
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-13 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *443
+    reactable_ref: *443
   - mode: up
     user_ref: *charlie
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-13 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *443
+    reactable_ref: *443
   - mode: up
     user_ref: *mortal3
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-02 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *443
+    reactable_ref: *443
   - mode: down
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-15 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *443
+    reactable_ref: *443
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-24 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *443
+    reactable_ref: *443
   - mode: down
     user_ref: *143
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *443
+    reactable_ref: *443
   - mode: up
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *443
+    reactable_ref: *443
   - mode: up
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-14 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *443
+    reactable_ref: *443
   - mode: up
     user_ref: *114
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-17 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *443
+    reactable_ref: *443
   - mode: up
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-24 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *443
+    reactable_ref: *443
   - mode: up
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-26 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *443
+    reactable_ref: *443
   - mode: up
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-27 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *443
+    reactable_ref: *443
   - mode: up
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-16 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *1259
+    reactable_ref: *1259
   - mode: up
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *1259
+    reactable_ref: *1259
   - mode: up
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-22 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *1259
+    reactable_ref: *1259
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-28 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *1259
+    reactable_ref: *1259
   - mode: up
     user_ref: *143
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-24 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *1259
+    reactable_ref: *1259
   - mode: up
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-28 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *1259
+    reactable_ref: *1259
   - mode: down
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-10 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *1259
+    reactable_ref: *1259
   - mode: up
     user_ref: *128
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-01-29 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *1259
+    reactable_ref: *1259
   - mode: down
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-02 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *1259
+    reactable_ref: *1259
   - mode: up
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-21 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *1259
+    reactable_ref: *1259
   - mode: up
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-03 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *1259
+    reactable_ref: *1259
   - mode: up
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-02-08 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *1259
+    reactable_ref: *1259
   - mode: up
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-09-30 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *449
+    reactable_ref: *449
   - mode: down
     user_ref: *charlie
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-09-17 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *449
+    reactable_ref: *449
   - mode: up
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-02 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *449
+    reactable_ref: *449
   - mode: up
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-09-23 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *449
+    reactable_ref: *449
   - mode: up
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-12-03 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *449
+    reactable_ref: *449
   - mode: up
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-10-16 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *449
+    reactable_ref: *449
   - mode: up
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2017-11-11 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-    votable_ref: *449
+    reactable_ref: *449
   - mode: up
     user_ref: *admin
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-16 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *461
+    reactable_ref: *461
   - mode: down
     user_ref: *charlie
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-23 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *461
+    reactable_ref: *461
   - mode: down
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *461
+    reactable_ref: *461
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-15 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *461
+    reactable_ref: *461
   - mode: up
     user_ref: *143
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-22 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *461
+    reactable_ref: *461
   - mode: up
     user_ref: *102
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-20 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *461
+    reactable_ref: *461
   - mode: up
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *461
+    reactable_ref: *461
   - mode: up
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-06 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *461
+    reactable_ref: *461
   - mode: down
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-22 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *461
+    reactable_ref: *461
   - mode: down
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *461
+    reactable_ref: *461
   - mode: down
     user_ref: *128
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-23 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *461
+    reactable_ref: *461
   - mode: up
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-19 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *461
+    reactable_ref: *461
   - mode: down
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-11 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *461
+    reactable_ref: *461
   - mode: up
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-12 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *461
+    reactable_ref: *461
   - mode: down
     user_ref: *mortal1
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-04 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *471
+    reactable_ref: *471
   - mode: up
     user_ref: *mortal3
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-08 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *471
+    reactable_ref: *471
   - mode: down
     user_ref: *94
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-23 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *471
+    reactable_ref: *471
   - mode: up
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-12 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *471
+    reactable_ref: *471
   - mode: down
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-24 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *471
+    reactable_ref: *471
   - mode: up
     user_ref: *86
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-09 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *471
+    reactable_ref: *471
   - mode: down
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-14 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *471
+    reactable_ref: *471
   - mode: up
     user_ref: *114
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *471
+    reactable_ref: *471
   - mode: up
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-19 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *471
+    reactable_ref: *471
   - mode: down
     user_ref: *77
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-18 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *471
+    reactable_ref: *471
   - mode: down
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-24 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *471
+    reactable_ref: *471
   - mode: up
     user_ref: *moderator
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-24 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *471
+    reactable_ref: *471
   - mode: up
     user_ref: *charlie
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *209
+    reactable_ref: *209
   - mode: up
     user_ref: *mortal3
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-22 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *209
+    reactable_ref: *209
   - mode: down
     user_ref: *194
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *209
+    reactable_ref: *209
   - mode: down
     user_ref: *143
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *209
+    reactable_ref: *209
   - mode: down
     user_ref: *174
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-22 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *209
+    reactable_ref: *209
   - mode: down
     user_ref: *139
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *209
+    reactable_ref: *209
   - mode: down
     user_ref: *98
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *209
+    reactable_ref: *209
   - mode: down
     user_ref: *110
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *209
+    reactable_ref: *209
   - mode: up
     user_ref: *128
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-24 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *209
+    reactable_ref: *209
   - mode: down
     user_ref: *159
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-27 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *209
+    reactable_ref: *209
   - mode: up
     user_ref: *114
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-28 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *209
+    reactable_ref: *209
   - mode: down
     user_ref: *163
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *209
+    reactable_ref: *209
   - mode: down
     user_ref: *181
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *209
+    reactable_ref: *209
   - mode: down
     user_ref: *67
-    votable_type: Idea
+    reactable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:24'
-    votable_ref: *209
+    reactable_ref: *209
   - mode: up
     user_ref: *mortal1
     created_at_timediff: -1440
     updated_at_timediff: -1440
-    votable_ref: *initiative1
+    reactable_ref: *initiative1
   idea_image:
   - remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/brainstorming_graphic.png
     idea_ref: *controversial_idea
@@ -8002,7 +8002,7 @@ models:
       permitted_by: groups
       permission_scope_ref: *verifiedIdeation
     - &112
-      action: voting_idea
+      action: reacting_idea
       permitted_by: groups
       permission_scope_ref: *verifiedIdeation
     - &113
@@ -8026,7 +8026,7 @@ models:
       permitted_by: groups
       permission_scope_ref: *charliesIdeation
     - &1112
-      action: voting_idea
+      action: reacting_idea
       permitted_by: groups
       permission_scope_ref: *charliesIdeation
     - &1113
@@ -8050,7 +8050,7 @@ models:
       permitted_by: groups
       permission_scope_ref: *charliesVerifiedPPlproject
     - &1118
-      action: voting_idea
+      action: reacting_idea
       permitted_by: groups
       permission_scope_ref: *charliesVerifiedPPlproject
     - &1119
