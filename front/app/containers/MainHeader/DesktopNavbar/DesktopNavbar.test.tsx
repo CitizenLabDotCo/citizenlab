@@ -7,18 +7,25 @@ jest.mock('hooks/useCustomPageSlugById');
 
 const mockAdminPublications = [
   {
-    publicationId: '_1',
-    publicationType: 'project',
+    id: '1',
     attributes: {
       publication_title_multiloc: { en: 'Project 1' },
       publication_slug: 'project_one',
     },
+    relationships: {
+      publication: {
+        data: {
+          id: '_1',
+          type: 'project',
+        },
+      },
+    },
   },
 ];
 
-jest.mock('hooks/useAdminPublications', () =>
+jest.mock('api/admin_publications/useAdminPublications', () =>
   jest.fn(() => ({
-    list: mockAdminPublications,
+    data: { pages: [{ data: mockAdminPublications }] },
   }))
 );
 
