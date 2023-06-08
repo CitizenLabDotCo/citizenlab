@@ -8,8 +8,7 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath =
-  '*/users/custom_fields/:customFieldId/custom_field_options/:optionId/reorder';
+const apiPath = '*/users/custom_fields/:customFieldId/reorder';
 const server = setupServer(
   rest.patch(apiPath, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: userCustomFieldsData[0] }));

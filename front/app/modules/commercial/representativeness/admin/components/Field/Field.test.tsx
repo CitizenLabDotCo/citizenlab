@@ -57,7 +57,9 @@ const birthyearField = {
   },
 };
 
-jest.mock('hooks/useUserCustomField', () => () => mockUserCustomField);
+jest.mock('api/user_custom_fields/useUserCustomField', () => () => ({
+  data: { data: mockUserCustomField },
+}));
 
 describe('<Field />', () => {
   describe('select field', () => {

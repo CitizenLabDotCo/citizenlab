@@ -24,10 +24,15 @@ const useUpdateUserCustomFields = () => {
   const queryClient = useQueryClient();
   return useMutation<IUserCustomField, { errors: CLErrors }, UpdateField>({
     mutationFn: updateField,
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: schemaKeys.all() });
       queryClient.invalidateQueries({
         queryKey: userCustomFieldsKeys.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: userCustomFieldsKeys.item({
+          customFieldId: variables.customFieldId,
+        }),
       });
     },
   });
