@@ -22,10 +22,10 @@ import messages from './messages';
 
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 // services
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
 const FolderIcon = styled(Icon)`
   margin-right: 10px;
@@ -57,7 +57,7 @@ const FolderRowContent = styled(RowContent)<{
 `;
 
 export interface Props {
-  publication: IAdminPublicationContent;
+  publication: IAdminPublicationData;
   toggleFolder: () => void;
   isFolderOpen: boolean;
   hasProjects: boolean;
@@ -122,14 +122,14 @@ const ProjectFolderRow = memo<Props>(
                       'en-GB'
                     ] || ''
                   }`}
-                  linkTo={`/admin/projects/folders/${publication.publicationId}`}
+                  linkTo={`/admin/projects/folders/${publication.relationships.publication.data.id}`}
                   buttonStyle="secondary"
                   icon="edit"
                   disabled={
                     isBeingDeleted ||
                     !userModeratesFolder(
                       authUser.data,
-                      publication.publicationId
+                      publication.relationships.publication.data.id
                     )
                   }
                   data-testid="folder-row-edit-button"
@@ -138,7 +138,7 @@ const ProjectFolderRow = memo<Props>(
                 </RowButton>
               </FolderRowContent>
               <FolderMoreActionsMenu
-                folderId={publication.publicationId}
+                folderId={publication.relationships.publication.data.id}
                 setError={setFolderDeletionError}
                 setIsRunningAction={setIsBeingDeleted}
               />

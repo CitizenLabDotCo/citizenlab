@@ -13,7 +13,7 @@ import useAddProjectFolderFile from 'api/project_folder_files/useAddProjectFolde
 import useAddProjectFolder from 'api/project_folders/useAddProjectFolder';
 import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
-import useAdminPublication from 'hooks/useAdminPublication';
+import useAdminPublication from 'api/admin_publications/useAdminPublication';
 import useDeleteProjectFolderImage from 'api/project_folder_images/useDeleteProjectFolderImage';
 import useAddProjectFolderImage from 'api/project_folder_images/useAddProjectFolderImage';
 
@@ -83,7 +83,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const { mutateAsync: deleteProjectFolderImage } =
     useDeleteProjectFolderImage();
 
-  const adminPublication = useAdminPublication(
+  const { data: adminPublication } = useAdminPublication(
     !isNilOrError(projectFolder)
       ? projectFolder.data.relationships.admin_publication.data?.id || null
       : null
@@ -149,7 +149,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   useEffect(() => {
     if (mode === 'edit' && !isNilOrError(adminPublication)) {
-      setPublicationStatus(adminPublication.attributes.publication_status);
+      setPublicationStatus(adminPublication.data.attributes.publication_status);
     }
   }, [mode, adminPublication]);
 
@@ -403,7 +403,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               isNilOrError(adminPublication) ||
               !isEqual(
                 publicationStatus,
-                adminPublication.attributes.publication_status
+                adminPublication.data.attributes.publication_status
               );
 
             if (

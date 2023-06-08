@@ -12,7 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/SiteMap/messages';
 
 // hooks
-import useAdminPublications from 'hooks/useAdminPublications';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 // typings
@@ -33,10 +33,14 @@ const ProjectFolderSitemap = ({ projectFolderId, hightestTitle }: Props) => {
   const TitleComponent = hightestTitle === 'h3' ? H3 : H4;
 
   const { data: folder } = useProjectFolderById(projectFolderId);
-  const { list: childAdminPublications } = useAdminPublications({
+  const { data: adminPublications } = useAdminPublications({
     childrenOfId: projectFolderId,
     publicationStatusFilter: publicationStatuses,
   });
+
+  const childAdminPublications = adminPublications?.pages
+    .map((page) => page.data)
+    .flat();
 
   if (folder && !isNilOrError(folder.data)) {
     return (
