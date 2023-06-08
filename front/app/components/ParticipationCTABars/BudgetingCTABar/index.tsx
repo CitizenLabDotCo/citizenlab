@@ -6,7 +6,7 @@ import { ParticipationCTAContent } from 'components/ParticipationCTABars/Partici
 
 // hooks
 import { useTheme } from 'styled-components';
-import useBasket from 'hooks/useBasket';
+import useBasket from 'api/baskets/useBasket';
 
 // services
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
@@ -27,18 +27,16 @@ import { isNilOrError } from 'utils/helperUtils';
 export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
-  let basketId: string | null = null;
+  let basketId: string | undefined;
   if (currentPhase) {
-    basketId = currentPhase.relationships.user_basket?.data?.id || null;
+    basketId = currentPhase.relationships.user_basket?.data?.id;
   } else {
-    basketId = project.relationships.user_basket?.data?.id || null;
+    basketId = project.relationships.user_basket?.data?.id;
   }
-  const basket = useBasket(basketId);
-  const submittedAt = !isNilOrError(basket)
-    ? basket.attributes.submitted_at
-    : null;
+  const { data: basket } = useBasket(basketId);
+  const submittedAt = basket ? basket.data.attributes.submitted_at : null;
   const spentBudget = !isNilOrError(basket)
-    ? basket.attributes.total_budget
+    ? basket.data.attributes.total_budget
     : 0;
   const hasUserParticipated = !!submittedAt && spentBudget > 0;
 

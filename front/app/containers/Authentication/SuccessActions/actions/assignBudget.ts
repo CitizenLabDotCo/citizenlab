@@ -1,5 +1,6 @@
 // services
-import { IBasketData, updateBasket, addBasket } from 'services/baskets';
+import { IBasketData } from 'api/baskets/types';
+import useAddBasket from 'api/baskets/useAddBasket';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -12,12 +13,15 @@ import streams from 'utils/streams';
 // typings
 import { IUserData } from 'api/users/types';
 import { IParticipationContextType } from 'typings';
+import useUpdateBasket from 'api/baskets/useUpdateBasket';
 
 export interface AssignBudgetParams {
   ideaId: string;
   participationContextId: string;
   participationContextType: IParticipationContextType;
   basket: IBasketData | null | undefined;
+  addBasket: ReturnType<typeof useAddBasket>['mutateAsync'];
+  updateBasket: ReturnType<typeof useUpdateBasket>['mutateAsync'];
 }
 
 export const assignBudget =
@@ -26,6 +30,8 @@ export const assignBudget =
     participationContextId,
     participationContextType,
     basket,
+    addBasket,
+    updateBasket,
   }: AssignBudgetParams) =>
   async (authUser: IUserData) => {
     if (!isNil(basket)) {
@@ -48,7 +54,8 @@ export const assignBudget =
       }
 
       try {
-        await updateBasket(basket.id, {
+        await updateBasket({
+          id: basket.id,
           user_id: authUser.id,
           participation_context_id: participationContextId,
           participation_context_type: capitalizeParticipationContextType(

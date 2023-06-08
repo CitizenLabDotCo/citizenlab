@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { round } from 'lodash-es';
 import moment from 'moment';
 import Tippy from '@tippyjs/react';
 
 // services
-import { updateBasket } from 'services/baskets';
 
 // typings
 import { IParticipationContextType } from 'typings';
@@ -36,10 +35,11 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useBasket from 'hooks/useBasket';
+import useBasket from 'api/baskets/useBasket';
 import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
 import useLocale from 'hooks/useLocale';
+import useUpdateBasket from 'api/baskets/useUpdateBasket';
 
 const Container = styled.div`
   ${defaultCardStyle};
@@ -271,42 +271,42 @@ const PBExpenses = ({
   viewMode,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const [processing, setProcessing] = useState(false);
   const locale = useLocale();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: project } = useProjectById(
     participationContextType === 'project' ? participationContextId : null
   );
+  const { mutate: updateBasket, isLoading } = useUpdateBasket();
   const { data: phase } = usePhase(
     participationContextType === 'phase' ? participationContextId : null
   );
   function getBasketId() {
-    let basketId: string | null = null;
+    let basketId: string | undefined;
 
     if (participationContextType === 'project') {
-      basketId = project?.data.relationships.user_basket?.data?.id ?? null;
+      basketId = project?.data.relationships.user_basket?.data?.id;
     } else {
       basketId = phase
-        ? phase?.data.relationships.user_basket?.data?.id || null
-        : null;
+        ? phase?.data.relationships.user_basket?.data?.id
+        : undefined;
     }
 
     return basketId;
   }
   const basketId = getBasketId();
-  const basket = useBasket(basketId);
+  const { data: basket } = useBasket(basketId);
 
   const handleSubmitExpensesOnClick = async () => {
     if (!isNilOrError(basket)) {
       const now = moment().format();
-      setProcessing(true);
-      try {
-        await updateBasket(basket.id, { submitted_at: now });
-      } catch {
-        // Do nothing
-      }
-      trackEventByName(tracks.basketSubmitted);
-      setProcessing(false);
+      updateBasket(
+        { id: basket.data.id, submitted_at: now },
+        {
+          onSuccess: () => {
+            trackEventByName(tracks.basketSubmitted);
+          },
+        }
+      );
     }
   };
 
@@ -317,15 +317,11 @@ const PBExpenses = ({
       (participationContextType === 'phase' && phase))
   ) {
     const currency = appConfiguration.data.attributes.settings.core.currency;
-    const spentBudget = !isNilOrError(basket)
-      ? basket.attributes.total_budget
-      : 0;
-    const budgetExceedsLimit = !isNilOrError(basket)
-      ? (basket.attributes['budget_exceeds_limit?'] as boolean)
+    const spentBudget = basket ? basket.data.attributes.total_budget : 0;
+    const budgetExceedsLimit = basket
+      ? (basket.data.attributes['budget_exceeds_limit?'] as boolean)
       : false;
-    const submittedAt = !isNilOrError(basket)
-      ? basket.attributes.submitted_at
-      : null;
+    const submittedAt = basket ? basket.data.attributes.submitted_at : null;
     let minBudget = 0;
     let maxBudget = 0;
     let progress = 0;
@@ -562,7 +558,7 @@ const PBExpenses = ({
                       spentBudget === 0 ||
                       minBudgetRequiredNotReached
                     }
-                    processing={processing}
+                    processing={isLoading}
                     viewMode={viewMode}
                     data-cy="e2e-submit-my-basket-button"
                   >

@@ -1,14 +1,15 @@
 import React, { FormEvent } from 'react';
 
 // services
-import { IBasketData, updateBasket } from 'services/baskets';
+import { IBasketData } from 'api/baskets/types';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
-import useBasket from 'hooks/useBasket';
+import useBasket from 'api/baskets/useBasket';
 import useAuthUser from 'api/me/useAuthUser';
 import useIdeas from 'api/ideas/useIdeas';
+import useUpdateBasket from 'api/baskets/useUpdateBasket';
 
 // styles
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -139,6 +140,7 @@ const PBBasket = ({
 }: Props) => {
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
+  const { mutate: updateBasket } = useUpdateBasket();
 
   const { data: ideas } = useIdeas({
     basket_id: basket.id,
@@ -163,8 +165,9 @@ const PBBasket = ({
           .filter((idea) => idea.id !== ideaIdToRemove)
           .map((idea) => idea.id);
 
-        try {
-          await updateBasket(basket.id, {
+        updateBasket(
+          {
+            id: basket.id,
             user_id: authUser.data.id,
             participation_context_id: participationContextId,
             participation_context_type: capitalizeParticipationContextType(
@@ -172,12 +175,13 @@ const PBBasket = ({
             ),
             idea_ids: newIdeas,
             submitted_at: null,
-          });
-        } catch {
-          // Do nothing
-        }
-
-        trackEventByName(tracks.ideaRemovedFromBasket);
+          },
+          {
+            onSuccess: () => {
+              trackEventByName(tracks.ideaRemovedFromBasket);
+            },
+          }
+        );
       }
     };
 
@@ -302,9 +306,9 @@ const Wrapper = ({
     basketId = phase.data.relationships.user_basket?.data?.id;
   }
 
-  const basket = useBasket(basketId);
+  const { data: basket } = useBasket(basketId);
 
-  if (basketId === undefined || isNilOrError(basket)) {
+  if (basketId === undefined || !basket) {
     return null;
   }
 
@@ -313,7 +317,7 @@ const Wrapper = ({
       className={className}
       participationContextId={participationContextId}
       participationContextType={participationContextType}
-      basket={basket}
+      basket={basket.data}
       phase={phase?.data}
     />
   );
