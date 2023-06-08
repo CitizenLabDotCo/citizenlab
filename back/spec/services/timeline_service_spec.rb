@@ -5,12 +5,6 @@ require 'rails_helper'
 describe TimelineService do
   let(:service) { described_class.new }
 
-  before do
-    settings = AppConfiguration.instance.settings
-    settings['core']['locales'] = %w[fr en nl-BE]
-    AppConfiguration.instance.update(settings: settings)
-  end
-
   describe 'current_phase' do
     let(:project) { create(:project) }
     let!(:active_phase) { create_active_phase(project) }
