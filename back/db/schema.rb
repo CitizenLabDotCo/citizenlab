@@ -960,8 +960,8 @@ ActiveRecord::Schema.define(version: 2023_06_07_142901) do
     t.integer "reacting_dislike_limited_max", default: 10
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
-    t.string "document_annotation_embed_url"
     t.boolean "allow_anonymous_participation", default: false, null: false
+    t.string "document_annotation_embed_url"
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -1099,8 +1099,8 @@ ActiveRecord::Schema.define(version: 2023_06_07_142901) do
     t.boolean "include_all_areas", default: false, null: false
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
-    t.string "document_annotation_embed_url"
     t.boolean "allow_anonymous_participation", default: false, null: false
+    t.string "document_annotation_embed_url"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -1708,7 +1708,7 @@ ActiveRecord::Schema.define(version: 2023_06_07_142901) do
             GROUP BY comments.post_id) comments_at ON ((ideas.id = comments_at.idea_id)))
        FULL JOIN ( SELECT reactions.reactable_id AS votable_id,
               max(reactions.created_at) AS last_upvoted_at,
-              avg(date_part('epoch'::text, reactions.created_at)) AS mean_upvoted_at,
+              avg(date_part('epoc®h'::text, reactions.created_at)) AS mean_upvoted_at,
               count(reactions.reactable_id) AS upvotes_count
              FROM reactions
             WHERE (((reactions.mode)::text = 'up'::text) AND ((reactions.reactable_type)::text = 'Idea'::text))
