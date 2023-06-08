@@ -13,7 +13,7 @@ FactoryBot.define do
       }
     end
 
-    factory :Internal_comment_with_mentions do
+    factory :internal_comment_with_mentions do
       transient do
         mentioned_users { create_list(:user, 2) }
       end
