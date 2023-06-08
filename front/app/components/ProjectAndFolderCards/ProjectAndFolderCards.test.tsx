@@ -5,6 +5,8 @@ import * as styledComponents from 'styled-components';
 
 import ProjectAndFolderCards from '.';
 import { IStatusCounts } from 'api/admin_publications_status_counts/types';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
 
 // Mock external libraries
 let mockSmallerThanMinTablet = false;
@@ -50,13 +52,13 @@ const mockLoadMore = jest.fn();
 
 // Needed to render folder with project inside
 jest.mock('api/admin_publications/useAdminPublications', () => {
-  return () => ({
+  return jest.fn(() => ({
     hasNextPage: mockHasMore,
     isInitialLoading: mockLoadingInitial,
     isFetchingNextPage: mockLoadingMore,
     fetchNextPage: mockLoadMore,
     data: { pages: [{ data: mockAdminPublications }] },
-  });
+  }));
 });
 
 const DEFAULT_STATUS_COUNTS: IStatusCounts = {
@@ -281,9 +283,114 @@ describe('<ProjectAndFolderCards />', () => {
 
     const searchInput = container.querySelector('#search-input');
     fireEvent.change(searchInput, { target: { value: 'dog' } });
-    screen.debug();
 
     expect(searchInput.value).toBe('dog');
+  });
+
+  it('it changes status of useAdminPublications on click tab', () => {
+    render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    const tabs = screen.getAllByTestId('tab');
+
+    // Published tab: currently selected
+    fireEvent.click(tabs[0]);
+    expect(useAdminPublications).toHaveBeenCalledWith(
+      expect.objectContaining({
+        publicationStatusFilter: ['published'],
+      })
+    );
+
+    // Archived tab
+    fireEvent.click(tabs[1]);
+    expect(useAdminPublications).toHaveBeenCalledWith(
+      expect.objectContaining({
+        publicationStatusFilter: ['archived'],
+      })
+    );
+
+    // All tab
+    fireEvent.click(tabs[2]);
+    expect(useAdminPublications).toHaveBeenCalledWith(
+      expect.objectContaining({
+        publicationStatusFilter: ['published', 'archived'],
+      })
+    );
+  });
+
+  it('changes area on area selector click', () => {
+    const { container, debug } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    debug();
+
+    const filterSelectorButton = container.querySelector(
+      '.e2e-filter-selector-areas > .e2e-filter-selector-button'
+    );
+
+    // Open filter selector
+    fireEvent.click(filterSelectorButton);
+
+    // Get areas
+    const areas = container.querySelectorAll('.e2e-checkbox');
+
+    fireEvent.click(areas[0]);
+    expect(useAdminPublications).toHaveBeenCalledWith(
+      expect.objectContaining({
+        areaIds: ['1'],
+      })
+    );
+    expect(useAdminPublicationsStatusCounts).toHaveBeenCalledWith(
+      expect.objectContaining({
+        areaIds: ['1'],
+      })
+    );
+
+    fireEvent.click(areas[1]);
+    expect(useAdminPublications).toHaveBeenCalledWith(
+      expect.objectContaining({
+        areaIds: ['1', '2'],
+      })
+    );
+    expect(useAdminPublicationsStatusCounts).toHaveBeenCalledWith(
+      expect.objectContaining({
+        areaIds: ['1', '2'],
+      })
+    );
+
+    fireEvent.click(areas[0]);
+    expect(useAdminPublications).toHaveBeenCalledWith(
+      expect.objectContaining({
+        areaIds: ['2'],
+      })
+    );
+    expect(useAdminPublicationsStatusCounts).toHaveBeenCalledWith(
+      expect.objectContaining({
+        areaIds: ['2'],
+      })
+    );
+
+    fireEvent.click(areas[1]);
+    expect(useAdminPublications).toHaveBeenCalledWith(
+      expect.objectContaining({
+        areaIds: [],
+      })
+    );
+    expect(useAdminPublicationsStatusCounts).toHaveBeenCalledWith(
+      expect.objectContaining({
+        areaIds: [],
+      })
+    );
   });
 
   it('does not render area filter if no areas', () => {
@@ -320,6 +427,74 @@ describe('<ProjectAndFolderCards />', () => {
       '.e2e-filter-selector-areas'
     );
     expect(filterSelector).toBeInTheDocument();
+  });
+
+  it('changes topic on topic selector click', () => {
+    const { container } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    const filterSelector = container.querySelector(
+      '.e2e-filter-selector-topics > .e2e-filter-selector-button'
+    );
+
+    // Open filter selector
+    fireEvent.click(filterSelector);
+
+    // Get topics
+    const topics = container.querySelectorAll('.e2e-checkbox');
+
+    fireEvent.click(topics[0]);
+    expect(useAdminPublications).toHaveBeenCalledWith(
+      expect.objectContaining({
+        topicIds: ['1'],
+      })
+    );
+    expect(useAdminPublicationsStatusCounts).toHaveBeenCalledWith(
+      expect.objectContaining({
+        topicIds: ['1'],
+      })
+    );
+
+    fireEvent.click(topics[1]);
+    expect(useAdminPublications).toHaveBeenCalledWith(
+      expect.objectContaining({
+        topicIds: ['1', '2'],
+      })
+    );
+    expect(useAdminPublicationsStatusCounts).toHaveBeenCalledWith(
+      expect.objectContaining({
+        topicIds: ['1', '2'],
+      })
+    );
+
+    fireEvent.click(topics[0]);
+    expect(useAdminPublications).toHaveBeenCalledWith(
+      expect.objectContaining({
+        topicIds: ['2'],
+      })
+    );
+    expect(useAdminPublicationsStatusCounts).toHaveBeenCalledWith(
+      expect.objectContaining({
+        topicIds: ['2'],
+      })
+    );
+
+    fireEvent.click(topics[1]);
+    expect(useAdminPublications).toHaveBeenCalledWith(
+      expect.objectContaining({
+        topicIds: [],
+      })
+    );
+    expect(useAdminPublicationsStatusCounts).toHaveBeenCalledWith(
+      expect.objectContaining({
+        topicIds: [],
+      })
+    );
   });
 
   it('does not render topic filter if no topics', () => {
