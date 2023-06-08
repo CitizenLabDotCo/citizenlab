@@ -55,8 +55,4 @@ class InitiativeInternalCommentPolicy < ApplicationPolicy
   def internal_comment_author?
     record.author_id == user.id
   end
-
-  def commenting_allowed?(user)
-    user&.active? && user&.admin?
-  end
 end
