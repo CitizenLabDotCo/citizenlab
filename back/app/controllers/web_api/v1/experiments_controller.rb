@@ -10,6 +10,7 @@ class WebApi::V1::ExperimentsController < ApplicationController
 
   def create
     @experiment = Experiment.new permitted_attributes(Experiment)
+    authorize @experiment
 
     if @experiment.save
       render json: ::WebApi::V1::ExperimentSerializer.new(
