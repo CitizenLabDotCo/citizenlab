@@ -10,14 +10,9 @@ class InitiativeInternalCommentPolicy < ApplicationPolicy
     end
 
     def resolve
-      # If user active && admin then ...
-      scope.where(post_type: 'Initiative')
-      # else ...
-      #   scope.none
+      raise Pundit::NotAuthorizedError, 'not allowed to view this action' unless user&.active? && user&.admin?
 
-      # else
-      #   raise Pundit::NotAuthorizedError, 'not allowed to view this action'
-      # end
+      scope.where(post_type: 'Initiative')
     end
   end
 

@@ -20,8 +20,8 @@ describe InitiativeInternalCommentPolicy do
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
-      it 'indexes the internal comment' do
-        expect(scope.resolve.size).to eq 1
+      it '[error] indexes the internal comment' do
+        expect { scope.resolve }.to raise_error(Pundit::NotAuthorizedError, 'not allowed to view this action')
       end
     end
 
@@ -33,8 +33,8 @@ describe InitiativeInternalCommentPolicy do
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
-      it 'indexes the internal comment' do
-        expect(scope.resolve.size).to eq 1
+      it '[error] indexes the internal comment' do
+        expect { scope.resolve }.to raise_error(Pundit::NotAuthorizedError, 'not allowed to view this action')
       end
     end
 

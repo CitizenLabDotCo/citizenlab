@@ -10,7 +10,15 @@ class IdeaInternalCommentPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where(post_id: Pundit.policy_scope(user, Idea))
+      # Possibly need to include folder moderation in this (TBD), and need to also
+      # handle fact that a user can be a moderator of projects and/or folders
+      if user&.active? && user&.admin?
+        scope.where(post_type: 'Idea')
+      elsif user&.active? && user&.project_moderator?
+        scope.where(post_id: Idea.where(project_id: user.moderatable_project_ids))
+      else
+        raise Pundit::NotAuthorizedError, 'not allowed to view this action'
+      end
     end
   end
 
