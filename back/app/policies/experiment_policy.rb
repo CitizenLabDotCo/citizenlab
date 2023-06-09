@@ -14,7 +14,7 @@ class ExperimentPolicy < ApplicationPolicy
     end
   end
 
-  def index
+  def index?
     user&.active? && user&.admin?
   end
 

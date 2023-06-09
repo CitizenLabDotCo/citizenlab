@@ -205,7 +205,7 @@ Rails.application.routes.draw do
 
       resource :home_page, only: %i[show update]
 
-      resource :experiments, only: %i[index create]
+      resources :experiments, only: %i[index create]
 
       scope 'stats' do
         route_params = { controller: 'stats_users' }
