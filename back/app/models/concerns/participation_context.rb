@@ -76,6 +76,7 @@ module ParticipationContext
       # voting?
       with_options if: :voting? do
         validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
+        validate :validate_voting
         # TODO: budgeting: validates :voting_max_total, presence: true
         # validates :ideas_order, exclusion: { in: IDEAS_ORDERS_BUDGETING_EXCLUDE }, allow_nil: true
       end
@@ -170,6 +171,10 @@ module ParticipationContext
     return if participation_method_was != 'native_survey' && participation_method != 'native_survey'
 
     errors.add :participation_method, :change_not_permitted, message: 'change is not permitted'
+  end
+
+  def validate_voting
+    Factory.instance.voting_method_for(self).validate
   end
 end
 # rubocop:enable Metrics/ModuleLength

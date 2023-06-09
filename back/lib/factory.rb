@@ -29,5 +29,14 @@ class Factory
     end
   end
 
+  def voting_method_for(participation_context)
+    case participation_context&.voring_method
+    when 'budgeting'
+      ::VotingMethod::Budgeting.new(participation_context)
+    else
+      ::VotingMethod::None.new
+    end
+  end
+
   private_class_method :new
 end
