@@ -78,8 +78,8 @@ nl-BE:
     admin_digest:
       subject: 'Je wekelijks admin-rapport van %{time}'
       preheader: 'Weekoverzicht van %{organizationName}'
-      title_your_weekly_report: '%{firstName}, je wekelijks overzicht'
-      text_introduction: 'Ontdek rond welke ideeën er het meest werd gediscussieerd de afgelopen week. Hieronder vind je het overzicht!'
+      title_your_weekly_report: '%{firstName}, je wekelijkse overzicht'
+      text_introduction: 'Ontdek rond welke bijdragen er het meest werd gediscussieerd de afgelopen week. Hieronder vind je het overzicht!'
       cta_visit_the_platform: 'Ga naar het platform'
       new_users: 'Nieuwe gebruikers'
       new_ideas: 'Nieuwe ideeën'
@@ -96,7 +96,7 @@ nl-BE:
       message_you_became_administrator: 'Je bent beheerder geworden van het participatieplatform van %{organizationName}.'
       preheader: 'Je bent beheerder geworden van het participatieplatform van %{organizationName}'
       subject: 'Je bent nu een beheerder op het platform van %{organizationName}'
-      text_create_participatory_process: 'Als beheerder kun je nieuwe participatieprojecten aanmaken en vormgeven. Je kunt nieuwe projectfases toevoegen met behulp van een tijdslijn. Elke projectfase heeft een inspraakmethode, bijvoorbeeld een poll, ideeëngeneratie, een inspraakworkshop of een stemronde.'
+      text_create_participatory_process: 'Als beheerder kun je nieuwe participatieprojecten aanmaken en vormgeven. Je kunt nieuwe projectfases toevoegen met behulp van een tijdslijn. Elke projectfase heeft een inspraakmethode, bijvoorbeeld een poll, ideeën en/of feedback verzamelen, een enquete of een stemronde.'
       text_moderate_analyse_input: 'Zodra een project gelanceerd is, zullen de eerste ideeën binnenkomen. Om goed op de hoogte te blijven, krijg je een wekelijks overzicht van alle belangrijke activiteiten op het platform. In de ideeënsectie van het dashboard kun je alle input beheren, erover terugkoppelen naar je inwoners en analyseren.'
       text_platform_setup: 'Als een beheerder kan je je participatieplatform vormgeven. Kies een logo, voeg afbeeldingen en kleuren toe, schrijf een persoonlijk bericht op de homepagina, verstuur uitnodigingen, bepaal wat je wil weten van de mensen op je platform, ...'
       title_create_participatory_process: 'Geef het participatieproces vorm'
@@ -196,7 +196,7 @@ nl-BE:
       by_author: 'door %{authorName}'
       commented: '%{organizationName} schreef:'
       cta_reply_to: 'Antwoord op %{organizationName}'
-      event_description: '%{organizationName} heeft je genoemd in hun feedback op het idee ''%{post}''. Klik op onderstaande link om in gesprek te gaan met %{organizationName}'
+      event_description: '%{organizationName} heeft je genoemd in hun feedback op het idee ''%{post}''. Klik op onderstaande knop om in gesprek te gaan met %{organizationName}'
       main_header: 'Je bent genoemd'
       subject: '%{organizationName} noemde je in hun feedback'
       preheader: '%{commentAuthor} heeft je genoemd in feedback'
@@ -218,8 +218,8 @@ nl-BE:
     moderator_digest:
       subject: 'Je weekoverzicht als projectbeheerder van %{time}'
       preheader: 'Het weekoverzicht voor projectbeheerders van %{organizationName}'
-      title_your_weekly_report: '%{firstName}, je wekelijks overzicht'
-      text_introduction: 'Ontdek rond welke ideeën er het meest werd gediscussieerd de afgelopen week. Hieronder kom je te weten wat er leeft in je project!'
+      title_your_weekly_report: '%{firstName}, je wekelijkse overzicht'
+      text_introduction: 'Ontdek rond welke ideeën er het meest werd gediscussieerd de afgelopen week. Hieronder kom je te weten wat er gebeurt met je project!'
       cta_manage: 'Beheer je project'
       new_users: 'Nieuwe gebruikers'
       new_ideas: 'Nieuwe ideeën'
@@ -353,7 +353,7 @@ nl-BE:
       subject: 'Je bent nu projectbeheerder op het platform van %{organizationName}'
       text_design_participatory_process: 'Als projectbeheerder kan je mee het project instellen en vormgeven en bepalen hoe andere gebruikers binnen je project werken. Je kan de tijdslijn aanpassen en de verschillende fases instellen. Kies bij elke fase de ''inspraakmethode'': ideeën posten, reacties verzamelen en/of stemmen of gebruik een fase om enkel informatie te geven.'
       text_moderate_analyse_input: 'Wanneer het project eenmaal is gelanceerd zullen de eerste ideeën binnenkomen. Je ontvangt wekelijks een rapport met alle kernactiviteiten (nieuwe ideeën, stemmen, reacties) zodat je altijd op de hoogte blijft. In het ideeën-overzicht binnen je project kan je zien welke ideeën de meeste voor- en tegenstemmen kregen, en je kan de projectstatus aanpassen of thema''s toevoegen.'
-      text_share_project_information: 'Om de kwaliteit van de bijdrages die binnenkomen te verhogen is het belangrijk om voldoende informatie aan je doelpubliek te geven: vul de beschrijving van het project in, voeg afbeeldingen toe (bv. ook schetsen en plannen) en communiceer ook over verwante activiteiten. Onthoud: kwaliteitsvolle informatie gaat vooraf aan goede participatie!'
+      text_share_project_information: 'Om de kwaliteit van de bijdragen die binnenkomen te verhogen is het belangrijk om voldoende informatie aan je doelpubliek te geven: vul de beschrijving van het project in, voeg afbeeldingen toe (bv. ook schetsen en plannen) en communiceer ook over verwante activiteiten. Onthoud: kwaliteitsvolle informatie gaat vooraf aan goede participatie!'
       title_design_participatory_process: 'Geef vorm aan het participatieproces'
       title_moderate_analyse_input: 'Beheer en analyseer de input'
       title_share_project_information: 'Geef informatie bij het project.'
@@ -448,7 +448,7 @@ nl-BE:
       today_by_author: "Vandaag door %{author}"
       yesterday_by_author: "Gisteren door %{author}"
       x_days_ago_by_author: "%{x} dagen geleden door %{author}"
-      trending_ideas: "Populaire bijdrages"
+      trending_ideas: "Populaire bijdragen"
       trending_ideas_text: "Geïnteresseerd in wat er is gebeurd op het platform? Bekijk de drie meest populaire ideeën, wat mensen erover te zeggen hebben en neem deel aan het gesprek."
       no_notifications: "Geen meldingen"
       one_notification: "1 melding"
