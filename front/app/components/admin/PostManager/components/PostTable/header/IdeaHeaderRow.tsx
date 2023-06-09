@@ -170,7 +170,6 @@ export default ({
     },
     {
       name: 'picks',
-      featureFlag: 'participatory_budgeting',
       cellProps: { width: 1 },
       Component: ({ width }) => {
         return (

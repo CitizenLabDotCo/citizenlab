@@ -58,9 +58,6 @@ const ParticipationMethodPicker = ({
   const documentAnnotationEnabled = useFeatureFlag({
     name: 'konveio_document_annotation',
   });
-  const participatoryBudgetingEnabled = useFeatureFlag({
-    name: 'participatory_budgeting',
-  });
   const pollsEnabled = useFeatureFlag({
     name: 'polls',
   });
@@ -128,29 +125,27 @@ const ParticipationMethodPicker = ({
               />
             }
           />
-          {participatoryBudgetingEnabled && (
-            <ParticipationMethodRadio
-              onChange={handleParticipationMethodOnChange}
-              currentValue={participation_method}
-              value="voting"
-              name="participationmethod"
-              id="participationmethod-voting"
-              label={
-                <LabelHeaderDescription
-                  header={
-                    <FormattedMessage
-                      {...messages.conductVotingOrPrioritizationText}
-                    />
-                  }
-                  description={
-                    <FormattedMessage
-                      {...messages.conductVotingOrPrioritizationDescriptionText}
-                    />
-                  }
-                />
-              }
-            />
-          )}
+          <ParticipationMethodRadio
+            onChange={handleParticipationMethodOnChange}
+            currentValue={participation_method}
+            value="voting"
+            name="participationmethod"
+            id="participationmethod-voting"
+            label={
+              <LabelHeaderDescription
+                header={
+                  <FormattedMessage
+                    {...messages.conductVotingOrPrioritizationText}
+                  />
+                }
+                description={
+                  <FormattedMessage
+                    {...messages.conductVotingOrPrioritizationDescriptionText}
+                  />
+                }
+              />
+            }
+          />
           {pollsEnabled && (
             <ParticipationMethodRadio
               onChange={handleParticipationMethodOnChange}
