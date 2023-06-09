@@ -10,7 +10,6 @@
   "app.components.AssignBudgetControl.a11y_price": "السعر:",
   "app.components.AssignBudgetControl.add": "إضافة أخرى",
   "app.components.AssignBudgetControl.addToMyBasket": "إضافة الكتاب إلى سلَّتي ",
-  "app.components.AssignBudgetControl.remove": "إزالة",
   "app.components.AssignBudgetControl.removeFromMyBasket": "إزالة  آخر كتاب من سلَّتي ",
   "app.components.AuthProviders.continue": "متابعة",
   "app.components.AuthProviders.continueWithAzure": "تابع باستخدام {azureProviderName}",

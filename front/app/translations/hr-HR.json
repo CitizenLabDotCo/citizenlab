@@ -10,7 +10,6 @@
   "app.components.AssignBudgetControl.a11y_price": "Cijena:",
   "app.components.AssignBudgetControl.add": "Dodaj",
   "app.components.AssignBudgetControl.addToMyBasket": "Dodaj u moju košaru",
-  "app.components.AssignBudgetControl.remove": "Ukloni",
   "app.components.AssignBudgetControl.removeFromMyBasket": "Ukloni iz moje košare",
   "app.components.AuthProviders.continue": "Nastavi",
   "app.components.AuthProviders.continueWithAzure": "Nastavite putem {azureProviderName}",

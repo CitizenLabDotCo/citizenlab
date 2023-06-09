@@ -10,7 +10,6 @@
   "app.components.AssignBudgetControl.a11y_price": "Pris:",
   "app.components.AssignBudgetControl.add": "Lägg till",
   "app.components.AssignBudgetControl.addToMyBasket": "Lägg till i min korg",
-  "app.components.AssignBudgetControl.remove": "Ta bort",
   "app.components.AssignBudgetControl.removeFromMyBasket": "Ta bort från min korg",
   "app.components.AuthProviders.continue": "Fortsätt",
   "app.components.AuthProviders.continueWithAzure": "Fortsätt med {azureProviderName}",

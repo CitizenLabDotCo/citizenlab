@@ -10,7 +10,6 @@
   "app.components.AssignBudgetControl.a11y_price": "Fiyat:",
   "app.components.AssignBudgetControl.add": "Ekle",
   "app.components.AssignBudgetControl.addToMyBasket": "Sepetime ekle",
-  "app.components.AssignBudgetControl.remove": "Kaldır",
   "app.components.AssignBudgetControl.removeFromMyBasket": "Sepetimden kaldır",
   "app.components.AuthProviders.continue": "Devam",
   "app.components.AuthProviders.continueWithAzure": "{azureProviderName} ile devam edin",

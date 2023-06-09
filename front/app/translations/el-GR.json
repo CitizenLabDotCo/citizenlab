@@ -10,7 +10,6 @@
   "app.components.AssignBudgetControl.a11y_price": "Τιμή:",
   "app.components.AssignBudgetControl.add": "Προσθήκη",
   "app.components.AssignBudgetControl.addToMyBasket": "Προσθήκη στο καλάθι μου",
-  "app.components.AssignBudgetControl.remove": "Κατάργηση",
   "app.components.AssignBudgetControl.removeFromMyBasket": "Κατάργηση από το καλάθι μου",
   "app.components.AuthProviders.continue": "Συνέχεια",
   "app.components.AuthProviders.continueWithAzure": "Συνεχίστε με το {azureProviderName}",

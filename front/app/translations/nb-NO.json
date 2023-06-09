@@ -10,7 +10,6 @@
   "app.components.AssignBudgetControl.a11y_price": "Pris",
   "app.components.AssignBudgetControl.add": "Legg til",
   "app.components.AssignBudgetControl.addToMyBasket": "Legg i handlekurv",
-  "app.components.AssignBudgetControl.remove": "Fjern",
   "app.components.AssignBudgetControl.removeFromMyBasket": "Fjern fra handlekurv",
   "app.components.AuthProviders.continue": "Fortsett",
   "app.components.AuthProviders.continueWithAzure": "Fortsett med {azureProviderName}",

@@ -10,7 +10,6 @@
   "app.components.AssignBudgetControl.a11y_price": "Prijs:",
   "app.components.AssignBudgetControl.add": "Toevoegen",
   "app.components.AssignBudgetControl.addToMyBasket": "Voeg toe aan mijn mandje",
-  "app.components.AssignBudgetControl.remove": "Verwijder",
   "app.components.AssignBudgetControl.removeFromMyBasket": "Verwijder uit mijn mandje",
   "app.components.AuthProviders.continue": "Ga verder",
   "app.components.AuthProviders.continueWithAzure": "Doorgaan met {azureProviderName}",

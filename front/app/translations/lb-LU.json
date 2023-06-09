@@ -10,7 +10,6 @@
   "app.components.AssignBudgetControl.a11y_price": "Präis:",
   "app.components.AssignBudgetControl.add": "Bäisetzen",
   "app.components.AssignBudgetControl.addToMyBasket": "A mäin Akafskuerf",
-  "app.components.AssignBudgetControl.remove": "Ewechhuelen",
   "app.components.AssignBudgetControl.removeFromMyBasket": "Aus mengem Akafskuerf eraushuelen",
   "app.components.AuthProviders.continue": "Weiderfueren",
   "app.components.AuthProviders.continueWithAzure": "Weider mat {azureProviderName}",

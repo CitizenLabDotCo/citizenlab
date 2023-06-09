@@ -10,7 +10,6 @@
   "app.components.AssignBudgetControl.a11y_price": "Aki",
   "app.components.AssignBudgetControl.add": "Ilannguguk",
   "app.components.AssignBudgetControl.addToMyBasket": "Koorinnut ilanngullugu",
-  "app.components.AssignBudgetControl.remove": "Peeruk",
   "app.components.AssignBudgetControl.removeFromMyBasket": "Koorinniit peerlugu",
   "app.components.AuthProviders.continue": "Continue",
   "app.components.AuthProviders.continueWithAzure": "Continue with {azureProviderName}",

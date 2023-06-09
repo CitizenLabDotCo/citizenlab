@@ -10,7 +10,6 @@
   "app.components.AssignBudgetControl.a11y_price": "Cena:",
   "app.components.AssignBudgetControl.add": "Pievienot",
   "app.components.AssignBudgetControl.addToMyBasket": "Pievienot manam grozam",
-  "app.components.AssignBudgetControl.remove": "Noņemt",
   "app.components.AssignBudgetControl.removeFromMyBasket": "Izņemt no mana groza",
   "app.components.AuthProviders.continue": "Turpināt",
   "app.components.AuthProviders.continueWithAzure": "Turpināt ar {azureProviderName}",

@@ -10,7 +10,6 @@
   "app.components.AssignBudgetControl.a11y_price": "Preis:",
   "app.components.AssignBudgetControl.add": "Hinzufügen",
   "app.components.AssignBudgetControl.addToMyBasket": "Zu meinem Warenkorb hinzufügen",
-  "app.components.AssignBudgetControl.remove": "Entfernen",
   "app.components.AssignBudgetControl.removeFromMyBasket": "Aus meinem Warenkorb entfernen",
   "app.components.AuthProviders.continue": "Fortfahren",
   "app.components.AuthProviders.continueWithAzure": "Weiter mit {azureProviderName}",

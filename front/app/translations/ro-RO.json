@@ -10,7 +10,6 @@
   "app.components.AssignBudgetControl.a11y_price": "Preț:",
   "app.components.AssignBudgetControl.add": "Adaugă",
   "app.components.AssignBudgetControl.addToMyBasket": "Adaugă la coșul meu",
-  "app.components.AssignBudgetControl.remove": "Elimină",
   "app.components.AssignBudgetControl.removeFromMyBasket": "Scoate din coșul meu",
   "app.components.AuthProviders.continue": "Continuă",
   "app.components.AuthProviders.continueWithAzure": "Continuă cu {azureProviderName}",

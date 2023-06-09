@@ -10,7 +10,6 @@
   "app.components.AssignBudgetControl.a11y_price": "Pris",
   "app.components.AssignBudgetControl.add": "Tilføj",
   "app.components.AssignBudgetControl.addToMyBasket": "Læg i min kurv",
-  "app.components.AssignBudgetControl.remove": "Fjern",
   "app.components.AssignBudgetControl.removeFromMyBasket": "Fjern fra min kurv",
   "app.components.AuthProviders.continue": "Fortsæt",
   "app.components.AuthProviders.continueWithAzure": "Fortsæt med {azureProviderName}",

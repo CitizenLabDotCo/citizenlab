@@ -10,7 +10,6 @@
   "app.components.AssignBudgetControl.a11y_price": "Cena:",
   "app.components.AssignBudgetControl.add": "Dodaj",
   "app.components.AssignBudgetControl.addToMyBasket": "Dodaj do koszyka",
-  "app.components.AssignBudgetControl.remove": "Usuń",
   "app.components.AssignBudgetControl.removeFromMyBasket": "Usuń z mojego koszyka",
   "app.components.AuthProviders.continue": "Kontynuuj",
   "app.components.AuthProviders.continueWithAzure": "Kontynuuj z {azureProviderName}",
