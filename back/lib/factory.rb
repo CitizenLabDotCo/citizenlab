@@ -16,8 +16,8 @@ class Factory
       ::ParticipationMethod::DocumentAnnotation.new(participation_context)
     when 'survey'
       ::ParticipationMethod::Survey.new(participation_context)
-    when 'budgeting'
-      ::ParticipationMethod::Budgeting.new(participation_context)
+    when 'voting'
+      ::ParticipationMethod::Voting.new(participation_context)
     when 'poll'
       ::ParticipationMethod::Poll.new(participation_context)
     when 'volunteering'

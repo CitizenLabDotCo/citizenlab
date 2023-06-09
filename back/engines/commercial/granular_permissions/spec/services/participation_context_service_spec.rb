@@ -274,7 +274,7 @@ describe ParticipationContextService do
       it 'returns `not_signed_in` when user needs to be signed in' do
         project = create(
           :project_with_current_phase,
-          current_phase_attrs: { with_permissions: true, participation_method: 'budgeting', max_budget: 10_000 }
+          current_phase_attrs: { with_permissions: true, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 }
         )
         idea = create(:idea, project: project, phases: [project.phases[2]])
         permission = service.get_participation_context(project).permissions.find_by(action: 'budgeting')
@@ -285,7 +285,7 @@ describe ParticipationContextService do
       it 'returns `not_in_group` when the idea is in the current phase and budgeting is not permitted' do
         project = create(
           :project_with_current_phase,
-          current_phase_attrs: { with_permissions: true, participation_method: 'budgeting', max_budget: 10_000 }
+          current_phase_attrs: { with_permissions: true, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 }
         )
         idea = create(:idea, project: project, phases: [project.phases[2]])
         permission = service.get_participation_context(project).permissions.find_by(action: 'budgeting')

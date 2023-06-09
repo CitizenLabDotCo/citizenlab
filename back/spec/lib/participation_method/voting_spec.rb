@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ParticipationMethod::Budgeting do
+RSpec.describe ParticipationMethod::Voting do
   subject(:participation_method) { described_class.new project }
 
   let(:project) { create(:continuous_budgeting_project) }
