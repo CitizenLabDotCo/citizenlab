@@ -17,7 +17,7 @@ class WebApi::V1::MentionsController < ApplicationController
 
     nb_missing_users = limit - @users.size
     if nb_missing_users > 0
-      @users += User.not_invited.by_username(query).where.not(id: @users).limit(nb_missing_users)
+      @users += User.active.by_username(query).where.not(id: @users).limit(nb_missing_users)
     end
 
     render json: WebApi::V1::UserSerializer.new(
