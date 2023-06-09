@@ -510,7 +510,7 @@ const ProjectCard = memo<Props>(
         ? phase.data.attributes.participation_method
         : project.data.attributes.participation_method;
       const canPost = !!postingPermission.enabled;
-      const canReaction =
+      const canReact =
         project.data.attributes.action_descriptor.reacting_idea.enabled;
       const canComment =
         project.data.attributes.action_descriptor.commenting_idea.enabled;
@@ -622,7 +622,7 @@ const ProjectCard = memo<Props>(
             })}
           />
         );
-      } else if (participationMethod === 'ideation' && canReaction) {
+      } else if (participationMethod === 'ideation' && canReact) {
         ctaMessage = <FormattedMessage {...messages.vote} />;
       } else if (participationMethod === 'ideation' && canComment) {
         ctaMessage = <FormattedMessage {...messages.comment} />;
