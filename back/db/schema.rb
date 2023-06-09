@@ -960,8 +960,8 @@ ActiveRecord::Schema.define(version: 2023_06_07_142901) do
     t.integer "reacting_dislike_limited_max", default: 10
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
-    t.boolean "allow_anonymous_participation", default: false, null: false
     t.string "document_annotation_embed_url"
+    t.boolean "allow_anonymous_participation", default: false, null: false
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -1099,8 +1099,8 @@ ActiveRecord::Schema.define(version: 2023_06_07_142901) do
     t.boolean "include_all_areas", default: false, null: false
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
-    t.boolean "allow_anonymous_participation", default: false, null: false
     t.string "document_annotation_embed_url"
+    t.boolean "allow_anonymous_participation", default: false, null: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -1697,8 +1697,8 @@ ActiveRecord::Schema.define(version: 2023_06_07_142901) do
   SQL
   create_view "idea_trending_infos", sql_definition: <<-SQL
       SELECT ideas.id AS idea_id,
-      GREATEST(comments_at.last_comment_at, upvotes_at.last_upvoted_at, ideas.published_at) AS last_activity_at,
-      to_timestamp(round((((GREATEST(((comments_at.comments_count)::double precision * comments_at.mean_comment_at), (0)::double precision) + GREATEST(((upvotes_at.upvotes_count)::double precision * upvotes_at.mean_upvoted_at), (0)::double precision)) + date_part('epoch'::text, ideas.published_at)) / (((GREATEST((comments_at.comments_count)::numeric, 0.0) + GREATEST((upvotes_at.upvotes_count)::numeric, 0.0)) + 1.0))::double precision))) AS mean_activity_at
+      GREATEST(comments_at.last_comment_at, likes_at.last_liked_at, ideas.published_at) AS last_activity_at,
+      to_timestamp(round((((GREATEST(((comments_at.comments_count)::double precision * comments_at.mean_comment_at), (0)::double precision) + GREATEST(((likes_at.likes_count)::double precision * likes_at.mean_liked_at), (0)::double precision)) + date_part('epoch'::text, ideas.published_at)) / (((GREATEST((comments_at.comments_count)::numeric, 0.0) + GREATEST((likes_at.likes_count)::numeric, 0.0)) + 1.0))::double precision))) AS mean_activity_at
      FROM ((ideas
        FULL JOIN ( SELECT comments.post_id AS idea_id,
               max(comments.created_at) AS last_comment_at,
@@ -1706,13 +1706,13 @@ ActiveRecord::Schema.define(version: 2023_06_07_142901) do
               count(comments.post_id) AS comments_count
              FROM comments
             GROUP BY comments.post_id) comments_at ON ((ideas.id = comments_at.idea_id)))
-       FULL JOIN ( SELECT reactions.reactable_id AS votable_id,
-              max(reactions.created_at) AS last_upvoted_at,
-              avg(date_part('epoc®h'::text, reactions.created_at)) AS mean_upvoted_at,
-              count(reactions.reactable_id) AS upvotes_count
+       FULL JOIN ( SELECT reactions.reactable_id,
+              max(reactions.created_at) AS last_liked_at,
+              avg(date_part('epoch'::text, reactions.created_at)) AS mean_liked_at,
+              count(reactions.reactable_id) AS likes_count
              FROM reactions
             WHERE (((reactions.mode)::text = 'up'::text) AND ((reactions.reactable_type)::text = 'Idea'::text))
-            GROUP BY reactions.reactable_id) upvotes_at ON ((ideas.id = upvotes_at.votable_id)));
+            GROUP BY reactions.reactable_id) likes_at ON ((ideas.id = likes_at.reactable_id)));
   SQL
   create_view "analytics_fact_posts", sql_definition: <<-SQL
       SELECT i.id,
