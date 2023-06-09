@@ -9,6 +9,7 @@ import { ParticipationMethod } from 'services/participationContexts';
 import EmptyIdeas from './EmptyIdeas';
 import { IIdeaData } from 'api/ideas/types';
 import { IParticipationContextType } from 'typings';
+import { getMethodConfig } from 'utils/participationMethodUtils';
 
 const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;
@@ -86,7 +87,7 @@ const IdeasList = ({
   hideIdeaStatus = false,
 }: Props) => {
   const theme = useTheme();
-
+  const config = participationMethod && getMethodConfig(participationMethod);
   const loadMoreIdeas = () => {
     onLoadMore();
   };
@@ -117,6 +118,11 @@ const IdeasList = ({
                     participationContextId={participationContextId}
                     participationContextType={participationContextType}
                     hideImage={hideImage}
+                    hideBody={
+                      config && config.hideAuthorOnIdeas
+                        ? config.hideAuthorOnIdeas
+                        : false
+                    }
                     hideImagePlaceholder={hideImagePlaceholder}
                     hideIdeaStatus={hideIdeaStatus}
                   />

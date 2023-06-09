@@ -12,6 +12,7 @@ import {
   ParticipationMethod,
   IdeaDefaultSortMethod,
   InputTerm,
+  VotingMethod,
 } from 'services/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -168,6 +169,7 @@ export interface IProjectAttributes {
   max_budget?: number | null;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
+  voting_method?: VotingMethod | null;
   document_annotation_embed_url?: string | null;
   // MISMATCH: ordering doesn't seem to exist on real response
   // ordering: number;

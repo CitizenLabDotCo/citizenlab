@@ -2,8 +2,8 @@ import React, { memo, MouseEvent } from 'react';
 import bowser from 'bowser';
 
 // components
-import Link from 'utils/cl-router/Link';
 import Image from 'components/UI/Image';
+import Link from 'utils/cl-router/Link';
 
 // styling
 import styled from 'styled-components';
@@ -12,6 +12,7 @@ import {
   defaultCardHoverStyle,
   media,
 } from 'utils/styleUtils';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const cardPadding = '17px';
 const cardInnerHeight = '162px';
@@ -23,13 +24,7 @@ const Container = styled(Link)`
   display: flex;
   align-items: center;
   padding: ${cardPadding};
-  cursor: pointer;
   ${defaultCardStyle};
-
-  &.desktop {
-    ${defaultCardHoverStyle};
-    transform: translate(0px, -2px);
-  }
 
   @media (max-width: 1220px) and (min-width: 1023px) {
     min-height: calc(
@@ -50,10 +45,16 @@ const IdeaCardImageWrapper = styled.div<{ hasImage: boolean }>`
   height: ${cardInnerHeight};
   display: flex;
   align-items: center;
+  cursor: pointer;
   justify-content: center;
   margin-right: 18px;
   overflow: hidden;
   border-radius: ${(props) => props.theme.borderRadius};
+
+  &.desktop {
+    ${defaultCardHoverStyle};
+    transform: translate(0px, -2px);
+  }
 
   @media (max-width: 1220px) and (min-width: 1023px) {
     height: ${cardInnerHeightExtended};
@@ -125,10 +126,10 @@ const Body = styled.div`
 `;
 
 interface Props {
-  to: string;
   image: string | null;
   imagePlaceholder: JSX.Element;
   hideImage?: boolean;
+  hideBody?: boolean;
   hideImagePlaceholder?: boolean;
   author?: {
     name: string;
@@ -136,21 +137,25 @@ interface Props {
   } | null;
   title: JSX.Element | string;
   body: JSX.Element | string;
+  interactions?: JSX.Element | null;
   footer: JSX.Element | null;
-  onClick: (event: MouseEvent<HTMLAnchorElement>) => void;
   className?: string;
+  to: string;
+  onClick: (event: MouseEvent<HTMLAnchorElement>) => void;
 }
 
 export const Card = memo<Props>(
   ({
+    image,
     to,
     onClick,
-    image,
     imagePlaceholder,
     hideImage = false,
     hideImagePlaceholder = false,
     title,
     body,
+    hideBody,
+    interactions,
     footer,
     className,
   }) => (
@@ -182,8 +187,8 @@ export const Card = memo<Props>(
           )}
         </Header>
 
-        <Body>{body}</Body>
-
+        {!hideBody && <Body>{body}</Body>}
+        <Box mt="auto">{interactions && interactions}</Box>
         {footer}
       </ContentWrapper>
     </Container>

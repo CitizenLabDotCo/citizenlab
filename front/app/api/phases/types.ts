@@ -4,8 +4,8 @@ import {
   TSurveyService,
   IdeaDefaultSortMethod,
   InputTerm,
-  VotingMethod,
   PresentationMode,
+  VotingMethod,
 } from 'services/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
 import phasesKeys from './keys';
@@ -43,9 +43,9 @@ export interface IPhaseAttributes {
   posting_enabled: boolean;
   commenting_enabled: boolean;
   voting_enabled: boolean;
-  upvoting_method: VotingMethod;
+  upvoting_method: 'limited' | 'unlimited';
   upvoting_limited_max: number;
-  downvoting_method: VotingMethod;
+  downvoting_method: 'limited' | 'unlimited';
   allow_anonymous_participation: boolean;
   downvoting_enabled: boolean;
   downvoting_limited_max: number;
@@ -57,6 +57,7 @@ export interface IPhaseAttributes {
   poll_anonymous?: boolean;
   ideas_count: number;
   ideas_order?: IdeaDefaultSortMethod;
+  voting_method?: VotingMethod | null;
   document_annotation_embed_url?: string;
 }
 

@@ -25,6 +25,8 @@ export type ParticipationMethod =
   | 'volunteering'
   | 'document_annotation';
 
+export type VotingMethod = 'budgeting';
+
 export type IdeaDefaultSortMethod =
   | 'trending'
   | 'random'
@@ -48,8 +50,6 @@ export type InputTerm =
   | 'question'
   | 'issue'
   | 'contribution';
-
-export type VotingMethod = 'limited' | 'unlimited';
 
 export type PresentationMode = 'card' | 'map';
 

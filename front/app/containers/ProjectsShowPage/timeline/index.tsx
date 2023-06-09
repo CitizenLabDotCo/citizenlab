@@ -44,6 +44,7 @@ import { isValidPhase } from '../phaseParam';
 import setPhaseURL from './setPhaseURL';
 import PhaseDocumentAnnotation from './document_annotation';
 import { useParams } from 'react-router-dom';
+import StatusModule from 'components/StatusModule';
 
 const Container = styled.div``;
 
@@ -184,11 +185,19 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
                 setSelectedPhase={handleSetSelectedPhase}
               />
               {isPBPhase && (
-                <StyledPBExpenses
-                  participationContextId={selectedPhaseId}
-                  participationContextType="phase"
-                  viewMode={smallerThanSmallTablet ? 'column' : 'row'}
-                />
+                <>
+                  <StatusModule
+                    phase={selectedPhase}
+                    project={project.data}
+                    // votingMethod={project?.data.attributes.voting_method}
+                    votingMethod={'budgeting'} // TODO: Get from data once implemented
+                  />
+                  <StyledPBExpenses
+                    participationContextId={selectedPhaseId}
+                    participationContextType="phase"
+                    viewMode={smallerThanSmallTablet ? 'column' : 'row'}
+                  />
+                </>
               )}
               <PhaseSurvey project={project.data} phaseId={selectedPhaseId} />
               {participationMethod === 'document_annotation' && (

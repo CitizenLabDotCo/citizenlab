@@ -1,13 +1,12 @@
-import React, { memo, FormEvent } from 'react';
-import { IOpenPostPageModalEvent } from 'containers/App';
+import React, { FormEvent, memo } from 'react';
 
 // components
 import UserName from 'components/UI/UserName';
 import Card from 'components/UI/Card/Compact';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import FooterWithVoteControl from './FooterWithVoteControl';
-import FooterWithBudgetControl from './FooterWithBudgetControl';
+import IdeaCardFooter from './IdeaCardFooter';
 
 // types
 import { ParticipationMethod } from 'services/participationContexts';
@@ -20,7 +19,6 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
-import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
 // styles
@@ -30,6 +28,11 @@ import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { timeAgo } from 'utils/dateUtils';
 import useLocale from 'hooks/useLocale';
 import { IIdea } from 'api/ideas/types';
+
+// components
+import AssignBudgetControl from 'components/AssignBudgetControl';
+import eventEmitter from 'utils/eventEmitter';
+import { IOpenPostPageModalEvent } from 'containers/App';
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -106,6 +109,7 @@ interface Props {
   hideImage?: boolean;
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
+  hideBody?: boolean;
 }
 
 const IdeaLoading = (props: Props) => {
@@ -127,11 +131,10 @@ const CompactIdeaCard = memo<IdeaCardProps>(
     idea,
     className,
     participationMethod,
-    participationContextId,
-    participationContextType,
     hideImage = false,
     hideImagePlaceholder = false,
     hideIdeaStatus = false,
+    hideBody = false,
   }) => {
     const locale = useLocale();
     const localize = useLocalize();
@@ -151,6 +154,25 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       .replaceAll('&amp;', '&')
       .trim();
 
+    const getInteractions = () => {
+      if (project) {
+        const projectId = idea.data.relationships.project.data.id;
+        const ideaBudget = idea.data.attributes.budget;
+        if (participationMethod === 'budgeting' && ideaBudget) {
+          return (
+            <Box display="flex" alignItems="center">
+              <AssignBudgetControl
+                view="ideaCard"
+                projectId={projectId}
+                ideaId={idea.data.id}
+              />
+            </Box>
+          );
+        }
+      }
+      return null;
+    };
+
     const getFooter = () => {
       if (project) {
         const commentingEnabled =
@@ -164,12 +186,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
         // Should probably have better solution in future.
         if (participationMethod === 'budgeting') {
           return (
-            <FooterWithBudgetControl
-              idea={idea}
-              participationContextId={participationContextId}
-              participationContextType={participationContextType}
-              showCommentCount={showCommentCount}
-            />
+            <IdeaCardFooter idea={idea} showCommentCount={showCommentCount} />
           );
         }
 
@@ -200,11 +217,11 @@ const CompactIdeaCard = memo<IdeaCardProps>(
     return (
       <Card
         onClick={onCardClick}
+        to={`/ideas/${idea.data.attributes.slug}`}
         className={[className, 'e2e-idea-card']
           .filter((item) => typeof item === 'string' && item !== '')
           .join(' ')}
         title={ideaTitle}
-        to={`/ideas/${idea.data.attributes.slug}`}
         image={
           !isNilOrError(ideaImage)
             ? ideaImage.data.attributes.versions.medium
@@ -242,6 +259,8 @@ const CompactIdeaCard = memo<IdeaCardProps>(
             </Body>
           </BodyWrapper>
         }
+        hideBody={hideBody}
+        interactions={getInteractions()}
         footer={getFooter()}
       />
     );

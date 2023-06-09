@@ -9,6 +9,7 @@ import {
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
+import StatusModule from 'components/StatusModule';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -87,11 +88,18 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
         <StyledContentContainer id="project-ideas" maxWidth={maxPageWidth}>
           <SectionContainer>
             {isPBProject && (
-              <StyledPBExpenses
-                participationContextId={project.id}
-                participationContextType="project"
-                viewMode={smallerThanBigTablet ? 'column' : 'row'}
-              />
+              <>
+                <StatusModule
+                  // votingMethod={project.attributes.voting_method}
+                  votingMethod={'budgeting'} // TODO: Get from data once implemented
+                  project={project}
+                />
+                <StyledPBExpenses
+                  participationContextId={project.id}
+                  participationContextType="project"
+                  viewMode={smallerThanBigTablet ? 'column' : 'row'}
+                />
+              </>
             )}
             <StyledProjectPageSectionTitle>
               <FormattedMessage

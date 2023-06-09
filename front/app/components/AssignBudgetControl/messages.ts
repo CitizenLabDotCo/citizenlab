@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  remove: {
-    id: 'app.components.AssignBudgetControl.remove',
-    defaultMessage: 'Remove',
+  added: {
+    id: 'app.components.AssignBudgetControl.added',
+    defaultMessage: 'Added',
   },
   removeFromMyBasket: {
     id: 'app.components.AssignBudgetControl.removeFromMyBasket',

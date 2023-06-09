@@ -1,7 +1,7 @@
 import React, { memo, FormEvent, useState } from 'react';
 
 // components
-import Button from 'components/UI/Button';
+import { Box, Button, Icon } from '@citizenlab/cl2-component-library';
 
 // services
 import { getLatestRelevantPhase } from 'api/phases/utils';
@@ -35,18 +35,14 @@ import messages from './messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styles
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 
 // typings
 import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-
-const IdeaCardContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const IdeaPageContainer = styled.div`
   display: flex;
@@ -100,6 +96,8 @@ const AssignBudgetControl = memo(
     const { data: idea } = useIdeaById(ideaId);
     const { data: project } = useProjectById(projectId);
     const { data: phases } = usePhases(projectId);
+    const theme = useTheme();
+    const { data: appConfig } = useAppConfiguration();
 
     const isContinuousProject =
       project?.data.attributes.process_type === 'continuous';
@@ -266,21 +264,29 @@ const AssignBudgetControl = memo(
         onClick={handleAddRemoveButtonClick}
         disabled={buttonDisabled}
         processing={processing}
-        bgColor={isInBasket ? colors.red600 : colors.success}
-        icon={!isInBasket ? 'basket-plus' : 'basket-minus'}
+        bgColor={isInBasket ? colors.green500 : colors.white}
+        textColor={isInBasket ? colors.white : theme.colors.tenantPrimary}
+        textHoverColor={isInBasket ? colors.white : theme.colors.tenantPrimary}
+        bgHoverColor={isInBasket ? colors.green500 : 'white'}
+        borderColor={isInBasket ? '' : theme.colors.tenantPrimary}
+        width="100%"
         className={`e2e-assign-budget-button ${
           isInBasket ? 'in-basket' : 'not-in-basket'
         }`}
       >
+        {isInBasket && <Icon mb="4px" fill="white" name="check" />}
         <FormattedMessage {...buttonMessage} />
+        {` (${
+          idea.data.attributes.budget
+        } ${appConfig?.data.attributes.settings.core.currency.toString()})`}
       </Button>
     ) : null;
 
     if (view === 'ideaCard') {
       return (
-        <IdeaCardContainer className={`e2e-assign-budget ${className || ''}`}>
+        <Box className={`e2e-assign-budget ${className || ''}`} width="100%">
           {addRemoveButton}
-        </IdeaCardContainer>
+        </Box>
       );
     }
 
@@ -317,7 +323,7 @@ function getAddRemoveButtonMessage(view: TView, isInBasket: boolean) {
   switch (view) {
     case 'ideaCard':
       if (isInBasket) {
-        return messages.remove;
+        return messages.added;
       } else {
         return messages.add;
       }

@@ -75,6 +75,7 @@ export type ParticipationMethodConfig = {
   renderCTABar: (props: CTABarProps) => ReactNode | JSX.Element | null;
   postSortingOptions?: PostSortingOptionType[];
   showInputCount: boolean;
+  hideAuthorOnIdeas?: boolean; // Hides the author on the idea pages/cards
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -137,6 +138,7 @@ const ideationConfig: ParticipationMethodConfig = {
     return <IdeationCTABar project={props.project} phases={props.phases} />;
   },
   postSortingOptions: defaultSortingOptions,
+  hideAuthorOnIdeas: false,
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
@@ -291,6 +293,7 @@ const budgetingConfig: ParticipationMethodConfig = {
   postSortingOptions: defaultSortingOptions.filter(
     (option) => option.value !== 'trending' && option.value !== 'popular'
   ),
+  hideAuthorOnIdeas: true,
 };
 
 const pollConfig: ParticipationMethodConfig = {
