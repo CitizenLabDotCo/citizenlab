@@ -126,7 +126,6 @@ class JsonFormsService
 
   def budget_field_allowed?(project, current_user)
     # TODO: Deal with generic voting
-    return false unless AppConfiguration.instance.feature_activated?('participatory_budgeting')
     return false unless current_user
     return false unless UserRoleService.new.can_moderate_project?(project, current_user)
 
