@@ -30,7 +30,7 @@ class Factory
   end
 
   def voting_method_for(participation_context)
-    case participation_context&.voring_method
+    case participation_context&.voting_method
     when 'budgeting'
       ::VotingMethod::Budgeting.new(participation_context)
     else
