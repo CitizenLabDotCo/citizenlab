@@ -1251,7 +1251,6 @@
   "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Prasības dalībniekiem un jautājumi",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Piekļuves tiesības",
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "Dažas līdzdalības metodes nav pieejamas esošajos posmos. Šādos gadījumos jāizveido jauns posms.",
-  "app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip": "Izvēlēties, kādas līdzdalības darbības lietotāji var veikt šajā idejas izstrādes posmā.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Laika līnija",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Aptauja",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "Vislielāko balsu skaitu saņēma",

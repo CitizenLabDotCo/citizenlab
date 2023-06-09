@@ -1148,7 +1148,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Trieu com poden participar els usuaris.",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Drets d'accés",
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "Alguns mètodes de participació no estan disponibles per a les fases existents. En aquests casos s'haurà de crear una nova fase.",
-  "app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip": "Seleccioneu quina acció participativa poden dur a terme els usuaris durant aquesta fase d'ideació.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Timeline",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Poll",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "Most voted",

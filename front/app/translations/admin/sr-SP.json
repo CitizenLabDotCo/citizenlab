@@ -1251,7 +1251,6 @@
   "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Participant requirements & questions",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Права приступа",
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "Неке методе учешћа нису доступне за постојеће фазе. У овим случајевима мораће се створити нова фаза.",
-  "app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip": "Изаберите које партиципативне акције корисници могу да предузму током ове фазе идеје.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Временска линија",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Анкета",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "Највише гласано",

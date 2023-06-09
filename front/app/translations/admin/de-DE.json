@@ -1251,7 +1251,6 @@
   "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Teilnahmebedingungen & Fragen",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Zugriffsrechte",
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "Einige Beteiligungsmethoden sind für bestehende Phasen nicht verfügbar. In diesen Fällen muss eine neue Phase erstellt werden.",
-  "app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip": "Wählen Sie aus, welche partizipativen Maßnahmen die Benutzerinnen in dieser Ideenfindungsphase ergreifen können.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Zeitleiste",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Abstimmung",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "{orgName, select, München {Meiste Bewertungen} other {Meiste Stimmen}}",

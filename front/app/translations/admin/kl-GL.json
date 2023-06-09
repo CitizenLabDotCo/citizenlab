@@ -1148,7 +1148,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Atuisut qanoq peqataasinnaanersut toqqaruk.",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Iserfigisinnaasanut pisinnaatitaaffiit",
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "Some participation methods aren’t available for existing phases. A new phase will have to be created in these cases.",
-  "app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip": "Atuisut killiffimmi uani qanoq iliuuseqarsinnaanersut toqqaruk.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Timeline",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Poll",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "Most voted",
