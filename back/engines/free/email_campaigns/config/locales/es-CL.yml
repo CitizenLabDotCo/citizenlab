@@ -121,7 +121,7 @@ es-CL:
     comment_on_your_initiative:
       commented: '%{authorFirstName} escribió:'
       cta_reply_to: 'Responder a %{commentAuthor}'
-      event_description: '%{authorNameFull} ha puesto una reacción a su iniciativa ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
+      event_description: '%{authorNameFull} ha comentado tu propuesta ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
       main_header: '%{commentAuthor} comentó tu iniciativa'
       subject: 'Has recibido un comentario en la plataforma de %{organizationName}'
       preheader: '%{authorName} dejó un comentario sobre tu iniciativa para %{organizationName}'
@@ -167,7 +167,7 @@ es-CL:
       preheader_initiative: 'La iniciativa de %{authorName} ha sido asignada a ti'
     invite_reminder:
       cta_accept_invitation: 'Aceptar tu invitación'
-      invitation_header: 'Tu invitación está abierta'
+      invitation_header: 'Tu invitación está pendiente'
       preheader: '%{organizationName} te envió una invitación para unirte a su plataforma de participación unos días atras.'
       subject: 'Tienes una invitación abierta para la plataforma de participación de %{organizationName}'
     invite_received:
@@ -181,9 +181,9 @@ es-CL:
       action_add_image: '%{addImageLink} para aumentar visibilidad'
       action_published_initiative: 'Iniciativa publicada'
       action_send_email: 'Envía a sus contactos un %{sendEmailLink}'
-      action_share_fb: 'Deja a tus amigos ahora en %{fbLink}'
-      action_share_link: 'Compártalo a través de cualquier canal copiando el %{link}'
-      action_share_twitter: 'Informa a tus seguidores sobre %{twitterLink}'
+      action_share_fb: 'Compártelo con tus amigos en %{fbLink}'
+      action_share_link: 'Compártelo con tus contactos por correo electrónico %{link}'
+      action_share_twitter: 'Compártelo con tus seguidores en %{twitterLink}'
       cta_view_initiative: 'Ir a tu iniciativa'
       link: enlace
       main_header: '¡Has publicado una iniciativa! Reunamos apoyo para ella.'
@@ -251,7 +251,7 @@ es-CL:
       by_author: 'por %{authorName}'
       commented: '%{authorFirstName} escribió:'
       cta_reply_to: 'Responder a%{commentAuthor}'
-      event_description: '%{authorNameFull} ha puesto una reacción a tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
+      event_description: '%{authorNameFull} ha comentado tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
       main_header: '%{authorName} comentó tu idea'
       subject: 'Has recibido un comentario en la plataforma de %{organizationName}'
       preheader: '%{authorName} dejó un comentario sobre tu idea para %{organizationName}'
@@ -302,7 +302,7 @@ es-CL:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escribió:'
       cta_view: 'Ir a esta iniciativa'
-      event_description: '%{officialName} ha puesto una reacción a tu iniciativa ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{organizationName}.'
+      event_description: '%{officialName} ha commentado tu iniciativa ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{organizationName}.'
       main_header: 'Hay una actualización sobre la iniciativa que comentaste antes'
       subject: 'Una iniciativa que comentaste ha recibido una actualización oficial en la plataforma %{organizationName}'
       preheader: '%{officialName} dejó una actualización sobre una iniciativa que usted comentó'
@@ -310,7 +310,7 @@ es-CL:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escribió:'
       cta_view: 'Ir a esta idea'
-      event_description: '%{officialName} ha puesto una reacción a tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{officialName}.'
+      event_description: '%{officialName} ha commentado tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{officialName}.'
       subject: 'Una idea sobre la que votastes ha recibido una actualización en la plataforma de %{organizationName}'
       preheader: '%{officialName} dejó una actualización en una idea sobre la que votaste'
       main_header: ""
@@ -318,7 +318,7 @@ es-CL:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escribió:'
       cta_view: 'Ir a esta idea'
-      event_description: '%{officialName} ha puesto una reacción a tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{officialName}.'
+      event_description: '%{officialName} ha commentado tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{officialName}.'
       main_header: 'Hay una actualización sobre la idea que comentaste antes'
       subject: 'Una idea que comentaste ha recibido una actualización oficial en la plataforma %{organizationName}'
       preheader: '%{officialName} dejó una actualización oficial sobre una idea que usted comentó'
@@ -326,7 +326,7 @@ es-CL:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escribió:'
       cta_view: 'Ir a tu idea'
-      event_description: '%{officialName} ha puesto una reacción a tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{officialName}.'
+      event_description: '%{officialName} ha commentado tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{officialName}.'
       main_header: 'Has recibido una actualización de %{organizationName}'
       subject: 'Has recibido una actualización de %{organizationName}'
       preheader: '%{officialName} dejó una actualización oficial de tu idea'
@@ -334,14 +334,14 @@ es-CL:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escribió:'
       cta_view: 'Ir a esta iniciativa'
-      event_description: '%{officialName} ha puesto una reacción a tu iniciativa ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{organizationName}.'
+      event_description: '%{officialName} ha commentado tu iniciativa ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{organizationName}.'
       main_header: 'Hay una actualización sobre la iniciativa por la que votaste'
       subject: 'Una iniciativa sobre la que votastes ha recibido una actualización en la plataforma de %{organizationName}'
       preheader: '%{officialName} dejó una actualización sobre una iniciativa sobre la que votaste'
     official_feedback_on_your_initiative:
       updated: '%{officialName} escribió:'
       cta_view: 'Ir a tu iniciativa'
-      event_description: '%{officialName} ha puesto una reacción a tu iniciativa ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{organizationName}.'
+      event_description: '%{officialName} ha commentado tu iniciativa ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{organizationName}.'
       main_header: 'Has recibido una actualización de %{officialName}'
       subject: 'Has recibido una actualización oficial en la plataforma %{organizationName}'
       preheader: '%{officialName} dejó una actualización oficial de tu iniciativa'
@@ -438,7 +438,7 @@ es-CL:
       commented: "%{authorFirstName} comentó:"
       preheader: "Reporte semanal de%{organizationName}"
       title_your_weekly_report: "Descubre lo que pasó la semana pasada"
-      intro_text: "Aquí hay un resumen de lo que ha estado sucediendo en la plataforma de participación de %{organizationName}."
+      intro_text: "Aquí tienes un resumen de lo que ha estado sucediendo en la plataforma de participación de %{organizationName}."
       cta_go_to_the_platform: "Ir a la plataforma"
       title_no_activity_past_week: "Sin actividad en la última semana"
       title_proposals: "Propuestas iniciadas"
@@ -448,8 +448,8 @@ es-CL:
       today_by_author: "Hoy por %{author}"
       yesterday_by_author: "Ayer por %{author}"
       x_days_ago_by_author: "%{x} días atrás por %{author}"
-      trending_ideas: "Ideas tendencia"
-      trending_ideas_text: "¿Interesado en lo que ha estado sucediendo en la plataforma? Echa un vistazo a las tres ideas más modernas, mira lo que la gente está diciendo de ellas y únete a la conversación."
+      trending_ideas: "Ideas populares"
+      trending_ideas_text: "¿Estas interesado en lo que ha estado sucediendo en la plataforma? Echa un vistazo a las tres ideas más modernas, mira lo que la gente está diciendo de ellas y únete a la conversación."
       no_notifications: "No hay notificaciones"
       one_notification: "1 notificación"
       multiple_notifications: "%{notifCount} notificaciones"
@@ -467,9 +467,9 @@ es-CL:
       action_comment: '%{textComment} en ideas existentes'
       action_published_idea: 'Idea publicada'
       action_send_email: 'Envía a sus contactos un %{sendEmailLink}'
-      action_share_fb: 'Deja a tus amigos ahora en %{fbLink}'
-      action_share_link: 'Compártalo a través de cualquier canal copiando el %{link}'
-      action_share_twitter: 'Informa a tus seguidores sobre %{twitterLink}'
+      action_share_fb: 'Compártelo con tus amigos en %{fbLink}'
+      action_share_link: 'Compártelo con tus contactos por correo electrónico %{link}'
+      action_share_twitter: 'Compártelo con tus seguidores en %{twitterLink}'
       add_image: 'Añade una imagen'
       cta_view_idea: 'Ir a tu idea'
       event_description: '%{firstName}, felicidades por su primera idea en la plataforma de participación de %{organizationName}. Se le notificará cuando las personas interactúen con su idea. Descubra los siguientes pasos que puede seguir a continuación.'
@@ -490,9 +490,9 @@ es-CL:
       action_add_image: '%{addImageLink} para aumentar la visibilidad'
       action_published_idea: 'Idea publicada'
       action_send_email: 'Envía a sus contactos un %{sendEmailLink}'
-      action_share_fb: 'Deja a tus amigos ahora en %{fbLink}'
-      action_share_link: 'Compártalo a través de cualquier canal copiando el %{link}'
-      action_share_twitter: 'Informa a tus seguidores sobre %{twitterLink}'
+      action_share_fb: 'Compártelo con tus amigos en %{fbLink}'
+      action_share_link: 'Compártelo con tus contactos por correo electrónico %{link}'
+      action_share_twitter: 'Compártelo con tus seguidores en %{twitterLink}'
       add_image: 'Añade una imagen'
       cta_view_idea: 'Ir a tu idea'
       event_description: '%{firstName}, su idea ha sido publicada con éxito en la plataforma de participación de %{organizationName}. Se le notificará cuando las personas interactúen con su idea. Descubra los siguientes pasos que puede seguir a continuación.'
