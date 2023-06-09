@@ -214,6 +214,13 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
         ? messages.oneDocToReview
         : messages.oneDocToReviewInCurrentPhase;
 
+    const isParticipatoryBudgeting =
+      projectType === 'continuous'
+        ? project.data.attributes.participation_method === 'voting' &&
+          project.data.attributes.voting_method === 'budgeting'
+        : currentPhase?.attributes.participation_method === 'voting' &&
+          currentPhase?.attributes.voting_method === 'budgeting';
+
     return (
       <Container id="e2e-project-sidebar" className={className || ''}>
         <About>
@@ -380,15 +387,12 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   </ListItem>
                 </Box>
               )}
-            {((projectType === 'continuous' &&
-              projectParticipationMethod === 'budgeting') ||
-              currentPhase?.attributes.participation_method === 'budgeting') &&
-              maxBudget && (
-                <ListItem id="e2e-project-sidebar-pb-budget">
-                  <ListItemIcon ariaHidden name="coin-stack" />
-                  <FormattedBudget value={maxBudget} />
-                </ListItem>
-              )}
+            {isParticipatoryBudgeting && maxBudget && (
+              <ListItem id="e2e-project-sidebar-pb-budget">
+                <ListItemIcon ariaHidden name="coin-stack" />
+                <FormattedBudget value={maxBudget} />
+              </ListItem>
+            )}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'survey') ||
               currentPhaseParticipationMethod === 'survey') &&

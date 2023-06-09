@@ -20,7 +20,7 @@ export type ParticipationMethod =
   | 'information'
   | 'native_survey'
   | 'survey'
-  | 'budgeting'
+  | 'voting'
   | 'poll'
   | 'volunteering'
   | 'document_annotation';

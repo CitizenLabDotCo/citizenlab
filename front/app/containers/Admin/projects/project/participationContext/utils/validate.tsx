@@ -46,7 +46,7 @@ export default (state: State, formatMessage: FormatMessage) => {
     isValidated = false;
   }
 
-  if (participation_method === 'budgeting') {
+  if (participation_method === 'voting') {
     if (isNaN(min_budget)) {
       minBudgetError = formatMessage(messages.minBudgetRequired);
       isValidated = false;

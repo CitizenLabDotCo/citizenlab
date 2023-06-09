@@ -132,9 +132,9 @@ const ParticipationMethodPicker = ({
             <ParticipationMethodRadio
               onChange={handleParticipationMethodOnChange}
               currentValue={participation_method}
-              value="budgeting"
+              value="voting"
               name="participationmethod"
-              id="participationmethod-budgeting"
+              id="participationmethod-voting"
               label={
                 <LabelHeaderDescription
                   header={

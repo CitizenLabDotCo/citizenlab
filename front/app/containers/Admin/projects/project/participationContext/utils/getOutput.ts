@@ -71,7 +71,7 @@ export default ({
     output = {
       participation_method,
     };
-  } else if (participation_method === 'budgeting') {
+  } else if (participation_method === 'voting') {
     output = omitBy(
       {
         participation_method,

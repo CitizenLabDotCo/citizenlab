@@ -87,7 +87,6 @@ interface DataProps {
   survey_monkey_enabled: GetFeatureFlagChildProps;
   snap_survey_enabled: GetFeatureFlagChildProps;
   isCustomInputTermEnabled: GetFeatureFlagChildProps;
-  isParticipatoryBudgetingEnabled: GetFeatureFlagChildProps;
 }
 
 export type ApiErrors = CLErrors | null | undefined;
@@ -226,29 +225,26 @@ class ParticipationContext extends PureComponent<
     participation_method: ParticipationMethod
   ) => {
     const ideation = participation_method === 'ideation';
-    const budgeting = participation_method === 'budgeting';
+    const voting = participation_method === 'voting';
     const survey = participation_method === 'survey';
-    const ideationOrBudgeting = ideation || budgeting;
-
-    const { isParticipatoryBudgetingEnabled } = this.props;
+    const ideationOrVoting = ideation || voting;
 
     this.setState({
       participation_method,
       posting_enabled: ideation ? true : null,
-      commenting_enabled: ideationOrBudgeting ? true : null,
+      commenting_enabled: ideationOrVoting ? true : null,
       voting_enabled: ideation ? true : null,
       upvoting_method: ideation ? 'unlimited' : null,
       downvoting_enabled: ideation ? true : null,
-      allow_anonymous_participation: ideationOrBudgeting ? false : null,
-      voting_method:
-        budgeting && isParticipatoryBudgetingEnabled ? 'budgeting' : null,
+      allow_anonymous_participation: ideation ? false : null,
+      voting_method: voting ? 'budgeting' : null,
       downvoting_method: ideation ? 'unlimited' : null,
-      presentation_mode: ideationOrBudgeting ? 'card' : null,
+      presentation_mode: ideationOrVoting ? 'card' : null,
       survey_embed_url: null,
       survey_service: survey ? 'typeform' : null,
       document_annotation_embed_url: null,
-      min_budget: budgeting ? 0 : null,
-      max_budget: budgeting ? 1000 : null,
+      min_budget: voting ? 0 : null,
+      max_budget: voting ? 1000 : null,
       ideas_order: ideation ? getDefaultSortMethodFallback(ideation) : null,
     });
   };
@@ -462,7 +458,7 @@ class ParticipationContext extends PureComponent<
               }
             />
 
-            {participation_method === 'budgeting' && (
+            {participation_method === 'voting' && (
               <VotingInputs
                 isCustomInputTermEnabled={isCustomInputTermEnabled}
                 input_term={input_term}
@@ -630,9 +626,6 @@ const Data = adopt<DataProps>({
   snap_survey_enabled: <GetFeatureFlag name="snap_survey_surveys" />,
   microsoft_forms_enabled: <GetFeatureFlag name="microsoft_forms_surveys" />,
   isCustomInputTermEnabled: <GetFeatureFlag name="idea_custom_copy" />,
-  isParticipatoryBudgetingEnabled: (
-    <GetFeatureFlag name="participatory_budgeting" />
-  ),
 });
 
 const ParticipationContextWithIntl = injectIntl(ParticipationContext);
