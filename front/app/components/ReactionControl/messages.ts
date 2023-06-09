@@ -55,8 +55,8 @@ export default defineMessages({
     id: 'app.components.VoteControl.downvote',
     defaultMessage: 'Downvote',
   },
-  a11y_likesDownvotes: {
-    id: 'app.containers.VoteControl.a11y_likesDownvotes',
+  a11y_upvotesDownvotes: {
+    id: 'app.containers.VoteControl.a11y_upvotesDownvotes',
     defaultMessage:
       'Total likes: {likesCount}, total downvotes: {downvotesCount}',
   },

@@ -14,7 +14,7 @@ const ScreenReaderContent = ({ likesCount, dislikesCount }: Props) => {
   return (
     <ScreenReaderOnly>
       <FormattedMessage
-        {...messages.a11y_likesDownvotes}
+        {...messages.a11y_upvotesDownvotes}
         values={{ likesCount, dislikesCount }}
       />
     </ScreenReaderOnly>
