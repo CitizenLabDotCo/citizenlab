@@ -38,6 +38,7 @@ CL2_SUPPORTED_LOCALES = %i[
   tr-TR
 ].freeze
 
+# Can I remove pt?
 fallback_locales =
   %i[
     ar
