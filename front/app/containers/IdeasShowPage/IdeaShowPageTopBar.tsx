@@ -6,7 +6,7 @@ import useProjectById from 'api/projects/useProjectById';
 import useAuthUser from 'api/me/useAuthUser';
 
 // components
-import VoteControl from 'components/VoteControl';
+import ReactionControl from 'components/ReactionControl';
 import GoBackButton from 'containers/IdeasShow/GoBackButton';
 
 // events
@@ -71,7 +71,9 @@ const IdeaShowPageTopBar = ({
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
 
-  const onDisabledVoteClick = (disabled_reason: IdeaReactingDisabledReason) => {
+  const onDisabledReactionClick = (
+    disabled_reason: IdeaReactingDisabledReason
+  ) => {
     if (
       !isNilOrError(authUser) &&
       project &&
@@ -107,11 +109,11 @@ const IdeaShowPageTopBar = ({
           />
         </Left>
         <Right>
-          <VoteControl
+          <ReactionControl
             size="1"
             styleType="border"
             ideaId={ideaId}
-            disabledVoteClick={onDisabledVoteClick}
+            disabledReactionClick={onDisabledReactionClick}
           />
         </Right>
       </TopBarInner>

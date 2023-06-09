@@ -95,20 +95,20 @@ const PostLinkRight = styled.div`
   white-space: nowrap;
 `;
 
-const VotesContainer = styled.div`
+const ReactionsContainer = styled.div`
   display: flex;
   align-items: center;
   margin-top: 20px;
 `;
 
-const VoteIcon = styled(Icon)`
+const ReactionIcon = styled(Icon)`
   flex: 0 0 24px;
   fill: ${colors.textSecondary};
   margin-right: 5px;
   margin-top: -2px;
 `;
 
-const VoteCount = styled.div`
+const ReactionCount = styled.div`
   color: ${colors.textSecondary};
 `;
 
@@ -206,11 +206,11 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
               postId={postId}
               postType={postType}
             />
-            <VotesContainer>
-              <VoteIcon ariaHidden name="vote-up" />
-              <VoteCount aria-hidden>
+            <ReactionsContainer>
+              <ReactionIcon ariaHidden name="vote-up" />
+              <ReactionCount aria-hidden>
                 {comment.attributes.likes_count}
-              </VoteCount>
+              </ReactionCount>
               <ScreenReaderOnly>
                 <FormattedMessage
                   {...messages.a11y_likesCount}
@@ -219,7 +219,7 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
                   }}
                 />
               </ScreenReaderOnly>
-            </VotesContainer>
+            </ReactionsContainer>
           </CommentContainer>
         );
       })}

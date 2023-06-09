@@ -29,7 +29,7 @@ import InitiativeMeta from './InitiativeMeta';
 import PostedBy from './PostedBy';
 import PostedByMobile from './PostedByMobile';
 import ActionBar from './ActionBar';
-import VoteControl from './VoteControl';
+import ReactionControl from './ReactionControl';
 import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
 
 // resources
@@ -302,7 +302,7 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 80px;
 `;
 
-const StyledVoteControl = styled(VoteControl)`
+const StyledReactionControl = styled(ReactionControl)`
   box-shadow: 1px 0px 15px rgba(0, 0, 0, 0.06);
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   padding: 25px;
@@ -508,7 +508,7 @@ const InitiativesShow = ({
         )}
 
         {isNotDesktop && (
-          <StyledVoteControl
+          <StyledReactionControl
             initiativeId={initiativeId}
             onScrollToOfficialFeedback={onScrollToOfficialFeedback}
           />
@@ -629,10 +629,10 @@ const InitiativesShow = ({
                       {...messages.a11y_voteControl}
                     />
                   </ScreenReaderOnly>
-                  <VoteControl
+                  <ReactionControl
                     initiativeId={initiativeId}
                     onScrollToOfficialFeedback={onScrollToOfficialFeedback}
-                    id="e2e-initiative-vote-control"
+                    id="e2e-initiative-reaction-control"
                   />
                   <SharingWrapper>
                     <SharingButtons

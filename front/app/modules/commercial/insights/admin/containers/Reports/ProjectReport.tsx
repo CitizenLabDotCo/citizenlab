@@ -37,7 +37,7 @@ import BarChartActiveUsersByTime from './Charts/BarChartActiveUsersByTime';
 import PollReport from './PollReport';
 import UserCharts from './Charts/UserCharts';
 import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
-import VotesByTimeCard from 'components/admin/GraphCards/VotesByTimeCard';
+import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard';
 import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
 
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -78,7 +78,7 @@ const TimelineSection = styled.div`
 
 interface Props {
   phases: GetPhasesChildProps;
-  mostreactedIdeas: GetIdeasChildProps;
+  mostReactedIdeas: GetIdeasChildProps;
   project: GetProjectChildProps;
 }
 
@@ -111,7 +111,7 @@ const ProjectReport = memo(
   ({
     project,
     phases,
-    mostreactedIdeas,
+    mostReactedIdeas,
     intl: { formatMessage, formatDate },
   }: Props & WrappedComponentProps & WithRouterProps) => {
     const localize = useLocalize();
@@ -157,7 +157,7 @@ const ProjectReport = memo(
         month: 'short',
       });
 
-    const mostreactedIdeasSerie = mostreactedIdeas?.list?.map((idea) => ({
+    const mostReactedIdeasSerie = mostReactedIdeas?.list?.map((idea) => ({
       code: idea.id,
       value: idea.attributes.likes_count + idea.attributes.dislikes_count,
       up: idea.attributes.likes_count,
@@ -270,18 +270,18 @@ const ProjectReport = memo(
                   endAtMoment={moment(endAt)}
                   resolution={resolution}
                 />
-                <VotesByTimeCard
+                <ReactionsByTimeCard
                   projectId={project.id}
                   startAtMoment={moment(startAt)}
                   endAtMoment={moment(endAt)}
                   resolution={resolution}
                 />
                 <HorizontalBarChartWithoutStream
-                  serie={mostreactedIdeasSerie}
+                  serie={mostReactedIdeasSerie}
                   graphTitleString={formatMessage(
                     messages.fiveInputsWithMostVotes
                   )}
-                  graphUnit="votes"
+                  graphUnit="reactions"
                   className="dynamicHeight fullWidth"
                 />
               </Column>
@@ -345,7 +345,7 @@ const Data = adopt<Props, WithRouterProps>({
   phases: ({ params, render }) => (
     <GetPhases projectId={params.projectId}>{render}</GetPhases>
   ),
-  mostreactedIdeas: ({ params, render }) => (
+  mostReactedIdeas: ({ params, render }) => (
     <GetIdeas
       {...{
         'page[size]': 5,

@@ -158,7 +158,7 @@ export default ({
 
         <ToggleRow className="last">
           <ToggleLabel>
-            <FormattedMessage {...messages.inputReactingEnabled} />
+            <FormattedMessage {...messages.inputVotingEnabled} />
           </ToggleLabel>
           <Toggle checked={reacting_enabled} onChange={toggleReactingEnabled} />
           <Error apiErrors={apiErrors && apiErrors.reacting_enabled} />
@@ -191,7 +191,7 @@ export default ({
             {reacting_like_method === 'limited' && (
               <>
                 <SubSectionTitle>
-                  <FormattedMessage {...messages.maxLikes} />
+                  <FormattedMessage {...messages.maxUpvotes} />
                 </SubSectionTitle>
                 <ReactingLimitInput
                   id="liking-limit"
@@ -228,7 +228,7 @@ export default ({
                 value={true}
                 name="enableDisliking"
                 id="enableDisliking-true"
-                label={<FormattedMessage {...messages.downreactingEnabled} />}
+                label={<FormattedMessage {...messages.downvotingEnabled} />}
               />
               <Radio
                 onChange={handleReactingDislikeEnabledOnChange}
@@ -266,7 +266,7 @@ export default ({
                 {reacting_dislike_method === 'limited' && (
                   <>
                     <SubSectionTitle>
-                      <FormattedMessage {...messages.maxDislikes} />
+                      <FormattedMessage {...messages.maxDownvotes} />
                     </SubSectionTitle>
                     <ReactingLimitInput
                       id="disliking-limit"

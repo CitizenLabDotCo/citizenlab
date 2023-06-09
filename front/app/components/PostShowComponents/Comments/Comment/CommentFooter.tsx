@@ -3,9 +3,9 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import CommentVote from './CommentVote';
 import CommentReplyButton from './CommentReplyButton';
 import CommentsMoreActions from './CommentsMoreActions';
+import CommentReaction from './CommentReaction';
 
 // resources
 import GetAppConfigurationLocales, {
@@ -80,7 +80,7 @@ const Left = styled.ul`
   }
 `;
 
-const StyledCommentVote = styled(CommentVote)`
+const StyledCommentReaction = styled(CommentReaction)`
   height: ${footerHeight};
   margin-top: ${footerTopMargin};
 `;
@@ -153,7 +153,7 @@ const CommentFooter = ({
   return (
     <Container className={className || ''}>
       <Left>
-        <StyledCommentVote
+        <StyledCommentReaction
           postId={postId}
           postType={postType}
           comment={comment}
