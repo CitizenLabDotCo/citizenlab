@@ -121,7 +121,7 @@ es:
     comment_on_your_initiative:
       commented: '%{authorFirstName} escribió:'
       cta_reply_to: 'Responder a %{commentAuthor}'
-      event_description: '%{authorNameFull} ha puesto una reacción a su propuesta ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
+      event_description: '%{authorNameFull} ha comentado tu propuesta ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
       main_header: '%{commentAuthor} comentó tu propuesta'
       subject: 'Has recibido un comentario en la plataforma de %{organizationName}'
       preheader: '%{authorName} dejó un comentario sobre tu propuesta para %{organizationName}'
@@ -251,7 +251,7 @@ es:
       by_author: 'por %{authorName}'
       commented: '%{authorFirstName} escribió:'
       cta_reply_to: 'Responder a%{commentAuthor}'
-      event_description: '%{authorNameFull} ha puesto una reacción a tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
+      event_description: '%{authorNameFull} ha comentado tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
       main_header: '%{authorName} comentó tu idea'
       subject: 'Has recibido un comentario en la plataforma de %{organizationName}'
       preheader: '%{authorName} dejó un comentario sobre tu idea para %{organizationName}'
@@ -438,7 +438,7 @@ es:
       commented: "%{authorFirstName} comentó:"
       preheader: "Reporte semanal de %{organizationName}"
       title_your_weekly_report: "Descubre lo que pasó la semana pasada"
-      intro_text: "Aquí hay un resumen de lo que ha estado sucediendo en la plataforma de participación de %{organizationName}."
+      intro_text: "Aquí tienes un resumen de lo que ha estado sucediendo en la plataforma de participación de %{organizationName}."
       cta_go_to_the_platform: "Ir a la plataforma"
       title_no_activity_past_week: "Sin actividad en la última semana"
       title_proposals: "Propuestas iniciadas"
@@ -448,7 +448,7 @@ es:
       today_by_author: "Hoy por %{author}"
       yesterday_by_author: "Ayer por %{author}"
       x_days_ago_by_author: "%{x} días atrás por %{author}"
-      trending_ideas: "Ideas tendencia"
+      trending_ideas: "Ideas populares"
       trending_ideas_text: "¿Interesado en lo que ha estado sucediendo en la plataforma? Echa un vistazo a las tres ideas más modernas, mira lo que la gente está diciendo de ellas y únete a la conversación."
       no_notifications: "No hay notificaciones"
       one_notification: "1 notificación"
