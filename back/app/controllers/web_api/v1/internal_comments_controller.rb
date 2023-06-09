@@ -120,7 +120,7 @@ class WebApi::V1::InternalCommentsController < ApplicationController
     @comment.publication_status = 'deleted'
     if @comment.save
       SideFxInternalCommentService.new.after_mark_as_deleted(@comment, current_user)
-      head :accepted
+      head :no_content
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
     end

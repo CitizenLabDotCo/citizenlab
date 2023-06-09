@@ -286,7 +286,7 @@ resource 'InternalComments' do
       let(:id) { internal_comment.id }
 
       example_request 'Author marks an internal comment on an idea as deleted' do
-        expect(response_status).to eq 202
+        expect(response_status).to eq 204
         expect(internal_comment.reload.publication_status).to eq('deleted')
       end
     end
