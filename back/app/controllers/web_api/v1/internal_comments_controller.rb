@@ -3,19 +3,18 @@
 class WebApi::V1::InternalCommentsController < ApplicationController
   before_action :set_post_type_id_and_policy, only: %i[index create]
   before_action :set_comment, only: %i[children show update mark_as_deleted destroy]
-  # skip_before_action :authenticate_user # Not sure if this is needed, or even a good idea. TBD
 
   FULLY_EXPAND_THRESHOLD = 5
   MINIMAL_SUBCOMMENTS = 2
 
   def index
     include_attrs = [author: [:unread_notifications]]
-    root_comments = policy_scope(InternalComment, policy_scope_class: @policy_class::Scope)
+    root_comments = policy_scope(InternalComment, policy_scope_class: @policy_class::Scope) # policy_scope(InternalComment)
       .where(post_type: @post_type, post_id: @post_id)
       .where(parent: nil)
       .includes(*include_attrs)
 
-    root_comments = case params[:sort]
+    root_comments = case params[:sort] # replace with method that handles sort param
     when 'new'
       root_comments.order(created_at: :desc)
     when '-new'
@@ -116,7 +115,7 @@ class WebApi::V1::InternalCommentsController < ApplicationController
   end
 
   def mark_as_deleted
-    return unless @comment.author_id == current_user&.id
+    authorize @comment, policy_class: @policy_class
 
     @comment.publication_status = 'deleted'
     if @comment.save
