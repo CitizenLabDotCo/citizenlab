@@ -3,8 +3,6 @@
 class SideFxInternalCommentService
   include SideFxHelper
 
-  @@mention_service = MentionService.new # rubocop:disable Style/ClassVars
-
   def before_create(comment, _user)
     process_mentions(comment)
   end
@@ -64,14 +62,14 @@ class SideFxInternalCommentService
     #   new_body, _users = @@mention_service.process_mentions(body)
     #   [locale, new_body]
     # end
-    comment.body_text, _users = @@mention_service.process_mentions(comment.body_text)
+    comment.body_text, _users = MentionService.new.process_mentions(comment.body_text)
   end
 
   def notify_mentioned_users(comment, user)
     # mentioned_users = comment.body_multiloc.flat_map do |_locale, body|
     #   @@mention_service.extract_expanded_mention_users(body)
     # end
-    mentioned_users = @@mention_service.extract_expanded_mention_users(comment.body_text)
+    mentioned_users = MentionService.new.extract_expanded_mention_users(comment.body_text)
 
     mentioned_users.uniq.each do |mentioned_user|
       LogActivityJob.perform_later(
@@ -93,7 +91,7 @@ class SideFxInternalCommentService
     # end
 
     old_body_text, new_body_text = comment.body_text_previous_change
-    mentioned_users = @@mention_service.new_mentioned_users(old_body_text, new_body_text)
+    mentioned_users = MentionService.new.new_mentioned_users(old_body_text, new_body_text)
 
     mentioned_users.uniq.each do |mentioned_user|
       LogActivityJob.perform_later(
