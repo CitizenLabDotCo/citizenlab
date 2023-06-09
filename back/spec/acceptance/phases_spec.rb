@@ -106,10 +106,10 @@ resource 'Phases' do
         parameter :posting_limited_max, 'Number of posts a citizen can perform in this phase. Defaults to 1', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase? Defaults to true', required: false
         parameter :voting_enabled, 'Can citizens vote in this phase? Defaults to true', required: false
-        parameter :upvoting_method, "How does upvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :upvoting_method, "How does upvoting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
         parameter :upvoting_limited_max, 'Number of upvotes a citizen can perform in this phase, only if the upvoting_method is limited. Defaults to 10', required: false
         parameter :downvoting_enabled, 'Can citizens downvote in this phase? Defaults to true', required: false
-        parameter :downvoting_method, "How does downvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :downvoting_method, "How does downvoting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
         parameter :downvoting_limited_max, 'Number of downvotes a citizen can perform in this phase, only if the downvoting_method is limited. Defaults to 10', required: false
         parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously. Defaults to false', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
@@ -328,10 +328,10 @@ resource 'Phases' do
         parameter :posting_limited_max, 'Number of posts a citizen can perform in this phase. Defaults to 1', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase?', required: false
         parameter :voting_enabled, 'Can citizens vote in this phase?', required: false
-        parameter :upvoting_method, "How does upvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
+        parameter :upvoting_method, "How does upvoting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}", required: false
         parameter :upvoting_limited_max, 'Number of upvotes a citizen can perform in this phase, only if the upvoting_method is limited', required: false
         parameter :downvoting_enabled, 'Can citizens vote in this phase?', required: false
-        parameter :downvoting_method, "How does downvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
+        parameter :downvoting_method, "How does downvoting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}", required: false
         parameter :downvoting_limited_max, 'Number of downvotes a citizen can perform in this phase, only if the downvoting_method is limited', required: false
         parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously.', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
