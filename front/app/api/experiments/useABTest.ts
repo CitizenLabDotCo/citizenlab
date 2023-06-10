@@ -43,8 +43,11 @@ function useABTest<TreatmentOption extends string>({
   const { mutate: addExperiment } = useAddExperiment();
   const { data: authUser, isLoading } = useAuthUser();
 
+  const treatmentsStr = JSON.stringify(treatments);
+
   const treatment = useMemo(() => {
     if (isLoading) return;
+    const treatments: TreatmentOption[] = JSON.parse(treatmentsStr);
 
     if (authUser) {
       const seed = toNumber(authUser.data.id);
@@ -52,7 +55,7 @@ function useABTest<TreatmentOption extends string>({
     } else {
       return randomPickFrom(treatments);
     }
-  }, [authUser, isLoading, treatments]);
+  }, [authUser, isLoading, treatmentsStr]);
 
   const send = useCallback(
     (payload: string) => {

@@ -50,6 +50,9 @@ const ReportPrintPage = lazy(
 );
 const DisabledAccount = lazy(() => import('containers/DisabledAccount'));
 
+// TODO remove
+const Test = lazy(() => import('containers/Test'));
+
 export default function createRoutes() {
   return [
     {
@@ -332,6 +335,17 @@ export default function createRoutes() {
             </PageLoading>
           ),
         },
+
+        // TODO remove
+        {
+          path: 'testing',
+          element: (
+            <PageLoading>
+              <Test />
+            </PageLoading>
+          ),
+        },
+
         ...moduleConfiguration.routes.citizen,
       ],
     },
