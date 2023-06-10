@@ -14,16 +14,7 @@ class WebApi::V1::InternalCommentsController < ApplicationController
       .where(parent: nil)
       .includes(*include_attrs)
 
-    root_comments = case params[:sort] # replace with method that handles sort param
-    when 'new'
-      root_comments.order(created_at: :desc)
-    when '-new'
-      root_comments.order(created_at: :asc)
-    when nil
-      root_comments.order(lft: :asc)
-    else
-      raise 'Unsupported sort method'
-    end
+    root_comments = sort_comments root_comments
     root_comments = paginate root_comments
 
     fully_expanded_root_comments = InternalComment.where(id: root_comments)
@@ -138,6 +129,17 @@ class WebApi::V1::InternalCommentsController < ApplicationController
   end
 
   private
+
+  def sort_comments(comments)
+    case params[:sort]
+    when 'new'
+      comments.order(created_at: :desc)
+    when '-new', nil
+      comments.order(created_at: :asc)
+    else
+      raise 'Unsupported sort method'
+    end
+  end
 
   def set_comment
     @comment = InternalComment.find params[:id]
