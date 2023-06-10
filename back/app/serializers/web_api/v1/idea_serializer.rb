@@ -8,6 +8,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     :upvotes_count,
     :downvotes_count,
     :comments_count,
+    :internal_comments_count,
     :official_feedbacks_count,
     :location_point_geojson,
     :location_description,
