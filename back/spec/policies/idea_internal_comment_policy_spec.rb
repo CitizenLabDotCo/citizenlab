@@ -97,6 +97,19 @@ describe IdeaInternalCommentPolicy do
         expect(scope.resolve.size).to eq 1
       end
     end
+
+    context 'for a moderator who is not moderator of the project of the internal comment' do
+      let(:user) { create(:project_moderator, projects: [create(:project)]) }
+
+      it { is_expected.not_to permit(:show)    }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:destroy) }
+
+      it 'does not include comment when indexing internal comments' do
+        expect(scope.resolve.size).to eq 0
+      end
+    end
   end
 
   # Add test(s) of folder moderator?
