@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe InitiativeInternalCommentPolicy do
+describe InternalCommentPolicy do
   subject { described_class.new(user, internal_comment) }
 
-  let(:scope) { InitiativeInternalCommentPolicy::Scope.new(user, initiave.internal_comments) }
+  let(:scope) { InternalCommentPolicy::Scope.new(user, initiave.internal_comments) }
 
   context 'on internal comment on initiave' do
     let(:initiave) { create(:initiative) }

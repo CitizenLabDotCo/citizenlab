@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::InternalCommentsController < ApplicationController
-  before_action :set_post_type_id_and_policy, only: %i[index create]
+  before_action :set_post_type_and_id, only: %i[index create]
   before_action :set_comment, only: %i[children show update mark_as_deleted destroy]
 
   FULLY_EXPAND_THRESHOLD = 5
@@ -9,7 +9,7 @@ class WebApi::V1::InternalCommentsController < ApplicationController
 
   def index
     include_attrs = [author: [:unread_notifications]]
-    root_comments = policy_scope(InternalComment, policy_scope_class: @policy_class::Scope) # policy_scope(InternalComment)
+    root_comments = policy_scope(InternalComment)
       .where(post_type: @post_type, post_id: @post_id)
       .where(parent: nil)
       .includes(*include_attrs)
@@ -57,7 +57,7 @@ class WebApi::V1::InternalCommentsController < ApplicationController
   end
 
   def children
-    @comments = policy_scope(InternalComment, policy_scope_class: @policy_class::Scope)
+    @comments = policy_scope(InternalComment)
       .where(parent: params[:id])
       .order(:lft)
     @comments = paginate @comments
@@ -80,7 +80,7 @@ class WebApi::V1::InternalCommentsController < ApplicationController
     @comment.post_type = @post_type
     @comment.post_id = @post_id
     @comment.author ||= current_user
-    authorize @comment, policy_class: @policy_class
+    authorize @comment
 
     SideFxInternalCommentService.new.before_create @comment, current_user
     if @comment.save
@@ -99,7 +99,7 @@ class WebApi::V1::InternalCommentsController < ApplicationController
     @comment.attributes = comment_update_params
     # We cannot pass policy class to permitted_attributes
     # @comment.attributes = pundit_params_for(@comment).permit(@policy_class.new(current_user, @comment).permitted_attributes_for_update)
-    authorize @comment, policy_class: @policy_class
+    authorize @comment
 
     SideFxInternalCommentService.new.before_update @comment, current_user
     if @comment.save
@@ -115,7 +115,7 @@ class WebApi::V1::InternalCommentsController < ApplicationController
   end
 
   def mark_as_deleted
-    authorize @comment, policy_class: @policy_class
+    authorize @comment
 
     @comment.publication_status = 'deleted'
     if @comment.save
@@ -142,23 +142,12 @@ class WebApi::V1::InternalCommentsController < ApplicationController
   def set_comment
     @comment = InternalComment.find params[:id]
     @post_type = @comment.post_type
-    set_policy_class
-    authorize @comment, policy_class: @policy_class
+    authorize @comment
   end
 
-  def set_post_type_id_and_policy
+  def set_post_type_and_id
     @post_type = params[:post]
     @post_id = params[:"#{@post_type.underscore}_id"]
-    set_policy_class
-  end
-
-  def set_policy_class
-    @policy_class = case @post_type
-    when 'Idea' then IdeaInternalCommentPolicy
-    when 'Initiative' then InitiativeInternalCommentPolicy
-    else raise "#{@post_type} has no comment policy defined"
-    end
-    raise 'must not be blank' if @post_type.blank?
   end
 
   def comment_create_params

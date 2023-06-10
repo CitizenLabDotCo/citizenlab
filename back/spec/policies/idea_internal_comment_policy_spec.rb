@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe IdeaInternalCommentPolicy do
+describe InternalCommentPolicy do
   subject { described_class.new(user, internal_comment) }
 
-  let(:scope) { IdeaInternalCommentPolicy::Scope.new(user, idea.internal_comments) }
+  let(:scope) { InternalCommentPolicy::Scope.new(user, idea.internal_comments) }
 
   context 'on internal comment by an admin on idea in a public project' do
     let(:project) { create(:continuous_project) }

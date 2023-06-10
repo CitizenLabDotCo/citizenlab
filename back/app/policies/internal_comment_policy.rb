@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class IdeaInternalCommentPolicy < ApplicationPolicy
+class InternalCommentPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -10,10 +10,8 @@ class IdeaInternalCommentPolicy < ApplicationPolicy
     end
 
     def resolve
-      # Possibly need to include folder moderation in this (TBD), and need to also
-      # handle fact that a user can be a moderator of projects and/or folders
       if user&.active? && user&.admin?
-        scope.where(post_type: 'Idea')
+        scope.all
       elsif user&.active? && user&.project_moderator?
         scope.where(post_id: Idea.where(project_id: user.moderatable_project_ids))
       else
@@ -23,19 +21,19 @@ class IdeaInternalCommentPolicy < ApplicationPolicy
   end
 
   def create?
-    active_admin_or_moderator?
+    internal_commenter?
   end
 
   def children?
-    active_admin_or_moderator?
+    internal_commenter?
   end
 
   def show?
-    active_admin_or_moderator?
+    internal_commenter?
   end
 
   def update?
-    active_admin_or_moderator? && internal_comment_author?
+    internal_commenter? && internal_comment_author?
   end
 
   def mark_as_deleted?
@@ -47,6 +45,16 @@ class IdeaInternalCommentPolicy < ApplicationPolicy
   end
 
   private
+
+  def internal_commenter?
+    if record.post_type == 'Idea'
+      active_admin_or_moderator?
+    elsif record.post_type == 'Initiative'
+      active? && admin?
+    else
+      false
+    end
+  end
 
   def active_admin_or_moderator?
     active? && (admin? || UserRoleService.new.can_moderate?(record.post, user))
