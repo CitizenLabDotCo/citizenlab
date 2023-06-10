@@ -41,6 +41,7 @@ module AdminApi
     field :href, String, null: true
     field :upvotes_count, Integer, null: false
     field :comments_count, Integer, null: false
+    field :internal_comments_count, Integer, null: false
     field :images, InitiativeImage.connection_type, null: true
     def images
       object.initiative_images
