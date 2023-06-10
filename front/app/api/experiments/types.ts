@@ -9,8 +9,7 @@ interface IExperimentData {
   attributes: {
     name: string;
     treatment: string;
-    payload?: string;
-    user_id?: string;
+    payload: string;
   };
 }
 
@@ -25,6 +24,5 @@ export interface IExperiments {
 export interface IExperimentAdd {
   name: string;
   treatment: string;
-  payload?: string;
-  user_id?: string;
+  payload: string;
 }

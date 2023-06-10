@@ -7,9 +7,7 @@ class CreateExperiments < ActiveRecord::Migration[6.1]
     create_table :experiments, id: :uuid do |t|
       t.string :name, null: false
       t.string :treatment, null: false
-      t.string :payload
-
-      t.references :user, type: :uuid, index: true
+      t.string :payload, null: false
 
       t.timestamps
     end

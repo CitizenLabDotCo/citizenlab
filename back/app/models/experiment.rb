@@ -7,18 +7,12 @@
 #  id         :uuid             not null, primary key
 #  name       :string           not null
 #  treatment  :string           not null
-#  payload    :string
-#  user_id    :uuid
+#  payload    :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-# Indexes
-#
-#  index_experiments_on_user_id  (user_id)
-#
 class Experiment < ApplicationRecord
-  belongs_to :user
-
   validates :name, presence: true
   validates :treatment, presence: true
+  validates :payload, presence: true
 end

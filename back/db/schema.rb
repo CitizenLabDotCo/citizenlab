@@ -391,11 +391,9 @@ ActiveRecord::Schema.define(version: 2023_06_09_161522) do
   create_table "experiments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "treatment", null: false
-    t.string "payload"
-    t.uuid "user_id"
+    t.string "payload", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_experiments_on_user_id"
   end
 
   create_table "flag_inappropriate_content_inappropriate_content_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
