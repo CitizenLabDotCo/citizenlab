@@ -20,6 +20,10 @@ namespace :fix_existing_tenants do
           fix[:tenant] = tenant.host
           fix
         end
+        fixes += InternalComment.counter_culture_fix_counts(skip_unsupported: true).map do |fix|
+          fix[:tenant] = tenant.host
+          fix
+        end
         fixes += OfficialFeedback.counter_culture_fix_counts(skip_unsupported: true).map do |fix|
           fix[:tenant] = tenant.host
           fix
