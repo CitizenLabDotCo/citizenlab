@@ -75,12 +75,6 @@ class Idea < ApplicationRecord
     delta_magnitude: proc { |idea| idea.comments_count }
   )
 
-  counter_culture(
-    :project,
-    column_name: 'internal_comments_count',
-    delta_magnitude: proc { |idea| idea.internal_comments_count }
-  )
-
   belongs_to :assignee, class_name: 'User', optional: true
 
   has_many :ideas_topics, dependent: :destroy
@@ -124,7 +118,6 @@ class Idea < ApplicationRecord
 
   after_create :assign_slug
   after_update :fix_comments_count_on_projects
-  after_update :fix_internal_comments_count_on_projects
 
   scope :with_some_topics, (proc do |topics|
     ideas = joins(:ideas_topics).where(ideas_topics: { topic: topics })
@@ -251,12 +244,6 @@ class Idea < ApplicationRecord
     return unless project_id_previously_changed?
 
     Comment.counter_culture_fix_counts only: [%i[idea project]]
-  end
-
-  def fix_internal_comments_count_on_projects
-    return unless project_id_previously_changed?
-
-    InternalComment.counter_culture_fix_counts only: [%i[idea project]]
   end
 
   def update_phase_ideas_count(_)

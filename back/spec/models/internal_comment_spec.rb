@@ -11,50 +11,41 @@ RSpec.describe Comment do
 
   describe 'body sanitizer' do
     it 'sanitizes script tags in the body' do
-      comment = create(:internal_comment, body_text: '<p>Test</p><script>The script tags should be removed!</script>')
-      expect(comment.body_text).to eq('<p>Test</p>The script tags should be removed!')
+      internal_comment = create(:internal_comment, body_text: '<p>Test</p><script>The script tags should be removed!</script>')
+      expect(internal_comment.body_text).to eq('<p>Test</p>The script tags should be removed!')
     end
   end
 
   describe 'counters' do
-    it 'increments the internal_comments_count in project and idea for a new published internal_comment' do
-      project = create(:project)
-      idea = create(:idea, project: project)
+    it 'increments the internal_comments_count of idea for a new published internal_comment' do
+      idea = create(:idea, project: create(:project))
 
-      expect(project.internal_comments_count).to eq 0
       expect(idea.internal_comments_count).to eq 0
 
       create(:internal_comment, post: idea)
 
-      expect(project.reload.internal_comments_count).to eq 1
       expect(idea.reload.internal_comments_count).to eq 1
     end
 
-    it 'decrements the internal_comments_count in project and idea for a deleted internal_comment' do
-      project = create(:project)
-      idea = create(:idea, project: project)
-      comment = create(:internal_comment, post: idea)
+    it 'decrements the internal_comments_count of idea for a deleted internal_comment' do
+      idea = create(:idea, project: create(:project))
+      internal_comment = create(:internal_comment, post: idea)
 
-      expect(project.reload.internal_comments_count).to eq 1
       expect(idea.reload.internal_comments_count).to eq 1
 
-      comment.update!(publication_status: 'deleted')
+      internal_comment.update!(publication_status: 'deleted')
 
-      expect(project.reload.internal_comments_count).to eq 0
       expect(idea.reload.internal_comments_count).to eq 0
     end
 
-    it 'decrements the internal_comments_count in project and idea for a destroyed internal_comment' do
-      project = create(:project)
-      idea = create(:idea, project: project)
-      comment = create(:internal_comment, post: idea)
+    it 'decrements the internal_comments_count of idea for a destroyed internal_comment' do
+      idea = create(:idea, project: create(:project))
+      internal_comment = create(:internal_comment, post: idea)
 
-      expect(project.reload.internal_comments_count).to eq 1
       expect(idea.reload.internal_comments_count).to eq 1
 
-      comment.destroy
+      internal_comment.destroy
 
-      expect(project.reload.internal_comments_count).to eq 0
       expect(idea.reload.internal_comments_count).to eq 0
     end
 

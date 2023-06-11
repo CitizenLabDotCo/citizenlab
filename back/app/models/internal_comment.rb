@@ -51,14 +51,6 @@ class InternalComment < ApplicationRecord
     },
     touch: true
   )
-  counter_culture(
-    %i[idea project],
-    column_name: proc { |model| model.published? ? 'internal_comments_count' : nil },
-    column_names: {
-      ['internal_comments.publication_status = ?', 'published'] => 'internal_comments_count'
-    },
-    touch: true
-  )
 
   # rubocop:disable Rails/InverseOf
   # This code allows us to do something like comments.include(:idea)
