@@ -31,6 +31,10 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
     object.header_bg && object.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
   end
 
+  attribute :internal_comments_count, if: proc { |object, params|
+    can_moderate?(object, params)
+  }
+
   has_many :initiative_images, serializer: WebApi::V1::ImageSerializer
   has_many :topics
   has_many :areas

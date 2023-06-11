@@ -30,6 +30,10 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     TextImageService.new.render_data_images object, :body_multiloc
   end
 
+  attribute :internal_comments_count, if: proc { |object, params|
+    can_moderate?(object, params)
+  }
+
   attribute :action_descriptor do |object, params|
     @participation_context_service = params[:pcs] || ParticipationContextService.new
     commenting_disabled_reason = @participation_context_service.commenting_disabled_reason_for_idea(object, current_user(params))
