@@ -39,7 +39,6 @@
 #  posting_method                :string           default("unlimited"), not null
 #  posting_limited_max           :integer          default(1)
 #  allow_anonymous_participation :boolean          default(FALSE), not null
-#  internal_comments_count       :integer          default(0), not null
 #
 # Indexes
 #
