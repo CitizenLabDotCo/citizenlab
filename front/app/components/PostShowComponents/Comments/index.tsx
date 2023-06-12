@@ -95,7 +95,7 @@ const CommentsSection = ({
   postType,
   className,
   allowAnonymousParticipation,
-}) => {
+}: Props) => {
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
