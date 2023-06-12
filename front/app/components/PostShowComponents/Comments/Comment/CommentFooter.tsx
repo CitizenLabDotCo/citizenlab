@@ -13,9 +13,7 @@ import Outlet from 'components/Outlet';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
-import useUserById from 'api/users/useUserById';
 import useComment from 'api/comments/useComment';
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 const footerHeight = '30px';
 const footerTopMargin = '6px';
@@ -111,12 +109,8 @@ const CommentFooter = ({
   authorId,
 }: Props) => {
   const { data: comment } = useComment(commentId);
-  const { data: author } = useUserById(authorId);
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: idea } = useIdeaById(ideaId);
-  const commentingPermissionInitiative = useInitiativesPermissions(
-    'commenting_initiative'
-  );
 
   if (isNilOrError(comment)) {
     return null;
@@ -136,10 +130,9 @@ const CommentFooter = ({
           postType={postType}
           commentId={commentId}
           commentType={commentType}
-          author={author?.data}
+          authorId={authorId}
           idea={idea?.data}
           comment={comment.data}
-          commentingPermissionInitiative={commentingPermissionInitiative}
         />
         <Outlet
           id="app.components.PostShowComponents.CommentFooter.left"
