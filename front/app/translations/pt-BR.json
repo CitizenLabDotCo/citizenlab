@@ -233,7 +233,7 @@
   "app.components.ParticipationCTABars.allocateBudget": "Distribua o seu orçamento",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Aberto à participação",
   "app.components.ParticipationCTABars.poll": "Faça a sondagem",
-  "app.components.ParticipationCTABars.projectClosedForSubmission": "Não estão a ser aceites novos envios",
+  "app.components.ParticipationCTABars.projectClosedForSubmission": "Não estamos aceitando novas submissões no momento",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Este projeto está atualmente aberto à participação.",
   "app.components.ParticipationCTABars.reviewDocument": "Revisar o documento",
   "app.components.ParticipationCTABars.seeIdeas": "Ver ideias",
