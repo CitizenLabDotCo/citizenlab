@@ -6,7 +6,7 @@ import {
   ActionDescriptor,
   ActionDescriptorFutureEnabled,
 } from 'utils/actionDescriptors';
-import { ILinks, IRelationship, Multiloc, UploadFile, CLError } from 'typings';
+import { ILinks, IRelationship, Multiloc } from 'typings';
 import {
   TSurveyService,
   ParticipationMethod,
@@ -15,10 +15,6 @@ import {
   ParticipationContext,
 } from 'services/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
-import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { Locale } from '@citizenlab/cl2-component-library';
-import { IAreaData } from 'api/areas/types';
-import { IAppConfiguration } from 'api/app_configuration/types';
 
 // Keys
 export type ProjectsKeys = Keys<typeof projectsKeys>;
@@ -211,29 +207,5 @@ export interface IUpdatedProjectProperties {
   slug?: string;
   topic_ids?: string[];
   include_all_areas?: boolean;
-  folder_id?: string | null;
-}
-
-export interface IProjectFormState {
-  processing: boolean;
-  project: IProject | null | undefined;
-  publicationStatus: 'draft' | 'published' | 'archived';
-  projectType: 'continuous' | 'timeline';
-  projectAttributesDiff: IUpdatedProjectProperties;
-  projectHeaderImage: UploadFile[] | null;
-  presentationMode: 'map' | 'card';
-  projectCardImage: UploadFile | null;
-  projectCardImageToRemove: UploadFile | null;
-  projectFiles: UploadFile[];
-  projectFilesToRemove: UploadFile[];
-  titleError: Multiloc | null;
-  apiErrors: { [fieldName: string]: CLError[] };
-  saved: boolean;
-  areas: IAreaData[];
-  locale: Locale;
-  currentTenant: IAppConfiguration | null;
-  submitState: ISubmitState;
-  slug: string | null;
-  showSlugErrorMessage: boolean;
   folder_id?: string | null;
 }
