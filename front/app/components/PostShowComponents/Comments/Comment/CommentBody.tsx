@@ -7,7 +7,6 @@ import useUpdateComment from 'api/comments/useUpdateComment';
 import { IUpdatedComment } from 'api/comments/types';
 
 // i18n
-import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
@@ -25,11 +24,11 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 
 import Outlet from 'components/Outlet';
 import useComment from 'api/comments/useComment';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 import { filter } from 'rxjs/operators';
 import { Button } from '@citizenlab/cl2-component-library';
 import { commentTranslateButtonClicked$ } from '../events';
+import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.div``;
 
@@ -82,8 +81,8 @@ const CommentBody = ({
     ideaId: postType === 'idea' ? postId : undefined,
     initiativeId: postType === 'initiative' ? postId : undefined,
   });
+  const localize = useLocalize();
   const locale = useLocale();
-  const tenantLocales = useAppConfigurationLocales();
 
   const [commentContent, setCommentContent] = useState('');
   const [editableCommentContent, setEditableCommentContent] = useState('');
@@ -95,19 +94,12 @@ const CommentBody = ({
   );
 
   useEffect(() => {
-    if (
-      !isNilOrError(locale) &&
-      !isNilOrError(tenantLocales) &&
-      !isNilOrError(comment) &&
-      !commentContent
-    ) {
+    if (!isNilOrError(comment) && !commentContent) {
       const setNewCommentContent = () => {
         let commentContent = '';
 
-        commentContent = getLocalized(
-          comment.data.attributes.body_multiloc,
-          locale,
-          tenantLocales
+        commentContent = localize(
+          comment.data.attributes.body_multiloc
         ).replace(
           /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
           '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
@@ -119,10 +111,8 @@ const CommentBody = ({
       const setNewEditableCommentContent = () => {
         let editableCommentContent = '';
 
-        editableCommentContent = getLocalized(
-          comment.data.attributes.body_multiloc,
-          locale,
-          tenantLocales
+        editableCommentContent = localize(
+          comment.data.attributes.body_multiloc
         ).replace(
           /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>@([\S\s]*?)<\/span>/gi,
           '@[$3]($2)'
@@ -134,7 +124,7 @@ const CommentBody = ({
       setNewCommentContent();
       setNewEditableCommentContent();
     }
-  }, [comment, locale, tenantLocales, commentContent]);
+  }, [comment, commentContent, localize]);
 
   useEffect(() => {
     const subscription = commentTranslateButtonClicked$
