@@ -1,10 +1,6 @@
 import React from 'react';
-
-// components
 import Author from 'components/Author';
-import AdminBadge from './AdminBadge';
-
-// style
+import { lighten } from 'polished';
 import styled from 'styled-components';
 import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 
@@ -35,6 +31,22 @@ const Right = styled.div`
 
 const StyledAuthor = styled(Author)`
   margin-left: -4px;
+`;
+
+const AdminBadge = styled.span`
+  color: ${colors.red600};
+  font-size: ${fontSizes.xs}px;
+  line-height: 16px;
+  border-radius: ${(props) => props.theme.borderRadius};
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 600;
+  background: ${lighten(0.52, colors.red600)};
+  border: none;
+  padding: 4px 8px;
+  height: 24px;
+  display: flex;
+  align-items: center;
 `;
 
 interface Props {
