@@ -691,7 +691,6 @@
   "app.containers.Admin.emails.nameVariablesInfo": "Alıcılara \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. Ör. \"Sayın \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ...\" değişkenlerini kullanarak hitap edebilirsiniz",
   "app.containers.Admin.emails.noCampaignsDescription": "İstediğiniz kadar e-posta oluşturabilir ve gönderebilirsiniz.",
   "app.containers.Admin.emails.noCampaignsHeader": "Henüz özel e-posta yok",
-  "app.containers.Admin.emails.noExampleYet": "Henüz bu tür bir e-posta gönderilmediği için size örnek bir e-posta gösteremiyoruz. Bir e-posta gönderilir gönderilmez buradan görüntüleyebileceksiniz.",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Henüz SMS taslağı hazırlanmadı veya gönderilmedi",
   "app.containers.Admin.emails.previewSentConfirmation": "E-posta adresinize bir e-posta önizlemesi gönderildi",
   "app.containers.Admin.emails.previewTitle": "Önizleme",

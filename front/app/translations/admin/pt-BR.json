@@ -691,7 +691,6 @@
   "app.containers.Admin.emails.nameVariablesInfo": "Você pode falar diretamente com os cidadãos usando as variáveis ​​\\{\\{primeiro nome\\}\\}\\{\\{sobrenome\\} \\}. Por exemplo. \"Caro \\{\\{primeiro nome\\}\\}\\ {\\{sobrenome\\}\\}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Você pode criar e enviar quantos e-mails desejar.",
   "app.containers.Admin.emails.noCampaignsHeader": "Ainda não há e-mails personalizados",
-  "app.containers.Admin.emails.noExampleYet": "Não podemos mostrar um exemplo de e-mail, pois nenhum e-mail desse tipo foi enviado ainda. Assim que um for enviado, você poderá visualizá-lo aqui.",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Nenhum SMS foi ainda redigido ou enviado",
   "app.containers.Admin.emails.previewSentConfirmation": "Um e-mail de visualização prévia foi enviado para o seu endereço de e-mail",
   "app.containers.Admin.emails.previewTitle": "Vista prévia",

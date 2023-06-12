@@ -691,7 +691,6 @@
   "app.containers.Admin.emails.nameVariablesInfo": "Primaocima se možete obratiti pomoću promenljivih \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. Npr. \"Dragi \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Možete kreirati i poslati onoliko email poruka koliko želite.",
   "app.containers.Admin.emails.noCampaignsHeader": "Još uvek nema prilagođenih email poruka",
-  "app.containers.Admin.emails.noExampleYet": "Не можемо да вам покажемо пример е-поште јер још увек није послата ниједна е-порука овог типа. Чим један буде послан, моћи ћете да га видите овде.",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Nema radne vezije niti poslatog SMS-a",
   "app.containers.Admin.emails.previewSentConfirmation": "Probni email je poslat na vašu adresu",
   "app.containers.Admin.emails.previewTitle": "Prikaz",

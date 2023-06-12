@@ -691,7 +691,6 @@
   "app.containers.Admin.emails.nameVariablesInfo": "Sie können Empfänger*innen über die Variablen {{first_name}} {{last_name}} direkt ansprechen. Z.B. \"Sehr geehrte(r) {{first_name}} {{last_name}},\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Sie können so viele E-Mails erstellen und versenden, wie Sie möchten.",
   "app.containers.Admin.emails.noCampaignsHeader": "Es sind noch keine benutzerdefinierten E-Mails vorhanden",
-  "app.containers.Admin.emails.noExampleYet": "Wir können Ihnen keine Beispiel-E-Mail zeigen, da noch keine E-Mail dieser Art verschickt wurde. Sobald eine solche E-Mail verschickt wird, können Sie sie hier ansehen.",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Es wurde noch keine SMS verfasst oder verschickt",
   "app.containers.Admin.emails.previewSentConfirmation": "Eine Vorschau-E-Mail wurde an Ihre E-Mail-Adresse gesendet",
   "app.containers.Admin.emails.previewTitle": "Vorschau",

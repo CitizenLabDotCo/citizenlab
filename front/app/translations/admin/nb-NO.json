@@ -691,7 +691,6 @@
   "app.containers.Admin.emails.nameVariablesInfo": "Du kan snakke direkte til borgere ved å bruke variablene \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. F.eks. \"Kjære \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Tilpassede e-postkampanjer er e-poster skrevet fra bunnen av. Innholdet og mottakerne deres kan bli valgt, og du kan følge opp på resultatene deres via statistikk.",
   "app.containers.Admin.emails.noCampaignsHeader": "Det er ingen egendefinerte e-postmeldinger ennå",
-  "app.containers.Admin.emails.noExampleYet": "Vi kan ikke vise deg et eksempel på e-post, siden ingen e-post av denne typen er sendt ennå. Så snart en er sendt vil du kunne se den her.",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Ingen SMS-meldinger er kladdet eller sendt ennå",
   "app.containers.Admin.emails.previewSentConfirmation": "En forhåndsvisnings-e-post har blitt sendt til e-postadressen din",
   "app.containers.Admin.emails.previewTitle": "Forhåndsvinging",

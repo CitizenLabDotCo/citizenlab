@@ -691,7 +691,6 @@
   "app.containers.Admin.emails.nameVariablesInfo": "Du kan henvende dig til modtagerne ved hjælp af variablerne \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. E.g. \"Dear \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Du kan oprette og sende så mange e-mails, som du vil.",
   "app.containers.Admin.emails.noCampaignsHeader": "Der er ingen brugerdefinerede e-mails endnu",
-  "app.containers.Admin.emails.noExampleYet": "Vi kan ikke vise dig et eksempel på en e-mail, da der endnu ikke er sendt en e-mail af denne type. Så snart der bliver sendt en, kan du se den her.",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Der er endnu ikke blevet udarbejdet eller sendt nogen SMS",
   "app.containers.Admin.emails.previewSentConfirmation": "Der er blevet sendt en preview e-mail til din e-mailadresse",
   "app.containers.Admin.emails.previewTitle": "Eksempel",

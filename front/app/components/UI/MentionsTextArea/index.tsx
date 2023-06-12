@@ -145,6 +145,10 @@ const MentionsTextArea = ({
           WebkitAppearance: 'none',
           transition: 'min-height 180ms cubic-bezier(0.165, 0.84, 0.44, 1)',
         },
+        highlighter: {
+          padding,
+          fontSize,
+        },
         suggestions: {
           list: {
             backgroundColor: 'white',

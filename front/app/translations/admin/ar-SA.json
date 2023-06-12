@@ -691,7 +691,6 @@
   "app.containers.Admin.emails.nameVariablesInfo": "يمكنك التحدث مباشرة مع المواطنين باستخدام المتغيرات \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. مثال: \" عزيزي \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}، ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "يمكنك إنشاء وإرسال رسائل إلكترونية بالقدر الذي تريده.",
   "app.containers.Admin.emails.noCampaignsHeader": "لا توجد رسائل إلكترونية مخصصة بعد",
-  "app.containers.Admin.emails.noExampleYet": "لا يمكننا أن نعرض لك مثالاً على البريد الإلكتروني لأنه لم يتم إرسال بريد إلكتروني من هذا النوع حتى الآن. بمجرد إرسال واحدة ، ستتمكن من عرضها هنا.",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "لم تتم صياغة أي رسالة SMS أو إرسالها حتى الآن",
   "app.containers.Admin.emails.previewSentConfirmation": "تم إرسال رسالة معاينة إلكترونية إلى عنوان بريدك الإلكتروني",
   "app.containers.Admin.emails.previewTitle": "معاينة",

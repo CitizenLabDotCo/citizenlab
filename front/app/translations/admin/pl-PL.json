@@ -691,7 +691,6 @@
   "app.containers.Admin.emails.nameVariablesInfo": "Możesz zwracać się bezpośrednio do osób, używając zmiennych \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. Na przykład: \"Szanowny \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Możesz tworzyć i wysyłać tyle e-maili, ile chcesz.",
   "app.containers.Admin.emails.noCampaignsHeader": "Nie ma jeszcze niestandardowych e-maili",
-  "app.containers.Admin.emails.noExampleYet": "Nie możemy pokazać Ci przykładowej wiadomości e-mail, ponieważ żadna wiadomość tego typu nie została jeszcze wysłana. Jak tylko taki e-mail zostanie wysłany, będziesz mógł go zobaczyć tutaj.",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Nie przygotowano jeszcze ani nie wysłano żadnej wiadomości SMS",
   "app.containers.Admin.emails.previewSentConfirmation": "Na Twój adres e-mail został wysłany e-mail podglądowy",
   "app.containers.Admin.emails.previewTitle": "Podgląd",
