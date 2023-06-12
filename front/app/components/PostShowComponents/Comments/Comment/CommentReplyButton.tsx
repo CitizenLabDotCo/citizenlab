@@ -22,13 +22,13 @@ import { postIsIdea, postIsInitiative } from './utils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // types
-import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { GetInitiativesPermissionsChildProps } from 'resources/GetInitiativesPermissions';
 import { IInitiativeData } from 'api/initiatives/types';
 import { IIdeaData } from 'api/ideas/types';
 import { ICommentData } from 'api/comments/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { IUserData } from 'api/users/types';
+import useAuthUser from 'api/me/useAuthUser';
 
 const Container = styled.li`
   display: flex;
@@ -59,7 +59,6 @@ interface Props {
   postType: 'idea' | 'initiative';
   commentId: string;
   commentType: 'parent' | 'child' | undefined;
-  authUser: GetAuthUserChildProps;
   author?: IUserData;
   post: IIdeaData | IInitiativeData;
   comment: ICommentData;
@@ -71,13 +70,13 @@ const CommentReplyButton = memo<Props>(
   ({
     postType,
     commentType,
-    authUser,
     author,
     post,
     comment,
     commentingPermissionInitiative,
     className,
   }) => {
+    const { data: authUser } = useAuthUser();
     const commentId = comment.id;
     const parentCommentId = comment.relationships.parent.data?.id ?? null;
     const authorFirstName = !isNilOrError(author)
