@@ -1,7 +1,5 @@
 import React from 'react';
-import FilterSelector, {
-  IFilterSelectorValue,
-} from 'components/FilterSelector';
+import FilterSelector from 'components/FilterSelector';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { CommentsSort } from 'api/comments/types';
@@ -9,16 +7,27 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
   onChange: (value: CommentsSort) => void;
-  selectedValue: CommentsSort[];
+  selectedCommentSort: CommentsSort;
   className?: string;
 }
 
-const CommentSorting = ({ onChange, selectedValue, className }: Props) => {
-  const handleOnChange = (selectedValue: [CommentsSort]) => {
+const CommentSorting = ({
+  onChange,
+  selectedCommentSort,
+  className,
+}: Props) => {
+  // 'new' = most recent (date posted, ascending)
+  // '-upvotes_count' = most votes (votes, descending)
+  const handleOnChange = (selectedValue: ['new'] | ['-upvotes_count']) => {
     onChange(selectedValue[0]);
   };
 
-  const sortOptions: IFilterSelectorValue[] = [
+  const sortOptions: {
+    text: JSX.Element;
+    value: CommentsSort;
+  }[] = [
+    // '-new' is the default value we get from the parent
+    { text: <FormattedMessage {...messages.leastRecent} />, value: '-new' },
     { text: <FormattedMessage {...messages.mostRecent} />, value: 'new' },
     {
       text: <FormattedMessage {...messages.mostUpvoted} />,
@@ -32,7 +41,7 @@ const CommentSorting = ({ onChange, selectedValue, className }: Props) => {
         id="e2e-comments-sort-filter"
         title={<FormattedMessage {...messages.commentsSortTitle} />}
         name="sort"
-        selected={selectedValue}
+        selected={[selectedCommentSort]}
         values={sortOptions}
         onChange={handleOnChange}
         multipleSelectionAllowed={false}
