@@ -233,6 +233,7 @@
   "app.components.ParticipationCTABars.allocateBudget": "Bütçenizi ayırın",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Katılım için açık",
   "app.components.ParticipationCTABars.poll": "Ankete katılın",
+  "app.components.ParticipationCTABars.projectClosedForSubmission": "Yeni başvurular şu anda kabul edilmemektedir",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Bu proje şu anda katılıma açıktır.",
   "app.components.ParticipationCTABars.reviewDocument": "Belgeyi gözden geçirin",
   "app.components.ParticipationCTABars.seeIdeas": "Fikirleri görün",
