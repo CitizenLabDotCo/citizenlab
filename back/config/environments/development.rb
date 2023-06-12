@@ -48,6 +48,9 @@ Rails.application.configure do
     #   { namespace: -> { Apartment::Tenant.current } }
   end
 
+  # Raise error when unpermitted parameters are passed through API calls.
+  config.action_controller.action_on_unpermitted_parameters = :raise
+
   # Store uploaded files on the local file system (see config/storage.yml for options)
   # config.active_storage.service = :local
 
