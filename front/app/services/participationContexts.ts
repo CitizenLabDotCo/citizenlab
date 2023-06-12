@@ -71,15 +71,17 @@ export interface ParticipationContext {
   downvoting_enabled: boolean;
   downvoting_limited_max: number;
   presentation_mode: PresentationMode;
-  voting_min_total?: number | null;
-  voting_max_total?: number | null;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
   ideas_count: number;
   ideas_order?: IdeaDefaultSortMethod;
-  voting_method?: VotingMethod | null;
   document_annotation_embed_url?: string | null;
+  voting_method?: VotingMethod | null;
+  voting_term?: Multiloc | null;
+  voting_min_total?: number | null;
+  voting_max_total?: number | null;
+  voting_max_votes_per_idea?: number | null;
 }
 
 export function getInputTerm(
