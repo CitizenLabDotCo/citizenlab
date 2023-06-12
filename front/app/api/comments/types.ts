@@ -87,7 +87,7 @@ export interface DeleteReason {
   other_reason: string | null;
 }
 
-// back-end also offers 'upvotes_count', but we haven't implemented it
+// back-end also offers 'upvotes_count' if needed
 export type CommentsSort = '-new' | 'new' | '-upvotes_count';
 
 export type ICommentQueryParameters = {
