@@ -233,6 +233,7 @@
   "app.components.ParticipationCTABars.allocateBudget": "Maak je keuze",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Open voor participatie",
   "app.components.ParticipationCTABars.poll": "Doe de peiling",
+  "app.components.ParticipationCTABars.projectClosedForSubmission": "Het is momenteel niet mogelijk om hier een bijdrage te plaatsen.",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Dit project staat momenteel open voor participatie.",
   "app.components.ParticipationCTABars.reviewDocument": "Bekijk het document",
   "app.components.ParticipationCTABars.seeIdeas": "Bekijk ideeën",
