@@ -3,6 +3,8 @@ import Author from 'components/Author';
 import { lighten } from 'polished';
 import styled from 'styled-components';
 import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
+import { useIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;
@@ -72,6 +74,7 @@ const CommentHeader = ({
   anonymous,
 }: Props) => {
   const hasAuthorId = !!authorId;
+  const { formatMessage } = useIntl();
 
   return (
     <Container className={className || ''}>
@@ -93,7 +96,11 @@ const CommentHeader = ({
           anonymous={anonymous}
         />
       </Left>
-      <Right>{moderator && <AdminBadge />}</Right>
+      <Right>
+        {moderator && (
+          <AdminBadge>{formatMessage(messages.official)}</AdminBadge>
+        )}
+      </Right>
     </Container>
   );
 };
