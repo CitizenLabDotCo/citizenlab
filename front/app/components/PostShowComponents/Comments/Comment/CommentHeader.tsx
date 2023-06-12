@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
 // components
 import Author from 'components/Author';
@@ -37,7 +37,7 @@ const StyledAuthor = styled(Author)`
   margin-left: -4px;
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
   projectId?: string | null;
   authorId: string | null;
@@ -49,46 +49,41 @@ interface InputProps {
   anonymous?: boolean;
 }
 
-interface Props extends InputProps {}
+const CommentHeader = ({
+  projectId,
+  authorId,
+  authorHash,
+  commentType,
+  commentCreatedAt,
+  moderator,
+  className,
+  anonymous,
+}: Props) => {
+  const hasAuthorId = !!authorId;
 
-interface State {}
+  return (
+    <Container className={className || ''}>
+      <Left>
+        <StyledAuthor
+          authorId={authorId}
+          authorHash={authorHash}
+          isLinkToProfile={hasAuthorId}
+          size={30}
+          projectId={projectId}
+          showModeration={moderator}
+          createdAt={commentCreatedAt}
+          avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
+          horizontalLayout={true}
+          color={colors.textSecondary}
+          fontSize={fontSizes.base}
+          fontWeight={400}
+          underline={true}
+          anonymous={anonymous}
+        />
+      </Left>
+      <Right>{moderator && <AdminBadge />}</Right>
+    </Container>
+  );
+};
 
-export default class CommentHeader extends PureComponent<Props, State> {
-  render() {
-    const {
-      projectId,
-      authorId,
-      authorHash,
-      commentType,
-      commentCreatedAt,
-      moderator,
-      className,
-      anonymous,
-    } = this.props;
-    const hasAuthorId = !!authorId;
-
-    return (
-      <Container className={className || ''}>
-        <Left>
-          <StyledAuthor
-            authorId={authorId}
-            authorHash={authorHash}
-            isLinkToProfile={hasAuthorId}
-            size={30}
-            projectId={projectId}
-            showModeration={moderator}
-            createdAt={commentCreatedAt}
-            avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
-            horizontalLayout={true}
-            color={colors.textSecondary}
-            fontSize={fontSizes.base}
-            fontWeight={400}
-            underline={true}
-            anonymous={anonymous}
-          />
-        </Left>
-        <Right>{moderator && <AdminBadge />}</Right>
-      </Container>
-    );
-  }
-}
+export default CommentHeader;
