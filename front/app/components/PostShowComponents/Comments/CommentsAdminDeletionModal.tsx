@@ -2,7 +2,7 @@
 import React from 'react';
 
 // Services
-import { DeleteReasonCode } from 'api/comments/types';
+import { DeleteReason, DeleteReasonCode } from 'api/comments/types';
 
 // Components
 import Button from 'components/UI/Button';
@@ -47,7 +47,7 @@ const ButtonsWrapper = styled.div`
 
 const timeout = 300;
 
-const DeleteReason = styled.div`
+const DeleteReasonContainer = styled.div`
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
   overflow: hidden;
 
@@ -80,7 +80,7 @@ type FormValues = {
 };
 
 type Props = {
-  onDeleteComment: (values: FormValues) => Promise<void>;
+  onDeleteComment: (reason: DeleteReason) => Promise<void>;
   onCloseDeleteModal: () => void;
 };
 
@@ -148,11 +148,11 @@ const CommentsAdminDeletionForm = ({
                 enter={true}
                 exit={true}
               >
-                <DeleteReason>
+                <DeleteReasonContainer>
                   <SectionField>
                     <TextArea name="other_reason" />
                   </SectionField>
-                </DeleteReason>
+                </DeleteReasonContainer>
               </CSSTransition>
             ) : null}
           </TransitionGroup>
